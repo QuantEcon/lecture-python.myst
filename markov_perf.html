@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>71. Markov Perfect Equilibrium &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>72. Markov Perfect Equilibrium &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="72. Uncertainty Traps" href="uncertainty_traps.html" />
-    <link rel="prev" title="70. Stability in Linear Rational Expectations Models" href="re_with_feedback.html" />
+    <link rel="next" title="73. Uncertainty Traps" href="uncertainty_traps.html" />
+    <link rel="prev" title="71. Stability in Linear Rational Expectations Models" href="re_with_feedback.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,29 +169,29 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">71.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">71.2. Background</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-a-duopoly-model">71.2.1. Example: A Duopoly Model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">71.2.2. Computation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">72.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">72.2. Background</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-a-duopoly-model">72.2.1. Example: A Duopoly Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">72.2.2. Computation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-markov-perfect-equilibria">71.3. Linear Markov Perfect Equilibria</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coupled-linear-regulator-problems">71.3.1. Coupled Linear Regulator Problems</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-equilibrium">71.3.2. Computing Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#key-insight">71.3.2.1. Key Insight</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#infinite-horizon">71.3.2.2. Infinite Horizon</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-markov-perfect-equilibria">72.3. Linear Markov Perfect Equilibria</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coupled-linear-regulator-problems">72.3.1. Coupled Linear Regulator Problems</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-equilibrium">72.3.2. Computing Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#key-insight">72.3.2.1. Key Insight</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#infinite-horizon">72.3.2.2. Infinite Horizon</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">71.3.3. Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">72.3.3. Implementation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application">71.4. Application</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-duopoly-model">71.4.1. A Duopoly Model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-and-solution">71.4.2. Parameters and Solution</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamics">71.4.3. Dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application">72.4. Application</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-duopoly-model">72.4.1. A Duopoly Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-and-solution">72.4.2. Parameters and Solution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamics">72.4.3. Dynamics</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">71.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">72.5. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="markov-perfect-equilibrium">
-<h1><a class="toc-backref" href="#id8"><span class="section-number">71. </span>Markov Perfect Equilibrium</a><a class="headerlink" href="#markov-perfect-equilibrium" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id8"><span class="section-number">72. </span>Markov Perfect Equilibrium</a><a class="headerlink" href="#markov-perfect-equilibrium" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -270,7 +270,9 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
@@ -293,7 +295,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">71.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">72.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p id="index-1">This lecture describes the concept of Markov perfect equilibrium.</p>
 <p>Markov perfect equilibrium is a key notion for analyzing economic problems involving dynamic strategic interaction, and a cornerstone of applied game theory.</p>
 <p>In this lecture, we teach Markov perfect equilibrium by example.</p>
@@ -318,7 +320,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </section>
 <section id="background">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">71.2. </span>Background</a><a class="headerlink" href="#background" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">72.2. </span>Background</a><a class="headerlink" href="#background" title="Permalink to this heading">#</a></h2>
 <p id="index-2">Markov perfect equilibrium is a refinement of the concept of Nash equilibrium.</p>
 <p>It is used to study settings where multiple decision-makers interact non-cooperatively over time, each pursuing its own objective.</p>
 <p>The agents in the model face a common state vector, the time path of which is influenced by – and influences – their decisions.</p>
@@ -332,12 +334,12 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </ul>
 <p>Let’s examine a model of the first type.</p>
 <section id="example-a-duopoly-model">
-<h3><span class="section-number">71.2.1. </span>Example: A Duopoly Model<a class="headerlink" href="#example-a-duopoly-model" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.2.1. </span>Example: A Duopoly Model<a class="headerlink" href="#example-a-duopoly-model" title="Permalink to this heading">#</a></h3>
 <p>Two firms are the only producers of a good, the demand for which is governed by a linear inverse demand function</p>
 <div class="math notranslate nohighlight" id="equation-game2">
-<span class="eqno">(71.1)<a class="headerlink" href="#equation-game2" title="Permalink to this equation">#</a></span>\[p = a_0 - a_1 (q_1 +  q_2)\]</div>
+<span class="eqno">(72.1)<a class="headerlink" href="#equation-game2" title="Permalink to this equation">#</a></span>\[p = a_0 - a_1 (q_1 +  q_2)\]</div>
 <p>Here <span class="math notranslate nohighlight">\(p = p_t\)</span> is the price of the good, <span class="math notranslate nohighlight">\(q_i = q_{it}\)</span> is the output of firm <span class="math notranslate nohighlight">\(i=1,2\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(a_0 &gt; 0, a_1 &gt;0\)</span>.</p>
-<p>In <a class="reference internal" href="#equation-game2">(71.1)</a> and what follows,</p>
+<p>In <a class="reference internal" href="#equation-game2">(72.1)</a> and what follows,</p>
 <ul class="simple">
 <li><p>the time subscript is suppressed when possible to simplify notation</p></li>
 <li><p><span class="math notranslate nohighlight">\(\hat x\)</span> denotes a next period value of variable <span class="math notranslate nohighlight">\(x\)</span></p></li>
@@ -345,22 +347,22 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <p>Each firm recognizes that its output affects total output and therefore the market price.</p>
 <p>The one-period payoff function of firm <span class="math notranslate nohighlight">\(i\)</span> is price times quantity minus adjustment costs:</p>
 <div class="math notranslate nohighlight" id="equation-game1">
-<span class="eqno">(71.2)<a class="headerlink" href="#equation-game1" title="Permalink to this equation">#</a></span>\[\pi_i = p q_i - \gamma (\hat q_i - q_i)^2, \quad \gamma &gt; 0 ,\]</div>
-<p>Substituting the inverse demand curve <a class="reference internal" href="#equation-game2">(71.1)</a> into <a class="reference internal" href="#equation-game1">(71.2)</a> lets us express the one-period payoff as</p>
+<span class="eqno">(72.2)<a class="headerlink" href="#equation-game1" title="Permalink to this equation">#</a></span>\[\pi_i = p q_i - \gamma (\hat q_i - q_i)^2, \quad \gamma &gt; 0 ,\]</div>
+<p>Substituting the inverse demand curve <a class="reference internal" href="#equation-game2">(72.1)</a> into <a class="reference internal" href="#equation-game1">(72.2)</a> lets us express the one-period payoff as</p>
 <div class="math notranslate nohighlight" id="equation-game3">
-<span class="eqno">(71.3)<a class="headerlink" href="#equation-game3" title="Permalink to this equation">#</a></span>\[\pi_i(q_i, q_{-i}, \hat q_i) = a_0 q_i - a_1 q_i^2 - a_1 q_i q_{-i} - \gamma (\hat q_i - q_i)^2 ,\]</div>
+<span class="eqno">(72.3)<a class="headerlink" href="#equation-game3" title="Permalink to this equation">#</a></span>\[\pi_i(q_i, q_{-i}, \hat q_i) = a_0 q_i - a_1 q_i^2 - a_1 q_i q_{-i} - \gamma (\hat q_i - q_i)^2 ,\]</div>
 <p>where <span class="math notranslate nohighlight">\(q_{-i}\)</span> denotes the output of the firm other than <span class="math notranslate nohighlight">\(i\)</span>.</p>
 <p>The objective of the firm is to maximize <span class="math notranslate nohighlight">\(\sum_{t=0}^\infty \beta^t \pi_{it}\)</span>.</p>
 <p>Firm <span class="math notranslate nohighlight">\(i\)</span> chooses a decision rule that sets next period quantity <span class="math notranslate nohighlight">\(\hat q_i\)</span> as a function <span class="math notranslate nohighlight">\(f_i\)</span> of the current state <span class="math notranslate nohighlight">\((q_i, q_{-i})\)</span>.</p>
 <p>An essential aspect of a Markov perfect equilibrium is that each firm takes the decision rule of the other firm as known and given.</p>
 <p>Given <span class="math notranslate nohighlight">\(f_{-i}\)</span>, the Bellman equation of firm <span class="math notranslate nohighlight">\(i\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-game4">
-<span class="eqno">(71.4)<a class="headerlink" href="#equation-game4" title="Permalink to this equation">#</a></span>\[v_i(q_i, q_{-i}) = \max_{\hat q_i}
+<span class="eqno">(72.4)<a class="headerlink" href="#equation-game4" title="Permalink to this equation">#</a></span>\[v_i(q_i, q_{-i}) = \max_{\hat q_i}
    \left\{\pi_i (q_i, q_{-i}, \hat q_i) + \beta v_i(\hat q_i, f_{-i}(q_{-i}, q_i)) \right\}\]</div>
 <p><strong>Definition</strong>  A <em>Markov perfect equilibrium</em> of the duopoly model is a pair of value functions <span class="math notranslate nohighlight">\((v_1, v_2)\)</span> and a pair of policy functions <span class="math notranslate nohighlight">\((f_1, f_2)\)</span> such that, for each <span class="math notranslate nohighlight">\(i \in \{1, 2\}\)</span> and each possible state,</p>
 <ul class="simple">
-<li><p>The value function <span class="math notranslate nohighlight">\(v_i\)</span> satisfies  Bellman equation <a class="reference internal" href="#equation-game4">(71.4)</a>.</p></li>
-<li><p>The maximizer on the right side of <a class="reference internal" href="#equation-game4">(71.4)</a>  equals <span class="math notranslate nohighlight">\(f_i(q_i, q_{-i})\)</span>.</p></li>
+<li><p>The value function <span class="math notranslate nohighlight">\(v_i\)</span> satisfies  Bellman equation <a class="reference internal" href="#equation-game4">(72.4)</a>.</p></li>
+<li><p>The maximizer on the right side of <a class="reference internal" href="#equation-game4">(72.4)</a>  equals <span class="math notranslate nohighlight">\(f_i(q_i, q_{-i})\)</span>.</p></li>
 </ul>
 <p>The adjective “Markov” denotes that the equilibrium decision rules depend only on the current values of the state variables, not other parts of their histories.</p>
 <p>“Perfect” means complete, in the sense that the equilibrium is constructed by backward induction and hence builds in optimizing behavior for each firm at all possible future states.</p>
@@ -369,29 +371,29 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </ul>
 </section>
 <section id="computation">
-<h3><span class="section-number">71.2.2. </span>Computation<a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.2.2. </span>Computation<a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h3>
 <p>One strategy for computing a Markov perfect equilibrium is iterating to convergence on pairs of Bellman equations and decision rules.</p>
 <p>In particular, let <span class="math notranslate nohighlight">\(v_i^j,f_i^j\)</span> be the value function and policy function for firm <span class="math notranslate nohighlight">\(i\)</span> at the <span class="math notranslate nohighlight">\(j\)</span>-th iteration.</p>
 <p>Imagine constructing the iterates</p>
 <div class="math notranslate nohighlight" id="equation-game6">
-<span class="eqno">(71.5)<a class="headerlink" href="#equation-game6" title="Permalink to this equation">#</a></span>\[v_i^{j+1}(q_i, q_{-i}) = \max_{\hat q_i}
+<span class="eqno">(72.5)<a class="headerlink" href="#equation-game6" title="Permalink to this equation">#</a></span>\[v_i^{j+1}(q_i, q_{-i}) = \max_{\hat q_i}
    \left\{\pi_i (q_i, q_{-i}, \hat q_i) + \beta v^j_i(\hat q_i, f_{-i}(q_{-i}, q_i)) \right\}\]</div>
 <p>These iterations can be challenging to implement computationally.</p>
 <p>However, they simplify for the case in which  one-period payoff functions are quadratic and  transition laws are linear — which takes us to our next topic.</p>
 </section>
 </section>
 <section id="linear-markov-perfect-equilibria">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">71.3. </span>Linear Markov Perfect Equilibria</a><a class="headerlink" href="#linear-markov-perfect-equilibria" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">72.3. </span>Linear Markov Perfect Equilibria</a><a class="headerlink" href="#linear-markov-perfect-equilibria" title="Permalink to this heading">#</a></h2>
 <p id="index-3">As we saw in the duopoly example, the study of Markov perfect equilibria in games with two players leads us to an interrelated pair of Bellman equations.</p>
 <p>In linear-quadratic dynamic games, these “stacked Bellman equations” become “stacked Riccati equations” with a tractable mathematical structure.</p>
 <p>We’ll lay out that structure in a general setup and then apply it to some simple problems.</p>
 <section id="coupled-linear-regulator-problems">
-<h3><span class="section-number">71.3.1. </span>Coupled Linear Regulator Problems<a class="headerlink" href="#coupled-linear-regulator-problems" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.3.1. </span>Coupled Linear Regulator Problems<a class="headerlink" href="#coupled-linear-regulator-problems" title="Permalink to this heading">#</a></h3>
 <p>We consider a general linear-quadratic regulator game with two players.</p>
 <p>For convenience, we’ll start with a finite horizon formulation, where <span class="math notranslate nohighlight">\(t_0\)</span> is the initial date and <span class="math notranslate nohighlight">\(t_1\)</span> is the common terminal date.</p>
 <p>Player <span class="math notranslate nohighlight">\(i\)</span> takes <span class="math notranslate nohighlight">\(\{u_{-it}\}\)</span> as given and minimizes</p>
 <div class="math notranslate nohighlight" id="equation-orig-1">
-<span class="eqno">(71.6)<a class="headerlink" href="#equation-orig-1" title="Permalink to this equation">#</a></span>\[\sum_{t=t_0}^{t_1 - 1}
+<span class="eqno">(72.6)<a class="headerlink" href="#equation-orig-1" title="Permalink to this equation">#</a></span>\[\sum_{t=t_0}^{t_1 - 1}
 \beta^{t - t_0}
 \left\{
     x_t' R_i x_t +
@@ -402,7 +404,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 \right\}\]</div>
 <p>while the state evolves according to</p>
 <div class="math notranslate nohighlight" id="equation-orig-0">
-<span class="eqno">(71.7)<a class="headerlink" href="#equation-orig-0" title="Permalink to this equation">#</a></span>\[x_{t+1} = A x_t + B_1 u_{1t} + B_2 u_{2t}\]</div>
+<span class="eqno">(72.7)<a class="headerlink" href="#equation-orig-0" title="Permalink to this equation">#</a></span>\[x_{t+1} = A x_t + B_1 u_{1t} + B_2 u_{2t}\]</div>
 <p>Here</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_t\)</span> is an <span class="math notranslate nohighlight">\(n \times 1\)</span> state vector and  <span class="math notranslate nohighlight">\(u_{it}\)</span> is a <span class="math notranslate nohighlight">\(k_i \times 1\)</span> vector of controls for player <span class="math notranslate nohighlight">\(i\)</span></p></li>
@@ -416,7 +418,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </ul>
 </section>
 <section id="computing-equilibrium">
-<h3><span class="section-number">71.3.2. </span>Computing Equilibrium<a class="headerlink" href="#computing-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.3.2. </span>Computing Equilibrium<a class="headerlink" href="#computing-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>We formulate a linear Markov perfect equilibrium as follows.</p>
 <p>Player <span class="math notranslate nohighlight">\(i\)</span> employs linear decision rules <span class="math notranslate nohighlight">\(u_{it} = - F_{it} x_t\)</span>, where <span class="math notranslate nohighlight">\(F_{it}\)</span> is a <span class="math notranslate nohighlight">\(k_i \times n\)</span> matrix.</p>
 <p>A Markov perfect equilibrium is a pair of sequences <span class="math notranslate nohighlight">\(\{F_{1t}, F_{2t}\}\)</span> over <span class="math notranslate nohighlight">\(t = t_0, \ldots, t_1 - 1\)</span> such that</p>
@@ -424,9 +426,9 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <li><p><span class="math notranslate nohighlight">\(\{F_{1t}\}\)</span> solves player 1’s problem, taking <span class="math notranslate nohighlight">\(\{F_{2t}\}\)</span> as given, and</p></li>
 <li><p><span class="math notranslate nohighlight">\(\{F_{2t}\}\)</span> solves player 2’s problem, taking <span class="math notranslate nohighlight">\(\{F_{1t}\}\)</span> as given</p></li>
 </ul>
-<p>If we take <span class="math notranslate nohighlight">\(u_{2t} = - F_{2t} x_t\)</span> and substitute it into <a class="reference internal" href="#equation-orig-1">(71.6)</a> and <a class="reference internal" href="#equation-orig-0">(71.7)</a>, then player 1’s problem becomes minimization of</p>
+<p>If we take <span class="math notranslate nohighlight">\(u_{2t} = - F_{2t} x_t\)</span> and substitute it into <a class="reference internal" href="#equation-orig-1">(72.6)</a> and <a class="reference internal" href="#equation-orig-0">(72.7)</a>, then player 1’s problem becomes minimization of</p>
 <div class="math notranslate nohighlight" id="equation-eq-mpe-p1p">
-<span class="eqno">(71.8)<a class="headerlink" href="#equation-eq-mpe-p1p" title="Permalink to this equation">#</a></span>\[\sum_{t=t_0}^{t_1 - 1}
+<span class="eqno">(72.8)<a class="headerlink" href="#equation-eq-mpe-p1p" title="Permalink to this equation">#</a></span>\[\sum_{t=t_0}^{t_1 - 1}
 \beta^{t - t_0}
     \left\{
     x_t' \Pi_{1t} x_t +
@@ -435,7 +437,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
     \right\}\]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight" id="equation-eq-mpe-p1d">
-<span class="eqno">(71.9)<a class="headerlink" href="#equation-eq-mpe-p1d" title="Permalink to this equation">#</a></span>\[x_{t+1} = \Lambda_{1t} x_t + B_1 u_{1t},\]</div>
+<span class="eqno">(72.9)<a class="headerlink" href="#equation-eq-mpe-p1d" title="Permalink to this equation">#</a></span>\[x_{t+1} = \Lambda_{1t} x_t + B_1 u_{1t},\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\Lambda_{it} := A - B_{-i} F_{-it}\)</span></p></li>
@@ -445,58 +447,58 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <p>This is an LQ dynamic programming problem that can be solved by working backwards.</p>
 <p>Decision rules that solve this problem are</p>
 <div class="math notranslate nohighlight" id="equation-orig-3">
-<span class="eqno">(71.10)<a class="headerlink" href="#equation-orig-3" title="Permalink to this equation">#</a></span>\[F_{1t}
+<span class="eqno">(72.10)<a class="headerlink" href="#equation-orig-3" title="Permalink to this equation">#</a></span>\[F_{1t}
 = (Q_1 + \beta B_1' P_{1t+1} B_1)^{-1}
 (\beta B_1' P_{1t+1} \Lambda_{1t} + \Gamma_{1t})\]</div>
 <p>where <span class="math notranslate nohighlight">\(P_{1t}\)</span> solves the matrix Riccati difference equation</p>
 <div class="math notranslate nohighlight" id="equation-orig-4">
-<span class="eqno">(71.11)<a class="headerlink" href="#equation-orig-4" title="Permalink to this equation">#</a></span>\[P_{1t} =
+<span class="eqno">(72.11)<a class="headerlink" href="#equation-orig-4" title="Permalink to this equation">#</a></span>\[P_{1t} =
 \Pi_{1t} - (\beta B_1' P_{1t+1} \Lambda_{1t} +
 \Gamma_{1t})' (Q_1 + \beta B_1' P_{1t+1} B_1)^{-1}
 (\beta B_1' P_{1t+1} \Lambda_{1t} + \Gamma_{1t}) +
 \beta \Lambda_{1t}' P_{1t+1} \Lambda_{1t}\]</div>
 <p>Similarly, decision rules that solve player 2’s problem are</p>
 <div class="math notranslate nohighlight" id="equation-orig-5">
-<span class="eqno">(71.12)<a class="headerlink" href="#equation-orig-5" title="Permalink to this equation">#</a></span>\[F_{2t} = (Q_2 + \beta B_2' P_{2t+1} B_2)^{-1}
+<span class="eqno">(72.12)<a class="headerlink" href="#equation-orig-5" title="Permalink to this equation">#</a></span>\[F_{2t} = (Q_2 + \beta B_2' P_{2t+1} B_2)^{-1}
 (\beta B_2' P_{2t+1} \Lambda_{2t} + \Gamma_{2t})\]</div>
 <p>where <span class="math notranslate nohighlight">\(P_{2t}\)</span> solves</p>
 <div class="math notranslate nohighlight" id="equation-orig-6">
-<span class="eqno">(71.13)<a class="headerlink" href="#equation-orig-6" title="Permalink to this equation">#</a></span>\[P_{2t} =
+<span class="eqno">(72.13)<a class="headerlink" href="#equation-orig-6" title="Permalink to this equation">#</a></span>\[P_{2t} =
 \Pi_{2t} - (\beta B_2' P_{2t+1} \Lambda_{2t} +
 \Gamma_{2t})' (Q_2 + \beta B_2' P_{2t+1} B_2)^{-1}
 (\beta B_2' P_{2t+1} \Lambda_{2t} + \Gamma_{2t}) +
 \beta \Lambda_{2t}' P_{2t+1} \Lambda_{2t}\]</div>
 <p>Here, in all cases <span class="math notranslate nohighlight">\(t = t_0, \ldots, t_1 - 1\)</span> and the terminal conditions are <span class="math notranslate nohighlight">\(P_{it_1} = 0\)</span>.</p>
-<p>The solution procedure is to use equations <a class="reference internal" href="#equation-orig-3">(71.10)</a>, <a class="reference internal" href="#equation-orig-4">(71.11)</a>, <a class="reference internal" href="#equation-orig-5">(71.12)</a>, and <a class="reference internal" href="#equation-orig-6">(71.13)</a>, and “work backwards” from time <span class="math notranslate nohighlight">\(t_1 - 1\)</span>.</p>
+<p>The solution procedure is to use equations <a class="reference internal" href="#equation-orig-3">(72.10)</a>, <a class="reference internal" href="#equation-orig-4">(72.11)</a>, <a class="reference internal" href="#equation-orig-5">(72.12)</a>, and <a class="reference internal" href="#equation-orig-6">(72.13)</a>, and “work backwards” from time <span class="math notranslate nohighlight">\(t_1 - 1\)</span>.</p>
 <p>Since we’re working backward, <span class="math notranslate nohighlight">\(P_{1t+1}\)</span> and <span class="math notranslate nohighlight">\(P_{2t+1}\)</span> are taken as given at each stage.</p>
 <p>Moreover, since</p>
 <ul class="simple">
-<li><p>some terms on the right-hand side of <a class="reference internal" href="#equation-orig-3">(71.10)</a> contain <span class="math notranslate nohighlight">\(F_{2t}\)</span></p></li>
-<li><p>some terms on the right-hand side of <a class="reference internal" href="#equation-orig-5">(71.12)</a> contain <span class="math notranslate nohighlight">\(F_{1t}\)</span></p></li>
+<li><p>some terms on the right-hand side of <a class="reference internal" href="#equation-orig-3">(72.10)</a> contain <span class="math notranslate nohighlight">\(F_{2t}\)</span></p></li>
+<li><p>some terms on the right-hand side of <a class="reference internal" href="#equation-orig-5">(72.12)</a> contain <span class="math notranslate nohighlight">\(F_{1t}\)</span></p></li>
 </ul>
 <p>we need to solve these <span class="math notranslate nohighlight">\(k_1 + k_2\)</span> equations simultaneously.</p>
 <section id="key-insight">
-<h4><span class="section-number">71.3.2.1. </span>Key Insight<a class="headerlink" href="#key-insight" title="Permalink to this heading">#</a></h4>
-<p>A key insight is that  equations  <a class="reference internal" href="#equation-orig-3">(71.10)</a> and <a class="reference internal" href="#equation-orig-5">(71.12)</a> are linear in <span class="math notranslate nohighlight">\(F_{1t}\)</span> and <span class="math notranslate nohighlight">\(F_{2t}\)</span>.</p>
-<p>After these equations have been solved, we can take  <span class="math notranslate nohighlight">\(F_{it}\)</span> and solve for <span class="math notranslate nohighlight">\(P_{it}\)</span> in <a class="reference internal" href="#equation-orig-4">(71.11)</a> and <a class="reference internal" href="#equation-orig-6">(71.13)</a>.</p>
+<h4><span class="section-number">72.3.2.1. </span>Key Insight<a class="headerlink" href="#key-insight" title="Permalink to this heading">#</a></h4>
+<p>A key insight is that  equations  <a class="reference internal" href="#equation-orig-3">(72.10)</a> and <a class="reference internal" href="#equation-orig-5">(72.12)</a> are linear in <span class="math notranslate nohighlight">\(F_{1t}\)</span> and <span class="math notranslate nohighlight">\(F_{2t}\)</span>.</p>
+<p>After these equations have been solved, we can take  <span class="math notranslate nohighlight">\(F_{it}\)</span> and solve for <span class="math notranslate nohighlight">\(P_{it}\)</span> in <a class="reference internal" href="#equation-orig-4">(72.11)</a> and <a class="reference internal" href="#equation-orig-6">(72.13)</a>.</p>
 </section>
 <section id="infinite-horizon">
-<h4><span class="section-number">71.3.2.2. </span>Infinite Horizon<a class="headerlink" href="#infinite-horizon" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">72.3.2.2. </span>Infinite Horizon<a class="headerlink" href="#infinite-horizon" title="Permalink to this heading">#</a></h4>
 <p>We often want to compute the solutions of such games for infinite horizons, in the hope that the decision rules <span class="math notranslate nohighlight">\(F_{it}\)</span> settle down to be time-invariant as <span class="math notranslate nohighlight">\(t_1 \rightarrow +\infty\)</span>.</p>
 <p>In practice, we usually fix <span class="math notranslate nohighlight">\(t_1\)</span> and compute the equilibrium of an infinite horizon game by driving <span class="math notranslate nohighlight">\(t_0 \rightarrow - \infty\)</span>.</p>
 <p>This is the approach we adopt in the next section.</p>
 </section>
 </section>
 <section id="implementation">
-<h3><span class="section-number">71.3.3. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.3.3. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
 <p>We use the function <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lqnash.py">nnash</a> from <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a> that computes a Markov perfect equilibrium of the infinite horizon linear-quadratic dynamic game in the manner described above.</p>
 </section>
 </section>
 <section id="application">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">71.4. </span>Application</a><a class="headerlink" href="#application" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">72.4. </span>Application</a><a class="headerlink" href="#application" title="Permalink to this heading">#</a></h2>
 <p id="index-4">Let’s use these procedures to treat some applications, starting with the duopoly model.</p>
 <section id="a-duopoly-model">
-<h3><span class="section-number">71.4.1. </span>A Duopoly Model<a class="headerlink" href="#a-duopoly-model" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.4.1. </span>A Duopoly Model<a class="headerlink" href="#a-duopoly-model" title="Permalink to this heading">#</a></h3>
 <p>To map the duopoly model into  coupled linear-quadratic dynamic programming problems, define the state
 and controls as</p>
 <div class="math notranslate nohighlight">
@@ -533,7 +535,7 @@ R_2 :=
    -\frac{a_0}{2} &amp; \frac{a_1}{2} &amp; a_1
 \end{bmatrix}
 \end{split}\]</div>
-<p>then we recover the  one-period  payoffs in expression <a class="reference internal" href="#equation-game3">(71.3)</a>.</p>
+<p>then we recover the  one-period  payoffs in expression <a class="reference internal" href="#equation-game3">(72.3)</a>.</p>
 <p>The law of motion for the state <span class="math notranslate nohighlight">\(x_t\)</span> is <span class="math notranslate nohighlight">\(x_{t+1} = A x_t + B_1 u_{1t} + B_2 u_{2t}\)</span> where</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -560,10 +562,10 @@ B_2 :=
 \end{split}\]</div>
 <p>The optimal decision rule of firm <span class="math notranslate nohighlight">\(i\)</span> will take the form <span class="math notranslate nohighlight">\(u_{it} = - F_i x_t\)</span>, inducing the following closed-loop system for the evolution of <span class="math notranslate nohighlight">\(x\)</span> in the Markov perfect equilibrium:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mpe-cle">
-<span class="eqno">(71.14)<a class="headerlink" href="#equation-eq-mpe-cle" title="Permalink to this equation">#</a></span>\[x_{t+1} = (A - B_1 F_1 -B_1 F_2 ) x_t\]</div>
+<span class="eqno">(72.14)<a class="headerlink" href="#equation-eq-mpe-cle" title="Permalink to this equation">#</a></span>\[x_{t+1} = (A - B_1 F_1 -B_1 F_2 ) x_t\]</div>
 </section>
 <section id="parameters-and-solution">
-<h3><span class="section-number">71.4.2. </span>Parameters and Solution<a class="headerlink" href="#parameters-and-solution" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.4.2. </span>Parameters and Solution<a class="headerlink" href="#parameters-and-solution" title="Permalink to this heading">#</a></h3>
 <p>Consider the previously presented duopoly model with parameter values of:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(a_0 = 10\)</span></p></li>
@@ -624,7 +626,7 @@ F2 = [[-0.66846615  0.07584666  0.29512482]]
 </div>
 <p>Running the code produces the following output.</p>
 <p>One way to see that <span class="math notranslate nohighlight">\(F_i\)</span> is indeed optimal for firm <span class="math notranslate nohighlight">\(i\)</span> taking <span class="math notranslate nohighlight">\(F_2\)</span> as given is to use <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>’s LQ class.</p>
-<p>In particular, let’s take F2 as computed above, plug it into <a class="reference internal" href="#equation-eq-mpe-p1p">(71.8)</a> and <a class="reference internal" href="#equation-eq-mpe-p1d">(71.9)</a> to get firm 1’s problem and solve it using LQ.</p>
+<p>In particular, let’s take F2 as computed above, plug it into <a class="reference internal" href="#equation-eq-mpe-p1p">(72.8)</a> and <a class="reference internal" href="#equation-eq-mpe-p1d">(72.9)</a> to get firm 1’s problem and solve it using LQ.</p>
 <p>We hope that the resulting policy will agree with F1 as computed above</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -657,13 +659,13 @@ F2 = [[-0.66846615  0.07584666  0.29512482]]
 </div>
 </section>
 <section id="dynamics">
-<h3><span class="section-number">71.4.3. </span>Dynamics<a class="headerlink" href="#dynamics" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.4.3. </span>Dynamics<a class="headerlink" href="#dynamics" title="Permalink to this heading">#</a></h3>
 <p>Let’s now investigate the dynamics of price and output in this simple duopoly model under the MPE policies.</p>
-<p>Given our optimal policies <span class="math notranslate nohighlight">\(F1\)</span> and <span class="math notranslate nohighlight">\(F2\)</span>, the state evolves according to <a class="reference internal" href="#equation-eq-mpe-cle">(71.14)</a>.</p>
+<p>Given our optimal policies <span class="math notranslate nohighlight">\(F1\)</span> and <span class="math notranslate nohighlight">\(F2\)</span>, the state evolves according to <a class="reference internal" href="#equation-eq-mpe-cle">(72.14)</a>.</p>
 <p>The following program</p>
 <ul class="simple">
 <li><p>imports <span class="math notranslate nohighlight">\(F1\)</span> and <span class="math notranslate nohighlight">\(F2\)</span> from the previous program along with all parameters.</p></li>
-<li><p>computes the evolution of <span class="math notranslate nohighlight">\(x_t\)</span> using <a class="reference internal" href="#equation-eq-mpe-cle">(71.14)</a>.</p></li>
+<li><p>computes the evolution of <span class="math notranslate nohighlight">\(x_t\)</span> using <a class="reference internal" href="#equation-eq-mpe-cle">(72.14)</a>.</p></li>
 <li><p>extracts and plots industry output <span class="math notranslate nohighlight">\(q_t = q_{1t} + q_{2t}\)</span> and price <span class="math notranslate nohighlight">\(p_t = a_0 - a_1 q_t\)</span>.</p></li>
 </ul>
 <div class="cell docutils container">
@@ -705,10 +707,10 @@ F2 = [[-0.66846615  0.07584666  0.29512482]]
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">71.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">72.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="mp_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 71.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 72.1 </span></p>
 <section id="exercise-content">
 <p>Replicate the <a class="reference internal" href="#mpe-vs-monopolist"><span class="std std-ref">pair of figures</span></a> showing the comparison of output and prices for the monopolist and duopoly under MPE.</p>
 <p>Parameters are as in duopoly_mpe.py and you can use that code to compute MPE policies under duopoly.</p>
@@ -717,7 +719,7 @@ F2 = [[-0.66846615  0.07584666  0.29512482]]
 </div>
 <div class="solution dropdown admonition" id="markov_perf-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#mp_ex1"> Exercise 71.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#mp_ex1"> Exercise 72.1</a></p>
 <section id="solution-content">
 <p>First, let’s compute the duopoly MPE under the stated parameters</p>
 <div class="cell docutils container">
@@ -840,7 +842,7 @@ resulting dynamics of <span class="math notranslate nohighlight">\(\{q_t\}\)</sp
 </div>
 <div class="exercise admonition" id="mp_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 71.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 72.2 </span></p>
 <section id="exercise-content">
 <p>In this exercise, we consider a slightly more sophisticated duopoly problem.</p>
 <p>It takes the form of infinite horizon linear-quadratic game proposed by Judd <span id="id7">[<a class="reference internal" href="zreferences.html#id177" title="K L Judd. Cournot versus bertrand: a dynamic resolution. Technical Report, Hoover Institution, Stanford University, 1990.">Jud90</a>]</span>.</p>
@@ -925,7 +927,7 @@ x_t =
 </div>
 <div class="solution dropdown admonition" id="markov_perf-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#mp_ex2"> Exercise 71.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#mp_ex2"> Exercise 72.2</a></p>
 <section id="solution-content">
 <p>We treat the case <span class="math notranslate nohighlight">\(\delta = 0.02\)</span></p>
 <div class="cell docutils container">
@@ -1290,8 +1292,13 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   32. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   33. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1303,37 +1310,37 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   34. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   35. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   36. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   37. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   38. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   39. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   40. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1345,52 +1352,52 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   41. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   42. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   43. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   44. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   45. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   46. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   47. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   48. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   49. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1402,17 +1409,17 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   51. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   51. Posterior Distributions for  AR(1) Parameters
+   52. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   52. Forecasting  an AR(1) Process
+   53. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1424,42 +1431,42 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   53. Job Search VII: Search with Learning
+   54. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   54. Likelihood Ratio Processes
+   55. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   56. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   57. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   58. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   59. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   60. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   61. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1471,32 +1478,32 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   62. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   63. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   64. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   65. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   66. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   67. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1508,37 +1515,37 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
+   68. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   69. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   70. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   71. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   71. Markov Perfect Equilibrium
+   72. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   73. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   74. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1550,17 +1557,17 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   75. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   76. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   76. Heterogeneous Beliefs and Bubbles
+   77. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1572,17 +1579,17 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   78. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   79. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   79. Maximum Likelihood Estimation
+   80. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1594,12 +1601,12 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   81. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   82. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1611,17 +1618,17 @@ corresponding to <span class="math notranslate nohighlight">\(\delta = 0.02\)</s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   83. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   84. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   85. Execution Statistics
   </a>
  </li>
 </ul>

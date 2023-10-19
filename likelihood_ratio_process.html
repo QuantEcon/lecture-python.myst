@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>54. Likelihood Ratio Processes &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>55. Likelihood Ratio Processes &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="55. Computing Mean of a Likelihood Ratio Process" href="imp_sample.html" />
-    <link rel="prev" title="53. Job Search VII: Search with Learning" href="odu.html" />
+    <link rel="next" title="56. Computing Mean of a Likelihood Ratio Process" href="imp_sample.html" />
+    <link rel="prev" title="54. Job Search VII: Search with Learning" href="odu.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,14 +169,14 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">54.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">54.2. Likelihood Ratio Process</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-g">54.3. Nature Permanently Draws from Density g</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#peculiar-property">54.4. Peculiar Property</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-f">54.5. Nature Permanently Draws from Density f</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-test">54.6. Likelihood Ratio Test</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kullbackleibler-divergence">54.7. Kullback–Leibler Divergence</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequels">54.8. Sequels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">55.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">55.2. Likelihood Ratio Process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-g">55.3. Nature Permanently Draws from Density g</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#peculiar-property">55.4. Peculiar Property</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-f">55.5. Nature Permanently Draws from Density f</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-test">55.6. Likelihood Ratio Test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kullbackleibler-divergence">55.7. Kullback–Leibler Divergence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequels">55.8. Sequels</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -226,7 +226,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="likelihood-ratio-processes">
-<h1><a class="toc-backref" href="#id4"><span class="section-number">54. </span>Likelihood Ratio Processes</a><a class="headerlink" href="#likelihood-ratio-processes" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id4"><span class="section-number">55. </span>Likelihood Ratio Processes</a><a class="headerlink" href="#likelihood-ratio-processes" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -245,7 +245,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">54.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">55.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes likelihood ratio processes and some of their uses.</p>
 <p>We’ll use a setting described in <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture</span></a>.</p>
 <p>Among  things that we’ll learn  are</p>
@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </section>
 <section id="id1">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">54.2. </span>Likelihood Ratio Process</a><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">55.2. </span>Likelihood Ratio Process</a><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <p>A nonnegative random variable <span class="math notranslate nohighlight">\(W\)</span> has one of two probability density functions, either
 <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>Before the beginning of time, nature once and for all decides whether she will draw a sequence of IID draws from either
@@ -363,7 +363,7 @@ probability distributionss, for example, a sequence of  IID draws from <span cla
 </div>
 </section>
 <section id="nature-permanently-draws-from-density-g">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">54.3. </span>Nature Permanently Draws from Density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">55.3. </span>Nature Permanently Draws from Density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Permalink to this heading">#</a></h2>
 <p>We first simulate the likelihood ratio process when nature permanently
 draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <div class="cell docutils container">
@@ -388,7 +388,7 @@ draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7ae34987e108549c3d87e4be588d446ae33f5a5fbbc63b5fa7a0683a3b0d98f2.png" src="_images/7ae34987e108549c3d87e4be588d446ae33f5a5fbbc63b5fa7a0683a3b0d98f2.png" />
+<img alt="_images/697f2e77a38bf73cc5426b0a81cef1720b9b05d8252d328e915ed52cd3222cd7.png" src="_images/697f2e77a38bf73cc5426b0a81cef1720b9b05d8252d328e915ed52cd3222cd7.png" />
 </div>
 </div>
 <p>Evidently, as sample length <span class="math notranslate nohighlight">\(T\)</span> grows, most probability mass
@@ -403,10 +403,10 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f507df17950&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f99956cbdd0&gt;]
 </pre></div>
 </div>
-<img alt="_images/dbbf12bf8e47e5cf500f2c8f02b5944c2ac9bad879fb8ff56e9e2c4898032b1c.png" src="_images/dbbf12bf8e47e5cf500f2c8f02b5944c2ac9bad879fb8ff56e9e2c4898032b1c.png" />
+<img alt="_images/aeb086d3b5938bb683c0af7234f42585ed2b7839164c626193120b0b1404ebc1.png" src="_images/aeb086d3b5938bb683c0af7234f42585ed2b7839164c626193120b0b1404ebc1.png" />
 </div>
 </div>
 <p>Despite the evident convergence of most probability mass to a
@@ -449,7 +449,7 @@ E\left[L\left(w^{t}\right)\bigm|q=g\right]  &amp;=E\left[L\left(w^{t-1}\right)\e
 <span class="math notranslate nohighlight">\(t \geq 1\)</span>.</p>
 </section>
 <section id="peculiar-property">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">54.4. </span>Peculiar Property</a><a class="headerlink" href="#peculiar-property" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">55.4. </span>Peculiar Property</a><a class="headerlink" href="#peculiar-property" title="Permalink to this heading">#</a></h2>
 <p>How can <span class="math notranslate nohighlight">\(E\left[L\left(w^{t}\right)\bigm|q=g\right]=1\)</span> possibly be true when most  probability mass of the likelihood
 ratio process is piling up near <span class="math notranslate nohighlight">\(0\)</span> as
 <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>?</p>
@@ -479,7 +479,7 @@ paths.</p>
 <p>There we describe a way to an alternative way to compute the mean of a likelihood ratio by computing the mean of a <em>different</em> random variable by sampling from  a <em>different</em> probability distribution.</p>
 </section>
 <section id="nature-permanently-draws-from-density-f">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">54.5. </span>Nature Permanently Draws from Density f</a><a class="headerlink" href="#nature-permanently-draws-from-density-f" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">55.5. </span>Nature Permanently Draws from Density f</a><a class="headerlink" href="#nature-permanently-draws-from-density-f" title="Permalink to this heading">#</a></h2>
 <p>Now suppose that before time <span class="math notranslate nohighlight">\(0\)</span> nature permanently decided to draw repeatedly from density <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <p>While the mean of the likelihood ratio <span class="math notranslate nohighlight">\(\ell \left(w_{t}\right)\)</span> under density
 <span class="math notranslate nohighlight">\(g\)</span> is <span class="math notranslate nohighlight">\(1\)</span>, its mean under the density <span class="math notranslate nohighlight">\(f\)</span> exceeds one.</p>
@@ -515,10 +515,10 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f507d88be90&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f9995586b50&gt;]
 </pre></div>
 </div>
-<img alt="_images/b6ff61677bea6f54364bda90bba7b5c948cec2fdb3e0b63f44c2bdf42ec3a20d.png" src="_images/b6ff61677bea6f54364bda90bba7b5c948cec2fdb3e0b63f44c2bdf42ec3a20d.png" />
+<img alt="_images/609cfac1dc4e4dbe6c743b9ea21a84f1f8f0ff379e15cfc1d0b4a9915f80c37e.png" src="_images/609cfac1dc4e4dbe6c743b9ea21a84f1f8f0ff379e15cfc1d0b4a9915f80c37e.png" />
 </div>
 </div>
 <p>We also plot the probability that <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> falls into
@@ -531,15 +531,15 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f507d8d6710&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f99955abdd0&gt;]
 </pre></div>
 </div>
-<img alt="_images/bf081a645f109c044cb99f8d0b6ed86e2f9f8d3d21979d3359cce81c40b20fc8.png" src="_images/bf081a645f109c044cb99f8d0b6ed86e2f9f8d3d21979d3359cce81c40b20fc8.png" />
+<img alt="_images/302a8b4c6410a89a290feef3b281050af5f4045657fc92e0adc4f880e7d4ed7b.png" src="_images/302a8b4c6410a89a290feef3b281050af5f4045657fc92e0adc4f880e7d4ed7b.png" />
 </div>
 </div>
 </section>
 <section id="likelihood-ratio-test">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">54.6. </span>Likelihood Ratio Test</a><a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">55.6. </span>Likelihood Ratio Test</a><a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this heading">#</a></h2>
 <p>We now describe how to employ the machinery
 of Neyman and Pearson <span id="id3">[<a class="reference internal" href="zreferences.html#id252" title="J. Neyman and E. S Pearson. On the problem of the most efficient tests of statistical hypotheses. Phil. Trans. R. Soc. Lond. A. 231 (694–706), pages 289–337, 1933.">NP33</a>]</span> to test the hypothesis that  history <span class="math notranslate nohighlight">\(w^t\)</span> is generated by repeated
 IID draws from density <span class="math notranslate nohighlight">\(g\)</span>.</p>
@@ -653,7 +653,7 @@ is what makes it possible to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fc12b9b8ef2f848dfb278e6fea6021dd8c8fec2551566569d3189fd2541b3f6f.png" src="_images/fc12b9b8ef2f848dfb278e6fea6021dd8c8fec2551566569d3189fd2541b3f6f.png" />
+<img alt="_images/ddd4433a0f7f769eff2abf4faa89eb5e265b53eed12db497667170b5a29472d5.png" src="_images/ddd4433a0f7f769eff2abf4faa89eb5e265b53eed12db497667170b5a29472d5.png" />
 </div>
 </div>
 <p>The graph below shows more clearly that, when we hold the threshold
@@ -678,7 +678,7 @@ is what makes it possible to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0e15b23f6f0a564bd06da837827c57fd3f574c281fc9b2678272acd0b7708672.png" src="_images/0e15b23f6f0a564bd06da837827c57fd3f574c281fc9b2678272acd0b7708672.png" />
+<img alt="_images/01f32edb8f5b49e26ce44f4c955ac544263b3fd59f42fe832632dedacc21cbf3.png" src="_images/01f32edb8f5b49e26ce44f4c955ac544263b3fd59f42fe832632dedacc21cbf3.png" />
 </div>
 </div>
 <p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>,  the threshold <span class="math notranslate nohighlight">\(c\)</span> uniquely pins down  probabilities
@@ -713,7 +713,7 @@ sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d0a79848f7100299ad529d828e87329c1d7e35076109ed80f8a745e52e4ee378.png" src="_images/d0a79848f7100299ad529d828e87329c1d7e35076109ed80f8a745e52e4ee378.png" />
+<img alt="_images/cfbe314008d5f8e7bd8dc3514a6c9ae6281caf2e93cf4827a73bc9d40d82ec1f.png" src="_images/cfbe314008d5f8e7bd8dc3514a6c9ae6281caf2e93cf4827a73bc9d40d82ec1f.png" />
 </div>
 </div>
 <p>Notice that as <span class="math notranslate nohighlight">\(t\)</span> increases, we are assured a larger probability
@@ -754,7 +754,7 @@ target probability of detection, for example, <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e6f184e89c23e1ef3e5374b62fdc28b95042895b1c39c29158d537a55edc53ce.png" src="_images/e6f184e89c23e1ef3e5374b62fdc28b95042895b1c39c29158d537a55edc53ce.png" />
+<img alt="_images/6ed0c1adf78b3ae19052edabd8bdd0381972b7c6bd03527416277f2332e6ca25.png" src="_images/6ed0c1adf78b3ae19052edabd8bdd0381972b7c6bd03527416277f2332e6ca25.png" />
 </div>
 </div>
 <p>The United States Navy evidently used a procedure like this to select a sample size <span class="math notranslate nohighlight">\(t\)</span> for doing quality
@@ -763,7 +763,7 @@ control tests during World War II.</p>
 presented to Milton Friedman, as we describe in  <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a>.</p>
 </section>
 <section id="kullbackleibler-divergence">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">54.7. </span>Kullback–Leibler Divergence</a><a class="headerlink" href="#kullbackleibler-divergence" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">55.7. </span>Kullback–Leibler Divergence</a><a class="headerlink" href="#kullbackleibler-divergence" title="Permalink to this heading">#</a></h2>
 <p>Now let’s consider a case in which neither <span class="math notranslate nohighlight">\(g\)</span> nor <span class="math notranslate nohighlight">\(f\)</span>
 generates the data.</p>
 <p>Instead, a third distribution <span class="math notranslate nohighlight">\(h\)</span> does.</p>
@@ -892,10 +892,10 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f507c24f950&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f998a191550&gt;]
 </pre></div>
 </div>
-<img alt="_images/26ec055e5a80b2db03926d2eab9893bea6b475d5251c9492da0afd8fa8ef7fde.png" src="_images/26ec055e5a80b2db03926d2eab9893bea6b475d5251c9492da0afd8fa8ef7fde.png" />
+<img alt="_images/cc5da2d4333c4a759b190c786287c39fc67272a325892e6f1a4de193c1496bb2.png" src="_images/cc5da2d4333c4a759b190c786287c39fc67272a325892e6f1a4de193c1496bb2.png" />
 </div>
 </div>
 <p>We can also try an <span class="math notranslate nohighlight">\(h\)</span> that is closer to <span class="math notranslate nohighlight">\(f\)</span> than is
@@ -939,15 +939,15 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f507c129690&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f9989b6c790&gt;]
 </pre></div>
 </div>
-<img alt="_images/14000cff272926beb3d7e3700b36fcbfa368cad0c9baf099b77f54e993ce268d.png" src="_images/14000cff272926beb3d7e3700b36fcbfa368cad0c9baf099b77f54e993ce268d.png" />
+<img alt="_images/0d8b65470902db0521d3bac1d135e25352e2f4c0f37759fe6c207e79b1d34aa8.png" src="_images/0d8b65470902db0521d3bac1d135e25352e2f4c0f37759fe6c207e79b1d34aa8.png" />
 </div>
 </div>
 </section>
 <section id="sequels">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">54.8. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">55.8. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this heading">#</a></h2>
 <p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this lecture</span></a>
 and as applied in <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a>.</p>
 <p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html">this lecture</a>, which contains another illustration
@@ -1187,8 +1187,13 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   32. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   33. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1200,37 +1205,37 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   34. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   35. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   36. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   37. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   38. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   39. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   40. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1242,52 +1247,52 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   41. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   42. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   43. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   44. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   45. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   46. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   47. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   48. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   49. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1299,17 +1304,17 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   51. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   51. Posterior Distributions for  AR(1) Parameters
+   52. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   52. Forecasting  an AR(1) Process
+   53. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1321,42 +1326,42 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   53. Job Search VII: Search with Learning
+   54. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   54. Likelihood Ratio Processes
+   55. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   56. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   57. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   58. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   59. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   60. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   61. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1368,32 +1373,32 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   62. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   63. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   64. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   65. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   66. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   67. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1405,37 +1410,37 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
+   68. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   69. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   70. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   71. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   71. Markov Perfect Equilibrium
+   72. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   73. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   74. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1447,17 +1452,17 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   75. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   76. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   76. Heterogeneous Beliefs and Bubbles
+   77. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1469,17 +1474,17 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   78. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   79. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   79. Maximum Likelihood Estimation
+   80. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1491,12 +1496,12 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   81. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   82. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1508,17 +1513,17 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   83. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   84. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   85. Execution Statistics
   </a>
  </li>
 </ul>

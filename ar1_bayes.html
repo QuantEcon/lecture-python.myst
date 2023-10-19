@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>51. Posterior Distributions for AR(1) Parameters &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>52. Posterior Distributions for AR(1) Parameters &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="52. Forecasting an AR(1) Process" href="ar1_turningpts.html" />
-    <link rel="prev" title="50. Non-Conjugate Priors" href="bayes_nonconj.html" />
+    <link rel="next" title="53. Forecasting an AR(1) Process" href="ar1_turningpts.html" />
+    <link rel="prev" title="51. Non-Conjugate Priors" href="bayes_nonconj.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,8 +169,8 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pymc-implementation">51.1. PyMC Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numpyro-implementation">51.2. Numpyro Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pymc-implementation">52.1. PyMC Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numpyro-implementation">52.2. Numpyro Implementation</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -216,7 +216,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="posterior-distributions-for-ar-1-parameters">
-<h1><span class="section-number">51. </span>Posterior Distributions for  AR(1) Parameters<a class="headerlink" href="#posterior-distributions-for-ar-1-parameters" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">52. </span>Posterior Distributions for  AR(1) Parameters<a class="headerlink" href="#posterior-distributions-for-ar-1-parameters" title="Permalink to this heading">#</a></h1>
 <p>We’ll begin with some Python imports.</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -269,25 +269,25 @@ Requirement already satisfied: cloudpickle in /opt/conda/envs/quantecon/lib/pyth
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pytensor&lt;2.18,&gt;=2.17.0 (from pymc)
-  Obtaining dependency information for pytensor&lt;2.18,&gt;=2.17.0 from https://files.pythonhosted.org/packages/ea/50/494392fdee32ecfab48722120c5dfdd8f8a813cfe894f8dbb3e94b382e1c/pytensor-2.17.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
+  Obtaining dependency information for pytensor&lt;2.18,&gt;=2.17.0 from https://files.pythonhosted.org/packages/74/84/ac6d09bd83dd2a2d1ecf1b972564e840a847608d61bf14837665b0a11583/pytensor-2.17.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pytensor-2.17.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.7 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pytensor-2.17.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.7 kB)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jaxlib&gt;=0.4.14 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numpyro) (0.4.16+cuda12.cudnn89)
 Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numpyro) (0.6.0)
 Requirement already satisfied: tqdm in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numpyro) (4.65.0)
-Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (0.3.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (0.3.1)
 Requirement already satisfied: opt-einsum in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (3.3.0)
+Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.9.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.9.0)
-Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.0.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.0.5)
 Requirement already satisfied: cycler&gt;=0.10 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (0.11.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (4.25.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (4.25.0)
 Requirement already satisfied: kiwisolver&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.4.4)
 Requirement already satisfied: pillow&gt;=6.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (9.4.0)
 Requirement already satisfied: pyparsing&lt;3.1,&gt;=2.3.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (3.0.9)
@@ -296,9 +296,7 @@ Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/conda/envs/quante
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3.post1)
 Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (3.9.0)
+Requirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (3.9.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting etuples (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc)
@@ -312,7 +310,9 @@ Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/li
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting logical-unification (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc)
-  Downloading logical-unification-0.4.6.tar.gz (31 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading logical-unification-0.4.6.tar.gz (31 kB)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Preparing metadata (setup.py) ... ?25l-
@@ -324,7 +324,9 @@ Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/li
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting miniKanren (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc)
   Downloading miniKanren-1.0.3.tar.gz (41 kB)
 ?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/41.3 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">41.3/41.3 kB</span> <span class=" -Color -Color-Red">8.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">41.3/41.3 kB</span> <span class=" -Color -Color-Red">7.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
@@ -354,16 +356,27 @@ Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/li
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/469.1 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">469.1/469.1 kB</span> <span class=" -Color -Color-Red">21.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ <span class=" -Color -Color-Green">399.4/469.1 kB</span> <span class=" -Color -Color-Red">12.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">469.1/469.1 kB</span> <span class=" -Color -Color-Red">10.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hDownloading numpyro-0.13.2-py3-none-any.whl (312 kB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/312.7 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">312.7/312.7 kB</span> <span class=" -Color -Color-Red">42.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25l
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/312.7 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">312.7/312.7 kB</span> <span class=" -Color -Color-Red">12.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hDownloading cachetools-5.3.1-py3-none-any.whl (9.3 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading pytensor-2.17.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.9 MB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading pytensor-2.17.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.9 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.9 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.9/1.9 MB</span> <span class=" -Color -Color-Red">74.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.5/1.9 MB</span> <span class=" -Color -Color-Red">14.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.2/1.9 MB</span> <span class=" -Color -Color-Red">18.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">1.9/1.9 MB</span> <span class=" -Color -Color-Red">20.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.9/1.9 MB</span> <span class=" -Color -Color-Red">17.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hBuilding wheels for collected packages: cons, logical-unification, etuples, miniKanren
 </pre></div>
 </div>
@@ -374,7 +387,7 @@ Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/li
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for cons: filename=cons-0.4.6-py3-none-any.whl size=9100 sha256=849c2d466861cbb60be34274d610ff59120ac4ce6faab22dfa5935f60e559a4f
+?25h  Created wheel for cons: filename=cons-0.4.6-py3-none-any.whl size=9100 sha256=07aa9a36a95ef946c1153b6ef2ea6d0ad3997cb3905418d89357c345f5a01133
   Stored in directory: /github/home/.cache/pip/wheels/95/8f/45/fe0a5b5e232401da571d514eb545833fbe220993ac8336c94e
 </pre></div>
 </div>
@@ -384,8 +397,11 @@ Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/li
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for logical-unification: filename=logical_unification-0.4.6-py3-none-any.whl size=13911 sha256=974c4ea81c8d6a9e942cd5d1048e27101a3ca3a8f9114dcc1068eeca86371aef
+?25h  Created wheel for logical-unification: filename=logical_unification-0.4.6-py3-none-any.whl size=13911 sha256=63fe2cbf7770795db7f18adc736674cfcafefbda5dbaa8e3aec32117677b7f33
   Stored in directory: /github/home/.cache/pip/wheels/b8/34/a9/c11a21ef1f1b6d2e5ae518dd5d28c0bd2b131c5d6e5d4417c3
 </pre></div>
 </div>
@@ -396,7 +412,7 @@ Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/li
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for etuples: filename=etuples-0.3.9-py3-none-any.whl size=12617 sha256=5f181e7f430b1e73165aaa4a2c4c338f4eed59e79dcb10e8fb9e6a5ffba6e6ea
+?25h  Created wheel for etuples: filename=etuples-0.3.9-py3-none-any.whl size=12617 sha256=db49eaa06212adc460ec0fdbee71e5a84c1aaf4a2a16b1d4cfcec643fc433781
   Stored in directory: /github/home/.cache/pip/wheels/11/5a/ad/ebef6395e95b1dfd742afb44db6d92bd5e8921a572b9ff8618
 </pre></div>
 </div>
@@ -406,8 +422,11 @@ Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/li
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for miniKanren: filename=miniKanren-1.0.3-py3-none-any.whl size=23910 sha256=6a54aa8d81296a9b89214c6ada93a4d08730ed7fde958a2640877541b513b53b
+?25h  Created wheel for miniKanren: filename=miniKanren-1.0.3-py3-none-any.whl size=23910 sha256=e16aa6cac6e461698efa10cb6ec9bf229535a3b1b58f384f9b780c4cfbf7ef6b
   Stored in directory: /github/home/.cache/pip/wheels/8d/86/58/7da4a186a7bb721885e4fb811a54b5a0065b0c624a5deb1259
 Successfully built cons logical-unification etuples miniKanren
 </pre></div>
@@ -415,7 +434,7 @@ Successfully built cons logical-unification etuples miniKanren
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: fastprogress, cachetools, logical-unification, numpyro, cons, etuples, miniKanren, pytensor, pymc
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed cachetools-5.3.1 cons-0.4.6 etuples-0.3.9 fastprogress-1.0.3 logical-unification-0.4.6 miniKanren-1.0.3 numpyro-0.13.2 pymc-5.9.0 pytensor-2.17.1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed cachetools-5.3.1 cons-0.4.6 etuples-0.3.9 fastprogress-1.0.3 logical-unification-0.4.6 miniKanren-1.0.3 numpyro-0.13.2 pymc-5.9.0 pytensor-2.17.3
 <span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
@@ -454,14 +473,14 @@ consequences of alternative ways of modeling the distribution of the initial  <s
 </ul>
 <p>The first component of the statistical model is</p>
 <div class="math notranslate nohighlight" id="equation-eq-themodel">
-<span class="eqno">(51.1)<a class="headerlink" href="#equation-eq-themodel" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(52.1)<a class="headerlink" href="#equation-eq-themodel" title="Permalink to this equation">#</a></span>\[
 y_{t+1} = \rho y_t + \sigma_x \epsilon_{t+1}, \quad t \geq 0
 \]</div>
 <p>where the scalars <span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(\sigma_x\)</span> satisfy <span class="math notranslate nohighlight">\(|\rho| &lt; 1\)</span> and <span class="math notranslate nohighlight">\(\sigma_x &gt; 0\)</span>;
 <span class="math notranslate nohighlight">\(\{\epsilon_{t+1}\}\)</span> is a sequence of i.i.d. normal random variables with mean <span class="math notranslate nohighlight">\(0\)</span> and variance <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <p>The second component of the statistical model is</p>
 <div class="math notranslate nohighlight" id="equation-eq-themodel-2">
-<span class="eqno">(51.2)<a class="headerlink" href="#equation-eq-themodel-2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(52.2)<a class="headerlink" href="#equation-eq-themodel-2" title="Permalink to this equation">#</a></span>\[
 y_0 \sim {\cal N}(\mu_0, \sigma_0^2)
 \]</div>
 <p>Consider a sample <span class="math notranslate nohighlight">\(\{y_t\}_{t=0}^T\)</span> governed by this statistical model.</p>
@@ -472,7 +491,7 @@ implies that the likelihood function of <span class="math notranslate nohighligh
 f(y_T, y_{T-1}, \ldots, y_0) = f(y_T| y_{T-1}) f(y_{T-1}| y_{T-2}) \cdots f(y_1 | y_0 ) f(y_0)
 \]</div>
 <p>where we use <span class="math notranslate nohighlight">\(f\)</span> to denote a generic probability density.</p>
-<p>The  statistical model <a class="reference internal" href="#equation-eq-themodel">(51.1)</a>-<a class="reference internal" href="#equation-eq-themodel-2">(51.2)</a> implies</p>
+<p>The  statistical model <a class="reference internal" href="#equation-eq-themodel">(52.1)</a>-<a class="reference internal" href="#equation-eq-themodel-2">(52.2)</a> implies</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -494,7 +513,7 @@ f(y_t | y_{t-1})  &amp; \sim {\mathcal N}(\rho y_{t-1}, \sigma_x^2) \\
 <p>Thus, we explore consequences of making these alternative assumptions about the distribution of <span class="math notranslate nohighlight">\(y_0\)</span>:</p>
 <ul class="simple">
 <li><p>A first procedure is to condition on whatever value of <span class="math notranslate nohighlight">\(y_0\)</span> is observed. This amounts to assuming that the probability distribution of the random variable  <span class="math notranslate nohighlight">\(y_0\)</span> is a Dirac delta function that puts probability one on the observed value of <span class="math notranslate nohighlight">\(y_0\)</span>.</p></li>
-<li><p>A second procedure  assumes that <span class="math notranslate nohighlight">\(y_0\)</span> is drawn from the stationary distribution of a process described by <a class="reference internal" href="#equation-eq-themodel">(51.1)</a>
+<li><p>A second procedure  assumes that <span class="math notranslate nohighlight">\(y_0\)</span> is drawn from the stationary distribution of a process described by <a class="reference internal" href="#equation-eq-themodel">(52.1)</a>
 so that  <span class="math notranslate nohighlight">\(y_0 \sim {\cal N} \left(0, {\sigma_x^2\over (1-\rho)^2} \right) \)</span></p></li>
 </ul>
 <p>When the initial value <span class="math notranslate nohighlight">\(y_0\)</span> is far out in a tail of the stationary distribution, conditioning on an initial value gives a posterior that is <strong>more accurate</strong> in a sense that we’ll explain.</p>
@@ -547,7 +566,7 @@ so that  <span class="math notranslate nohighlight">\(y_0 \sim {\cal N} \left(0,
 <p>(Later we’ll assume that <span class="math notranslate nohighlight">\(y_0\)</span> is drawn from the stationary distribution, but not now.)</p>
 <p>First we’ll use <strong>pymc4</strong>.</p>
 <section id="pymc-implementation">
-<h2><span class="section-number">51.1. </span>PyMC Implementation<a class="headerlink" href="#pymc-implementation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">52.1. </span>PyMC Implementation<a class="headerlink" href="#pymc-implementation" title="Permalink to this heading">#</a></h2>
 <p>For a normal distribution in <code class="docutils literal notranslate"><span class="pre">pymc</span></code>,
 <span class="math notranslate nohighlight">\(var = 1/\tau = \sigma^{2}\)</span>.</p>
 <div class="cell docutils container">
@@ -597,7 +616,7 @@ so that  <span class="math notranslate nohighlight">\(y_0 \sim {\cal N} \left(0,
 </div><div class="output text_html">
     <div>
       <progress value='240000' class='' max='240000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      100.00% [240000/240000 01:12&lt;00:00 Sampling 4 chains, 0 divergences]
+      100.00% [240000/240000 01:14&lt;00:00 Sampling 4 chains, 0 divergences]
     </div>
     </div></div>
 </div>
@@ -609,7 +628,7 @@ so that  <span class="math notranslate nohighlight">\(y_0 \sim {\cal N} \left(0,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2ede287ccecda43fe0d111c258a5f5afe9a993d0e2c6391294de986eb8f01581.png" src="_images/2ede287ccecda43fe0d111c258a5f5afe9a993d0e2c6391294de986eb8f01581.png" />
+<img alt="_images/793576d39ea77d37df1ac423b449f7afcd879e922a2fe06e83ccf277814c6c1a.png" src="_images/793576d39ea77d37df1ac423b449f7afcd879e922a2fe06e83ccf277814c6c1a.png" />
 </div>
 </div>
 <p>Evidently, the posteriors aren’t centered on the true values of <span class="math notranslate nohighlight">\(.5, 1\)</span> that we used to generate the data.</p>
@@ -658,27 +677,27 @@ so that  <span class="math notranslate nohighlight">\(y_0 \sim {\cal N} \left(0,
   <tbody>
     <tr>
       <th>rho</th>
-      <td>0.5365</td>
-      <td>0.0709</td>
-      <td>0.4036</td>
-      <td>0.6707</td>
+      <td>0.5361</td>
+      <td>0.0706</td>
+      <td>0.4015</td>
+      <td>0.6672</td>
       <td>0.0002</td>
       <td>0.0001</td>
-      <td>170793.4530</td>
-      <td>123530.1222</td>
-      <td>1.0001</td>
+      <td>176416.5167</td>
+      <td>126032.6001</td>
+      <td>1.0</td>
     </tr>
     <tr>
       <th>sigma</th>
-      <td>1.0098</td>
-      <td>0.1061</td>
-      <td>0.8216</td>
-      <td>1.2112</td>
-      <td>0.0003</td>
+      <td>1.0099</td>
+      <td>0.1059</td>
+      <td>0.8183</td>
+      <td>1.2095</td>
       <td>0.0002</td>
-      <td>172634.9764</td>
-      <td>137072.7724</td>
-      <td>1.0000</td>
+      <td>0.0002</td>
+      <td>185522.6227</td>
+      <td>143632.9393</td>
+      <td>1.0</td>
     </tr>
   </tbody>
 </table>
@@ -741,7 +760,7 @@ y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right)
 </div><div class="output text_html">
     <div>
       <progress value='240000' class='' max='240000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      100.00% [240000/240000 01:13&lt;00:00 Sampling 4 chains, 43 divergences]
+      100.00% [240000/240000 01:20&lt;00:00 Sampling 4 chains, 91 divergences]
     </div>
     </div></div>
 </div>
@@ -753,7 +772,7 @@ y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bfdef3713aa07c48bdc460b954e9a9c7d54ee8891505fa46d662fafeb55333fc.png" src="_images/bfdef3713aa07c48bdc460b954e9a9c7d54ee8891505fa46d662fafeb55333fc.png" />
+<img alt="_images/0d8a1dbefc247d983a18f069fe87cdb748b485f99afb8694b20dea07b34dfd9c.png" src="_images/0d8a1dbefc247d983a18f069fe87cdb748b485f99afb8694b20dea07b34dfd9c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -798,26 +817,26 @@ y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right)
   <tbody>
     <tr>
       <th>rho</th>
-      <td>0.8756</td>
+      <td>0.8759</td>
       <td>0.0812</td>
-      <td>0.7308</td>
-      <td>0.9979</td>
+      <td>0.7325</td>
+      <td>0.9989</td>
       <td>0.0002</td>
       <td>0.0002</td>
-      <td>110603.9789</td>
-      <td>83714.7435</td>
+      <td>106467.9374</td>
+      <td>77476.5180</td>
       <td>1.0</td>
     </tr>
     <tr>
       <th>sigma</th>
-      <td>1.4045</td>
-      <td>0.1471</td>
-      <td>1.1396</td>
-      <td>1.6817</td>
-      <td>0.0004</td>
+      <td>1.4049</td>
+      <td>0.1474</td>
+      <td>1.1432</td>
+      <td>1.6866</td>
+      <td>0.0005</td>
       <td>0.0003</td>
-      <td>120982.9833</td>
-      <td>102833.8016</td>
+      <td>104222.8042</td>
+      <td>97388.2562</td>
       <td>1.0</td>
     </tr>
   </tbody>
@@ -835,7 +854,7 @@ that make observations more likely.</p>
 <p>We’ll now repeat the calculations using <code class="docutils literal notranslate"><span class="pre">numpyro</span></code>.</p>
 </section>
 <section id="numpyro-implementation">
-<h2><span class="section-number">51.2. </span>Numpyro Implementation<a class="headerlink" href="#numpyro-implementation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">52.2. </span>Numpyro Implementation<a class="headerlink" href="#numpyro-implementation" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_posterior</span><span class="p">(</span><span class="n">sample</span><span class="p">):</span>
@@ -898,7 +917,7 @@ that make observations more likely.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1696996497.996073     167 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
+I0000 00:00:1697689998.999455     199 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
 </pre></div>
 </div>
 </div>
@@ -1236,8 +1255,13 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   32. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   33. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1249,37 +1273,37 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   34. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   35. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   36. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   37. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   38. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   39. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   40. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1291,52 +1315,52 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   41. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   42. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   43. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   44. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   45. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   46. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   47. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   48. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   49. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1348,17 +1372,17 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   51. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   51. Posterior Distributions for  AR(1) Parameters
+   52. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   52. Forecasting  an AR(1) Process
+   53. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1370,42 +1394,42 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   53. Job Search VII: Search with Learning
+   54. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   54. Likelihood Ratio Processes
+   55. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   56. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   57. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   58. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   59. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   60. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   61. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1417,32 +1441,32 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   62. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   63. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   64. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   65. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   66. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   67. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1454,37 +1478,37 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
+   68. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   69. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   70. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   71. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   71. Markov Perfect Equilibrium
+   72. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   73. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   74. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1496,17 +1520,17 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   75. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   76. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   76. Heterogeneous Beliefs and Bubbles
+   77. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1518,17 +1542,17 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   78. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   79. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   79. Maximum Likelihood Estimation
+   80. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1540,12 +1564,12 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   81. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   82. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1557,17 +1581,17 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   83. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   84. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   85. Execution Statistics
   </a>
  </li>
 </ul>

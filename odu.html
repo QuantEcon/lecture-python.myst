@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>53. Job Search VII: Search with Learning &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>54. Job Search VII: Search with Learning &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="54. Likelihood Ratio Processes" href="likelihood_ratio_process.html" />
-    <link rel="prev" title="52. Forecasting an AR(1) Process" href="ar1_turningpts.html" />
+    <link rel="next" title="55. Likelihood Ratio Processes" href="likelihood_ratio_process.html" />
+    <link rel="prev" title="53. Forecasting an AR(1) Process" href="ar1_turningpts.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,32 +169,32 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">53.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-features">53.1.1. Model Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">54.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-features">54.1.1. Model Features</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model">53.2. Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basic-mccall-model">53.2.1. The Basic McCall Model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#offer-distribution-unknown">53.2.2. Offer Distribution Unknown</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameterization">53.2.3. Parameterization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#looking-forward">53.2.4. Looking Forward</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model">54.2. Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basic-mccall-model">54.2.1. The Basic McCall Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#offer-distribution-unknown">54.2.2. Offer Distribution Unknown</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameterization">54.2.3. Parameterization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#looking-forward">54.2.4. Looking Forward</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-1-solution-by-vfi">53.3. Take 1: Solution by VFI</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-2-a-more-efficient-method">53.4. Take 2: A More Efficient Method</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-functional-equation">53.5. Another Functional Equation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-rwfe">53.6. Solving the RWFE</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">53.7. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">53.8. Exercises</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solutions">53.9. Solutions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-a">53.10. Appendix A</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-b">53.11. Appendix B</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">53.12. Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-baseline">53.12.1. Example 1 (Baseline)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">53.12.2. Example 2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">53.12.3. Example 3</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4">53.12.4. Example 4</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-5">53.12.5. Example 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-1-solution-by-vfi">54.3. Take 1: Solution by VFI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#take-2-a-more-efficient-method">54.4. Take 2: A More Efficient Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-functional-equation">54.5. Another Functional Equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-rwfe">54.6. Solving the RWFE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">54.7. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">54.8. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solutions">54.9. Solutions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-a">54.10. Appendix A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-b">54.11. Appendix B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">54.12. Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-baseline">54.12.1. Example 1 (Baseline)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">54.12.2. Example 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">54.12.3. Example 3</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4">54.12.4. Example 4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-5">54.12.5. Example 5</a></li>
 </ul>
 </li>
 </ul>
@@ -246,7 +246,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="job-search-vii-search-with-learning">
-<h1><a class="toc-backref" href="#id8"><span class="section-number">53. </span>Job Search VII: Search with Learning</a><a class="headerlink" href="#job-search-vii-search-with-learning" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id8"><span class="section-number">54. </span>Job Search VII: Search with Learning</a><a class="headerlink" href="#job-search-vii-search-with-learning" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -318,7 +318,7 @@ Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/en
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">53.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">54.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we consider an extension of the <a class="reference external" href="https://python.quantecon.org/mccall_model.html">previously studied</a> job search model of McCall
 <span id="id1">[<a class="reference internal" href="zreferences.html#id191" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McC70</a>]</span>.</p>
 <p>We’ll build on a model of Bayesian learning discussed in <a class="reference external" href="https://python.quantecon.org/exchangeable.html">this lecture</a> on the topic of exchangeability and its relationship to
@@ -360,7 +360,7 @@ must be learned.</p>
 </div>
 </div>
 <section id="model-features">
-<h3><span class="section-number">53.1.1. </span>Model Features<a class="headerlink" href="#model-features" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">54.1.1. </span>Model Features<a class="headerlink" href="#model-features" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Infinite horizon dynamic programming with two states and one binary
 control.</p></li>
@@ -369,12 +369,12 @@ control.</p></li>
 </section>
 </section>
 <section id="model">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">53.2. </span>Model</a><a class="headerlink" href="#model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">54.2. </span>Model</a><a class="headerlink" href="#model" title="Permalink to this heading">#</a></h2>
 <p>Let’s first review the basic McCall model
 <span id="id3">[<a class="reference internal" href="zreferences.html#id191" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McC70</a>]</span> and then add the variation we
 want to consider.</p>
 <section id="the-basic-mccall-model">
-<h3><span class="section-number">53.2.1. </span>The Basic McCall Model<a class="headerlink" href="#the-basic-mccall-model" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">54.2.1. </span>The Basic McCall Model<a class="headerlink" href="#the-basic-mccall-model" title="Permalink to this heading">#</a></h3>
 <p>Recall that, <a class="reference internal" href="mccall_model.html"><span class="doc">in the baseline model</span></a>, an
 unemployed worker is presented in each period with a permanent job offer
 at wage <span class="math notranslate nohighlight">\(W_t\)</span>.</p>
@@ -391,7 +391,7 @@ reconsiders next period</p></li>
 yet to decide whether to accept or reject the offer.</p>
 <p>The value  function <span class="math notranslate nohighlight">\(v\)</span> satisfies the recursion</p>
 <div class="math notranslate nohighlight" id="equation-odu-odu-pv">
-<span class="eqno">(53.1)<a class="headerlink" href="#equation-odu-odu-pv" title="Permalink to this equation">#</a></span>\[v(w)
+<span class="eqno">(54.1)<a class="headerlink" href="#equation-odu-odu-pv" title="Permalink to this equation">#</a></span>\[v(w)
 = \max \left\{
 \frac{w}{1 - \beta}, \, c + \beta \int v(w')q(w') dw'
 \right\}\]</div>
@@ -399,7 +399,7 @@ yet to decide whether to accept or reject the offer.</p>
 <span class="math notranslate nohighlight">\(\bar w\)</span> is a constant called the <em>reservation wage</em>.</p>
 </section>
 <section id="offer-distribution-unknown">
-<h3><span class="section-number">53.2.2. </span>Offer Distribution Unknown<a class="headerlink" href="#offer-distribution-unknown" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">54.2.2. </span>Offer Distribution Unknown<a class="headerlink" href="#offer-distribution-unknown" title="Permalink to this heading">#</a></h3>
 <p>Now let’s extend the model by considering the variation presented in
 <span id="id4">[<a class="reference internal" href="zreferences.html#id183" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 6.6.</p>
 <p>The model is as above, apart from the fact that</p>
@@ -428,7 +428,7 @@ the two possible distributions <span class="math notranslate nohighlight">\(f\)<
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\pi_t\)</span> updates via</p>
 <div class="math notranslate nohighlight" id="equation-odu-pi-rec-2">
-<span class="eqno">(53.2)<a class="headerlink" href="#equation-odu-pi-rec-2" title="Permalink to this equation">#</a></span>\[\pi_{t+1}
+<span class="eqno">(54.2)<a class="headerlink" href="#equation-odu-pi-rec-2" title="Permalink to this equation">#</a></span>\[\pi_{t+1}
 = \frac{\pi_t f(w_{t+1})}{\pi_t f(w_{t+1}) + (1 - \pi_t) g(w_{t+1})}\]</div>
 <p>This last expression follows from Bayes’ rule, which tells us that</p>
 <div class="math notranslate nohighlight">
@@ -439,7 +439,7 @@ the two possible distributions <span class="math notranslate nohighlight">\(f\)<
 \quad \text{and} \quad
 \mathbb{P}\{W = w\} = \sum_{\omega \in \{f, g\}} \mathbb{P}\{W = w \,|\, q = \omega\} \mathbb{P}\{q = \omega\}
 \]</div>
-<p>The fact that <a class="reference internal" href="#equation-odu-pi-rec-2">(53.2)</a> is recursive allows us to
+<p>The fact that <a class="reference internal" href="#equation-odu-pi-rec-2">(54.2)</a> is recursive allows us to
 progress to a recursive solution method.</p>
 <p>Letting</p>
 <div class="math notranslate nohighlight">
@@ -451,7 +451,7 @@ q_{\pi}(w) := \pi f(w) + (1 - \pi) g(w)
 <p>we can express the value function for the unemployed worker recursively
 as follows</p>
 <div class="math notranslate nohighlight" id="equation-odu-mvf">
-<span class="eqno">(53.3)<a class="headerlink" href="#equation-odu-mvf" title="Permalink to this equation">#</a></span>\[v(w, \pi)
+<span class="eqno">(54.3)<a class="headerlink" href="#equation-odu-mvf" title="Permalink to this equation">#</a></span>\[v(w, \pi)
 = \max \left\{
 \frac{w}{1 - \beta}, \, c + \beta \int v(w', \pi') \, q_{\pi}(w') \, dw'
 \right\}
@@ -462,7 +462,7 @@ since it affects the worker’s perception of probabilities for future
 rewards.</p>
 </section>
 <section id="parameterization">
-<h3><span class="section-number">53.2.3. </span>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">54.2.3. </span>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this heading">#</a></h3>
 <p>Following section 6.6 of <span id="id5">[<a class="reference internal" href="zreferences.html#id183" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>,
 our baseline parameterization will be</p>
 <ul class="simple">
@@ -498,9 +498,9 @@ our baseline parameterization will be</p>
 </div>
 </section>
 <section id="looking-forward">
-<span id="id6"></span><h3><span class="section-number">53.2.4. </span>Looking Forward<a class="headerlink" href="#looking-forward" title="Permalink to this heading">#</a></h3>
+<span id="id6"></span><h3><span class="section-number">54.2.4. </span>Looking Forward<a class="headerlink" href="#looking-forward" title="Permalink to this heading">#</a></h3>
 <p>What kind of optimal policy might result from
-<a class="reference internal" href="#equation-odu-mvf">(53.3)</a> and the parameterization specified above?</p>
+<a class="reference internal" href="#equation-odu-mvf">(54.3)</a> and the parameterization specified above?</p>
 <p>Intuitively, if we accept at <span class="math notranslate nohighlight">\(w_a\)</span> and <span class="math notranslate nohighlight">\(w_a\leq w_b\)</span>,
 then — all other things being given — we should also accept at <span class="math notranslate nohighlight">\(w_b\)</span>.</p>
 <p>This suggests a policy of accepting whenever <span class="math notranslate nohighlight">\(w\)</span> exceeds some
@@ -521,7 +521,7 @@ decreasing function <span class="math notranslate nohighlight">\(\bar w\)</span>
 </section>
 </section>
 <section id="take-1-solution-by-vfi">
-<span id="id7"></span><h2><a class="toc-backref" href="#id11"><span class="section-number">53.3. </span>Take 1: Solution by VFI</a><a class="headerlink" href="#take-1-solution-by-vfi" title="Permalink to this heading">#</a></h2>
+<span id="id7"></span><h2><a class="toc-backref" href="#id11"><span class="section-number">54.3. </span>Take 1: Solution by VFI</a><a class="headerlink" href="#take-1-solution-by-vfi" title="Permalink to this heading">#</a></h2>
 <p>Let’s set about solving the model and see how our results match with our
 intuition.</p>
 <p>We begin by solving via value function iteration (VFI), which is natural
@@ -716,28 +716,28 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6247022986902753.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6310381410111034.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.1072442675302554.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.0992412627113648.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.023933702317490813.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.020683442101079308.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.005591673519264262.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.0044946206033955605.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0013068744107656016.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0009824755557872322.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.0003054353417031308.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.00021477274909642574.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 34 iterations.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 33 iterations.
 </pre></div>
 </div>
-<img alt="_images/c5f5f512163987c45766a07ace555021d1c8682976e21014bd2ea254d1df1067.png" src="_images/c5f5f512163987c45766a07ace555021d1c8682976e21014bd2ea254d1df1067.png" />
+<img alt="_images/2d975517c309ff324f7b12f032bf1201302d951452b8f2fb64f433611752b9fa.png" src="_images/2d975517c309ff324f7b12f032bf1201302d951452b8f2fb64f433611752b9fa.png" />
 </div>
 </div>
 <p>We will also plot the optimal policy</p>
@@ -759,7 +759,7 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4df936df257cc4a4d615e406353523e42ab56a31272491ebd551a969d8c4b01d.png" src="_images/4df936df257cc4a4d615e406353523e42ab56a31272491ebd551a969d8c4b01d.png" />
+<img alt="_images/61f5acae4b25f9074cf967f1616fa6238f3424085703b560539812f8dee9af6e.png" src="_images/61f5acae4b25f9074cf967f1616fa6238f3424085703b560539812f8dee9af6e.png" />
 </div>
 </div>
 <p>The results fit well with our intuition from section <a class="reference internal" href="#looking-forward"><span class="std std-ref">looking
@@ -771,7 +771,7 @@ forward</span></a>.</p>
 </ul>
 </section>
 <section id="take-2-a-more-efficient-method">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">53.4. </span>Take 2: A More Efficient Method</a><a class="headerlink" href="#take-2-a-more-efficient-method" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">54.4. </span>Take 2: A More Efficient Method</a><a class="headerlink" href="#take-2-a-more-efficient-method" title="Permalink to this heading">#</a></h2>
 <p>Let’s consider another method to solve for the optimal policy.</p>
 <p>We will use iteration with an operator that has the same contraction
 rate as the Bellman operator, but</p>
@@ -784,21 +784,21 @@ rate as the Bellman operator, but</p>
 bit of mathematical analysis goes a long way.</p>
 </section>
 <section id="another-functional-equation">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">53.5. </span>Another Functional Equation</a><a class="headerlink" href="#another-functional-equation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">54.5. </span>Another Functional Equation</a><a class="headerlink" href="#another-functional-equation" title="Permalink to this heading">#</a></h2>
 <p>To begin, note that when <span class="math notranslate nohighlight">\(w = \bar w(\pi)\)</span>, the worker is indifferent
 between accepting and rejecting.</p>
-<p>Hence the two choices on the right-hand side of <a class="reference internal" href="#equation-odu-mvf">(53.3)</a> have equal value:</p>
+<p>Hence the two choices on the right-hand side of <a class="reference internal" href="#equation-odu-mvf">(54.3)</a> have equal value:</p>
 <div class="math notranslate nohighlight" id="equation-odu-mvf2">
-<span class="eqno">(53.4)<a class="headerlink" href="#equation-odu-mvf2" title="Permalink to this equation">#</a></span>\[\frac{\bar w(\pi)}{1 - \beta}
+<span class="eqno">(54.4)<a class="headerlink" href="#equation-odu-mvf2" title="Permalink to this equation">#</a></span>\[\frac{\bar w(\pi)}{1 - \beta}
 = c + \beta \int v(w', \pi') \, q_{\pi}(w') \, dw'\]</div>
-<p>Together, <a class="reference internal" href="#equation-odu-mvf">(53.3)</a> and <a class="reference internal" href="#equation-odu-mvf2">(53.4)</a> give</p>
+<p>Together, <a class="reference internal" href="#equation-odu-mvf">(54.3)</a> and <a class="reference internal" href="#equation-odu-mvf2">(54.4)</a> give</p>
 <div class="math notranslate nohighlight" id="equation-odu-mvf3">
-<span class="eqno">(53.5)<a class="headerlink" href="#equation-odu-mvf3" title="Permalink to this equation">#</a></span>\[v(w, \pi) =
+<span class="eqno">(54.5)<a class="headerlink" href="#equation-odu-mvf3" title="Permalink to this equation">#</a></span>\[v(w, \pi) =
 \max
 \left\{
     \frac{w}{1 - \beta} ,\, \frac{\bar w(\pi)}{1 - \beta}
 \right\}\]</div>
-<p>Combining <a class="reference internal" href="#equation-odu-mvf2">(53.4)</a> and <a class="reference internal" href="#equation-odu-mvf3">(53.5)</a>, we obtain</p>
+<p>Combining <a class="reference internal" href="#equation-odu-mvf2">(54.4)</a> and <a class="reference internal" href="#equation-odu-mvf3">(54.5)</a>, we obtain</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\bar w(\pi)}{1 - \beta}
@@ -810,17 +810,17 @@ between accepting and rejecting.</p>
 <p>Multiplying by <span class="math notranslate nohighlight">\(1 - \beta\)</span>, substituting in <span class="math notranslate nohighlight">\(\pi' = \kappa(w', \pi)\)</span>
 and using <span class="math notranslate nohighlight">\(\circ\)</span> for composition of functions yields</p>
 <div class="math notranslate nohighlight" id="equation-odu-mvf4">
-<span class="eqno">(53.6)<a class="headerlink" href="#equation-odu-mvf4" title="Permalink to this equation">#</a></span>\[\bar w(\pi)
+<span class="eqno">(54.6)<a class="headerlink" href="#equation-odu-mvf4" title="Permalink to this equation">#</a></span>\[\bar w(\pi)
 = (1 - \beta) c +
 \beta \int \max \left\{ w', \bar w \circ \kappa(w', \pi) \right\} \, q_{\pi}(w') \, dw'\]</div>
-<p>Equation <a class="reference internal" href="#equation-odu-mvf4">(53.6)</a> can be understood as a functional equation, where <span class="math notranslate nohighlight">\(\bar w\)</span> is the unknown function.</p>
+<p>Equation <a class="reference internal" href="#equation-odu-mvf4">(54.6)</a> can be understood as a functional equation, where <span class="math notranslate nohighlight">\(\bar w\)</span> is the unknown function.</p>
 <ul class="simple">
 <li><p>Let’s call it the <em>reservation wage functional equation</em> (RWFE).</p></li>
 <li><p>The solution <span class="math notranslate nohighlight">\(\bar w\)</span> to the RWFE is the object that we wish to compute.</p></li>
 </ul>
 </section>
 <section id="solving-the-rwfe">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">53.6. </span>Solving the RWFE</a><a class="headerlink" href="#solving-the-rwfe" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">54.6. </span>Solving the RWFE</a><a class="headerlink" href="#solving-the-rwfe" title="Permalink to this heading">#</a></h2>
 <p>To solve the RWFE, we will first show that its solution is the
 fixed point of a <a class="reference external" href="https://en.wikipedia.org/wiki/Contraction_mapping">contraction mapping</a>.</p>
 <p>To this end, let</p>
@@ -830,17 +830,17 @@ fixed point of a <a class="reference external" href="https://en.wikipedia.org/wi
 </ul>
 <p>Consider the operator <span class="math notranslate nohighlight">\(Q\)</span> mapping <span class="math notranslate nohighlight">\(\omega \in b[0,1]\)</span> into <span class="math notranslate nohighlight">\(Q\omega \in b[0,1]\)</span> via</p>
 <div class="math notranslate nohighlight" id="equation-odu-dq">
-<span class="eqno">(53.7)<a class="headerlink" href="#equation-odu-dq" title="Permalink to this equation">#</a></span>\[(Q \omega)(\pi)
+<span class="eqno">(54.7)<a class="headerlink" href="#equation-odu-dq" title="Permalink to this equation">#</a></span>\[(Q \omega)(\pi)
 = (1 - \beta) c +
 \beta \int \max \left\{ w', \omega \circ \kappa(w', \pi) \right\} \, q_{\pi}(w') \, dw'\]</div>
-<p>Comparing <a class="reference internal" href="#equation-odu-mvf4">(53.6)</a> and <a class="reference internal" href="#equation-odu-dq">(53.7)</a>, we see that the set of fixed points of <span class="math notranslate nohighlight">\(Q\)</span> exactly coincides with the set of solutions to the RWFE.</p>
+<p>Comparing <a class="reference internal" href="#equation-odu-mvf4">(54.6)</a> and <a class="reference internal" href="#equation-odu-dq">(54.7)</a>, we see that the set of fixed points of <span class="math notranslate nohighlight">\(Q\)</span> exactly coincides with the set of solutions to the RWFE.</p>
 <ul class="simple">
-<li><p>If <span class="math notranslate nohighlight">\(Q \bar w = \bar w\)</span> then <span class="math notranslate nohighlight">\(\bar w\)</span> solves <a class="reference internal" href="#equation-odu-mvf4">(53.6)</a> and vice versa.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(Q \bar w = \bar w\)</span> then <span class="math notranslate nohighlight">\(\bar w\)</span> solves <a class="reference internal" href="#equation-odu-mvf4">(54.6)</a> and vice versa.</p></li>
 </ul>
 <p>Moreover, for any <span class="math notranslate nohighlight">\(\omega, \omega' \in b[0,1]\)</span>, basic algebra and the
 triangle inequality for integrals tells us that</p>
 <div class="math notranslate nohighlight" id="equation-odu-nt">
-<span class="eqno">(53.8)<a class="headerlink" href="#equation-odu-nt" title="Permalink to this equation">#</a></span>\[|(Q \omega)(\pi) - (Q \omega')(\pi)|
+<span class="eqno">(54.8)<a class="headerlink" href="#equation-odu-nt" title="Permalink to this equation">#</a></span>\[|(Q \omega)(\pi) - (Q \omega')(\pi)|
 \leq \beta \int
 \left|
 \max \left\{w', \omega \circ \kappa(w', \pi) \right\} -
@@ -849,17 +849,17 @@ triangle inequality for integrals tells us that</p>
 \, q_{\pi}(w') \, dw'\]</div>
 <p>Working case by case, it is easy to check that for real numbers <span class="math notranslate nohighlight">\(a, b, c\)</span> we always have</p>
 <div class="math notranslate nohighlight" id="equation-odu-nt2">
-<span class="eqno">(53.9)<a class="headerlink" href="#equation-odu-nt2" title="Permalink to this equation">#</a></span>\[| \max\{a, b\} - \max\{a, c\}| \leq | b - c|\]</div>
-<p>Combining <a class="reference internal" href="#equation-odu-nt">(53.8)</a> and <a class="reference internal" href="#equation-odu-nt2">(53.9)</a> yields</p>
+<span class="eqno">(54.9)<a class="headerlink" href="#equation-odu-nt2" title="Permalink to this equation">#</a></span>\[| \max\{a, b\} - \max\{a, c\}| \leq | b - c|\]</div>
+<p>Combining <a class="reference internal" href="#equation-odu-nt">(54.8)</a> and <a class="reference internal" href="#equation-odu-nt2">(54.9)</a> yields</p>
 <div class="math notranslate nohighlight" id="equation-odu-nt3">
-<span class="eqno">(53.10)<a class="headerlink" href="#equation-odu-nt3" title="Permalink to this equation">#</a></span>\[|(Q \omega)(\pi) - (Q \omega')(\pi)|
+<span class="eqno">(54.10)<a class="headerlink" href="#equation-odu-nt3" title="Permalink to this equation">#</a></span>\[|(Q \omega)(\pi) - (Q \omega')(\pi)|
 \leq \beta \int
 \left| \omega \circ \kappa(w', \pi) -  \omega' \circ \kappa(w', \pi) \right|
 \, q_{\pi}(w') \, dw'
 \leq \beta \| \omega - \omega' \|\]</div>
 <p>Taking the supremum over <span class="math notranslate nohighlight">\(\pi\)</span> now gives us</p>
 <div class="math notranslate nohighlight" id="equation-odu-rwc">
-<span class="eqno">(53.11)<a class="headerlink" href="#equation-odu-rwc" title="Permalink to this equation">#</a></span>\[\|Q \omega - Q \omega'\|
+<span class="eqno">(54.11)<a class="headerlink" href="#equation-odu-rwc" title="Permalink to this equation">#</a></span>\[\|Q \omega - Q \omega'\|
 \leq \beta \| \omega - \omega' \|\]</div>
 <p>In other words, <span class="math notranslate nohighlight">\(Q\)</span> is a contraction of modulus <span class="math notranslate nohighlight">\(\beta\)</span> on the
 complete metric space <span class="math notranslate nohighlight">\((b[0,1], \| \cdot \|)\)</span>.</p>
@@ -870,7 +870,7 @@ complete metric space <span class="math notranslate nohighlight">\((b[0,1], \| \
 </ul>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">53.7. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">54.7. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>The following function takes an instance of <code class="docutils literal notranslate"><span class="pre">SearchProblem</span></code> and
 returns the operator <code class="docutils literal notranslate"><span class="pre">Q</span></code></p>
 <div class="cell docutils container">
@@ -929,10 +929,10 @@ returns the operator <code class="docutils literal notranslate"><span class="pre
 <span class="math notranslate nohighlight">\(\bar w\)</span>.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">53.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">54.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="odu_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 53.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 54.1 </span></p>
 <section id="exercise-content">
 <p>Use the default parameters and <code class="docutils literal notranslate"><span class="pre">Q_factory</span></code> to compute an optimal
 policy.</p>
@@ -944,10 +944,10 @@ in the optimal policy coincides with your intuition.</p>
 </div>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">53.9. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">54.9. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this heading">#</a></h2>
 <div class="solution dropdown admonition" id="odu-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#odu_ex1"> Exercise 53.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#odu_ex1"> Exercise 54.1</a></p>
 <section id="solution-content">
 <p>This code solves the “Offer Distribution Unknown” model by iterating on
 a guess of the reservation wage function.</p>
@@ -1012,22 +1012,23 @@ fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.020799223259200583.
-Error at iteration 10 is 0.006341997484693107.
-Error at iteration 15 is 0.0014162625334815937.
-Error at iteration 20 is 0.0002962720954480247.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.021402824106681928.
+Error at iteration 10 is 0.006291079473899064.
+Error at iteration 15 is 0.0015574572622565341.
+Error at iteration 20 is 0.00036563584780946456.
+Error at iteration 25 is 8.577628060446596e-05.
 
-Converged in 24 iterations.
+Converged in 25 iterations.
 </pre></div>
 </div>
-<img alt="_images/0d1f75cb5c8dba220983198f755055793302c94c106726e714ca9d22acf98ddb.png" src="_images/0d1f75cb5c8dba220983198f755055793302c94c106726e714ca9d22acf98ddb.png" />
+<img alt="_images/e99bda026f85b577b90f40e850d28e38c24a57fe440619948b5c33b54cbcd268.png" src="_images/e99bda026f85b577b90f40e850d28e38c24a57fe440619948b5c33b54cbcd268.png" />
 </div>
 </div>
 </section>
 </div>
 </section>
 <section id="appendix-a">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">53.10. </span>Appendix A</a><a class="headerlink" href="#appendix-a" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id18"><span class="section-number">54.10. </span>Appendix A</a><a class="headerlink" href="#appendix-a" title="Permalink to this heading">#</a></h2>
 <p>The next piece of code generates a fun simulation to see what the effect
 of a change in the underlying distribution on the unemployment rate is.</p>
 <p>At a point in the simulation, the distribution becomes significantly
@@ -1111,12 +1112,12 @@ too optimistic and turn down too many jobs.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/66da98ce9b3a351063d4a6cfad2ff6d753edc6714896044ac10b020b74313929.png" src="_images/66da98ce9b3a351063d4a6cfad2ff6d753edc6714896044ac10b020b74313929.png" />
+<img alt="_images/2ebcb46d19551dac0def0ab52c017a57910df889e9eb0a80d906d33b4844936d.png" src="_images/2ebcb46d19551dac0def0ab52c017a57910df889e9eb0a80d906d33b4844936d.png" />
 </div>
 </div>
 </section>
 <section id="appendix-b">
-<h2><a class="toc-backref" href="#id19"><span class="section-number">53.11. </span>Appendix B</a><a class="headerlink" href="#appendix-b" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id19"><span class="section-number">54.11. </span>Appendix B</a><a class="headerlink" href="#appendix-b" title="Permalink to this heading">#</a></h2>
 <p>In this appendix we provide more details about how Bayes’ Law contributes to the workings of the model.</p>
 <p>We present some graphs that bring out additional insights about how learning works.</p>
 <p>We build on graphs proposed in <a class="reference external" href="https://python.quantecon.org/exchangeable.html">this lecture</a>.</p>
@@ -1321,9 +1322,9 @@ to interpret the solution of our search model.</p>
 <p>We now provide some examples that provide insights about how the model works.</p>
 </section>
 <section id="examples">
-<h2><a class="toc-backref" href="#id20"><span class="section-number">53.12. </span>Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id20"><span class="section-number">54.12. </span>Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h2>
 <section id="example-1-baseline">
-<h3><span class="section-number">53.12.1. </span>Example 1 (Baseline)<a class="headerlink" href="#example-1-baseline" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">54.12.1. </span>Example 1 (Baseline)<a class="headerlink" href="#example-1-baseline" title="Permalink to this heading">#</a></h3>
 <p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(3, 1.2), <span class="math notranslate nohighlight">\(c\)</span>=0.3.</p>
 <p>In the graphs below, the red arrows in the upper right figure show how <span class="math notranslate nohighlight">\(\pi_t\)</span> is updated in response to the
 new information <span class="math notranslate nohighlight">\(w_t\)</span>.</p>
@@ -1373,13 +1374,13 @@ unemployment verifies our conjecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eb927b1f6ca249265517e5dc8623d6da25a5bb53b5d5dcabce651032cd0caf45.png" src="_images/eb927b1f6ca249265517e5dc8623d6da25a5bb53b5d5dcabce651032cd0caf45.png" />
-<img alt="_images/8826b97bad2a8999b1e0788e6ee35bb92ae68f34327ff50c7fe324960bc0f278.png" src="_images/8826b97bad2a8999b1e0788e6ee35bb92ae68f34327ff50c7fe324960bc0f278.png" />
+<img alt="_images/f633e0940b4b3b5371b9f35a282d3d121b4881449f61b3c8ccfc1da7124a40c1.png" src="_images/f633e0940b4b3b5371b9f35a282d3d121b4881449f61b3c8ccfc1da7124a40c1.png" />
+<img alt="_images/4df3443a743040e26616e469b42c7b99be899cadfb298a29db5aba5c6c76fc8a.png" src="_images/4df3443a743040e26616e469b42c7b99be899cadfb298a29db5aba5c6c76fc8a.png" />
 </div>
 </div>
 </section>
 <section id="example-2">
-<h3><span class="section-number">53.12.2. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">54.12.2. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this heading">#</a></h3>
 <p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(1.2, 1.2), <span class="math notranslate nohighlight">\(c\)</span>=0.3.</p>
 <p>Now <span class="math notranslate nohighlight">\(G\)</span> has the same mean as <span class="math notranslate nohighlight">\(F\)</span> with a smaller variance.</p>
 <p>Since the unemployment compensation <span class="math notranslate nohighlight">\(c\)</span> serves as a lower bound
@@ -1394,13 +1395,13 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/de431c23e62fd60d01061e31abe33ebabccb0d12e3455f9d241882ca619036c1.png" src="_images/de431c23e62fd60d01061e31abe33ebabccb0d12e3455f9d241882ca619036c1.png" />
-<img alt="_images/a672adce52dbcf97cc245ebf57ea95e2f54d0c810739791e1e5d37f65133fbdf.png" src="_images/a672adce52dbcf97cc245ebf57ea95e2f54d0c810739791e1e5d37f65133fbdf.png" />
+<img alt="_images/9da84716b54f7e0fd2b95e0076c4100ed414a7fe1d2f24f6d55f1ecb2f4fc00a.png" src="_images/9da84716b54f7e0fd2b95e0076c4100ed414a7fe1d2f24f6d55f1ecb2f4fc00a.png" />
+<img alt="_images/1f5ac96b1a6670a0573b95434793ce6c37661324afc3cf3aa6c57016010fd35e.png" src="_images/1f5ac96b1a6670a0573b95434793ce6c37661324afc3cf3aa6c57016010fd35e.png" />
 </div>
 </div>
 </section>
 <section id="example-3">
-<h3><span class="section-number">53.12.3. </span>Example 3<a class="headerlink" href="#example-3" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">54.12.3. </span>Example 3<a class="headerlink" href="#example-3" title="Permalink to this heading">#</a></h3>
 <p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(2, 2), <span class="math notranslate nohighlight">\(c\)</span>=0.3.</p>
 <p>If the variance of <span class="math notranslate nohighlight">\(G\)</span> is smaller, we observe in the result that
 <span class="math notranslate nohighlight">\(G\)</span> is even more “inferior” and the slope of
@@ -1412,13 +1413,13 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2359ed5b1308f415d98dd82389f636ff30d9fffa86263b2365749b4985bb16d6.png" src="_images/2359ed5b1308f415d98dd82389f636ff30d9fffa86263b2365749b4985bb16d6.png" />
-<img alt="_images/3c70c9cede27129e51895775f3a6cfd3f4d3854843ed95f9643af7ae8672c2d7.png" src="_images/3c70c9cede27129e51895775f3a6cfd3f4d3854843ed95f9643af7ae8672c2d7.png" />
+<img alt="_images/7991fb539a2858a7d9f4392d9bc3f1b859e40d75ec524df7c4d490e279f64781.png" src="_images/7991fb539a2858a7d9f4392d9bc3f1b859e40d75ec524df7c4d490e279f64781.png" />
+<img alt="_images/cb1deec79a13da6881874a0f8759fa145024f145b5978794aa05b7ef77bbb719.png" src="_images/cb1deec79a13da6881874a0f8759fa145024f145b5978794aa05b7ef77bbb719.png" />
 </div>
 </div>
 </section>
 <section id="example-4">
-<h3><span class="section-number">53.12.4. </span>Example 4<a class="headerlink" href="#example-4" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">54.12.4. </span>Example 4<a class="headerlink" href="#example-4" title="Permalink to this heading">#</a></h3>
 <p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(3, 1.2), and <span class="math notranslate nohighlight">\(c\)</span>=0.8.</p>
 <p>In this example, we keep the parameters of beta distributions to be the
 same with the baseline case but increase the unemployment compensation
@@ -1440,13 +1441,13 @@ when he eventually chooses to accept a wage offer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e5a281005b0c957769d3fd169db366edfa4c32bda3c300fd26f017e9d28bbccf.png" src="_images/e5a281005b0c957769d3fd169db366edfa4c32bda3c300fd26f017e9d28bbccf.png" />
-<img alt="_images/3327daa22ecc177874c2627bb1c053468d7502732542e5a9e9f8bb5dbc9d16a4.png" src="_images/3327daa22ecc177874c2627bb1c053468d7502732542e5a9e9f8bb5dbc9d16a4.png" />
+<img alt="_images/b2f98f720138d77bc3181b8fd5c8686db505b1b8ad5ca4e88cde696c915f1eb5.png" src="_images/b2f98f720138d77bc3181b8fd5c8686db505b1b8ad5ca4e88cde696c915f1eb5.png" />
+<img alt="_images/bb36e73c3d511c879015c52cabbfe75deb08495a83c1aa7c6d0e46a9ba4e5963.png" src="_images/bb36e73c3d511c879015c52cabbfe75deb08495a83c1aa7c6d0e46a9ba4e5963.png" />
 </div>
 </div>
 </section>
 <section id="example-5">
-<h3><span class="section-number">53.12.5. </span>Example 5<a class="headerlink" href="#example-5" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">54.12.5. </span>Example 5<a class="headerlink" href="#example-5" title="Permalink to this heading">#</a></h3>
 <p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(3, 1.2), and <span class="math notranslate nohighlight">\(c\)</span>=0.1.</p>
 <p>As expected, a smaller <span class="math notranslate nohighlight">\(c\)</span> makes an unemployed worker  accept wage offers earlier
 after having acquired less information about the wage distribution.</p>
@@ -1457,8 +1458,8 @@ after having acquired less information about the wage distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0efb1bc9fe493f52f28677d291aa3338d8827c5a2c2374077bf126a2125da72d.png" src="_images/0efb1bc9fe493f52f28677d291aa3338d8827c5a2c2374077bf126a2125da72d.png" />
-<img alt="_images/eb01f38a28b17c0d27af1853b9bfcef6a992c2ec435dce4afd66cd85b3b49105.png" src="_images/eb01f38a28b17c0d27af1853b9bfcef6a992c2ec435dce4afd66cd85b3b49105.png" />
+<img alt="_images/2d0ce47ec7ce2da9d694c069c9560b1744c03f75a2c3f318ddc18935642340a7.png" src="_images/2d0ce47ec7ce2da9d694c069c9560b1744c03f75a2c3f318ddc18935642340a7.png" />
+<img alt="_images/98fb8d8a472944d332673f9c1f840cd9935f37645356049b727e58312e08a482.png" src="_images/98fb8d8a472944d332673f9c1f840cd9935f37645356049b727e58312e08a482.png" />
 </div>
 </div>
 </section>
@@ -1697,8 +1698,13 @@ after having acquired less information about the wage distribution.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   32. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   33. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1710,37 +1716,37 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   34. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   35. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   36. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   37. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   38. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   39. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   40. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1752,52 +1758,52 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   41. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   42. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   43. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   44. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   45. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   46. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   47. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   48. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   49. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1809,17 +1815,17 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   51. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   51. Posterior Distributions for  AR(1) Parameters
+   52. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   52. Forecasting  an AR(1) Process
+   53. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1831,42 +1837,42 @@ after having acquired less information about the wage distribution.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   53. Job Search VII: Search with Learning
+   54. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   54. Likelihood Ratio Processes
+   55. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   56. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   57. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   58. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   59. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   60. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   61. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1878,32 +1884,32 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   62. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   63. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   64. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   65. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   66. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   67. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1915,37 +1921,37 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
+   68. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   69. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   70. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   71. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   71. Markov Perfect Equilibrium
+   72. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   73. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   74. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1957,17 +1963,17 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   75. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   76. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   76. Heterogeneous Beliefs and Bubbles
+   77. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1979,17 +1985,17 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   78. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   79. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   79. Maximum Likelihood Estimation
+   80. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2001,12 +2007,12 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   81. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   82. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2018,17 +2024,17 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   83. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   84. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   85. Execution Statistics
   </a>
  </li>
 </ul>

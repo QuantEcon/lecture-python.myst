@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>35. Job Search III: Fitted Value Function Iteration &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>36. Job Search III: Fitted Value Function Iteration &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="36. Job Search IV: Correlated Wage Offers" href="mccall_correlated.html" />
-    <link rel="prev" title="34. Job Search II: Search and Separation" href="mccall_model_with_separation.html" />
+    <link rel="next" title="37. Job Search IV: Correlated Wage Offers" href="mccall_correlated.html" />
+    <link rel="prev" title="35. Job Search II: Search and Separation" href="mccall_model_with_separation.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,14 +169,14 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">35.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-algorithm">35.2. The Algorithm</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">35.2.1. Value Function Iteration</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitted-value-function-iteration">35.2.2. Fitted Value Function Iteration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">36.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-algorithm">36.2. The Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">36.2.1. Value Function Iteration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitted-value-function-iteration">36.2.2. Fitted Value Function Iteration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">35.3. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">35.4. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">36.3. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">36.4. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -226,7 +226,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="job-search-iii-fitted-value-function-iteration">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">35. </span>Job Search III: Fitted Value Function Iteration</a><a class="headerlink" href="#job-search-iii-fitted-value-function-iteration" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id3"><span class="section-number">36. </span>Job Search III: Fitted Value Function Iteration</a><a class="headerlink" href="#job-search-iii-fitted-value-function-iteration" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -269,7 +269,7 @@ Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/en
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">35.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">36.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture we again study the <a class="reference internal" href="mccall_model_with_separation.html"><span class="doc">McCall job search model with separation</span></a>, but now with a continuous wage distribution.</p>
 <p>While we already considered continuous wage distributions briefly in the
 exercises of the <a class="reference internal" href="mccall_model.html"><span class="doc">first job search lecture</span></a>,
@@ -304,45 +304,45 @@ comes to applying value function iteration (VFI).</p>
 </div>
 </section>
 <section id="the-algorithm">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">35.2. </span>The Algorithm</a><a class="headerlink" href="#the-algorithm" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">36.2. </span>The Algorithm</a><a class="headerlink" href="#the-algorithm" title="Permalink to this heading">#</a></h2>
 <p>The model is the same as the McCall model with job separation we <a class="reference internal" href="mccall_model_with_separation.html"><span class="doc">studied before</span></a>, except that the wage offer distribution is continuous.</p>
 <p>We are going to start with the two Bellman equations we obtained for the model with job separation after <a class="reference internal" href="mccall_model_with_separation.html#ast-mcm"><span class="std std-ref">a simplifying transformation</span></a>.</p>
 <p>Modified to accommodate continuous wage draws, they take the following form:</p>
 <div class="math notranslate nohighlight" id="equation-bell1mcmc">
-<span class="eqno">(35.1)<a class="headerlink" href="#equation-bell1mcmc" title="Permalink to this equation">#</a></span>\[d = \int \max \left\{ v(w'), \,  u(c) + \beta d \right\} q(w') d w'\]</div>
+<span class="eqno">(36.1)<a class="headerlink" href="#equation-bell1mcmc" title="Permalink to this equation">#</a></span>\[d = \int \max \left\{ v(w'), \,  u(c) + \beta d \right\} q(w') d w'\]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-bell2mcmc">
-<span class="eqno">(35.2)<a class="headerlink" href="#equation-bell2mcmc" title="Permalink to this equation">#</a></span>\[v(w) = u(w) + \beta
+<span class="eqno">(36.2)<a class="headerlink" href="#equation-bell2mcmc" title="Permalink to this equation">#</a></span>\[v(w) = u(w) + \beta
     \left[
         (1-\alpha)v(w) + \alpha d
     \right]\]</div>
 <p>The unknowns here are the function <span class="math notranslate nohighlight">\(v\)</span> and the scalar <span class="math notranslate nohighlight">\(d\)</span>.</p>
 <p>The difference between these and the pair of Bellman equations we previously worked on are</p>
 <ol class="arabic simple">
-<li><p>in <a class="reference internal" href="#equation-bell1mcmc">(35.1)</a>, what used to be a sum over a finite number of wage values is an integral over an infinite set.</p></li>
-<li><p>The function <span class="math notranslate nohighlight">\(v\)</span> in <a class="reference internal" href="#equation-bell2mcmc">(35.2)</a> is defined over all <span class="math notranslate nohighlight">\(w \in \mathbb R_+\)</span>.</p></li>
+<li><p>in <a class="reference internal" href="#equation-bell1mcmc">(36.1)</a>, what used to be a sum over a finite number of wage values is an integral over an infinite set.</p></li>
+<li><p>The function <span class="math notranslate nohighlight">\(v\)</span> in <a class="reference internal" href="#equation-bell2mcmc">(36.2)</a> is defined over all <span class="math notranslate nohighlight">\(w \in \mathbb R_+\)</span>.</p></li>
 </ol>
-<p>The function <span class="math notranslate nohighlight">\(q\)</span> in <a class="reference internal" href="#equation-bell1mcmc">(35.1)</a> is the density of the wage offer distribution.</p>
+<p>The function <span class="math notranslate nohighlight">\(q\)</span> in <a class="reference internal" href="#equation-bell1mcmc">(36.1)</a> is the density of the wage offer distribution.</p>
 <p>Its support is taken as equal to <span class="math notranslate nohighlight">\(\mathbb R_+\)</span>.</p>
 <section id="value-function-iteration">
-<h3><span class="section-number">35.2.1. </span>Value Function Iteration<a class="headerlink" href="#value-function-iteration" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.2.1. </span>Value Function Iteration<a class="headerlink" href="#value-function-iteration" title="Permalink to this heading">#</a></h3>
 <p>In theory, we should now proceed as follows:</p>
 <ol class="arabic simple">
-<li><p>Begin with a guess <span class="math notranslate nohighlight">\(v, d\)</span> for the solutions to <a class="reference internal" href="#equation-bell1mcmc">(35.1)</a>–<a class="reference internal" href="#equation-bell2mcmc">(35.2)</a>.</p></li>
-<li><p>Plug <span class="math notranslate nohighlight">\(v, d\)</span> into the right hand side of <a class="reference internal" href="#equation-bell1mcmc">(35.1)</a>–<a class="reference internal" href="#equation-bell2mcmc">(35.2)</a> and
+<li><p>Begin with a guess <span class="math notranslate nohighlight">\(v, d\)</span> for the solutions to <a class="reference internal" href="#equation-bell1mcmc">(36.1)</a>–<a class="reference internal" href="#equation-bell2mcmc">(36.2)</a>.</p></li>
+<li><p>Plug <span class="math notranslate nohighlight">\(v, d\)</span> into the right hand side of <a class="reference internal" href="#equation-bell1mcmc">(36.1)</a>–<a class="reference internal" href="#equation-bell2mcmc">(36.2)</a> and
 compute the left hand side to obtain updates <span class="math notranslate nohighlight">\(v', d'\)</span></p></li>
 <li><p>Unless some stopping condition is satisfied, set <span class="math notranslate nohighlight">\((v, d) = (v', d')\)</span>
 and go to step 2.</p></li>
 </ol>
 <p>However, there is a problem we must confront before we implement this procedure:
 The iterates of the value function can neither be calculated exactly nor stored on a computer.</p>
-<p>To see the issue, consider <a class="reference internal" href="#equation-bell2mcmc">(35.2)</a>.</p>
+<p>To see the issue, consider <a class="reference internal" href="#equation-bell2mcmc">(36.2)</a>.</p>
 <p>Even if <span class="math notranslate nohighlight">\(v\)</span> is a known function,  the only way to store its update <span class="math notranslate nohighlight">\(v'\)</span>
 is to record its value <span class="math notranslate nohighlight">\(v'(w)\)</span> for every <span class="math notranslate nohighlight">\(w \in \mathbb R_+\)</span>.</p>
 <p>Clearly, this is impossible.</p>
 </section>
 <section id="fitted-value-function-iteration">
-<h3><span class="section-number">35.2.2. </span>Fitted Value Function Iteration<a class="headerlink" href="#fitted-value-function-iteration" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.2.2. </span>Fitted Value Function Iteration<a class="headerlink" href="#fitted-value-function-iteration" title="Permalink to this heading">#</a></h3>
 <p>What we will do instead is use <strong>fitted value function iteration</strong>.</p>
 <p>The procedure is as follows:</p>
 <p>Let a current guess <span class="math notranslate nohighlight">\(v\)</span> be given.</p>
@@ -401,7 +401,7 @@ function on grid points <span class="math notranslate nohighlight">\(0, 0.2, 0.4
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">35.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">36.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>The first step is to build a jitted class for the McCall model with separation and
 a continuous wage offer distribution.</p>
 <p>We will take the utility function to be the log function for this application, with <span class="math notranslate nohighlight">\(u(c) = \ln c\)</span>.</p>
@@ -530,10 +530,10 @@ and returns the associated reservation wage.</p>
 <p>The exercises ask you to explore the solution and how it changes with parameters.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">35.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">36.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="mfv_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 35.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 36.1 </span></p>
 <section id="exercise-content">
 <p>Use the code above to explore what happens to the reservation wage when the wage parameter <span class="math notranslate nohighlight">\(\mu\)</span>
 changes.</p>
@@ -543,7 +543,7 @@ changes.</p>
 </div>
 <div class="solution dropdown admonition" id="mccall_fitted_vfi-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#mfv_ex1"> Exercise 35.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#mfv_ex1"> Exercise 36.1</a></p>
 <section id="solution-content">
 <p>Here is one solution</p>
 <div class="cell docutils container">
@@ -577,7 +577,7 @@ offers shifts to the right.</p>
 </div>
 <div class="exercise admonition" id="mfv_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 35.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 36.2 </span></p>
 <section id="exercise-content">
 <p>Let us now consider how the agent responds to an increase in volatility.</p>
 <p>To try to understand this, compute the reservation wage when the wage offer
@@ -592,7 +592,7 @@ support.</p>
 </div>
 <div class="solution dropdown admonition" id="mccall_fitted_vfi-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#mfv_ex2"> Exercise 35.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#mfv_ex2"> Exercise 36.2</a></p>
 <section id="solution-content">
 <p>Here is one solution</p>
 <div class="cell docutils container">
@@ -619,7 +619,7 @@ support.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0db65fa4edd60ce5b5b0c4802968ee175811f4dc0f242c7926d17aaf547b8641.png" src="_images/0db65fa4edd60ce5b5b0c4802968ee175811f4dc0f242c7926d17aaf547b8641.png" />
+<img alt="_images/9ada946bbdc0b93c0bd92dbff27206e41c04eb4cea9709bbc4f6dd65ddd5374b.png" src="_images/9ada946bbdc0b93c0bd92dbff27206e41c04eb4cea9709bbc4f6dd65ddd5374b.png" />
 </div>
 </div>
 <p>The reservation wage increases with volatility.</p>
@@ -865,8 +865,13 @@ risk.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   32. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   33. Shortest Paths
   </a>
  </li>
 </ul>
@@ -878,37 +883,37 @@ risk.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   34. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   35. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   35. Job Search III: Fitted Value Function Iteration
+   36. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   37. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   38. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   39. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   40. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -920,52 +925,52 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   41. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   42. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   43. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   44. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   45. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   46. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   47. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   48. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   49. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -977,17 +982,17 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   51. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   51. Posterior Distributions for  AR(1) Parameters
+   52. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   52. Forecasting  an AR(1) Process
+   53. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -999,42 +1004,42 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   53. Job Search VII: Search with Learning
+   54. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   54. Likelihood Ratio Processes
+   55. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   56. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   57. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   58. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   59. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   60. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   61. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1046,32 +1051,32 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   62. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   63. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   64. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   65. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   66. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   67. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1083,37 +1088,37 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
+   68. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   69. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   70. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   71. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   71. Markov Perfect Equilibrium
+   72. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   73. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   74. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1125,17 +1130,17 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   75. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   76. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   76. Heterogeneous Beliefs and Bubbles
+   77. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1147,17 +1152,17 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   78. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   79. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   79. Maximum Likelihood Estimation
+   80. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1169,12 +1174,12 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   81. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   82. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1186,17 +1191,17 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   83. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   84. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   85. Execution Statistics
   </a>
  </li>
 </ul>

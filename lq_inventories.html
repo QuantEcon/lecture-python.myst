@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>66. Production Smoothing via Inventories &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>67. Production Smoothing via Inventories &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="67. Schelling’s Segregation Model" href="schelling.html" />
-    <link rel="prev" title="65. Permanent Income II: LQ Techniques" href="perm_income_cons.html" />
+    <link rel="next" title="68. Schelling’s Segregation Model" href="schelling.html" />
+    <link rel="prev" title="66. Permanent Income II: LQ Techniques" href="perm_income_cons.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,16 +169,16 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">66.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">66.2. Example 1</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventories-not-useful">66.3. Inventories Not Useful</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventories-useful-but-are-hardwired-to-be-zero-always">66.4. Inventories Useful but are Hardwired to be Zero Always</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">66.5. Example 2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">66.6. Example 3</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4">66.7. Example 4</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-5">66.8. Example 5</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-6">66.9. Example 6</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">66.10. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">67.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">67.2. Example 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventories-not-useful">67.3. Inventories Not Useful</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventories-useful-but-are-hardwired-to-be-zero-always">67.4. Inventories Useful but are Hardwired to be Zero Always</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">67.5. Example 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">67.6. Example 3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4">67.7. Example 4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-5">67.8. Example 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-6">67.9. Example 6</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">67.10. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -228,7 +228,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="production-smoothing-via-inventories">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">66. </span>Production Smoothing via Inventories</a><a class="headerlink" href="#production-smoothing-via-inventories" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id2"><span class="section-number">67. </span>Production Smoothing via Inventories</a><a class="headerlink" href="#production-smoothing-via-inventories" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -265,16 +265,18 @@ const thebe_selector_output = ".output, .cell_output"
 Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
 Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -285,7 +287,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">66.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">67.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture can be viewed as an application of this <a class="reference internal" href="lqcontrol.html"><span class="doc">quantecon lecture</span></a> about linear quadratic control
 theory.</p>
 <p>It formulates a discounted dynamic program for a firm that
@@ -593,7 +595,7 @@ values</p>
 <p>In the examples below, we alter some or all of these parameter values.</p>
 </section>
 <section id="example-1">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">66.2. </span>Example 1</a><a class="headerlink" href="#example-1" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">67.2. </span>Example 1</a><a class="headerlink" href="#example-1" title="Permalink to this heading">#</a></h2>
 <p>In this example, the demand shock follows AR(1) process:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -629,7 +631,7 @@ pertinent figures.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/48f06ccea645915a3d9b3e395b7aefb7d8839886f316a74eb1c47725da7c8687.png" src="_images/48f06ccea645915a3d9b3e395b7aefb7d8839886f316a74eb1c47725da7c8687.png" />
+<img alt="_images/1b496f6d21660681b8977c85f045ca2f7412e949cc63443e834f9b9689c8eb4e.png" src="_images/1b496f6d21660681b8977c85f045ca2f7412e949cc63443e834f9b9689c8eb4e.png" />
 </div>
 </div>
 <p>The figures above illustrate various features of an optimal production
@@ -654,7 +656,7 @@ always</p></li>
 <p>We use these two alternative production concepts in order to shed light on the baseline model.</p>
 </section>
 <section id="inventories-not-useful">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">66.3. </span>Inventories Not Useful</a><a class="headerlink" href="#inventories-not-useful" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">67.3. </span>Inventories Not Useful</a><a class="headerlink" href="#inventories-not-useful" title="Permalink to this heading">#</a></h2>
 <p>Let’s turn first to the setting in which inventories aren’t needed.</p>
 <p>In this problem, the firm forms an output plan that maximizes the expected
 value of</p>
@@ -680,7 +682,7 @@ Q_{t}^{ni}=\frac{a_{0}+\nu_{t}-c_{1}}{c_{2}+a_{1}}.
 \]</div>
 </section>
 <section id="inventories-useful-but-are-hardwired-to-be-zero-always">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">66.4. </span>Inventories Useful but are Hardwired to be Zero Always</a><a class="headerlink" href="#inventories-useful-but-are-hardwired-to-be-zero-always" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">67.4. </span>Inventories Useful but are Hardwired to be Zero Always</a><a class="headerlink" href="#inventories-useful-but-are-hardwired-to-be-zero-always" title="Permalink to this heading">#</a></h2>
 <p>Next, we turn to a distinct problem in which inventories are useful –
 meaning that there are costs of <span class="math notranslate nohighlight">\(d_2 (I_t - S_t)^2\)</span> associated
 with having sales not equal to inventories – but we arbitrarily impose on the firm
@@ -737,12 +739,12 @@ confine the graphs to the first 10 periods:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fd28671af290484926d4acd7a8a0469be19c402695323f3330c799a30d8c4415.png" src="_images/fd28671af290484926d4acd7a8a0469be19c402695323f3330c799a30d8c4415.png" />
+<img alt="_images/b0fd971a85494a5176c3c884443eb8980949cbbe1ea5876fb942f0367abfa963.png" src="_images/b0fd971a85494a5176c3c884443eb8980949cbbe1ea5876fb942f0367abfa963.png" />
 </div>
 </div>
 </section>
 <section id="example-2">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">66.5. </span>Example 2</a><a class="headerlink" href="#example-2" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">67.5. </span>Example 2</a><a class="headerlink" href="#example-2" title="Permalink to this heading">#</a></h2>
 <p>Next, we shut down randomness in demand and assume that the demand shock
 <span class="math notranslate nohighlight">\(\nu_t\)</span> follows a deterministic path:</p>
 <div class="math notranslate nohighlight">
@@ -765,7 +767,7 @@ confine the graphs to the first 10 periods:</p>
 </div>
 </section>
 <section id="example-3">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">66.6. </span>Example 3</a><a class="headerlink" href="#example-3" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">67.6. </span>Example 3</a><a class="headerlink" href="#example-3" title="Permalink to this heading">#</a></h2>
 <p>Now we’ll put randomness back into the demand shock process and also
 assume that there are zero costs of holding inventories.</p>
 <p>In particular, we’ll look at a situation in which <span class="math notranslate nohighlight">\(d_1=0\)</span> but
@@ -783,12 +785,12 @@ the following figures confirm</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8016f038a40bc18831b76d339626cf28235f92823cf11b700279e1791c86003a.png" src="_images/8016f038a40bc18831b76d339626cf28235f92823cf11b700279e1791c86003a.png" />
+<img alt="_images/fab7bbaa221d49f40327b2a233fb6479152f9e26ff528a456106acfbbbf6cc9d.png" src="_images/fab7bbaa221d49f40327b2a233fb6479152f9e26ff528a456106acfbbbf6cc9d.png" />
 </div>
 </div>
 </section>
 <section id="example-4">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">66.7. </span>Example 4</a><a class="headerlink" href="#example-4" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">67.7. </span>Example 4</a><a class="headerlink" href="#example-4" title="Permalink to this heading">#</a></h2>
 <p>To bring out some features of the optimal policy that are related to
 some technical issues in linear control theory, we’ll now temporarily
 assume that it is costless to hold inventories.</p>
@@ -830,7 +832,7 @@ and to <strong>run a Ponzi scheme</strong> by running inventories down forever.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/69b8dff464aaff1ac289ee4e12749109623155215e1210c78aaf433868744ac6.png" src="_images/69b8dff464aaff1ac289ee4e12749109623155215e1210c78aaf433868744ac6.png" />
+<img alt="_images/56264137b4d24fa3ba14c2726a95a3e899cd66c8f3baddc82ca14eb3810e4bcc.png" src="_images/56264137b4d24fa3ba14c2726a95a3e899cd66c8f3baddc82ca14eb3810e4bcc.png" />
 </div>
 </div>
 <p>Let’s shorten the time span displayed in order to highlight what is
@@ -844,12 +846,12 @@ going on.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/77e2418107d26c3abc0fbf0f396553db54eeda3714a2088c7479afa009300f5c.png" src="_images/77e2418107d26c3abc0fbf0f396553db54eeda3714a2088c7479afa009300f5c.png" />
+<img alt="_images/ee80daff7340db7e8d912a92c0f9193f9375aa415bf577f4676af7929968650e.png" src="_images/ee80daff7340db7e8d912a92c0f9193f9375aa415bf577f4676af7929968650e.png" />
 </div>
 </div>
 </section>
 <section id="example-5">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">66.8. </span>Example 5</a><a class="headerlink" href="#example-5" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">67.8. </span>Example 5</a><a class="headerlink" href="#example-5" title="Permalink to this heading">#</a></h2>
 <p>Now we’ll assume that the demand shock that follows a linear time trend</p>
 <div class="math notranslate nohighlight">
 \[
@@ -893,7 +895,7 @@ b &amp; a\end{array}\right]
 </div>
 </section>
 <section id="example-6">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">66.9. </span>Example 6</a><a class="headerlink" href="#example-6" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">67.9. </span>Example 6</a><a class="headerlink" href="#example-6" title="Permalink to this heading">#</a></h2>
 <p>Now we’ll assume a deterministically seasonal demand shock.</p>
 <p>To represent this we’ll set</p>
 <div class="math notranslate nohighlight">
@@ -966,12 +968,12 @@ initial <strong>season</strong> of the year in which we begin the demand shock</
 </div>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">66.10. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">67.10. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <p>Please try to analyze some inventory sales smoothing problems using the
 <code class="docutils literal notranslate"><span class="pre">SmoothingExample</span></code> class.</p>
 <div class="exercise admonition" id="lqi_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 66.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 67.1 </span></p>
 <section id="exercise-content">
 <p>Assume that the demand shock follows AR(2) process below:</p>
 <div class="math notranslate nohighlight">
@@ -993,7 +995,7 @@ firms respond differently by staring at the production plans.</p>
 </div>
 <div class="solution dropdown admonition" id="lq_inventories-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#lqi_ex1"> Exercise 66.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#lqi_ex1"> Exercise 67.1</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1027,7 +1029,7 @@ firms respond differently by staring at the production plans.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4172753660462c1490c72aeeca9f059762f06c092bca7a3ccf32d91bd6e6ff8b.png" src="_images/4172753660462c1490c72aeeca9f059762f06c092bca7a3ccf32d91bd6e6ff8b.png" />
+<img alt="_images/c3149dc729e9db20f72a4446f422b948f510f155d90dd344f93f41d2973bd190.png" src="_images/c3149dc729e9db20f72a4446f422b948f510f155d90dd344f93f41d2973bd190.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1091,7 +1093,7 @@ a short period response.</p>
 </div>
 <div class="exercise admonition" id="lqi_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 66.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 67.2 </span></p>
 <section id="exercise-content">
 <p>Change parameters of <span class="math notranslate nohighlight">\(C(Q_t)\)</span> and <span class="math notranslate nohighlight">\(d(I_t, S_t)\)</span>.</p>
 <ol class="arabic simple">
@@ -1103,7 +1105,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 <div class="solution dropdown admonition" id="lq_inventories-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#lqi_ex2"> Exercise 66.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#lqi_ex2"> Exercise 67.2</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1119,7 +1121,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/170ca82f1d39117e7c89a0e716ade879c1c5f56cd484e12d5e6cda8fe871cd90.png" src="_images/170ca82f1d39117e7c89a0e716ade879c1c5f56cd484e12d5e6cda8fe871cd90.png" />
+<img alt="_images/73abd1aadad9b767552c8bd3109a4c82c672bc47049d42901f9fe397a3e97f4a.png" src="_images/73abd1aadad9b767552c8bd3109a4c82c672bc47049d42901f9fe397a3e97f4a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1129,7 +1131,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a839b554d6e6d288805a8281ecc976c3bf3aaa266d862d69dc8c91408e461859.png" src="_images/a839b554d6e6d288805a8281ecc976c3bf3aaa266d862d69dc8c91408e461859.png" />
+<img alt="_images/46d69ebb10d4db5431b8702c64b63da66d4ee964c18e94b07ddf0397a52b879b.png" src="_images/46d69ebb10d4db5431b8702c64b63da66d4ee964c18e94b07ddf0397a52b879b.png" />
 </div>
 </div>
 </section>
@@ -1369,8 +1371,13 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   32. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   33. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1382,37 +1389,37 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   34. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   35. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   36. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   37. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   38. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   39. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   40. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1424,52 +1431,52 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   41. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   42. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   43. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   44. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   45. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   46. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   47. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   48. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   49. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1481,17 +1488,17 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   51. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   51. Posterior Distributions for  AR(1) Parameters
+   52. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   52. Forecasting  an AR(1) Process
+   53. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1503,42 +1510,42 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   53. Job Search VII: Search with Learning
+   54. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   54. Likelihood Ratio Processes
+   55. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   56. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   57. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   58. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   59. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   60. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   61. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1550,32 +1557,32 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   62. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   63. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   64. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   65. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   66. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   66. Production Smoothing via Inventories
+   67. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1587,37 +1594,37 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
+   68. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   69. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   70. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   71. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   71. Markov Perfect Equilibrium
+   72. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   73. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   74. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1629,17 +1636,17 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   75. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   76. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   76. Heterogeneous Beliefs and Bubbles
+   77. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1651,17 +1658,17 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   78. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   79. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   79. Maximum Likelihood Estimation
+   80. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1673,12 +1680,12 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   81. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   82. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1690,17 +1697,17 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   83. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   84. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   85. Execution Statistics
   </a>
  </li>
 </ul>
