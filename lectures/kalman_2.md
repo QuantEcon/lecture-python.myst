@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# A Second Look at the Kalman Filter
+# Another Look at the Kalman Filter
 
 ```{index} single: Kalman Filter 2
 ```
@@ -29,15 +29,16 @@ kernelspec:
 :depth: 2
 ```
 
-This is a sequel to this quantecon lecture   {doc}`A First Look at the Kalman filter <kalman>` in which we applied
-a Kalman filter to estimate the location of a rocket. 
+In  this quantecon lecture   {doc}`A First Look at the Kalman filter <kalman>`, we used
+a Kalman filter to estimate  locations of a rocket. 
 
-Here we'll use the Kalman filter to 
-make inferences about a worker's  human capital and his/her  effort to  accumulate or  maintain
-human capital, both of which are unobserved to a firm that learns about those things only be observing a history
-of the output that the worker generates for the firm.
+In this lecture,  we'll use the Kalman filter to 
+infer a worker's  human capital and the  effort that the worker devotes  to  accumulatng 
+human capital, neither of which the firm observes directly.
 
-We'll posit a little model of how the firm pays the worker in light of these information limitations.
+The firm  learns about those things only be observing a history of the output that the worker generates for the firm, and from understanding how that output depends on the worker's human capital and how human capital evolves as a function of the worker's effort. 
+
+We'll posit a rule that expresses how the much  firm pays the worker each period  as a function of the firm's information each period.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
@@ -92,21 +93,21 @@ Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_
 
 At time $0$, a firm has hired the worker.
 
-The worker is permanently attached to the firm and so works for the  firm at dates $t =0, 1, 2, \ldots$.
+The worker is permanently attached to the firm and so works for the same  firm at all  dates $t =0, 1, 2, \ldots$.
 
 At the beginning of time $0$, the firm observes neither the worker's innate initial human capitl $h_0$ nor its hard-wired permanent effort level $u_0$.
 
 The firm believes that $u_0$ for a particular worker is drawn from a Gaussian probability distribution, and so is  described by $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$.
 
 
-The $h_t$ part of a worker's "type" moves over time, but the effort part of the type $u_t = u_0$.
+The $h_t$ part of a worker's "type" moves over time, but the effort compoent  of the worker's  type is  $u_t = u_0$.
 
-So from the firm's point of view, the worker's effort is  effectively an unknown  fixed  "parameter".
+This means that  from the firm's point of view, the worker's effort is  effectively an unknown  fixed  "parameter".
 
 
 At time $t\geq 1$, for a particular worker the  firm  observed  $y^{t-1} = [y_{t-1}, y_{t-2}, \ldots, y_0]$.
 
-The firm does not observe the  worker's "type" $h_0, u_0$.
+The firm does not observe the  worker's "type" $(h_0, u_0)$.
 
 But the firm  does observe the worker's  output $y_t$ at time $t$ and remembers the worker's past outputs $y^{t-1}$.
 
@@ -129,9 +130,11 @@ $$
 w_0 = g \hat h_0 . 
 $$
 
+In using this payment rule, the firm is taking into account that the worker's log output todayis partly due
+to the random component $v_t$ that comes entirely from luck, and that is assumed to be independent of $h_t$ and $u_t$.
 
 
-## Forming a state-space representation
+## A state-space representation
 
 Write system [](worker_model) in the state-space form
 
@@ -145,7 +148,8 @@ y_t & = \begin{bmatrix} g & 0 \end{bmatrix} \begin{bmatrix} h_{t} \cr u_{t} \end
 which is equivalent with
 
 ```{math}
-\begin{align}
+:label: ssrepresent
+\begin{align} 
 x_{t+1} & = A x_t + C w_{t+1} \cr
 y_t & = G x_t + v_t \cr
 x_0 & \sim {\mathcal N}(\hat x_0, \Sigma_0) \end{align}
@@ -153,6 +157,7 @@ x_0 & \sim {\mathcal N}(\hat x_0, \Sigma_0) \end{align}
 where
 
 ```{math}
+
 \begin{equation}
 x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
 \hat x_0  = \begin{bmatrix} \hat h_0 \cr \hat u_0 \end{bmatrix} , \quad
@@ -161,7 +166,7 @@ x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
 \end{equation}
 ```
 
-To prepare to compute the firm's wage setting policy, we first we create a `namedtuple` to store the parameters of the model
+To compute the firm's wage setting policy, we first we create a `namedtuple` to store the parameters of the model
 
 ```{code-cell} ipython3
 WorkerModel = namedtuple("WorkerModel", ('A', 'C', 'G', 'R', 'xhat_0', 'Σ_0'))
@@ -186,7 +191,10 @@ def create_worker(α=.8, β=.2, c=.2,
     return WorkerModel(A=A, C=C, G=G, R=R, xhat_0=xhat_0, Σ_0=Σ_0)
 ```
 
-In order to be able to simulate a history $\{y_t, h_t\}$ for a worker, we form 
+Please note how the `WorkerModel` namedtuple creates all of the objects required to compute an associated
+state-space representation {eq}`ssrepresent`.
+
+This is handy, because in order to  simulate a history $\{y_t, h_t\}$ for a worker, we'll want to form 
  state space system for him/her by using the [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
 
 
@@ -205,14 +213,19 @@ x, y = ss.simulate(T)
 y = y.flatten()
 
 h_0, u_0 = x[0, 0], x[1, 0]
-print('h_0 =', h_0)
-print('u_0 =', u_0)
 ```
 
 Next, to  compute the firm's policy for setting the log wage based on the information it has about the worker,
 we  use the Kalman filter described in this quantecon lecture   {doc}`A First Look at the Kalman filter <kalman>`.
 
-In particular, we want to compute all of the objects in an "innovation representation":
+In particular, we want to compute all of the objects in an "innovation representation".
+
+## An Innovations Representation
+
+We have all the objects in hand required to form an innovations represenation for the output
+process $\{y_t\}_{t=0}^T$ for a worker.
+
+Let's code that up now.
 
 ```{math}
     \begin{align}
@@ -247,7 +260,7 @@ For a draw of $h_0, u_0$,  we plot $E y_t = G \hat x_t $ where $\hat x_t = E [x_
 
 We also plot $E [u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
-We  watch as the  firm's inference of the worker's work ethic $E [u_0 | y^{t-1}]$ converges toward the hidden  (to the firm) value $u_0$.
+We can  watch as the  firm's inference  $E [u_0 | y^{t-1}]$ of the worker's work ethic converges toward the hidden   $u_0$, which is not directly observed by the firm.
 
 ```{code-cell} ipython3
 :tags: []
@@ -270,8 +283,9 @@ ax[1].legend()
 fig.tight_layout()
 plt.show()
 ```
+## Some Computational Experiments
 
-Now we check the $\Sigma_0$ and $\Sigma_T$
+Let's look at  $\Sigma_0$ and $\Sigma_T$ in order to see how much the firm learns about the hidden state during the horizon we have set.
 
 ```{code-cell} ipython3
 :tags: []
@@ -285,9 +299,9 @@ print(Σ_t[:, :, 0])
 print(Σ_t[:, :, -1])
 ```
 
-Evidently,  entries in the covariance matrix become smaller over time.
+Evidently,  entries in the conditional covariance matrix become smaller over time.
 
-We can portray how  conditional covariance matrices $\Sigma_t$ evolves by plotting confidence ellipsoides around $E [x_t |y^{t-1}] $ at various $t$'s.
+It is enlightening to  portray how  conditional covariance matrices $\Sigma_t$ evolve by plotting confidence ellipsoides around $E [x_t |y^{t-1}] $ at various $t$'s.
 
 ```{code-cell} ipython3
 :tags: []
@@ -328,22 +342,25 @@ for i, t in enumerate(np.linspace(0, T-1, 3, dtype=int)):
 plt.tight_layout()
 plt.show()
 ```
+Note how the accumulation of evidence $y^t$ affects the shape of the confidence ellipsoid as sample size $t$ grows. 
 
-NEW REQUEST FOR HUMPHREY AND SMIT:
 
-HUMPHREY AND/OR SMIT: YOU HAVE DONE A WONDERFUL JOB.  AS A ``REWARD'' FOR YOUR EXCELLENT WORK, I'D LIKE TO ASK YOU TO TWEAK YOUR CODE TO ALLOW US TO DO THE FOLLOWING THINGS:
+Now let's use our code to set the hidden state $x_0$ to a particular vector in order to watch how
+a firm learns starting from some $x_0$ we are interested in. 
 
-* LET ME ARBITRARILY SET THE WORKER'S INITIAL $h_0, u_0$ PAIR INSTEAD OF DRAWING IT FROM THE INITIAL DISTRIBUTION THAT THE FIRM HAS IN ITS HEAD.  THAT WILL LET ME GENERATE SOME PATHS WITH HIDDEN STATES AT SET VALUES THAT I ARBITRARILY PUT AT VARIOUS SPOTS IN THE PRIOR DISTRIBUTION OF THESE TWO OBJECTS. IT WILL HELP ME GENERATE SOME INTERESTING GRAPHS.
+For example, let's say $h_0 = 0$ and $u_0 = 4$.
+
+Here is one way to do this.
 
 ```{code-cell} ipython3
 :tags: []
 
-# For example, we might want h_0 = 3 and u_0 = 4
-mu_0 = np.array([3.0, 4.0])
+# For example, we might want h_0 = 0 and u_0 = 4
+mu_0 = np.array([0.0, 4.0])
 
 # Create a LinearStateSpace object with Sigma_0 as a matrix of zeros
 ss_example = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=mu_0, 
-                              Sigma_0=np.zeros((2, 2)) # This line forces exact h_0=3 and u_0=4
+                              Sigma_0=np.zeros((2, 2)) # This line forces exact h_0=0 and u_0=4
                              )
 
 T = 100
@@ -352,16 +369,16 @@ y = y.flatten()
 
 # Now h_0 and u_0 will be exactly hhat_0
 h_0, u_0 = x[0, 0], x[1, 0]
-print('h_0 =', h_0)
-print('u_0 =', u_0)
 ```
+
+Another way to accomplish the same goal is to use the following code.
 
 ```{code-cell} ipython3
 :tags: []
 
 # If we want to set the initial 
-# h_0 = hhat_0 = 7 and u_0 = uhhat_0 = 3.5:
-worker = create_worker(hhat_0=7.0, uhat_0=3.5)
+# h_0 = hhat_0 = 0 and u_0 = uhhat_0 = 4.0:
+worker = create_worker(hhat_0=0.0, uhat_0=4.0)
 
 ss_example = LinearStateSpace(A, C, G, np.sqrt(R), 
                               mu_0=worker.xhat_0, # This line takes h_0=hhat_0 and u_0 = uhhat_0
@@ -377,6 +394,7 @@ h_0, u_0 = x[0, 0], x[1, 0]
 print('h_0 =', h_0)
 print('u_0 =', u_0)
 ```
+For this worker, let's generate a plot like the one above.
 
 ```{code-cell} ipython3
 :tags: []
@@ -421,7 +439,10 @@ plt.show()
 # Code to generate a plot like figure 2 is shown below
 ```
 
-* TEACH ME HOW TO GENERATE WORKERS CHARACTERIZED BY DIFFERENT PARAMETER VECTORS, I.E., DIFFERENT VALUES OF $\alpha, \beta$ AND SO ON.  THAT WILL ALLOW US TO DO SOME EXPERIMENTS AND GENERATE GRAPHS THAT TEACH THE READER HOW "LEARNING RATES" AND "PAY PROFILES" DEPEND ON THOSE PARAMETERS AS WELL AS ON THE INITIAL HIDDEN $h_0, w_0$.
+More generally, we can change some or all of the parameters defining a worker in our `create_worker`
+namedtuple.
+
+Here is an example. 
 
 ```{code-cell} ipython3
 :tags: []
@@ -432,7 +453,7 @@ hard_working_worker =  create_worker(α=.4, β=.8, hhat_0=7.0, uhat_0=100, σ_h=
 print(hard_working_worker)
 ```
 
-THANKS SO MUCH!
+
 
 We can also simulate the system for $T = 50$ periods for different workers.
 
@@ -593,3 +614,8 @@ ax.axhline(y=u_0, xmin=0, xmax=0, color='grey',
 ax.legend(bbox_to_anchor=(1, 0.5))
 plt.show()
 ```
+
+## Future Extensions
+
+We can do lots of enlightening experiments by creating new types of workers and letting the firm 
+learn about their hidden (to the firm) states by observing just their output histories.
