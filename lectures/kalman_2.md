@@ -169,7 +169,8 @@ x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
 To compute the firm's wage setting policy, we first we create a `namedtuple` to store the parameters of the model
 
 ```{code-cell} ipython3
-WorkerModel = namedtuple("WorkerModel", ('A', 'C', 'G', 'R', 'xhat_0', 'Σ_0'))
+WorkerModel = namedtuple("WorkerModel", 
+                ('A', 'C', 'G', 'R', 'xhat_0', 'Σ_0'))
 
 def create_worker(α=.8, β=.2, c=.2,
                   R=.5, g=1.0, hhat_0=4, uhat_0=4, 
@@ -206,7 +207,8 @@ A, C, G, R = worker.A, worker.C, worker.G, worker.R
 xhat_0, Σ_0 = worker.xhat_0, worker.Σ_0
 
 # Create a LinearStateSpace object
-ss = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=xhat_0, Sigma_0=np.zeros((2,2)))
+ss = LinearStateSpace(A, C, G, np.sqrt(R), 
+        mu_0=xhat_0, Sigma_0=np.zeros((2,2)))
 
 T = 100
 x, y = ss.simulate(T)
@@ -251,8 +253,10 @@ for t in range(1, T):
     x_hat_t[:, t-1] = x_hat.reshape(-1)
     y_hat_t[t-1] = worker.G @ x_hat
 
-x_hat_t = np.concatenate((x[:, 1][:, np.newaxis], x_hat_t), axis=1)
-Σ_t = np.concatenate((worker.Σ_0[:, :, np.newaxis], Σ_t), axis=2)
+x_hat_t = np.concatenate((x[:, 1][:, np.newaxis], 
+                    x_hat_t), axis=1)
+Σ_t = np.concatenate((worker.Σ_0[:, :, np.newaxis], 
+                    Σ_t), axis=2)
 u_hat_t = x_hat_t[1, :]
 ```
 
@@ -274,7 +278,8 @@ ax[0].set_title(r'$E[y_t]$ over time')
 ax[0].legend()
 
 ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
-ax[1].axhline(y=u_0, color='grey', linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
+ax[1].axhline(y=u_0, color='grey', 
+            linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
 ax[1].set_xlabel('Time')
 ax[1].set_ylabel(r'$E[u_t|y^{t-1}]$')
 ax[1].set_title('Inferred work ethic over time')
@@ -336,14 +341,13 @@ for i, t in enumerate(np.linspace(0, T-1, 3, dtype=int)):
     cov_latex = r'$\Sigma_{{{}}}= \begin{{bmatrix}} {:.2f} & {:.2f} \\ {:.2f} & {:.2f} \end{{bmatrix}}$'.format(
         t+1, cov[0, 0], cov[0, 1], cov[1, 0], cov[1, 1]
     )
-    axs[i].text(0.2, -0.15, cov_latex, transform=axs[i].transAxes)
+    axs[i].text(0.33, -0.15, cov_latex, transform=axs[i].transAxes)
 
     
 plt.tight_layout()
 plt.show()
 ```
 Note how the accumulation of evidence $y^t$ affects the shape of the confidence ellipsoid as sample size $t$ grows. 
-
 
 Now let's use our code to set the hidden state $x_0$ to a particular vector in order to watch how
 a firm learns starting from some $x_0$ we are interested in. 
@@ -360,15 +364,18 @@ mu_0 = np.array([0.0, 4.0])
 
 # Create a LinearStateSpace object with Sigma_0 as a matrix of zeros
 ss_example = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=mu_0, 
-                              Sigma_0=np.zeros((2, 2)) # This line forces exact h_0=0 and u_0=4
+                              # This line forces exact h_0=0 and u_0=4
+                              Sigma_0=np.zeros((2, 2))
                              )
 
 T = 100
 x, y = ss_example.simulate(T)
 y = y.flatten()
 
-# Now h_0 and u_0 will be exactly hhat_0
+# Now h_0=0 and u_0=4
 h_0, u_0 = x[0, 0], x[1, 0]
+print('h_0 =', h_0)
+print('u_0 =', u_0)
 ```
 
 Another way to accomplish the same goal is to use the following code.
@@ -381,8 +388,10 @@ Another way to accomplish the same goal is to use the following code.
 worker = create_worker(hhat_0=0.0, uhat_0=4.0)
 
 ss_example = LinearStateSpace(A, C, G, np.sqrt(R), 
-                              mu_0=worker.xhat_0, # This line takes h_0=hhat_0 and u_0 = uhhat_0
-                              Sigma_0=np.zeros((2, 2)) # This line forces exact h_0=hhat_0 and u_0=uhhat_0
+                              # This line takes h_0=hhat_0 and u_0=uhhat_0
+                              mu_0=worker.xhat_0,
+                              # This line forces exact h_0=hhat_0 and u_0=uhhat_0
+                              Sigma_0=np.zeros((2, 2))
                              )
 
 T = 100
@@ -398,10 +407,7 @@ For this worker, let's generate a plot like the one above.
 
 ```{code-cell} ipython3
 :tags: []
-
-# Code to generate a plot like figure 1
-
-# First we get the Kalman filter with initial xhat_0 and Σ_0 
+# First we compute the Kalman filter with initial xhat_0 and Σ_0 
 kalman = Kalman(ss, xhat_0, Σ_0)
 Σ_t = []
 y_hat_t = np.zeros(T-1)
@@ -427,7 +433,8 @@ ax[0].set_title(r'$E[y_t]$ over time')
 ax[0].legend()
 
 ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
-ax[1].axhline(y=u_0, color='grey', linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
+ax[1].axhline(y=u_0, color='grey', 
+            linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
 ax[1].set_xlabel('Time')
 ax[1].set_ylabel(r'$E[u_t|y^{t-1}]$')
 ax[1].set_title('Inferred work ethic over time')
@@ -435,8 +442,6 @@ ax[1].legend()
 
 fig.tight_layout()
 plt.show()
-
-# Code to generate a plot like figure 2 is shown below
 ```
 
 More generally, we can change some or all of the parameters defining a worker in our `create_worker`
@@ -448,7 +453,8 @@ Here is an example.
 :tags: []
 
 # We can set these parameters when creating a worker -- just like classes!
-hard_working_worker =  create_worker(α=.4, β=.8, hhat_0=7.0, uhat_0=100, σ_h=2.5, σ_u=3.2)
+hard_working_worker =  create_worker(α=.4, β=.8, 
+                        hhat_0=7.0, uhat_0=100, σ_h=2.5, σ_u=3.2)
 
 print(hard_working_worker)
 ```
@@ -464,7 +470,8 @@ This shows that the filter is gradually teaching the worker and firm about the w
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None, diff=True, name=None, title=None):
+def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None, 
+                    diff=True, name=None, title=None):
     A, C, G, R = worker.A, worker.C, worker.G, worker.R
     xhat_0, Σ_0 = worker.xhat_0, worker.Σ_0
     
@@ -473,7 +480,8 @@ def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None, diff=True, name=Non
     if isinstance(Sigma_0, type(None)):
         Sigma_0 = worker.Σ_0
         
-    ss = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=mu_0, Sigma_0=Sigma_0)
+    ss = LinearStateSpace(A, C, G, np.sqrt(R), 
+                        mu_0=mu_0, Sigma_0=Sigma_0)
 
     x, y = ss.simulate(T)
     y = y.flatten()
@@ -511,7 +519,8 @@ def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None, diff=True, name=Non
                 if title == None else title)
         
         u_hat_plot = ax.plot(u_hat_t, label=label_line)
-        ax.axhline(y=u_0, color=u_hat_plot[0].get_color(), linestyle='dashed', alpha=0.5)
+        ax.axhline(y=u_0, color=u_hat_plot[0].get_color(), 
+                    linestyle='dashed', alpha=0.5)
         ax.set_xlabel('Time')
         ax.set_ylabel(r'$E[u_t|y^{t-1}]$')
         ax.set_title(title)
@@ -546,7 +555,8 @@ uhat_0s = [2, -2, 1]
 for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
     worker = create_worker(uhat_0=uhat_0, α=α, β=β)
     simulate_workers(worker, T, ax,
-                    diff=False, name=r'$u_{{{}, t}}$'.format(i)) # By setting diff=False, it will give u_t
+                    # By setting diff=False, it will give u_t
+                    diff=False, name=r'$u_{{{}, t}}$'.format(i))
     
 ax.axhline(y=u_0, xmin=0, xmax=0, color='grey', 
            linestyle='dashed', label=r'$u_{i, 0}$')
