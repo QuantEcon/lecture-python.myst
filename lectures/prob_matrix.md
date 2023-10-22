@@ -496,10 +496,9 @@ $$
 X=F^{-1}(U),
 $$
 
-then $X$ ia a random variable  with CDF $F_X(x)=F(x)=\textrm{Prob}\{X\le x\}$.
+then $X$ is a random variable  with CDF $F_X(x)=F(x)=\textrm{Prob}\{X\le x\}$.
 
-We'll verify this in  the special case in which  $F$ is continuous and bijective so that its inverse function exists and  
-can be  denoted by $F^{-1}$.
+We'll verify this in  the special case in which  $F$ is continuous and bijective so that its inverse function exists and  can be  denoted by $F^{-1}$.
 
 Note that 
 
