@@ -57,7 +57,7 @@ Key ideas in play will be:
 - Dynamic programming
 - Type I and type II statistical errors
     - a type I error occurs when you reject a null hypothesis that is true
-    - a type II error is when you accept a null hypothesis that is false
+    - a type II error occures when you accept a null hypothesis that is false
 - Abraham Wald's **sequential probability ratio test**
 - The **power** of a statistical test
 - The **critical region** of a statistical test
