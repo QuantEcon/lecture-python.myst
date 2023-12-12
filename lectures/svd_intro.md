@@ -1019,7 +1019,7 @@ Thinking in terms of the Eckart-Young theorem, build the pseudoinverse matrix $ 
 
 ```
 
-```{solution-start} svd_ex1
+```{solution} svd_ex1
 :class: dropdown
 
 We can use SVD to compute the pseudoinverse:
@@ -1052,7 +1052,6 @@ $$
 \hat{\beta} = X^{+}y = V \Sigma^{+} U^\top y 
 $$
 
-```{solution-end}
 ```
 
 
