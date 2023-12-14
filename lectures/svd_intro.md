@@ -1021,6 +1021,7 @@ Thinking in terms of the Eckart-Young theorem, build the pseudoinverse matrix $ 
 
 ```{solution-start} svd_ex1
 :class: dropdown
+```
 
 We can use SVD to compute the pseudoinverse:
 
