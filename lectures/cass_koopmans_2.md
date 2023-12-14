@@ -79,10 +79,7 @@ The physical setting is identical with that in {doc}`Cass-Koopmans Planning Mode
 
 Time is discrete and takes values $t = 0, 1 , \ldots, T$.
 
-A single good can either be consumed or invested in physical capital.
-
-The consumption good is not durable and depreciates completely if not
-consumed immediately.
+Output of a single good can either be consumed or invested in physical capital.
 
 The capital good is durable but partially depreciates each period at a constant rate.
 
@@ -98,7 +95,7 @@ $t$ and likes the consumption good at each $t$.
 
 The representative household inelastically supplies a single unit of
 labor $N_t$ at each $t$, so that
-$N_t =1 \text{ for all } t \in [0,T]$.
+$N_t =1 \text{ for all } t \in \{0, 1, \ldots, T\}$.
 
 The representative household has preferences over consumption bundles
 ordered by the utility functional:
@@ -123,7 +120,7 @@ with $0 < \alpha<1$, $A > 0$.
 A feasible allocation $\vec{C}, \vec{K}$ satisfies
 
 $$
-C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t, \quad \text{for all } t \in [0, T]
+C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t \quad \text{for all } t \in \{0, 1, \ldots, T\}
 $$
 
 where $\delta \in (0,1)$ is a depreciation rate of capital.
@@ -144,18 +141,18 @@ technology and preference structure as the planned economy studied in this lectu
 
 But now there is no planner.
 
-There are (unit masses of) price taking consumers and firms.
+There are (unit masses of) price-taking consumers and firms.
 
 Market prices are set to reconcile distinct decisions that are made
-separately by a representative household and a representative firm.
+separately by a representative consumer and a representative firm.
 
 There is a representative consumer who has the same preferences over
 consumption plans as did a consumer in the planned economy.
 
 Instead of being told what to consume and save by a planner, a
-consumer (also known as a *household*) chooses for itself subject to a budget constraint
+consumer (also known as a *household*) chooses for itself subject to a budget constraint.
 
-- At each time $t$, the household receives wages and rentals
+- At each time $t$, the consumer receives wages and rentals
   of capital from a firm -- these comprise its **income** at
   time $t$.
 - The consumer decides how much income to allocate to consumption or
@@ -164,7 +161,7 @@ consumer (also known as a *household*) chooses for itself subject to a budget co
   capital (it trades one for one with time $t$ consumption)
   or by acquiring claims on consumption at dates other
   than $t$.
-- The household owns all physical capital and labor
+- The household owns  physical capital and labor
   and rents them to the firm.
 - The household consumes, supplies labor, and invests in physical
   capital.
@@ -177,7 +174,7 @@ consumer (also known as a *household*) chooses for itself subject to a budget co
   **price takers** who believe that prices are not affected by their choices
 
 ```{note}
-We can think of there being  unit measures of identical representative consumers and
+Again, we can think of there being  unit measures of identical representative consumers and
 identical representative firms.
 ```
 
@@ -190,7 +187,7 @@ The household owns both factors of production, namely, labor and physical capita
 Each period, the firm rents both factors from the household.
 
 There is a **single** grand competitive market in which a
-household can trade date $0$ goods for goods at
+household  trades date $0$ goods for goods at
 all other dates $t=1, 2, \ldots, T$.
 
 ### Prices
@@ -199,26 +196,28 @@ There are  sequences of prices
 $\{w_t,\eta_t\}_{t=0}^T= \{\vec{w}, \vec{\eta} \}$
 where
 
-- $w_t$ is a wage or rental rate for labor at time $t$
+- $w_t$ is a wage, i.e., a rental rate, for labor at time $t$
 
 - $\eta_t$ is a rental rate for capital at time $t$
 
 In addition there is a vector $\{q_t^0\}$ of  intertemporal prices where
 
-- $q^0_t$ is the price of a good at date $t$ relative
-to a good at date $0$.
+- $q^0_t$ is the price at time $0$ of one unit of the  good at date $t$.
 
 We call $\{q^0_t\}_{t=0}^T$  a vector of **Hicks-Arrow prices**,
 named after the 1972 economics Nobel prize winners.
 
-Units of $q_t^0$ could be
+
+
+Because  is a **relative price**. the unit of account  in terms of which the prices $q^0_t$ are stated is; we are free to re-normalize them by multiplying  all of them by a positive scalar, say $\lambda > 0$.
+
+Units of $q_t^0$ could be set so that they are
 
 $$
 \frac{\text{number of time 0 goods}}{\text{number of time t goods}}
 $$
 
-But because $q^0_t$ is a **relative price**, the units in terms of
-which prices are quoted are arbitrary, we are free to re-normalize them.
+In this case, we would be taking the time $0$ consumption good to be the **numeraire**.
 
 ## Firm Problem
 
@@ -242,7 +241,7 @@ $$
 
 ### Zero Profit Conditions
 
-Zero-profits condition for capital and labor are
+Zero-profits conditions for capital and labor are
 
 $$
 F_k(\tilde k_t, \tilde n_t) =\eta_t
@@ -262,7 +261,7 @@ To describe this no-arbitrage profits  reasoning, we begin by applying a theorem
 Euler about linearly homogenous functions.
 
 The theorem applies to the Cobb-Douglas production function because
-it assumed displays constant returns to scale:
+we it  displays constant returns to scale:
 
 $$
 \alpha F(\tilde k_t, \tilde n_t) =  F(\alpha  \tilde k_t, \alpha \tilde n_t)
@@ -270,12 +269,12 @@ $$
 
 for $\alpha \in (0,1)$.
 
-Taking the partial derivative
-$\frac{\partial F }{\partial \alpha}$ on both sides of the
+Taking  partial derivatives
+$\frac{\partial  }{\partial \alpha}$ on both sides of the
 above equation gives
 
 $$
-F(\tilde k_t,\tilde n_t) =_\text{chain rule} \frac{\partial F}{\partial \tilde k_t}
+F(\tilde k_t,\tilde n_t) =  \frac{\partial F}{\partial \tilde k_t}
 \tilde k_t + \frac{\partial F}{\partial \tilde  n_t} \tilde n_t
 $$
 
@@ -305,7 +304,7 @@ $\tilde k_t$, so it would want to make $\tilde k_t$
 arbitrarily large.
 
 But setting $\tilde k_t = + \infty$ is not physically feasible,
-so presumably **equilibrium** prices will assume values that present
+so  **equilibrium** prices must take  values that present
 the firm with no such arbitrage opportunity.
 
 A similar argument applies if
@@ -315,7 +314,7 @@ If $\frac{\partial \tilde k_t}{\partial \tilde k_t}< \eta_t$,
 the firm would want to set  $\tilde k_t$ to zero, which is not feasible.
 
 It is convenient to define
-$\vec{w} =\{w_0, \dots,w_T\}$and $\vec{\eta}= \{\eta_0, \dots, \eta_T\}$.
+$\vec{w} =\{w_0, \dots,w_T\}$ and $\vec{\eta}= \{\eta_0, \dots, \eta_T\}$.
 
 ## Household Problem
 
@@ -329,22 +328,23 @@ w_t 1+ \eta_t k_t
 $$
 
 At $t$ the household allocates its income to the following
-purchases
+purchases between the following two categories:
 
-$$
-\left(c_t + (k_{t+1} -(1-\delta)k_t)\right)
-$$
+* consumption $c_t$
+
+* net investment $k_{t+1} -(1-\delta)k_t$
+
 
 Here $\left(k_{t+1} -(1-\delta)k_t\right)$ is the household's
 net investment in physical capital and $\delta \in (0,1)$ is
 again a depreciation rate of capital.
 
-In period $t$ is free to purchase more goods to be consumed and
+In period $t$, the consumer is free to purchase more goods to be consumed and
 invested in physical capital than its income from supplying capital
 and labor to the firm, provided that in some other periods its income
 exceeds its purchases.
 
-A household's net excess demand for time $t$ consumption goods
+A consumer's net excess demand for time $t$ consumption goods
 is the gap
 
 $$
@@ -355,8 +355,8 @@ Let $\vec{c} = \{c_0,\dots,c_T\}$ and let $\vec{k} = \{k_1,\dots,k_{T+1}\}$.
 
 $k_0$ is given to the household.
 
-The household faces a **single** budget constraint.
-that states that the present value of the household's net excess
+The household faces a **single** budget constraint
+that requires that the present value of the household's net excess
 demands must be zero:
 
 $$
@@ -366,14 +366,23 @@ $$
 or
 
 $$
-\sum_{t=0}^T q^0_t  \left(c_t + (k_{t+1} -(1-\delta)k_t)-(w_t 1 + \eta_t k_t) \right) \leq 0
+\sum_{t=0}^T q^0_t  \left(c_t + (k_{t+1} -(1-\delta)k_t)\right) \leq \sum_{t=0}^T q^0_t(w_t 1 + \eta_t k_t)  \
 $$
 
-The household chooses an allocation to solve the constrained optimization problem:
+The household faces price system $\{q^0_t, w_t, \eta_t\}$ as a price-taker and  chooses an allocation to solve the constrained optimization problem:
 
 $$
-\begin{aligned}& \max_{\vec{c}, \vec{k} }  \sum_{t=0}^T \beta^t u(c_t) \\ \text{subject to} \ \   & \sum_{t=0}^T q_t^0\left(c_t +\left(k_{t+1}-(1-\delta) k_t\right) -w_t -\eta_t k_t\right) \leq 0  \notag \end{aligned}
+\begin{aligned}& \max_{\vec{c}, \vec{k} }  \sum_{t=0}^T \beta^t u(c_t) \\ \text{subject to} \ \   & \sum_{t=0}^T q_t^0\left(c_t +\left(k_{t+1}-(1-\delta) k_t \right) - (w_t -\eta_t k_t) \right)\leq 0  \notag \end{aligned}
 $$
+
+Components of a  **price system** have the following units:
+
+* $w_t$ is measured in units of the  time $t$ good per unit of time $t$ labor hired
+
+* $\eta_t$ is measured in  units of the time $t$ good per unit of time $t$ capital  hired
+
+* $q_t^0$ is measured in units of a numeraire  per unit of the time $t$ good
+
 
 ### Definitions
 
@@ -382,11 +391,16 @@ $$
 - An **allocation** is a sequence
   $\{c_t,k_{t+1},n_t=1\}_{t=0}^T = \{\vec{c}, \vec{k}, \vec{n}\}$.
 - A **competitive equilibrium** is a price system and an allocation
-  for which
+  with the following properties:
     - Given the price system, the allocation solves the household's
       problem.
     - Given the price system, the allocation solves the firm's
       problem.
+
+
+The vision here is that an equilibrium price system and allocation are determined once and for all.
+
+In effect, we imagine that all trades occur just before time $0$.
 
 ## Computing a Competitive Equilibrium
 
@@ -401,21 +415,32 @@ verify** approach.
 ### Guess for Price System
 
 In this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>`, we  computed an allocation $\{\vec{C}, \vec{K}, \vec{N}\}$
-that solves the planning problem.
+that solves a planning problem.
 
-(This allocation will constitute the **Big** $K$  to be in the present instance of the **Big** $K$ **, little** $k$ trick
-that we'll apply to  a competitive equilibrium in the spirit of [this lecture](https://python.quantecon.org/rational_expectations.html)
-and  [this lecture](https://python-advanced.quantecon.org/dyn_stack.html).)
 
 We use that allocation to construct a guess for the equilibrium
 price system.
 
-In particular, we guess that for $t=0,\dots,T$:
+
+```{note}
+This allocation will constitute the **Big** $K$  to be in the present instance of the **Big** $K$ **, little** $k$ trick
+that we'll apply to  a competitive equilibrium in the spirit of [this lecture](https://python.quantecon.org/rational_expectations.html)
+and  [this lecture](https://python-advanced.quantecon.org/dyn_stack.html).
+```
+
+In particular, we shall use the following procedure:
+
+* obtain first-order conditions for the representative firm and the representative consumer.
+* from these equations, obtain a new set of equations by replacing the firm's choice variables $\tilde k, \tilde n$ and the consumer's choice variables with the quantities $\vec C, \vec K$ that solve the planning problem.
+* solve the resulting equations for  $\{\vec{q}, \vec{\eta}, \vec{w}\}$ as functions of $\vec C, \vec K$.
+* verify that at these prices, $c_t = C_t, k_t = \tilde k_t = K_t, \tilde n_t = 1$ for $t = 0, 1, \ldots, T$.
+
+Thus, we guess that for $t=0,\dots,T$:
 
 ```{math}
 :label: eq-price
 
-\lambda q_t^0 = \beta^t u'(K_t) =\beta^t \mu_t
+q_t^0 = \beta^t u'(C_t) 
 ```
 
 ```{math}
@@ -430,7 +455,7 @@ w_t = f(K_t) -K_t f'(K_t)
 \eta_t = f'(K_t)
 ```
 
-At these prices, let the capital chosen by the household be
+At these prices, let  capital chosen by the household be
 
 ```{math}
 :label: eq-pr4
@@ -465,7 +490,7 @@ $$
 c_t^* + k_{t+1}^* - (1-\delta) k_t^*  = F(\tilde k_t^*, \tilde n_t^*)
 $$
 
-We shall verify that for $t=0,\dots,T$ the allocations chosen
+We shall verify that for $t=0,\dots,T$  allocations chosen
 by the household and the firm both equal the allocation that solves
 the planning problem:
 
@@ -477,7 +502,7 @@ k^*_t = \tilde k^*_t=K_t, \tilde n_t=1, c^*_t=C_t
 
 ### Verification Procedure
 
-Our approach is to stare at first-order necessary conditions for the
+Our approach is firsts to stare at first-order necessary conditions for 
 optimization problems of the household and the firm.
 
 At the price system we have guessed, we'll then verify that both sets of first-order
@@ -525,7 +550,7 @@ k_t: \quad -\lambda q_t^0 \left[(1-\delta)+\eta_t \right]+\lambda q^0_{t-1}=0 \q
 k_{T+1}: \quad -\lambda q_0^{T+1} \leq 0, \ \leq 0 \text{ if } k_{T+1}=0; \ =0 \text{ if } k_{T+1}>0
 ```
 
-Now we plug in our guesses of prices and embark on some algebra in the hope of recovering all first-order necessary conditions
+Now we plug in our guesses of prices and do some algebra in the hope of recovering all first-order necessary conditions
 {eq}`constraint1`-{eq}`constraint4` for the planning problem from this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>`.
 
 Combining {eq}`cond1` and {eq}`eq-price`, we get:
@@ -537,7 +562,7 @@ $$
 which is {eq}`constraint1`.
 
 Combining {eq}`cond2`, {eq}`eq-price`, and
-{eq}`eq-price3` we get:
+{eq}`eq-price3`, we get:
 
 ```{math}
 :label: co-re
@@ -577,7 +602,7 @@ $$
 Since $\beta^t \mu_t >0$ for $t =0, \ldots, T$, it follows that
 
 $$
-C_t+K_{t+1}-(1-\delta)K_t -F(K_t,1)=0 \quad  \text{ for all }t \text{ in } 0,\dots,T
+C_t+K_{t+1}-(1-\delta)K_t -F(K_t,1)=0 \quad  \text{ for all }t \text{ in } \{0, 1, \ldots, T\}
 $$
 
 which is {eq}`constraint3`.
@@ -599,6 +624,8 @@ which is  {eq}`constraint4` for the  planning problem.
 Thus, at our guess of the equilibrium price system, the allocation
 that solves the planning problem also solves the problem faced by a
 representative household living in a competitive equilibrium.
+
+### Representative Firm's Problem
 
 We now turn to  the problem faced by a firm in a competitive
 equilibrium:
@@ -630,12 +657,12 @@ identical to the one that solves the consumer's problem.
 
 ```{note}
 Because budget sets are affected only by relative prices,
-$\{q_0^t\}$ is determined only up to multiplication by a
+$\{q^0_t\}$ is determined only up to multiplication by a
 positive constant.
 ```
 
-**Normalization:** We are free to choose a $\{q_0^t\}$ that
-makes $\lambda=1$ so that we are measuring $q_0^t$  in
+**Normalization:** We are free to choose a $\{q_t^0\}$ that
+makes $\lambda=1$ so that we are measuring $q_t^0$  in
 units of the marginal utility of time $0$ goods.
 
 We will  plot $q, w, \eta$ below to show these equilibrium  prices
@@ -794,8 +821,9 @@ k_ss = pp.f_prime_inv(ρ+pp.δ)
 c_ss = pp.f(k_ss) - pp.δ * k_ss
 ```
 
-The above code from this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>` lets us compute an optimal allocation for the planning problem that turns
-out to be the allocation associated with a competitive equilibium.
+The above code from this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>` lets us compute an optimal allocation for the planning problem.
+
+* from the preceding analysis, we know that it will also be  an  allocation associated with a competitive equilibium.
 
 Now  we're ready to bring in Python code that we require to compute additional objects that appear in a competitive equilibrium.
 
@@ -893,9 +921,10 @@ Adjusting $\gamma$ means adjusting how much individuals prefer
 to smooth consumption.
 
 Higher $\gamma$ means individuals prefer to smooth more
-resulting in slower adjustments to the steady state allocations.
+resulting in slower convergence to a  steady state allocation.
 
-Vice-versa for lower $\gamma$.
+Lower $\gamma$ means individuals prefer to smooth less,
+resulting in faster convergence  to a steady state allocation.
 
 ## Yield Curves and Hicks-Arrow Prices
 
@@ -903,7 +932,7 @@ We return to  Hicks-Arrow prices and  calculate how they are related to  **yield
 
 This will let us plot a **yield curve** that graphs   yields  on bonds of  maturities $j=1, 2, \ldots$ against $j=1,2, \ldots$.
 
-The formulas we want are:
+We use the following formulas.
 
 A **yield to maturity** on a loan made at time $t_0$ that matures at time $t > t_0$
 
@@ -911,7 +940,7 @@ $$
 r_{t_0,t}= -\frac{\log q^{t_0}_t}{t - t_0}
 $$
 
-A Hicks-Arrow price for a base-year $t_0\leq t$
+A Hicks-Arrow price system for a base-year $t_0\leq t$ satisfies
 
 $$
 q^{t_0}_t = \beta^{t-t_0} \frac{u'(c_t)}{u'(c_{t_0})}= \beta^{t-t_0}

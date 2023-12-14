@@ -465,7 +465,7 @@ print(f'rank of X = {rr}')
 **Properties:**
 
 * Where $U$ is constructed via a full SVD, $U^\top  U = I_{p\times p}$ and  $U U^\top  = I_{m \times m}$
-* Where $\hat U$ is constructed via a reduced SVD, although $\hat U^\top  \hat U = I_{p\times p}$ it happens that  $\hat U \hat U^\top  \neq I_{m \times m}$
+* Where $\hat U$ is constructed via a reduced SVD, although $\hat U^\top  \hat U = I_{p\times p}$, it happens that  $\hat U \hat U^\top  \neq I_{m \times m}$
 
 We illustrate these properties for our example with the following code cells.
 
@@ -702,7 +702,7 @@ provided that  we set
 
 * ${V_k}^{T}=\tilde{\epsilon_k}$ (the $k$th principal component)
 
-Because  there are alternative algorithms for  computing  $P$ and $U$ for  given a data matrix $X$, depending on  algorithms used, we might have sign differences or different orders between eigenvectors.
+Because  there are alternative algorithms for  computing  $P$ and $U$ for  given a data matrix $X$, depending on  algorithms used, we might have sign differences or different orders of eigenvectors.
 
 We can resolve such ambiguities about  $U$ and $P$ by
 

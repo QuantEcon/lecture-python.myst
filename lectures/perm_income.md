@@ -466,7 +466,7 @@ $$
 \end{aligned}
 $$
 
-Thus income is IID and debt and consumption are both Gaussian random walks.
+Thus, income is IID and debt and consumption are both Gaussian random walks.
 
 Defining assets as $-b_t$, we see that assets are just the cumulative sum of unanticipated incomes prior to the present date.
 
@@ -796,8 +796,10 @@ b_{t+1} - b_t = - z_{2t} = - \sigma_2 w_{2t}
 
 This confirms that none of $\sigma_1 w_{1t}$ is saved, while all of $\sigma_2 w_{2t}$ is saved.
 
-The next figure illustrates these very different reactions to transitory and
-permanent income shocks using impulse-response functions
+The next figure displays impulse-response functions that  illustrates these very different reactions to transitory and
+permanent income shocks.
+
+
 
 ```{code-cell} python3
 r = 0.05
@@ -823,7 +825,7 @@ def time_path(T, permanent=False):
 
 
 fig, axes = plt.subplots(2, 1, figsize=(10, 8))
-titles = ['transitory', 'permanent']
+titles = ['permanent', 'transitory']
 
 L = 0.175
 
@@ -841,6 +843,12 @@ axes[0].legend(loc='lower right')
 plt.tight_layout()
 plt.show()
 ```
+
+Notice how the permanent income shock provokes no change in  assets $-b_{t+1}$ and an immediate  permanent change in consumption equal to the permanent increment in non-financial income.
+
+In contrast, notice how most of a transitory income shock is saved and only a small amount is saved.
+
+The box-like impulse responses of consumption to both types of shock reflect the random walk property of the optimal consumption decision.
 
 ### Example 2
 

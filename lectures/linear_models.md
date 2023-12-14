@@ -555,7 +555,7 @@ information, to be defined below.
 However, you should be aware that these "unconditional" moments do depend on
 the initial distribution $N(\mu_0, \Sigma_0)$.
 
-#### Moments of the Observations
+#### Moments of the Observables
 
 Using linearity of expectations again we have
 
@@ -584,9 +584,8 @@ is not quite as good as knowing the full distribution.
 However, there are some situations where these moments alone tell us all we
 need to know.
 
-These are situations in which the mean vector and covariance matrix are **sufficient statistics** for the population distribution.
+These are situations in which the mean vector and covariance matrix are all of the  **parameters** that pin down the population distribution.
 
-(Sufficient statistics form a list of objects that characterize a population distribution)
 
 One such situation is when the vector in question is Gaussian (i.e., normally
 distributed).
@@ -752,8 +751,7 @@ The black line is the population density of $y_T$ calculated from {eq}`lss_mgs_y
 The histogram and population distribution are close, as expected.
 
 By looking at the figures and experimenting with parameters, you will gain a
-feel for how the population distribution depends on the model primitives {ref}`listed above <lss_pgs>`, as intermediated by
-the distribution's sufficient statistics.
+feel for how the population distribution depends on the model primitives {ref}`listed above <lss_pgs>`, as intermediated by the distribution's parameters.
 
 #### Ensemble Means
 

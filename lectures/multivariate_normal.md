@@ -790,7 +790,7 @@ The solid blue line in the plot above shows $\hat{\mu}_{\theta}$
 as a function of the number of test scores that we have recorded and
 conditioned on.
 
-The blue area shows the span that comes from adding or deducing
+The blue area shows the span that comes from adding or subtracting
 $1.96 \hat{\sigma}_{\theta}$ from $\hat{\mu}_{\theta}$.
 
 Therefore, $95\%$ of the probability mass of the conditional
@@ -1874,7 +1874,7 @@ Although the  two equations are not identical, they display striking family rese
 * the second equation tells dynamics that work  **backward** in time
 * while many of the terms are similar, one equation seems to apply matrix transformations to some matrices that play similar roles in the other equation
 
-The family resemblences of these two equations reflects a transcendent **duality** between control theory and filtering theory.
+The family resemblences of these two equations reflects a transcendent **duality** that prevails between control theory and filtering theory.
 
 ### An example
 

@@ -268,7 +268,7 @@ the  single  budget constraint in   arrangement with all trades occurring at tim
 
 
 
-Starting the system  with $a_0^k =0$ forall $i$ has a striking implication that we can call **state variable degeneracy**.
+Starting the system  with $a_0^k =0$ for all $i$ has a striking implication that we can call **state variable degeneracy**.
 
 
 Here is  what we mean by **state variable degeneracy**:
@@ -495,7 +495,7 @@ $$
 
 +++
 
-### Matrix $Q$ to Represent Pricing Kernel
+### $Q$ is the Pricing Kernel
 
 
 For any agent  $k \in \left[1, \ldots, K\right]$, at the equilibrium allocation,

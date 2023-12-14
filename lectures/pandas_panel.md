@@ -362,13 +362,15 @@ past decade for each country in our data set
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
-import matplotlib
-matplotlib.style.use('seaborn')
+import seaborn as sns
+sns.set_theme()
+```
 
-merged.mean().sort_values(ascending=False).plot(kind='bar', title="Average real minimum wage 2006 - 2016")
+```{code-cell} ipython
+merged.mean().sort_values(ascending=False).plot(kind='bar',
+                                                title="Average real minimum wage 2006 - 2016")
 
-#Set country labels
+# Set country labels
 country_labels = merged.mean().sort_values(ascending=False).index.get_level_values('Country').tolist()
 plt.xticks(range(0, len(country_labels)), country_labels)
 plt.xlabel('Country')
@@ -467,12 +469,10 @@ minimum wages in 2016 for each continent.
 object
 
 ```{code-cell} python3
-import seaborn as sns
-
 continents = grouped.groups.keys()
 
 for continent in continents:
-    sns.kdeplot(grouped.get_group(continent).loc['2015'].unstack(), label=continent, shade=True)
+    sns.kdeplot(grouped.get_group(continent).loc['2015'].unstack(), label=continent, fill=True)
 
 plt.title('Real minimum wages in 2015')
 plt.xlabel('US dollars')
