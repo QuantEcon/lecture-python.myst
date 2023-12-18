@@ -32,7 +32,7 @@ latex:
       targetname: quantecon-python.tex
 
 sphinx:
-  extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe, sphinx_tojupyter, sphinxcontrib.youtube, sphinx.ext.todo, sphinx_exercise, sphinx_togglebutton, sphinx.ext.intersphinx]
+  extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe, sphinx_tojupyter, sphinxcontrib.youtube, sphinx.ext.todo, sphinx_exercise, sphinx_togglebutton, sphinx.ext.intersphinx, sphinx_reredirects]
   config:
     nb_mime_priority_overrides: [
        # HTML
@@ -91,8 +91,12 @@ sphinx:
           "argmax" : "arg\\,max"
           "argmin" : "arg\\,min"
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+    # Local Redirects
     rediraffe_redirects:
       index_toc.md: intro.md
+    # Remote Redirects
+    redirects:
+      heavy_tails: https://intro.quantecon.org/heavy_tails.html
     tojupyter_static_file_path: ["source/_static", "_static"]
     tojupyter_target_html: true
     tojupyter_urlpath: "https://python.quantecon.org/"
