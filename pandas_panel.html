@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=fb55226d87c9bac2266479caf30be1337b66f140" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
-  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -97,7 +97,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=eed9c059a3ee152aae2353ec732f0a6d12e6aa07"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
@@ -177,7 +177,8 @@ const thebe_selector_output = ".output, .cell_output"
                             <p class="logo">
                                 
                                     
-                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
                                     
                                 
                             </p>
@@ -205,8 +206,9 @@ const thebe_selector_output = ".output, .cell_output"
                         <p class="qe-page__header-subheading">Pandas for Panel Data</p>
 
                     </div>
+                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+                        <p class="qe-page__header-authors" font-size="18">Thomas J. Sargent & John Stachurski</p>
 
-                    <p class="qe-page__header-authors">Thomas J. Sargent & John Stachurski</p>
 
                 </div> <!-- .page__header -->
 
@@ -1937,15 +1939,19 @@ dtype: float64
 past decade for each country in our data set</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="n">matplotlib</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span>
+                                                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Average real minimum wage 2006 - 2016&quot;</span><span class="p">)</span>
 
-<span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Average real minimum wage 2006 - 2016&quot;</span><span class="p">)</span>
-
-<span class="c1">#Set country labels</span>
+<span class="c1"># Set country labels</span>
 <span class="n">country_labels</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;Country&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">country_labels</span><span class="p">)),</span> <span class="n">country_labels</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Country&#39;</span><span class="p">)</span>
@@ -1955,11 +1961,7 @@ past decade for each country in our data set</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_4274/1612084180.py:5: MatplotlibDeprecationWarning: The seaborn styles shipped by Matplotlib are deprecated since 3.6, as they no longer correspond to the styles shipped by seaborn. However, they will remain available as &#39;seaborn-v0_8-&lt;style&gt;&#39;. Alternatively, directly use the seaborn API instead.
-  matplotlib.style.use(&#39;seaborn&#39;)
-</pre></div>
-</div>
-<img alt="_images/c57bbebec0e927f98de63e0b2ea0e554e41d6e18e34a5091d471be1598be2a6c.png" src="_images/c57bbebec0e927f98de63e0b2ea0e554e41d6e18e34a5091d471be1598be2a6c.png" />
+<img alt="_images/9414e44d51d728a2f6f3d91d4e9016e540c0160c32a6ff818e1d52e05657b10a.png" src="_images/9414e44d51d728a2f6f3d91d4e9016e540c0160c32a6ff818e1d52e05657b10a.png" />
 </div>
 </div>
 <p>Passing in <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> to <code class="docutils literal notranslate"><span class="pre">.mean()</span></code> will aggregate over columns (giving
@@ -1994,7 +1996,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9c086ae42899a0ae89e3f1b6b393e80dbe0b0ae89e1d17798cfbf28e5bf9e60f.png" src="_images/9c086ae42899a0ae89e3f1b6b393e80dbe0b0ae89e1d17798cfbf28e5bf9e60f.png" />
+<img alt="_images/5148ae57ad1923223e21ee73e645459a76affa9d764b40aa9f2388aa1f712513.png" src="_images/5148ae57ad1923223e21ee73e645459a76affa9d764b40aa9f2388aa1f712513.png" />
 </div>
 </div>
 <p>We can also specify a level of the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> (in the column axis)
@@ -2089,7 +2091,7 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3de9e7cc54baf0d87b5fb1d1c37312d012f6abfeee89a4097a260088f843ba09.png" src="_images/3de9e7cc54baf0d87b5fb1d1c37312d012f6abfeee89a4097a260088f843ba09.png" />
+<img alt="_images/a74d4673a5d2175112b698ebd5e0216e131ca7e500b382eb49f5c7ce5bcb6db6.png" src="_images/a74d4673a5d2175112b698ebd5e0216e131ca7e500b382eb49f5c7ce5bcb6db6.png" />
 </div>
 </div>
 <p>We will drop Australia as a continent for plotting purposes</p>
@@ -2105,7 +2107,7 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/67de5564c5814a1a8302f5473252fc3d3a11b56b6c4fd7f8be7e89572a7bfb33.png" src="_images/67de5564c5814a1a8302f5473252fc3d3a11b56b6c4fd7f8be7e89572a7bfb33.png" />
+<img alt="_images/e113ef995952ca298abb675f8c25fa6bed8cc066ab66b912aa619ea472eaaa36.png" src="_images/e113ef995952ca298abb675f8c25fa6bed8cc066ab66b912aa619ea472eaaa36.png" />
 </div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">.describe()</span></code> is useful for quickly retrieving a number of common
@@ -2212,7 +2214,7 @@ a new <code class="docutils literal notranslate"><span class="pre">DataFrameGrou
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f425349eb50&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f9d9754a750&gt;
 </pre></div>
 </div>
 </div>
@@ -2245,12 +2247,10 @@ minimum wages in 2016 for each continent.</p>
 object</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-
-<span class="n">continents</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">continents</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">continent</span> <span class="ow">in</span> <span class="n">continents</span><span class="p">:</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">grouped</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">continent</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="n">continent</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">grouped</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">continent</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="n">continent</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Real minimum wages in 2015&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;US dollars&#39;</span><span class="p">)</span>
@@ -2260,27 +2260,7 @@ object</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_4274/13690229.py:6: FutureWarning: 
-
-`shade` is now deprecated in favor of `fill`; setting `fill=True`.
-This will become an error in seaborn v0.14.0; please update your code.
-
-  sns.kdeplot(grouped.get_group(continent).loc[&#39;2015&#39;].unstack(), label=continent, shade=True)
-/tmp/ipykernel_4274/13690229.py:6: FutureWarning: 
-
-`shade` is now deprecated in favor of `fill`; setting `fill=True`.
-This will become an error in seaborn v0.14.0; please update your code.
-
-  sns.kdeplot(grouped.get_group(continent).loc[&#39;2015&#39;].unstack(), label=continent, shade=True)
-/tmp/ipykernel_4274/13690229.py:6: FutureWarning: 
-
-`shade` is now deprecated in favor of `fill`; setting `fill=True`.
-This will become an error in seaborn v0.14.0; please update your code.
-
-  sns.kdeplot(grouped.get_group(continent).loc[&#39;2015&#39;].unstack(), label=continent, shade=True)
-</pre></div>
-</div>
-<img alt="_images/ab480b4b335fb14b2a1e7889d1eede7547a03ca25e1e8d9637880f2ab4e7ff89.png" src="_images/ab480b4b335fb14b2a1e7889d1eede7547a03ca25e1e8d9637880f2ab4e7ff89.png" />
+<img alt="_images/00e547bc0f21411760d01689456c029d3ddff4f76768ae841a16ff5cd2804ac7.png" src="_images/00e547bc0f21411760d01689456c029d3ddff4f76768ae841a16ff5cd2804ac7.png" />
 </div>
 </div>
 </section>
@@ -2696,7 +2676,7 @@ dataframe</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/64fb79e7185245a60dd1bd3af04cc1ed4e371d2c1964323622c07424fea927f7.png" src="_images/64fb79e7185245a60dd1bd3af04cc1ed4e371d2c1964323622c07424fea927f7.png" />
+<img alt="_images/a506ad6b80c765bc57fa891fd740b28b9c16376d7f3d8c8927719f023471b9a1.png" src="_images/a506ad6b80c765bc57fa891fd740b28b9c16376d7f3d8c8927719f023471b9a1.png" />
 </div>
 </div>
 </section>

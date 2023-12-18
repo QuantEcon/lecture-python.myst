@@ -102,7 +102,8 @@ We'll need the following imports:
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from sympy import *
+from sympy import (Symbol, symbols, Eq, nsolve, sqrt, cos, sin, simplify,
+                  init_printing, integrate)
 ```
 
 ### An Example
@@ -491,11 +492,38 @@ integrate(cos(ω) * sin(ω), (ω, -π, π))
 We invite the reader to verify analytically and with the `sympy` package the following two equalities:
 
 $$
-\int_{-\pi}^{\pi} \cos (\omega)^2 \, d\omega = \frac{\pi}{2}
+\int_{-\pi}^{\pi} \cos (\omega)^2 \, d\omega = \pi
 $$
 
 $$
-\int_{-\pi}^{\pi} \sin (\omega)^2 \, d\omega = \frac{\pi}{2}
+\int_{-\pi}^{\pi} \sin (\omega)^2 \, d\omega = \pi
 $$
+```
 
+```{solution-start} complex_ex1
+:class: dropdown
+```
+
+Let's import symbolic $\pi$ from `sympy`
+
+```{code-cell} ipython3
+# Import symbolic π from sympy
+from sympy import pi
+```
+
+```{code-cell} ipython3
+print('The analytical solution for the integral of cos(ω)**2 \
+from -π to π is:')
+
+integrate(cos(ω)**2, (ω, -pi, pi))
+```
+
+```{code-cell} ipython3
+print('The analytical solution for the integral of sin(ω)**2 \
+from -π to π is:')
+
+integrate(sin(ω)**2, (ω, -pi, pi))
+```
+
+```{solution-end}
 ```

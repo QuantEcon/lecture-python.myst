@@ -66,6 +66,8 @@ import pandas as pd
 import statsmodels.api as sm
 from statsmodels.iolib.summary2 import summary_col
 from linearmodels.iv import IV2SLS
+import seaborn as sns
+sns.set_theme()
 ```
 
 ### Prerequisites
@@ -100,8 +102,6 @@ between GDP per capita and the protection against
 expropriation index
 
 ```{code-cell} python3
-plt.style.use('seaborn')
-
 df1.plot(x='avexpr', y='logpgp95', kind='scatter')
 plt.show()
 ```
