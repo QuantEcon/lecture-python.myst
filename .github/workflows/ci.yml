@@ -24,7 +24,7 @@ jobs:
     needs: deploy-runner
     runs-on: [self-hosted, cml-gpu]
     container:
-      image: docker://mmcky/quantecon-lecture-python:cuda-12.1.0-anaconda-2023-09-py311
+      image: docker://mmcky/quantecon-lecture-python:cuda-12.1.0-anaconda-2023-09-py311-b
       options: --gpus all
     steps:
       - uses: actions/checkout@v3
@@ -34,9 +34,6 @@ jobs:
       - name: nvidia Drivers
         shell: bash -l {0}
         run: nvidia-smi
-      - name: Install sphinx-reredirects
-        shell: bash -l {0}
-        run: pip install sphinx-reredirects
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
