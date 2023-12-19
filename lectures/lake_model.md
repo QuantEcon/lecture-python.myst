@@ -1013,7 +1013,7 @@ class LakeModelModified:
         --------
         xbar : steady state vector of employment and unemployment rates
         """
-        x = np.array([self.A_hat[0, 1], self.A_hat[1, 0]])
+        x = np.array([self.A_hat[1, 0], self.A_hat[0, 1]])
         x /= x.sum()
         return x
 
