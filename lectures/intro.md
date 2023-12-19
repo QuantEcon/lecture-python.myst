@@ -11,8 +11,7 @@ kernelspec:
 
 # Intermediate Quantitative Economics with Python
 
-This website presents a set of lectures on quantitative economic modeling, designed and written by
-[Thomas J. Sargent](http://www.tomsargent.com/) and [John Stachurski](https://johnstachurski.net/).
+This website presents a set of lectures on quantitative economic modeling.
 
 ```{tableofcontents}
 ```
