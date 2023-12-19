@@ -218,7 +218,7 @@ This class will
 1. store the primitives $\alpha, \lambda, b, d$
 1. compute and store the implied objects $g, A, \hat A$
 1. provide methods to simulate dynamics of the stocks and rates
-1. provide a method to compute the steady state of the rate (We will discuss it in section {ref}`dynamics_workers`)
+1. provide a method to compute the steady state of the rate (which we discuss in section {ref}`dynamics_workers`)
 
 Please be careful because the implied objects $g, A, \hat A$ will not change
 if you only change the primitives.
