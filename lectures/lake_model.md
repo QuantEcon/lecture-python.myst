@@ -218,7 +218,7 @@ This class will
 1. store the primitives $\alpha, \lambda, b, d$
 1. compute and store the implied objects $g, A, \hat A$
 1. provide methods to simulate dynamics of the stocks and rates
-2. provide a method to compute the steady state vector of employment and unemployment rates $\bar x$ using {ref}`a technique <dynamics_workers>` we previously introduced for computing stationary distributions of Markov chains
+2. provide a method to compute the steady state vector $\bar x$ of employment and unemployment rates using {ref}`a technique <dynamics_workers>` we previously introduced for computing stationary distributions of Markov chains
 
 Please be careful because the implied objects $g, A, \hat A$ will not change
 if you only change the primitives.
