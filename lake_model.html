@@ -71,7 +71,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=fb55226d87c9bac2266479caf30be1337b66f140" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -230,7 +230,17 @@ const thebe_selector_output = ".output, .cell_output"
 
                     </div>
                     <!-- length 2, since its a string and empty dict has length 2 - {} -->
-                        <p class="qe-page__header-authors" font-size="18">Thomas J. Sargent & John Stachurski</p>
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
 
 
                 </div> <!-- .page__header -->
@@ -460,7 +470,7 @@ x_{t+1} = \hat A x_t
 <li><p>store the primitives <span class="math notranslate nohighlight">\(\alpha, \lambda, b, d\)</span></p></li>
 <li><p>compute and store the implied objects <span class="math notranslate nohighlight">\(g, A, \hat A\)</span></p></li>
 <li><p>provide methods to simulate dynamics of the stocks and rates</p></li>
-<li><p>provide a method to compute the steady state of the rate</p></li>
+<li><p>provide a method to compute the steady state vector <span class="math notranslate nohighlight">\(\bar x\)</span> of employment and unemployment rates using <a class="reference internal" href="#dynamics-workers"><span class="std std-ref">a technique</span></a> we previously introduced for computing stationary distributions of Markov chains</p></li>
 </ol>
 <p>Please be careful because the implied objects <span class="math notranslate nohighlight">\(g, A, \hat A\)</span> will not change
 if you only change the primitives.</p>
@@ -505,12 +515,8 @@ you need to create an instance and update it by <code class="docutils literal no
 <span class="sd">        --------</span>
 <span class="sd">        xbar : steady state vector of employment and unemployment rates</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
-            <span class="n">new_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A_hat</span> <span class="o">@</span> <span class="n">x</span>
-            <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_x</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">new_x</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">A_hat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">A_hat</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+        <span class="n">x</span> <span class="o">/=</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">x</span>
 
     <span class="k">def</span> <span class="nf">simulate_stock_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X0</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
@@ -693,13 +699,13 @@ there exists an <span class="math notranslate nohighlight">\(\bar x\)</span>  su
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ddd555fb5ce519e56a31af2bc2122a5ec128a89b6759f170d1f633aef3ab050e.png" src="_images/ddd555fb5ce519e56a31af2bc2122a5ec128a89b6759f170d1f633aef3ab050e.png" />
+<img alt="_images/5ba6ac4288782ee6588da15cd52ce0a30de0b15ac1347d774fe3fcdfae24d8c8.png" src="_images/5ba6ac4288782ee6588da15cd52ce0a30de0b15ac1347d774fe3fcdfae24d8c8.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="dynamics-of-an-individual-worker">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">69.4. </span>Dynamics of an Individual Worker</a><a class="headerlink" href="#dynamics-of-an-individual-worker" title="Permalink to this heading">#</a></h2>
+<span id="dynamics-workers"></span><h2><a class="toc-backref" href="#id8"><span class="section-number">69.4. </span>Dynamics of an Individual Worker</a><a class="headerlink" href="#dynamics-of-an-individual-worker" title="Permalink to this heading">#</a></h2>
 <p>An individual worker’s employment dynamics are governed by a <a class="reference internal" href="finite_markov.html"><span class="doc">finite state Markov process</span></a>.</p>
 <p>The worker can be in one of two states:</p>
 <ul class="simple">
@@ -801,7 +807,7 @@ MarkovChain class to investigate this.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a0093df213bd8752bbec7cbde7dcc8288fca06174befef10145e709d525d1503.png" src="_images/a0093df213bd8752bbec7cbde7dcc8288fca06174befef10145e709d525d1503.png" />
+<img alt="_images/b8a7dbe8adb9f4324b1a729c2060b5d30fdb9fa24c223b3aff54e7d3807cf768.png" src="_images/b8a7dbe8adb9f4324b1a729c2060b5d30fdb9fa24c223b3aff54e7d3807cf768.png" />
 </div>
 </div>
 <p>The stationary probabilities are given by the dashed red line.</p>
@@ -981,9 +987,9 @@ W := e \,  {\mathbb E} [V \, | \,  \text{employed}] + u \,  U
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2959/1748977302.py:3: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3009/1748977302.py:3: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span>
   @jit
-/tmp/ipykernel_2959/1748977302.py:41: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span>
+/tmp/ipykernel_3009/1748977302.py:41: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span>
   @jit
 </pre></div>
 </div>
@@ -1140,7 +1146,7 @@ function of the unemployment compensation rate</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6718f1c06d92096bd1d972ddad3d338cfe34bb7c94be048b827adb5a84c40d2a.png" src="_images/6718f1c06d92096bd1d972ddad3d338cfe34bb7c94be048b827adb5a84c40d2a.png" />
+<img alt="_images/e6ee8eb7c965b8f7b697299b2f9f6ed0ff57c8ad6f668c15bebb46cc56069751.png" src="_images/e6ee8eb7c965b8f7b697299b2f9f6ed0ff57c8ad6f668c15bebb46cc56069751.png" />
 </div>
 </div>
 <p>Welfare first increases and then decreases as unemployment benefits rise.</p>
@@ -1261,12 +1267,8 @@ and <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 <span class="sd">        --------</span>
 <span class="sd">        xbar : steady state vector of employment and unemployment rates</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
-            <span class="n">new_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A_hat</span> <span class="o">@</span> <span class="n">x</span>
-            <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_x</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">new_x</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">A_hat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">A_hat</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+        <span class="n">x</span> <span class="o">/=</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">x</span>
 
     <span class="k">def</span> <span class="nf">simulate_stock_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X0</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
@@ -1357,7 +1359,7 @@ steady state values to <code class="docutils literal notranslate"><span class="p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initial Steady State: [0.08266806 0.91733194]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initial Steady State: [0.08266627 0.91733373]
 </pre></div>
 </div>
 </div>
@@ -1384,7 +1386,7 @@ steady state values to <code class="docutils literal notranslate"><span class="p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>New Steady State: [0.11309573 0.88690427]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>New Steady State: [0.11309295 0.88690705]
 </pre></div>
 </div>
 </div>
@@ -1412,7 +1414,7 @@ steady state values to <code class="docutils literal notranslate"><span class="p
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/57c9bcd608fa66254265ab04c07aaa67d76a24b00865f921197f444301318d57.png" src="_images/57c9bcd608fa66254265ab04c07aaa67d76a24b00865f921197f444301318d57.png" />
+<img alt="_images/1aa067b89542897e8afd9592ad2696c05565c91a65655a9fad67039103435549.png" src="_images/1aa067b89542897e8afd9592ad2696c05565c91a65655a9fad67039103435549.png" />
 </div>
 </div>
 <p>And how the rates evolve</p>
@@ -1434,7 +1436,7 @@ steady state values to <code class="docutils literal notranslate"><span class="p
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2c4163dcd97fcb9cffb46d0c0e7d360bffc881efa6d9f2d645903207c404ea0e.png" src="_images/2c4163dcd97fcb9cffb46d0c0e7d360bffc881efa6d9f2d645903207c404ea0e.png" />
+<img alt="_images/f10df04bb503e6e796c7c1470310aa292c52fadf2bdd564a133021ebf3b30a19.png" src="_images/f10df04bb503e6e796c7c1470310aa292c52fadf2bdd564a133021ebf3b30a19.png" />
 </div>
 </div>
 <p>We see that it takes 20 periods for the economy to converge to its new
@@ -1532,7 +1534,7 @@ additional 30 periods</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c7f5264ef5be34dfbf0cb7a9df0fd3db0d5e86d4cb31a46f6e8f010e2046b535.png" src="_images/c7f5264ef5be34dfbf0cb7a9df0fd3db0d5e86d4cb31a46f6e8f010e2046b535.png" />
+<img alt="_images/234286ea1c46d18d99645c6e65219340995e0624894536b755899378998646ff.png" src="_images/234286ea1c46d18d99645c6e65219340995e0624894536b755899378998646ff.png" />
 </div>
 </div>
 <p>And the rates</p>
@@ -1554,7 +1556,7 @@ additional 30 periods</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bd8ab62eb89615dd2fbdb53a4f9d3fd876707dbbdaabf25897a91251c4d6ea4a.png" src="_images/bd8ab62eb89615dd2fbdb53a4f9d3fd876707dbbdaabf25897a91251c4d6ea4a.png" />
+<img alt="_images/540327b389faf1ba0abd59f8d18036aa1c785afb081f51a3cc50aec17ce02f50.png" src="_images/540327b389faf1ba0abd59f8d18036aa1c785afb081f51a3cc50aec17ce02f50.png" />
 </div>
 </div>
 </section>
@@ -2166,9 +2168,8 @@ additional 30 periods</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/lake_model.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/lake_model.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -2181,7 +2182,7 @@ additional 30 periods</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>
