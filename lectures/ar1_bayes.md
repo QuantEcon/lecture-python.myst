@@ -190,7 +190,7 @@ with AR1_model:
     y_like = pmc.Normal('y_obs', mu=yhat, sigma=sigma, observed=y[1:])
 ```
 
-[pmc.sample](https://www.pymc.io/projects/docs/en/latest/api/generated/pymc.sample.html?highlight=sample#pymc.sample) by default uses the NUTS samplers to generate samples as shown in the below cell:
+[pmc.sample](https://www.pymc.io/projects/docs/en/v5.10.0/api/generated/pymc.sample.html#pymc-sample) by default uses the NUTS samplers to generate samples as shown in the below cell:
 
 ```{code-cell} ipython3
 :tag: [hide-output]

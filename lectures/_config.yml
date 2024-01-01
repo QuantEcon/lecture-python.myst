@@ -32,7 +32,7 @@ latex:
       targetname: quantecon-python.tex
 
 sphinx:
-  extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe, sphinx_tojupyter, sphinxcontrib.youtube, sphinx.ext.todo, sphinx_exercise, sphinx_togglebutton, sphinx.ext.intersphinx]
+  extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe, sphinx_tojupyter, sphinxcontrib.youtube, sphinx.ext.todo, sphinx_exercise, sphinx_togglebutton, sphinx.ext.intersphinx, sphinx_reredirects]
   config:
     nb_mime_priority_overrides: [
        # HTML
@@ -69,6 +69,11 @@ sphinx:
     html_theme: quantecon_book_theme
     html_static_path: ['_static']
     html_theme_options:
+      authors:
+        - name: Thomas J. Sargent
+          url: http://www.tomsargent.com/
+        - name: John Stachurski
+          url: https://johnstachurski.net/
       header_organisation_url: https://quantecon.org
       header_organisation: QuantEcon
       repository_url: https://github.com/QuantEcon/lecture-python.myst
@@ -91,8 +96,12 @@ sphinx:
           "argmax" : "arg\\,max"
           "argmin" : "arg\\,min"
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+    # Local Redirects
     rediraffe_redirects:
       index_toc.md: intro.md
+    # Remote Redirects
+    redirects:
+      heavy_tails: https://intro.quantecon.org/heavy_tails.html
     tojupyter_static_file_path: ["source/_static", "_static"]
     tojupyter_target_html: true
     tojupyter_urlpath: "https://python.quantecon.org/"

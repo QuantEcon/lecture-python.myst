@@ -217,7 +217,7 @@ This class will
 1. store the primitives $\alpha, \lambda, b, d$
 1. compute and store the implied objects $g, A, \hat A$
 1. provide methods to simulate dynamics of the stocks and rates
-1. provide a method to compute the steady state of the rate
+2. provide a method to compute the steady state vector $\bar x$ of employment and unemployment rates using {ref}`a technique <dynamics_workers>` we previously introduced for computing stationary distributions of Markov chains
 
 Please be careful because the implied objects $g, A, \hat A$ will not change
 if you only change the primitives.
@@ -264,12 +264,8 @@ class LakeModel:
         --------
         xbar : steady state vector of employment and unemployment rates
         """
-        x = np.full(2, 0.5)
-        error = tol + 1
-        while error > tol:
-            new_x = self.A_hat @ x
-            error = np.max(np.abs(new_x - x))
-            x = new_x
+        x = np.array([self.A_hat[0, 1], self.A_hat[1, 0]])
+        x /= x.sum()
         return x
 
     def simulate_stock_path(self, X0, T):
@@ -414,6 +410,7 @@ plt.tight_layout()
 plt.show()
 ```
 
+(dynamics_workers)=
 ## Dynamics of an Individual Worker
 
 An individual worker's employment dynamics are governed by a {doc}`finite state Markov process <finite_markov>`.
@@ -1015,12 +1012,8 @@ class LakeModelModified:
         --------
         xbar : steady state vector of employment and unemployment rates
         """
-        x = np.full(2, 0.5)
-        error = tol + 1
-        while error > tol:
-            new_x = self.A_hat @ x
-            error = np.max(np.abs(new_x - x))
-            x = new_x
+        x = np.array([self.A_hat[0, 1], self.A_hat[1, 0]])
+        x /= x.sum()
         return x
 
     def simulate_stock_path(self, X0, T):
