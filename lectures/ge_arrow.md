@@ -14,8 +14,6 @@ kernelspec:
 
 # Competitive Equilibria with Arrow Securities
 
-+++
-
 ## Introduction
 
 This lecture presents Python code for experimenting with  competitive equilibria of  an infinite-horizon pure exchange economy with
@@ -58,9 +56,6 @@ In the course of presenting the model we shall describe these important ideas
 * a counterpart of the **law of iterated expectations** known as a **law of iterated values**
 
 * a  **state-variable degeneracy** that prevails within a competitive equilibrium and that opens the way to various appearances of resolvent operators
-
-
-+++
 
 ## The setting
 
@@ -149,8 +144,6 @@ $$
 $$
 
 for all $t$ and for all $s^t$.
-
-+++
 
 ## Recursive Formulation
 
@@ -292,8 +285,6 @@ This outcome depends critically on there being complete markets in Arrow securit
 
 For example, it does not prevail in the incomplete markets setting of this lecture {doc}`The Aiyagari Model <aiyagari>`
 
-+++
-
 ## Markov Asset Prices
 
 
@@ -355,8 +346,6 @@ $$
 Below, we describe an equilibrium model with trading of one-period Arrow securities in which the pricing kernel is endogenous.
 
 In constructing our model, we'll repeatedly encounter formulas that remind us of our asset pricing formulas.
-
-+++
 
 ### Multi-Step-Forward Transition Probabilities and Pricing Kernels
 
@@ -438,15 +427,11 @@ V \left[ V  ( d(s_{t+j}) | s_{t+1} ) \right] | s_t
     \end{aligned}
 $$
 
-+++
-
 ## General Equilibrium
 
 Now we are ready to do some fun calculations.
 
 We find it interesting to think in terms of analytical **inputs** into and **outputs** from our general equilibrium theorizing.
-
-+++
 
 ### Inputs
 
@@ -493,8 +478,6 @@ $$
 
 * A collection of $n \times 1$ vectors of individual $k$ consumptions: $c^k\left(s\right), k=1,\ldots, K$
 
-+++
-
 ### $Q$ is the Pricing Kernel
 
 
@@ -526,8 +509,6 @@ that satisfies
 
 $$ \alpha_k \in \left(0, 1\right), \quad \sum_{k=1}^K \alpha_k = 1 $$
 
-+++
-
 This means that we can compute the pricing kernel from
 
 $$
@@ -540,8 +521,6 @@ Note that $Q_{ij}$ is independent of vector $\alpha$.
 
 
 **Key finding:** We can compute competitive equilibrium **prices** prior to computing a **distribution of wealth**.
-
-+++
 
 ### Values
 
@@ -599,8 +578,6 @@ even if he consumes zero goods forevermore.
 **Remark:** If  we have an Inada condition at zero consumption or just impose that consumption
 be nonnegative, then in a **finite horizon** economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section below on a Finite Horizon Economy.
 
-+++
-
 ### Continuation Wealth
 
 Continuation wealth plays an important role in Bellmanizing a competitive equilibrium with sequential
@@ -626,8 +603,6 @@ $$
 \psi^{k}\left(\bar{s}_{n}\right)
 \end{array}\right], \quad k \in \left[1, \ldots, K\right]
 $$
-
-+++
 
 Continuation wealth  $\psi^k$ of consumer $k$ satisfies
 
@@ -658,8 +633,6 @@ the economy begins with  all agents being debt-free and financial-asset-free at 
 
 **Remark:** Note that all agents' continuation wealths recurrently return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$.
 
-+++
-
 ### Optimal Portfolios
 
 A nifty feature of the model is that an optimal portfolio of  a type $k$ agent equals the continuation wealth that we just computed.
@@ -670,8 +643,6 @@ Markov state and equal
 $$
 a_k(s) = \psi^k(s), \quad s \in \left[\bar s_1, \ldots, \bar s_n \right]
 $$ (eqn:optport)
-
-+++
 
 ### Equilibrium Wealth Distribution $\alpha$
 
@@ -708,8 +679,6 @@ In summary, here is the logical flow of an algorithm to compute a competitive eq
 
 * via formula {eq}`eqn:optport` equate agent $k$'s portfolio to its continuation wealth state by state
 
-+++
-
 We can also add formulas for optimal value functions in  a competitive equilibrium with trades
 in a complete set of one-period state-contingent Arrow securities.
 
@@ -720,10 +689,6 @@ For the infinite horizon economy now under study, the formula is
 $$ J^k = (I - \beta P)^{-1} u(\alpha_k y)  , \quad u(c) = \frac{c^{1-\gamma}}{1-\gamma} $$
 
 where it is understood that $ u(\alpha_k y)$ is a vector.
-
-
-
-+++
 
 ## Python Code
 
@@ -1308,9 +1273,6 @@ for the finite horizon economy the formula is
 $$ J_0^k = (I + \beta P + \cdots + \beta^T P^T) u(\alpha_k y) , $$
 
 where it is understood that $ u(\alpha_k y)$ is a vector.
-
-
-+++
 
 ### Finite Horizon Example
 
