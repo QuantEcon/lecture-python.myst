@@ -75,7 +75,6 @@ The model will prove useful for illustrating concepts such as
 Let's start with some imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import quantecon as qe
@@ -790,4 +789,3 @@ Let's have a look at the cointegration figure
 cointegration_figure(bsimb, csimb)
 plt.show()
 ```
-

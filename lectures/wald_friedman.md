@@ -36,7 +36,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon
 !pip install interpolation
 ```
 
@@ -137,7 +136,7 @@ random variables is also independently and identically distributed (IID).
 But the observer does not know which of the two distributions generated the sequence.
 
 For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the sequence is not
-IID.  
+IID.
 
 The observer has something to learn, namely, whether the observations are drawn from  $f_0$ or from $f_1$.
 

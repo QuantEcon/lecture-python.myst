@@ -52,7 +52,6 @@ Prerequisite knowledge is basic probability and linear algebra.
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import quantecon as qe
@@ -128,7 +127,7 @@ $$
 Going the other way, if we take a stochastic matrix $P$, we can generate a Markov
 chain $\{X_t\}$ as follows:
 
-* draw $X_0$ from a marginal distribution $\psi$ 
+* draw $X_0$ from a marginal distribution $\psi$
 * for each $t = 0, 1, \ldots$, draw $X_{t+1}$ from $P(X_t,\cdot)$
 
 By construction, the resulting process satisfies {eq}`mpp`.
@@ -759,7 +758,7 @@ $$
 
 is a stationary distribution for $P$.
 
-If we restrict attention to the case in which only one stationary distribution exists, one way to  finding it is to solve the system 
+If we restrict attention to the case in which only one stationary distribution exists, one way to  finding it is to solve the system
 
 $$
 \psi (I_n - P) = 0
@@ -767,7 +766,7 @@ $$ (eq:eqpsifixed)
 
 for $\psi$, where $I_n$ is the $n \times n$ identity.
 
-But the zero vector solves system {eq}`eq:eqpsifixed`,  so we must proceed cautiously. 
+But the zero vector solves system {eq}`eq:eqpsifixed`,  so we must proceed cautiously.
 
 We want to impose the restriction that $\psi$ is  a probability distribution.
 
@@ -969,16 +968,16 @@ The vector $P^k h$ stores the conditional expectation $\mathbb E [ h(X_{t + k}) 
 The **law of iterated expectations** states that
 
 $$
-\mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \mathbb E [  h(X_{t + k}) ] 
+\mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \mathbb E [  h(X_{t + k}) ]
 $$
 
-where the outer $ \mathbb E$ on the left side is an unconditional distribution taken with respect to the marginal distribution  $\psi_t$ of $X_t$ 
-(again see equation {eq}`mdfmc2`).  
+where the outer $ \mathbb E$ on the left side is an unconditional distribution taken with respect to the marginal distribution  $\psi_t$ of $X_t$
+(again see equation {eq}`mdfmc2`).
 
 To verify the law of iterated expectations, use  equation {eq}`mc_cce2` to substitute $ (P^k h)(x)$ for $E [ h(X_{t + k})  \mid X_t = x]$, write
 
 $$
-\mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \psi_t P^k h, 
+\mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \psi_t P^k h,
 $$
 
 and note $\psi_t P^k h = \psi_{t+k} h = \mathbb E [  h(X_{t + k}) ] $.
@@ -1007,7 +1006,7 @@ Premultiplication by $(I - \beta P)^{-1}$ amounts to "applying the **resolvent o
 
 ## Exercises
 
-```{exercise} 
+```{exercise}
 :label: fm_ex1
 
 According to the discussion {ref}`above <mc_eg1-2>`, if a worker's employment dynamics obey the stochastic matrix
@@ -1278,7 +1277,7 @@ n = 14 # Total number of web pages (nodes)
 #  * Q[i, j] = 1 if there is a link from i to j
 #  * Q[i, j] = 0 otherwise
 Q = np.zeros((n, n), dtype=int)
-with open(infile) as f: 
+with open(infile) as f:
     edges = f.readlines()
 for edge in edges:
     from_node, to_node = re.findall('\w', edge)
@@ -1342,23 +1341,23 @@ Let $F$ be the cumulative distribution function of the normal distribution $N(0,
 The values $P(x_i, x_j)$ are computed to approximate the AR(1) process --- omitting the derivation, the rules are as follows:
 
 1. If $j = 0$, then set
-   
+
    $$
    P(x_i, x_j) = P(x_i, x_0) = F(x_0-\rho x_i + s/2)
    $$
-   
+
 1. If $j = n-1$, then set
-   
+
    $$
    P(x_i, x_j) = P(x_i, x_{n-1}) = 1 - F(x_{n-1} - \rho x_i - s/2)
    $$
-   
+
 1. Otherwise, set
-   
+
    $$
    P(x_i, x_j) = F(x_j - \rho x_i + s/2) - F(x_j - \rho x_i - s/2)
    $$
-   
+
 
 The exercise is to write a function `approx_markov(rho, sigma_u, m=3, n=7)` that returns
 $\{x_0, \ldots, x_{n-1}\} \subset \mathbb R$ and $n \times n$ matrix

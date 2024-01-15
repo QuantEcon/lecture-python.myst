@@ -203,7 +203,6 @@ Here is code for computing an optimal decision rule and for analyzing
 its consequences.
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np

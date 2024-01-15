@@ -76,7 +76,6 @@ At the same time, all of the techniques discussed here can be plugged into model
 We will use the following imports.
 
 ```{code-cell} ipython3
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np

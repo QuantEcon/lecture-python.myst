@@ -33,7 +33,6 @@ We begin by importing some Python packages
 import numpy as np
 from numba import njit
 import matplotlib.pyplot as plt
-%matplotlib inline
 ```
 
 ```{code-cell} ipython3
@@ -42,7 +41,7 @@ np.set_printoptions(precision=3, suppress=True)
 
 ## Constructing a Circulant Matrix
 
-To construct an $N \times N$ circulant matrix, we  need only the first row, say,  
+To construct an $N \times N$ circulant matrix, we  need only the first row, say,
 
 $$ \begin{bmatrix} c_{0} & c_{1} & c_{2} & c_{3} & c_{4} & \cdots & c_{N-1} \end{bmatrix} .$$
 
@@ -71,7 +70,7 @@ Let's write some Python code to generate a circulant matrix.
 def construct_cirlulant(row):
 
     N = row.size
-    
+
     C = np.empty((N, N))
 
     for i in range(N):
@@ -96,23 +95,23 @@ Suppose that $A$ and $B$ are both circulant matrices. Then it can be verified th
  * The transpose of a circulant matrix is a circulant matrix.
 
 
- 
+
   * $A + B$ is a circulant matrix
   * $A B$ is a circulant matrix
-  * $A B = B A$ 
+  * $A B = B A$
 
-Now consider a circulant matrix with first row 
+Now consider a circulant matrix with first row
 
   $$  c = \begin{bmatrix} c_0 & c_1 & \cdots & c_{N-1} \end{bmatrix} $$
 
- and consider a vector 
+ and consider a vector
 
  $$ a = \begin{bmatrix} a_0 & a_1 & \cdots  &  a_{N-1} \end{bmatrix} $$
 
  The **convolution** of  vectors $c$ and $a$ is defined   as the vector $b = c * a $  with components
 
 $$
- b_k = \sum_{i=0}^{n-1} c_{k-i} a_i  
+ b_k = \sum_{i=0}^{n-1} c_{k-i} a_i
 $$ (eqn:conv)
 
 We use $*$ to denote **convolution** via the calculation described in equation {eq}`eqn:conv`.
@@ -121,7 +120,7 @@ It can be verified that the vector $b$ satisfies
 
 $$ b = C^T a  $$
 
-where $C^T$ is the transpose of the circulant matrix  defined in equation {eq}`eqn:circulant`.  
+where $C^T$ is the transpose of the circulant matrix  defined in equation {eq}`eqn:circulant`.
 
 
 
@@ -135,10 +134,10 @@ Before defining a permutation **matrix**, we'll define a **permutation**.
 
 A **permutation** of a set of the set of non-negative integers $\{0, 1, 2, \ldots \}$ is a one-to-one mapping of the set into itself.
 
-A permutation of a set $\{1, 2, \ldots, n\}$ rearranges the $n$ integers in the set.  
+A permutation of a set $\{1, 2, \ldots, n\}$ rearranges the $n$ integers in the set.
 
 
-A [permutation matrix](https://mathworld.wolfram.com/PermutationMatrix.html) is obtained by permuting the rows of an $n \times n$ identity matrix according to a permutation of the numbers $1$ to $n$. 
+A [permutation matrix](https://mathworld.wolfram.com/PermutationMatrix.html) is obtained by permuting the rows of an $n \times n$ identity matrix according to a permutation of the numbers $1$ to $n$.
 
 
 Thus, every row and every column contain precisely a single $1$ with $0$ everywhere else.
@@ -158,7 +157,7 @@ P=\left[\begin{array}{cccccc}
 \end{array}\right]
 $$ (eqn:exampleP)
 
-serves as  a **cyclic shift**  operator that, when applied to an $N \times 1$ vector $h$, shifts entries in rows $2$ through $N$ up one row and shifts the entry in row $1$ to row $N$. 
+serves as  a **cyclic shift**  operator that, when applied to an $N \times 1$ vector $h$, shifts entries in rows $2$ through $N$ up one row and shifts the entry in row $1$ to row $N$.
 
 
 Eigenvalues of  the cyclic shift permutation matrix $P$ defined in equation {eq}`eqn:exampleP` can be computed  by constructing
@@ -174,7 +173,7 @@ P-\lambda I=\left[\begin{array}{cccccc}
 \end{array}\right]
 $$
 
-and solving 
+and solving
 
 $$
 \textrm{det}(P - \lambda I) = (-1)^N \lambda^{N}-1=0
@@ -190,7 +189,7 @@ Thus, **singular values** of the  permutation matrix $P$ defined in equation {eq
 It can be verified that permutation matrices are orthogonal matrices:
 
 $$
-P P' = I 
+P P' = I
 $$
 
 
@@ -228,7 +227,7 @@ for i in range(4):
     print(f'𝜆{i} = {𝜆[i]:.1f} \nvec{i} = {Q[i, :]}\n')
 ```
 
-In graphs  below, we shall portray eigenvalues of a shift  permutation matrix   in the complex plane. 
+In graphs  below, we shall portray eigenvalues of a shift  permutation matrix   in the complex plane.
 
 These eigenvalues are uniformly distributed along the unit circle.
 
@@ -265,7 +264,7 @@ for i, N in enumerate([3, 4, 6, 8]):
 
 plt.show()
 ```
-For a vector of  coefficients $\{c_i\}_{i=0}^{n-1}$, eigenvectors of $P$ are also  eigenvectors of 
+For a vector of  coefficients $\{c_i\}_{i=0}^{n-1}$, eigenvectors of $P$ are also  eigenvectors of
 
 $$
 C = c_{0} I + c_{1} P + c_{2} P^{2} +\cdots + c_{N-1} P^{N-1}.
@@ -290,9 +289,9 @@ $$
 
 The matrix $F_8$ defines a  [Discete Fourier Transform](https://en.wikipedia.org/wiki/Discrete_Fourier_transform).
 
-To convert it into an orthogonal eigenvector matrix, we can simply normalize it by dividing every entry  by $\sqrt{8}$. 
+To convert it into an orthogonal eigenvector matrix, we can simply normalize it by dividing every entry  by $\sqrt{8}$.
 
- *  stare at the first column of $F_8$ above to convince yourself of this fact 
+ *  stare at the first column of $F_8$ above to convince yourself of this fact
 
 The eigenvalues corresponding to each eigenvector are $\{w^{j}\}_{j=0}^{7}$ in order.
 
@@ -347,10 +346,10 @@ for j in range(8):
 diff_arr
 ```
 
-## Associated Permutation Matrix 
+## Associated Permutation Matrix
 
 
-Next, we execute calculations to verify that the circulant matrix $C$ defined  in equation {eq}`eqn:circulant` can be written as 
+Next, we execute calculations to verify that the circulant matrix $C$ defined  in equation {eq}`eqn:circulant` can be written as
 
 
 $$
@@ -431,7 +430,7 @@ for j in range(8):
 
 The **Discrete Fourier Transform** (DFT) allows us to  represent a  discrete time sequence as a weighted sum of complex sinusoids.
 
-Consider a sequence of $N$ real number $\{x_j\}_{j=0}^{N-1}$. 
+Consider a sequence of $N$ real number $\{x_j\}_{j=0}^{N-1}$.
 
 The **Discrete Fourier Transform** maps $\{x_j\}_{j=0}^{N-1}$ into a sequence of complex numbers $\{X_k\}_{k=0}^{N-1}$
 
@@ -572,7 +571,7 @@ X = DFT(x)
 plot_magnitude(x=x, X=X)
 ```
 
-What happens if we change the last example to $x_{n}=2\cos\left(2\pi\frac{10}{40}n\right)$? 
+What happens if we change the last example to $x_{n}=2\cos\left(2\pi\frac{10}{40}n\right)$?
 
 Note that $\frac{10}{40}$ is an integer multiple of $\frac{1}{20}$.
 

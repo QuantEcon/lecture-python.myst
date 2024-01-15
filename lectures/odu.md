@@ -30,8 +30,7 @@ In addition to what’s in Anaconda, this lecture deploys the libraries:
 ---
 tags: [hide-output]
 ---
-  !pip install quantecon
-  !pip install interpolation
+!pip install interpolation
 ```
 
 ## Overview
@@ -58,7 +57,6 @@ must be learned.
 Let’s start with some imports
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, prange, vectorize

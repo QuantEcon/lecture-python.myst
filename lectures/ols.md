@@ -58,7 +58,6 @@ Such variation is needed to determine whether it is institutions that give rise 
 Let's start with some imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np

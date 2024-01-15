@@ -33,7 +33,6 @@ We start by importing some Python packages.
 import numpy as np
 from numba import njit, vectorize, prange
 import matplotlib.pyplot as plt
-%matplotlib inline
 from math import gamma
 ```
 

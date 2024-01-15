@@ -61,7 +61,6 @@ We apply our Python class to some examples.
 We  use the following imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -115,7 +114,7 @@ def f(z, μ, Σ):
 For some integer $k\in \{1,\dots, N-1\}$, partition
 $z$ as
 
-$$ 
+$$
 z=\left[\begin{array}{c} z_{1}\\ z_{2} \end{array}\right],
 $$
 
@@ -301,32 +300,32 @@ We have computed everything we need to compute two regression lines, one of $z_2
 We'll represent  these regressions as
 
 $$
-z_1 = a_1 + b_1 z_2 + \epsilon_1 
+z_1 = a_1 + b_1 z_2 + \epsilon_1
 $$
 
 and
 
-$$ 
+$$
 z_2 = a_2 + b_2 z_1 + \epsilon_2
 $$
 
 where we have the population least squares orthogonality conditions
 
 $$
-E \epsilon_1 z_2 = 0 
+E \epsilon_1 z_2 = 0
 $$
 
-and 
+and
 
-$$ 
-E \epsilon_2 z_1 = 0 
+$$
+E \epsilon_2 z_1 = 0
 $$
 
 Let's  compute $a_1, a_2, b_1, b_2$.
 
 ```{code-cell} python3
 
-beta = multi_normal.βs 
+beta = multi_normal.βs
 
 a1 = μ[0] - beta[0]*μ[1]
 b1 = beta[0]
@@ -401,7 +400,7 @@ print("a1 = ", a1)
 print("b1 = ", b1)
 ```
 
-The blue line is the expectation of $z_2$ conditional on $z_1$.  
+The blue line is the expectation of $z_2$ conditional on $z_1$.
 
 The intercept and slope of the blue line are
 
@@ -692,7 +691,7 @@ We can now use our `MultivariateNormal` class to construct an
 instance, then partition the mean vector and covariance matrix as we
 wish.
 
-We want to regress IQ, the random variable $\theta$ (_what we don't know_), on the vector $y$  of test scores (_what we do know_). 
+We want to regress IQ, the random variable $\theta$ (_what we don't know_), on the vector $y$  of test scores (_what we do know_).
 
 We choose `k=n` so that $z_{1} = y$ and $z_{2} = \theta$.
 
@@ -1702,11 +1701,11 @@ where $v_0$ is orthogonal to $x_0$, $G$ is a
 $p \times n$ matrix, and $R$ is a $p \times p$
 positive definite matrix.
 
-We consider the problem of someone who 
+We consider the problem of someone who
 
 * *observes* $y_0$
 *  does not observe $x_0$,
-*  knows $\hat x_0, \Sigma_0, G, R$ and therefore  the joint probability distribution of the vector $\begin{bmatrix} x_0 \cr y_0 \end{bmatrix}$ 
+*  knows $\hat x_0, \Sigma_0, G, R$ and therefore  the joint probability distribution of the vector $\begin{bmatrix} x_0 \cr y_0 \end{bmatrix}$
 * wants to infer $x_0$ from $y_0$ in light of what he knows about that
 joint probability distribution.
 
@@ -1740,7 +1739,7 @@ $x_0$ conditional on $y_0$ is ${\mathcal N}(\tilde x_0, \tilde \Sigma_0)$ by rep
 as
 
 $$
- x_0 = \tilde x_0 + \zeta_0 
+ x_0 = \tilde x_0 + \zeta_0
 $$ (eq:x0rep2)
 
 where $\zeta_0$ is a Gaussian random vector that is orthogonal to $\tilde x_0$ and $y_0$ and that
@@ -1760,13 +1759,13 @@ $$
 where $A$ is an $n \times n$ matrix and $C$ is an
 $n \times m$ matrix.
 
-Using equation {eq}`eq:x0rep2`, we can also represent $x_1$ as 
+Using equation {eq}`eq:x0rep2`, we can also represent $x_1$ as
 
 $$
-x_1 = A (\tilde x_0 + \zeta_0) + C w_1 
+x_1 = A (\tilde x_0 + \zeta_0) + C w_1
 $$
 
-It follows that 
+It follows that
 
 $$ E x_1 | y_0 = A \tilde x_0
 $$
@@ -1775,10 +1774,10 @@ $$
 and that the corresponding conditional covariance matrix $E (x_1 - E x_1| y_0)  (x_1 - E x_1| y_0)' \equiv \Sigma_1$ is
 
 $$
- \Sigma_1 = A \tilde \Sigma_0 A' + C C' 
+ \Sigma_1 = A \tilde \Sigma_0 A' + C C'
 $$
 
-or 
+or
 
 $$
 \Sigma_1 =  A \Sigma_0 A' - A \Sigma_0 G' (G \Sigma_0 G' + R)^{-1} G \Sigma_0 A'
@@ -1787,18 +1786,18 @@ $$
 We can write the mean of $x_1$ conditional on $y_0$ as
 
 $$
- \hat x_1 = A \hat x_0 + A \Sigma_0 G' (G \Sigma_0 G' + R)^{-1} (y_0 - G \hat x_0) 
+ \hat x_1 = A \hat x_0 + A \Sigma_0 G' (G \Sigma_0 G' + R)^{-1} (y_0 - G \hat x_0)
 $$
 
-or 
+or
 
 $$
- \hat x_1 = A \hat x_0 + K_0 (y_0 - G \hat x_0) 
+ \hat x_1 = A \hat x_0 + K_0 (y_0 - G \hat x_0)
 $$
 
-where 
+where
 
-$$ 
+$$
 K_0 = A \Sigma_0 G' (G \Sigma_0 G' + R)^{-1}
 $$
 
@@ -1850,20 +1849,20 @@ If we shift the first equation forward one period and then substitute the expres
 into it we obtain
 
 $$
-\Sigma_{t+1}= C C' + A \Sigma_t A' - A \Sigma_t G' (G \Sigma_t G' +R)^{-1} G \Sigma_t A' . 
+\Sigma_{t+1}= C C' + A \Sigma_t A' - A \Sigma_t G' (G \Sigma_t G' +R)^{-1} G \Sigma_t A' .
 $$
 
 This is a matrix Riccati difference equation that is closely related to another matrix Riccati difference equation that appears in  a quantecon lecture on the basics of linear quadratic control theory.
 
-That equation has the form  
+That equation has the form
 
-  
+
 
 ```{math}
 
-P_{t-1} =R + A' P_t A  - A' P_t B 
+P_{t-1} =R + A' P_t A  - A' P_t B
 (B' P_t B + Q)^{-1}  B' P_t A  .
- 
+
 ```
 
 Stare at the two preceding equations for a moment or two, the first being a matrix difference equation for a conditional covariance matrix, the
@@ -1873,7 +1872,7 @@ Although the  two equations are not identical, they display striking family rese
 
 * the first equation tells dynamics that work **forward**  in time
 * the second equation tells dynamics that work  **backward** in time
-* while many of the terms are similar, one equation seems to apply matrix transformations to some matrices that play similar roles in the other equation 
+* while many of the terms are similar, one equation seems to apply matrix transformations to some matrices that play similar roles in the other equation
 
 The family resemblences of these two equations reflects a transcendent **duality** that prevails between control theory and filtering theory.
 
@@ -2054,7 +2053,7 @@ $$
 
 where the first half of the first column of $\Lambda$ is filled
 with $1$s and $0$s for the rest half, and symmetrically
-for the second column. 
+for the second column.
 
 $D$ is a diagonal matrix with parameter
 $\sigma_{u}^{2}$ on the diagonal.
@@ -2295,4 +2294,3 @@ Pjk = P[:, :2]
 Σy_hat = Pjk @ Σεjk @ Pjk.T
 print('Σy_hat = \n', Σy_hat)
 ```
-

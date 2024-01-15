@@ -295,7 +295,6 @@ Let's do an example.
 import numpy as np
 import numpy.linalg as LA
 import matplotlib.pyplot as plt
-%matplotlib inline
 ```
 
 Having imported these modules, let's do the example.

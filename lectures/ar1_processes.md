@@ -47,7 +47,6 @@ Let's start with some imports:
 
 ```{code-cell} ipython
 import numpy as np
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 ```

@@ -70,7 +70,6 @@ In order to focus on computation, we leave longer proofs to these sources (while
 Let's start with some imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
