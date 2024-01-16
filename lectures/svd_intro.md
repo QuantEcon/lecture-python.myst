@@ -13,8 +13,6 @@ kernelspec:
 
 # Singular Value Decomposition (SVD)
 
-
-
 ## Overview
 
 The **singular value decomposition** (SVD) is a work-horse in applications of least squares projection that
@@ -38,16 +36,16 @@ Necessarily, $p \leq \min(m,n)$.
 
 In  much of this lecture, we'll think of $X$ as a matrix of **data** in which
 
-  * each column is an **individual** -- a time period or person, depending on the application
+* each column is an **individual** -- a time period or person, depending on the application
 
-  * each row is a **random variable** describing an attribute of a time period or a person, depending on the application
+* each row is a **random variable** describing an attribute of a time period or a person, depending on the application
 
 
 We'll be interested in  two  situations
 
-  * A **short and fat** case in which $m << n$, so that there are many more columns (individuals) than rows (attributes).
+* A **short and fat** case in which $m << n$, so that there are many more columns (individuals) than rows (attributes).
 
-  * A  **tall and skinny** case in which $m >> n$, so that there are many more rows  (attributes) than columns (individuals).
+* A  **tall and skinny** case in which $m >> n$, so that there are many more rows  (attributes) than columns (individuals).
 
 
 We'll apply a **singular value decomposition** of $X$ in both situations.
@@ -116,15 +114,9 @@ Thus,
 
 We'll apply this circle of ideas  later in this lecture when we study Dynamic Mode Decomposition.
 
-
-
-
-
 **Road Ahead**
 
 What we have described above  is called a **full** SVD.
-
-
 
 In a **full** SVD, the  shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively.
 
@@ -132,12 +124,9 @@ Later we'll also describe an **economy** or **reduced** SVD.
 
 Before we study a **reduced** SVD we'll say a little more about properties of a **full** SVD.
 
-
 ## Four Fundamental Subspaces
 
-
 Let  ${\mathcal C}$ denote a column space, ${\mathcal N}$ denote a null space, and ${\mathcal R}$ denote a row space.
-
 
 Let's start by recalling the four fundamental subspaces of an $m \times n$
 matrix $X$ of rank $p$.
@@ -263,14 +252,12 @@ $$
 \end{aligned}
 $$ (eq:fourspaceSVD)
 
-
-
 Since $U$ and $V$ are both orthonormal matrices, collection {eq}`eq:fourspaceSVD` asserts that
 
- * $U_L$ is an orthonormal basis for the column space of $X$
- * $U_R$ is an orthonormal basis for the null space of $X^\top $
- * $V_L$ is an orthonormal basis for the row space of $X$
- * $V_R$ is an orthonormal basis for the null space of $X$
+* $U_L$ is an orthonormal basis for the column space of $X$
+* $U_R$ is an orthonormal basis for the null space of $X^\top $
+* $V_L$ is an orthonormal basis for the row space of $X$
+* $V_R$ is an orthonormal basis for the null space of $X$
 
 
 We have verified the four claims in {eq}`eq:fourspaceSVD` simply  by performing the multiplications called for by the right side of {eq}`eq:fullSVDpartition` and reading them.
@@ -285,8 +272,6 @@ Sometimes these properties are described with the following two pairs of orthogo
 
 * ${\mathcal C}(X)$ is the orthogonal complement of $ {\mathcal N}(X^\top )$
 * ${\mathcal R}(X)$ is the orthogonal complement  ${\mathcal N}(X)$
-
-
 
 Let's do an example.
 
@@ -340,12 +325,12 @@ Suppose that we want to construct  the best rank $r$ approximation of an $m \tim
 
 By best, we mean a  matrix $X_r$ of rank $r < p$ that, among all rank $r$ matrices, minimizes
 
-$$ || X - X_r || $$
+$$ 
+|| X - X_r || 
+$$
 
 where $ || \cdot || $ denotes a norm of a matrix $X$ and where $X_r$ belongs to the space of all rank $r$ matrices
 of dimension $m \times n$.
-
-
 
 Three popular **matrix norms**  of an $m \times n$ matrix $X$ can be expressed in terms of the singular values of $X$
 
@@ -369,12 +354,6 @@ You can read about the Eckart-Young theorem and some of its uses [here](https://
 
 We'll make use of this theorem when we discuss principal components analysis (PCA) and also dynamic mode decomposition (DMD).
 
-
-
-
-
-
-
 ## Full and Reduced SVD's
 
 Up to now we have described properties of a **full** SVD in which shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively.
@@ -384,7 +363,6 @@ There is  an alternative bookkeeping convention called an **economy** or **reduc
 Thus, note that because we assume that $X$ has rank $p$, there are only $p$ nonzero singular values, where $p=\textrm{rank}(X)\leq\min\left(m, n\right)$.
 
 A **reduced** SVD uses this fact to express $U$, $\Sigma$, and $V$ as matrices with shapes $\left(m, p\right)$, $\left(p, p\right)$, $\left( n, p\right)$.
-
 
 You can read about reduced and full SVD here
 <https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html>
@@ -411,7 +389,7 @@ VV^\top  & = I & \quad V^\top  V = I
 \end{aligned}
 $$
 
- * In a **short-fat** case in which $m < < n$, for a **reduced** SVD
+* In a **short-fat** case in which $m < < n$, for a **reduced** SVD
 
 $$
 \begin{aligned}
@@ -428,20 +406,17 @@ Let's do an  exercise  to compare **full** and **reduced** SVD's.
 To review,
 
 
- * in a **full** SVD
+* in a **full** SVD
 
-    -  $U$ is $m \times m$
-    -  $\Sigma$ is $m \times n$
-    -  $V$ is $n \times n$
+  -  $U$ is $m \times m$
+  -  $\Sigma$ is $m \times n$
+  -  $V$ is $n \times n$
 
- * in a **reduced** SVD
+* in a **reduced** SVD
 
-    -  $U$ is $m \times p$
-    - $\Sigma$ is $p\times p$
-    -  $V$ is $n \times p$
-
-
-
+  -  $U$ is $m \times p$
+  - $\Sigma$ is $p\times p$
+  -  $V$ is $n \times p$
 
 First, let's study a case in which $m = 5 > n = 2$.
 
@@ -618,10 +593,10 @@ If the matrix $C$ is diagonalizable, we can eigendecompose it, find its eigenval
 If $C$ is not diagonalizable, we can perform an SVD of $C$:
 
 $$
-\begin{align}
+\begin{aligned}
 B^T B &= V \Sigma^\top U^\top U \Sigma V^\top \cr
 &= V \Sigma^\top \Sigma V^\top
-\end{align}
+\end{aligned}
 $$
 
 $$
@@ -644,11 +619,11 @@ $$
 **Step 5: Create the Score Matrix:**
 
 $$
-\begin{align}
+\begin{aligned}
 T&= BV \cr
 &= U\Sigma V^\top \cr
 &= U\Sigma
-\end{align}
+\end{aligned}
 $$
 
 
