@@ -253,7 +253,6 @@ including</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -294,7 +293,7 @@ first column needs to be specified.</p>
 <span class="k">def</span> <span class="nf">construct_cirlulant</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
 
     <span class="n">N</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">size</span>
-    
+
     <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
@@ -341,7 +340,7 @@ first column needs to be specified.</p>
 <p>The <strong>convolution</strong> of  vectors <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(a\)</span> is defined   as the vector <span class="math notranslate nohighlight">\(b = c * a \)</span>  with components</p>
 <div class="math notranslate nohighlight" id="equation-eqn-conv">
 <span class="eqno">(6.2)<a class="headerlink" href="#equation-eqn-conv" title="Permalink to this equation">#</a></span>\[
- b_k = \sum_{i=0}^{n-1} c_{k-i} a_i  
+ b_k = \sum_{i=0}^{n-1} c_{k-i} a_i
 \]</div>
 <p>We use <span class="math notranslate nohighlight">\(*\)</span> to denote <strong>convolution</strong> via the calculation described in equation <a class="reference internal" href="#equation-eqn-conv">(6.2)</a>.</p>
 <p>It can be verified that the vector <span class="math notranslate nohighlight">\(b\)</span> satisfies</p>
@@ -395,7 +394,7 @@ P-\lambda I=\left[\begin{array}{cccccc}
 <p>It can be verified that permutation matrices are orthogonal matrices:</p>
 <div class="math notranslate nohighlight">
 \[
-P P' = I 
+P P' = I
 \]</div>
 </section>
 <section id="examples-with-python">
@@ -681,7 +680,7 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.711, 0.626, 0.553, 0.414, 0.643, 0.527, 0.173, 0.728])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.315, 0.091, 0.849, 0.769, 0.442, 0.324, 0.291, 0.411])
 </pre></div>
 </div>
 </div>
@@ -715,14 +714,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.711, 0.626, 0.553, 0.414, 0.643, 0.527, 0.173, 0.728],
-       [0.728, 0.711, 0.626, 0.553, 0.414, 0.643, 0.527, 0.173],
-       [0.173, 0.728, 0.711, 0.626, 0.553, 0.414, 0.643, 0.527],
-       [0.527, 0.173, 0.728, 0.711, 0.626, 0.553, 0.414, 0.643],
-       [0.643, 0.527, 0.173, 0.728, 0.711, 0.626, 0.553, 0.414],
-       [0.414, 0.643, 0.527, 0.173, 0.728, 0.711, 0.626, 0.553],
-       [0.553, 0.414, 0.643, 0.527, 0.173, 0.728, 0.711, 0.626],
-       [0.626, 0.553, 0.414, 0.643, 0.527, 0.173, 0.728, 0.711]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.315, 0.091, 0.849, 0.769, 0.442, 0.324, 0.291, 0.411],
+       [0.411, 0.315, 0.091, 0.849, 0.769, 0.442, 0.324, 0.291],
+       [0.291, 0.411, 0.315, 0.091, 0.849, 0.769, 0.442, 0.324],
+       [0.324, 0.291, 0.411, 0.315, 0.091, 0.849, 0.769, 0.442],
+       [0.442, 0.324, 0.291, 0.411, 0.315, 0.091, 0.849, 0.769],
+       [0.769, 0.442, 0.324, 0.291, 0.411, 0.315, 0.091, 0.849],
+       [0.849, 0.769, 0.442, 0.324, 0.291, 0.411, 0.315, 0.091],
+       [0.091, 0.849, 0.769, 0.442, 0.324, 0.291, 0.411, 0.315]])
 </pre></div>
 </div>
 </div>
@@ -734,14 +733,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.711, 0.626, 0.553, 0.414, 0.643, 0.527, 0.173, 0.728],
-       [0.728, 0.711, 0.626, 0.553, 0.414, 0.643, 0.527, 0.173],
-       [0.173, 0.728, 0.711, 0.626, 0.553, 0.414, 0.643, 0.527],
-       [0.527, 0.173, 0.728, 0.711, 0.626, 0.553, 0.414, 0.643],
-       [0.643, 0.527, 0.173, 0.728, 0.711, 0.626, 0.553, 0.414],
-       [0.414, 0.643, 0.527, 0.173, 0.728, 0.711, 0.626, 0.553],
-       [0.553, 0.414, 0.643, 0.527, 0.173, 0.728, 0.711, 0.626],
-       [0.626, 0.553, 0.414, 0.643, 0.527, 0.173, 0.728, 0.711]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.315, 0.091, 0.849, 0.769, 0.442, 0.324, 0.291, 0.411],
+       [0.411, 0.315, 0.091, 0.849, 0.769, 0.442, 0.324, 0.291],
+       [0.291, 0.411, 0.315, 0.091, 0.849, 0.769, 0.442, 0.324],
+       [0.324, 0.291, 0.411, 0.315, 0.091, 0.849, 0.769, 0.442],
+       [0.442, 0.324, 0.291, 0.411, 0.315, 0.091, 0.849, 0.769],
+       [0.769, 0.442, 0.324, 0.291, 0.411, 0.315, 0.091, 0.849],
+       [0.849, 0.769, 0.442, 0.324, 0.291, 0.411, 0.315, 0.091],
+       [0.091, 0.849, 0.769, 0.442, 0.324, 0.291, 0.411, 0.315]])
 </pre></div>
 </div>
 </div>
@@ -778,8 +777,8 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 4.375+0.j   ,  0.361-0.228j,  0.628-0.011j, -0.225+0.532j,
-       -0.216-0.j   , -0.225-0.532j,  0.628+0.011j,  0.361+0.228j])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 3.491+0.j   , -0.545-0.646j, -0.383+0.766j,  0.29 +0.469j,
+        0.303-0.j   ,  0.29 -0.469j, -0.383-0.766j, -0.545+0.646j])
 </pre></div>
 </div>
 </div>
@@ -795,14 +794,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.+0.j -0.+0.j -0.+0.j -0.+0.j -0.+0.j  0.+0.j  0.+0.j -0.+0.j]
-[-0.+0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j -0.+0.j]
-[-0.+0.j  0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j -0.-0.j -0.-0.j]
-[ 0.+0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j  0.+0.j  0.-0.j -0.-0.j]
-[ 0.+0.j -0.-0.j  0.+0.j -0.-0.j  0.+0.j  0.-0.j -0.+0.j -0.-0.j]
-[-0.+0.j -0.-0.j  0.+0.j -0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j]
-[ 0.-0.j  0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j  0.-0.j  0.+0.j]
-[ 0.+0.j -0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.+0.j  0.+0.j]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j]
+[ 0.-0.j  0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j]
+[ 0.+0.j  0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j -0.-0.j -0.+0.j]
+[ 0.+0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j]
+[-0.+0.j  0.-0.j -0.+0.j  0.-0.j -0.+0.j  0.-0.j -0.-0.j  0.-0.j]
+[ 0.+0.j -0.-0.j  0.-0.j -0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.+0.j]
+[-0.-0.j  0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j  0.-0.j  0.+0.j]
+[-0.+0.j  0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.+0.j]
 </pre></div>
 </div>
 </div>

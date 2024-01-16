@@ -283,8 +283,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>In addition to what’s in Anaconda, this lecture deploys the libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>  <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
-  <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>interpolation
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>interpolation
 </pre></div>
 </div>
 </div>
@@ -294,34 +293,12 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
-
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.11/site-packages (2.2.1)
 Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.57.1)
 Requirement already satisfied: numpy&gt;=1.18.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.24.3)
 Requirement already satisfied: scipy&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.11.1)
 Requirement already satisfied: tempita&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.5.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.40.0)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.40.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -353,8 +330,7 @@ must be learned.</p>
 <p>Let’s start with some imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">vectorize</span>
 <span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">mlinterp</span><span class="p">,</span> <span class="n">interp</span>
@@ -730,28 +706,28 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6069862269071375.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6352728434103625.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.09513233939402177.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.11119458294702866.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.01881742681328724.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.025347512515775605.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.00382138258622966.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.00588337804527761.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0007844420722644685.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0013653197403939998.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.0001678501177426739.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.000319287578243177.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 32 iterations.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 34 iterations.
 </pre></div>
 </div>
-<img alt="_images/859c606cb6346532edb137990173fba2ba575057ce669c8be94d4c97be76ae3f.png" src="_images/859c606cb6346532edb137990173fba2ba575057ce669c8be94d4c97be76ae3f.png" />
+<img alt="_images/e595450d3f67c84088b9804c371607ed3611655f73235cea501170a0a58c131d.png" src="_images/e595450d3f67c84088b9804c371607ed3611655f73235cea501170a0a58c131d.png" />
 </div>
 </div>
 <p>We will also plot the optimal policy</p>
@@ -773,7 +749,7 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5c2f1dbc4bc9d93adba63a7f5a5737685b15bcc401c0114f898153df3f61c93d.png" src="_images/5c2f1dbc4bc9d93adba63a7f5a5737685b15bcc401c0114f898153df3f61c93d.png" />
+<img alt="_images/aa102ccd39f10f1d5c1e579fb967d177e628323c9b95578994eb4875bb1eeaa7.png" src="_images/aa102ccd39f10f1d5c1e579fb967d177e628323c9b95578994eb4875bb1eeaa7.png" />
 </div>
 </div>
 <p>The results fit well with our intuition from section <a class="reference internal" href="#looking-forward"><span class="std std-ref">looking
@@ -1026,15 +1002,16 @@ fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.020914814855659936.
-Error at iteration 10 is 0.005655939121225306.
-Error at iteration 15 is 0.0012332275225722666.
-Error at iteration 20 is 0.00024598741413006664.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.02236386911901056.
+Error at iteration 10 is 0.0067711396559273496.
+Error at iteration 15 is 0.0016356227647515986.
+Error at iteration 20 is 0.0003751580882346284.
+Error at iteration 25 is 8.418971314749779e-05.
 
-Converged in 23 iterations.
+Converged in 25 iterations.
 </pre></div>
 </div>
-<img alt="_images/59d14bf7735491fd768d5a80c531454690fbe3fa4245951a6523252e1155e336.png" src="_images/59d14bf7735491fd768d5a80c531454690fbe3fa4245951a6523252e1155e336.png" />
+<img alt="_images/1a2b1d1200f709b8d0a718bb9cbec7fb65f7917b1531f774b8e668c74e96a954.png" src="_images/1a2b1d1200f709b8d0a718bb9cbec7fb65f7917b1531f774b8e668c74e96a954.png" />
 </div>
 </div>
 </section>
@@ -1125,7 +1102,7 @@ too optimistic and turn down too many jobs.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a73a3d8030b48de51fd6d8fe77060758c4aaf139a46349c8c05df5a4542cc07a.png" src="_images/a73a3d8030b48de51fd6d8fe77060758c4aaf139a46349c8c05df5a4542cc07a.png" />
+<img alt="_images/d66d568c627f0d13d7a6635cc5522d5c4b4c10aae7c99fcc160684dd1a77b6a7.png" src="_images/d66d568c627f0d13d7a6635cc5522d5c4b4c10aae7c99fcc160684dd1a77b6a7.png" />
 </div>
 </div>
 </section>
@@ -1387,8 +1364,8 @@ unemployment verifies our conjecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c50041a627fe4884f236609b5606c033edb743d4f1b2fb799e2d9e4e1438e7c1.png" src="_images/c50041a627fe4884f236609b5606c033edb743d4f1b2fb799e2d9e4e1438e7c1.png" />
-<img alt="_images/69dabf74e15766184b99810c3859339222915e89dd0afc8e86aca989c2f24f56.png" src="_images/69dabf74e15766184b99810c3859339222915e89dd0afc8e86aca989c2f24f56.png" />
+<img alt="_images/74a98a40de1b9a7601cae59e23b0cdaec30a4852b05a51ed34ebd7c428df6179.png" src="_images/74a98a40de1b9a7601cae59e23b0cdaec30a4852b05a51ed34ebd7c428df6179.png" />
+<img alt="_images/c4d49d9343e1014943f6b61f108d776cf9e4a84e950903b3fd05e9e89d9ad62d.png" src="_images/c4d49d9343e1014943f6b61f108d776cf9e4a84e950903b3fd05e9e89d9ad62d.png" />
 </div>
 </div>
 </section>
@@ -1408,8 +1385,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5ce0e7a6bf3ddf5c98437da68c29b939e92976dc475d3d3a79ff4baf8cfc89c7.png" src="_images/5ce0e7a6bf3ddf5c98437da68c29b939e92976dc475d3d3a79ff4baf8cfc89c7.png" />
-<img alt="_images/e78823474be4df869a56e2f9365b815e557a1e50e6ee1d73b2299df684304fc6.png" src="_images/e78823474be4df869a56e2f9365b815e557a1e50e6ee1d73b2299df684304fc6.png" />
+<img alt="_images/9f6954a595d15fe0dbc52b7a6e08036c0eef78dc2aadfa0299da0ec5627afe29.png" src="_images/9f6954a595d15fe0dbc52b7a6e08036c0eef78dc2aadfa0299da0ec5627afe29.png" />
+<img alt="_images/af3ac1a3db931f66df5f1c77f3cc160c61ad71aae69bc97e3cf7c0f3834ba9ae.png" src="_images/af3ac1a3db931f66df5f1c77f3cc160c61ad71aae69bc97e3cf7c0f3834ba9ae.png" />
 </div>
 </div>
 </section>
@@ -1426,8 +1403,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a0245074fc15c9dd31468abe109070a4838212b1a6e705d0abb735753ffeee8c.png" src="_images/a0245074fc15c9dd31468abe109070a4838212b1a6e705d0abb735753ffeee8c.png" />
-<img alt="_images/ef3ab94a70842534353a9361e35521bbb35068ea065cd48f4353af866beac0b7.png" src="_images/ef3ab94a70842534353a9361e35521bbb35068ea065cd48f4353af866beac0b7.png" />
+<img alt="_images/aa0752d23da5229a0e98c926111eedaa797b67f8236cdd88b3aac6bc4f5e75ad.png" src="_images/aa0752d23da5229a0e98c926111eedaa797b67f8236cdd88b3aac6bc4f5e75ad.png" />
+<img alt="_images/a85898caf863342a358b6196e4163846ebaaead791eee63a76f587c208781421.png" src="_images/a85898caf863342a358b6196e4163846ebaaead791eee63a76f587c208781421.png" />
 </div>
 </div>
 </section>
@@ -1454,8 +1431,8 @@ when he eventually chooses to accept a wage offer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/80d1c2125fb3768b55e29ffd080f82a8db357c38d7ede01b88163ed1d0b0bc38.png" src="_images/80d1c2125fb3768b55e29ffd080f82a8db357c38d7ede01b88163ed1d0b0bc38.png" />
-<img alt="_images/7116980f99daaafd9d9ff29798ba2a65926581f2101ed6bed633895805db9a7e.png" src="_images/7116980f99daaafd9d9ff29798ba2a65926581f2101ed6bed633895805db9a7e.png" />
+<img alt="_images/74da0604d200938360a2c6bb8f54b84b90137138dba3d1d541fb4964278f7da4.png" src="_images/74da0604d200938360a2c6bb8f54b84b90137138dba3d1d541fb4964278f7da4.png" />
+<img alt="_images/2451fdafc21d209804e642a29828773d0923693d2597336cc7dccc65b40be642.png" src="_images/2451fdafc21d209804e642a29828773d0923693d2597336cc7dccc65b40be642.png" />
 </div>
 </div>
 </section>
@@ -1471,8 +1448,8 @@ after having acquired less information about the wage distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/43881a9762cb06d1f7a8f0e5b68bdc8c46927dd95b3dbdb2ee24b182067d4c7d.png" src="_images/43881a9762cb06d1f7a8f0e5b68bdc8c46927dd95b3dbdb2ee24b182067d4c7d.png" />
-<img alt="_images/241e1db04f2e647ad4c7db843f2d7efa74849a7cc4306bfac1b27c65095a98ba.png" src="_images/241e1db04f2e647ad4c7db843f2d7efa74849a7cc4306bfac1b27c65095a98ba.png" />
+<img alt="_images/a75f00845acd483435b790ea9689d3a10c39113a3455300e5fd13fb517a35931.png" src="_images/a75f00845acd483435b790ea9689d3a10c39113a3455300e5fd13fb517a35931.png" />
+<img alt="_images/b1e1ca0de2d7c1cf72e1b259f693bdd5c1a0d022a31ed392679b00626a8373d9.png" src="_images/b1e1ca0de2d7c1cf72e1b259f693bdd5c1a0d022a31ed392679b00626a8373d9.png" />
 </div>
 </div>
 </section>

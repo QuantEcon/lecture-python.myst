@@ -59,7 +59,6 @@ import matplotlib.pyplot as plt
 from scipy.signal import fftconvolve
 from tabulate import tabulate
 import time
-%matplotlib inline
 ```
 
 

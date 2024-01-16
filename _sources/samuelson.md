@@ -47,7 +47,6 @@ Our objectives are to
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -1434,4 +1433,3 @@ could either be stationary, explosive, or oscillating.
 
 We also were able to represent the model using the [QuantEcon.py](http://quantecon.org/quantecon-py)
 [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class.
-

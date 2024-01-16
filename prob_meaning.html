@@ -268,7 +268,9 @@ proceeding to read the rest of the lecture.</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /opt/conda/envs/quantecon/lib/python3.11/site-packages (3.9.0)
-Requirement already satisfied: wcwidth in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from prettytable) (0.2.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: wcwidth in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from prettytable) (0.2.5)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -290,7 +292,6 @@ Requirement already satisfied: wcwidth in /opt/conda/envs/quantecon/lib/python3.
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">binom</span>
 <span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -302,8 +303,8 @@ Requirement already satisfied: wcwidth in /opt/conda/envs/quantecon/lib/python3.
 <p>Consider the following classic example.</p>
 <p>The random variable  <span class="math notranslate nohighlight">\(X \)</span> takes on possible values <span class="math notranslate nohighlight">\(k = 0, 1, 2, \ldots, n\)</span>  with probabilties</p>
 <div class="math notranslate nohighlight">
-\[ 
-\textrm{Prob}(X =  k | \theta) = 
+\[
+\textrm{Prob}(X =  k | \theta) =
 \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
 \]</div>
 <p>where the fixed parameter <span class="math notranslate nohighlight">\(\theta \in (0,1)\)</span>.</p>
@@ -326,7 +327,7 @@ Requirement already satisfied: wcwidth in /opt/conda/envs/quantecon/lib/python3.
 <p>Let <span class="math notranslate nohighlight">\(\sum_{h=1}^n y_h^i\)</span> denote the total number of times  heads come up during the <span class="math notranslate nohighlight">\(i\)</span>th sequence of <span class="math notranslate nohighlight">\(n\)</span> independent coin flips.</p>
 <p>Let <span class="math notranslate nohighlight">\(f_k\)</span> record the fraction of samples of length <span class="math notranslate nohighlight">\(n\)</span> for which <span class="math notranslate nohighlight">\(\sum_{h=1}^n y_h^i = k\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h^i = k}{
     I}
 \]</div>
@@ -357,7 +358,7 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">frequentist</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-<span class="w">    </span>
+
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        initialization</span>
 <span class="sd">        -----------------</span>
@@ -365,42 +366,42 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 <span class="sd">        θ : probability that one toss of a coin will be a head with Y = 1</span>
 <span class="sd">        n : number of independent flips in each independent sequence of draws</span>
 <span class="sd">        I : number of independent sequence of draws</span>
-<span class="sd">        </span>
+
 <span class="sd">        &#39;&#39;&#39;</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">I</span>
-    
+
     <span class="k">def</span> <span class="nf">binomial</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span>
+
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;compute the theoretical probability for specific input k&#39;&#39;&#39;</span>
-        
+
         <span class="n">θ</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
-        
+
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span>
+
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;draw n independent flips for I independent sequences&#39;&#39;&#39;</span>
-        
+
         <span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span>
         <span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="n">Y</span> <span class="o">=</span> <span class="p">(</span><span class="n">sample</span> <span class="o">&lt;=</span> <span class="n">θ</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
-    
+
     <span class="k">def</span> <span class="nf">compute_fk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kk</span><span class="p">):</span>
-<span class="w">        </span>
+
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;compute f_{k}^I for specific input k&#39;&#39;&#39;</span>
-        
+
         <span class="n">Y</span><span class="p">,</span> <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span>
         <span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">f_kI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">K</span> <span class="o">==</span> <span class="n">kk</span><span class="p">)</span> <span class="o">/</span> <span class="n">I</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f_kI</span> <span class="o">=</span> <span class="n">f_kI</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kk</span> <span class="o">=</span> <span class="n">kk</span>
-        
+
     <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span>
+
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;compute and print the comparison&#39;&#39;&#39;</span>
-        
+
         <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
         <span class="n">comp</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">PrettyTable</span><span class="p">()</span>
         <span class="n">comp</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;Theoretical&#39;</span><span class="p">,</span> <span class="s1">&#39;Frequentist&#39;</span><span class="p">]</span>
@@ -429,25 +430,25 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 | k  |      Theoretical       | Frequentist |
 +----+------------------------+-------------+
 | 1  | 1.6271660538000033e-09 |     0.0     |
-| 2  | 3.606884752589999e-08  |     0.0     |
+| 2  | 3.606884752589999e-08  |    1e-06    |
 | 3  |  5.04963865362601e-07  |     0.0     |
-| 4  | 5.007558331512455e-06  |    4e-06    |
-| 5  | 3.7389768875293014e-05 |    3e-05    |
-| 6  | 0.00021810698510587546 |   0.000225  |
-| 7  |  0.001017832597160754  |   0.001011  |
-| 8  |  0.003859281930901185  |   0.003764  |
-| 9  |  0.012006654896137007  |   0.011915  |
-| 10 |  0.030817080900085007  |   0.03077   |
-| 11 |  0.06536956554563476   |   0.065765  |
-| 12 |  0.11439673970486108   |   0.114496  |
-| 13 |   0.1642619852172365   |   0.163897  |
-| 14 |  0.19163898275344252   |   0.191341  |
-| 15 |  0.17886305056987967   |   0.178843  |
-| 16 |   0.1304209743738704   |   0.130323  |
-| 17 |  0.07160367220526209   |   0.071794  |
-| 18 |  0.027845872524268643  |   0.028232  |
-| 19 |  0.006839337111223895  |   0.006797  |
-| 20 | 0.0007979226629761189  |   0.000793  |
+| 4  | 5.007558331512455e-06  |    8e-06    |
+| 5  | 3.7389768875293014e-05 |   4.7e-05   |
+| 6  | 0.00021810698510587546 |   0.000215  |
+| 7  |  0.001017832597160754  |   0.001005  |
+| 8  |  0.003859281930901185  |   0.003811  |
+| 9  |  0.012006654896137007  |   0.012057  |
+| 10 |  0.030817080900085007  |   0.031069  |
+| 11 |  0.06536956554563476   |   0.065284  |
+| 12 |  0.11439673970486108   |   0.113936  |
+| 13 |   0.1642619852172365   |   0.164163  |
+| 14 |  0.19163898275344252   |   0.191442  |
+| 15 |  0.17886305056987967   |   0.179241  |
+| 16 |   0.1304209743738704   |   0.130724  |
+| 17 |  0.07160367220526209   |   0.071519  |
+| 18 |  0.027845872524268643  |   0.027851  |
+| 19 |  0.006839337111223895  |   0.006827  |
+| 20 | 0.0007979226629761189  |    0.0008   |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -461,7 +462,7 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 <p>Now we fix</p>
 <div class="math notranslate nohighlight">
 \[
-n=20, k=10, I=1,000,000 
+n=20, k=10, I=1,000,000
 \]</div>
 <p>We’ll vary <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(0.01\)</span> to <span class="math notranslate nohighlight">\(0.99\)</span> and plot outcomes against <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <div class="cell docutils container">
@@ -497,7 +498,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/10a3d819d3f5c52816bdb0e856dc5805112b7137f7c0aa4280208dffce8ee2d0.png" src="_images/10a3d819d3f5c52816bdb0e856dc5805112b7137f7c0aa4280208dffce8ee2d0.png" />
+<img alt="_images/2ed47050fbad48c5e9d54895284ab98e036013de552946c74f4fdbb24004d3db.png" src="_images/2ed47050fbad48c5e9d54895284ab98e036013de552946c74f4fdbb24004d3db.png" />
 </div>
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(n\)</span></strong></p>
@@ -536,7 +537,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bfe51340daa77eecdcc592cb0b693e0bb80fae4c216e5c7c39eabbef82db0be8.png" src="_images/bfe51340daa77eecdcc592cb0b693e0bb80fae4c216e5c7c39eabbef82db0be8.png" />
+<img alt="_images/762b592e26cae0fcb8ed967c8a333b84852eb3aaf3aed9022f6786b70c6aa393.png" src="_images/762b592e26cae0fcb8ed967c8a333b84852eb3aaf3aed9022f6786b70c6aa393.png" />
 </div>
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(I\)</span></strong></p>
@@ -575,7 +576,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/78cad32bb72803a7ade661bbb54849fcfabad804ed5b037ae77d019d1e4f58fa.png" src="_images/78cad32bb72803a7ade661bbb54849fcfabad804ed5b037ae77d019d1e4f58fa.png" />
+<img alt="_images/29f541e195e1bbf49d596060a3bea14b6b27b59611d884750297cb65d79866ba.png" src="_images/29f541e195e1bbf49d596060a3bea14b6b27b59611d884750297cb65d79866ba.png" />
 </div>
 </div>
 <p>From the above graphs, we can see that <strong><span class="math notranslate nohighlight">\(I\)</span>, the number of independent sequences,</strong> plays an important role.</p>
@@ -637,7 +638,7 @@ a <strong>beta distribution</strong> with parameters <span class="math notransla
 <p>The likelihood function is:</p>
 <div class="math notranslate nohighlight">
 \[
-L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) = 
+L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 \theta^Y (1-\theta)^{1-Y}
 \]</div>
 <p><strong>b)</strong> Please write the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of our coin.</p>
@@ -669,55 +670,55 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        ----------</span>
-<span class="sd">        θ : float, ranging from [0,1]. </span>
+<span class="sd">        θ : float, ranging from [0,1].</span>
 <span class="sd">           probability that one toss of a coin will be a head with Y = 1</span>
-<span class="sd">            </span>
+
 <span class="sd">        n : int.</span>
 <span class="sd">           number of independent flips in an independent sequence of draws</span>
-<span class="sd">            </span>
+
 <span class="sd">        α&amp;β : int or float.</span>
 <span class="sd">             parameters of the prior distribution on θ</span>
-<span class="sd">            </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span> <span class="o">=</span> <span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        simulate a single sequence of draws of length n, given probability θ</span>
-<span class="sd">            </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draws</span> <span class="o">=</span> <span class="p">(</span><span class="n">array</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">form_single_posterior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_num</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        form a posterior distribution after observing the first step_num elements of the draws</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        step_num: int. </span>
+<span class="sd">        step_num: int.</span>
 <span class="sd">               number of steps observed to form a posterior distribution</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        ------</span>
 <span class="sd">        the posterior distribution for sake of plotting in the subsequent steps</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">heads_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draws</span><span class="p">[:</span><span class="n">step_num</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="n">tails_num</span> <span class="o">=</span> <span class="n">step_num</span> <span class="o">-</span> <span class="n">heads_num</span>
-        
+
         <span class="k">return</span> <span class="n">st</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">+</span><span class="n">heads_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="o">+</span><span class="n">tails_num</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">form_posterior_series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">num_obs_list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        form a series of posterior distributions that form after observing different number of draws.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        num_obs_list: a list of int.</span>
 <span class="sd">               a list of the number of observations used to form a series of posterior distributions.</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">posterior_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">num_obs_list</span><span class="p">:</span>
@@ -733,7 +734,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 <span class="n">Bay_stat</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 
 <span class="n">num_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="c1"># this line for finite n</span>
-            <span class="mi">5000</span><span class="p">,</span> <span class="mi">10_000</span><span class="p">,</span> <span class="mi">50_000</span><span class="p">,</span> <span class="mi">100_000</span><span class="p">,</span> <span class="mi">200_000</span><span class="p">,</span> <span class="mi">300_000</span><span class="p">]</span>  <span class="c1"># this line for approximately infinite n </span>
+            <span class="mi">5000</span><span class="p">,</span> <span class="mi">10_000</span><span class="p">,</span> <span class="mi">50_000</span><span class="p">,</span> <span class="mi">100_000</span><span class="p">,</span> <span class="mi">200_000</span><span class="p">,</span> <span class="mi">300_000</span><span class="p">]</span>  <span class="c1"># this line for approximately infinite n</span>
 
 <span class="n">Bay_stat</span><span class="o">.</span><span class="n">form_posterior_series</span><span class="p">(</span><span class="n">num_list</span><span class="p">)</span>
 
@@ -747,7 +748,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">θ_values</span><span class="p">,</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">θ_values</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Posterior with n = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">num</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;P.D.F of Posterior Distributions&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span> 
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -755,7 +756,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/949c5a6057372ca88e64ddfc15c6d9692d509b09956ec75b715aebb95ccc8a92.png" src="_images/949c5a6057372ca88e64ddfc15c6d9692d509b09956ec75b715aebb95ccc8a92.png" />
+<img alt="_images/2f1cd91b9ee653ad0548efca4007d4c4aadad829eb342b1483e5221686ab7c13.png" src="_images/2f1cd91b9ee653ad0548efca4007d4c4aadad829eb342b1483e5221686ab7c13.png" />
 </div>
 </div>
 <p><strong>e)</strong> For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  <span class="math notranslate nohighlight">\(.05\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> quantiles for  posterior probabilities.</p>
@@ -811,37 +812,37 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
   <tbody>
     <tr>
       <th>upper</th>
-      <td>0.001543</td>
-      <td>0.000868</td>
-      <td>0.000603</td>
-      <td>0.000462</td>
-      <td>0.000374</td>
-      <td>0.117329</td>
-      <td>0.237639</td>
-      <td>0.235206</td>
-      <td>0.220799</td>
-      <td>0.268394</td>
-      <td>0.322252</td>
-      <td>0.341362</td>
-      <td>0.362493</td>
-      <td>0.356016</td>
+      <td>0.228520</td>
+      <td>0.097308</td>
+      <td>0.235534</td>
+      <td>0.349293</td>
+      <td>0.260634</td>
+      <td>0.185116</td>
+      <td>0.324234</td>
+      <td>0.293487</td>
+      <td>0.347833</td>
+      <td>0.321256</td>
+      <td>0.369972</td>
+      <td>0.396703</td>
+      <td>0.393947</td>
+      <td>0.378704</td>
     </tr>
     <tr>
       <th>lower</th>
-      <td>0.771480</td>
-      <td>0.569259</td>
-      <td>0.444067</td>
-      <td>0.362487</td>
-      <td>0.305746</td>
-      <td>0.558127</td>
-      <td>0.582446</td>
-      <td>0.516350</td>
-      <td>0.434206</td>
-      <td>0.454460</td>
-      <td>0.481969</td>
-      <td>0.433580</td>
-      <td>0.434377</td>
-      <td>0.406492</td>
+      <td>0.998457</td>
+      <td>0.902692</td>
+      <td>0.937587</td>
+      <td>0.953993</td>
+      <td>0.872224</td>
+      <td>0.652678</td>
+      <td>0.675766</td>
+      <td>0.582293</td>
+      <td>0.575503</td>
+      <td>0.512457</td>
+      <td>0.532139</td>
+      <td>0.490768</td>
+      <td>0.466650</td>
+      <td>0.429705</td>
     </tr>
   </tbody>
 </table>
@@ -867,7 +868,7 @@ F(a)=p_1,F(b)=p_2
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">posterior_prob_list</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Posterior Probabililty that &#39;</span><span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span> <span class="o">+</span><span class="s1">&#39; Ranges from </span><span class="si">%.2f</span><span class="s1"> to </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">left_value</span><span class="p">,</span> <span class="n">right_value</span><span class="p">),</span>
              <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">posterior_prob_list</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>  
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">posterior_prob_list</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">num_list</span><span class="p">[::</span><span class="mi">3</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Observations&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 
@@ -876,7 +877,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/71778a00dc1d8afd19d6de10281b2adb599eef6123dcb1a9f4ba264f9f14faca.png" src="_images/71778a00dc1d8afd19d6de10281b2adb599eef6123dcb1a9f4ba264f9f14faca.png" />
+<img alt="_images/8af4303c82a845863fbf40bd742ce9b9a253e4d2b645784073fd9fa6cae9b0e2.png" src="_images/8af4303c82a845863fbf40bd742ce9b9a253e4d2b645784073fd9fa6cae9b0e2.png" />
 </div>
 </div>
 <p>Notice that in the graph above the posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> typically exhibits a hump shape as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
@@ -895,11 +896,11 @@ F(a)=p_1,F(b)=p_2
 
 <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">num_list</span><span class="p">[</span><span class="mi">14</span><span class="p">:]):</span>
     <span class="n">ii</span> <span class="o">+=</span> <span class="mi">14</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">θ_values</span><span class="p">,</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">θ_values</span><span class="p">),</span> 
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">θ_values</span><span class="p">,</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">θ_values</span><span class="p">),</span>
             <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Posterior with n=</span><span class="si">%d</span><span class="s1"> thousand&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num</span><span class="o">/</span><span class="mi">1000</span><span class="p">))</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;P.D.F of Posterior Distributions&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span> 
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
@@ -908,7 +909,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c31e2441698382ed4d927beb628213dbf5e3a9c45308aac06fd51c91e6f9366c.png" src="_images/c31e2441698382ed4d927beb628213dbf5e3a9c45308aac06fd51c91e6f9366c.png" />
+<img alt="_images/89927529db71bb77944f1bf9f40e2dc42bac34445f4df2699b532feb4c514332.png" src="_images/89927529db71bb77944f1bf9f40e2dc42bac34445f4df2699b532feb4c514332.png" />
 </div>
 </div>
 <p>As <span class="math notranslate nohighlight">\(n\)</span> increases, we can see that the probability density functions <em>concentrate</em> on <span class="math notranslate nohighlight">\(0.4\)</span>, the true value of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
@@ -923,13 +924,13 @@ F(a)=p_1,F(b)=p_2
 
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mean_list</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Mean Values of Posterior Distribution&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mean_list</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>  
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mean_list</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">num_list</span><span class="p">[::</span><span class="mi">3</span><span class="p">])</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Observations&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">std_list</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Standard Deviations of Posterior Distribution&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">std_list</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>  
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">std_list</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">num_list</span><span class="p">[::</span><span class="mi">3</span><span class="p">])</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Observations&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 
@@ -938,7 +939,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9b6f1eda50ac7162791129761447bced0cea6c0e5d04313a4abd61ced07df9f1.png" src="_images/9b6f1eda50ac7162791129761447bced0cea6c0e5d04313a4abd61ced07df9f1.png" />
+<img alt="_images/6463525529c219edd6867d16027e4cd0553acb389abe54d25903172341e01456.png" src="_images/6463525529c219edd6867d16027e4cd0553acb389abe54d25903172341e01456.png" />
 </div>
 </div>
 </section>
@@ -982,7 +983,7 @@ F(a)=p_1,F(b)=p_2
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">)),</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95 th Quantile&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">)),</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;05 th Quantile&#39;</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>  
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">num_list</span><span class="p">[::</span><span class="mi">2</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Observations&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Bayesian Coverage Intervals of Posterior Distributions&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
@@ -993,7 +994,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5dd976681d6e8164a03ed6cd1e02756fd5eb710cfa3adbb49b9ab99af96c216b.png" src="_images/5dd976681d6e8164a03ed6cd1e02756fd5eb710cfa3adbb49b9ab99af96c216b.png" />
+<img alt="_images/2bb4569efdb37246a6a1566b52aab497c6f4220b2cf9ef6170920ca109904cab.png" src="_images/2bb4569efdb37246a6a1566b52aab497c6f4220b2cf9ef6170920ca109904cab.png" />
 </div>
 </div>
 <p>After observing a large number of outcomes, the  posterior distribution collapses around <span class="math notranslate nohighlight">\(0.4\)</span>.</p>

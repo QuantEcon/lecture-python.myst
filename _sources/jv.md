@@ -33,7 +33,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!pip install quantecon
 !pip install interpolation
 ```
 
@@ -46,7 +45,6 @@ In this section, we solve a simple on-the-job search model
 Let's start with some imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np

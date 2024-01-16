@@ -46,7 +46,6 @@ accuracy of alternative numerical methods.
 We will use the following imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np

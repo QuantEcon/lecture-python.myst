@@ -27,15 +27,6 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's in Anaconda, this lecture will need the following libraries:
-
-```{code-cell} ipython
----
-tags: [hide-output]
----
-!pip install quantecon
-```
-
 ## Overview
 
 This lecture describes a rational expectations version of the famous permanent income model of Milton Friedman {cite}`Friedman1956`.
@@ -56,7 +47,6 @@ Background readings on the linear-quadratic-Gaussian permanent income model are 
 Let's start with some imports
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -1016,4 +1006,3 @@ The proof for the general case is similar.
 [^f5]: A moving average representation for a process $y_t$ is said to be **fundamental** if the linear space spanned by $y^t$ is equal to the linear space spanned by $w^t$.  A time-invariant innovations representation, attained via the Kalman filter, is by construction fundamental.
 
 [^f8]: See {cite}`CampbellShiller88`, {cite}`LettLud2001`, {cite}`LettLud2004` for interesting applications of related ideas.
-

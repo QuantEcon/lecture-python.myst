@@ -343,8 +343,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <p>Let’s start with some standard imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -491,7 +490,7 @@ P =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 1, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 1, 1, 0])
 </pre></div>
 </div>
 </div>
@@ -551,7 +550,7 @@ P =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.25164
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.24843
 </pre></div>
 </div>
 </div>
@@ -574,7 +573,7 @@ always close to 0.25, at least for the <code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.249977
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.250722
 </pre></div>
 </div>
 </div>
@@ -587,11 +586,11 @@ always close to 0.25, at least for the <code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.26 s, sys: 0 ns, total: 1.26 s
-Wall time: 1.26 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.25 s, sys: 0 ns, total: 1.25 s
+Wall time: 1.25 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 1, ..., 1, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, ..., 1, 1, 1])
 </pre></div>
 </div>
 </div>
@@ -603,11 +602,11 @@ Wall time: 1.26 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 23.9 ms, sys: 0 ns, total: 23.9 ms
-Wall time: 23.6 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 14.4 ms, sys: 9.77 ms, total: 24.2 ms
+Wall time: 23.8 ms
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, ..., 0, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 0, ..., 0, 0, 0])
 </pre></div>
 </div>
 </div>
@@ -637,7 +636,7 @@ Wall time: 23.6 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;unemployed&#39;, &#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;unemployed&#39;, &#39;employed&#39;, &#39;unemployed&#39;, &#39;unemployed&#39;], dtype=&#39;&lt;U10&#39;)
 </pre></div>
 </div>
 </div>
@@ -649,7 +648,8 @@ Wall time: 23.6 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;unemployed&#39;, &#39;employed&#39;, &#39;employed&#39;, &#39;unemployed&#39;], dtype=&#39;&lt;U10&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;unemployed&#39;, &#39;unemployed&#39;, &#39;unemployed&#39;, &#39;unemployed&#39;],
+      dtype=&#39;&lt;U10&#39;)
 </pre></div>
 </div>
 </div>
@@ -662,7 +662,7 @@ Wall time: 23.6 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, 0])
 </pre></div>
 </div>
 </div>
@@ -1190,14 +1190,14 @@ the conditional distribution of <span class="math notranslate nohighlight">\(X_{
 <p>The <strong>law of iterated expectations</strong> states that</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \mathbb E [  h(X_{t + k}) ] 
+\mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \mathbb E [  h(X_{t + k}) ]
 \]</div>
 <p>where the outer <span class="math notranslate nohighlight">\( \mathbb E\)</span> on the left side is an unconditional distribution taken with respect to the marginal distribution  <span class="math notranslate nohighlight">\(\psi_t\)</span> of <span class="math notranslate nohighlight">\(X_t\)</span>
 (again see equation <a class="reference internal" href="#equation-mdfmc2">(25.6)</a>).</p>
 <p>To verify the law of iterated expectations, use  equation <a class="reference internal" href="#equation-mc-cce2">(25.11)</a> to substitute <span class="math notranslate nohighlight">\( (P^k h)(x)\)</span> for <span class="math notranslate nohighlight">\(E [ h(X_{t + k})  \mid X_t = x]\)</span>, write</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \psi_t P^k h, 
+\mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \psi_t P^k h,
 \]</div>
 <p>and note <span class="math notranslate nohighlight">\(\psi_t P^k h = \psi_{t+k} h = \mathbb E [  h(X_{t + k}) ] \)</span>.</p>
 </section>
@@ -1298,7 +1298,7 @@ conditions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6a58d567ef685f5f596473034d7a183f4592e28e4d19faa29efed4a782329686.png" src="_images/6a58d567ef685f5f596473034d7a183f4592e28e4d19faa29efed4a782329686.png" />
+<img alt="_images/8ae568d7dfbafd526e3564d4fe52a3bee9aa456a8c45b52dbd7f73e0907a4d5c.png" src="_images/8ae568d7dfbafd526e3564d4fe52a3bee9aa456a8c45b52dbd7f73e0907a4d5c.png" />
 </div>
 </div>
 </section>
@@ -1479,7 +1479,7 @@ and return the list of pages ordered by rank.</p>
 <span class="c1">#  * Q[i, j] = 1 if there is a link from i to j</span>
 <span class="c1">#  * Q[i, j] = 0 otherwise</span>
 <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> 
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">edges</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
     <span class="n">from_node</span><span class="p">,</span> <span class="n">to_node</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;\w&#39;</span><span class="p">,</span> <span class="n">edge</span><span class="p">)</span>

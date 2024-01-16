@@ -56,7 +56,7 @@ You can read about exchangeability [here](https://en.wikipedia.org/wiki/Exchange
 
 Because another term for **exchangeable** is **conditionally independent**,  we want   to convey an answer to the question *conditional on what?*
 
-We also tell why  an assumption of independence precludes  learning while 
+We also tell why  an assumption of independence precludes  learning while
 an assumption of conditional independence makes learning possible.
 
 Below, we'll often use
@@ -70,7 +70,6 @@ Let’s start with some imports:
 ---
 tags: [hide-output]
 ---
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, vectorize
@@ -88,7 +87,7 @@ An independently and identically distributed sequence is often abbreviated as II
 
 Two notions are involved
 
-- **independence** 
+- **independence**
 
 - **identically distributed**
 
@@ -181,7 +180,7 @@ We now drop into this setting a partially informed decision maker who knows
 
 - both $F$ and $G$, but
 
-- not the $F$ or $G$ that nature drew once-and-for-all at $t = -1$ 
+- not the $F$ or $G$ that nature drew once-and-for-all at $t = -1$
 
 So our decision maker does not know which of the two distributions nature selected.
 
@@ -306,7 +305,7 @@ Another way to say *use Bayes' Law* is to say *from a (subjective) joint distrib
 
 Let's dive into Bayes' Law in this context.
 
-Let $q$ represent the distribution that nature actually draws $w$ 
+Let $q$ represent the distribution that nature actually draws $w$
  from and let
 
 $$
@@ -519,7 +518,7 @@ distribution, and toward $1$ when $F$ is the true distribution).
 
 For example,
 in the above  example, under true distribution $F$,  $\pi$ will  be updated toward $0$ if $w$ falls into the interval
-$[0.524, 0.999]$, which occurs with probability $1 - .524 = .476$ under $F$. 
+$[0.524, 0.999]$, which occurs with probability $1 - .524 = .476$ under $F$.
 
 But this
 would occur with probability
@@ -623,7 +622,7 @@ T = 50
 π_paths_F = simulate(a=1, b=1, T=T, N=1000)
 ```
 
-In the above example,  for most paths $\pi_t \rightarrow 1$. 
+In the above example,  for most paths $\pi_t \rightarrow 1$.
 
 So Bayes' Law evidently eventually
 discovers the truth for most of our paths.
@@ -660,7 +659,7 @@ From the above graph, rates of convergence appear not to depend on whether $F$ o
 
 ### Graph of Ensemble Dynamics of $\pi_t$
 
-More insights about the dynamics of $\{\pi_t\}$ can be gleaned by computing 
+More insights about the dynamics of $\{\pi_t\}$ can be gleaned by computing
 conditional expectations of $\frac{\pi_{t+1}}{\pi_{t}}$ as functions of $\pi_t$ via integration with respect
 to the pertinent probability distribution:
 
@@ -738,7 +737,6 @@ We'll apply and dig deeper into some of the ideas presented in this lecture:
 
 * {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes**
   and their role in frequentist and Bayesian statistical theories
-* {doc}`this lecture <navy_captain>` studies  whether a World War II US Navy Captain's hunch that a (frequentist) decision rule that the Navy had told 
+* {doc}`this lecture <navy_captain>` studies  whether a World War II US Navy Captain's hunch that a (frequentist) decision rule that the Navy had told
   him to use was  inferior to a sequential rule that Abraham
   Wald had not yet designed.
-

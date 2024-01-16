@@ -283,14 +283,31 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p>sufficient statistics as data summaries</p></li>
 </ul>
 <p>We’ll use a matrix to represent a bivariate probability distribution and a vector to represent a univariate probability distribution</p>
-<p>As usual, we’ll start with some imports</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !pip install prettytable</span>
+<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>prettytable
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /opt/conda/envs/quantecon/lib/python3.11/site-packages (3.9.0)
+Requirement already satisfied: wcwidth in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from prettytable) (0.2.5)
+</pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>As usual, we’ll start with some imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -299,7 +316,6 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 <span class="kn">from</span> <span class="nn">matplotlib_inline.backend_inline</span> <span class="kn">import</span> <span class="n">set_matplotlib_formats</span>
 <span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;retina&#39;</span><span class="p">)</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -320,8 +336,8 @@ const thebe_selector_output = ".output, .cell_output"
 <p>The random variable <span class="math notranslate nohighlight">\(X(\omega)\)</span>  has a <strong>probability distribution</strong> that is induced by the underlying probability measure <span class="math notranslate nohighlight">\(\mu\)</span> and the function
 <span class="math notranslate nohighlight">\(X(\omega)\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-cdffromdensity">
-<span class="eqno">(10.1)<a class="headerlink" href="#equation-eq-cdffromdensity" title="Permalink to this equation">#</a></span>\[ 
-\textrm{Prob} (X \in A ) = \int_{\mathcal{G}} \mu(\omega) d \omega 
+<span class="eqno">(10.1)<a class="headerlink" href="#equation-eq-cdffromdensity" title="Permalink to this equation">#</a></span>\[
+\textrm{Prob} (X \in A ) = \int_{\mathcal{G}} \mu(\omega) d \omega
 \]</div>
 <p>where <span class="math notranslate nohighlight">\({\mathcal G}\)</span> is the subset of <span class="math notranslate nohighlight">\(\Omega\)</span> for which <span class="math notranslate nohighlight">\(X(\omega) \in A\)</span>.</p>
 <p>We call this the induced probability distribution of random variable <span class="math notranslate nohighlight">\(X\)</span>.</p>
@@ -348,7 +364,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p><strong>Scalar example</strong></p>
 <p>Consider the following discrete distribution</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 X  \sim \{{f_i}\}_{i=0}^{I-1},\quad f_i \geqslant 0, \quad \sum_i f_i = 1
 \]</div>
 <p>Draw a sample <span class="math notranslate nohighlight">\(x_0, x_1, \dots , x_{N-1}\)</span>, <span class="math notranslate nohighlight">\(N\)</span> draws of <span class="math notranslate nohighlight">\(X\)</span> from <span class="math notranslate nohighlight">\(\{f_i\}^I_{i=1}\)</span>.</p>
@@ -372,7 +388,7 @@ i &amp; = 0,\dots,I-1,\\
 N_i &amp; = \text{number of times} \ X = i,\\
 N &amp; = \sum^{I-1}_{i=0} N_i \quad \text{total number of draws},\\
 \tilde {f_i} &amp;  = \frac{N_i}{N} \sim \ \text{frequency of draws for which}\  X=i
-\end{aligned} 
+\end{aligned}
 \end{split}\]</div>
 <p>Key ideas that  justify connecting probability theory with statistics are laws of large numbers and central limit theorems</p>
 <p><strong>LLN:</strong></p>
@@ -394,12 +410,12 @@ N &amp; = \sum^{I-1}_{i=0} N_i \quad \text{total number of draws},\\
 <p>A  probability distribution <span class="math notranslate nohighlight">\(\textrm{Prob} (X \in A)\)</span> can  be described by its <strong>cumulative distribution function (CDF)</strong></p>
 <div class="math notranslate nohighlight">
 \[
-F_{X}(x) = \textrm{Prob}\{X\leq x\}. 
+F_{X}(x) = \textrm{Prob}\{X\leq x\}.
 \]</div>
 <p>Sometimes, but not always, a random variable can also be described by  <strong>density function</strong> <span class="math notranslate nohighlight">\(f(x)\)</span>
 that is related to its CDF by</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 \textrm{Prob} \{X\in B\} = \int_{t\in B}f(t)dt
 \]</div>
 <div class="math notranslate nohighlight">
@@ -429,7 +445,7 @@ about continuous-valued random variables.</p>
 <p>Define <span class="math notranslate nohighlight">\(f_i \equiv \textrm{Prob}\{X=i\}\)</span>
 and assemble  the non-negative vector</p>
 <div class="math notranslate nohighlight" id="equation-eq-discretedist">
-<span class="eqno">(10.2)<a class="headerlink" href="#equation-eq-discretedist" title="Permalink to this equation">#</a></span>\[\begin{split} 
+<span class="eqno">(10.2)<a class="headerlink" href="#equation-eq-discretedist" title="Permalink to this equation">#</a></span>\[\begin{split}
 f=\left[\begin{array}{c}
 f_{0}\\
 f_{1}\\
@@ -447,7 +463,7 @@ has <strong>parameters</strong>  <span class="math notranslate nohighlight">\(\{
 <p>We often work with special  distributions that  are  characterized by  a small number  parameters.</p>
 <p>In these special parametric  distributions,</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 f_i = g(i; \theta)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\theta \)</span> is a vector of parameters that is of much smaller dimension than <span class="math notranslate nohighlight">\(I\)</span>.</p>
@@ -462,13 +478,13 @@ f_i = g(i; \theta)
 <p>An example of a parametric probability distribution is  a <strong>geometric distribution</strong>.</p>
 <p>It is described by</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 f_{i} = \textrm{Prob}\{X=i\} = (1-\lambda)\lambda^{i},\quad \lambda \in [0,1], \quad i = 0, 1, 2, \ldots
 \]</div>
 <p>Evidently,  <span class="math notranslate nohighlight">\(\sum_{i=0}^{\infty}f_i=1\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(\theta\)</span> be a vector of parameters of the distribution described by <span class="math notranslate nohighlight">\(f\)</span>, then</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 f_i( \theta)\ge0, \sum_{i=0}^{\infty}f_i(\theta)=1
 \]</div>
 </section>
@@ -481,8 +497,8 @@ f_i( \theta)\ge0, \sum_{i=0}^{\infty}f_i(\theta)=1
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(A\)</span> is a subset of <span class="math notranslate nohighlight">\(\tilde{X}\)</span> and</p>
 <div class="math notranslate nohighlight">
-\[ 
-\textrm{Prob}\{X\in \tilde{X}\} =1 
+\[
+\textrm{Prob}\{X\in \tilde{X}\} =1
 \]</div>
 </section>
 </section>
@@ -493,7 +509,7 @@ f_i( \theta)\ge0, \sum_{i=0}^{\infty}f_i(\theta)=1
 <p>Let <span class="math notranslate nohighlight">\(X,Y\)</span> be two discrete random variables that take values:</p>
 <div class="math notranslate nohighlight">
 \[
-X\in\{0,\ldots,I-1\} 
+X\in\{0,\ldots,I-1\}
 \]</div>
 <div class="math notranslate nohighlight">
 \[
@@ -524,7 +540,7 @@ f_{ij}=\textrm{Prob}\{X=i,Y=j\} \geq 0
 \]</div>
 <div class="math notranslate nohighlight">
 \[
-\textrm{Prob}\{Y=j\}= \sum_{i=0}^{I-1}f_{ij} = \nu_j, \quad j=0,\ldots,J-1 
+\textrm{Prob}\{Y=j\}= \sum_{i=0}^{I-1}f_{ij} = \nu_j, \quad j=0,\ldots,J-1
 \]</div>
 <p>For example, let a joint distribution over <span class="math notranslate nohighlight">\((X,Y)\)</span> be</p>
 <div class="math notranslate nohighlight" id="equation-eq-example101discrete">
@@ -538,8 +554,8 @@ F = \left[
 \end{split}\]</div>
 <p>The implied  marginal distributions are:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split} 
-\begin{aligned} 
+\[\begin{split}
+\begin{aligned}
 \textrm{Prob} \{X=0\}&amp;=.25+.1=.35\\
 \textrm{Prob}\{X=1\}&amp; =.15+.5=.65\\
 \textrm{Prob}\{Y=0\}&amp;=.25+.15=.4\\
@@ -566,7 +582,7 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 <p>For a pair of discrete random variables, we have  the <strong>conditional distribution</strong></p>
 <div class="math notranslate nohighlight">
 \[
-\textrm{Prob}\{X=i|Y=j\}=\frac{f_{ij}}{\sum_{i}f_{ij}} 
+\textrm{Prob}\{X=i|Y=j\}=\frac{f_{ij}}{\sum_{i}f_{ij}}
 =\frac{\textrm{Prob} \{X=i, Y=j\} }{\textrm{Prob} \{Y=j\} }
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(i=0, \ldots,I-1, \quad j=0,\ldots,J-1\)</span>.</p>
@@ -591,12 +607,12 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 <h2><span class="section-number">10.8. </span>Statistical Independence<a class="headerlink" href="#statistical-independence" title="Permalink to this heading">#</a></h2>
 <p>Random variables X and Y are statistically <strong>independent</strong> if</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 \textrm{Prob}\{X=i,Y=j\}={f_ig_j}
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 \begin{aligned}
 \textrm{Prob}\{X=i\} &amp;=f_i\ge0， \sum{f_i}=1 \cr
 \textrm{Prob}\{Y=j\} &amp; =g_j\ge0， \sum{g_j}=1
@@ -617,10 +633,10 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\mu_{X} &amp; \equiv\mathbb{E}\left[X\right] 
-=\sum_{k}k \textrm{Prob}\{X=k\} \\ 
+\mu_{X} &amp; \equiv\mathbb{E}\left[X\right]
+=\sum_{k}k \textrm{Prob}\{X=k\} \\
 \sigma_{X}^{2} &amp; \equiv\mathbb{D}\left[X\right]=\sum_{k}\left(k-\mathbb{E}\left[X\right]\right)^{2}\textrm{Prob}\{X=k\}
-\end{aligned} 
+\end{aligned}
 \end{split}\]</div>
 <p>A continuous random variable having  density <span class="math notranslate nohighlight">\(f_{X}(x)\)</span>) has  mean and variance</p>
 <div class="math notranslate nohighlight">
@@ -678,7 +694,7 @@ X=F^{-1}(U),
 F_{X}\left(x\right)	&amp; =\textrm{Prob}\left\{ X\leq x\right\} \\
 	&amp; =\textrm{Prob}\left\{ F^{-1}\left(U\right)\leq x\right\} \\
 	&amp; =\textrm{Prob}\left\{ U\leq F\left(x\right)\right\} \\
-	&amp; =F\left(x\right) 
+	&amp; =F\left(x\right)
 \end{aligned}
 \end{split}\]</div>
 <p>where the last equality occurs  because <span class="math notranslate nohighlight">\(U\)</span> is distributed uniformly on <span class="math notranslate nohighlight">\([0,1]\)</span> while <span class="math notranslate nohighlight">\(F(x)\)</span> is a constant given <span class="math notranslate nohighlight">\(x\)</span> that also lies on <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
@@ -699,7 +715,7 @@ F(x)=\int_{0}^{\infty}\lambda e^{-\lambda x}=1-e^{-\lambda x}
 <p><span class="math notranslate nohighlight">\(X\)</span> is a random variable such that <span class="math notranslate nohighlight">\(U=F(X)\)</span>.</p>
 <p>The distribution <span class="math notranslate nohighlight">\(X\)</span> can be deduced from</p>
 <div class="math notranslate nohighlight">
-\[\begin{split} 
+\[\begin{split}
 \begin{aligned}
 U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 \implies &amp; \quad -U=e^{-\lambda X}\\
@@ -730,7 +746,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5ad276316ae0421fd5ec942909d7e9d95538dd5ef6c91d0b050179f8235981dc.png" src="_images/5ad276316ae0421fd5ec942909d7e9d95538dd5ef6c91d0b050179f8235981dc.png" />
+<img alt="_images/ff2454c5201a8231468d2408ca306742d7d77a1bf50c23aae91174f6c92ed6d7.png" src="_images/ff2454c5201a8231468d2408ca306742d7d77a1bf50c23aae91174f6c92ed6d7.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -741,14 +757,14 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ac3fb7b6e966a6c252c59b858a6d6963fceaca3bfc0c75d11e7088068dcdb85d.png" src="_images/ac3fb7b6e966a6c252c59b858a6d6963fceaca3bfc0c75d11e7088068dcdb85d.png" />
+<img alt="_images/f4cb8d559d86ab788bb6600e93ed629136458e7134c41225e675fb6410bf6626.png" src="_images/f4cb8d559d86ab788bb6600e93ed629136458e7134c41225e675fb6410bf6626.png" />
 </div>
 </div>
 <p><strong>Geometric distribution</strong></p>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> distributed geometrically, that is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{aligned} 
+\begin{aligned}
 \textrm{Prob}(X=i) &amp; =(1-\lambda)\lambda^i,\quad\lambda\in(0,1), \quad  i=0,1,\dots \\
  &amp; \sum_{i=0}^{\infty}\textrm{Prob}(X=i)=1\longleftrightarrow(1- \lambda)\sum_{i=0}^{\infty}\lambda^i=\frac{1-\lambda}{1-\lambda}=1
 \end{aligned}
@@ -760,7 +776,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 \textrm{Prob}(X\le i)&amp; =(1-\lambda)\sum_{j=0}^{i}\lambda^i\\
 &amp; =(1-\lambda)[\frac{1-\lambda^{i+1}}{1-\lambda}]\\
 &amp; =1-\lambda^{i+1}\\
-&amp; =F(X)=F_i \quad 
+&amp; =F(X)=F_i \quad
 \end{aligned}
 \end{split}\]</div>
 <p>Again, let <span class="math notranslate nohighlight">\(\tilde{U}\)</span> follow a uniform distribution and we want to find <span class="math notranslate nohighlight">\(X\)</span> such that <span class="math notranslate nohighlight">\(F(X)=\tilde{U}\)</span>.</p>
@@ -808,7 +824,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/112c326cc65ae9fa9f4558a8d06a122d717759f0b94410f5e3f9a9899d1e38ad.png" src="_images/112c326cc65ae9fa9f4558a8d06a122d717759f0b94410f5e3f9a9899d1e38ad.png" />
+<img alt="_images/c8bc381310ddce6650cca32cf040cd41bcbcf80bd434942ef6c0dc46ede6711f.png" src="_images/c8bc381310ddce6650cca32cf040cd41bcbcf80bd434942ef6c0dc46ede6711f.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -818,7 +834,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>62
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>70
 </pre></div>
 </div>
 </div>
@@ -843,7 +859,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9ae03c89db1f87b2fb2a571918014ba8096613f9fb8147a161c8b4479105c3c4.png" src="_images/9ae03c89db1f87b2fb2a571918014ba8096613f9fb8147a161c8b4479105c3c4.png" />
+<img alt="_images/bf666e0da5574c1a554914bf9f54044d1a2edc7a356d1cf04a9e9e781529df66.png" src="_images/bf666e0da5574c1a554914bf9f54044d1a2edc7a356d1cf04a9e9e781529df66.png" />
 </div>
 </div>
 </section>
@@ -861,13 +877,13 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 <h2><span class="section-number">10.12. </span>Geometric distribution<a class="headerlink" href="#geometric-distribution" title="Permalink to this heading">#</a></h2>
 <div class="math notranslate nohighlight">
 \[
-\textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots 
+\textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots
 \]</div>
 <p><span class="math notranslate nohighlight">\(\implies\)</span></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\mathbb{E}(X) &amp; =\frac{1}{p}\\\mathbb{D}(X) &amp; =\frac{1-p}{p^2} 
+\mathbb{E}(X) &amp; =\frac{1}{p}\\\mathbb{D}(X) &amp; =\frac{1-p}{p^2}
 \end{aligned}
 \end{split}\]</div>
 <p>We draw observations from the distribution and compare the sample mean and variance with the theoretical results.</p>
@@ -892,8 +908,8 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.331161 
-The sample variance is:  7.762677392079
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.329663 
+The sample variance is:  7.757961306431005
 
 The population mean is:  3.3333333333333335
 The population variance is:  7.777777777777778
@@ -920,7 +936,7 @@ the leading digit is more likely to be small than large.</p>
 <p>The mean and variance of a Benford distribution are</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{aligned} 
+\begin{aligned}
 \mathbb{E}\left[X\right]	 &amp;=\sum_{d=1}^{9}d\log_{10}\left(1+\frac{1}{d}\right)\simeq3.4402 \\
 \mathbb{V}\left[X\right]	 &amp; =\sum_{d=1}^{9}\left(d-\mathbb{E}\left[X\right]\right)^{2}\log_{10}\left(1+\frac{1}{d}\right)\simeq6.0565
 \end{aligned}
@@ -973,10 +989,10 @@ the leading digit is more likely to be small than large.</p>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be a random variable that represents the number of failures before we get <span class="math notranslate nohighlight">\(r\)</span> success.</p>
 <p>Its distribution is</p>
 <div class="math notranslate nohighlight">
-\[\begin{split} 
+\[\begin{split}
 \begin{aligned}
 X  &amp; \sim NB(r,p) \\
-\textrm{Prob}(X=k;r,p) &amp; = \begin{pmatrix}k+r-1 \\ r-1 \end{pmatrix}p^r(1-p)^{k} 
+\textrm{Prob}(X=k;r,p) &amp; = \begin{pmatrix}k+r-1 \\ r-1 \end{pmatrix}p^r(1-p)^{k}
 \end{aligned}
 \end{split}\]</div>
 <p>Here, we choose from among <span class="math notranslate nohighlight">\(k+r-1\)</span> possible outcomes  because the last draw is by definition a success.</p>
@@ -1007,8 +1023,8 @@ X  &amp; \sim NB(r,p) \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.321931 
-The sample variance is:  77.84802743123899
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.326577 
+The sample variance is:  77.774148463071
 
 The population mean is:  23.333333333333336
 The population variance is:  77.77777777777779
@@ -1024,7 +1040,7 @@ The population variance is:  77.77777777777779
 <h3><span class="section-number">10.13.1. </span>Univariate Gaussian distribution<a class="headerlink" href="#univariate-gaussian-distribution" title="Permalink to this heading">#</a></h3>
 <p>We write</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 X \sim N(\mu,\sigma^2)
 \]</div>
 <p>to indicate the probability distribution</p>
@@ -1052,8 +1068,8 @@ X \sim N(\mu,\sigma^2)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  4.6216479631482215e-05
-The sample standard deviation is:  0.09999059250383698
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -2.5696791128609393e-05
+The sample standard deviation is:  0.10004898494410892
 </pre></div>
 </div>
 </div>
@@ -1085,10 +1101,10 @@ f(x)&amp; = \begin{cases} \frac{1}{b-a}, &amp; a \leq x \leq b \\ \quad0, &amp; 
 \end{split}\]</div>
 <p>The population mean and variance are</p>
 <div class="math notranslate nohighlight">
-\[\begin{split} 
+\[\begin{split}
 \begin{aligned}
 \mathbb{E}(X) &amp; = \frac{a+b}{2} \\
-\mathbb{V}(X) &amp; = \frac{(b-a)^2}{12} 
+\mathbb{V}(X) &amp; = \frac{(b-a)^2}{12}
 \end{aligned}
 \end{split}\]</div>
 <div class="cell docutils container">
@@ -1113,8 +1129,8 @@ f(x)&amp; = \begin{cases} \frac{1}{b-a}, &amp; a \leq x \leq b \\ \quad0, &amp; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.997504768216741 
-The sample variance is:  8.327751972680227
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.998600037068522 
+The sample variance is:  8.334805948671056
 
 The population mean is:  15.0
 The population variance is:  8.333333333333334
@@ -1131,7 +1147,7 @@ The population variance is:  8.333333333333334
 <p>You have <span class="math notranslate nohighlight">\(5\%\)</span> chance to pass an interview and you know your salary will uniformly distributed in the interval 300~400 a day only if you pass.</p>
 <p>We can describe your daily salary as  a discrete-continuous variable with the following probabilities:</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 P(X=0)=0.95
 \]</div>
 <div class="math notranslate nohighlight">
@@ -1158,8 +1174,8 @@ f(x) = 0.0005
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.532953450650915 
-The sample variance is:  5865.024725694275
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.555027820946638 
+The sample variance is:  5875.111605495466
 </pre></div>
 </div>
 </div>
@@ -1178,7 +1194,7 @@ The sample variance is:  5865.024725694275
 \begin{aligned}
 \sigma^2 &amp;= 0.95\times(0-17.5)^2+\int_{300}^{400}(x-17.5)^2f(x)dx \\
 &amp;= 0.95\times17.5^2+0.0005\int_{300}^{400}(x-17.5)^2dx \\
-&amp;= 0.95\times17.5^2+0.0005 \times \frac{1}{3}(x-17.5)^3 \bigg|_{300}^{400} 
+&amp;= 0.95\times17.5^2+0.0005 \times \frac{1}{3}(x-17.5)^3 \bigg|_{300}^{400}
 \end{aligned}
 \end{split}\]</div>
 <div class="cell docutils container">
@@ -1242,8 +1258,8 @@ F=[f_{ij}]=\left[\begin{array}{cc}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.  1.  1. ...  0.  1.  0.]
- [10. 20. 20. ... 20. 20. 10.]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.  0.  0. ...  0.  1.  0.]
+ [10. 10. 20. ... 10. 20. 10.]]
 </pre></div>
 </div>
 </div>
@@ -1274,20 +1290,20 @@ F=[f_{ij}]=\left[\begin{array}{cc}
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>marginal distribution for x
-+---------+---------------------+
-| x_value |        x_prob       |
-+---------+---------------------+
-|    0    |       0.500902      |
-|    1    | 0.49909800000000004 |
-+---------+---------------------+
++---------+----------+
+| x_value |  x_prob  |
++---------+----------+
+|    0    | 0.499953 |
+|    1    | 0.500047 |
++---------+----------+
 
 marginal distribution for y
-+---------+----------+
-| y_value |  y_prob  |
-+---------+----------+
-|    10   | 0.399821 |
-|    20   | 0.600179 |
-+---------+----------+
++---------+--------------------+
+| y_value |       y_prob       |
++---------+--------------------+
+|    10   |      0.400607      |
+|    20   | 0.5993930000000001 |
++---------+--------------------+
 </pre></div>
 </div>
 </div>
@@ -1324,20 +1340,20 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
-+---------+--------------------+---------------------+
-| y_value |     prob(x=0)      |      prob(x=1)      |
-+---------+--------------------+---------------------+
-|    10   | 0.7517113908474042 | 0.24828860915259576 |
-|    20   | 0.3338204102442771 |  0.6661795897557229 |
-+---------+--------------------+---------------------+
++---------+---------------------+---------------------+
+| y_value |      prob(x=0)      |      prob(x=1)      |
++---------+---------------------+---------------------+
+|    10   |  0.749602478239272  | 0.25039752176072805 |
+|    20   | 0.33309865146906953 |  0.6669013485309305 |
++---------+---------------------+---------------------+
 
 conditional distribution for y
-+---------+--------------------+---------------------+
-| x_value |     prob(y=10)     |      prob(y=20)     |
-+---------+--------------------+---------------------+
-|    0    | 0.6000175683067746 | 0.39998243169322545 |
-|    1    | 0.1989008170740015 |  0.8010991829259985 |
-+---------+--------------------+---------------------+
++---------+---------------------+---------------------+
+| x_value |      prob(y=10)     |      prob(y=20)     |
++---------+---------------------+---------------------+
+|    0    |  0.6006484609553298 | 0.39935153904467025 |
+|    1    | 0.20060314330452939 |  0.7993968566954706 |
++---------+---------------------+---------------------+
 </pre></div>
 </div>
 </div>
@@ -1541,8 +1557,8 @@ x=x_2 &amp; \vdots &amp; \frac{0.1}{0.5}=0.2 &amp; \frac{0.4}{0.5}=0.8 \\
  +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    0    | 0.499536 |
-|    1    | 0.500464 |
+|    0    | 0.499926 |
+|    1    | 0.500074 |
 |   sum   |   1.0    |
 +---------+----------+
 
@@ -1550,8 +1566,8 @@ marginal distribution for y
  +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    10   | 0.400706 |
-|    20   | 0.599294 |
+|    10   | 0.400563 |
+|    20   | 0.599437 |
 |   sum   |   1.0    |
 +---------+----------+
 </pre></div>
@@ -1567,20 +1583,20 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
- +---------+--------------------+--------------------+-----+
-| x_value |         0          |         1          | sum |
-+---------+--------------------+--------------------+-----+
-|    10   | 0.7493249414782908 | 0.2506750585217092 | 1.0 |
-|    20   | 0.3325195980603844 | 0.6674804019396157 | 1.0 |
-+---------+--------------------+--------------------+-----+
+ +---------+---------------------+---------------------+-----+
+| x_value |          0          |          1          | sum |
++---------+---------------------+---------------------+-----+
+|    10   |  0.749073179499854  | 0.25092682050014603 | 1.0 |
+|    20   | 0.33343787587352797 |  0.666562124126472  | 1.0 |
++---------+---------------------+---------------------+-----+
 
 conditional distribution for y
- +---------+---------------------+---------------------+-----+
-| y_value |          10         |          20         | sum |
-+---------+---------------------+---------------------+-----+
-|    0    |  0.6010757983408603 | 0.39892420165913967 | 1.0 |
-|    1    | 0.20070774321429713 |  0.7992922567857028 | 1.0 |
-+---------+---------------------+---------------------+-----+
+ +---------+---------------------+--------------------+-----+
+| y_value |          10         |         20         | sum |
++---------+---------------------+--------------------+-----+
+|    0    |  0.6001908282425799 | 0.3998091717574201 | 1.0 |
+|    1    | 0.20099425285057812 | 0.7990057471494219 | 1.0 |
++---------+---------------------+--------------------+-----+
 </pre></div>
 </div>
 </div>
@@ -1622,9 +1638,9 @@ conditional distribution for y
  +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    10   | 0.300663 |
-|    20   | 0.399391 |
-|    30   | 0.299946 |
+|    10   | 0.300482 |
+|    20   | 0.399327 |
+|    30   | 0.300191 |
 |   sum   |   1.0    |
 +---------+----------+
 
@@ -1632,8 +1648,8 @@ marginal distribution for y
  +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    1    | 0.449498 |
-|    2    | 0.550502 |
+|    1    | 0.449434 |
+|    2    | 0.550566 |
 |   sum   |   1.0    |
 +---------+----------+
 </pre></div>
@@ -1651,18 +1667,18 @@ marginal distribution for y
  +---------+---------------------+---------------------+---------------------+-----+
 | x_value |          10         |          20         |          30         | sum |
 +---------+---------------------+---------------------+---------------------+-----+
-|    1    |  0.4452611580029277 | 0.22137362123969406 | 0.33336522075737823 | 1.0 |
-|    2    | 0.18259515860069536 |  0.5447464314389412 | 0.27265840996036345 | 1.0 |
+|    1    |  0.4452311129109057 | 0.22134729459720448 |  0.3334215924918898 | 1.0 |
+|    2    | 0.18232146554636502 |  0.5446140880475728 | 0.27306444640606214 | 1.0 |
 +---------+---------------------+---------------------+---------------------+-----+
 
 conditional distribution for y
- +---------+---------------------+---------------------+-----+
-| y_value |          1          |          2          | sum |
-+---------+---------------------+---------------------+-----+
-|    10   |  0.665675523759159  | 0.33432447624084105 | 1.0 |
-|    20   | 0.24914682604264993 |  0.7508531739573501 | 1.0 |
-|    30   | 0.49957992438638954 |  0.5004200756136105 | 1.0 |
-+---------+---------------------+---------------------+-----+
+ +---------+--------------------+--------------------+-----+
+| y_value |         1          |         2          | sum |
++---------+--------------------+--------------------+-----+
+|    10   | 0.6659367283231608 | 0.3340632716768392 | 1.0 |
+|    20   | 0.2491216471713658 | 0.7508783528286341 | 1.0 |
+|    30   | 0.4991855185531878 | 0.5008144814468122 | 1.0 |
++---------+--------------------+--------------------+-----+
 </pre></div>
 </div>
 </div>
@@ -1672,12 +1688,12 @@ conditional distribution for y
 <h2><span class="section-number">10.16. </span>A Continuous Bivariate Random Vector<a class="headerlink" href="#a-continuous-bivariate-random-vector" title="Permalink to this heading">#</a></h2>
 <p>A two-dimensional Gaussian distribution has  joint density</p>
 <div class="math notranslate nohighlight">
-\[ 
-f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2)}\left(\frac{(x-\mu_1)^2}{\sigma_1^2}-\frac{2\rho(x-\mu_1)(y-\mu_2)}{\sigma_1\sigma_2}+\frac{(y-\mu_2)^2}{\sigma_2^2}\right)\right] 
+\[
+f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2)}\left(\frac{(x-\mu_1)^2}{\sigma_1^2}-\frac{2\rho(x-\mu_1)(y-\mu_2)}{\sigma_1\sigma_2}+\frac{(y-\mu_2)^2}{\sigma_2^2}\right)\right]
 \]</div>
 <div class="math notranslate nohighlight">
 \[
-\frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}\exp\left[-\frac{1}{2(1-\rho^2)}\left(\frac{(x-\mu_1)^2}{\sigma_1^2}-\frac{2\rho(x-\mu_1)(y-\mu_2)}{\sigma_1\sigma_2}+\frac{(y-\mu_2)^2}{\sigma_2^2}\right)\right] 
+\frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}\exp\left[-\frac{1}{2(1-\rho^2)}\left(\frac{(x-\mu_1)^2}{\sigma_1^2}-\frac{2\rho(x-\mu_1)(y-\mu_2)}{\sigma_1\sigma_2}+\frac{(y-\mu_2)^2}{\sigma_2^2}\right)\right]
 \]</div>
 <p>We start with a  bivariate normal distribution pinned down by</p>
 <div class="math notranslate nohighlight">
@@ -1787,10 +1803,10 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.0023992935771164703 2.236355843901094
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.0033915154669934187 2.2361944061298753
 </pre></div>
 </div>
-<img alt="_images/6f0114236d557166e9cd4bcede156732590579625b43e403ebf3ec38deba87b5.png" src="_images/6f0114236d557166e9cd4bcede156732590579625b43e403ebf3ec38deba87b5.png" />
+<img alt="_images/62b4f36908380c36feca363899d2ffdbd853f6a3b407ef94d255e947dd470455.png" src="_images/62b4f36908380c36feca363899d2ffdbd853f6a3b407ef94d255e947dd470455.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1805,10 +1821,10 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.999996403055951 0.9999356653958039
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.99813369550081 0.9991098050285391
 </pre></div>
 </div>
-<img alt="_images/e0b365251c38dc03303519f2f7e707156942f69a5a290545c9e677a85cb2a883.png" src="_images/e0b365251c38dc03303519f2f7e707156942f69a5a290545c9e677a85cb2a883.png" />
+<img alt="_images/bee62a66927ee341bc20624712259df7f364118ccfb82cbbc07f13b6a82d03e4.png" src="_images/bee62a66927ee341bc20624712259df7f364118ccfb82cbbc07f13b6a82d03e4.png" />
 </div>
 </div>
 <p><strong>Conditional distribution</strong></p>
@@ -1817,8 +1833,8 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 \[\begin{split}
 \begin{aligned} \\
 [X|Y &amp;= y ]\sim \mathbb{N}\bigg[\mu_X+\rho\sigma_X\frac{y-\mu_Y}{\sigma_Y},\sigma_X^2(1-\rho^2)\bigg] \\
-[Y|X &amp;= x ]\sim \mathbb{N}\bigg[\mu_Y+\rho\sigma_Y\frac{x-\mu_X}{\sigma_X},\sigma_Y^2(1-\rho^2)\bigg] 
-\end{aligned} 
+[Y|X &amp;= x ]\sim \mathbb{N}\bigg[\mu_Y+\rho\sigma_Y\frac{x-\mu_X}{\sigma_X},\sigma_Y^2(1-\rho^2)\bigg]
+\end{aligned}
 \end{split}\]</div>
 <p>Let’s approximate  the joint density by discretizing and mapping the approximating joint density into a  matrix.</p>
 <p>We can compute the discretized marginal density  by just using matrix algebra and  noting that</p>
@@ -1866,7 +1882,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/99ccb446ddd2c7af28989079aba0b02514f18f30861c6133d53b9ba7a91159bd.png" src="_images/99ccb446ddd2c7af28989079aba0b02514f18f30861c6133d53b9ba7a91159bd.png" />
+<img alt="_images/a28de31ed16603d3ea0728ac9c9c2b137ec7df00d680d0303e9cf13ba78518a6.png" src="_images/a28de31ed16603d3ea0728ac9c9c2b137ec7df00d680d0303e9cf13ba78518a6.png" />
 </div>
 </div>
 <p>Fix <span class="math notranslate nohighlight">\(x=1\)</span>.</p>
@@ -1897,7 +1913,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3377d5568d96a2cea42ba6ddd9b19e0518503796e89234a1cc5dd8c0c23df3b8.png" src="_images/3377d5568d96a2cea42ba6ddd9b19e0518503796e89234a1cc5dd8c0c23df3b8.png" />
+<img alt="_images/386f4c7b3dec4abdd86a3970ec0fcbc03ce974183de8b995305b15de591837ff.png" src="_images/386f4c7b3dec4abdd86a3970ec0fcbc03ce974183de8b995305b15de591837ff.png" />
 </div>
 </div>
 <p>We compare  with the analytically computed parameters and note that they are close.</p>
@@ -1928,7 +1944,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 <p>Evidently, <span class="math notranslate nohighlight">\(Z\)</span> takes values from <span class="math notranslate nohighlight">\(\bar{Z}\)</span> defined as follows:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{aligned} 
+\begin{aligned}
 \bar{X} &amp; =\{0,1,\ldots,I-1\};\qquad f_i= \textrm{Prob} \{X=i\}\\
 \bar{Y} &amp; =\{0,1,\ldots,J-1\};\qquad g_j= \textrm{Prob}\{Y=j\}\\
 \bar{Z}&amp; =\{0,1,\ldots,I+J-2\};\qquad h_k=  \textrm{Prob} \{X+Y=k\}
@@ -1944,8 +1960,8 @@ h_k&amp; =f_0g_k+f_1g_{k-1}+\ldots+f_{k-1}g_1+f_kg_0 \qquad \text{for}\quad k=0,
 \end{split}\]</div>
 <p>Thus, we have:</p>
 <div class="math notranslate nohighlight">
-\[ 
-h_k=\sum_{i=0}^{k} f_ig_{k-i} \equiv f*g 
+\[
+h_k=\sum_{i=0}^{k} f_ig_{k-i} \equiv f*g
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(f * g\)</span> denotes the <strong>convolution</strong> of the  <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> sequences.</p>
 <p>Similarly, for  two random variables <span class="math notranslate nohighlight">\(X,Y\)</span> with  densities <span class="math notranslate nohighlight">\(f_{X}, g_{Y}\)</span>, the density of <span class="math notranslate nohighlight">\(Z=X+Y\)</span> is</p>
@@ -2179,19 +2195,19 @@ C(u_1,u_2,\dots,u_n) = H[F^{-1}_1(u_1),F^{-1}_2(u_2),\dots,F^{-1}_N(u_N)]
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distribution for x
-+---------+---------+
-| x_value |  x_prob |
-+---------+---------+
-|    0    | 0.59998 |
-|    1    | 0.40002 |
-+---------+---------+
++---------+----------+
+| x_value |  x_prob  |
++---------+----------+
+|    0    | 0.600646 |
+|    1    | 0.399354 |
++---------+----------+
 distribution for y
-+---------+---------------------+
-| y_value |        y_prob       |
-+---------+---------------------+
-|    0    | 0.30099699999999996 |
-|    1    |       0.699003      |
-+---------+---------------------+
++---------+----------+
+| y_value |  y_prob  |
++---------+----------+
+|    0    | 0.300605 |
+|    1    | 0.699395 |
++---------+----------+
 </pre></div>
 </div>
 </div>
@@ -2266,10 +2282,10 @@ distribution for y
 +------------+------------+----------+
 | c1_x_value | c1_y_value | c1_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.179807 |
-|     0      |     1      | 0.419938 |
-|     1      |     0      | 0.119846 |
-|     1      |     1      | 0.280409 |
+|     0      |     0      | 0.179779 |
+|     0      |     1      | 0.41976  |
+|     1      |     0      | 0.120015 |
+|     1      |     1      | 0.280446 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -2303,16 +2319,16 @@ distribution for y
 +------------+-----------+
 | c1_x_value | c1_x_prob |
 +------------+-----------+
-|     0      |  0.599745 |
-|     1      |  0.400255 |
+|     0      |  0.599539 |
+|     1      |  0.400461 |
 +------------+-----------+
 marginal distribution for y
-+------------+---------------------+
-| c1_y_value |      c1_y_prob      |
-+------------+---------------------+
-|     0      | 0.29965299999999995 |
-|     1      |       0.700347      |
-+------------+---------------------+
++------------+-----------+
+| c1_y_value | c1_y_prob |
++------------+-----------+
+|     0      |  0.299794 |
+|     1      |  0.700206 |
++------------+-----------+
 </pre></div>
 </div>
 </div>
@@ -2380,10 +2396,10 @@ marginal distribution for y
 +------------+------------+----------+
 | c2_x_value | c2_y_value | c2_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.300197 |
-|     0      |     1      | 0.298985 |
+|     0      |     0      | 0.300361 |
+|     0      |     1      | 0.299724 |
 |     1      |     0      |   0.0    |
-|     1      |     1      | 0.400818 |
+|     1      |     1      | 0.399915 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -2417,16 +2433,16 @@ marginal distribution for y
 +------------+-----------+
 | c2_x_value | c2_x_prob |
 +------------+-----------+
-|     0      |  0.599182 |
-|     1      |  0.400818 |
+|     0      |  0.600085 |
+|     1      |  0.399915 |
 +------------+-----------+
 marginal distribution for y
-+------------+---------------------+
-| c2_y_value |      c2_y_prob      |
-+------------+---------------------+
-|     0      | 0.30019700000000005 |
-|     1      |       0.699803      |
-+------------+---------------------+
++------------+-----------+
+| c2_y_value | c2_y_prob |
++------------+-----------+
+|     0      |  0.300361 |
+|     1      |  0.699639 |
++------------+-----------+
 </pre></div>
 </div>
 </div>

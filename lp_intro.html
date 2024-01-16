@@ -271,7 +271,6 @@ a linear objective function subject to a set of  linear equality and/or inequali
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linprog</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Polygon</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -374,10 +373,10 @@ to maximize its revenue.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="s2">&quot;$x_1 \geq 0$&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 
 <span class="c1"># Draw the feasible region</span>
-<span class="n">feasible_set</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
-                                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> 
-                                 <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> 
-                                 <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span> 
+<span class="n">feasible_set</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+                                 <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+                                 <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
                        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">feasible_set</span><span class="p">)</span>
 
@@ -519,12 +518,12 @@ leaving it with  a bank account balance equal to <span class="math notranslate n
 \end{split}\]</div>
 <p>Let</p>
 <div class="math notranslate nohighlight">
-\[\begin{split} 
+\[\begin{split}
 A = \begin{bmatrix}
-a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} \\ 
-a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} \\ 
-  &amp;   &amp; \vdots &amp;   \\ 
-a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn} \\ 
+a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} \\
+a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} \\
+  &amp;   &amp; \vdots &amp;   \\
+a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn} \\
 \end{bmatrix}, \quad
 b = \begin{bmatrix} b_1 \\ b_2 \\ \vdots \\ b_m \\ \end{bmatrix}, \quad
 c = \begin{bmatrix} c_1 \\ c_2 \\ \vdots \\ c_n \\ \end{bmatrix}, \quad
@@ -799,10 +798,10 @@ there is an <strong>dual</strong> linear programming problem that takes the form
 <div class="math notranslate nohighlight">
 \[\begin{split}
 A = \begin{bmatrix}
-a_1' \\ 
-a_2' \\ 
-\ \\ 
-a_m' \\ 
+a_1' \\
+a_2' \\
+\ \\
+a_m' \\
 \end{bmatrix}.
 \end{split}\]</div>
 <p>To construct the  dual of linear programming problem <a class="reference internal" href="#equation-linprog">(20.1)</a>, we proceed as follows:</p>
@@ -880,13 +879,13 @@ a_m' \\
 <p>The duality theorems provide the foundations of enlightening economic interpretations of linear programming problems.</p>
 <p><strong>Weak duality:</strong> For linear programming problem <a class="reference internal" href="#equation-linprog">(20.1)</a>, if <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> are feasible solutions to the primal and the dual problems, respectively, then</p>
 <div class="math notranslate nohighlight">
-\[ 
-b'p \le c'x 
+\[
+b'p \le c'x
 \]</div>
 <p><strong>Strong duality:</strong> For linear programming problem <a class="reference internal" href="#equation-linprog">(20.1)</a>, if the primal problem has an optimal solution <span class="math notranslate nohighlight">\(x\)</span>, then the dual problem also has an optimal solution. Denote an optimal solution of the dual problem as <span class="math notranslate nohighlight">\(p\)</span>. Then</p>
 <div class="math notranslate nohighlight">
-\[ 
-b'p = c'x 
+\[
+b'p = c'x
 \]</div>
 <p>According to strong duality, we can find the optimal value for the primal problem by solving the dual problem.</p>
 <p>But the dual problem tells us even more as we shall see next.</p>
@@ -895,7 +894,7 @@ b'p = c'x
 <p>Let <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> be feasible solutions to the primal problem <a class="reference internal" href="#equation-linprog">(20.1)</a> and its dual problem, respectively.</p>
 <p>Then <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> are also  optimal solutions of the primal and dual problems if and only if:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split} 
+\[\begin{split}
 p_i (a_i' x - b_i) = 0, \quad \forall i, \\
 x_j (A_j' p - c_j) = 0, \quad \forall j.
 \end{split}\]</div>
@@ -1037,7 +1036,7 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
                    <span class="p">(</span>   <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
 
 <span class="c1"># Solve the dual problem</span>
-<span class="n">res_ex2_dual</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">c_ex2_dual</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A_eq_ex2_dual</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b_eq_ex2_dual</span><span class="p">,</span> 
+<span class="n">res_ex2_dual</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">c_ex2_dual</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A_eq_ex2_dual</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b_eq_ex2_dual</span><span class="p">,</span>
                        <span class="n">A_ub</span><span class="o">=</span><span class="n">A_ub_ex2_dual</span><span class="p">,</span> <span class="n">b_ub</span><span class="o">=</span><span class="n">b_ub_ex2_dual</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds_ex2_dual</span><span class="p">)</span>
 
 <span class="n">res_ex2_dual</span>

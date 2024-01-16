@@ -12,11 +12,19 @@ kernelspec:
 ---
 
 (likelihood-ratio-process)=
-# Incorrect Models 
+# Incorrect Models
+
+In addition to what's in Anaconda, this lecture will need the following libraries:
+```{code-cell} ipython
+---
+tags: [hide-output]
+---
+!pip install numpyro jax
+```
 
 ## Overview
 
-This  is a sequel to {doc}`this  quantecon lecture <likelihood_bayes>`.  
+This  is a sequel to {doc}`this  quantecon lecture <likelihood_bayes>`.
 
 We discuss  two ways to create compound lottery and their consequences.
 
@@ -39,9 +47,9 @@ That lecture studied an agent who knew both $f$ and $g$ but  did not know which 
 The agent represented that ignorance  by assuming that nature had chosen  $f$ or $g$ by  flipping an unfair coin that put probability  $\pi_{-1}$ on probability distribution $f$.
 
 That assumption allowed the agent to construct a subjective joint probability distribution over the
-random sequence $\{W_t\}_{t=0}^\infty$.  
+random sequence $\{W_t\}_{t=0}^\infty$.
 
-We studied how the agent would then use the laws of conditional probability and an observed   history $w^t =\{w_s\}_{t=0}^t$   to form   
+We studied how the agent would then use the laws of conditional probability and an observed   history $w^t =\{w_s\}_{t=0}^t$   to form
 
 $$
 \pi_t = E [ \textrm{nature chose distribution}  f | w^t] , \quad  t = 0, 1, 2, \ldots
@@ -54,11 +62,11 @@ The reason is that  now the wage sequence is actually described by a different s
 Thus, we change the {doc}`quantecon lecture <likelihood_bayes>` specification in the following way.
 
 Now, **each period** $t \geq 0$, nature flips a possibly unfair coin that comes up $f$ with probability $\alpha$
-and $g$ with probability $1 -\alpha$.  
+and $g$ with probability $1 -\alpha$.
 
-Thus, naturally perpetually draws from the **mixture distribution** with c.d.f. 
+Thus, naturally perpetually draws from the **mixture distribution** with c.d.f.
 
-$$ 
+$$
 H(w ) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
 $$
 
@@ -72,12 +80,12 @@ permanently draws from that distribution.
 Our second type of agent knows, correctly, that nature mixes $f$ and $g$ with mixing probability $\alpha \in (0,1)$
 each period, though the agent doesn't know the mixing parameter.
 
-Our first type of agent applies the learning algorithm described in {doc}`this  quantecon lecture <likelihood_bayes>`>.
+Our first type of agent applies the learning algorithm described in {doc}`this  quantecon lecture <likelihood_bayes>`.
 
 In the context of the statistical model that prevailed in that lecture, that was a good learning algorithm and it enabled the Bayesian learner
 eventually to learn the distribution that nature had drawn at time $-1$.
 
-This is because the agent's statistical model was *correct* in the sense of being aligned with the data 
+This is because the agent's statistical model was *correct* in the sense of being aligned with the data
 generating process.
 
 But in the present context, our type 1 decision maker's model is incorrect because the model $h$ that actually
@@ -94,17 +102,17 @@ We'll tell the sense in which it is closest.
 Our second type of agent understands that nature mixes between $f$ and $g$ each period with a fixed mixing
 probability $\alpha$.
 
-But  the agent doesn't know $\alpha$. 
+But  the agent doesn't know $\alpha$.
 
 The agent sets out to learn $\alpha$ using Bayes' law applied to his model.
 
 His model is correct in the sense that
 it includes the actual data generating process $h$ as a possible distribution.
 
-In this lecture, we'll learn about 
+In this lecture, we'll learn about
 
 * how nature can *mix* between two distributions $f$ and $g$ to create a new distribution $h$.
-   
+
 * The Kullback-Leibler statistical divergence <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence> that governs statistical learning under an incorrect statistical model
 
 * A useful Python function `numpy.searchsorted` that,  in conjunction with a uniform random number generator, can be used to sample from an arbitrary distribution
@@ -114,7 +122,6 @@ As usual, we'll start by importing some Python tools.
 ```{code-cell} ipython3
 :hide-output: false
 
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -201,10 +208,10 @@ l_seq_f = np.cumprod(l_arr_f, axis=1)
 
 ## Sampling from  Compound Lottery $H$
 
-We implement two methods  to draw samples from 
-our mixture model $\alpha F + (1-\alpha) G$.  
+We implement two methods  to draw samples from
+our mixture model $\alpha F + (1-\alpha) G$.
 
-We'll generate samples using each of them and verify that they match well. 
+We'll generate samples using each of them and verify that they match well.
 
 Here is pseudo code for a direct "method 1" for drawing from our compound lottery:
 
@@ -212,11 +219,11 @@ Here is pseudo code for a direct "method 1" for drawing from our compound lotter
 
   * use the numpy.random.choice function to flip an unfair coin that selects distribution $F$ with prob $\alpha$
   and $G$ with prob $1 -\alpha$
-  
+
 * Step two:
-  
+
   * draw from either $F$ or $G$, as determined by the coin flip.
-  
+
 * Step three:
 
   * put the first two steps in a big loop and do them for each realization of $w$
@@ -230,13 +237,13 @@ In other words, if $X \sim F(x)$ we can generate a random sample from $F$ by dra
 a uniform distribution on $[0,1]$ and computing $F^{-1}(U)$.
 
 
-We'll  use this  fact 
+We'll  use this  fact
 in conjunction with the `numpy.searchsorted` command to sample from $H$ directly.
 
 See <https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html> for the
 `searchsorted` function.
 
-See the [Mr. P Solver video on Monte Carlo simulation](https://www.google.com/search?q=Mr.+P+Solver+video+on+Monte+Carlo+simulation&oq=Mr.+P+Solver+video+on+Monte+Carlo+simulation) to see other applications of this powerful trick. 
+See the [Mr. P Solver video on Monte Carlo simulation](https://www.google.com/search?q=Mr.+P+Solver+video+on+Monte+Carlo+simulation&oq=Mr.+P+Solver+video+on+Monte+Carlo+simulation) to see other applications of this powerful trick.
 
 In the Python code below, we'll use both of our methods and confirm that each of them does a good job of sampling
 from our target mixture distribution.
@@ -298,7 +305,7 @@ plt.show()
 
 **Note:** With numba acceleration the first method is actually only slightly slower than the second when we generated 1,000,000 samples.
 
-## Type 1 Agent 
+## Type 1 Agent
 
 We'll now study what our type 1 agent learns
 
@@ -403,7 +410,7 @@ the batch of data $ \left\{ w_{i}\right\} _{i=1}^{t+1} $.
 
 ## What a type 1 Agent Learns when Mixture $H$ Generates Data
 
-We now study what happens when the mixture distribution $h;\alpha$  truly generated the data each period.   
+We now study what happens when the mixture distribution $h;\alpha$  truly generated the data each period.
 
 A submartingale or supermartingale continues to describe $\pi_t$
 
@@ -430,13 +437,13 @@ def simulate_mixed(α, T=50, N=500):
 
 def plot_π_seq(α, π1=0.2, π2=0.8, T=200):
     """
-    Compute and plot π_seq and the log likelihood ratio process 
+    Compute and plot π_seq and the log likelihood ratio process
     when the mixed distribution governs the data.
     """
 
     l_arr_mixed = simulate_mixed(α, T=T, N=50)
     l_seq_mixed = np.cumprod(l_arr_mixed, axis=1)
-    
+
     T = l_arr_mixed.shape[1]
     π_seq_mixed = np.empty((2, T+1))
     π_seq_mixed[:, 0] = π1, π2
@@ -444,7 +451,7 @@ def plot_π_seq(α, π1=0.2, π2=0.8, T=200):
     for t in range(T):
         for i in range(2):
             π_seq_mixed[i, t+1] = update(π_seq_mixed[i, t], l_arr_mixed[0, t])
-    
+
     # plot
     fig, ax1 = plt.subplots()
     for i in range(2):
@@ -471,7 +478,7 @@ The above graph shows a sample path of the log likelihood ratio process as the b
 sample paths of $\pi_t$ that start from two distinct initial conditions.
 
 
-Let's see what happens when we change $\alpha$ 
+Let's see what happens when we change $\alpha$
 
 ```{code-cell} ipython3
 plot_π_seq(α = 0.2)
@@ -487,20 +494,20 @@ $$ h(w) \equiv h(w | \alpha) = \alpha f(w) + (1-\alpha) g(w) $$
 
 we shall compute the following two Kullback-Leibler divergences
 
-$$ 
-KL_g (\alpha) = \int \log\left(\frac{g(w)}{h(w)}\right) h(w) d w 
+$$
+KL_g (\alpha) = \int \log\left(\frac{g(w)}{h(w)}\right) h(w) d w
 $$
 
-and 
+and
 
-$$ 
-KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w 
+$$
+KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w
 $$
 
 We shall plot both of these functions against $\alpha$ as we use $\alpha$ to vary
 $h(w) = h(w|\alpha)$.
 
-The limit of $\pi_t$ is  determined by 
+The limit of $\pi_t$ is  determined by
 
 $$ \min_{f,g} \{KL_g, KL_f\} $$
 
@@ -513,11 +520,11 @@ As $\rightarrow +\infty$, $\pi_t$ goes to one if and only if  $KL_f < KL_g$
 def KL_g(α):
     "Compute the KL divergence between g and h."
     err = 1e-8                          # to avoid 0 at end points
-    ws = np.linspace(err, 1-err, 10000) 
+    ws = np.linspace(err, 1-err, 10000)
     gs, fs = g(ws), f(ws)
     hs = α*fs + (1-α)*gs
     return np.sum(np.log(gs/hs)*hs)/10000
-    
+
 @vectorize
 def KL_f(α):
     "Compute the KL divergence between f and h."
@@ -643,7 +650,7 @@ Our type 2 agent understands the correct statistical  model but acknowledges doe
 We apply Bayes law to deduce an algorithm for  learning $\alpha$ under the assumption
 that the agent knows that
 
-$$ 
+$$
 h(w) = h(w| \alpha)
 $$
 
@@ -658,17 +665,17 @@ We'll fire up `numpyro` and  apply it  to the present situation.
 Bayes' law now takes the form
 
 
-$$ 
-\pi_{t+1}(\alpha) = \frac {h(w_{t+1} | \alpha) \pi_t(\alpha)} 
-       { \int h(w_{t+1} | \hat \alpha) \pi_t(\hat \alpha) d \hat \alpha } 
+$$
+\pi_{t+1}(\alpha) = \frac {h(w_{t+1} | \alpha) \pi_t(\alpha)}
+       { \int h(w_{t+1} | \hat \alpha) \pi_t(\hat \alpha) d \hat \alpha }
 $$
 
 We'll use numpyro  to approximate this equation.
 
-We'll create  graphs of the posterior $\pi_t(\alpha)$ as 
+We'll create  graphs of the posterior $\pi_t(\alpha)$ as
 $t \rightarrow +\infty$ corresponding to ones presented in the quantecon lecture <https://python.quantecon.org/bayes_nonconj.html>.
 
-We anticipate that a posterior  distribution will collapse around  the true $\alpha$ as 
+We anticipate that a posterior  distribution will collapse around  the true $\alpha$ as
 $t \rightarrow + \infty$.
 
 Let us try a uniform prior first.
@@ -685,12 +692,12 @@ sizes = [5, 20, 50, 200, 1000, 25000]
 def model(w):
     α = numpyro.sample('α', dist.Uniform(low=0.0, high=1.0))
 
-    y_samp = numpyro.sample('w', 
+    y_samp = numpyro.sample('w',
         dist.Mixture(dist.Categorical(jnp.array([α, 1-α])), [dist.Beta(F_a, F_b), dist.Beta(G_a, G_b)]), obs=w)
 
 def MCMC_run(ws):
     "Compute posterior using MCMC with observed ws"
-    
+
     kernal = NUTS(model)
     mcmc = MCMC(kernal, num_samples=5000, num_warmup=1000, progress_bar=False)
 
@@ -708,20 +715,20 @@ fig, ax = plt.subplots(figsize=(10, 6))
 for i in range(len(sizes)):
     sample = MCMC_run(data[:sizes[i]])
     sns.histplot(
-        data=sample, kde=True, stat='density', alpha=0.2, ax=ax, 
+        data=sample, kde=True, stat='density', alpha=0.2, ax=ax,
         color=colors[i], binwidth=0.02, linewidth=0.05, label=f't={sizes[i]}'
     )
 ax.set_title('$\pi_t(\\alpha)$ as $t$ increases')
 ax.legend()
 ax.set_xlabel('$\\alpha$')
-plt.show() 
+plt.show()
 ```
 
-Evidently,  the Bayesian posterior  narrows in on the true value  $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.  
+Evidently,  the Bayesian posterior  narrows in on the true value  $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.
 
 ## Concluding Remarks
 
-Our type 1 person  deploys an incorrect statistical  model.  
+Our type 1 person  deploys an incorrect statistical  model.
 
 He believes
 that either $f$ or $g$ generated the $w$ process, but just doesn't know which one.
@@ -730,7 +737,7 @@ That is wrong because nature is actually mixing each period with mixing probabil
 
 Our type 1 agent  eventually believes that either $f$ or $g$ generated the $w$ sequence, the outcome being determined by the model, either $f$ or $g$, whose  KL divergence relative to $h$ is smaller.
 
-Our type 2 agent has a different statistical model, one that is correctly specified.  
+Our type 2 agent has a different statistical model, one that is correctly specified.
 
 He knows the parametric form of the statistical model but not the mixing parameter $\alpha$.
 

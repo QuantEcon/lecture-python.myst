@@ -180,6 +180,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-of-pca-to-svd">7.9. Relationship of PCA to SVD</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-with-eigenvalues-and-eigenvectors">7.10. PCA with Eigenvalues and Eigenvectors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connections">7.11. Connections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">7.12. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -289,9 +290,9 @@ VV^\top  &amp; = I &amp; \quad V^\top  V = I
 <p>and</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(U\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> orthogonal  matrix of <strong>left singular vectors</strong> of <span class="math notranslate nohighlight">\(X\)</span></p></li>
-<li><p>Columns of <span class="math notranslate nohighlight">\(U\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(X^\top  X\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(V\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> orthogonal matrix of <strong>right singular values</strong> of <span class="math notranslate nohighlight">\(X\)</span></p></li>
-<li><p>Columns of <span class="math notranslate nohighlight">\(V\)</span>  are eigenvectors of <span class="math notranslate nohighlight">\(X X^\top \)</span></p></li>
+<li><p>Columns of <span class="math notranslate nohighlight">\(U\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(X X^\top \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(V\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> orthogonal matrix of <strong>right singular vectors</strong> of <span class="math notranslate nohighlight">\(X\)</span></p></li>
+<li><p>Columns of <span class="math notranslate nohighlight">\(V\)</span>  are eigenvectors of <span class="math notranslate nohighlight">\(X^\top  X\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\Sigma\)</span> is an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix in which the first <span class="math notranslate nohighlight">\(p\)</span> places on its main diagonal are positive numbers <span class="math notranslate nohighlight">\(\sigma_1, \sigma_2, \ldots, \sigma_p\)</span> called <strong>singular values</strong>; remaining entries of <span class="math notranslate nohighlight">\(\Sigma\)</span> are all zero</p></li>
 <li><p>The <span class="math notranslate nohighlight">\(p\)</span> singular values are positive square roots of the eigenvalues of the <span class="math notranslate nohighlight">\(m \times m\)</span> matrix  <span class="math notranslate nohighlight">\(X X^\top \)</span> and also of the <span class="math notranslate nohighlight">\(n \times n\)</span> matrix <span class="math notranslate nohighlight">\(X^\top  X\)</span></p></li>
 <li><p>We adopt a convention that when <span class="math notranslate nohighlight">\(U\)</span> is a complex valued matrix, <span class="math notranslate nohighlight">\(U^\top \)</span> denotes the <strong>conjugate-transpose</strong> or <strong>Hermitian-transpose</strong> of <span class="math notranslate nohighlight">\(U\)</span>, meaning that
@@ -304,10 +305,10 @@ VV^\top  &amp; = I &amp; \quad V^\top  V = I
 <li><p>multiplying vectors by the diagonal  matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> leaves <strong>angles between vectors</strong> unchanged but <strong>rescales</strong> vectors.</p></li>
 </ul>
 <p>Thus, representation <a class="reference internal" href="#equation-eq-svd101">(7.1)</a> asserts that multiplying an <span class="math notranslate nohighlight">\(n \times 1\)</span>  vector <span class="math notranslate nohighlight">\(y\)</span> by the <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span>
-amounts to performing the following three multiplcations of <span class="math notranslate nohighlight">\(y\)</span> sequentially:</p>
+amounts to performing the following three multiplications of <span class="math notranslate nohighlight">\(y\)</span> sequentially:</p>
 <ul class="simple">
 <li><p><strong>rotating</strong> <span class="math notranslate nohighlight">\(y\)</span> by computing <span class="math notranslate nohighlight">\(V^\top  y\)</span></p></li>
-<li><p><strong>rescaling</strong> <span class="math notranslate nohighlight">\(V^\top  y\)</span> by multipying it by <span class="math notranslate nohighlight">\(\Sigma\)</span></p></li>
+<li><p><strong>rescaling</strong> <span class="math notranslate nohighlight">\(V^\top  y\)</span> by multiplying it by <span class="math notranslate nohighlight">\(\Sigma\)</span></p></li>
 <li><p><strong>rotating</strong> <span class="math notranslate nohighlight">\(\Sigma V^\top  y\)</span> by multiplying it by <span class="math notranslate nohighlight">\(U\)</span></p></li>
 </ul>
 <p>This structure of the <span class="math notranslate nohighlight">\(m \times n\)</span> matrix  <span class="math notranslate nohighlight">\(X\)</span> opens the door to constructing systems
@@ -333,11 +334,11 @@ matrix <span class="math notranslate nohighlight">\(X\)</span> of rank <span cla
 <ul class="simple">
 <li><p>The <strong>column space</strong> of <span class="math notranslate nohighlight">\(X\)</span>, denoted <span class="math notranslate nohighlight">\({\mathcal C}(X)\)</span>, is the span of the  columns of  <span class="math notranslate nohighlight">\(X\)</span>, i.e., all vectors <span class="math notranslate nohighlight">\(y\)</span> that can be written as linear combinations of columns of <span class="math notranslate nohighlight">\(X\)</span>. Its dimension is <span class="math notranslate nohighlight">\(p\)</span>.</p></li>
 <li><p>The <strong>null space</strong> of <span class="math notranslate nohighlight">\(X\)</span>, denoted <span class="math notranslate nohighlight">\({\mathcal N}(X)\)</span> consists of all vectors <span class="math notranslate nohighlight">\(y\)</span> that satisfy
-<span class="math notranslate nohighlight">\(X y = 0\)</span>. Its dimension is <span class="math notranslate nohighlight">\(m-p\)</span>.</p></li>
+<span class="math notranslate nohighlight">\(X y = 0\)</span>. Its dimension is <span class="math notranslate nohighlight">\(n-p\)</span>.</p></li>
 <li><p>The <strong>row space</strong> of <span class="math notranslate nohighlight">\(X\)</span>, denoted <span class="math notranslate nohighlight">\({\mathcal R}(X)\)</span> is the column space of <span class="math notranslate nohighlight">\(X^\top \)</span>. It consists of all
 vectors <span class="math notranslate nohighlight">\(z\)</span> that can be written as  linear combinations of rows of <span class="math notranslate nohighlight">\(X\)</span>. Its dimension is <span class="math notranslate nohighlight">\(p\)</span>.</p></li>
 <li><p>The <strong>left null space</strong> of <span class="math notranslate nohighlight">\(X\)</span>, denoted <span class="math notranslate nohighlight">\({\mathcal N}(X^\top )\)</span>, consist of all vectors <span class="math notranslate nohighlight">\(z\)</span> such that
-<span class="math notranslate nohighlight">\(X^\top  z =0\)</span>.  Its dimension is <span class="math notranslate nohighlight">\(n-p\)</span>.</p></li>
+<span class="math notranslate nohighlight">\(X^\top  z =0\)</span>.  Its dimension is <span class="math notranslate nohighlight">\(m-p\)</span>.</p></li>
 </ul>
 <p>For a  full SVD of a matrix <span class="math notranslate nohighlight">\(X\)</span>, the matrix <span class="math notranslate nohighlight">\(U\)</span> of left singular vectors  and the matrix <span class="math notranslate nohighlight">\(V\)</span> of right singular vectors contain orthogonal bases for all four subspaces.</p>
 <p>They form two pairs of orthogonal subspaces
@@ -409,7 +410,7 @@ X^\top  u_i &amp; = \sigma_i v_i, \quad i=1, \ldots, p \cr
 X^\top  u_i &amp; = 0 \quad i= p+1, \ldots, m
 \end{aligned}
 \]</div>
-<p>Notice how equations <a class="reference internal" href="#equation-eq-orthoortho2">(7.6)</a> assert that  the transformation <span class="math notranslate nohighlight">\(X^\top \)</span> maps a pairsof distinct orthonormal  vectors <span class="math notranslate nohighlight">\(u_i, u_j\)</span>  for <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> both less than or equal to the rank <span class="math notranslate nohighlight">\(p\)</span> of <span class="math notranslate nohighlight">\(X\)</span> into a pair of distinct orthonormal vectors <span class="math notranslate nohighlight">\(v_i, v_j\)</span> .</p>
+<p>Notice how equations <a class="reference internal" href="#equation-eq-orthoortho2">(7.6)</a> assert that  the transformation <span class="math notranslate nohighlight">\(X^\top \)</span> maps a pair of distinct orthonormal  vectors <span class="math notranslate nohighlight">\(u_i, u_j\)</span>  for <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> both less than or equal to the rank <span class="math notranslate nohighlight">\(p\)</span> of <span class="math notranslate nohighlight">\(X\)</span> into a pair of distinct orthonormal vectors <span class="math notranslate nohighlight">\(v_i, v_j\)</span> .</p>
 <p>Equations <a class="reference internal" href="#equation-eq-xfour1b">(7.5)</a> assert that</p>
 <div class="math notranslate nohighlight">
 \[
@@ -418,7 +419,7 @@ X^\top  u_i &amp; = 0 \quad i= p+1, \ldots, m
 {\mathcal N}(X^\top ) &amp; = {\mathcal C}(U_R)
 \end{aligned}
 \]</div>
-<p>Thus, taken together, the systems of quations <a class="reference internal" href="#equation-eq-xfour1a">(7.3)</a> and <a class="reference internal" href="#equation-eq-xfour1b">(7.5)</a>
+<p>Thus, taken together, the systems of equations <a class="reference internal" href="#equation-eq-xfour1a">(7.3)</a> and <a class="reference internal" href="#equation-eq-xfour1b">(7.5)</a>
 describe the  four fundamental subspaces of <span class="math notranslate nohighlight">\(X\)</span> in the following ways:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fourspacesvd">
 <span class="eqno">(7.7)<a class="headerlink" href="#equation-eq-fourspacesvd" title="Permalink to this equation">#</a></span>\[ \begin{align}\begin{aligned}
@@ -439,7 +440,7 @@ describe the  four fundamental subspaces of <span class="math notranslate nohigh
 <p>The claims in <a class="reference internal" href="#equation-eq-fourspacesvd">(7.7)</a> and the fact that <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> are both unitary (i.e, orthonormal) matrices  imply
 that</p>
 <ul class="simple">
-<li><p>the column space of <span class="math notranslate nohighlight">\(X\)</span> is orthogonal to the null space of of <span class="math notranslate nohighlight">\(X^\top \)</span></p></li>
+<li><p>the column space of <span class="math notranslate nohighlight">\(X\)</span> is orthogonal to the null space of <span class="math notranslate nohighlight">\(X^\top \)</span></p></li>
 <li><p>the null space of <span class="math notranslate nohighlight">\(X\)</span> is orthogonal to the row space of <span class="math notranslate nohighlight">\(X\)</span></p></li>
 </ul>
 <p>Sometimes these properties are described with the following two pairs of orthogonal complement subspaces:</p>
@@ -453,7 +454,6 @@ that</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">LA</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -540,14 +540,16 @@ Right null space:
 <section id="eckart-young-theorem">
 <h2><span class="section-number">7.5. </span>Eckart-Young Theorem<a class="headerlink" href="#eckart-young-theorem" title="Permalink to this heading">#</a></h2>
 <p>Suppose that we want to construct  the best rank <span class="math notranslate nohighlight">\(r\)</span> approximation of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span>.</p>
-<p>By best we mean a  matrix <span class="math notranslate nohighlight">\(X_r\)</span> of rank <span class="math notranslate nohighlight">\(r &lt; p\)</span> that, among all rank <span class="math notranslate nohighlight">\(r\)</span> matrices, minimizes</p>
+<p>By best, we mean a  matrix <span class="math notranslate nohighlight">\(X_r\)</span> of rank <span class="math notranslate nohighlight">\(r &lt; p\)</span> that, among all rank <span class="math notranslate nohighlight">\(r\)</span> matrices, minimizes</p>
 <div class="math notranslate nohighlight">
-\[ || X - X_r || \]</div>
+\[ 
+|| X - X_r || 
+\]</div>
 <p>where <span class="math notranslate nohighlight">\( || \cdot || \)</span> denotes a norm of a matrix <span class="math notranslate nohighlight">\(X\)</span> and where <span class="math notranslate nohighlight">\(X_r\)</span> belongs to the space of all rank <span class="math notranslate nohighlight">\(r\)</span> matrices
 of dimension <span class="math notranslate nohighlight">\(m \times n\)</span>.</p>
 <p>Three popular <strong>matrix norms</strong>  of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> can be expressed in terms of the singular values of <span class="math notranslate nohighlight">\(X\)</span></p>
 <ul class="simple">
-<li><p>the <strong>spectral</strong> or <span class="math notranslate nohighlight">\(l^2\)</span> norm <span class="math notranslate nohighlight">\(|| X ||_2 = \max_{y \in \textbf{R}^n} \frac{||X y ||}{||y||} = \sigma_1\)</span></p></li>
+<li><p>the <strong>spectral</strong> or <span class="math notranslate nohighlight">\(l^2\)</span> norm <span class="math notranslate nohighlight">\(|| X ||_2 = \max_{||y|| \neq 0} \frac{||X y ||}{||y||} = \sigma_1\)</span></p></li>
 <li><p>the <strong>Frobenius</strong> norm <span class="math notranslate nohighlight">\(||X ||_F = \sqrt{\sigma_1^2 + \cdots + \sigma_p^2}\)</span></p></li>
 <li><p>the <strong>nuclear</strong> norm <span class="math notranslate nohighlight">\( || X ||_N = \sigma_1 + \cdots + \sigma_p \)</span></p></li>
 </ul>
@@ -556,7 +558,10 @@ of dimension <span class="math notranslate nohighlight">\(m \times n\)</span>.</
 <span class="eqno">(7.8)<a class="headerlink" href="#equation-eq-ekart" title="Permalink to this equation">#</a></span>\[
 \hat X_r = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_r U_r V_r^\top
 \]</div>
-<p>You can read about the Eckart-Young theorem and some of its uses here <a class="reference external" href="https://en.wikipedia.org/wiki/Low-rank_approximation">https://en.wikipedia.org/wiki/Low-rank_approximation</a>.</p>
+<p>This is a very powerful theorem that says that we can take our <span class="math notranslate nohighlight">\( m \times n \)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> that in not full rank, and we can best approximate it by a full rank <span class="math notranslate nohighlight">\(p \times p\)</span> matrix through the SVD.</p>
+<p>Moreover, if some of these <span class="math notranslate nohighlight">\(p\)</span> singular values carry more information than others, and if we want to have the most amount of information with the least amount of data, we can take <span class="math notranslate nohighlight">\(r\)</span> leading singular values ordered by magnitude.</p>
+<p>We’ll say more about this later when we present Principal Component Analysis.</p>
+<p>You can read about the Eckart-Young theorem and some of its uses <a class="reference external" href="https://en.wikipedia.org/wiki/Low-rank_approximation">here</a>.</p>
 <p>We’ll make use of this theorem when we discuss principal components analysis (PCA) and also dynamic mode decomposition (DMD).</p>
 </section>
 <section id="full-and-reduced-svds">
@@ -633,14 +638,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-2.48e-01, -2.34e-01, -2.23e-02, -6.56e-01, -6.73e-01],
-        [-7.01e-01, -4.92e-01, -2.54e-01,  4.50e-01, -7.95e-04],
-        [-7.80e-02, -2.91e-01,  9.49e-01,  9.60e-02,  4.83e-03],
-        [-4.05e-01,  7.53e-01,  1.70e-01,  2.87e-01, -3.97e-01],
-        [-5.26e-01,  2.28e-01,  7.67e-02, -5.25e-01,  6.24e-01]]),
- array([1.66, 0.39]),
- array([[-0.65, -0.76],
-        [-0.76,  0.65]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.66,  0.29, -0.44, -0.46, -0.27],
+        [-0.16, -0.14, -0.31,  0.75, -0.55],
+        [-0.54, -0.24,  0.77,  0.  , -0.22],
+        [-0.23,  0.77,  0.18,  0.43,  0.36],
+        [-0.45, -0.49, -0.28,  0.19,  0.67]]),
+ array([1.91, 0.9 ]),
+ array([[-0.85, -0.52],
+        [-0.52,  0.85]]))
 </pre></div>
 </div>
 </div>
@@ -656,14 +661,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.25, -0.23],
-        [-0.7 , -0.49],
-        [-0.08, -0.29],
-        [-0.41,  0.75],
-        [-0.53,  0.23]]),
- array([1.66, 0.39]),
- array([[-0.65, -0.76],
-        [-0.76,  0.65]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.66,  0.29],
+        [-0.16, -0.14],
+        [-0.54, -0.24],
+        [-0.23,  0.77],
+        [-0.45, -0.49]]),
+ array([1.91, 0.9 ]),
+ array([[-0.85, -0.52],
+        [-0.52,  0.85]]))
 </pre></div>
 </div>
 </div>
@@ -683,7 +688,7 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 </div>
 <p><strong>Properties:</strong></p>
 <ul class="simple">
-<li><p>Where <span class="math notranslate nohighlight">\(U\)</span> is constructed via a full SVD, <span class="math notranslate nohighlight">\(U^\top  U = I_{p\times p}\)</span> and  <span class="math notranslate nohighlight">\(U U^\top  = I_{m \times m}\)</span></p></li>
+<li><p>Where <span class="math notranslate nohighlight">\(U\)</span> is constructed via a full SVD, <span class="math notranslate nohighlight">\(U^\top  U = I_{m\times m}\)</span> and  <span class="math notranslate nohighlight">\(U U^\top  = I_{m \times m}\)</span></p></li>
 <li><p>Where <span class="math notranslate nohighlight">\(\hat U\)</span> is constructed via a reduced SVD, although <span class="math notranslate nohighlight">\(\hat U^\top  \hat U = I_{p\times p}\)</span>, it happens that  <span class="math notranslate nohighlight">\(\hat U \hat U^\top  \neq I_{m \times m}\)</span></p></li>
 </ul>
 <p>We illustrate these properties for our example with the following code cells.</p>
@@ -700,16 +705,16 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UUT, UTU = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00, -3.32e-16, -1.14e-16, -2.32e-16, -1.80e-16],
-        [-3.32e-16,  1.00e+00, -1.40e-16, -6.85e-17, -8.65e-17],
-        [-1.14e-16, -1.40e-16,  1.00e+00,  3.95e-17,  3.82e-18],
-        [-2.32e-16, -6.85e-17,  3.95e-17,  1.00e+00, -1.53e-16],
-        [-1.80e-16, -8.65e-17,  3.82e-18, -1.53e-16,  1.00e+00]]),
- array([[ 1.00e+00, -9.14e-17,  3.69e-17, -2.73e-16, -3.09e-16],
-        [-9.14e-17,  1.00e+00,  1.56e-17,  5.15e-17, -5.01e-17],
-        [ 3.69e-17,  1.56e-17,  1.00e+00,  4.71e-17,  2.40e-17],
-        [-2.73e-16,  5.15e-17,  4.71e-17,  1.00e+00, -1.48e-16],
-        [-3.09e-16, -5.01e-17,  2.40e-17, -1.48e-16,  1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00,  1.04e-16,  5.69e-17,  1.43e-16,  1.66e-16],
+        [ 1.04e-16,  1.00e+00,  1.52e-17,  6.82e-18,  5.37e-17],
+        [ 5.69e-17,  1.52e-17,  1.00e+00, -3.82e-17,  6.97e-17],
+        [ 1.43e-16,  6.82e-18, -3.82e-17,  1.00e+00, -1.32e-16],
+        [ 1.66e-16,  5.37e-17,  6.97e-17, -1.32e-16,  1.00e+00]]),
+ array([[ 1.00e+00, -7.93e-17,  1.19e-16,  1.75e-17, -2.25e-17],
+        [-7.93e-17,  1.00e+00,  5.68e-18,  1.58e-16,  2.91e-17],
+        [ 1.19e-16,  5.68e-18,  1.00e+00,  2.59e-17,  3.72e-17],
+        [ 1.75e-17,  1.58e-16,  2.59e-17,  1.00e+00, -2.33e-17],
+        [-2.25e-17,  2.91e-17,  3.72e-17, -2.33e-17,  1.00e+00]]))
 </pre></div>
 </div>
 </div>
@@ -727,21 +732,21 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UhatUhatT, UhatTUhat= 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.12,  0.29,  0.09, -0.08,  0.08],
-        [ 0.29,  0.73,  0.2 , -0.09,  0.26],
-        [ 0.09,  0.2 ,  0.09, -0.19, -0.03],
-        [-0.08, -0.09, -0.19,  0.73,  0.39],
-        [ 0.08,  0.26, -0.03,  0.39,  0.33]]),
- array([[ 1.00e+00, -1.05e-16],
-        [-1.05e-16,  1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.51,  0.06,  0.28,  0.38,  0.15],
+        [ 0.06,  0.04,  0.12, -0.07,  0.14],
+        [ 0.28,  0.12,  0.35, -0.06,  0.36],
+        [ 0.38, -0.07, -0.06,  0.65, -0.27],
+        [ 0.15,  0.14,  0.36, -0.27,  0.44]]),
+ array([[ 1.00e+00, -7.93e-17],
+        [-7.93e-17,  1.00e+00]]))
 </pre></div>
 </div>
 </div>
 </div>
 <p><strong>Remarks:</strong></p>
-<p>The cells above illustrate application of the  <code class="docutils literal notranslate"><span class="pre">fullmatrices=True</span></code> and <code class="docutils literal notranslate"><span class="pre">full-matrices=False</span></code> options.
-Using <code class="docutils literal notranslate"><span class="pre">full-matrices=False</span></code> returns a reduced singular value decomposition.</p>
-<p>The <strong>full</strong> and <strong>reduced</strong> SVd’s both accurately  decompose an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span></p>
+<p>The cells above illustrate the application of the  <code class="docutils literal notranslate"><span class="pre">full_matrices=True</span></code> and <code class="docutils literal notranslate"><span class="pre">full_matrices=False</span></code> options.
+Using <code class="docutils literal notranslate"><span class="pre">full_matrices=False</span></code> returns a reduced singular value decomposition.</p>
+<p>The <strong>full</strong> and <strong>reduced</strong> SVD’s both accurately  decompose an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span></p>
 <p>When we study Dynamic Mode Decompositions below, it  will be important for us to remember the preceding properties of full and reduced SVD’s in such tall-skinny cases.</p>
 <p>Now let’s turn to a short-fat case.</p>
 <p>To illustrate this case,  we’ll set <span class="math notranslate nohighlight">\(m = 2 &lt; 5 = n \)</span> and compute both full and reduced SVD’s.</p>
@@ -760,14 +765,14 @@ Using <code class="docutils literal notranslate"><span class="pre">full-matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.64, -0.77],
-        [ 0.77,  0.64]]),
- array([1.64, 0.44]),
- array([[ 0.56,  0.24,  0.41,  0.53,  0.42],
-        [ 0.5 ,  0.22,  0.06, -0.02, -0.84],
-        [-0.38, -0.05,  0.9 , -0.14, -0.17],
-        [-0.47,  0.04, -0.13,  0.82, -0.3 ],
-        [-0.26,  0.94, -0.07, -0.17,  0.1 ]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.69, -0.72],
+        [ 0.72,  0.69]]),
+ array([2.17, 0.42]),
+ array([[ 0.57,  0.42,  0.4 ,  0.33,  0.47],
+        [ 0.18, -0.11,  0.68, -0.66, -0.23],
+        [-0.71,  0.49,  0.44,  0.21, -0.09],
+        [-0.01, -0.67,  0.42,  0.59, -0.15],
+        [-0.36, -0.33,  0.09, -0.25,  0.83]]))
 </pre></div>
 </div>
 </div>
@@ -783,11 +788,11 @@ Using <code class="docutils literal notranslate"><span class="pre">full-matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.64, -0.77],
-        [ 0.77,  0.64]]),
- array([1.64, 0.44]),
- array([[ 0.56,  0.24,  0.41,  0.53,  0.42],
-        [ 0.5 ,  0.22,  0.06, -0.02, -0.84]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.69, -0.72],
+        [ 0.72,  0.69]]),
+ array([2.17, 0.42]),
+ array([[ 0.57,  0.42,  0.4 ,  0.33,  0.47],
+        [ 0.18, -0.11,  0.68, -0.66, -0.23]]))
 </pre></div>
 </div>
 </div>
@@ -845,15 +850,68 @@ X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
 \]</div>
 <p>where for <span class="math notranslate nohighlight">\(j = 1, \ldots, n\)</span> the column vector <span class="math notranslate nohighlight">\(X_j = \begin{bmatrix}X_{1j}\\X_{2j}\\\vdots\\X_{mj}\end{bmatrix}\)</span> is a  vector of observations on variables <span class="math notranslate nohighlight">\(\begin{bmatrix}x_1\\x_2\\\vdots\\x_m\end{bmatrix}\)</span>.</p>
 <p>In a <strong>time series</strong> setting, we would think of columns <span class="math notranslate nohighlight">\(j\)</span> as indexing different <strong>times</strong> at which random variables are observed, while rows index different random variables.</p>
-<p>In a <strong>cross section</strong> setting, we would think of columns <span class="math notranslate nohighlight">\(j\)</span> as indexing different <strong>individuals</strong> for  which random variables are observed, while rows index different <strong>attributes</strong>.</p>
-<p>The number of positive singular values equals the rank of  matrix <span class="math notranslate nohighlight">\(X\)</span>.</p>
-<p>Arrange the singular values  in decreasing order.</p>
-<p>Arrange   the positive singular values on the main diagonal of the matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> of into a vector <span class="math notranslate nohighlight">\(\sigma_R\)</span>.</p>
-<p>Set all other entries of <span class="math notranslate nohighlight">\(\Sigma\)</span> to zero.</p>
+<p>In a <strong>cross-section</strong> setting, we would think of columns <span class="math notranslate nohighlight">\(j\)</span> as indexing different <strong>individuals</strong> for  which random variables are observed, while rows index different <strong>attributes</strong>.</p>
+<p>As we have seen before, the SVD is a way to decompose a matrix into useful components, just like polar decomposition, eigendecomposition, and many others.</p>
+<p>PCA, on the other hand, is a method that builds on the SVD to analyze data. The goal is to apply certain steps, to help better visualize patterns in data, using statistical tools to capture the most important patterns in data.</p>
+<p><strong>Step 1: Standardize the data:</strong></p>
+<p>Because our data matrix may hold variables of different units and scales, we first need to standardize the data.</p>
+<p>First by computing the average of each row of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{X_j}= \frac{1}{m} \sum_{i = 1}^{m} x_{i,j}
+\]</div>
+<p>We then create an average matrix out of these means:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\bar{X} =  \begin{bmatrix}1 \\1 \\\ldots\\1 \end{bmatrix}  \begin{bmatrix} \bar{X_1} \mid \bar{X_2} \mid \cdots \mid \bar{X_n}\end{bmatrix}
+\end{split}\]</div>
+<p>And subtract out of the original matrix to create a mean centered matrix:</p>
+<div class="math notranslate nohighlight">
+\[
+B = X - \bar{X}
+\]</div>
+<p><strong>Step 2: Compute the covariance matrix:</strong></p>
+<p>Then because we want to extract the relationships between variables rather than just their magnitude, in other words, we want to know how they can explain each other, we compute the covariance matrix of <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+C = \frac{1}{{n}} B^\top  B
+\]</div>
+<p><strong>Step 3: Decompose the covariance matrix and arrange the singular values:</strong></p>
+<p>If the matrix <span class="math notranslate nohighlight">\(C\)</span> is diagonalizable, we can eigendecompose it, find its eigenvalues and rearrange the eigenvalue and eigenvector matrices in a decreasing other.</p>
+<p>If <span class="math notranslate nohighlight">\(C\)</span> is not diagonalizable, we can perform an SVD of <span class="math notranslate nohighlight">\(C\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+B^T B &amp;= V \Sigma^\top U^\top U \Sigma V^\top \cr
+&amp;= V \Sigma^\top \Sigma V^\top
+\end{aligned}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+C = \frac{1}{{n}} V \Sigma^\top \Sigma V^\top
+\]</div>
+<p>We can then rearrange the columns in the matrices <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(\Sigma\)</span> so that the singular values are in decreasing order.</p>
+<p><strong>Step 4: Select singular values, (optional) truncate the rest:</strong></p>
+<p>We can now decide how many singular values to pick, based on how much variance you want to retain. (e.g., retaining 95% of the total variance).</p>
+<p>We can obtain the percentage by calculating the variance contained in the leading <span class="math notranslate nohighlight">\(r\)</span> factors divided by the variance in total:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\sum_{i = 1}^{r} \sigma^2_{i}}{\sum_{i = 1}^{p} \sigma^2_{i}}
+\]</div>
+<p><strong>Step 5: Create the Score Matrix:</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+T&amp;= BV \cr
+&amp;= U\Sigma V^\top \cr
+&amp;= U\Sigma
+\end{aligned}
+\]</div>
 </section>
 <section id="relationship-of-pca-to-svd">
 <h2><span class="section-number">7.9. </span>Relationship of PCA to SVD<a class="headerlink" href="#relationship-of-pca-to-svd" title="Permalink to this heading">#</a></h2>
-<p>To relate a SVD to a PCA (principal component analysis) of data set <span class="math notranslate nohighlight">\(X\)</span>, first construct  the  SVD of the data matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
+<p>To relate an SVD to a PCA of data set <span class="math notranslate nohighlight">\(X\)</span>, first construct the SVD of the data matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
+<p>Let’s assume that sample means of all variables are zero, so we don’t need to standardize our matrix.</p>
 <div class="math notranslate nohighlight" id="equation-eq-pca1">
 <span class="eqno">(7.9)<a class="headerlink" href="#equation-eq-pca1" title="Permalink to this equation">#</a></span>\[
 X = U \Sigma V^\top  = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_p U_p V_p^\top
@@ -1000,7 +1058,7 @@ X X^\top  = P \Lambda P^\top
 \[
 X X^\top  = U \Sigma \Sigma^\top  U^\top
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(U\)</span> is an orthonal matrix.</p>
+<p>where <span class="math notranslate nohighlight">\(U\)</span> is an orthogonal matrix.</p>
 <p>Thus, <span class="math notranslate nohighlight">\(P = U\)</span> and we have the representation of <span class="math notranslate nohighlight">\(X\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -1023,9 +1081,11 @@ U^\top  X = \Sigma V^\top  = \epsilon
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DecomAnalysis</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class for conducting PCA and SVD.</span>
+<span class="sd">    X: data matrix</span>
+<span class="sd">    r_component: chosen rank for best approximation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">n_component</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">r_component</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
 
@@ -1034,10 +1094,10 @@ U^\top  X = \Sigma V^\top  = \epsilon
         <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">n_component</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">n_component</span> <span class="o">=</span> <span class="n">n_component</span>
+        <span class="k">if</span> <span class="n">r_component</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">r_component</span> <span class="o">=</span> <span class="n">r_component</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">n_component</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">r_component</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
 
     <span class="k">def</span> <span class="nf">pca</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -1057,8 +1117,8 @@ U^\top  X = \Sigma V^\top  = \epsilon
         <span class="c1"># compute the N by T matrix of principal components</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">𝜖</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span>
 
-        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">]</span>
-        <span class="n">𝜖</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">𝜖</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">r_component</span><span class="p">]</span>
+        <span class="n">𝜖</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">𝜖</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">r_component</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="c1"># transform data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X_pca</span> <span class="o">=</span> <span class="n">P</span> <span class="o">@</span> <span class="n">𝜖</span>
@@ -1086,26 +1146,26 @@ U^\top  X = \Sigma V^\top  = \epsilon
         <span class="bp">self</span><span class="o">.</span><span class="n">explained_ratio_svd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">𝜎_sq</span><span class="p">)</span> <span class="o">/</span> <span class="n">𝜎_sq</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
         <span class="c1"># slicing matrices by the number of components to use</span>
-        <span class="n">U</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">]</span>
-        <span class="n">Σ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Σ</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">]</span>
-        <span class="n">VT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">VT</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">r_component</span><span class="p">]</span>
+        <span class="n">Σ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Σ</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">r_component</span><span class="p">,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">r_component</span><span class="p">]</span>
+        <span class="n">VT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">VT</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">r_component</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="c1"># transform data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X_svd</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">Σ</span> <span class="o">@</span> <span class="n">VT</span>
 
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_component</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r_component</span><span class="p">):</span>
 
         <span class="c1"># pca</span>
-        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_component</span><span class="p">]</span>
-        <span class="n">𝜖</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">𝜖</span><span class="p">[:</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">[:,</span> <span class="p">:</span><span class="n">r_component</span><span class="p">]</span>
+        <span class="n">𝜖</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">𝜖</span><span class="p">[:</span><span class="n">r_component</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="c1"># transform data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X_pca</span> <span class="o">=</span> <span class="n">P</span> <span class="o">@</span> <span class="n">𝜖</span>
 
         <span class="c1"># svd</span>
-        <span class="n">U</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_component</span><span class="p">]</span>
-        <span class="n">Σ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Σ</span><span class="p">[:</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:</span><span class="n">n_component</span><span class="p">]</span>
-        <span class="n">VT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">VT</span><span class="p">[:</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">r_component</span><span class="p">]</span>
+        <span class="n">Σ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Σ</span><span class="p">[:</span><span class="n">r_component</span><span class="p">,</span> <span class="p">:</span><span class="n">r_component</span><span class="p">]</span>
+        <span class="n">VT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">VT</span><span class="p">[:</span><span class="n">r_component</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="c1"># transform data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X_svd</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">Σ</span> <span class="o">@</span> <span class="n">VT</span>
@@ -1161,6 +1221,51 @@ obtained by different algorithms.</p>
 </pre></div>
 </div>
 </div>
+</div>
+</section>
+<section id="exercises">
+<h2><span class="section-number">7.12. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<div class="exercise admonition" id="svd_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 7.1 </span></p>
+<section id="exercise-content">
+<p>In Ordinary Least Squares (OLS), we learn to compute <span class="math notranslate nohighlight">\( \hat{\beta} = (X^\top X)^{-1} X^\top y \)</span>, but there are cases such as when we have colinearity or an underdetermined system: <strong>short fat</strong> matrix.</p>
+<p>In these cases, the <span class="math notranslate nohighlight">\( (X^\top X) \)</span> matrix is not not invertible (its determinant is zero) or ill-conditioned (its determinant is very close to zero).</p>
+<p>What we can do instead is to create what is called a <a class="reference external" href="https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse">pseudoinverse</a>, a full rank approximation of the inverted matrix so we can compute <span class="math notranslate nohighlight">\( \hat{\beta} \)</span> with it.</p>
+<p>Thinking in terms of the Eckart-Young theorem, build the pseudoinverse matrix <span class="math notranslate nohighlight">\( X^{+} \)</span> and use it to compute <span class="math notranslate nohighlight">\( \hat{\beta} \)</span>.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="svd_intro-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#svd_ex1"> Exercise 7.1</a></p>
+<section id="solution-content">
+<p>We can use SVD to compute the pseudoinverse:</p>
+<div class="math notranslate nohighlight">
+\[
+X  = U \Sigma V^\top
+\]</div>
+<p>inverting <span class="math notranslate nohighlight">\(X\)</span>, we have:</p>
+<div class="math notranslate nohighlight">
+\[
+X^{+}  = V \Sigma^{+} U^\top
+\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\Sigma^{+} = \begin{bmatrix}
+\frac{1}{\sigma_1} &amp; 0 &amp; \cdots &amp; 0 &amp; 0 \\
+0 &amp; \frac{1}{\sigma_2} &amp; \cdots &amp; 0 &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \\
+0 &amp; 0 &amp; \cdots &amp; \frac{1}{\sigma_p} &amp; 0 \\
+0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 \\
+\end{bmatrix}
+\end{split}\]</div>
+<p>and finally:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{\beta} = X^{+}y = V \Sigma^{+} U^\top y 
+\]</div>
+</section>
 </div>
 <p>For an example  PCA applied to analyzing the structure of intelligence tests see this lecture <a class="reference internal" href="multivariate_normal.html"><span class="doc">Multivariable Normal Distribution</span></a>.</p>
 <p>Look at  parts of that lecture that describe and illustrate the classic factor analysis model.</p>

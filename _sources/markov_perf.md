@@ -58,7 +58,6 @@ Other references include chapter 7 of {cite}`Ljungqvist2012`.
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -512,7 +511,7 @@ As expected, output is higher and prices are lower under duopoly than monopoly.
 
 ## Exercises
 
-```{exercise} 
+```{exercise}
 :label: mp_ex1
 
 Replicate the {ref}`pair of figures <mpe_vs_monopolist>` showing the comparison of output and prices for the monopolist and duopoly under MPE.

@@ -15,7 +15,7 @@ kernelspec:
 
 ## Overview
 
-**Linear programming** problems either maximize or minimize 
+**Linear programming** problems either maximize or minimize
 a linear objective function subject to a set of  linear equality and/or inequality constraints.
 
 Linear programs come in pairs:
@@ -23,7 +23,7 @@ Linear programs come in pairs:
 * an original  **primal** problem, and
 
 * an associated **dual** problem.
- 
+
 If a primal problem involves **maximization**, the dual problem involves **minimization**.
 
 If a primal problem involves  **minimization**, the dual problem involves **maximization**.
@@ -41,16 +41,15 @@ import numpy as np
 from scipy.optimize import linprog
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
-%matplotlib inline
 ```
 
 ## Objective Function and Constraints
 
 We want to minimize a **cost function** $c'x = \sum_{i=1}^n c_i x_i$ over  feasible values of $x = (x_1,x_2,\dots,x_n)'$.
 
-Here 
+Here
 
-*  $c = (c_1,c_2,\dots,c_n)'$ is  a **unit cost vector**,  and 
+*  $c = (c_1,c_2,\dots,c_n)'$ is  a **unit cost vector**,  and
 
 *  $x = (x_1,x_2,\dots,x_n)'$ is a vector of **decision variables**
 
@@ -58,9 +57,9 @@ Decision variables are  restricted to satisfy a set of linear equality and/or in
 
 We describe the constraints with the following  collections of  $n$-dimensional vectors $a_i$ and scalars $b_i$  and associated sets indexing the equality and inequality constraints:
 
-* $a_i$ for $i \in M_i$, where $M_1,M_2,M_3$ are each  sets of indexes 
- 
-and a collection of  scalers 
+* $a_i$ for $i \in M_i$, where $M_1,M_2,M_3$ are each  sets of indexes
+
+and a collection of  scalers
 
 * $b_i$ for $i \in N_i$, where $N_1,N_2,N_3$  are each sets of indexes.
 
@@ -80,21 +79,21 @@ $$ (linprog)
 
 A vector $x$ that satisfies all of the constraints is called a **feasible solution**.
 
-A collection of all feasible solutions is called  a **feasible set**. 
+A collection of all feasible solutions is called  a **feasible set**.
 
 A feasible solution $x$ that minimizes the cost function  is called an **optimal solution**.
 
-The corresponding value of cost function $c'x$ is called the  **optimal value**. 
+The corresponding value of cost function $c'x$ is called the  **optimal value**.
 
-If the feasible set is empty, we say that solving  the  linear programming problem is **infeasible**. 
+If the feasible set is empty, we say that solving  the  linear programming problem is **infeasible**.
 
 If, for any $K \in \mathbb R$, there exists a feasible solution $x$ such that $c'x < K$, we say that the problem is **unbounded** or equivalently that the optimal value is $-\infty$.
 
-## Example 1: Production Problem 
+## Example 1: Production Problem
 
 This example was created by {cite}`bertsimas_tsitsiklis1997`
 
-Suppose that a factory can produce two goods called Product $1$ and Product $2$. 
+Suppose that a factory can produce two goods called Product $1$ and Product $2$.
 
 To produce each product requires both material and labor.
 
@@ -113,7 +112,7 @@ Required per unit material and labor  inputs and  revenues  are shown in table b
 A firm's problem is to construct a  production plan that uses its  30 units of materials and 20 unites of labor
 to maximize its revenue.
 
-Let $x_i$ denote the quantity of Product $i$ that the firm produces. 
+Let $x_i$ denote the quantity of Product $i$ that the firm produces.
 
 This problem can be formulated as:
 
@@ -143,10 +142,10 @@ ax.text(-2, 2, "$x_2 \geq 0$", size=12)
 ax.text(2.5, -0.7, "$x_1 \geq 0$", size=12)
 
 # Draw the feasible region
-feasible_set = Polygon(np.array([[0, 0], 
-                                 [0, 6], 
-                                 [2.5, 5], 
-                                 [5, 0]]), 
+feasible_set = Polygon(np.array([[0, 0],
+                                 [0, 6],
+                                 [2.5, 5],
+                                 [5, 0]]),
                        color="cyan")
 ax.add_patch(feasible_set)
 
@@ -164,17 +163,17 @@ ax.text(2.7, 5.2, "Optimal Solution", size=12)
 plt.show()
 ```
 
-The blue region is the feasible set within which all constraints are satisfied. 
+The blue region is the feasible set within which all constraints are satisfied.
 
 Parallel orange lines are iso-revenue lines.
 
-The firm's objective is to find the  parallel orange lines to the upper boundary of the feasible set. 
+The firm's objective is to find the  parallel orange lines to the upper boundary of the feasible set.
 
-The intersection of the feasible set and the highest orange line delineates the optimal set. 
+The intersection of the feasible set and the highest orange line delineates the optimal set.
 
 In this example, the optimal set is the point $(2.5, 5)$.
 
-## Example 2: Investment Problem 
+## Example 2: Investment Problem
 
 We now consider a problem posed and solved by  {cite}`hu_guo2018`.
 
@@ -186,7 +185,7 @@ Three investment options are available:
 
 2. **Bank account:** the fund can deposit any amount  into a bank at the beginning of each year and receive its capital plus 6\% interest at the end of that year. In addition, the mutual fund is permitted to borrow no more than $20,000 at the beginning of each year and is asked to pay back the amount borrowed plus 6\% interest at the end of the year. The mutual fund can choose whether to deposit or borrow at the beginning of each year.
 
-3. **Corporate bond:** At the beginning of the second year, a  corporate bond becomes available. 
+3. **Corporate bond:** At the beginning of the second year, a  corporate bond becomes available.
 The fund can buy an amount
 that is no more than $ \$ $50,000 of this bond at the beginning of the second year and  at the end of the third year receive a payout of 130\% of the amount invested in the bond.
 
@@ -194,7 +193,7 @@ The mutual fund's objective is to maximize total payout that it owns at the end 
 
 We can formulate this  as a linear programming problem.
 
-Let  $x_1$ be the amount of put in the annuity, $x_2, x_3, x_4$ be  bank deposit balances at the beginning of the three years,  and $x_5$ be the amount invested  in the corporate bond. 
+Let  $x_1$ be the amount of put in the annuity, $x_2, x_3, x_4$ be  bank deposit balances at the beginning of the three years,  and $x_5$ be the amount invested  in the corporate bond.
 
 When $x_2, x_3, x_4$ are negative, it means that  the mutual fund has borrowed from  bank.
 
@@ -209,15 +208,15 @@ The table below shows the mutual fund's decision variables together with the tim
 The  mutual fund's decision making proceeds according to the following timing protocol:
 
 1. At the beginning of the first year, the mutual fund decides how much to invest in the annuity and
-   how much to deposit in the bank. This decision is subject to the constraint:  
+   how much to deposit in the bank. This decision is subject to the constraint:
 
    $$
    x_1 + x_2 = 100,000
-   $$ 
+   $$
 
 2. At the beginning of the second year, the mutual fund has a bank balance  of $1.06 x_2$.
    It must keep $x_1$ in the annuity. It can choose to put $x_5$ into the corporate bond,
-   and put $x_3$ in the bank. These decisions are restricted by 
+   and put $x_3$ in the bank. These decisions are restricted by
 
    $$
    x_1 + x_5 = 1.06 x_2 - x_3
@@ -256,12 +255,12 @@ $$
 
 ## Standard Form
 
-For purposes of 
+For purposes of
 
 * unifying linear programs that are initially stated in superficially different forms, and
 
 * having a form that is convenient to put into black-box software packages,
- 
+
 it is useful to devote some effort to describe a **standard form**.
 
 Our standard form  is:
@@ -277,14 +276,14 @@ $$
 \end{aligned}
 $$
 
-Let 
+Let
 
-$$ 
+$$
 A = \begin{bmatrix}
-a_{11} & a_{12} & \dots & a_{1n} \\ 
-a_{21} & a_{22} & \dots & a_{2n} \\ 
-  &   & \vdots &   \\ 
-a_{m1} & a_{m2} & \dots & a_{mn} \\ 
+a_{11} & a_{12} & \dots & a_{1n} \\
+a_{21} & a_{22} & \dots & a_{2n} \\
+  &   & \vdots &   \\
+a_{m1} & a_{m2} & \dots & a_{mn} \\
 \end{bmatrix}, \quad
 b = \begin{bmatrix} b_1 \\ b_2 \\ \vdots \\ b_m \\ \end{bmatrix}, \quad
 c = \begin{bmatrix} c_1 \\ c_2 \\ \vdots \\ c_n \\ \end{bmatrix}, \quad
@@ -301,7 +300,7 @@ $$
 \end{aligned}
 $$ (lpproblem)
 
-Here, $Ax = b$ means that  the $i$-th entry of $Ax$  equals the $i$-th entry of $b$ for every $i$. 
+Here, $Ax = b$ means that  the $i$-th entry of $Ax$  equals the $i$-th entry of $b$ for every $i$.
 
 Similarly, $x >= 0$ means that  $x_j$ is greater than $0$ for every $j$.
 
@@ -309,7 +308,7 @@ Similarly, $x >= 0$ means that  $x_j$ is greater than $0$ for every $j$.
 
 It is useful to know how to transform a problem that initially is not stated in the standard form into one that is.
 
-By deploying the following steps, any linear programming problem can be transformed into an  equivalent  standard form linear programming problem. 
+By deploying the following steps, any linear programming problem can be transformed into an  equivalent  standard form linear programming problem.
 
 1. **Objective Function:** If a problem is originally a constrained **maximization** problem, we can construct a new objective function that  is the additive inverse of the original objective function. The transformed problem is then a **minimization** problem.
 
@@ -430,13 +429,13 @@ res_ex1
 
 The optimal plan tells the  factory to produce 2.5 units of Product 1 and 5 units of  Product 2; that  generates a maximizing value of  revenue of 27.5.
 
-We are using the *linprog* function as a **black box**.  
+We are using the *linprog* function as a **black box**.
 
-Inside it, Python first  transforms the problem into  standard form. 
+Inside it, Python first  transforms the problem into  standard form.
 
 To do that, for each inequality constraint it generates one slack variable.
 
-Here the vector of slack variables is a two-dimensional NumPy array that  equals $b_{ub} - A_{ub}x$. 
+Here the vector of slack variables is a two-dimensional NumPy array that  equals $b_{ub} - A_{ub}x$.
 
 See the [official documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html#scipy.optimize.linprog) for more details.
 
@@ -527,10 +526,10 @@ In what  follows, we shall  use $a_i'$ to denote the $i$-th row of $A$ and $A_j$
 
 $$
 A = \begin{bmatrix}
-a_1' \\ 
-a_2' \\ 
-\ \\ 
-a_m' \\ 
+a_1' \\
+a_2' \\
+\ \\
+a_m' \\
 \end{bmatrix}.
 $$
 
@@ -542,11 +541,11 @@ To construct the  dual of linear programming problem {eq}`linprog`, we proceed a
 
 3. The dual problem is to **maximize**  objective function $b'p$.
 
-For a **maximization**  problem, we can first transform it to an equivalent minimization problem and then follow the above steps above to construct the  dual **minimization** problem. 
+For a **maximization**  problem, we can first transform it to an equivalent minimization problem and then follow the above steps above to construct the  dual **minimization** problem.
 
 We can easily verify that  **the dual of a dual problem is the  primal problem**.
 
-The following table summarizes relationships between objects in primal and dual problems. 
+The following table summarizes relationships between objects in primal and dual problems.
 
 |  Objective: Min  |  Objective: Max  |
 | :--------------: | :--------------: |
@@ -592,48 +591,48 @@ $$
 
 Primal and dual problems are linked by powerful **duality theorems** that have  **weak** and **strong** forms.
 
-The duality theorems provide the foundations of enlightening economic interpretations of linear programming problems. 
+The duality theorems provide the foundations of enlightening economic interpretations of linear programming problems.
 
 **Weak duality:** For linear programming problem {eq}`linprog`, if $x$ and $p$ are feasible solutions to the primal and the dual problems, respectively, then
 
-$$ 
-b'p \le c'x 
+$$
+b'p \le c'x
 $$
 
 **Strong duality:** For linear programming problem {eq}`linprog`, if the primal problem has an optimal solution $x$, then the dual problem also has an optimal solution. Denote an optimal solution of the dual problem as $p$. Then
 
-$$ 
-b'p = c'x 
+$$
+b'p = c'x
 $$
 
 According to strong duality, we can find the optimal value for the primal problem by solving the dual problem.
 
-But the dual problem tells us even more as we shall see next. 
+But the dual problem tells us even more as we shall see next.
 
 ### Complementary Slackness
 
-Let $x$ and $p$ be feasible solutions to the primal problem {eq}`linprog` and its dual problem, respectively. 
+Let $x$ and $p$ be feasible solutions to the primal problem {eq}`linprog` and its dual problem, respectively.
 
 Then $x$ and $p$ are also  optimal solutions of the primal and dual problems if and only if:
 
-$$ 
+$$
 p_i (a_i' x - b_i) = 0, \quad \forall i, \\
 x_j (A_j' p - c_j) = 0, \quad \forall j.
 $$
 
 This means that $p_i = 0$ if $a_i' x - b_i \neq 0$ and $x_j = 0$ if $A_j' p - c_j \neq 0$.
 
-These are the celebrated **complementary slackness** conditions. 
+These are the celebrated **complementary slackness** conditions.
 
 Let's interpret them.
 
-### Interpretations 
+### Interpretations
 
-Let's take a version of problem {eq}`linprog2` as a production problem and consider its associated dual problem.   
+Let's take a version of problem {eq}`linprog2` as a production problem and consider its associated dual problem.
 
 A factory produce $n$ products with $m$ types of resources.
 
-Where  $i=1,2,\dots,m$ and $j=1,2,\dots,n$, let 
+Where  $i=1,2,\dots,m$ and $j=1,2,\dots,n$, let
 
 * $x_j$ denote quantities of product $j$ to be produced
 
@@ -641,7 +640,7 @@ Where  $i=1,2,\dots,m$ and $j=1,2,\dots,n$, let
 
 * $b_i$ denotes the  avaliable amount of resource $i$
 
-* $c_j$ denotes the revenue generated by producing one unit of product $j$. 
+* $c_j$ denotes the revenue generated by producing one unit of product $j$.
 
 
 **Dual variables:** By  strong duality, we have
@@ -650,11 +649,11 @@ $$
 c_1 x_1 + c_2 x_2 + \dots + c_n x_n = b_1 p_1 + b_2 p_2 + \dots + b_m p_m.
 $$
 
-Evidently, a one unit change of $b_i$ results in $p_i$ units  change of revenue. 
+Evidently, a one unit change of $b_i$ results in $p_i$ units  change of revenue.
 
 Thus, a dual variable can be interpreted as the **value** of one unit of resource $i$.
 
-This is why it is often called the  **shadow price** of resource $i$. 
+This is why it is often called the  **shadow price** of resource $i$.
 
 For feasible but not optimal primal and dual solutions $x$ and $p$, by weak duality, we have
 
@@ -668,9 +667,9 @@ Here, the expression is opposite to the statement above since primal problem is 
 
 When a strict inequality holds, the solution is not optimal because  it doesn't fully utilize all valuable resources.
 
-Evidently, 
+Evidently,
 
-* if a shadow price $p_i$ is larger than the market price for Resource $i$, the factory should buy more Resource $i$ and expand its scale to generate more revenue; 
+* if a shadow price $p_i$ is larger than the market price for Resource $i$, the factory should buy more Resource $i$ and expand its scale to generate more revenue;
 
 * if a shadow price $p_i$ is less than the market price for Resource $i$, the factory should sell its  Resource $i$.
 
@@ -698,7 +697,7 @@ $$
 \end{aligned}
 $$
 
-We solve this dual problem by using the  function *linprog*. 
+We solve this dual problem by using the  function *linprog*.
 
 Since parameters used here are defined before when solving the primal problem, we won't define them here.
 
@@ -711,7 +710,7 @@ res_ex1_dual
 
 The optimal value for the dual problem equals  27.5.
 
-This equals the optimal value of  the primal problem, an illustration of  strong duality. 
+This equals the optimal value of  the primal problem, an illustration of  strong duality.
 
 Shadow prices for materials and labor are 0.625 and 0.4375, respectively.
 
@@ -760,7 +759,7 @@ bounds_ex2_dual = [(None, None),
                    (   0, None)]
 
 # Solve the dual problem
-res_ex2_dual = linprog(c_ex2_dual, A_eq=A_eq_ex2_dual, b_eq=b_eq_ex2_dual, 
+res_ex2_dual = linprog(c_ex2_dual, A_eq=A_eq_ex2_dual, b_eq=b_eq_ex2_dual,
                        A_ub=A_ub_ex2_dual, b_ub=b_ub_ex2_dual, bounds=bounds_ex2_dual)
 
 res_ex2_dual
@@ -776,9 +775,9 @@ $$
 100,000 p_1 - 20,000 p_4 - 20,000 p_5 - 20,000 p_6 + 50,000 p_7.
 $$
 
-We know if $b_i$ changes one dollor, then the optimal payoff in the end of the third year will change $p_i$ dollars. 
+We know if $b_i$ changes one dollor, then the optimal payoff in the end of the third year will change $p_i$ dollars.
 
-For $i = 1$, this means if the initial capital changes by one dollar, then the optimal payoff in the end of the third year will change $p_1$ dollars. 
+For $i = 1$, this means if the initial capital changes by one dollar, then the optimal payoff in the end of the third year will change $p_1$ dollars.
 
 Thus, $p_1$ is the potential value of one more unit of initial capital, or the shadow price for initial capital.
 
@@ -786,11 +785,11 @@ We can also interpret $p_1$ as the prospective  value in the end of the third ye
 
 If the mutual fund can raise money at a cost lower than $p_1 - 1$, then it should raise more money to increase its revenue.
 
-But if it bears a cost of funds higher than $p_1 - 1$, the mutual fund shouldn't do that. 
+But if it bears a cost of funds higher than $p_1 - 1$, the mutual fund shouldn't do that.
 
 For $i = 4, 5, 6$, this means that if the amount of capital that the fund is permitted to borrow from the bank changes by one dollar, the optimal pay out  at the end of the third year will change $p_i$ dollars.
 
-Thus, for $i = 4, 5, 6$, $|p_i|$ indicates the value of one dollar that the mutual fund can borrow from the bank at the beginning of the $i-3$-th year. 
+Thus, for $i = 4, 5, 6$, $|p_i|$ indicates the value of one dollar that the mutual fund can borrow from the bank at the beginning of the $i-3$-th year.
 
 $|p_i|$ is the shadow price for the loan amount. (We use absolute value here since $p_i \le 0$.)
 
@@ -798,7 +797,7 @@ If the interest rate is lower than $|p_i|$, then the mutual fund should borrow t
 
 For $i = 7$, this means that if the amount of the corporate bond the mutual fund can buy changes one dollar, then the optimal payoff will change $p_7$ dollars at the end of the third year.  Again, $p_7$ is the shadow price for the amount of the corporate bond the mutual fund can buy.
 
-As for numerical results 
+As for numerical results
 
 1. $p_1 = 1.38$, which means one dollar of initial capital is worth $\$ 1.38$ at the end of the third year.
 

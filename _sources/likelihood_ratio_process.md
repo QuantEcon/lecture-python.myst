@@ -43,7 +43,6 @@ Let's start  by importing some Python tools.
 
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -349,18 +348,18 @@ The two probabilities are:
 
 - Probability of detection (= power = 1 minus probability
   of Type II error):
-  
+
   $$
   1-\beta \equiv \Pr\left\{ L\left(w^{t}\right)<c\mid q=g\right\}
   $$
-  
+
 - Probability of false alarm (= significance level = probability of
   Type I error):
-  
+
   $$
   \alpha \equiv  \Pr\left\{ L\left(w^{t}\right)<c\mid q=f\right\}
   $$
-  
+
 
 The [Neyman-Pearson
 Lemma](https://en.wikipedia.org/wiki/Neyman–Pearson_lemma)
@@ -694,4 +693,3 @@ and as applied in {doc}`this lecture <odu>`.
 
 Likelihood ratio processes appear again in [this lecture](https://python-advanced.quantecon.org/additive_functionals.html), which contains another illustration
 of the **peculiar property** of likelihood ratio processes described above.
-

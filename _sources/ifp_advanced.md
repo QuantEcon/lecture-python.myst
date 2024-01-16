@@ -56,7 +56,6 @@ endogenous grid method to solve the model quickly and accurately.
 We require the following imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np

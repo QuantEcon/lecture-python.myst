@@ -51,7 +51,6 @@ other countries.
 We will use the following standard imports:
 
 ```{code-cell} ipython3
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -412,4 +411,3 @@ plot_paths(paths, labels)
 
 Pushing the peak of curve further into the future may reduce cumulative deaths
 if a vaccine is found.
-
