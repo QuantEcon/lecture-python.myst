@@ -44,7 +44,7 @@ tags: [hide-output]
 
 This lecture introduces the **linear state space** dynamic system.
 
-The linear state space system is a generalization of the scalar AR(1) process {doc}`we studied before <ar1_processes>`.
+The linear state space system is a generalization of the scalar AR(1) process {doc}`we studied before <intro:ar1_processes>`.
 
 This model is a workhorse that carries a powerful theory of prediction.
 

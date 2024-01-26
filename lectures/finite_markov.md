@@ -675,7 +675,7 @@ Such distributions are called **stationary** or **invariant**.
 Formally, a marginal distribution $\psi^*$ on $S$ is called **stationary** for $P$ if $\psi^* = \psi^* P$.
 
 (This is the same notion of stationarity that we learned about in the
-{doc}`lecture on AR(1) processes <ar1_processes>` applied to a different setting.)
+{doc}`lecture on AR(1) processes <intro:ar1_processes>` applied to a different setting.)
 
 From this equality, we immediately get $\psi^* = \psi^* P^t$ for all $t$.
 

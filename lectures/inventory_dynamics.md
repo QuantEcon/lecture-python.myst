@@ -283,7 +283,7 @@ histogram just above.
 This model is asymptotically stationary, with a unique stationary
 distribution.
 
-(See the discussion of stationarity in {doc}`our lecture on AR(1) processes <ar1_processes>` for background --- the fundamental concepts are the same.)
+(See the discussion of stationarity in {doc}`our lecture on AR(1) processes <intro:ar1_processes>` for background --- the fundamental concepts are the same.)
 
 In particular, the sequence of marginal distributions $\{\psi_t\}$
 is converging to a unique limiting distribution that does not depend on
