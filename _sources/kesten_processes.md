@@ -38,7 +38,7 @@ tags: [hide-output]
 
 ## Overview
 
-{doc}`Previously <ar1_processes>` we learned about linear scalar-valued stochastic processes (AR(1) models).
+{doc}`Previously <intro:ar1_processes>` we learned about linear scalar-valued stochastic processes (AR(1) models).
 
 Now we generalize these linear models slightly by allowing the multiplicative coefficient to be stochastic.
 
@@ -170,7 +170,7 @@ is a Kesten process.
 
 ### Stationarity
 
-In earlier lectures, such as the one on {doc}`AR(1) processes <ar1_processes>`, we introduced the notion of a stationary distribution.
+In earlier lectures, such as the one on {doc}`AR(1) processes <intro:ar1_processes>`, we introduced the notion of a stationary distribution.
 
 In the present context, we can define a stationary distribution as follows:
 

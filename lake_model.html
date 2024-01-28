@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>69. A Lake Model of Employment and Unemployment &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>68. A Lake Model of Employment and Unemployment &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="70. Rational Expectations Equilibrium" href="rational_expectations.html" />
-    <link rel="prev" title="68. Schelling’s Segregation Model" href="schelling.html" />
+    <link rel="next" title="69. Rational Expectations Equilibrium" href="rational_expectations.html" />
+    <link rel="prev" title="67. Schelling’s Segregation Model" href="schelling.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,33 +169,33 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">69.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">69.1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">68.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">68.1.1. Prerequisites</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">69.2. The Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-variables">69.2.1. Aggregate Variables</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#laws-of-motion-for-stock-variables">69.2.2. Laws of Motion for Stock Variables</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#laws-of-motion-for-rates">69.2.3. Laws of Motion for Rates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">68.2. The Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-variables">68.2.1. Aggregate Variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#laws-of-motion-for-stock-variables">68.2.2. Laws of Motion for Stock Variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#laws-of-motion-for-rates">68.2.3. Laws of Motion for Rates</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">69.3. Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-dynamics">69.3.1. Aggregate Dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">68.3. Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-dynamics">68.3.1. Aggregate Dynamics</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamics-of-an-individual-worker">69.4. Dynamics of an Individual Worker</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ergodicity">69.4.1. Ergodicity</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-rate">69.4.2. Convergence Rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamics-of-an-individual-worker">68.4. Dynamics of an Individual Worker</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ergodicity">68.4.1. Ergodicity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-rate">68.4.2. Convergence Rate</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endogenous-job-finding-rate">69.5. Endogenous Job Finding Rate</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservation-wage">69.5.1. Reservation Wage</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linking-the-mccall-search-model-to-the-lake-model">69.5.2. Linking the McCall Search Model to the Lake Model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiscal-policy">69.5.3. Fiscal Policy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiscal-policy-code">69.5.4. Fiscal Policy Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endogenous-job-finding-rate">68.5. Endogenous Job Finding Rate</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservation-wage">68.5.1. Reservation Wage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linking-the-mccall-search-model-to-the-lake-model">68.5.2. Linking the McCall Search Model to the Lake Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiscal-policy">68.5.3. Fiscal Policy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fiscal-policy-code">68.5.4. Fiscal Policy Code</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">69.6. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">68.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -257,7 +257,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="a-lake-model-of-employment-and-unemployment">
-<h1><a class="toc-backref" href="#id4"><span class="section-number">69. </span>A Lake Model of Employment and Unemployment</a><a class="headerlink" href="#a-lake-model-of-employment-and-unemployment" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id4"><span class="section-number">68. </span>A Lake Model of Employment and Unemployment</a><a class="headerlink" href="#a-lake-model-of-employment-and-unemployment" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -287,7 +287,9 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
@@ -310,7 +312,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">69.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">68.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes what has come to be called a <em>lake model</em>.</p>
 <p>The lake model is a basic tool for modeling unemployment.</p>
 <p>It allows us to analyze</p>
@@ -346,14 +348,14 @@ and out of unemployment and employment are exogenous.</p>
 </div>
 </div>
 <section id="prerequisites">
-<h3><span class="section-number">69.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h3>
 <p>Before working through what follows, we recommend you read the
 <a class="reference internal" href="finite_markov.html"><span class="doc">lecture on finite Markov chains</span></a>.</p>
 <p>You will also need some basic <a class="reference internal" href="linear_algebra.html"><span class="doc">linear algebra</span></a> and probability.</p>
 </section>
 </section>
 <section id="the-model">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">69.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">68.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
 <p>The economy is inhabited by a very large number of ex-ante identical workers.</p>
 <p>The workers live forever, spending their lives moving between unemployment and employment.</p>
 <p>Their rates of  transition between employment and unemployment are  governed by the following parameters:</p>
@@ -365,7 +367,7 @@ and out of unemployment and employment are exogenous.</p>
 </ul>
 <p>The growth rate of the labor force evidently equals <span class="math notranslate nohighlight">\(g=b-d\)</span>.</p>
 <section id="aggregate-variables">
-<h3><span class="section-number">69.2.1. </span>Aggregate Variables<a class="headerlink" href="#aggregate-variables" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.2.1. </span>Aggregate Variables<a class="headerlink" href="#aggregate-variables" title="Permalink to this heading">#</a></h3>
 <p>We want to derive the dynamics of the following aggregates</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(E_t\)</span>, the total number of employed workers at date <span class="math notranslate nohighlight">\(t\)</span></p></li>
@@ -380,7 +382,7 @@ and out of unemployment and employment are exogenous.</p>
 <p>(Here and below, capital letters represent aggregates and lowercase letters represent rates)</p>
 </section>
 <section id="laws-of-motion-for-stock-variables">
-<h3><span class="section-number">69.2.2. </span>Laws of Motion for Stock Variables<a class="headerlink" href="#laws-of-motion-for-stock-variables" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.2.2. </span>Laws of Motion for Stock Variables<a class="headerlink" href="#laws-of-motion-for-stock-variables" title="Permalink to this heading">#</a></h3>
 <p>We begin by constructing laws of motion for the aggregate variables <span class="math notranslate nohighlight">\(E_t,U_t, N_t\)</span>.</p>
 <p>Of the mass of workers <span class="math notranslate nohighlight">\(E_t\)</span> who are employed at date <span class="math notranslate nohighlight">\(t\)</span>,</p>
 <ul class="simple">
@@ -422,7 +424,7 @@ A :=
 <p>This law tells us how total employment and unemployment evolve over time.</p>
 </section>
 <section id="laws-of-motion-for-rates">
-<h3><span class="section-number">69.2.3. </span>Laws of Motion for Rates<a class="headerlink" href="#laws-of-motion-for-rates" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.2.3. </span>Laws of Motion for Rates<a class="headerlink" href="#laws-of-motion-for-rates" title="Permalink to this heading">#</a></h3>
 <p>Now let’s derive the law of motion for rates.</p>
 <p>To get these we can divide both sides of <span class="math notranslate nohighlight">\(X_{t+1} = A X_t\)</span> by  <span class="math notranslate nohighlight">\(N_{t+1}\)</span> to get</p>
 <div class="math notranslate nohighlight">
@@ -461,7 +463,7 @@ x_{t+1} = \hat A x_t
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">69.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">68.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>Let’s code up these equations.</p>
 <p>To do this we’re going to use a class that we’ll call <code class="docutils literal notranslate"><span class="pre">LakeModel</span></code>.</p>
 <p>This class will</p>
@@ -608,7 +610,7 @@ derived objects like <span class="math notranslate nohighlight">\(A\)</span> wil
 </div>
 </div>
 <section id="aggregate-dynamics">
-<h3><span class="section-number">69.3.1. </span>Aggregate Dynamics<a class="headerlink" href="#aggregate-dynamics" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.3.1. </span>Aggregate Dynamics<a class="headerlink" href="#aggregate-dynamics" title="Permalink to this heading">#</a></h3>
 <p>Let’s run a simulation under the default parameters (see above) starting from <span class="math notranslate nohighlight">\(X_0 = (12, 138)\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -704,7 +706,7 @@ there exists an <span class="math notranslate nohighlight">\(\bar x\)</span>  su
 </section>
 </section>
 <section id="dynamics-of-an-individual-worker">
-<span id="dynamics-workers"></span><h2><a class="toc-backref" href="#id8"><span class="section-number">69.4. </span>Dynamics of an Individual Worker</a><a class="headerlink" href="#dynamics-of-an-individual-worker" title="Permalink to this heading">#</a></h2>
+<span id="dynamics-workers"></span><h2><a class="toc-backref" href="#id8"><span class="section-number">68.4. </span>Dynamics of an Individual Worker</a><a class="headerlink" href="#dynamics-of-an-individual-worker" title="Permalink to this heading">#</a></h2>
 <p>An individual worker’s employment dynamics are governed by a <a class="reference internal" href="finite_markov.html"><span class="doc">finite state Markov process</span></a>.</p>
 <p>The worker can be in one of two states:</p>
 <ul class="simple">
@@ -740,7 +742,7 @@ that if <span class="math notranslate nohighlight">\(\alpha \in (0, 1)\)</span> 
 <p>Not surprisingly, probability mass on the unemployment state increases with
 the dismissal rate and falls with the job finding rate.</p>
 <section id="ergodicity">
-<h3><span class="section-number">69.4.1. </span>Ergodicity<a class="headerlink" href="#ergodicity" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.4.1. </span>Ergodicity<a class="headerlink" href="#ergodicity" title="Permalink to this heading">#</a></h3>
 <p>Let’s look at a typical lifetime of employment-unemployment spells.</p>
 <p>We want to compute the average amounts of time an infinitely lived worker would spend employed and unemployed.</p>
 <p>Let</p>
@@ -767,7 +769,7 @@ the dismissal rate and falls with the job finding rate.</p>
 <p>Thus, the percentages of time that an  infinitely lived worker  spends employed and unemployed equal the fractions of workers employed and unemployed in the steady state distribution.</p>
 </section>
 <section id="convergence-rate">
-<h3><span class="section-number">69.4.2. </span>Convergence Rate<a class="headerlink" href="#convergence-rate" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.4.2. </span>Convergence Rate<a class="headerlink" href="#convergence-rate" title="Permalink to this heading">#</a></h3>
 <p>How long does it take for time series sample averages to converge to cross-sectional averages?</p>
 <p>We can use <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py’s</a>
 MarkovChain class to investigate this.</p>
@@ -806,7 +808,7 @@ MarkovChain class to investigate this.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/49b4d0dcff18b8cc3ec889cc00614b07cbc102bac4772b9ea1ca53405250022b.png" src="_images/49b4d0dcff18b8cc3ec889cc00614b07cbc102bac4772b9ea1ca53405250022b.png" />
+<img alt="_images/16d0cb1d927221979bb4b80bf3ebed0b52ef449e0918d967bad6585d9e5dd633.png" src="_images/16d0cb1d927221979bb4b80bf3ebed0b52ef449e0918d967bad6585d9e5dd633.png" />
 </div>
 </div>
 <p>The stationary probabilities are given by the dashed red line.</p>
@@ -815,12 +817,12 @@ MarkovChain class to investigate this.</p>
 </section>
 </section>
 <section id="endogenous-job-finding-rate">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">69.5. </span>Endogenous Job Finding Rate</a><a class="headerlink" href="#endogenous-job-finding-rate" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">68.5. </span>Endogenous Job Finding Rate</a><a class="headerlink" href="#endogenous-job-finding-rate" title="Permalink to this heading">#</a></h2>
 <p>We now make the hiring rate endogenous.</p>
-<p>The transition rate from unemployment to employment will be determined by the McCall search model <span id="id1">[<a class="reference internal" href="zreferences.html#id191" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McC70</a>]</span>.</p>
+<p>The transition rate from unemployment to employment will be determined by the McCall search model <span id="id1">[<a class="reference internal" href="zreferences.html#id193" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McC70</a>]</span>.</p>
 <p>All details relevant to the following discussion can be found in <a class="reference internal" href="mccall_model.html"><span class="doc">our treatment</span></a> of that model.</p>
 <section id="reservation-wage">
-<h3><span class="section-number">69.5.1. </span>Reservation Wage<a class="headerlink" href="#reservation-wage" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.5.1. </span>Reservation Wage<a class="headerlink" href="#reservation-wage" title="Permalink to this heading">#</a></h3>
 <p>The most important thing to remember about the model is that optimal decisions
 are characterized by a reservation wage <span class="math notranslate nohighlight">\(\bar w\)</span></p>
 <ul class="simple">
@@ -836,18 +838,18 @@ are characterized by a reservation wage <span class="math notranslate nohighligh
 </ul>
 </section>
 <section id="linking-the-mccall-search-model-to-the-lake-model">
-<h3><span class="section-number">69.5.2. </span>Linking the McCall Search Model to the Lake Model<a class="headerlink" href="#linking-the-mccall-search-model-to-the-lake-model" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.5.2. </span>Linking the McCall Search Model to the Lake Model<a class="headerlink" href="#linking-the-mccall-search-model-to-the-lake-model" title="Permalink to this heading">#</a></h3>
 <p>Suppose that  all workers inside a lake model behave according to the McCall search model.</p>
 <p>The exogenous probability of leaving employment remains <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <p>But their optimal decision rules determine the probability <span class="math notranslate nohighlight">\(\lambda\)</span> of leaving unemployment.</p>
 <p>This is now</p>
 <div class="math notranslate nohighlight" id="equation-lake-lamda">
-<span class="eqno">(69.1)<a class="headerlink" href="#equation-lake-lamda" title="Permalink to this equation">#</a></span>\[\lambda
+<span class="eqno">(68.1)<a class="headerlink" href="#equation-lake-lamda" title="Permalink to this equation">#</a></span>\[\lambda
 = \gamma \mathbb P \{ w_t \geq \bar w\}
 = \gamma \sum_{w' \geq \bar w} p(w')\]</div>
 </section>
 <section id="fiscal-policy">
-<h3><span class="section-number">69.5.3. </span>Fiscal Policy<a class="headerlink" href="#fiscal-policy" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.5.3. </span>Fiscal Policy<a class="headerlink" href="#fiscal-policy" title="Permalink to this heading">#</a></h3>
 <p>We can use the McCall search version of the Lake Model  to find an optimal level of unemployment insurance.</p>
 <p>We assume that  the government sets unemployment compensation <span class="math notranslate nohighlight">\(c\)</span>.</p>
 <p>The government imposes a lump-sum tax <span class="math notranslate nohighlight">\(\tau\)</span> sufficient to finance total unemployment payments.</p>
@@ -860,7 +862,7 @@ are characterized by a reservation wage <span class="math notranslate nohighligh
 <p>Thus, the post-tax income of an employed worker with wage <span class="math notranslate nohighlight">\(w\)</span> is <span class="math notranslate nohighlight">\(w - \tau\)</span>.</p>
 <p>The post-tax income of an unemployed worker is <span class="math notranslate nohighlight">\(c - \tau\)</span>.</p>
 <p>For each specification <span class="math notranslate nohighlight">\((c, \tau)\)</span> of government policy, we can solve for the worker’s optimal reservation wage.</p>
-<p>This determines <span class="math notranslate nohighlight">\(\lambda\)</span> via <a class="reference internal" href="#equation-lake-lamda">(69.1)</a> evaluated at post tax wages, which in turn determines a steady state unemployment rate <span class="math notranslate nohighlight">\(u(c, \tau)\)</span>.</p>
+<p>This determines <span class="math notranslate nohighlight">\(\lambda\)</span> via <a class="reference internal" href="#equation-lake-lamda">(68.1)</a> evaluated at post tax wages, which in turn determines a steady state unemployment rate <span class="math notranslate nohighlight">\(u(c, \tau)\)</span>.</p>
 <p>For a given level of unemployment benefit <span class="math notranslate nohighlight">\(c\)</span>, we can solve for a tax that balances the budget in the steady state</p>
 <div class="math notranslate nohighlight">
 \[
@@ -883,13 +885,13 @@ W := e \,  {\mathbb E} [V \, | \,  \text{employed}] + u \,  U
 <li><p><span class="math notranslate nohighlight">\(b = 0.0124\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(d = 0.00822\)</span></p></li>
 </ul>
-<p>Following <span id="id2">[<a class="reference internal" href="zreferences.html#id137" title="Steven J Davis, R Jason Faberman, and John Haltiwanger. The flow approach to labor markets: new data sources, micro-macro links and the recent downturn. Journal of Economic Perspectives, 2006.">DFH06</a>]</span>, we set <span class="math notranslate nohighlight">\(\alpha\)</span>, the hazard rate of leaving employment, to</p>
+<p>Following <span id="id2">[<a class="reference internal" href="zreferences.html#id139" title="Steven J Davis, R Jason Faberman, and John Haltiwanger. The flow approach to labor markets: new data sources, micro-macro links and the recent downturn. Journal of Economic Perspectives, 2006.">DFH06</a>]</span>, we set <span class="math notranslate nohighlight">\(\alpha\)</span>, the hazard rate of leaving employment, to</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\alpha = 0.013\)</span></p></li>
 </ul>
 </section>
 <section id="fiscal-policy-code">
-<h3><span class="section-number">69.5.4. </span>Fiscal Policy Code<a class="headerlink" href="#fiscal-policy-code" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">68.5.4. </span>Fiscal Policy Code<a class="headerlink" href="#fiscal-policy-code" title="Permalink to this heading">#</a></h3>
 <p>We will make use of techniques from the <a class="reference internal" href="mccall_model.html"><span class="doc">McCall model lecture</span></a></p>
 <p>The first piece of code implements value function iteration</p>
 <div class="cell tag_output_scroll docutils container">
@@ -986,9 +988,9 @@ W := e \,  {\mathbb E} [V \, | \,  \text{employed}] + u \,  U
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2962/1748977302.py:3: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2936/1748977302.py:3: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span>
   @jit
-/tmp/ipykernel_2962/1748977302.py:41: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span>
+/tmp/ipykernel_2936/1748977302.py:41: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span>
   @jit
 </pre></div>
 </div>
@@ -1153,10 +1155,10 @@ function of the unemployment compensation rate</p>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">69.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">68.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="lm_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 69.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 68.1 </span></p>
 <section id="exercise-content">
 <p>In the Lake Model, there is derived data such as <span class="math notranslate nohighlight">\(A\)</span> which depends on primitives like <span class="math notranslate nohighlight">\(\alpha\)</span>
 and <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
@@ -1173,7 +1175,7 @@ and <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 </div>
 <div class="solution dropdown admonition" id="lake_model-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#lm_ex1"> Exercise 69.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#lm_ex1"> Exercise 68.1</a></p>
 <section id="solution-content">
 <p>Here is one solution</p>
 <div class="cell docutils container">
@@ -1321,7 +1323,7 @@ and <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 </div>
 <div class="exercise admonition" id="lm_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 69.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 68.2 </span></p>
 <section id="exercise-content">
 <p>Consider an economy with an initial stock  of workers <span class="math notranslate nohighlight">\(N_0 = 100\)</span> at the
 steady state level of employment in the baseline parameterization</p>
@@ -1331,7 +1333,7 @@ steady state level of employment in the baseline parameterization</p>
 <li><p><span class="math notranslate nohighlight">\(b = 0.0124\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(d = 0.00822\)</span></p></li>
 </ul>
-<p>(The values for <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span> follow <span id="id3">[<a class="reference internal" href="zreferences.html#id137" title="Steven J Davis, R Jason Faberman, and John Haltiwanger. The flow approach to labor markets: new data sources, micro-macro links and the recent downturn. Journal of Economic Perspectives, 2006.">DFH06</a>]</span>)</p>
+<p>(The values for <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span> follow <span id="id3">[<a class="reference internal" href="zreferences.html#id139" title="Steven J Davis, R Jason Faberman, and John Haltiwanger. The flow approach to labor markets: new data sources, micro-macro links and the recent downturn. Journal of Economic Perspectives, 2006.">DFH06</a>]</span>)</p>
 <p>Suppose that in response to new legislation the hiring rate reduces to <span class="math notranslate nohighlight">\(\lambda = 0.2\)</span>.</p>
 <p>Plot the transition dynamics of the unemployment and employment stocks for 50 periods.</p>
 <p>Plot the transition dynamics for the rates.</p>
@@ -1345,7 +1347,7 @@ steady state level of employment in the baseline parameterization</p>
 </div>
 <div class="solution dropdown admonition" id="lake_model-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#lm_ex2"> Exercise 69.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#lm_ex2"> Exercise 68.2</a></p>
 <section id="solution-content">
 <p>We begin by constructing the class containing the default parameters and assigning the
 steady state values to <code class="docutils literal notranslate"><span class="pre">x0</span></code></p>
@@ -1444,7 +1446,7 @@ steady state levels.</p>
 </div>
 <div class="exercise admonition" id="lm_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 69.3 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 68.3 </span></p>
 <section id="exercise-content">
 <p>Consider an economy with an initial stock  of workers <span class="math notranslate nohighlight">\(N_0 = 100\)</span> at the
 steady state level of employment in the baseline parameterization.</p>
@@ -1456,7 +1458,7 @@ steady state level of employment in the baseline parameterization.</p>
 </div>
 <div class="solution dropdown admonition" id="lake_model-solution-5">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#lm_ex3"> Exercise 69.3</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#lm_ex3"> Exercise 68.3</a></p>
 <section id="solution-content">
 <p>This next exercise has the economy experiencing a boom in entrances to
 the labor market and then later returning to the original levels.</p>
@@ -1755,53 +1757,48 @@ additional 30 periods</p>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="ar1_processes.html">
-   24. AR1 Processes
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   25. Finite Markov Chains
+   24. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   26. Inventory Dynamics
+   25. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   27. Linear State Space Models
+   26. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   28. Samuelson Multiplier-Accelerator
+   27. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   29. Kesten Processes and Firm Dynamics
+   28. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   30. Wealth Distribution Dynamics
+   29. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   31. A First Look at the Kalman Filter
+   30. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   32. Another Look at the Kalman Filter
+   31. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1813,37 +1810,37 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1855,52 +1852,52 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1912,17 +1909,17 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   53. Forecasting  an AR(1) Process
+   52. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1934,42 +1931,42 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1981,32 +1978,32 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2018,37 +2015,37 @@ additional 30 periods</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -2060,17 +2057,17 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2082,17 +2079,17 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2104,12 +2101,12 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2121,17 +2118,17 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

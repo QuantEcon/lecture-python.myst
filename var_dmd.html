@@ -405,8 +405,8 @@ X^{+} =  V \Sigma^{-1}  U^\top
 <h2><span class="section-number">8.2. </span>Dynamic Mode Decomposition (DMD)<a class="headerlink" href="#dynamic-mode-decomposition-dmd" title="Permalink to this heading">#</a></h2>
 <p>We turn to the <span class="math notranslate nohighlight">\( m &gt;&gt;n \)</span> <strong>tall and skinny</strong> case  associated with <strong>Dynamic Mode Decomposition</strong>.</p>
 <p>Here an <span class="math notranslate nohighlight">\( m \times n+1 \)</span>  data matrix <span class="math notranslate nohighlight">\( \tilde X \)</span> contains many more attributes (or variables) <span class="math notranslate nohighlight">\( m \)</span> than time periods  <span class="math notranslate nohighlight">\( n+1 \)</span>.</p>
-<p>Dynamic mode decomposition was introduced by <span id="id1">[<a class="reference internal" href="zreferences.html#id16" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span>,</p>
-<p>You can read  about Dynamic Mode Decomposition here <span id="id2">[<a class="reference internal" href="zreferences.html#id39" title="J. N. Kutz, S. L. Brunton, Brunton B. W, and J. L. Proctor. Dynamic mode decomposition: data-driven modeling of complex systems. SIAM, 2016.">KBBWP16</a>]</span> and here [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id25">BK19</a>] (section 7.2).</p>
+<p>Dynamic mode decomposition was introduced by <span id="id1">[<a class="reference internal" href="zreferences.html#id18" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span>,</p>
+<p>You can read  about Dynamic Mode Decomposition here <span id="id2">[<a class="reference internal" href="zreferences.html#id41" title="J. N. Kutz, S. L. Brunton, Brunton B. W, and J. L. Proctor. Dynamic mode decomposition: data-driven modeling of complex systems. SIAM, 2016.">KBBWP16</a>]</span> and here [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id25">BK19</a>] (section 7.2).</p>
 <p><strong>Dynamic Mode Decomposition</strong> (DMD) computes a rank <span class="math notranslate nohighlight">\( r &lt; p  \)</span> approximation to the least squares regression coefficients <span class="math notranslate nohighlight">\( \hat A \)</span>  described by formula <a class="reference internal" href="#equation-eq-ahatsvdformula">(8.11)</a>.</p>
 <p>We’ll  build up gradually  to a formulation that is useful  in applications.</p>
 <p>We’ll do this by describing three  alternative representations of our first-order linear dynamic system, i.e., our vector autoregression.</p>
@@ -463,7 +463,7 @@ X_t = U \tilde b_t
 </section>
 <section id="representation-2">
 <h2><span class="section-number">8.4. </span>Representation 2<a class="headerlink" href="#representation-2" title="Permalink to this heading">#</a></h2>
-<p>This representation is related to  one originally proposed by  <span id="id3">[<a class="reference internal" href="zreferences.html#id16" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span>.</p>
+<p>This representation is related to  one originally proposed by  <span id="id3">[<a class="reference internal" href="zreferences.html#id18" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span>.</p>
 <p>It can be regarded as an intermediate step on the way  to obtaining  a related   representation 3 to be presented later</p>
 <p>As with Representation 1, we continue to</p>
 <ul class="simple">
@@ -521,7 +521,7 @@ X_t = U W \hat b_t
 \overline X_{t+1} = U W \Lambda^t W^{-1} U^\top  X_1 
 \]</div>
 <p>In effect,
-<span id="id4">[<a class="reference internal" href="zreferences.html#id16" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span> defined an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(\Phi_s\)</span> as</p>
+<span id="id4">[<a class="reference internal" href="zreferences.html#id18" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span> defined an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(\Phi_s\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-phisfull">
 <span class="eqno">(8.18)<a class="headerlink" href="#equation-eq-phisfull" title="Permalink to this equation">#</a></span>\[ 
 \Phi_s = UW 
@@ -531,7 +531,7 @@ X_t = U W \hat b_t
 <span class="eqno">(8.19)<a class="headerlink" href="#equation-eq-phisfullinv" title="Permalink to this equation">#</a></span>\[
 \Phi_s^+ = W^{-1}U^\top  
 \]</div>
-<p><span id="id5">[<a class="reference internal" href="zreferences.html#id16" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span> then  represented equation <a class="reference internal" href="#equation-eq-dssebookrepr">(8.17)</a> as</p>
+<p><span id="id5">[<a class="reference internal" href="zreferences.html#id18" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span> then  represented equation <a class="reference internal" href="#equation-eq-dssebookrepr">(8.17)</a> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-schmidrep">
 <span class="eqno">(8.20)<a class="headerlink" href="#equation-eq-schmidrep" title="Permalink to this equation">#</a></span>\[
 \overline X_{t+1} = \Phi_s \Lambda^t \Phi_s^+ X_1 
@@ -549,7 +549,7 @@ DMD <strong>projected modes</strong>.</p>
 \hat b =  \Phi_s^+ X
 \]</div>
 <p>is a matrix of regression coefficients of the <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> on the <span class="math notranslate nohighlight">\(m \times p\)</span> matrix <span class="math notranslate nohighlight">\(\Phi_s\)</span>.</p>
-<p>We’ll say more about this interpretation in a related context when we discuss representation 3, which was suggested by  Tu et al. <span id="id6">[<a class="reference internal" href="zreferences.html#id25" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">TRL+14</a>]</span>.</p>
+<p>We’ll say more about this interpretation in a related context when we discuss representation 3, which was suggested by  Tu et al. <span id="id6">[<a class="reference internal" href="zreferences.html#id27" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">TRL+14</a>]</span>.</p>
 <p>It is more appropriate to use  representation 3  when, as is often the case  in practice, we want to use a reduced SVD.</p>
 </section>
 <section id="representation-3">
@@ -574,7 +574,7 @@ X = \tilde U \tilde \Sigma \tilde V^\top ,
 \tilde A =\tilde  U^\top  \hat A \tilde U 
 \]</div>
 <p><strong>Interpretation as projection coefficients</strong></p>
-<p><span id="id7">[<a class="reference internal" href="zreferences.html#id40" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> remark that <span class="math notranslate nohighlight">\(\tilde A\)</span>  can be interpreted in terms of a projection of <span class="math notranslate nohighlight">\(\hat A\)</span> onto the <span class="math notranslate nohighlight">\(p\)</span> modes in <span class="math notranslate nohighlight">\(\tilde U\)</span>.</p>
+<p><span id="id7">[<a class="reference internal" href="zreferences.html#id42" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> remark that <span class="math notranslate nohighlight">\(\tilde A\)</span>  can be interpreted in terms of a projection of <span class="math notranslate nohighlight">\(\hat A\)</span> onto the <span class="math notranslate nohighlight">\(p\)</span> modes in <span class="math notranslate nohighlight">\(\tilde U\)</span>.</p>
 <p>To verify this, first note that, because  <span class="math notranslate nohighlight">\( \tilde U^\top  \tilde U = I\)</span>, it follows that</p>
 <div class="math notranslate nohighlight" id="equation-eq-tildeaverify">
 <span class="eqno">(8.23)<a class="headerlink" href="#equation-eq-tildeaverify" title="Permalink to this equation">#</a></span>\[
@@ -631,7 +631,7 @@ are <strong>not</strong> eigenvectors of <span class="math notranslate nohighlig
 \Phi \equiv \hat A \tilde \Phi_s = X' \tilde V \tilde \Sigma^{-1}  \tilde  W
 \]</div>
 <p>It turns out that columns of <span class="math notranslate nohighlight">\(\Phi\)</span> <strong>are</strong> eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
-<p>This is  a consequence of a  result established by Tu et al. <span id="id8">[<a class="reference internal" href="zreferences.html#id25" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">TRL+14</a>]</span> that we now present.</p>
+<p>This is  a consequence of a  result established by Tu et al. <span id="id8">[<a class="reference internal" href="zreferences.html#id27" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">TRL+14</a>]</span> that we now present.</p>
 <p><strong>Proposition</strong> The <span class="math notranslate nohighlight">\(p\)</span> columns of <span class="math notranslate nohighlight">\(\Phi\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
 <p><strong>Proof:</strong> From formula <a class="reference internal" href="#equation-eq-phiformula">(8.26)</a> we have</p>
 <div class="math notranslate nohighlight">
@@ -656,7 +656,7 @@ are <strong>not</strong> eigenvectors of <span class="math notranslate nohighlig
 \]</div>
 <p>This equation confirms that  <span class="math notranslate nohighlight">\(\phi_i\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\hat A\)</span> that corresponds to eigenvalue  <span class="math notranslate nohighlight">\(\lambda_i\)</span> of both  <span class="math notranslate nohighlight">\(\tilde A\)</span> and <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
 <p>This concludes the proof.</p>
-<p>Also see <span id="id9">[<a class="reference internal" href="zreferences.html#id40" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> (p. 238)</p>
+<p>Also see <span id="id9">[<a class="reference internal" href="zreferences.html#id42" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> (p. 238)</p>
 <section id="decoder-of-check-b-as-a-linear-projection">
 <h3><span class="section-number">8.5.1. </span>Decoder of  <span class="math notranslate nohighlight">\(\check b\)</span> as a linear projection<a class="headerlink" href="#decoder-of-check-b-as-a-linear-projection" title="Permalink to this heading">#</a></h3>
 <p>From  eigendecomposition <a class="reference internal" href="#equation-eq-aphilambda">(8.27)</a> we can represent <span class="math notranslate nohighlight">\(\hat A\)</span> as</p>
@@ -713,7 +713,7 @@ X = \Phi \check b + \epsilon
 <section id="an-approximation">
 <h3><span class="section-number">8.5.2. </span>An Approximation<a class="headerlink" href="#an-approximation" title="Permalink to this heading">#</a></h3>
 <p>We now describe a way to approximate  the <span class="math notranslate nohighlight">\(p \times 1\)</span> vector <span class="math notranslate nohighlight">\(\check b_t\)</span> instead of using  formula <a class="reference internal" href="#equation-eq-decoder102">(8.29)</a>.</p>
-<p>In particular, the following argument adapted from <span id="id10">[<a class="reference internal" href="zreferences.html#id40" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> (page 240) provides a computationally efficient way to approximate <span class="math notranslate nohighlight">\(\check b_t\)</span>.</p>
+<p>In particular, the following argument adapted from <span id="id10">[<a class="reference internal" href="zreferences.html#id42" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> (page 240) provides a computationally efficient way to approximate <span class="math notranslate nohighlight">\(\check b_t\)</span>.</p>
 <p>For convenience, we’ll apply the method at  time <span class="math notranslate nohighlight">\(t=1\)</span>.</p>
 <p>For <span class="math notranslate nohighlight">\(t=1\)</span>, from equation <a class="reference internal" href="#equation-eq-xbcheck">(8.32)</a> we have</p>
 <div class="math notranslate nohighlight" id="equation-eq-x1proj">
@@ -986,53 +986,48 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="ar1_processes.html">
-   24. AR1 Processes
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   25. Finite Markov Chains
+   24. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   26. Inventory Dynamics
+   25. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   27. Linear State Space Models
+   26. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   28. Samuelson Multiplier-Accelerator
+   27. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   29. Kesten Processes and Firm Dynamics
+   28. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   30. Wealth Distribution Dynamics
+   29. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   31. A First Look at the Kalman Filter
+   30. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   32. Another Look at the Kalman Filter
+   31. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1044,37 +1039,37 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1086,52 +1081,52 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1143,17 +1138,17 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   53. Forecasting  an AR(1) Process
+   52. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1165,42 +1160,42 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1212,32 +1207,32 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1249,37 +1244,37 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1291,17 +1286,17 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1313,17 +1308,17 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1335,12 +1330,12 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1352,17 +1347,17 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

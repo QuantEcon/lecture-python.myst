@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>29. Kesten Processes and Firm Dynamics &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>28. Kesten Processes and Firm Dynamics &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="30. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
-    <link rel="prev" title="28. Samuelson Multiplier-Accelerator" href="samuelson.html" />
+    <link rel="next" title="29. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
+    <link rel="prev" title="27. Samuelson Multiplier-Accelerator" href="samuelson.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,26 +169,26 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">29.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesten-processes">29.2. Kesten Processes</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-garch-volatility">29.2.1. Example: GARCH Volatility</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-wealth-dynamics">29.2.2. Example: Wealth Dynamics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stationarity">29.2.3. Stationarity</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-interpretation">29.2.4. Cross-Sectional Interpretation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conditions-for-stationarity">29.2.5. Conditions for Stationarity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">28.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesten-processes">28.2. Kesten Processes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-garch-volatility">28.2.1. Example: GARCH Volatility</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-wealth-dynamics">28.2.2. Example: Wealth Dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stationarity">28.2.3. Stationarity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-interpretation">28.2.4. Cross-Sectional Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conditions-for-stationarity">28.2.5. Conditions for Stationarity</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heavy-tails">29.3. Heavy Tails</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kestengoldie-theorem">29.3.1. The Kesten–Goldie Theorem</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intuition">29.3.2. Intuition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heavy-tails">28.3. Heavy Tails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kestengoldie-theorem">28.3.1. The Kesten–Goldie Theorem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intuition">28.3.2. Intuition</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-firm-dynamics">29.4. Application: Firm Dynamics</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gibrats-law">29.4.1. Gibrat’s Law</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">29.4.2. Heavy Tails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-firm-dynamics">28.4. Application: Firm Dynamics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gibrats-law">28.4.1. Gibrat’s Law</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">28.4.2. Heavy Tails</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">29.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">28.5. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -250,7 +250,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="kesten-processes-and-firm-dynamics">
-<h1><a class="toc-backref" href="#id13"><span class="section-number">29. </span>Kesten Processes and Firm Dynamics</a><a class="headerlink" href="#kesten-processes-and-firm-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id13"><span class="section-number">28. </span>Kesten Processes and Firm Dynamics</a><a class="headerlink" href="#kesten-processes-and-firm-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -300,21 +300,19 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting yfinance
-  Obtaining dependency information for yfinance from https://files.pythonhosted.org/packages/58/f7/a966b800b49cb5379e348bf0717df481051714a99ece15289718562f6952/yfinance-0.2.35-py2.py3-none-any.whl.metadata
+  Obtaining dependency information for yfinance from https://files.pythonhosted.org/packages/1b/0f/77716aa9dd84bb1aa5e93c87122af1de89697b6231f6d01d58d4e7c03c14/yfinance-0.2.36-py2.py3-none-any.whl.metadata
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading yfinance-0.2.35-py2.py3-none-any.whl.metadata (11 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=1.3.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from yfinance) (2.0.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading yfinance-0.2.36-py2.py3-none-any.whl.metadata (11 kB)
+Requirement already satisfied: pandas&gt;=1.3.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from yfinance) (2.0.3)
 Requirement already satisfied: numpy&gt;=1.16.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from yfinance) (1.24.3)
 Requirement already satisfied: requests&gt;=2.31 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from yfinance) (2.31.0)
-Collecting multitasking&gt;=0.0.7 (from yfinance)
-  Downloading multitasking-0.0.11-py3-none-any.whl (8.5 kB)
-Requirement already satisfied: lxml&gt;=4.9.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from yfinance) (4.9.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: appdirs&gt;=1.4.4 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from yfinance) (1.4.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting multitasking&gt;=0.0.7 (from yfinance)
+  Downloading multitasking-0.0.11-py3-none-any.whl (8.5 kB)
+Requirement already satisfied: lxml&gt;=4.9.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from yfinance) (4.9.3)
+Requirement already satisfied: appdirs&gt;=1.4.4 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from yfinance) (1.4.4)
 Requirement already satisfied: pytz&gt;=2022.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from yfinance) (2023.3.post1)
 </pre></div>
 </div>
@@ -323,7 +321,7 @@ Requirement already satisfied: pytz&gt;=2022.5 in /opt/conda/envs/quantecon/lib/
 ?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/314.6 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">314.6/314.6 kB</span> <span class=" -Color -Color-Red">10.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">314.6/314.6 kB</span> <span class=" -Color -Color-Red">10.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
@@ -355,15 +353,15 @@ Requirement already satisfied: pytz&gt;=2022.5 in /opt/conda/envs/quantecon/lib/
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25hCollecting peewee&gt;=3.16.2 (from yfinance)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading peewee-3.17.0.tar.gz (2.9 MB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting peewee&gt;=3.16.2 (from yfinance)
+  Downloading peewee-3.17.0.tar.gz (2.9 MB)
 ?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/2.9 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">2.9/2.9 MB</span> <span class=" -Color -Color-Red">117.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2.9/2.9 MB</span> <span class=" -Color -Color-Red">72.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">2.9/2.9 MB</span> <span class=" -Color -Color-Red">122.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2.9/2.9 MB</span> <span class=" -Color -Color-Red">65.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
@@ -391,11 +389,11 @@ Requirement already satisfied: pytz&gt;=2022.5 in /opt/conda/envs/quantecon/lib/
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
 ?25hRequirement already satisfied: beautifulsoup4&gt;=4.11.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from yfinance) (4.12.2)
 Collecting html5lib&gt;=1.1 (from yfinance)
+  Downloading html5lib-1.1-py2.py3-none-any.whl (112 kB)
+?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/112.2 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading html5lib-1.1-py2.py3-none-any.whl (112 kB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/112.2 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">112.2/112.2 kB</span> <span class=" -Color -Color-Red">23.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">112.2/112.2 kB</span> <span class=" -Color -Color-Red">19.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hRequirement already satisfied: soupsieve&gt;1.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from beautifulsoup4&gt;=4.11.1-&gt;yfinance) (2.4)
 Requirement already satisfied: six&gt;=1.9 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from html5lib&gt;=1.1-&gt;yfinance) (1.16.0)
 Requirement already satisfied: webencodings in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from html5lib&gt;=1.1-&gt;yfinance) (0.5.1)
@@ -409,17 +407,20 @@ Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quant
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests&gt;=2.31-&gt;yfinance) (2023.7.22)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading yfinance-0.2.35-py2.py3-none-any.whl (72 kB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/72.2 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">72.2/72.2 kB</span> <span class=" -Color -Color-Red">15.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hBuilding wheels for collected packages: frozendict, peewee
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading yfinance-0.2.36-py2.py3-none-any.whl (72 kB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/72.4 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">72.4/72.4 kB</span> <span class=" -Color -Color-Red">12.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building wheels for collected packages: frozendict, peewee
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for frozendict (pyproject.toml) ... ?25l-
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for frozendict: filename=frozendict-2.4.0-py3-none-any.whl size=15425 sha256=5b237aa9c433f3867831ce245f15f5ac32214c048b0b047b8ec7a373d13faa15
+?25h  Created wheel for frozendict: filename=frozendict-2.4.0-py3-none-any.whl size=15425 sha256=1faff869b50aaee53e63c8bbb56964dcd317a4e51f1547b6c8f2f0ce670ee95c
   Stored in directory: /github/home/.cache/pip/wheels/31/dd/81/a814e6f8cde8a1bbc1f088fdc273943371f10478b91a605e14
 </pre></div>
 </div>
@@ -436,7 +437,7 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quanteco
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for peewee: filename=peewee-3.17.0-cp311-cp311-linux_x86_64.whl size=289791 sha256=0714478f7d4881175e96ff0a157e18c7de8e6be2f57d32623288b6d55d689a65
+?25h  Created wheel for peewee: filename=peewee-3.17.0-cp311-cp311-linux_x86_64.whl size=289791 sha256=3e69c2c798bac75bde9464d585989928bc3abaaf3765d47abe77c756a9f28518
   Stored in directory: /github/home/.cache/pip/wheels/02/20/23/74a10d0cd31f5d41c19b92ddf4c138ceff01b9f4675f19dbf5
 Successfully built frozendict peewee
 </pre></div>
@@ -444,7 +445,7 @@ Successfully built frozendict peewee
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: peewee, multitasking, html5lib, frozendict, yfinance
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed frozendict-2.4.0 html5lib-1.1 multitasking-0.0.11 peewee-3.17.0 yfinance-0.2.35
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed frozendict-2.4.0 html5lib-1.1 multitasking-0.0.11 peewee-3.17.0 yfinance-0.2.36
 <span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
@@ -453,8 +454,8 @@ Successfully built frozendict peewee
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">29.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p><a class="reference internal" href="ar1_processes.html"><span class="doc">Previously</span></a> we learned about linear scalar-valued stochastic processes (AR(1) models).</p>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">28.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://intro.quantecon.org/ar1_processes.html" title="(in Python)"><span class="xref std std-doc">Previously</span></a> we learned about linear scalar-valued stochastic processes (AR(1) models).</p>
 <p>Now we generalize these linear models slightly by allowing the multiplicative coefficient to be stochastic.</p>
 <p>Such processes are known as Kesten processes after German–American mathematician Harry Kesten (1931–2019)</p>
 <p>Although simple to write down, Kesten processes are interesting for at least two reasons:</p>
@@ -485,13 +486,13 @@ compatibility issues between pandas and matplotlib.</p>
 </div>
 </div>
 <p>Additional technical background related to this lecture can be found in the
-monograph of <span id="id1">[<a class="reference internal" href="zreferences.html#id56" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>.</p>
+monograph of <span id="id1">[<a class="reference internal" href="zreferences.html#id58" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>.</p>
 </section>
 <section id="kesten-processes">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">29.2. </span>Kesten Processes</a><a class="headerlink" href="#kesten-processes" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">28.2. </span>Kesten Processes</a><a class="headerlink" href="#kesten-processes" title="Permalink to this heading">#</a></h2>
 <p id="index-1">A <strong>Kesten process</strong> is a stochastic process of the form</p>
 <div class="math notranslate nohighlight" id="equation-kesproc">
-<span class="eqno">(29.1)<a class="headerlink" href="#equation-kesproc" title="Permalink to this equation">#</a></span>\[X_{t+1} = a_{t+1} X_t + \eta_{t+1}\]</div>
+<span class="eqno">(28.1)<a class="headerlink" href="#equation-kesproc" title="Permalink to this equation">#</a></span>\[X_{t+1} = a_{t+1} X_t + \eta_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{a_t\}_{t \geq 1}\)</span> and <span class="math notranslate nohighlight">\(\{\eta_t\}_{t \geq 1}\)</span> are IID
 sequences.</p>
 <p>We are interested in the dynamics of <span class="math notranslate nohighlight">\(\{X_t\}_{t \geq 0}\)</span> when <span class="math notranslate nohighlight">\(X_0\)</span> is given.</p>
@@ -503,7 +504,7 @@ sequences.</p>
 <li><p><span class="math notranslate nohighlight">\(\{\eta_t\}_{t \geq 1}\)</span> is another nonnegative IID stochastic process, independent of the first.</p></li>
 </ul>
 <section id="example-garch-volatility">
-<h3><span class="section-number">29.2.1. </span>Example: GARCH Volatility<a class="headerlink" href="#example-garch-volatility" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.2.1. </span>Example: GARCH Volatility<a class="headerlink" href="#example-garch-volatility" title="Permalink to this heading">#</a></h3>
 <p>The GARCH model is common in financial applications, where time series such as asset returns exhibit time varying volatility.</p>
 <p>For example, consider the following plot of daily returns on the Nasdaq
 Composite Index for the period 1st January 2006 to 1st November 2019.</p>
@@ -541,53 +542,53 @@ settles down again.</p>
 <p>GARCH models can replicate this feature.</p>
 <p>The GARCH(1, 1) volatility process takes the form</p>
 <div class="math notranslate nohighlight" id="equation-garch11v">
-<span class="eqno">(29.2)<a class="headerlink" href="#equation-garch11v" title="Permalink to this equation">#</a></span>\[\sigma_{t+1}^2 = \alpha_0 + \sigma_t^2 (\alpha_1 \xi_{t+1}^2 + \beta)\]</div>
+<span class="eqno">(28.2)<a class="headerlink" href="#equation-garch11v" title="Permalink to this equation">#</a></span>\[\sigma_{t+1}^2 = \alpha_0 + \sigma_t^2 (\alpha_1 \xi_{t+1}^2 + \beta)\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{\xi_t\}\)</span> is IID with <span class="math notranslate nohighlight">\(\mathbb E \xi_t^2 = 1\)</span> and all parameters are positive.</p>
 <p>Returns on a given asset are then modeled as</p>
 <div class="math notranslate nohighlight" id="equation-garch11r">
-<span class="eqno">(29.3)<a class="headerlink" href="#equation-garch11r" title="Permalink to this equation">#</a></span>\[r_t = \sigma_t \zeta_t\]</div>
+<span class="eqno">(28.3)<a class="headerlink" href="#equation-garch11r" title="Permalink to this equation">#</a></span>\[r_t = \sigma_t \zeta_t\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{\zeta_t\}\)</span> is again IID and independent of <span class="math notranslate nohighlight">\(\{\xi_t\}\)</span>.</p>
 <p>The volatility sequence <span class="math notranslate nohighlight">\(\{\sigma_t^2 \}\)</span>, which drives the dynamics of returns, is a Kesten process.</p>
 </section>
 <section id="example-wealth-dynamics">
-<h3><span class="section-number">29.2.2. </span>Example: Wealth Dynamics<a class="headerlink" href="#example-wealth-dynamics" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.2.2. </span>Example: Wealth Dynamics<a class="headerlink" href="#example-wealth-dynamics" title="Permalink to this heading">#</a></h3>
 <p>Suppose that a given household saves a fixed fraction <span class="math notranslate nohighlight">\(s\)</span> of its current wealth in every period.</p>
 <p>The household earns labor income <span class="math notranslate nohighlight">\(y_t\)</span> at the start of time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>Wealth then evolves according to</p>
 <div class="math notranslate nohighlight" id="equation-wealth-dynam">
-<span class="eqno">(29.4)<a class="headerlink" href="#equation-wealth-dynam" title="Permalink to this equation">#</a></span>\[w_{t+1} = R_{t+1} s w_t  + y_{t+1}\]</div>
+<span class="eqno">(28.4)<a class="headerlink" href="#equation-wealth-dynam" title="Permalink to this equation">#</a></span>\[w_{t+1} = R_{t+1} s w_t  + y_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{R_t\}\)</span> is the gross rate of return on assets.</p>
-<p>If <span class="math notranslate nohighlight">\(\{R_t\}\)</span> and <span class="math notranslate nohighlight">\(\{y_t\}\)</span> are both IID, then <a class="reference internal" href="#equation-wealth-dynam">(29.4)</a>
+<p>If <span class="math notranslate nohighlight">\(\{R_t\}\)</span> and <span class="math notranslate nohighlight">\(\{y_t\}\)</span> are both IID, then <a class="reference internal" href="#equation-wealth-dynam">(28.4)</a>
 is a Kesten process.</p>
 </section>
 <section id="stationarity">
-<h3><span class="section-number">29.2.3. </span>Stationarity<a class="headerlink" href="#stationarity" title="Permalink to this heading">#</a></h3>
-<p>In earlier lectures, such as the one on <a class="reference internal" href="ar1_processes.html"><span class="doc">AR(1) processes</span></a>, we introduced the notion of a stationary distribution.</p>
+<h3><span class="section-number">28.2.3. </span>Stationarity<a class="headerlink" href="#stationarity" title="Permalink to this heading">#</a></h3>
+<p>In earlier lectures, such as the one on <a class="reference external" href="https://intro.quantecon.org/ar1_processes.html" title="(in Python)"><span class="xref std std-doc">AR(1) processes</span></a>, we introduced the notion of a stationary distribution.</p>
 <p>In the present context, we can define a stationary distribution as follows:</p>
 <p>The distribution <span class="math notranslate nohighlight">\(F^*\)</span> on <span class="math notranslate nohighlight">\(\mathbb R\)</span> is called <strong>stationary</strong> for the
-Kesten process <a class="reference internal" href="#equation-kesproc">(29.1)</a> if</p>
+Kesten process <a class="reference internal" href="#equation-kesproc">(28.1)</a> if</p>
 <div class="math notranslate nohighlight" id="equation-kp-stationary0">
-<span class="eqno">(29.5)<a class="headerlink" href="#equation-kp-stationary0" title="Permalink to this equation">#</a></span>\[X_t \sim F^*
+<span class="eqno">(28.5)<a class="headerlink" href="#equation-kp-stationary0" title="Permalink to this equation">#</a></span>\[X_t \sim F^*
 \quad \implies \quad
 a_{t+1} X_t + \eta_{t+1} \sim F^*\]</div>
 <p>In other words, if the current state <span class="math notranslate nohighlight">\(X_t\)</span> has distribution <span class="math notranslate nohighlight">\(F^*\)</span>,
 then so does the next period state <span class="math notranslate nohighlight">\(X_{t+1}\)</span>.</p>
 <p>We can write this alternatively as</p>
 <div class="math notranslate nohighlight" id="equation-kp-stationary">
-<span class="eqno">(29.6)<a class="headerlink" href="#equation-kp-stationary" title="Permalink to this equation">#</a></span>\[F^*(y) = \int \mathbb P\{ a_{t+1} x + \eta_{t+1} \leq y\} F^*(dx)
+<span class="eqno">(28.6)<a class="headerlink" href="#equation-kp-stationary" title="Permalink to this equation">#</a></span>\[F^*(y) = \int \mathbb P\{ a_{t+1} x + \eta_{t+1} \leq y\} F^*(dx)
 \quad \text{for all } y \geq 0.\]</div>
 <p>The left hand side is the distribution of the next period state when the
 current state is drawn from <span class="math notranslate nohighlight">\(F^*\)</span>.</p>
-<p>The equality in <a class="reference internal" href="#equation-kp-stationary">(29.6)</a> states that this distribution is unchanged.</p>
+<p>The equality in <a class="reference internal" href="#equation-kp-stationary">(28.6)</a> states that this distribution is unchanged.</p>
 </section>
 <section id="cross-sectional-interpretation">
-<h3><span class="section-number">29.2.4. </span>Cross-Sectional Interpretation<a class="headerlink" href="#cross-sectional-interpretation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.2.4. </span>Cross-Sectional Interpretation<a class="headerlink" href="#cross-sectional-interpretation" title="Permalink to this heading">#</a></h3>
 <p>There is an important cross-sectional interpretation of stationary distributions, discussed previously but worth repeating here.</p>
 <p>Suppose, for example, that we are interested in the wealth distribution — that is, the current distribution of wealth across households in a given country.</p>
 <p>Suppose further that</p>
 <ul class="simple">
 <li><p>the wealth of each household evolves independently according to
-<a class="reference internal" href="#equation-wealth-dynam">(29.4)</a>,</p></li>
+<a class="reference internal" href="#equation-wealth-dynam">(28.4)</a>,</p></li>
 <li><p><span class="math notranslate nohighlight">\(F^*\)</span> is a stationary distribution for this stochastic process and</p></li>
 <li><p>there are many households.</p></li>
 </ul>
@@ -609,7 +610,7 @@ next period as it is this period.</p>
 <p>Since <span class="math notranslate nohighlight">\(y\)</span> was chosen arbitrarily, the distribution is unchanged.</p>
 </section>
 <section id="conditions-for-stationarity">
-<h3><span class="section-number">29.2.5. </span>Conditions for Stationarity<a class="headerlink" href="#conditions-for-stationarity" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.2.5. </span>Conditions for Stationarity<a class="headerlink" href="#conditions-for-stationarity" title="Permalink to this heading">#</a></h3>
 <p>The Kesten process <span class="math notranslate nohighlight">\(X_{t+1} = a_{t+1} X_t + \eta_{t+1}\)</span> does not always
 have a stationary distribution.</p>
 <p>For example, if <span class="math notranslate nohighlight">\(a_t \equiv \eta_t \equiv 1\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>, then
@@ -618,31 +619,31 @@ have a stationary distribution.</p>
 strictly less than 1 most of the time.</p>
 <p>In particular, if</p>
 <div class="math notranslate nohighlight" id="equation-kp-stat-cond">
-<span class="eqno">(29.7)<a class="headerlink" href="#equation-kp-stat-cond" title="Permalink to this equation">#</a></span>\[\mathbb E \ln a_t &lt; 0
+<span class="eqno">(28.7)<a class="headerlink" href="#equation-kp-stat-cond" title="Permalink to this equation">#</a></span>\[\mathbb E \ln a_t &lt; 0
 \quad \text{and} \quad
 \mathbb E \eta_t &lt; \infty\]</div>
 <p>then a unique stationary distribution exists on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span>.</p>
 <ul class="simple">
-<li><p>See, for example, theorem 2.1.3 of <span id="id2">[<a class="reference internal" href="zreferences.html#id56" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>, which provides slightly weaker conditions.</p></li>
+<li><p>See, for example, theorem 2.1.3 of <span id="id2">[<a class="reference internal" href="zreferences.html#id58" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>, which provides slightly weaker conditions.</p></li>
 </ul>
 <p>As one application of this result, we see that the wealth process
-<a class="reference internal" href="#equation-wealth-dynam">(29.4)</a> will have a unique stationary distribution whenever
+<a class="reference internal" href="#equation-wealth-dynam">(28.4)</a> will have a unique stationary distribution whenever
 labor income has finite mean and <span class="math notranslate nohighlight">\(\mathbb E \ln R_t  + \ln s &lt; 0\)</span>.</p>
 </section>
 </section>
 <section id="heavy-tails">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">29.3. </span>Heavy Tails</a><a class="headerlink" href="#heavy-tails" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">28.3. </span>Heavy Tails</a><a class="headerlink" href="#heavy-tails" title="Permalink to this heading">#</a></h2>
 <p>Under certain conditions, the stationary distribution of a Kesten process has
 a Pareto tail.</p>
 <p>(See our <a class="reference external" href="https://intro.quantecon.org/heavy_tails.html" title="(in Python)"><span class="xref std std-doc">earlier lecture</span></a>  on heavy-tailed distributions for background.)</p>
 <p>This fact is significant for economics because of the prevalence of Pareto-tailed distributions.</p>
 <section id="the-kestengoldie-theorem">
-<h3><span class="section-number">29.3.1. </span>The Kesten–Goldie Theorem<a class="headerlink" href="#the-kestengoldie-theorem" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.3.1. </span>The Kesten–Goldie Theorem<a class="headerlink" href="#the-kestengoldie-theorem" title="Permalink to this heading">#</a></h3>
 <p>To state the conditions under which the stationary distribution of a Kesten process has a Pareto tail, we first recall that a random variable is called <strong>nonarithmetic</strong> if its distribution is not concentrated on <span class="math notranslate nohighlight">\(\{\dots, -2t, -t, 0, t, 2t, \ldots \}\)</span> for any <span class="math notranslate nohighlight">\(t \geq 0\)</span>.</p>
 <p>For example, any random variable with a density is nonarithmetic.</p>
-<p>The famous Kesten–Goldie Theorem (see, e.g., <span id="id3">[<a class="reference internal" href="zreferences.html#id56" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>, theorem 2.4.4) states that if</p>
+<p>The famous Kesten–Goldie Theorem (see, e.g., <span id="id3">[<a class="reference internal" href="zreferences.html#id58" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>, theorem 2.4.4) states that if</p>
 <ol class="arabic simple">
-<li><p>the stationarity conditions in <a class="reference internal" href="#equation-kp-stat-cond">(29.7)</a> hold,</p></li>
+<li><p>the stationarity conditions in <a class="reference internal" href="#equation-kp-stat-cond">(28.7)</a> hold,</p></li>
 <li><p>the random variable <span class="math notranslate nohighlight">\(a_t\)</span> is positive with probability one and nonarithmetic,</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathbb P\{a_t x + \eta_t = x\} &lt; 1\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb R_+\)</span> and</p></li>
 <li><p>there exists a positive constant <span class="math notranslate nohighlight">\(\alpha\)</span> such that</p></li>
@@ -665,7 +666,7 @@ tail index <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <p>for some positive constant <span class="math notranslate nohighlight">\(c\)</span>.</p>
 </section>
 <section id="intuition">
-<h3><span class="section-number">29.3.2. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.3.2. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this heading">#</a></h3>
 <p>Later we will illustrate the Kesten–Goldie Theorem using rank-size plots.</p>
 <p>Prior to doing so, we can give the following intuition for the conditions.</p>
 <p>Two important conditions are that <span class="math notranslate nohighlight">\(\mathbb E \ln a_t &lt; 0\)</span>, so the model
@@ -711,17 +712,17 @@ is stationary, and <span class="math notranslate nohighlight">\(\mathbb E a_t^\a
 </section>
 </section>
 <section id="application-firm-dynamics">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">29.4. </span>Application: Firm Dynamics</a><a class="headerlink" href="#application-firm-dynamics" title="Permalink to this heading">#</a></h2>
-<p>As noted in our <a class="reference external" href="https://intro.quantecon.org/heavy_tails.html" title="(in Python)"><span class="xref std std-doc">lecture on heavy tails</span></a>, for common measures of firm size such as revenue or employment, the US firm size distribution exhibits a Pareto tail (see, e.g., <span id="id4">[<a class="reference internal" href="zreferences.html#id66" title="Robert L Axtell. Zipf distribution of us firm sizes. science, 293(5536):1818–1820, 2001.">Axt01</a>]</span>, <span id="id5">[<a class="reference internal" href="zreferences.html#id65" title="Xavier Gabaix. Power laws in economics: an introduction. Journal of Economic Perspectives, 30(1):185–206, 2016.">Gab16</a>]</span>).</p>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">28.4. </span>Application: Firm Dynamics</a><a class="headerlink" href="#application-firm-dynamics" title="Permalink to this heading">#</a></h2>
+<p>As noted in our <a class="reference external" href="https://intro.quantecon.org/heavy_tails.html" title="(in Python)"><span class="xref std std-doc">lecture on heavy tails</span></a>, for common measures of firm size such as revenue or employment, the US firm size distribution exhibits a Pareto tail (see, e.g., <span id="id4">[<a class="reference internal" href="zreferences.html#id68" title="Robert L Axtell. Zipf distribution of us firm sizes. science, 293(5536):1818–1820, 2001.">Axt01</a>]</span>, <span id="id5">[<a class="reference internal" href="zreferences.html#id67" title="Xavier Gabaix. Power laws in economics: an introduction. Journal of Economic Perspectives, 30(1):185–206, 2016.">Gab16</a>]</span>).</p>
 <p>Let us try to explain this rather striking fact using the Kesten–Goldie Theorem.</p>
 <section id="gibrats-law">
-<h3><span class="section-number">29.4.1. </span>Gibrat’s Law<a class="headerlink" href="#gibrats-law" title="Permalink to this heading">#</a></h3>
-<p>It was postulated many years ago by Robert Gibrat <span id="id6">[<a class="reference internal" href="zreferences.html#id55" title="Robert Gibrat. Les inégalités économiques: Applications d'une loi nouvelle, la loi de l'effet proportionnel. PhD thesis, Recueil Sirey, 1931.">Gib31</a>]</span> that firm size evolves according to a simple rule whereby size next period is proportional to current size.</p>
+<h3><span class="section-number">28.4.1. </span>Gibrat’s Law<a class="headerlink" href="#gibrats-law" title="Permalink to this heading">#</a></h3>
+<p>It was postulated many years ago by Robert Gibrat <span id="id6">[<a class="reference internal" href="zreferences.html#id57" title="Robert Gibrat. Les inégalités économiques: Applications d'une loi nouvelle, la loi de l'effet proportionnel. PhD thesis, Recueil Sirey, 1931.">Gib31</a>]</span> that firm size evolves according to a simple rule whereby size next period is proportional to current size.</p>
 <p>This is now known as <a class="reference external" href="https://en.wikipedia.org/wiki/Gibrat%27s_law">Gibrat’s law of proportional growth</a>.</p>
 <p>We can express this idea by stating that a suitably defined measure
 <span class="math notranslate nohighlight">\(s_t\)</span> of firm size obeys</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam-gb">
-<span class="eqno">(29.8)<a class="headerlink" href="#equation-firm-dynam-gb" title="Permalink to this equation">#</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1}\]</div>
+<span class="eqno">(28.8)<a class="headerlink" href="#equation-firm-dynam-gb" title="Permalink to this equation">#</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1}\]</div>
 <p>for some positive IID sequence <span class="math notranslate nohighlight">\(\{a_t\}\)</span>.</p>
 <p>One implication of Gibrat’s law is that the growth rate of individual firms
 does not depend on their size.</p>
@@ -729,25 +730,25 @@ does not depend on their size.</p>
 accumulated in the literature.</p>
 <p>For example, it is commonly found that, on average,</p>
 <ol class="arabic simple">
-<li><p>small firms grow faster than large firms (see, e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id54" title="David S Evans. The relationship between firm growth, size, and age: estimates for 100 manufacturing industries. The Journal of Industrial Economics, pages 567–581, 1987.">Eva87</a>]</span> and <span id="id8">[<a class="reference internal" href="zreferences.html#id53" title="Bronwyn H Hall. The relationship between firm size and firm growth in the us manufacturing sector. The Journal of Industrial Economics, pages 583–606, 1987.">Hal87</a>]</span>) and</p></li>
-<li><p>the growth rate of small firms is more volatile than that of large firms <span id="id9">[<a class="reference internal" href="zreferences.html#id52" title="Timothy Dunne, Mark J Roberts, and Larry Samuelson. The growth and failure of us manufacturing plants. The Quarterly Journal of Economics, 104(4):671–698, 1989.">DRS89</a>]</span>.</p></li>
+<li><p>small firms grow faster than large firms (see, e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id56" title="David S Evans. The relationship between firm growth, size, and age: estimates for 100 manufacturing industries. The Journal of Industrial Economics, pages 567–581, 1987.">Eva87</a>]</span> and <span id="id8">[<a class="reference internal" href="zreferences.html#id55" title="Bronwyn H Hall. The relationship between firm size and firm growth in the us manufacturing sector. The Journal of Industrial Economics, pages 583–606, 1987.">Hal87</a>]</span>) and</p></li>
+<li><p>the growth rate of small firms is more volatile than that of large firms <span id="id9">[<a class="reference internal" href="zreferences.html#id54" title="Timothy Dunne, Mark J Roberts, and Larry Samuelson. The growth and failure of us manufacturing plants. The Quarterly Journal of Economics, 104(4):671–698, 1989.">DRS89</a>]</span>.</p></li>
 </ol>
 <p>On the other hand, Gibrat’s law is generally found to be a reasonable
-approximation for large firms <span id="id10">[<a class="reference internal" href="zreferences.html#id54" title="David S Evans. The relationship between firm growth, size, and age: estimates for 100 manufacturing industries. The Journal of Industrial Economics, pages 567–581, 1987.">Eva87</a>]</span>.</p>
-<p>We can accommodate these empirical findings by modifying <a class="reference internal" href="#equation-firm-dynam-gb">(29.8)</a>
+approximation for large firms <span id="id10">[<a class="reference internal" href="zreferences.html#id56" title="David S Evans. The relationship between firm growth, size, and age: estimates for 100 manufacturing industries. The Journal of Industrial Economics, pages 567–581, 1987.">Eva87</a>]</span>.</p>
+<p>We can accommodate these empirical findings by modifying <a class="reference internal" href="#equation-firm-dynam-gb">(28.8)</a>
 to</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam">
-<span class="eqno">(29.9)<a class="headerlink" href="#equation-firm-dynam" title="Permalink to this equation">#</a></span>\[s_{t+1} = a_{t+1} s_t + b_{t+1}\]</div>
+<span class="eqno">(28.9)<a class="headerlink" href="#equation-firm-dynam" title="Permalink to this equation">#</a></span>\[s_{t+1} = a_{t+1} s_t + b_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{a_t\}\)</span> and <span class="math notranslate nohighlight">\(\{b_t\}\)</span> are both IID and independent of each
 other.</p>
-<p>In the exercises you are asked to show that <a class="reference internal" href="#equation-firm-dynam">(29.9)</a> is more
+<p>In the exercises you are asked to show that <a class="reference internal" href="#equation-firm-dynam">(28.9)</a> is more
 consistent with the empirical findings presented above than Gibrat’s law in
-<a class="reference internal" href="#equation-firm-dynam-gb">(29.8)</a>.</p>
+<a class="reference internal" href="#equation-firm-dynam-gb">(28.8)</a>.</p>
 </section>
 <section id="id11">
-<h3><span class="section-number">29.4.2. </span>Heavy Tails<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.4.2. </span>Heavy Tails<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h3>
 <p>So what has this to do with Pareto tails?</p>
-<p>The answer is that <a class="reference internal" href="#equation-firm-dynam">(29.9)</a> is a Kesten process.</p>
+<p>The answer is that <a class="reference internal" href="#equation-firm-dynam">(28.9)</a> is a Kesten process.</p>
 <p>If the conditions of the Kesten–Goldie Theorem are satisfied, then the firm
 size distribution is predicted to have heavy tails — which is exactly what
 we see in the data.</p>
@@ -758,13 +759,13 @@ quantitative analysis.</p>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">29.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id18"><span class="section-number">28.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="kp_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 29.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 28.1 </span></p>
 <section id="exercise-content">
 <p>Simulate and plot 15 years of daily returns (consider each year as having 250
-working days) using the GARCH(1, 1) process in <a class="reference internal" href="#equation-garch11v">(29.2)</a>–<a class="reference internal" href="#equation-garch11r">(29.3)</a>.</p>
+working days) using the GARCH(1, 1) process in <a class="reference internal" href="#equation-garch11v">(28.2)</a>–<a class="reference internal" href="#equation-garch11r">(28.3)</a>.</p>
 <p>Take <span class="math notranslate nohighlight">\(\xi_t\)</span> and <span class="math notranslate nohighlight">\(\zeta_t\)</span> to be independent and standard normal.</p>
 <p>Set <span class="math notranslate nohighlight">\(\alpha_0 = 0.00001, \alpha_1 = 0.1, \beta = 0.9\)</span> and <span class="math notranslate nohighlight">\(\sigma_0 = 0\)</span>.</p>
 <p>Compare visually with the Nasdaq Composite Index returns <a class="reference internal" href="#ndcode"><span class="std std-ref">shown above</span></a>.</p>
@@ -773,7 +774,7 @@ working days) using the GARCH(1, 1) process in <a class="reference internal" hre
 </div>
 <div class="solution dropdown admonition" id="kesten_processes-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex1"> Exercise 29.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex1"> Exercise 28.1</a></p>
 <section id="solution-content">
 <p>Here is one solution:</p>
 <div class="cell docutils container">
@@ -813,16 +814,16 @@ working days) using the GARCH(1, 1) process in <a class="reference internal" hre
 </div>
 <div class="exercise admonition" id="kp_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 29.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 28.2 </span></p>
 <section id="exercise-content">
-<p>In our discussion of firm dynamics, it was claimed that <a class="reference internal" href="#equation-firm-dynam">(29.9)</a> is more consistent with the empirical literature than Gibrat’s law in <a class="reference internal" href="#equation-firm-dynam-gb">(29.8)</a>.</p>
-<p>(The empirical literature was reviewed immediately above <a class="reference internal" href="#equation-firm-dynam">(29.9)</a>.)</p>
+<p>In our discussion of firm dynamics, it was claimed that <a class="reference internal" href="#equation-firm-dynam">(28.9)</a> is more consistent with the empirical literature than Gibrat’s law in <a class="reference internal" href="#equation-firm-dynam-gb">(28.8)</a>.</p>
+<p>(The empirical literature was reviewed immediately above <a class="reference internal" href="#equation-firm-dynam">(28.9)</a>.)</p>
 <p>In what sense is this true (or false)?</p>
 </section>
 </div>
 <div class="solution dropdown admonition" id="kesten_processes-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex2"> Exercise 29.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex2"> Exercise 28.2</a></p>
 <section id="solution-content">
 <p>The empirical findings are that</p>
 <ol class="arabic simple">
@@ -831,11 +832,11 @@ working days) using the GARCH(1, 1) process in <a class="reference internal" hre
 </ol>
 <p>Also, Gibrat’s law is generally found to be a reasonable approximation for
 large firms than for small firms</p>
-<p>The claim is that the dynamics in <a class="reference internal" href="#equation-firm-dynam">(29.9)</a> are more consistent with
+<p>The claim is that the dynamics in <a class="reference internal" href="#equation-firm-dynam">(28.9)</a> are more consistent with
 points 1-2 than Gibrat’s law.</p>
-<p>To see why, we rewrite <a class="reference internal" href="#equation-firm-dynam">(29.9)</a> in terms of growth dynamics:</p>
+<p>To see why, we rewrite <a class="reference internal" href="#equation-firm-dynam">(28.9)</a> in terms of growth dynamics:</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam-2">
-<span class="eqno">(29.10)<a class="headerlink" href="#equation-firm-dynam-2" title="Permalink to this equation">#</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1} + \frac{b_{t+1}}{s_t}\]</div>
+<span class="eqno">(28.10)<a class="headerlink" href="#equation-firm-dynam-2" title="Permalink to this equation">#</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1} + \frac{b_{t+1}}{s_t}\]</div>
 <p>Taking <span class="math notranslate nohighlight">\(s_t = s\)</span> as given, the mean and variance of firm growth are</p>
 <div class="math notranslate nohighlight">
 \[
@@ -846,15 +847,15 @@ points 1-2 than Gibrat’s law.</p>
 + \frac{\mathbb V b}{s^2}
 \]</div>
 <p>Both of these decline with firm size <span class="math notranslate nohighlight">\(s\)</span>, consistent with the data.</p>
-<p>Moreover, the law of motion <a class="reference internal" href="#equation-firm-dynam-2">(29.10)</a> clearly approaches Gibrat’s law
-<a class="reference internal" href="#equation-firm-dynam-gb">(29.8)</a> as <span class="math notranslate nohighlight">\(s_t\)</span> gets large.</p>
+<p>Moreover, the law of motion <a class="reference internal" href="#equation-firm-dynam-2">(28.10)</a> clearly approaches Gibrat’s law
+<a class="reference internal" href="#equation-firm-dynam-gb">(28.8)</a> as <span class="math notranslate nohighlight">\(s_t\)</span> gets large.</p>
 </section>
 </div>
 <div class="exercise admonition" id="kp_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 29.3 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 28.3 </span></p>
 <section id="exercise-content">
-<p>Consider an arbitrary Kesten process as given in <a class="reference internal" href="#equation-kesproc">(29.1)</a>.</p>
+<p>Consider an arbitrary Kesten process as given in <a class="reference internal" href="#equation-kesproc">(28.1)</a>.</p>
 <p>Suppose that <span class="math notranslate nohighlight">\(\{a_t\}\)</span> is lognormal with parameters <span class="math notranslate nohighlight">\((\mu,
 \sigma)\)</span>.</p>
 <p>In other words, each <span class="math notranslate nohighlight">\(a_t\)</span> has the same distribution as <span class="math notranslate nohighlight">\(\exp(\mu + \sigma Z)\)</span> when <span class="math notranslate nohighlight">\(Z\)</span> is standard normal.</p>
@@ -868,7 +869,7 @@ hold.</p>
 </div>
 <div class="solution dropdown admonition" id="kesten_processes-solution-5">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex3"> Exercise 29.3</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex3"> Exercise 28.3</a></p>
 <section id="solution-content">
 <p>Since <span class="math notranslate nohighlight">\(a_t\)</span> has a density it is nonarithmetic.</p>
 <p>Since <span class="math notranslate nohighlight">\(a_t\)</span> has the same density as <span class="math notranslate nohighlight">\(a = \exp(\mu + \sigma Z)\)</span> when <span class="math notranslate nohighlight">\(Z\)</span> is standard normal, we have</p>
@@ -891,19 +892,19 @@ of all orders), the only other condition in doubt is existence of a positive con
 </div>
 <div class="exercise admonition" id="kp_ex4">
 
-<p class="admonition-title"><span class="caption-number">Exercise 29.4 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 28.4 </span></p>
 <section id="exercise-content">
-<p>One unrealistic aspect of the firm dynamics specified in <a class="reference internal" href="#equation-firm-dynam">(29.9)</a> is
+<p>One unrealistic aspect of the firm dynamics specified in <a class="reference internal" href="#equation-firm-dynam">(28.9)</a> is
 that it ignores entry and exit.</p>
 <p>In any given period and in any given market, we observe significant numbers of firms entering and exiting the market.</p>
-<p>Empirical discussion of this can be found in a famous paper by Hugo Hopenhayn <span id="id12">[<a class="reference internal" href="zreferences.html#id171" title="Hugo A Hopenhayn. Entry, exit, and firm dynamics in long run equilibrium. Econometrica: Journal of the Econometric Society, pages 1127–1150, 1992.">Hop92</a>]</span>.</p>
+<p>Empirical discussion of this can be found in a famous paper by Hugo Hopenhayn <span id="id12">[<a class="reference internal" href="zreferences.html#id173" title="Hugo A Hopenhayn. Entry, exit, and firm dynamics in long run equilibrium. Econometrica: Journal of the Econometric Society, pages 1127–1150, 1992.">Hop92</a>]</span>.</p>
 <p>In the same paper, Hopenhayn builds a model of entry and exit that
 incorporates profit maximization by firms and market clearing quantities, wages and prices.</p>
 <p>In his model, a stationary equilibrium occurs when the number of entrants
 equals the number of exiting firms.</p>
 <p>In this setting, firm dynamics can be expressed as</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam-ee">
-<span class="eqno">(29.11)<a class="headerlink" href="#equation-firm-dynam-ee" title="Permalink to this equation">#</a></span>\[s_{t+1} = e_{t+1} \mathbb{1}\{s_t &lt; \bar s\} +
+<span class="eqno">(28.11)<a class="headerlink" href="#equation-firm-dynam-ee" title="Permalink to this equation">#</a></span>\[s_{t+1} = e_{t+1} \mathbb{1}\{s_t &lt; \bar s\} +
 (a_{t+1} s_t + b_{t+1}) \mathbb{1}\{s_t \geq \bar s\}\]</div>
 <p>Here</p>
 <ul class="simple">
@@ -914,10 +915,10 @@ entrant and</p></li>
 <li><p>the variable <span class="math notranslate nohighlight">\(\bar s\)</span> is a threshold value that we take as given,
 although it is determined endogenously in Hopenhayn’s model.</p></li>
 </ul>
-<p>The idea behind <a class="reference internal" href="#equation-firm-dynam-ee">(29.11)</a> is that firms stay in the market as long
+<p>The idea behind <a class="reference internal" href="#equation-firm-dynam-ee">(28.11)</a> is that firms stay in the market as long
 as their productivity <span class="math notranslate nohighlight">\(s_t\)</span> remains at or above <span class="math notranslate nohighlight">\(\bar s\)</span>.</p>
 <ul class="simple">
-<li><p>In this case, their productivity updates according to <a class="reference internal" href="#equation-firm-dynam">(29.9)</a>.</p></li>
+<li><p>In this case, their productivity updates according to <a class="reference internal" href="#equation-firm-dynam">(28.9)</a>.</p></li>
 </ul>
 <p>Firms choose to exit when their productivity <span class="math notranslate nohighlight">\(s_t\)</span> falls below <span class="math notranslate nohighlight">\(\bar s\)</span>.</p>
 <ul class="simple">
@@ -925,7 +926,7 @@ as their productivity <span class="math notranslate nohighlight">\(s_t\)</span> 
 <span class="math notranslate nohighlight">\(e_{t+1}\)</span>.</p></li>
 </ul>
 <p>What can we say about dynamics?</p>
-<p>Although <a class="reference internal" href="#equation-firm-dynam-ee">(29.11)</a> is not a Kesten process, it does update in the
+<p>Although <a class="reference internal" href="#equation-firm-dynam-ee">(28.11)</a> is not a Kesten process, it does update in the
 same way as a Kesten process when <span class="math notranslate nohighlight">\(s_t\)</span> is large.</p>
 <p>So perhaps its stationary distribution still has Pareto tails?</p>
 <p>Your task is to investigate this question via simulation and rank-size plots.</p>
@@ -962,7 +963,7 @@ when <span class="math notranslate nohighlight">\(T\)</span> is large.)</p>
 </div>
 <div class="solution dropdown admonition" id="kesten_processes-solution-7">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex4"> Exercise 29.4</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex4"> Exercise 28.4</a></p>
 <section id="solution-content">
 <p>Here’s one solution.
 First we generate the observations:</p>
@@ -1019,7 +1020,7 @@ First we generate the observations:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8aa4a47ce26dc899303129df6cc0828b7473a46e7a7730b4ad3473a62efc3754.png" src="_images/8aa4a47ce26dc899303129df6cc0828b7473a46e7a7730b4ad3473a62efc3754.png" />
+<img alt="_images/4edb41b534ae6bf0b7e55968d006c82d29a2cb7cfffc10e310c6f0f950843139.png" src="_images/4edb41b534ae6bf0b7e55968d006c82d29a2cb7cfffc10e310c6f0f950843139.png" />
 </div>
 </div>
 <p>The plot produces a straight line, consistent with a Pareto tail.</p>
@@ -1220,53 +1221,48 @@ First we generate the observations:</p>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="ar1_processes.html">
-   24. AR1 Processes
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   25. Finite Markov Chains
+   24. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   26. Inventory Dynamics
+   25. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   27. Linear State Space Models
+   26. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   28. Samuelson Multiplier-Accelerator
+   27. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   29. Kesten Processes and Firm Dynamics
+   28. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   30. Wealth Distribution Dynamics
+   29. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   31. A First Look at the Kalman Filter
+   30. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   32. Another Look at the Kalman Filter
+   31. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1278,37 +1274,37 @@ First we generate the observations:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1320,52 +1316,52 @@ First we generate the observations:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1377,17 +1373,17 @@ First we generate the observations:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   53. Forecasting  an AR(1) Process
+   52. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1399,42 +1395,42 @@ First we generate the observations:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1446,32 +1442,32 @@ First we generate the observations:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1483,37 +1479,37 @@ First we generate the observations:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1525,17 +1521,17 @@ First we generate the observations:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1547,17 +1543,17 @@ First we generate the observations:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1569,12 +1565,12 @@ First we generate the observations:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1586,17 +1582,17 @@ First we generate the observations:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

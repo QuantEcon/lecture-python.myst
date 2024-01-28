@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>38. Job Search V: Modeling Career Choice &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>37. Job Search V: Modeling Career Choice &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="39. Job Search VI: On-the-Job Search" href="jv.html" />
-    <link rel="prev" title="37. Job Search IV: Correlated Wage Offers" href="mccall_correlated.html" />
+    <link rel="next" title="38. Job Search VI: On-the-Job Search" href="jv.html" />
+    <link rel="prev" title="36. Job Search IV: Correlated Wage Offers" href="mccall_correlated.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,16 +169,16 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">38.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-features">38.1.1. Model Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">37.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-features">37.1.1. Model Features</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model">38.2. Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameterization">38.2.1. Parameterization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model">37.2. Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameterization">37.2.1. Parameterization</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">38.3. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">38.4. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">37.3. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">37.4. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -240,7 +240,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="job-search-v-modeling-career-choice">
-<h1><a class="toc-backref" href="#id4"><span class="section-number">38. </span>Job Search V: Modeling Career Choice</a><a class="headerlink" href="#job-search-v-modeling-career-choice" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id4"><span class="section-number">37. </span>Job Search V: Modeling Career Choice</a><a class="headerlink" href="#job-search-v-modeling-career-choice" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -291,10 +291,10 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">38.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">37.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>Next, we study a computational problem concerning career and job choices.</p>
-<p>The model is originally due to Derek Neal <span id="id1">[<a class="reference internal" href="zreferences.html#id197" title="Derek Neal. The Complexity of Job Mobility among Young Men. Journal of Labor Economics, 17(2):237–261, 1999.">Nea99</a>]</span>.</p>
-<p>This exposition draws on the presentation in <span id="id2">[<a class="reference internal" href="zreferences.html#id183" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 6.5.</p>
+<p>The model is originally due to Derek Neal <span id="id1">[<a class="reference internal" href="zreferences.html#id199" title="Derek Neal. The Complexity of Job Mobility among Young Men. Journal of Labor Economics, 17(2):237–261, 1999.">Nea99</a>]</span>.</p>
+<p>This exposition draws on the presentation in <span id="id2">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 6.5.</p>
 <p>We begin with some imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -312,7 +312,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <section id="model-features">
-<h3><span class="section-number">38.1.1. </span>Model Features<a class="headerlink" href="#model-features" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">37.1.1. </span>Model Features<a class="headerlink" href="#model-features" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Career and job within career both chosen to maximize expected discounted wage flow.</p></li>
 <li><p>Infinite horizon dynamic programming with two state variables.</p></li>
@@ -320,7 +320,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </section>
 </section>
 <section id="model">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">38.2. </span>Model</a><a class="headerlink" href="#model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">37.2. </span>Model</a><a class="headerlink" href="#model" title="Permalink to this heading">#</a></h2>
 <p>In what follows we distinguish between a career and a job, where</p>
 <ul class="simple">
 <li><p>a <em>career</em> is understood to be a general field encompassing many possible jobs, and</p></li>
@@ -354,10 +354,10 @@ past values, with</p>
 a career — starting a new career always requires starting a new job.</p>
 <p>A young worker aims to maximize the expected sum of discounted wages</p>
 <div class="math notranslate nohighlight" id="equation-exw">
-<span class="eqno">(38.1)<a class="headerlink" href="#equation-exw" title="Permalink to this equation">#</a></span>\[\mathbb{E} \sum_{t=0}^{\infty} \beta^t w_t\]</div>
+<span class="eqno">(37.1)<a class="headerlink" href="#equation-exw" title="Permalink to this equation">#</a></span>\[\mathbb{E} \sum_{t=0}^{\infty} \beta^t w_t\]</div>
 <p>subject to the choice restrictions specified above.</p>
 <p>Let <span class="math notranslate nohighlight">\(v(\theta, \epsilon)\)</span> denote the value function, which is the
-maximum of <a class="reference internal" href="#equation-exw">(38.1)</a> overall feasible (career, job) policies, given the
+maximum of <a class="reference internal" href="#equation-exw">(37.1)</a> overall feasible (career, job) policies, given the
 initial state <span class="math notranslate nohighlight">\((\theta, \epsilon)\)</span>.</p>
 <p>The value function obeys</p>
 <div class="math notranslate nohighlight">
@@ -366,15 +366,15 @@ v(\theta, \epsilon) = \max\{I, II, III\}
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-eyes">
-<span class="eqno">(38.2)<a class="headerlink" href="#equation-eyes" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(37.2)<a class="headerlink" href="#equation-eyes" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
 &amp; I = \theta + \epsilon + \beta v(\theta, \epsilon) \\
 &amp; II = \theta + \int \epsilon' G(d \epsilon') + \beta \int v(\theta, \epsilon') G(d \epsilon') \nonumber \\
 &amp; III = \int \theta' F(d \theta') + \int \epsilon' G(d \epsilon') + \beta \int \int v(\theta', \epsilon') G(d \epsilon') F(d \theta') \nonumber
 \end{aligned}\end{split}\]</div>
 <p>Evidently <span class="math notranslate nohighlight">\(I\)</span>, <span class="math notranslate nohighlight">\(II\)</span> and <span class="math notranslate nohighlight">\(III\)</span> correspond to “stay put”, “new job” and “new life”, respectively.</p>
 <section id="parameterization">
-<h3><span class="section-number">38.2.1. </span>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this heading">#</a></h3>
-<p>As in <span id="id3">[<a class="reference internal" href="zreferences.html#id183" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 6.5, we will focus on a discrete version of the model, parameterized as follows:</p>
+<h3><span class="section-number">37.2.1. </span>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this heading">#</a></h3>
+<p>As in <span id="id3">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 6.5, we will focus on a discrete version of the model, parameterized as follows:</p>
 <ul class="simple">
 <li><p>both <span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(\epsilon\)</span> take values in the set
 <code class="docutils literal notranslate"><span class="pre">np.linspace(0,</span> <span class="pre">B,</span> <span class="pre">grid_size)</span></code> — an even grid of points between
@@ -432,7 +432,7 @@ p(k \,|\, n, a, b)
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">38.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">37.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>We will first create a class <code class="docutils literal notranslate"><span class="pre">CareerWorkerProblem</span></code> which will hold the
 default parameterizations of the model and an initial guess for the value function.</p>
 <div class="cell docutils container">
@@ -468,7 +468,7 @@ default parameterizations of the model and an initial guess for the value functi
 <p>The following function takes an instance of <code class="docutils literal notranslate"><span class="pre">CareerWorkerProblem</span></code> and returns
 the corresponding Bellman operator <span class="math notranslate nohighlight">\(T\)</span> and the greedy policy function.</p>
 <p>In this model, <span class="math notranslate nohighlight">\(T\)</span> is defined by <span class="math notranslate nohighlight">\(Tv(\theta, \epsilon) = \max\{I, II, III\}\)</span>, where
-<span class="math notranslate nohighlight">\(I\)</span>, <span class="math notranslate nohighlight">\(II\)</span> and <span class="math notranslate nohighlight">\(III\)</span> are as given in <a class="reference internal" href="#equation-eyes">(38.2)</a>.</p>
+<span class="math notranslate nohighlight">\(I\)</span>, <span class="math notranslate nohighlight">\(II\)</span> and <span class="math notranslate nohighlight">\(III\)</span> are as given in <a class="reference internal" href="#equation-eyes">(37.2)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">operator_factory</span><span class="p">(</span><span class="n">cw</span><span class="p">,</span> <span class="n">parallel_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -623,10 +623,10 @@ the worker cannot change careers without changing jobs.</p>
 </ul>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">38.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">37.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="career_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 38.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 37.1 </span></p>
 <section id="exercise-content">
 <p>Using the default parameterization in the class <code class="docutils literal notranslate"><span class="pre">CareerWorkerProblem</span></code>,
 generate and plot typical sample paths for <span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(\epsilon\)</span>
@@ -643,7 +643,7 @@ when the worker follows the optimal policy.</p>
 </div>
 <div class="solution dropdown admonition" id="career-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#career_ex1"> Exercise 38.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#career_ex1"> Exercise 37.1</a></p>
 <section id="solution-content">
 <p>Simulate job/career paths.</p>
 <p>In reading the code, recall that <code class="docutils literal notranslate"><span class="pre">optimal_policy[i,</span> <span class="pre">j]</span></code> = policy at
@@ -688,14 +688,14 @@ when the worker follows the optimal policy.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8edb6f7afb5156eb85b0708ad01c3104ddfbf8f3de7a5931e8cefdcd11ae6608.png" src="_images/8edb6f7afb5156eb85b0708ad01c3104ddfbf8f3de7a5931e8cefdcd11ae6608.png" />
+<img alt="_images/cb86b70cd8c7db3e8f524d2fd11e36831394e308203a112deae05688a938b01e.png" src="_images/cb86b70cd8c7db3e8f524d2fd11e36831394e308203a112deae05688a938b01e.png" />
 </div>
 </div>
 </section>
 </div>
 <div class="exercise admonition" id="career_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 38.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 37.2 </span></p>
 <section id="exercise-content">
 <p>Let’s now consider how long it takes for the worker to settle down to a
 permanent job, given a starting point of <span class="math notranslate nohighlight">\((\theta, \epsilon) = (0, 0)\)</span>.</p>
@@ -718,7 +718,7 @@ T^* := \inf\{t \geq 0 \,|\, (\theta_t, \epsilon_t) \in S\}
 </div>
 <div class="solution dropdown admonition" id="career-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#career_ex2"> Exercise 38.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#career_ex2"> Exercise 37.2</a></p>
 <section id="solution-content">
 <p>The median for the original parameterization can be computed as follows</p>
 <div class="cell docutils container">
@@ -769,7 +769,7 @@ value <span class="math notranslate nohighlight">\(\beta=0.95\)</span>, replace 
 </div>
 <div class="exercise admonition" id="career_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 38.3 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 37.3 </span></p>
 <section id="exercise-content">
 <p>Set the parameterization to <code class="docutils literal notranslate"><span class="pre">G_a</span> <span class="pre">=</span> <span class="pre">G_b</span> <span class="pre">=</span> <span class="pre">100</span></code> and generate a new optimal policy
 figure – interpret.</p>
@@ -777,7 +777,7 @@ figure – interpret.</p>
 </div>
 <div class="solution dropdown admonition" id="career-solution-5">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#career_ex3"> Exercise 38.3</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#career_ex3"> Exercise 37.3</a></p>
 <section id="solution-content">
 <p>Here is one solution</p>
 <div class="cell docutils container">
@@ -1005,53 +1005,48 @@ less realistic.</p>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="ar1_processes.html">
-   24. AR1 Processes
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   25. Finite Markov Chains
+   24. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   26. Inventory Dynamics
+   25. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   27. Linear State Space Models
+   26. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   28. Samuelson Multiplier-Accelerator
+   27. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   29. Kesten Processes and Firm Dynamics
+   28. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   30. Wealth Distribution Dynamics
+   29. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   31. A First Look at the Kalman Filter
+   30. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   32. Another Look at the Kalman Filter
+   31. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1063,37 +1058,37 @@ less realistic.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1105,52 +1100,52 @@ less realistic.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1162,17 +1157,17 @@ less realistic.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   53. Forecasting  an AR(1) Process
+   52. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1184,42 +1179,42 @@ less realistic.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1231,32 +1226,32 @@ less realistic.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1268,37 +1263,37 @@ less realistic.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1310,17 +1305,17 @@ less realistic.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1332,17 +1327,17 @@ less realistic.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1354,12 +1349,12 @@ less realistic.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1371,17 +1366,17 @@ less realistic.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

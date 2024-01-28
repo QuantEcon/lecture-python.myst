@@ -83,6 +83,11 @@ Milton Friedman described a problem presented to him and Allen Wallis
 during World War II, when they worked at the US Government's
 Statistical Research Group at Columbia University.
 
+```{note}
+See pages 25 and 26  of Allen Wallis's 1980 article {cite}`wallis1980statistical`  about the Statistical Research Group at Columbia University during World War II for his account of the episode and  for important contributions  that Harold Hotelling made to formulating the problem.   Also see  chapter 5 of Jennifer Burns book about
+Milton Friedman {cite}`Burns_2023`.
+```
+
 Let's listen to Milton Friedman tell us what happened
 
 > In order to understand the story, it is necessary to have an idea of a

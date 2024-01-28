@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>53. Forecasting an AR(1) Process &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>52. Forecasting an AR(1) Process &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="54. Job Search VII: Search with Learning" href="odu.html" />
-    <link rel="prev" title="52. Posterior Distributions for AR(1) Parameters" href="ar1_bayes.html" />
+    <link rel="next" title="53. Job Search VII: Search with Learning" href="odu.html" />
+    <link rel="prev" title="51. Posterior Distributions for AR(1) Parameters" href="ar1_bayes.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,15 +169,15 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-univariate-first-order-autoregressive-process">53.1. A Univariate First-Order Autoregressive Process</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">53.2. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictive-distributions-of-path-properties">53.3. Predictive Distributions of Path Properties</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-wecker-like-algorithm">53.4. A Wecker-Like Algorithm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-simulations-to-approximate-a-posterior-distribution">53.5. Using Simulations to Approximate a Posterior Distribution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-sample-path-statistics">53.6. Calculating Sample Path Statistics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#original-wecker-method">53.7. Original Wecker Method</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extended-wecker-method">53.8. Extended Wecker Method</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison">53.9. Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-univariate-first-order-autoregressive-process">52.1. A Univariate First-Order Autoregressive Process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">52.2. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictive-distributions-of-path-properties">52.3. Predictive Distributions of Path Properties</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-wecker-like-algorithm">52.4. A Wecker-Like Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-simulations-to-approximate-a-posterior-distribution">52.5. Using Simulations to Approximate a Posterior Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-sample-path-statistics">52.6. Calculating Sample Path Statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#original-wecker-method">52.7. Original Wecker Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extended-wecker-method">52.8. Extended Wecker Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison">52.9. Comparison</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -235,7 +235,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="forecasting-an-ar-1-process">
-<h1><span class="section-number">53. </span>Forecasting  an AR(1) Process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">52. </span>Forecasting  an AR(1) Process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>arviz<span class="w"> </span>pymc
@@ -315,7 +315,7 @@ Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib
 <li><p>sample path properties that are defined as non-linear functions of future values <span class="math notranslate nohighlight">\(\{y_{t+j}\}_{j \geq 1}\)</span> at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
 </ul>
 <p><strong>Sample path properties</strong> are things like “time to next turning point” or “time to next recession”.</p>
-<p>To investigate sample path properties we’ll use a simulation procedure recommended by Wecker <span id="id1">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span>.</p>
+<p>To investigate sample path properties we’ll use a simulation procedure recommended by Wecker <span id="id1">[<a class="reference internal" href="zreferences.html#id7" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span>.</p>
 <p>To acknowledge uncertainty about parameters, we’ll deploy <code class="docutils literal notranslate"><span class="pre">pymc</span></code> to construct a Bayesian joint posterior distribution for unknown parameters.</p>
 <p>Let’s start with some imports.</p>
 <div class="cell docutils container">
@@ -338,36 +338,36 @@ Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib
 </div>
 </div>
 <section id="a-univariate-first-order-autoregressive-process">
-<h2><span class="section-number">53.1. </span>A Univariate First-Order Autoregressive Process<a class="headerlink" href="#a-univariate-first-order-autoregressive-process" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">52.1. </span>A Univariate First-Order Autoregressive Process<a class="headerlink" href="#a-univariate-first-order-autoregressive-process" title="Permalink to this heading">#</a></h2>
 <p>Consider the univariate AR(1) model:</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq1">
-<span class="eqno">(53.1)<a class="headerlink" href="#equation-ar1-tp-eq1" title="Permalink to this equation">#</a></span>\[ 
+<span class="eqno">(52.1)<a class="headerlink" href="#equation-ar1-tp-eq1" title="Permalink to this equation">#</a></span>\[ 
 y_{t+1} = \rho y_t + \sigma \epsilon_{t+1}, \quad t \geq 0 
 \]</div>
 <p>where the scalars <span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> satisfy <span class="math notranslate nohighlight">\(|\rho| &lt; 1\)</span> and <span class="math notranslate nohighlight">\(\sigma &gt; 0\)</span>;
 <span class="math notranslate nohighlight">\(\{\epsilon_{t+1}\}\)</span> is a sequence of i.i.d. normal random variables with mean <span class="math notranslate nohighlight">\(0\)</span> and variance <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <p>The initial condition <span class="math notranslate nohighlight">\(y_{0}\)</span> is a known number.</p>
-<p>Equation <a class="reference internal" href="#equation-ar1-tp-eq1">(53.1)</a> implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+1}\)</span> is</p>
+<p>Equation <a class="reference internal" href="#equation-ar1-tp-eq1">(52.1)</a> implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+1}\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq2">
-<span class="eqno">(53.2)<a class="headerlink" href="#equation-ar1-tp-eq2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(52.2)<a class="headerlink" href="#equation-ar1-tp-eq2" title="Permalink to this equation">#</a></span>\[
 f(y_{t+1} | y_{t}; \rho, \sigma) \sim {\mathcal N}(\rho y_{t}, \sigma^2) \
 \]</div>
-<p>Further, equation <a class="reference internal" href="#equation-ar1-tp-eq1">(53.1)</a> also implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+j}\)</span> for <span class="math notranslate nohighlight">\(j \geq 1\)</span> is</p>
+<p>Further, equation <a class="reference internal" href="#equation-ar1-tp-eq1">(52.1)</a> also implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+j}\)</span> for <span class="math notranslate nohighlight">\(j \geq 1\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq3">
-<span class="eqno">(53.3)<a class="headerlink" href="#equation-ar1-tp-eq3" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(52.3)<a class="headerlink" href="#equation-ar1-tp-eq3" title="Permalink to this equation">#</a></span>\[
 f(y_{t+j} | y_{t}; \rho, \sigma) \sim {\mathcal N}\left(\rho^j y_{t}, \sigma^2 \frac{1 - \rho^{2j}}{1 - \rho^2} \right) 
 \]</div>
-<p>The predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(53.3)</a> that assumes that the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span> are known, which we express
+<p>The predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(52.3)</a> that assumes that the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span> are known, which we express
 by conditioning on them.</p>
 <p>We also want to compute a  predictive distribution that does not condition on <span class="math notranslate nohighlight">\(\rho,\sigma\)</span> but instead takes account of our uncertainty about them.</p>
-<p>We form this predictive distribution by integrating <a class="reference internal" href="#equation-ar1-tp-eq3">(53.3)</a> with respect to a joint posterior distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t)\)</span>
+<p>We form this predictive distribution by integrating <a class="reference internal" href="#equation-ar1-tp-eq3">(52.3)</a> with respect to a joint posterior distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t)\)</span>
 that conditions on an observed history <span class="math notranslate nohighlight">\(y^t = \{y_s\}_{s=0}^t\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq4">
-<span class="eqno">(53.4)<a class="headerlink" href="#equation-ar1-tp-eq4" title="Permalink to this equation">#</a></span>\[ 
+<span class="eqno">(52.4)<a class="headerlink" href="#equation-ar1-tp-eq4" title="Permalink to this equation">#</a></span>\[ 
 f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^t ) d \rho d \sigma
 \]</div>
-<p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(53.3)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are known.</p>
-<p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq4">(53.4)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are uncertain, but have known probability distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t )\)</span>.</p>
+<p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(52.3)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are known.</p>
+<p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq4">(52.4)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are uncertain, but have known probability distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t )\)</span>.</p>
 <p>We also want to compute some  predictive distributions of “sample path statistics” that might  include, for example</p>
 <ul class="simple">
 <li><p>the time until the next “recession”,</p></li>
@@ -375,7 +375,7 @@ f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^
 <li><p>“severe recession”, and</p></li>
 <li><p>the time until the next turning point (positive or negative).</p></li>
 </ul>
-<p>To accomplish that for situations in which we are uncertain about parameter values, we shall extend Wecker’s <span id="id2">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span> approach in the following way.</p>
+<p>To accomplish that for situations in which we are uncertain about parameter values, we shall extend Wecker’s <span id="id2">[<a class="reference internal" href="zreferences.html#id7" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span> approach in the following way.</p>
 <ul class="simple">
 <li><p>first simulate an initial path of length <span class="math notranslate nohighlight">\(T_0\)</span>;</p></li>
 <li><p>for a given prior, draw a sample of size <span class="math notranslate nohighlight">\(N\)</span> from the posterior joint distribution of parameters <span class="math notranslate nohighlight">\(\left(\rho,\sigma\right)\)</span> after observing the initial path;</p></li>
@@ -384,11 +384,11 @@ f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^
 </ul>
 </section>
 <section id="implementation">
-<h2><span class="section-number">53.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">52.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>First, we’ll simulate a  sample path from which to launch our forecasts.</p>
 <p>In addition to plotting the sample path, under the assumption that the true parameter values are known,
 we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> coverage intervals using conditional distribution
-<a class="reference internal" href="#equation-ar1-tp-eq3">(53.3)</a> described above.</p>
+<a class="reference internal" href="#equation-ar1-tp-eq3">(52.3)</a> described above.</p>
 <p>We’ll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -459,8 +459,8 @@ we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span 
 <a class="reference external" href="https://python.quantecon.org/perm_income_cons.html">https://python.quantecon.org/perm_income_cons.html</a></p>
 </section>
 <section id="predictive-distributions-of-path-properties">
-<h2><span class="section-number">53.3. </span>Predictive Distributions of Path Properties<a class="headerlink" href="#predictive-distributions-of-path-properties" title="Permalink to this heading">#</a></h2>
-<p>Wecker <span id="id3">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span> proposed using simulation techniques to characterize  predictive distribution of some statistics that are  non-linear functions of <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<h2><span class="section-number">52.3. </span>Predictive Distributions of Path Properties<a class="headerlink" href="#predictive-distributions-of-path-properties" title="Permalink to this heading">#</a></h2>
+<p>Wecker <span id="id3">[<a class="reference internal" href="zreferences.html#id7" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span> proposed using simulation techniques to characterize  predictive distribution of some statistics that are  non-linear functions of <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>He called these functions “path properties” to contrast them with properties of single data points.</p>
 <p>He studied two special  prospective path properties of a given series <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
 <p>The first was <strong>time until the next turning point</strong>.</p>
@@ -488,7 +488,7 @@ Z_t(Y(\omega)) :=
 \[
 W_t(\omega):= \inf \{ k\geq 1 \mid Z_{t+k}(\omega) = 1\}
 \]</div>
-<p>Wecker  <span id="id4">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span> also studied <strong>the minimum value of <span class="math notranslate nohighlight">\(Y\)</span> over the next 8 quarters</strong>
+<p>Wecker  <span id="id4">[<a class="reference internal" href="zreferences.html#id7" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span> also studied <strong>the minimum value of <span class="math notranslate nohighlight">\(Y\)</span> over the next 8 quarters</strong>
 which can be defined as the random variable.</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -534,10 +534,10 @@ P_t(\omega) :=
 <ul class="simple">
 <li><p>``after one or two decrease(s), <span class="math notranslate nohighlight">\(Y\)</span> will grow for two consecutive quarters’’</p></li>
 </ul>
-<p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span>, we can use simulations to calculate  probabilities of <span class="math notranslate nohighlight">\(P_t\)</span> and <span class="math notranslate nohighlight">\(N_t\)</span> for each period <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id7" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span>, we can use simulations to calculate  probabilities of <span class="math notranslate nohighlight">\(P_t\)</span> and <span class="math notranslate nohighlight">\(N_t\)</span> for each period <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </section>
 <section id="a-wecker-like-algorithm">
-<h2><span class="section-number">53.4. </span>A Wecker-Like Algorithm<a class="headerlink" href="#a-wecker-like-algorithm" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">52.4. </span>A Wecker-Like Algorithm<a class="headerlink" href="#a-wecker-like-algorithm" title="Permalink to this heading">#</a></h2>
 <p>The procedure consists of the following steps:</p>
 <ul class="simple">
 <li><p>index a sample path by <span class="math notranslate nohighlight">\(\omega_i\)</span></p></li>
@@ -553,7 +553,7 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </ul>
 </section>
 <section id="using-simulations-to-approximate-a-posterior-distribution">
-<h2><span class="section-number">53.5. </span>Using Simulations to Approximate a Posterior Distribution<a class="headerlink" href="#using-simulations-to-approximate-a-posterior-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">52.5. </span>Using Simulations to Approximate a Posterior Distribution<a class="headerlink" href="#using-simulations-to-approximate-a-posterior-distribution" title="Permalink to this heading">#</a></h2>
 <p>The next code cells use <code class="docutils literal notranslate"><span class="pre">pymc</span></code> to compute the time <span class="math notranslate nohighlight">\(t\)</span> posterior distribution of <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
 <p>Note that in defining the likelihood function, we choose to condition on the initial value <span class="math notranslate nohighlight">\(y_0\)</span>.</p>
 <div class="cell docutils container">
@@ -618,15 +618,15 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div><div class="output text_html">
     <div>
       <progress value='60000' class='' max='60000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      100.00% [60000/60000 00:19&lt;00:00 Sampling 4 chains, 0 divergences]
+      100.00% [60000/60000 00:17&lt;00:00 Sampling 4 chains, 0 divergences]
     </div>
-    </div><img alt="_images/8a9afcd5b7bf68ae47f6074ec41d070adb7ec342a0ac35e355c05940c5ca9481.png" src="_images/8a9afcd5b7bf68ae47f6074ec41d070adb7ec342a0ac35e355c05940c5ca9481.png" />
+    </div><img alt="_images/5fc26cc7bfb97a96d74c37160a39bbc1d21c27c42953b2d1cffbfdcd86e9e64b.png" src="_images/5fc26cc7bfb97a96d74c37160a39bbc1d21c27c42953b2d1cffbfdcd86e9e64b.png" />
 </div>
 </div>
 <p>The graphs on the left portray posterior marginal distributions.</p>
 </section>
 <section id="calculating-sample-path-statistics">
-<h2><span class="section-number">53.6. </span>Calculating Sample Path Statistics<a class="headerlink" href="#calculating-sample-path-statistics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">52.6. </span>Calculating Sample Path Statistics<a class="headerlink" href="#calculating-sample-path-statistics" title="Permalink to this heading">#</a></h2>
 <p>Our next step is to prepare Python code to compute our sample path statistics.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -688,7 +688,7 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div>
 </section>
 <section id="original-wecker-method">
-<h2><span class="section-number">53.7. </span>Original Wecker Method<a class="headerlink" href="#original-wecker-method" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">52.7. </span>Original Wecker Method<a class="headerlink" href="#original-wecker-method" title="Permalink to this heading">#</a></h2>
 <p>Now we  apply Wecker’s original  method by simulating future paths and compute predictive distributions, conditioning
 on the true  parameters associated with the data-generating model.</p>
 <div class="cell docutils container">
@@ -760,10 +760,10 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </section>
 <section id="extended-wecker-method">
-<h2><span class="section-number">53.8. </span>Extended Wecker Method<a class="headerlink" href="#extended-wecker-method" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">52.8. </span>Extended Wecker Method<a class="headerlink" href="#extended-wecker-method" title="Permalink to this heading">#</a></h2>
 <p>Now we apply we apply our  “extended” Wecker method based on  predictive densities of <span class="math notranslate nohighlight">\(y\)</span> defined by
-<a class="reference internal" href="#equation-ar1-tp-eq4">(53.4)</a> that acknowledge posterior uncertainty in the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
-<p>To approximate  the intergration on the right side of <a class="reference internal" href="#equation-ar1-tp-eq4">(53.4)</a>, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model <a class="reference internal" href="#equation-ar1-tp-eq1">(53.1)</a>.</p>
+<a class="reference internal" href="#equation-ar1-tp-eq4">(52.4)</a> that acknowledge posterior uncertainty in the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
+<p>To approximate  the intergration on the right side of <a class="reference internal" href="#equation-ar1-tp-eq4">(52.4)</a>, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model <a class="reference internal" href="#equation-ar1-tp-eq1">(52.1)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_extended_Wecker</span><span class="p">(</span><span class="n">post_samples</span><span class="p">,</span> <span class="n">initial_path</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
@@ -821,12 +821,12 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a31c97ed32188d25fa9e62fff0aff02f6cc06eae5f531babdedd9d4dea097d13.png" src="_images/a31c97ed32188d25fa9e62fff0aff02f6cc06eae5f531babdedd9d4dea097d13.png" />
+<img alt="_images/79e5c0b62447b21e5ead72624b58f1cae0c1539a5fdaa69341bb53916bbbbc9c.png" src="_images/79e5c0b62447b21e5ead72624b58f1cae0c1539a5fdaa69341bb53916bbbbc9c.png" />
 </div>
 </div>
 </section>
 <section id="comparison">
-<h2><span class="section-number">53.9. </span>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">52.9. </span>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">#</a></h2>
 <p>Finally, we plot both the original Wecker method and the extended method with parameter values drawn from the posterior together to compare the differences that emerge from pretending to know parameter values when they are actually uncertain.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -840,7 +840,7 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/270956044d7febfd5b219eef000aa0482e1250495e17a68f2ab0ddec33dadb81.png" src="_images/270956044d7febfd5b219eef000aa0482e1250495e17a68f2ab0ddec33dadb81.png" />
+<img alt="_images/89e494d04e00091852f4986d9022db2abaa4b4c79786f2976fb9dc2a7403fb43.png" src="_images/89e494d04e00091852f4986d9022db2abaa4b4c79786f2976fb9dc2a7403fb43.png" />
 </div>
 </div>
 </section>
@@ -1038,53 +1038,48 @@ on the true  parameters associated with the data-generating model.</p>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="ar1_processes.html">
-   24. AR1 Processes
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   25. Finite Markov Chains
+   24. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   26. Inventory Dynamics
+   25. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   27. Linear State Space Models
+   26. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   28. Samuelson Multiplier-Accelerator
+   27. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   29. Kesten Processes and Firm Dynamics
+   28. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   30. Wealth Distribution Dynamics
+   29. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   31. A First Look at the Kalman Filter
+   30. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   32. Another Look at the Kalman Filter
+   31. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1096,37 +1091,37 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1138,52 +1133,52 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1195,17 +1190,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   53. Forecasting  an AR(1) Process
+   52. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1217,42 +1212,42 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1264,32 +1259,32 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1301,37 +1296,37 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1343,17 +1338,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1365,17 +1360,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1387,12 +1382,12 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1404,17 +1399,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>
