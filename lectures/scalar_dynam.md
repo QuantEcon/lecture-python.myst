@@ -100,7 +100,7 @@ a x_0 + b, \quad
 a^2 x_0 + a b + b, \quad \text{etc.}
 ```
 
-Continuing in this way, and using our knowledge of {doc}`geometric series <geom_series>`, we find that, for any $t \geq 0$,
+Continuing in this way, and using our knowledge of {doc}`geometric series <intro:geom_series>`, we find that, for any $t \geq 0$,
 
 ```{math}
 :label: sdslinmod

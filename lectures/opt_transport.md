@@ -20,7 +20,7 @@ because of its many applications and because of its important role in the histor
 economic theory.
 
 In this lecture, we describe the problem, tell how
-{doc}`linear programming <lp_intro>` is a
+{doc}`linear programming <intro:lp_intro>` is a
 key tool for solving it, and then provide some examples.
 
 We will provide other applications in followup lectures.
@@ -631,7 +631,7 @@ linprog(-b[:-1], A_ub=A[:-1].T, b_ub=C_vec,
 ### Interpretation of dual problem
 
 By **strong duality** (please see this lecture
-{doc}`Linear Programming <lp_intro>`), we know that:
+{doc}`Linear Programming <intro:lp_intro>`), we know that:
 
 $$
 \sum_{i=1}^m \sum_{j=1}^n c_{ij} x_{ij}  = \sum_{i=1}^m p_i u_i + \sum_{j=1}^n q_j v_j
