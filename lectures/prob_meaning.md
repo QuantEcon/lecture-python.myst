@@ -710,15 +710,13 @@ Typically, the functional form of the likelihood function determines the functio
 
 A natural question to ask is why should a person's personal prior about a parameter $\theta$ be restricted to be described by a conjugate prior?
 
-Why not some other functional form that more sincerely describes the person's beliefs.
+Why not some other functional form that more sincerely describes the person's beliefs?
 
-To be argumentative, one could ask, why should the form of the likelihood function have *anything* to say about my
-personal beliefs about $\theta$?
+To be argumentative, one could ask, why should the form of the likelihood function have *anything* to say about my personal beliefs about $\theta$?
 
 A dignified response to that question is, well, it shouldn't, but if you want to compute a posterior easily you'll just be happier if your prior is conjugate to your likelihood.
 
-Otherwise, your posterior won't have a convenient analytical form and you'll be in the situation of wanting to
-apply the Markov chain Monte Carlo techniques deployed in {doc}`this quantecon lecture <bayes_nonconj>`.
+Otherwise, your posterior won't have a convenient analytical form and you'll be in the situation of wanting to apply the Markov chain Monte Carlo techniques deployed in {doc}`this quantecon lecture <bayes_nonconj>`.
 
 We also apply these powerful methods to approximating Bayesian posteriors for non-conjugate priors in
 {doc}`this quantecon lecture <ar1_bayes>` and {doc}`this quantecon lecture <ar1_turningpts>`
