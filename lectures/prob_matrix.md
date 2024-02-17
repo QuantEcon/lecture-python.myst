@@ -111,19 +111,32 @@ To appreciate how statisticians connect probabilities to data, the key is to und
 
 **Scalar example**
 
-
-Consider the following discrete distribution
+Let $X$ be a scalar random variable that takes on the $I$ possible values
+$0, 1, 2, \ldots, I-1$ with probabilities
 
 $$
-X  \sim \{{f_i}\}_{i=0}^{I-1},\quad f_i \geqslant 0, \quad \sum_i f_i = 1
+{\rm Prob}(X = i) = f_i, \quad 
+$$
+where 
+
+$$
+ f_i \geqslant 0, \quad \sum_i f_i = 1 .
 $$
 
-Draw a sample $x_0, x_1, \dots , x_{N-1}$, $N$ draws of $X$ from $\{f_i\}^I_{i=1}$.
+We sometimes write 
+
+$$
+X  \sim \{{f_i}\}_{i=0}^{I-1}
+$$
+
+as a short-hand way of saying that the random variable $X$ is described by the probability distribution $ \{{f_i}\}_{i=0}^{I-1}$.
+
+Consider drawing a  sample $x_0, x_1, \dots , x_{N-1}$ of  $N$ independent and identically distributoed  draws of $X$. 
 
 What do the "identical" and "independent" mean in   IID or iid ("identically and independently distributed)?
 
 - "identical" means that each draw is from the same distribution.
-- "independent" means that the joint distribution  equal tthe product of marginal distributions, i.e.,
+- "independent" means that  joint distribution  equal  products of marginal distributions, i.e.,
 
 $$
 \begin{aligned}
@@ -132,11 +145,12 @@ $$
 \end{aligned}
 $$
 
-Consider the **empirical distribution**:
+We define an e **empirical distribution** as follows.
+
+For each $i  = 0,\dots,I-1$, let 
 
 $$
 \begin{aligned}
-i & = 0,\dots,I-1,\\
 N_i & = \text{number of times} \ X = i,\\
 N & = \sum^{I-1}_{i=0} N_i \quad \text{total number of draws},\\
 \tilde {f_i} &  = \frac{N_i}{N} \sim \ \text{frequency of draws for which}\  X=i
@@ -425,7 +439,7 @@ Conditional distributions are
 
 $$
 \begin{aligned}
-\textrm{Prob}\{X=i|Y=j\} & =\frac{f_ig_j}{\sum_{i}f_ig_j}=\frac{f_ig_j}{g_i}=f_i \\
+\textrm{Prob}\{X=i|Y=j\} & =\frac{f_ig_j}{\sum_{i}f_ig_j}=\frac{f_ig_j}{g_j}=f_i \\
 \textrm{Prob}\{Y=j|X=i\} & =\frac{f_ig_j}{\sum_{j}f_ig_j}=\frac{f_ig_j}{f_i}=g_j
 \end{aligned}
 $$
@@ -609,7 +623,7 @@ $$
 \begin{aligned}
 \tilde{U} & =F(X)=1-\lambda^{x+1}\\
 1-\tilde{U} & =\lambda^{x+1}\\
-log(1-\tilde{U})& =(x+1)\log\lambda\\
+\log(1-\tilde{U})& =(x+1)\log\lambda\\
 \frac{\log(1-\tilde{U})}{\log\lambda}& =x+1\\
 \frac{\log(1-\tilde{U})}{\log\lambda}-1 &=x
 \end{aligned}
@@ -1561,7 +1575,7 @@ Now we'll try to go in a reverse direction.
 
 We'll find that from two marginal distributions, can we usually construct more than one   joint distribution that verifies these marginals.
 
-Each of these joint distributions is called a **coupling** of the two martingal distributions.
+Each of these joint distributions is called a **coupling** of the two marginal distributions.
 
 Let's start with marginal distributions
 
