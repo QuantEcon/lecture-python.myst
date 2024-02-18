@@ -1454,6 +1454,13 @@ y_{T}
 \alpha_{0}\\
 \vdots\\
 \alpha_{0}
+\end{array}\right]}} +\underset{\equiv u}{\underbrace{\left[\begin{array}{c}
+u_{1} \\
+u_2 \\
+u_3\\
+u_4\\
+\vdots\\
+u_T
 \end{array}\right]}}
 $$
 
