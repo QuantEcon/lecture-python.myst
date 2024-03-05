@@ -32,7 +32,7 @@ The main tool we will use to solve the cake eating problem is dynamic programmin
 
 Readers might find it helpful to review the following lectures before reading this one:
 
-* The {doc}`shortest paths lecture <short_path>`
+* The {doc}`shortest paths lecture <intro:short_path>`
 * The {doc}`basic McCall model <mccall_model>`
 * The {doc}`McCall model with separation <mccall_model_with_separation>`
 * The {doc}`McCall model with separation and a continuous wage distribution <mccall_fitted_vfi>`
