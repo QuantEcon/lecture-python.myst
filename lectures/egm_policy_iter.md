@@ -23,14 +23,6 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's in Anaconda, this lecture will need the following libraries:
-
-```{code-cell} ipython
----
-tags: [hide-output]
----
-!pip install interpolation
-```
 
 ## Overview
 
@@ -51,9 +43,7 @@ Let's start with some standard imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from interpolation import interp
 from numba import njit
 ```
 
@@ -188,7 +178,7 @@ def K(σ_array, og):
     y = grid + σ_array  # y_i = k_i + c_i
 
     # Linear interpolation of policy using endogenous grid
-    σ = lambda x: interp(y, σ_array, x)
+    σ = lambda x: np.interp(x, y, σ_array)
 
     # Allocate memory for new consumption array
     c = np.empty_like(grid)
