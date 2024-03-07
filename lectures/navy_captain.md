@@ -24,22 +24,12 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's in Anaconda, this lecture will need the following libraries:
-
-```{code-cell} ipython
----
-tags: [hide-output]
----
-!pip install interpolation
-```
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numba import njit, prange, float64, int64
 from numba.experimental import jitclass
-from interpolation import interp
 from math import gamma
 from scipy.optimize import minimize
 ```
@@ -496,7 +486,7 @@ def Q(h, wf):
     κ = wf.κ
 
     h_new = np.empty_like(π_grid)
-    h_func = lambda p: interp(π_grid, h, p)
+    h_func = lambda p: np.interp(p, π_grid, h)
 
     for i in prange(len(π_grid)):
         π = π_grid[i]
@@ -679,7 +669,7 @@ def V_q(wf, flag):
 
             for j in prange(len(z_arr)):
                 π_next = wf.κ(z_arr[j], π)
-                V[i] += wf.c + interp(wf.π_grid, V_old, π_next)
+                V[i] += wf.c + np.interp(π_next, wf.π_grid, V_old)
 
             V[i] /= wf.mc_size
 

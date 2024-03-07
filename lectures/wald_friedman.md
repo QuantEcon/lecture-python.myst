@@ -31,14 +31,6 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's in Anaconda, this lecture will need the following libraries:
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install interpolation
-```
-
 ## Overview
 
 This lecture describes a statistical decision problem presented to Milton
@@ -69,7 +61,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit, prange, float64, int64
 from numba.experimental import jitclass
-from interpolation import interp
 from math import gamma
 ```
 
@@ -487,7 +478,7 @@ def Q(h, wf):
     κ = wf.κ
 
     h_new = np.empty_like(π_grid)
-    h_func = lambda p: interp(π_grid, h, p)
+    h_func = lambda p: np.interp(p, π_grid, h)
 
     for i in prange(len(π_grid)):
         π = π_grid[i]

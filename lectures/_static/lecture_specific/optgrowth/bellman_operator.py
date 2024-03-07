@@ -1,5 +1,4 @@
 import numpy as np
-from interpolation import interp
 from numba import njit, prange
 from quantecon.optimize.scalar_maximization import brent_max
 
@@ -21,7 +20,7 @@ def operator_factory(og, parallel_flag=True):
         The right-hand side of the Bellman equation
         """
         # First turn v into a function via interpolation
-        v_func = lambda x: interp(grid, v, x)
+        v_func = lambda x: np.interp(x, grid, v)
         return u(c) + β * np.mean(v_func(f(y - c) * shocks))
 
     @njit(parallel=parallel_flag)
