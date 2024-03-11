@@ -30,7 +30,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 tags: [hide-output]
 ---
 !pip install quantecon
-!pip install interpolation
 ```
 
 ## Overview
@@ -57,9 +56,7 @@ We require the following imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from interpolation import interp
 from numba import njit, float64
 from numba.experimental import jitclass
 from quantecon import MarkovChain
@@ -436,7 +433,7 @@ def K(a_in, σ_in, ifp):
     n = len(P)
 
     # Create consumption function by linear interpolation
-    σ = lambda a, z: interp(a_in[:, z], σ_in[:, z], a)
+    σ = lambda a, z: np.interp(a, a_in[:, z], σ_in[:, z])
 
     # Allocate memory
     σ_out = np.empty_like(σ_in)
@@ -636,7 +633,7 @@ def compute_asset_series(ifp, a_star, σ_star, z_seq, T=500_000):
     """
 
     # Create consumption function by linear interpolation
-    σ = lambda a, z: interp(a_star[:, z], σ_star[:, z], a)
+    σ = lambda a, z: np.interp(a, a_star[:, z], σ_star[:, z])
 
     # Simulate the asset path
     a = np.zeros(T+1)

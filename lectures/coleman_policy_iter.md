@@ -30,7 +30,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 tags: [hide-output]
 ---
 !pip install quantecon
-!pip install interpolation
 ```
 
 ## Overview
@@ -62,9 +61,7 @@ Let's start with some imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from interpolation import interp
 from quantecon.optimize import brentq
 from numba import njit
 ```
@@ -301,7 +298,7 @@ def euler_diff(c, σ, y, og):
     f, f_prime, u_prime = og.f, og.f_prime, og.u_prime
 
     # First turn σ into a function via interpolation
-    σ_func = lambda x: interp(grid, σ, x)
+    σ_func = lambda x: np.interp(x, grid, σ)
 
     # Now set up the function we need to find the root of.
     vals = u_prime(σ_func(f(y - c) * shocks)) * f_prime(y - c) * shocks

@@ -15,15 +15,6 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's in Anaconda, this lecture will require the following library:
-
-```{code-cell} ipython
----
-tags: [hide-output]
----
-!pip install interpolation
-```
-
 ## Overview
 
 In this lecture we continue the study of {doc}`the cake eating problem <cake_eating_problem>`.
@@ -47,9 +38,7 @@ We will use the following imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from interpolation import interp
 from scipy.optimize import minimize_scalar, bisect
 ```
 
@@ -211,7 +200,7 @@ class CakeEating:
         """
 
         u, β = self.u, self.β
-        v = lambda x: interp(self.x_grid, v_array, x)
+        v = lambda x: np.interp(x, self.x_grid, v_array)
 
         return u(c) + β * v(x - c)
 ```
@@ -533,7 +522,7 @@ class OptimalGrowth(CakeEating):
         """
 
         u, β, α = self.u, self.β, self.α
-        v = lambda x: interp(self.x_grid, v_array, x)
+        v = lambda x: np.interp(x, self.x_grid, v_array)
 
         return u(c) + β * v((x - c)**α)
 ```
@@ -609,7 +598,7 @@ def K(σ_array, ce):
     u_prime, β, x_grid = ce.u_prime, ce.β, ce.x_grid
     σ_new = np.empty_like(σ_array)
 
-    σ = lambda x: interp(x_grid, σ_array, x)
+    σ = lambda x: np.interp(x, x_grid, σ_array)
 
     def euler_diff(c, x):
         return u_prime(c) - β * u_prime(σ(x - c))

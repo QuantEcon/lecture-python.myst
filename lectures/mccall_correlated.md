@@ -30,7 +30,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 tags: [hide-output]
 ---
 !pip install quantecon
-!pip install interpolation
 ```
 
 ## Overview
@@ -48,10 +47,8 @@ We will use the following imports:
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
-from interpolation import interp
 from numpy.random import randn
 from numba import njit, prange, float64
 from numba.experimental import jitclass
@@ -245,7 +242,7 @@ def Q(js, f_in, f_out):
         for m in range(M):
             e1, e2 = js.e_draws[:, m]
             z_next = d + ρ * z + σ * e1
-            go_val = interp(js.z_grid, f_in, z_next)     # f(z')
+            go_val = np.interp(z_next, js.z_grid, f_in)  # f(z')
             y_next = np.exp(μ + s * e2)                  # y' draw
             w_next = np.exp(z_next) + y_next             # w' draw
             stop_val = np.log(w_next) / (1 - β)
@@ -353,7 +350,7 @@ def compute_unemployment_duration(js, seed=1234):
 
     @njit
     def f_star_function(z):
-        return interp(z_grid, f_star, z)
+        return np.interp(z, z_grid, f_star)
 
     @njit
     def draw_tau(t_max=10_000):

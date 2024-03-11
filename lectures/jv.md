@@ -27,15 +27,6 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's in Anaconda, this lecture will need the following libraries:
-
-```{code-cell} ipython
----
-tags: [hide-output]
----
-!pip install interpolation
-```
-
 ## Overview
 
 In this section, we solve a simple on-the-job search model
@@ -46,10 +37,8 @@ Let's start with some imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import scipy.stats as stats
-from interpolation import interp
 from numba import njit, prange
 ```
 
@@ -269,7 +258,7 @@ def operator_factory(jv, parallel_flag=True):
     @njit
     def state_action_values(z, x, v):
         s, ϕ = z
-        v_func = lambda x: interp(x_grid, v, x)
+        v_func = lambda x: np.interp(x, x_grid, v)
 
         integral = 0
         for m in range(mc_size):
@@ -460,8 +449,8 @@ v_star = solve_model(jv, verbose=False)
 s_policy, ϕ_policy = get_greedy(v_star)
 
 # Turn the policy function arrays into actual functions
-s = lambda y: interp(x_grid, s_policy, y)
-ϕ = lambda y: interp(x_grid, ϕ_policy, y)
+s = lambda y: np.interp(y, x_grid, s_policy)
+ϕ = lambda y: np.interp(y, x_grid, ϕ_policy)
 
 def h(x, b, u):
     return (1 - b) * g(x, ϕ(x)) + b * max(g(x, ϕ(x)), u)

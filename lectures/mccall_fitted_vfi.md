@@ -23,14 +23,6 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's in Anaconda, this lecture will need the following libraries:
-
-```{code-cell} ipython
----
-tags: [hide-output]
----
-!pip install interpolation
-```
 
 ## Overview
 
@@ -58,9 +50,7 @@ We will use the following imports:
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from interpolation import interp
 from numba import njit, float64
 from numba.experimental import jitclass
 ```
@@ -155,7 +145,7 @@ This method
    {cite}`gordon1995stable` or {cite}`stachurski2008continuous`) and
 1. preserves useful shape properties such as monotonicity and concavity/convexity.
 
-Linear interpolation will be implemented using a JIT-aware Python interpolation library called [interpolation.py](https://github.com/EconForge/interpolation.py).
+Linear interpolation will be implemented using [numpy.interp](https://numpy.org/doc/stable/reference/generated/numpy.interp.html).
 
 The next figure illustrates piecewise linear interpolation of an arbitrary
 function on grid points $0, 0.2, 0.4, 0.6, 0.8, 1$.
@@ -169,7 +159,7 @@ c_grid = np.linspace(0, 1, 6)
 f_grid = np.linspace(0, 1, 150)
 
 def Af(x):
-    return interp(c_grid, f(c_grid), x)
+    return np.interp(x, c_grid, f(c_grid))
 
 fig, ax = plt.subplots()
 
@@ -238,7 +228,7 @@ class McCallModelContinuous:
         u = lambda x: np.log(x)
 
         # Interpolate array represented value function
-        vf = lambda x: interp(w, v, x)
+        vf = lambda x: np.interp(x, w, v)
 
         # Update d using Monte Carlo to evaluate integral
         d_new = np.mean(np.maximum(vf(self.w_draws), u(c) + β * d))

@@ -58,9 +58,8 @@ Let’s start with some imports
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, prange, vectorize
-from interpolation import mlinterp, interp
+from interpolation import mlinterp
 from math import gamma
 import numpy as np
 from matplotlib import cm
@@ -633,7 +632,7 @@ def Q_factory(sp, parallel_flag=True):
 
     @njit
     def ω_func(p, ω):
-        return interp(π_grid, ω, p)
+        return np.interp(p, π_grid, ω)
 
     @njit
     def κ(w, π):
@@ -783,7 +782,7 @@ w_bar = solve_wbar(sp, verbose=False)
 
 # Interpolate reservation wage function
 π_grid = sp.π_grid
-w_func = njit(lambda x: interp(π_grid, w_bar, x))
+w_func = njit(lambda x: np.interp(x, π_grid, w_bar))
 
 @njit
 def update(a, b, e, π):
@@ -907,7 +906,7 @@ def empirical_dist(F_a, F_b, G_a, G_b, w_bar, π_grid,
                 π = π * lw / (π * lw + 1 - π)
 
                 # move to next agent if accepts
-                if w >= interp(π_grid, w_bar, π):
+                if w >= np.interp(π, π_grid, w_bar):
                     break
 
             # record the unemployment duration

@@ -31,7 +31,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 tags: [hide-output]
 ---
 !pip install quantecon
-!pip install interpolation
 ```
 
 ## Overview
@@ -61,16 +60,10 @@ Let's start with some imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from interpolation import interp
 from numba import jit, njit
 from quantecon.optimize.scalar_maximization import brent_max
 ```
-
-We are using an interpolation function from
-[interpolation.py](https://github.com/EconForge/interpolation.py) because it
-helps us JIT-compile our code.
 
 The function `brent_max` is also designed for embedding in JIT-compiled code.
 
@@ -152,7 +145,7 @@ def state_action_value(c, y, v_array, og):
 
     u, f, β, shocks = og.u, og.f, og.β, og.shocks
 
-    v = lambda x: interp(og.grid, v_array, x)
+    v = lambda x: np.interp(x, og.grid, v_array)
 
     return u(c) + β * np.mean(v(f(y - c) * shocks))
 ```
@@ -398,7 +391,7 @@ for β in (0.8, 0.9, 0.98):
     v_greedy, v_solution = solve_model(og, verbose=False)
 
     # Define an optimal policy function
-    σ_func = lambda x: interp(og.grid, v_greedy, x)
+    σ_func = lambda x: np.interp(x, og.grid, v_greedy)
     y = simulate_og(σ_func, og)
     ax.plot(y, lw=2, alpha=0.6, label=rf'$\beta = {β}$')
 
