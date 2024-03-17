@@ -214,11 +214,9 @@ The following table gives a summary of the findings obtained in the remainder of
 
 The table reports  implications of Harrison and Kreps's specifications of $P_a, P_b, \beta$.
 
-```{raw} html
-<div class="content-table"></div>
-```
+
 |    $ s_t $    |   0   |   1   |
-| :-----------: | :---: | :---: |
+|---------------|-------|-------|
 |    $ p_a $    | 1.33  | 1.22  |
 |    $ p_b $    | 1.45  | 1.91  |
 |    $ p_o $    | 1.85  | 2.08  |
@@ -522,11 +520,8 @@ He emphasizes how limiting short sales and limiting leverage have opposite effec
 
 This exercise invites you to recreate the summary table using the functions we have built above.
 
-```{raw} html
-<div class="content-table"></div>
-```
 |    $s_t$    |   0   |   1   |
-| :---------: | :---: | :---: |
+|-------------|-------|-------|
 |    $p_a$    | 1.33  | 1.22  |
 |    $p_b$    | 1.45  | 1.91  |
 |    $p_o$    | 1.85  | 2.08  |
