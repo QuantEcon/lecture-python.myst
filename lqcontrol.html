@@ -298,22 +298,20 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
 Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -343,9 +341,9 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quanteco
 </ul>
 <p>For additional reading on LQ control, see, for example,</p>
 <ul class="simple">
-<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, chapter 5</p></li>
-<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id169" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">HS08</a>]</span>, chapter 4</p></li>
-<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id171" title="O Hernandez-Lerma and J B Lasserre. Discrete-Time Markov Control Processes: Basic Optimality Criteria. Number Vol 1 in Applications of Mathematics Stochastic Modelling and Applied Probability. Springer, 1996.">HLL96</a>]</span>, section 3.5</p></li>
+<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, chapter 5</p></li>
+<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id169" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">Hansen and Sargent, 2008</a>]</span>, chapter 4</p></li>
+<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id171" title="O Hernandez-Lerma and J B Lasserre. Discrete-Time Markov Control Processes: Basic Optimality Criteria. Number Vol 1 in Applications of Mathematics Stochastic Modelling and Applied Probability. Springer, 1996.">Hernandez-Lerma and Lasserre, 1996</a>]</span>, section 3.5</p></li>
 </ul>
 <p>In order to focus on computation, we leave longer proofs to these sources (while trying to provide as much intuition as possible).</p>
 <p>Let’s start with some imports:</p>
@@ -503,7 +501,7 @@ C :=
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In fact, for many economic problems, the definiteness conditions on <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> can be relaxed.  It is sufficient that certain submatrices of <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> be nonnegative definite. See <span id="id4">[<a class="reference internal" href="zreferences.html#id169" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">HS08</a>]</span> for details.</p>
+<p>In fact, for many economic problems, the definiteness conditions on <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> can be relaxed.  It is sufficient that certain submatrices of <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> be nonnegative definite. See <span id="id4">[<a class="reference internal" href="zreferences.html#id169" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">Hansen and Sargent, 2008</a>]</span> for details.</p>
 </div>
 <section id="id5">
 <h4><span class="section-number">61.2.2.1. </span>Example 1<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
@@ -740,7 +738,7 @@ propensity to consume from current income.</p>
 <p>Data contradicted the constancy of the marginal propensity to consume.</p>
 <p>In response, Milton Friedman, Franco Modigliani and others built models
 based on a consumer’s preference for an intertemporally smooth consumption stream.</p>
-<p>(See, for example, <span id="id7">[<a class="reference internal" href="zreferences.html#id163" title="M. Friedman. A Theory of the Consumption Function. Princeton University Press, 1956.">Fri56</a>]</span> or <span id="id8">[<a class="reference internal" href="zreferences.html#id198" title="F. Modigliani and R. Brumberg. Utility analysis and the consumption function: An interpretation of cross-section data. In K.K Kurihara, editor, Post-Keynesian Economics. 1954.">MB54</a>]</span>.)</p>
+<p>(See, for example, <span id="id7">[<a class="reference internal" href="zreferences.html#id163" title="M. Friedman. A Theory of the Consumption Function. Princeton University Press, 1956.">Friedman, 1956</a>]</span> or <span id="id8">[<a class="reference internal" href="zreferences.html#id198" title="F. Modigliani and R. Brumberg. Utility analysis and the consumption function: An interpretation of cross-section data. In K.K Kurihara, editor, Post-Keynesian Economics. 1954.">Modigliani and Brumberg, 1954</a>]</span>.)</p>
 <p>One property of those models is that households purchase and sell financial assets to make consumption streams smoother than income streams.</p>
 <p>The household savings problem <a class="reference internal" href="#lq-hhp"><span class="std std-ref">outlined above</span></a> captures these ideas.</p>
 <p>The optimization problem for the household is to choose a consumption sequence in order to minimize</p>
@@ -846,7 +844,7 @@ consumption can be simulated via <a class="reference internal" href="#equation-l
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9bb576f4174b725f29d04347e5ba7b3d4df1fc55c3c5dc97589365917399cca2.png" src="_images/9bb576f4174b725f29d04347e5ba7b3d4df1fc55c3c5dc97589365917399cca2.png" />
+<img alt="_images/1fa339b36974903a818c31a7ca14d8a6c66acb95a06fba854bce33a6467ec6fd.png" src="_images/1fa339b36974903a818c31a7ca14d8a6c66acb95a06fba854bce33a6467ec6fd.png" />
 </div>
 </div>
 <p>The top panel shows the time path of consumption <span class="math notranslate nohighlight">\(c_t\)</span> and income <span class="math notranslate nohighlight">\(y_t\)</span> in the simulation.</p>
@@ -908,7 +906,7 @@ relatively more weight on later consumption values.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4c177f67523054620a2674f36357067bc82ba5d545ffbc9af1f103b61ce17524.png" src="_images/4c177f67523054620a2674f36357067bc82ba5d545ffbc9af1f103b61ce17524.png" />
+<img alt="_images/2ff376d475c9f03dbf970737f4fa383664d06d8ab0008e89e206e8232d6cdf5b.png" src="_images/2ff376d475c9f03dbf970737f4fa383664d06d8ab0008e89e206e8232d6cdf5b.png" />
 </div>
 </div>
 <p>We now have a slowly rising consumption stream and a hump-shaped build-up
@@ -926,7 +924,7 @@ of assets in the middle periods to fund rising consumption.</p>
 <p>However, the loss of generality is not as large as you might first imagine.</p>
 <p>In fact, we can tackle many models with time-varying parameters by suitable choice of state variables.</p>
 <p>One illustration is given <a class="reference internal" href="#lq-nsi"><span class="std std-ref">below</span></a>.</p>
-<p>For further examples and a more systematic treatment, see <span id="id9">[<a class="reference internal" href="zreferences.html#id168" title="L P Hansen and T J Sargent. Recursive Models of Dynamic Linear Economies. The Gorman Lectures in Economics. Princeton University Press, 2013.">HS13</a>]</span>, section 2.4.</p>
+<p>For further examples and a more systematic treatment, see <span id="id9">[<a class="reference internal" href="zreferences.html#id168" title="L P Hansen and T J Sargent. Recursive Models of Dynamic Linear Economies. The Gorman Lectures in Economics. Princeton University Press, 2013.">Hansen and Sargent, 2013</a>]</span>, section 2.4.</p>
 </section>
 <section id="adding-a-cross-product-term">
 <span id="lq-cpt"></span><h3><span class="section-number">61.5.2. </span>Adding a Cross-Product Term<a class="headerlink" href="#adding-a-cross-product-term" title="Permalink to this heading">#</a></h3>
@@ -1335,7 +1333,7 @@ y_t = m_1 t + m_2 t^2 + \sigma w_{t+1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/71c342795a6d8db1e79d11999abbb12662625a4dfde772af198631fbd5807d30.png" src="_images/71c342795a6d8db1e79d11999abbb12662625a4dfde772af198631fbd5807d30.png" />
+<img alt="_images/ea47a87f6dcd20033227ed6cd60bf2a6fb04aa222fb9525eb48059b3656fe6f7.png" src="_images/ea47a87f6dcd20033227ed6cd60bf2a6fb04aa222fb9525eb48059b3656fe6f7.png" />
 </div>
 </div>
 </section>
@@ -1476,7 +1474,7 @@ the lecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bc7b5ec0f4f3017f66cd107dea2011f99dc49270c42ef810bdbb5a3f3a29040f.png" src="_images/bc7b5ec0f4f3017f66cd107dea2011f99dc49270c42ef810bdbb5a3f3a29040f.png" />
+<img alt="_images/eb68885727af03cf5f899ad71afed86b5e21db0bd3f778c1adfbfea4b29a0ac5.png" src="_images/eb68885727af03cf5f899ad71afed86b5e21db0bd3f778c1adfbfea4b29a0ac5.png" />
 </div>
 </div>
 </section>
@@ -1583,7 +1581,7 @@ function, which we repeat here for convenience:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/45043f0bdad113eaaffc867f73de075e60f86ebbdf33b23ed26b761e9c6bdced.png" src="_images/45043f0bdad113eaaffc867f73de075e60f86ebbdf33b23ed26b761e9c6bdced.png" />
+<img alt="_images/a595343b83387f58ecfc76ea2e4efd46d1cc7175d2cc70b32ba8ca7f31a4aac6.png" src="_images/a595343b83387f58ecfc76ea2e4efd46d1cc7175d2cc70b32ba8ca7f31a4aac6.png" />
 </div>
 </div>
 </section>

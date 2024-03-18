@@ -255,7 +255,6 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
-<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>interpolation
 </pre></div>
 </div>
 </div>
@@ -265,34 +264,20 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
 Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
-
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.11/site-packages (2.2.1)
-Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.57.1)
-Requirement already satisfied: numpy&gt;=1.18.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.24.3)
-Requirement already satisfied: scipy&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.11.1)
-Requirement already satisfied: tempita&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.5.2)
-Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.40.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -322,24 +307,13 @@ accelerate our code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">interp</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">njit</span>
 <span class="kn">from</span> <span class="nn">quantecon.optimize.scalar_maximization</span> <span class="kn">import</span> <span class="n">brent_max</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/site-packages/numba/core/decorators.py:262: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">numba.generated_jit is deprecated. Please see the documentation at: https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-generated-jit for more information and advice on a suitable replacement.</span>
-  warnings.warn(msg, NumbaDeprecationWarning)
-</pre></div>
 </div>
-</div>
-</div>
-<p>We are using an interpolation function from
-<a class="reference external" href="https://github.com/EconForge/interpolation.py">interpolation.py</a> because it
-helps us JIT-compile our code.</p>
 <p>The function <code class="docutils literal notranslate"><span class="pre">brent_max</span></code> is also designed for embedding in JIT-compiled code.</p>
 <p>These are alternatives to similar functions in SciPy (which, unfortunately, are not JIT-aware).</p>
 </section>
@@ -476,7 +450,7 @@ but will use in later lectures.</p>
 
     <span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">shocks</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">shocks</span>
 
-    <span class="n">v</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">interp</span><span class="p">(</span><span class="n">og</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_array</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_array</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">v</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span><span class="p">))</span>
 </pre></div>
@@ -567,35 +541,35 @@ takes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.41372668361363196.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.41372668361362486.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 50 is 0.14767653072604503.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 50 is 0.14767653072603082.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 75 is 0.053221715530355596.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 75 is 0.053221715530327174.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 100 is 0.019180931418503633.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 100 is 0.019180931418517844.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 125 is 0.006912744709538288.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 125 is 0.0069127447095276295.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 150 is 0.002491330497818467.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 150 is 0.0024913304978255724.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 175 is 0.0008978673320712005.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 175 is 0.0008978673320818586.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 200 is 0.0003235884386754151.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 200 is 0.0003235884387500221.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 225 is 0.00011662021095304453.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 225 is 0.00011662021095659725.
 
 Converged in 229 iterations.
-CPU times: user 8.56 s, sys: 149 ms, total: 8.7 s
-Wall time: 8.69 s
+CPU times: user 5.73 s, sys: 415 ms, total: 6.14 s
+Wall time: 6.13 s
 </pre></div>
 </div>
 </div>
@@ -618,7 +592,7 @@ Wall time: 8.69 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f4e6721570931d602b1b1cd554db61417807b0ebcea3d347b2bdad147f1b4954.png" src="_images/f4e6721570931d602b1b1cd554db61417807b0ebcea3d347b2bdad147f1b4954.png" />
+<img alt="_images/a8d581d09c7a1e989e4dc1bc1e5c1fcd6468897829b987c59642d0fb864c0af0.png" src="_images/a8d581d09c7a1e989e4dc1bc1e5c1fcd6468897829b987c59642d0fb864c0af0.png" />
 </div>
 </div>
 <p>Again, the fit is excellent — this is as expected since we have not changed
@@ -631,7 +605,7 @@ the algorithm.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0010480539639137199
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0010480495434626036
 </pre></div>
 </div>
 </div>
@@ -673,8 +647,8 @@ the algorithm.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 553 ms, sys: 0 ns, total: 553 ms
-Wall time: 551 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 209 ms, sys: 0 ns, total: 209 ms
+Wall time: 209 ms
 </pre></div>
 </div>
 </div>
@@ -785,38 +759,38 @@ takes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 1.6201897527234905.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 1.6201897527239453.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 50 is 0.459106047057503.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 75 is 0.165423522162655.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 75 is 0.16542352216310974.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 100 is 0.05961808343499797.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 125 is 0.021486161531569792.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 125 is 0.02148616153202454.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 150 is 0.007743542074422294.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 175 is 0.002790747140650751.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 175 is 0.0027907471408212814.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 200 is 0.001005776107120937.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 200 is 0.0010057761073767324.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 225 is 0.0003624784085332067.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 250 is 0.00013063602793295104.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 250 is 0.00013063602807505958.
 
 Converged in 257 iterations.
-CPU times: user 8.58 s, sys: 94.7 ms, total: 8.67 s
-Wall time: 8.66 s
+CPU times: user 4.61 s, sys: 107 ms, total: 4.71 s
+Wall time: 4.71 s
 </pre></div>
 </div>
 </div>
@@ -835,7 +809,7 @@ Wall time: 8.66 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ab3a8b7ab1d3c0f7bf126b0fd9b9c34036909445bcc9180751f5daf179200ce1.png" src="_images/ab3a8b7ab1d3c0f7bf126b0fd9b9c34036909445bcc9180751f5daf179200ce1.png" />
+<img alt="_images/937dc6e2065f21e70a77a826916e6a710765396551ebfbdad3f4bd7f4245e6a9.png" src="_images/937dc6e2065f21e70a77a826916e6a710765396551ebfbdad3f4bd7f4245e6a9.png" />
 </div>
 </div>
 <p>This matches the solution that we obtained in our non-jitted code,
@@ -898,7 +872,7 @@ different discount factors (and hence three different policies).</p>
     <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_solution</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">og</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># Define an optimal policy function</span>
-    <span class="n">σ_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">interp</span><span class="p">(</span><span class="n">og</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">σ_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_greedy</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">simulate_og</span><span class="p">(</span><span class="n">σ_func</span><span class="p">,</span> <span class="n">og</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">rf</span><span class="s1">&#39;$\beta = </span><span class="si">{</span><span class="n">β</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
 
@@ -908,7 +882,7 @@ different discount factors (and hence three different policies).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a24b63f4c2d7fd1e467836eb764198e35fb616dcb2b14a4c3344d9845049dc5d.png" src="_images/a24b63f4c2d7fd1e467836eb764198e35fb616dcb2b14a4c3344d9845049dc5d.png" />
+<img alt="_images/8bd0f0d632f17b356c4bd747ed3dcaf59653cb51e0ad66f6bc70d509fc86cd89.png" src="_images/8bd0f0d632f17b356c4bd747ed3dcaf59653cb51e0ad66f6bc70d509fc86cd89.png" />
 </div>
 </div>
 </section>

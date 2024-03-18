@@ -214,11 +214,9 @@ The following table gives a summary of the findings obtained in the remainder of
 
 The table reports  implications of Harrison and Kreps's specifications of $P_a, P_b, \beta$.
 
-```{raw} html
-<div class="content-table"></div>
-```
+
 |    $ s_t $    |   0   |   1   |
-| :-----------: | :---: | :---: |
+|---------------|-------|-------|
 |    $ p_a $    | 1.33  | 1.22  |
 |    $ p_b $    | 1.45  | 1.91  |
 |    $ p_o $    | 1.85  | 2.08  |
@@ -237,7 +235,7 @@ Here
 
 We'll explain these values and how they are calculated one row at a time.
 
-The row corresponding to $p_o$ applies when both types of investor have enough resources to purchse the entire stock of the asset and strict short sales constraints prevail so that  temporarily optimistic investors always price the asset.
+The row corresponding to $p_o$ applies when both types of investor have enough resources to purchase the entire stock of the asset and strict short sales constraints prevail so that  temporarily optimistic investors always price the asset.
 
 The row corresponding to $p_p$ would apply if neither type of investor has enough resources to purchase the entire stock of the asset and both types must hold the asset.
 
@@ -495,7 +493,7 @@ def price_pessimistic_beliefs(transitions, dividend_payoff, β=.75,
 
 ### Further Interpretation
 
-{cite}`Scheinkman2014` interprets the Harrison-Kreps model as a model of a bubble --- a situation in which an asset price exceeds what every investor thinks is merited by his or her beliefs about the value of the asset's underlying dividend stream.
+Jose Scheinkman {cite}`Scheinkman2014` interprets the Harrison-Kreps model as a model of a bubble --- a situation in which an asset price exceeds what every investor thinks is merited by his or her beliefs about the value of the asset's underlying dividend stream.
 
 Scheinkman stresses these features of the Harrison-Kreps model:
 
@@ -522,11 +520,8 @@ He emphasizes how limiting short sales and limiting leverage have opposite effec
 
 This exercise invites you to recreate the summary table using the functions we have built above.
 
-```{raw} html
-<div class="content-table"></div>
-```
 |    $s_t$    |   0   |   1   |
-| :---------: | :---: | :---: |
+|-------------|-------|-------|
 |    $p_a$    | 1.33  | 1.22  |
 |    $p_b$    | 1.45  | 1.91  |
 |    $p_o$    | 1.85  | 2.08  |

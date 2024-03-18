@@ -30,7 +30,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 tags: [hide-output]
 ---
 !pip install quantecon
-!pip install interpolation
 ```
 
 ## Overview
@@ -60,10 +59,8 @@ We'll need the following imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from quantecon.optimize import brentq
-from interpolation import interp
 from numba import njit, float64
 from numba.experimental import jitclass
 from quantecon import MarkovChain
@@ -437,7 +434,7 @@ def euler_diff(c, a, z, σ_vals, ifp):
 
     # Convert policy into a function by linear interpolation
     def σ(a, z):
-        return interp(asset_grid, σ_vals[:, z], a)
+        return np.interp(a, asset_grid, σ_vals[:, z])
 
     # Calculate the expectation conditional on current z
     expect = 0.0
@@ -663,7 +660,7 @@ def compute_asset_series(ifp, T=500_000, seed=1234):
 
     # Solve for the optimal policy
     σ_star = solve_model_time_iter(ifp, σ_init, verbose=False)
-    σ = lambda a, z: interp(ifp.asset_grid, σ_star[:, z], a)
+    σ = lambda a, z: np.interp(a, ifp.asset_grid, σ_star[:, z])
 
     # Simulate the exogeneous state process
     mc = MarkovChain(P)

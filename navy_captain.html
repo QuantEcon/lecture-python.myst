@@ -258,52 +258,14 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>interpolation
-</pre></div>
-</div>
-</div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.11/site-packages (2.2.1)
-Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.57.1)
-Requirement already satisfied: numpy&gt;=1.18.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.24.3)
-Requirement already satisfied: scipy&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.11.1)
-Requirement already satisfied: tempita&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.5.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.40.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
-
-</pre></div>
-</div>
-</div>
-</details>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
 <span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
-<span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">interp</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/site-packages/numba/core/decorators.py:262: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">numba.generated_jit is deprecated. Please see the documentation at: https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-generated-jit for more information and advice on a suitable replacement.</span>
-  warnings.warn(msg, NumbaDeprecationWarning)
 </pre></div>
 </div>
 </div>
@@ -477,7 +439,7 @@ frequentist Navy Captains.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1bed653c756de04a6c20a18524305f36e4856357c3e77ff67c3347cdd1b3570a.png" src="_images/1bed653c756de04a6c20a18524305f36e4856357c3e77ff67c3347cdd1b3570a.png" />
+<img alt="_images/85ea71f23f6a4f6268adad0c04b76eb05ac23e948c194a4c17242bf01e90899a.png" src="_images/85ea71f23f6a4f6268adad0c04b76eb05ac23e948c194a4c17242bf01e90899a.png" />
 </div>
 </div>
 <p>Above, we plot the two possible probability densities <span class="math notranslate nohighlight">\(f_0\)</span> and
@@ -560,7 +522,7 @@ generates data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d37a29c9489340731094829f58ca964d065bd2adb36e987d539c89679544ec27.png" src="_images/d37a29c9489340731094829f58ca964d065bd2adb36e987d539c89679544ec27.png" />
+<img alt="_images/6689a39ba250989ca27ecdb9a49c4a57d58f6c229a958249ef7c0c7ad02f84c5.png" src="_images/6689a39ba250989ca27ecdb9a49c4a57d58f6c229a958249ef7c0c7ad02f84c5.png" />
 </div>
 </div>
 <p>We can compute sequences of likelihood ratios using simulated samples.</p>
@@ -609,7 +571,7 @@ generates data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/97abbfb3017fce70c9a54912d74aa5a1e6333448ebc8247e6eac730edc4babe1.png" src="_images/97abbfb3017fce70c9a54912d74aa5a1e6333448ebc8247e6eac730edc4babe1.png" />
+<img alt="_images/2fc48c4967caa0fc9c7cd37e2952b2efab229706e290676007157457ab156ab2.png" src="_images/2fc48c4967caa0fc9c7cd37e2952b2efab229706e290676007157457ab156ab2.png" />
 </div>
 </div>
 <p>Our frequentist minimizes the expected total loss presented in equation
@@ -693,7 +655,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a2e1676022c4d2f41683b923247d3afcb76fddd6974748761b53ee6bafc6f745.png" src="_images/a2e1676022c4d2f41683b923247d3afcb76fddd6974748761b53ee6bafc6f745.png" />
+<img alt="_images/bb053bf1036e0904ae1b64399eb38035ac6741ee59dc3dce208c8ca3958a411c.png" src="_images/bb053bf1036e0904ae1b64399eb38035ac6741ee59dc3dce208c8ca3958a411c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -711,7 +673,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The above graph indicates that minimizing over t tells the frequentist to draw 8 observations and then decide.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The above graph indicates that minimizing over t tells the frequentist to draw 9 observations and then decide.
 </pre></div>
 </div>
 </div>
@@ -751,7 +713,7 @@ rule changes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/925f15c5bd1674b560d6ab9784f0b0d3ce7f59a3577135fb107df624c6ca6985.png" src="_images/925f15c5bd1674b560d6ab9784f0b0d3ce7f59a3577135fb107df624c6ca6985.png" />
+<img alt="_images/ce76a91af3693c25cd78821955af251a6211f05918435478fb6e3352259f5193.png" src="_images/ce76a91af3693c25cd78821955af251a6211f05918435478fb6e3352259f5193.png" />
 </div>
 </div>
 <p>The following shows how optimal sample size <span class="math notranslate nohighlight">\(t\)</span> and targeted
@@ -775,7 +737,7 @@ rule changes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/62823ae1e5a560e1abb164ec7c84e9e14ac1733082962d0c276d6cb9cc7852e2.png" src="_images/62823ae1e5a560e1abb164ec7c84e9e14ac1733082962d0c276d6cb9cc7852e2.png" />
+<img alt="_images/4dde25e18b4a44d29aefc04713411eac8a8de72e5681affdb2da114905b6ad6b.png" src="_images/4dde25e18b4a44d29aefc04713411eac8a8de72e5681affdb2da114905b6ad6b.png" />
 </div>
 </div>
 </section>
@@ -804,7 +766,7 @@ that computes <span class="math notranslate nohighlight">\(\alpha\)</span> and <
     <span class="n">κ</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">κ</span>
 
     <span class="n">h_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">π_grid</span><span class="p">)</span>
-    <span class="n">h_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">interp</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">h_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">π_grid</span><span class="p">)):</span>
         <span class="n">π</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -922,7 +884,7 @@ that computes <span class="math notranslate nohighlight">\(\alpha\)</span> and <
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5b76b3605f24929d0f4abfad75c3055f51e399e6519f03d6262b7db555734ea0.png" src="_images/5b76b3605f24929d0f4abfad75c3055f51e399e6519f03d6262b7db555734ea0.png" />
+<img alt="_images/c9e379991c7cae107bb61d78671e5ac5b24aa997c2f0f3aea9d72d14bdc5c96d.png" src="_images/c9e379991c7cae107bb61d78671e5ac5b24aa997c2f0f3aea9d72d14bdc5c96d.png" />
 </div>
 </div>
 <p>The above figure portrays the value function plotted against the decision
@@ -997,7 +959,7 @@ numerically.</p>
 
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_arr</span><span class="p">)):</span>
                 <span class="n">π_next</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">κ</span><span class="p">(</span><span class="n">z_arr</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">π</span><span class="p">)</span>
-                <span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">wf</span><span class="o">.</span><span class="n">c</span> <span class="o">+</span> <span class="n">interp</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">V_old</span><span class="p">,</span> <span class="n">π_next</span><span class="p">)</span>
+                <span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">wf</span><span class="o">.</span><span class="n">c</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">π_next</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">V_old</span><span class="p">)</span>
 
             <span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">wf</span><span class="o">.</span><span class="n">mc_size</span>
 
@@ -1028,7 +990,7 @@ numerically.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/77336765f9264bc8fb4ee4b87827f493a110356e5182bb9bf707a46334525981.png" src="_images/77336765f9264bc8fb4ee4b87827f493a110356e5182bb9bf707a46334525981.png" />
+<img alt="_images/57454517134b6c1f97c4c2c6a4a8487419d63cbf38da1125f1eae6b7b1e0cf11.png" src="_images/57454517134b6c1f97c4c2c6a4a8487419d63cbf38da1125f1eae6b7b1e0cf11.png" />
 </div>
 </div>
 <p>Given an assumed value for
@@ -1080,7 +1042,7 @@ minimizes this objective concept of expected loss.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/42ee5ceb247dbb79e42ffa9944067a465f8741623512d87efada2fbf2f69125a.png" src="_images/42ee5ceb247dbb79e42ffa9944067a465f8741623512d87efada2fbf2f69125a.png" />
+<img alt="_images/9e202d52bc819b4c6b4bde4f35d00030f582c34783b6070141c4400199c384e4.png" src="_images/9e202d52bc819b4c6b4bde4f35d00030f582c34783b6070141c4400199c384e4.png" />
 </div>
 </div>
 <p>This pattern of outcomes holds more generally.</p>
@@ -1119,7 +1081,7 @@ for all <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/21ad38bacd3934c7799a202c61291067fa2697a7dff37bcadecb452f8fc7d842.png" src="_images/21ad38bacd3934c7799a202c61291067fa2697a7dff37bcadecb452f8fc7d842.png" />
+<img alt="_images/388188bbcfd9bf2c180c3166ca136c170e42874c2f13488f13a6068caa3fdf53.png" src="_images/388188bbcfd9bf2c180c3166ca136c170e42874c2f13488f13a6068caa3fdf53.png" />
 </div>
 </div>
 </section>
@@ -1160,7 +1122,7 @@ frequentist and Bayesian decision rules.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6a06482bdcbd6a1259b020d876ab08fb7d039bee4d59844d2fd5a315ca8fdb81.png" src="_images/6a06482bdcbd6a1259b020d876ab08fb7d039bee4d59844d2fd5a315ca8fdb81.png" />
+<img alt="_images/0f12231b1b1f52e05db9a35dd0b13be239586d58c8777534442edd202504424d.png" src="_images/0f12231b1b1f52e05db9a35dd0b13be239586d58c8777534442edd202504424d.png" />
 </div>
 </div>
 <p>Evidently, there is no sample size <span class="math notranslate nohighlight">\(t\)</span> at which the frequentist
@@ -1185,7 +1147,7 @@ rule does better on average for all values of <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/04f3fe36506a5edb026708fb412ed12526bd0b3c33111c64b084b328769ec40d.png" src="_images/04f3fe36506a5edb026708fb412ed12526bd0b3c33111c64b084b328769ec40d.png" />
+<img alt="_images/a48ec072fb6f093ea35604b863214584a104de8310a5293da9a259042a9826f5.png" src="_images/a48ec072fb6f093ea35604b863214584a104de8310a5293da9a259042a9826f5.png" />
 </div>
 </div>
 <p>The right panel of the above graph plots the difference
@@ -1213,7 +1175,7 @@ sample size <code class="docutils literal notranslate"><span class="pre">t_optim
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9
 </pre></div>
 </div>
 </div>
@@ -1298,7 +1260,7 @@ rule when <span class="math notranslate nohighlight">\(q= f_0\)</span> and <stro
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2871f8829cc4c909afcffe03b340c55ff814b9d4a376a622565482e67e1875a4.png" src="_images/2871f8829cc4c909afcffe03b340c55ff814b9d4a376a622565482e67e1875a4.png" />
+<img alt="_images/173a23a9c1a57420b5615055cbd65034c9891076bc8a968fd188dd027d97b838.png" src="_images/173a23a9c1a57420b5615055cbd65034c9891076bc8a968fd188dd027d97b838.png" />
 </div>
 </div>
 <p>Later we’ll figure out how these distributions ultimately affect
@@ -1338,7 +1300,7 @@ the one-to-one mapping from <span class="math notranslate nohighlight">\(L_{t}\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a48b9b983b8122271a28c20e98887c80c2c75e6b4c9887ed2af58f690b28971f.png" src="_images/a48b9b983b8122271a28c20e98887c80c2c75e6b4c9887ed2af58f690b28971f.png" />
+<img alt="_images/af2390052436fd5312ec9b62a5969a38ce2cdca467bcd43c6221b6ceac0f478e.png" src="_images/af2390052436fd5312ec9b62a5969a38ce2cdca467bcd43c6221b6ceac0f478e.png" />
 </div>
 </div>
 <p>The above figures compare averages and variances of updated Bayesian
@@ -1374,7 +1336,7 @@ confirm the Navy Captain’s hunch.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6e4fd0703eb0553a94abc64bf7bbf9074f67db1a839d3737787643518fe4a087.png" src="_images/6e4fd0703eb0553a94abc64bf7bbf9074f67db1a839d3737787643518fe4a087.png" />
+<img alt="_images/5cec0ff15e275fa9704d1a0f63d398c7761ca4b79915cbaf768863feedada1e7.png" src="_images/5cec0ff15e275fa9704d1a0f63d398c7761ca4b79915cbaf768863feedada1e7.png" />
 </div>
 </div>
 </section>
@@ -1420,7 +1382,7 @@ with the conditional probabilities that the Bayesian rule decides before
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c56ca8ae90e99a5e236432ab0b74275c250f7e6970b13070c0968f014be3ff57.png" src="_images/c56ca8ae90e99a5e236432ab0b74275c250f7e6970b13070c0968f014be3ff57.png" />
+<img alt="_images/9961db891801ebbb32172a7eb332611f8f11289c6e48fd7ce64f24cbb3c9ee10.png" src="_images/9961db891801ebbb32172a7eb332611f8f11289c6e48fd7ce64f24cbb3c9ee10.png" />
 </div>
 </div>
 <p>By averaging using <span class="math notranslate nohighlight">\(\pi^{*}\)</span>, we also plot the unconditional
@@ -1445,7 +1407,7 @@ distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ad04ef12ebc750b2499b5bec5f1b025171eae9042c0906b093daf06f17ebfba4.png" src="_images/ad04ef12ebc750b2499b5bec5f1b025171eae9042c0906b093daf06f17ebfba4.png" />
+<img alt="_images/ef8fa616e013666078697c14751e3918317d9e3db67bc668ec0b35ca014cfac2.png" src="_images/ef8fa616e013666078697c14751e3918317d9e3db67bc668ec0b35ca014cfac2.png" />
 </div>
 </div>
 </section>
@@ -1489,7 +1451,7 @@ generating the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0c06c1f12c077165d1fb8ff06913652472707ec99e91d64da43331e18ddfc957.png" src="_images/0c06c1f12c077165d1fb8ff06913652472707ec99e91d64da43331e18ddfc957.png" />
+<img alt="_images/43c158b21e58d067581105caf2ad759f636bf311c8411c48dd876fd5aec01f4f.png" src="_images/43c158b21e58d067581105caf2ad759f636bf311c8411c48dd876fd5aec01f4f.png" />
 </div>
 </div>
 <p>The next graph plots the unconditional distribution of Bayesian times to
@@ -1512,7 +1474,7 @@ distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a6399c7bb37ca205495d17bf6ce073157662312ae5541e8db6df8993acfe75cb.png" src="_images/a6399c7bb37ca205495d17bf6ce073157662312ae5541e8db6df8993acfe75cb.png" />
+<img alt="_images/86837be8273015cca1104cee85ce16f89b42a4d8bf96d4cfd4cf784d4cfbc403.png" src="_images/86837be8273015cca1104cee85ce16f89b42a4d8bf96d4cfd4cf784d4cfbc403.png" />
 </div>
 </div>
 </section>

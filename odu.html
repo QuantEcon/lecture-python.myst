@@ -293,15 +293,36 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.11/site-packages (2.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting interpolation
+  Obtaining dependency information for interpolation from https://files.pythonhosted.org/packages/1c/a4/36997c533d5e25d78e51789509e9e2134034097bb870178e5108f1c73596/interpolation-2.2.1-py3-none-any.whl.metadata
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading interpolation-2.2.1-py3-none-any.whl.metadata (924 bytes)
 Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.57.1)
 Requirement already satisfied: numpy&gt;=1.18.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.24.3)
 Requirement already satisfied: scipy&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.11.1)
-Requirement already satisfied: tempita&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.5.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting tempita&gt;=0.5.2 (from interpolation)
+  Obtaining dependency information for tempita&gt;=0.5.2 from https://files.pythonhosted.org/packages/46/5b/2ad80b580134a160e84b9aac0d136df3d77d5ccd45cd349f6146d41cee76/Tempita-0.5.2-py3-none-any.whl.metadata
+  Downloading Tempita-0.5.2-py3-none-any.whl.metadata (1.0 kB)
 Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.40.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading interpolation-2.2.1-py3-none-any.whl (56 kB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/56.6 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">56.6/56.6 kB</span> <span class=" -Color -Color-Red">3.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading Tempita-0.5.2-py3-none-any.whl (12 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: tempita, interpolation
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed interpolation-2.2.1 tempita-0.5.2
+<span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
@@ -311,7 +332,7 @@ Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/en
 <section id="overview">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">53.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we consider an extension of the <a class="reference external" href="https://python.quantecon.org/mccall_model.html">previously studied</a> job search model of McCall
-<span id="id1">[<a class="reference internal" href="zreferences.html#id193" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McC70</a>]</span>.</p>
+<span id="id1">[<a class="reference internal" href="zreferences.html#id193" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span>.</p>
 <p>We’ll build on a model of Bayesian learning discussed in <a class="reference external" href="https://python.quantecon.org/exchangeable.html">this lecture</a> on the topic of exchangeability and its relationship to
 the concept of IID (identically and independently distributed) random variables and to  Bayesian updating.</p>
 <p>In the McCall model, an unemployed worker decides when to accept a
@@ -325,15 +346,14 @@ permanent job at a specific fixed wage, given</p>
 must be learned.</p>
 <ul class="simple">
 <li><p>The following is based on the presentation in
-<span id="id2">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 6.6.</p></li>
+<span id="id2">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 6.6.</p></li>
 </ul>
 <p>Let’s start with some imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">vectorize</span>
-<span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">mlinterp</span><span class="p">,</span> <span class="n">interp</span>
+<span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">mlinterp</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
@@ -361,7 +381,7 @@ control.</p></li>
 <section id="model">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">53.2. </span>Model</a><a class="headerlink" href="#model" title="Permalink to this heading">#</a></h2>
 <p>Let’s first review the basic McCall model
-<span id="id3">[<a class="reference internal" href="zreferences.html#id193" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McC70</a>]</span> and then add the variation we
+<span id="id3">[<a class="reference internal" href="zreferences.html#id193" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span> and then add the variation we
 want to consider.</p>
 <section id="the-basic-mccall-model">
 <h3><span class="section-number">53.2.1. </span>The Basic McCall Model<a class="headerlink" href="#the-basic-mccall-model" title="Permalink to this heading">#</a></h3>
@@ -391,7 +411,7 @@ yet to decide whether to accept or reject the offer.</p>
 <section id="offer-distribution-unknown">
 <h3><span class="section-number">53.2.2. </span>Offer Distribution Unknown<a class="headerlink" href="#offer-distribution-unknown" title="Permalink to this heading">#</a></h3>
 <p>Now let’s extend the model by considering the variation presented in
-<span id="id4">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 6.6.</p>
+<span id="id4">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 6.6.</p>
 <p>The model is as above, apart from the fact that</p>
 <ul class="simple">
 <li><p>the density <span class="math notranslate nohighlight">\(q\)</span> is unknown</p></li>
@@ -453,7 +473,7 @@ rewards.</p>
 </section>
 <section id="parameterization">
 <h3><span class="section-number">53.2.3. </span>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this heading">#</a></h3>
-<p>Following section 6.6 of <span id="id5">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>,
+<p>Following section 6.6 of <span id="id5">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>,
 our baseline parameterization will be</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\operatorname{Beta}(1, 1)\)</span></p></li>
@@ -706,31 +726,28 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6263556600595042.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6223551922015087.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.11716748734196969.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.09066162466420202.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.028145447894093678.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.01707949767618011.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.006990703451677405.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.003339492786674114.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.001745907626226284.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0006529833086990067.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.00043606324248379735.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.00012770383397686658.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 35 is 0.00010891318147621121.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 31 iterations.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 36 iterations.
-</pre></div>
-</div>
-<img alt="_images/1c61574ee3e268eac2b6b6fd0248d5308386ab684543beb0f929306140225b96.png" src="_images/1c61574ee3e268eac2b6b6fd0248d5308386ab684543beb0f929306140225b96.png" />
+<img alt="_images/154050de0b63af3f3bbb8b4645cce6b60d5187aeb91111629cf62e69c5b88347.png" src="_images/154050de0b63af3f3bbb8b4645cce6b60d5187aeb91111629cf62e69c5b88347.png" />
 </div>
 </div>
 <p>We will also plot the optimal policy</p>
@@ -752,7 +769,7 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/57584243a0ce08a8f52ae8e5591ffc326f5a637c4ffb053f08eb9752cbec22b6.png" src="_images/57584243a0ce08a8f52ae8e5591ffc326f5a637c4ffb053f08eb9752cbec22b6.png" />
+<img alt="_images/0eba27edb2f39c090244bb3464ec7187504ade57db46ce7f1a7266e8e92b51d0.png" src="_images/0eba27edb2f39c090244bb3464ec7187504ade57db46ce7f1a7266e8e92b51d0.png" />
 </div>
 </div>
 <p>The results fit well with our intuition from section <a class="reference internal" href="#looking-forward"><span class="std std-ref">looking
@@ -878,7 +895,7 @@ returns the operator <code class="docutils literal notranslate"><span class="pre
 
     <span class="nd">@njit</span>
     <span class="k">def</span> <span class="nf">ω_func</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">ω</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">interp</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">ω</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span> <span class="n">ω</span><span class="p">)</span>
 
     <span class="nd">@njit</span>
     <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
@@ -1005,15 +1022,18 @@ fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.022017403714866934.
-Error at iteration 10 is 0.006684533972632689.
-Error at iteration 15 is 0.0014855563395547167.
-Error at iteration 20 is 0.0003001188649934816.
-
-Converged in 24 iterations.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.022708508388621373.
+Error at iteration 10 is 0.007334838583672121.
+Error at iteration 15 is 0.001822057505939001.
+Error at iteration 20 is 0.0004072586904451114.
 </pre></div>
 </div>
-<img alt="_images/8374c88da9644d3a9be07f360e343c885dfc7387702befd32925416cd14a921e.png" src="_images/8374c88da9644d3a9be07f360e343c885dfc7387702befd32925416cd14a921e.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 8.627421985907269e-05.
+
+Converged in 25 iterations.
+</pre></div>
+</div>
+<img alt="_images/369fd254e8faca15b971ae3e4f708a701298aad5ec5a8518eddee8159032e381.png" src="_images/369fd254e8faca15b971ae3e4f708a701298aad5ec5a8518eddee8159032e381.png" />
 </div>
 </div>
 </section>
@@ -1040,7 +1060,7 @@ too optimistic and turn down too many jobs.</p>
 
 <span class="c1"># Interpolate reservation wage function</span>
 <span class="n">π_grid</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span>
-<span class="n">w_func</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">interp</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+<span class="n">w_func</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">))</span>
 
 <span class="nd">@njit</span>
 <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
@@ -1104,7 +1124,7 @@ too optimistic and turn down too many jobs.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d9221d6ec655565b7dc8ce9738b7647ccd2e0b9f93d2b13fab0bf676806ff85c.png" src="_images/d9221d6ec655565b7dc8ce9738b7647ccd2e0b9f93d2b13fab0bf676806ff85c.png" />
+<img alt="_images/16abefb701c9ef69085b7fe1da6c02925696072a4abb59f5b1b25e81eb4b882f.png" src="_images/16abefb701c9ef69085b7fe1da6c02925696072a4abb59f5b1b25e81eb4b882f.png" />
 </div>
 </div>
 </section>
@@ -1166,7 +1186,7 @@ employment.</p>
                 <span class="n">π</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="n">lw</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">lw</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span>
 
                 <span class="c1"># move to next agent if accepts</span>
-                <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="n">interp</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">π</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">):</span>
                     <span class="k">break</span>
 
             <span class="c1"># record the unemployment duration</span>
@@ -1366,8 +1386,8 @@ unemployment verifies our conjecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f600e59ec518f10c383441f6ad6d9d6e4ff0b26b8d967d62e83995b73b64c13e.png" src="_images/f600e59ec518f10c383441f6ad6d9d6e4ff0b26b8d967d62e83995b73b64c13e.png" />
-<img alt="_images/53ca3df30cbad44bedb83bb7545bdcbf57b0ac422cf32e4dae1f52c3b6bfb8da.png" src="_images/53ca3df30cbad44bedb83bb7545bdcbf57b0ac422cf32e4dae1f52c3b6bfb8da.png" />
+<img alt="_images/ececc5a4755e97604d8d86f88bd7b44eb4501d7986dc7b57289fd412fc44d475.png" src="_images/ececc5a4755e97604d8d86f88bd7b44eb4501d7986dc7b57289fd412fc44d475.png" />
+<img alt="_images/20e07a1393bc8f985838c19573c15925414ea0b3375a13cd1a47eb6df2ce8ea3.png" src="_images/20e07a1393bc8f985838c19573c15925414ea0b3375a13cd1a47eb6df2ce8ea3.png" />
 </div>
 </div>
 </section>
@@ -1387,8 +1407,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b3ce51706be5129aea5b763e1f586b1c697497c0b2569eb6bc2b040a81c08099.png" src="_images/b3ce51706be5129aea5b763e1f586b1c697497c0b2569eb6bc2b040a81c08099.png" />
-<img alt="_images/cd7daa5d7f512521b13ccd4d716f157d95313e8a32b6d7d4575170e748f2c8d3.png" src="_images/cd7daa5d7f512521b13ccd4d716f157d95313e8a32b6d7d4575170e748f2c8d3.png" />
+<img alt="_images/6d637299f35f4ec4fd72ad3e6a8bf78ab230579764b7fcbf3ef4fa9ca6752d15.png" src="_images/6d637299f35f4ec4fd72ad3e6a8bf78ab230579764b7fcbf3ef4fa9ca6752d15.png" />
+<img alt="_images/991614e34911e136410ac40c79674a4b858ccc86c05a246302fcc2980be86732.png" src="_images/991614e34911e136410ac40c79674a4b858ccc86c05a246302fcc2980be86732.png" />
 </div>
 </div>
 </section>
@@ -1405,8 +1425,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6cf935c4606c4d8fa741d795c71a752d1da66a3c06f27db886c92d036c300d11.png" src="_images/6cf935c4606c4d8fa741d795c71a752d1da66a3c06f27db886c92d036c300d11.png" />
-<img alt="_images/c140e11c2677e5132a663cca4bbb8a1b312856be0e53244d2eb5a5ee5216bf73.png" src="_images/c140e11c2677e5132a663cca4bbb8a1b312856be0e53244d2eb5a5ee5216bf73.png" />
+<img alt="_images/b30ef6b9d0972fbcf431abb8ad8e4d11becc51d6f58ddad949f50165b71aff07.png" src="_images/b30ef6b9d0972fbcf431abb8ad8e4d11becc51d6f58ddad949f50165b71aff07.png" />
+<img alt="_images/409a12e09d93ea03876184b10bde28297d8db871110235f4c49a65068ebf2f6b.png" src="_images/409a12e09d93ea03876184b10bde28297d8db871110235f4c49a65068ebf2f6b.png" />
 </div>
 </div>
 </section>
@@ -1433,8 +1453,8 @@ when he eventually chooses to accept a wage offer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eef99b0dfec2f47fda88b2b4cff14f3f1766a2c02b0d77c6f97c0619c5f9aa86.png" src="_images/eef99b0dfec2f47fda88b2b4cff14f3f1766a2c02b0d77c6f97c0619c5f9aa86.png" />
-<img alt="_images/9ee59ae0a6d6c36d36459eae24bf6a6d501eaeeeead3b67f717ed6ff404572e9.png" src="_images/9ee59ae0a6d6c36d36459eae24bf6a6d501eaeeeead3b67f717ed6ff404572e9.png" />
+<img alt="_images/ec11b4ba1de2d0ceec30b0c350f6b476083f41f0664d9e5cbfaf641d71f364c5.png" src="_images/ec11b4ba1de2d0ceec30b0c350f6b476083f41f0664d9e5cbfaf641d71f364c5.png" />
+<img alt="_images/a27247146c50cba8af490de2400ca70dccfd14ba7cc574a73a604ce39b9f9284.png" src="_images/a27247146c50cba8af490de2400ca70dccfd14ba7cc574a73a604ce39b9f9284.png" />
 </div>
 </div>
 </section>
@@ -1450,8 +1470,8 @@ after having acquired less information about the wage distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0496f720066fddb899d9fa73c9935adb02997433aa079831c2dac2aa9af33a80.png" src="_images/0496f720066fddb899d9fa73c9935adb02997433aa079831c2dac2aa9af33a80.png" />
-<img alt="_images/481b824d8833bc2ea341d730283f8cdb83fe5b7a5e8b2058b6990dd9f030a0dd.png" src="_images/481b824d8833bc2ea341d730283f8cdb83fe5b7a5e8b2058b6990dd9f030a0dd.png" />
+<img alt="_images/824077259190cc90414c636c7f8d9e933930cdb8c1dc728f5fc7e83471613632.png" src="_images/824077259190cc90414c636c7f8d9e933930cdb8c1dc728f5fc7e83471613632.png" />
+<img alt="_images/6f95419fe769473db7eda87b12b364cdd3d167bfd927c250e4db3d00354f5f25.png" src="_images/6f95419fe769473db7eda87b12b364cdd3d167bfd927c250e4db3d00354f5f25.png" />
 </div>
 </div>
 </section>

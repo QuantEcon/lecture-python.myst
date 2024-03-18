@@ -297,10 +297,8 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
@@ -324,7 +322,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 <section id="overview">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">27.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>This lecture creates non-stochastic and stochastic versions of Paul Samuelson’s celebrated multiplier accelerator model <span id="id1">[<a class="reference internal" href="zreferences.html#id87" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Sam39</a>]</span>.</p>
+<p>This lecture creates non-stochastic and stochastic versions of Paul Samuelson’s celebrated multiplier accelerator model <span id="id1">[<a class="reference internal" href="zreferences.html#id87" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Samuelson, 1939</a>]</span>.</p>
 <p>In doing so, we extend the example of the Solow model class in <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html">our second OOP lecture</a>.</p>
 <p>Our objectives are to</p>
 <ul class="simple">
@@ -372,7 +370,7 @@ times the difference in output between period <span class="math notranslate nohi
 <p>Consumption plus investment plus government purchases
 constitute <em>aggregate demand,</em> which automatically calls forth an
 equal amount of <em>aggregate supply</em>.</p>
-<p>(To read about linear difference equations see <a class="reference external" href="https://en.wikipedia.org/wiki/Linear_difference_equation">here</a> or chapter IX of <span id="id2">[<a class="reference internal" href="zreferences.html#id209" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sar87</a>]</span>.)</p>
+<p>(To read about linear difference equations see <a class="reference external" href="https://en.wikipedia.org/wiki/Linear_difference_equation">here</a> or chapter IX of <span id="id2">[<a class="reference internal" href="zreferences.html#id209" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sargent, 1987</a>]</span>.)</p>
 <p>Samuelson used the model to analyze how particular values of the
 marginal propensity to consume and the accelerator coefficient might
 give rise to transient <em>business cycles</em> in national output.</p>
@@ -390,7 +388,7 @@ identity representing random fluctuations in aggregate demand.</p>
 <em>stochastic linear difference equation</em> that, with appropriate parameter values,
 gives rise to recurrent irregular business cycles.</p>
 <p>(To read about stochastic linear difference equations see chapter XI of
-<span id="id3">[<a class="reference internal" href="zreferences.html#id209" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sar87</a>]</span>.)</p>
+<span id="id3">[<a class="reference internal" href="zreferences.html#id209" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sargent, 1987</a>]</span>.)</p>
 </section>
 </section>
 <section id="details">
@@ -562,7 +560,7 @@ oscillations with <strong>period</strong> <span class="math notranslate nohighli
 \frac{2 \pi}{\omega}\)</span> and <strong>damping factor</strong> <span class="math notranslate nohighlight">\(r\)</span>.</p>
 <p>We say that <span class="math notranslate nohighlight">\(\check p\)</span> is the <strong>period</strong> because in that amount of time the cosine wave <span class="math notranslate nohighlight">\(\cos(\omega t + \theta)\)</span> goes through exactly one complete cycles.</p>
 <p>(Draw a cosine function to convince yourself of this please)</p>
-<p><strong>Remark:</strong> Following <span id="id4">[<a class="reference internal" href="zreferences.html#id87" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Sam39</a>]</span>, we want to choose the parameters
+<p><strong>Remark:</strong> Following <span id="id4">[<a class="reference internal" href="zreferences.html#id87" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Samuelson, 1939</a>]</span>, we want to choose the parameters
 <span class="math notranslate nohighlight">\(a, b\)</span> of the model so that the absolute values (of the possibly
 complex) roots <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2\)</span> of the characteristic
 polynomial are both strictly less than one:</p>
@@ -608,7 +606,7 @@ A = \begin{bmatrix} 1 &amp; 0 &amp; 0 \cr
 </section>
 <section id="implementation">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">27.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
-<p>We’ll start by drawing an informative graph from page 189 of <span id="id5">[<a class="reference internal" href="zreferences.html#id209" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sar87</a>]</span></p>
+<p>We’ll start by drawing an informative graph from page 189 of <span id="id5">[<a class="reference internal" href="zreferences.html#id209" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sargent, 1987</a>]</span></p>
 <div class="cell tag_output_scroll docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">param_plot</span><span class="p">():</span>
@@ -1148,7 +1146,7 @@ Roots are real
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/0ac926d202488f9e22253971a21ab83570d0654deccb68e35d76cdf408f3912f.png" src="_images/0ac926d202488f9e22253971a21ab83570d0654deccb68e35d76cdf408f3912f.png" />
+<img alt="_images/9299e11e89e107de2147399629e36872f8bf72dd6c9533a96640e0ccb2c03e21.png" src="_images/9299e11e89e107de2147399629e36872f8bf72dd6c9533a96640e0ccb2c03e21.png" />
 </div>
 </div>
 <p>Let’s do a simulation in which there are shocks and the characteristic polynomial has complex roots</p>
@@ -1180,7 +1178,7 @@ Roots are complex
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/bba40f98fd29e8d77b6d40f2502454705b7b29cf5aa26e0a575e0289cfa73d39.png" src="_images/bba40f98fd29e8d77b6d40f2502454705b7b29cf5aa26e0a575e0289cfa73d39.png" />
+<img alt="_images/7e8ae45731c8bb34f811215682db8829c9707ea67bad82d58eee20c02fbef351.png" src="_images/7e8ae45731c8bb34f811215682db8829c9707ea67bad82d58eee20c02fbef351.png" />
 </div>
 </div>
 </section>
@@ -1289,7 +1287,7 @@ Roots are real
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/e2a1f5917f1b0423b406857c6528a62d388455bddcc362b38037038eafc5b544.png" src="_images/e2a1f5917f1b0423b406857c6528a62d388455bddcc362b38037038eafc5b544.png" />
+<img alt="_images/daf88997321d65569593a08efa3017d737608f55bc879885b9f762cec6db5895.png" src="_images/daf88997321d65569593a08efa3017d737608f55bc879885b9f762cec6db5895.png" />
 </div>
 </div>
 <p>We can also see the response to a one time jump in government expenditures</p>
@@ -1306,7 +1304,7 @@ Roots are real
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/fbdf89ff0a1b12bdcd9aa58db33b6750c92ba91d85abe2a54c6988f1a393c3be.png" src="_images/fbdf89ff0a1b12bdcd9aa58db33b6750c92ba91d85abe2a54c6988f1a393c3be.png" />
+<img alt="_images/690fca50fb819589ce22d4416500662645a6b610fc4e73c5c23bfe3ee0c6a4e6.png" src="_images/690fca50fb819589ce22d4416500662645a6b610fc4e73c5c23bfe3ee0c6a4e6.png" />
 </div>
 </div>
 </section>
@@ -1543,7 +1541,7 @@ Permanent government spending shock at t = 20
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4126c1a619db1cbee565532a647770ff7d2d954ef79ce3a76fd624e7b1c2f644.png" src="_images/4126c1a619db1cbee565532a647770ff7d2d954ef79ce3a76fd624e7b1c2f644.png" />
+<img alt="_images/5d2bb2cb7c336def8e90a3d3bff7ef15aa5ff387e379d8932f02c51a433d1fe8.png" src="_images/5d2bb2cb7c336def8e90a3d3bff7ef15aa5ff387e379d8932f02c51a433d1fe8.png" />
 </div>
 </div>
 </section>
@@ -1617,7 +1615,7 @@ much of the work that we have done from scratch above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bda5d4d4ed74a93313e647c2e5bbbf1148cdbf0e6302259a0ca4dbdb67559543.png" src="_images/bda5d4d4ed74a93313e647c2e5bbbf1148cdbf0e6302259a0ca4dbdb67559543.png" />
+<img alt="_images/b47c807c27aa193df23bb7998b4acd289a1d22f37a0331c2300ad719b4521644.png" src="_images/b47c807c27aa193df23bb7998b4acd289a1d22f37a0331c2300ad719b4521644.png" />
 </div>
 </div>
 <section id="other-methods-in-the-linearstatespace-class">
@@ -1787,7 +1785,7 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e206e0481ba320b9c04fcc677daf25c8561af0c01db13889f8c7f8d830b00b0b.png" src="_images/e206e0481ba320b9c04fcc677daf25c8561af0c01db13889f8c7f8d830b00b0b.png" />
+<img alt="_images/a887a212159d5bdece0039085f8e54779b19c17dd6af4414844e83424e4c2e68.png" src="_images/a887a212159d5bdece0039085f8e54779b19c17dd6af4414844e83424e4c2e68.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1798,7 +1796,7 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b7ea2862c76c8350280dfed2ca567b10fe33c2b0ef0bc072e183e078944c17a0.png" src="_images/b7ea2862c76c8350280dfed2ca567b10fe33c2b0ef0bc072e183e078944c17a0.png" />
+<img alt="_images/f9b2eeefa011bf91abb48b001255dbca6c53a7d7c8180feea075f2a2c3256142.png" src="_images/f9b2eeefa011bf91abb48b001255dbca6c53a7d7c8180feea075f2a2c3256142.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1848,8 +1846,8 @@ accelerator</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2dc10d4335d13f786e4b364718653d1c0c3999dac761f0823c73b6b54810afd7.png" src="_images/2dc10d4335d13f786e4b364718653d1c0c3999dac761f0823c73b6b54810afd7.png" />
-<img alt="_images/2dc10d4335d13f786e4b364718653d1c0c3999dac761f0823c73b6b54810afd7.png" src="_images/2dc10d4335d13f786e4b364718653d1c0c3999dac761f0823c73b6b54810afd7.png" />
+<img alt="_images/80541b227f253954d2641419ae7f67c31605f1806359e140a24c3cc06196c6b8.png" src="_images/80541b227f253954d2641419ae7f67c31605f1806359e140a24c3cc06196c6b8.png" />
+<img alt="_images/80541b227f253954d2641419ae7f67c31605f1806359e140a24c3cc06196c6b8.png" src="_images/80541b227f253954d2641419ae7f67c31605f1806359e140a24c3cc06196c6b8.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1866,8 +1864,8 @@ accelerator</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0d03c80238fb321b2f49829799d75060eba7ddd6412f211fbd4e9bfb01fd2e21.png" src="_images/0d03c80238fb321b2f49829799d75060eba7ddd6412f211fbd4e9bfb01fd2e21.png" />
-<img alt="_images/0d03c80238fb321b2f49829799d75060eba7ddd6412f211fbd4e9bfb01fd2e21.png" src="_images/0d03c80238fb321b2f49829799d75060eba7ddd6412f211fbd4e9bfb01fd2e21.png" />
+<img alt="_images/061728b3f8cf296e1fb740003f5ffe490aca02494061e938f9a5a694101ae802.png" src="_images/061728b3f8cf296e1fb740003f5ffe490aca02494061e938f9a5a694101ae802.png" />
+<img alt="_images/061728b3f8cf296e1fb740003f5ffe490aca02494061e938f9a5a694101ae802.png" src="_images/061728b3f8cf296e1fb740003f5ffe490aca02494061e938f9a5a694101ae802.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1886,7 +1884,7 @@ accelerator</p></li>
 <h2><a class="toc-backref" href="#id16"><span class="section-number">27.9. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we wrote functions and classes to represent non-stochastic and
 stochastic versions of the Samuelson (1939) multiplier-accelerator model, described
-in <span id="id6">[<a class="reference internal" href="zreferences.html#id87" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Sam39</a>]</span>.</p>
+in <span id="id6">[<a class="reference internal" href="zreferences.html#id87" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Samuelson, 1939</a>]</span>.</p>
 <p>We saw that different parameter values led to different output paths, which
 could either be stationary, explosive, or oscillating.</p>
 <p>We also were able to represent the model using the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>

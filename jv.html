@@ -257,55 +257,19 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>interpolation
-</pre></div>
-</div>
-</div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.11/site-packages (2.2.1)
-Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.57.1)
-Requirement already satisfied: numpy&gt;=1.18.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.24.3)
-Requirement already satisfied: scipy&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.11.1)
-Requirement already satisfied: tempita&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.5.2)
-Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.40.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
-
-</pre></div>
-</div>
-</div>
-</details>
-</div>
 <section id="overview">
 <h2><a class="toc-backref" href="#id4"><span class="section-number">38.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this section, we solve a simple on-the-job search model</p>
 <ul class="simple">
-<li><p>based on <span id="id1">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, exercise 6.18, and <span id="id2">[<a class="reference internal" href="zreferences.html#id99" title="Boyan Jovanovic. Firm-specific capital and turnover. Journal of Political Economy, 87(6):1246–1260, 1979.">Jov79</a>]</span></p></li>
+<li><p>based on <span id="id1">[<a class="reference internal" href="zreferences.html#id185" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, exercise 6.18, and <span id="id2">[<a class="reference internal" href="zreferences.html#id99" title="Boyan Jovanovic. Firm-specific capital and turnover. Journal of Political Economy, 87(6):1246–1260, 1979.">Jovanovic, 1979</a>]</span></p></li>
 </ul>
 <p>Let’s start with some imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
-<span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">interp</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/site-packages/numba/core/decorators.py:262: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">numba.generated_jit is deprecated. Please see the documentation at: https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-generated-jit for more information and advice on a suitable replacement.</span>
-  warnings.warn(msg, NumbaDeprecationWarning)
 </pre></div>
 </div>
 </div>
@@ -483,7 +447,7 @@ at each <span class="math notranslate nohighlight">\(x\)</span>, given a value f
     <span class="nd">@njit</span>
     <span class="k">def</span> <span class="nf">state_action_values</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">s</span><span class="p">,</span> <span class="n">ϕ</span> <span class="o">=</span> <span class="n">z</span>
-        <span class="n">v_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">interp</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">v_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
         <span class="n">integral</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mc_size</span><span class="p">):</span>
@@ -599,20 +563,28 @@ and iterates to find a fixed point.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.1511093628568041.
-Error at iteration 50 is 0.05445931823461514.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.1511080836166352.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 75 is 0.01962695949408655.
-Error at iteration 100 is 0.0070734917635757455.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 50 is 0.05445885720060062.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 125 is 0.002549263208317498.
-Error at iteration 150 is 0.0009187460906865397.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 75 is 0.019626793338938242.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 175 is 0.00033111307471145324.
-Error at iteration 200 is 0.00011933206503655924.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 100 is 0.007073431881806869.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 125 is 0.0025492416271308826.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 150 is 0.0009187383128956839.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 175 is 0.000331110271622137.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 200 is 0.00011933105481354289.
 
 Converged in 205 iterations.
 </pre></div>
@@ -638,7 +610,7 @@ Converged in 205 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f63009882875eb95fa3bcad98015b20a46cac3291c5c7b02cbbe714e77a3dbc7.png" src="_images/f63009882875eb95fa3bcad98015b20a46cac3291c5c7b02cbbe714e77a3dbc7.png" />
+<img alt="_images/57656bad7e8fba96574a1444f79e9108f7d6b1c7672ed83e375442494ccbdeff.png" src="_images/57656bad7e8fba96574a1444f79e9108f7d6b1c7672ed83e375442494ccbdeff.png" />
 </div>
 </div>
 <p>The horizontal axis is the state <span class="math notranslate nohighlight">\(x\)</span>, while the vertical axis gives <span class="math notranslate nohighlight">\(s(x)\)</span> and <span class="math notranslate nohighlight">\(\phi(x)\)</span>.</p>
@@ -693,8 +665,8 @@ diagram, setting</p>
 <span class="n">s_policy</span><span class="p">,</span> <span class="n">ϕ_policy</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_star</span><span class="p">)</span>
 
 <span class="c1"># Turn the policy function arrays into actual functions</span>
-<span class="n">s</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">interp</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">s_policy</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">ϕ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">interp</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">ϕ_policy</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">s_policy</span><span class="p">)</span>
+<span class="n">ϕ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">ϕ_policy</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ϕ</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="n">u</span><span class="p">)</span>
@@ -722,7 +694,7 @@ diagram, setting</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5f4c8db992518cbfa2bc276f5b3a154ec60970fed01ec855d5f970d5edbbacb0.png" src="_images/5f4c8db992518cbfa2bc276f5b3a154ec60970fed01ec855d5f970d5edbbacb0.png" />
+<img alt="_images/cfaaa343ada7909cc74f68545855c6d909dd1b9ebba922b6d8bdca087ab1738b.png" src="_images/cfaaa343ada7909cc74f68545855c6d909dd1b9ebba922b6d8bdca087ab1738b.png" />
 </div>
 </div>
 <p>Looking at the dynamics, we can see that</p>
