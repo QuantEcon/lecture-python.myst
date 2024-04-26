@@ -30,7 +30,7 @@ In addition to what’s in Anaconda, this lecture deploys the libraries:
 ---
 tags: [hide-output]
 ---
-!pip install git+https://github.com/EconForge/interpolation.py
+!pip install interpolation
 ```
 
 ## Overview
