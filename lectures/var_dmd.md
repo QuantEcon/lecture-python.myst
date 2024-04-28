@@ -269,7 +269,8 @@ Here an $ m \times n+1 $  data matrix $ \tilde X $ contains many more attributes
 
 Dynamic mode decomposition was introduced by {cite}`schmid2010`,
 
-You can read  about Dynamic Mode Decomposition here {cite}`DMD_book` and here {cite}`Brunton_Kutz_2019` (section 7.2).
+You can read  about Dynamic Mode Decomposition {cite}`DMD_book` and {cite}`Brunton_Kutz_2019` (section 7.2).
+
 
 **Dynamic Mode Decomposition** (DMD) computes a rank $ r < p  $ approximation to the least squares regression coefficients $ \hat A $  described by formula {eq}`eq:AhatSVDformula`.
 
