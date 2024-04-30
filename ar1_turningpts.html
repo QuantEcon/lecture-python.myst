@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>52. Forecasting an AR(1) Process &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>46. Forecasting an AR(1) Process &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,15 +60,15 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -115,13 +115,16 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="application/vnd.jupyter.widget-state+json">{"state": {"572a878f62fc4f8cb6489bcc38a5c923": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_7c851e35cfa84046bcd2b1763383c827", "msg_id": "", "outputs": [{"data": {"text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 4 chains, 1 divergences <span style=\"color: #008000; text-decoration-color: #008000\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span>\n</pre>\n", "text/plain": "Sampling 4 chains, 1 divergences \u001b[32m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m\n"}, "metadata": {}, "output_type": "display_data"}]}}, "7c851e35cfa84046bcd2b1763383c827": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}}, "version_major": 2, "version_minor": 0}</script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script crossorigin="anonymous" data-jupyter-widgets-cdn="https://cdn.jsdelivr.net/npm/" src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@1.0.6/dist/embed-amd.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'ar1_turningpts';</script>
     <link rel="canonical" href="https://python.quantecon.org/ar1_turningpts.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="53. Job Search VII: Search with Learning" href="odu.html" />
-    <link rel="prev" title="51. Posterior Distributions for AR(1) Parameters" href="ar1_bayes.html" />
+    <link rel="next" title="47. Job Search VII: Search with Learning" href="odu.html" />
+    <link rel="prev" title="45. Posterior Distributions for AR(1) Parameters" href="ar1_bayes.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,15 +172,15 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-univariate-first-order-autoregressive-process">52.1. A Univariate First-Order Autoregressive Process</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">52.2. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictive-distributions-of-path-properties">52.3. Predictive Distributions of Path Properties</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-wecker-like-algorithm">52.4. A Wecker-Like Algorithm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-simulations-to-approximate-a-posterior-distribution">52.5. Using Simulations to Approximate a Posterior Distribution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-sample-path-statistics">52.6. Calculating Sample Path Statistics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#original-wecker-method">52.7. Original Wecker Method</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extended-wecker-method">52.8. Extended Wecker Method</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison">52.9. Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-univariate-first-order-autoregressive-process">46.1. A Univariate First-Order Autoregressive Process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">46.2. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictive-distributions-of-path-properties">46.3. Predictive Distributions of Path Properties</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-wecker-like-algorithm">46.4. A Wecker-Like Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-simulations-to-approximate-a-posterior-distribution">46.5. Using Simulations to Approximate a Posterior Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-sample-path-statistics">46.6. Calculating Sample Path Statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#original-wecker-method">46.7. Original Wecker Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extended-wecker-method">46.8. Extended Wecker Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison">46.9. Comparison</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -235,7 +238,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="forecasting-an-ar-1-process">
-<h1><span class="section-number">52. </span>Forecasting  an AR(1) Process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">46. </span>Forecasting  an AR(1) Process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>arviz<span class="w"> </span>pymc
@@ -248,48 +251,55 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.16.1)
-Requirement already satisfied: pymc in /opt/conda/envs/quantecon/lib/python3.11/site-packages (5.11.0)
-Requirement already satisfied: setuptools&gt;=60.0.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (68.0.0)
-Requirement already satisfied: matplotlib&gt;=3.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (3.7.2)
-Requirement already satisfied: numpy&lt;2.0,&gt;=1.21.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.24.3)
-Requirement already satisfied: scipy&gt;=1.8.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.11.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.17.0)
+Requirement already satisfied: pymc in /opt/conda/envs/quantecon/lib/python3.11/site-packages (5.13.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: setuptools&gt;=60.0.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (68.2.2)
+Requirement already satisfied: matplotlib&gt;=3.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (3.8.0)
+Requirement already satisfied: numpy&lt;2.0,&gt;=1.22.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.26.4)
+Requirement already satisfied: scipy&gt;=1.8.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.11.4)
 Requirement already satisfied: packaging in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (23.1)
-Requirement already satisfied: pandas&gt;=1.3.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (2.0.3)
+Requirement already satisfied: pandas&gt;=1.4.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (2.1.4)
 Requirement already satisfied: xarray&gt;=0.21.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (2023.6.0)
 Requirement already satisfied: h5netcdf&gt;=1.0.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.3.0)
-Requirement already satisfied: typing-extensions&gt;=4.1.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (4.7.1)
-Requirement already satisfied: xarray-einstats&gt;=0.3 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (0.6.0)
-Requirement already satisfied: cachetools&gt;=4.2.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (5.3.3)
+Requirement already satisfied: typing-extensions&gt;=4.1.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (4.9.0)
+Requirement already satisfied: xarray-einstats&gt;=0.3 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (0.7.0)
+Requirement already satisfied: cachetools&gt;=4.2.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (4.2.2)
 Requirement already satisfied: cloudpickle in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (2.2.1)
-Requirement already satisfied: fastprogress&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (1.0.3)
-Requirement already satisfied: pytensor&lt;2.19,&gt;=2.18.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (2.18.6)
+Requirement already satisfied: pytensor&lt;2.21,&gt;=2.20 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (2.20.0)
+Requirement already satisfied: rich&gt;=13.7.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (13.7.1)
+Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.9.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.5-&gt;arviz) (1.2.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.9.0)
-Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.0.5)
-Requirement already satisfied: cycler&gt;=0.10 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (0.11.0)
-Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (4.25.0)
-Requirement already satisfied: kiwisolver&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.4.4)
-Requirement already satisfied: pillow&gt;=6.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (9.4.0)
-Requirement already satisfied: pyparsing&lt;3.1,&gt;=2.3.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (3.0.9)
-Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (2.8.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: cycler&gt;=0.10 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.5-&gt;arviz) (0.11.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.5-&gt;arviz) (4.25.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.5-&gt;arviz) (1.4.4)
+Requirement already satisfied: pillow&gt;=6.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.5-&gt;arviz) (10.2.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.5-&gt;arviz) (3.0.9)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.5-&gt;arviz) (2.8.2)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3.post1)
-Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.4.0-&gt;arviz) (2024.1)
+Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.4.0-&gt;arviz) (2023.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.19,&gt;=2.18.1-&gt;pymc) (3.9.0)
-Requirement already satisfied: etuples in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.19,&gt;=2.18.1-&gt;pymc) (0.3.9)
-Requirement already satisfied: logical-unification in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.19,&gt;=2.18.1-&gt;pymc) (0.4.6)
-Requirement already satisfied: miniKanren in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.19,&gt;=2.18.1-&gt;pymc) (1.0.3)
-Requirement already satisfied: cons in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.19,&gt;=2.18.1-&gt;pymc) (0.4.6)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.21,&gt;=2.20-&gt;pymc) (3.13.1)
+Requirement already satisfied: etuples in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.21,&gt;=2.20-&gt;pymc) (0.3.9)
+Requirement already satisfied: logical-unification in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.21,&gt;=2.20-&gt;pymc) (0.4.6)
+Requirement already satisfied: miniKanren in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.21,&gt;=2.20-&gt;pymc) (1.0.3)
+Requirement already satisfied: cons in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.21,&gt;=2.20-&gt;pymc) (0.4.6)
+Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from rich&gt;=13.7.1-&gt;pymc) (2.2.0)
+Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from rich&gt;=13.7.1-&gt;pymc) (2.15.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.2-&gt;arviz) (1.16.0)
-Requirement already satisfied: toolz in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from logical-unification-&gt;pytensor&lt;2.19,&gt;=2.18.1-&gt;pymc) (0.12.0)
-Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from logical-unification-&gt;pytensor&lt;2.19,&gt;=2.18.1-&gt;pymc) (0.6.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mdurl~=0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich&gt;=13.7.1-&gt;pymc) (0.1.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.5-&gt;arviz) (1.16.0)
+Requirement already satisfied: toolz in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from logical-unification-&gt;pytensor&lt;2.21,&gt;=2.20-&gt;pymc) (0.12.0)
+Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from logical-unification-&gt;pytensor&lt;2.21,&gt;=2.20-&gt;pymc) (0.6.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -334,36 +344,36 @@ Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib
 </div>
 </div>
 <section id="a-univariate-first-order-autoregressive-process">
-<h2><span class="section-number">52.1. </span>A Univariate First-Order Autoregressive Process<a class="headerlink" href="#a-univariate-first-order-autoregressive-process" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">46.1. </span>A Univariate First-Order Autoregressive Process<a class="headerlink" href="#a-univariate-first-order-autoregressive-process" title="Permalink to this heading">#</a></h2>
 <p>Consider the univariate AR(1) model:</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq1">
-<span class="eqno">(52.1)<a class="headerlink" href="#equation-ar1-tp-eq1" title="Permalink to this equation">#</a></span>\[ 
+<span class="eqno">(46.1)<a class="headerlink" href="#equation-ar1-tp-eq1" title="Permalink to this equation">#</a></span>\[ 
 y_{t+1} = \rho y_t + \sigma \epsilon_{t+1}, \quad t \geq 0 
 \]</div>
 <p>where the scalars <span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> satisfy <span class="math notranslate nohighlight">\(|\rho| &lt; 1\)</span> and <span class="math notranslate nohighlight">\(\sigma &gt; 0\)</span>;
 <span class="math notranslate nohighlight">\(\{\epsilon_{t+1}\}\)</span> is a sequence of i.i.d. normal random variables with mean <span class="math notranslate nohighlight">\(0\)</span> and variance <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <p>The initial condition <span class="math notranslate nohighlight">\(y_{0}\)</span> is a known number.</p>
-<p>Equation <a class="reference internal" href="#equation-ar1-tp-eq1">(52.1)</a> implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+1}\)</span> is</p>
+<p>Equation <a class="reference internal" href="#equation-ar1-tp-eq1">(46.1)</a> implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+1}\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq2">
-<span class="eqno">(52.2)<a class="headerlink" href="#equation-ar1-tp-eq2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(46.2)<a class="headerlink" href="#equation-ar1-tp-eq2" title="Permalink to this equation">#</a></span>\[
 f(y_{t+1} | y_{t}; \rho, \sigma) \sim {\mathcal N}(\rho y_{t}, \sigma^2) \
 \]</div>
-<p>Further, equation <a class="reference internal" href="#equation-ar1-tp-eq1">(52.1)</a> also implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+j}\)</span> for <span class="math notranslate nohighlight">\(j \geq 1\)</span> is</p>
+<p>Further, equation <a class="reference internal" href="#equation-ar1-tp-eq1">(46.1)</a> also implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+j}\)</span> for <span class="math notranslate nohighlight">\(j \geq 1\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq3">
-<span class="eqno">(52.3)<a class="headerlink" href="#equation-ar1-tp-eq3" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(46.3)<a class="headerlink" href="#equation-ar1-tp-eq3" title="Permalink to this equation">#</a></span>\[
 f(y_{t+j} | y_{t}; \rho, \sigma) \sim {\mathcal N}\left(\rho^j y_{t}, \sigma^2 \frac{1 - \rho^{2j}}{1 - \rho^2} \right) 
 \]</div>
-<p>The predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(52.3)</a> that assumes that the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span> are known, which we express
+<p>The predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(46.3)</a> that assumes that the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span> are known, which we express
 by conditioning on them.</p>
 <p>We also want to compute a  predictive distribution that does not condition on <span class="math notranslate nohighlight">\(\rho,\sigma\)</span> but instead takes account of our uncertainty about them.</p>
-<p>We form this predictive distribution by integrating <a class="reference internal" href="#equation-ar1-tp-eq3">(52.3)</a> with respect to a joint posterior distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t)\)</span>
+<p>We form this predictive distribution by integrating <a class="reference internal" href="#equation-ar1-tp-eq3">(46.3)</a> with respect to a joint posterior distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t)\)</span>
 that conditions on an observed history <span class="math notranslate nohighlight">\(y^t = \{y_s\}_{s=0}^t\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq4">
-<span class="eqno">(52.4)<a class="headerlink" href="#equation-ar1-tp-eq4" title="Permalink to this equation">#</a></span>\[ 
+<span class="eqno">(46.4)<a class="headerlink" href="#equation-ar1-tp-eq4" title="Permalink to this equation">#</a></span>\[ 
 f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^t ) d \rho d \sigma
 \]</div>
-<p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(52.3)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are known.</p>
-<p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq4">(52.4)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are uncertain, but have known probability distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t )\)</span>.</p>
+<p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(46.3)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are known.</p>
+<p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq4">(46.4)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are uncertain, but have known probability distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t )\)</span>.</p>
 <p>We also want to compute some  predictive distributions of “sample path statistics” that might  include, for example</p>
 <ul class="simple">
 <li><p>the time until the next “recession”,</p></li>
@@ -380,11 +390,11 @@ f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^
 </ul>
 </section>
 <section id="implementation">
-<h2><span class="section-number">52.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">46.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>First, we’ll simulate a  sample path from which to launch our forecasts.</p>
 <p>In addition to plotting the sample path, under the assumption that the true parameter values are known,
 we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> coverage intervals using conditional distribution
-<a class="reference internal" href="#equation-ar1-tp-eq3">(52.3)</a> described above.</p>
+<a class="reference internal" href="#equation-ar1-tp-eq3">(46.3)</a> described above.</p>
 <p>We’ll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -448,14 +458,14 @@ we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b8569780dc953cbe3af93d7b4b632fb5bcb5cdd4c0d546cfcdaf2babda0cd459.png" src="_images/b8569780dc953cbe3af93d7b4b632fb5bcb5cdd4c0d546cfcdaf2babda0cd459.png" />
+<img alt="_images/37a0bdd8c8e5b1f327e51403fc3dd4d23364a51eec1569e58de626a96b13d5d3.png" src="_images/37a0bdd8c8e5b1f327e51403fc3dd4d23364a51eec1569e58de626a96b13d5d3.png" />
 </div>
 </div>
 <p>As functions of forecast horizon, the coverage intervals have shapes like those described in
 <a class="reference external" href="https://python.quantecon.org/perm_income_cons.html">https://python.quantecon.org/perm_income_cons.html</a></p>
 </section>
 <section id="predictive-distributions-of-path-properties">
-<h2><span class="section-number">52.3. </span>Predictive Distributions of Path Properties<a class="headerlink" href="#predictive-distributions-of-path-properties" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">46.3. </span>Predictive Distributions of Path Properties<a class="headerlink" href="#predictive-distributions-of-path-properties" title="Permalink to this heading">#</a></h2>
 <p>Wecker <span id="id3">[<a class="reference internal" href="zreferences.html#id7" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span> proposed using simulation techniques to characterize  predictive distribution of some statistics that are  non-linear functions of <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>He called these functions “path properties” to contrast them with properties of single data points.</p>
 <p>He studied two special  prospective path properties of a given series <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
@@ -533,7 +543,7 @@ P_t(\omega) :=
 <p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id7" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span>, we can use simulations to calculate  probabilities of <span class="math notranslate nohighlight">\(P_t\)</span> and <span class="math notranslate nohighlight">\(N_t\)</span> for each period <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </section>
 <section id="a-wecker-like-algorithm">
-<h2><span class="section-number">52.4. </span>A Wecker-Like Algorithm<a class="headerlink" href="#a-wecker-like-algorithm" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">46.4. </span>A Wecker-Like Algorithm<a class="headerlink" href="#a-wecker-like-algorithm" title="Permalink to this heading">#</a></h2>
 <p>The procedure consists of the following steps:</p>
 <ul class="simple">
 <li><p>index a sample path by <span class="math notranslate nohighlight">\(\omega_i\)</span></p></li>
@@ -549,7 +559,7 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </ul>
 </section>
 <section id="using-simulations-to-approximate-a-posterior-distribution">
-<h2><span class="section-number">52.5. </span>Using Simulations to Approximate a Posterior Distribution<a class="headerlink" href="#using-simulations-to-approximate-a-posterior-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">46.5. </span>Using Simulations to Approximate a Posterior Distribution<a class="headerlink" href="#using-simulations-to-approximate-a-posterior-distribution" title="Permalink to this heading">#</a></h2>
 <p>The next code cells use <code class="docutils literal notranslate"><span class="pre">pymc</span></code> to compute the time <span class="math notranslate nohighlight">\(t\)</span> posterior distribution of <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
 <p>Note that in defining the likelihood function, we choose to condition on the initial value <span class="math notranslate nohighlight">\(y_0\)</span>.</p>
 <div class="cell docutils container">
@@ -595,34 +605,16 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">
-<style>
-    /* Turns off some styling */
-    progress {
-        /* gets rid of default border in Firefox and Opera. */
-        border: none;
-        /* Needs to be in here for Safari polyfill so background images work as expected. */
-        background-size: auto;
-    }
-    progress:not([value]), progress:not([value])::-webkit-progress-bar {
-        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
-    }
-    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-        background: #F44336;
-    }
-</style>
-</div><div class="output text_html">
-    <div>
-      <progress value='60000' class='' max='60000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      100.00% [60000/60000 00:17&lt;00:00 Sampling 4 chains, 0 divergences]
-    </div>
-    </div><img alt="_images/fd5de9af5c43ad42eb70e2b1b66b4844aac6f0f6b361bb3c354689b8fe4b7ebf.png" src="_images/fd5de9af5c43ad42eb70e2b1b66b4844aac6f0f6b361bb3c354689b8fe4b7ebf.png" />
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "572a878f62fc4f8cb6489bcc38a5c923", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">
+</pre>
+</div><img alt="_images/fbe5d357d27945c38d81107fa3f26931643ee6aa6b0ecd6c7c82072a01c7e8c9.png" src="_images/fbe5d357d27945c38d81107fa3f26931643ee6aa6b0ecd6c7c82072a01c7e8c9.png" />
 </div>
 </div>
 <p>The graphs on the left portray posterior marginal distributions.</p>
 </section>
 <section id="calculating-sample-path-statistics">
-<h2><span class="section-number">52.6. </span>Calculating Sample Path Statistics<a class="headerlink" href="#calculating-sample-path-statistics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">46.6. </span>Calculating Sample Path Statistics<a class="headerlink" href="#calculating-sample-path-statistics" title="Permalink to this heading">#</a></h2>
 <p>Our next step is to prepare Python code to compute our sample path statistics.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -684,7 +676,7 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div>
 </section>
 <section id="original-wecker-method">
-<h2><span class="section-number">52.7. </span>Original Wecker Method<a class="headerlink" href="#original-wecker-method" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">46.7. </span>Original Wecker Method<a class="headerlink" href="#original-wecker-method" title="Permalink to this heading">#</a></h2>
 <p>Now we  apply Wecker’s original  method by simulating future paths and compute predictive distributions, conditioning
 on the true  parameters associated with the data-generating model.</p>
 <div class="cell docutils container">
@@ -751,15 +743,27 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/986c986d6bcf4113c152dd359dc915863a33c75fe065072665ac7a20c1f6fdaa.png" src="_images/986c986d6bcf4113c152dd359dc915863a33c75fe065072665ac7a20c1f6fdaa.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+</pre></div>
+</div>
+<img alt="_images/95632e8245e86c0bfb6ab1d7c24e67d59772aa9ab42e387ce277e60a543f87f0.png" src="_images/95632e8245e86c0bfb6ab1d7c24e67d59772aa9ab42e387ce277e60a543f87f0.png" />
 </div>
 </div>
 </section>
 <section id="extended-wecker-method">
-<h2><span class="section-number">52.8. </span>Extended Wecker Method<a class="headerlink" href="#extended-wecker-method" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">46.8. </span>Extended Wecker Method<a class="headerlink" href="#extended-wecker-method" title="Permalink to this heading">#</a></h2>
 <p>Now we apply we apply our  “extended” Wecker method based on  predictive densities of <span class="math notranslate nohighlight">\(y\)</span> defined by
-<a class="reference internal" href="#equation-ar1-tp-eq4">(52.4)</a> that acknowledge posterior uncertainty in the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
-<p>To approximate  the intergration on the right side of <a class="reference internal" href="#equation-ar1-tp-eq4">(52.4)</a>, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model <a class="reference internal" href="#equation-ar1-tp-eq1">(52.1)</a>.</p>
+<a class="reference internal" href="#equation-ar1-tp-eq4">(46.4)</a> that acknowledge posterior uncertainty in the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
+<p>To approximate  the intergration on the right side of <a class="reference internal" href="#equation-ar1-tp-eq4">(46.4)</a>, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model <a class="reference internal" href="#equation-ar1-tp-eq1">(46.1)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_extended_Wecker</span><span class="p">(</span><span class="n">post_samples</span><span class="p">,</span> <span class="n">initial_path</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
@@ -817,12 +821,24 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/49d1203e26b0ceabe953a07d61e2bc295ce6b204d2024964f50fff78b4559257.png" src="_images/49d1203e26b0ceabe953a07d61e2bc295ce6b204d2024964f50fff78b4559257.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+</pre></div>
+</div>
+<img alt="_images/b82137c1d8cb24d8cae1f746eaa92c6dabf4e6fdaf5448e665bec1fd2aed2c23.png" src="_images/b82137c1d8cb24d8cae1f746eaa92c6dabf4e6fdaf5448e665bec1fd2aed2c23.png" />
 </div>
 </div>
 </section>
 <section id="comparison">
-<h2><span class="section-number">52.9. </span>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">46.9. </span>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">#</a></h2>
 <p>Finally, we plot both the original Wecker method and the extended method with parameter values drawn from the posterior together to compare the differences that emerge from pretending to know parameter values when they are actually uncertain.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -836,7 +852,31 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6fbebc661d77e334beef5d05b1511ad57311f8ca19908f5068fb54ca512ccc40.png" src="_images/6fbebc661d77e334beef5d05b1511ad57311f8ca19908f5068fb54ca512ccc40.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context(&#39;mode.use_inf_as_na&#39;, True):
+</pre></div>
+</div>
+<img alt="_images/4ca0369110510f5e7b9762ae9ab20ee0f1c6d8add80fdfaeefc4b16dc94ba7be.png" src="_images/4ca0369110510f5e7b9762ae9ab20ee0f1c6d8add80fdfaeefc4b16dc94ba7be.png" />
 </div>
 </div>
 </section>
@@ -898,48 +938,38 @@ on the true  parameters associated with the data-generating model.</p>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="geom_series.html">
-   1. Geometric Series for Elementary Economics
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="sir_model.html">
-   2. Modeling COVID 19
+   1. Modeling COVID 19
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_algebra.html">
-   3. Linear Algebra
+   2. Linear Algebra
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="qr_decomp.html">
-   4. QR Decomposition
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="complex_and_trig.html">
-   5. Complex Numbers and Trigonometry
+   3. QR Decomposition
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="eig_circulant.html">
-   6. Circulant Matrices
+   4. Circulant Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="svd_intro.html">
-   7. Singular Value Decomposition (SVD)
+   5. Singular Value Decomposition (SVD)
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="var_dmd.html">
-   8. VARs and DMDs
+   6. VARs and DMDs
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="newton_method.html">
-   9. Using Newton’s Method to Solve Economic Models
+   7. Using Newton’s Method to Solve Economic Models
   </a>
  </li>
 </ul>
@@ -951,52 +981,47 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="prob_matrix.html">
-   10. Elementary Probability with Matrices
+   8. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   11. LLN and CLT
+   9. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   12. Two Meanings of Probability
+   10. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   13. Multivariate Hypergeometric Distribution
+   11. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   14. Multivariate Normal Distribution
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="heavy_tails.html">
-   15. Heavy-Tailed Distributions
+   12. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   16. Fault Tree Uncertainties
+   13. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   17. Introduction to Artificial Neural Networks
+   14. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   18. Randomized Response Surveys
+   15. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   19. Expected Utilities of Random Responses
+   16. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1007,18 +1032,13 @@ on the true  parameters associated with the data-generating model.</p>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="lp_intro.html">
-   20. Linear Programming
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   21. Optimal Transport
+   17. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   22. Von Neumann Growth Model (and a Generalization)
+   18. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1029,53 +1049,43 @@ on the true  parameters associated with the data-generating model.</p>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="scalar_dynam.html">
-   23. Dynamics in One Dimension
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   24. Finite Markov Chains
+   19. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   25. Inventory Dynamics
+   20. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   26. Linear State Space Models
+   21. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   27. Samuelson Multiplier-Accelerator
+   22. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   28. Kesten Processes and Firm Dynamics
+   23. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   29. Wealth Distribution Dynamics
+   24. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   30. A First Look at the Kalman Filter
+   25. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   31. Another Look at the Kalman Filter
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   26. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1087,37 +1097,37 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   27. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   28. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   29. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   30. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   31. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   32. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   33. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1129,52 +1139,52 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   34. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   35. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   36. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   37. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   38. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   39. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   40. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   41. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   42. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   43. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1186,17 +1196,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   44. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   51. Posterior Distributions for  AR(1) Parameters
+   45. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   52. Forecasting  an AR(1) Process
+   46. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1208,42 +1218,42 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   53. Job Search VII: Search with Learning
+   47. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   54. Likelihood Ratio Processes
+   48. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   49. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   50. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   51. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   52. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   53. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   54. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1255,32 +1265,32 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   55. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   56. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   57. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   58. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   59. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   60. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1291,38 +1301,33 @@ on the true  parameters associated with the data-generating model.</p>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   61. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   62. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   63. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   71. Markov Perfect Equilibrium
+   64. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   65. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   66. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1334,17 +1339,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   67. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   68. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   76. Heterogeneous Beliefs and Bubbles
+   69. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1356,17 +1361,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   70. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   71. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   79. Maximum Likelihood Estimation
+   72. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1378,12 +1383,12 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   73. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   74. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1395,17 +1400,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   75. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   76. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   77. Execution Statistics
   </a>
  </li>
 </ul>

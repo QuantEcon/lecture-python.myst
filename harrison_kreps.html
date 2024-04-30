@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>76. Heterogeneous Beliefs and Bubbles &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>69. Heterogeneous Beliefs and Bubbles &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,15 +60,15 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="77. Pandas for Panel Data" href="pandas_panel.html" />
-    <link rel="prev" title="75. Competitive Equilibria with Arrow Securities" href="ge_arrow.html" />
+    <link rel="next" title="70. Pandas for Panel Data" href="pandas_panel.html" />
+    <link rel="prev" title="68. Competitive Equilibria with Arrow Securities" href="ge_arrow.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,30 +169,30 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">76.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">76.1.1. References</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bubbles">76.1.2. Bubbles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">69.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">69.1.1. References</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bubbles">69.1.2. Bubbles</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-of-the-model">76.2. Structure of the Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ownership-rights">76.2.1. Ownership Rights</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#short-sales-prohibited">76.2.2. Short Sales Prohibited</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimism-and-pessimism">76.2.3. Optimism and Pessimism</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#information">76.2.4. Information</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-of-the-model">69.2. Structure of the Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ownership-rights">69.2.1. Ownership Rights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#short-sales-prohibited">69.2.2. Short Sales Prohibited</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimism-and-pessimism">69.2.3. Optimism and Pessimism</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#information">69.2.4. Information</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-model">76.3. Solving the Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-table">76.3.1. Summary Table</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-belief-prices">76.3.2. Single Belief Prices</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#single-belief-prices-as-benchmarks">76.3.2.1. Single Belief Prices as Benchmarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-model">69.3. Solving the Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-table">69.3.1. Summary Table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-belief-prices">69.3.2. Single Belief Prices</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#single-belief-prices-as-benchmarks">69.3.2.1. Single Belief Prices as Benchmarks</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pricing-under-heterogeneous-beliefs">76.3.3. Pricing under Heterogeneous Beliefs</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#insufficient-funds">76.3.4. Insufficient Funds</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-interpretation">76.3.5. Further Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pricing-under-heterogeneous-beliefs">69.3.3. Pricing under Heterogeneous Beliefs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#insufficient-funds">69.3.4. Insufficient Funds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-interpretation">69.3.5. Further Interpretation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">76.4. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">69.4. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -254,7 +254,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="heterogeneous-beliefs-and-bubbles">
-<h1><a class="toc-backref" href="#id5"><span class="section-number">76. </span>Heterogeneous Beliefs and Bubbles</a><a class="headerlink" href="#heterogeneous-beliefs-and-bubbles" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id5"><span class="section-number">69. </span>Heterogeneous Beliefs and Bubbles</a><a class="headerlink" href="#heterogeneous-beliefs-and-bubbles" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -282,18 +282,18 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
+Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
@@ -305,7 +305,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">76.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">69.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes a version of a model of Harrison and Kreps <span id="id1">[<a class="reference internal" href="zreferences.html#id129" title="J. Michael Harrison and David M. Kreps. Speculative investor behavior in a stock market with heterogeneous expectations. The Quarterly Journal of Economics, 92(2):323-336, 1978.">Harrison and Kreps, 1978</a>]</span>.</p>
 <p>The model determines the price of a dividend-yielding asset that is traded by two types of self-interested investors.</p>
 <p>The model features</p>
@@ -326,7 +326,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <section id="references">
-<h3><span class="section-number">76.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h3>
 <p>Prior to reading the following, you might like to review our lectures on</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="finite_markov.html"><span class="doc">Markov chains</span></a></p></li>
@@ -334,7 +334,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </ul>
 </section>
 <section id="bubbles">
-<h3><span class="section-number">76.1.2. </span>Bubbles<a class="headerlink" href="#bubbles" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.1.2. </span>Bubbles<a class="headerlink" href="#bubbles" title="Permalink to this heading">#</a></h3>
 <p>Economists differ in how they define a <em>bubble</em>.</p>
 <p>The Harrison-Kreps model illustrates the following notion of a bubble that attracts many economists:</p>
 <blockquote>
@@ -343,7 +343,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </section>
 </section>
 <section id="structure-of-the-model">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">76.2. </span>Structure of the Model</a><a class="headerlink" href="#structure-of-the-model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">69.2. </span>Structure of the Model</a><a class="headerlink" href="#structure-of-the-model" title="Permalink to this heading">#</a></h2>
 <p>The model simplifies things  by ignoring alterations in the distribution of wealth
 among investors who have hard-wired different beliefs about the fundamentals that determine
 asset payouts.</p>
@@ -419,7 +419,7 @@ P_b =
 <p>The stationary distribution of <span class="math notranslate nohighlight">\(P_b\)</span> is approximately <span class="math notranslate nohighlight">\(\pi_b = \begin{bmatrix} .43 &amp; .57 \end{bmatrix}\)</span>.</p>
 <p>Thus, a type <span class="math notranslate nohighlight">\(a\)</span> investor is more pessimistic on average.</p>
 <section id="ownership-rights">
-<h3><span class="section-number">76.2.1. </span>Ownership Rights<a class="headerlink" href="#ownership-rights" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.2.1. </span>Ownership Rights<a class="headerlink" href="#ownership-rights" title="Permalink to this heading">#</a></h3>
 <p>An owner of the asset at the end of time <span class="math notranslate nohighlight">\(t\)</span> is entitled to the dividend at time <span class="math notranslate nohighlight">\(t+1\)</span> and also has the right to sell the asset at time <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
 <p>Both types of investors are risk-neutral and both have the same fixed discount factor <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span>.</p>
 <p>In our numerical example, we’ll set <span class="math notranslate nohighlight">\(\beta = .75\)</span>, just as Harrison and Kreps <span id="id2">[<a class="reference internal" href="zreferences.html#id129" title="J. Michael Harrison and David M. Kreps. Speculative investor behavior in a stock market with heterogeneous expectations. The Quarterly Journal of Economics, 92(2):323-336, 1978.">Harrison and Kreps, 1978</a>]</span> did.</p>
@@ -432,7 +432,7 @@ P_b =
 <p>In case 2, both types of investors always hold at least some of the asset.</p>
 </section>
 <section id="short-sales-prohibited">
-<h3><span class="section-number">76.2.2. </span>Short Sales Prohibited<a class="headerlink" href="#short-sales-prohibited" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.2.2. </span>Short Sales Prohibited<a class="headerlink" href="#short-sales-prohibited" title="Permalink to this heading">#</a></h3>
 <p>No short sales are allowed.</p>
 <p>This matters because it limits how  pessimists can express their opinions.</p>
 <ul class="simple">
@@ -441,7 +441,7 @@ P_b =
 </ul>
 </section>
 <section id="optimism-and-pessimism">
-<h3><span class="section-number">76.2.3. </span>Optimism and Pessimism<a class="headerlink" href="#optimism-and-pessimism" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.2.3. </span>Optimism and Pessimism<a class="headerlink" href="#optimism-and-pessimism" title="Permalink to this heading">#</a></h3>
 <p>The above specifications of the perceived transition matrices <span class="math notranslate nohighlight">\(P_a\)</span> and <span class="math notranslate nohighlight">\(P_b\)</span>, taken directly from Harrison and Kreps, build in stochastically alternating temporary optimism and pessimism.</p>
 <p>Remember that state <span class="math notranslate nohighlight">\(1\)</span> is the high dividend state.</p>
 <ul class="simple">
@@ -451,14 +451,14 @@ P_b =
 <p>However, the stationary distributions <span class="math notranslate nohighlight">\(\pi_a = \begin{bmatrix} .57 &amp; .43 \end{bmatrix}\)</span> and <span class="math notranslate nohighlight">\(\pi_b = \begin{bmatrix} .43 &amp; .57 \end{bmatrix}\)</span> tell us that a type <span class="math notranslate nohighlight">\(b\)</span> person is more optimistic about the dividend process in the long run than is a type <span class="math notranslate nohighlight">\(a\)</span> person.</p>
 </section>
 <section id="information">
-<h3><span class="section-number">76.2.4. </span>Information<a class="headerlink" href="#information" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.2.4. </span>Information<a class="headerlink" href="#information" title="Permalink to this heading">#</a></h3>
 <p>Investors know a price function mapping the state <span class="math notranslate nohighlight">\(s_t\)</span> at <span class="math notranslate nohighlight">\(t\)</span> into the equilibrium price <span class="math notranslate nohighlight">\(p(s_t)\)</span> that prevails in that state.</p>
 <p>This price function is endogenous and to be determined below.</p>
 <p>When investors choose whether to purchase or sell the asset at <span class="math notranslate nohighlight">\(t\)</span>, they also know <span class="math notranslate nohighlight">\(s_t\)</span>.</p>
 </section>
 </section>
 <section id="solving-the-model">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">76.3. </span>Solving the Model</a><a class="headerlink" href="#solving-the-model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">69.3. </span>Solving the Model</a><a class="headerlink" href="#solving-the-model" title="Permalink to this heading">#</a></h2>
 <p>Now let’s turn to solving the model.</p>
 <p>We’ll  determine equilibrium prices under a particular specification of beliefs and constraints on trading selected from one of the specifications described above.</p>
 <p>We shall compare equilibrium price functions under the following alternative
@@ -469,7 +469,7 @@ assumptions about beliefs:</p>
 <li><p>There are two types of agents with different beliefs, but because of limited wealth and/or limited leverage, both types of investors hold the asset each period.</p></li>
 </ol>
 <section id="summary-table">
-<h3><span class="section-number">76.3.1. </span>Summary Table<a class="headerlink" href="#summary-table" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.3.1. </span>Summary Table<a class="headerlink" href="#summary-table" title="Permalink to this heading">#</a></h3>
 <p>The following table gives a summary of the findings obtained in the remainder of the lecture
 (in an exercise you will be asked to recreate  the  table and also reinterpret parts of it).</p>
 <p>The table reports  implications of Harrison and Kreps’s specifications of <span class="math notranslate nohighlight">\(P_a, P_b, \beta\)</span>.</p>
@@ -522,19 +522,19 @@ assumptions about beliefs:</p>
 <p>The row corresponding to <span class="math notranslate nohighlight">\(p_p\)</span> would also  apply if both types have enough resources to buy the entire stock of the asset but  short sales are also  possible so that   temporarily pessimistic   investors price the asset.</p>
 </section>
 <section id="single-belief-prices">
-<h3><span class="section-number">76.3.2. </span>Single Belief Prices<a class="headerlink" href="#single-belief-prices" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.3.2. </span>Single Belief Prices<a class="headerlink" href="#single-belief-prices" title="Permalink to this heading">#</a></h3>
 <p>We’ll start by pricing the asset under homogeneous beliefs.</p>
 <p>(This is the case treated in <a class="reference internal" href="markov_asset.html"><span class="doc">the lecture</span></a> on asset pricing with finite Markov states)</p>
 <p>Suppose that there is only one type of investor, either of type <span class="math notranslate nohighlight">\(a\)</span> or <span class="math notranslate nohighlight">\(b\)</span>, and that this investor always “prices the asset”.</p>
 <p>Let <span class="math notranslate nohighlight">\(p_h = \begin{bmatrix} p_h(0) \cr p_h(1) \end{bmatrix}\)</span> be the equilibrium price vector when all investors are of type <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <p>The price today equals the expected discounted value of tomorrow’s dividend and tomorrow’s price of the asset:</p>
 <div class="math notranslate nohighlight" id="equation-eq-assetpricehomog">
-<span class="eqno">(76.1)<a class="headerlink" href="#equation-eq-assetpricehomog" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(69.1)<a class="headerlink" href="#equation-eq-assetpricehomog" title="Permalink to this equation">#</a></span>\[
 p_h(s) = \beta \left( P_h(s,0) (0 + p_h(0)) + P_h(s,1) ( 1 + p_h(1)) \right), \quad s = 0, 1
 \]</div>
 <p>These equations imply that the equilibrium price vector is</p>
 <div class="math notranslate nohighlight" id="equation-harrkrep1">
-<span class="eqno">(76.2)<a class="headerlink" href="#equation-harrkrep1" title="Permalink to this equation">#</a></span>\[\begin{bmatrix} p_h(0) \cr p_h(1) \end{bmatrix}
+<span class="eqno">(69.2)<a class="headerlink" href="#equation-harrkrep1" title="Permalink to this equation">#</a></span>\[\begin{bmatrix} p_h(0) \cr p_h(1) \end{bmatrix}
 = \beta [I - \beta P_h]^{-1} P_h \begin{bmatrix} 0 \cr 1 \end{bmatrix}\]</div>
 <p>The first two rows of the table report <span class="math notranslate nohighlight">\(p_a(s)\)</span> and <span class="math notranslate nohighlight">\(p_b(s)\)</span>.</p>
 <p>Here’s a function that can be used to compute these values</p>
@@ -556,7 +556,7 @@ p_h(s) = \beta \left( P_h(s,0) (0 + p_h(0)) + P_h(s,1) ( 1 + p_h(1)) \right), \q
 </div>
 </div>
 <section id="single-belief-prices-as-benchmarks">
-<h4><span class="section-number">76.3.2.1. </span>Single Belief Prices as Benchmarks<a class="headerlink" href="#single-belief-prices-as-benchmarks" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">69.3.2.1. </span>Single Belief Prices as Benchmarks<a class="headerlink" href="#single-belief-prices-as-benchmarks" title="Permalink to this heading">#</a></h4>
 <p>These equilibrium prices under homogeneous beliefs are important benchmarks for the subsequent analysis.</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(p_h(s)\)</span> tells what a type <span class="math notranslate nohighlight">\(h\)</span> investor  thinks is the “fundamental value” of the asset.</p></li>
@@ -566,12 +566,12 @@ p_h(s) = \beta \left( P_h(s,0) (0 + p_h(0)) + P_h(s,1) ( 1 + p_h(1)) \right), \q
 </section>
 </section>
 <section id="pricing-under-heterogeneous-beliefs">
-<h3><span class="section-number">76.3.3. </span>Pricing under Heterogeneous Beliefs<a class="headerlink" href="#pricing-under-heterogeneous-beliefs" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.3.3. </span>Pricing under Heterogeneous Beliefs<a class="headerlink" href="#pricing-under-heterogeneous-beliefs" title="Permalink to this heading">#</a></h3>
 <p>There are several cases to consider.</p>
 <p>The first is when both types of agents have sufficient wealth to purchase all of the asset themselves.</p>
 <p>In this case, the marginal investor who prices the asset is the more optimistic type so that the equilibrium price <span class="math notranslate nohighlight">\(\bar p\)</span> satisfies Harrison and Kreps’s key equation:</p>
 <div class="math notranslate nohighlight" id="equation-hakr2">
-<span class="eqno">(76.3)<a class="headerlink" href="#equation-hakr2" title="Permalink to this equation">#</a></span>\[\bar p(s) =
+<span class="eqno">(69.3)<a class="headerlink" href="#equation-hakr2" title="Permalink to this equation">#</a></span>\[\bar p(s) =
 \beta
 \max
 \left\{
@@ -595,14 +595,14 @@ P_a(s,1)  \bar p(0) + P_a(s,1) ( 1 +  \bar  p(1)) &lt;
 P_b(s,1)  \bar p(0) + P_b(s,1) ( 1 +  \bar  p(1))
 \]</div>
 <p><strong>Thus the marginal investor is the (temporarily) optimistic type</strong>.</p>
-<p>Equation <a class="reference internal" href="#equation-hakr2">(76.3)</a> is a functional equation that, like a Bellman equation, can be solved by</p>
+<p>Equation <a class="reference internal" href="#equation-hakr2">(69.3)</a> is a functional equation that, like a Bellman equation, can be solved by</p>
 <ul class="simple">
 <li><p>starting with a guess for the price vector <span class="math notranslate nohighlight">\(\bar p\)</span> and</p></li>
 <li><p>iterating to convergence on the operator that maps a guess <span class="math notranslate nohighlight">\(\bar p^j\)</span> into an updated guess
-<span class="math notranslate nohighlight">\(\bar p^{j+1}\)</span> defined by the right side of <a class="reference internal" href="#equation-hakr2">(76.3)</a>, namely</p></li>
+<span class="math notranslate nohighlight">\(\bar p^{j+1}\)</span> defined by the right side of <a class="reference internal" href="#equation-hakr2">(69.3)</a>, namely</p></li>
 </ul>
 <div class="math notranslate nohighlight" id="equation-harrkrep3">
-<span class="eqno">(76.4)<a class="headerlink" href="#equation-harrkrep3" title="Permalink to this equation">#</a></span>\[\bar  p^{j+1}(s)
+<span class="eqno">(69.4)<a class="headerlink" href="#equation-harrkrep3" title="Permalink to this equation">#</a></span>\[\bar  p^{j+1}(s)
  = \beta \max
  \left\{
         P_a(s,0) \bar p^j(0) + P_a(s,1) ( 1 + \bar p^j(1))
@@ -684,12 +684,12 @@ worth.</p>
 </div>
 </section>
 <section id="insufficient-funds">
-<h3><span class="section-number">76.3.4. </span>Insufficient Funds<a class="headerlink" href="#insufficient-funds" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.3.4. </span>Insufficient Funds<a class="headerlink" href="#insufficient-funds" title="Permalink to this heading">#</a></h3>
 <p>Outcomes differ when the more optimistic type of investor has insufficient wealth — or insufficient ability to borrow enough — to hold the entire stock of the asset.</p>
 <p>In this case, the asset price must adjust to attract pessimistic investors.</p>
-<p>Instead of equation <a class="reference internal" href="#equation-hakr2">(76.3)</a>, the equilibrium price satisfies</p>
+<p>Instead of equation <a class="reference internal" href="#equation-hakr2">(69.3)</a>, the equilibrium price satisfies</p>
 <div class="math notranslate nohighlight" id="equation-harrkrep4">
-<span class="eqno">(76.5)<a class="headerlink" href="#equation-harrkrep4" title="Permalink to this equation">#</a></span>\[\check p(s)
+<span class="eqno">(69.5)<a class="headerlink" href="#equation-harrkrep4" title="Permalink to this equation">#</a></span>\[\check p(s)
 = \beta \min
 \left\{
     P_a(s,1)  \check  p(0) + P_a(s,1) ( 1 +   \check  p(1)) ,\;
@@ -698,10 +698,10 @@ worth.</p>
 <p>and the marginal investor who prices the asset is always the one that values it <em>less</em> highly than does the other type.</p>
 <p>Now the marginal investor is always the (temporarily) pessimistic type.</p>
 <p>Notice from the sixth row of that the pessimistic price <span class="math notranslate nohighlight">\(p_o\)</span> is lower than the homogeneous belief prices <span class="math notranslate nohighlight">\(p_a\)</span> and <span class="math notranslate nohighlight">\(p_b\)</span> in both states.</p>
-<p>When pessimistic investors price the asset according to <a class="reference internal" href="#equation-harrkrep4">(76.5)</a>, optimistic investors think that the asset is underpriced.</p>
+<p>When pessimistic investors price the asset according to <a class="reference internal" href="#equation-harrkrep4">(69.5)</a>, optimistic investors think that the asset is underpriced.</p>
 <p>If they could, optimistic investors would willingly borrow at a  one-period risk-free gross interest rate <span class="math notranslate nohighlight">\(\beta^{-1}\)</span> to purchase more of the asset.</p>
 <p>Implicit constraints on leverage prohibit them from doing so.</p>
-<p>When optimistic investors price the asset as in equation <a class="reference internal" href="#equation-hakr2">(76.3)</a>, pessimistic investors think that the asset is overpriced and would like to sell the asset short.</p>
+<p>When optimistic investors price the asset as in equation <a class="reference internal" href="#equation-hakr2">(69.3)</a>, pessimistic investors think that the asset is overpriced and would like to sell the asset short.</p>
 <p>Constraints on short sales prevent that.</p>
 <p>Here’s code to solve for <span class="math notranslate nohighlight">\(\check p\)</span> using iteration</p>
 <div class="cell docutils container">
@@ -733,11 +733,11 @@ worth.</p>
 </div>
 </section>
 <section id="further-interpretation">
-<h3><span class="section-number">76.3.5. </span>Further Interpretation<a class="headerlink" href="#further-interpretation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.3.5. </span>Further Interpretation<a class="headerlink" href="#further-interpretation" title="Permalink to this heading">#</a></h3>
 <p>Jose Scheinkman <span id="id4">[<a class="reference internal" href="zreferences.html#id128" title="Jose A. Scheinkman. Speculation, Trading, and Bubbles. Columbia University Press, New York, 2014.">Scheinkman, 2014</a>]</span> interprets the Harrison-Kreps model as a model of a bubble — a situation in which an asset price exceeds what every investor thinks is merited by his or her beliefs about the value of the asset’s underlying dividend stream.</p>
 <p>Scheinkman stresses these features of the Harrison-Kreps model:</p>
 <ul class="simple">
-<li><p>High volume occurs when the Harrison-Kreps pricing formula <a class="reference internal" href="#equation-hakr2">(76.3)</a> prevails.</p></li>
+<li><p>High volume occurs when the Harrison-Kreps pricing formula <a class="reference internal" href="#equation-hakr2">(69.3)</a> prevails.</p></li>
 <li><p>Type <span class="math notranslate nohighlight">\(a\)</span> investors sell the entire stock of the asset to type <span class="math notranslate nohighlight">\(b\)</span> investors every time the state switches from <span class="math notranslate nohighlight">\(s_t =0\)</span> to <span class="math notranslate nohighlight">\(s_t =1\)</span>.</p></li>
 <li><p>Type <span class="math notranslate nohighlight">\(b\)</span> investors sell the asset to type <span class="math notranslate nohighlight">\(a\)</span> investors every time the state switches from <span class="math notranslate nohighlight">\(s_t = 1\)</span> to <span class="math notranslate nohighlight">\(s_t =0\)</span>.</p></li>
 </ul>
@@ -751,10 +751,10 @@ worth.</p>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">76.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">69.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="hk_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 76.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 69.1 </span></p>
 <section id="exercise-content">
 <p>This exercise invites you to recreate the summary table using the functions we have built above.</p>
 <table class="colwidths-auto table">
@@ -820,7 +820,7 @@ P_p =
 </div>
 <div class="solution dropdown admonition" id="harrison_kreps-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#hk_ex1"> Exercise 76.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#hk_ex1"> Exercise 69.1</a></p>
 <section id="solution-content">
 <p>First, we will obtain equilibrium price vectors with homogeneous beliefs, including when all
 investors are optimistic or pessimistic.</p>
@@ -979,48 +979,38 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="geom_series.html">
-   1. Geometric Series for Elementary Economics
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="sir_model.html">
-   2. Modeling COVID 19
+   1. Modeling COVID 19
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_algebra.html">
-   3. Linear Algebra
+   2. Linear Algebra
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="qr_decomp.html">
-   4. QR Decomposition
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="complex_and_trig.html">
-   5. Complex Numbers and Trigonometry
+   3. QR Decomposition
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="eig_circulant.html">
-   6. Circulant Matrices
+   4. Circulant Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="svd_intro.html">
-   7. Singular Value Decomposition (SVD)
+   5. Singular Value Decomposition (SVD)
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="var_dmd.html">
-   8. VARs and DMDs
+   6. VARs and DMDs
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="newton_method.html">
-   9. Using Newton’s Method to Solve Economic Models
+   7. Using Newton’s Method to Solve Economic Models
   </a>
  </li>
 </ul>
@@ -1032,52 +1022,47 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="prob_matrix.html">
-   10. Elementary Probability with Matrices
+   8. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   11. LLN and CLT
+   9. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   12. Two Meanings of Probability
+   10. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   13. Multivariate Hypergeometric Distribution
+   11. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   14. Multivariate Normal Distribution
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="heavy_tails.html">
-   15. Heavy-Tailed Distributions
+   12. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   16. Fault Tree Uncertainties
+   13. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   17. Introduction to Artificial Neural Networks
+   14. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   18. Randomized Response Surveys
+   15. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   19. Expected Utilities of Random Responses
+   16. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1088,18 +1073,13 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="lp_intro.html">
-   20. Linear Programming
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   21. Optimal Transport
+   17. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   22. Von Neumann Growth Model (and a Generalization)
+   18. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1110,53 +1090,43 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="scalar_dynam.html">
-   23. Dynamics in One Dimension
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   24. Finite Markov Chains
+   19. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   25. Inventory Dynamics
+   20. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   26. Linear State Space Models
+   21. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   27. Samuelson Multiplier-Accelerator
+   22. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   28. Kesten Processes and Firm Dynamics
+   23. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   29. Wealth Distribution Dynamics
+   24. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   30. A First Look at the Kalman Filter
+   25. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   31. Another Look at the Kalman Filter
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   26. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1168,37 +1138,37 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   27. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   28. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   29. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   30. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   31. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   32. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   33. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1210,52 +1180,52 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   34. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   35. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   36. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   37. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   38. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   39. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   40. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   41. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   42. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   43. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1267,17 +1237,17 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   44. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   51. Posterior Distributions for  AR(1) Parameters
+   45. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   52. Forecasting  an AR(1) Process
+   46. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1289,42 +1259,42 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   53. Job Search VII: Search with Learning
+   47. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   54. Likelihood Ratio Processes
+   48. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   49. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   50. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   51. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   52. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   53. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   54. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1336,32 +1306,32 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   55. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   56. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   57. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   58. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   59. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   60. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1372,38 +1342,33 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   61. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   62. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   63. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   71. Markov Perfect Equilibrium
+   64. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   65. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   66. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1415,17 +1380,17 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   67. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   68. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   76. Heterogeneous Beliefs and Bubbles
+   69. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1437,17 +1402,17 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   70. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   71. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   79. Maximum Likelihood Estimation
+   72. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1459,12 +1424,12 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   73. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   74. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1476,17 +1441,17 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   75. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   76. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   77. Execution Statistics
   </a>
  </li>
 </ul>

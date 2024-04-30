@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>79. Maximum Likelihood Estimation &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>72. Maximum Likelihood Estimation &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,15 +60,15 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="80. First-Price and Second-Price Auctions" href="two_auctions.html" />
-    <link rel="prev" title="78. Linear Regression in Python" href="ols.html" />
+    <link rel="next" title="73. First-Price and Second-Price Auctions" href="two_auctions.html" />
+    <link rel="prev" title="71. Linear Regression in Python" href="ols.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,21 +169,21 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">79.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">79.1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">72.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">72.1.1. Prerequisites</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-and-assumptions">79.2. Set Up and Assumptions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flow-of-ideas">79.2.1. Flow of Ideas</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-billionaires">79.2.2. Counting Billionaires</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-and-assumptions">72.2. Set Up and Assumptions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flow-of-ideas">72.2.1. Flow of Ideas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-billionaires">72.2.2. Counting Billionaires</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditional-distributions">79.3. Conditional Distributions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">79.4. Maximum Likelihood Estimation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-numerical-methods">79.5. MLE with Numerical Methods</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation-with-statsmodels">79.6. Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">79.7. Summary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">79.8. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditional-distributions">72.3. Conditional Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">72.4. Maximum Likelihood Estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-numerical-methods">72.5. MLE with Numerical Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation-with-statsmodels">72.6. Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">72.7. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">72.8. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -245,7 +245,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="maximum-likelihood-estimation">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">79. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id3"><span class="section-number">72. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -264,7 +264,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">79.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">72.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In a <a class="reference internal" href="ols.html"><span class="doc">previous lecture</span></a>, we estimated the relationship between
 dependent and explanatory variables using linear regression.</p>
 <p>But what if a linear relationship is not an appropriate assumption for our model?</p>
@@ -293,15 +293,15 @@ economic factors such as market size and tax rate predict.</p>
 </div>
 </div>
 <section id="prerequisites">
-<h3><span class="section-number">79.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h3>
 <p>We assume familiarity with basic probability and multivariate calculus.</p>
 </section>
 </section>
 <section id="set-up-and-assumptions">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">79.2. </span>Set Up and Assumptions</a><a class="headerlink" href="#set-up-and-assumptions" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">72.2. </span>Set Up and Assumptions</a><a class="headerlink" href="#set-up-and-assumptions" title="Permalink to this heading">#</a></h2>
 <p>Let’s consider the steps we need to go through in maximum likelihood estimation and how they pertain to this study.</p>
 <section id="flow-of-ideas">
-<h3><span class="section-number">79.2.1. </span>Flow of Ideas<a class="headerlink" href="#flow-of-ideas" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.2.1. </span>Flow of Ideas<a class="headerlink" href="#flow-of-ideas" title="Permalink to this heading">#</a></h3>
 <p>The first step with maximum likelihood estimation is to choose the probability distribution believed to be generating the data.</p>
 <p>More precisely, we need to make an assumption as to which <em>parametric class</em> of distributions is generating the data.</p>
 <ul class="simple">
@@ -316,7 +316,7 @@ indexed by its mean <span class="math notranslate nohighlight">\(\mu \in (-\inft
 <p>The parameter estimates so produced will be called <strong>maximum likelihood estimates</strong>.</p>
 </section>
 <section id="counting-billionaires">
-<h3><span class="section-number">79.2.2. </span>Counting Billionaires<a class="headerlink" href="#counting-billionaires" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">72.2.2. </span>Counting Billionaires<a class="headerlink" href="#counting-billionaires" title="Permalink to this heading">#</a></h3>
 <p>Treisman <span id="id1">[<a class="reference internal" href="zreferences.html#id94" title="Daniel Treisman. Russia's billionaires. The American Economic Review, 106(5):236–241, 2016.">Treisman, 2016</a>]</span> is interested in estimating the number of billionaires in different countries.</p>
 <p>The number of billionaires is integer-valued.</p>
 <p>Hence we consider distributions that take values only in the nonnegative integers.</p>
@@ -358,7 +358,7 @@ f(y) = \frac{\mu^{y}}{y!} e^{-\mu},
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e80429bd62582d08fe4829e36671bdfdcf386c6fc8488994ec26489f879483c2.png" src="_images/e80429bd62582d08fe4829e36671bdfdcf386c6fc8488994ec26489f879483c2.png" />
+<img alt="_images/12e83d2873777d03e607f409ba994997ea4bd60e189a0c09afd5f36aa6ba51b0.png" src="_images/12e83d2873777d03e607f409ba994997ea4bd60e189a0c09afd5f36aa6ba51b0.png" />
 </div>
 </div>
 <p>Notice that the Poisson distribution begins to resemble a normal distribution as the mean of <span class="math notranslate nohighlight">\(y\)</span> increases.</p>
@@ -503,19 +503,19 @@ dropped for plotting purposes)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/429f52255e4fc84c9ca50d0914c298b51b9eb43b3a21b3353cbbfdafe7ae18a2.png" src="_images/429f52255e4fc84c9ca50d0914c298b51b9eb43b3a21b3353cbbfdafe7ae18a2.png" />
+<img alt="_images/a5325f39c07ff37b28d20696ed8797495ff186c04df7665d135e0d49ac24a038.png" src="_images/a5325f39c07ff37b28d20696ed8797495ff186c04df7665d135e0d49ac24a038.png" />
 </div>
 </div>
 <p>From the histogram, it appears that the Poisson assumption is not unreasonable (albeit with a very low <span class="math notranslate nohighlight">\(\mu\)</span> and some outliers).</p>
 </section>
 </section>
 <section id="conditional-distributions">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">79.3. </span>Conditional Distributions</a><a class="headerlink" href="#conditional-distributions" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">72.3. </span>Conditional Distributions</a><a class="headerlink" href="#conditional-distributions" title="Permalink to this heading">#</a></h2>
 <p>In Treisman’s paper, the dependent variable — the number of billionaires <span class="math notranslate nohighlight">\(y_i\)</span> in country <span class="math notranslate nohighlight">\(i\)</span> — is modeled as a function of GDP per capita, population size, and years membership in GATT and WTO.</p>
 <p>Hence, the distribution of <span class="math notranslate nohighlight">\(y_i\)</span> needs to be conditioned on the vector of explanatory variables <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>.</p>
 <p>The standard formulation — the so-called <em>poisson regression</em> model — is as follows:</p>
 <div class="math notranslate nohighlight" id="equation-poissonreg">
-<span class="eqno">(79.1)<a class="headerlink" href="#equation-poissonreg" title="Permalink to this equation">#</a></span>\[f(y_i \mid \mathbf{x}_i) = \frac{\mu_i^{y_i}}{y_i!} e^{-\mu_i}; \qquad y_i = 0, 1, 2, \ldots , \infty .\]</div>
+<span class="eqno">(72.1)<a class="headerlink" href="#equation-poissonreg" title="Permalink to this equation">#</a></span>\[f(y_i \mid \mathbf{x}_i) = \frac{\mu_i^{y_i}}{y_i!} e^{-\mu_i}; \qquad y_i = 0, 1, 2, \ldots , \infty .\]</div>
 <div class="math notranslate nohighlight">
 \[
 \text{where}\ \mu_i
@@ -564,14 +564,14 @@ dropped for plotting purposes)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/89b2ccd9895314003cec18f15343fd05cbfacd203fe484eba4fa80a6a701c456.png" src="_images/89b2ccd9895314003cec18f15343fd05cbfacd203fe484eba4fa80a6a701c456.png" />
+<img alt="_images/27d7faac0850bd274b1ccf122354d10d2b648502e927d3b5163622a34f4f74a5.png" src="_images/27d7faac0850bd274b1ccf122354d10d2b648502e927d3b5163622a34f4f74a5.png" />
 </div>
 </div>
 <p>We can see that the distribution of <span class="math notranslate nohighlight">\(y_i\)</span> is conditional on
 <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> (<span class="math notranslate nohighlight">\(\mu_i\)</span> is no longer constant).</p>
 </section>
 <section id="id2">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">79.4. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">72.4. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
 <p>In our model for number of billionaires, the conditional distribution
 contains 4 (<span class="math notranslate nohighlight">\(k = 4\)</span>) parameters that we need to estimate.</p>
 <p>We will label our entire parameter vector as <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> where</p>
@@ -618,7 +618,7 @@ we can visualize the joint pmf like so</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d49e67f04031c73d2b03911f611e2f0474f2cbff339a2ef0ad2eb4d69f6b2b04.png" src="_images/d49e67f04031c73d2b03911f611e2f0474f2cbff339a2ef0ad2eb4d69f6b2b04.png" />
+<img alt="_images/81339880bcbd17580634987d0651630972014813f7a118f8011c187db7aa4319.png" src="_images/81339880bcbd17580634987d0651630972014813f7a118f8011c187db7aa4319.png" />
 </div>
 </div>
 <p>Similarly, the joint pmf of our data (which is distributed as a
@@ -684,7 +684,7 @@ differentiating <span class="math notranslate nohighlight">\(f(x) = x \exp(x)\)<
 we need to use numerical methods.</p>
 </section>
 <section id="mle-with-numerical-methods">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">79.5. </span>MLE with Numerical Methods</a><a class="headerlink" href="#mle-with-numerical-methods" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">72.5. </span>MLE with Numerical Methods</a><a class="headerlink" href="#mle-with-numerical-methods" title="Permalink to this heading">#</a></h2>
 <p>Many distributions do not have nice, analytical solutions and therefore require
 numerical methods to solve for parameter estimates.</p>
 <p>One such numerical method is the Newton-Raphson algorithm.</p>
@@ -723,7 +723,7 @@ function will be equal to 0.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ba974b759aa2cb027f245a1e78091b8a621c69c69170f082cd21015aa1d4af1f.png" src="_images/ba974b759aa2cb027f245a1e78091b8a621c69c69170f082cd21015aa1d4af1f.png" />
+<img alt="_images/4899caa2efcd43b1f9ed5aaf16de868f19ecc5a2ab7a004679b2d590f79ca43c.png" src="_images/4899caa2efcd43b1f9ed5aaf16de868f19ecc5a2ab7a004679b2d590f79ca43c.png" />
 </div>
 </div>
 <p>The plot shows that the maximum likelihood value (the top plot) occurs
@@ -955,7 +955,7 @@ the maximum is found at <span class="math notranslate nohighlight">\(\beta = 10\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/83ba2ee3338402ed8202057cd33698bd186bf08cf7015884b086447fdfb87644.png" src="_images/83ba2ee3338402ed8202057cd33698bd186bf08cf7015884b086447fdfb87644.png" />
+<img alt="_images/567e04b662f90b6eef5f9ab23ee7810d9c6461f2947a1dabc795657f80fbd6bd.png" src="_images/567e04b662f90b6eef5f9ab23ee7810d9c6461f2947a1dabc795657f80fbd6bd.png" />
 </div>
 </div>
 <p>Note that our implementation of the Newton-Raphson algorithm is rather
@@ -963,7 +963,7 @@ basic — for more robust implementations see,
 for example, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a>.</p>
 </section>
 <section id="maximum-likelihood-estimation-with-statsmodels">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">79.6. </span>Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a><a class="headerlink" href="#maximum-likelihood-estimation-with-statsmodels" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">72.6. </span>Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a><a class="headerlink" href="#maximum-likelihood-estimation-with-statsmodels" title="Permalink to this heading">#</a></h2>
 <p>Now that we know what’s going on under the hood, we can apply MLE to an interesting application.</p>
 <p>We’ll use the Poisson regression model in <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> to obtain
 a richer output with standard errors, test values, and more.</p>
@@ -995,8 +995,8 @@ to confirm we obtain the same coefficients and log-likelihood value.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 18 Mar 2024   Pseudo R-squ.:                  0.2546
-Time:                        01:16:09   Log-Likelihood:                -3.3784
+Date:                Tue, 30 Apr 2024   Pseudo R-squ.:                  0.2546
+Time:                        00:33:11   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
@@ -1013,7 +1013,7 @@ x2             0.8433      0.798      1.057      0.291      -0.720       2.407
 <p>Now let’s replicate results from Daniel Treisman’s paper, <a class="reference external" href="https://www.aeaweb.org/articles?id=10.1257/aer.p20161068">Russia’s
 Billionaires</a>,
 mentioned earlier in the lecture.</p>
-<p>Treisman starts by estimating equation <a class="reference internal" href="#equation-poissonreg">(79.1)</a>, where:</p>
+<p>Treisman starts by estimating equation <a class="reference internal" href="#equation-poissonreg">(72.1)</a>, where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(y_i\)</span> is <span class="math notranslate nohighlight">\({number\ of\ billionaires}_i\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(x_{i1}\)</span> is <span class="math notranslate nohighlight">\(\log{GDP\ per\ capita}_i\)</span></p></li>
@@ -1062,8 +1062,8 @@ model.</p>
 Dep. Variable:                numbil0   No. Observations:                  197
 Model:                        Poisson   Df Residuals:                      193
 Method:                           MLE   Df Model:                            3
-Date:                Mon, 18 Mar 2024   Pseudo R-squ.:                  0.8574
-Time:                        01:16:09   Log-Likelihood:                -438.54
+Date:                Tue, 30 Apr 2024   Pseudo R-squ.:                  0.8574
+Time:                        00:33:11   Log-Likelihood:                -438.54
 converged:                       True   LL-Null:                       -3074.7
 Covariance Type:                  HC0   LLR p-value:                     0.000
 ==============================================================================
@@ -1184,7 +1184,7 @@ plot the first 15</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a47b454d13b6c1df032ab2501b33c5d0ed6cd2366226e2f353b322d4e414ce2d.png" src="_images/a47b454d13b6c1df032ab2501b33c5d0ed6cd2366226e2f353b322d4e414ce2d.png" />
+<img alt="_images/4300b6b21ea782e2c5f29efc3eb8a3b9f57c097496768f34d21eb8175cb75cc1.png" src="_images/4300b6b21ea782e2c5f29efc3eb8a3b9f57c097496768f34d21eb8175cb75cc1.png" />
 </div>
 </div>
 <p>As we can see, Russia has by far the highest number of billionaires in
@@ -1195,7 +1195,7 @@ Russia, the political climate, and the history of privatization in the
 years after the USSR.</p>
 </section>
 <section id="summary">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">79.7. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">72.7. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we used Maximum Likelihood Estimation to estimate the
 parameters of a Poisson model.</p>
 <p><code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> contains other built-in likelihood models such as
@@ -1208,10 +1208,10 @@ example notebook can be found
 <a class="reference external" href="https://www.statsmodels.org/dev/examples/notebooks/generated/generic_mle.html">here</a>.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">79.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">72.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="mle_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 79.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 72.1 </span></p>
 <section id="exercise-content">
 <p>Suppose we wanted to estimate the probability of an event <span class="math notranslate nohighlight">\(y_i\)</span>
 occurring, given some observations.</p>
@@ -1237,7 +1237,7 @@ compute the cmf and pmf of the normal distribution.</p>
 </div>
 <div class="solution dropdown admonition" id="mle-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex1"> Exercise 79.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex1"> Exercise 72.1</a></p>
 <section id="solution-content">
 <p>The log-likelihood can be written as</p>
 <div class="math notranslate nohighlight">
@@ -1316,7 +1316,7 @@ follows</p>
 </div>
 <div class="exercise admonition" id="mle_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 79.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 72.2 </span></p>
 <section id="exercise-content">
 <p>Use the following dataset and initial values of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> to
 estimate the MLE with the Newton-Raphson algorithm developed earlier in
@@ -1364,7 +1364,7 @@ achieve convergence with different starting values.</p>
 </div>
 <div class="solution dropdown admonition" id="mle-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex2"> Exercise 79.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex2"> Exercise 72.2</a></p>
 <section id="solution-content">
 <p>Here is one solution</p>
 <div class="cell docutils container">
@@ -1421,8 +1421,8 @@ Number of iterations: 4
 Dep. Variable:                      y   No. Observations:                    5
 Model:                         Probit   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 18 Mar 2024   Pseudo R-squ.:                  0.2961
-Time:                        01:16:10   Log-Likelihood:                -2.3687
+Date:                Tue, 30 Apr 2024   Pseudo R-squ.:                  0.2961
+Time:                        00:33:11   Log-Likelihood:                -2.3687
 converged:                       True   LL-Null:                       -3.3651
 Covariance Type:            nonrobust   LLR p-value:                    0.3692
 ==============================================================================
@@ -1497,48 +1497,38 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="geom_series.html">
-   1. Geometric Series for Elementary Economics
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="sir_model.html">
-   2. Modeling COVID 19
+   1. Modeling COVID 19
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_algebra.html">
-   3. Linear Algebra
+   2. Linear Algebra
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="qr_decomp.html">
-   4. QR Decomposition
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="complex_and_trig.html">
-   5. Complex Numbers and Trigonometry
+   3. QR Decomposition
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="eig_circulant.html">
-   6. Circulant Matrices
+   4. Circulant Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="svd_intro.html">
-   7. Singular Value Decomposition (SVD)
+   5. Singular Value Decomposition (SVD)
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="var_dmd.html">
-   8. VARs and DMDs
+   6. VARs and DMDs
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="newton_method.html">
-   9. Using Newton’s Method to Solve Economic Models
+   7. Using Newton’s Method to Solve Economic Models
   </a>
  </li>
 </ul>
@@ -1550,52 +1540,47 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="prob_matrix.html">
-   10. Elementary Probability with Matrices
+   8. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   11. LLN and CLT
+   9. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   12. Two Meanings of Probability
+   10. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   13. Multivariate Hypergeometric Distribution
+   11. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   14. Multivariate Normal Distribution
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="heavy_tails.html">
-   15. Heavy-Tailed Distributions
+   12. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   16. Fault Tree Uncertainties
+   13. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   17. Introduction to Artificial Neural Networks
+   14. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   18. Randomized Response Surveys
+   15. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   19. Expected Utilities of Random Responses
+   16. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1606,18 +1591,13 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="lp_intro.html">
-   20. Linear Programming
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   21. Optimal Transport
+   17. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   22. Von Neumann Growth Model (and a Generalization)
+   18. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1628,53 +1608,43 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="scalar_dynam.html">
-   23. Dynamics in One Dimension
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   24. Finite Markov Chains
+   19. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   25. Inventory Dynamics
+   20. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   26. Linear State Space Models
+   21. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   27. Samuelson Multiplier-Accelerator
+   22. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   28. Kesten Processes and Firm Dynamics
+   23. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   29. Wealth Distribution Dynamics
+   24. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   30. A First Look at the Kalman Filter
+   25. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   31. Another Look at the Kalman Filter
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   26. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1686,37 +1656,37 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   27. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   28. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   29. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   30. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   31. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   32. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   33. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1728,52 +1698,52 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   34. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   35. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   36. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   37. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   38. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   39. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   40. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   41. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   42. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   43. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1785,17 +1755,17 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   44. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   51. Posterior Distributions for  AR(1) Parameters
+   45. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   52. Forecasting  an AR(1) Process
+   46. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1807,42 +1777,42 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   53. Job Search VII: Search with Learning
+   47. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   54. Likelihood Ratio Processes
+   48. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   49. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   50. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   51. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   52. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   53. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   54. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1854,32 +1824,32 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   55. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   56. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   57. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   58. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   59. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   60. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1890,38 +1860,33 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   61. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   62. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   63. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   71. Markov Perfect Equilibrium
+   64. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   65. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   66. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1933,17 +1898,17 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   67. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   68. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   76. Heterogeneous Beliefs and Bubbles
+   69. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1955,17 +1920,17 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   70. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   71. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   79. Maximum Likelihood Estimation
+   72. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1977,12 +1942,12 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   73. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   74. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1994,17 +1959,17 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   75. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   76. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   77. Execution Statistics
   </a>
  </li>
 </ul>

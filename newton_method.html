@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>9. Using Newton’s Method to Solve Economic Models &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>7. Using Newton’s Method to Solve Economic Models &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,15 +60,15 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="10. Elementary Probability with Matrices" href="prob_matrix.html" />
-    <link rel="prev" title="8. VARs and DMDs" href="var_dmd.html" />
+    <link rel="next" title="8. Elementary Probability with Matrices" href="prob_matrix.html" />
+    <link rel="prev" title="6. VARs and DMDs" href="var_dmd.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,33 +169,33 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">9.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-point-computation-using-newtons-method">9.2. Fixed Point Computation Using Newton’s Method</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-solow-model">9.2.1. The Solow Model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">9.2.2. Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#successive-approximation">9.2.2.1. Successive Approximation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#newtons-method">9.2.2.2. Newton’s Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">7.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-point-computation-using-newtons-method">7.2. Fixed Point Computation Using Newton’s Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-solow-model">7.2.1. The Solow Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">7.2.2. Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#successive-approximation">7.2.2.1. Successive Approximation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#newtons-method">7.2.2.2. Newton’s Method</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#root-finding-in-one-dimension">9.3. Root-Finding in One Dimension</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newtons-method-for-zeros">9.3.1. Newton’s Method for Zeros</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-finding-fixed-points">9.3.2. Application to Finding Fixed Points</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#root-finding-in-one-dimension">7.3. Root-Finding in One Dimension</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newtons-method-for-zeros">7.3.1. Newton’s Method for Zeros</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-finding-fixed-points">7.3.2. Application to Finding Fixed Points</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-newtons-method">9.4. Multivariate Newton’s Method</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-two-goods-market-equilibrium">9.4.1. A Two Goods Market Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-graphical-exploration">9.4.1.1. A Graphical Exploration</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-multidimensional-root-finder">9.4.1.2. Using a Multidimensional Root Finder</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-gradient-information">9.4.1.3. Adding Gradient Information</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-newtons-method">9.4.1.4. Using Newton’s Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-newtons-method">7.4. Multivariate Newton’s Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-two-goods-market-equilibrium">7.4.1. A Two Goods Market Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-graphical-exploration">7.4.1.1. A Graphical Exploration</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-multidimensional-root-finder">7.4.1.2. Using a Multidimensional Root Finder</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-gradient-information">7.4.1.3. Adding Gradient Information</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-newtons-method">7.4.1.4. Using Newton’s Method</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-high-dimensional-problem">9.4.2. A High-Dimensional Problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-high-dimensional-problem">7.4.2. A High-Dimensional Problem</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">9.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">7.5. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -257,7 +257,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="using-newtons-method-to-solve-economic-models">
-<span id="index-0"></span><h1><a class="toc-backref" href="#id1"><span class="section-number">9. </span>Using Newton’s Method to Solve Economic Models</a><a class="headerlink" href="#using-newtons-method-to-solve-economic-models" title="Permalink to this heading">#</a></h1>
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1"><span class="section-number">7. </span>Using Newton’s Method to Solve Economic Models</a><a class="headerlink" href="#using-newtons-method-to-solve-economic-models" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -278,7 +278,7 @@ const thebe_selector_output = ".output, .cell_output"
 on a <code class="docutils literal notranslate"><span class="pre">GPU</span></code> is <a class="reference external" href="https://jax.quantecon.org/newtons_method.html">available here</a></p>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">9.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2"><span class="section-number">7.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>Many economic problems involve finding <a class="reference external" href="https://en.wikipedia.org/wiki/Fixed_point_(mathematics)">fixed
 points</a> or
 <a class="reference external" href="https://en.wikipedia.org/wiki/Zero_of_a_function">zeros</a> (sometimes called
@@ -322,25 +322,26 @@ differentiation in <a class="reference external" href="https://github.com/HIPS/a
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting autograd
-  Obtaining dependency information for autograd from https://files.pythonhosted.org/packages/81/70/d5c7c2a458b8be96495c8b1634c2155beab58cbe864b7a9a5c06c2e52520/autograd-1.6.2-py3-none-any.whl.metadata
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading autograd-1.6.2-py3-none-any.whl.metadata (706 bytes)
-Requirement already satisfied: numpy&gt;=1.12 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from autograd) (1.24.3)
+Requirement already satisfied: numpy&gt;=1.12 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from autograd) (1.26.4)
+Collecting future&gt;=0.15.2 (from autograd)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting future&gt;=0.15.2 (from autograd)
-  Obtaining dependency information for future&gt;=0.15.2 from https://files.pythonhosted.org/packages/da/71/ae30dadffc90b9006d77af76b393cb9dfbfc9629f339fc1574a1c52e6806/future-1.0.0-py3-none-any.whl.metadata
-  Downloading future-1.0.0-py3-none-any.whl.metadata (4.0 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading future-1.0.0-py3-none-any.whl.metadata (4.0 kB)
 Downloading autograd-1.6.2-py3-none-any.whl (49 kB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/49.3 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">49.3/49.3 kB</span> <span class=" -Color -Color-Red">3.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">49.3/49.3 kB</span> <span class=" -Color -Color-Red">2.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading future-1.0.0-py3-none-any.whl (491 kB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/491.3 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">491.3/491.3 kB</span> <span class=" -Color -Color-Red">23.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ <span class=" -Color -Color-Green">399.4/491.3 kB</span> <span class=" -Color -Color-Red">12.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">491.3/491.3 kB</span> <span class=" -Color -Color-Red">10.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
@@ -372,18 +373,18 @@ Downloading autograd-1.6.2-py3-none-any.whl (49 kB)
 </div>
 </section>
 <section id="fixed-point-computation-using-newtons-method">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">9.2. </span>Fixed Point Computation Using Newton’s Method</a><a class="headerlink" href="#fixed-point-computation-using-newtons-method" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">7.2. </span>Fixed Point Computation Using Newton’s Method</a><a class="headerlink" href="#fixed-point-computation-using-newtons-method" title="Permalink to this heading">#</a></h2>
 <p>In this section we solve the fixed point of the law of motion for capital in
 the setting of the <a class="reference external" href="https://en.wikipedia.org/wiki/Solow%E2%80%93Swan_model">Solow growth
 model</a>.</p>
 <p>We will inspect the fixed point visually, solve it by successive
 approximation, and then apply Newton’s method to achieve faster convergence.</p>
 <section id="the-solow-model">
-<span id="solow"></span><h3><span class="section-number">9.2.1. </span>The Solow Model<a class="headerlink" href="#the-solow-model" title="Permalink to this heading">#</a></h3>
+<span id="solow"></span><h3><span class="section-number">7.2.1. </span>The Solow Model<a class="headerlink" href="#the-solow-model" title="Permalink to this heading">#</a></h3>
 <p>In the Solow growth model, assuming Cobb-Douglas production technology and
 zero population growth, the law of motion for capital is</p>
 <div class="math notranslate nohighlight" id="equation-motion-law">
-<span class="eqno">(9.1)<a class="headerlink" href="#equation-motion-law" title="Permalink to this equation">#</a></span>\[    k_{t+1} = g(k_t) \quad \text{where} \quad
+<span class="eqno">(7.1)<a class="headerlink" href="#equation-motion-law" title="Permalink to this equation">#</a></span>\[    k_{t+1} = g(k_t) \quad \text{where} \quad
     g(k) := sAk^\alpha + (1-\delta) k\]</div>
 <p>Here</p>
 <ul class="simple">
@@ -404,7 +405,7 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 \[ k^* = \left(\frac{s A}{δ}\right)^{1/(1 - α)}  \]</div>
 </section>
 <section id="implementation">
-<h3><span class="section-number">9.2.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.2.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
 <p>Let’s store our parameters in <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.namedtuple"><code class="docutils literal notranslate"><span class="pre">namedtuple</span></code></a> to help us keep our code clean and concise.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -423,7 +424,7 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 </div>
 </div>
 </div>
-<p>The next two functions implement the law of motion <a class="reference internal" href="#equation-motion-law">(9.1)</a> and store the true fixed point <span class="math notranslate nohighlight">\(k^*\)</span>.</p>
+<p>The next two functions implement the law of motion <a class="reference internal" href="#equation-motion-law">(7.1)</a> and store the true fixed point <span class="math notranslate nohighlight">\(k^*\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
@@ -483,7 +484,7 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/53bc945d02714c2546844f88dff2cb6820094471cdf13a1babf38dcc0a58d923.png" src="_images/53bc945d02714c2546844f88dff2cb6820094471cdf13a1babf38dcc0a58d923.png" />
+<img alt="_images/c9c83e1bb83d2785536443efadb46b251edcf8af32a4b3239c9a34af7327fcb5.png" src="_images/c9c83e1bb83d2785536443efadb46b251edcf8af32a4b3239c9a34af7327fcb5.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -496,12 +497,12 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4cfd5ec70ec081fac0e89611b4b70579d216474682abf95616febf0ca46a76c1.png" src="_images/4cfd5ec70ec081fac0e89611b4b70579d216474682abf95616febf0ca46a76c1.png" />
+<img alt="_images/e1af330220afc5474041dbe32c65bfb9c3464fe45be68901ade4054b03d44267.png" src="_images/e1af330220afc5474041dbe32c65bfb9c3464fe45be68901ade4054b03d44267.png" />
 </div>
 </div>
 <p>We see that <span class="math notranslate nohighlight">\(k^*\)</span> is indeed the unique positive fixed point.</p>
 <section id="successive-approximation">
-<h4><span class="section-number">9.2.2.1. </span>Successive Approximation<a class="headerlink" href="#successive-approximation" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.2.2.1. </span>Successive Approximation<a class="headerlink" href="#successive-approximation" title="Permalink to this heading">#</a></h4>
 <p>First let’s compute the fixed point using successive approximation.</p>
 <p>In this case, successive approximation means repeatedly updating capital
 from some initial state <span class="math notranslate nohighlight">\(k_0\)</span> using the law of motion.</p>
@@ -536,7 +537,7 @@ from some initial state <span class="math notranslate nohighlight">\(k_0\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/30f8afdec6a56632d4495fe05f3d39d76d76bed7dbc4edfafc66447ae3266694.png" src="_images/30f8afdec6a56632d4495fe05f3d39d76d76bed7dbc4edfafc66447ae3266694.png" />
+<img alt="_images/bf9f9fe342724da2b5259381f3e6e2c0d90cd49bad240dc0f9f18e6fbbc03ed4.png" src="_images/bf9f9fe342724da2b5259381f3e6e2c0d90cd49bad240dc0f9f18e6fbbc03ed4.png" />
 </div>
 </div>
 <p>Let’s see the output for a long time series.</p>
@@ -569,7 +570,7 @@ from some initial state <span class="math notranslate nohighlight">\(k_0\)</span
 </div>
 </section>
 <section id="newtons-method">
-<h4><span class="section-number">9.2.2.2. </span>Newton’s Method<a class="headerlink" href="#newtons-method" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.2.2.2. </span>Newton’s Method<a class="headerlink" href="#newtons-method" title="Permalink to this heading">#</a></h4>
 <p>In general, when applying Newton’s fixed point method to some function <span class="math notranslate nohighlight">\(g\)</span>,
 we start with a guess <span class="math notranslate nohighlight">\(x_0\)</span> of the fixed
 point and then update by solving for the fixed point of a tangent line at
@@ -578,7 +579,7 @@ point and then update by solving for the fixed point of a tangent line at
 (i.e., the first order Taylor approximation of <span class="math notranslate nohighlight">\(g\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span>) is
 the function</p>
 <div class="math notranslate nohighlight" id="equation-motivation">
-<span class="eqno">(9.2)<a class="headerlink" href="#equation-motivation" title="Permalink to this equation">#</a></span>\[\hat g(x) \approx g(x_0)+g'(x_0)(x-x_0)\]</div>
+<span class="eqno">(7.2)<a class="headerlink" href="#equation-motivation" title="Permalink to this equation">#</a></span>\[\hat g(x) \approx g(x_0)+g'(x_0)(x-x_0)\]</div>
 <p>We solve for the fixed point of <span class="math notranslate nohighlight">\(\hat g\)</span> by calculating the <span class="math notranslate nohighlight">\(x_1\)</span> that solves</p>
 <div class="math notranslate nohighlight">
 \[
@@ -586,11 +587,11 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 \]</div>
 <p>Generalising the process above, Newton’s fixed point method iterates on</p>
 <div class="math notranslate nohighlight" id="equation-newtons-method">
-<span class="eqno">(9.3)<a class="headerlink" href="#equation-newtons-method" title="Permalink to this equation">#</a></span>\[x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
+<span class="eqno">(7.3)<a class="headerlink" href="#equation-newtons-method" title="Permalink to this equation">#</a></span>\[x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
 \quad x_0 \text{ given}\]</div>
-<p>To implement Newton’s method we observe that the derivative of the law of motion for capital <a class="reference internal" href="#equation-motion-law">(9.1)</a> is</p>
+<p>To implement Newton’s method we observe that the derivative of the law of motion for capital <a class="reference internal" href="#equation-motion-law">(7.1)</a> is</p>
 <div class="math notranslate nohighlight" id="equation-newton-method2">
-<span class="eqno">(9.4)<a class="headerlink" href="#equation-newton-method2" title="Permalink to this equation">#</a></span>\[g'(k) = \alpha s A k^{\alpha-1} + (1-\delta)\]</div>
+<span class="eqno">(7.4)<a class="headerlink" href="#equation-newton-method2" title="Permalink to this equation">#</a></span>\[g'(k) = \alpha s A k^{\alpha-1} + (1-\delta)\]</div>
 <p>Let’s define this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -601,7 +602,7 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 </div>
 </div>
 </div>
-<p>Here’s a function <span class="math notranslate nohighlight">\(q\)</span> representing <a class="reference internal" href="#equation-newtons-method">(9.3)</a>.</p>
+<p>Here’s a function <span class="math notranslate nohighlight">\(q\)</span> representing <a class="reference internal" href="#equation-newtons-method">(7.3)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
@@ -655,7 +656,7 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c9e614550de042be48e707b24c717af613462cb3604d14e65c1e711a5210897d.png" src="_images/c9e614550de042be48e707b24c717af613462cb3604d14e65c1e711a5210897d.png" />
+<img alt="_images/0f3f95daf4e356da57acc0bc7d6baf531c401144a56a841b9f9f403754382b1f.png" src="_images/0f3f95daf4e356da57acc0bc7d6baf531c401144a56a841b9f9f403754382b1f.png" />
 </div>
 </div>
 <p>We can see that Newton’s method converges faster than successive approximation.</p>
@@ -663,14 +664,14 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 </section>
 </section>
 <section id="root-finding-in-one-dimension">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">9.3. </span>Root-Finding in One Dimension</a><a class="headerlink" href="#root-finding-in-one-dimension" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">7.3. </span>Root-Finding in One Dimension</a><a class="headerlink" href="#root-finding-in-one-dimension" title="Permalink to this heading">#</a></h2>
 <p>In the previous section we computed fixed points.</p>
 <p>In fact Newton’s method is more commonly associated with the problem of
 finding zeros of functions.</p>
 <p>Let’s discuss this “root-finding” problem and then show how it is connected to
 the problem of finding fixed points.</p>
 <section id="newtons-method-for-zeros">
-<h3><span class="section-number">9.3.1. </span>Newton’s Method for Zeros<a class="headerlink" href="#newtons-method-for-zeros" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.3.1. </span>Newton’s Method for Zeros<a class="headerlink" href="#newtons-method-for-zeros" title="Permalink to this heading">#</a></h3>
 <p>Let’s suppose we want to find an <span class="math notranslate nohighlight">\(x\)</span> such that <span class="math notranslate nohighlight">\(f(x)=0\)</span> for some smooth
 function <span class="math notranslate nohighlight">\(f\)</span> mapping real numbers to real numbers.</p>
 <p>Suppose we have a guess <span class="math notranslate nohighlight">\(x_0\)</span> and we want to update it to a new point <span class="math notranslate nohighlight">\(x_1\)</span>.</p>
@@ -688,9 +689,9 @@ x_1 = x_0 - \frac{ f(x_0) }{ f'(x_0) },
 \]</div>
 <p>Generalizing the formula above, for one-dimensional zero-finding problems, Newton’s method iterates on</p>
 <div class="math notranslate nohighlight" id="equation-oned-newton">
-<span class="eqno">(9.5)<a class="headerlink" href="#equation-oned-newton" title="Permalink to this equation">#</a></span>\[x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
+<span class="eqno">(7.5)<a class="headerlink" href="#equation-oned-newton" title="Permalink to this equation">#</a></span>\[x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
 \quad x_0 \text{ given}\]</div>
-<p>The following code implements the iteration <a class="reference internal" href="#equation-oned-newton">(9.5)</a></p>
+<p>The following code implements the iteration <a class="reference internal" href="#equation-oned-newton">(7.5)</a></p>
 <div class="cell docutils container" id="first-newton-attempt">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Df</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">):</span>
@@ -722,7 +723,7 @@ automatic differentiation or GPU acceleration, it will be helpful to know how
 to implement Newton’s method ourselves.)</p>
 </section>
 <section id="application-to-finding-fixed-points">
-<h3><span class="section-number">9.3.2. </span>Application to Finding Fixed Points<a class="headerlink" href="#application-to-finding-fixed-points" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.3.2. </span>Application to Finding Fixed Points<a class="headerlink" href="#application-to-finding-fixed-points" title="Permalink to this heading">#</a></h3>
 <p>Now consider again the Solow fixed-point calculation, where we solve for <span class="math notranslate nohighlight">\(k\)</span>
 satisfying <span class="math notranslate nohighlight">\(g(k) = k\)</span>.</p>
 <p>We can convert to this to a zero-finding problem by setting <span class="math notranslate nohighlight">\(f(x) := g(x)-x\)</span>.</p>
@@ -763,7 +764,7 @@ iteration 5, error = 0.00000
 </section>
 </section>
 <section id="multivariate-newtons-method">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">9.4. </span>Multivariate Newton’s Method</a><a class="headerlink" href="#multivariate-newtons-method" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">7.4. </span>Multivariate Newton’s Method</a><a class="headerlink" href="#multivariate-newtons-method" title="Permalink to this heading">#</a></h2>
 <p>In this section, we introduce a two-good problem, present a
 visualization of the problem, and solve for the equilibrium of the two-good market
 using both a zero finder in <code class="docutils literal notranslate"><span class="pre">SciPy</span></code> and Newton’s method.</p>
@@ -771,7 +772,7 @@ using both a zero finder in <code class="docutils literal notranslate"><span cla
 performance of the two methods again.</p>
 <p>We will see a significant performance gain when using Netwon’s method.</p>
 <section id="a-two-goods-market-equilibrium">
-<span id="two-goods-market"></span><h3><span class="section-number">9.4.1. </span>A Two Goods Market Equilibrium<a class="headerlink" href="#a-two-goods-market-equilibrium" title="Permalink to this heading">#</a></h3>
+<span id="two-goods-market"></span><h3><span class="section-number">7.4.1. </span>A Two Goods Market Equilibrium<a class="headerlink" href="#a-two-goods-market-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>Let’s start by computing the market equilibrium of a two-good problem.</p>
 <p>We consider a market for two related products, good 0 and good 1, with
 price vector <span class="math notranslate nohighlight">\(p = (p_0, p_1)\)</span></p>
@@ -813,7 +814,7 @@ A = \begin{pmatrix}
 \end{split}\]</div>
 <p>for this particular question.</p>
 <section id="a-graphical-exploration">
-<h4><span class="section-number">9.4.1.1. </span>A Graphical Exploration<a class="headerlink" href="#a-graphical-exploration" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.4.1.1. </span>A Graphical Exploration<a class="headerlink" href="#a-graphical-exploration" title="Permalink to this heading">#</a></h4>
 <p>Since our problem is only two-dimensional, we can use graphical analysis to visualize and help understand the problem.</p>
 <p>Our first step is to define the excess demand function</p>
 <div class="math notranslate nohighlight">
@@ -917,7 +918,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/31c4694669fcfd9d048df7d2a92d5c1165785f4717409f7f2d35937ed0469422.png" src="_images/31c4694669fcfd9d048df7d2a92d5c1165785f4717409f7f2d35937ed0469422.png" />
+<img alt="_images/d227c64a5ea40af97426a87d61351b9659155b59e825a8e95599ce7467c9c143.png" src="_images/d227c64a5ea40af97426a87d61351b9659155b59e825a8e95599ce7467c9c143.png" />
 </div>
 </div>
 <p>Here’s our plot of <span class="math notranslate nohighlight">\(e_1\)</span>:</p>
@@ -930,7 +931,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0bcad7957881fa2439a5c74885d71bfe207e8de044aeda7045744ec5f7cbff0a.png" src="_images/0bcad7957881fa2439a5c74885d71bfe207e8de044aeda7045744ec5f7cbff0a.png" />
+<img alt="_images/14b84afcbbe435c325dd6b8017661b838cc013caa1ccaaefc996babaf9eaca41.png" src="_images/14b84afcbbe435c325dd6b8017661b838cc013caa1ccaaefc996babaf9eaca41.png" />
 </div>
 </div>
 <p>We see the black contour line of zero, which tells us when <span class="math notranslate nohighlight">\(e_i(p)=0\)</span>.</p>
@@ -946,13 +947,13 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b98ab8ef0a523180434afe0b4317425d95fa52ba9ad1b10474784dd3edd5ab5b.png" src="_images/b98ab8ef0a523180434afe0b4317425d95fa52ba9ad1b10474784dd3edd5ab5b.png" />
+<img alt="_images/1fc20222afce97dfbd4ce9d2ec3945d703ba7102539c8f1c7674a557ff1c39f5.png" src="_images/1fc20222afce97dfbd4ce9d2ec3945d703ba7102539c8f1c7674a557ff1c39f5.png" />
 </div>
 </div>
 <p>It seems there is an equilibrium close to <span class="math notranslate nohighlight">\(p = (1.6, 1.5)\)</span>.</p>
 </section>
 <section id="using-a-multidimensional-root-finder">
-<h4><span class="section-number">9.4.1.2. </span>Using a Multidimensional Root Finder<a class="headerlink" href="#using-a-multidimensional-root-finder" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.4.1.2. </span>Using a Multidimensional Root Finder<a class="headerlink" href="#using-a-multidimensional-root-finder" title="Permalink to this heading">#</a></h4>
 <p>To solve for <span class="math notranslate nohighlight">\(p^*\)</span> more precisely, we use a zero-finding algorithm from <code class="docutils literal notranslate"><span class="pre">scipy.optimize</span></code>.</p>
 <p>We supply <span class="math notranslate nohighlight">\(p = (1, 1)\)</span> as our initial guess.</p>
 <div class="cell docutils container">
@@ -971,8 +972,8 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 281 µs, sys: 25 µs, total: 306 µs
-Wall time: 290 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 332 µs, sys: 0 ns, total: 332 µs
+Wall time: 286 µs
 </pre></div>
 </div>
 </div>
@@ -1007,7 +1008,7 @@ Wall time: 290 µs
 <p>This is indeed a very small error.</p>
 </section>
 <section id="adding-gradient-information">
-<h4><span class="section-number">9.4.1.3. </span>Adding Gradient Information<a class="headerlink" href="#adding-gradient-information" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.4.1.3. </span>Adding Gradient Information<a class="headerlink" href="#adding-gradient-information" title="Permalink to this heading">#</a></h4>
 <p>In many cases, for zero-finding algorithms applied to smooth functions, supplying the <a class="reference external" href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">Jacobian</a> of the function leads to better convergence properties.</p>
 <p>Here we manually calculate the elements of the Jacobian</p>
 <div class="math notranslate nohighlight">
@@ -1046,8 +1047,8 @@ J(p) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 497 µs, sys: 0 ns, total: 497 µs
-Wall time: 442 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 582 µs, sys: 46 µs, total: 628 µs
+Wall time: 449 µs
 </pre></div>
 </div>
 </div>
@@ -1068,11 +1069,11 @@ Wall time: 442 µs
 </div>
 </section>
 <section id="using-newtons-method">
-<h4><span class="section-number">9.4.1.4. </span>Using Newton’s Method<a class="headerlink" href="#using-newtons-method" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.4.1.4. </span>Using Newton’s Method<a class="headerlink" href="#using-newtons-method" title="Permalink to this heading">#</a></h4>
 <p>Now let’s use Newton’s method to compute the equilibrium price using the multivariate version of Newton’s method</p>
 <div class="math notranslate nohighlight" id="equation-multi-newton">
-<span class="eqno">(9.6)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
-<p>This is a multivariate version of <a class="reference internal" href="#equation-oned-newton">(9.5)</a></p>
+<span class="eqno">(7.6)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
+<p>This is a multivariate version of <a class="reference internal" href="#equation-oned-newton">(7.5)</a></p>
 <p>(Here <span class="math notranslate nohighlight">\(J_e(p_n)\)</span> is the Jacobian of <span class="math notranslate nohighlight">\(e\)</span> evaluated at <span class="math notranslate nohighlight">\(p_n\)</span>.)</p>
 <p>The iteration starts from some initial guess of the price vector <span class="math notranslate nohighlight">\(p_0\)</span>.</p>
 <p>Here, instead of coding Jacobian by hand, We use the <code class="docutils literal notranslate"><span class="pre">jacobian()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">autograd</span></code> library to auto-differentiate and calculate the Jacobian.</p>
@@ -1124,8 +1125,8 @@ iteration 4, error = 0.00000
 
 Result = [1.57080182 1.46928838] 
 
-CPU times: user 4.07 ms, sys: 0 ns, total: 4.07 ms
-Wall time: 3.33 ms
+CPU times: user 4.86 ms, sys: 394 µs, total: 5.25 ms
+Wall time: 3.62 ms
 </pre></div>
 </div>
 </div>
@@ -1147,7 +1148,7 @@ Wall time: 3.33 ms
 </section>
 </section>
 <section id="a-high-dimensional-problem">
-<h3><span class="section-number">9.4.2. </span>A High-Dimensional Problem<a class="headerlink" href="#a-high-dimensional-problem" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.4.2. </span>A High-Dimensional Problem<a class="headerlink" href="#a-high-dimensional-problem" title="Permalink to this heading">#</a></h3>
 <p>Our next step is to investigate a large market with 3,000 goods.</p>
 <p>A JAX version of this section using GPU accelerated linear algebra and
 automatic differentiation is available <a class="reference external" href="https://jax.quantecon.org/newtons_method.html#application">here</a></p>
@@ -1202,7 +1203,7 @@ automatic differentiation is available <a class="reference external" href="https
 
 Result = [1.50185286 1.49865815 1.50028285 ... 1.50875149 1.48724784 1.48577532] 
 
-CPU times: user 2min 9s, sys: 1.68 s, total: 2min 11s
+CPU times: user 2min 9s, sys: 1.76 s, total: 2min 11s
 Wall time: 32.9 s
 </pre></div>
 </div>
@@ -1233,8 +1234,8 @@ Wall time: 32.9 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 21s, sys: 614 ms, total: 1min 21s
-Wall time: 42.8 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 20s, sys: 618 ms, total: 1min 21s
+Wall time: 42.7 s
 </pre></div>
 </div>
 </div>
@@ -1255,10 +1256,10 @@ Wall time: 42.8 s
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">9.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">7.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="newton_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 9.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 7.1 </span></p>
 <section id="exercise-content">
 <p>Consider a three-dimensional extension of the Solow fixed point problem with</p>
 <div class="math notranslate nohighlight">
@@ -1306,7 +1307,7 @@ s = 0.2, \quad α = 0.5, \quad δ = 0.8
 </div>
 <div class="solution dropdown admonition" id="newton_method-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex1"> Exercise 9.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex1"> Exercise 7.1</a></p>
 <section id="solution-content">
 <p>Let’s first define the parameters for this problem</p>
 <div class="cell docutils container">
@@ -1326,7 +1327,7 @@ s = 0.2, \quad α = 0.5, \quad δ = 0.8
 </div>
 </div>
 </div>
-<p>Then define the multivariate version of the formula for the <a class="reference internal" href="#equation-motion-law">(9.1)</a></p>
+<p>Then define the multivariate version of the formula for the <a class="reference internal" href="#equation-motion-law">(7.1)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multivariate_solow</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="n">δ</span><span class="p">):</span>
@@ -1360,8 +1361,8 @@ iteration 6, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 27.5 ms, sys: 0 ns, total: 27.5 ms
-Wall time: 6.35 ms
+CPU times: user 26.8 ms, sys: 137 µs, total: 27 ms
+Wall time: 6.33 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 
@@ -1372,8 +1373,8 @@ iteration 4, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 14.1 ms, sys: 4.01 ms, total: 18.1 ms
-Wall time: 4.18 ms
+CPU times: user 17.3 ms, sys: 17 µs, total: 17.3 ms
+Wall time: 4.06 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 
@@ -1386,8 +1387,8 @@ iteration 6, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 23.2 ms, sys: 3.95 ms, total: 27.1 ms
-Wall time: 6.21 ms
+CPU times: user 25.5 ms, sys: 0 ns, total: 25.5 ms
+Wall time: 5.97 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1436,8 +1437,8 @@ iteration 4, error = 0.00000
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 22.8 ms, sys: 85 µs, total: 22.9 ms
-Wall time: 5.42 ms
+CPU times: user 14 ms, sys: 4.03 ms, total: 18 ms
+Wall time: 4.22 ms
 </pre></div>
 </div>
 </div>
@@ -1460,8 +1461,8 @@ iteration 5, error = 0.00000
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 20.5 ms, sys: 7.97 ms, total: 28.5 ms
-Wall time: 6.72 ms
+CPU times: user 22.3 ms, sys: 79 µs, total: 22.3 ms
+Wall time: 5.23 ms
 </pre></div>
 </div>
 </div>
@@ -1471,7 +1472,7 @@ Wall time: 6.72 ms
 </div>
 <div class="exercise admonition" id="newton_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 9.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 7.2 </span></p>
 <section id="exercise-content">
 <p>In this exercise, let’s try different initial values and check how Newton’s method responds to different starting points.</p>
 <p>Let’s define a three-good problem with the following default values:</p>
@@ -1508,7 +1509,7 @@ c = \begin{pmatrix}
 </div>
 <div class="solution dropdown admonition" id="newton_method-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex2"> Exercise 9.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex2"> Exercise 7.2</a></p>
 <section id="solution-content">
 <p>Define parameters and initial values</p>
 <div class="cell docutils container">
@@ -1582,8 +1583,8 @@ iteration 6, error = 0.00000
 
 Result = [1.49744442 1.49744442 1.49744442] 
 
-CPU times: user 6.06 ms, sys: 26 µs, total: 6.08 ms
-Wall time: 4.86 ms
+CPU times: user 5.71 ms, sys: 0 ns, total: 5.71 ms
+Wall time: 4.85 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [4.5 0.1 4. ] 
 
@@ -1598,8 +1599,8 @@ iteration 8, error = 0.00000
 
 Result = [1.49744442 1.49744442 1.49744442] 
 
-CPU times: user 7.85 ms, sys: 0 ns, total: 7.85 ms
-Wall time: 6.22 ms
+CPU times: user 7.05 ms, sys: 19 µs, total: 7.07 ms
+Wall time: 6.03 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1682,48 +1683,38 @@ Wall time: 6.22 ms
 </p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="geom_series.html">
-   1. Geometric Series for Elementary Economics
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="sir_model.html">
-   2. Modeling COVID 19
+   1. Modeling COVID 19
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_algebra.html">
-   3. Linear Algebra
+   2. Linear Algebra
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="qr_decomp.html">
-   4. QR Decomposition
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="complex_and_trig.html">
-   5. Complex Numbers and Trigonometry
+   3. QR Decomposition
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="eig_circulant.html">
-   6. Circulant Matrices
+   4. Circulant Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="svd_intro.html">
-   7. Singular Value Decomposition (SVD)
+   5. Singular Value Decomposition (SVD)
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="var_dmd.html">
-   8. VARs and DMDs
+   6. VARs and DMDs
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   9. Using Newton’s Method to Solve Economic Models
+   7. Using Newton’s Method to Solve Economic Models
   </a>
  </li>
 </ul>
@@ -1735,52 +1726,47 @@ Wall time: 6.22 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="prob_matrix.html">
-   10. Elementary Probability with Matrices
+   8. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   11. LLN and CLT
+   9. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   12. Two Meanings of Probability
+   10. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   13. Multivariate Hypergeometric Distribution
+   11. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   14. Multivariate Normal Distribution
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="heavy_tails.html">
-   15. Heavy-Tailed Distributions
+   12. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   16. Fault Tree Uncertainties
+   13. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   17. Introduction to Artificial Neural Networks
+   14. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   18. Randomized Response Surveys
+   15. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   19. Expected Utilities of Random Responses
+   16. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1791,18 +1777,13 @@ Wall time: 6.22 ms
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="lp_intro.html">
-   20. Linear Programming
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   21. Optimal Transport
+   17. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   22. Von Neumann Growth Model (and a Generalization)
+   18. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1813,53 +1794,43 @@ Wall time: 6.22 ms
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="scalar_dynam.html">
-   23. Dynamics in One Dimension
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   24. Finite Markov Chains
+   19. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   25. Inventory Dynamics
+   20. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   26. Linear State Space Models
+   21. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   27. Samuelson Multiplier-Accelerator
+   22. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   28. Kesten Processes and Firm Dynamics
+   23. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   29. Wealth Distribution Dynamics
+   24. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   30. A First Look at the Kalman Filter
+   25. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   31. Another Look at the Kalman Filter
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   26. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1871,37 +1842,37 @@ Wall time: 6.22 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   27. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   28. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   29. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   30. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   31. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   32. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   33. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1913,52 +1884,52 @@ Wall time: 6.22 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   34. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   35. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   36. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   37. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   38. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   39. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   40. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   41. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   42. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   43. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1970,17 +1941,17 @@ Wall time: 6.22 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   44. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   51. Posterior Distributions for  AR(1) Parameters
+   45. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   52. Forecasting  an AR(1) Process
+   46. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1992,42 +1963,42 @@ Wall time: 6.22 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   53. Job Search VII: Search with Learning
+   47. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   54. Likelihood Ratio Processes
+   48. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   49. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   50. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   51. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   52. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   53. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   54. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -2039,32 +2010,32 @@ Wall time: 6.22 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   55. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   56. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   57. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   58. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   59. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   60. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2075,38 +2046,33 @@ Wall time: 6.22 ms
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   61. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   62. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   63. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   71. Markov Perfect Equilibrium
+   64. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   65. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   66. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -2118,17 +2084,17 @@ Wall time: 6.22 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   67. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   68. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   76. Heterogeneous Beliefs and Bubbles
+   69. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2140,17 +2106,17 @@ Wall time: 6.22 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   70. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   71. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   79. Maximum Likelihood Estimation
+   72. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2162,12 +2128,12 @@ Wall time: 6.22 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   73. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   74. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2179,17 +2145,17 @@ Wall time: 6.22 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   75. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   76. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   77. Execution Statistics
   </a>
  </li>
 </ul>
