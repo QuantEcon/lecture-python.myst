@@ -234,7 +234,7 @@ def operator_factory(cw, parallel_flag=True):
     F_probs, G_probs = cw.F_probs, cw.G_probs
     F_mean, G_mean = cw.F_mean, cw.G_mean
 
-    @njit(parallel=parallel_flag)
+    @jit(parallel=parallel_flag)
     def T(v):
         "The Bellman operator"
 
@@ -249,7 +249,7 @@ def operator_factory(cw, parallel_flag=True):
 
         return v_new
 
-    @njit
+    @jit
     def get_greedy(v):
         "Computes the v-greedy policy"
 
@@ -472,7 +472,7 @@ T, get_greedy = operator_factory(cw)
 v_star = solve_model(cw, verbose=False)
 greedy_star = get_greedy(v_star)
 
-@njit
+@jit
 def passage_time(optimal_policy, F, G):
     t = 0
     i = j = 0
@@ -485,7 +485,7 @@ def passage_time(optimal_policy, F, G):
             i, j  = qe.random.draw(F), qe.random.draw(G)
         t += 1
 
-@njit(parallel=True)
+@jit(parallel=True)
 def median_time(optimal_policy, F, G, M=25000):
     samples = np.empty(M)
     for i in prange(M):

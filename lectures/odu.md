@@ -318,11 +318,11 @@ def operator_factory(sp, parallel_flag=True):
     mc_size = sp.mc_size
     w_grid, π_grid = sp.w_grid, sp.π_grid
 
-    @njit
+    @jit
     def v_func(x, y, v):
         return mlinterp((w_grid, π_grid), v, (x, y))
 
-    @njit
+    @jit
     def κ(w, π):
         """
         Updates π using Bayes' rule and the current wage observation w.
@@ -332,7 +332,7 @@ def operator_factory(sp, parallel_flag=True):
 
         return π_new
 
-    @njit(parallel=parallel_flag)
+    @jit(parallel=parallel_flag)
     def T(v):
         """
         The Bellman operator.
@@ -358,7 +358,7 @@ def operator_factory(sp, parallel_flag=True):
 
         return v_new
 
-    @njit(parallel=parallel_flag)
+    @jit(parallel=parallel_flag)
     def get_greedy(v):
         """"
         Compute optimal actions taking v as the value function.
@@ -630,11 +630,11 @@ def Q_factory(sp, parallel_flag=True):
     mc_size = sp.mc_size
     w_grid, π_grid = sp.w_grid, sp.π_grid
 
-    @njit
+    @jit
     def ω_func(p, ω):
         return np.interp(p, π_grid, ω)
 
-    @njit
+    @jit
     def κ(w, π):
         """
         Updates π using Bayes' rule and the current wage observation w.
@@ -644,7 +644,7 @@ def Q_factory(sp, parallel_flag=True):
 
         return π_new
 
-    @njit(parallel=parallel_flag)
+    @jit(parallel=parallel_flag)
     def Q(ω):
         """
 
@@ -784,7 +784,7 @@ w_bar = solve_wbar(sp, verbose=False)
 π_grid = sp.π_grid
 w_func = njit(lambda x: np.interp(x, π_grid, w_bar))
 
-@njit
+@jit
 def update(a, b, e, π):
     "Update e and π by drawing wage offer from beta distribution with parameters a and b"
 
@@ -797,7 +797,7 @@ def update(a, b, e, π):
 
     return e, π
 
-@njit
+@jit
 def simulate_path(F_a=F_a,
                   F_b=F_b,
                   G_a=G_a,
@@ -860,7 +860,7 @@ empirical distributions of unemployment duration and π at the time of
 employment.
 
 ```{code-cell} python3
-@njit
+@jit
 def empirical_dist(F_a, F_b, G_a, G_b, w_bar, π_grid,
                    N=10000, T=600):
     """

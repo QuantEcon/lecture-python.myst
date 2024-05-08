@@ -414,7 +414,7 @@ u'(c) - \max \left\{
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def euler_diff(c, a, z, σ_vals, ifp):
     """
     The difference between the left- and right-hand side
@@ -450,7 +450,7 @@ policy function.
 The next step is to obtain the root of the Euler difference.
 
 ```{code-cell} python3
-@njit
+@jit
 def K(σ, ifp):
     """
     The operator K.

@@ -110,7 +110,7 @@ $b_{1}=1.2$, respectively.
 Below is some Python code that sets up these objects.
 
 ```{code-cell} python3
-@njit
+@jit
 def p(x, a, b):
     "Beta distribution."
 
@@ -346,7 +346,7 @@ consequently the minimal $\bar{V}_{fre}\left(t\right)$.
 Here is Python code that does that and then plots a useful graph.
 
 ```{code-cell} python3
-@njit
+@jit
 def V_fre_d_t(d, t, L0_arr, L1_arr, π_star, wf):
 
     N = L0_arr.shape[0]
@@ -475,7 +475,7 @@ lecture {doc}`A Problem that Stumped Milton Friedman <wald_friedman>`
 that computes $\alpha$ and $\beta$.
 
 ```{code-cell} python3
-@njit(parallel=True)
+@jit(parallel=True)
 def Q(h, wf):
 
     c, π_grid = wf.c, wf.π_grid
@@ -508,7 +508,7 @@ def Q(h, wf):
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def solve_model(wf, tol=1e-4, max_iter=1000):
     """
     Compute the continuation value function
@@ -538,7 +538,7 @@ h_star = solve_model(wf)
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def find_cutoff_rule(wf, h):
 
     """
@@ -645,7 +645,7 @@ $V^{0}\left(\pi\right)$ and $V^{1}\left(\pi\right)$
 numerically.
 
 ```{code-cell} python3
-@njit(parallel=True)
+@jit(parallel=True)
 def V_q(wf, flag):
     V = np.zeros(wf.π_grid_size)
     if flag == 0:
@@ -877,7 +877,7 @@ On average the Bayesian rule decides **earlier** than the frequentist
 rule when $q= f_0$ and **later** when $q = f_1$.
 
 ```{code-cell} python3
-@njit(parallel=True)
+@jit(parallel=True)
 def check_results(L_arr, α, β, flag, π0):
 
     N, T = L_arr.shape

@@ -143,7 +143,7 @@ from jax import random
 
 np.random.seed(142857)
 
-@njit
+@jit
 def set_seed():
     np.random.seed(142857)
 set_seed()
@@ -171,7 +171,7 @@ g = njit(lambda x: p(x, G_a, G_b))
 ```{code-cell} ipython3
 :hide-output: false
 
-@njit
+@jit
 def simulate(a, b, T=50, N=500):
     '''
     Generate N sets of T observations of the likelihood ratio,
@@ -250,7 +250,7 @@ from our target mixture distribution.
 
 
 ```{code-cell} ipython3
-@njit
+@jit
 def draw_lottery(p, N):
     "Draw from the compound lottery directly."
 
@@ -339,7 +339,7 @@ likelihood ratio $ \ell $ according to  recursion {eq}`equation-eq-recur1`
 ```{code-cell} ipython3
 :hide-output: false
 
-@njit
+@jit
 def update(π, l):
     "Update π using likelihood l"
 

@@ -560,7 +560,7 @@ def function_factory(F_a=1, F_b=1, G_a=3, G_b=1.2):
     f = njit(lambda x: p(x, F_a, F_b))
     g = njit(lambda x: p(x, G_a, G_b))
 
-    @njit
+    @jit
     def update(a, b, π):
         "Update π by drawing from beta distribution with parameters a and b"
 
@@ -572,7 +572,7 @@ def function_factory(F_a=1, F_b=1, G_a=3, G_b=1.2):
 
         return π
 
-    @njit
+    @jit
     def simulate_path(a, b, T=50):
         "Simulates a path of beliefs π with length T"
 

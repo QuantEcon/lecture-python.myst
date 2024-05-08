@@ -197,7 +197,7 @@ Here $\frac{p\left(\omega_{i,t}^q\right)}{q\left(\omega_{i,t}^q\right)}$ is the 
 Below we prepare a Python function for computing the importance sampling estimates given any beta distributions $p$, $q$.
 
 ```{code-cell} ipython3
-@njit(parallel=True)
+@jit(parallel=True)
 def estimate(p_a, p_b, q_a, q_b, T=1, N=10000):
 
     μ_L = 0
@@ -255,7 +255,7 @@ We next study the bias and efficiency of the Monte Carlo and importance sampling
 The code  below produces distributions of estimates using both Monte Carlo and importance sampling methods.
 
 ```{code-cell} ipython3
-@njit(parallel=True)
+@jit(parallel=True)
 def simulate(p_a, p_b, q_a, q_b, N_simu, T=1):
 
     μ_L_p = np.empty(N_simu)

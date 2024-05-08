@@ -131,7 +131,7 @@ We will use JIT compilation to accelerate the Bellman operator.
 First, here's a function that returns the value of a particular consumption choice `c`, given state `y`, as per the Bellman equation {eq}`fpb30`.
 
 ```{code-cell} python3
-@njit
+@jit
 def state_action_value(c, y, v_array, og):
     """
     Right hand side of the Bellman equation.

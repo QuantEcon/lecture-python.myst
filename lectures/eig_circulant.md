@@ -66,7 +66,7 @@ first column needs to be specified.
 Let's write some Python code to generate a circulant matrix.
 
 ```{code-cell} ipython3
-@njit
+@jit
 def construct_cirlulant(row):
 
     N = row.size
@@ -200,7 +200,7 @@ $$
 Let's write some Python code to illustrate these ideas.
 
 ```{code-cell} ipython3
-@njit
+@jit
 def construct_P(N):
 
     P = np.zeros((N, N))

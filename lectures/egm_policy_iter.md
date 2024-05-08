@@ -161,7 +161,7 @@ We reuse the `OptimalGrowthModel` class
 Here's an implementation of $K$ using EGM as described above.
 
 ```{code-cell} python3
-@njit
+@jit
 def K(σ_array, og):
     """
     The Coleman-Reffett operator using EGM

@@ -136,7 +136,7 @@ g = njit(lambda x: p(x, G_a, G_b))
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def simulate(a, b, T=50, N=500):
     '''
     Generate N sets of T observations of the likelihood ratio,

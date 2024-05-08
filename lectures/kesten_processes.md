@@ -679,7 +679,7 @@ from numba import njit, prange
 from numpy.random import randn
 
 
-@njit(parallel=True)
+@jit(parallel=True)
 def generate_draws(μ_a=-0.5,
                    σ_a=0.1,
                    μ_b=0.0,

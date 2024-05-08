@@ -255,7 +255,7 @@ def operator_factory(jv, parallel_flag=True):
     x_grid, ɛ, mc_size = jv.x_grid, jv.ɛ, jv.mc_size
     f_rvs, g = jv.f_rvs, jv.g
 
-    @njit
+    @jit
     def state_action_values(z, x, v):
         s, ϕ = z
         v_func = lambda x: np.interp(x, x_grid, v)
@@ -269,7 +269,7 @@ def operator_factory(jv, parallel_flag=True):
         q = π(s) * integral + (1 - π(s)) * v_func(g(x, ϕ))
         return x * (1 - ϕ - s) + β * q
 
-    @njit(parallel=parallel_flag)
+    @jit(parallel=parallel_flag)
     def T(v):
         """
         The Bellman operator
@@ -291,7 +291,7 @@ def operator_factory(jv, parallel_flag=True):
 
         return v_new
 
-    @njit
+    @jit
     def get_greedy(v):
         """
         Computes the v-greedy policy of a given function v

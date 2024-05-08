@@ -394,7 +394,7 @@ def bivariate_normal(x, y, μ, Σ, i, j):
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def count(vec1, vec2, n):
     size = sample.shape[0]
 

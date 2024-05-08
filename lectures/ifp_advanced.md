@@ -415,7 +415,7 @@ class IFP:
 Here's the Coleman-Reffett operator based on EGM:
 
 ```{code-cell} ipython
-@njit
+@jit
 def K(a_in, σ_in, ifp):
     """
     The Coleman--Reffett operator for the income fluctuation problem,
@@ -619,7 +619,7 @@ The reason we do this is that `solve_model_time_iter` is not
 JIT-compiled.
 
 ```{code-cell} python3
-@njit
+@jit
 def compute_asset_series(ifp, a_star, σ_star, z_seq, T=500_000):
     """
     Simulates a time series of length T for assets, given optimal

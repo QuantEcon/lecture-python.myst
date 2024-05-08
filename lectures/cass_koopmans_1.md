@@ -525,7 +525,7 @@ planning problem.
 $c_0$ instead of $\mu_0$ in the following code.)
 
 ```{code-cell} python3
-@njit
+@jit
 def shooting(pp, c0, k0, T=10):
     '''
     Given the initial condition of capital k0 and an initial guess
@@ -610,7 +610,7 @@ When $K_{T+1}$ gets close enough to $0$ (i.e., within an error
 tolerance bounds), we stop.
 
 ```{code-cell} python3
-@njit
+@jit
 def bisection(pp, c0, k0, T=10, tol=1e-4, max_iter=500, k_ter=0, verbose=True):
 
     # initial boundaries for guess c0
@@ -804,7 +804,7 @@ over time.
 Let's calculate and  plot the saving rate.
 
 ```{code-cell} python3
-@njit
+@jit
 def saving_rate(pp, c_path, k_path):
     'Given paths of c and k, computes the path of saving rate.'
     production = pp.f(k_path[:-1])

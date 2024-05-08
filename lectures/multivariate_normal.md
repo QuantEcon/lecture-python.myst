@@ -84,7 +84,7 @@ covariance matrix of $z$.
 The covariance matrix $\Sigma$ is symmetric and positive definite.
 
 ```{code-cell} python3
-@njit
+@jit
 def f(z, μ, Σ):
     """
     The density function of multivariate normal distribution.
