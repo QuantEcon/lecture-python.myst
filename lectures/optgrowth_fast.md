@@ -154,7 +154,7 @@ Now we can implement the Bellman operator, which maximizes the right hand side
 of the Bellman equation:
 
 ```{code-cell} python3
-@jit(nopython=True)
+@jit
 def T(v, og):
     """
     The Bellman operator.
