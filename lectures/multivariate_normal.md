@@ -64,7 +64,7 @@ We  use the following imports:
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from numba import njit
+from numba import jit
 import statsmodels.api as sm
 ```
 

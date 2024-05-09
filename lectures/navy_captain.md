@@ -28,7 +28,7 @@ kernelspec:
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import njit, prange, float64, int64
+from numba import jit, prange, float64, int64
 from numba.experimental import jitclass
 from math import gamma
 from scipy.optimize import minimize

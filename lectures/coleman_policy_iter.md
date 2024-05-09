@@ -63,7 +63,7 @@ Let's start with some imports:
 import matplotlib.pyplot as plt
 import numpy as np
 from quantecon.optimize import brentq
-from numba import njit
+from numba import jit
 ```
 
 ## The Euler Equation

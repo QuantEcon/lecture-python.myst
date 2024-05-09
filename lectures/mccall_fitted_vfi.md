@@ -51,7 +51,7 @@ We will use the following imports:
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import njit, float64
+from numba import jit, float64
 from numba.experimental import jitclass
 ```
 

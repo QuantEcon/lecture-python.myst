@@ -50,7 +50,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import quantecon as qe
 from numpy.random import randn
-from numba import njit, prange, float64
+from numba import jit, prange, float64
 from numba.experimental import jitclass
 ```
 

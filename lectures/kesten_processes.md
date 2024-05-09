@@ -675,7 +675,7 @@ Here's one solution.
 First we generate the observations:
 
 ```{code-cell} ipython3
-from numba import njit, prange
+from numba import jit, prange
 from numpy.random import randn
 
 

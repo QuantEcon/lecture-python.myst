@@ -61,7 +61,7 @@ Let's start with some imports:
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import jit, njit
+from numba import jit, jit
 from quantecon.optimize.scalar_maximization import brent_max
 ```
 

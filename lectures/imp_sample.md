@@ -31,7 +31,7 @@ We start by importing some Python packages.
 
 ```{code-cell} ipython3
 import numpy as np
-from numba import njit, vectorize, prange
+from numba import jit, vectorize, prange
 import matplotlib.pyplot as plt
 from math import gamma
 ```
@@ -81,8 +81,8 @@ def p(w, a, b):
     return r * w ** (a-1) * (1 - w) ** (b-1)
 
 # The two density functions.
-f = njit(lambda w: p(w, F_a, F_b))
-g = njit(lambda w: p(w, G_a, G_b))
+f = jit(lambda w: p(w, F_a, F_b))
+g = jit(lambda w: p(w, G_a, G_b))
 ```
 
 ```{code-cell} ipython3
@@ -99,7 +99,7 @@ plt.show()
 The likelihood ratio is `l(w)=f(w)/g(w)`.
 
 ```{code-cell} ipython3
-l = njit(lambda w: f(w) / g(w))
+l = jit(lambda w: f(w) / g(w))
 ```
 
 ```{code-cell} ipython3

@@ -80,7 +80,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
-from numba import njit, float64, prange
+from numba import jit, float64, prange
 from numba.experimental import jitclass
 ```
 

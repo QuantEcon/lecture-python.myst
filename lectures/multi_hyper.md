@@ -116,7 +116,7 @@ plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from scipy.special import comb
 from scipy.stats import normaltest
-from numba import njit, prange
+from numba import jit, prange
 ```
 
 To recapitulate, we assume there are in total $c$ types of objects in an urn.

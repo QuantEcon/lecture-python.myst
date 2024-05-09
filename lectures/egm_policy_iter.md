@@ -44,7 +44,7 @@ Let's start with some standard imports:
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import njit
+from numba import jit
 ```
 
 ## Key Idea

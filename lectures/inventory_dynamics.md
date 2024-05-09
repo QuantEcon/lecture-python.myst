@@ -50,7 +50,7 @@ Let's start with some imports
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from numba import njit, float64, prange
+from numba import jit, float64, prange
 from numba.experimental import jitclass
 ```
 

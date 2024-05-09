@@ -58,7 +58,7 @@ Let’s start with some imports
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-from numba import njit, prange, vectorize
+from numba import jit, prange, vectorize
 from interpolation import mlinterp
 from math import gamma
 import numpy as np
@@ -291,8 +291,8 @@ class SearchProblem:
 
         self.β, self.c, self.w_max = β, c, w_max
 
-        self.f = njit(lambda x: p(x, F_a, F_b))
-        self.g = njit(lambda x: p(x, G_a, G_b))
+        self.f = jit(lambda x: p(x, F_a, F_b))
+        self.g = jit(lambda x: p(x, G_a, G_b))
 
         self.π_min, self.π_max = 1e-3, 1-1e-3    # Avoids instability
         self.w_grid = np.linspace(0, w_max, w_grid_size)
@@ -782,7 +782,7 @@ w_bar = solve_wbar(sp, verbose=False)
 
 # Interpolate reservation wage function
 π_grid = sp.π_grid
-w_func = njit(lambda x: np.interp(x, π_grid, w_bar))
+w_func = jit(lambda x: np.interp(x, π_grid, w_bar))
 
 @jit
 def update(a, b, e, π):

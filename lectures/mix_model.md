@@ -125,7 +125,7 @@ As usual, we'll start by importing some Python tools.
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from numba import vectorize, njit
+from numba import vectorize, jit
 from math import gamma
 import pandas as pd
 import scipy.stats as sp
@@ -164,8 +164,8 @@ def p(x, a, b):
     return r * x** (a-1) * (1 - x) ** (b-1)
 
 # The two density functions.
-f = njit(lambda x: p(x, F_a, F_b))
-g = njit(lambda x: p(x, G_a, G_b))
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
 ```
 
 ```{code-cell} ipython3

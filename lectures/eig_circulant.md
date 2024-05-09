@@ -31,7 +31,7 @@ We begin by importing some Python packages
 
 ```{code-cell} ipython3
 import numpy as np
-from numba import njit
+from numba import jit
 import matplotlib.pyplot as plt
 ```
 

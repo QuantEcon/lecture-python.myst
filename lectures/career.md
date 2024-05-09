@@ -51,7 +51,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
-from numba import njit, prange
+from numba import jit, prange
 from quantecon.distributions import BetaBinomial
 from scipy.special import binom, beta
 from mpl_toolkits.mplot3d.axes3d import Axes3D

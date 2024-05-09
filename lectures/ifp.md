@@ -61,7 +61,7 @@ We'll need the following imports:
 import matplotlib.pyplot as plt
 import numpy as np
 from quantecon.optimize import brentq
-from numba import njit, float64
+from numba import jit, float64
 from numba.experimental import jitclass
 from quantecon import MarkovChain
 ```
