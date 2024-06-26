@@ -186,7 +186,7 @@ The next figure shows two beta distributions in the top panel.
 The bottom panel presents mixtures of these distributions, with various mixing probabilities $\pi_k$
 
 ```{code-cell} ipython3
-@jit(nopython=True)
+@jit
 def p(x, a, b):
     r = gamma(a + b) / (gamma(a) * gamma(b))
     return r * x**(a-1) * (1 - x)**(b-1)
@@ -502,7 +502,7 @@ def Q(h, wf):
 To solve the key functional equation, we will iterate using `Q` to find the fixed point
 
 ```{code-cell} ipython3
-@jit(nopython=True)
+@jit
 def solve_model(wf, tol=1e-4, max_iter=1000):
     """
     Compute the continuation cost function
@@ -557,7 +557,7 @@ We will also set up a function to compute the cutoffs $\alpha$ and $\beta$
 and plot these on our cost function plot
 
 ```{code-cell} ipython3
-@jit(nopython=True)
+@jit
 def find_cutoff_rule(wf, h):
 
     """

@@ -61,7 +61,7 @@ We'll need the following imports:
 import matplotlib.pyplot as plt
 import numpy as np
 from quantecon.optimize import brentq
-from numba import njit, float64
+from numba import jit, float64
 from numba.experimental import jitclass
 from quantecon import MarkovChain
 ```
@@ -414,7 +414,7 @@ u'(c) - \max \left\{
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def euler_diff(c, a, z, σ_vals, ifp):
     """
     The difference between the left- and right-hand side
@@ -450,7 +450,7 @@ policy function.
 The next step is to obtain the root of the Euler difference.
 
 ```{code-cell} python3
-@njit
+@jit
 def K(σ, ifp):
     """
     The operator K.

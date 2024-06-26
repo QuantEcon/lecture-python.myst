@@ -50,7 +50,7 @@ Let's start with some imports
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from numba import njit, float64, prange
+from numba import jit, float64, prange
 from numba.experimental import jitclass
 ```
 
@@ -316,7 +316,7 @@ This meant writing a specialized function rather than using the class above.
 ```{code-cell} ipython3
 s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
 
-@njit(parallel=True)
+@jit(parallel=True)
 def shift_firms_forward(current_inventory_levels, num_periods):
 
     num_firms = len(current_inventory_levels)
@@ -396,7 +396,7 @@ specialized function rather than using the class above.
 We will also use parallelization across firms.
 
 ```{code-cell} ipython3
-@njit(parallel=True)
+@jit(parallel=True)
 def compute_freq(sim_length=50, x_init=70, num_firms=1_000_000):
 
     firm_counter = 0  # Records number of firms that restock 2x or more

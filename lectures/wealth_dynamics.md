@@ -80,7 +80,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
-from numba import njit, float64, prange
+from numba import jit, float64, prange
 from numba.experimental import jitclass
 ```
 
@@ -352,7 +352,7 @@ Here's function to simulate the time series of wealth for in individual househol
 
 ```{code-cell} ipython3
 
-@njit
+@jit
 def wealth_time_series(wdy, w_0, n):
     """
     Generate a single time series of length n for wealth given
@@ -381,7 +381,7 @@ Note the use of parallelization to speed up computation.
 
 ```{code-cell} ipython3
 
-@njit(parallel=True)
+@jit(parallel=True)
 def update_cross_section(wdy, w_distribution, shift_length=500):
     """
     Shifts a cross-section of household forward in time

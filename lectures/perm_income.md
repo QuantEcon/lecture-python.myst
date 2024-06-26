@@ -51,7 +51,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import random
-from numba import njit
+from numba import jit
 ```
 
 ## The Savings Problem
@@ -479,7 +479,7 @@ r = 0.05
 μ = 1
 T = 60
 
-@njit
+@jit
 def time_path(T):
     w = np.random.randn(T+1)  # w_0, w_1, ..., w_T
     w[0] = 0
@@ -807,7 +807,7 @@ r = 0.05
 S = 5   # Impulse date
 σ1 = σ2 = 0.15
 
-@njit
+@jit
 def time_path(T, permanent=False):
     "Time path of consumption and debt given shock sequence"
     w1 = np.zeros(T+1)

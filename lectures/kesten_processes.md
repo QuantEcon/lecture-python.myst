@@ -675,11 +675,11 @@ Here's one solution.
 First we generate the observations:
 
 ```{code-cell} ipython3
-from numba import njit, prange
+from numba import jit, prange
 from numpy.random import randn
 
 
-@njit(parallel=True)
+@jit(parallel=True)
 def generate_draws(μ_a=-0.5,
                    σ_a=0.1,
                    μ_b=0.0,
