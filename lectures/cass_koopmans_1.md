@@ -36,7 +36,7 @@ It does so by making the saving rate be a choice, instead of a hard-wired fixed 
 
 (Solow assumed a constant saving rate determined outside the model.)
 
-We describe two versions of the model, a planning problem without price  in this lecture, and a competitive equilibrium with prices  in this lecture  {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
+We describe two versions of the model, a planning problem without prices in this lecture, and a competitive equilibrium with prices  in this lecture  {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
 
 Together, the two lectures  illustrate what is, in fact, a
 more general connection between a **planned economy** and a decentralized economy
