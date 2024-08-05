@@ -32,7 +32,7 @@ and David Cass {cite}`Cass` used to analyze optimal growth.
 The model extends  the model of Robert Solow
 described in [an earlier lecture](https://python-programming.quantecon.org/python_oop.html).
 
-It does so by making the saving rate be a choice, instead of a hard-wired fixed number.
+It does so by making  saving rates be   decisions, instead of a hard-wired fixed number.
 
 (Solow assumed a constant saving rate determined outside the model.)
 
