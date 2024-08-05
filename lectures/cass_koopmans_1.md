@@ -71,6 +71,8 @@ plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, float64
 from numba.experimental import jitclass
 import numpy as np
+from scipy.optimize import minimize
+from quantecon.optimize import brentq
 ```
 
 ## The Model
@@ -367,7 +369,7 @@ $$
 %\notag\\= C_t\left(\beta [f'(K_{t+1}) +
 %(1-\delta)]\right)^{1/\gamma} 
 \end{aligned}
-$$
+$$ (eq:consn_euler)
 
 which we can  combine with the feasibility constraint {eq}`allocation` to get
 
@@ -377,7 +379,7 @@ C_{t+1} & = C_t\left(\beta [f'(F(K_t,1)+ (1-\delta) K_t  - C_t) +
 (1-\delta)]\right)^{1/\gamma}  \\
 K_{t+1}  & = F(K_t,1)+ (1-\delta) K_t  - C_t .
 \end{aligned}
-$$
+$$ (eq:systemdynamics)
 
 This is a pair of non-linear first-order difference equations that map $C_t, K_t$ into $C_{t+1}, K_{t+1}$ and that  an optimal sequence $\vec C , \vec K$ must satisfy.
 
@@ -533,7 +535,7 @@ def shooting(pp, c0, k0, T=10):
     of consumption c0, computes the whole paths of c and k
     using the state transition law and Euler equation for T periods.
     '''
-    if c0 > pp.f(k0):
+    if c0 > pp.f(k0) + (1 - pp.δ) * k0:
         print("initial consumption is not feasible")
 
         return None
@@ -887,6 +889,189 @@ Note that $f''(K)<0$, so as $K$ rises, $f'(K)$ declines.
 The planner slowly lowers the saving rate until reaching a steady
 state in which $f'(K)=\rho +\delta$.
 
+
+## Stable Manifold and Phase Diagram 
+
+Given an arbitrary and fixed  $K$, a fixed point $C$ of the consumption Euler equation  {eq}`eq:consn_euler`
+satisfies 
+
+$$
+C=C\left(\beta\left[f^{\prime}\left(F\left(K,1\right)+\left(1-\delta\right)K-C\right)+\left(1-\delta\right)\right]\right)^{1/\gamma}
+$$
+
+which implies
+
+$$
+\begin{aligned}
+C &=F\left(K,1\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)  \\
+ &\equiv \tilde{C} \left(K\right)
+\end{aligned}
+$$ (eq:tildeC)
+
+It is important to note  that a positive fixed point solution $C$ exists only if $F\left(K,1\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)>0$
+
+```{code-cell} python3
+@njit
+def C_tilde(K, pp):
+
+    return pp.f(K) + (1 - pp.δ) * K - pp.f_prime_inv(1 / pp.β - 1 + pp.δ)
+```
+
+Next note that given a time-invariant  arbitrary $C$,  a fixed point $K$ of the feasibility condition  {eq}`allocation` solves the following equation
+
+$$
+    K = F(K, 1) + (1 - \delta K) - C
+$$
+
+which yields a function
+
+$$
+K = \tilde K(C)
+$$ (eq:tildeK)
+
+```{code-cell} python3
+@njit
+def K_diff(K, C, pp):
+    return pp.f(K) - pp.δ * K - C
+
+@njit
+def K_tilde(C, pp):
+
+    res = brentq(K_diff, 1e-6, 100, args=(C, pp))
+
+    return res.root
+```
+
+
+A  steady state $\left(K_s, C_s\right)$ is a pair $(K,C)$ that  satisfies both equations {eq}`eq:tildeC` and {eq}`eq:tildeK`. 
+
+
+It is thus the intersection of the  two curves    $\tilde{C}$ and $\tilde{K}$ that we'll eventually plot in Figure {numref}`stable_manifold` below.
+
+```{code-cell} python3
+@njit
+def KC_diff(KC, pp):
+
+    K, C = KC
+    K_next, C_next = pp.next_k_c(K, C)
+
+    return (K - K_next) ** 2 + (C - C_next) ** 2
+```
+
+```{code-cell} python3
+# find (Ks, Cs)
+res = minimize(KC_diff, x0=np.array([10, 2]), args=(pp,))
+Ks, Cs = res.x
+
+Ks, Cs
+```    
+
+We can use the shooting algorithm to  compute  trajectories that approach $\left(K_s, C_s\right)$.
+
+For any given $K$, let's compute $\vec{C}$ and $\vec{K}$ for a large $T$ , e.g., $=200$.
+
+We compute  $C_0$ by the bisection algorithm that assures that  $K_T=K_s$.
+
+Let's compute  two trajectories towards $\left(K_s, C_s\right)$ that  start from different sides of $K_s$: $\bar{K}_0=1e-3<K_s<\bar{K}_1=15$.
+
+```{code-cell} python3
+c_vec1, k_vec1 = bisection(pp, 5, 15, T=200, k_ter=Ks)
+c_vec2, k_vec2 = bisection(pp, 1e-3, 1e-3, T=200, k_ter=Ks)
+```
+The following code generates Figure {numref}`stable_manifold`, which is patterned on a graph that appears  on the top of page 278 of {cite}`intriligator2002mathematical`. 
+
+Figure {numref}`stable_manifold` is a classic "phase diagram" that plots "state" variable $K$ on the ordinate axis and "co-state" variable $C$ on the coordinate axis.  
+
+It plots   three curves:
+  
+  * the blue line  graphs $C = \tilde C (K)$ of fixed points described by equation {eq}`eq:tildeC`. 
+  * the red line graphs $K = \tilde K(C)$ of fixed points described by equation {eq}`eq:tildeK`
+  * the green line graphs the stable traced out by paths that converge to the steady state starting from an arbitrary $K$.
+     * for a given $K$, the shooting algorithm sets $C$ to the coordinate on the green line in order to initiate a path that converges to the optimal steady state
+     * the arrows on the green line show the direction in which the system dynamics {eq}`eq:systemdynamics` push the $(K_{t+1}, C_t)$ pair. 
+     
+In addition to the three curves, Figure {numref}`stable_manifold` plots  arrows that point where the system dynamics {eq}`eq:systemdynamics` drive the system  when, for a given $K_0$, $C_0$ is  not on the stable manifold depicted in the green line.
+
+  * If $C_0$ is set below the green line for a given $K_0$, too much capital is accumulated
+  
+  * If $C_0$ is set above the green line for a given $K_0$, too little capital is accumulated
+
+
+
+
+```{code-cell} python3
+---
+mystnb:
+  figure:
+    caption: "Stable Manifold and Phase Plane"
+    name: stable_manifold
+---
+fig, ax = plt.subplots(figsize=(7, 5))
+
+K_range = np.arange(1e-1, 15, 0.1)
+C_range = np.arange(1e-1, 2.3, 0.1)
+
+# C tilde
+ax.plot(K_range, [C_tilde(Ks, pp) for Ks in K_range], color='b')
+ax.text(11.8, 4, r'$C=\tilde{C}(K)$', color='b')
+
+ax.plot([K_tilde(Cs, pp) for Cs in C_range], C_range, color='r')
+ax.text(2, 1.5, r'$K=\tilde{K}(C)$', color='r')
+
+# K tilde
+ax.plot(k_vec1[:-1], c_vec1, color='g')
+ax.plot(k_vec2[:-1], c_vec2, color='g')
+ax.quiver(k_vec1[5], c_vec1[5],
+          k_vec1[6]-k_vec1[5], c_vec1[6]-c_vec1[5],
+          color='g')
+ax.quiver(k_vec2[5], c_vec2[5],
+          k_vec2[6]-k_vec2[5], c_vec2[6]-c_vec2[5],
+          color='g')
+ax.text(12, 2.5, r'stable branch', color='g')
+
+# (Ks, Cs)
+ax.scatter(Ks, Cs)
+ax.text(Ks-1.2, Cs+0.2, '$(K_s, C_s)$')
+
+# arrows
+K_range = np.linspace(1e-3, 15, 20)
+C_range = np.linspace(1e-3, 7.5, 20)
+K_mesh, C_mesh = np.meshgrid(K_range, C_range)
+
+next_K, next_C = pp.next_k_c(K_mesh, C_mesh)
+ax.quiver(K_range, C_range, next_K-K_mesh, next_C-C_mesh)
+
+# infeasible consumption area
+ax.text(0.5, 5, "infeasible\n consumption")
+
+ax.set_ylim([0, 7.5])
+ax.set_xlim([0, 15])
+
+ax.set_xlabel('$K$')
+ax.set_ylabel('$C$')
+
+plt.show()
+```  
+   
+
+
+## Concluding Remarks
+
+In {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`,  we study a decentralized version of an economy with exactly the same
+technology and preference structure as deployed here.
+
+In that lecture, we replace the  planner of this lecture with Adam Smith's **invisible hand**.
+
+In place of quantity choices made by the planner, there are market prices that are set by a *deus ex machina* from outside the model, a so-called invisible hand.
+
+Equilibrium market prices must reconcile distinct decisions that are made independently
+by a representative household and a representative firm.
+
+The relationship between a command economy like the one studied in this lecture and a market economy like that
+studied in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` is a foundational topic in general equilibrium theory and welfare economics.
+
+
+
 ### Exercise
 
 ```{exercise}
@@ -908,18 +1093,3 @@ plot_saving_rate(pp, 0.3, k_ss*1.5, [130], k_ter=k_ss, k_ss=k_ss, s_ss=s_ss)
 
 ```{solution-end}
 ```
-
-## Concluding Remarks
-
-In {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`,  we study a decentralized version of an economy with exactly the same
-technology and preference structure as deployed here.
-
-In that lecture, we replace the  planner of this lecture with Adam Smith's **invisible hand**.
-
-In place of quantity choices made by the planner, there are market prices that are set by a *deus ex machina* from outside the model, a so-called invisible hand.
-
-Equilibrium market prices must reconcile distinct decisions that are made independently
-by a representative household and a representative firm.
-
-The relationship between a command economy like the one studied in this lecture and a market economy like that
-studied in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` is a foundational topic in general equilibrium theory and welfare economics.
