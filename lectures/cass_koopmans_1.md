@@ -32,11 +32,11 @@ and David Cass {cite}`Cass` used to analyze optimal growth.
 The model extends  the model of Robert Solow
 described in [an earlier lecture](https://python-programming.quantecon.org/python_oop.html).
 
-It does so by making  saving rates be   decisions, instead of a hard-wired fixed number.
+It does so by making  saving rate be a  decision, instead of a hard-wired constant.
 
 (Solow assumed a constant saving rate determined outside the model.)
 
-We describe two versions of the model, a planning problem without prices in this lecture, and a competitive equilibrium with prices  in this lecture  {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
+We describe two versions of the model, a planning problem  in this lecture, and a competitive equilibrium   in this lecture  {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
 
 Together, the two lectures  illustrate what is, in fact, a
 more general connection between a **planned economy** and a decentralized economy
@@ -62,6 +62,7 @@ The lecture uses important ideas including
   to initial and terminal conditions.
 - A **turnpike** property of  optimal paths for
   long but finite-horizon economies.
+- A **stable manifold** and a **phase plane**
 
 Let's start with some standard imports:
 
@@ -891,6 +892,10 @@ state in which $f'(K)=\rho +\delta$.
 
 ## Stable Manifold and Phase Diagram 
 
+We now describe a classic diagram that describes an optimal $(K_{t+1}, C_t)$ path.
+
+The diagram has $K$ on the ordinate axis and $C$ on the coordinate axis.  
+
 Given an arbitrary and fixed  $K$, a fixed point $C$ of the consumption Euler equation  {eq}`eq:consn_euler`
 satisfies 
 
@@ -907,7 +912,7 @@ C &=f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\le
 \end{aligned}
 $$ (eq:tildeC)
 
-It is important to note  that a positive fixed point solution $C$ exists only if $f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)>0$
+A positive fixed point  $C = \tilde C(K)$ exists only if $f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)>0$
 
 ```{code-cell} python3
 @njit
@@ -919,10 +924,10 @@ def C_tilde(K, pp):
 Next note that given a time-invariant  arbitrary $C$,  a fixed point $K$ of the feasibility condition  {eq}`allocation` solves the following equation
 
 $$
-    K = f(K) + (1 - \delta K) - C
+    K = f(K) + (1 - \delta K) - C .
 $$
 
-which yields a function
+A fixed point of the above equation is described by  a function
 
 $$
 K = \tilde K(C)
@@ -947,7 +952,7 @@ A  steady state $\left(K_s, C_s\right)$ is a pair $(K,C)$ that  satisfies both e
 
 It is thus the intersection of the  two curves    $\tilde{C}$ and $\tilde{K}$ that we'll eventually plot in Figure {numref}`stable_manifold` below.
 
-Let's find $K_s$ by solving the equation $K_s = \tilde{K}\left(\tilde{C}\left(K_s\right)\right)$
+We can compute $K_s$ by solving the equation $K_s = \tilde{K}\left(\tilde{C}\left(K_s\right)\right)$
 
 ```{code-cell} python3
 @njit
@@ -969,7 +974,7 @@ Ks, Cs
 
 We can use the shooting algorithm to  compute  trajectories that approach $\left(K_s, C_s\right)$.
 
-For any given $K$, let's compute $\vec{C}$ and $\vec{K}$ for a large $T$ , e.g., $=200$.
+For a given $K$, let's compute $\vec{C}$ and $\vec{K}$ for a large $T$ , e.g., $=200$.
 
 We compute  $C_0$ by the bisection algorithm that assures that  $K_T=K_s$.
 
@@ -979,19 +984,19 @@ Let's compute  two trajectories towards $\left(K_s, C_s\right)$ that  start from
 c_vec1, k_vec1 = bisection(pp, 5, 15, T=200, k_ter=Ks)
 c_vec2, k_vec2 = bisection(pp, 1e-3, 1e-3, T=200, k_ter=Ks)
 ```
-The following code generates Figure {numref}`stable_manifold`, which is patterned on a graph that appears  on the top of page 278 of {cite}`intriligator2002mathematical`. 
+The following code generates Figure {numref}`stable_manifold`, which is patterned on a graph that appears  on  page 411 of {cite}`intriligator2002mathematical`. 
 
-Figure {numref}`stable_manifold` is a classic "phase diagram" that plots "state" variable $K$ on the ordinate axis and "co-state" variable $C$ on the coordinate axis.  
+Figure {numref}`stable_manifold` is a classic "phase plane" with  "state" variable $K$ on the ordinate axis and "co-state" variable $C$ on the coordinate axis.  
 
-It plots   three curves:
+Figure {numref}`stable_manifold` plots   three curves:
   
   * the blue line  graphs $C = \tilde C (K)$ of fixed points described by equation {eq}`eq:tildeC`. 
   * the red line graphs $K = \tilde K(C)$ of fixed points described by equation {eq}`eq:tildeK`
-  * the green line graphs the stable traced out by paths that converge to the steady state starting from an arbitrary $K$.
-     * for a given $K$, the shooting algorithm sets $C$ to the coordinate on the green line in order to initiate a path that converges to the optimal steady state
-     * the arrows on the green line show the direction in which the system dynamics {eq}`eq:systemdynamics` push the $(K_{t+1}, C_t)$ pair. 
+  * the green line graphs the stable traced out by paths that converge to the steady state starting from an arbitrary $K_0$ at time $0$.
+     * for a given $K_0$, the shooting algorithm sets $C_0$ to the coordinate on the green line in order to initiate a path that converges to the optimal steady state
+     * the arrows on the green line show the direction in which  dynamics {eq}`eq:systemdynamics` push successive $(K_{t+1}, C_t)$ pairs. 
      
-In addition to the three curves, Figure {numref}`stable_manifold` plots  arrows that point where the system dynamics {eq}`eq:systemdynamics` drive the system  when, for a given $K_0$, $C_0$ is  not on the stable manifold depicted in the green line.
+In addition to the three curves, Figure {numref}`stable_manifold` plots  arrows that point where the  dynamics {eq}`eq:systemdynamics` drive the system  when, for a given $K_0$, $C_0$ is  not on the stable manifold depicted in the green line.
 
   * If $C_0$ is set below the green line for a given $K_0$, too much capital is accumulated
   
