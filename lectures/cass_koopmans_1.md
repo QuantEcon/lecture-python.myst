@@ -71,7 +71,6 @@ plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, float64
 from numba.experimental import jitclass
 import numpy as np
-from scipy.optimize import minimize
 from quantecon.optimize import brentq
 ```
 
@@ -896,19 +895,19 @@ Given an arbitrary and fixed  $K$, a fixed point $C$ of the consumption Euler eq
 satisfies 
 
 $$
-C=C\left(\beta\left[f^{\prime}\left(F\left(K,1\right)+\left(1-\delta\right)K-C\right)+\left(1-\delta\right)\right]\right)^{1/\gamma}
+C=C\left(\beta\left[f^{\prime}\left(f\left(K\right)+\left(1-\delta\right)K-C\right)+\left(1-\delta\right)\right]\right)^{1/\gamma}
 $$
 
 which implies
 
 $$
 \begin{aligned}
-C &=F\left(K,1\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)  \\
+C &=f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)  \\
  &\equiv \tilde{C} \left(K\right)
 \end{aligned}
 $$ (eq:tildeC)
 
-It is important to note  that a positive fixed point solution $C$ exists only if $F\left(K,1\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)>0$
+It is important to note  that a positive fixed point solution $C$ exists only if $f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)>0$
 
 ```{code-cell} python3
 @njit
@@ -920,7 +919,7 @@ def C_tilde(K, pp):
 Next note that given a time-invariant  arbitrary $C$,  a fixed point $K$ of the feasibility condition  {eq}`allocation` solves the following equation
 
 $$
-    K = F(K, 1) + (1 - \delta K) - C
+    K = f(K) + (1 - \delta K) - C
 $$
 
 which yields a function
@@ -948,20 +947,22 @@ A  steady state $\left(K_s, C_s\right)$ is a pair $(K,C)$ that  satisfies both e
 
 It is thus the intersection of the  two curves    $\tilde{C}$ and $\tilde{K}$ that we'll eventually plot in Figure {numref}`stable_manifold` below.
 
+Let's find $K_s$ by solving the equation $K_s = \tilde{K}\left(\tilde{C}\left(K_s\right)\right)$
+
 ```{code-cell} python3
 @njit
-def KC_diff(KC, pp):
+def K_tilde_diff(K, pp):
 
-    K, C = KC
-    K_next, C_next = pp.next_k_c(K, C)
+    K_out = K_tilde(C_tilde(K, pp), pp)
 
-    return (K - K_next) ** 2 + (C - C_next) ** 2
+    return K - K_out
 ```
 
 ```{code-cell} python3
-# find (Ks, Cs)
-res = minimize(KC_diff, x0=np.array([10, 2]), args=(pp,))
-Ks, Cs = res.x
+res = brentq(K_tilde_diff, 8, 10, args=(pp,))
+
+Ks = res.root
+Cs = C_tilde(Ks, pp)
 
 Ks, Cs
 ```    
@@ -1015,10 +1016,11 @@ C_range = np.arange(1e-1, 2.3, 0.1)
 ax.plot(K_range, [C_tilde(Ks, pp) for Ks in K_range], color='b')
 ax.text(11.8, 4, r'$C=\tilde{C}(K)$', color='b')
 
+# K tilde
 ax.plot([K_tilde(Cs, pp) for Cs in C_range], C_range, color='r')
 ax.text(2, 1.5, r'$K=\tilde{K}(C)$', color='r')
 
-# K tilde
+# stable branch
 ax.plot(k_vec1[:-1], c_vec1, color='g')
 ax.plot(k_vec2[:-1], c_vec2, color='g')
 ax.quiver(k_vec1[5], c_vec1[5],
