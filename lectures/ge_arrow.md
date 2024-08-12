@@ -4,10 +4,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.8.2
+    format_version: 0.13
+    jupytext_version: 1.16.1
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -30,9 +30,9 @@ This lecture presents Python code for experimenting with  competitive equilibria
 
 * Common beliefs across agents
 
-* A constant relative risk aversion (CRRA)  one-period utility function that implies the existence of a representative consumer whose consumption process can be plugged into a formula for the pricing kernel for  one-step Arrow securities and thereby determine equilbrium prices before determining an equilibrium distribution of wealth
+* A constant relative risk aversion (CRRA)  one-period utility function that implies the existence of a representative consumer whose consumption process can be plugged into a formula for the pricing kernel for  one-step Arrow securities and thereby determine equilibrium prices before determining an equilibrium distribution of wealth
 
-Diverse endowments across agents provide motivations for individuals to want to reallocate consumption goods across time and Markov states
+* Diverse endowments across agents provide motivations for individuals to want to reallocate consumption goods across time and Markov states
 
 We impose  restrictions that allow us to **Bellmanize** competitive equilibrium prices and quantities
 
@@ -297,7 +297,7 @@ The setup assumes the following infrastructure
 * Markov states: $s \in S = \left[\bar{s}_1, \ldots, \bar{s}_n \right]$ governed by  an $n$-state Markov chain with transition probability
 
 $$
-P_{ij} = \Pr \left\{s_{t+1} = \bar{s}_j \mid s_t = \bar{s}_k \right\}
+P_{ij} = \Pr \left\{s_{t+1} = \bar{s}_j \mid s_t = \bar{s}_i \right\}
 $$
 
 * A collection $h=1,\ldots, H$ of  $n \times 1$ vectors of  $H$ assets that pay off  $d^h\left(s\right)$  in state $s$
@@ -349,7 +349,7 @@ In constructing our model, we'll repeatedly encounter formulas that remind us of
 
 ### Multi-Step-Forward Transition Probabilities and Pricing Kernels
 
-The $(i,j)$ component of  the $k$-step ahead transition probability $P^\ell$ is
+The $(i,j)$ component of  the $\ell$-step ahead transition probability $P^\ell$ is
 
 $$
 Prob(s_{t+\ell} = \bar s_j | s_t = \bar s_i)   = P^{\ell}_{i,j}
@@ -705,7 +705,6 @@ import matplotlib.pyplot as plt
 ```{code-cell} ipython3
 np.set_printoptions(suppress=True)
 ```
-
 
 First, we create a Python class to compute  the objects that comprise a competitive equilibrium
 with sequential trading of one-period Arrow securities.
