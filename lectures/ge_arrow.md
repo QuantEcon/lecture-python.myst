@@ -97,11 +97,11 @@ history $s^t$.
 The history $s^t$ is publicly observable.
 
 
-Consumer $i$
+Consumer $k$
 purchases a history-dependent  consumption plan $c^k =
  \{c_t^k(s^t)\}_{t=0}^\infty$
 
-Consumer $i$  orders consumption plans by
+Consumer $k$  orders consumption plans by
 
 $$ U_k(c^k) =
    \sum_{t=0}^\infty \sum_{s^t} \beta^t u_k[c_t^k(s^t)]
@@ -118,7 +118,7 @@ Here $u_k(c)$ is an increasing, twice
 continuously differentiable, strictly concave function of
 consumption $c\geq 0$  of one good.
 
-The utility function pf person $k$ satisfies
+The utility function of person $k$ satisfies
 the Inada condition
 
 $$ \lim_{c \downarrow 0} u'_k(c) = +\infty.$$
@@ -159,18 +159,20 @@ These enable us to provide a
 recursive formulation of a consumer's optimization problem.
 
 
-Consumer $i$'s state at time $t$ is its financial wealth $a^k_t$ and Markov state $s_t$.
+Consumer $k$'s state at time $t$ is its financial wealth $a^k_t$ and Markov state $s_t$.
 
-Let $v^k(a,s)$ be the optimal value of consumer $i$'s problem
+Let $v^k(a,s)$ be the optimal value of consumer $k$'s problem
 starting from state $(a, s)$.
 
- * $v^k(a,s)$ is the maximum expected discounted utility  that consumer $i$ with current financial wealth $a$ can attain in Markov state $s$.
+ * $v^k(a,s)$ is the maximum expected discounted utility  that Consumer $k$ with current financial wealth $a$ can attain in Markov state $s$.
 
 The optimal  value function satisfies the Bellman equation
 
 $$
 v^k(a, s) = \max_{c, \hat a(s')} \left\{ u_k(c) + \beta \sum_{s'} v^k[\hat a(s'),s'] \pi (s' | s) \right\}
 $$
+
+(NOTE: Define $\hat a$ here?)
 
 
 where  maximization is subject to the budget constraint
@@ -210,8 +212,8 @@ and $c_{t+1}^k = c^k(s_{t+1})$.
 
 A **recursive competitive equilibrium** is
 an initial distribution of wealth $\vec a_0$, a set of borrowing limits $\{\bar A^k(s)\}_{k=1}^K$,
-a pricing kernel $Q(s' | s)$, sets of value functions $\{v^k(a,s)\}_{i=1}^K$, and
-decision rules $\{c^k(s), a^k(s)\}_{i=1}^K$ such
+a pricing kernel $Q(s' | s)$, sets of value functions $\{v^k(a,s)\}_{k=1}^K$, and
+decision rules $\{c^k(s), a^k(s)\}_{k=1}^K$ such
 that
 
 * The state-by-state borrowing constraints satisfy the recursion
@@ -226,11 +228,11 @@ solve the consumers' problems;
 
 * For all realizations of $\{s_t\}_{t=0}^\infty$, the consumption and asset
 portfolios $\{\{c^k_t,$
-$\{\hat a^k_{t+1}(s')\}_{s'}\}_i\}_t$  satisfy $\sum_i c^k_t = \sum_i y^k(s_t)$ and
-$\sum_i \hat a_{t+1}^k(s') = 0$
+$\{\hat a^k_{t+1}(s')\}_{s'}\}_k\}_t$  satisfy $\sum_k c^k_t = \sum_k y^k(s_t)$ and
+$\sum_k \hat a_{t+1}^k(s') = 0$
 for all $t$ and $s'$.
 
-* The initial financial wealth vector $\vec a_0$ satisfies $\sum_{i=1}^K a_0^k = 0 $.
+* The initial financial wealth vector $\vec a_0$ satisfies $\sum_{k=1}^K a_0^k = 0 $.
 
 
 The third condition asserts that there are  zero net aggregate claims in all Markov states.
@@ -562,7 +564,7 @@ y^{k}=\left[\begin{array}{c}
 y^{k}\left(\bar{s}_{1}\right)\\
 \vdots\\
 y^{k}\left(\bar{s}_{n}\right)
-\end{array}\right] \equiv \begin{bmatrix} y^k_1 \cr \vdots \cr v^k_n \end{bmatrix}
+\end{array}\right] \equiv \begin{bmatrix} y^k_1 \cr \vdots \cr y^k_n \end{bmatrix}
 $$
 
 
@@ -577,6 +579,8 @@ even if he consumes zero goods forevermore.
 
 **Remark:** If  we have an Inada condition at zero consumption or just impose that consumption
 be nonnegative, then in a **finite horizon** economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section below on a Finite Horizon Economy.
+
+(NOTE: check equation (25) in week 4 slides -- Inada condition forces the the natural debt limits non-binding in infinite horizon sequential trading)
 
 ### Continuation Wealth
 
@@ -623,6 +627,8 @@ y\left(\bar{s}_{1}\right)\\
 y\left(\bar{s}_{n}\right)
 \end{array}\right]
 $$
+
+(NOTE: Derived using 9.8.1 and Gorman Aggregation)
 
 Note that $\sum_{k=1}^K \psi^k = {0}_{n \times 1}$.
 
