@@ -172,8 +172,7 @@ $$
 v^k(a, s) = \max_{c, \hat a(s')} \left\{ u_k(c) + \beta \sum_{s'} v^k[\hat a(s'),s'] \pi (s' | s) \right\}
 $$
 
-(NOTE: Define $\hat a$ here? I think it is trying to distinguish the choice and the equilibrium $a^k(s)$ below?)
-
+(NOTE: We have $\hat a$ here and $a$ below in the definition of **recursive competitive equilibrium**. Is it a typo below or this is intentional?)
 
 where  maximization is subject to the budget constraint
 
@@ -498,7 +497,7 @@ This follows from agent $k$'s first-order necessary conditions.
 But with the CRRA preferences that we have assumed, individual consumptions vary proportionately
 with aggregate consumption and therefore with the aggregate endowment.
 
-  * This is a consequence of our preference specification implying that **Engle curves** affine in wealth and therefore  satisfy conditions for **Gorman aggregation**
+  * This is a consequence of our preference specification implying that **Engle curves** are affine in wealth and therefore  satisfy conditions for **Gorman aggregation**
 
 Thus,
 
@@ -627,8 +626,6 @@ y\left(\bar{s}_{1}\right)\\
 y\left(\bar{s}_{n}\right)
 \end{array}\right]
 $$
-
-(NOTE: Derived using 9.8.1 and Gorman Aggregation)
 
 Note that $\sum_{k=1}^K \psi^k = {0}_{n \times 1}$.
 
@@ -942,8 +939,6 @@ print(f'ψ = \n{ex1.continuation_wealths()}')
 print(f'J = \n{ex1.value_functionss()}')
 ```
 
-(NOTE: Continuation wealth flips because of the initial state is now 2)
-
 ### Example 2
 
 ```{code-cell} ipython3
@@ -983,7 +978,7 @@ print("R = ", ex2.R)
 ex2.Q
 ```
 
-(NOTE: The pricing kernal is different because of the aggregate endowments in state 1 and 2 are different now
+NOTE: The pricing kernal is different because of the aggregate endowments in state 1 and 2 are different now
 
 ```{code-cell} ipython3
 ex2.β * ex2.u_prime(3.5) / ex2.u_prime(2.5) * ex2.P[0,1]
@@ -993,7 +988,7 @@ ex2.β * ex2.u_prime(3.5) / ex2.u_prime(2.5) * ex2.P[0,1]
 ex2.β * ex2.u_prime(2.5) / ex2.u_prime(3.5) * ex2.P[1,0]
 ```
 
-)
+END OF NOTE
 
 ```{code-cell} ipython3
 # Risk free rate R
@@ -1083,7 +1078,7 @@ print(f'J = \n{ex3.value_functionss()}')
 For the specification of the Markov chain in example 3, let's take a look at how the equilibrium allocation changes as a function of transition probability $\lambda$.
 
 ```{code-cell} ipython3
-λ_seq = np.linspace(0, 1, 100)
+λ_seq = np.linspace(0, 0.99, 100)
 
 # prepare containers
 αs0_seq = np.empty((len(λ_seq), 2))
@@ -1166,7 +1161,7 @@ for i in range(1, 4):
 ```
 
 ## Finite Horizon
-(NOTE: Consider bring finite horizon section above since the class considers the finite horizon cases)
+(NOTE: Consider bring finite horizon section above since the Python class considers the finite horizon cases)
 
 The Python class **RecurCompetitive** provided above also can be used to compute competitive equilibrium
 allocations and Arrow securities prices for finite horizon economies.
