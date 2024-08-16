@@ -164,7 +164,7 @@ Consumer $k$'s state at time $t$ is its financial wealth $a^k_t$ and Markov stat
 Let $v^k(a,s)$ be the optimal value of consumer $k$'s problem
 starting from state $(a, s)$.
 
- * $v^k(a,s)$ is the maximum expected discounted utility  that Consumer $k$ with current financial wealth $a$ can attain in Markov state $s$.
+ * $v^k(a,s)$ is the maximum expected discounted utility that consumer $k$ with current financial wealth $a$ can attain in Markov state $s$.
 
 The optimal  value function satisfies the Bellman equation
 
@@ -172,7 +172,7 @@ $$
 v^k(a, s) = \max_{c, \hat a(s')} \left\{ u_k(c) + \beta \sum_{s'} v^k[\hat a(s'),s'] \pi (s' | s) \right\}
 $$
 
-(NOTE: Define $\hat a$ here?)
+(NOTE: Define $\hat a$ here? I think it is trying to distinguish the choice and the equilibrium $a^k(s)$ below?)
 
 
 where  maximization is subject to the budget constraint
@@ -792,7 +792,6 @@ class RecurCompetitive:
 
         n = self.n
         Q = np.empty((n, n))
-
         for i in range(n):
             for j in range(n):
                 ratio = self.u_prime(c[j]) / self.u_prime(c[i])
@@ -943,6 +942,8 @@ print(f'ψ = \n{ex1.continuation_wealths()}')
 print(f'J = \n{ex1.value_functionss()}')
 ```
 
+(NOTE: Continuation wealth flips because of the initial state is now 2)
+
 ### Example 2
 
 ```{code-cell} ipython3
@@ -981,6 +982,18 @@ print("R = ", ex2.R)
 # pricing kernal
 ex2.Q
 ```
+
+(NOTE: The pricing kernal is different because of the aggregate endowments in state 1 and 2 are different now
+
+```{code-cell} ipython3
+ex2.β * ex2.u_prime(3.5) / ex2.u_prime(2.5) * ex2.P[0,1]
+```
+
+```{code-cell} ipython3
+ex2.β * ex2.u_prime(2.5) / ex2.u_prime(3.5) * ex2.P[1,0]
+```
+
+)
 
 ```{code-cell} ipython3
 # Risk free rate R
@@ -1116,6 +1129,7 @@ s = np.array([1, 2, 3])
 μ = .9
 δ = .05
 
+# prosperous, moderate, and recession states
 P = np.array([[1-λ, λ, 0], [μ/2, μ, μ/2], [(1-δ)/2, (1-δ)/2, δ]])
 
 # endowments
@@ -1152,6 +1166,7 @@ for i in range(1, 4):
 ```
 
 ## Finite Horizon
+(NOTE: Consider bring finite horizon section above since the class considers the finite horizon cases)
 
 The Python class **RecurCompetitive** provided above also can be used to compute competitive equilibrium
 allocations and Arrow securities prices for finite horizon economies.
