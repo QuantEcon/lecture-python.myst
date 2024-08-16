@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>37. Cake Eating II: Numerical Methods &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>38. Cake Eating II: Numerical Methods &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="38. Optimal Growth I: The Stochastic Optimal Growth Model" href="optgrowth.html" />
-    <link rel="prev" title="36. Cake Eating I: Introduction to Optimal Saving" href="cake_eating_problem.html" />
+    <link rel="next" title="39. Optimal Growth I: The Stochastic Optimal Growth Model" href="optgrowth.html" />
+    <link rel="prev" title="37. Cake Eating I: Introduction to Optimal Saving" href="cake_eating_problem.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,17 +169,17 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">37.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reviewing-the-model">37.2. Reviewing the Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">37.3. Value Function Iteration</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bellman-operator">37.3.1. The Bellman Operator</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitted-value-function-iteration">37.3.2. Fitted Value Function Iteration</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">37.3.3. Implementation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-function">37.3.4. Policy Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">38.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reviewing-the-model">38.2. Reviewing the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">38.3. Value Function Iteration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bellman-operator">38.3.1. The Bellman Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitted-value-function-iteration">38.3.2. Fitted Value Function Iteration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">38.3.3. Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-function">38.3.4. Policy Function</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-iteration">37.4. Time Iteration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">37.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-iteration">38.4. Time Iteration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">38.5. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -237,7 +237,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="cake-eating-ii-numerical-methods">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">37. </span>Cake Eating II: Numerical Methods</a><a class="headerlink" href="#cake-eating-ii-numerical-methods" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id1"><span class="section-number">38. </span>Cake Eating II: Numerical Methods</a><a class="headerlink" href="#cake-eating-ii-numerical-methods" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -253,7 +253,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">37.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2"><span class="section-number">38.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture we continue the study of <a class="reference internal" href="cake_eating_problem.html"><span class="doc">the cake eating problem</span></a>.</p>
 <p>The aim of this lecture is to solve the problem using numerical
 methods.</p>
@@ -277,11 +277,11 @@ accuracy of alternative numerical methods.</p>
 </div>
 </section>
 <section id="reviewing-the-model">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">37.2. </span>Reviewing the Model</a><a class="headerlink" href="#reviewing-the-model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">38.2. </span>Reviewing the Model</a><a class="headerlink" href="#reviewing-the-model" title="Permalink to this heading">#</a></h2>
 <p>You might like to <a class="reference internal" href="cake_eating_problem.html"><span class="doc">review the details</span></a> before we start.</p>
 <p>Recall in particular that the Bellman equation is</p>
 <div class="math notranslate nohighlight" id="equation-bellman-cen">
-<span class="eqno">(37.1)<a class="headerlink" href="#equation-bellman-cen" title="Permalink to this equation">#</a></span>\[v(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
+<span class="eqno">(38.1)<a class="headerlink" href="#equation-bellman-cen" title="Permalink to this equation">#</a></span>\[v(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
 \quad \text{for all } x \geq 0.\]</div>
 <p>where <span class="math notranslate nohighlight">\(u\)</span> is the CRRA utility function.</p>
 <p>The analytical solutions for the value function and optimal policy were found
@@ -303,7 +303,7 @@ to be as follows.</p>
 <p>Our first aim is to obtain these analytical solutions numerically.</p>
 </section>
 <section id="value-function-iteration">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">37.3. </span>Value Function Iteration</a><a class="headerlink" href="#value-function-iteration" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">38.3. </span>Value Function Iteration</a><a class="headerlink" href="#value-function-iteration" title="Permalink to this heading">#</a></h2>
 <p>The first approach we will take is <strong>value function iteration</strong>.</p>
 <p>This is a form of <strong>successive approximation</strong>, and was discussed in our <a class="reference internal" href="mccall_model.html"><span class="doc">lecture on job search</span></a>.</p>
 <p>The basic idea is:</p>
@@ -320,7 +320,7 @@ to be as follows.</p>
 </ol>
 <p>Let’s write this a bit more mathematically.</p>
 <section id="the-bellman-operator">
-<h3><span class="section-number">37.3.1. </span>The Bellman Operator<a class="headerlink" href="#the-bellman-operator" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">38.3.1. </span>The Bellman Operator<a class="headerlink" href="#the-bellman-operator" title="Permalink to this heading">#</a></h3>
 <p>We introduce the <strong>Bellman operator</strong> <span class="math notranslate nohighlight">\(T\)</span> that takes a function v as an
 argument and returns a new function <span class="math notranslate nohighlight">\(Tv\)</span> defined by</p>
 <div class="math notranslate nohighlight">
@@ -336,7 +336,7 @@ contraction mapping theorem to prove that the sequence of functions <span class=
 v\)</span> converges to the solution to the Bellman equation.</p>
 </section>
 <section id="fitted-value-function-iteration">
-<h3><span class="section-number">37.3.2. </span>Fitted Value Function Iteration<a class="headerlink" href="#fitted-value-function-iteration" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">38.3.2. </span>Fitted Value Function Iteration<a class="headerlink" href="#fitted-value-function-iteration" title="Permalink to this heading">#</a></h3>
 <p>Both consumption <span class="math notranslate nohighlight">\(c\)</span> and the state variable <span class="math notranslate nohighlight">\(x\)</span> are continuous.</p>
 <p>This causes complications when it comes to numerical work.</p>
 <p>For example, we need to store each function <span class="math notranslate nohighlight">\(T^n v\)</span> in order to
@@ -360,7 +360,7 @@ equation.</p></li>
 <p>In step 2 we’ll use continuous piecewise linear interpolation.</p>
 </section>
 <section id="implementation">
-<h3><span class="section-number">37.3.3. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">38.3.3. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">maximize</span></code> function below is a small helper function that converts a
 SciPy minimization routine into a maximization routine.</p>
 <div class="cell docutils container">
@@ -633,7 +633,7 @@ less so near the lower boundary.</p>
 steep near the lower boundary, and hence hard to approximate.</p>
 </section>
 <section id="policy-function">
-<h3><span class="section-number">37.3.4. </span>Policy Function<a class="headerlink" href="#policy-function" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">38.3.4. </span>Policy Function<a class="headerlink" href="#policy-function" title="Permalink to this heading">#</a></h3>
 <p>Let’s see how this plays out in terms of computing the optimal policy.</p>
 <p>In the <a class="reference internal" href="cake_eating_problem.html"><span class="doc">first lecture on cake eating</span></a>, the optimal
 consumption policy was shown to be</p>
@@ -713,11 +713,11 @@ possibility of faster compute time and, at the same time, more accuracy.</p>
 </section>
 </section>
 <section id="time-iteration">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">37.4. </span>Time Iteration</a><a class="headerlink" href="#time-iteration" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">38.4. </span>Time Iteration</a><a class="headerlink" href="#time-iteration" title="Permalink to this heading">#</a></h2>
 <p>Now let’s look at a different strategy to compute the optimal policy.</p>
 <p>Recall that the optimal policy satisfies the Euler equation</p>
 <div class="math notranslate nohighlight" id="equation-euler-cen">
-<span class="eqno">(37.2)<a class="headerlink" href="#equation-euler-cen" title="Permalink to this equation">#</a></span>\[u' (\sigma(x)) = \beta u' ( \sigma(x - \sigma(x)))
+<span class="eqno">(38.2)<a class="headerlink" href="#equation-euler-cen" title="Permalink to this equation">#</a></span>\[u' (\sigma(x)) = \beta u' ( \sigma(x - \sigma(x)))
 \quad \text{for all } x &gt; 0\]</div>
 <p>Computationally, we can start with any initial guess of
 <span class="math notranslate nohighlight">\(\sigma_0\)</span> and now choose <span class="math notranslate nohighlight">\(c\)</span> to solve</p>
@@ -748,10 +748,10 @@ value function iteration.</p>
 </ol>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">37.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">38.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="cen_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 37.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 38.1 </span></p>
 <section id="exercise-content">
 <p>Try the following modification of the problem.</p>
 <p>Instead of the cake size changing according to <span class="math notranslate nohighlight">\(x_{t+1} = x_t - c_t\)</span>,
@@ -768,7 +768,7 @@ x_{t+1} = (x_t - c_t)^{\alpha}
 </div>
 <div class="solution dropdown admonition" id="cake_eating_numerical-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#cen_ex1"> Exercise 37.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#cen_ex1"> Exercise 38.1</a></p>
 <section id="solution-content">
 <p>We need to create a class to hold our primitives and return the right hand side of the Bellman equation.</p>
 <p>We will use <a class="reference external" href="https://en.wikipedia.org/wiki/Inheritance_%28object-oriented_programming%29">inheritance</a> to maximize code reuse.</p>
@@ -859,7 +859,7 @@ the standard cake eating case <span class="math notranslate nohighlight">\(\alph
 </div>
 <div class="exercise admonition" id="cen_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 37.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 38.2 </span></p>
 <section id="exercise-content">
 <p>Implement time iteration, returning to the original case (i.e., dropping the
 modification in the exercise above).</p>
@@ -867,7 +867,7 @@ modification in the exercise above).</p>
 </div>
 <div class="solution dropdown admonition" id="cake_eating_numerical-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#cen_ex2"> Exercise 37.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#cen_ex2"> Exercise 38.2</a></p>
 <section id="solution-content">
 <p>Here’s one way to implement time iteration.</p>
 <div class="cell docutils container">
@@ -1265,43 +1265,48 @@ modification in the exercise above).</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   36. Transitions in an Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   36. Cake Eating I: Introduction to Optimal Saving
+   37. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   37. Cake Eating II: Numerical Methods
+   38. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   38. Optimal Growth I: The Stochastic Optimal Growth Model
+   39. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   39. Optimal Growth II: Accelerating the Code with Numba
+   40. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   40. Optimal Growth III: Time Iteration
+   41. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   41. Optimal Growth IV: The Endogenous Grid Method
+   42. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   42. The Income Fluctuation Problem I: Basic Model
+   43. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   43. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   44. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1313,17 +1318,17 @@ modification in the exercise above).</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   44. Non-Conjugate Priors
+   45. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   45. Posterior Distributions for  AR(1) Parameters
+   46. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   46. Forecasting  an AR(1) Process
+   47. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1335,42 +1340,42 @@ modification in the exercise above).</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   47. Job Search VII: Search with Learning
+   48. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   48. Likelihood Ratio Processes
+   49. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   49. Computing Mean of a Likelihood Ratio Process
+   50. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   50. A Problem that Stumped Milton Friedman
+   51. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   51. Exchangeability and Bayesian Updating
+   52. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   52. Likelihood Ratio Processes and Bayesian Learning
+   53. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   53. Incorrect Models
+   54. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   54. Bayesian versus Frequentist Decision Rules
+   55. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1382,32 +1387,32 @@ modification in the exercise above).</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   55. LQ Control: Foundations
+   56. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   56. Lagrangian for LQ Control
+   57. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   57. Eliminating Cross Products
+   58. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   58. The Permanent Income Model
+   59. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   59. Permanent Income II: LQ Techniques
+   60. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   60. Production Smoothing via Inventories
+   61. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1419,32 +1424,32 @@ modification in the exercise above).</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   61. A Lake Model of Employment and Unemployment
+   62. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   62. Rational Expectations Equilibrium
+   63. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   63. Stability in Linear Rational Expectations Models
+   64. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   64. Markov Perfect Equilibrium
+   65. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   65. Uncertainty Traps
+   66. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   66. The Aiyagari Model
+   67. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1456,17 +1461,17 @@ modification in the exercise above).</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   67. Asset Pricing: Finite State Models
+   68. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   68. Competitive Equilibria with Arrow Securities
+   69. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   69. Heterogeneous Beliefs and Bubbles
+   70. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1478,17 +1483,17 @@ modification in the exercise above).</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   70. Pandas for Panel Data
+   71. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   71. Linear Regression in Python
+   72. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   72. Maximum Likelihood Estimation
+   73. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1500,12 +1505,12 @@ modification in the exercise above).</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   73. First-Price and Second-Price Auctions
+   74. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   74. Multiple Good Allocation Mechanisms
+   75. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1517,17 +1522,17 @@ modification in the exercise above).</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   75. Troubleshooting
+   76. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   76. References
+   77. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   77. Execution Statistics
+   78. Execution Statistics
   </a>
  </li>
 </ul>

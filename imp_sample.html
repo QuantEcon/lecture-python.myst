@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>49. Computing Mean of a Likelihood Ratio Process &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>50. Computing Mean of a Likelihood Ratio Process &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="50. A Problem that Stumped Milton Friedman" href="wald_friedman.html" />
-    <link rel="prev" title="48. Likelihood Ratio Processes" href="likelihood_ratio_process.html" />
+    <link rel="next" title="51. A Problem that Stumped Milton Friedman" href="wald_friedman.html" />
+    <link rel="prev" title="49. Likelihood Ratio Processes" href="likelihood_ratio_process.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,13 +169,13 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">49.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-expectation-of-likelihood-ratio">49.2. Mathematical Expectation of Likelihood Ratio</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-sampling">49.3. Importance sampling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-a-sampling-distribution">49.4. Selecting a Sampling Distribution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-a-cumulative-likelihood-ratio">49.5. Approximating a cumulative likelihood ratio</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-sample-mean">49.6. Distribution of  Sample Mean</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-thoughts-about-choice-of-sampling-distribution">49.7. More Thoughts about Choice of Sampling Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">50.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-expectation-of-likelihood-ratio">50.2. Mathematical Expectation of Likelihood Ratio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-sampling">50.3. Importance sampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-a-sampling-distribution">50.4. Selecting a Sampling Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-a-cumulative-likelihood-ratio">50.5. Approximating a cumulative likelihood ratio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-sample-mean">50.6. Distribution of  Sample Mean</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-thoughts-about-choice-of-sampling-distribution">50.7. More Thoughts about Choice of Sampling Distribution</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -233,7 +233,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="computing-mean-of-a-likelihood-ratio-process">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">49. </span>Computing Mean of a Likelihood Ratio Process</a><a class="headerlink" href="#computing-mean-of-a-likelihood-ratio-process" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id1"><span class="section-number">50. </span>Computing Mean of a Likelihood Ratio Process</a><a class="headerlink" href="#computing-mean-of-a-likelihood-ratio-process" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -251,7 +251,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">49.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2"><span class="section-number">50.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In  <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a> we described a peculiar property of a likelihood ratio process, namely, that it’s mean equals one for all <span class="math notranslate nohighlight">\(t \geq 0\)</span> despite it’s converging to zero almost surely.</p>
 <p>While it is easy to verify that peculiar properly analytically (i.e., in population), it is challenging to use a computer simulation to verify it via an application of a law of large numbers that entails studying sample averages of repeated simulations.</p>
 <p>To confront this challenge, this lecture puts <strong>importance sampling</strong> to work to accelerate convergence of sample averages to population means.</p>
@@ -269,7 +269,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </section>
 <section id="mathematical-expectation-of-likelihood-ratio">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">49.2. </span>Mathematical Expectation of Likelihood Ratio</a><a class="headerlink" href="#mathematical-expectation-of-likelihood-ratio" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">50.2. </span>Mathematical Expectation of Likelihood Ratio</a><a class="headerlink" href="#mathematical-expectation-of-likelihood-ratio" title="Permalink to this heading">#</a></h2>
 <p>In <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a>, we studied a likelihood ratio <span class="math notranslate nohighlight">\(\ell \left(\omega_t\right)\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -354,7 +354,7 @@ provides a more computationally efficient way to approximate the mean of the cum
 <p>We illustrate this numerically below.</p>
 </section>
 <section id="importance-sampling">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">49.3. </span>Importance sampling</a><a class="headerlink" href="#importance-sampling" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">50.3. </span>Importance sampling</a><a class="headerlink" href="#importance-sampling" title="Permalink to this heading">#</a></h2>
 <p>We circumvent the issue by using a <em>change of distribution</em> called <strong>importance sampling</strong>.</p>
 <p>Instead of drawing from <span class="math notranslate nohighlight">\(g\)</span> to generate data during the simulation, we use  an alternative
 distribution <span class="math notranslate nohighlight">\(h\)</span> to generate draws of <span class="math notranslate nohighlight">\(\omega\)</span>.</p>
@@ -383,7 +383,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 \]</div>
 </section>
 <section id="selecting-a-sampling-distribution">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">49.4. </span>Selecting a Sampling Distribution</a><a class="headerlink" href="#selecting-a-sampling-distribution" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">50.4. </span>Selecting a Sampling Distribution</a><a class="headerlink" href="#selecting-a-sampling-distribution" title="Permalink to this heading">#</a></h2>
 <p>Since we must use an <span class="math notranslate nohighlight">\(h\)</span> that has larger mass in parts of the distribution to which  <span class="math notranslate nohighlight">\(g\)</span> puts low mass, we use <span class="math notranslate nohighlight">\(h=Beta(0.5, 0.5)\)</span> as our importance distribution.</p>
 <p>The  plots compare <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <div class="cell docutils container">
@@ -413,7 +413,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </section>
 <section id="approximating-a-cumulative-likelihood-ratio">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">49.5. </span>Approximating a cumulative likelihood ratio</a><a class="headerlink" href="#approximating-a-cumulative-likelihood-ratio" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">50.5. </span>Approximating a cumulative likelihood ratio</a><a class="headerlink" href="#approximating-a-cumulative-likelihood-ratio" title="Permalink to this heading">#</a></h2>
 <p>We now study how to use importance sampling to approximate
 <span class="math notranslate nohighlight">\({E} \left[L(\omega^t)\right] = \left[\prod_{i=1}^T \ell \left(\omega_i\right)\right]\)</span>.</p>
 <p>As above, our plan is to draw  sequences <span class="math notranslate nohighlight">\(\omega^t\)</span> from <span class="math notranslate nohighlight">\(q\)</span> and then re-weight the likelihood ratio appropriately:</p>
@@ -460,7 +460,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9545643628272709
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9907561898590599
 </pre></div>
 </div>
 </div>
@@ -473,7 +473,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0034498466312063
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0101026415539167
 </pre></div>
 </div>
 </div>
@@ -489,7 +489,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4115594531178296
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.571997202219962
 </pre></div>
 </div>
 </div>
@@ -501,14 +501,14 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9836224253217175
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0429359082572
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="distribution-of-sample-mean">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">49.6. </span>Distribution of  Sample Mean</a><a class="headerlink" href="#distribution-of-sample-mean" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">50.6. </span>Distribution of  Sample Mean</a><a class="headerlink" href="#distribution-of-sample-mean" title="Permalink to this heading">#</a></h2>
 <p>We next study the bias and efficiency of the Monte Carlo and importance sampling approaches.</p>
 <p>The code  below produces distributions of estimates using both Monte Carlo and importance sampling methods.</p>
 <div class="cell docutils container">
@@ -546,7 +546,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9965017531985612, 0.008583971261348671)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9971177718440681, 0.007835274303592751)
 </pre></div>
 </div>
 </div>
@@ -559,7 +559,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9998655901548411, 2.464706844392727e-05)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0001404616706207, 2.449858378782896e-05)
 </pre></div>
 </div>
 </div>
@@ -597,7 +597,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/01a1e891d54b631cd9030dd5df3597e805b0a875fe02c02745226c62aeade7fb.png" src="_images/01a1e891d54b631cd9030dd5df3597e805b0a875fe02c02745226c62aeade7fb.png" />
+<img alt="_images/4fc4481e3bc55c5c7f73008c09297c9741cb0014c7453e24726703d5dd5799ca.png" src="_images/4fc4481e3bc55c5c7f73008c09297c9741cb0014c7453e24726703d5dd5799ca.png" />
 </div>
 </div>
 <p>The simulation exercises above show that the importance sampling estimates are unbiased under all <span class="math notranslate nohighlight">\(T\)</span>
@@ -605,7 +605,7 @@ while the standard Monte Carlo estimates are biased downwards.</p>
 <p>Evidently, the bias increases with increases in <span class="math notranslate nohighlight">\(T\)</span>.</p>
 </section>
 <section id="more-thoughts-about-choice-of-sampling-distribution">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">49.7. </span>More Thoughts about Choice of Sampling Distribution</a><a class="headerlink" href="#more-thoughts-about-choice-of-sampling-distribution" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">50.7. </span>More Thoughts about Choice of Sampling Distribution</a><a class="headerlink" href="#more-thoughts-about-choice-of-sampling-distribution" title="Permalink to this heading">#</a></h2>
 <p>Above, we arbitraily chose <span class="math notranslate nohighlight">\(h = Beta(0.5,0.5)\)</span> as the importance distribution.</p>
 <p>Is there an optimal importance distribution?</p>
 <p>In our particular case, since we  know in advance that <span class="math notranslate nohighlight">\(E_0 \left[ L\left(\omega^t\right) \right] = 1\)</span>.</p>
@@ -707,7 +707,7 @@ while the standard Monte Carlo estimates are biased downwards.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/aaec0f9c6f16549db11a91524f13109e69a389bf669792bc973898ebcf4ceb07.png" src="_images/aaec0f9c6f16549db11a91524f13109e69a389bf669792bc973898ebcf4ceb07.png" />
+<img alt="_images/e5dee346277a6c2ab7d987da7633e0740354ee20d027f51d3783f279e7a1186d.png" src="_images/e5dee346277a6c2ab7d987da7633e0740354ee20d027f51d3783f279e7a1186d.png" />
 </div>
 </div>
 <p>Our simulations suggest that indeed <span class="math notranslate nohighlight">\(h_2\)</span> is a quite  good importance sampling distribution for our problem.</p>
@@ -745,7 +745,7 @@ while the standard Monte Carlo estimates are biased downwards.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/51ad041894a07b3375a2a534e21cb90dd3317269d15ed691f322969b44f2ca91.png" src="_images/51ad041894a07b3375a2a534e21cb90dd3317269d15ed691f322969b44f2ca91.png" />
+<img alt="_images/83548b1326cf4d1b42f89bed3f9600667f860afc6001330016d5bee2638e1d34.png" src="_images/83548b1326cf4d1b42f89bed3f9600667f860afc6001330016d5bee2638e1d34.png" />
 </div>
 </div>
 <p>However, <span class="math notranslate nohighlight">\(h_3\)</span> is evidently a poor importance sampling distribution forpir problem,
@@ -1022,43 +1022,48 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   36. Transitions in an Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   36. Cake Eating I: Introduction to Optimal Saving
+   37. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   37. Cake Eating II: Numerical Methods
+   38. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   38. Optimal Growth I: The Stochastic Optimal Growth Model
+   39. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   39. Optimal Growth II: Accelerating the Code with Numba
+   40. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   40. Optimal Growth III: Time Iteration
+   41. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   41. Optimal Growth IV: The Endogenous Grid Method
+   42. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   42. The Income Fluctuation Problem I: Basic Model
+   43. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   43. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   44. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1070,17 +1075,17 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   44. Non-Conjugate Priors
+   45. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   45. Posterior Distributions for  AR(1) Parameters
+   46. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   46. Forecasting  an AR(1) Process
+   47. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1092,42 +1097,42 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   47. Job Search VII: Search with Learning
+   48. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   48. Likelihood Ratio Processes
+   49. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   49. Computing Mean of a Likelihood Ratio Process
+   50. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   50. A Problem that Stumped Milton Friedman
+   51. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   51. Exchangeability and Bayesian Updating
+   52. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   52. Likelihood Ratio Processes and Bayesian Learning
+   53. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   53. Incorrect Models
+   54. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   54. Bayesian versus Frequentist Decision Rules
+   55. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1139,32 +1144,32 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   55. LQ Control: Foundations
+   56. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   56. Lagrangian for LQ Control
+   57. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   57. Eliminating Cross Products
+   58. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   58. The Permanent Income Model
+   59. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   59. Permanent Income II: LQ Techniques
+   60. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   60. Production Smoothing via Inventories
+   61. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1176,32 +1181,32 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   61. A Lake Model of Employment and Unemployment
+   62. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   62. Rational Expectations Equilibrium
+   63. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   63. Stability in Linear Rational Expectations Models
+   64. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   64. Markov Perfect Equilibrium
+   65. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   65. Uncertainty Traps
+   66. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   66. The Aiyagari Model
+   67. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1213,17 +1218,17 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   67. Asset Pricing: Finite State Models
+   68. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   68. Competitive Equilibria with Arrow Securities
+   69. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   69. Heterogeneous Beliefs and Bubbles
+   70. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1235,17 +1240,17 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   70. Pandas for Panel Data
+   71. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   71. Linear Regression in Python
+   72. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   72. Maximum Likelihood Estimation
+   73. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1257,12 +1262,12 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   73. First-Price and Second-Price Auctions
+   74. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   74. Multiple Good Allocation Mechanisms
+   75. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1274,17 +1279,17 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   75. Troubleshooting
+   76. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   76. References
+   77. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   77. Execution Statistics
+   78. Execution Statistics
   </a>
  </li>
 </ul>

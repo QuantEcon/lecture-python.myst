@@ -29,13 +29,14 @@ kernelspec:
 This lecture and {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` describe a model that Tjalling Koopmans {cite}`Koopmans`
 and David Cass {cite}`Cass` used to analyze optimal growth.
 
-The model can be viewed as an extension of the model of Robert Solow
-described in [an earlier lecture](https://python-programming.quantecon.org/python_oop.html)
-but adapted to make the saving rate be a choice.
+The model extends  the model of Robert Solow
+described in [an earlier lecture](https://python-programming.quantecon.org/python_oop.html).
+
+It does so by making the saving rate be a choice, instead of a hard-wired fixed number.
 
 (Solow assumed a constant saving rate determined outside the model.)
 
-We describe two versions of the model, one in this lecture and the other in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
+We describe two versions of the model, a planning problem without prices in this lecture, and a competitive equilibrium with prices  in this lecture  {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
 
 Together, the two lectures  illustrate what is, in fact, a
 more general connection between a **planned economy** and a decentralized economy
@@ -59,7 +60,7 @@ The lecture uses important ideas including
 - A min-max problem for solving a planning problem.
 - A **shooting algorithm** for solving difference equations subject
   to initial and terminal conditions.
-- A **turnpike** property that describes optimal paths for
+- A **turnpike** property of  optimal paths for
   long but finite-horizon economies.
 
 Let's start with some standard imports:
