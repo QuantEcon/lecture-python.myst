@@ -950,8 +950,7 @@ def K_tilde(C, pp):
 A  steady state $\left(K_s, C_s\right)$ is a pair $(K,C)$ that  satisfies both equations {eq}`eq:tildeC` and {eq}`eq:tildeK`. 
 
 
-It is thus the intersection of the  two curves    $\tilde{C}$ and $\tilde{K}$ that we'll eventually plot in Figure 
-{numref}`stable_manifold` below.
+It is thus the intersection of the two curves $\tilde{C}$ and $\tilde{K}$ that we'll eventually plot in a figure below.
 
 We can compute $K_s$ by solving the equation $K_s = \tilde{K}\left(\tilde{C}\left(K_s\right)\right)$
 
