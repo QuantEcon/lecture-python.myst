@@ -4,30 +4,10 @@ on:
     branches:
       - main
 jobs:
-  deploy-runner:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: iterative/setup-cml@v1
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Deploy runner on EC2
-        env:
-          REPO_TOKEN: ${{ secrets.QUANTECON_SERVICES_PAT }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          cml runner launch \
-              --cloud=aws \
-              --cloud-region=us-west-2 \
-              --cloud-type=p3.2xlarge \
-              --labels=cml-gpu \
-              --cloud-hdd-size=40
   cache:
-    needs: deploy-runner
-    runs-on: [self-hosted, cml-gpu]
+    runs-on: quantecon-gpu-runner
     container:
-      image: docker://mmcky/quantecon-lecture-python:cuda-12.3.1-anaconda-2024-02-py311
+      image: ghcr.io/quantecon/lecture-python-container:cuda-12.5.0-anaconda-2024-06-py311
       options: --gpus all
     steps:
       - uses: actions/checkout@v3
