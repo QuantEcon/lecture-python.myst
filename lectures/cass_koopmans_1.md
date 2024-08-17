@@ -986,7 +986,7 @@ c_vec1, k_vec1 = bisection(pp, 5, 15, T=200, k_ter=Ks)
 c_vec2, k_vec2 = bisection(pp, 1e-3, 1e-3, T=200, k_ter=Ks)
 ```
 
-The following code generates a figure, which is patterned on a graph that appears  on  page 411 of {cite}`intriligator2002mathematical`. 
+The following code generates Figure {numref}`stable_manifold`, which is patterned on a graph that appears  on  page 411 of {cite}`intriligator2002mathematical`. 
 
 ```{code-cell} ipython3
 ---
