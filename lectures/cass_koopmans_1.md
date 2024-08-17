@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.1
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -66,9 +68,8 @@ The lecture uses important ideas including
 
 Let's start with some standard imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, float64
 from numba.experimental import jitclass
 import numpy as np
@@ -388,7 +389,7 @@ It must also satisfy the initial condition that $K_0$ is given and $K_{T+1} = 0$
 Below we define a `jitclass` that stores parameters and functions
 that define our economy.
 
-```{code-cell} python3
+```{code-cell} ipython3
 planning_data = [
     ('γ', float64),    # Coefficient of relative risk aversion
     ('β', float64),    # Discount factor
@@ -398,7 +399,7 @@ planning_data = [
 ]
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jitclass(planning_data)
 class PlanningProblem():
 
@@ -466,7 +467,7 @@ class PlanningProblem():
 
 We can construct an economy with the Python code:
 
-```{code-cell} python3
+```{code-cell} ipython3
 pp = PlanningProblem()
 ```
 
@@ -527,7 +528,7 @@ planning problem.
 (Actually, we modified the preceding  algorithm slightly by starting with a guess for
 $c_0$ instead of $\mu_0$ in the following code.)
 
-```{code-cell} python3
+```{code-cell} ipython3
 @njit
 def shooting(pp, c0, k0, T=10):
     '''
@@ -557,11 +558,11 @@ def shooting(pp, c0, k0, T=10):
 
 We’ll start with an incorrect guess.
 
-```{code-cell} python3
+```{code-cell} ipython3
 paths = shooting(pp, 0.2, 0.3, T=10)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, axs = plt.subplots(1, 2, figsize=(14, 5))
 
 colors = ['blue', 'red']
@@ -612,7 +613,7 @@ Shoot forward again, iterating on these steps until we converge.
 When $K_{T+1}$ gets close enough to $0$ (i.e., within an error
 tolerance bounds), we stop.
 
-```{code-cell} python3
+```{code-cell} ipython3
 @njit
 def bisection(pp, c0, k0, T=10, tol=1e-4, max_iter=500, k_ter=0, verbose=True):
 
@@ -646,7 +647,7 @@ def bisection(pp, c0, k0, T=10, tol=1e-4, max_iter=500, k_ter=0, verbose=True):
         c0 = (c0_lower + c0_upper) / 2
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 def plot_paths(pp, c0, k0, T_arr, k_ter=0, k_ss=None, axs=None):
 
     if axs is None:
@@ -680,7 +681,7 @@ def plot_paths(pp, c0, k0, T_arr, k_ter=0, k_ss=None, axs=None):
 
 Now we can solve the model and plot the paths of consumption, capital, and Lagrange multiplier.
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_paths(pp, 0.3, 0.3, [10]);
 ```
 
@@ -745,7 +746,7 @@ $$
 Let's verify this with Python and then use this steady state
 $\bar K$ as our initial capital stock $K_0$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 ρ = 1 / pp.β - 1
 k_ss = pp.f_prime_inv(ρ+pp.δ)
 
@@ -754,7 +755,7 @@ print(f'steady state for capital is: {k_ss}')
 
 Now we plot
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_paths(pp, 0.3, k_ss, [150], k_ss=k_ss);
 ```
 
@@ -764,7 +765,7 @@ $T$, $K_t$ stays near $K_0$ until $t$ approaches $T$ closely.
 Let's see what the planner does when we set
 $K_0$ below $\bar K$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_paths(pp, 0.3, k_ss/3, [150], k_ss=k_ss);
 ```
 
@@ -774,7 +775,7 @@ value $K_{T+1} =0$ when $t$ closely approaches $T$.
 
 The following graphs compare optimal outcomes as we vary $T$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_paths(pp, 0.3, k_ss/3, [150, 75, 50, 25], k_ss=k_ss);
 ```
 
@@ -784,7 +785,7 @@ The following calculation indicates that when  $T$ is very large,
 the optimal capital stock stays close to
 its steady state value most of the time.
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_paths(pp, 0.3, k_ss/3, [250, 150, 50, 25], k_ss=k_ss);
 ```
 
@@ -806,7 +807,7 @@ over time.
 
 Let's calculate and  plot the saving rate.
 
-```{code-cell} python3
+```{code-cell} ipython3
 @njit
 def saving_rate(pp, c_path, k_path):
     'Given paths of c and k, computes the path of saving rate.'
@@ -815,7 +816,7 @@ def saving_rate(pp, c_path, k_path):
     return (production - c_path) / production
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 def plot_saving_rate(pp, c0, k0, T_arr, k_ter=0, k_ss=None, s_ss=None):
 
     fix, axs = plt.subplots(2, 2, figsize=(12, 9))
@@ -832,7 +833,7 @@ def plot_saving_rate(pp, c0, k0, T_arr, k_ter=0, k_ss=None, s_ss=None):
         axs[1, 1].hlines(s_ss, 0, np.max(T_arr), linestyle='--')
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_saving_rate(pp, 0.3, k_ss/3, [250, 150, 75, 50], k_ss=k_ss)
 ```
 
@@ -872,7 +873,7 @@ the amount required to offset capital depreciation each period.
 We first study optimal capital paths that start below the steady
 state.
 
-```{code-cell} python3
+```{code-cell} ipython3
 # steady state of saving rate
 s_ss = pp.δ * k_ss / pp.f(k_ss)
 
@@ -914,7 +915,7 @@ $$ (eq:tildeC)
 
 A positive fixed point  $C = \tilde C(K)$ exists only if $f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)>0$
 
-```{code-cell} python3
+```{code-cell} ipython3
 @njit
 def C_tilde(K, pp):
 
@@ -933,7 +934,7 @@ $$
 K = \tilde K(C)
 $$ (eq:tildeK)
 
-```{code-cell} python3
+```{code-cell} ipython3
 @njit
 def K_diff(K, C, pp):
     return pp.f(K) - pp.δ * K - C
@@ -946,7 +947,6 @@ def K_tilde(C, pp):
     return res.root
 ```
 
-
 A  steady state $\left(K_s, C_s\right)$ is a pair $(K,C)$ that  satisfies both equations {eq}`eq:tildeC` and {eq}`eq:tildeK`. 
 
 
@@ -954,7 +954,7 @@ It is thus the intersection of the  two curves    $\tilde{C}$ and $\tilde{K}$ th
 
 We can compute $K_s$ by solving the equation $K_s = \tilde{K}\left(\tilde{C}\left(K_s\right)\right)$
 
-```{code-cell} python3
+```{code-cell} ipython3
 @njit
 def K_tilde_diff(K, pp):
 
@@ -963,14 +963,14 @@ def K_tilde_diff(K, pp):
     return K - K_out
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 res = brentq(K_tilde_diff, 8, 10, args=(pp,))
 
 Ks = res.root
 Cs = C_tilde(Ks, pp)
 
 Ks, Cs
-```    
+```
 
 We can use the shooting algorithm to  compute  trajectories that approach $\left(K_s, C_s\right)$.
 
@@ -980,10 +980,11 @@ We compute  $C_0$ by the bisection algorithm that assures that  $K_T=K_s$.
 
 Let's compute  two trajectories towards $\left(K_s, C_s\right)$ that  start from different sides of $K_s$: $\bar{K}_0=1e-3<K_s<\bar{K}_1=15$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 c_vec1, k_vec1 = bisection(pp, 5, 15, T=200, k_ter=Ks)
 c_vec2, k_vec2 = bisection(pp, 1e-3, 1e-3, T=200, k_ter=Ks)
 ```
+
 The following code generates Figure {numref}`stable_manifold`, which is patterned on a graph that appears  on  page 411 of {cite}`intriligator2002mathematical`. 
 
 Figure {numref}`stable_manifold` is a classic "phase plane" with  "state" variable $K$ on the ordinate axis and "co-state" variable $C$ on the coordinate axis.  
@@ -1002,14 +1003,11 @@ In addition to the three curves, Figure {numref}`stable_manifold` plots  arrows 
   
   * If $C_0$ is set above the green line for a given $K_0$, too little capital is accumulated
 
-
-
-
-```{code-cell} python3
+```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: "Stable Manifold and Phase Plane"
+    caption: Stable Manifold and Phase Plane
     name: stable_manifold
 ---
 fig, ax = plt.subplots(figsize=(7, 5))
@@ -1058,7 +1056,8 @@ ax.set_xlabel('$K$')
 ax.set_ylabel('$C$')
 
 plt.show()
-```  
+```
+
    
 
 
@@ -1094,7 +1093,7 @@ studied in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` is a f
 :class: dropdown
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_saving_rate(pp, 0.3, k_ss*1.5, [130], k_ter=k_ss, k_ss=k_ss, s_ss=s_ss)
 ```
 
