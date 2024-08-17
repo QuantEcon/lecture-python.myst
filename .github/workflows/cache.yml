@@ -10,7 +10,7 @@ jobs:
       image: ghcr.io/quantecon/lecture-python-container:cuda-12.5.0-anaconda-2024-06-py311
       options: --gpus all
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Check nvidia drivers
