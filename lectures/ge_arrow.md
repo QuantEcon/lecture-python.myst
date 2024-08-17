@@ -28,11 +28,11 @@ This lecture presents Python code for experimenting with  competitive equilibria
 
 * Common expected utility preferences across agents
 
-* Common beliefs across agents
+* Common beliefs among agents
 
 * A constant relative risk aversion (CRRA)  one-period utility function that implies the existence of a representative consumer whose consumption process can be plugged into a formula for the pricing kernel for  one-step Arrow securities and thereby determine equilibrium prices before determining an equilibrium distribution of wealth
 
-* Diverse endowments across agents provide motivations for individuals to want to reallocate consumption goods across time and Markov states
+* Differences in their  endowments make individuals want to reallocate consumption goods across time and Markov states
 
 We impose  restrictions that allow us to **Bellmanize** competitive equilibrium prices and quantities
 
@@ -45,7 +45,7 @@ We use  Bellman equations  to describe
 * state-by-state natural debt limits for each person
 
 
-In the course of presenting the model we shall describe these important ideas
+In the course of presenting the model we shall encounter these important ideas
 
 *  a **resolvent operator**   widely  used in this class of models
 
@@ -172,8 +172,6 @@ $$
 v^k(a, s) = \max_{c, \hat a(s')} \left\{ u_k(c) + \beta \sum_{s'} v^k[\hat a(s'),s'] \pi (s' | s) \right\}
 $$
 
-(NOTE: We have $\hat a$ here and $a$ below in the definition of **recursive competitive equilibrium**. Is it a typo below or this is intentional?)
-
 where  maximization is subject to the budget constraint
 
 $$
@@ -212,7 +210,7 @@ and $c_{t+1}^k = c^k(s_{t+1})$.
 A **recursive competitive equilibrium** is
 an initial distribution of wealth $\vec a_0$, a set of borrowing limits $\{\bar A^k(s)\}_{k=1}^K$,
 a pricing kernel $Q(s' | s)$, sets of value functions $\{v^k(a,s)\}_{k=1}^K$, and
-decision rules $\{c^k(s), a^k(s)\}_{k=1}^K$ such
+decision rules $\{c^k(s), \hat a^k(s)\}_{k=1}^K$ such
 that
 
 * The state-by-state borrowing constraints satisfy the recursion
@@ -221,7 +219,7 @@ $$
 \bar A^k(s) = y^k(s) + \sum_{s'} Q(s'|s) \bar A^k(s')
 $$
 
-* For all $i$, given
+* For all $k$, given
  $a^k_0$, $\bar A^k(s)$,  and the pricing kernel, the value functions and decision rules
 solve the consumers' problems;
 
@@ -262,7 +260,7 @@ the  single  budget constraint in   arrangement with all trades occurring at tim
 
 
 
-Starting the system  with $a_0^k =0$ for all $i$ has a striking implication that we can call **state variable degeneracy**.
+Starting the system  with $a_0^k =0$ for all $i$ has a striking implication that we  call **state variable degeneracy**.
 
 
 Here is  what we mean by **state variable degeneracy**:
@@ -337,12 +335,18 @@ p^h = (I - Q)^{-1} d^h
 $$
 
 
+
+
 * the price in Markov state $s$ at time $t$ of an **ex dividend** stock that entitles the owner at the end  of time $t$ to the time $t+1$ dividend and the option to sell the stock at time $t+1$. The  price is
 
 $$
 p^h = (I - Q)^{-1} Q d^h
 $$
 
+```{note}
+The matrix geometric sum $(I - Q)^{-1} = I + Q + Q^2 + \cdots $
+is an example of a **resolvent operator**.
+```
 
 Below, we describe an equilibrium model with trading of one-period Arrow securities in which the pricing kernel is endogenous.
 
@@ -577,9 +581,9 @@ Evidently, they equal the maximum amount that it is feasible for  individual $k$
 even if he consumes zero goods forevermore.
 
 **Remark:** If  we have an Inada condition at zero consumption or just impose that consumption
-be nonnegative, then in a **finite horizon** economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section below on a Finite Horizon Economy.
+be nonnegative, then in a **finite horizon** economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section on a Finite Horizon Economy  below.
 
-(NOTE: check equation (25) in week 4 slides -- Inada condition forces the the natural debt limits non-binding in infinite horizon sequential trading)
+
 
 ### Continuation Wealth
 
@@ -693,6 +697,134 @@ $$ J^k = (I - \beta P)^{-1} u(\alpha_k y)  , \quad u(c) = \frac{c^{1-\gamma}}{1-
 
 where it is understood that $ u(\alpha_k y)$ is a vector.
 
+
+## Finite Horizon
+
+We now describe a finite-horizon version of the economy that operates  for $T+1$ periods
+$t \in {\bf T} = \{ 0, 1, \ldots, T\}$.
+
+Consequently, we'll  want  $T+1$ counterparts to objects described above, with one important exception:
+we won't need **borrowing limits**.
+
+ * borrowing limits aren't required for a finite horizon economy in which a
+one-period utility function $u(c)$ satisfies an Inada condition that sets the marginal utility of consumption at zero consumption to zero.
+ * Nonnegativity of consumption choices at all $t \in {\bf T}$ automatically
+limits borrowing.
+
+
+### Continuation Wealths
+
+
+We denote  a $K \times 1$ vector of  state-dependent continuation wealths in Markov state $s$ at time $t$ as
+
+$$
+\psi_t\left(s\right)=\left[\begin{array}{c}
+\psi^{1}\left(s\right)\\
+\vdots\\
+\psi^{K}\left(s\right)
+\end{array}\right], \quad s \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]
+$$
+
+and an  $n \times 1$ vector of continuation wealths for each individual $k$ as
+
+$$
+\psi_t^{k}=\left[\begin{array}{c}
+\psi_t^{k}\left(\bar{s}_{1}\right)\\
+\vdots\\
+\psi_t^{k}\left(\bar{s}_{n}\right)
+\end{array}\right], \quad k \in \left[1, \ldots, K\right]
+$$
+
+
+
+Continuation wealths  $\psi^k$ of consumer $k$ satisfy
+
+$$
+\begin{aligned}
+\psi_T^k & =  \left[\alpha_k y - y^k\right] \cr
+\psi_{T-1}^k & =  \left[I + Q \right] \left[\alpha_k y - y^k\right] \cr
+\vdots \quad  & \quad \quad \quad \vdots \cr
+\psi_0^k  & = \left[I + Q + Q^2 + \cdots + Q^T \right] \left[\alpha_k y - y^k\right]
+\end{aligned}
+$$ (eq:vv)
+
+where
+
+$$
+y^{k}=\left[\begin{array}{c}
+y^{k}\left(\bar{s}_{1}\right)\\
+\vdots\\
+y^{k}\left(\bar{s}_{n}\right)
+\end{array}\right],\quad y=\left[\begin{array}{c}
+y\left(\bar{s}_{1}\right)\\
+\vdots\\
+y\left(\bar{s}_{n}\right)
+\end{array}\right]
+$$
+
+Note that $\sum_{k=1}^K \psi_t^k = {0}_{n \times 1}$ for all $t \in {\bf T}$.
+
+**Remark:** At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$,
+ for all agents $k = 1, \ldots, K$, continuation wealth $\psi_0^k(s_0) = 0$.  This indicates that
+the economy begins with  all agents being debt-free and financial-asset-free at time $0$, state $s_0$.
+
+
+**Remark:** Note that all agents' continuation wealths  return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$. This will recur if the Markov chain makes the initial state $s_0$ recurrent.
+
+
+
+
+With the initial state being  a particular state $s_0 \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]$, we must have
+
+$$
+\psi_0^k\left(s_0\right) = 0, \quad k=1, \ldots, K
+$$
+
+which means the equilibrium distribution of wealth satisfies
+
+$$
+\alpha_k = \frac{V_z y^k}{V_z y}
+$$ (eq:w)
+
+
+
+where  now in our finite-horizon economy
+
+$$
+ V = \left[I + Q + Q^2 + \cdots + Q^T \right]
+$$ (eq:ww)
+
+and $z$ is the row index corresponding to the initial state $s_0$.
+
+Since $\sum_{k=1}^K V_z y^k = V_z y$,  $\sum_{k=1}^K \alpha_k = 1$.
+
+
+In summary, here is the logical flow of an algorithm to compute a competitive equilibrium with Arrow securities
+in our finite-horizon Markov economy:
+
+* compute $Q$ from the aggregate allocation and  formula {eq}`eq:Qformula`
+
+* compute the distribution of wealth $\alpha$ from  formulas {eq}`eq:w` and {eq}`eq:ww`
+
+* using  $\alpha$, assign each consumer $k$ the share  $\alpha_k$ of the aggregate endowment at each state
+
+* return to the $\alpha$-dependent formula {eq}`eq:vv` for continuation wealths and compute continuation wealths
+
+* equate agent $k$'s portfolio to its continuation wealth state by state
+
+
+While for  the infinite horizon economy, the formula for value functions  is
+
+$$ J^k = (I - \beta P)^{-1} u(\alpha_k y)  , \quad u(c) = \frac{c^{1-\gamma}}{1-\gamma} $$
+
+for the finite horizon economy the formula is
+
+$$ J_0^k = (I + \beta P + \cdots + \beta^T P^T) u(\alpha_k y) , $$
+
+where it is understood that $ u(\alpha_k y)$ is a vector.
+
+
+
 ## Python Code
 
 We are ready to dive into some Python code.
@@ -712,9 +844,9 @@ np.set_printoptions(suppress=True)
 First, we create a Python class to compute  the objects that comprise a competitive equilibrium
 with sequential trading of one-period Arrow securities.
 
-In addition to  handly infinite-horizon economies, the code is set up to handle finite-horizon economies indexed by horizon $T$.
+In addition to infinite-horizon economies, the code is set up to handle finite-horizon economies indexed by horizon $T$.
 
-We'll study some finite horizon economies after we look at some infinite-horizon economies.
+We'll study examples of  finite horizon economies after we first  look at  some infinite-horizon economies.
 
 ```{code-cell} ipython3
 class RecurCompetitive:
@@ -879,6 +1011,14 @@ class RecurCompetitive:
         return J
 ```
 
+## Examples
+
+We'll use our code to construct equilibrium objects in several example economies.
+
+Our first several examples will be infinite horizon economies.
+
+Our final example will be a finite horizon economy.
+
 ### Example 1
 
 Please read the preceding class for default parameter values and the  following Python code for the fundamentals of the economy.
@@ -978,7 +1118,9 @@ print("R = ", ex2.R)
 ex2.Q
 ```
 
-NOTE: The pricing kernal is different because of the aggregate endowments in state 1 and 2 are different now
+Note that the pricing kernal in example economies 1 and 2 differ.
+
+This comes from differences in the aggregate endowments in state 1 and 2 in example 1.
 
 ```{code-cell} ipython3
 ex2.β * ex2.u_prime(3.5) / ex2.u_prime(2.5) * ex2.P[0,1]
@@ -988,7 +1130,7 @@ ex2.β * ex2.u_prime(3.5) / ex2.u_prime(2.5) * ex2.P[0,1]
 ex2.β * ex2.u_prime(2.5) / ex2.u_prime(3.5) * ex2.P[1,0]
 ```
 
-END OF NOTE
+
 
 ```{code-cell} ipython3
 # Risk free rate R
@@ -1160,138 +1302,10 @@ for i in range(1, 4):
     print(f'J = \n{ex4.value_functionss()}\n')
 ```
 
-## Finite Horizon
-(NOTE: Consider bring finite horizon section above since the Python class considers the finite horizon cases)
-
-The Python class **RecurCompetitive** provided above also can be used to compute competitive equilibrium
-allocations and Arrow securities prices for finite horizon economies.
-
-The setting is a finite-horizon version of  the one above except that time now runs for $T+1$ periods
-$t \in {\bf T} = \{ 0, 1, \ldots, T\}$.
-
-Consequently, we want  $T+1$ counterparts to objects described above, with one important exception:
-we won't need **borrowing limits**.
-
- * borrowing limits aren't required for a finite horizon economy in which a
-one-period utility function $u(c)$ satisfies an Inada condition that sets the marginal utility of consumption at zero consumption to zero.
- * Nonnegativity of consumption choices at all $t \in {\bf T}$ automatically
-limits borrowing.
-
-
-### Continuation Wealths
-
-
-We denote  a $K \times 1$ vector of  state-dependent continuation wealths in Markov state $s$ at time $t$ as
-
-$$
-\psi_t\left(s\right)=\left[\begin{array}{c}
-\psi^{1}\left(s\right)\\
-\vdots\\
-\psi^{K}\left(s\right)
-\end{array}\right], \quad s \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]
-$$
-
-and an  $n \times 1$ vector of continuation wealths for each individual $k$ as
-
-$$
-\psi_t^{k}=\left[\begin{array}{c}
-\psi_t^{k}\left(\bar{s}_{1}\right)\\
-\vdots\\
-\psi_t^{k}\left(\bar{s}_{n}\right)
-\end{array}\right], \quad k \in \left[1, \ldots, K\right]
-$$
-
-
-
-Continuation wealths  $\psi^k$ of consumer $k$ satisfy
-
-$$
-\begin{aligned}
-\psi_T^k & =  \left[\alpha_k y - y^k\right] \cr
-\psi_{T-1}^k & =  \left[I + Q \right] \left[\alpha_k y - y^k\right] \cr
-\vdots \quad  & \quad \quad \quad \vdots \cr
-\psi_0^k  & = \left[I + Q + Q^2 + \cdots + Q^T \right] \left[\alpha_k y - y^k\right]
-\end{aligned}
-$$ (eq:vv)
-
-where
-
-$$
-y^{k}=\left[\begin{array}{c}
-y^{k}\left(\bar{s}_{1}\right)\\
-\vdots\\
-y^{k}\left(\bar{s}_{n}\right)
-\end{array}\right],\quad y=\left[\begin{array}{c}
-y\left(\bar{s}_{1}\right)\\
-\vdots\\
-y\left(\bar{s}_{n}\right)
-\end{array}\right]
-$$
-
-Note that $\sum_{k=1}^K \psi_t^k = {0}_{n \times 1}$ for all $t \in {\bf T}$.
-
-**Remark:** At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$,
- for all agents $k = 1, \ldots, K$, continuation wealth $\psi_0^k(s_0) = 0$.  This indicates that
-the economy begins with  all agents being debt-free and financial-asset-free at time $0$, state $s_0$.
-
-
-**Remark:** Note that all agents' continuation wealths  return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$. This will recur if the Markov chain makes the initial state $s_0$ recurrent.
-
-
-
-
-With the initial state being  a particular state $s_0 \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]$, we must have
-
-$$
-\psi_0^k\left(s_0\right) = 0, \quad k=1, \ldots, K
-$$
-
-which means the equilibrium distribution of wealth satisfies
-
-$$
-\alpha_k = \frac{V_z y^k}{V_z y}
-$$ (eq:w)
-
-
-
-where  now in our finite-horizon economy
-
-$$
- V = \left[I + Q + Q^2 + \cdots + Q^T \right]
-$$ (eq:ww)
-
-and $z$ is the row index corresponding to the initial state $s_0$.
-
-Since $\sum_{k=1}^K V_z y^k = V_z y$,  $\sum_{k=1}^K \alpha_k = 1$.
-
-
-In summary, here is the logical flow of an algorithm to compute a competitive equilibrium with Arrow securities
-in our finite-horizon Markov economy:
-
-* compute $Q$ from the aggregate allocation and  formula {eq}`eq:Qformula`
-
-* compute the distribution of wealth $\alpha$ from  formulas {eq}`eq:w` and {eq}`eq:ww`
-
-* using  $\alpha$, assign each consumer $k$ the share  $\alpha_k$ of the aggregate endowment at each state
-
-* return to the $\alpha$-dependent formula {eq}`eq:vv` for continuation wealths and compute continuation wealths
-
-* equate agent $k$'s portfolio to its continuation wealth state by state
-
-
-While for  the infinite horizon economy, the formula for value functions  is
-
-$$ J^k = (I - \beta P)^{-1} u(\alpha_k y)  , \quad u(c) = \frac{c^{1-\gamma}}{1-\gamma} $$
-
-for the finite horizon economy the formula is
-
-$$ J_0^k = (I + \beta P + \cdots + \beta^T P^T) u(\alpha_k y) , $$
-
-where it is understood that $ u(\alpha_k y)$ is a vector.
 
 ### Finite Horizon Example
 
-Below we revisit the economy defined in example 1, but set the time horizon to be $T=10$.
+We now  revisit the economy defined in example 1, but set the time horizon to be $T=10$.
 
 ```{code-cell} ipython3
 # dimensions
