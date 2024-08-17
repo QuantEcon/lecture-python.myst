@@ -950,7 +950,8 @@ def K_tilde(C, pp):
 A  steady state $\left(K_s, C_s\right)$ is a pair $(K,C)$ that  satisfies both equations {eq}`eq:tildeC` and {eq}`eq:tildeK`. 
 
 
-It is thus the intersection of the  two curves    $\tilde{C}$ and $\tilde{K}$ that we'll eventually plot in Figure {numref}`stable_manifold` below.
+It is thus the intersection of the  two curves    $\tilde{C}$ and $\tilde{K}$ that we'll eventually plot in Figure 
+{numref}`stable_manifold` below.
 
 We can compute $K_s$ by solving the equation $K_s = \tilde{K}\left(\tilde{C}\left(K_s\right)\right)$
 
@@ -987,22 +988,6 @@ c_vec2, k_vec2 = bisection(pp, 1e-3, 1e-3, T=200, k_ter=Ks)
 
 The following code generates Figure {numref}`stable_manifold`, which is patterned on a graph that appears  on  page 411 of {cite}`intriligator2002mathematical`. 
 
-Figure {numref}`stable_manifold` is a classic "phase plane" with  "state" variable $K$ on the ordinate axis and "co-state" variable $C$ on the coordinate axis.  
-
-Figure {numref}`stable_manifold` plots   three curves:
-  
-  * the blue line  graphs $C = \tilde C (K)$ of fixed points described by equation {eq}`eq:tildeC`. 
-  * the red line graphs $K = \tilde K(C)$ of fixed points described by equation {eq}`eq:tildeK`
-  * the green line graphs the stable traced out by paths that converge to the steady state starting from an arbitrary $K_0$ at time $0$.
-     * for a given $K_0$, the shooting algorithm sets $C_0$ to the coordinate on the green line in order to initiate a path that converges to the optimal steady state
-     * the arrows on the green line show the direction in which  dynamics {eq}`eq:systemdynamics` push successive $(K_{t+1}, C_t)$ pairs. 
-     
-In addition to the three curves, Figure {numref}`stable_manifold` plots  arrows that point where the  dynamics {eq}`eq:systemdynamics` drive the system  when, for a given $K_0$, $C_0$ is  not on the stable manifold depicted in the green line.
-
-  * If $C_0$ is set below the green line for a given $K_0$, too much capital is accumulated
-  
-  * If $C_0$ is set above the green line for a given $K_0$, too little capital is accumulated
-
 ```{code-cell} ipython3
 ---
 mystnb:
@@ -1010,6 +995,7 @@ mystnb:
     caption: Stable Manifold and Phase Plane
     name: stable_manifold
 ---
+
 fig, ax = plt.subplots(figsize=(7, 5))
 
 K_range = np.arange(1e-1, 15, 0.1)
@@ -1058,8 +1044,21 @@ ax.set_ylabel('$C$')
 plt.show()
 ```
 
-   
+Figure {numref}`stable_manifold` is a classic "phase plane" with  "state" variable $K$ on the ordinate axis and "co-state" variable $C$ on the coordinate axis.  
 
+Figure {numref}`stable_manifold` plots   three curves:
+  
+  * the blue line  graphs $C = \tilde C (K)$ of fixed points described by equation {eq}`eq:tildeC`. 
+  * the red line graphs $K = \tilde K(C)$ of fixed points described by equation {eq}`eq:tildeK`
+  * the green line graphs the stable traced out by paths that converge to the steady state starting from an arbitrary $K_0$ at time $0$.
+     * for a given $K_0$, the shooting algorithm sets $C_0$ to the coordinate on the green line in order to initiate a path that converges to the optimal steady state
+     * the arrows on the green line show the direction in which  dynamics {eq}`eq:systemdynamics` push successive $(K_{t+1}, C_t)$ pairs. 
+     
+In addition to the three curves, Figure {numref}`stable_manifold` plots arrows that point where the  dynamics {eq}`eq:systemdynamics` drive the system  when, for a given $K_0$, $C_0$ is  not on the stable manifold depicted in the green line.
+
+  * If $C_0$ is set below the green line for a given $K_0$, too much capital is accumulated
+  
+  * If $C_0$ is set above the green line for a given $K_0$, too little capital is accumulated
 
 ## Concluding Remarks
 
