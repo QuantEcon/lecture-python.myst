@@ -4,10 +4,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.8.2
+    format_version: 0.13
+    jupytext_version: 1.16.1
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -28,11 +28,11 @@ This lecture presents Python code for experimenting with  competitive equilibria
 
 * Common expected utility preferences across agents
 
-* Common beliefs across agents
+* Common beliefs among agents
 
-* A constant relative risk aversion (CRRA)  one-period utility function that implies the existence of a representative consumer whose consumption process can be plugged into a formula for the pricing kernel for  one-step Arrow securities and thereby determine equilbrium prices before determining an equilibrium distribution of wealth
+* A constant relative risk aversion (CRRA)  one-period utility function that implies the existence of a representative consumer whose consumption process can be plugged into a formula for the pricing kernel for  one-step Arrow securities and thereby determine equilibrium prices before determining an equilibrium distribution of wealth
 
-Diverse endowments across agents provide motivations for individuals to want to reallocate consumption goods across time and Markov states
+* Differences in their  endowments make individuals want to reallocate consumption goods across time and Markov states
 
 We impose  restrictions that allow us to **Bellmanize** competitive equilibrium prices and quantities
 
@@ -45,7 +45,7 @@ We use  Bellman equations  to describe
 * state-by-state natural debt limits for each person
 
 
-In the course of presenting the model we shall describe these important ideas
+In the course of presenting the model we shall encounter these important ideas
 
 *  a **resolvent operator**   widely  used in this class of models
 
@@ -97,11 +97,11 @@ history $s^t$.
 The history $s^t$ is publicly observable.
 
 
-Consumer $i$
+Consumer $k$
 purchases a history-dependent  consumption plan $c^k =
  \{c_t^k(s^t)\}_{t=0}^\infty$
 
-Consumer $i$  orders consumption plans by
+Consumer $k$  orders consumption plans by
 
 $$ U_k(c^k) =
    \sum_{t=0}^\infty \sum_{s^t} \beta^t u_k[c_t^k(s^t)]
@@ -118,7 +118,7 @@ Here $u_k(c)$ is an increasing, twice
 continuously differentiable, strictly concave function of
 consumption $c\geq 0$  of one good.
 
-The utility function pf person $k$ satisfies
+The utility function of person $k$ satisfies
 the Inada condition
 
 $$ \lim_{c \downarrow 0} u'_k(c) = +\infty.$$
@@ -159,19 +159,18 @@ These enable us to provide a
 recursive formulation of a consumer's optimization problem.
 
 
-Consumer $i$'s state at time $t$ is its financial wealth $a^k_t$ and Markov state $s_t$.
+Consumer $k$'s state at time $t$ is its financial wealth $a^k_t$ and Markov state $s_t$.
 
-Let $v^k(a,s)$ be the optimal value of consumer $i$'s problem
+Let $v^k(a,s)$ be the optimal value of consumer $k$'s problem
 starting from state $(a, s)$.
 
- * $v^k(a,s)$ is the maximum expected discounted utility  that consumer $i$ with current financial wealth $a$ can attain in Markov state $s$.
+ * $v^k(a,s)$ is the maximum expected discounted utility that consumer $k$ with current financial wealth $a$ can attain in Markov state $s$.
 
 The optimal  value function satisfies the Bellman equation
 
 $$
 v^k(a, s) = \max_{c, \hat a(s')} \left\{ u_k(c) + \beta \sum_{s'} v^k[\hat a(s'),s'] \pi (s' | s) \right\}
 $$
-
 
 where  maximization is subject to the budget constraint
 
@@ -210,8 +209,8 @@ and $c_{t+1}^k = c^k(s_{t+1})$.
 
 A **recursive competitive equilibrium** is
 an initial distribution of wealth $\vec a_0$, a set of borrowing limits $\{\bar A^k(s)\}_{k=1}^K$,
-a pricing kernel $Q(s' | s)$, sets of value functions $\{v^k(a,s)\}_{i=1}^K$, and
-decision rules $\{c^k(s), a^k(s)\}_{i=1}^K$ such
+a pricing kernel $Q(s' | s)$, sets of value functions $\{v^k(a,s)\}_{k=1}^K$, and
+decision rules $\{c^k(s), \hat a^k(s)\}_{k=1}^K$ such
 that
 
 * The state-by-state borrowing constraints satisfy the recursion
@@ -220,17 +219,17 @@ $$
 \bar A^k(s) = y^k(s) + \sum_{s'} Q(s'|s) \bar A^k(s')
 $$
 
-* For all $i$, given
+* For all $k$, given
  $a^k_0$, $\bar A^k(s)$,  and the pricing kernel, the value functions and decision rules
 solve the consumers' problems;
 
 * For all realizations of $\{s_t\}_{t=0}^\infty$, the consumption and asset
 portfolios $\{\{c^k_t,$
-$\{\hat a^k_{t+1}(s')\}_{s'}\}_i\}_t$  satisfy $\sum_i c^k_t = \sum_i y^k(s_t)$ and
-$\sum_i \hat a_{t+1}^k(s') = 0$
+$\{\hat a^k_{t+1}(s')\}_{s'}\}_k\}_t$  satisfy $\sum_k c^k_t = \sum_k y^k(s_t)$ and
+$\sum_k \hat a_{t+1}^k(s') = 0$
 for all $t$ and $s'$.
 
-* The initial financial wealth vector $\vec a_0$ satisfies $\sum_{i=1}^K a_0^k = 0 $.
+* The initial financial wealth vector $\vec a_0$ satisfies $\sum_{k=1}^K a_0^k = 0 $.
 
 
 The third condition asserts that there are  zero net aggregate claims in all Markov states.
@@ -261,7 +260,7 @@ the  single  budget constraint in   arrangement with all trades occurring at tim
 
 
 
-Starting the system  with $a_0^k =0$ for all $i$ has a striking implication that we can call **state variable degeneracy**.
+Starting the system  with $a_0^k =0$ for all $i$ has a striking implication that we  call **state variable degeneracy**.
 
 
 Here is  what we mean by **state variable degeneracy**:
@@ -297,7 +296,7 @@ The setup assumes the following infrastructure
 * Markov states: $s \in S = \left[\bar{s}_1, \ldots, \bar{s}_n \right]$ governed by  an $n$-state Markov chain with transition probability
 
 $$
-P_{ij} = \Pr \left\{s_{t+1} = \bar{s}_j \mid s_t = \bar{s}_k \right\}
+P_{ij} = \Pr \left\{s_{t+1} = \bar{s}_j \mid s_t = \bar{s}_i \right\}
 $$
 
 * A collection $h=1,\ldots, H$ of  $n \times 1$ vectors of  $H$ assets that pay off  $d^h\left(s\right)$  in state $s$
@@ -336,12 +335,18 @@ p^h = (I - Q)^{-1} d^h
 $$
 
 
+
+
 * the price in Markov state $s$ at time $t$ of an **ex dividend** stock that entitles the owner at the end  of time $t$ to the time $t+1$ dividend and the option to sell the stock at time $t+1$. The  price is
 
 $$
 p^h = (I - Q)^{-1} Q d^h
 $$
 
+```{note}
+The matrix geometric sum $(I - Q)^{-1} = I + Q + Q^2 + \cdots $
+is an example of a **resolvent operator**.
+```
 
 Below, we describe an equilibrium model with trading of one-period Arrow securities in which the pricing kernel is endogenous.
 
@@ -349,7 +354,7 @@ In constructing our model, we'll repeatedly encounter formulas that remind us of
 
 ### Multi-Step-Forward Transition Probabilities and Pricing Kernels
 
-The $(i,j)$ component of  the $k$-step ahead transition probability $P^\ell$ is
+The $(i,j)$ component of  the $\ell$-step ahead transition probability $P^\ell$ is
 
 $$
 Prob(s_{t+\ell} = \bar s_j | s_t = \bar s_i)   = P^{\ell}_{i,j}
@@ -496,7 +501,7 @@ This follows from agent $k$'s first-order necessary conditions.
 But with the CRRA preferences that we have assumed, individual consumptions vary proportionately
 with aggregate consumption and therefore with the aggregate endowment.
 
-  * This is a consequence of our preference specification implying that **Engle curves** affine in wealth and therefore  satisfy conditions for **Gorman aggregation**
+  * This is a consequence of our preference specification implying that **Engle curves** are affine in wealth and therefore  satisfy conditions for **Gorman aggregation**
 
 Thus,
 
@@ -562,7 +567,7 @@ y^{k}=\left[\begin{array}{c}
 y^{k}\left(\bar{s}_{1}\right)\\
 \vdots\\
 y^{k}\left(\bar{s}_{n}\right)
-\end{array}\right] \equiv \begin{bmatrix} y^k_1 \cr \vdots \cr v^k_n \end{bmatrix}
+\end{array}\right] \equiv \begin{bmatrix} y^k_1 \cr \vdots \cr y^k_n \end{bmatrix}
 $$
 
 
@@ -576,7 +581,9 @@ Evidently, they equal the maximum amount that it is feasible for  individual $k$
 even if he consumes zero goods forevermore.
 
 **Remark:** If  we have an Inada condition at zero consumption or just impose that consumption
-be nonnegative, then in a **finite horizon** economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section below on a Finite Horizon Economy.
+be nonnegative, then in a **finite horizon** economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section on a Finite Horizon Economy  below.
+
+
 
 ### Continuation Wealth
 
@@ -690,471 +697,13 @@ $$ J^k = (I - \beta P)^{-1} u(\alpha_k y)  , \quad u(c) = \frac{c^{1-\gamma}}{1-
 
 where it is understood that $ u(\alpha_k y)$ is a vector.
 
-## Python Code
-
-We are ready to dive into some Python code.
-
-
-As usual, we start with Python imports.
-
-```{code-cell} ipython3
-import numpy as np
-import matplotlib.pyplot as plt
-```
-
-```{code-cell} ipython3
-np.set_printoptions(suppress=True)
-```
-
-
-First, we create a Python class to compute  the objects that comprise a competitive equilibrium
-with sequential trading of one-period Arrow securities.
-
-In addition to  handly infinite-horizon economies, the code is set up to handle finite-horizon economies indexed by horizon $T$.
-
-We'll study some finite horizon economies after we look at some infinite-horizon economies.
-
-```{code-cell} ipython3
-class RecurCompetitive:
-    """
-    A class that represents a recursive competitive economy
-    with one-period Arrow securities.
-    """
-
-    def __init__(self,
-                 s,        # state vector
-                 P,        # transition matrix
-                 ys,       # endowments ys = [y1, y2, .., yI]
-                 γ=0.5,    # risk aversion
-                 β=0.98,   # discount rate
-                 T=None):  # time horizon, none if infinite
-
-        # preference parameters
-        self.γ = γ
-        self.β = β
-
-        # variables dependent on state
-        self.s = s
-        self.P = P
-        self.ys = ys
-        self.y = np.sum(ys, 1)
-
-        # dimensions
-        self.n, self.K = ys.shape
-
-        # compute pricing kernel
-        self.Q = self.pricing_kernel()
-
-        # compute price of risk-free one-period bond
-        self.PRF = self.price_risk_free_bond()
-
-        # compute risk-free rate
-        self.R = self.risk_free_rate()
-
-        # V = [I - Q]^{-1} (infinite case)
-        if T is None:
-            self.T = None
-            self.V = np.empty((1, n, n))
-            self.V[0] = np.linalg.inv(np.eye(n) - self.Q)
-        # V = [I + Q + Q^2 + ... + Q^T] (finite case)
-        else:
-            self.T = T
-            self.V = np.empty((T+1, n, n))
-            self.V[0] = np.eye(n)
-
-            Qt = np.eye(n)
-            for t in range(1, T+1):
-                Qt = Qt.dot(self.Q)
-                self.V[t] = self.V[t-1] + Qt
-
-        # natural debt limit
-        self.A = self.V[-1] @ ys
-
-    def u(self, c):
-        "The CRRA utility"
-
-        return c ** (1 - self.γ) / (1 - self.γ)
-
-    def u_prime(self, c):
-        "The first derivative of CRRA utility"
-
-        return c ** (-self.γ)
-
-    def pricing_kernel(self):
-        "Compute the pricing kernel matrix Q"
-
-        c = self.y
-
-        n = self.n
-        Q = np.empty((n, n))
-
-        for i in range(n):
-            for j in range(n):
-                ratio = self.u_prime(c[j]) / self.u_prime(c[i])
-                Q[i, j] = self.β * ratio * P[i, j]
-
-        self.Q = Q
-
-        return Q
-
-    def wealth_distribution(self, s0_idx):
-        "Solve for wealth distribution α"
-
-        # set initial state
-        self.s0_idx = s0_idx
-
-        # simplify notations
-        n = self.n
-        Q = self.Q
-        y, ys = self.y, self.ys
-
-        # row of V corresponding to s0
-        Vs0 = self.V[-1, s0_idx, :]
-        α = Vs0 @ self.ys / (Vs0 @ self.y)
-
-        self.α = α
-
-        return α
-
-    def continuation_wealths(self):
-        "Given α, compute the continuation wealths ψ"
-
-        diff = np.empty((n, K))
-        for k in range(K):
-            diff[:, k] = self.α[k] * self.y - self.ys[:, k]
-
-        ψ = self.V @ diff
-        self.ψ = ψ
-
-        return ψ
-
-    def price_risk_free_bond(self):
-        "Give Q, compute price of one-period risk free bond"
-
-        PRF = np.sum(self.Q, 0)
-        self.PRF = PRF
-
-        return PRF
-
-    def risk_free_rate(self):
-        "Given Q, compute one-period gross risk-free interest rate R"
-
-        R = np.sum(self.Q, 0)
-        R = np.reciprocal(R)
-        self.R = R
-
-        return R
-
-    def value_functionss(self):
-        "Given α, compute the optimal value functions J in equilibrium"
-
-        n, T = self.n, self.T
-        β = self.β
-        P = self.P
-
-        # compute (I - βP)^(-1) in infinite case
-        if T is None:
-            P_seq = np.empty((1, n, n))
-            P_seq[0] = np.linalg.inv(np.eye(n) - β * P)
-        # and (I + βP + ... + β^T P^T) in finite case
-        else:
-            P_seq = np.empty((T+1, n, n))
-            P_seq[0] = np.eye(n)
-
-            Pt = np.eye(n)
-            for t in range(1, T+1):
-                Pt = Pt.dot(P)
-                P_seq[t] = P_seq[t-1] + Pt * β ** t
-
-        # compute the matrix [u(α_1 y), ..., u(α_K, y)]
-        flow = np.empty((n, K))
-        for k in range(K):
-            flow[:, k] = self.u(self.α[k] * self.y)
-
-        J = P_seq @ flow
-
-        self.J = J
-
-        return J
-```
-
-### Example 1
-
-Please read the preceding class for default parameter values and the  following Python code for the fundamentals of the economy.
-
-Here goes.
-
-```{code-cell} ipython3
-# dimensions
-K, n = 2, 2
-
-# states
-s = np.array([0, 1])
-
-# transition
-P = np.array([[.5, .5], [.5, .5]])
-
-# endowments
-ys = np.empty((n, K))
-ys[:, 0] = 1 - s       # y1
-ys[:, 1] = s           # y2
-```
-
-```{code-cell} ipython3
-ex1 = RecurCompetitive(s, P, ys)
-```
-
-```{code-cell} ipython3
-# endowments
-ex1.ys
-```
-
-```{code-cell} ipython3
-# pricing kernal
-ex1.Q
-```
-
-```{code-cell} ipython3
-# Risk free rate R
-ex1.R
-```
-
-```{code-cell} ipython3
-# natural debt limit, A = [A1, A2, ..., AI]
-ex1.A
-```
-
-```{code-cell} ipython3
-# when the initial state is state 1
-print(f'α = {ex1.wealth_distribution(s0_idx=0)}')
-print(f'ψ = \n{ex1.continuation_wealths()}')
-print(f'J = \n{ex1.value_functionss()}')
-```
-
-```{code-cell} ipython3
-# when the initial state is state 2
-print(f'α = {ex1.wealth_distribution(s0_idx=1)}')
-print(f'ψ = \n{ex1.continuation_wealths()}')
-print(f'J = \n{ex1.value_functionss()}')
-```
-
-### Example 2
-
-```{code-cell} ipython3
-# dimensions
-K, n = 2, 2
-
-# states
-s = np.array([1, 2])
-
-# transition
-P = np.array([[.5, .5], [.5, .5]])
-
-# endowments
-ys = np.empty((n, K))
-ys[:, 0] = 1.5         # y1
-ys[:, 1] = s           # y2
-```
-
-```{code-cell} ipython3
-ex2 = RecurCompetitive(s, P, ys)
-```
-
-```{code-cell} ipython3
-# endowments
-
-print("ys = \n", ex2.ys)
-
-# pricing kernal
-print ("Q = \n", ex2.Q)
-
-# Risk free rate R
-print("R = ", ex2.R)
-```
-
-```{code-cell} ipython3
-# pricing kernal
-ex2.Q
-```
-
-```{code-cell} ipython3
-# Risk free rate R
-ex2.R
-```
-
-```{code-cell} ipython3
-# natural debt limit, A = [A1, A2, ..., AI]
-ex2.A
-```
-
-```{code-cell} ipython3
-# when the initial state is state 1
-print(f'α = {ex2.wealth_distribution(s0_idx=0)}')
-print(f'ψ = \n{ex2.continuation_wealths()}')
-print(f'J = \n{ex2.value_functionss()}')
-```
-
-```{code-cell} ipython3
-# when the initial state is state 1
-print(f'α = {ex2.wealth_distribution(s0_idx=1)}')
-print(f'ψ = \n{ex2.continuation_wealths()}')
-print(f'J = \n{ex2.value_functionss()}')
-```
-
-### Example 3
-
-```{code-cell} ipython3
-# dimensions
-K, n = 2, 2
-
-# states
-s = np.array([1, 2])
-
-# transition
-λ = 0.9
-P = np.array([[1-λ, λ], [0, 1]])
-
-# endowments
-ys = np.empty((n, K))
-ys[:, 0] = [1, 0]         # y1
-ys[:, 1] = [0, 1]         # y2
-```
-
-```{code-cell} ipython3
-ex3 = RecurCompetitive(s, P, ys)
-```
-
-```{code-cell} ipython3
-# endowments
-
-print("ys = ", ex3.ys)
-
-# pricing kernel
-print ("Q = ", ex3.Q)
-
-# Risk free rate R
-print("R = ", ex3.R)
-```
-
-```{code-cell} ipython3
-# pricing kernel
-ex3.Q
-```
-
-```{code-cell} ipython3
-# natural debt limit, A = [A1, A2, ..., AI]
-ex3.A
-```
-
-Note that the natural debt limit for agent $1$ in state $2$ is $0$.
-
-```{code-cell} ipython3
-# when the initial state is state 1
-print(f'α = {ex3.wealth_distribution(s0_idx=0)}')
-print(f'ψ = \n{ex3.continuation_wealths()}')
-print(f'J = \n{ex3.value_functionss()}')
-```
-
-```{code-cell} ipython3
-# when the initial state is state 1
-print(f'α = {ex3.wealth_distribution(s0_idx=1)}')
-print(f'ψ = \n{ex3.continuation_wealths()}')
-print(f'J = \n{ex3.value_functionss()}')
-```
-
-For the specification of the Markov chain in example 3, let's take a look at how the equilibrium allocation changes as a function of transition probability $\lambda$.
-
-```{code-cell} ipython3
-λ_seq = np.linspace(0, 1, 100)
-
-# prepare containers
-αs0_seq = np.empty((len(λ_seq), 2))
-αs1_seq = np.empty((len(λ_seq), 2))
-
-for i, λ in enumerate(λ_seq):
-    P = np.array([[1-λ, λ], [0, 1]])
-    ex3 = RecurCompetitive(s, P, ys)
-
-    # initial state s0 = 1
-    α = ex3.wealth_distribution(s0_idx=0)
-    αs0_seq[i, :] = α
-
-    # initial state s0 = 2
-    α = ex3.wealth_distribution(s0_idx=1)
-    αs1_seq[i, :] = α
-```
-
-```{code-cell} ipython3
-fig, axs = plt.subplots(1, 2, figsize=(12, 4))
-
-for i, αs_seq in enumerate([αs0_seq, αs1_seq]):
-    for j in range(2):
-        axs[i].plot(λ_seq, αs_seq[:, j], label=f'α{j+1}')
-        axs[i].set_xlabel('λ')
-        axs[i].set_title(f'initial state s0 = {s[i]}')
-        axs[i].legend()
-
-plt.show()
-```
-
-### Example 4
-
-```{code-cell} ipython3
-# dimensions
-K, n = 2, 3
-
-# states
-s = np.array([1, 2, 3])
-
-# transition
-λ = .9
-μ = .9
-δ = .05
-
-P = np.array([[1-λ, λ, 0], [μ/2, μ, μ/2], [(1-δ)/2, (1-δ)/2, δ]])
-
-# endowments
-ys = np.empty((n, K))
-ys[:, 0] = [.25, .75, .2]       # y1
-ys[:, 1] = [1.25, .25, .2]      # y2
-```
-
-```{code-cell} ipython3
-ex4 = RecurCompetitive(s, P, ys)
-```
-
-```{code-cell} ipython3
-# endowments
-print("ys = \n", ex4.ys)
-
-# pricing kernal
-print ("Q = \n", ex4.Q)
-
-# Risk free rate R
-print("R = ", ex4.R)
-
-# natural debt limit, A = [A1, A2, ..., AI]
-print("A = \n", ex4.A)
-
-print('')
-
-for i in range(1, 4):
-    # when the initial state is state i
-    print(f"when the initial state is state {i}")
-    print(f'α = {ex4.wealth_distribution(s0_idx=i-1)}')
-    print(f'ψ = \n{ex4.continuation_wealths()}')
-    print(f'J = \n{ex4.value_functionss()}\n')
-```
 
 ## Finite Horizon
 
-The Python class **RecurCompetitive** provided above also can be used to compute competitive equilibrium
-allocations and Arrow securities prices for finite horizon economies.
-
-The setting is a finite-horizon version of  the one above except that time now runs for $T+1$ periods
+We now describe a finite-horizon version of the economy that operates  for $T+1$ periods
 $t \in {\bf T} = \{ 0, 1, \ldots, T\}$.
 
-Consequently, we want  $T+1$ counterparts to objects described above, with one important exception:
+Consequently, we'll  want  $T+1$ counterparts to objects described above, with one important exception:
 we won't need **borrowing limits**.
 
  * borrowing limits aren't required for a finite horizon economy in which a
@@ -1274,9 +823,489 @@ $$ J_0^k = (I + \beta P + \cdots + \beta^T P^T) u(\alpha_k y) , $$
 
 where it is understood that $ u(\alpha_k y)$ is a vector.
 
+
+
+## Python Code
+
+We are ready to dive into some Python code.
+
+
+As usual, we start with Python imports.
+
+```{code-cell} ipython3
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+```{code-cell} ipython3
+np.set_printoptions(suppress=True)
+```
+
+First, we create a Python class to compute  the objects that comprise a competitive equilibrium
+with sequential trading of one-period Arrow securities.
+
+In addition to infinite-horizon economies, the code is set up to handle finite-horizon economies indexed by horizon $T$.
+
+We'll study examples of  finite horizon economies after we first  look at  some infinite-horizon economies.
+
+```{code-cell} ipython3
+class RecurCompetitive:
+    """
+    A class that represents a recursive competitive economy
+    with one-period Arrow securities.
+    """
+
+    def __init__(self,
+                 s,        # state vector
+                 P,        # transition matrix
+                 ys,       # endowments ys = [y1, y2, .., yI]
+                 γ=0.5,    # risk aversion
+                 β=0.98,   # discount rate
+                 T=None):  # time horizon, none if infinite
+
+        # preference parameters
+        self.γ = γ
+        self.β = β
+
+        # variables dependent on state
+        self.s = s
+        self.P = P
+        self.ys = ys
+        self.y = np.sum(ys, 1)
+
+        # dimensions
+        self.n, self.K = ys.shape
+
+        # compute pricing kernel
+        self.Q = self.pricing_kernel()
+
+        # compute price of risk-free one-period bond
+        self.PRF = self.price_risk_free_bond()
+
+        # compute risk-free rate
+        self.R = self.risk_free_rate()
+
+        # V = [I - Q]^{-1} (infinite case)
+        if T is None:
+            self.T = None
+            self.V = np.empty((1, n, n))
+            self.V[0] = np.linalg.inv(np.eye(n) - self.Q)
+        # V = [I + Q + Q^2 + ... + Q^T] (finite case)
+        else:
+            self.T = T
+            self.V = np.empty((T+1, n, n))
+            self.V[0] = np.eye(n)
+
+            Qt = np.eye(n)
+            for t in range(1, T+1):
+                Qt = Qt.dot(self.Q)
+                self.V[t] = self.V[t-1] + Qt
+
+        # natural debt limit
+        self.A = self.V[-1] @ ys
+
+    def u(self, c):
+        "The CRRA utility"
+
+        return c ** (1 - self.γ) / (1 - self.γ)
+
+    def u_prime(self, c):
+        "The first derivative of CRRA utility"
+
+        return c ** (-self.γ)
+
+    def pricing_kernel(self):
+        "Compute the pricing kernel matrix Q"
+
+        c = self.y
+
+        n = self.n
+        Q = np.empty((n, n))
+        for i in range(n):
+            for j in range(n):
+                ratio = self.u_prime(c[j]) / self.u_prime(c[i])
+                Q[i, j] = self.β * ratio * P[i, j]
+
+        self.Q = Q
+
+        return Q
+
+    def wealth_distribution(self, s0_idx):
+        "Solve for wealth distribution α"
+
+        # set initial state
+        self.s0_idx = s0_idx
+
+        # simplify notations
+        n = self.n
+        Q = self.Q
+        y, ys = self.y, self.ys
+
+        # row of V corresponding to s0
+        Vs0 = self.V[-1, s0_idx, :]
+        α = Vs0 @ self.ys / (Vs0 @ self.y)
+
+        self.α = α
+
+        return α
+
+    def continuation_wealths(self):
+        "Given α, compute the continuation wealths ψ"
+
+        diff = np.empty((n, K))
+        for k in range(K):
+            diff[:, k] = self.α[k] * self.y - self.ys[:, k]
+
+        ψ = self.V @ diff
+        self.ψ = ψ
+
+        return ψ
+
+    def price_risk_free_bond(self):
+        "Give Q, compute price of one-period risk free bond"
+
+        PRF = np.sum(self.Q, 0)
+        self.PRF = PRF
+
+        return PRF
+
+    def risk_free_rate(self):
+        "Given Q, compute one-period gross risk-free interest rate R"
+
+        R = np.sum(self.Q, 0)
+        R = np.reciprocal(R)
+        self.R = R
+
+        return R
+
+    def value_functionss(self):
+        "Given α, compute the optimal value functions J in equilibrium"
+
+        n, T = self.n, self.T
+        β = self.β
+        P = self.P
+
+        # compute (I - βP)^(-1) in infinite case
+        if T is None:
+            P_seq = np.empty((1, n, n))
+            P_seq[0] = np.linalg.inv(np.eye(n) - β * P)
+        # and (I + βP + ... + β^T P^T) in finite case
+        else:
+            P_seq = np.empty((T+1, n, n))
+            P_seq[0] = np.eye(n)
+
+            Pt = np.eye(n)
+            for t in range(1, T+1):
+                Pt = Pt.dot(P)
+                P_seq[t] = P_seq[t-1] + Pt * β ** t
+
+        # compute the matrix [u(α_1 y), ..., u(α_K, y)]
+        flow = np.empty((n, K))
+        for k in range(K):
+            flow[:, k] = self.u(self.α[k] * self.y)
+
+        J = P_seq @ flow
+
+        self.J = J
+
+        return J
+```
+
+## Examples
+
+We'll use our code to construct equilibrium objects in several example economies.
+
+Our first several examples will be infinite horizon economies.
+
+Our final example will be a finite horizon economy.
+
+### Example 1
+
+Please read the preceding class for default parameter values and the  following Python code for the fundamentals of the economy.
+
+Here goes.
+
+```{code-cell} ipython3
+# dimensions
+K, n = 2, 2
+
+# states
+s = np.array([0, 1])
+
+# transition
+P = np.array([[.5, .5], [.5, .5]])
+
+# endowments
+ys = np.empty((n, K))
+ys[:, 0] = 1 - s       # y1
+ys[:, 1] = s           # y2
+```
+
+```{code-cell} ipython3
+ex1 = RecurCompetitive(s, P, ys)
+```
+
+```{code-cell} ipython3
+# endowments
+ex1.ys
+```
+
+```{code-cell} ipython3
+# pricing kernal
+ex1.Q
+```
+
+```{code-cell} ipython3
+# Risk free rate R
+ex1.R
+```
+
+```{code-cell} ipython3
+# natural debt limit, A = [A1, A2, ..., AI]
+ex1.A
+```
+
+```{code-cell} ipython3
+# when the initial state is state 1
+print(f'α = {ex1.wealth_distribution(s0_idx=0)}')
+print(f'ψ = \n{ex1.continuation_wealths()}')
+print(f'J = \n{ex1.value_functionss()}')
+```
+
+```{code-cell} ipython3
+# when the initial state is state 2
+print(f'α = {ex1.wealth_distribution(s0_idx=1)}')
+print(f'ψ = \n{ex1.continuation_wealths()}')
+print(f'J = \n{ex1.value_functionss()}')
+```
+
+### Example 2
+
+```{code-cell} ipython3
+# dimensions
+K, n = 2, 2
+
+# states
+s = np.array([1, 2])
+
+# transition
+P = np.array([[.5, .5], [.5, .5]])
+
+# endowments
+ys = np.empty((n, K))
+ys[:, 0] = 1.5         # y1
+ys[:, 1] = s           # y2
+```
+
+```{code-cell} ipython3
+ex2 = RecurCompetitive(s, P, ys)
+```
+
+```{code-cell} ipython3
+# endowments
+
+print("ys = \n", ex2.ys)
+
+# pricing kernal
+print ("Q = \n", ex2.Q)
+
+# Risk free rate R
+print("R = ", ex2.R)
+```
+
+```{code-cell} ipython3
+# pricing kernal
+ex2.Q
+```
+
+Note that the pricing kernal in example economies 1 and 2 differ.
+
+This comes from differences in the aggregate endowments in state 1 and 2 in example 1.
+
+```{code-cell} ipython3
+ex2.β * ex2.u_prime(3.5) / ex2.u_prime(2.5) * ex2.P[0,1]
+```
+
+```{code-cell} ipython3
+ex2.β * ex2.u_prime(2.5) / ex2.u_prime(3.5) * ex2.P[1,0]
+```
+
+
+
+```{code-cell} ipython3
+# Risk free rate R
+ex2.R
+```
+
+```{code-cell} ipython3
+# natural debt limit, A = [A1, A2, ..., AI]
+ex2.A
+```
+
+```{code-cell} ipython3
+# when the initial state is state 1
+print(f'α = {ex2.wealth_distribution(s0_idx=0)}')
+print(f'ψ = \n{ex2.continuation_wealths()}')
+print(f'J = \n{ex2.value_functionss()}')
+```
+
+```{code-cell} ipython3
+# when the initial state is state 1
+print(f'α = {ex2.wealth_distribution(s0_idx=1)}')
+print(f'ψ = \n{ex2.continuation_wealths()}')
+print(f'J = \n{ex2.value_functionss()}')
+```
+
+### Example 3
+
+```{code-cell} ipython3
+# dimensions
+K, n = 2, 2
+
+# states
+s = np.array([1, 2])
+
+# transition
+λ = 0.9
+P = np.array([[1-λ, λ], [0, 1]])
+
+# endowments
+ys = np.empty((n, K))
+ys[:, 0] = [1, 0]         # y1
+ys[:, 1] = [0, 1]         # y2
+```
+
+```{code-cell} ipython3
+ex3 = RecurCompetitive(s, P, ys)
+```
+
+```{code-cell} ipython3
+# endowments
+
+print("ys = ", ex3.ys)
+
+# pricing kernel
+print ("Q = ", ex3.Q)
+
+# Risk free rate R
+print("R = ", ex3.R)
+```
+
+```{code-cell} ipython3
+# pricing kernel
+ex3.Q
+```
+
+```{code-cell} ipython3
+# natural debt limit, A = [A1, A2, ..., AI]
+ex3.A
+```
+
+Note that the natural debt limit for agent $1$ in state $2$ is $0$.
+
+```{code-cell} ipython3
+# when the initial state is state 1
+print(f'α = {ex3.wealth_distribution(s0_idx=0)}')
+print(f'ψ = \n{ex3.continuation_wealths()}')
+print(f'J = \n{ex3.value_functionss()}')
+```
+
+```{code-cell} ipython3
+# when the initial state is state 1
+print(f'α = {ex3.wealth_distribution(s0_idx=1)}')
+print(f'ψ = \n{ex3.continuation_wealths()}')
+print(f'J = \n{ex3.value_functionss()}')
+```
+
+For the specification of the Markov chain in example 3, let's take a look at how the equilibrium allocation changes as a function of transition probability $\lambda$.
+
+```{code-cell} ipython3
+λ_seq = np.linspace(0, 0.99, 100)
+
+# prepare containers
+αs0_seq = np.empty((len(λ_seq), 2))
+αs1_seq = np.empty((len(λ_seq), 2))
+
+for i, λ in enumerate(λ_seq):
+    P = np.array([[1-λ, λ], [0, 1]])
+    ex3 = RecurCompetitive(s, P, ys)
+
+    # initial state s0 = 1
+    α = ex3.wealth_distribution(s0_idx=0)
+    αs0_seq[i, :] = α
+
+    # initial state s0 = 2
+    α = ex3.wealth_distribution(s0_idx=1)
+    αs1_seq[i, :] = α
+```
+
+```{code-cell} ipython3
+fig, axs = plt.subplots(1, 2, figsize=(12, 4))
+
+for i, αs_seq in enumerate([αs0_seq, αs1_seq]):
+    for j in range(2):
+        axs[i].plot(λ_seq, αs_seq[:, j], label=f'α{j+1}')
+        axs[i].set_xlabel('λ')
+        axs[i].set_title(f'initial state s0 = {s[i]}')
+        axs[i].legend()
+
+plt.show()
+```
+
+### Example 4
+
+```{code-cell} ipython3
+# dimensions
+K, n = 2, 3
+
+# states
+s = np.array([1, 2, 3])
+
+# transition
+λ = .9
+μ = .9
+δ = .05
+
+# prosperous, moderate, and recession states
+P = np.array([[1-λ, λ, 0], [μ/2, μ, μ/2], [(1-δ)/2, (1-δ)/2, δ]])
+
+# endowments
+ys = np.empty((n, K))
+ys[:, 0] = [.25, .75, .2]       # y1
+ys[:, 1] = [1.25, .25, .2]      # y2
+```
+
+```{code-cell} ipython3
+ex4 = RecurCompetitive(s, P, ys)
+```
+
+```{code-cell} ipython3
+# endowments
+print("ys = \n", ex4.ys)
+
+# pricing kernal
+print ("Q = \n", ex4.Q)
+
+# Risk free rate R
+print("R = ", ex4.R)
+
+# natural debt limit, A = [A1, A2, ..., AI]
+print("A = \n", ex4.A)
+
+print('')
+
+for i in range(1, 4):
+    # when the initial state is state i
+    print(f"when the initial state is state {i}")
+    print(f'α = {ex4.wealth_distribution(s0_idx=i-1)}')
+    print(f'ψ = \n{ex4.continuation_wealths()}')
+    print(f'J = \n{ex4.value_functionss()}\n')
+```
+
+
 ### Finite Horizon Example
 
-Below we revisit the economy defined in example 1, but set the time horizon to be $T=10$.
+We now  revisit the economy defined in example 1, but set the time horizon to be $T=10$.
 
 ```{code-cell} ipython3
 # dimensions
