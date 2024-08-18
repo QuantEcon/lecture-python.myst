@@ -999,12 +999,12 @@ In addition to the three curves, Figure {numref}`stable_manifold` plots  arrows 
   
   * If $C_0$ is set above the green line for a given $K_0$, too little capital is accumulated
 
-(stable_manifold)=
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
     caption: "Stable Manifold and Phase Plane"
+    name: stable_manifold
 tags: [hide-input]
 ---
 fig, ax = plt.subplots(figsize=(7, 5))
