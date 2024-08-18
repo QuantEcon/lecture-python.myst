@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -185,11 +185,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shooting-algorithm">34.4. Shooting Algorithm</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-initial-capital-to-steady-state-capital">34.5. Setting Initial Capital to Steady State Capital</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-turnpike-property">34.6. A Turnpike Property</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-limiting-infinite-horizon-economy">34.7. A Limiting Infinite Horizon Economy</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">34.7.1. Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-limiting-infinite-horizon-economy">34.7. A Limiting Infinite Horizon Economy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stable-manifold-and-phase-diagram">34.8. Stable Manifold and Phase Diagram</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">34.9. Concluding Remarks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">34.9.1. Exercise</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">34.8. Concluding Remarks</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -251,33 +252,16 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="cass-koopmans-model">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">34. </span>Cass-Koopmans Model</a><a class="headerlink" href="#cass-koopmans-model" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
-<p class="topic-title">Contents</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#cass-koopmans-model" id="id3">Cass-Koopmans Model</a></p>
-<ul>
-<li><p><a class="reference internal" href="#overview" id="id4">Overview</a></p></li>
-<li><p><a class="reference internal" href="#the-model" id="id5">The Model</a></p></li>
-<li><p><a class="reference internal" href="#planning-problem" id="id6">Planning Problem</a></p></li>
-<li><p><a class="reference internal" href="#shooting-algorithm" id="id7">Shooting Algorithm</a></p></li>
-<li><p><a class="reference internal" href="#setting-initial-capital-to-steady-state-capital" id="id8">Setting Initial Capital to Steady State Capital</a></p></li>
-<li><p><a class="reference internal" href="#a-turnpike-property" id="id9">A Turnpike Property</a></p></li>
-<li><p><a class="reference internal" href="#a-limiting-infinite-horizon-economy" id="id10">A Limiting Infinite Horizon Economy</a></p></li>
-<li><p><a class="reference internal" href="#concluding-remarks" id="id11">Concluding Remarks</a></p></li>
-</ul>
-</li>
-</ul>
-</div>
+<h1><span class="section-number">34. </span>Cass-Koopmans Model<a class="headerlink" href="#cass-koopmans-model" title="Permalink to this heading">#</a></h1>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">34.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>This lecture and <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> describe a model that Tjalling Koopmans <span id="id1">[<a class="reference internal" href="zreferences.html#id90" title="Tjalling C. Koopmans. On the concept of optimal economic growth. In Tjalling C. Koopmans, editor, The Economic Approach to Development Planning, pages 225-287. Chicago, 1965.">Koopmans, 1965</a>]</span>
-and David Cass <span id="id2">[<a class="reference internal" href="zreferences.html#id91" title="David Cass. Optimum growth in an aggregative model of capital accumulation. Review of Economic Studies, 32(3):233-240, 1965.">Cass, 1965</a>]</span> used to analyze optimal growth.</p>
+<h2><span class="section-number">34.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>This lecture and <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> describe a model that Tjalling Koopmans <span id="id1">[<a class="reference internal" href="zreferences.html#id91" title="Tjalling C. Koopmans. On the concept of optimal economic growth. In Tjalling C. Koopmans, editor, The Economic Approach to Development Planning, pages 225-287. Chicago, 1965.">Koopmans, 1965</a>]</span>
+and David Cass <span id="id2">[<a class="reference internal" href="zreferences.html#id92" title="David Cass. Optimum growth in an aggregative model of capital accumulation. Review of Economic Studies, 32(3):233-240, 1965.">Cass, 1965</a>]</span> used to analyze optimal growth.</p>
 <p>The model extends  the model of Robert Solow
 described in <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html">an earlier lecture</a>.</p>
-<p>It does so by making the saving rate be a choice, instead of a hard-wired fixed number.</p>
+<p>It does so by making  saving rate be a  decision, instead of a hard-wired constant.</p>
 <p>(Solow assumed a constant saving rate determined outside the model.)</p>
-<p>We describe two versions of the model, a planning problem without prices in this lecture, and a competitive equilibrium with prices  in this lecture  <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>.</p>
+<p>We describe two versions of the model, a planning problem  in this lecture, and a competitive equilibrium   in this lecture  <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>.</p>
 <p>Together, the two lectures  illustrate what is, in fact, a
 more general connection between a <strong>planned economy</strong> and a decentralized economy
 organized as a <strong>competitive equilibrium</strong>.</p>
@@ -300,22 +284,23 @@ organized as a <strong>competitive equilibrium</strong>.</p>
 to initial and terminal conditions.</p></li>
 <li><p>A <strong>turnpike</strong> property of  optimal paths for
 long but finite-horizon economies.</p></li>
+<li><p>A <strong>stable manifold</strong> and a <strong>phase plane</strong></p></li>
 </ul>
 <p>Let’s start with some standard imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">float64</span>
 <span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">quantecon.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="the-model">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">34.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">34.2. </span>The Model<a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
 <p>Time is discrete and takes values <span class="math notranslate nohighlight">\(t = 0, 1 , \ldots, T\)</span> where <span class="math notranslate nohighlight">\(T\)</span> is  finite.</p>
 <p>(We’ll eventually study a limiting case in which  <span class="math notranslate nohighlight">\(T = + \infty\)</span>)</p>
 <p>A single good can either be consumed or invested in physical capital.</p>
@@ -399,7 +384,7 @@ capital stock.</p>
 </section>
 </section>
 <section id="planning-problem">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">34.3. </span>Planning Problem</a><a class="headerlink" href="#planning-problem" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">34.3. </span>Planning Problem<a class="headerlink" href="#planning-problem" title="Permalink to this heading">#</a></h2>
 <p>A planner chooses an allocation <span class="math notranslate nohighlight">\(\{\vec{C},\vec{K}\}\)</span> to
 maximize <a class="reference internal" href="#equation-utility-functional">(34.2)</a> subject to <a class="reference internal" href="#equation-allocation">(34.5)</a>.</p>
 <p>Let <span class="math notranslate nohighlight">\(\vec{\mu}=\{\mu_0,\dots,\mu_T\}\)</span> be a sequence of
@@ -503,8 +488,8 @@ C_{t+1} =u'^{-1}\left(\left(\frac{\beta}{u'(C_t)}[f'(K_{t+1}) +(1-\delta)]\right
 \]</div>
 <p>which for our utility function <a class="reference internal" href="#equation-utility-oneperiod">(34.3)</a> becomes the consumption <strong>Euler
 equation</strong></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<div class="math notranslate nohighlight" id="equation-eq-consn-euler">
+<span class="eqno">(34.15)<a class="headerlink" href="#equation-eq-consn-euler" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned} C_{t+1} =\left(\beta C_t^{\gamma}[f'(K_{t+1}) +
 (1-\delta)]\right)^{1/\gamma} 
 %\notag\\= C_t\left(\beta [f'(K_{t+1}) +
@@ -512,8 +497,8 @@ equation</strong></p>
 \end{aligned}
 \end{split}\]</div>
 <p>which we can  combine with the feasibility constraint <a class="reference internal" href="#equation-allocation">(34.5)</a> to get</p>
-<div class="math notranslate nohighlight">
-\[\begin{split} 
+<div class="math notranslate nohighlight" id="equation-eq-systemdynamics">
+<span class="eqno">(34.16)<a class="headerlink" href="#equation-eq-systemdynamics" title="Permalink to this equation">#</a></span>\[\begin{split} 
 \begin{aligned}
 C_{t+1} &amp; = C_t\left(\beta [f'(F(K_t,1)+ (1-\delta) K_t  - C_t) +
 (1-\delta)]\right)^{1/\gamma}  \\
@@ -617,7 +602,7 @@ that define our economy.</p>
 </section>
 </section>
 <section id="shooting-algorithm">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">34.4. </span>Shooting Algorithm</a><a class="headerlink" href="#shooting-algorithm" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">34.4. </span>Shooting Algorithm<a class="headerlink" href="#shooting-algorithm" title="Permalink to this heading">#</a></h2>
 <p>We use  <strong>shooting</strong> to compute an optimal allocation
 <span class="math notranslate nohighlight">\(\vec{C}, \vec{K}\)</span> and an associated Lagrange multiplier sequence
 <span class="math notranslate nohighlight">\(\vec{\mu}\)</span>.</p>
@@ -672,7 +657,7 @@ planning problem.</p>
 <span class="sd">    of consumption c0, computes the whole paths of c and k</span>
 <span class="sd">    using the state transition law and Euler equation for T periods.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">c0</span> <span class="o">&gt;</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">k0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">c0</span> <span class="o">&gt;</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">k0</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pp</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span> <span class="o">*</span> <span class="n">k0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;initial consumption is not feasible&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span>
@@ -723,7 +708,7 @@ planning problem.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e45e11dc13b658ab8e803799d5e6090891ab6b72610ae395b01d26ea7078ddb1.png" src="_images/e45e11dc13b658ab8e803799d5e6090891ab6b72610ae395b01d26ea7078ddb1.png" />
+<img alt="_images/4b06c272c25187b4a3c0128ff77679998bf2b9eb041fcbfe26e0ac709df9cd45.png" src="_images/4b06c272c25187b4a3c0128ff77679998bf2b9eb041fcbfe26e0ac709df9cd45.png" />
 </div>
 </div>
 <p>Evidently, our initial guess for <span class="math notranslate nohighlight">\(\mu_0\)</span> is too high, so
@@ -827,12 +812,12 @@ tolerance bounds), we stop.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/492e25a668976277e5fe53dbeb554025bf4edafef5777f556c0f5e5e4f0291a4.png" src="_images/492e25a668976277e5fe53dbeb554025bf4edafef5777f556c0f5e5e4f0291a4.png" />
+<img alt="_images/b075cf04e89c7eafa6ac9dba9dc2976dae31888df4d4e2cc800212037945d085.png" src="_images/b075cf04e89c7eafa6ac9dba9dc2976dae31888df4d4e2cc800212037945d085.png" />
 </div>
 </div>
 </section>
 <section id="setting-initial-capital-to-steady-state-capital">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">34.5. </span>Setting Initial Capital to Steady State Capital</a><a class="headerlink" href="#setting-initial-capital-to-steady-state-capital" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">34.5. </span>Setting Initial Capital to Steady State Capital<a class="headerlink" href="#setting-initial-capital-to-steady-state-capital" title="Permalink to this heading">#</a></h2>
 <p>When  <span class="math notranslate nohighlight">\(T \rightarrow +\infty\)</span>, the optimal allocation converges to
 steady state values of <span class="math notranslate nohighlight">\(C_t\)</span> and <span class="math notranslate nohighlight">\(K_t\)</span>.</p>
 <p>It is instructive to set <span class="math notranslate nohighlight">\(K_0\)</span> equal
@@ -841,7 +826,7 @@ to the <span class="math notranslate nohighlight">\(\lim_{T \rightarrow + \infty
 large <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>Evalauating  feasibility constraint <a class="reference internal" href="#equation-allocation">(34.5)</a> at <span class="math notranslate nohighlight">\(\bar K\)</span> gives</p>
 <div class="math notranslate nohighlight" id="equation-feasibility-constraint">
-<span class="eqno">(34.15)<a class="headerlink" href="#equation-feasibility-constraint" title="Permalink to this equation">#</a></span>\[f(\bar{K})-\delta \bar{K} = \bar{C}\]</div>
+<span class="eqno">(34.17)<a class="headerlink" href="#equation-feasibility-constraint" title="Permalink to this equation">#</a></span>\[f(\bar{K})-\delta \bar{K} = \bar{C}\]</div>
 <p>Substituting <span class="math notranslate nohighlight">\(K_t = \bar K\)</span> and <span class="math notranslate nohighlight">\(C_t=\bar C\)</span> for
 all <span class="math notranslate nohighlight">\(t\)</span> into <a class="reference internal" href="#equation-l12">(34.14)</a> gives</p>
 <div class="math notranslate nohighlight">
@@ -900,7 +885,7 @@ we get</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a04fe51d10846b6e88dedcfadbd2a43c093c92d5b33651347bc59c5b5ea3f4d7.png" src="_images/a04fe51d10846b6e88dedcfadbd2a43c093c92d5b33651347bc59c5b5ea3f4d7.png" />
+<img alt="_images/7338897c6f498bd37dfde6d6951e346e4efab9577db6037a936f67cf6c477fd5.png" src="_images/7338897c6f498bd37dfde6d6951e346e4efab9577db6037a936f67cf6c477fd5.png" />
 </div>
 </div>
 <p>Evidently,  with a large value of
@@ -914,7 +899,7 @@ we get</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4476536a9caada55414710812532a8e9d64a69f000df1d7e4836718fc467730b.png" src="_images/4476536a9caada55414710812532a8e9d64a69f000df1d7e4836718fc467730b.png" />
+<img alt="_images/aa5b41cf3dca9e7873c4eced3966e9f3517195a3abe9c428b362658e831005a4.png" src="_images/aa5b41cf3dca9e7873c4eced3966e9f3517195a3abe9c428b362658e831005a4.png" />
 </div>
 </div>
 <p>Notice how the planner pushes capital toward the steady state, stays
@@ -928,12 +913,12 @@ value <span class="math notranslate nohighlight">\(K_{T+1} =0\)</span> when <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5b4c14f7f5e27300e4abcc499687bfd26b525cd95e872d4aba5ea0ea5cff3180.png" src="_images/5b4c14f7f5e27300e4abcc499687bfd26b525cd95e872d4aba5ea0ea5cff3180.png" />
+<img alt="_images/e5a5b8f83c32d2abd68d4831ffc7b5df69844eec542435f81dcb38d773853cf9.png" src="_images/e5a5b8f83c32d2abd68d4831ffc7b5df69844eec542435f81dcb38d773853cf9.png" />
 </div>
 </div>
 </section>
 <section id="a-turnpike-property">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">34.6. </span>A Turnpike Property</a><a class="headerlink" href="#a-turnpike-property" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">34.6. </span>A Turnpike Property<a class="headerlink" href="#a-turnpike-property" title="Permalink to this heading">#</a></h2>
 <p>The following calculation indicates that when  <span class="math notranslate nohighlight">\(T\)</span> is very large,
 the optimal capital stock stays close to
 its steady state value most of the time.</p>
@@ -944,7 +929,7 @@ its steady state value most of the time.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cb74e14032b6fb946a432a34d4468f0a8f165d061819aadb25f9c8c1488a90c7.png" src="_images/cb74e14032b6fb946a432a34d4468f0a8f165d061819aadb25f9c8c1488a90c7.png" />
+<img alt="_images/6c5baab5497149f9b26269b047273804752e83670fd21a2714bcaadc17aea906.png" src="_images/6c5baab5497149f9b26269b047273804752e83670fd21a2714bcaadc17aea906.png" />
 </div>
 </div>
 <p>In the above graphs, different colors  are associated with
@@ -999,12 +984,12 @@ over time.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8cf2d09a74874600becc213c38b1048cb5d80b3b3309ada5f0d3845d9d64b26e.png" src="_images/8cf2d09a74874600becc213c38b1048cb5d80b3b3309ada5f0d3845d9d64b26e.png" />
+<img alt="_images/15658ec4ff12ade4f998d89ca75ea0779acf8ae29a0f7e0f50c233dbfd3a9890.png" src="_images/15658ec4ff12ade4f998d89ca75ea0779acf8ae29a0f7e0f50c233dbfd3a9890.png" />
 </div>
 </div>
 </section>
 <section id="a-limiting-infinite-horizon-economy">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">34.7. </span>A Limiting Infinite Horizon Economy</a><a class="headerlink" href="#a-limiting-infinite-horizon-economy" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">34.7. </span>A Limiting Infinite Horizon Economy<a class="headerlink" href="#a-limiting-infinite-horizon-economy" title="Permalink to this heading">#</a></h2>
 <p>We want to set <span class="math notranslate nohighlight">\(T = +\infty\)</span>.</p>
 <p>The appropriate thing to do is to replace terminal condition
 <a class="reference internal" href="#equation-constraint4">(34.12)</a> with</p>
@@ -1021,7 +1006,7 @@ optimal steady state.</p>
 saving rate.</p>
 <p>We know that in the steady state that the saving rate is constant
 and that <span class="math notranslate nohighlight">\(\bar s= \frac{f(\bar K)-\bar C}{f(\bar K)}\)</span>.</p>
-<p>From <a class="reference internal" href="#equation-feasibility-constraint">(34.15)</a> the steady state saving rate equals</p>
+<p>From <a class="reference internal" href="#equation-feasibility-constraint">(34.17)</a> the steady state saving rate equals</p>
 <div class="math notranslate nohighlight">
 \[
 \bar s =\frac{ \delta \bar{K}}{f(\bar K)}
@@ -1040,7 +1025,7 @@ state.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d0f447b001a0d81e9fb808389575c9ee747cb8276fa6843f05dfc7235acf4974.png" src="_images/d0f447b001a0d81e9fb808389575c9ee747cb8276fa6843f05dfc7235acf4974.png" />
+<img alt="_images/ca1a1b00347aad122823f0e4a62356e6679c9c57846b661ce116b5ffbd261d33.png" src="_images/ca1a1b00347aad122823f0e4a62356e6679c9c57846b661ce116b5ffbd261d33.png" />
 </div>
 </div>
 <p>Since <span class="math notranslate nohighlight">\(K_0&lt;\bar K\)</span>, <span class="math notranslate nohighlight">\(f'(K_0)&gt;\rho +\delta\)</span>.</p>
@@ -1049,8 +1034,209 @@ saving rate.</p>
 <p>Note that <span class="math notranslate nohighlight">\(f''(K)&lt;0\)</span>, so as <span class="math notranslate nohighlight">\(K\)</span> rises, <span class="math notranslate nohighlight">\(f'(K)\)</span> declines.</p>
 <p>The planner slowly lowers the saving rate until reaching a steady
 state in which <span class="math notranslate nohighlight">\(f'(K)=\rho +\delta\)</span>.</p>
+</section>
+<section id="stable-manifold-and-phase-diagram">
+<h2><span class="section-number">34.8. </span>Stable Manifold and Phase Diagram<a class="headerlink" href="#stable-manifold-and-phase-diagram" title="Permalink to this heading">#</a></h2>
+<p>We now describe a classic diagram that describes an optimal <span class="math notranslate nohighlight">\((K_{t+1}, C_t)\)</span> path.</p>
+<p>The diagram has <span class="math notranslate nohighlight">\(K\)</span> on the ordinate axis and <span class="math notranslate nohighlight">\(C\)</span> on the coordinate axis.</p>
+<p>Given an arbitrary and fixed  <span class="math notranslate nohighlight">\(K\)</span>, a fixed point <span class="math notranslate nohighlight">\(C\)</span> of the consumption Euler equation  <a class="reference internal" href="#equation-eq-consn-euler">(34.15)</a>
+satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+C=C\left(\beta\left[f^{\prime}\left(f\left(K\right)+\left(1-\delta\right)K-C\right)+\left(1-\delta\right)\right]\right)^{1/\gamma}
+\]</div>
+<p>which implies</p>
+<div class="math notranslate nohighlight" id="equation-eq-tildec">
+<span class="eqno">(34.18)<a class="headerlink" href="#equation-eq-tildec" title="Permalink to this equation">#</a></span>\[\begin{split}
+\begin{aligned}
+C &amp;=f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)  \\
+ &amp;\equiv \tilde{C} \left(K\right)
+\end{aligned}
+\end{split}\]</div>
+<p>A positive fixed point  <span class="math notranslate nohighlight">\(C = \tilde C(K)\)</span> exists only if <span class="math notranslate nohighlight">\(f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)&gt;0\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">C_tilde</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">pp</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pp</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span> <span class="o">*</span> <span class="n">K</span> <span class="o">-</span> <span class="n">pp</span><span class="o">.</span><span class="n">f_prime_inv</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">pp</span><span class="o">.</span><span class="n">β</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">pp</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next note that given a time-invariant  arbitrary <span class="math notranslate nohighlight">\(C\)</span>,  a fixed point <span class="math notranslate nohighlight">\(K\)</span> of the feasibility condition  <a class="reference internal" href="#equation-allocation">(34.5)</a> solves the following equation</p>
+<div class="math notranslate nohighlight">
+\[
+    K = f(K) + (1 - \delta K) - C .
+\]</div>
+<p>A fixed point of the above equation is described by  a function</p>
+<div class="math notranslate nohighlight" id="equation-eq-tildek">
+<span class="eqno">(34.19)<a class="headerlink" href="#equation-eq-tildek" title="Permalink to this equation">#</a></span>\[
+K = \tilde K(C)
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">K_diff</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">pp</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">-</span> <span class="n">pp</span><span class="o">.</span><span class="n">δ</span> <span class="o">*</span> <span class="n">K</span> <span class="o">-</span> <span class="n">C</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">K_tilde</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">pp</span><span class="p">):</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span><span class="n">K_diff</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">pp</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">root</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A  steady state <span class="math notranslate nohighlight">\(\left(K_s, C_s\right)\)</span> is a pair <span class="math notranslate nohighlight">\((K,C)\)</span> that  satisfies both equations <a class="reference internal" href="#equation-eq-tildec">(34.18)</a> and <a class="reference internal" href="#equation-eq-tildek">(34.19)</a>.</p>
+<p>It is thus the intersection of the two curves <span class="math notranslate nohighlight">\(\tilde{C}\)</span> and <span class="math notranslate nohighlight">\(\tilde{K}\)</span> that we’ll plot in Figure <a class="reference internal" href="#stable-manifold"><span class="std std-numref">Fig. 34.1</span></a> below.</p>
+<p>We can compute <span class="math notranslate nohighlight">\(K_s\)</span> by solving the equation <span class="math notranslate nohighlight">\(K_s = \tilde{K}\left(\tilde{C}\left(K_s\right)\right)\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">K_tilde_diff</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">pp</span><span class="p">):</span>
+
+    <span class="n">K_out</span> <span class="o">=</span> <span class="n">K_tilde</span><span class="p">(</span><span class="n">C_tilde</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">pp</span><span class="p">),</span> <span class="n">pp</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">K</span> <span class="o">-</span> <span class="n">K_out</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span><span class="n">K_tilde_diff</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">pp</span><span class="p">,))</span>
+
+<span class="n">Ks</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">root</span>
+<span class="n">Cs</span> <span class="o">=</span> <span class="n">C_tilde</span><span class="p">(</span><span class="n">Ks</span><span class="p">,</span> <span class="n">pp</span><span class="p">)</span>
+
+<span class="n">Ks</span><span class="p">,</span> <span class="n">Cs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(9.575838163314447, 1.9160839808123402)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use the shooting algorithm to  compute  trajectories that approach <span class="math notranslate nohighlight">\(\left(K_s, C_s\right)\)</span>.</p>
+<p>For a given <span class="math notranslate nohighlight">\(K\)</span>, let’s compute <span class="math notranslate nohighlight">\(\vec{C}\)</span> and <span class="math notranslate nohighlight">\(\vec{K}\)</span> for a large <span class="math notranslate nohighlight">\(T\)</span> , e.g., <span class="math notranslate nohighlight">\(=200\)</span>.</p>
+<p>We compute  <span class="math notranslate nohighlight">\(C_0\)</span> by the bisection algorithm that assures that  <span class="math notranslate nohighlight">\(K_T=K_s\)</span>.</p>
+<p>Let’s compute  two trajectories towards <span class="math notranslate nohighlight">\(\left(K_s, C_s\right)\)</span> that  start from different sides of <span class="math notranslate nohighlight">\(K_s\)</span>: <span class="math notranslate nohighlight">\(\bar{K}_0=1e-3&lt;K_s&lt;\bar{K}_1=15\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c_vec1</span><span class="p">,</span> <span class="n">k_vec1</span> <span class="o">=</span> <span class="n">bisection</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="n">Ks</span><span class="p">)</span>
+<span class="n">c_vec2</span><span class="p">,</span> <span class="n">k_vec2</span> <span class="o">=</span> <span class="n">bisection</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="n">Ks</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged successfully on iteration  46
+Converged successfully on iteration  52
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following code generates Figure <a class="reference internal" href="#stable-manifold"><span class="std std-numref">Fig. 34.1</span></a>, which is patterned on a graph that appears  on  page 411 of <span id="id3">[<a class="reference internal" href="zreferences.html#id3" title="Michael D Intriligator. Mathematical optimization and economic theory. SIAM, 2002.">Intriligator, 2002</a>]</span>.</p>
+<p>Figure <a class="reference internal" href="#stable-manifold"><span class="std std-numref">Fig. 34.1</span></a> is a classic “phase plane” with  “state” variable <span class="math notranslate nohighlight">\(K\)</span> on the ordinate axis and “co-state” variable <span class="math notranslate nohighlight">\(C\)</span> on the coordinate axis.</p>
+<p>Figure <a class="reference internal" href="#stable-manifold"><span class="std std-numref">Fig. 34.1</span></a> plots   three curves:</p>
+<ul class="simple">
+<li><p>the blue line  graphs <span class="math notranslate nohighlight">\(C = \tilde C (K)\)</span> of fixed points described by equation <a class="reference internal" href="#equation-eq-tildec">(34.18)</a>.</p></li>
+<li><p>the red line graphs <span class="math notranslate nohighlight">\(K = \tilde K(C)\)</span> of fixed points described by equation <a class="reference internal" href="#equation-eq-tildek">(34.19)</a></p></li>
+<li><p>the green line graphs the stable traced out by paths that converge to the steady state starting from an arbitrary <span class="math notranslate nohighlight">\(K_0\)</span> at time <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<ul>
+<li><p>for a given <span class="math notranslate nohighlight">\(K_0\)</span>, the shooting algorithm sets <span class="math notranslate nohighlight">\(C_0\)</span> to the coordinate on the green line in order to initiate a path that converges to the optimal steady state</p></li>
+<li><p>the arrows on the green line show the direction in which  dynamics <a class="reference internal" href="#equation-eq-systemdynamics">(34.16)</a> push successive <span class="math notranslate nohighlight">\((K_{t+1}, C_t)\)</span> pairs.</p></li>
+</ul>
+</li>
+</ul>
+<p>In addition to the three curves, Figure <a class="reference internal" href="#stable-manifold"><span class="std std-numref">Fig. 34.1</span></a> plots  arrows that point where the  dynamics <a class="reference internal" href="#equation-eq-systemdynamics">(34.16)</a> drive the system  when, for a given <span class="math notranslate nohighlight">\(K_0\)</span>, <span class="math notranslate nohighlight">\(C_0\)</span> is  not on the stable manifold depicted in the green line.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(C_0\)</span> is set below the green line for a given <span class="math notranslate nohighlight">\(K_0\)</span>, too much capital is accumulated</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(C_0\)</span> is set above the green line for a given <span class="math notranslate nohighlight">\(K_0\)</span>, too little capital is accumulated</p></li>
+</ul>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">K_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">1e-1</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">C_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">1e-1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># C tilde</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">K_range</span><span class="p">,</span> <span class="p">[</span><span class="n">C_tilde</span><span class="p">(</span><span class="n">Ks</span><span class="p">,</span> <span class="n">pp</span><span class="p">)</span> <span class="k">for</span> <span class="n">Ks</span> <span class="ow">in</span> <span class="n">K_range</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">11.8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$C=\tilde</span><span class="si">{C}</span><span class="s1">(K)$&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+
+<span class="c1"># K tilde</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">K_tilde</span><span class="p">(</span><span class="n">Cs</span><span class="p">,</span> <span class="n">pp</span><span class="p">)</span> <span class="k">for</span> <span class="n">Cs</span> <span class="ow">in</span> <span class="n">C_range</span><span class="p">],</span> <span class="n">C_range</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$K=\tilde</span><span class="si">{K}</span><span class="s1">(C)$&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="c1"># stable branch</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k_vec1</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">c_vec1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k_vec2</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">c_vec2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">k_vec1</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">c_vec1</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
+          <span class="n">k_vec1</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">-</span><span class="n">k_vec1</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">c_vec1</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">-</span><span class="n">c_vec1</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
+          <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">k_vec2</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">c_vec2</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
+          <span class="n">k_vec2</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">-</span><span class="n">k_vec2</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">c_vec2</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">-</span><span class="n">c_vec2</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
+          <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;stable branch&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+
+<span class="c1"># (Ks, Cs)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Ks</span><span class="p">,</span> <span class="n">Cs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">Ks</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">Cs</span><span class="o">+</span><span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;$(K_s, C_s)$&#39;</span><span class="p">)</span>
+
+<span class="c1"># arrows</span>
+<span class="n">K_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">C_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">K_mesh</span><span class="p">,</span> <span class="n">C_mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">K_range</span><span class="p">,</span> <span class="n">C_range</span><span class="p">)</span>
+
+<span class="n">next_K</span><span class="p">,</span> <span class="n">next_C</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">next_k_c</span><span class="p">(</span><span class="n">K_mesh</span><span class="p">,</span> <span class="n">C_mesh</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">K_range</span><span class="p">,</span> <span class="n">C_range</span><span class="p">,</span> <span class="n">next_K</span><span class="o">-</span><span class="n">K_mesh</span><span class="p">,</span> <span class="n">next_C</span><span class="o">-</span><span class="n">C_mesh</span><span class="p">)</span>
+
+<span class="c1"># infeasible consumption area</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;infeasible</span><span class="se">\n</span><span class="s2"> consumption&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$K$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$C$&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<figure class="align-default" id="stable-manifold">
+<img alt="_images/e635e09fe3bfafc520577542d789521b9b110b1c700b8d01c0d217f37ac041b7.png" src="_images/e635e09fe3bfafc520577542d789521b9b110b1c700b8d01c0d217f37ac041b7.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 34.1 </span><span class="caption-text">Stable Manifold and Phase Plane</span><a class="headerlink" href="#stable-manifold" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="concluding-remarks">
+<h2><span class="section-number">34.9. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this heading">#</a></h2>
+<p>In <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>,  we study a decentralized version of an economy with exactly the same
+technology and preference structure as deployed here.</p>
+<p>In that lecture, we replace the  planner of this lecture with Adam Smith’s <strong>invisible hand</strong>.</p>
+<p>In place of quantity choices made by the planner, there are market prices that are set by a <em>deus ex machina</em> from outside the model, a so-called invisible hand.</p>
+<p>Equilibrium market prices must reconcile distinct decisions that are made independently
+by a representative household and a representative firm.</p>
+<p>The relationship between a command economy like the one studied in this lecture and a market economy like that
+studied in <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> is a foundational topic in general equilibrium theory and welfare economics.</p>
 <section id="exercise">
-<h3><span class="section-number">34.7.1. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">34.9.1. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h3>
 <div class="exercise admonition" id="ck1_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 34.1 </span></p>
@@ -1074,23 +1260,12 @@ as we shoot towards the steady state at <span class="math notranslate nohighligh
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6266dc2a68a99e6960880ad3773b78e9b70db9d661949fb372eebb79d52f723f.png" src="_images/6266dc2a68a99e6960880ad3773b78e9b70db9d661949fb372eebb79d52f723f.png" />
+<img alt="_images/14be39c20daa2423d6c7bc94da146cf509fef5815b4d12067981a67657a1d512.png" src="_images/14be39c20daa2423d6c7bc94da146cf509fef5815b4d12067981a67657a1d512.png" />
 </div>
 </div>
 </section>
 </div>
 </section>
-</section>
-<section id="concluding-remarks">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">34.8. </span>Concluding Remarks</a><a class="headerlink" href="#concluding-remarks" title="Permalink to this heading">#</a></h2>
-<p>In <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>,  we study a decentralized version of an economy with exactly the same
-technology and preference structure as deployed here.</p>
-<p>In that lecture, we replace the  planner of this lecture with Adam Smith’s <strong>invisible hand</strong>.</p>
-<p>In place of quantity choices made by the planner, there are market prices that are set by a <em>deus ex machina</em> from outside the model, a so-called invisible hand.</p>
-<p>Equilibrium market prices must reconcile distinct decisions that are made independently
-by a representative household and a representative firm.</p>
-<p>The relationship between a command economy like the one studied in this lecture and a market economy like that
-studied in <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> is a foundational topic in general equilibrium theory and welfare economics.</p>
 </section>
 </section>
 

@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -272,7 +272,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>This lecture describes a statistical decision problem presented to Milton
 Friedman and W. Allen Wallis during World War II when they were analysts at
 the U.S. Government’s  Statistical Research Group at Columbia University.</p>
-<p>This problem led Abraham Wald <span id="id1">[<a class="reference internal" href="zreferences.html#id111" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> to formulate <strong>sequential analysis</strong>,
+<p>This problem led Abraham Wald <span id="id1">[<a class="reference internal" href="zreferences.html#id112" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> to formulate <strong>sequential analysis</strong>,
 an approach to statistical decision problems intimately related to dynamic programming.</p>
 <p>In this lecture, we apply dynamic programming algorithms to Friedman and Wallis and Wald’s problem.</p>
 <p>Key ideas in play will be:</p>
@@ -307,14 +307,14 @@ and <a class="reference internal" href="exchangeable.html"><span class="doc">thi
 </section>
 <section id="origin-of-the-problem">
 <h2><a class="toc-backref" href="#id13"><span class="section-number">51.2. </span>Origin of the Problem</a><a class="headerlink" href="#origin-of-the-problem" title="Permalink to this heading">#</a></h2>
-<p>On pages 137-139 of his 1998 book <em>Two Lucky People</em> with Rose Friedman <span id="id2">[<a class="reference internal" href="zreferences.html#id106" title="Milton Friedman and Rose D Friedman. Two Lucky People. University of Chicago Press, 1998.">Friedman and Friedman, 1998</a>]</span>,
+<p>On pages 137-139 of his 1998 book <em>Two Lucky People</em> with Rose Friedman <span id="id2">[<a class="reference internal" href="zreferences.html#id107" title="Milton Friedman and Rose D Friedman. Two Lucky People. University of Chicago Press, 1998.">Friedman and Friedman, 1998</a>]</span>,
 Milton Friedman described a problem presented to him and Allen Wallis
 during World War II, when they worked at the US Government’s
 Statistical Research Group at Columbia University.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>See pages 25 and 26  of Allen Wallis’s 1980 article <span id="id3">[<a class="reference internal" href="zreferences.html#id3" title="W Allen Wallis. The statistical research group, 1942–1945. Journal of the American Statistical Association, 75(370):320–330, 1980.">Wallis, 1980</a>]</span>  about the Statistical Research Group at Columbia University during World War II for his account of the episode and  for important contributions  that Harold Hotelling made to formulating the problem.   Also see  chapter 5 of Jennifer Burns book about
-Milton Friedman <span id="id4">[<a class="reference internal" href="zreferences.html#id4" title="Jennifer Burns. Milton Friedman: The Last Conservative. Farrar, Straus, and Giroux, New York, 2023.">Burns, 2023</a>]</span>.</p>
+<p>See pages 25 and 26  of Allen Wallis’s 1980 article <span id="id3">[<a class="reference internal" href="zreferences.html#id4" title="W Allen Wallis. The statistical research group, 1942–1945. Journal of the American Statistical Association, 75(370):320–330, 1980.">Wallis, 1980</a>]</span>  about the Statistical Research Group at Columbia University during World War II for his account of the episode and  for important contributions  that Harold Hotelling made to formulating the problem.   Also see  chapter 5 of Jennifer Burns book about
+Milton Friedman <span id="id4">[<a class="reference internal" href="zreferences.html#id5" title="Jennifer Burns. Milton Friedman: The Last Conservative. Farrar, Straus, and Giroux, New York, 2023.">Burns, 2023</a>]</span>.</p>
 </div>
 <p>Let’s listen to Milton Friedman tell us what happened</p>
 <blockquote>
@@ -348,13 +348,13 @@ because it is obviously superior beyond what was hoped for
 </div></blockquote>
 <p>Friedman and Wallis struggled with the problem but, after realizing that
 they were not able to solve it,  described the problem to  Abraham Wald.</p>
-<p>That started Wald on the path that led him  to <em>Sequential Analysis</em> <span id="id5">[<a class="reference internal" href="zreferences.html#id111" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span>.</p>
+<p>That started Wald on the path that led him  to <em>Sequential Analysis</em> <span id="id5">[<a class="reference internal" href="zreferences.html#id112" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span>.</p>
 <p>We’ll formulate the problem using dynamic programming.</p>
 </section>
 <section id="a-dynamic-programming-approach">
 <h2><a class="toc-backref" href="#id14"><span class="section-number">51.3. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Permalink to this heading">#</a></h2>
 <p>The following presentation of the problem closely follows Dmitri
-Berskekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id6">[<a class="reference internal" href="zreferences.html#id110" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">Bertsekas, 1975</a>]</span>.</p>
+Berskekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id6">[<a class="reference internal" href="zreferences.html#id111" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">Bertsekas, 1975</a>]</span>.</p>
 <p>A decision-maker can observe a sequence of draws of a random variable <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>He (or she) wants to know which of two probability distributions <span class="math notranslate nohighlight">\(f_0\)</span> or <span class="math notranslate nohighlight">\(f_1\)</span> governs <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>Conditional on knowing that successive observations are drawn from distribution <span class="math notranslate nohighlight">\(f_0\)</span>, the sequence of
@@ -435,7 +435,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7e68a2721ec9979980235f0b73cda54a6b10fcddbc30a8bf0dbd66ace93ba9e1.png" src="_images/7e68a2721ec9979980235f0b73cda54a6b10fcddbc30a8bf0dbd66ace93ba9e1.png" />
+<img alt="_images/33eee2e49ae98a038610cc1f239ce20ebad0664cdbc573c7691b6266385d0311.png" src="_images/33eee2e49ae98a038610cc1f239ce20ebad0664cdbc573c7691b6266385d0311.png" />
 </div>
 </div>
 <section id="losses-and-costs">
@@ -744,7 +744,7 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/aca0e87b9a7d331a8485804d99a87ab07eaf65c5eb089f6878ccdca1d957c78f.png" src="_images/aca0e87b9a7d331a8485804d99a87ab07eaf65c5eb089f6878ccdca1d957c78f.png" />
+<img alt="_images/f6fab9a5d103236cd38b8fd7694ff77fb3247a9fde6832c57b53de3530c1f06c.png" src="_images/f6fab9a5d103236cd38b8fd7694ff77fb3247a9fde6832c57b53de3530c1f06c.png" />
 </div>
 </div>
 <section id="value-function">
@@ -818,7 +818,7 @@ and plot these on our cost function plot</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d23f946da6bcff9f50c5ae2dd35465a3115db1c969c16d668cd8f846f06b2347.png" src="_images/d23f946da6bcff9f50c5ae2dd35465a3115db1c969c16d668cd8f846f06b2347.png" />
+<img alt="_images/9d067273e6108f5b3210938a604465603fd2a86eea7c4a095b88014fa0e99e2f.png" src="_images/9d067273e6108f5b3210938a604465603fd2a86eea7c4a095b88014fa0e99e2f.png" />
 </div>
 </div>
 <p>The cost function <span class="math notranslate nohighlight">\(J\)</span> equals <span class="math notranslate nohighlight">\(\pi L_1\)</span> for <span class="math notranslate nohighlight">\(\pi \leq \beta\)</span>, and <span class="math notranslate nohighlight">\((1-\pi )L_0\)</span> for <span class="math notranslate nohighlight">\(\pi
@@ -933,7 +933,7 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/04f1537f4852042225ee243e7aacebe229b11fe1523bd658948cb42a89a505da.png" src="_images/04f1537f4852042225ee243e7aacebe229b11fe1523bd658948cb42a89a505da.png" />
+<img alt="_images/441e1b4d67dc062aa73522b765453fc12e0c47494dae07699d87aaebda0442f1.png" src="_images/441e1b4d67dc062aa73522b765453fc12e0c47494dae07699d87aaebda0442f1.png" />
 </div>
 </div>
 </section>
@@ -954,7 +954,7 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/daef557076570ac5b53dfe6eab39d564dc92d10a2e78a6c7a35063b5e599cec0.png" src="_images/daef557076570ac5b53dfe6eab39d564dc92d10a2e78a6c7a35063b5e599cec0.png" />
+<img alt="_images/2c494f01cbbe8a0e3fd277dc2e7578a9560e6d30854bb126d58aa9da570519f5.png" src="_images/2c494f01cbbe8a0e3fd277dc2e7578a9560e6d30854bb126d58aa9da570519f5.png" />
 </div>
 </div>
 <p>Increased cost per draw has induced the decision-maker to take fewer draws before deciding.</p>
@@ -987,7 +987,7 @@ that superior practical procedures existed.</p>
 <p>Evidently, the Navy had told
 Captail Schuyler to use what it knew to be a state-of-the-art
 Neyman-Pearson test.</p>
-<p>We’ll rely on Abraham Wald’s <span id="id8">[<a class="reference internal" href="zreferences.html#id111" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> elegant summary of Neyman-Pearson theory.</p>
+<p>We’ll rely on Abraham Wald’s <span id="id8">[<a class="reference internal" href="zreferences.html#id112" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> elegant summary of Neyman-Pearson theory.</p>
 <p>For our purposes, watch for there features of the setup:</p>
 <ul class="simple">
 <li><p>the assumption of a <em>fixed</em> sample size <span class="math notranslate nohighlight">\(n\)</span></p></li>
@@ -1004,7 +1004,7 @@ rules used to determine <span class="math notranslate nohighlight">\(n\)</span> 
 <li><p>Laws of large numbers make no appearances in the sequential
 construction.</p></li>
 </ul>
-<p>In chapter 1 of <strong>Sequential Analysis</strong> <span id="id9">[<a class="reference internal" href="zreferences.html#id111" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> Abraham Wald summarizes the
+<p>In chapter 1 of <strong>Sequential Analysis</strong> <span id="id9">[<a class="reference internal" href="zreferences.html#id112" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> Abraham Wald summarizes the
 Neyman-Pearson approach to hypothesis testing.</p>
 <p>Wald frames the problem as making a decision about a probability
 distribution that is partially known.</p>
@@ -1145,7 +1145,7 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id7">1</a></span></dt>
 <dd><p>The decision maker acts as if he believes that the sequence of random variables
 <span class="math notranslate nohighlight">\([z_{0}, z_{1}, \ldots]\)</span> is <em>exchangeable</em>.  See <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a> and
-<span id="id10">[<a class="reference internal" href="zreferences.html#id109" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kreps, 1988</a>]</span> chapter 11, for  discussions of exchangeability.</p>
+<span id="id10">[<a class="reference internal" href="zreferences.html#id110" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kreps, 1988</a>]</span> chapter 11, for  discussions of exchangeability.</p>
 </dd>
 </dl>
 </section>

@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -270,12 +270,12 @@ const thebe_selector_output = ".output, .cell_output"
 <h2><a class="toc-backref" href="#id6"><span class="section-number">52.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture studies  learning
 via Bayes’ Law.</p>
-<p>We touch foundations of Bayesian statistical inference invented by Bruno DeFinetti <span id="id1">[<a class="reference internal" href="zreferences.html#id45" title="Bruno de Finetti. La prevision: ses lois logiques, ses sources subjectives. Annales de l'Institute Henri Poincare', 7:1 - 68, 1937. English translation in Kyburg and Smokler (eds.), \it Studies in Subjective Probability, Wiley, New York, 1964.">de Finetti, 1937</a>]</span>.</p>
+<p>We touch foundations of Bayesian statistical inference invented by Bruno DeFinetti <span id="id1">[<a class="reference internal" href="zreferences.html#id46" title="Bruno de Finetti. La prevision: ses lois logiques, ses sources subjectives. Annales de l'Institute Henri Poincare', 7:1 - 68, 1937. English translation in Kyburg and Smokler (eds.), \it Studies in Subjective Probability, Wiley, New York, 1964.">de Finetti, 1937</a>]</span>.</p>
 <p>The relevance of DeFinetti’s work for economists is presented forcefully
-in chapter 11 of <span id="id2">[<a class="reference internal" href="zreferences.html#id109" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kreps, 1988</a>]</span> by David Kreps.</p>
+in chapter 11 of <span id="id2">[<a class="reference internal" href="zreferences.html#id110" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kreps, 1988</a>]</span> by David Kreps.</p>
 <p>An example  that we study in this lecture  is a key component of <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a> that augments the
 <a class="reference internal" href="mccall_model.html"><span class="doc">classic</span></a>  job search model of McCall
-<span id="id3">[<a class="reference internal" href="zreferences.html#id193" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span> by presenting an unemployed worker with a statistical inference problem.</p>
+<span id="id3">[<a class="reference internal" href="zreferences.html#id194" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span> by presenting an unemployed worker with a statistical inference problem.</p>
 <p>Here we create  graphs that illustrate the role that  a  likelihood ratio
 plays in  Bayes’ Law.</p>
 <p>We’ll use such graphs to provide insights into  mechanics driving outcomes in <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a> about learning in an augmented McCall job
@@ -467,7 +467,7 @@ appear are altered.</p>
 variables  as a <strong>mixture</strong>  of  two IID joint densities over a sequence of random variables.</p>
 <p>For a Bayesian statistician, the mixing parameter <span class="math notranslate nohighlight">\(\tilde \pi \in (0,1)\)</span> has a special interpretation
 as a subjective <strong>prior probability</strong> that nature selected probability distribution <span class="math notranslate nohighlight">\(F\)</span>.</p>
-<p>DeFinetti <span id="id4">[<a class="reference internal" href="zreferences.html#id45" title="Bruno de Finetti. La prevision: ses lois logiques, ses sources subjectives. Annales de l'Institute Henri Poincare', 7:1 - 68, 1937. English translation in Kyburg and Smokler (eds.), \it Studies in Subjective Probability, Wiley, New York, 1964.">de Finetti, 1937</a>]</span> established a related representation of an exchangeable process created by mixing
+<p>DeFinetti <span id="id4">[<a class="reference internal" href="zreferences.html#id46" title="Bruno de Finetti. La prevision: ses lois logiques, ses sources subjectives. Annales de l'Institute Henri Poincare', 7:1 - 68, 1937. English translation in Kyburg and Smokler (eds.), \it Studies in Subjective Probability, Wiley, New York, 1964.">de Finetti, 1937</a>]</span> established a related representation of an exchangeable process created by mixing
 sequences of IID Bernoulli random variables with parameter <span class="math notranslate nohighlight">\(\theta \in (0,1)\)</span> and mixing probability density <span class="math notranslate nohighlight">\(\pi(\theta)\)</span>
 that a Bayesian statistician would interpret as a prior over the unknown
 Bernoulli parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
@@ -655,7 +655,7 @@ given parameters of <span class="math notranslate nohighlight">\(f\)</span> and 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/95113406ec333907a6bb9efdded9c4ea2042abdde211a1e96b717c6adad9a242.png" src="_images/95113406ec333907a6bb9efdded9c4ea2042abdde211a1e96b717c6adad9a242.png" />
+<img alt="_images/25a822d92f84813041567cf22f6eca81fea8d4cecd4885ceec8f43adb404382e.png" src="_images/25a822d92f84813041567cf22f6eca81fea8d4cecd4885ceec8f43adb404382e.png" />
 </div>
 </div>
 <p>Please look at the three graphs above created for an instance in which <span class="math notranslate nohighlight">\(f\)</span> is a uniform distribution on <span class="math notranslate nohighlight">\([0,1]\)</span>
@@ -690,7 +690,7 @@ is a Beta distribution with parameters <span class="math notranslate nohighlight
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/be29a0aa6ed1e62b9b6ddd05f87433d7c846748c211642f9c9ac12e348edfb5f.png" src="_images/be29a0aa6ed1e62b9b6ddd05f87433d7c846748c211642f9c9ac12e348edfb5f.png" />
+<img alt="_images/2c61f2610ff42bc46737e5c3b9e738af491d2f7e24201838821c4eba24d2b1e5.png" src="_images/2c61f2610ff42bc46737e5c3b9e738af491d2f7e24201838821c4eba24d2b1e5.png" />
 </div>
 </div>
 <p>Notice how the likelihood ratio, the middle graph, and the arrows compare with the previous instance of our example.</p>
@@ -788,7 +788,7 @@ periods when the sequence is truly IID draws from <span class="math notranslate 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/10ad3ad74e5bc9a73c43d1d39265d7ddabb92a5ec8b183e04cbdc1df5c03d5e3.png" src="_images/10ad3ad74e5bc9a73c43d1d39265d7ddabb92a5ec8b183e04cbdc1df5c03d5e3.png" />
+<img alt="_images/41422a3e5205ebf18054ca9e2a5c3175993e1a55aa7bfac962052e256d430c75.png" src="_images/41422a3e5205ebf18054ca9e2a5c3175993e1a55aa7bfac962052e256d430c75.png" />
 </div>
 </div>
 <p>In the above example,  for most paths <span class="math notranslate nohighlight">\(\pi_t \rightarrow 1\)</span>.</p>
@@ -804,7 +804,7 @@ periods when the sequence is truly IID draws from <span class="math notranslate 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1d44817796e2efad915003fd7a989b1407dba46a7642b9d24985faa480c1e74b.png" src="_images/1d44817796e2efad915003fd7a989b1407dba46a7642b9d24985faa480c1e74b.png" />
+<img alt="_images/a230f1d1144d1a00e2d5c03e6753a60f5819d9cea3fbfc7ff1de8e2b341ddfe3.png" src="_images/a230f1d1144d1a00e2d5c03e6753a60f5819d9cea3fbfc7ff1de8e2b341ddfe3.png" />
 </div>
 </div>
 <p>In the above graph we observe that now  most paths <span class="math notranslate nohighlight">\(\pi_t \rightarrow 0\)</span>.</p>
@@ -827,7 +827,7 @@ and compute <span class="math notranslate nohighlight">\(\sum_{i=1}^{N}\pi_{i,t}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3dc95e69696a7141a7e6379eca983d8150478c11772624fa08beaa76c2a51435.png" src="_images/3dc95e69696a7141a7e6379eca983d8150478c11772624fa08beaa76c2a51435.png" />
+<img alt="_images/cbb96ce0a93fcd10a7db1f09153d610eb4455b8cb04a4af77d1d589505a7d94c.png" src="_images/cbb96ce0a93fcd10a7db1f09153d610eb4455b8cb04a4af77d1d589505a7d94c.png" />
 </div>
 </div>
 <p>From the above graph, rates of convergence appear not to depend on whether <span class="math notranslate nohighlight">\(F\)</span> or <span class="math notranslate nohighlight">\(G\)</span> generates the data.</p>
@@ -885,7 +885,7 @@ E\left[\frac{\pi_{t+1}}{\pi_{t}}\biggm|q=a, \pi_{t}\right] &amp;=E\left[\frac{l\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2825067374cac0be9b04a536076fddcd77faee53b840b6b08bad14a4fc53b8fe.png" src="_images/2825067374cac0be9b04a536076fddcd77faee53b840b6b08bad14a4fc53b8fe.png" />
+<img alt="_images/c61444e91cb528bad6710e77ac56953c2d5d0d7d51499be04c12165bd18fc916.png" src="_images/c61444e91cb528bad6710e77ac56953c2d5d0d7d51499be04c12165bd18fc916.png" />
 </div>
 </div>
 <p>The above graphs shows that when <span class="math notranslate nohighlight">\(F\)</span> generates the data, <span class="math notranslate nohighlight">\(\pi_t\)</span> on average always heads north, while
@@ -901,7 +901,7 @@ is nothing to learn.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6c41170ae0db74ab79e4043ca893cda00d65ea7775fb428b2048a83afcf28bf4.png" src="_images/6c41170ae0db74ab79e4043ca893cda00d65ea7775fb428b2048a83afcf28bf4.png" />
+<img alt="_images/e10f41729c25d923ba4cdbbbcf3b07493dbba6473366fac5c5fbeabeead79e5a.png" src="_images/e10f41729c25d923ba4cdbbbcf3b07493dbba6473366fac5c5fbeabeead79e5a.png" />
 </div>
 </div>
 <p>The above graph says that <span class="math notranslate nohighlight">\(\pi_t\)</span> is inert and  remains at its initial value.</p>
@@ -915,7 +915,7 @@ different nor identical, in particular one in which  <span class="math notransla
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f79ec39ca50735dcf8497e9aa3165f47529c9ac8ce3a6dbe449df8bd6ae448e4.png" src="_images/f79ec39ca50735dcf8497e9aa3165f47529c9ac8ce3a6dbe449df8bd6ae448e4.png" />
+<img alt="_images/d2bebac885a2f6c47cf2298ca81bafc80b05d6d0ac9d120532ed9300eb85e447.png" src="_images/d2bebac885a2f6c47cf2298ca81bafc80b05d6d0ac9d120532ed9300eb85e447.png" />
 </div>
 </div>
 </section>
