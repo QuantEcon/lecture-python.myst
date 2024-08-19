@@ -37,7 +37,7 @@ jobs:
         shell: bash -l {0}
         run: jb build lectures --path-output=./ --builder=custom --custom-builder=linkcheck
       - name: Upload Link Checker Reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: linkcheck-reports
