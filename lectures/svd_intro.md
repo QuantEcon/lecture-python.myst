@@ -544,7 +544,7 @@ $$
 X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
 $$
 
-where for $j = 1, \ldots, n$ the column vector $X_j = \begin{bmatrix}X_{1j}\\X_{2j}\\\vdots\\X_{mj}\end{bmatrix}$ is a  vector of observations on variables $\begin{bmatrix}x_1\\x_2\\\vdots\\x_m\end{bmatrix}$.
+where for $j = 1, \ldots, n$ the column vector $X_j = \begin{bmatrix}x_{1j}\\x_{2j}\\\vdots\\x_{mj}\end{bmatrix}$ is a  vector of observations on variables $\begin{bmatrix}X_1\\X_2\\\vdots\\X_m\end{bmatrix}$.
 
 In a **time series** setting, we would think of columns $j$ as indexing different __times__ at which random variables are observed, while rows index different random variables.
 
@@ -561,14 +561,14 @@ Because our data matrix may hold variables of different units and scales, we fir
 First by computing the average of each row of $X$.
 
 $$
-\bar{X_j}= \frac{1}{m} \sum_{i = 1}^{m} x_{i,j}
+\bar{X_i}= \frac{1}{n} \sum_{j = 1}^{n} x_{ij}
 $$
 
 We then create an average matrix out of these means:
 
 
 $$
-\bar{X} =  \begin{bmatrix}1 \\1 \\\ldots\\1 \end{bmatrix}  \begin{bmatrix} \bar{X_1} \mid \bar{X_2} \mid \cdots \mid \bar{X_n}\end{bmatrix}
+\bar{X} =  \begin{bmatrix} \bar{X_1} \\ \bar{X_2} \\ \ldots \\ \bar{X_m}\end{bmatrix}\begin{bmatrix}1 \mid 1 \mid \cdots \mid 1 \end{bmatrix}
 $$
 
 And subtract out of the original matrix to create a mean centered matrix:
@@ -583,27 +583,28 @@ $$
 Then because we want to extract the relationships between variables rather than just their magnitude, in other words, we want to know how they can explain each other, we compute the covariance matrix of $B$.
 
 $$
-C = \frac{1}{{n}} B^\top  B
+C = \frac{1}{{n-1}} BB^{\top}
 $$
 
 **Step 3: Decompose the covariance matrix and arrange the singular values:**
 
-If the matrix $C$ is diagonalizable, we can eigendecompose it, find its eigenvalues and rearrange the eigenvalue and eigenvector matrices in a decreasing other. 
+Since the matrix $C$ is positive definite, we can eigendecompose it, find its eigenvalues, and rearrange the eigenvalue and eigenvector matrices in a decreasing order.
 
-If $C$ is not diagonalizable, we can perform an SVD of $C$:
+The eigendecomposition of $C$ can be found by decomposing $B$ instead. Since $B$ is not a square matrix, we obtain an SVD of $B$:
 
 $$
 \begin{aligned}
-B^T B &= V \Sigma^\top U^\top U \Sigma V^\top \cr
-&= V \Sigma^\top \Sigma V^\top
+B B^\top &= U \Sigma V^\top (U \Sigma V^{\top})^{\top}\\
+&= U \Sigma V^\top V \Sigma^\top U^\top\\
+&= U \Sigma \Sigma^\top U^\top
 \end{aligned}
 $$
 
 $$
-C = \frac{1}{{n}} V \Sigma^\top \Sigma V^\top
+C = \frac{1}{{n-1}} U \Sigma \Sigma^\top U^\top
 $$
 
-We can then rearrange the columns in the matrices $V$ and $\Sigma$ so that the singular values are in decreasing order.
+We can then rearrange the columns in the matrices $U$ and $\Sigma$ so that the singular values are in decreasing order.
 
 
 **Step 4: Select singular values, (optional) truncate the rest:**
@@ -621,7 +622,7 @@ $$
 $$
 \begin{aligned}
 T&= BV \cr
-&= U\Sigma V^\top \cr
+&= U\Sigma V^\top V \cr
 &= U\Sigma
 \end{aligned}
 $$
