@@ -167,7 +167,11 @@ $$
 \mathbb{P}\{q = f \,|\, W = w\}
 = \frac{\mathbb{P}\{W = w \,|\, q = f\}\mathbb{P}\{q = f\}}
 {\mathbb{P}\{W = w\}}
-\quad \text{and} \quad
+\\
+\quad 
+\text{and} 
+\quad
+\\
 \mathbb{P}\{W = w\} = \sum_{\omega \in \{f, g\}} \mathbb{P}\{W = w \,|\, q = \omega\} \mathbb{P}\{q = \omega\}
 $$
 
@@ -178,7 +182,9 @@ Letting
 
 $$
 q_{\pi}(w) := \pi f(w) + (1 - \pi) g(w)
+\\
 \quad \text{and} \quad
+\\
 \kappa(w, \pi) := \frac{\pi f(w)}{\pi f(w) + (1 - \pi) g(w)}
 $$
 
