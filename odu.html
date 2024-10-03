@@ -71,7 +71,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -297,15 +297,15 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading interpolation-2.2.7-py3-none-any.whl.metadata (913 bytes)
-Requirement already satisfied: numba&gt;=0.59.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.59.1)
-Requirement already satisfied: scipy&lt;2.0,&gt;=1.10 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.13.1)
-Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.59.1-&gt;interpolation) (0.42.0)
-Requirement already satisfied: numpy&lt;1.27,&gt;=1.22 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.59.1-&gt;interpolation) (1.26.4)
+Requirement already satisfied: numba&gt;=0.59.1 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from interpolation) (0.59.1)
+Requirement already satisfied: scipy&lt;2.0,&gt;=1.10 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from interpolation) (1.13.1)
+Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.59.1-&gt;interpolation) (0.42.0)
+Requirement already satisfied: numpy&lt;1.27,&gt;=1.22 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.59.1-&gt;interpolation) (1.26.4)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading interpolation-2.2.7-py3-none-any.whl (80 kB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/80.5 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">80.5/80.5 kB</span> <span class=" -Color -Color-Red">4.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">80.5/80.5 kB</span> <span class=" -Color -Color-Red">6.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
@@ -431,7 +431,10 @@ the two possible distributions <span class="math notranslate nohighlight">\(f\)<
 \mathbb{P}\{q = f \,|\, W = w\}
 = \frac{\mathbb{P}\{W = w \,|\, q = f\}\mathbb{P}\{q = f\}}
 {\mathbb{P}\{W = w\}}
-\quad \text{and} \quad
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
 \mathbb{P}\{W = w\} = \sum_{\omega \in \{f, g\}} \mathbb{P}\{W = w \,|\, q = \omega\} \mathbb{P}\{q = \omega\}
 \]</div>
 <p>The fact that <a class="reference internal" href="#equation-odu-pi-rec-2">(48.2)</a> is recursive allows us to
@@ -440,7 +443,10 @@ progress to a recursive solution method.</p>
 <div class="math notranslate nohighlight">
 \[
 q_{\pi}(w) := \pi f(w) + (1 - \pi) g(w)
-\quad \text{and} \quad
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
 \kappa(w, \pi) := \frac{\pi f(w)}{\pi f(w) + (1 - \pi) g(w)}
 \]</div>
 <p>we can express the value function for the unemployed worker recursively
@@ -711,28 +717,34 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6077545760753544.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3754/3612521828.py:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+  ax.set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$w$&#39;)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.08775824476261818.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.666846634024397.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.016558701600416725.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.1067438484688008.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.0033357743060822287.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.021987289305993585.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0006736904249713405.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.004767230756380414.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.0001360681170687883.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0010340088625842014.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 31 iterations.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.0002242812922279569.
 </pre></div>
 </div>
-<img alt="_images/8d608425acefb73809b1c18b960916a56033c58785a3f619de161f23b830cb25.png" src="_images/8d608425acefb73809b1c18b960916a56033c58785a3f619de161f23b830cb25.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 33 iterations.
+</pre></div>
+</div>
+<img alt="_images/daba874387b7b775c4aba609cdf437ab69d2466ca29b8207cf5ebaa505df43a8.png" src="_images/daba874387b7b775c4aba609cdf437ab69d2466ca29b8207cf5ebaa505df43a8.png" />
 </div>
 </div>
 <p>We will also plot the optimal policy</p>
@@ -754,7 +766,13 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7d75163d4427afdad31729a5ba8738d0bf2e0f4a48878a3d2a47d6878eb0984c.png" src="_images/7d75163d4427afdad31729a5ba8738d0bf2e0f4a48878a3d2a47d6878eb0984c.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3754/2124312748.py:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+  ax.set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$w$&#39;)
+</pre></div>
+</div>
+<img alt="_images/ed34186d43423bfb431ff538d76aa783dc4c0054592b97f10f6ae3bbca33aa9a.png" src="_images/ed34186d43423bfb431ff538d76aa783dc4c0054592b97f10f6ae3bbca33aa9a.png" />
 </div>
 </div>
 <p>The results fit well with our intuition from section <a class="reference internal" href="#looking-forward"><span class="std std-ref">looking
@@ -1007,15 +1025,21 @@ fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.021187558746341373.
-Error at iteration 10 is 0.006026019280448769.
-Error at iteration 15 is 0.0012619661451718223.
-Error at iteration 20 is 0.00024369755728703701.
-
-Converged in 23 iterations.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3754/2244278736.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+  ax.set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$w$&#39;)
 </pre></div>
 </div>
-<img alt="_images/f0ae074c603dafa1bb043f404192396d208f863a867d14870cf127197f232e86.png" src="_images/f0ae074c603dafa1bb043f404192396d208f863a867d14870cf127197f232e86.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.02140396079896334.
+Error at iteration 10 is 0.006663329346452418.
+Error at iteration 15 is 0.0015275471869833357.
+Error at iteration 20 is 0.000311822280486429.
+
+Converged in 24 iterations.
+</pre></div>
+</div>
+<img alt="_images/acb8e5836957e58edda98dc237b16c19444efa4913d75ea52a38aaf6363d37dc.png" src="_images/acb8e5836957e58edda98dc237b16c19444efa4913d75ea52a38aaf6363d37dc.png" />
 </div>
 </div>
 </section>
@@ -1106,7 +1130,7 @@ too optimistic and turn down too many jobs.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/af24b7136d177cff9a4dcf969f3f51f6fc6a92ea36c7715f9550bffae4eb5ee9.png" src="_images/af24b7136d177cff9a4dcf969f3f51f6fc6a92ea36c7715f9550bffae4eb5ee9.png" />
+<img alt="_images/e3ad87275d841dfe6d979b2852c746adb05cbd0feb4e27e678020366348f1c60.png" src="_images/e3ad87275d841dfe6d979b2852c746adb05cbd0feb4e27e678020366348f1c60.png" />
 </div>
 </div>
 </section>
@@ -1312,6 +1336,22 @@ to interpret the solution of our search model.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:62: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:77: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:77: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+&lt;&gt;:62: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:77: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:77: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/tmp/ipykernel_3754/1288726496.py:62: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+  axs[0, 1].set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$w$&#39;)
+/tmp/ipykernel_3754/1288726496.py:77: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+  axs[1, 1].set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$\mathbb{P}\{w &gt; \overline{w} (\pi)\}$&#39;)
+/tmp/ipykernel_3754/1288726496.py:77: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+  axs[1, 1].set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$\mathbb{P}\{w &gt; \overline{w} (\pi)\}$&#39;)
+</pre></div>
+</div>
+</div>
 </div>
 <p>We now provide some examples that provide insights about how the model works.</p>
 </section>
@@ -1368,8 +1408,8 @@ unemployment verifies our conjecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/99cd396ad17ceaf2a760ee3e8eec63b0936edd3bc60f6245319d7720d5e78ab0.png" src="_images/99cd396ad17ceaf2a760ee3e8eec63b0936edd3bc60f6245319d7720d5e78ab0.png" />
-<img alt="_images/9cf2a95c18dc35b2ede29e45083da8bfda13dacceed9eb02c4fe7d6cbf34583b.png" src="_images/9cf2a95c18dc35b2ede29e45083da8bfda13dacceed9eb02c4fe7d6cbf34583b.png" />
+<img alt="_images/64514f90fc9f1cf77f976e9e8702e4a5a05746385af650f7d44824dcd8cef69a.png" src="_images/64514f90fc9f1cf77f976e9e8702e4a5a05746385af650f7d44824dcd8cef69a.png" />
+<img alt="_images/24f1a3c90fb3e58e0388b4b4f5e5a3c0d51be01bd4e922fbe0a8762b4bfd51ca.png" src="_images/24f1a3c90fb3e58e0388b4b4f5e5a3c0d51be01bd4e922fbe0a8762b4bfd51ca.png" />
 </div>
 </div>
 </section>
@@ -1389,8 +1429,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/552044a73d22d758367ba09192d139ee84137813283d5580d3240e9720ed0743.png" src="_images/552044a73d22d758367ba09192d139ee84137813283d5580d3240e9720ed0743.png" />
-<img alt="_images/31e97cfbba7e80efd8e19279b3b10e218b05bd62e1f38809a58417e1f287ff97.png" src="_images/31e97cfbba7e80efd8e19279b3b10e218b05bd62e1f38809a58417e1f287ff97.png" />
+<img alt="_images/aed12151d62641655b62bcffd339c992324f4304e457174121b31b9dcc60ad3c.png" src="_images/aed12151d62641655b62bcffd339c992324f4304e457174121b31b9dcc60ad3c.png" />
+<img alt="_images/180939d4db150a9ecb00f57430ed5177f046994a12e17e22e356dc1511d28198.png" src="_images/180939d4db150a9ecb00f57430ed5177f046994a12e17e22e356dc1511d28198.png" />
 </div>
 </div>
 </section>
@@ -1407,8 +1447,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5e4fadeb4011b6da4a22b0c9a2e15bcf079b0efe1572cd053c31a840e5998206.png" src="_images/5e4fadeb4011b6da4a22b0c9a2e15bcf079b0efe1572cd053c31a840e5998206.png" />
-<img alt="_images/99f2596a39c7534d287959fdc87b59d44f782aca78b76196d8a23657ef2d9b69.png" src="_images/99f2596a39c7534d287959fdc87b59d44f782aca78b76196d8a23657ef2d9b69.png" />
+<img alt="_images/433d2a5d8b8c110a4a5cb266033258bbb8cd6d20c02f6d29b57427895874587d.png" src="_images/433d2a5d8b8c110a4a5cb266033258bbb8cd6d20c02f6d29b57427895874587d.png" />
+<img alt="_images/ead5ab09e60ccf8b75df24f21530b7b70b2575cc882995481c927cc6885102e5.png" src="_images/ead5ab09e60ccf8b75df24f21530b7b70b2575cc882995481c927cc6885102e5.png" />
 </div>
 </div>
 </section>
@@ -1435,8 +1475,8 @@ when he eventually chooses to accept a wage offer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/155af634fa1a8f65bbef245ea7e49361aa1eeaa235688d3eeeff5a095250e4ce.png" src="_images/155af634fa1a8f65bbef245ea7e49361aa1eeaa235688d3eeeff5a095250e4ce.png" />
-<img alt="_images/91b547f6f443c9abe3c1f9efd31afb4e408e42d4db0a33eb5d37aa3bf4397fca.png" src="_images/91b547f6f443c9abe3c1f9efd31afb4e408e42d4db0a33eb5d37aa3bf4397fca.png" />
+<img alt="_images/a1bc41e0967eb2d480df1db0412aaecb66dff2e6f31d3643322c840a241eeb15.png" src="_images/a1bc41e0967eb2d480df1db0412aaecb66dff2e6f31d3643322c840a241eeb15.png" />
+<img alt="_images/95e8676fef41fb552ef88a3ecf314a04abfa2452f399d92f8911999ab164ea55.png" src="_images/95e8676fef41fb552ef88a3ecf314a04abfa2452f399d92f8911999ab164ea55.png" />
 </div>
 </div>
 </section>
@@ -1452,8 +1492,8 @@ after having acquired less information about the wage distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7824e968c979688902b9dff72279bbe6f7b9f8bad18e1cf73b2da34ec2b81ac8.png" src="_images/7824e968c979688902b9dff72279bbe6f7b9f8bad18e1cf73b2da34ec2b81ac8.png" />
-<img alt="_images/963b06c49fb4db2dcdbf3ddca8ed45d5a8b1562f72e087ef1297b2d9c871257b.png" src="_images/963b06c49fb4db2dcdbf3ddca8ed45d5a8b1562f72e087ef1297b2d9c871257b.png" />
+<img alt="_images/2aa7e3480184bb9749f084b7eb87e16bebe9e28fc7da8c35d83b75df898cdd1e.png" src="_images/2aa7e3480184bb9749f084b7eb87e16bebe9e28fc7da8c35d83b75df898cdd1e.png" />
+<img alt="_images/7fe1efc48d4105f92dc63d8ef6ab6d15953ed7c2f29f18c6f1f57fb8bb4afd99.png" src="_images/7fe1efc48d4105f92dc63d8ef6ab6d15953ed7c2f29f18c6f1f57fb8bb4afd99.png" />
 </div>
 </div>
 </section>
@@ -2061,18 +2101,18 @@ after having acquired less information about the wage distribution.</p>
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/odu.ipynb">Colab</option>
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/odu.ipynb">Colab</option>
                 
                 </select>
                 <i class="fas fa-check-circle"></i>
             </li>
             <li class="launcher-private">
                 <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/odu.ipynb" data-branch=master>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/odu.ipynb" data-branch=main>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/odu.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/odu.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
@@ -2105,7 +2145,7 @@ after having acquired less information about the wage distribution.</p>
                 const pageName = "odu";
                 const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
                 const urlPath = "tree/lecture-python.notebooks/odu.ipynb";
-                const branch = "master"
+                const branch = "main"
                 const launchNotebookLink = document.getElementById('advancedLaunchButton');
 
                 // Highlight public server option if previous selection exists

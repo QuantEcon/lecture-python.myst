@@ -71,7 +71,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -247,20 +247,18 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.15.2)
-Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.4.31)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /opt/conda/envs/quantecon/lib/python3.12/site-packages (0.15.3)
+Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.12/site-packages (0.4.33)
+Requirement already satisfied: jaxlib&gt;=0.4.25 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.4.33)
+Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
+Requirement already satisfied: numpy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (1.26.4)
+Requirement already satisfied: tqdm in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (4.66.4)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jaxlib&gt;=0.4.25 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numpyro) (0.4.31)
-Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numpyro) (0.6.0)
-Requirement already satisfied: numpy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numpyro) (1.26.4)
-Requirement already satisfied: tqdm in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numpyro) (4.66.4)
-Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (0.4.0)
-Requirement already satisfied: opt-einsum in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (3.3.0)
-Requirement already satisfied: scipy&gt;=1.10 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (1.13.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.0)
+Requirement already satisfied: opt-einsum in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (3.4.0)
+Requirement already satisfied: scipy&gt;=1.10 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (1.13.1)
+Requirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -678,6 +676,18 @@ what fundamental force determines the limiting value of <span class="math notran
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:32: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:35: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:32: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:35: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3282/648395305.py:32: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+  ax1.plot(range(T+1), π_seq_mixed[i, :], label=f&quot;$\pi_0$={π_seq_mixed[i, 0]}&quot;)
+/tmp/ipykernel_3282/648395305.py:35: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+  ax1.set_ylabel(&quot;$\pi_t$&quot;)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -866,6 +876,12 @@ recorded on the <span class="math notranslate nohighlight">\(x\)</span> axis.</p
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3282/651151521.py:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+  ax2.scatter(α_arr_x, π_lim_arr, facecolors=&#39;none&#39;, edgecolors=&#39;tab:blue&#39;, label=&#39;$\pi$ lim&#39;)
+</pre></div>
+</div>
 <img alt="_images/520791e992f1ba35e1afffd94e8d508b397ddcc512a7b51ff3c994cb8faf3743.png" src="_images/520791e992f1ba35e1afffd94e8d508b397ddcc512a7b51ff3c994cb8faf3743.png" />
 </div>
 </div>
@@ -945,7 +961,10 @@ h(w) = h(w| \alpha)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-08-18 11:09:55.375273: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver&#39;s CUDA version is 12.5 which is older than the PTX compiler version (12.6.20). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:9: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+&lt;&gt;:9: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3282/1064323415.py:9: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+  ax.set_title(&#39;$\pi_t(\\alpha)$ as $t$ increases&#39;)
 </pre></div>
 </div>
 <img alt="_images/06e1ea4141e5f5e949cf1b4bb22447b73b12142ea2c38f55f90b31e8c84cdd78.png" src="_images/06e1ea4141e5f5e949cf1b4bb22447b73b12142ea2c38f55f90b31e8c84cdd78.png" />
@@ -1576,18 +1595,18 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/mix_model.ipynb">Colab</option>
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/mix_model.ipynb">Colab</option>
                 
                 </select>
                 <i class="fas fa-check-circle"></i>
             </li>
             <li class="launcher-private">
                 <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/mix_model.ipynb" data-branch=master>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/mix_model.ipynb" data-branch=main>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/mix_model.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/mix_model.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
@@ -1620,7 +1639,7 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
                 const pageName = "mix_model";
                 const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
                 const urlPath = "tree/lecture-python.notebooks/mix_model.ipynb";
-                const branch = "master"
+                const branch = "main"
                 const launchNotebookLink = document.getElementById('advancedLaunchButton');
 
                 // Highlight public server option if previous selection exists
