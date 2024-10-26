@@ -556,8 +556,9 @@ class BayesianInference:
         Computes numerically the posterior distribution with beta prior parametrized by (alpha0, beta0)
         given data using MCMC
         """
-        # tensorize
-        data = torch.tensor(data)
+        
+        # Convert data to float32
+        data = np.asarray(data, dtype=np.float32)
 
         # use pyro
         if self.solver=='pyro':
@@ -966,18 +967,18 @@ We first initialize the `BayesianInference` classes and then can directly call `
 ```{code-cell} ipython3
 # Initialize BayesianInference classes
 # try uniform
-STD_UNIFORM_pyro = BayesianInference(param=(0,1), name_dist='uniform', solver='pyro')
+STD_UNIFORM_pyro = BayesianInference(param=(0.0,1.0), name_dist='uniform', solver='pyro')
 UNIFORM_numpyro = BayesianInference(param=(0.2,0.7), name_dist='uniform', solver='numpyro')
 
 # try truncated lognormal
-LOGNORMAL_numpyro = BayesianInference(param=(0,2), name_dist='lognormal', solver='numpyro')
-LOGNORMAL_pyro = BayesianInference(param=(0,2), name_dist='lognormal', solver='pyro')
+LOGNORMAL_numpyro = BayesianInference(param=(0.0,2.0), name_dist='lognormal', solver='numpyro')
+LOGNORMAL_pyro = BayesianInference(param=(0.0,2.0), name_dist='lognormal', solver='pyro')
 
 # try von Mises
 # shifted von Mises
-VONMISES_numpyro = BayesianInference(param=10, name_dist='vonMises', solver='numpyro')
+VONMISES_numpyro = BayesianInference(param=10.0, name_dist='vonMises', solver='numpyro')
 # truncated von Mises
-VONMISES_pyro = BayesianInference(param=40, name_dist='vonMises', solver='pyro')
+VONMISES_pyro = BayesianInference(param=40.0, name_dist='vonMises', solver='pyro')
 
 # try laplace
 LAPLACE_numpyro = BayesianInference(param=(0.5, 0.07), name_dist='laplace', solver='numpyro')
