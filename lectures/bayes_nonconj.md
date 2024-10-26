@@ -1,10 +1,10 @@
 ---
 jupytext:
   text_representation:
-    extension: .myst
+    extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.13.8
+    jupytext_version: 1.16.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -43,7 +43,6 @@ The two Python modules are
 
 As usual, we begin by importing some Python code.
 
-
 ```{code-cell} ipython3
 :tags: [hide-output]
 
@@ -80,9 +79,7 @@ from numpyro.infer import SVI as nSVI
 from numpyro.infer import ELBO as nELBO
 from numpyro.infer import Trace_ELBO as nTrace_ELBO
 from numpyro.optim import Adam as nAdam
-
 ```
-
 
 ## Unleashing MCMC on a  Binomial Likelihood
 
@@ -251,7 +248,6 @@ We  will use the following priors:
     - We also considered a truncated Laplace distribution because its density comes in a piece-wise non-smooth form and has a distinctive spiked shape.
 
     - The truncated Laplace can be created using `Numpyro`'s `TruncatedDistribution` class.
-
 
 ```{code-cell} ipython3
 # used by Numpyro
@@ -595,9 +591,9 @@ class BayesianInference:
             pyro.sample('theta', dist.Beta(alpha_q, beta_q))
 
         else:
-            alpha_q = numpyro.param('alpha_q', 10,
+            alpha_q = numpyro.param('alpha_q', 10.0,
                             constraint=nconstraints.positive)
-            beta_q = numpyro.param('beta_q', 10,
+            beta_q = numpyro.param('beta_q', 10.0,
                             constraint=nconstraints.positive)
 
             numpyro.sample('theta', ndist.Beta(alpha_q, beta_q))
@@ -655,17 +651,16 @@ class BayesianInference:
         params : the learned parameters for guide
         losses : a vector of loss at each step
         """
-        # tensorize data
-        if not torch.is_tensor(data):
-            data = torch.tensor(data)
+        # Convert data to float32
+        data = np.asarray(data, dtype=np.float32)
 
         # initiate SVI
         svi = self.SVI_init(guide_dist=guide_dist)
 
         # do gradient steps
-        if self.solver=='pyro':
+        if self.solver == 'pyro':
             # store loss vector
-            losses = np.zeros(n_steps)
+            losses = np.zeros(n_steps, dtype=np.float32)
             for step in range(n_steps):
                 losses[step] = svi.step(data)
 
@@ -673,14 +668,14 @@ class BayesianInference:
             params = {
                 'alpha_q': pyro.param('alpha_q').item(),
                 'beta_q': pyro.param('beta_q').item()
-                }
+            }
 
-        elif self.solver=='numpyro':
+        elif self.solver == 'numpyro':
             result = svi.run(self.rng_key, n_steps, data, progress_bar=False)
-            params = dict(
-                (key, np.asarray(value)) for key, value in result.params.items()
-                )
-            losses = np.asarray(result.losses)
+            params = {
+                key: np.asarray(value, dtype=np.float32) for key, value in result.params.items()
+            }
+            losses = np.asarray(result.losses, dtype=np.float32)
 
         return params, losses
 ```
@@ -898,7 +893,6 @@ For the same Beta prior, we shall
 
 Let's start with the analytical method that we described in this quantecon lecture <https://python.quantecon.org/prob_meaning.html>
 
-
 ```{code-cell} ipython3
 # First examine Beta priors
 BETA_pyro = BayesianInference(param=(5,5), name_dist='beta', solver='pyro')
@@ -952,11 +946,9 @@ will be  more accurate, as we shall see next.
 
 (Increasing the step size increases computational time though).
 
-
 ```{code-cell} ipython3
 BayesianInferencePlot(true_theta, num_list, BETA_numpyro).SVI_plot(guide_dist='beta', n_steps=100000)
 ```
-
 
 ## Non-conjugate Prior Distributions
 
@@ -1052,7 +1044,6 @@ SVI_num_steps = 50000
 example_CLASS = BayesianInference(param=(0,1), name_dist='uniform', solver='numpyro')
 print(f'=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}\nSolver: {example_CLASS.solver}')
 BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(guide_dist='normal', n_steps=SVI_num_steps)
-
 ```
 
 ```{code-cell} ipython3
