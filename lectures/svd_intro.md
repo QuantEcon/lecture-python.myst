@@ -583,7 +583,7 @@ $$
 Then because we want to extract the relationships between variables rather than just their magnitude, in other words, we want to know how they can explain each other, we compute the covariance matrix of $B$.
 
 $$
-C = \frac{1}{{n-1}} BB^{\top}
+C = \frac{1}{n} BB^{\top}
 $$
 
 **Step 3: Decompose the covariance matrix and arrange the singular values:**
@@ -601,7 +601,7 @@ B B^\top &= U \Sigma V^\top (U \Sigma V^{\top})^{\top}\\
 $$
 
 $$
-C = \frac{1}{{n-1}} U \Sigma \Sigma^\top U^\top
+C = \frac{1}{n} U \Sigma \Sigma^\top U^\top
 $$
 
 We can then rearrange the columns in the matrices $U$ and $\Sigma$ so that the singular values are in decreasing order.
