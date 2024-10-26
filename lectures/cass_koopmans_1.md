@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.1
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -20,22 +22,19 @@ kernelspec:
 
 # Cass-Koopmans Model
 
-```{contents} Contents
-:depth: 2
-```
-
 ## Overview
 
 This lecture and {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` describe a model that Tjalling Koopmans {cite}`Koopmans`
 and David Cass {cite}`Cass` used to analyze optimal growth.
 
-The model can be viewed as an extension of the model of Robert Solow
-described in [an earlier lecture](https://python-programming.quantecon.org/python_oop.html)
-but adapted to make the saving rate be a choice.
+The model extends  the model of Robert Solow
+described in [an earlier lecture](https://python-programming.quantecon.org/python_oop.html).
+
+It does so by making  saving rate be a  decision, instead of a hard-wired constant.
 
 (Solow assumed a constant saving rate determined outside the model.)
 
-We describe two versions of the model, one in this lecture and the other in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
+We describe two versions of the model, a planning problem  in this lecture, and a competitive equilibrium   in this lecture  {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
 
 Together, the two lectures  illustrate what is, in fact, a
 more general connection between a **planned economy** and a decentralized economy
@@ -59,17 +58,18 @@ The lecture uses important ideas including
 - A min-max problem for solving a planning problem.
 - A **shooting algorithm** for solving difference equations subject
   to initial and terminal conditions.
-- A **turnpike** property that describes optimal paths for
+- A **turnpike** property of  optimal paths for
   long but finite-horizon economies.
+- A **stable manifold** and a **phase plane**
 
 Let's start with some standard imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, float64
 from numba.experimental import jitclass
 import numpy as np
+from quantecon.optimize import brentq
 ```
 
 ## The Model
@@ -366,7 +366,7 @@ $$
 %\notag\\= C_t\left(\beta [f'(K_{t+1}) +
 %(1-\delta)]\right)^{1/\gamma} 
 \end{aligned}
-$$
+$$ (eq:consn_euler)
 
 which we can  combine with the feasibility constraint {eq}`allocation` to get
 
@@ -376,7 +376,7 @@ C_{t+1} & = C_t\left(\beta [f'(F(K_t,1)+ (1-\delta) K_t  - C_t) +
 (1-\delta)]\right)^{1/\gamma}  \\
 K_{t+1}  & = F(K_t,1)+ (1-\delta) K_t  - C_t .
 \end{aligned}
-$$
+$$ (eq:systemdynamics)
 
 This is a pair of non-linear first-order difference equations that map $C_t, K_t$ into $C_{t+1}, K_{t+1}$ and that  an optimal sequence $\vec C , \vec K$ must satisfy.
 
@@ -385,7 +385,7 @@ It must also satisfy the initial condition that $K_0$ is given and $K_{T+1} = 0$
 Below we define a `jitclass` that stores parameters and functions
 that define our economy.
 
-```{code-cell} python3
+```{code-cell} ipython3
 planning_data = [
     ('γ', float64),    # Coefficient of relative risk aversion
     ('β', float64),    # Discount factor
@@ -395,7 +395,7 @@ planning_data = [
 ]
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jitclass(planning_data)
 class PlanningProblem():
 
@@ -463,7 +463,7 @@ class PlanningProblem():
 
 We can construct an economy with the Python code:
 
-```{code-cell} python3
+```{code-cell} ipython3
 pp = PlanningProblem()
 ```
 
@@ -524,7 +524,7 @@ planning problem.
 (Actually, we modified the preceding  algorithm slightly by starting with a guess for
 $c_0$ instead of $\mu_0$ in the following code.)
 
-```{code-cell} python3
+```{code-cell} ipython3
 @njit
 def shooting(pp, c0, k0, T=10):
     '''
@@ -532,7 +532,7 @@ def shooting(pp, c0, k0, T=10):
     of consumption c0, computes the whole paths of c and k
     using the state transition law and Euler equation for T periods.
     '''
-    if c0 > pp.f(k0):
+    if c0 > pp.f(k0) + (1 - pp.δ) * k0:
         print("initial consumption is not feasible")
 
         return None
@@ -554,11 +554,11 @@ def shooting(pp, c0, k0, T=10):
 
 We’ll start with an incorrect guess.
 
-```{code-cell} python3
+```{code-cell} ipython3
 paths = shooting(pp, 0.2, 0.3, T=10)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, axs = plt.subplots(1, 2, figsize=(14, 5))
 
 colors = ['blue', 'red']
@@ -609,7 +609,7 @@ Shoot forward again, iterating on these steps until we converge.
 When $K_{T+1}$ gets close enough to $0$ (i.e., within an error
 tolerance bounds), we stop.
 
-```{code-cell} python3
+```{code-cell} ipython3
 @njit
 def bisection(pp, c0, k0, T=10, tol=1e-4, max_iter=500, k_ter=0, verbose=True):
 
@@ -643,7 +643,7 @@ def bisection(pp, c0, k0, T=10, tol=1e-4, max_iter=500, k_ter=0, verbose=True):
         c0 = (c0_lower + c0_upper) / 2
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 def plot_paths(pp, c0, k0, T_arr, k_ter=0, k_ss=None, axs=None):
 
     if axs is None:
@@ -677,7 +677,7 @@ def plot_paths(pp, c0, k0, T_arr, k_ter=0, k_ss=None, axs=None):
 
 Now we can solve the model and plot the paths of consumption, capital, and Lagrange multiplier.
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_paths(pp, 0.3, 0.3, [10]);
 ```
 
@@ -742,7 +742,7 @@ $$
 Let's verify this with Python and then use this steady state
 $\bar K$ as our initial capital stock $K_0$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 ρ = 1 / pp.β - 1
 k_ss = pp.f_prime_inv(ρ+pp.δ)
 
@@ -751,7 +751,7 @@ print(f'steady state for capital is: {k_ss}')
 
 Now we plot
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_paths(pp, 0.3, k_ss, [150], k_ss=k_ss);
 ```
 
@@ -761,7 +761,7 @@ $T$, $K_t$ stays near $K_0$ until $t$ approaches $T$ closely.
 Let's see what the planner does when we set
 $K_0$ below $\bar K$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_paths(pp, 0.3, k_ss/3, [150], k_ss=k_ss);
 ```
 
@@ -771,7 +771,7 @@ value $K_{T+1} =0$ when $t$ closely approaches $T$.
 
 The following graphs compare optimal outcomes as we vary $T$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_paths(pp, 0.3, k_ss/3, [150, 75, 50, 25], k_ss=k_ss);
 ```
 
@@ -781,7 +781,7 @@ The following calculation indicates that when  $T$ is very large,
 the optimal capital stock stays close to
 its steady state value most of the time.
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_paths(pp, 0.3, k_ss/3, [250, 150, 50, 25], k_ss=k_ss);
 ```
 
@@ -803,7 +803,7 @@ over time.
 
 Let's calculate and  plot the saving rate.
 
-```{code-cell} python3
+```{code-cell} ipython3
 @njit
 def saving_rate(pp, c_path, k_path):
     'Given paths of c and k, computes the path of saving rate.'
@@ -812,7 +812,7 @@ def saving_rate(pp, c_path, k_path):
     return (production - c_path) / production
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 def plot_saving_rate(pp, c0, k0, T_arr, k_ter=0, k_ss=None, s_ss=None):
 
     fix, axs = plt.subplots(2, 2, figsize=(12, 9))
@@ -829,7 +829,7 @@ def plot_saving_rate(pp, c0, k0, T_arr, k_ter=0, k_ss=None, s_ss=None):
         axs[1, 1].hlines(s_ss, 0, np.max(T_arr), linestyle='--')
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_saving_rate(pp, 0.3, k_ss/3, [250, 150, 75, 50], k_ss=k_ss)
 ```
 
@@ -869,7 +869,7 @@ the amount required to offset capital depreciation each period.
 We first study optimal capital paths that start below the steady
 state.
 
-```{code-cell} python3
+```{code-cell} ipython3
 # steady state of saving rate
 s_ss = pp.δ * k_ss / pp.f(k_ss)
 
@@ -886,26 +886,173 @@ Note that $f''(K)<0$, so as $K$ rises, $f'(K)$ declines.
 The planner slowly lowers the saving rate until reaching a steady
 state in which $f'(K)=\rho +\delta$.
 
-### Exercise
 
-```{exercise}
-:label: ck1_ex1
+## Stable Manifold and Phase Diagram 
 
-- Plot the optimal consumption, capital, and saving paths when the
-  initial capital level begins at 1.5 times the steady state level
-  as we shoot towards the steady state at $T=130$.
-- Why does the saving rate respond as it does?
+We now describe a classic diagram that describes an optimal $(K_{t+1}, C_t)$ path.
+
+The diagram has $K$ on the ordinate axis and $C$ on the coordinate axis.  
+
+Given an arbitrary and fixed  $K$, a fixed point $C$ of the consumption Euler equation  {eq}`eq:consn_euler`
+satisfies 
+
+$$
+C=C\left(\beta\left[f^{\prime}\left(f\left(K\right)+\left(1-\delta\right)K-C\right)+\left(1-\delta\right)\right]\right)^{1/\gamma}
+$$
+
+which implies
+
+$$
+\begin{aligned}
+C &=f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)  \\
+ &\equiv \tilde{C} \left(K\right)
+\end{aligned}
+$$ (eq:tildeC)
+
+A positive fixed point  $C = \tilde C(K)$ exists only if $f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)>0$
+
+```{code-cell} ipython3
+@njit
+def C_tilde(K, pp):
+
+    return pp.f(K) + (1 - pp.δ) * K - pp.f_prime_inv(1 / pp.β - 1 + pp.δ)
 ```
 
-```{solution-start} ck1_ex1
-:class: dropdown
+Next note that given a time-invariant  arbitrary $C$,  a fixed point $K$ of the feasibility condition  {eq}`allocation` solves the following equation
+
+$$
+    K = f(K) + (1 - \delta K) - C .
+$$
+
+A fixed point of the above equation is described by  a function
+
+$$
+K = \tilde K(C)
+$$ (eq:tildeK)
+
+```{code-cell} ipython3
+@njit
+def K_diff(K, C, pp):
+    return pp.f(K) - pp.δ * K - C
+
+@njit
+def K_tilde(C, pp):
+
+    res = brentq(K_diff, 1e-6, 100, args=(C, pp))
+
+    return res.root
 ```
 
-```{code-cell} python3
-plot_saving_rate(pp, 0.3, k_ss*1.5, [130], k_ter=k_ss, k_ss=k_ss, s_ss=s_ss)
+A  steady state $\left(K_s, C_s\right)$ is a pair $(K,C)$ that  satisfies both equations {eq}`eq:tildeC` and {eq}`eq:tildeK`. 
+
+
+It is thus the intersection of the two curves $\tilde{C}$ and $\tilde{K}$ that we'll plot in Figure {numref}`stable_manifold` below.
+
+We can compute $K_s$ by solving the equation $K_s = \tilde{K}\left(\tilde{C}\left(K_s\right)\right)$
+
+```{code-cell} ipython3
+@njit
+def K_tilde_diff(K, pp):
+
+    K_out = K_tilde(C_tilde(K, pp), pp)
+
+    return K - K_out
 ```
 
-```{solution-end}
+```{code-cell} ipython3
+res = brentq(K_tilde_diff, 8, 10, args=(pp,))
+
+Ks = res.root
+Cs = C_tilde(Ks, pp)
+
+Ks, Cs
+```
+
+We can use the shooting algorithm to  compute  trajectories that approach $\left(K_s, C_s\right)$.
+
+For a given $K$, let's compute $\vec{C}$ and $\vec{K}$ for a large $T$ , e.g., $=200$.
+
+We compute  $C_0$ by the bisection algorithm that assures that  $K_T=K_s$.
+
+Let's compute  two trajectories towards $\left(K_s, C_s\right)$ that  start from different sides of $K_s$: $\bar{K}_0=1e-3<K_s<\bar{K}_1=15$.
+
+```{code-cell} ipython3
+c_vec1, k_vec1 = bisection(pp, 5, 15, T=200, k_ter=Ks)
+c_vec2, k_vec2 = bisection(pp, 1e-3, 1e-3, T=200, k_ter=Ks)
+```
+
+The following code generates Figure {numref}`stable_manifold`, which is patterned on a graph that appears  on  page 411 of {cite}`intriligator2002mathematical`. 
+
+Figure {numref}`stable_manifold` is a classic "phase plane" with  "state" variable $K$ on the ordinate axis and "co-state" variable $C$ on the coordinate axis.  
+
+Figure {numref}`stable_manifold` plots   three curves:
+  
+  * the blue line  graphs $C = \tilde C (K)$ of fixed points described by equation {eq}`eq:tildeC`. 
+  * the red line graphs $K = \tilde K(C)$ of fixed points described by equation {eq}`eq:tildeK`
+  * the green line graphs the stable traced out by paths that converge to the steady state starting from an arbitrary $K_0$ at time $0$.
+     * for a given $K_0$, the shooting algorithm sets $C_0$ to the coordinate on the green line in order to initiate a path that converges to the optimal steady state
+     * the arrows on the green line show the direction in which  dynamics {eq}`eq:systemdynamics` push successive $(K_{t+1}, C_t)$ pairs. 
+     
+In addition to the three curves, Figure {numref}`stable_manifold` plots  arrows that point where the  dynamics {eq}`eq:systemdynamics` drive the system  when, for a given $K_0$, $C_0$ is  not on the stable manifold depicted in the green line.
+
+  * If $C_0$ is set below the green line for a given $K_0$, too much capital is accumulated
+  
+  * If $C_0$ is set above the green line for a given $K_0$, too little capital is accumulated
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Stable Manifold and Phase Plane"
+    name: stable_manifold
+tags: [hide-input]
+---
+fig, ax = plt.subplots(figsize=(7, 5))
+
+K_range = np.arange(1e-1, 15, 0.1)
+C_range = np.arange(1e-1, 2.3, 0.1)
+
+# C tilde
+ax.plot(K_range, [C_tilde(Ks, pp) for Ks in K_range], color='b')
+ax.text(11.8, 4, r'$C=\tilde{C}(K)$', color='b')
+
+# K tilde
+ax.plot([K_tilde(Cs, pp) for Cs in C_range], C_range, color='r')
+ax.text(2, 1.5, r'$K=\tilde{K}(C)$', color='r')
+
+# stable branch
+ax.plot(k_vec1[:-1], c_vec1, color='g')
+ax.plot(k_vec2[:-1], c_vec2, color='g')
+ax.quiver(k_vec1[5], c_vec1[5],
+          k_vec1[6]-k_vec1[5], c_vec1[6]-c_vec1[5],
+          color='g')
+ax.quiver(k_vec2[5], c_vec2[5],
+          k_vec2[6]-k_vec2[5], c_vec2[6]-c_vec2[5],
+          color='g')
+ax.text(12, 2.5, r'stable branch', color='g')
+
+# (Ks, Cs)
+ax.scatter(Ks, Cs)
+ax.text(Ks-1.2, Cs+0.2, '$(K_s, C_s)$')
+
+# arrows
+K_range = np.linspace(1e-3, 15, 20)
+C_range = np.linspace(1e-3, 7.5, 20)
+K_mesh, C_mesh = np.meshgrid(K_range, C_range)
+
+next_K, next_C = pp.next_k_c(K_mesh, C_mesh)
+ax.quiver(K_range, C_range, next_K-K_mesh, next_C-C_mesh)
+
+# infeasible consumption area
+ax.text(0.5, 5, "infeasible\n consumption")
+
+ax.set_ylim([0, 7.5])
+ax.set_xlim([0, 15])
+
+ax.set_xlabel('$K$')
+ax.set_ylabel('$C$')
+
+plt.show()
 ```
 
 ## Concluding Remarks
@@ -922,3 +1069,27 @@ by a representative household and a representative firm.
 
 The relationship between a command economy like the one studied in this lecture and a market economy like that
 studied in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` is a foundational topic in general equilibrium theory and welfare economics.
+
+
+
+### Exercise
+
+```{exercise}
+:label: ck1_ex1
+
+- Plot the optimal consumption, capital, and saving paths when the
+  initial capital level begins at 1.5 times the steady state level
+  as we shoot towards the steady state at $T=130$.
+- Why does the saving rate respond as it does?
+```
+
+```{solution-start} ck1_ex1
+:class: dropdown
+```
+
+```{code-cell} ipython3
+plot_saving_rate(pp, 0.3, k_ss*1.5, [130], k_ter=k_ss, k_ss=k_ss, s_ss=s_ss)
+```
+
+```{solution-end}
+```
