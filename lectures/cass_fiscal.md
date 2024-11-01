@@ -527,10 +527,10 @@ def shooting_algorithm(c0, k0, shocks, S, model):
     Shooting algorithm for given initial c0 and k0.
     """
     # High-precision parameters
-    β, γ, δ, α, A = [mp.mpf(x) for x in [model.β, model.γ, model.δ, model.α, model.A]]
-    g_path = [mp.mpf(g) for g in shocks['g']]
-    τ_c_path = [mp.mpf(tau_c) for tau_c in shocks['τ_c']]
-    τ_k_path = [mp.mpf(tau_k) for tau_k in shocks['τ_k']]
+    β, γ, δ, α, A = map(mp.mpf, 
+                [model.β, model.γ, model.δ, model.α, model.A])
+    g_path, τ_c_path, τ_k_path = [
+        list(map(mp.mpf, shocks[key])) for key in ['g', 'τ_c', 'τ_k']]
     
     # Initialize paths for consumption and capital
     c_path = [mp.mpf('0')] * (S + 1)
@@ -550,7 +550,8 @@ def shooting_algorithm(c0, k0, shocks, S, model):
         k_path[t + 1] = k_tp1
 
         # Calculate next period's consumption
-        R_bar = compute_R_bar(A, τ_c_path[t], τ_c_path[t + 1], τ_k_path[t + 1], k_tp1, α, δ)
+        R_bar = compute_R_bar(A, τ_c_path[t], τ_c_path[t + 1], 
+                              τ_k_path[t + 1], k_tp1, α, δ)
         c_tp1 = next_c(c_t, R_bar, γ, β)
         if c_tp1 < mp.mpf('0'):
             raise ValueError(f"Consumption became negative at time {t + 1}.")
@@ -558,15 +559,18 @@ def shooting_algorithm(c0, k0, shocks, S, model):
 
     return k_path, c_path
 
-def bisection_c0(k0, c0, shocks, S, model, tol=mp.mpf('1e-6'), max_iter=1000, verbose=False):
+def bisection_c0(k0, c0, shocks, S, model, 
+                 tol=mp.mpf('1e-6'), max_iter=1000, verbose=False):
     """
     Bisection method to find optimal initial consumption c0.
     """
     # High-precision model parameters
-    β, γ, δ, α, A = [mp.mpf(x) for x in [model.β, model.γ, model.δ, model.α, model.A]]
+    β, γ, δ, α, A = [mp.mpf(x) for x in [model.β, model.γ, 
+                                         model.δ, model.α, model.A]]
     
     # Compute the steady-state capital with high precision
-    k_ss_final, _ = steady_states(model, mp.mpf(shocks['g'][-1]), mp.mpf(shocks['τ_k'][-1]))
+    k_ss_final, _ = steady_states(model, mp.mpf(shocks['g'][-1]),
+                                  mp.mpf(shocks['τ_k'][-1]))
     
     # Initial bounds for c0
     c0_lower, c0_upper = mp.mpf(0), A * k_ss_final ** α
@@ -608,7 +612,9 @@ def bisection_c0(k0, c0, shocks, S, model, tol=mp.mpf('1e-6'), max_iter=1000, ve
     )
     return c0
 
-def run_shooting(shocks, S, model, c0_function=bisection_c0, shooting_function=shooting_algorithm):
+def run_shooting(shocks, S, model, 
+                 c0_function=bisection_c0, 
+                 shooting_func=shooting_algorithm):
     """
     Runs the shooting algorithm to find the optimal c0 and simulate the model.
     """
@@ -621,7 +627,7 @@ def run_shooting(shocks, S, model, c0_function=bisection_c0, shooting_function=s
     print(f"Optimal initial consumption c0: {mp.nstr(optimal_c0, 7)} \n")
 
     # Simulate the model
-    k_path, c_path = shooting_function(optimal_c0, k0, shocks, S, model)
+    k_path, c_path = shooting_func(optimal_c0, k0, shocks, S, model)
     
     # Combine and return the results
     solution = np.column_stack([k_path, c_path])
@@ -659,7 +665,8 @@ solution = run_shooting(shocks, S, model)
 fig, axes = plt.subplots(2, 3, figsize=(10, 8))
 axes = axes.flatten()
 
-plot_results(solution, k_ss_initial, c_ss_initial, shocks, 'g', axes, model, T=40)
+plot_results(solution, k_ss_initial, 
+             c_ss_initial, shocks, 'g', axes, model, T=40)
 
 for ax in axes[5:]:
     fig.delaxes(ax)
@@ -680,7 +687,8 @@ def experiment_model(shocks, S, model, solver, plot_func, k_ss, c_ss, policy_sho
     axes = axes.flatten()
 
     solution = solver(shocks, S, model)
-    plot_func(solution, k_ss_initial, c_ss_initial, shocks, policy_shock, axes, model, T=40)
+    plot_func(solution, k_ss_initial, c_ss_initial, 
+              shocks, policy_shock, axes, model, T=40)
 
     for ax in axes[5:]:
         fig.delaxes(ax)
@@ -709,7 +717,8 @@ plot_results(solution, k_ss, c_ss, shocks, 'g', axes, model_γ2,
              linestyle='-.', T=40)
 
 handles, labels = axes[0].get_legend_handles_labels()  
-fig.legend(handles, labels, loc='lower right', ncol=3, fontsize=14, bbox_to_anchor=(1, 0.1))  
+fig.legend(handles, labels, loc='lower right', 
+           ncol=3, fontsize=14, bbox_to_anchor=(1, 0.1))  
 
 for ax in axes[5:]:
     fig.delaxes(ax)
@@ -721,36 +730,38 @@ plt.show()
 Let's write another function that runs the solver and draw the plots for two models as we did above
 
 ```{code-cell} ipython3
-def experiment_two_models(shocks, S, model_1, model_2, solver, plot_func, k_ss, c_ss,
-                    policy_shock, legend_label_fun=lambda model: fr"$\gamma = {model.γ}$"):
+def experiment_two_models(shocks, S, model_1, model_2, solver, plot_func, 
+                          k_ss, c_ss, policy_shock, legend_label_fun=None):
     """
-    Plots the results of running the shooting algorithm for two different models.
+    Compares and plots results of the shooting algorithm for two models.
     """
+    # Use a default labeling function if none is provided
+    if legend_label_fun is None:
+        legend_label_fun = lambda model: fr"$\gamma = {model.γ}$"
 
-    # Set up the figure and axes for plotting
+    # Set up the figure and axes
     fig, axes = plt.subplots(2, 3, figsize=(10, 8))
     axes = axes.flatten()
 
-    # Run the shooting algorithm for the first model
-    solution = solver(shocks, S, model_1)
-    plot_func(solution, k_ss, c_ss, shocks, policy_shock, axes, model_1,
-                 label=legend_label_fun(model_1), T=40)
+    # Function to run and plot for each model
+    def run_and_plot(model, linestyle='-'):
+        solution = solver(shocks, S, model)
+        plot_func(solution, k_ss, c_ss, shocks, policy_shock, axes, model, 
+                  label=legend_label_fun(model), linestyle=linestyle, T=40)
 
-    # Run the shooting algorithm for the second model
-    solution = solver(shocks, S, model_2)
-    plot_func(solution, k_ss, c_ss, shocks, policy_shock, axes, model_2,
-                 label=legend_label_fun(model_2), linestyle='-.', T=40)
+    # Plot for both models
+    run_and_plot(model_1)
+    run_and_plot(model_2, linestyle='-.')
 
-    # Create a legend using the labels from the first axis
+    # Set legend using labels from the first axis
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc='lower right', ncol=3, 
                fontsize=14, bbox_to_anchor=(1, 0.1))
 
-    # Remove any extra axes to tidy up the plot layout
+    # Remove extra axes and tidy up the layout
     for ax in axes[5:]:
         fig.delaxes(ax)
-
-    # Adjust the layout and display the plot
+    
     plt.tight_layout()
     plt.show()
 ```
