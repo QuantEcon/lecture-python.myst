@@ -72,16 +72,6 @@ $$
 \end{aligned}
 $$ (eq:house_budget)
 
-
-In our model, the representative household has the following CRRA preferences over consumption: 
-
-$$
-U(c) = \frac{c^{1 - \gamma}}{1 - \gamma}
-$$
-
-where $c$ is consumption and $\gamma$ is the coefficient of relative risk aversion. 
-
-
 ### Technology
 
 The economy's production technology is defined by: 
@@ -233,10 +223,6 @@ $$
 -\lim_{T \to \infty} \frac{U_{1t}}{(1 + \tau_{ct})} r k_{T+1} = 0.
 $$ (eq:terminal_final)
 
-$F(k_t, n_t) = A k_t^\alpha n_t^{1 - \alpha}$
-
-$f'(k_t) = \alpha A k_t^{\alpha - 1}$
-
 ## Computing Equilibria
 
 To compute an equilibrium we solve a price system $\{q_t, \eta_t, w_t\}$, a budget feasible government policy $\{g_t, \tau_t\} \equiv \{g_t, \tau_{ct}, \tau_{nt}, \tau_{kt}, \tau_{ht}\}$, and an allocation $\{c_t, n_t, k_{t+1}\}$ that solve the system of nonlinear difference equations consisting of 
@@ -253,6 +239,14 @@ First we rewrite {eq}`eq:tech_capital` with $f(k) := F(k, 1)$,
 $$
 k_{t+1} = f(k_t) + (1 - \delta) k_t - g_t - c_t.
 $$ (eq:feasi_capital)
+
+```{code-cell} ipython3
+def next_k(A, k_t, g_t, c_t, α, δ):
+    """
+    Capital next period: k_{t+1} = f(k_t) + (1 - δ) * k_t - c_t - g_t
+    """
+    return f(A, k_t, α) + (1 - δ) * k_t - g_t - c_t
+```
 
 By the properties of linearly homogeneous production function, we have $F_k(k, n) = f'(k)$, and $F_n(k, 1) = f(k, 1)  - f'(k)k$.
 
@@ -304,110 +298,73 @@ $$ (eq:diff_second_steady)
 
 ### Other equilibrium quantities
 
-**Consumption**
-$$
-c_t = f(k_t) + (1 - \delta)k_t - k_{t+1} - g_t  
-$$ (eq:equil_c)
-
 **Price of the good:**
+
 $$
 q_t = \beta^t \frac{u'(c_t)}{1 + \tau_{ct}}
 $$ (eq:equil_q)
 
+```{code-cell} ipython3
+def compute_q_path(c_path, β, γ, S=100):
+    """
+    Compute q path: q_t = (β^t * u'(c_t)) / u'(c_0)
+    """
+    q_path = np.zeros_like(c_path)
+    for t in range(S):
+        q_path[t] = (β ** t * u_prime(c_path[t], γ)) / u_prime(c_path[0], γ)
+    return q_path
+```
+
 **Marginal product of capital**
+
 $$
 \eta_t = f'(k_t)  
 $$
 
+```{code-cell} ipython3
+def compute_η_path(k_path, α, A, S=100):
+    """
+    Compute η path: η_t = f'(k_t) = α * A * k_t^{α - 1}
+    """
+    η_path = np.zeros_like(k_path)
+    for t in range(S):
+        η_path[t] = α * A * k_path[t] ** (α - 1)
+    return η_path
+```
+
 **Wage:**
+
 $$
 w_t = f(k_t) - k_t f'(k_t)    
 $$
 
+```{code-cell} ipython3
+def compute_w_path(k_path, η_path, α, A, S=100):
+    """
+    Compute w path: w_t = f(k_t) - k_t * f'(k_t)
+    """
+    w_path = np.zeros_like(k_path)
+    for t in range(S):
+        w_path[t] = A * k_path[t] ** α - k_path[t] * η_path[t]
+    return w_path
+```
+
 **Gross one-period return on capital:**
+
 $$
 \bar{R}_{t+1} = \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1\right] =  \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} R_{t, t+1}
 $$ (eq:gross_rate)
 
-**One-period discount factor:**
-$$
-R^{-1}_{t, t+1} = \frac{q_t}{q_{t-1}} = m_{t, t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)} \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})}
-$$ (eq:equil_R)
-
-**Net one-period rate of interest:**
-$$
-r_{t, t+1} \equiv R_{t, t+1} - 1 = (1 - \tau_{k, t+1})(f'(k_{t+1}) - \delta)
-$$ (eq:equil_r)
-
-### Shooting Algorithm
-
-In the following sections, we will experiment apply two methods to solve the model: shooting algorithm and minimization of Euler residual and law of motion capital.
-
-### Experiments
-
-+++
-
-We will do a number of experiments and analyze the transition path for the equilibrium in each case:
-
-1. A foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10.
-2. A foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 in period 10.
-3. A foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.
-3. A foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever
-
-+++
-
-Below we write the formulas for the shooting algorithm:
-
-$u(c) = \frac{c^{1 - \gamma}}{1 - \gamma}$
-
-$u'(c_t) = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[ (1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right]$
-
-$R_{t,t+1} = \left[ (1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right] \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})}$
-
-$k_{t+1} = f(k_t) + (1 - \delta)k_t - g_t - c_t$
-
-$u'(c_t) = \beta R_{t,t+1} u'(c_{t+1}) \iff c_t^{-\gamma} = \beta R_{t,t+1} c_{t+1}^{-\gamma} \iff c_{t+1} = c_t \left( \beta R_{t,t+1} \right)^{1/\gamma}$
-
 ```{code-cell} ipython3
-def u_prime(c, γ):
-    """
-    Marginal utility: u'(c) = c^{-γ}
-    """
-    return c ** (-γ)
-
-def f(A, k, α): 
-    """
-    Production function: f(k) = A * k^{α}
-    """
-    return A * k ** α
-
-def f_prime(A, k, α):
-    """
-    Marginal product of capital: f'(k) = α * A * k^{α - 1}
-    """
-    return α * A * k ** (α - 1)
-
 def compute_R_bar(A, τ_ct, τ_ctp1, τ_ktp1, k_tp1, α, δ):
     """
     Gross one-period return on capital:
-    R̄ = [(1 + τ_c_t) / (1 + τ_c_{t+1})] * { [1 - τ_k_{t+1}] * [f'(k_{t+1}) - δ] + 1 }
+    R̄ = [(1 + τ_c_t) / (1 + τ_c_{t+1})] 
+        * { [1 - τ_k_{t+1}] * [f'(k_{t+1}) - δ] + 1 }
     """
-    return ((1 + τ_ct) / (1 + τ_ctp1)) * (
-        (1 - τ_ktp1) * (f_prime(A, k_tp1, α) - δ) + 1)
+    return  ((1 - τ_ktp1) * (f_prime(A, k_tp1, α) - δ) + 1) * (
+        (1 + τ_ct) / (1 + τ_ctp1))
 
-def next_k(A, k_t, g_t, c_t, α, δ):
-    """
-    Capital next period: k_{t+1} = f(k_t) + (1 - δ) * k_t - c_t - g_t
-    """
-    return f(A, k_t, α) + (1 - δ) * k_t - g_t - c_t
-
-def next_c(c_t, R_bar, γ, β):
-    """
-    Consumption next period: c_{t+1} = c_t * (β * R̄)^{1/γ}
-    """
-    return c_t * (β * R_bar) ** (1 / γ)
-
-# Compute other equilibrium quantities
 def compute_R_bar_path(shocks, k_path, model, S):
     """
     Compute R̄ path over time.
@@ -423,46 +380,136 @@ def compute_R_bar_path(shocks, k_path, model, S):
         )
     R_bar_path[S] = R_bar_path[S - 1]
     return R_bar_path
+```
 
-def compute_η_path(k_path, α, A, S=100):
-    """
-    Compute η path: η_t = f'(k_t) = α * A * k_t^{α - 1}
-    """
-    η_path = np.zeros_like(k_path)
-    for t in range(S):
-        η_path[t] = α * A * k_path[t] ** (α - 1)
-    return η_path
+**One-period discount factor:**
 
-def compute_w_path(k_path, η_path, α, A, S=100):
-    """
-    Compute w path: w_t = f(k_t) - k_t * f'(k_t)
-    """
-    w_path = np.zeros_like(k_path)
-    for t in range(S):
-        w_path[t] = A * k_path[t] ** α - k_path[t] * η_path[t]
-    return w_path
+$$
+R^{-1}_{t, t+1} = \frac{q_t}{q_{t-1}} = m_{t, t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)} \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})}
+$$ (eq:equil_R)
 
-def compute_q_path(c_path, β, γ, S=100):
-    """
-    Compute q path: q_t = (β^t * u'(c_t)) / u'(c_0)
-    """
-    q_path = np.zeros_like(c_path)
-    for t in range(S):
-        q_path[t] = (β ** t * u_prime(c_path[t], γ)) / u_prime(c_path[0], γ)
-    return q_path
 
+**Net one-period rate of interest:**
+
+$$
+r_{t, t+1} \equiv R_{t, t+1} - 1 = (1 - \tau_{k, t+1})(f'(k_{t+1}) - \delta)
+$$ (eq:equil_r)
+
+By {eq}`eq:equil_R`, we have
+
+$$
+R_{t, t+s} = e^{s \cdot r_{t, t+s}}.
+$$
+
+Then by {eq}`eq:equil_r`, we have 
+
+$$
+\frac{q_{t+s}}{q_t} = e^{-s \cdot r_{t, t+s}}.
+$$
+
+Rearranging the above equation, we have
+
+$$
+r_{t, t+s} = -\frac{1}{s} \ln\left(\frac{q_{t+s}}{q_t}\right).
+$$
+
+```{code-cell} ipython3
 def compute_rts_path(q_path, T, t):
     """
     Compute r path:
-    r_t(s) = - (1/s) * ln(q_{t+s} / q_t)
+    r_t,t+s = - (1/s) * ln(q_{t+s} / q_t)
     """
-    s = np.arange(T)
-    q_path = np.array([float(q) for q in q_path])
-
+    s = np.arange(1, T + 1) 
+    q_path = np.array([float(q) for q in q_path]) 
+    
     with np.errstate(divide='ignore', invalid='ignore'):
         rts_path = - np.log(q_path[t + s] / q_path[t]) / s
     return rts_path
+```
 
+## Specifications of the Model
+
+In our model, the representative household has the following CRRA preferences over consumption: 
+
+$$
+U(c) = \frac{c^{1 - \gamma}}{1 - \gamma}
+$$
+
+```{code-cell} ipython3
+def u_prime(c, γ):
+    """
+    Marginal utility: u'(c) = c^{-γ}
+    """
+    return c ** (-γ)
+```
+
+Observe that by substituting {eq}`eq:gross_rate` into {eq}`eq:diff_second`, we have
+
+$$
+c_{t+1} = c_t \left[ \beta \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{k, t+1})(f'(k_{t+1}) - \delta) + 1 \right] \right]^{\frac{1}{\gamma}} = c_t \left[ \beta \overline{R}_{t+1} \right]^{\frac{1}{\gamma}}
+$$ (eq:consume_R)
+
+```{code-cell} ipython3
+def next_c(c_t, R_bar, γ, β):
+    """
+    Consumption next period: c_{t+1} = c_t * (β * R̄)^{1/γ}
+    """
+    return c_t * (β * R_bar) ** (1 / γ)
+```
+
+The production function is given by the Cobb-Douglas form:
+
+$$
+F(k, 1) = A k^\alpha
+$$
+
+```{code-cell} ipython3
+def f(A, k, α): 
+    """
+    Production function: f(k) = A * k^{α}
+    """
+
+    A, α = model.A, model.α
+    return A * k ** α
+
+def f_prime(A, k, α):
+    """
+    Marginal product of capital: f'(k) = α * A * k^{α - 1}
+    """
+    A, α = model.A, model.α
+    return α * A * k ** (α - 1)
+```
+
+## Computation 
+
+In the following sections, we will experiment apply two methods to solve the model: shooting algorithm and minimization of Euler residual and law of motion capital.
+
+### Shooting Algorithm
+
+1. Solve equation {eq}`eq:diff_second_steady` for the terminal steady-state capital $\bar{k}$ that is associated with the permanent policy vector $\bar{z}$.
+
+2. Select a large time index $S \gg T$ and guess an initial consumption rate $c_0$, and use equation {eq}`eq:feasi_capital` to solve for $k_1$.
+
+3. Use equation {eq}`eq:consume_R` to determine $c_{t+1}$. Then, use equation {eq}`eq:feasi_capital` to compute $k_{t+2}$.
+
+4.  Iterate on step 3 to compute candidate values $\hat{k}_t$ for $t = 1, \dots, S$.
+
+5. Compute the difference $\hat{k}_S - \bar{k}$. If $\left| \hat{k}_S - \bar{k} \right| > \epsilon$ for some small $\epsilon$, adjust $c_0$ and repeat steps 2-5.
+
+6. Adjust $c_0$ iteratively using bisection method to find a value that makes $\left| \hat{k}_S - \bar{k} \right| < \epsilon$.
+
+### Experiments
+
++++
+
+We will do a number of experiments and analyze the transition path for the equilibrium in each case:
+
+1. A foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10.
+2. A foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 in period 10.
+3. A foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.
+3. A foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever
+
+```{code-cell} ipython3
 # Steady-state calculation
 def steady_states(model, g_ss, τ_k_ss=0.0):
     """
@@ -888,7 +935,7 @@ $$k_{t+1} = A k_{t}^{\alpha} + (1 - \delta) k_t - g_t - c_t.$$
 3. **Compute the residuals** $R_a$, $R_k$ for $t = 0, \dots, S$, and $R_{tk_0}$ for $t=0$:
    - **Arbitrage condition** residual for $t = 0, \dots, S$:
      $$
-     R_{ta} = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right] - u'(c_t)
+     R_{ta} = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right] - 1
      $$
    - **Feasibility condition** residual for $t = 1, \dots, S-1$:
      $$
@@ -898,9 +945,13 @@ $$k_{t+1} = A k_{t}^{\alpha} + (1 - \delta) k_t - g_t - c_t.$$
      $$
      R_{k_0} = 1 - \beta \left[ (1 - \tau_{k0}) \left(f'(k_0) - \delta \right) + 1 \right]
      $$
+   - **Terminal condition for $t = S$**:
+     $$
+     R_{k_S} = \beta u'(c_S) \frac{(1 + \tau_{cS})}{(1 + \tau_{cS})} \left[(1 - \tau_{kS})(f'(k_S) - \delta) + 1 \right] - 1
+     $$
 
-4. **Root-finding**:
-   - Adjust the guesses for $k_t$ and $c_t$ to minimize the residuals $R_{k_0}$, $R_{ta}$, and $R_{tk}$ for $t = 0, \dots, S$.
+4. **Loss Minimization**:
+   - Adjust the guesses for $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$ to minimize the residuals $R_{k_0}$, $R_{ta}$, $R_{tk}$, and $R_{k_S}$ for $t = 0, \dots, S$.
 
 5. **Output**:
    - The solution $\{c_t, k_t\}_{t=0}^{S}$.
