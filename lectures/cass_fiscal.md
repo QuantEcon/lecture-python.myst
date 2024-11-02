@@ -20,15 +20,11 @@ import numpy as np
 from scipy.optimize import root
 import matplotlib.pyplot as plt
 from collections import namedtuple
-from mpmath import mp
-import warnings
-
-class ConvergenceWarning(UserWarning):
-    """Warning raised when the bisection method fails to converge."""
-    pass
+from mpmath import mp, mpf
+from warnings import warn
 
 # Set the precision
-mp.dps = 60
+mp.dps = 40
 mp.pretty = True
 ```
 
@@ -527,119 +523,99 @@ def shooting_algorithm(c0, k0, shocks, S, model):
     Shooting algorithm for given initial c0 and k0.
     """
     # High-precision parameters
-    β, γ, δ, α, A = map(mp.mpf, 
-                [model.β, model.γ, model.δ, model.α, model.A])
-    g_path, τ_c_path, τ_k_path = [
-        list(map(mp.mpf, shocks[key])) for key in ['g', 'τ_c', 'τ_k']]
-    
-    # Initialize paths for consumption and capital
-    c_path = [mp.mpf('0')] * (S + 1)
-    k_path = [mp.mpf('0')] * (S + 1)
-    c_path[0] = mp.mpf(c0)
-    k_path[0] = mp.mpf(k0)
+    β, γ, δ, α, A = map(mpf, (model.β, model.γ, model.δ, model.α, model.A))
+    # Convert shocks to high-precision
+    g_path, τ_c_path, τ_k_path = (
+        list(map(mpf, shocks[key])) for key in ['g', 'τ_c', 'τ_k']
+    )
+
+    # Initialize paths with initial values
+    c_path = [mpf(c0)] + [mpf(0)] * S
+    k_path = [mpf(k0)] + [mpf(0)] * S
 
     # Generate paths for k_t and c_t
     for t in range(S):
-        k_t, c_t = k_path[t], c_path[t]
-        g_t = g_path[t]
-        
+        k_t, c_t, g_t = k_path[t], c_path[t], g_path[t]
+
         # Calculate next period's capital
         k_tp1 = next_k(A, k_t, g_t, c_t, α, δ)
-        if k_tp1 < mp.mpf('0'):
-            raise ValueError(f"Capital stock became negative at time {t + 1}.")
+        # Failure due to negative capital
+        if k_tp1 < mpf(0):
+            return None, None 
         k_path[t + 1] = k_tp1
 
         # Calculate next period's consumption
         R_bar = compute_R_bar(A, τ_c_path[t], τ_c_path[t + 1], 
                               τ_k_path[t + 1], k_tp1, α, δ)
         c_tp1 = next_c(c_t, R_bar, γ, β)
-        if c_tp1 < mp.mpf('0'):
-            raise ValueError(f"Consumption became negative at time {t + 1}.")
+        # Failure due to negative consumption
+        if c_tp1 < mpf(0):
+            return None, None
         c_path[t + 1] = c_tp1
 
     return k_path, c_path
 
-def bisection_c0(k0, c0, shocks, S, model, 
-                 tol=mp.mpf('1e-6'), max_iter=1000, verbose=False):
+
+def bisection_c0(k0, c0_guess, shocks, S, model, 
+                 tol=mpf('1e-6'), max_iter=1000, verbose=False):
     """
     Bisection method to find optimal initial consumption c0.
     """
-    # High-precision model parameters
-    β, γ, δ, α, A = [mp.mpf(x) for x in [model.β, model.γ, 
-                                         model.δ, model.α, model.A]]
-    
-    # Compute the steady-state capital with high precision
-    k_ss_final, _ = steady_states(model, mp.mpf(shocks['g'][-1]),
-                                  mp.mpf(shocks['τ_k'][-1]))
-    
-    # Initial bounds for c0
-    c0_lower, c0_upper = mp.mpf(0), A * k_ss_final ** α
+    β, γ, δ, α, A = map(mpf, (model.β, model.γ, model.δ, model.α, model.A))
+    k_ss_final, _ = steady_states(model, 
+                                  mpf(shocks['g'][-1]), mpf(shocks['τ_k'][-1]))
+    c0_lower, c0_upper = mpf(0), A * k_ss_final ** α
 
+    c0 = c0_guess
     for iter_count in range(max_iter):
-        try:
-            # Run the shooting algorithm and calculate the error
-            k_path, _ = shooting_algorithm(c0, k0, shocks, S, model)
+        k_path, _ = shooting_algorithm(c0, k0, shocks, S, model)
+        if k_path is None:
+            if verbose:
+                print(f"Iteration {iter_count + 1}: shooting failed with c0 = {c0}")
+            # Adjust upper bound when shooting fails
+            c0_upper = c0
+        else:
             error = k_path[-1] - k_ss_final
-
             if verbose and iter_count % 100 == 0:
                 print(f"Iteration {iter_count + 1}: c0 = {c0}, error = {error}")
 
             # Check for convergence
             if abs(error) < tol:
-                if verbose:
-                    print(f"Converged successfully on iteration {iter_count + 1}")
-                return c0
+                # Converged successfully
+                print(f"Converged successfully on iteration {iter_count + 1}")
+                return c0 
 
-            # Update bounds
-            if error > mp.mpf('0'):
+            # Update bounds based on the error
+            if error > mpf(0):
                 c0_lower = c0
             else:
                 c0_upper = c0
 
-        except (ValueError, FloatingPointError) as e:
-            # Adjust bounds if an error occurs
-            if verbose:
-                print(f"Iteration {iter_count + 1}: shooting failed with c0 = {c0}")
-            c0_upper = c0
-
         # Calculate the new midpoint for bisection
-        c0 = (c0_lower + c0_upper) / mp.mpf('2')
+        c0 = (c0_lower + c0_upper) / mpf('2')
 
-    # Warn if convergence failed
-    warnings.warn(
-        f"Convergence failed after {max_iter} iterations. Returning last value: c0 = {c0}",
-        ConvergenceWarning
-    )
+    # Return the last computed c0 if convergence was not achieved
+    # Send a Warning message when this happens
+    warn(f"Converged failed. Returning the last c0 = {c0}", stacklevel=2)
     return c0
 
-def run_shooting(shocks, S, model, 
-                 c0_function=bisection_c0, 
-                 shooting_func=shooting_algorithm):
+def run_shooting(shocks, S, model, c0_function=bisection_c0, shooting_func=shooting_algorithm):
     """
-    Runs the shooting algorithm to find the optimal c0 and simulate the model.
+    Runs the shooting algorithm.
     """
     # Compute initial steady states
-    k0, c0 = steady_states(model, mp.mpf(shocks['g'][0]), mp.mpf(shocks['τ_k'][0]))
+    k0, c0 = steady_states(model, mpf(shocks['g'][0]), mpf(shocks['τ_k'][0]))
     
     # Find the optimal initial consumption
     optimal_c0 = c0_function(k0, c0, shocks, S, model)
     print(f"Parameters: {model}")
     print(f"Optimal initial consumption c0: {mp.nstr(optimal_c0, 7)} \n")
-
+    
     # Simulate the model
     k_path, c_path = shooting_func(optimal_c0, k0, shocks, S, model)
     
     # Combine and return the results
-    solution = np.column_stack([k_path, c_path])
-    return solution
-```
-
-```{code-cell} ipython3
-# Steady-state calculations
-k_ss, c_ss = steady_states(model, g_ss=0.2)
-
-print(f"Steady-state capital: {k_ss:.4f}")
-print(f"Steady-state consumption: {c_ss:.4f}")
+    return np.column_stack([k_path, c_path])
 ```
 
 ## Experiments with Shooting Algorithm
@@ -649,16 +625,19 @@ print(f"Steady-state consumption: {c_ss:.4f}")
 The experiment replicates the Figure 12.9.1 in RMT5 under $\gamma = 2$.
 
 ```{code-cell} ipython3
+# Define shocks as a dictionary
 shocks = {
     'g': np.concatenate((np.repeat(0.2, 10), np.repeat(0.4, S - 9))),
     'τ_c': np.repeat(0.0, S + 1),
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-k_ss_initial, c_ss_initial = steady_states(model, g_ss=0.2)
+k_ss_initial, c_ss_initial = steady_states(model, 
+                                           shocks['g'][0], 
+                                           shocks['τ_k'][0])
 
-# Initial capital
-k0 = k_ss_initial
+print(f"Steady-state capital: {k_ss_initial:.4f}")
+print(f"Steady-state consumption: {c_ss_initial:.4f}")
 
 solution = run_shooting(shocks, S, model)
 
@@ -678,17 +657,23 @@ plt.show()
 Let's write the procedures above into a function that runs the solver and draw the plots for a given model
 
 ```{code-cell} ipython3
-def experiment_model(shocks, S, model, solver, plot_func, k_ss, c_ss, policy_shock):
+def experiment_model(shocks, S, model, solver, plot_func, policy_shock, T=40):
     """
     Plots the results of running the shooting algorithm given a model
     """
 
+    k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
+    
+    print(f"Steady-state capital: {k0:.4f}")
+    print(f"Steady-state consumption: {c0:.4f}")
+    print('-'*64)
+    
     fig, axes = plt.subplots(2, 3, figsize=(10, 8))
     axes = axes.flatten()
 
     solution = solver(shocks, S, model)
-    plot_func(solution, k_ss_initial, c_ss_initial, 
-              shocks, policy_shock, axes, model, T=40)
+    plot_func(solution, k0, c0, 
+              shocks, policy_shock, axes, model, T=T)
 
     for ax in axes[5:]:
         fig.delaxes(ax)
@@ -701,18 +686,22 @@ The experiment replicates the Figure 12.9.2 in RMT5 under $\gamma = 2$ and $\gam
 
 ```{code-cell} ipython3
 solution = run_shooting(shocks, S, model)
-
+k_ss_initial, c_ss_initial = steady_states(model, 
+                                           shocks['g'][0], 
+                                           shocks['τ_k'][0])
 fig, axes = plt.subplots(2, 3, figsize=(10, 8))
 axes = axes.flatten()
 
 label = fr"$\gamma = {model.γ}$"
-plot_results(solution, k_ss, c_ss, shocks, 'g', axes, model, label=label, 
+plot_results(solution, k_ss_initial, c_ss_initial, 
+             shocks, 'g', axes, model, label=label, 
              T=40)
 
 model_γ2 = create_model(γ=0.2)
 solution = run_shooting(shocks, S, model_γ2)
 
-plot_results(solution, k_ss, c_ss, shocks, 'g', axes, model_γ2, 
+plot_results(solution, k_ss_initial, c_ss_initial, 
+             shocks, 'g', axes, model_γ2, 
              label=fr"$\gamma = {model_γ2.γ}$", 
              linestyle='-.', T=40)
 
@@ -731,10 +720,16 @@ Let's write another function that runs the solver and draw the plots for two mod
 
 ```{code-cell} ipython3
 def experiment_two_models(shocks, S, model_1, model_2, solver, plot_func, 
-                          k_ss, c_ss, policy_shock, legend_label_fun=None):
+                          policy_shock, legend_label_fun=None, T=40):
     """
     Compares and plots results of the shooting algorithm for two models.
     """
+    
+    k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
+    print(f"Steady-state capital: {k0:.4f}")
+    print(f"Steady-state consumption: {c0:.4f}")
+    print('-'*64)
+    
     # Use a default labeling function if none is provided
     if legend_label_fun is None:
         legend_label_fun = lambda model: fr"$\gamma = {model.γ}$"
@@ -746,8 +741,8 @@ def experiment_two_models(shocks, S, model_1, model_2, solver, plot_func,
     # Function to run and plot for each model
     def run_and_plot(model, linestyle='-'):
         solution = solver(shocks, S, model)
-        plot_func(solution, k_ss, c_ss, shocks, policy_shock, axes, model, 
-                  label=legend_label_fun(model), linestyle=linestyle, T=40)
+        plot_func(solution, k0, c0, shocks, policy_shock, axes, model, 
+                  label=legend_label_fun(model), linestyle=linestyle, T=T)
 
     # Plot for both models
     run_and_plot(model_1)
@@ -815,7 +810,7 @@ solution = run_shooting(shocks, S, model)
 fig, axes = plt.subplots(2, 3, figsize=(10, 8))
 axes = axes.flatten()
 
-plot_prices(solution, c_ss, 'g', axes, model, T=40)
+plot_prices(solution, c_ss_initial, 'g', axes, model, T=40)
 
 for ax in axes[5:]:
     fig.delaxes(ax)
@@ -837,7 +832,7 @@ shocks = {
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_shooting, plot_results, k_ss, c_ss, 'τ_c')
+experiment_model(shocks, S, model, run_shooting, plot_results, 'τ_c')
 ```
 
 ### Experiment 3: Foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.
@@ -852,7 +847,7 @@ shocks = {
 }
 
 experiment_two_models(shocks, S, model, model_γ2, 
-                run_shooting, plot_results, k_ss, c_ss, 'τ_k')
+                run_shooting, plot_results, 'τ_k')
 ```
 
 ### Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever
@@ -869,7 +864,7 @@ shocks = {
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_shooting, plot_results, k_ss, c_ss, 'g')
+experiment_model(shocks, S, model, run_shooting, plot_results, 'g')
 ```
 
 ## Method 2: Minimization of Euler Residual and Law of Motion Capital
@@ -995,14 +990,14 @@ shocks = {
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_min, plot_results, k_ss, c_ss, 'g')
+experiment_model(shocks, S, model, run_min, plot_results, 'g')
 ```
 
 The experiment replicates the Figure 12.9.2 in RMT5 under $\gamma = 2$ and $\gamma = 0.2$.
 
 ```{code-cell} ipython3
 experiment_two_models(shocks, S, model, model_γ2, 
-                run_min, plot_results, k_ss, c_ss, 'g')
+                run_min, plot_results, 'g')
 ```
 
 Below replicates the graph 12.9.3:
@@ -1013,7 +1008,7 @@ solution = run_min(shocks, S, model)
 fig, axes = plt.subplots(2, 3, figsize=(10, 8))
 axes = axes.flatten()
 
-plot_prices(solution, c_ss, 'g', axes, model, T=40)
+plot_prices(solution, c_ss_initial, 'g', axes, model, T=40)
 
 for ax in axes[5:]:
     fig.delaxes(ax)
@@ -1035,7 +1030,7 @@ shocks = {
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_min, plot_results, k_ss, c_ss, 'τ_c')
+experiment_model(shocks, S, model, run_min, plot_results, 'τ_c')
 ```
 
 ### Experiment 3: Foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.
@@ -1050,7 +1045,7 @@ shocks = {
 }
 
 experiment_two_models(shocks, S, model, model_γ2, 
-                run_min, plot_results, k_ss, c_ss, 'τ_k')
+                run_min, plot_results, 'τ_k')
 ```
 
 ### Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever
@@ -1067,5 +1062,5 @@ shocks = {
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_min, plot_results, k_ss, c_ss, 'g')
+experiment_model(shocks, S, model, run_min, plot_results, 'g')
 ```
