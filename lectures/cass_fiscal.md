@@ -119,6 +119,7 @@ Firms maximize their present value of profit:
 $$
 \sum_{t=0}^\infty q_t \left[ F(k_t, n_t) - w_t n_t - \eta_t k_t \right],
 $$
+
 Euler's theorem for linearly homogeneous functions states that if a function $F(k, n)$ is linearly homogeneous (degree 1), then:
 
 $$
@@ -232,140 +233,144 @@ To compute an equilibrium we solve a price system $\{q_t, \eta_t, w_t\}$, a budg
 
 ### Inelastic Labor Supply
 
-First, we consider the special case where $U(c, 1-n) = u(c)$.
+In this lecture, we consider the special case where $U(c, 1-n) = u(c)$ and $f(k) := F(k, 1)$.
 
-First we rewrite {eq}`eq:tech_capital` with $f(k) := F(k, 1)$,
+We rewrite {eq}`eq:tech_capital` with $f(k) := F(k, 1)$,
 
 $$
 k_{t+1} = f(k_t) + (1 - \delta) k_t - g_t - c_t.
 $$ (eq:feasi_capital)
 
 ```{code-cell} ipython3
-def next_k(A, k_t, g_t, c_t, α, δ):
+def next_k(k_t, g_t, c_t, model):
     """
     Capital next period: k_{t+1} = f(k_t) + (1 - δ) * k_t - c_t - g_t
     """
-    return f(A, k_t, α) + (1 - δ) * k_t - g_t - c_t
+    return f(k_t, model) + (1 - model.δ) * k_t - g_t - c_t
 ```
 
-By the properties of linearly homogeneous production function, we have $F_k(k, n) = f'(k)$, and $F_n(k, 1) = f(k, 1)  - f'(k)k$.
+By the properties of a linearly homogeneous production function, we have $F_k(k, n) = f'(k)$ and $F_n(k, 1) = f(k, 1) - f'(k)k$.
 
-Substitute {eq}`eq:foc_c`, {eq}`eq:no_arb_firms`, and {eq}`eq:feasi_capital` into {eq}`eq:no_arb`, we have 
+Substituting {eq}`eq:foc_c`, {eq}`eq:no_arb_firms`, and {eq}`eq:feasi_capital` into {eq}`eq:no_arb`, we obtain:
 
 $$
 \begin{aligned}
 &\frac{u'(f(k_t) + (1 - \delta) k_t - g_t - k_{t+1})}{(1 + \tau_{ct})} \\
 &- \beta \frac{u'(f(k_{t+1}) + (1 - \delta) k_{t+1} - g_{t+1} - k_{t+2})}{(1 + \tau_{ct+1})} \\
-&\times [(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1] = 0. 
+&\times [(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1] = 0.
 \end{aligned}
 $$
 
-which can be written as 
+This can be simplified to:
 
 $$
 \begin{aligned}
-u'(c_t) = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} [(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1]. 
+u'(c_t) = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} [(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1].
 \end{aligned}
 $$ (eq:diff_second)
 
-which is the Euler equation for the household.
+which represents the Euler equation for the household.
 
-This equation can be used to solve for the equilibrium sequence of consumption and capital as we will see in the second method.
+This equation is instrumental in solving for the equilibrium sequence of consumption and capital, as demonstrated in the second method.
 
 ### Steady state
 
-Tax rates and government expenditures serve as forcing functions for the difference equations {eq}`eq:feasi_capital` and {eq}`eq:diff_second`. 
+Tax rates and government expenditures act as forcing functions for the difference equations {eq}`eq:feasi_capital` and {eq}`eq:diff_second`.
 
-Let $z_t = [g_t, \tau_{kt}, \tau_{ct}]'$. We can write the second-order difference equation into 
+Define $z_t = [g_t, \tau_{kt}, \tau_{ct}]'$. We can express the second-order difference equation as:
 
 $$
 H(k_t, k_{t+1}, k_{t+2}; z_t, z_{t+1}) = 0.
 $$ (eq:second_ord_diff)
 
-We assume that the government policy is in the steady state satisfying $\lim_{t \to \infty} z_t = \bar z$. We assume the steady state is reached for $t > T$. A terminal  steady-state capital stock $\bar k$ solves 
+We assume that the government policy reaches a steady state such that $\lim_{t \to \infty} z_t = \bar z$ and that the steady state holds for $t > T$. The terminal steady-state capital stock $\bar{k}$ satisfies:
 
-$$H(\bar{k}, \bar{k}, \bar{k}, \bar{z}, \bar{z}) = 0$$
+$$
+H(\bar{k}, \bar{k}, \bar{k}, \bar{z}, \bar{z}) = 0.
+$$
 
-Hencer we can derive the steady-state from the difference equation {eq}`eq:diff_second`
+From the difference equation {eq}`eq:diff_second`, we can derive the steady-state condition:
 
 $$
 \begin{aligned}
-u'(\bar c) &= \beta u'(\bar c) \frac{(1 + \bar \tau_{c})}{(1 + \bar \tau_{c})} [(1 - \bar \tau_{k})(f'(\bar k) - \delta) + 1]. \\
-&\implies 1 = \beta[(1 - \bar \tau_{k})(f'(\bar k) - \delta) + 1]
+u'(\bar{c}) &= \beta u'(\bar{c}) \frac{(1 + \bar{\tau}_{c})}{(1 + \bar{\tau}_{c})} [(1 - \bar{\tau}_{k})(f'(\bar{k}) - \delta) + 1]. \\
+&\implies 1 = \beta[(1 - \bar{\tau}_{k})(f'(\bar{k}) - \delta) + 1].
 \end{aligned}
 $$ (eq:diff_second_steady)
 
+### Other equilibrium quantities and prices
 
-### Other equilibrium quantities
-
-**Price of the good:**
+*Price:*
 
 $$
 q_t = \beta^t \frac{u'(c_t)}{1 + \tau_{ct}}
 $$ (eq:equil_q)
 
 ```{code-cell} ipython3
-def compute_q_path(c_path, β, γ, S=100):
+def compute_q_path(c_path, model, S=100):
     """
     Compute q path: q_t = (β^t * u'(c_t)) / u'(c_0)
     """
     q_path = np.zeros_like(c_path)
     for t in range(S):
-        q_path[t] = (β ** t * u_prime(c_path[t], γ)) / u_prime(c_path[0], γ)
+        q_path[t] = (model.β ** t * 
+                     u_prime(c_path[t], model)) / u_prime(c_path[0], model)
     return q_path
 ```
 
-**Marginal product of capital**
+*Marginal product of capital*
 
 $$
 \eta_t = f'(k_t)  
 $$
 
 ```{code-cell} ipython3
-def compute_η_path(k_path, α, A, S=100):
+def compute_η_path(k_path, model, S=100):
     """
     Compute η path: η_t = f'(k_t) = α * A * k_t^{α - 1}
     """
     η_path = np.zeros_like(k_path)
     for t in range(S):
-        η_path[t] = α * A * k_path[t] ** (α - 1)
+        η_path[t] = f_prime(k_path[t], model)
     return η_path
 ```
 
-**Wage:**
+*Wage:*
 
 $$
 w_t = f(k_t) - k_t f'(k_t)    
 $$
 
 ```{code-cell} ipython3
-def compute_w_path(k_path, η_path, α, A, S=100):
+def compute_w_path(k_path, η_path, model, S=100):
     """
     Compute w path: w_t = f(k_t) - k_t * f'(k_t)
     """
+    A, α = model.A, model.α, model.δ
     w_path = np.zeros_like(k_path)
     for t in range(S):
-        w_path[t] = A * k_path[t] ** α - k_path[t] * η_path[t]
+        w_path[t] = f(k_path[t], model) - k_path[t] * η_path[t]
     return w_path
 ```
 
-**Gross one-period return on capital:**
+*Gross one-period return on capital:*
 
 $$
 \bar{R}_{t+1} = \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1\right] =  \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} R_{t, t+1}
 $$ (eq:gross_rate)
 
 ```{code-cell} ipython3
-def compute_R_bar(A, τ_ct, τ_ctp1, τ_ktp1, k_tp1, α, δ):
+def compute_R_bar(τ_ct, τ_ctp1, τ_ktp1, k_tp1, model):
     """
     Gross one-period return on capital:
     R̄ = [(1 + τ_c_t) / (1 + τ_c_{t+1})] 
         * { [1 - τ_k_{t+1}] * [f'(k_{t+1}) - δ] + 1 }
     """
-    return  ((1 - τ_ktp1) * (f_prime(A, k_tp1, α) - δ) + 1) * (
-        (1 + τ_ct) / (1 + τ_ctp1))
+    A, α, δ = model.A, model.α, model.δ
+    return  ((1 + τ_ct) / (1 + τ_ctp1)) * (
+        (1 - τ_ktp1) * (f_prime(k_tp1, model) - δ) + 1) 
 
-def compute_R_bar_path(shocks, k_path, model, S):
+def compute_R_bar_path(shocks, k_path, model, S=100):
     """
     Compute R̄ path over time.
     """
@@ -373,23 +378,20 @@ def compute_R_bar_path(shocks, k_path, model, S):
     R_bar_path = np.zeros(S + 1)
     for t in range(S):
         R_bar_path[t] = compute_R_bar(
-            A,
             shocks['τ_c'][t], shocks['τ_c'][t + 1], shocks['τ_k'][t + 1],
-            k_path[t + 1],
-            α, δ
-        )
+            k_path[t + 1], model)
     R_bar_path[S] = R_bar_path[S - 1]
     return R_bar_path
 ```
 
-**One-period discount factor:**
+*One-period discount factor:*
 
 $$
 R^{-1}_{t, t+1} = \frac{q_t}{q_{t-1}} = m_{t, t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)} \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})}
 $$ (eq:equil_R)
 
 
-**Net one-period rate of interest:**
+*Net one-period rate of interest:*
 
 $$
 r_{t, t+1} \equiv R_{t, t+1} - 1 = (1 - \tau_{k, t+1})(f'(k_{t+1}) - \delta)
@@ -414,12 +416,12 @@ r_{t, t+s} = -\frac{1}{s} \ln\left(\frac{q_{t+s}}{q_t}\right).
 $$
 
 ```{code-cell} ipython3
-def compute_rts_path(q_path, T, t):
+def compute_rts_path(q_path, S, t):
     """
     Compute r path:
     r_t,t+s = - (1/s) * ln(q_{t+s} / q_t)
     """
-    s = np.arange(1, T + 1) 
+    s = np.arange(1, S + 1) 
     q_path = np.array([float(q) for q in q_path]) 
     
     with np.errstate(divide='ignore', invalid='ignore'):
@@ -427,7 +429,7 @@ def compute_rts_path(q_path, T, t):
     return rts_path
 ```
 
-## Specifications of the Model
+## Specifications of the model
 
 In our model, the representative household has the following CRRA preferences over consumption: 
 
@@ -436,35 +438,36 @@ U(c) = \frac{c^{1 - \gamma}}{1 - \gamma}
 $$
 
 ```{code-cell} ipython3
-def u_prime(c, γ):
+def u_prime(c, model):
     """
     Marginal utility: u'(c) = c^{-γ}
     """
-    return c ** (-γ)
+    return c ** (-model.γ)
 ```
 
-Observe that by substituting {eq}`eq:gross_rate` into {eq}`eq:diff_second`, we have
+By substituting {eq}`eq:gross_rate` into {eq}`eq:diff_second`, we have
 
 $$
 c_{t+1} = c_t \left[ \beta \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{k, t+1})(f'(k_{t+1}) - \delta) + 1 \right] \right]^{\frac{1}{\gamma}} = c_t \left[ \beta \overline{R}_{t+1} \right]^{\frac{1}{\gamma}}
 $$ (eq:consume_R)
 
 ```{code-cell} ipython3
-def next_c(c_t, R_bar, γ, β):
+def next_c(c_t, R_bar, model):
     """
     Consumption next period: c_{t+1} = c_t * (β * R̄)^{1/γ}
     """
+    β, γ = model.β, model.γ
     return c_t * (β * R_bar) ** (1 / γ)
 ```
 
-The production function is given by the Cobb-Douglas form:
+The production function is given by the Cobb-Douglas form with inelastic labor supply:
 
 $$
 F(k, 1) = A k^\alpha
 $$
 
 ```{code-cell} ipython3
-def f(A, k, α): 
+def f(k, model): 
     """
     Production function: f(k) = A * k^{α}
     """
@@ -472,7 +475,7 @@ def f(A, k, α):
     A, α = model.A, model.α
     return A * k ** α
 
-def f_prime(A, k, α):
+def f_prime(k, model):
     """
     Marginal product of capital: f'(k) = α * A * k^{α - 1}
     """
@@ -480,34 +483,23 @@ def f_prime(A, k, α):
     return α * A * k ** (α - 1)
 ```
 
-## Computation 
+## Computation
 
-In the following sections, we will experiment apply two methods to solve the model: shooting algorithm and minimization of Euler residual and law of motion capital.
+In the following sections, we will apply two methods to solve the model: the shooting algorithm and residual minimization using the Euler equation ({eq}`eq:diff_second`) and feasibility condition ({eq}`eq:feasi_capital`).
 
-### Shooting Algorithm
+### Method 1: Shooting Algorithm
 
-1. Solve equation {eq}`eq:diff_second_steady` for the terminal steady-state capital $\bar{k}$ that is associated with the permanent policy vector $\bar{z}$.
+1. Solve the equation {eq}`eq:diff_second_steady` for the terminal steady-state capital $\bar{k}$ that corresponds to the permanent policy vector $\bar{z}$.
 
-2. Select a large time index $S \gg T$ and guess an initial consumption rate $c_0$, and use equation {eq}`eq:feasi_capital` to solve for $k_1$.
+2. Select a large time index $S \gg T$, guess an initial consumption rate $c_0$, and use the equation {eq}`eq:feasi_capital` to solve for $k_1$.
 
-3. Use equation {eq}`eq:consume_R` to determine $c_{t+1}$. Then, use equation {eq}`eq:feasi_capital` to compute $k_{t+2}$.
+3. Use the equation {eq}`eq:consume_R` to determine $c_{t+1}$. Then, apply the equation {eq}`eq:feasi_capital` to compute $k_{t+2}$.
 
-4.  Iterate on step 3 to compute candidate values $\hat{k}_t$ for $t = 1, \dots, S$.
+4. Iterate step 3 to compute candidate values $\hat{k}_t$ for $t = 1, \dots, S$.
 
 5. Compute the difference $\hat{k}_S - \bar{k}$. If $\left| \hat{k}_S - \bar{k} \right| > \epsilon$ for some small $\epsilon$, adjust $c_0$ and repeat steps 2-5.
 
-6. Adjust $c_0$ iteratively using bisection method to find a value that makes $\left| \hat{k}_S - \bar{k} \right| < \epsilon$.
-
-### Experiments
-
-+++
-
-We will do a number of experiments and analyze the transition path for the equilibrium in each case:
-
-1. A foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10.
-2. A foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 in period 10.
-3. A foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.
-3. A foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever
+6. Adjust $c_0$ iteratively using the bisection method to find a value that ensures $\left| \hat{k}_S - \bar{k} \right| < \epsilon$.
 
 ```{code-cell} ipython3
 # Steady-state calculation
@@ -523,54 +515,11 @@ def steady_states(model, g_ss, τ_k_ss=0.0):
     k_ss = (numerator / denominator) ** (1 / (α - 1))
     c_ss = A * k_ss ** α - δ * k_ss - g_ss
     return k_ss, c_ss
-```
 
-Next we prepare the sequence of variables that will be used to initialize the simulation. 
-
-We will start from the steady state and then apply the shocks at the appropriate time.
-
-```{code-cell} ipython3
-def plot_results(solution, k_ss, c_ss, shocks, shock_param, 
-                 axes, model, label='', linestyle='-', T=40):
-    
-    k_path = solution[:, 0]
-    c_path = solution[:, 1]
-
-    axes[0].plot(k_path[:T], linestyle=linestyle, label=label)
-    axes[0].axhline(k_ss, linestyle='--', color='black')
-    axes[0].set_title('k')
-
-    # Plot for c
-    axes[1].plot(c_path[:T], linestyle=linestyle, label=label)
-    axes[1].axhline(c_ss, linestyle='--', color='black')
-    axes[1].set_title('c')
-
-    # Plot for g
-    R_bar_path = compute_R_bar_path(shocks, k_path, model, S)
-
-    axes[2].plot(R_bar_path[:T], linestyle=linestyle, label=label)
-    axes[2].set_title('$\overline{R}$')
-    axes[2].axhline(1 / model.β, linestyle='--', color='black')
-    
-    η_path = compute_η_path(k_path, model.α, model.A, S=T)
-    η_ss = model.α * model.A * k_ss ** (model.α - 1)
-    
-    axes[3].plot(η_path[:T], linestyle=linestyle, label=label)
-    axes[3].axhline(η_ss, linestyle='--', color='black')
-    axes[3].set_title(r'$\eta$')
-    
-    axes[4].plot(shocks[shock_param][:T], linestyle=linestyle, label=label)
-    axes[4].axhline(shocks[shock_param][0], linestyle='--', color='black')
-    axes[4].set_title(rf'${shock_param}$')
-```
-
-```{code-cell} ipython3
 def shooting_algorithm(c0, k0, shocks, S, model):
     """
     Shooting algorithm for given initial c0 and k0.
     """
-    # High-precision parameters
-    β, γ, δ, α, A = map(mpf, (model.β, model.γ, model.δ, model.α, model.A))
     # Convert shocks to high-precision
     g_path, τ_c_path, τ_k_path = (
         list(map(mpf, shocks[key])) for key in ['g', 'τ_c', 'τ_k']
@@ -585,16 +534,16 @@ def shooting_algorithm(c0, k0, shocks, S, model):
         k_t, c_t, g_t = k_path[t], c_path[t], g_path[t]
 
         # Calculate next period's capital
-        k_tp1 = next_k(A, k_t, g_t, c_t, α, δ)
+        k_tp1 = next_k(k_t, g_t, c_t, model)
         # Failure due to negative capital
         if k_tp1 < mpf(0):
             return None, None 
         k_path[t + 1] = k_tp1
 
         # Calculate next period's consumption
-        R_bar = compute_R_bar(A, τ_c_path[t], τ_c_path[t + 1], 
-                              τ_k_path[t + 1], k_tp1, α, δ)
-        c_tp1 = next_c(c_t, R_bar, γ, β)
+        R_bar = compute_R_bar(τ_c_path[t], τ_c_path[t + 1], 
+                              τ_k_path[t + 1], k_tp1, model)
+        c_tp1 = next_c(c_t, R_bar, model)
         # Failure due to negative consumption
         if c_tp1 < mpf(0):
             return None, None
@@ -603,15 +552,15 @@ def shooting_algorithm(c0, k0, shocks, S, model):
     return k_path, c_path
 
 
-def bisection_c0(k0, c0_guess, shocks, S, model, 
+def bisection_c0(c0_guess, k0, shocks, S, model, 
                  tol=mpf('1e-6'), max_iter=1000, verbose=False):
     """
     Bisection method to find optimal initial consumption c0.
     """
-    β, γ, δ, α, A = map(mpf, (model.β, model.γ, model.δ, model.α, model.A))
     k_ss_final, _ = steady_states(model, 
-                                  mpf(shocks['g'][-1]), mpf(shocks['τ_k'][-1]))
-    c0_lower, c0_upper = mpf(0), A * k_ss_final ** α
+                                  mpf(shocks['g'][-1]), 
+                                  mpf(shocks['τ_k'][-1]))
+    c0_lower, c0_upper = mpf(0), f(k_ss_final, model)
 
     c0 = c0_guess
     for iter_count in range(max_iter):
@@ -646,7 +595,7 @@ def bisection_c0(k0, c0_guess, shocks, S, model,
     warn(f"Converged failed. Returning the last c0 = {c0}", stacklevel=2)
     return c0
 
-def run_shooting(shocks, S, model, c0_function=bisection_c0, shooting_func=shooting_algorithm):
+def run_shooting(shocks, S, model, c0_func=bisection_c0, shooting_func=shooting_algorithm):
     """
     Runs the shooting algorithm.
     """
@@ -654,7 +603,7 @@ def run_shooting(shocks, S, model, c0_function=bisection_c0, shooting_func=shoot
     k0, c0 = steady_states(model, mpf(shocks['g'][0]), mpf(shocks['τ_k'][0]))
     
     # Find the optimal initial consumption
-    optimal_c0 = c0_function(k0, c0, shocks, S, model)
+    optimal_c0 = c0_func(c0, k0, shocks, S, model)
     print(f"Parameters: {model}")
     print(f"Optimal initial consumption c0: {mp.nstr(optimal_c0, 7)} \n")
     
@@ -665,9 +614,57 @@ def run_shooting(shocks, S, model, c0_function=bisection_c0, shooting_func=shoot
     return np.column_stack([k_path, c_path])
 ```
 
-## Experiments with Shooting Algorithm
+### Experiments
 
-### Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10.
+We will run a series of experiments and analyze the transition path for the equilibrium in each scenario:
+
+1. A foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 occurring in period 10.
+2. A foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 occurring in period 10.
+3. A foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 occurring in period 10.
+4. A foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ reverts to 0.2 permanently.
+
++++
+
+Next we prepare the sequence of variables that will be used to initialize the simulation. 
+
+We will start from the steady state and then apply the shocks at the appropriate time.
+
+```{code-cell} ipython3
+def plot_results(solution, k_ss, c_ss, shocks, shock_param, 
+                 axes, model, label='', linestyle='-', T=40):
+    
+    k_path = solution[:, 0]
+    c_path = solution[:, 1]
+
+    axes[0].plot(k_path[:T], linestyle=linestyle, label=label)
+    axes[0].axhline(k_ss, linestyle='--', color='black')
+    axes[0].set_title('k')
+
+    # Plot for c
+    axes[1].plot(c_path[:T], linestyle=linestyle, label=label)
+    axes[1].axhline(c_ss, linestyle='--', color='black')
+    axes[1].set_title('c')
+
+    # Plot for g
+    R_bar_path = compute_R_bar_path(shocks, k_path, model, S)
+
+    axes[2].plot(R_bar_path[:T], linestyle=linestyle, label=label)
+    axes[2].set_title('$\overline{R}$')
+    axes[2].axhline(1 / model.β, linestyle='--', color='black')
+    
+    η_path = compute_η_path(k_path, model, S=T)
+    η_ss = model.α * model.A * k_ss ** (model.α - 1)
+    
+    axes[3].plot(η_path[:T], linestyle=linestyle, label=label)
+    axes[3].axhline(η_ss, linestyle='--', color='black')
+    axes[3].set_title(r'$\eta$')
+    
+    axes[4].plot(shocks[shock_param][:T], linestyle=linestyle, label=label)
+    axes[4].axhline(shocks[shock_param][0], linestyle='--', color='black')
+    axes[4].set_title(rf'${shock_param}$')
+```
+
+#### Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10.
 
 The experiment replicates the Figure 12.9.1 in RMT5 under $\gamma = 2$.
 
@@ -706,7 +703,7 @@ Let's write the procedures above into a function that runs the solver and draw t
 ```{code-cell} ipython3
 def experiment_model(shocks, S, model, solver, plot_func, policy_shock, T=40):
     """
-    Plots the results of running the shooting algorithm given a model
+    Run the shooting algorithm given a model and plot the results.
     """
 
     k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
@@ -732,10 +729,15 @@ def experiment_model(shocks, S, model, solver, plot_func, policy_shock, T=40):
 The experiment replicates the Figure 12.9.2 in RMT5 under $\gamma = 2$ and $\gamma = 0.2$.
 
 ```{code-cell} ipython3
+# Solve the model using shooting
 solution = run_shooting(shocks, S, model)
+
+# Compute the initial steady states
 k_ss_initial, c_ss_initial = steady_states(model, 
                                            shocks['g'][0], 
                                            shocks['τ_k'][0])
+
+# Plot the solution for γ=2
 fig, axes = plt.subplots(2, 3, figsize=(10, 8))
 axes = axes.flatten()
 
@@ -744,6 +746,7 @@ plot_results(solution, k_ss_initial, c_ss_initial,
              shocks, 'g', axes, model, label=label, 
              T=40)
 
+# Solve and plot the result for γ=0.2
 model_γ2 = create_model(γ=0.2)
 solution = run_shooting(shocks, S, model_γ2)
 
@@ -777,7 +780,7 @@ def experiment_two_models(shocks, S, model_1, model_2, solver, plot_func,
     print(f"Steady-state consumption: {c0:.4f}")
     print('-'*64)
     
-    # Use a default labeling function if none is provided
+    # Use a default legend labeling function if none is provided
     if legend_label_fun is None:
         legend_label_fun = lambda model: fr"$\gamma = {model.γ}$"
 
@@ -824,19 +827,19 @@ def plot_prices(solution, c_ss, shock_param, axes,
     axes[0].axhline(c_ss, linestyle='--', color='black')
     axes[0].set_title('c')
     
-    q_path = compute_q_path(c_path, 
-                            β, γ, S=S)
+    # Plot for q
+    q_path = compute_q_path(c_path, model, S=S)
     axes[1].plot(q_path[:T], linestyle=linestyle, label=label)
     axes[1].plot(β**np.arange(T), linestyle='--', color='black')
     axes[1].set_title('q')
     
+    # Plot for r_{t,t+1}
     R_bar_path = compute_R_bar_path(shocks, k_path, model, S)
-        
     axes[2].plot(R_bar_path[:T] - 1, linestyle=linestyle, label=label)
     axes[2].axhline(1 / β - 1, linestyle='--', color='black')
     axes[2].set_title('$r_{t,t+1}$')
 
-    
+    # Plot for r_{t,t+s}
     for style, s in zip(['-', '-.', '--'], [0, 10, 60]):
         rts_path = compute_rts_path(q_path, T, s)
         axes[3].plot(rts_path, linestyle=style, 
@@ -868,7 +871,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-### Experiment 2: Foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 in period 10.
+#### Experiment 2: Foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 in period 10.
 
 The experiment replicates the Figure 12.9.4.
 
@@ -882,7 +885,7 @@ shocks = {
 experiment_model(shocks, S, model, run_shooting, plot_results, 'τ_c')
 ```
 
-### Experiment 3: Foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.
+#### Experiment 3: Foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.
 
 The experiment replicates the Figure 12.9.5.
 
@@ -897,7 +900,7 @@ experiment_two_models(shocks, S, model, model_γ2,
                 run_shooting, plot_results, 'τ_k')
 ```
 
-### Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever
+#### Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever
 
 The experiment replicates the Figure 12.9.6.
 
@@ -914,70 +917,73 @@ shocks = {
 experiment_model(shocks, S, model, run_shooting, plot_results, 'g')
 ```
 
-## Method 2: Minimization of Euler Residual and Law of Motion Capital
+### Method 2: Residual Minimization Using the Euler Equation and Feasibility Condition
 
+The second method involves minimizing the residuals of the following equations:
 
-$$1 = \beta \left(\frac{c_{t+1}}{c_t}\right)^{-\gamma} \frac{(1+\tau_{ct})}{(1+\tau_{ct+1})} \left[(1 - \tau_{kt+1})(\alpha A k_{t+1}^{\alpha-1} - \delta) + 1 \right]$$
+- *The Euler equation* {eq}`eq:diff_second`:
+  $$
+  1 = \beta \left(\frac{c_{t+1}}{c_t}\right)^{-\gamma} \frac{(1+\tau_{ct})}{(1+\tau_{ct+1})} \left[(1 - \tau_{kt+1})(\alpha A k_{t+1}^{\alpha-1} - \delta) + 1 \right]
+  $$
 
-and a law of motion for capital
-
-$$k_{t+1} = A k_{t}^{\alpha} + (1 - \delta) k_t - g_t - c_t.$$
+- *The feasibility condition* {eq}`eq:feasi_capital`:
+  $$
+  k_{t+1} = A k_{t}^{\alpha} + (1 - \delta) k_t - g_t - c_t.
+  $$
 
 +++
 
-### Algorithm for minimization approach (Method 2)
+The algorithm is described as follows:
 
-1. **Calculate initial state $k_0$**:
-   - Based on the given initial government plan $z_0$.
+1. *Calculate the initial state $k_0$*:
+   - Derive $k_0$ based on the given initial government plan $z_0$.
 
-2. **Initialize a sequence of initial guesses** $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$
+2. *Initialize a sequence of initial guesses* $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$.
 
-3. **Compute the residuals** $R_a$, $R_k$ for $t = 0, \dots, S$, and $R_{tk_0}$ for $t=0$:
-   - **Arbitrage condition** residual for $t = 0, \dots, S$:
+3. *Compute the residuals* $l_a$ and $l_k$ for $t = 0, \dots, S$, as well as $l_{k_0}$ for $t = 0$ and $l_{k_S}$ for $t = S$:
+   - Compute the *Euler's equation* residual for $t = 0, \dots, S$ using {eq}`eq:diff_second`:
      $$
-     R_{ta} = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right] - 1
+     l_{ta} = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right] - 1
      $$
-   - **Feasibility condition** residual for $t = 1, \dots, S-1$:
+   - Compute the *feasibility condition* residual for $t = 1, \dots, S-1$ using {eq}`eq:feasi_capital`:
      $$
-     R_{tk} = k_{t+1} - f(k_t) + (1 - \delta)k_t - g_t - c_t
+     l_{tk} = k_{t+1} - f(k_t) + (1 - \delta)k_t - g_t - c_t
      $$
-   - **Initial condition for $k_0$**:
+   - Compute the residual for the *initial condition for $k_0$* using {eq}`eq:diff_second_steady` and the initial capital $k_0$:
      $$
-     R_{k_0} = 1 - \beta \left[ (1 - \tau_{k0}) \left(f'(k_0) - \delta \right) + 1 \right]
+     l_{k_0} = 1 - \beta \left[ (1 - \tau_{k0}) \left(f'(k_0) - \delta \right) + 1 \right]
      $$
-   - **Terminal condition for $t = S$**:
+   - Compute the residual for the *terminal condition for $t = S* using {eq}`eq:diff_second` under the assumptions $c_t = c_{t+1} = c_S$, $k_t = k_{t+1} = k_S$, $\tau_{ct} = \tau_{ct+1} = \tau_{cS}$, and $\tau_{kt} = \tau_{kt+1} = \tau_{kS}$:
      $$
-     R_{k_S} = \beta u'(c_S) \frac{(1 + \tau_{cS})}{(1 + \tau_{cS})} \left[(1 - \tau_{kS})(f'(k_S) - \delta) + 1 \right] - 1
+     l_{k_S} = \beta u'(c_S) \frac{(1 + \tau_{cS})}{(1 + \tau_{cS})} \left[(1 - \tau_{kS})(f'(k_S) - \delta) + 1 \right] - 1
      $$
 
-4. **Loss Minimization**:
-   - Adjust the guesses for $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$ to minimize the residuals $R_{k_0}$, $R_{ta}$, $R_{tk}$, and $R_{k_S}$ for $t = 0, \dots, S$.
-
-5. **Output**:
-   - The solution $\{c_t, k_t\}_{t=0}^{S}$.
+4. *Residual Minimization*:
+   - Adjust the guesses for $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$ to minimize the residuals $l_{k_0}$, $l_{ta}$, $l_{tk}$, and $l_{k_S}$ for $t = 0, \dots, S$.
 
 ```{code-cell} ipython3
-# Arbitrage and Transition Equations for method 2
-def arbitrage(c_t, c_tp1, τ_c_t, τ_c_tp1, τ_k_tp1, k_tp1, model):
+# Euler's equation and feasibility condition 
+def euler_residual(c_t, c_tp1, τ_c_t, τ_c_tp1, τ_k_tp1, k_tp1, model):
     """
-    Computes the arbitrage condition.
+    Computes the residuals for Euler's equation.
     """
     β, γ, δ, α, A = model.β, model.γ, model.δ, model.α, model.A
     η_tp1 = α * A * k_tp1 ** (α - 1)
     return β * (c_tp1 / c_t) ** (-γ) * (1 + τ_c_t) / (1 + τ_c_tp1) * (
         (1 - τ_k_tp1) * (η_tp1 - δ) + 1) - 1
 
-def transition(k_t, k_tm1, c_tm1, g_t, model):
+def feasi_residual(k_t, k_tm1, c_tm1, g_t, model):
     """
-    Computes the capital transition.
+    Computes the residuals for feasibility condition.
     """
     α, A, δ = model.α, model.A, model.δ
     return k_t - (A * k_tm1 ** α + (1 - δ) * k_tm1 - c_tm1 - g_t)
 
-# Residuals for method 2
+# Computing Residuals
 def compute_residuals(vars_flat, k_init, S, shocks, model):
     """
-    Compute residuals for arbitrage and transition equations.
+    Compute a vector of residuals under Euler's equation, feasibility condition, 
+    and boundary conditions.
     """
     k, c = vars_flat.reshape((S + 1, 2)).T
     residuals = np.zeros(2 * S + 2)
@@ -987,18 +993,18 @@ def compute_residuals(vars_flat, k_init, S, shocks, model):
 
     # Compute residuals for each time step
     for t in range(S):
-        residuals[2 * t + 1] = arbitrage(
+        residuals[2 * t + 1] = euler_residual(
             c[t], c[t + 1],
             shocks['τ_c'][t], shocks['τ_c'][t + 1], shocks['τ_k'][t + 1],
             k[t + 1], model
         )
-        residuals[2 * t + 2] = transition(
+        residuals[2 * t + 2] = feasi_residual(
             k[t + 1], k[t], c[t],
             shocks['g'][t], model
         )
 
-    # Terminal condition for arbitrage
-    residuals[-1] = arbitrage(
+    # Terminal condition
+    residuals[-1] = euler_residual(
         c[S], c[S],
         shocks['τ_c'][S], shocks['τ_c'][S], shocks['τ_k'][S],
         k[S], model
@@ -1009,7 +1015,7 @@ def compute_residuals(vars_flat, k_init, S, shocks, model):
 # Root-finding Algorithm to minimize the residual
 def run_min(shocks, S, model):
     """
-    Root-finding algorithm to minimize the residuals.
+    Root-finding algorithm to minimize the vector of residuals.
     """
     k_ss, c_ss = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
     
@@ -1018,19 +1024,20 @@ def run_min(shocks, S, model):
         (np.full(S + 1, k_ss), np.full(S + 1, c_ss))).flatten()
 
     # Solve the system using root-finding
-    sol = root(compute_residuals, initial_guess, args=(k_ss, S, shocks, model), tol=1e-8)
+    sol = root(compute_residuals, initial_guess, 
+               args=(k_ss, S, shocks, model), tol=1e-8)
 
     # Reshape solution to get time paths for k and c
     return sol.x.reshape((S + 1, 2))
 ```
 
-Below are the results for the same experiments using the method of minimization of Euler residual and law of motion capital.
+Below are the results for the same experiments using the second method.
 
-This method does not have numerical stability issues so `mp.mpf` is not necessary.
+This method does not have numerical stability issues, so `mp.mpf` is not necessary.
 
-### Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10.
+### Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10
 
-The experiment replicates the Figure 12.9.1 in RMT5 under $\gamma = 2$.
+The experiment replicates Figure 12.9.1 in RMT5 under the parameter $\gamma = 2$.
 
 ```{code-cell} ipython3
 # Define the shocks for the simulation
