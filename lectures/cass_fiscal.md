@@ -318,7 +318,7 @@ def compute_q_path(c_path, model, S=100):
     return q_path
 ```
 
-*Marginal product of capital*
+*Capital rental rate*
 
 $$
 \eta_t = f'(k_t)  
@@ -335,7 +335,7 @@ def compute_η_path(k_path, model, S=100):
     return η_path
 ```
 
-*Wage:*
+*Labor rental rate:*
 
 $$
 w_t = f(k_t) - k_t f'(k_t)    
