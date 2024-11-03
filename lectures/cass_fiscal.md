@@ -303,7 +303,7 @@ $$ (eq:diff_second_steady)
 *Price:*
 
 $$
-q_t = \beta^t \frac{u'(c_t)}{1 + \tau_{ct}}
+q_t = \frac{\beta^t u'(c_t)}{u'(c_0)}
 $$ (eq:equil_q)
 
 ```{code-cell} ipython3
@@ -434,7 +434,7 @@ def compute_rts_path(q_path, S, t):
 In our model, the representative household has the following CRRA preferences over consumption: 
 
 $$
-U(c) = \frac{c^{1 - \gamma}}{1 - \gamma}
+u(c) = \frac{c^{1 - \gamma}}{1 - \gamma}
 $$
 
 ```{code-cell} ipython3
@@ -701,6 +701,7 @@ plt.show()
 Let's write the procedures above into a function that runs the solver and draw the plots for a given model
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 def experiment_model(shocks, S, model, solver, plot_func, policy_shock, T=40):
     """
     Run the shooting algorithm given a model and plot the results.
@@ -769,6 +770,8 @@ plt.show()
 Let's write another function that runs the solver and draw the plots for two models as we did above
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def experiment_two_models(shocks, S, model_1, model_2, solver, plot_func, 
                           policy_shock, legend_label_fun=None, T=40):
     """
@@ -953,7 +956,7 @@ The algorithm is described as follows:
      $$
      l_{k_0} = 1 - \beta \left[ (1 - \tau_{k0}) \left(f'(k_0) - \delta \right) + 1 \right]
      $$
-   - Compute the residual for the *terminal condition for $t = S* using {eq}`eq:diff_second` under the assumptions $c_t = c_{t+1} = c_S$, $k_t = k_{t+1} = k_S$, $\tau_{ct} = \tau_{ct+1} = \tau_{cS}$, and $\tau_{kt} = \tau_{kt+1} = \tau_{kS}$:
+   - Compute the residual for the *terminal condition* for $t = S$ using {eq}`eq:diff_second` under the assumptions $c_t = c_{t+1} = c_S$, $k_t = k_{t+1} = k_S$, $\tau_{ct} = \tau_{ct+1} = \tau_{cS}$, and $\tau_{kt} = \tau_{kt+1} = \tau_{kS}$:
      $$
      l_{k_S} = \beta u'(c_S) \frac{(1 + \tau_{cS})}{(1 + \tau_{cS})} \left[(1 - \tau_{kS})(f'(k_S) - \delta) + 1 \right] - 1
      $$
@@ -979,7 +982,7 @@ def feasi_residual(k_t, k_tm1, c_tm1, g_t, model):
     α, A, δ = model.α, model.A, model.δ
     return k_t - (A * k_tm1 ** α + (1 - δ) * k_tm1 - c_tm1 - g_t)
 
-# Computing Residuals
+# Computing residuals as objective function to minimize
 def compute_residuals(vars_flat, k_init, S, shocks, model):
     """
     Compute a vector of residuals under Euler's equation, feasibility condition, 
