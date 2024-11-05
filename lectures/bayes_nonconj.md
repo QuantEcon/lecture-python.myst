@@ -1,10 +1,10 @@
 ---
 jupytext:
   text_representation:
-    extension: .myst
+    extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.13.8
+    jupytext_version: 1.16.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -43,7 +43,6 @@ The two Python modules are
 
 As usual, we begin by importing some Python code.
 
-
 ```{code-cell} ipython3
 :tags: [hide-output]
 
@@ -80,9 +79,7 @@ from numpyro.infer import SVI as nSVI
 from numpyro.infer import ELBO as nELBO
 from numpyro.infer import Trace_ELBO as nTrace_ELBO
 from numpyro.optim import Adam as nAdam
-
 ```
-
 
 ## Unleashing MCMC on a  Binomial Likelihood
 
@@ -251,7 +248,6 @@ We  will use the following priors:
     - We also considered a truncated Laplace distribution because its density comes in a piece-wise non-smooth form and has a distinctive spiked shape.
 
     - The truncated Laplace can be created using `Numpyro`'s `TruncatedDistribution` class.
-
 
 ```{code-cell} ipython3
 # used by Numpyro
@@ -560,19 +556,17 @@ class BayesianInference:
         Computes numerically the posterior distribution with beta prior parametrized by (alpha0, beta0)
         given data using MCMC
         """
-        # tensorize
-        data = torch.tensor(data)
-
         # use pyro
         if self.solver=='pyro':
-
+            # tensorize
+            data = torch.tensor(data)
             nuts_kernel = NUTS(self.model)
             mcmc = MCMC(nuts_kernel, num_samples=num_samples, warmup_steps=num_warmup, disable_progbar=True)
             mcmc.run(data)
 
         # use numpyro
         elif self.solver=='numpyro':
-
+            data = np.array(data, dtype=float)
             nuts_kernel = nNUTS(self.model)
             mcmc = nMCMC(nuts_kernel, num_samples=num_samples, num_warmup=num_warmup, progress_bar=False)
             mcmc.run(self.rng_key, data=data)
@@ -655,15 +649,15 @@ class BayesianInference:
         params : the learned parameters for guide
         losses : a vector of loss at each step
         """
-        # tensorize data
-        if not torch.is_tensor(data):
-            data = torch.tensor(data)
 
         # initiate SVI
         svi = self.SVI_init(guide_dist=guide_dist)
 
         # do gradient steps
         if self.solver=='pyro':
+             # tensorize data
+            if not torch.is_tensor(data):
+                data = torch.tensor(data)
             # store loss vector
             losses = np.zeros(n_steps)
             for step in range(n_steps):
@@ -676,6 +670,7 @@ class BayesianInference:
                 }
 
         elif self.solver=='numpyro':
+            data = np.array(data, dtype=float)
             result = svi.run(self.rng_key, n_steps, data, progress_bar=False)
             params = dict(
                 (key, np.asarray(value)) for key, value in result.params.items()
@@ -898,7 +893,6 @@ For the same Beta prior, we shall
 
 Let's start with the analytical method that we described in this quantecon lecture <https://python.quantecon.org/prob_meaning.html>
 
-
 ```{code-cell} ipython3
 # First examine Beta priors
 BETA_pyro = BayesianInference(param=(5,5), name_dist='beta', solver='pyro')
@@ -952,11 +946,9 @@ will be  more accurate, as we shall see next.
 
 (Increasing the step size increases computational time though).
 
-
 ```{code-cell} ipython3
 BayesianInferencePlot(true_theta, num_list, BETA_numpyro).SVI_plot(guide_dist='beta', n_steps=100000)
 ```
-
 
 ## Non-conjugate Prior Distributions
 
@@ -1052,7 +1044,6 @@ SVI_num_steps = 50000
 example_CLASS = BayesianInference(param=(0,1), name_dist='uniform', solver='numpyro')
 print(f'=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}\nSolver: {example_CLASS.solver}')
 BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(guide_dist='normal', n_steps=SVI_num_steps)
-
 ```
 
 ```{code-cell} ipython3
