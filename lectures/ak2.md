@@ -408,7 +408,7 @@ $$
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-from numba import njit
+from numba import jit
 from quantecon.optimize import brent_max
 ```
 
@@ -433,22 +433,22 @@ Knowing $\hat K$, we can calculate other equilibrium objects.
 Let's first define  some Python helper functions.
 
 ```{code-cell} ipython3
-@njit
+@jit
 def K_to_Y(K, α):
 
     return K ** α
 
-@njit
+@jit
 def K_to_r(K, α):
 
     return α * K ** (α - 1)
 
-@njit
+@jit
 def K_to_W(K, α):
 
     return (1 - α) * K ** α
 
-@njit
+@jit
 def K_to_C(K, D, τ, r, α, β):
 
     # optimal consumption for the old when δ=0
@@ -913,7 +913,7 @@ Let's implement this "guess and verify" approach
 We start by defining the Cobb-Douglas utility function
 
 ```{code-cell} ipython3
-@njit
+@jit
 def U(Cy, Co, β):
 
     return (Cy ** β) * (Co ** (1-β))
@@ -924,7 +924,7 @@ We use `Cy_val` to compute the lifetime value of an arbitrary consumption plan, 
 Note that it requires knowing future prices $r_{t+1}$ and tax rate $\tau_{t+1}$.
 
 ```{code-cell} ipython3
-@njit
+@jit
 def Cy_val(Cy, W, r_next, τ, τ_next, δy, δo_next, β):
 
     # Co given by the budget constraint

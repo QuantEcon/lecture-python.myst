@@ -39,7 +39,7 @@ Let's start with some imports:
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
-from numba import njit, prange
+from numba import jit, prange
 ```
 
 ### Model Features
@@ -197,7 +197,7 @@ class JVWorker:
         self.A, self.α, self.β, self.π = A, α, β, π
         self.mc_size, self.ɛ = mc_size, ɛ
 
-        self.g = njit(lambda x, ϕ: A * (x * ϕ)**α)    # Transition function
+        self.g = jit(lambda x, ϕ: A * (x * ϕ)**α)    # Transition function
         self.f_rvs = np.random.beta(a, b, mc_size)
 
         # Max of grid is the max of a large quantile value for f and the
@@ -255,7 +255,7 @@ def operator_factory(jv, parallel_flag=True):
     x_grid, ɛ, mc_size = jv.x_grid, jv.ɛ, jv.mc_size
     f_rvs, g = jv.f_rvs, jv.g
 
-    @njit
+    @jit
     def state_action_values(z, x, v):
         s, ϕ = z
         v_func = lambda x: np.interp(x, x_grid, v)
@@ -269,7 +269,7 @@ def operator_factory(jv, parallel_flag=True):
         q = π(s) * integral + (1 - π(s)) * v_func(g(x, ϕ))
         return x * (1 - ϕ - s) + β * q
 
-    @njit(parallel=parallel_flag)
+    @jit(parallel=parallel_flag)
     def T(v):
         """
         The Bellman operator
@@ -291,7 +291,7 @@ def operator_factory(jv, parallel_flag=True):
 
         return v_new
 
-    @njit
+    @jit
     def get_greedy(v):
         """
         Computes the v-greedy policy of a given function v

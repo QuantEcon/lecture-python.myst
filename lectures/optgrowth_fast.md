@@ -61,7 +61,7 @@ Let's start with some imports:
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import jit, njit
+from numba import jit, jit
 from quantecon.optimize.scalar_maximization import brent_max
 ```
 
@@ -131,7 +131,7 @@ We will use JIT compilation to accelerate the Bellman operator.
 First, here's a function that returns the value of a particular consumption choice `c`, given state `y`, as per the Bellman equation {eq}`fpb30`.
 
 ```{code-cell} python3
-@njit
+@jit
 def state_action_value(c, y, v_array, og):
     """
     Right hand side of the Bellman equation.
@@ -154,7 +154,7 @@ Now we can implement the Bellman operator, which maximizes the right hand side
 of the Bellman equation:
 
 ```{code-cell} python3
-@jit(nopython=True)
+@jit
 def T(v, og):
     """
     The Bellman operator.

@@ -50,7 +50,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import quantecon as qe
 from numpy.random import randn
-from numba import njit, prange, float64
+from numba import jit, prange, float64
 from numba.experimental import jitclass
 ```
 
@@ -223,7 +223,7 @@ class JobSearch:
 Next we implement the $Q$ operator.
 
 ```{code-cell} ipython3
-@njit(parallel=True)
+@jit(parallel=True)
 def Q(js, f_in, f_out):
     """
     Apply the operator Q.
@@ -348,11 +348,11 @@ def compute_unemployment_duration(js, seed=1234):
     z_grid = js.z_grid
     np.random.seed(seed)
 
-    @njit
+    @jit
     def f_star_function(z):
         return np.interp(z, z_grid, f_star)
 
-    @njit
+    @jit
     def draw_tau(t_max=10_000):
         z = 0
         t = 0
@@ -373,7 +373,7 @@ def compute_unemployment_duration(js, seed=1234):
                 t += 1
         return τ
 
-    @njit(parallel=True)
+    @jit(parallel=True)
     def compute_expected_tau(num_reps=100_000):
         sum_value = 0
         for i in prange(num_reps):
