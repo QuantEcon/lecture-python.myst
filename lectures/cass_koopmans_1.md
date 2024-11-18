@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.16.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -66,7 +66,7 @@ Let's start with some standard imports:
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-from numba import njit, float64
+from numba import jit, float64
 from numba.experimental import jitclass
 import numpy as np
 from quantecon.optimize import brentq
@@ -524,7 +524,7 @@ planning problem.
 (Actually, we modified the preceding  algorithm slightly by starting with a guess for
 $c_0$ instead of $\mu_0$ in the following code.)
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit
 def shooting(pp, c0, k0, T=10):
     '''
@@ -609,7 +609,7 @@ Shoot forward again, iterating on these steps until we converge.
 When $K_{T+1}$ gets close enough to $0$ (i.e., within an error
 tolerance bounds), we stop.
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit
 def bisection(pp, c0, k0, T=10, tol=1e-4, max_iter=500, k_ter=0, verbose=True):
 
@@ -802,7 +802,6 @@ The planner accomplishes this by adjusting the saving rate $\frac{f(K_t) - C_t}{
 over time.
 
 Let's calculate and  plot the saving rate.
-
 
 ```{code-cell} ipython3
 @jit
@@ -1004,7 +1003,7 @@ In addition to the three curves, Figure {numref}`stable_manifold` plots  arrows 
 ---
 mystnb:
   figure:
-    caption: "Stable Manifold and Phase Plane"
+    caption: Stable Manifold and Phase Plane
     name: stable_manifold
 tags: [hide-input]
 ---
