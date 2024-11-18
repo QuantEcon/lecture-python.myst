@@ -301,9 +301,7 @@ Requirement already satisfied: numba&gt;=0.59.1 in /opt/conda/envs/quantecon/lib
 Requirement already satisfied: scipy&lt;2.0,&gt;=1.10 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from interpolation) (1.13.1)
 Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.59.1-&gt;interpolation) (0.43.0)
 Requirement already satisfied: numpy&lt;2.1,&gt;=1.22 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.59.1-&gt;interpolation) (1.26.4)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading interpolation-2.2.7-py3-none-any.whl (80 kB)
+Downloading interpolation-2.2.7-py3-none-any.whl (80 kB)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: interpolation
@@ -340,7 +338,7 @@ must be learned.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">vectorize</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">vectorize</span>
 <span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">mlinterp</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -549,8 +547,8 @@ needed to compute optimal actions.</p>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_max</span> <span class="o">=</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">w_max</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">π_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">π_max</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-3</span>    <span class="c1"># Avoids instability</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w_max</span><span class="p">,</span> <span class="n">w_grid_size</span><span class="p">)</span>
@@ -578,11 +576,11 @@ the value function</p>
     <span class="n">mc_size</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">mc_size</span>
     <span class="n">w_grid</span><span class="p">,</span> <span class="n">π_grid</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span>
 
-    <span class="nd">@njit</span>
+    <span class="nd">@jit</span>
     <span class="k">def</span> <span class="nf">v_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">mlinterp</span><span class="p">((</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">),</span> <span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 
-    <span class="nd">@njit</span>
+    <span class="nd">@jit</span>
     <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates π using Bayes&#39; rule and the current wage observation w.</span>
@@ -592,7 +590,7 @@ the value function</p>
 
         <span class="k">return</span> <span class="n">π_new</span>
 
-    <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
+    <span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The Bellman operator.</span>
@@ -618,7 +616,7 @@ the value function</p>
 
         <span class="k">return</span> <span class="n">v_new</span>
 
-    <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
+    <span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;</span>
 <span class="sd">        Compute optimal actions taking v as the value function.</span>
@@ -716,32 +714,32 @@ using T to find a fixed point</p>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3699/3612521828.py:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3706/3612521828.py:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$w$&#39;)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6104489929146641.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.5827432463865403.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.09490491580999638.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.09265316254882805.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.018736541810183027.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.01922918887695424.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.0038000527766328673.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.0042193959563334715.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0007708061492017748.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.000980364462845884.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.00015634808231901332.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.00022862708405035903.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 32 iterations.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 33 iterations.
 </pre></div>
 </div>
-<img alt="_images/20a5b0f9a11a461d5ea3305992ce6c74e4ceb39ef5f2a3a0f503c27fc938102d.png" src="_images/20a5b0f9a11a461d5ea3305992ce6c74e4ceb39ef5f2a3a0f503c27fc938102d.png" />
+<img alt="_images/7186c09c7bfeefbc96fe17d6a9d4edf8283b79007ecdbb03654a0fe12771a98f.png" src="_images/7186c09c7bfeefbc96fe17d6a9d4edf8283b79007ecdbb03654a0fe12771a98f.png" />
 </div>
 </div>
 <p>We will also plot the optimal policy</p>
@@ -765,11 +763,11 @@ using T to find a fixed point</p>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3699/2124312748.py:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3706/2124312748.py:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$w$&#39;)
 </pre></div>
 </div>
-<img alt="_images/418fa004244a93c0c1af2cbdb05f8e0b25fd03566d9ea745b14d1c03a0d9cd31.png" src="_images/418fa004244a93c0c1af2cbdb05f8e0b25fd03566d9ea745b14d1c03a0d9cd31.png" />
+<img alt="_images/8488b507af0bdabfda819d7d5ea7ef668299914136f61eff0da23daba8d15ed7.png" src="_images/8488b507af0bdabfda819d7d5ea7ef668299914136f61eff0da23daba8d15ed7.png" />
 </div>
 </div>
 <p>The results fit well with our intuition from section <a class="reference internal" href="#looking-forward"><span class="std std-ref">looking
@@ -893,11 +891,11 @@ returns the operator <code class="docutils literal notranslate"><span class="pre
     <span class="n">mc_size</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">mc_size</span>
     <span class="n">w_grid</span><span class="p">,</span> <span class="n">π_grid</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span>
 
-    <span class="nd">@njit</span>
+    <span class="nd">@jit</span>
     <span class="k">def</span> <span class="nf">ω_func</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">ω</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span> <span class="n">ω</span><span class="p">)</span>
 
-    <span class="nd">@njit</span>
+    <span class="nd">@jit</span>
     <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates π using Bayes&#39; rule and the current wage observation w.</span>
@@ -907,7 +905,7 @@ returns the operator <code class="docutils literal notranslate"><span class="pre
 
         <span class="k">return</span> <span class="n">π_new</span>
 
-    <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
+    <span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">Q</span><span class="p">(</span><span class="n">ω</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -1024,20 +1022,19 @@ fixed point</p>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3699/2244278736.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3706/2244278736.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$w$&#39;)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.022295399006442174.
-Error at iteration 10 is 0.00654867543206783.
-Error at iteration 15 is 0.0015402278613517728.
-Error at iteration 20 is 0.00034898691574569707.
-Error at iteration 25 is 7.881469600967694e-05.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.022669024644528357.
+Error at iteration 10 is 0.0066802033288654306.
+Error at iteration 15 is 0.0014984196588559984.
+Error at iteration 20 is 0.00032019990387199826.
 
-Converged in 25 iterations.
+Converged in 24 iterations.
 </pre></div>
 </div>
-<img alt="_images/a2e2d77275e053ee3ad1c0d73e3b12121aef8e6cf035388206636df02e3157eb.png" src="_images/a2e2d77275e053ee3ad1c0d73e3b12121aef8e6cf035388206636df02e3157eb.png" />
+<img alt="_images/5d1cdd1070c9cd84bd873709912d0436d169e80c9d3bb7878f33e95d6aaaf9d7.png" src="_images/5d1cdd1070c9cd84bd873709912d0436d169e80c9d3bb7878f33e95d6aaaf9d7.png" />
 </div>
 </div>
 </section>
@@ -1064,9 +1061,9 @@ too optimistic and turn down too many jobs.</p>
 
 <span class="c1"># Interpolate reservation wage function</span>
 <span class="n">π_grid</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span>
-<span class="n">w_func</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">))</span>
+<span class="n">w_func</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">))</span>
 
-<span class="nd">@njit</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
     <span class="s2">&quot;Update e and π by drawing wage offer from beta distribution with parameters a and b&quot;</span>
 
@@ -1079,7 +1076,7 @@ too optimistic and turn down too many jobs.</p>
 
     <span class="k">return</span> <span class="n">e</span><span class="p">,</span> <span class="n">π</span>
 
-<span class="nd">@njit</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">simulate_path</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="n">F_a</span><span class="p">,</span>
                   <span class="n">F_b</span><span class="o">=</span><span class="n">F_b</span><span class="p">,</span>
                   <span class="n">G_a</span><span class="o">=</span><span class="n">G_a</span><span class="p">,</span>
@@ -1128,7 +1125,7 @@ too optimistic and turn down too many jobs.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ed3dc6bf9973264bcaad6073d5012d3b6905ead815835c45cc73d78c540a703c.png" src="_images/ed3dc6bf9973264bcaad6073d5012d3b6905ead815835c45cc73d78c540a703c.png" />
+<img alt="_images/abd532bcf86802532d1591e608d939ee84447329a68c221595bbebe86063d826.png" src="_images/abd532bcf86802532d1591e608d939ee84447329a68c221595bbebe86063d826.png" />
 </div>
 </div>
 </section>
@@ -1144,7 +1141,7 @@ empirical distributions of unemployment duration and π at the time of
 employment.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">empirical_dist</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span>
                    <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1341,11 +1338,11 @@ to interpret the solution of our search model.</p>
 &lt;&gt;:62: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:77: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:77: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-/tmp/ipykernel_3699/1288726496.py:62: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3706/1288726496.py:62: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[0, 1].set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$w$&#39;)
-/tmp/ipykernel_3699/1288726496.py:77: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3706/1288726496.py:77: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[1, 1].set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$\mathbb{P}\{w &gt; \overline{w} (\pi)\}$&#39;)
-/tmp/ipykernel_3699/1288726496.py:77: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/tmp/ipykernel_3706/1288726496.py:77: SyntaxWarning: invalid escape sequence &#39;\m&#39;
   axs[1, 1].set(xlabel=&#39;$\pi$&#39;, ylabel=&#39;$\mathbb{P}\{w &gt; \overline{w} (\pi)\}$&#39;)
 </pre></div>
 </div>
@@ -1406,8 +1403,8 @@ unemployment verifies our conjecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/825cc66ec17cbcbfec262eb7d3281fc61406eeab6826142a712b73270aab2f13.png" src="_images/825cc66ec17cbcbfec262eb7d3281fc61406eeab6826142a712b73270aab2f13.png" />
-<img alt="_images/11ec6129859732c219f37e7a4d7a4ceb38b2cfcb456516d69f5074c6117fd8ee.png" src="_images/11ec6129859732c219f37e7a4d7a4ceb38b2cfcb456516d69f5074c6117fd8ee.png" />
+<img alt="_images/223dbe6f2dbbf08a528164f9f7ff8f04d98aa234d26f09b49055b073cd3f736e.png" src="_images/223dbe6f2dbbf08a528164f9f7ff8f04d98aa234d26f09b49055b073cd3f736e.png" />
+<img alt="_images/c374d43fad115e008b9ea8dba60beb2f7e07740240bd789ddae6ac6baca58f1f.png" src="_images/c374d43fad115e008b9ea8dba60beb2f7e07740240bd789ddae6ac6baca58f1f.png" />
 </div>
 </div>
 </section>
@@ -1427,8 +1424,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9abb3f57ea51dcf37dfe08cafdeb1291b7c7b7243bfb68de5e1ac3f656fe5c2f.png" src="_images/9abb3f57ea51dcf37dfe08cafdeb1291b7c7b7243bfb68de5e1ac3f656fe5c2f.png" />
-<img alt="_images/425cbb709f5c3781afed31720e9389fadc5da915a1cc36a1f9ad9df7fd13ef29.png" src="_images/425cbb709f5c3781afed31720e9389fadc5da915a1cc36a1f9ad9df7fd13ef29.png" />
+<img alt="_images/43a5caa0ecb61acac564d464d721bf734f54649b127441adb84cd38d9d5e68e0.png" src="_images/43a5caa0ecb61acac564d464d721bf734f54649b127441adb84cd38d9d5e68e0.png" />
+<img alt="_images/4770308f309f512552556c9c7bb51048d2720b5a18e6926a30ae1b5a09536ff4.png" src="_images/4770308f309f512552556c9c7bb51048d2720b5a18e6926a30ae1b5a09536ff4.png" />
 </div>
 </div>
 </section>
@@ -1445,8 +1442,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fbe6c9f42539bc2bb5003af355b5b3552114de876f89584bd261ae5a0d42f28d.png" src="_images/fbe6c9f42539bc2bb5003af355b5b3552114de876f89584bd261ae5a0d42f28d.png" />
-<img alt="_images/1ea87270e4f005683d5ecbe96aaf8ad70955aa6815f382959991586e4bb83ee4.png" src="_images/1ea87270e4f005683d5ecbe96aaf8ad70955aa6815f382959991586e4bb83ee4.png" />
+<img alt="_images/5a1398774f85fe2b18e5c589720e7759bed3986091c8f30190e055baf0411542.png" src="_images/5a1398774f85fe2b18e5c589720e7759bed3986091c8f30190e055baf0411542.png" />
+<img alt="_images/12c0a867e7540628ab316dc4111fb9b36f0c0f86a42ab55d07c01048991fc4a8.png" src="_images/12c0a867e7540628ab316dc4111fb9b36f0c0f86a42ab55d07c01048991fc4a8.png" />
 </div>
 </div>
 </section>
@@ -1473,8 +1470,8 @@ when he eventually chooses to accept a wage offer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/93a9d8413cc101f34d16f7be66343515781c6ffe253f2e545dfafad010ec295e.png" src="_images/93a9d8413cc101f34d16f7be66343515781c6ffe253f2e545dfafad010ec295e.png" />
-<img alt="_images/db6f94fccf5cc34f2bd464a551bbe0c7ad114920aa792926118cbda5bcbb7bd8.png" src="_images/db6f94fccf5cc34f2bd464a551bbe0c7ad114920aa792926118cbda5bcbb7bd8.png" />
+<img alt="_images/e2efb966c0012b12148e1da848b9b133154c8bb3f241b47dfa20029081d32684.png" src="_images/e2efb966c0012b12148e1da848b9b133154c8bb3f241b47dfa20029081d32684.png" />
+<img alt="_images/0171f78890928b4eaa7c11f3b98394327f386de50ef4b9aae917ed52969ed223.png" src="_images/0171f78890928b4eaa7c11f3b98394327f386de50ef4b9aae917ed52969ed223.png" />
 </div>
 </div>
 </section>
@@ -1490,8 +1487,8 @@ after having acquired less information about the wage distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/527a10014d8c41c64d9d42d62318b259bf90c6beffcb9abe6e35af5fe02bc842.png" src="_images/527a10014d8c41c64d9d42d62318b259bf90c6beffcb9abe6e35af5fe02bc842.png" />
-<img alt="_images/14c00da8ffdf08be0926cd0d5edb953c9cf00bf51da83c8919d88f3beacc6944.png" src="_images/14c00da8ffdf08be0926cd0d5edb953c9cf00bf51da83c8919d88f3beacc6944.png" />
+<img alt="_images/e3e65dfbb6a82a25daa3fe4ee73e5b29abafb3bb099507535c90a0a442ac13cd.png" src="_images/e3e65dfbb6a82a25daa3fe4ee73e5b29abafb3bb099507535c90a0a442ac13cd.png" />
+<img alt="_images/e81f7f643dfd33d9072cc1cb45287e42f082b0726ee4ab11b27cbdce8767ac22.png" src="_images/e81f7f643dfd33d9072cc1cb45287e42f082b0726ee4ab11b27cbdce8767ac22.png" />
 </div>
 </div>
 </section>

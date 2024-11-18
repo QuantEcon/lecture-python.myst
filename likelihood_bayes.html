@@ -262,14 +262,14 @@ and <a class="reference internal" href="wald_friedman.html"><span class="doc">th
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
 
-<span class="nd">@njit</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">set_seed</span><span class="p">():</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">142857</span><span class="p">)</span>
 <span class="n">set_seed</span><span class="p">()</span>
@@ -341,15 +341,15 @@ probability distribution, for example, a sequence of  IID draws from <span class
     <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># The two density functions.</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Generate N sets of T observations of the likelihood ratio,</span>
@@ -406,7 +406,7 @@ i.e., a personal or subjective belief about <span class="math notranslate nohigh
 likelihood ratio <span class="math notranslate nohighlight">\(\ell\)</span> according to  recursion <a class="reference internal" href="#equation-eq-recur1">(53.1)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">π</span><span class="p">,</span> <span class="n">l</span><span class="p">):</span>
     <span class="s2">&quot;Update π using likelihood l&quot;</span>
 
@@ -523,9 +523,9 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_2839/565988615.py:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2846/565988615.py:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax1.plot(range(T+1), π_seq_f[i, :], label=f&quot;$\pi_0$={π_seq_f[i, 0]}&quot;)
-/tmp/ipykernel_2839/565988615.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2846/565988615.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax1.set_ylabel(&quot;$\pi_t$&quot;)
 </pre></div>
 </div>
@@ -573,9 +573,9 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_2839/1025496856.py:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2846/1025496856.py:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax1.plot(range(T+1), π_seq_g[i, :], label=f&quot;$\pi_0$={π_seq_g[i, 0]}&quot;)
-/tmp/ipykernel_2839/1025496856.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2846/1025496856.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax1.set_ylabel(&quot;$\pi_t$&quot;)
 </pre></div>
 </div>
@@ -754,7 +754,7 @@ converge pointwise to <span class="math notranslate nohighlight">\(0\)</span>.</
 <p>We’ll plot a large sample of paths.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">martingale_simulate</span><span class="p">(</span><span class="n">π0</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
 
     <span class="n">π_path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
@@ -818,7 +818,7 @@ converge pointwise to <span class="math notranslate nohighlight">\(0\)</span>.</
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_2839/1789801037.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2846/1789801037.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.set_ylabel(&#39;$\pi_t$&#39;)
 </pre></div>
 </div>
@@ -849,7 +849,7 @@ converge pointwise to <span class="math notranslate nohighlight">\(0\)</span>.</
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_2839/4236759434.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2846/4236759434.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.set_xlabel(&#39;$\pi_T$&#39;)
 </pre></div>
 </div>
@@ -891,7 +891,7 @@ in the ensemble.</p>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_2839/351373864.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2846/351373864.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.set_xlabel(&#39;$\pi_T$&#39;)
 </pre></div>
 </div>
@@ -924,9 +924,9 @@ in the ensemble.</p>
 &lt;&gt;:8: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:8: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_2839/4027704832.py:3: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2846/4027704832.py:3: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.plot(range(T+1), π_path[j,:], color=colors[i], label=f&#39;$\pi$_path, {j}-th simulation&#39;)
-/tmp/ipykernel_2839/4027704832.py:8: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2846/4027704832.py:8: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.set_ylabel(&#39;$\pi_t$&#39;)
 </pre></div>
 </div>
@@ -1050,7 +1050,7 @@ probability distribution of the pointwise limits <span class="math notranslate n
 <p>Then we’ll plot it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">compute_cond_var</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">mc_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)):</span>
     <span class="c1"># create monte carlo draws</span>
     <span class="n">mc_draws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">mc_size</span><span class="p">)</span>
@@ -1083,9 +1083,9 @@ probability distribution of the pointwise limits <span class="math notranslate n
 &lt;&gt;:24: SyntaxWarning: invalid escape sequence &#39;\s&#39;
 &lt;&gt;:23: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:24: SyntaxWarning: invalid escape sequence &#39;\s&#39;
-/tmp/ipykernel_2839/3877570783.py:23: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2846/106585806.py:23: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.set_xlabel(&#39;$\pi_{t-1}$&#39;)
-/tmp/ipykernel_2839/3877570783.py:24: SyntaxWarning: invalid escape sequence &#39;\s&#39;
+/tmp/ipykernel_2846/106585806.py:24: SyntaxWarning: invalid escape sequence &#39;\s&#39;
   ax.set_ylabel(&#39;$\sigma^{2}(\pi_{t}\\vert \pi_{t-1})$&#39;)
 </pre></div>
 </div>

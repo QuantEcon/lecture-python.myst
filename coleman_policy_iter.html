@@ -313,7 +313,7 @@ iteration can be further adjusted to obtain even more efficiency.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">quantecon.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
 </pre></div>
 </div>
 </div>
@@ -549,7 +549,7 @@ constructed in an <a class="reference internal" href="optgrowth_fast.html"><span
 <span class="eqno">(41.8)<a class="headerlink" href="#equation-euler-diff" title="Permalink to this equation">#</a></span>\[u'(c) - \beta \int (u' \circ \sigma) (f(y - c) z ) f'(y - c) z \phi(dz)\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">euler_diff</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">og</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set up a function such that the root with respect to c,</span>
@@ -577,7 +577,7 @@ state <span class="math notranslate nohighlight">\(y\)</span> and <span class="m
 <p>Here’s the operator <span class="math notranslate nohighlight">\(K\)</span>, that implements the root-finding step.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">K</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">og</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Coleman-Reffett operator</span>
@@ -632,7 +632,7 @@ state <span class="math notranslate nohighlight">\(y\)</span> and <span class="m
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:8: SyntaxWarning: invalid escape sequence &#39;\s&#39;
 &lt;&gt;:8: SyntaxWarning: invalid escape sequence &#39;\s&#39;
-/tmp/ipykernel_2041/3765608876.py:8: SyntaxWarning: invalid escape sequence &#39;\s&#39;
+/tmp/ipykernel_2045/3765608876.py:8: SyntaxWarning: invalid escape sequence &#39;\s&#39;
   lb = &#39;initial condition $\sigma(y) = y$&#39;
 </pre></div>
 </div>
@@ -732,7 +732,7 @@ using time iteration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>53.8 ms ± 0 ns per loop (mean ± std. dev. of 1 run, 3 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>52.9 ms ± 0 ns per loop (mean ± std. dev. of 1 run, 3 loops each)
 </pre></div>
 </div>
 </div>
@@ -853,7 +853,7 @@ u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 </pre></div>
 </div>
 <img alt="_images/0b6f8b2d885e626c71f412bf42026410fda51a9e8743cb4a1ce29f02e19df563.png" src="_images/0b6f8b2d885e626c71f412bf42026410fda51a9e8743cb4a1ce29f02e19df563.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.32 s, sys: 71.9 ms, total: 1.4 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.31 s, sys: 83.9 ms, total: 1.39 s
 Wall time: 1.39 s
 </pre></div>
 </div>

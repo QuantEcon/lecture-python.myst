@@ -665,7 +665,7 @@ the reservation wage.</p>
 <p>We’ll be using JIT compilation via Numba to turbocharge our loops.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">compute_reservation_wage</span><span class="p">(</span><span class="n">mcm</span><span class="p">,</span>
                              <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
                              <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
@@ -808,7 +808,7 @@ v^*(s')
 <p>Here’s an implementation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">compute_reservation_wage_two</span><span class="p">(</span><span class="n">mcm</span><span class="p">,</span>
                                  <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
                                  <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
@@ -866,7 +866,7 @@ given the parameters, and then simulate to see how long it takes to accept.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cdf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">q_default</span><span class="p">)</span>
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">compute_stopping_time</span><span class="p">(</span><span class="n">w_bar</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
 
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
@@ -882,7 +882,7 @@ given the parameters, and then simulate to see how long it takes to accept.</p>
             <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">stopping_time</span>
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">compute_mean_stopping_time</span><span class="p">(</span><span class="n">w_bar</span><span class="p">,</span> <span class="n">num_reps</span><span class="o">=</span><span class="mi">100000</span><span class="p">):</span>
     <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_reps</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_reps</span><span class="p">):</span>
@@ -980,7 +980,7 @@ assumes a lognormal wage distribution.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">w_draws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span><span class="o">+</span> <span class="n">σ</span> <span class="o">*</span> <span class="n">s</span><span class="p">)</span>
 
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">compute_reservation_wage_continuous</span><span class="p">(</span><span class="n">mcmc</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
 
     <span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">w_draws</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">σ</span><span class="p">,</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">μ</span><span class="p">,</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">w_draws</span>

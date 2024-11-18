@@ -336,7 +336,7 @@ savings behavior.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">prange</span>
 <span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
 </pre></div>
 </div>
@@ -376,7 +376,7 @@ inequality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b2e06b476332b1aa489ab9702321398b73691141e0823d694e874b75ad9854b2.png" src="_images/b2e06b476332b1aa489ab9702321398b73691141e0823d694e874b75ad9854b2.png" />
+<img alt="_images/9b6daa45b231cf213358659a9d0cd35a3667970f6f5ab095d97e38291510f74a.png" src="_images/9b6daa45b231cf213358659a9d0cd35a3667970f6f5ab095d97e38291510f74a.png" />
 </div>
 </div>
 <p>This curve can be understood as follows: if point <span class="math notranslate nohighlight">\((x,y)\)</span> lies on the curve, it means that, collectively, the bottom <span class="math notranslate nohighlight">\((100x)\%\)</span> of the population holds <span class="math notranslate nohighlight">\((100y)\%\)</span> of the wealth.</p>
@@ -407,7 +407,7 @@ observations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/60c1a0e3abab14fbc5bdbb7ab1438abba9f2cf0297acf7093af4d2abdb02c48f.png" src="_images/60c1a0e3abab14fbc5bdbb7ab1438abba9f2cf0297acf7093af4d2abdb02c48f.png" />
+<img alt="_images/67c313425f93b14241beb6417fa0d3619b403ea2e383350eafec988f068e0446.png" src="_images/67c313425f93b14241beb6417fa0d3619b403ea2e383350eafec988f068e0446.png" />
 </div>
 </div>
 <p>You can see that, as the tail parameter of the Pareto distribution increases, inequality decreases.</p>
@@ -449,7 +449,7 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7ac9c6b1f7bba3eec6f4b0dd294a53fc246adf9c8db92320eca7048b01844aed.png" src="_images/7ac9c6b1f7bba3eec6f4b0dd294a53fc246adf9c8db92320eca7048b01844aed.png" />
+<img alt="_images/74c39992cc2ce2c20003cb2764a722c66ce78b4d1aaa33fdde18787e6185c1e7.png" src="_images/74c39992cc2ce2c20003cb2764a722c66ce78b4d1aaa33fdde18787e6185c1e7.png" />
 </div>
 </div>
 <p>The simulation shows that the fit is good.</p>
@@ -597,7 +597,7 @@ the aggregate state and household wealth.</p>
 <p>Here’s function to simulate the time series of wealth for in individual households.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">wealth_time_series</span><span class="p">(</span><span class="n">wdy</span><span class="p">,</span> <span class="n">w_0</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a single time series of length n for wealth given</span>
@@ -626,7 +626,7 @@ the aggregate state and household wealth.</p>
 <p>Note the use of parallelization to speed up computation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">wdy</span><span class="p">,</span> <span class="n">w_distribution</span><span class="p">,</span> <span class="n">shift_length</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Shifts a cross-section of household forward in time</span>
@@ -684,7 +684,7 @@ the implications for the wealth distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3a9bf71b73af457561f270693597e8a9cc3d779df4858ea66c617eb5e90eff43.png" src="_images/3a9bf71b73af457561f270693597e8a9cc3d779df4858ea66c617eb5e90eff43.png" />
+<img alt="_images/139c7b9d6b0fb5f62d8e129f14e6af094fc3ce381071bb11f5811760627540dc.png" src="_images/139c7b9d6b0fb5f62d8e129f14e6af094fc3ce381071bb11f5811760627540dc.png" />
 </div>
 </div>
 <p>Notice the large spikes in wealth over time.</p>
@@ -740,8 +740,8 @@ curve and Gini coefficient.</p>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;unknown&gt;:8: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 </pre></div>
 </div>
-<img alt="_images/82e61f949fe4c806dbce3f85fbac6653067cd4fee2b630bbff1fa2de0fc29694.png" src="_images/82e61f949fe4c806dbce3f85fbac6653067cd4fee2b630bbff1fa2de0fc29694.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 52.6 s, sys: 43.9 ms, total: 52.7 s
+<img alt="_images/1d03d07298ca29dd6fbb7c7c8572a1261ba0b78f920c7bf0a56e330dca3bd82e.png" src="_images/1d03d07298ca29dd6fbb7c7c8572a1261ba0b78f920c7bf0a56e330dca3bd82e.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 52.5 s, sys: 72.3 ms, total: 52.6 s
 Wall time: 13.9 s
 </pre></div>
 </div>
@@ -768,11 +768,11 @@ hardware.</p>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-/tmp/ipykernel_4461/892734317.py:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/tmp/ipykernel_4468/892734317.py:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
   ax.set_xlabel(&quot;$\mu_r$&quot;)
 </pre></div>
 </div>
-<img alt="_images/87a59231789c3d3298fb3581594e9d085bed5995dd2fb80a3af58e209c1115e3.png" src="_images/87a59231789c3d3298fb3581594e9d085bed5995dd2fb80a3af58e209c1115e3.png" />
+<img alt="_images/0cd4933944588a0e42b59afc0f2d1dea15e845158ad3ec9f4ddc52e6ce3f44ea.png" src="_images/0cd4933944588a0e42b59afc0f2d1dea15e845158ad3ec9f4ddc52e6ce3f44ea.png" />
 </div>
 </div>
 <p>Once again, we see that inequality increases as returns on financial income
@@ -803,8 +803,8 @@ volatility term <span class="math notranslate nohighlight">\(\sigma_r\)</span> i
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;unknown&gt;:8: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 </pre></div>
 </div>
-<img alt="_images/eee782c37ee801415965b34b6c40dcb1fab5a61f41403f0209a8ea239f7f9b3a.png" src="_images/eee782c37ee801415965b34b6c40dcb1fab5a61f41403f0209a8ea239f7f9b3a.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 51.9 s, sys: 12 ms, total: 51.9 s
+<img alt="_images/e8506ae25537cfff0f67a1f167679ffa50a286cc7d8fe71900d3761dd0769adf.png" src="_images/e8506ae25537cfff0f67a1f167679ffa50a286cc7d8fe71900d3761dd0769adf.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 51.9 s, sys: 20 ms, total: 51.9 s
 Wall time: 13.2 s
 </pre></div>
 </div>
@@ -855,7 +855,7 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4e9e7a7f2217041e1238d3e17c94d92b1f48d2f5fd5a0c67df051b831c428325.png" src="_images/4e9e7a7f2217041e1238d3e17c94d92b1f48d2f5fd5a0c67df051b831c428325.png" />
+<img alt="_images/06f1444322892c156e31a24811eafdb9c7914bc95303a4c5eaf069e5e819cede.png" src="_images/06f1444322892c156e31a24811eafdb9c7914bc95303a4c5eaf069e5e819cede.png" />
 </div>
 </div>
 <p>In general, for a Pareto distribution, a higher tail index implies less weight
@@ -926,7 +926,7 @@ this what you see?</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/53cd82b567765f993424b56d66bb90129f433019cd38581df524dd26ba6a3976.png" src="_images/53cd82b567765f993424b56d66bb90129f433019cd38581df524dd26ba6a3976.png" />
+<img alt="_images/112a77aab75119827391550c6616badc030f64a79a61201a87df6a8b8a17e74d.png" src="_images/112a77aab75119827391550c6616badc030f64a79a61201a87df6a8b8a17e74d.png" />
 </div>
 </div>
 </section>

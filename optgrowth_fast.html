@@ -306,7 +306,7 @@ accelerate our code.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">njit</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">jit</span>
 <span class="kn">from</span> <span class="nn">quantecon.optimize.scalar_maximization</span> <span class="kn">import</span> <span class="n">brent_max</span>
 </pre></div>
 </div>
@@ -434,7 +434,7 @@ but will use in later lectures.</p>
 <p>First, here’s a function that returns the value of a particular consumption choice <code class="docutils literal notranslate"><span class="pre">c</span></code>, given state <code class="docutils literal notranslate"><span class="pre">y</span></code>, as per the Bellman equation <a class="reference internal" href="optgrowth.html#equation-fpb30">(39.9)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">state_action_value</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">v_array</span><span class="p">,</span> <span class="n">og</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Right hand side of the Bellman equation.</span>
@@ -459,7 +459,7 @@ but will use in later lectures.</p>
 of the Bellman equation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">og</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Bellman operator.</span>
@@ -558,8 +558,8 @@ Error at iteration 200 is 0.0003235884387500221.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 225 is 0.00011662021095659725.
 
 Converged in 229 iterations.
-CPU times: user 3.68 s, sys: 356 ms, total: 4.03 s
-Wall time: 4.04 s
+CPU times: user 3.7 s, sys: 324 ms, total: 4.03 s
+Wall time: 4.03 s
 </pre></div>
 </div>
 </div>
@@ -637,7 +637,7 @@ the algorithm.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 132 ms, sys: 0 ns, total: 132 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 132 ms, sys: 6 μs, total: 132 ms
 Wall time: 132 ms
 </pre></div>
 </div>
@@ -770,8 +770,8 @@ Error at iteration 250 is 0.00013063602807505958.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 257 iterations.
-CPU times: user 3.02 s, sys: 92.7 ms, total: 3.11 s
-Wall time: 3.11 s
+CPU times: user 3.02 s, sys: 84.3 ms, total: 3.1 s
+Wall time: 3.1 s
 </pre></div>
 </div>
 </div>
@@ -863,7 +863,7 @@ different discount factors (and hence three different policies).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/96ac4c855dacc981daf5b965317410ce66d1313cfd971b776bd9cb342090db91.png" src="_images/96ac4c855dacc981daf5b965317410ce66d1313cfd971b776bd9cb342090db91.png" />
+<img alt="_images/0bceb7c14681ebee45a31d793b95354501c4123f039f61b46d4095601a1e3bf1.png" src="_images/0bceb7c14681ebee45a31d793b95354501c4123f039f61b46d4095601a1e3bf1.png" />
 </div>
 </div>
 </section>

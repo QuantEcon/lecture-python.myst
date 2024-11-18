@@ -68,7 +68,7 @@ Let's start with some standard imports:
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
-from numba import njit, float64
+from numba import jit, float64
 from numba.experimental import jitclass
 import numpy as np
 ```
@@ -751,7 +751,7 @@ class PlanningProblem():
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def shooting(pp, c0, k0, T=10):
     '''
     Given the initial condition of capital k0 and an initial guess
@@ -779,7 +779,7 @@ def shooting(pp, c0, k0, T=10):
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def bisection(pp, c0, k0, T=10, tol=1e-4, max_iter=500, k_ter=0, verbose=True):
 
     # initial boundaries for guess c0
@@ -828,7 +828,7 @@ The above code from this lecture {doc}`Cass-Koopmans Planning Model <cass_koopma
 Now  we're ready to bring in Python code that we require to compute additional objects that appear in a competitive equilibrium.
 
 ```{code-cell} python3
-@njit
+@jit
 def q(pp, c_path):
     # Here we choose numeraire to be u'(c_0) -- this is q^(t_0)_t
     T = len(c_path) - 1
@@ -838,12 +838,12 @@ def q(pp, c_path):
         q_path[t] = pp.β ** t * pp.u_prime(c_path[t])
     return q_path
 
-@njit
+@jit
 def w(pp, k_path):
     w_path = pp.f(k_path) - k_path * pp.f_prime(k_path)
     return w_path
 
-@njit
+@jit
 def η(pp, k_path):
     η_path = pp.f_prime(k_path)
     return η_path
@@ -953,7 +953,7 @@ years, and define a new function for $r$, then plot both.
 We begin by continuing to assume that  $t_0=0$ and plot things for different maturities $t=T$, with $K_0$ below the steady state
 
 ```{code-cell} python3
-@njit
+@jit
 def q_generic(pp, t0, c_path):
     # simplify notations
     β = pp.β
@@ -966,7 +966,7 @@ def q_generic(pp, t0, c_path):
         q_path[t-t0] = β ** (t-t0) * u_prime(c_path[t]) / u_prime(c_path[t0])
     return q_path
 
-@njit
+@jit
 def r(pp, t0, q_path):
     '''Yield to maturity'''
     r_path = - np.log(q_path[1:]) / np.arange(1, len(q_path))

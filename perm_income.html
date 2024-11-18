@@ -295,7 +295,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
 </pre></div>
 </div>
 </div>
@@ -613,7 +613,7 @@ C =
 <span class="n">μ</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">T</span> <span class="o">=</span> <span class="mi">60</span>
 
-<span class="nd">@njit</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">time_path</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># w_0, w_1, ..., w_T</span>
     <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -640,7 +640,7 @@ C =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ecfe396a1393d338288c17a62ea359ed8c4e4bbf693f9933642ad42533937a3c.png" src="_images/ecfe396a1393d338288c17a62ea359ed8c4e4bbf693f9933642ad42533937a3c.png" />
+<img alt="_images/6f38130fb79c3c64556d5088ecf193012d568f57701e27160f374ab8a6538121.png" src="_images/6f38130fb79c3c64556d5088ecf193012d568f57701e27160f374ab8a6538121.png" />
 </div>
 </div>
 <p>Observe that consumption is considerably smoother than income.</p>
@@ -663,7 +663,7 @@ C =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a6f6dc0eef2f49b0bb8b6a37de44a69f53a5ddfeeab30a5d7c1e862f624b2fc4.png" src="_images/a6f6dc0eef2f49b0bb8b6a37de44a69f53a5ddfeeab30a5d7c1e862f624b2fc4.png" />
+<img alt="_images/8fabee1ec504c99ffa9e0393c8c45b95bf215b6cccb2bd441fb012e77c9b36fb.png" src="_images/8fabee1ec504c99ffa9e0393c8c45b95bf215b6cccb2bd441fb012e77c9b36fb.png" />
 </div>
 </div>
 </section>
@@ -861,7 +861,7 @@ permanent income shocks.</p>
 <span class="n">S</span> <span class="o">=</span> <span class="mi">5</span>   <span class="c1"># Impulse date</span>
 <span class="n">σ1</span> <span class="o">=</span> <span class="n">σ2</span> <span class="o">=</span> <span class="mf">0.15</span>
 
-<span class="nd">@njit</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">time_path</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">permanent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="s2">&quot;Time path of consumption and debt given shock sequence&quot;</span>
     <span class="n">w1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>

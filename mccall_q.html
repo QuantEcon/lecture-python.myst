@@ -747,7 +747,7 @@ pseudo-code for   our McCall worker to do Q-learning:</p>
 
         <span class="k">return</span> <span class="n">qtable_new</span>
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">run_epochs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">qlmc</span><span class="p">,</span> <span class="n">qtable</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run epochs N times with qtable from the last iteration each time.</span>
@@ -803,17 +803,17 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[5173.34983848 2550.09650515]
- [5272.02984505 5254.86413756]
- [5266.30289331 5239.85565547]
- [5294.55676308 5230.40509856]
- [5323.58622252 5299.85738862]
- [5298.07991329 5220.41279289]
- [5383.61465448 5218.77766884]
- [5589.37571822 5211.38104576]
- [5255.2492854  5297.37623326]
- [5301.786548   5500.60050846]
- [5449.96639169 6000.        ]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[5321.83651313    0.        ]
+ [5322.94117196 5278.28944873]
+ [5314.30088205 5285.67683657]
+ [5398.69337305 5257.57800965]
+ [5303.46588528 5312.63629163]
+ [5267.01467247 5270.84497197]
+ [5388.9300914  5287.60585239]
+ [5642.1374958  5279.97427522]
+ [5338.73479571 5251.19621431]
+ [5356.52072139 5500.00024648]
+ [5419.79745503 6000.        ]]
 </pre></div>
 </div>
 </div>
@@ -828,8 +828,8 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[5173.34983848 5272.02984505 5266.30289331 5294.55676308 5323.58622252
- 5298.07991329 5383.61465448 5589.37571822 5297.37623326 5500.60050846
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[5321.83651313 5322.94117196 5314.30088205 5398.69337305 5312.63629163
+ 5270.84497197 5388.9300914  5642.1374958  5338.73479571 5500.00024648
  6000.        ]
 </pre></div>
 </div>
@@ -850,7 +850,7 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6b33eb3c0d440b85812724a9ee6603512eb4bdc2fbfd57510f61aac66395d626.png" src="_images/6b33eb3c0d440b85812724a9ee6603512eb4bdc2fbfd57510f61aac66395d626.png" />
+<img alt="_images/c932640c008408b74e8909ce09f5a2df606b66deb0b36c661ab406300f401a7e.png" src="_images/c932640c008408b74e8909ce09f5a2df606b66deb0b36c661ab406300f401a7e.png" />
 </div>
 </div>
 <p>Now, let us compute the case with a larger state space: <span class="math notranslate nohighlight">\(n=30\)</span> instead of <span class="math notranslate nohighlight">\(n=10\)</span>.</p>
@@ -966,7 +966,7 @@ Progress: EPOCHs = 160000
 Progress: EPOCHs = 200000
 </pre></div>
 </div>
-<img alt="_images/99f19c751408f9514d02367c96c0c54ac4f55137e27320f6a5781a8401c80002.png" src="_images/99f19c751408f9514d02367c96c0c54ac4f55137e27320f6a5781a8401c80002.png" />
+<img alt="_images/35b0a228da3266815ce5c082a66c7b716e1b5d91a79eb7226e0e37f7032d6f47.png" src="_images/35b0a228da3266815ce5c082a66c7b716e1b5d91a79eb7226e0e37f7032d6f47.png" />
 </div>
 </div>
 <p>The above graphs indicates that</p>
@@ -1038,7 +1038,7 @@ exploitation only.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 200000
 </pre></div>
 </div>
-<img alt="_images/b71db8df36297c6bb8c2a61cca1ff84e643fbd7b20f578a81d6ea1151f5fe6e5.png" src="_images/b71db8df36297c6bb8c2a61cca1ff84e643fbd7b20f578a81d6ea1151f5fe6e5.png" />
+<img alt="_images/0f2e4d3f69a1d74a49863252cf68ee65da90253eb81c8ae8ec5e4afb16ebf590.png" src="_images/0f2e4d3f69a1d74a49863252cf68ee65da90253eb81c8ae8ec5e4afb16ebf590.png" />
 </div>
 </div>
 </section>

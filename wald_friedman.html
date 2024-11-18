@@ -405,7 +405,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 <p>The bottom panel presents mixtures of these distributions, with various mixing probabilities <span class="math notranslate nohighlight">\(\pi_k\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -437,7 +437,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:19: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:19: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_4435/4050496125.py:19: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_4442/1196062609.py:19: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axes[1].plot(y, lw=2, label=f&quot;$\pi_k$ = {π}&quot;)
 </pre></div>
 </div>
@@ -703,7 +703,7 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 <p>To solve the key functional equation, we will iterate using <code class="docutils literal notranslate"><span class="pre">Q</span></code> to find the fixed point</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the continuation cost function</span>
@@ -767,7 +767,7 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 and plot these on our cost function plot</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -830,15 +830,15 @@ and plot these on our cost function plot</p>
 &lt;&gt;:41: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_4435/1333654629.py:41: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_4442/2600543715.py:41: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   lw=15, alpha=0.1, color=&#39;b&#39;, label=&#39;$J(\pi)$&#39;)
-/tmp/ipykernel_4435/1333654629.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_4442/2600543715.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   xlabel=&quot;$\pi$&quot;, title=&quot;Cost function $J(\pi)$&quot;)
-/tmp/ipykernel_4435/1333654629.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_4442/2600543715.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   xlabel=&quot;$\pi$&quot;, title=&quot;Cost function $J(\pi)$&quot;)
 </pre></div>
 </div>
-<img alt="_images/32989044ad709c167489ca53a2f8ddf3d3446b9665c2d9e8e45dc7914f79f473.png" src="_images/32989044ad709c167489ca53a2f8ddf3d3446b9665c2d9e8e45dc7914f79f473.png" />
+<img alt="_images/45cfd096ade96b5af1e6d42c253539c86c6454b7edebcb80d616962bb2a443dc.png" src="_images/45cfd096ade96b5af1e6d42c253539c86c6454b7edebcb80d616962bb2a443dc.png" />
 </div>
 </div>
 <p>The cost function <span class="math notranslate nohighlight">\(J\)</span> equals <span class="math notranslate nohighlight">\(\pi L_1\)</span> for <span class="math notranslate nohighlight">\(\pi \leq \beta\)</span>, and <span class="math notranslate nohighlight">\((1-\pi )L_0\)</span> for <span class="math notranslate nohighlight">\(\pi
@@ -953,7 +953,7 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6fa96f89cd7ddaed756a54506d6eedb996b412a559882fd8a730ef5548d40b7b.png" src="_images/6fa96f89cd7ddaed756a54506d6eedb996b412a559882fd8a730ef5548d40b7b.png" />
+<img alt="_images/6d978e14fce866956b295c91698416788c083e318bd42774a1fb6c8faa33057e.png" src="_images/6d978e14fce866956b295c91698416788c083e318bd42774a1fb6c8faa33057e.png" />
 </div>
 </div>
 </section>
@@ -974,7 +974,7 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/335b2d506eb62f9020d2c54ec27b4147e1ce8c9f5b59d59042043647ac6e6734.png" src="_images/335b2d506eb62f9020d2c54ec27b4147e1ce8c9f5b59d59042043647ac6e6734.png" />
+<img alt="_images/905baa4ff9c676c1925be16da8e2f14e3b1250f9d819579161183edc0c2606f1.png" src="_images/905baa4ff9c676c1925be16da8e2f14e3b1250f9d819579161183edc0c2606f1.png" />
 </div>
 </div>
 <p>Increased cost per draw has induced the decision-maker to take fewer draws before deciding.</p>

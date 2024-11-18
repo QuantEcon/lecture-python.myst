@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.16.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -66,7 +66,7 @@ Let's start with some standard imports:
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-from numba import njit, float64
+from numba import jit, float64
 from numba.experimental import jitclass
 import numpy as np
 from quantecon.optimize import brentq
@@ -525,7 +525,7 @@ planning problem.
 $c_0$ instead of $\mu_0$ in the following code.)
 
 ```{code-cell} ipython3
-@njit
+@jit
 def shooting(pp, c0, k0, T=10):
     '''
     Given the initial condition of capital k0 and an initial guess
@@ -610,7 +610,7 @@ When $K_{T+1}$ gets close enough to $0$ (i.e., within an error
 tolerance bounds), we stop.
 
 ```{code-cell} ipython3
-@njit
+@jit
 def bisection(pp, c0, k0, T=10, tol=1e-4, max_iter=500, k_ter=0, verbose=True):
 
     # initial boundaries for guess c0
@@ -804,7 +804,7 @@ over time.
 Let's calculate and  plot the saving rate.
 
 ```{code-cell} ipython3
-@njit
+@jit
 def saving_rate(pp, c_path, k_path):
     'Given paths of c and k, computes the path of saving rate.'
     production = pp.f(k_path[:-1])
@@ -912,7 +912,7 @@ $$ (eq:tildeC)
 A positive fixed point  $C = \tilde C(K)$ exists only if $f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)>0$
 
 ```{code-cell} ipython3
-@njit
+@jit
 def C_tilde(K, pp):
 
     return pp.f(K) + (1 - pp.δ) * K - pp.f_prime_inv(1 / pp.β - 1 + pp.δ)
@@ -931,11 +931,11 @@ K = \tilde K(C)
 $$ (eq:tildeK)
 
 ```{code-cell} ipython3
-@njit
+@jit
 def K_diff(K, C, pp):
     return pp.f(K) - pp.δ * K - C
 
-@njit
+@jit
 def K_tilde(C, pp):
 
     res = brentq(K_diff, 1e-6, 100, args=(C, pp))
@@ -951,7 +951,7 @@ It is thus the intersection of the two curves $\tilde{C}$ and $\tilde{K}$ that w
 We can compute $K_s$ by solving the equation $K_s = \tilde{K}\left(\tilde{C}\left(K_s\right)\right)$
 
 ```{code-cell} ipython3
-@njit
+@jit
 def K_tilde_diff(K, pp):
 
     K_out = K_tilde(C_tilde(K, pp), pp)
@@ -1003,7 +1003,7 @@ In addition to the three curves, Figure {numref}`stable_manifold` plots  arrows 
 ---
 mystnb:
   figure:
-    caption: "Stable Manifold and Phase Plane"
+    caption: Stable Manifold and Phase Plane
     name: stable_manifold
 tags: [hide-input]
 ---

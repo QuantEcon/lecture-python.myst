@@ -522,7 +522,7 @@ when the parameters change.</p>
 
 <span class="c1"># Do the hard work using JIT-ed functions</span>
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">populate_R</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="n">a_vals</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">a_size</span> <span class="o">*</span> <span class="n">z_size</span>
     <span class="k">for</span> <span class="n">s_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -536,7 +536,7 @@ when the parameters change.</p>
             <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">R</span><span class="p">[</span><span class="n">s_i</span><span class="p">,</span> <span class="n">new_a_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>  <span class="c1"># Utility</span>
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">populate_Q</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="n">Π</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">a_size</span> <span class="o">*</span> <span class="n">z_size</span>
     <span class="k">for</span> <span class="n">s_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -546,7 +546,7 @@ when the parameters change.</p>
                 <span class="n">Q</span><span class="p">[</span><span class="n">s_i</span><span class="p">,</span> <span class="n">a_i</span><span class="p">,</span> <span class="n">a_i</span><span class="o">*</span><span class="n">z_size</span> <span class="o">+</span> <span class="n">next_z_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Π</span><span class="p">[</span><span class="n">z_i</span><span class="p">,</span> <span class="n">next_z_i</span><span class="p">]</span>
 
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">asset_marginal</span><span class="p">(</span><span class="n">s_probs</span><span class="p">,</span> <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">):</span>
     <span class="n">a_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">a_size</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">a_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a_size</span><span class="p">):</span>

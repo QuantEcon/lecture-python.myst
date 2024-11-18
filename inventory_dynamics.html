@@ -267,7 +267,7 @@ follow so-called s-S inventory dynamics.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">prange</span>
 <span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
 </pre></div>
 </div>
@@ -366,7 +366,7 @@ and standard normal.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9ae4e56537ffc89ff06460033cfead9cb4d1a878b19295237e479c854d0a0d3b.png" src="_images/9ae4e56537ffc89ff06460033cfead9cb4d1a878b19295237e479c854d0a0d3b.png" />
+<img alt="_images/fa5d5a35888f59b91e28c8ebca5209638dafb19eca31c99f220cfa87cec577b4.png" src="_images/fa5d5a35888f59b91e28c8ebca5209638dafb19eca31c99f220cfa87cec577b4.png" />
 </div>
 </div>
 <p>Now let’s simulate multiple paths in order to build a more complete picture of
@@ -390,7 +390,7 @@ the probabilities of different outcomes:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b071e2ba4471342245d7c9038221899221508209040503c3301a9fac93049de8.png" src="_images/b071e2ba4471342245d7c9038221899221508209040503c3301a9fac93049de8.png" />
+<img alt="_images/13e4c16feb5c2890c2968dead41dfe001af1f533bea92b289ef9ac5c884c6d2a.png" src="_images/13e4c16feb5c2890c2968dead41dfe001af1f533bea92b289ef9ac5c884c6d2a.png" />
 </div>
 </div>
 </section>
@@ -444,7 +444,7 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6c9157d18915678be7049eea4faf7f934f6a25eff1aa250cdf338a6c48cb78a6.png" src="_images/6c9157d18915678be7049eea4faf7f934f6a25eff1aa250cdf338a6c48cb78a6.png" />
+<img alt="_images/0ee0bb5b4baa7a39e6c13254505ddeb132dfb69be3bf9ea3d8f8f34d40de4110.png" src="_images/0ee0bb5b4baa7a39e6c13254505ddeb132dfb69be3bf9ea3d8f8f34d40de4110.png" />
 </div>
 </div>
 <p>We can build up a clearer picture by drawing more samples</p>
@@ -471,7 +471,7 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e032bf604b0e99146aefcf822c8809bbb44c291e1846b27bb0b28b1dbc623a17.png" src="_images/e032bf604b0e99146aefcf822c8809bbb44c291e1846b27bb0b28b1dbc623a17.png" />
+<img alt="_images/8154538ad1ef83ee36f00bdab417efe9a5cca7f5617cde2ecef580d75ef3ae84.png" src="_images/8154538ad1ef83ee36f00bdab417efe9a5cca7f5617cde2ecef580d75ef3ae84.png" />
 </div>
 </div>
 <p>Note that the distribution is bimodal</p>
@@ -508,7 +508,7 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6135d04caa757a2c21dd55b523ad00b258f1c7092ef96bd5c0bb0f3b35c1bd29.png" src="_images/6135d04caa757a2c21dd55b523ad00b258f1c7092ef96bd5c0bb0f3b35c1bd29.png" />
+<img alt="_images/8f42a2277ef3106b14ed2f8282f72bc170bfef2a7e1e0b96bc07fb42cdfc5c9f.png" src="_images/8f42a2277ef3106b14ed2f8282f72bc170bfef2a7e1e0b96bc07fb42cdfc5c9f.png" />
 </div>
 </div>
 <p>The allocation of probability mass is similar to what was shown by the
@@ -547,7 +547,7 @@ code efficiently.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">sigma</span>
 
-<span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">shift_firms_forward</span><span class="p">(</span><span class="n">current_inventory_levels</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">):</span>
 
     <span class="n">num_firms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_inventory_levels</span><span class="p">)</span>
@@ -596,7 +596,7 @@ code efficiently.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c5d1e6e19d8238a3cdd17220280e00566cc8d261d6d6526b0871543538011440.png" src="_images/c5d1e6e19d8238a3cdd17220280e00566cc8d261d6d6526b0871543538011440.png" />
+<img alt="_images/6ed8b63c9945f319a61790dfc98372b9af46726cdf9e1148feeaeb6f2e346fc9.png" src="_images/6ed8b63c9945f319a61790dfc98372b9af46726cdf9e1148feeaeb6f2e346fc9.png" />
 </div>
 </div>
 <p>Notice that by <span class="math notranslate nohighlight">\(t=500\)</span> or <span class="math notranslate nohighlight">\(t=750\)</span> the densities are barely
@@ -627,7 +627,7 @@ specialized function rather than using the class above.</p>
 <p>We will also use parallelization across firms.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">compute_freq</span><span class="p">(</span><span class="n">sim_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">x_init</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">num_firms</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">):</span>
 
     <span class="n">firm_counter</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Records number of firms that restock 2x or more</span>
@@ -663,9 +663,9 @@ specialized function rather than using the class above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency of at least two stock outs = 0.447371
-CPU times: user 2.36 s, sys: 3.85 ms, total: 2.36 s
-Wall time: 867 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency of at least two stock outs = 0.446478
+CPU times: user 2.35 s, sys: 7.75 ms, total: 2.36 s
+Wall time: 871 ms
 </pre></div>
 </div>
 </div>

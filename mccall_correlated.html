@@ -301,7 +301,7 @@ transitory components to wages.</p>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
 <span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">randn</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span>
 <span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
 </pre></div>
 </div>
@@ -453,7 +453,7 @@ Qf(z) = u(c) + \beta \, \mathbb E_z \max \left\{ \frac{u(w')}{1-\beta}, f(z') \r
 <p>Next we implement the <span class="math notranslate nohighlight">\(Q\)</span> operator.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">Q</span><span class="p">(</span><span class="n">js</span><span class="p">,</span> <span class="n">f_in</span><span class="p">,</span> <span class="n">f_out</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply the operator Q.</span>
@@ -555,7 +555,7 @@ Converged in 178 iterations.
 TOC: Elapsed: 0:00:4.15
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.152814149856567
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.150888681411743
 </pre></div>
 </div>
 </div>
@@ -620,11 +620,11 @@ at all state values.</p>
     <span class="n">z_grid</span> <span class="o">=</span> <span class="n">js</span><span class="o">.</span><span class="n">z_grid</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
 
-    <span class="nd">@njit</span>
+    <span class="nd">@jit</span>
     <span class="k">def</span> <span class="nf">f_star_function</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">f_star</span><span class="p">)</span>
 
-    <span class="nd">@njit</span>
+    <span class="nd">@jit</span>
     <span class="k">def</span> <span class="nf">draw_tau</span><span class="p">(</span><span class="n">t_max</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
         <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
@@ -645,7 +645,7 @@ at all state values.</p>
                 <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">τ</span>
 
-    <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">compute_expected_tau</span><span class="p">(</span><span class="n">num_reps</span><span class="o">=</span><span class="mi">100_000</span><span class="p">):</span>
         <span class="n">sum_value</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">num_reps</span><span class="p">):</span>
@@ -682,7 +682,7 @@ at all state values.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cdd67356afff98fa51966067d3cd83299f1283d6a0e75629ae3c161f1c0421a8.png" src="_images/cdd67356afff98fa51966067d3cd83299f1283d6a0e75629ae3c161f1c0421a8.png" />
+<img alt="_images/35fa8780dcec6f7b602870358cfe4331206d8c4ed49642ce9935973afa7c154a.png" src="_images/35fa8780dcec6f7b602870358cfe4331206d8c4ed49642ce9935973afa7c154a.png" />
 </div>
 </div>
 <p>Not surprisingly, unemployment duration increases when unemployment compensation is higher.</p>
@@ -729,7 +729,7 @@ at all state values.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/347fb15914188e16f63ebd97d02a112629acc925e2064ec4d31d6c6382e7ac35.png" src="_images/347fb15914188e16f63ebd97d02a112629acc925e2064ec4d31d6c6382e7ac35.png" />
+<img alt="_images/a1c56c91e68fb9c89d3d8507c08a8687024e4ffa9fd457d13cee60c6edb967f5.png" src="_images/a1c56c91e68fb9c89d3d8507c08a8687024e4ffa9fd457d13cee60c6edb967f5.png" />
 </div>
 </div>
 <p>The figure shows that more patient individuals tend to wait longer before accepting an offer.</p>

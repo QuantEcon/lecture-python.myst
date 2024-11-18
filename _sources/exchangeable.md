@@ -72,7 +72,7 @@ tags: [hide-output]
 ---
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
-from numba import njit, vectorize
+from numba import jit, vectorize
 from math import gamma
 import scipy.optimize as op
 from scipy.integrate import quad
@@ -416,8 +416,8 @@ def learning_example(F_a=1, F_b=1, G_a=3, G_b=1.2):
     given the parameters which specify F and G distributions.
     """
 
-    f = njit(lambda x: p(x, F_a, F_b))
-    g = njit(lambda x: p(x, G_a, G_b))
+    f = jit(lambda x: p(x, F_a, F_b))
+    g = jit(lambda x: p(x, G_a, G_b))
 
     # l(w) = f(w) / g(w)
     l = lambda w: f(w) / g(w)
@@ -557,10 +557,10 @@ To proceed, we create some Python code.
 def function_factory(F_a=1, F_b=1, G_a=3, G_b=1.2):
 
     # define f and g
-    f = njit(lambda x: p(x, F_a, F_b))
-    g = njit(lambda x: p(x, G_a, G_b))
+    f = jit(lambda x: p(x, F_a, F_b))
+    g = jit(lambda x: p(x, G_a, G_b))
 
-    @njit
+    @jit
     def update(a, b, π):
         "Update π by drawing from beta distribution with parameters a and b"
 
@@ -572,7 +572,7 @@ def function_factory(F_a=1, F_b=1, G_a=3, G_b=1.2):
 
         return π
 
-    @njit
+    @jit
     def simulate_path(a, b, T=50):
         "Simulates a path of beliefs π with length T"
 
@@ -678,8 +678,8 @@ The following code approximates the integral above:
 def expected_ratio(F_a=1, F_b=1, G_a=3, G_b=1.2):
 
     # define f and g
-    f = njit(lambda x: p(x, F_a, F_b))
-    g = njit(lambda x: p(x, G_a, G_b))
+    f = jit(lambda x: p(x, F_a, F_b))
+    g = jit(lambda x: p(x, G_a, G_b))
 
     l = lambda w: f(w) / g(w)
     integrand_f = lambda w, π: f(w) * l(w) / (π * l(w) + 1 - π)

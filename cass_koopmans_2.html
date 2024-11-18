@@ -325,7 +325,7 @@ decisions</p></li>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">float64</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">float64</span>
 <span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
@@ -869,7 +869,7 @@ the characterize an economy.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">shooting</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Given the initial condition of capital k0 and an initial guess</span>
@@ -900,7 +900,7 @@ the characterize an economy.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">bisection</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
     <span class="c1"># initial boundaries for guess c0</span>
@@ -954,7 +954,7 @@ the characterize an economy.</p>
 <p>Now  we’re ready to bring in Python code that we require to compute additional objects that appear in a competitive equilibrium.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c_path</span><span class="p">):</span>
     <span class="c1"># Here we choose numeraire to be u&#39;(c_0) -- this is q^(t_0)_t</span>
     <span class="n">T</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">c_path</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
@@ -964,12 +964,12 @@ the characterize an economy.</p>
         <span class="n">q_path</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">β</span> <span class="o">**</span> <span class="n">t</span> <span class="o">*</span> <span class="n">pp</span><span class="o">.</span><span class="n">u_prime</span><span class="p">(</span><span class="n">c_path</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">q_path</span>
 
-<span class="nd">@njit</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">w</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">k_path</span><span class="p">):</span>
     <span class="n">w_path</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">k_path</span><span class="p">)</span> <span class="o">-</span> <span class="n">k_path</span> <span class="o">*</span> <span class="n">pp</span><span class="o">.</span><span class="n">f_prime</span><span class="p">(</span><span class="n">k_path</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">w_path</span>
 
-<span class="nd">@njit</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">η</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">k_path</span><span class="p">):</span>
     <span class="n">η_path</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">f_prime</span><span class="p">(</span><span class="n">k_path</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">η_path</span>
@@ -1014,9 +1014,9 @@ the characterize an economy.</p>
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\m&#39;
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\e&#39;
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-/tmp/ipykernel_2018/2143488158.py:6: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+/tmp/ipykernel_2022/2143488158.py:6: SyntaxWarning: invalid escape sequence &#39;\e&#39;
   ylabels = [&#39;$q_t^0$&#39;, &#39;$w_t$&#39;, &#39;$\eta_t$&#39;, &#39;$c_t$&#39;, &#39;$k_t$&#39;, &#39;$\mu_t$&#39;]
-/tmp/ipykernel_2018/2143488158.py:6: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/tmp/ipykernel_2022/2143488158.py:6: SyntaxWarning: invalid escape sequence &#39;\m&#39;
   ylabels = [&#39;$q_t^0$&#39;, &#39;$w_t$&#39;, &#39;$\eta_t$&#39;, &#39;$c_t$&#39;, &#39;$k_t$&#39;, &#39;$\mu_t$&#39;]
 </pre></div>
 </div>
@@ -1063,7 +1063,7 @@ with <span class="math notranslate nohighlight">\(K_0\)</span> below the steady 
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:17: SyntaxWarning: invalid escape sequence &#39;\g&#39;
 &lt;&gt;:17: SyntaxWarning: invalid escape sequence &#39;\g&#39;
-/tmp/ipykernel_2018/134256387.py:17: SyntaxWarning: invalid escape sequence &#39;\g&#39;
+/tmp/ipykernel_2022/134256387.py:17: SyntaxWarning: invalid escape sequence &#39;\g&#39;
   ax.plot(paths[i], label=f&#39;$\gamma = {γ}$&#39;)
 </pre></div>
 </div>
@@ -1100,7 +1100,7 @@ years, and define a new function for <span class="math notranslate nohighlight">
 <p>We begin by continuing to assume that  <span class="math notranslate nohighlight">\(t_0=0\)</span> and plot things for different maturities <span class="math notranslate nohighlight">\(t=T\)</span>, with <span class="math notranslate nohighlight">\(K_0\)</span> below the steady state</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">q_generic</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">c_path</span><span class="p">):</span>
     <span class="c1"># simplify notations</span>
     <span class="n">β</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">β</span>
@@ -1113,7 +1113,7 @@ years, and define a new function for <span class="math notranslate nohighlight">
         <span class="n">q_path</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="n">t0</span><span class="p">]</span> <span class="o">=</span> <span class="n">β</span> <span class="o">**</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span> <span class="o">*</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">c_path</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="o">/</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">c_path</span><span class="p">[</span><span class="n">t0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">q_path</span>
 
-<span class="nd">@njit</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">q_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;Yield to maturity&#39;&#39;&#39;</span>
     <span class="n">r_path</span> <span class="o">=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">q_path</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">q_path</span><span class="p">))</span>

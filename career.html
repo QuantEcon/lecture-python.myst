@@ -300,7 +300,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/conda/envs/quant
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
 <span class="kn">from</span> <span class="nn">quantecon.distributions</span> <span class="kn">import</span> <span class="n">BetaBinomial</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">binom</span><span class="p">,</span> <span class="n">beta</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d.axes3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
@@ -482,7 +482,7 @@ the corresponding Bellman operator <span class="math notranslate nohighlight">\(
     <span class="n">F_probs</span><span class="p">,</span> <span class="n">G_probs</span> <span class="o">=</span> <span class="n">cw</span><span class="o">.</span><span class="n">F_probs</span><span class="p">,</span> <span class="n">cw</span><span class="o">.</span><span class="n">G_probs</span>
     <span class="n">F_mean</span><span class="p">,</span> <span class="n">G_mean</span> <span class="o">=</span> <span class="n">cw</span><span class="o">.</span><span class="n">F_mean</span><span class="p">,</span> <span class="n">cw</span><span class="o">.</span><span class="n">G_mean</span>
 
-    <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
+    <span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
         <span class="s2">&quot;The Bellman operator&quot;</span>
 
@@ -497,7 +497,7 @@ the corresponding Bellman operator <span class="math notranslate nohighlight">\(
 
         <span class="k">return</span> <span class="n">v_new</span>
 
-    <span class="nd">@njit</span>
+    <span class="nd">@jit</span>
     <span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
         <span class="s2">&quot;Computes the v-greedy policy&quot;</span>
 
@@ -686,7 +686,7 @@ when the worker follows the optimal policy.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/83bc511a755942763f7aef1ae6f24ad933b2d5f21f988ea3164d17d841f4d2f7.png" src="_images/83bc511a755942763f7aef1ae6f24ad933b2d5f21f988ea3164d17d841f4d2f7.png" />
+<img alt="_images/f17bf9a880f6fda496a5b29866894187c7dd75fed1a99c946d8d30efdbbeda80.png" src="_images/f17bf9a880f6fda496a5b29866894187c7dd75fed1a99c946d8d30efdbbeda80.png" />
 </div>
 </div>
 </section>
@@ -728,7 +728,7 @@ T^* := \inf\{t \geq 0 \,|\, (\theta_t, \epsilon_t) \in S\}
 <span class="n">v_star</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">cw</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">greedy_star</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_star</span><span class="p">)</span>
 
-<span class="nd">@njit</span>
+<span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">passage_time</span><span class="p">(</span><span class="n">optimal_policy</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
     <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
@@ -741,7 +741,7 @@ T^* := \inf\{t \geq 0 \,|\, (\theta_t, \epsilon_t) \in S\}
             <span class="n">i</span><span class="p">,</span> <span class="n">j</span>  <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">F</span><span class="p">),</span> <span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
         <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
 
-<span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">median_time</span><span class="p">(</span><span class="n">optimal_policy</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">25000</span><span class="p">):</span>
     <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>

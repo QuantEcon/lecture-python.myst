@@ -260,7 +260,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">prange</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 </pre></div>
@@ -304,8 +304,8 @@ provides a more computationally efficient way to approximate the mean of the cum
     <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">w</span> <span class="o">**</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># The two density functions.</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -326,7 +326,7 @@ provides a more computationally efficient way to approximate the mean of the cum
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:5: SyntaxWarning: invalid escape sequence &#39;\o&#39;
 &lt;&gt;:5: SyntaxWarning: invalid escape sequence &#39;\o&#39;
-/tmp/ipykernel_2339/1107513590.py:5: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_2343/1107513590.py:5: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   plt.xlabel(&#39;$\omega$&#39;)
 </pre></div>
 </div>
@@ -336,7 +336,7 @@ provides a more computationally efficient way to approximate the mean of the cum
 <p>The likelihood ratio is <code class="docutils literal notranslate"><span class="pre">l(w)=f(w)/g(w)</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -355,9 +355,9 @@ provides a more computationally efficient way to approximate the mean of the cum
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
 &lt;&gt;:2: SyntaxWarning: invalid escape sequence &#39;\e&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
-/tmp/ipykernel_2339/233243230.py:2: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+/tmp/ipykernel_2343/233243230.py:2: SyntaxWarning: invalid escape sequence &#39;\e&#39;
   plt.title(&#39;$\ell(\omega)$&#39;)
-/tmp/ipykernel_2339/233243230.py:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_2343/233243230.py:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   plt.xlabel(&#39;$\omega$&#39;)
 </pre></div>
 </div>
@@ -443,7 +443,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 <p>Below we prepare a Python function for computing the importance sampling estimates given any beta distributions <span class="math notranslate nohighlight">\(p\)</span>, <span class="math notranslate nohighlight">\(q\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">estimate</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
 
     <span class="n">μ_L</span> <span class="o">=</span> <span class="mi">0</span>
@@ -476,7 +476,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9472736608632193
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0156433761306312
 </pre></div>
 </div>
 </div>
@@ -489,7 +489,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9995870020896206
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9948405399884152
 </pre></div>
 </div>
 </div>
@@ -505,7 +505,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.36987159646782863
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5145057104329395
 </pre></div>
 </div>
 </div>
@@ -517,7 +517,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0060866131428428
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9618888506770538
 </pre></div>
 </div>
 </div>
@@ -529,7 +529,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 <p>The code  below produces distributions of estimates using both Monte Carlo and importance sampling methods.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">N_simu</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 
     <span class="n">μ_L_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N_simu</span><span class="p">)</span>
@@ -562,7 +562,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9950632195963458, 0.005186266674135793)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0059171420598676, 0.020243303514694094)
 </pre></div>
 </div>
 </div>
@@ -575,7 +575,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9998808447181199, 2.3031846425667844e-05)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0000029047273178, 2.3306504873311916e-05)
 </pre></div>
 </div>
 </div>
@@ -617,13 +617,13 @@ still produces an estimate close to its theoretical value of unity.</p>
 &lt;&gt;:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
-/tmp/ipykernel_2339/547428366.py:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2343/547428366.py:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[row, col].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
-/tmp/ipykernel_2339/547428366.py:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2343/547428366.py:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[row, col].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
 </pre></div>
 </div>
-<img alt="_images/576373698464c1acfd82b7d75a6a2971b009e8444753d1b6c0e92737d673ccf4.png" src="_images/576373698464c1acfd82b7d75a6a2971b009e8444753d1b6c0e92737d673ccf4.png" />
+<img alt="_images/2244eba852b07ede90aa05322ecc281f88aa8ec52ce966b81289af28d882aeb7.png" src="_images/2244eba852b07ede90aa05322ecc281f88aa8ec52ce966b81289af28d882aeb7.png" />
 </div>
 </div>
 <p>The simulation exercises above show that the importance sampling estimates are unbiased under all <span class="math notranslate nohighlight">\(T\)</span>
@@ -737,13 +737,13 @@ while the standard Monte Carlo estimates are biased downwards.</p>
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
-/tmp/ipykernel_2339/1582348873.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2343/1582348873.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[i].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
-/tmp/ipykernel_2339/1582348873.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2343/1582348873.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[i].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
 </pre></div>
 </div>
-<img alt="_images/50f45f05b3d7ba6e0c168941db2542bc12a0bd07dcf69a92e5c8123df6cbaa09.png" src="_images/50f45f05b3d7ba6e0c168941db2542bc12a0bd07dcf69a92e5c8123df6cbaa09.png" />
+<img alt="_images/3166dacb174e368edb511570204a91d674d103e957b4661285b292bfbb1da718.png" src="_images/3166dacb174e368edb511570204a91d674d103e957b4661285b292bfbb1da718.png" />
 </div>
 </div>
 <p>Our simulations suggest that indeed <span class="math notranslate nohighlight">\(h_2\)</span> is a quite  good importance sampling distribution for our problem.</p>
@@ -785,13 +785,13 @@ while the standard Monte Carlo estimates are biased downwards.</p>
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
-/tmp/ipykernel_2339/2364143561.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2343/2364143561.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[i].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
-/tmp/ipykernel_2339/2364143561.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2343/2364143561.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[i].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
 </pre></div>
 </div>
-<img alt="_images/3b7452690c93b8657427efca66a1f78b6704bb3363aeb18d17839df1184789ed.png" src="_images/3b7452690c93b8657427efca66a1f78b6704bb3363aeb18d17839df1184789ed.png" />
+<img alt="_images/4279ab4f69248810462f9fe07d351c400d83ff2d16d277254341bb87ab1ea64a.png" src="_images/4279ab4f69248810462f9fe07d351c400d83ff2d16d277254341bb87ab1ea64a.png" />
 </div>
 </div>
 <p>However, <span class="math notranslate nohighlight">\(h_3\)</span> is evidently a poor importance sampling distribution forpir problem,

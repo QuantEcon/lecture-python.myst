@@ -322,7 +322,7 @@ the population of <span class="math notranslate nohighlight">\(N\)</span> balls.
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">comb</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">normaltest</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
 </pre></div>
 </div>
 </div>
@@ -641,7 +641,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.9579017, 0.2775233, 1.1594849, 0.6050901])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.9583419, 0.276946 , 1.1595807, 0.6051314])
 </pre></div>
 </div>
 </div>
@@ -654,10 +654,10 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.31812477, -0.17903246, -0.74831863, -0.39077367],
-       [-0.17903246,  0.25911934, -0.05266718, -0.0274197 ],
-       [-0.74831863, -0.05266718,  0.91534976, -0.11436395],
-       [-0.39077367, -0.0274197 , -0.11436395,  0.53255732]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.31858223, -0.17890637, -0.74914165, -0.39053421],
+       [-0.17890637,  0.25858014, -0.05234524, -0.02732852],
+       [-0.74914165, -0.05234524,  0.91593299, -0.1144461 ],
+       [-0.39053421, -0.02732852, -0.1144461 ,  0.53230884]])
 </pre></div>
 </div>
 </div>
@@ -696,7 +696,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="n">size</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -743,7 +743,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d962cd2bebf48d420a6ed25ff3f8e76214d56e8d3589b2122dc9d11102221abf.png" src="_images/d962cd2bebf48d420a6ed25ff3f8e76214d56e8d3589b2122dc9d11102221abf.png" />
+<img alt="_images/31f72213b39edb0ec34e7b998c263ce463feec079bc1f2cf0704a54a3e9905d1.png" src="_images/31f72213b39edb0ec34e7b998c263ce463feec079bc1f2cf0704a54a3e9905d1.png" />
 </div>
 </div>
 <p>The diagonal graphs plot the marginal distributions of <span class="math notranslate nohighlight">\(k_i\)</span> for
@@ -782,7 +782,7 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.88402121, 0.27626717, 0.34346719, 0.74211727])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.77889297, 0.95333125, 0.72219498, 0.15003989])
 </pre></div>
 </div>
 </div>

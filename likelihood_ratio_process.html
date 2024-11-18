@@ -273,7 +273,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">njit</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">jit</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
 </pre></div>
@@ -343,15 +343,15 @@ probability distributionss, for example, a sequence of  IID draws from <span cla
     <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># The two density functions.</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Generate N sets of T observations of the likelihood ratio,</span>
@@ -399,7 +399,7 @@ draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4a714dba485a3f9fdde09d2d26c2924e4b6c5a35e6161fcf58cdc7bb189be8a5.png" src="_images/4a714dba485a3f9fdde09d2d26c2924e4b6c5a35e6161fcf58cdc7bb189be8a5.png" />
+<img alt="_images/a869c18bb6f7709acdab2498dc34f66fdb9e7d32195d8dd91ae03b48917d2013.png" src="_images/a869c18bb6f7709acdab2498dc34f66fdb9e7d32195d8dd91ae03b48917d2013.png" />
 </div>
 </div>
 <p>Evidently, as sample length <span class="math notranslate nohighlight">\(T\)</span> grows, most probability mass
@@ -414,10 +414,10 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f71be5ae240&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fbb82821640&gt;]
 </pre></div>
 </div>
-<img alt="_images/c5cbe27c562791bc66caaf3cb1cba160eef2f2088eccc5b4c53bc9a88b98c2b0.png" src="_images/c5cbe27c562791bc66caaf3cb1cba160eef2f2088eccc5b4c53bc9a88b98c2b0.png" />
+<img alt="_images/2a7a0a6098b12a8445103c651e3ecb4d3d33a396fa6766917f42d8bcaecb0a60.png" src="_images/2a7a0a6098b12a8445103c651e3ecb4d3d33a396fa6766917f42d8bcaecb0a60.png" />
 </div>
 </div>
 <p>Despite the evident convergence of most probability mass to a
@@ -526,10 +526,10 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f71be5ae270&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fbb82a903b0&gt;]
 </pre></div>
 </div>
-<img alt="_images/1248a15dd7536f0cbc9ba732bcaa22920455efc14bda77706ab03c4cca27ecc1.png" src="_images/1248a15dd7536f0cbc9ba732bcaa22920455efc14bda77706ab03c4cca27ecc1.png" />
+<img alt="_images/055db7da58e3321f6eea6126ed56f039b48770b086a9cbeff403d98d8dbb0977.png" src="_images/055db7da58e3321f6eea6126ed56f039b48770b086a9cbeff403d98d8dbb0977.png" />
 </div>
 </div>
 <p>We also plot the probability that <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> falls into
@@ -542,10 +542,10 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f71bf235010&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fbb828c8860&gt;]
 </pre></div>
 </div>
-<img alt="_images/415e809de47c232f5eb004d89a0fc6f036aedf5a9efbca41f18942c8ad9504b7.png" src="_images/415e809de47c232f5eb004d89a0fc6f036aedf5a9efbca41f18942c8ad9504b7.png" />
+<img alt="_images/4096779078421f5e568159697c882a6b6578c5c204d6233b69cdeb905859060d.png" src="_images/4096779078421f5e568159697c882a6b6578c5c204d6233b69cdeb905859060d.png" />
 </div>
 </div>
 </section>
@@ -664,7 +664,7 @@ is what makes it possible to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6d089802e5b859dd895f749912eb68eade9373149113fe5d6f85a6e9e187fcba.png" src="_images/6d089802e5b859dd895f749912eb68eade9373149113fe5d6f85a6e9e187fcba.png" />
+<img alt="_images/a6265b9e887e21cb2dfd5ac3117b40f40d388ea3b9d3d4556cbce850c21d0d8c.png" src="_images/a6265b9e887e21cb2dfd5ac3117b40f40d388ea3b9d3d4556cbce850c21d0d8c.png" />
 </div>
 </div>
 <p>The graph below shows more clearly that, when we hold the threshold
@@ -689,7 +689,7 @@ is what makes it possible to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e9fb79119648cb059daeb81e36ba3b7da19559211f2eaabbb306a48828fc27f2.png" src="_images/e9fb79119648cb059daeb81e36ba3b7da19559211f2eaabbb306a48828fc27f2.png" />
+<img alt="_images/a20fe8293c23b16da0a69080b693eeb046ff7e3b981cab798784c2aa829e5821.png" src="_images/a20fe8293c23b16da0a69080b693eeb046ff7e3b981cab798784c2aa829e5821.png" />
 </div>
 </div>
 <p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>,  the threshold <span class="math notranslate nohighlight">\(c\)</span> uniquely pins down  probabilities
@@ -724,7 +724,7 @@ sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/65c239daafbd740f782b247101c388ae4ddd9a826232119568f836cb4393d6cf.png" src="_images/65c239daafbd740f782b247101c388ae4ddd9a826232119568f836cb4393d6cf.png" />
+<img alt="_images/56392c07b6691ea7f036528f75f6ac2eb42feda4a7a00f6894e9fc056d6ad9b5.png" src="_images/56392c07b6691ea7f036528f75f6ac2eb42feda4a7a00f6894e9fc056d6ad9b5.png" />
 </div>
 </div>
 <p>Notice that as <span class="math notranslate nohighlight">\(t\)</span> increases, we are assured a larger probability
@@ -765,7 +765,7 @@ target probability of detection, for example, <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/43ff6d69b2a3a2f5f293fea54f6297327293545d8d9fe2d215b84fd123f2d259.png" src="_images/43ff6d69b2a3a2f5f293fea54f6297327293545d8d9fe2d215b84fd123f2d259.png" />
+<img alt="_images/cbc9b6cc30d7a2de70cc6b2e09c3ef07cc58378b7942e0d0055f6b9106b9b0ce.png" src="_images/cbc9b6cc30d7a2de70cc6b2e09c3ef07cc58378b7942e0d0055f6b9106b9b0ce.png" />
 </div>
 </div>
 <p>The United States Navy evidently used a procedure like this to select a sample size <span class="math notranslate nohighlight">\(t\)</span> for doing quality
@@ -821,7 +821,7 @@ is.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span> <span class="o">=</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">1.8</span>
 
-<span class="n">h</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span><span class="p">))</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -903,10 +903,10 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f71bf287020&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fbb82a850d0&gt;]
 </pre></div>
 </div>
-<img alt="_images/0e483c2d39d2556e9223f37ee7a3c8eecad06c3abb8ec8f9d0fcc8eaa14e7afe.png" src="_images/0e483c2d39d2556e9223f37ee7a3c8eecad06c3abb8ec8f9d0fcc8eaa14e7afe.png" />
+<img alt="_images/95cbb1a0ab3a83e3976832a02a8bbc63d9ca2e022c64e6eeca6753f161aaa750.png" src="_images/95cbb1a0ab3a83e3976832a02a8bbc63d9ca2e022c64e6eeca6753f161aaa750.png" />
 </div>
 </div>
 <p>We can also try an <span class="math notranslate nohighlight">\(h\)</span> that is closer to <span class="math notranslate nohighlight">\(f\)</span> than is
@@ -914,7 +914,7 @@ simulation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span>
-<span class="n">h</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span><span class="p">))</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -950,10 +950,10 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f71bca02fc0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fbb800f7080&gt;]
 </pre></div>
 </div>
-<img alt="_images/f52f33028f8582e6ccc56264bfa3d0a179b7365292d5d763f54e39df1b68bf00.png" src="_images/f52f33028f8582e6ccc56264bfa3d0a179b7365292d5d763f54e39df1b68bf00.png" />
+<img alt="_images/63b923bb10a5f81650e2fe3fb7c6f63bb81d96e2280311e9cf9b043f85e91d85.png" src="_images/63b923bb10a5f81650e2fe3fb7c6f63bb81d96e2280311e9cf9b043f85e91d85.png" />
 </div>
 </div>
 </section>

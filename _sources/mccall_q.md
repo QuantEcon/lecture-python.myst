@@ -581,7 +581,7 @@ class Qlearning_McCall:
 
         return qtable_new
 
-@jit(nopython=True)
+@jit
 def run_epochs(N, qlmc, qtable):
     """
     Run epochs N times with qtable from the last iteration each time.
