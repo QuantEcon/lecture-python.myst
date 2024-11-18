@@ -912,7 +912,7 @@ $$ (eq:tildeC)
 A positive fixed point  $C = \tilde C(K)$ exists only if $f\left(K\right)+\left(1-\delta\right)K-f^{\prime-1}\left(\frac{1}{\beta}-\left(1-\delta\right)\right)>0$
 
 ```{code-cell} ipython3
-@njit
+@jit
 def C_tilde(K, pp):
 
     return pp.f(K) + (1 - pp.δ) * K - pp.f_prime_inv(1 / pp.β - 1 + pp.δ)
@@ -931,11 +931,11 @@ K = \tilde K(C)
 $$ (eq:tildeK)
 
 ```{code-cell} ipython3
-@njit
+@jit
 def K_diff(K, C, pp):
     return pp.f(K) - pp.δ * K - C
 
-@njit
+@jit
 def K_tilde(C, pp):
 
     res = brentq(K_diff, 1e-6, 100, args=(C, pp))
@@ -951,7 +951,7 @@ It is thus the intersection of the two curves $\tilde{C}$ and $\tilde{K}$ that w
 We can compute $K_s$ by solving the equation $K_s = \tilde{K}\left(\tilde{C}\left(K_s\right)\right)$
 
 ```{code-cell} ipython3
-@njit
+@jit
 def K_tilde_diff(K, pp):
 
     K_out = K_tilde(C_tilde(K, pp), pp)
