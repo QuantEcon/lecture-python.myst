@@ -125,7 +125,7 @@ As usual, we'll start by importing some Python tools.
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from numba import vectorize, njit
+from numba import vectorize, jit
 from math import gamma
 import pandas as pd
 import scipy.stats as sp
@@ -143,7 +143,7 @@ from jax import random
 
 np.random.seed(142857)
 
-@njit
+@jit
 def set_seed():
     np.random.seed(142857)
 set_seed()
@@ -164,14 +164,14 @@ def p(x, a, b):
     return r * x** (a-1) * (1 - x) ** (b-1)
 
 # The two density functions.
-f = njit(lambda x: p(x, F_a, F_b))
-g = njit(lambda x: p(x, G_a, G_b))
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
 ```
 
 ```{code-cell} ipython3
 :hide-output: false
 
-@njit
+@jit
 def simulate(a, b, T=50, N=500):
     '''
     Generate N sets of T observations of the likelihood ratio,
@@ -250,7 +250,7 @@ from our target mixture distribution.
 
 
 ```{code-cell} ipython3
-@njit
+@jit
 def draw_lottery(p, N):
     "Draw from the compound lottery directly."
 
@@ -339,7 +339,7 @@ likelihood ratio $ \ell $ according to  recursion {eq}`equation-eq-recur1`
 ```{code-cell} ipython3
 :hide-output: false
 
-@njit
+@jit
 def update(π, l):
     "Update π using likelihood l"
 
