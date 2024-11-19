@@ -556,20 +556,17 @@ class BayesianInference:
         Computes numerically the posterior distribution with beta prior parametrized by (alpha0, beta0)
         given data using MCMC
         """
-        
-        # Convert data to float32
-        data = np.asarray(data, dtype=np.float32)
-
         # use pyro
         if self.solver=='pyro':
-
+            # tensorize
+            data = torch.tensor(data)
             nuts_kernel = NUTS(self.model)
             mcmc = MCMC(nuts_kernel, num_samples=num_samples, warmup_steps=num_warmup, disable_progbar=True)
             mcmc.run(data)
 
         # use numpyro
         elif self.solver=='numpyro':
-
+            data = np.array(data, dtype=float)
             nuts_kernel = nNUTS(self.model)
             mcmc = nMCMC(nuts_kernel, num_samples=num_samples, num_warmup=num_warmup, progress_bar=False)
             mcmc.run(self.rng_key, data=data)
@@ -592,9 +589,9 @@ class BayesianInference:
             pyro.sample('theta', dist.Beta(alpha_q, beta_q))
 
         else:
-            alpha_q = numpyro.param('alpha_q', 10.0,
+            alpha_q = numpyro.param('alpha_q', 10,
                             constraint=nconstraints.positive)
-            beta_q = numpyro.param('beta_q', 10.0,
+            beta_q = numpyro.param('beta_q', 10,
                             constraint=nconstraints.positive)
 
             numpyro.sample('theta', ndist.Beta(alpha_q, beta_q))
@@ -652,16 +649,17 @@ class BayesianInference:
         params : the learned parameters for guide
         losses : a vector of loss at each step
         """
-        # Convert data to float32
-        data = np.asarray(data, dtype=np.float32)
 
         # initiate SVI
         svi = self.SVI_init(guide_dist=guide_dist)
 
         # do gradient steps
-        if self.solver == 'pyro':
+        if self.solver=='pyro':
+             # tensorize data
+            if not torch.is_tensor(data):
+                data = torch.tensor(data)
             # store loss vector
-            losses = np.zeros(n_steps, dtype=np.float32)
+            losses = np.zeros(n_steps)
             for step in range(n_steps):
                 losses[step] = svi.step(data)
 
@@ -669,14 +667,15 @@ class BayesianInference:
             params = {
                 'alpha_q': pyro.param('alpha_q').item(),
                 'beta_q': pyro.param('beta_q').item()
-            }
+                }
 
-        elif self.solver == 'numpyro':
+        elif self.solver=='numpyro':
+            data = np.array(data, dtype=float)
             result = svi.run(self.rng_key, n_steps, data, progress_bar=False)
-            params = {
-                key: np.asarray(value, dtype=np.float32) for key, value in result.params.items()
-            }
-            losses = np.asarray(result.losses, dtype=np.float32)
+            params = dict(
+                (key, np.asarray(value)) for key, value in result.params.items()
+                )
+            losses = np.asarray(result.losses)
 
         return params, losses
 ```
@@ -967,18 +966,18 @@ We first initialize the `BayesianInference` classes and then can directly call `
 ```{code-cell} ipython3
 # Initialize BayesianInference classes
 # try uniform
-STD_UNIFORM_pyro = BayesianInference(param=(0.0,1.0), name_dist='uniform', solver='pyro')
+STD_UNIFORM_pyro = BayesianInference(param=(0,1), name_dist='uniform', solver='pyro')
 UNIFORM_numpyro = BayesianInference(param=(0.2,0.7), name_dist='uniform', solver='numpyro')
 
 # try truncated lognormal
-LOGNORMAL_numpyro = BayesianInference(param=(0.0,2.0), name_dist='lognormal', solver='numpyro')
-LOGNORMAL_pyro = BayesianInference(param=(0.0,2.0), name_dist='lognormal', solver='pyro')
+LOGNORMAL_numpyro = BayesianInference(param=(0,2), name_dist='lognormal', solver='numpyro')
+LOGNORMAL_pyro = BayesianInference(param=(0,2), name_dist='lognormal', solver='pyro')
 
 # try von Mises
 # shifted von Mises
-VONMISES_numpyro = BayesianInference(param=10.0, name_dist='vonMises', solver='numpyro')
+VONMISES_numpyro = BayesianInference(param=10, name_dist='vonMises', solver='numpyro')
 # truncated von Mises
-VONMISES_pyro = BayesianInference(param=40.0, name_dist='vonMises', solver='pyro')
+VONMISES_pyro = BayesianInference(param=40, name_dist='vonMises', solver='pyro')
 
 # try laplace
 LAPLACE_numpyro = BayesianInference(param=(0.5, 0.07), name_dist='laplace', solver='numpyro')
