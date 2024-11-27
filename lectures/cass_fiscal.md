@@ -68,7 +68,7 @@ under the budget constraint
 $$
 \begin{aligned}
     \sum_{t=0}^\infty& q_t \left\{ (1 + \tau_{ct})c_t + \underbrace{[k_{t+1} - (1 - \delta)k_t]}_{\text{no tax when investing}} \right\} \\
-    &\leq \sum_{t=0}^\infty q_t \left\{ \tau_{kt} - \underbrace{\tau_{kt}(\eta_t - \delta)k_t}_{\text{tax on rental return}} + (1 - \tau_{nt})w_t n_t - \tau_{ht} \right\}.
+    &\leq \sum_{t=0}^\infty q_t \left\{ \eta_t k_t - \underbrace{\tau_{kt}(\eta_t - \delta)k_t}_{\text{tax on rental return}} + (1 - \tau_{nt})w_t n_t - \tau_{ht} \right\}.
 \end{aligned}
 $$ (eq:house_budget)
 
@@ -664,7 +664,7 @@ def plot_results(solution, k_ss, c_ss, shocks, shock_param,
     axes[4].set_title(rf'${shock_param}$')
 ```
 
-#### Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10.
+**Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10**
 
 The experiment replicates the Figure 12.9.1 in RMT5 under $\gamma = 2$.
 
@@ -874,7 +874,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-#### Experiment 2: Foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 in period 10.
+**Experiment 2: Foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 in period 10**
 
 The experiment replicates the Figure 12.9.4.
 
@@ -888,7 +888,7 @@ shocks = {
 experiment_model(shocks, S, model, run_shooting, plot_results, 'τ_c')
 ```
 
-#### Experiment 3: Foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.
+**Experiment 3: Foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10**
 
 The experiment replicates the Figure 12.9.5.
 
@@ -903,7 +903,7 @@ experiment_two_models(shocks, S, model, model_γ2,
                 run_shooting, plot_results, 'τ_k')
 ```
 
-#### Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever
+**Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever**
 
 The experiment replicates the Figure 12.9.6.
 
@@ -945,18 +945,25 @@ The algorithm is described as follows:
 
 3. *Compute the residuals* $l_a$ and $l_k$ for $t = 0, \dots, S$, as well as $l_{k_0}$ for $t = 0$ and $l_{k_S}$ for $t = S$:
    - Compute the *Euler's equation* residual for $t = 0, \dots, S$ using {eq}`eq:diff_second`:
+
      $$
      l_{ta} = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right] - 1
      $$
+
    - Compute the *feasibility condition* residual for $t = 1, \dots, S-1$ using {eq}`eq:feasi_capital`:
+
      $$
-     l_{tk} = k_{t+1} - f(k_t) + (1 - \delta)k_t - g_t - c_t
+     l_{tk} = k_{t+1} - f(k_t) - (1 - \delta)k_t + g_t + c_t
      $$
+
    - Compute the residual for the *initial condition for $k_0$* using {eq}`eq:diff_second_steady` and the initial capital $k_0$:
+
      $$
      l_{k_0} = 1 - \beta \left[ (1 - \tau_{k0}) \left(f'(k_0) - \delta \right) + 1 \right]
      $$
+
    - Compute the residual for the *terminal condition* for $t = S$ using {eq}`eq:diff_second` under the assumptions $c_t = c_{t+1} = c_S$, $k_t = k_{t+1} = k_S$, $\tau_{ct} = \tau_{ct+1} = \tau_{cS}$, and $\tau_{kt} = \tau_{kt+1} = \tau_{kS}$:
+     
      $$
      l_{k_S} = \beta u'(c_S) \frac{(1 + \tau_{cS})}{(1 + \tau_{cS})} \left[(1 - \tau_{kS})(f'(k_S) - \delta) + 1 \right] - 1
      $$
@@ -1038,7 +1045,7 @@ Below are the results for the same experiments using the second method.
 
 This method does not have numerical stability issues, so `mp.mpf` is not necessary.
 
-### Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10
+**Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10**
 
 The experiment replicates Figure 12.9.1 in RMT5 under the parameter $\gamma = 2$.
 
@@ -1080,7 +1087,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-### Experiment 2: Foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 in period 10.
+**Experiment 2: Foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 in period 10.**
 
 The experiment replicates the Figure 12.9.4.
 
@@ -1094,7 +1101,7 @@ shocks = {
 experiment_model(shocks, S, model, run_min, plot_results, 'τ_c')
 ```
 
-### Experiment 3: Foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.
+**Experiment 3: Foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.**
 
 The experiment replicates the Figure 12.9.5.
 
@@ -1109,7 +1116,7 @@ experiment_two_models(shocks, S, model, model_γ2,
                 run_min, plot_results, 'τ_k')
 ```
 
-### Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever
+**Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever**
 
 The experiment replicates the Figure 12.9.6.
 
