@@ -1,0 +1,56 @@
+name: Build Project on Google Collab (Execution)
+on: [pull_request]
+jobs:
+  execution-checks:
+    runs-on: quantecon-gpu
+    container:
+      image: docker://us-docker.pkg.dev/colab-images/public/runtime
+      options: --gpus all
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Check nvidia drivers
+        shell: bash -l {0}
+        run: |
+          nvidia-smi
+      - name: Check python version
+        shell: bash -l {0}
+        run: |
+          python --version
+      - name: Display Pip Versions
+        shell: bash -l {0}
+        run: pip list
+      - name: Download "build" folder (cache)
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: cache.yml
+          branch: main
+          name: build-cache
+          path: _build
+      # Install build software
+      - name: Install Build Software
+        shell: bash -l {0}
+        run: |
+          pip install jupyter-book==0.15.1 docutils==0.17.1 quantecon-book-theme==0.7.2 sphinx-tojupyter==0.3.0 sphinxext-rediraffe==0.2.7 sphinx-reredirects sphinx-exercise==0.4.1 sphinxcontrib-youtube==1.1.0 sphinx-togglebutton==0.3.1 arviz==0.13.0
+      # Build of HTML (Execution Testing)
+      - name: Build HTML
+        shell: bash -l {0}
+        run: |
+          jb build lectures --path-output ./ -n -W --keep-going
+      - name: Upload Execution Reports
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: execution-reports
+          path: _build/html/reports
+      - name: Preview Deploy to Netlify
+        uses: nwtgck/actions-netlify@v2
+        with:
+          publish-dir: '_build/html/'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Preview Deploy from GitHub Actions"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
