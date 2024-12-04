@@ -3,11 +3,14 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # run cache monthly to prevent expiration
+    - cron:  '0 0 1 * *'
 jobs:
   cache:
     runs-on: quantecon-gpu
     container:
-      image: ghcr.io/quantecon/lecture-python-container:cuda-12.6.0-anaconda-2024-10-py312
+      image: ghcr.io/quantecon/lecture-python-container:cuda-12.6.0-anaconda-2024-10-py312-b
       options: --gpus all
     steps:
       - uses: actions/checkout@v4
