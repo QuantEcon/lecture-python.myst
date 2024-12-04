@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # run cache monthly to prevent expiration
+    - cron:  '0 0 1 * *'
 jobs:
   cache:
     runs-on: quantecon-gpu
