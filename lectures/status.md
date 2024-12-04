@@ -32,3 +32,9 @@ and the following package versions
 :tags: [hide-output]
 !conda list
 ```
+
+This lecture series also has access to the following GPU
+
+```{code-cell} ipython
+!nvidia-smi
+```
