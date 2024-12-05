@@ -71,13 +71,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -90,14 +90,15 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=eed9c059a3ee152aae2353ec732f0a6d12e6aa07"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
@@ -107,11 +108,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -240,11 +237,7 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <div id="qe-notebook-header" align="right" style="text-align:right;">
-        <a href="https://quantecon.org/" title="quantecon.org">
-                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
-        </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="maximum-likelihood-estimation">
+  <section class="tex2jax_ignore mathjax_ignore" id="maximum-likelihood-estimation">
 <h1><a class="toc-backref" href="#id3"><span class="section-number">73. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -342,14 +335,14 @@ f(y) = \frac{\mu^{y}}{y!} e^{-\mu},
         <span class="n">distribution</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poisson_pmf</span><span class="p">(</span><span class="n">y_i</span><span class="p">,</span> <span class="n">μ</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_values</span><span class="p">,</span>
             <span class="n">distribution</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$\mu$=</span><span class="si">{</span><span class="n">μ</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;$\mu$=</span><span class="si">{</span><span class="n">μ</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
             <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
             <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$y$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$f(y \mid \mu)$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$f(y \mid \mu)$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 
@@ -358,16 +351,6 @@ f(y) = \frac{\mu^{y}}{y!} e^{-\mu},
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-&lt;&gt;:19: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-&lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-&lt;&gt;:19: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-/tmp/ipykernel_3563/1320837734.py:12: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-  label=f&#39;$\mu$={μ}&#39;,
-/tmp/ipykernel_3563/1320837734.py:19: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-  ax.set_ylabel(&#39;$f(y \mid \mu)$&#39;, fontsize=14)
-</pre></div>
-</div>
 <img alt="_images/f6a9e8a7871e9277293d1b5673329f418e1153b2d31a5cb87ee80be213030e28.png" src="_images/f6a9e8a7871e9277293d1b5673329f418e1153b2d31a5cb87ee80be213030e28.png" />
 </div>
 </div>
@@ -559,14 +542,14 @@ dropped for plotting purposes)</p>
         <span class="n">distribution</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poisson_pmf</span><span class="p">(</span><span class="n">y_i</span><span class="p">,</span> <span class="n">μ</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_values</span><span class="p">,</span>
             <span class="n">distribution</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$\mu_i$=</span><span class="si">{</span><span class="n">μ</span><span class="si">:</span><span class="s1">.1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;$\mu_i$=</span><span class="si">{</span><span class="n">μ</span><span class="si">:</span><span class="s1">.1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
             <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$y \mid x_i$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$y \mid x_i$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$f(y \mid x_i; \beta )$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -574,16 +557,6 @@ dropped for plotting purposes)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:22: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-&lt;&gt;:29: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-&lt;&gt;:22: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-&lt;&gt;:29: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-/tmp/ipykernel_3563/1086206212.py:22: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-  label=f&#39;$\mu_i$={μ:.1}&#39;,
-/tmp/ipykernel_3563/1086206212.py:29: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-  ax.set_xlabel(&#39;$y \mid x_i$&#39;)
-</pre></div>
-</div>
 <img alt="_images/379cbb68b1782c7f701ff60de3a2fd924ba5dd5031008f923526ccb0f6948b25.png" src="_images/379cbb68b1782c7f701ff60de3a2fd924ba5dd5031008f923526ccb0f6948b25.png" />
 </div>
 </div>
@@ -1015,8 +988,8 @@ to confirm we obtain the same coefficients and log-likelihood value.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 18 Nov 2024   Pseudo R-squ.:                  0.2546
-Time:                        07:12:35   Log-Likelihood:                -3.3784
+Date:                Thu, 05 Dec 2024   Pseudo R-squ.:                  0.2546
+Time:                        03:21:20   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
@@ -1075,15 +1048,17 @@ model.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
-         Current function value: 2.226090
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         Current function value: 2.226090
          Iterations 9
                           Poisson Regression Results                          
 ==============================================================================
 Dep. Variable:                numbil0   No. Observations:                  197
 Model:                        Poisson   Df Residuals:                      193
 Method:                           MLE   Df Model:                            3
-Date:                Mon, 18 Nov 2024   Pseudo R-squ.:                  0.8574
-Time:                        07:12:35   Log-Likelihood:                -438.54
+Date:                Thu, 05 Dec 2024   Pseudo R-squ.:                  0.8574
+Time:                        03:21:20   Log-Likelihood:                -438.54
 converged:                       True   LL-Null:                       -3074.7
 Covariance Type:                  HC0   LLR p-value:                     0.000
 ==============================================================================
@@ -1441,8 +1416,8 @@ Number of iterations: 4
 Dep. Variable:                      y   No. Observations:                    5
 Model:                         Probit   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 18 Nov 2024   Pseudo R-squ.:                  0.2961
-Time:                        07:12:36   Log-Likelihood:                -2.3687
+Date:                Thu, 05 Dec 2024   Pseudo R-squ.:                  0.2961
+Time:                        03:21:20   Log-Likelihood:                -2.3687
 converged:                       True   LL-Null:                       -3.3651
 Covariance Type:            nonrobust   LLR p-value:                    0.3692
 ==============================================================================
@@ -2033,7 +2008,11 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/mle.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/mle.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>

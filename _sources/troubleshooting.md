@@ -10,7 +10,7 @@ kernelspec:
 ---
 
 (troubleshooting)=
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -46,8 +46,8 @@ You also need to keep the external code libraries, such as [QuantEcon.py](https:
 
 For this task you can either
 
-* use conda install -y quantecon on the command line, or
-* execute !conda install -y quantecon within a Jupyter notebook.
+* use `pip install --upgrade quantecon` on the command line, or
+* execute `!pip install --upgrade quantecon` within a Jupyter notebook.
 
 If your local environment is still not working you can do two things.
 

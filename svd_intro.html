@@ -71,13 +71,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -90,14 +90,15 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=eed9c059a3ee152aae2353ec732f0a6d12e6aa07"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
@@ -107,11 +108,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -638,14 +635,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.09,  0.27, -0.4 , -0.66, -0.57],
-        [-0.52, -0.47, -0.04,  0.41, -0.58],
-        [-0.34,  0.2 ,  0.86, -0.29, -0.13],
-        [-0.37,  0.79, -0.18,  0.45,  0.03],
-        [-0.68, -0.21, -0.25, -0.33,  0.57]]),
- array([1.99, 0.42]),
- array([[-0.67, -0.75],
-        [-0.75,  0.67]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.4 , -0.08, -0.45, -0.47, -0.64],
+        [-0.67, -0.17,  0.18, -0.37,  0.59],
+        [-0.26,  0.35,  0.79, -0.  , -0.43],
+        [-0.52, -0.26, -0.13,  0.79, -0.14],
+        [-0.22,  0.88, -0.36,  0.12,  0.19]]),
+ array([1.84, 0.5 ]),
+ array([[-0.74, -0.67],
+        [-0.67,  0.74]]))
 </pre></div>
 </div>
 </div>
@@ -661,14 +658,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.09,  0.27],
-        [-0.52, -0.47],
-        [-0.34,  0.2 ],
-        [-0.37,  0.79],
-        [-0.68, -0.21]]),
- array([1.99, 0.42]),
- array([[-0.67, -0.75],
-        [-0.75,  0.67]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.4 , -0.08],
+        [-0.67, -0.17],
+        [-0.26,  0.35],
+        [-0.52, -0.26],
+        [-0.22,  0.88]]),
+ array([1.84, 0.5 ]),
+ array([[-0.74, -0.67],
+        [-0.67,  0.74]]))
 </pre></div>
 </div>
 </div>
@@ -705,16 +702,16 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UUT, UTU = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00,  0.00e+00,  1.39e-17, -4.51e-17, -1.11e-16],
-        [ 0.00e+00,  1.00e+00,  5.55e-17, -3.47e-17,  5.55e-17],
-        [ 1.39e-17,  5.55e-17,  1.00e+00, -1.73e-17, -1.39e-17],
-        [-4.51e-17, -3.47e-17, -1.73e-17,  1.00e+00, -9.54e-17],
-        [-1.11e-16,  5.55e-17, -1.39e-17, -9.54e-17,  1.00e+00]]),
- array([[ 1.00e+00,  0.00e+00, -1.11e-16, -8.33e-17,  5.55e-17],
-        [ 0.00e+00,  1.00e+00,  0.00e+00,  8.33e-17,  2.78e-17],
-        [-1.11e-16,  0.00e+00,  1.00e+00, -4.16e-17,  0.00e+00],
-        [-8.33e-17,  8.33e-17, -4.16e-17,  1.00e+00,  2.78e-17],
-        [ 5.55e-17,  2.78e-17,  0.00e+00,  2.78e-17,  1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00,  5.55e-17,  5.55e-17,  9.71e-17, -2.78e-17],
+        [ 5.55e-17,  1.00e+00,  0.00e+00,  8.33e-17,  4.16e-17],
+        [ 5.55e-17,  0.00e+00,  1.00e+00,  2.78e-17,  1.25e-16],
+        [ 9.71e-17,  8.33e-17,  2.78e-17,  1.00e+00, -2.78e-17],
+        [-2.78e-17,  4.16e-17,  1.25e-16, -2.78e-17,  1.00e+00]]),
+ array([[ 1.00e+00,  2.78e-17, -5.55e-17,  1.32e-16,  5.55e-17],
+        [ 2.78e-17,  1.00e+00,  0.00e+00,  2.78e-17,  5.55e-17],
+        [-5.55e-17,  0.00e+00,  1.00e+00, -4.16e-17,  0.00e+00],
+        [ 1.32e-16,  2.78e-17, -4.16e-17,  1.00e+00, -1.04e-17],
+        [ 5.55e-17,  5.55e-17,  0.00e+00, -1.04e-17,  1.00e+00]]))
 </pre></div>
 </div>
 </div>
@@ -732,13 +729,13 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UhatUhatT, UhatTUhat= 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.08, -0.08,  0.08,  0.25,  0.  ],
-        [-0.08,  0.49,  0.08, -0.18,  0.45],
-        [ 0.08,  0.08,  0.15,  0.29,  0.19],
-        [ 0.25, -0.18,  0.29,  0.76,  0.09],
-        [ 0.  ,  0.45,  0.19,  0.09,  0.51]]),
- array([[1., 0.],
-        [0., 1.]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.17,  0.28,  0.08,  0.23,  0.02],
+        [ 0.28,  0.48,  0.11,  0.39, -0.01],
+        [ 0.08,  0.11,  0.19,  0.05,  0.36],
+        [ 0.23,  0.39,  0.05,  0.34, -0.11],
+        [ 0.02, -0.01,  0.36, -0.11,  0.82]]),
+ array([[1.00e+00, 2.78e-17],
+        [2.78e-17, 1.00e+00]]))
 </pre></div>
 </div>
 </div>
@@ -765,14 +762,14 @@ Using <code class="docutils literal notranslate"><span class="pre">full_matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.74, -0.68],
-        [ 0.68,  0.74]]),
- array([1.77, 0.73]),
- array([[ 0.28,  0.43,  0.53,  0.23,  0.63],
-        [ 0.33, -0.3 , -0.6 ,  0.57,  0.35],
-        [-0.28, -0.74,  0.53,  0.28,  0.07],
-        [-0.44,  0.41,  0.01,  0.71, -0.36],
-        [-0.74,  0.06, -0.27, -0.19,  0.59]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.69, -0.72],
+        [ 0.72,  0.69]]),
+ array([1.08, 0.47]),
+ array([[ 0.15,  0.06,  0.48,  0.47,  0.73],
+        [ 0.09, -0.11, -0.82,  0.52,  0.19],
+        [-0.62, -0.71,  0.17,  0.26, -0.09],
+        [-0.36,  0.61,  0.13,  0.55, -0.42],
+        [-0.67,  0.33, -0.23, -0.36,  0.5 ]]))
 </pre></div>
 </div>
 </div>
@@ -788,11 +785,11 @@ Using <code class="docutils literal notranslate"><span class="pre">full_matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.74, -0.68],
-        [ 0.68,  0.74]]),
- array([1.77, 0.73]),
- array([[ 0.28,  0.43,  0.53,  0.23,  0.63],
-        [ 0.33, -0.3 , -0.6 ,  0.57,  0.35]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.69, -0.72],
+        [ 0.72,  0.69]]),
+ array([1.08, 0.47]),
+ array([[ 0.15,  0.06,  0.48,  0.47,  0.73],
+        [ 0.09, -0.11, -0.82,  0.52,  0.19]]))
 </pre></div>
 </div>
 </div>
@@ -848,7 +845,7 @@ Q &amp; = U V^\top
 \[
 X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
 \]</div>
-<p>where for <span class="math notranslate nohighlight">\(j = 1, \ldots, n\)</span> the column vector <span class="math notranslate nohighlight">\(X_j = \begin{bmatrix}X_{1j}\\X_{2j}\\\vdots\\X_{mj}\end{bmatrix}\)</span> is a  vector of observations on variables <span class="math notranslate nohighlight">\(\begin{bmatrix}x_1\\x_2\\\vdots\\x_m\end{bmatrix}\)</span>.</p>
+<p>where for <span class="math notranslate nohighlight">\(j = 1, \ldots, n\)</span> the column vector <span class="math notranslate nohighlight">\(X_j = \begin{bmatrix}x_{1j}\\x_{2j}\\\vdots\\x_{mj}\end{bmatrix}\)</span> is a  vector of observations on variables <span class="math notranslate nohighlight">\(\begin{bmatrix}X_1\\X_2\\\vdots\\X_m\end{bmatrix}\)</span>.</p>
 <p>In a <strong>time series</strong> setting, we would think of columns <span class="math notranslate nohighlight">\(j\)</span> as indexing different <strong>times</strong> at which random variables are observed, while rows index different random variables.</p>
 <p>In a <strong>cross-section</strong> setting, we would think of columns <span class="math notranslate nohighlight">\(j\)</span> as indexing different <strong>individuals</strong> for  which random variables are observed, while rows index different <strong>attributes</strong>.</p>
 <p>As we have seen before, the SVD is a way to decompose a matrix into useful components, just like polar decomposition, eigendecomposition, and many others.</p>
@@ -858,12 +855,12 @@ X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
 <p>First by computing the average of each row of <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
-\bar{X_j}= \frac{1}{m} \sum_{i = 1}^{m} x_{i,j}
+\bar{X_i}= \frac{1}{n} \sum_{j = 1}^{n} x_{ij}
 \]</div>
 <p>We then create an average matrix out of these means:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\bar{X} =  \begin{bmatrix}1 \\1 \\\ldots\\1 \end{bmatrix}  \begin{bmatrix} \bar{X_1} \mid \bar{X_2} \mid \cdots \mid \bar{X_n}\end{bmatrix}
+\bar{X} =  \begin{bmatrix} \bar{X_1} \\ \bar{X_2} \\ \ldots \\ \bar{X_m}\end{bmatrix}\begin{bmatrix}1 \mid 1 \mid \cdots \mid 1 \end{bmatrix}
 \end{split}\]</div>
 <p>And subtract out of the original matrix to create a mean centered matrix:</p>
 <div class="math notranslate nohighlight">
@@ -874,23 +871,24 @@ B = X - \bar{X}
 <p>Then because we want to extract the relationships between variables rather than just their magnitude, in other words, we want to know how they can explain each other, we compute the covariance matrix of <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
-C = \frac{1}{{n}} B^\top  B
+C = \frac{1}{n} BB^{\top}
 \]</div>
 <p><strong>Step 3: Decompose the covariance matrix and arrange the singular values:</strong></p>
-<p>If the matrix <span class="math notranslate nohighlight">\(C\)</span> is diagonalizable, we can eigendecompose it, find its eigenvalues and rearrange the eigenvalue and eigenvector matrices in a decreasing other.</p>
-<p>If <span class="math notranslate nohighlight">\(C\)</span> is not diagonalizable, we can perform an SVD of <span class="math notranslate nohighlight">\(C\)</span>:</p>
+<p>Since the matrix <span class="math notranslate nohighlight">\(C\)</span> is positive definite, we can eigendecompose it, find its eigenvalues, and rearrange the eigenvalue and eigenvector matrices in a decreasing order.</p>
+<p>The eigendecomposition of <span class="math notranslate nohighlight">\(C\)</span> can be found by decomposing <span class="math notranslate nohighlight">\(B\)</span> instead. Since <span class="math notranslate nohighlight">\(B\)</span> is not a square matrix, we obtain an SVD of <span class="math notranslate nohighlight">\(B\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[
+\[\begin{split}
 \begin{aligned}
-B^T B &amp;= V \Sigma^\top U^\top U \Sigma V^\top \cr
-&amp;= V \Sigma^\top \Sigma V^\top
+B B^\top &amp;= U \Sigma V^\top (U \Sigma V^{\top})^{\top}\\
+&amp;= U \Sigma V^\top V \Sigma^\top U^\top\\
+&amp;= U \Sigma \Sigma^\top U^\top
 \end{aligned}
-\]</div>
+\end{split}\]</div>
 <div class="math notranslate nohighlight">
 \[
-C = \frac{1}{{n}} V \Sigma^\top \Sigma V^\top
+C = \frac{1}{n} U \Sigma \Sigma^\top U^\top
 \]</div>
-<p>We can then rearrange the columns in the matrices <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(\Sigma\)</span> so that the singular values are in decreasing order.</p>
+<p>We can then rearrange the columns in the matrices <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(\Sigma\)</span> so that the singular values are in decreasing order.</p>
 <p><strong>Step 4: Select singular values, (optional) truncate the rest:</strong></p>
 <p>We can now decide how many singular values to pick, based on how much variance you want to retain. (e.g., retaining 95% of the total variance).</p>
 <p>We can obtain the percentage by calculating the variance contained in the leading <span class="math notranslate nohighlight">\(r\)</span> factors divided by the variance in total:</p>
@@ -903,7 +901,7 @@ C = \frac{1}{{n}} V \Sigma^\top \Sigma V^\top
 \[
 \begin{aligned}
 T&amp;= BV \cr
-&amp;= U\Sigma V^\top \cr
+&amp;= U\Sigma V^\top V \cr
 &amp;= U\Sigma
 \end{aligned}
 \]</div>
@@ -1224,7 +1222,7 @@ obtained by different algorithms.</p>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:32: SyntaxWarning: invalid escape sequence &#39;\s&#39;
 &lt;&gt;:32: SyntaxWarning: invalid escape sequence &#39;\s&#39;
-/tmp/ipykernel_4214/4223624786.py:32: SyntaxWarning: invalid escape sequence &#39;\s&#39;
+/tmp/ipykernel_4072/4223624786.py:32: SyntaxWarning: invalid escape sequence &#39;\s&#39;
   axs[1].set_title(&#39;$V^\top *\sqrt{\lambda}$&#39;)
 </pre></div>
 </div>
@@ -1853,7 +1851,11 @@ X^{+}  = V \Sigma^{+} U^\top
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/svd_intro.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/svd_intro.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>

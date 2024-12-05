@@ -71,13 +71,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -90,14 +90,15 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=eed9c059a3ee152aae2353ec732f0a6d12e6aa07"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
@@ -107,11 +108,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -268,11 +265,7 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <div id="qe-notebook-header" align="right" style="text-align:right;">
-        <a href="https://quantecon.org/" title="quantecon.org">
-                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
-        </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="finite-markov-chains">
+  <section class="tex2jax_ignore mathjax_ignore" id="finite-markov-chains">
 <h1><a class="toc-backref" href="#id8"><span class="section-number">19. </span><span class="target" id="index-0"></span>Finite Markov Chains</a><a class="headerlink" href="#finite-markov-chains" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -488,7 +481,7 @@ P =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 1, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 0, 1, 0])
 </pre></div>
 </div>
 </div>
@@ -548,7 +541,7 @@ P =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.25309
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.25094
 </pre></div>
 </div>
 </div>
@@ -571,7 +564,7 @@ always close to 0.25, at least for the <code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.250183
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.250975
 </pre></div>
 </div>
 </div>
@@ -584,11 +577,11 @@ always close to 0.25, at least for the <code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.32 s, sys: 75 μs, total: 1.32 s
-Wall time: 1.32 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.4 s, sys: 1.24 ms, total: 1.4 s
+Wall time: 1.4 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, ..., 1, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 1, ..., 1, 1, 0])
 </pre></div>
 </div>
 </div>
@@ -600,11 +593,11 @@ Wall time: 1.32 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 17 ms, sys: 0 ns, total: 17 ms
-Wall time: 16.9 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 15.8 ms, sys: 2.08 ms, total: 17.9 ms
+Wall time: 17.7 ms
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 1, ..., 1, 1, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 1, ..., 0, 1, 1])
 </pre></div>
 </div>
 </div>
@@ -622,7 +615,7 @@ Wall time: 16.9 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;employed&#39;, &#39;unemployed&#39;, &#39;employed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;employed&#39;, &#39;employed&#39;, &#39;unemployed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
 </pre></div>
 </div>
 </div>
@@ -646,8 +639,7 @@ Wall time: 16.9 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;unemployed&#39;, &#39;unemployed&#39;, &#39;unemployed&#39;, &#39;unemployed&#39;],
-      dtype=&#39;&lt;U10&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
 </pre></div>
 </div>
 </div>
@@ -660,7 +652,7 @@ Wall time: 16.9 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, 0])
 </pre></div>
 </div>
 </div>
@@ -1298,11 +1290,11 @@ conditions.</p>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:21: SyntaxWarning: invalid escape sequence &#39;\,&#39;
 &lt;&gt;:21: SyntaxWarning: invalid escape sequence &#39;\,&#39;
-/tmp/ipykernel_2161/221373905.py:21: SyntaxWarning: invalid escape sequence &#39;\,&#39;
+/tmp/ipykernel_2042/221373905.py:21: SyntaxWarning: invalid escape sequence &#39;\,&#39;
   ax.plot(X_bar - p, color=col, label=f&#39;$X_0 = \, {x0} $&#39;)
 </pre></div>
 </div>
-<img alt="_images/c8dff383056281c6ce7ab5f93e273465d0a8164f77b9b85902dfdc3ea83c59b4.png" src="_images/c8dff383056281c6ce7ab5f93e273465d0a8164f77b9b85902dfdc3ea83c59b4.png" />
+<img alt="_images/ab14a1aa0c7162a908129347df7c2744014937eeeb37924db3fa36366278b30e.png" src="_images/ab14a1aa0c7162a908129347df7c2744014937eeeb37924db3fa36366278b30e.png" />
 </div>
 </div>
 </section>
@@ -1443,7 +1435,7 @@ and return the list of pages ordered by rank.</p>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:2: SyntaxWarning: invalid escape sequence &#39;\w&#39;
 &lt;&gt;:2: SyntaxWarning: invalid escape sequence &#39;\w&#39;
-/tmp/ipykernel_2161/2905483870.py:2: SyntaxWarning: invalid escape sequence &#39;\w&#39;
+/tmp/ipykernel_2042/2905483870.py:2: SyntaxWarning: invalid escape sequence &#39;\w&#39;
   re.findall(&#39;\w&#39;, &#39;x +++ y ****** z&#39;)  # \w matches alphanumerics
 </pre></div>
 </div>
@@ -1461,7 +1453,7 @@ and return the list of pages ordered by rank.</p>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:1: SyntaxWarning: invalid escape sequence &#39;\w&#39;
 &lt;&gt;:1: SyntaxWarning: invalid escape sequence &#39;\w&#39;
-/tmp/ipykernel_2161/3112023992.py:1: SyntaxWarning: invalid escape sequence &#39;\w&#39;
+/tmp/ipykernel_2042/3112023992.py:1: SyntaxWarning: invalid escape sequence &#39;\w&#39;
   re.findall(&#39;\w&#39;, &#39;a ^^ b &amp;&amp;&amp; $$ c&#39;)
 </pre></div>
 </div>
@@ -1537,7 +1529,7 @@ a: 0.002911
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:19: SyntaxWarning: invalid escape sequence &#39;\w&#39;
 &lt;&gt;:19: SyntaxWarning: invalid escape sequence &#39;\w&#39;
-/tmp/ipykernel_2161/251391331.py:19: SyntaxWarning: invalid escape sequence &#39;\w&#39;
+/tmp/ipykernel_2042/251391331.py:19: SyntaxWarning: invalid escape sequence &#39;\w&#39;
   from_node, to_node = re.findall(&#39;\w&#39;, edge)
 </pre></div>
 </div>
@@ -2194,7 +2186,11 @@ can be found <a class="reference external" href="https://github.com/QuantEcon/Qu
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/finite_markov.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/finite_markov.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
