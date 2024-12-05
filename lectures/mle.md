@@ -120,7 +120,7 @@ for μ in [1, 5, 10]:
 
 ax.grid()
 ax.set_xlabel('$y$', fontsize=14)
-ax.set_ylabel('$f(y \mid \mu)$', fontsize=14)
+ax.set_ylabel(r'$f(y \mid \mu)$', fontsize=14)
 ax.axis(xmin=0, ymin=0)
 ax.legend(fontsize=14)
 
@@ -218,7 +218,7 @@ for X in datasets:
 
 ax.grid()
 ax.legend()
-ax.set_xlabel('$y \mid x_i$')
+ax.set_xlabel(r'$y \mid x_i$')
 ax.set_ylabel(r'$f(y \mid x_i; \beta )$')
 ax.axis(xmin=0, ymin=0)
 plt.show()
