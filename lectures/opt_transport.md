@@ -265,7 +265,7 @@ The table below provides numbers for the requirements vector $q$, the capacity v
 and entries $c_{ij}$  of the cost-of-shipping matrix $C$.
 
 
-```{raw} html
+```{raw} jupyter
 <table>
     <tr>
 	    <th> </th>
