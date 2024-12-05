@@ -113,7 +113,7 @@ for μ in [1, 5, 10]:
         distribution.append(poisson_pmf(y_i, μ))
     ax.plot(y_values,
             distribution,
-            label=f'$\mu$={μ}',
+            label=fr'$\mu$={μ}',
             alpha=0.5,
             marker='o',
             markersize=8)
@@ -211,7 +211,7 @@ for X in datasets:
         distribution.append(poisson_pmf(y_i, μ))
     ax.plot(y_values,
             distribution,
-            label=f'$\mu_i$={μ:.1}',
+            label=fr'$\mu_i$={μ:.1}',
             marker='o',
             markersize=8,
             alpha=0.5)
