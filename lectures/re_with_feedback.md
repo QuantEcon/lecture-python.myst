@@ -429,8 +429,8 @@ T = 100 # length of simulation
 m_seq = np.empty(T+1)
 p_seq = np.empty(T+1)
 
-m_seq[0] = G @ x0
-p_seq[0] = F @ x0
+[m_seq[0]] = G @ x0
+[p_seq[0]] = F @ x0
 
 # simulate for T periods
 x_old = x0
@@ -438,8 +438,8 @@ for t in range(T):
 
     x = A @ x_old
 
-    m_seq[t+1] = G @ x
-    p_seq[t+1] = F @ x
+    [m_seq[t+1]] = G @ x
+    [p_seq[t+1]] = F @ x
 
     x_old = x
 ```
