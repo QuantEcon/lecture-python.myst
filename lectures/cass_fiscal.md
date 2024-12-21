@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.4
+    jupytext_version: 1.16.6
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -12,6 +12,24 @@ kernelspec:
 ---
 
 # Fiscal Policy Experiments in a Non-stochastic Model
+
+## Introduction
+
+This lecture studies eﬀects of technology and fiscal shocks on equilibrium outcomes in a nonstochastic growth model. 
+
+We use the model as a laboratory to exhibit numerical techniques for approximating equilibria and to display the structure of dynamic models in which decision makers have perfect foresight about future government decisions. 
+
+Following {cite}`hall1971dynamic`, we augment a nonstochastic version of the standard growth model with a government that purchases a stream of goods and that finances itself with an array of distorting flat-rate taxes.
+
+Distorting taxes prevent a competitive equilibrium allocation from solving a planning problem. 
+
+Therefore, to compute an equilibrium allocation and price system, we solve a system of nonlinear diﬀerence equations consisting of the first-order conditions for decision makers and the other equilibrium conditions.
+
+We present two ways to solve the model:
+
+- The first method is called shooting algorithm;
+
+- The second method is applying a root-finding algorithm to minimize the residuals derived from the first-order conditions.
 
 We will use the following imports
 
@@ -33,7 +51,7 @@ Note that we will use the `mpmath` library to perform high-precision arithmetic 
 We will use the following parameters
 
 ```{code-cell} ipython3
-# Create a named tuple to store the model parameters
+# Create a namedtuple to store the model parameters
 Model = namedtuple("Model", 
             ["β", "γ", "δ", "α", "A"])
 
@@ -55,13 +73,16 @@ S = 100
 ## The Economy
 
 ### Households
-The representative household has preferences over nonnegative streams of a single consumption good $c_t$:
+
+The representative household has preferences over nonnegative streams of a single consumption good $c_t$ and leisure $1-n_t$ that are ordered by:
 
 $$
-\sum_{t=0}^{\infty} \beta^t U(c_t), \quad \beta \in (0, 1)
+\sum_{t=0}^{\infty} \beta^t U(c_t, 1-n_t), \quad \beta \in (0, 1)
 $$ (eq:utility)
-where  
-- $U(c_t)$ is twice continuously differentiable, and strictly concave with $c_t \geq 0$.
+
+where
+
+- $U$ is twice continuously differentiable, and strictly concave with $c_t \geq 0$. In this lecture, we focus on the special case.
 
 under the budget constraint
 
@@ -80,25 +101,28 @@ $$
 g_t + c_t + x_t \leq F(k_t, n_t),
 $$ (eq:tech_capital)
 
+where 
+
 - $g_t$ is government expenditure
 - $x_t$ is gross investment, and 
-- $F(k_t, n_t)$ a linearly homogeneous production function with positive and decreasing marginal products of capital $k_t$ and labor $n_t$.
+- $F(k_t, n_t)$ is a linearly homogeneous production function with positive and decreasing marginal products of capital $k_t$ and labor $n_t$.
 
 The law of motion for capital is given by:
+
 $$
-      k_{t+1} = (1 - \delta)k_t + x_t,
+k_{t+1} = (1 - \delta)k_t + x_t,
 $$
 
 where 
 
-- $\delta \in (0, 1)$ is depreciation rate, $k_t$ is the stock of physical capital, and $x_t$ is gross investment.
+- $\delta \in (0, 1)$ is depreciation rate.
 
 
 ### Price System
 
 A price system is a triple of sequences $\{q_t, \eta_t, w_t\}_{t=0}^\infty$, where
 
-- $q_t$ is the time 0 pretax price of one unit of investment or consumption at time $t$ ($x_t$ or $c_t$),
+- $q_t$ is the time $0$ pretax price of one unit of investment or consumption at time $t$ ($x_t$ or $c_t$),
 - $\eta_t$ is the pretax price at time $t$ that the household receives from the firm for renting capital at time $t$,
 - $w_t$ is the pretax price at time $t$ that the household receives for renting labor to the firm at time $t$.
 
@@ -114,13 +138,13 @@ $$ (eq:gov_budget)
 
 ### Firm
 
-Firms maximize their present value of profit:
+A representative firm chooses $\{k_t, n_t\}_{t=0}^\infty$ to maximize their present value of profit:
 
 $$
 \sum_{t=0}^\infty q_t \left[ F(k_t, n_t) - w_t n_t - \eta_t k_t \right],
 $$
 
-Euler's theorem for linearly homogeneous functions states that if a function $F(k, n)$ is linearly homogeneous (degree 1), then:
+Euler's theorem for linearly homogeneous functions states that if a function $F(k, n)$ is linearly homogeneous of degree 1, then:
 
 $$
 F(k, n) = F_k k + F_n n,
@@ -135,9 +159,11 @@ In the equilibrium, given a budget-feasible government policy $\{g_t\}_{t=0}^\in
 
 - *Household* chooses $\{c_t\}_{t=0}^\infty$, $\{n_t\}_{t=0}^\infty$, and $\{k_{t+1}\}_{t=0}^\infty$ to maximize utility{eq}`eq:utility` subject to budget constraint{eq}`eq:house_budget`, and 
 - *Frim* chooses sequences of capital $\{k_t\}_{t=0}^\infty$ and $\{n_t\}_{t=0}^\infty$ to maximize profits
+
     $$
          \sum_{t=0}^\infty q_t [F(k_t, n_t) - \eta_t k_t - w_t n_t]
     $$ (eq:firm_profit)
+  
 - A **feasible allocation** is a sequence $\{c_t, x_t, n_t, k_t\}_{t=0}^\infty$ that satisfies feasibility condition {eq}`eq:tech_capital`.
 
 
@@ -155,7 +181,7 @@ $$
     \begin{aligned}
     \sum_{t=0}^\infty q_t \left[(1 + \tau_{ct})c_t \right] &\leq \sum_{t=0}^\infty q_t(1 - \tau_{nt})w_t n_t - \sum_{t=0}^\infty q_t \tau_{ht} \\
     &+ \sum_{t=1}^\infty\left\{ \left[(1 - \tau_{kt})(\eta_t - \delta) + 1\right]q_t - q_{t-1}\right\}k_t \\
-    &+ \left[(1 - \tau_{k0})(\eta_0 - \delta) + 1\right]q_0k_0 - \lim_{T \to \infty} q_T r k_{T+1}
+    &+ \left[(1 - \tau_{k0})(\eta_0 - \delta) + 1\right]q_0k_0 - \lim_{T \to \infty} q_T k_{T+1}
     \end{aligned}
 $$ (eq:constrant_house)
 
@@ -168,7 +194,7 @@ $$ (eq:no_arb)
 Moreover, we have terminal condition
 
 $$
--\lim_{T \to \infty} q_T r k_{T+1} = 0.
+-\lim_{T \to \infty} q_T k_{T+1} = 0.
 $$ (eq:terminal)
 
 Moreover, applying Euler's theorem on firm's present value gives
@@ -197,6 +223,8 @@ $$
 \frac{\partial \mathcal{L}}{\partial c_t} = \beta^t U_1(c_t, 1 - n_t) - \mu q_t (1 + \tau_{ct}) = 0
 $$ (eq:foc_c_1)
 
+which gives $\mu q_t = \beta^t \frac{U_1(c_t, 1 - n_t)}{(1 + \tau_{ct})}$
+
 and 
 
 $$
@@ -221,7 +249,7 @@ $$ (eq:foc_n)
 Plugging {eq}`eq:foc_c` into {eq}`eq:terminal` by replacing $q_t$, we get terminal condition
 
 $$
--\lim_{T \to \infty} \frac{U_{1t}}{(1 + \tau_{ct})} r k_{T+1} = 0.
+-\lim_{T \to \infty} \beta^T \frac{U_{1T}}{(1 + \tau_{cT})} k_{T+1} = 0.
 $$ (eq:terminal_final)
 
 ## Computing Equilibria
@@ -327,7 +355,7 @@ $$
 ```{code-cell} ipython3
 def compute_η_path(k_path, model, S=100):
     """
-    Compute η path: η_t = f'(k_t) = α * A * k_t^{α - 1}
+    Compute η path: η_t = f'(k_t)
     """
     η_path = np.zeros_like(k_path)
     for t in range(S):
@@ -702,6 +730,7 @@ Let's write the procedures above into a function that runs the solver and draw t
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 def experiment_model(shocks, S, model, solver, plot_func, policy_shock, T=40):
     """
     Run the shooting algorithm given a model and plot the results.
