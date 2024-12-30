@@ -1121,11 +1121,13 @@ We note that such a policy change impacts consumption and capital in an interest
 The second method involves minimizing the residuals of the following equations:
 
 - The Euler equation {eq}`eq:diff_second`:
+
   $$
   1 = \beta \left(\frac{c_{t+1}}{c_t}\right)^{-\gamma} \frac{(1+\tau_{ct})}{(1+\tau_{ct+1})} \left[(1 - \tau_{kt+1})(\alpha A k_{t+1}^{\alpha-1} - \delta) + 1 \right]
   $$
 
 - The feasibility condition {eq}`eq:feasi_capital`:
+
   $$
   k_{t+1} = A k_{t}^{\alpha} + (1 - \delta) k_t - g_t - c_t.
   $$
@@ -1151,7 +1153,7 @@ def feasi_residual(k_t, k_tm1, c_tm1, g_t, model):
 
 The algorithm is described as follows:
 
-1. Derive $k_0$ based on the given initial government plan $z_0$.
+1. Derive intial steady state $k_0$ based on the government plan at $t=0$.
 
 2. Initialize a sequence of initial guesses $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$.
 
@@ -1235,8 +1237,6 @@ def run_min(shocks, S, model):
     return sol.x.reshape((S + 1, 2))
 ```
 
-Below are the results for the same experiments using the second method.
-
 This method does not have numerical stability issues, so `mp.mpf` is not necessary.
 
 We leave the experiments for you to replicate using the second method.
@@ -1246,13 +1246,11 @@ We leave the experiments for you to replicate using the second method.
 ```{exercise}
 :label: cass_fiscal_ex1
 
-Replicate the plots of the four experiments we run before:
+Replicate the plots of the four experiments we run before using the second method of residual minimization:
 1. A foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 occurring in period 10,
 2. A foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 occurring in period 10,
 3. A foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 occurring in period 10, and
 4. A foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ reverts to 0.2 permanently,
-
-using the second method of residual minimization.
 ```
 
 ```{solution-start} cass_fiscal_ex1
