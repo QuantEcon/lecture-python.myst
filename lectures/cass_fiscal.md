@@ -15,7 +15,7 @@ kernelspec:
 
 ## Introduction
 
-This lecture studies effects of technology and fiscal shocks on equilibrium outcomes in a nonstochastic growth model with features inherited from {doc}`cass_koopmans_2`
+This lecture studies effects of technology and fiscal shocks on equilibrium outcomes in a nonstochastic growth model with features inherited from {doc}`cass_koopmans_2`.
 
 We use the model as a laboratory to exhibit numerical techniques for approximating equilibria and to display the structure of dynamic models in which decision makers have perfect foresight about future government decisions. 
 
@@ -464,7 +464,7 @@ def compute_R_bar_path(shocks, k_path, model, S=100):
 
 $$
 R^{-1}_{t, t+1} = \frac{q_t}{q_{t-1}} = m_{t, t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)} \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})}
-$$ (eq:equil_R)
+$$ (eq:equil_bigR)
 
 
 *Net one-period rate of interest:*
@@ -473,7 +473,7 @@ $$
 r_{t, t+1} \equiv R_{t, t+1} - 1 = (1 - \tau_{k, t+1})(f'(k_{t+1}) - \delta)
 $$ (eq:equil_r)
 
-By {eq}`eq:equil_R`, we have
+By {eq}`eq:equil_bigR`, we have
 
 $$
 R_{t, t+s} = e^{s \cdot r_{t, t+s}}.
@@ -696,9 +696,9 @@ def run_shooting(shocks, S, model, c0_func=bisection_c0, shooting_func=shooting_
 
 We will run a series of experiments and analyze the transition path for the equilibrium in each scenario:
 
-1. A foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 occurring in period 10.
-2. A foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 occurring in period 10.
-3. A foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 occurring in period 10.
+1. A foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 occurring in period 10,
+2. A foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 occurring in period 10,
+3. A foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 occurring in period 10, and
 4. A foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ reverts to 0.2 permanently.
 
 +++
@@ -778,19 +778,17 @@ plt.tight_layout()
 plt.show()
 ```
 
-- Steady-State Value of Capital Stock
-  - The steady-state value of the capital stock remains unaffected. 
-  - This follows from the fact that $g$ disappears from the steady state version of the Euler equation ({eq}eq:diff_second_steady).
+We note the following features in the figure
 
-- Gradual Reduction in Consumption
-  - Consumption begins to decline gradually before time $T$ due to increased government consumption.
+- The steady-state value of the capital stock remains unaffected:
+  - This follows from the fact that $g$ disappears from the steady state version of the Euler equation ({eq}`eq:diff_second_steady`).
+
+- Consumption begins to decline gradually before time $T$ due to increased government consumption:
   - Households reduce consumption to offset government spending, which is financed through increased lump-sum taxes.
   - The competitive economy signals households to consume less through an increase in the stream of lump-sum taxes.
   - Households, caring about the present value rather than the timing of taxes, experience an adverse wealth effect on consumption, leading to an immediate response.
   
-- Effect on Capital Stock:
-    - Capital gradually accumulates between time $0$ and $T$ due to increased savings.
-    - After time $T$, capital stock gradually decreases.
+- Capital gradually accumulates between time $0$ and $T$ due to increased savings and reduces gradually after time $T$:
     - This temporal variation in capital stock smooths consumption over time, driven by the consumption-smoothing motive.
 
 Let's write the procedures above into a function that runs the solver and draw the plots for a given model
@@ -866,16 +864,16 @@ plt.tight_layout()
 plt.show()
 ```
 
-- Impact of Lower $\gamma$:
+From the graph we can observe that lowering $\gamma$ affects both the consumption and capital stock paths:
+
+- Consumption path:
   - Lowering $\gamma$ increases the willingness to substitute consumption across time.
   - In the case of $\gamma = 0.2$, consumption becomes less smooth compared to $\gamma = 2$.
   - For $\gamma = 0.2$, consumption mirrors the government expenditure path more closely, staying higher until $t = 10$.
 
-- Effects on Capital and Fluctuations:
+- Capital stock path:
   - With $\gamma = 0.2$, there are smaller build-ups and drawdowns of capital stock.
   - Leads to smaller fluctuations in $\bar{R}$ and $\eta$.
-
-+++
 
 Let's write another function that runs the solver and draw the plots for two models as we did above
 
@@ -969,7 +967,7 @@ def plot_prices(solution, c_ss, shock_param, axes,
 ```
 
 For $\gamma = 2$ again, the next figure describes the response of $q_t$ and the term
-structure of interest rates to a foreseen increase in $g_t$ at $t = 10$.
+structure of interest rates to a foreseen increase in $g_t$ at $t = 10$
 
 ```{code-cell} ipython3
 solution = run_shooting(shocks, S, model)
@@ -1035,8 +1033,10 @@ experiment_model(shocks, S, model, run_shooting, plot_results, 'τ_c')
 ```
 
 Notice that while all variables in the figure above eventually return to their initial
-steady-state values, the anticipated increase in $\tau_{ct}$ leads to variations in consumption 
-across time:
+steady-state values.
+
+The anticipated increase in $\tau_{ct}$ leads to variations in consumption 
+and capital stock across time:
 
 - At $t = 0$:
     - Anticipation of the increase in $\tau_c$ causes an *immediate jump in consumption*.
@@ -1071,7 +1071,7 @@ experiment_two_models(shocks, S, model, model_γ2,
 
 The path of government expenditures remains fixed, and the increase in $\tau_{kt}$ is offset by a reduction in the present value of lump-sum taxes to keep the budget balanced.
 
-We note that 
+We note the following features in the figure:
 
 - Anticipation of the increase in $\tau_{kt}$ leads to immediate decline in capital stock due to increased current consumption and growing consumption flow.
 - $\bar{R}$ starts rising at $t = 0$ and peaks at $t = 9$, and at $t = 10$, $\bar{R}$ drops sharply due to the tax change.
@@ -1104,7 +1104,7 @@ shocks = {
 experiment_model(shocks, S, model, run_shooting, plot_results, 'g')
 ```
 
-We note that such a policy change impacts consumption and capital in an interesting one:
+We note that such a policy change impacts consumption and capital in an interesting way:
 
 - Consumption:
     - Drops immediately at the announcement of the policy and continues to decline over time in anticipation of the one-time surge in $g$.
@@ -1120,12 +1120,12 @@ We note that such a policy change impacts consumption and capital in an interest
 
 The second method involves minimizing the residuals of the following equations:
 
-- *The Euler equation* {eq}`eq:diff_second`:
+- The Euler equation {eq}`eq:diff_second`:
   $$
   1 = \beta \left(\frac{c_{t+1}}{c_t}\right)^{-\gamma} \frac{(1+\tau_{ct})}{(1+\tau_{ct+1})} \left[(1 - \tau_{kt+1})(\alpha A k_{t+1}^{\alpha-1} - \delta) + 1 \right]
   $$
 
-- *The feasibility condition* {eq}`eq:feasi_capital`:
+- The feasibility condition {eq}`eq:feasi_capital`:
   $$
   k_{t+1} = A k_{t}^{\alpha} + (1 - \delta) k_t - g_t - c_t.
   $$
@@ -1151,38 +1151,36 @@ def feasi_residual(k_t, k_tm1, c_tm1, g_t, model):
 
 The algorithm is described as follows:
 
-1. *Calculate the initial state $k_0$*:
-   - Derive $k_0$ based on the given initial government plan $z_0$.
+1. Derive $k_0$ based on the given initial government plan $z_0$.
 
-2. *Initialize a sequence of initial guesses* $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$.
+2. Initialize a sequence of initial guesses $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$.
 
-3. *Compute the residuals* $l_a$ and $l_k$ for $t = 0, \dots, S$, as well as $l_{k_0}$ for $t = 0$ and $l_{k_S}$ for $t = S$:
-   - Compute the *Euler's equation* residual for $t = 0, \dots, S$ using {eq}`eq:diff_second`:
+3. Compute the residuals $l_a$ and $l_k$ for $t = 0, \dots, S$, as well as $l_{k_0}$ for $t = 0$ and $l_{k_S}$ for $t = S$:
+   - Compute the Euler's equation residual for $t = 0, \dots, S$ using {eq}`eq:diff_second`:
 
      $$
      l_{ta} = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right] - 1
      $$
 
-   - Compute the *feasibility condition* residual for $t = 1, \dots, S-1$ using {eq}`eq:feasi_capital`:
+   - Compute the feasibility condition residual for $t = 1, \dots, S-1$ using {eq}`eq:feasi_capital`:
 
      $$
      l_{tk} = k_{t+1} - f(k_t) - (1 - \delta)k_t + g_t + c_t
      $$
 
-   - Compute the residual for the *initial condition for $k_0$* using {eq}`eq:diff_second_steady` and the initial capital $k_0$:
+   - Compute the residual for the*initial condition for $k_0$ using {eq}`eq:diff_second_steady` and the initial capital $k_0$:
 
      $$
      l_{k_0} = 1 - \beta \left[ (1 - \tau_{k0}) \left(f'(k_0) - \delta \right) + 1 \right]
      $$
 
-   - Compute the residual for the *terminal condition* for $t = S$ using {eq}`eq:diff_second` under the assumptions $c_t = c_{t+1} = c_S$, $k_t = k_{t+1} = k_S$, $\tau_{ct} = \tau_{ct+1} = \tau_{cS}$, and $\tau_{kt} = \tau_{kt+1} = \tau_{kS}$:
+   - Compute the residual for the terminal condition for $t = S$ using {eq}`eq:diff_second` under the assumptions $c_t = c_{t+1} = c_S$, $k_t = k_{t+1} = k_S$, $\tau_{ct} = \tau_{ct+1} = \tau_{cS}$, and $\tau_{kt} = \tau_{kt+1} = \tau_{kS}$:
      
      $$
      l_{k_S} = \beta u'(c_S) \frac{(1 + \tau_{cS})}{(1 + \tau_{cS})} \left[(1 - \tau_{kS})(f'(k_S) - \delta) + 1 \right] - 1
      $$
 
-4. *Residual Minimization*:
-   - Adjust the guesses for $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$ to minimize the residuals $l_{k_0}$, $l_{ta}$, $l_{tk}$, and $l_{k_S}$ for $t = 0, \dots, S$.
+4. Iteratively adjust the guesses for $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$ to minimize the residuals $l_{k_0}$, $l_{ta}$, $l_{tk}$, and $l_{k_S}$ for $t = 0, \dots, S$.
 
 ```{code-cell} ipython3
 # Computing residuals as objective function to minimize
@@ -1345,8 +1343,8 @@ experiment_model(shocks, S, model, run_min, plot_results, 'g')
 ```{exercise}
 :label: cass_fiscal_ex2
 
-Design a new experiment where the government expenditure $g$ increases from 0.2 to 0.4 in period 10, 
-and then decreases to 0.1 in period 20, after which it remains at 0.1 forever.
+Design a new experiment where the government expenditure $g$ increases from $0.2$ to $0.4$ in period $10$, 
+and then decreases to $0.1$ in period $20$ permanently.
 ```
 
 ```{solution-start} cass_fiscal_ex2
