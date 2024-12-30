@@ -27,9 +27,9 @@ Therefore, to compute an equilibrium allocation and price system, we solve a sys
 
 We present two ways to solve the model:
 
-- The first method is called shooting algorithm;
+- The first method is shooting algorithm in the same spirit as in {doc}`cass_koopmans_2`.
 
-- The second method is applying a root-finding algorithm to minimize the residuals derived from the first-order conditions.
+- The second method is a root-finding algorithm to minimize the residuals derived from the first-order conditions.
 
 We will use the following imports
 
@@ -88,7 +88,7 @@ under the budget constraint {eq}`eq:house_budget`.
 
 ### Technology
 
-The economy's production technology is defined by: 
+The technology is defined by: 
 
 $$
 g_t + c_t + x_t \leq F(k_t, n_t),
@@ -106,15 +106,13 @@ $$
 k_{t+1} = (1 - \delta)k_t + x_t,
 $$
 
-where 
-
-- $\delta \in (0, 1)$ is depreciation rate.
+where $\delta \in (0, 1)$ is depreciation rate.
 
 It is sometimes convenient to eliminate $x_t$ from {eq}`eq:tech_capital` to write it 
 as 
 
 $$
-g_t + c_t + k_{t+1} \leq F(k_t, n_t) + (1 - \delta)k_t
+g_t + c_t + k_{t+1} \leq F(k_t, n_t) + (1 - \delta)k_t.
 $$ 
 
 ### Components of a competitive equilibrium
@@ -131,7 +129,7 @@ A **price system** is a triple of sequences $\{q_t, \eta_t, w_t\}_{t=0}^\infty$,
 - $\eta_t$ is the pretax price at time $t$ that the household receives from the firm for renting capital at time $t$, and
 - $w_t$ is the pretax price at time $t$ that the household receives for renting labor to the firm at time $t$.
 
-The prices $w_t$ and $\eta_t$ are expressed in terms of time $t$ goods, while $q_t$ is expressed in terms of the numeraire at time 0 as in {doc}`cass_koopmans_2`
+The prices $w_t$ and $\eta_t$ are expressed in terms of time $t$ goods, while $q_t$ is expressed in terms of the numeraire at time 0 as in {doc}`cass_koopmans_2`.
 
 Government is the main feature that distinguishes this lecture from
 {doc}`cass_koopmans_2`.
@@ -154,13 +152,13 @@ We include all of these taxes because, like {cite}`hall1971dynamic`,
 they allow us to analyze how the
 various taxes distort production and consumption decisions.
 
-In the [experiment section](cf:experiments), we shall see how variations in government tax plan affects 
+In the [experiment section](cf:experiments), we shall see how variations in government tax plan affect 
 the transition path and equilibrium.
 
 ### Budget constraints
 
-Now we have all the elements to write down budget constraints for representative household
-and government
+Now we have all the elements to write down budget constraints for the representative household
+and government.
 
 Household maximizes {eq}`eq:utility` under the budget constraint:
 
@@ -223,9 +221,11 @@ The household's budget constraint {eq}`eq:house_budget` must be bounded in equil
 
 Specifically, for  $t \geq 1$, the terms multiplying $k_t$ must equal zero.
 
-If they were strictly positive (negative), the household could arbitrarily increase (decrease) the right-hand side of {eq}`eq:house_budget` by selecting an arbitrarily large positive (negative) $k_t$, leading to unbounded profit or arbitrage opportunities.
+If they were strictly positive (negative), the household could arbitrarily increase (decrease) the right-hand side of {eq}`eq:house_budget` by selecting an arbitrarily large positive (negative) $k_t$, leading to unbounded profit or arbitrage opportunities:
 
-For strictly positive terms, the household could purchase large capital stocks $k_t$ and profit from their rental services and undepreciated value. For strictly negative terms, the household could engage in "short selling" synthetic units of capital. Both cases would make {eq}`eq:house_budget` unbounded.
+- For strictly positive terms, the household could purchase large capital stocks $k_t$ and profit from their rental services and undepreciated value. 
+
+- For strictly negative terms, the household could engage in "short selling" synthetic units of capital. Both cases would make {eq}`eq:house_budget` unbounded.
 
 Hence, by setting the terms multiplying $k_t$ to $0$ we have the non-arbitrage condition:
 
@@ -463,7 +463,7 @@ def compute_R_bar_path(shocks, k_path, model, S=100):
 *One-period discount factor:*
 
 $$
-R^{-1}_{t, t+1} = \frac{q_t}{q_{t-1}} = m_{t, t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)} \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})}
+R^{-1}_{t, t+1} = \frac{q_{t+1}}{q_{t}} = m_{t, t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)} \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})}
 $$ (eq:equil_bigR)
 
 
@@ -473,7 +473,7 @@ $$
 r_{t, t+1} \equiv R_{t, t+1} - 1 = (1 - \tau_{k, t+1})(f'(k_{t+1}) - \delta)
 $$ (eq:equil_r)
 
-By {eq}`eq:equil_bigR`, we have
+By {eq}`eq:equil_bigR` and $r_{t, t+1} = - \ln(\frac{q_{t+1}}{q_t})$, we have
 
 $$
 R_{t, t+s} = e^{s \cdot r_{t, t+s}}.
@@ -560,7 +560,7 @@ def f_prime(k, model):
 
 ## Computation
 
-In the following sections, we will apply two methods to solve the model: the shooting algorithm and residual minimization using the Euler equation ({eq}`eq:diff_second`) and feasibility condition ({eq}`eq:feasi_capital`).
+In the following sections, we will apply two methods to solve the model: the shooting algorithm and residual minimization using the Euler equation {eq}`eq:diff_second` and feasibility condition {eq}`eq:feasi_capital`.
 
 ### Method 1: Shooting Algorithm
 
@@ -1003,10 +1003,8 @@ At $t = 0$, the term structure of interest rates exhibits a "U-shaped" pattern:
 - It declines until maturity at $s = 10$.
 - After $s = 10$, it increases for longer maturities.
     
-This pattern corresponds to the pattern of consumption growth in the first two figures, which:
-
-- Declines at an increasing rate until $t = 10$.
-- Then declines at a decreasing rate afterward.
+This pattern corresponds to the pattern of consumption growth in the first two figures, 
+which declines at an increasing rate until $t = 10$ and then declines at a decreasing rate afterward.
 
 +++
 
