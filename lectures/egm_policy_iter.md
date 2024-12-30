@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -44,7 +44,7 @@ Let's start with some standard imports:
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import njit
+from numba import jit
 ```
 
 ## Key Idea
@@ -161,7 +161,7 @@ We reuse the `OptimalGrowthModel` class
 Here's an implementation of $K$ using EGM as described above.
 
 ```{code-cell} python3
-@njit
+@jit
 def K(σ_array, og):
     """
     The Coleman-Reffett operator using EGM

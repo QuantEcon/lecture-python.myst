@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -57,7 +57,7 @@ We require the following imports:
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import njit, float64
+from numba import jit, float64
 from numba.experimental import jitclass
 from quantecon import MarkovChain
 ```
@@ -415,7 +415,7 @@ class IFP:
 Here's the Coleman-Reffett operator based on EGM:
 
 ```{code-cell} ipython
-@njit
+@jit
 def K(a_in, σ_in, ifp):
     """
     The Coleman--Reffett operator for the income fluctuation problem,
@@ -619,7 +619,7 @@ The reason we do this is that `solve_model_time_iter` is not
 JIT-compiled.
 
 ```{code-cell} python3
-@njit
+@jit
 def compute_asset_series(ifp, a_star, σ_star, z_seq, T=500_000):
     """
     Simulates a time series of length T for assets, given optimal

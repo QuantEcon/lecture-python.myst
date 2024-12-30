@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -113,14 +113,14 @@ for μ in [1, 5, 10]:
         distribution.append(poisson_pmf(y_i, μ))
     ax.plot(y_values,
             distribution,
-            label=f'$\mu$={μ}',
+            label=fr'$\mu$={μ}',
             alpha=0.5,
             marker='o',
             markersize=8)
 
 ax.grid()
 ax.set_xlabel('$y$', fontsize=14)
-ax.set_ylabel('$f(y \mid \mu)$', fontsize=14)
+ax.set_ylabel(r'$f(y \mid \mu)$', fontsize=14)
 ax.axis(xmin=0, ymin=0)
 ax.legend(fontsize=14)
 
@@ -211,14 +211,14 @@ for X in datasets:
         distribution.append(poisson_pmf(y_i, μ))
     ax.plot(y_values,
             distribution,
-            label=f'$\mu_i$={μ:.1}',
+            label=fr'$\mu_i$={μ:.1}',
             marker='o',
             markersize=8,
             alpha=0.5)
 
 ax.grid()
 ax.legend()
-ax.set_xlabel('$y \mid x_i$')
+ax.set_xlabel(r'$y \mid x_i$')
 ax.set_ylabel(r'$f(y \mid x_i; \beta )$')
 ax.axis(xmin=0, ymin=0)
 plt.show()

@@ -1,13 +1,13 @@
 name: Build Cache [using jupyter-book]
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    # Execute cache weekly at 3am on Monday
+    - cron:  '0 3 * * 1'
 jobs:
   cache:
-    runs-on: quantecon-gpu-runner
+    runs-on: quantecon-gpu
     container:
-      image: ghcr.io/quantecon/lecture-python-container:cuda-12.6.0-anaconda-2024-06-py312
+      image: ghcr.io/quantecon/lecture-python-container:cuda-12.6.0-anaconda-2024-10-py312-b
       options: --gpus all
     steps:
       - uses: actions/checkout@v4
@@ -32,3 +32,4 @@ jobs:
         with:
           name: build-cache
           path: _build
+          include-hidden-files: true

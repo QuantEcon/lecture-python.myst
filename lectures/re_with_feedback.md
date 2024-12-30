@@ -10,7 +10,7 @@ kernelspec:
 ---
 
 (re_with_feedback)=
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -38,7 +38,6 @@ tags: [hide-output]
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
 from sympy import init_printing, symbols, Matrix
@@ -447,10 +446,10 @@ for t in range(T):
 
 ```{code-cell} python3
 plt.figure()
-plt.plot(range(T+1), m_seq, label='$m_t$')
-plt.plot(range(T+1), p_seq, label='$p_t$')
+plt.plot(range(T+1), m_seq, label=r'$m_t$')
+plt.plot(range(T+1), p_seq, label=r'$p_t$')
 plt.xlabel('t')
-plt.title(f'λ={λ}, α={α}, $ρ_1$={ρ1}, $ρ_2$={ρ2}')
+plt.title(rf'λ={λ}, α={α}, $ρ_1$={ρ1}, $ρ_2$={ρ2}')
 plt.legend()
 plt.show()
 ```
@@ -938,8 +937,8 @@ for δ in [-0.05, 0, 0.05]:
     plt.plot(m_range, [magic_p0(m0, δ=δ) for m0 in m_range], label=f"δ={δ}")
 plt.legend()
 
-plt.xlabel("$m_0$")
-plt.ylabel("$p_0$")
+plt.xlabel(r"$m_0$")
+plt.ylabel(r"$p_0$")
 plt.show()
 ```
 
@@ -951,9 +950,9 @@ m0 = 1
 
 δ_range = np.linspace(-0.05, 0.05, 100)
 plt.plot(δ_range, [magic_p0(m0, δ=δ) for δ in δ_range])
-plt.xlabel('$\delta$')
-plt.ylabel('$p_0$')
-plt.title(f'$m_0$={m0}')
+plt.xlabel(r'$\delta$')
+plt.ylabel(r'$p_0$')
+plt.title(rf'$m_0$={m0}')
 plt.show()
 ```
 

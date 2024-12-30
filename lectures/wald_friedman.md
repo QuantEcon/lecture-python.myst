@@ -12,7 +12,7 @@ kernelspec:
 ---
 
 (wald_friedman)=
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -186,7 +186,7 @@ The next figure shows two beta distributions in the top panel.
 The bottom panel presents mixtures of these distributions, with various mixing probabilities $\pi_k$
 
 ```{code-cell} ipython3
-@jit(nopython=True)
+@jit
 def p(x, a, b):
     r = gamma(a + b) / (gamma(a) * gamma(b))
     return r * x**(a-1) * (1 - x)**(b-1)
@@ -502,7 +502,7 @@ def Q(h, wf):
 To solve the key functional equation, we will iterate using `Q` to find the fixed point
 
 ```{code-cell} ipython3
-@jit(nopython=True)
+@jit
 def solve_model(wf, tol=1e-4, max_iter=1000):
     """
     Compute the continuation cost function
@@ -557,7 +557,7 @@ We will also set up a function to compute the cutoffs $\alpha$ and $\beta$
 and plot these on our cost function plot
 
 ```{code-cell} ipython3
-@jit(nopython=True)
+@jit
 def find_cutoff_rule(wf, h):
 
     """
@@ -754,7 +754,7 @@ This leads to him having a higher expected loss when he puts equal weight on bot
 ### A Notebook Implementation
 
 To facilitate comparative statics, we provide
-a [Jupyter notebook](https://nbviewer.org/github/QuantEcon/lecture-python.notebooks/blob/master/wald_friedman.ipynb) that
+a [Jupyter notebook](https://nbviewer.org/github/QuantEcon/lecture-python.notebooks/blob/main/wald_friedman.ipynb) that
 generates the same plots, but with sliders.
 
 With these sliders, you can adjust parameters and immediately observe

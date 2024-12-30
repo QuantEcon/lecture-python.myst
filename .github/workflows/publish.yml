@@ -6,9 +6,9 @@ on:
 jobs:
   publish:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-    runs-on: quantecon-gpu-runner
+    runs-on: quantecon-gpu
     container:
-      image: ghcr.io/quantecon/lecture-python-container:cuda-12.6.0-anaconda-2024-06-py312
+      image: ghcr.io/quantecon/lecture-python-container:cuda-12.6.0-anaconda-2024-10-py312-b
       options: --gpus all
     steps:
       - name: Checkout
@@ -28,7 +28,7 @@ jobs:
         run: pip list
       # Download Build Cache from cache.yml
       - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@v7
         with:
           workflow: cache.yml
           branch: main
@@ -90,4 +90,4 @@ jobs:
           git config user.email "admin@quantecon.org"
           git add *.ipynb
           git commit -m "auto publishing updates to notebooks"
-          git push origin master
+          git push origin main

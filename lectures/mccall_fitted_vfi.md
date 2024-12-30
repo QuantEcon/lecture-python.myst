@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -51,7 +51,7 @@ We will use the following imports:
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import njit, float64
+from numba import jit, float64
 from numba.experimental import jitclass
 ```
 
@@ -184,7 +184,7 @@ We will adopt the lognormal distribution for wages, with $w = \exp(\mu + \sigma 
 when $z$ is standard normal and $\mu, \sigma$ are parameters.
 
 ```{code-cell} python3
-@njit
+@jit
 def lognormal_draws(n=1000, μ=2.5, σ=0.5, seed=1234):
     np.random.seed(seed)
     z = np.random.randn(n)
@@ -242,7 +242,7 @@ class McCallModelContinuous:
 We then return the current iterate as an approximate solution.
 
 ```{code-cell} python3
-@njit
+@jit
 def solve_model(mcm, tol=1e-5, max_iter=2000):
     """
     Iterates to convergence on the Bellman equations
@@ -273,7 +273,7 @@ and returns the associated reservation wage.
 If $v(w) < h$ for all $w$, then the function returns np.inf
 
 ```{code-cell} python3
-@njit
+@jit
 def compute_reservation_wage(mcm):
     """
     Computes the reservation wage of an instance of the McCall model

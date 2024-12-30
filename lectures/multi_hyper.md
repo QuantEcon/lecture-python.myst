@@ -10,7 +10,7 @@ kernelspec:
 ---
 
 (multi_hyper_v7)=
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -116,7 +116,7 @@ plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from scipy.special import comb
 from scipy.stats import normaltest
-from numba import njit, prange
+from numba import jit, prange
 ```
 
 To recapitulate, we assume there are in total $c$ types of objects in an urn.
@@ -394,7 +394,7 @@ def bivariate_normal(x, y, μ, Σ, i, j):
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def count(vec1, vec2, n):
     size = sample.shape[0]
 

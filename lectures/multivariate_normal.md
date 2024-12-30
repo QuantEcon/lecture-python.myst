@@ -10,7 +10,7 @@ kernelspec:
 ---
 
 (multivariate_normal_v11)=
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -64,7 +64,7 @@ We  use the following imports:
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from numba import njit
+from numba import jit
 import statsmodels.api as sm
 ```
 
@@ -84,7 +84,7 @@ covariance matrix of $z$.
 The covariance matrix $\Sigma$ is symmetric and positive definite.
 
 ```{code-cell} python3
-@njit
+@jit
 def f(z, μ, Σ):
     """
     The density function of multivariate normal distribution.

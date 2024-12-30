@@ -10,7 +10,7 @@ kernelspec:
 ---
 
 (likelihood_ratio_process)=
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -52,14 +52,14 @@ We'll begin by loading some Python modules.
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from numba import vectorize, njit, prange
+from numba import vectorize, jit, prange
 from math import gamma
 import pandas as pd
 
 import seaborn as sns
 colors = sns.color_palette()
 
-@njit
+@jit
 def set_seed():
     np.random.seed(142857)
 set_seed()
@@ -147,12 +147,12 @@ def p(x, a, b):
     return r * x** (a-1) * (1 - x) ** (b-1)
 
 # The two density functions.
-f = njit(lambda x: p(x, F_a, F_b))
-g = njit(lambda x: p(x, G_a, G_b))
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def simulate(a, b, T=50, N=500):
     '''
     Generate N sets of T observations of the likelihood ratio,
@@ -209,7 +209,7 @@ Below we define a Python function that updates belief $\pi$ using
 likelihood ratio $\ell$ according to  recursion {eq}`eq_recur1`
 
 ```{code-cell} python3
-@njit
+@jit
 def update(π, l):
     "Update π using likelihood l"
 
@@ -591,7 +591,7 @@ $$
 We'll plot a large sample of paths.
 
 ```{code-cell} ipython3
-@njit
+@jit
 def martingale_simulate(π0, N=5000, T=200):
 
     π_path = np.empty((N,T+1))
@@ -778,7 +778,7 @@ We approximate it for  a grid of points $\pi_{t-1} \in [0,1]$.
 Then we'll plot it.
 
 ```{code-cell} ipython3
-@njit
+@jit
 def compute_cond_var(pi, mc_size=int(1e6)):
     # create monte carlo draws
     mc_draws = np.zeros(mc_size)

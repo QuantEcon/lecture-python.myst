@@ -10,7 +10,7 @@ kernelspec:
 ---
 
 (aiyagari)=
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -283,7 +283,7 @@ class Household:
 
 # Do the hard work using JIT-ed functions
 
-@jit(nopython=True)
+@jit
 def populate_R(R, a_size, z_size, a_vals, z_vals, r, w):
     n = a_size * z_size
     for s_i in range(n):
@@ -297,7 +297,7 @@ def populate_R(R, a_size, z_size, a_vals, z_vals, r, w):
             if c > 0:
                 R[s_i, new_a_i] = np.log(c)  # Utility
 
-@jit(nopython=True)
+@jit
 def populate_Q(Q, a_size, z_size, Π):
     n = a_size * z_size
     for s_i in range(n):
@@ -307,7 +307,7 @@ def populate_Q(Q, a_size, z_size, Π):
                 Q[s_i, a_i, a_i*z_size + next_z_i] = Π[z_i, next_z_i]
 
 
-@jit(nopython=True)
+@jit
 def asset_marginal(s_probs, a_size, z_size):
     a_probs = np.zeros(a_size)
     for a_i in range(a_size):

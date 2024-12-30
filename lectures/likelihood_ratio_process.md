@@ -10,7 +10,7 @@ kernelspec:
 ---
 
 (likelihood_ratio_process)=
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -46,7 +46,7 @@ Let's start  by importing some Python tools.
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from numba import vectorize, njit
+from numba import vectorize, jit
 from math import gamma
 from scipy.integrate import quad
 ```
@@ -131,12 +131,12 @@ def p(x, a, b):
     return r * x** (a-1) * (1 - x) ** (b-1)
 
 # The two density functions.
-f = njit(lambda x: p(x, F_a, F_b))
-g = njit(lambda x: p(x, G_a, G_b))
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
 ```
 
 ```{code-cell} python3
-@njit
+@jit
 def simulate(a, b, T=50, N=500):
     '''
     Generate N sets of T observations of the likelihood ratio,
@@ -601,7 +601,7 @@ $h$ is closer to $g$
 ```{code-cell} python3
 H_a, H_b = 3.5, 1.8
 
-h = njit(lambda x: p(x, H_a, H_b))
+h = jit(lambda x: p(x, H_a, H_b))
 ```
 
 ```{code-cell} python3
@@ -665,7 +665,7 @@ $g$ so that now $K_g$ is larger than $K_f$.
 
 ```{code-cell} python3
 H_a, H_b = 1.2, 1.2
-h = njit(lambda x: p(x, H_a, H_b))
+h = jit(lambda x: p(x, H_a, H_b))
 ```
 
 ```{code-cell} python3

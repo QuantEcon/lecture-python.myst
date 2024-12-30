@@ -10,7 +10,7 @@ kernelspec:
 ---
 
 (mccall)=
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -461,7 +461,7 @@ the reservation wage.
 We'll be using JIT compilation via Numba to turbocharge our loops.
 
 ```{code-cell} python3
-@jit(nopython=True)
+@jit
 def compute_reservation_wage(mcm,
                              max_iter=500,
                              tol=1e-6):
@@ -612,7 +612,7 @@ The big difference here, however, is that we're iterating on a scalar $h$, rathe
 Here's an implementation:
 
 ```{code-cell} python3
-@jit(nopython=True)
+@jit
 def compute_reservation_wage_two(mcm,
                                  max_iter=500,
                                  tol=1e-5):
@@ -669,7 +669,7 @@ Here's one solution
 ```{code-cell} python3
 cdf = np.cumsum(q_default)
 
-@jit(nopython=True)
+@jit
 def compute_stopping_time(w_bar, seed=1234):
 
     np.random.seed(seed)
@@ -685,7 +685,7 @@ def compute_stopping_time(w_bar, seed=1234):
             t += 1
     return stopping_time
 
-@jit(nopython=True)
+@jit
 def compute_mean_stopping_time(w_bar, num_reps=100000):
     obs = np.empty(num_reps)
     for i in range(num_reps):
@@ -799,7 +799,7 @@ class McCallModelContinuous:
         self.w_draws = np.exp(μ+ σ * s)
 
 
-@jit(nopython=True)
+@jit
 def compute_reservation_wage_continuous(mcmc, max_iter=500, tol=1e-5):
 
     c, β, σ, μ, w_draws = mcmc.c, mcmc.β, mcmc.σ, mcmc.μ, mcmc.w_draws

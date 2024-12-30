@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -63,7 +63,7 @@ Let's start with some imports:
 import matplotlib.pyplot as plt
 import numpy as np
 from quantecon.optimize import brentq
-from numba import njit
+from numba import jit
 ```
 
 ## The Euler Equation
@@ -286,7 +286,7 @@ u'(c) - \beta \int (u' \circ \sigma) (f(y - c) z ) f'(y - c) z \phi(dz)
 ```
 
 ```{code-cell} ipython
-@njit
+@jit
 def euler_diff(c, σ, y, og):
     """
     Set up a function such that the root with respect to c,
@@ -314,7 +314,7 @@ state $y$ and $σ$, the current guess of the policy.
 Here's the operator $K$, that implements the root-finding step.
 
 ```{code-cell} ipython3
-@njit
+@jit
 def K(σ, og):
     """
     The Coleman-Reffett operator

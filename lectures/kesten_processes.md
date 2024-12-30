@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-```{raw} html
+```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
@@ -675,11 +675,11 @@ Here's one solution.
 First we generate the observations:
 
 ```{code-cell} ipython3
-from numba import njit, prange
+from numba import jit, prange
 from numpy.random import randn
 
 
-@njit(parallel=True)
+@jit(parallel=True)
 def generate_draws(μ_a=-0.5,
                    σ_a=0.1,
                    μ_b=0.0,
