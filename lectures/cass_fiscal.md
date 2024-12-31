@@ -11,84 +11,33 @@ kernelspec:
   name: python3
 ---
 
-# Fiscal Policy Experiments in a Non-stochastic Model
+# Cass-Koopmans Model with Distorting Taxes 
 
-## Introduction
+## Overview
 
-This lecture studies effects of technology and fiscal shocks on equilibrium outcomes in a nonstochastic growth model with features inherited from {doc}`cass_koopmans_2`.
+This lecture studies effects of foreseen   fiscal and technology shocks on competitive equilibrium prices and quantities in a nonstochastic version of a Cass-Koopmans  growth model with features described in this QuantEcon lecture {doc}`cass_koopmans_2`.
 
-We use the model as a laboratory to exhibit numerical techniques for approximating equilibria and to display the structure of dynamic models in which decision makers have perfect foresight about future government decisions. 
+We use the model as a laboratory to experiment with  numerical techniques for approximating equilibria and to display the structure of dynamic models in which decision makers have perfect foresight about future government decisions. 
 
-Following {cite}`hall1971dynamic`, we augment a nonstochastic version of the standard growth model with a government that purchases a stream of goods and that finances itself with an array of distorting flat-rate taxes.
+Following a classic paper by Robert E. Hall {cite}`hall1971dynamic`, we augment a nonstochastic version of the Cass-Koopmans optimal  growth model with a government that purchases a stream of goods and that finances its purchases  with an sequences of several  distorting flat-rate taxes.
 
 Distorting taxes prevent a competitive equilibrium allocation from solving a planning problem. 
 
 Therefore, to compute an equilibrium allocation and price system, we solve a system of nonlinear difference equations consisting of the first-order conditions for decision makers and the other equilibrium conditions.
 
-We present two ways to solve the model:
+We present two ways to approximate an equilibrium:
 
-- The first method is shooting algorithm in the same spirit as in {doc}`cass_koopmans_2`.
+- The first is a shooting algorithm like the one that we deployed  in {doc}`cass_koopmans_2`.
 
-- The second method is a root-finding algorithm to minimize the residuals derived from the first-order conditions.
+- The second method is a root-finding algorithm that  minimizes residuals from the  first-order conditions of a consumer and   a representative firm.
 
-We will use the following imports
-
-```{code-cell} ipython3
-import numpy as np
-from scipy.optimize import root
-import matplotlib.pyplot as plt
-from collections import namedtuple
-from mpmath import mp, mpf
-from warnings import warn
-
-# Set the precision
-mp.dps = 40
-mp.pretty = True
-```
-
-Note that we will use the `mpmath` library to perform high-precision arithmetic in the shooting algorithm in cases where the solution diverges due to numerical instability.
-
-We will use the following parameters
-
-```{code-cell} ipython3
-# Create a namedtuple to store the model parameters
-Model = namedtuple("Model", 
-            ["β", "γ", "δ", "α", "A"])
-
-def create_model(β=0.95, # discount factor
-                 γ=2.0,  # relative risk aversion coefficient
-                 δ=0.2,  # depreciation rate
-                 α=0.33, # capital share
-                 A=1.0   # TFP
-                 ):
-    """Create a model instance."""
-    return Model(β=β, γ=γ, δ=δ, α=α, A=A)
-
-model = create_model()
-
-# Total number of periods
-S = 100
-```
 
 ## The Economy
 
-### Households
-
-The representative household has preferences over nonnegative streams of a single consumption good $c_t$ and leisure $1-n_t$ that are ordered by:
-
-$$
-\sum_{t=0}^{\infty} \beta^t U(c_t, 1-n_t), \quad \beta \in (0, 1),
-$$ (eq:utility)
-
-where
-
-- $U$ is strictly increasing in $c_t$, twice continuously differentiable, and strictly concave with $c_t \geq 0$ and $n_t \in [0, 1]$,
-
-under the budget constraint {eq}`eq:house_budget`.
 
 ### Technology
 
-The technology is defined by: 
+Feasible allocations satisfy  
 
 $$
 g_t + c_t + x_t \leq F(k_t, n_t),
@@ -96,19 +45,19 @@ $$ (eq:tech_capital)
 
 where 
 
-- $g_t$ is government expenditure
+- $g_t$ is government purchases of the time $t$ good
 - $x_t$ is gross investment, and 
 - $F(k_t, n_t)$ is a linearly homogeneous production function with positive and decreasing marginal products of capital $k_t$ and labor $n_t$.
 
-The law of motion for capital is given by:
+Physical capital evolves according to
 
 $$
 k_{t+1} = (1 - \delta)k_t + x_t,
 $$
 
-where $\delta \in (0, 1)$ is depreciation rate.
+where $\delta \in (0, 1)$ is a depreciation rate.
 
-It is sometimes convenient to eliminate $x_t$ from {eq}`eq:tech_capital` to write it 
+It is sometimes convenient to eliminate $x_t$ from {eq}`eq:tech_capital` and to represent it as 
 as 
 
 $$
@@ -117,9 +66,9 @@ $$
 
 ### Components of a competitive equilibrium
 
-There is a competitive equilibrium with all trades occurring at time $0$.
+All trades occurring at time $0$.
 
-The household owns capital, makes investment decisions, and rents capital and labor to a representative production firm.
+The representative  household owns capital, makes investment decisions, and rents capital and labor to a representative production firm.
 
 The representative firm uses capital and labor to produce goods with the production function $F(k_t, n_t)$.
 
@@ -129,12 +78,14 @@ A **price system** is a triple of sequences $\{q_t, \eta_t, w_t\}_{t=0}^\infty$,
 - $\eta_t$ is the pretax price at time $t$ that the household receives from the firm for renting capital at time $t$, and
 - $w_t$ is the pretax price at time $t$ that the household receives for renting labor to the firm at time $t$.
 
-The prices $w_t$ and $\eta_t$ are expressed in terms of time $t$ goods, while $q_t$ is expressed in terms of the numeraire at time 0 as in {doc}`cass_koopmans_2`.
+The prices $w_t$ and $\eta_t$ are expressed in terms of time $t$ goods, while $q_t$ is expressed in terms of a numeraire at time $0$, as in {doc}`cass_koopmans_2`.
 
-Government is the main feature that distinguishes this lecture from
+The presence of a government  distinguishes this lecture from
 {doc}`cass_koopmans_2`.
 
-Government purchases of goods at time $t$ are $g_t \geq 0$ and a government expenditure plan is a sequence $g = \{g_t\}_{t=0}^\infty$. 
+Government purchases of goods at time $t$ are $g_t \geq 0$.
+
+A government expenditure plan is a sequence $g = \{g_t\}_{t=0}^\infty$. 
 
 A government tax plan is a $4$-tuple of sequences $\{\tau_{ct}, \tau_{kt}, \tau_{nt}, \tau_{ht}\}_{t=0}^\infty$, 
 where 
@@ -144,23 +95,30 @@ where
 - $\tau_{nt}$ is a tax rate on wage earnings at time $t$, and 
 - $\tau_{ht}$ is a lump sum tax on a consumer at time $t$.
 
-There is a sense in which we have given the government access to too many kinds
-of taxes, because when lump-sum taxes $\tau_{ht}$ are available, the government should not
+Because  lump-sum taxes $\tau_{ht}$ are available, the government actually should not
 use any distorting taxes. 
 
-We include all of these taxes because, like {cite}`hall1971dynamic`,
-they allow us to analyze how the
-various taxes distort production and consumption decisions.
+Nevertheless, we include all of these taxes because, like {cite}`hall1971dynamic`,
+they allow us to analyze how various taxes distort production and consumption decisions.
 
 In the [experiment section](cf:experiments), we shall see how variations in government tax plan affect 
 the transition path and equilibrium.
 
-### Budget constraints
 
-Now we have all the elements to write down budget constraints for the representative household
-and government.
+### Representative Household
 
-Household maximizes {eq}`eq:utility` under the budget constraint:
+A representative household has preferences over nonnegative streams of a single consumption good $c_t$ and leisure $1-n_t$ that are ordered by:
+
+$$
+\sum_{t=0}^{\infty} \beta^t U(c_t, 1-n_t), \quad \beta \in (0, 1),
+$$ (eq:utility)
+
+where
+
+- $U$ is strictly increasing in $c_t$, twice continuously differentiable, and strictly concave with $c_t \geq 0$ and $n_t \in [0, 1]$.
+
+
+The representative hßousehold maximizes {eq}`eq:utility` subject to  the single budget constraint:
 
 $$
 \begin{aligned}
@@ -173,15 +131,17 @@ Here we have assumed that the government gives a depreciation allowance $\delta 
 from the gross rentals on capital $\eta_t k_t$ and so collects taxes $\tau_{kt} (\eta_t - \delta) k_t$
 on rentals from capital.
 
-Government plans $\{ g_t \}_{t=0}^\infty$ for government purchases and taxes $\{\tau_{ct}, \tau_{kt}, \tau_{nt}, \tau_{ht}\}_{t=0}^\infty$ subject to the budget constraint
+### Government 
+
+Government plans $\{ g_t \}_{t=0}^\infty$ for government purchases and taxes $\{\tau_{ct}, \tau_{kt}, \tau_{nt}, \tau_{ht}\}_{t=0}^\infty$ must respect the budget constraint
 
 $$
 \sum_{t=0}^\infty q_t g_t \leq \sum_{t=0}^\infty q_t \left\{ \tau_{ct}c_t + \tau_{kt}(\eta_t - \delta)k_t + \tau_{nt}w_t n_t + \tau_{ht} \right\}.
 $$ (eq:gov_budget)
 
-### Equilibrium
 
-In the equilibrium, given a budget-feasible government policy $\{g_t\}_{t=0}^\infty$ and $\{\tau_{ct}, \tau_{kt}, \tau_{nt}, \tau_{ht}\}_{t=0}^\infty$ subject to {eq}`eq:gov_budget`,
+
+Given a budget-feasible government policy $\{g_t\}_{t=0}^\infty$ and $\{\tau_{ct}, \tau_{kt}, \tau_{nt}, \tau_{ht}\}_{t=0}^\infty$ subject to {eq}`eq:gov_budget`,
 
 - *Household* chooses $\{c_t\}_{t=0}^\infty$, $\{n_t\}_{t=0}^\infty$, and $\{k_{t+1}\}_{t=0}^\infty$ to maximize utility{eq}`eq:utility` subject to budget constraint{eq}`eq:house_budget`, and 
 - *Frim* chooses sequences of capital $\{k_t\}_{t=0}^\infty$ and $\{n_t\}_{t=0}^\infty$ to maximize profits
@@ -192,6 +152,7 @@ In the equilibrium, given a budget-feasible government policy $\{g_t\}_{t=0}^\in
   
 - A **feasible allocation** is a sequence $\{c_t, x_t, n_t, k_t\}_{t=0}^\infty$ that satisfies feasibility condition {eq}`eq:tech_capital`.
 
+## Equilibrium
 
 ```{prf:definition}
 :label: com_eq_tax
@@ -199,11 +160,11 @@ In the equilibrium, given a budget-feasible government policy $\{g_t\}_{t=0}^\in
 A **competitive equilibrium with distorting taxes** is a **budget-feasible government policy**, **a feasible allocation**, and **a price system** for which, given the price system and the government policy, the allocation solves the household’s problem and the ﬁrm’s problem.
 ```
 
-## Non-arbitrage Condition
+## No-arbitrage Condition
 
 A no-arbitrage argument implies a restriction on prices and tax rates across time.
 
-### Household
+
 
 By rearranging {eq}`eq:house_budget` and group $k_t$ at the same $t$, we can get
 
@@ -217,7 +178,9 @@ $$ (eq:constrant_house)
 
 The household inherits a given $k_0$ that it takes as initial condition and is free to choose $\{ c_t, n_t, k_{t+1} \}_{t=0}^\infty$.
 
-The household's budget constraint {eq}`eq:house_budget` must be bounded in equilibrium due to finite resources. This imposes a restriction on price and tax sequences. 
+The household's budget constraint {eq}`eq:house_budget` must be bounded in equilibrium due to finite resources. 
+
+This imposes a restriction on price and tax sequences. 
 
 Specifically, for  $t \geq 1$, the terms multiplying $k_t$ must equal zero.
 
@@ -239,7 +202,7 @@ $$
 -\lim_{T \to \infty} q_T k_{T+1} = 0.
 $$ (eq:terminal)
 
-### Firm
+
 
 Zero-profit conditions for the representative firm impose additional restrictions on equilibrium prices and quantities. 
 
@@ -263,13 +226,15 @@ $$(eq:no_arb_firms)
 
 ## Household's First Order Condition
 
-Household maximize {eq}`eq:utility` under {eq}`eq:house_budget`. Let $U_1 = \frac{\partial U}{\partial c}, U_2 = \frac{\partial U}{\partial (1-n)} = -\frac{\partial U}{\partial n}.$, we can derive FOC from the Lagrangian
+Household maximize {eq}`eq:utility` under {eq}`eq:house_budget`.
+
+Let $U_1 = \frac{\partial U}{\partial c}, U_2 = \frac{\partial U}{\partial (1-n)} = -\frac{\partial U}{\partial n}.$, we can derive FOC from the Lagrangian
 
 $$
 \mathcal{L} = \sum_{t=0}^\infty \beta^t U(c_t, 1 - n_t) + \mu \left( \sum_{t=0}^\infty q_t \left[(1 + \tau_{ct})c_t - (1 - \tau_{nt})w_t n_t + \ldots \right] \right),
 $$
 
-Hence we have FOC:
+First-order necessary conditions for the representative household's problem are 
 
 $$
 \frac{\partial \mathcal{L}}{\partial c_t} = \beta^t U_{1}(c_t, 1 - n_t) - \mu q_t (1 + \tau_{ct}) = 0
@@ -281,7 +246,7 @@ $$
 \frac{\partial \mathcal{L}}{\partial n_t} = \beta^t \left(-U_{2t}(c_t, 1 - n_t)\right) - \mu q_t (1 - \tau_{nt}) w_t = 0
 $$ (eq:foc_n_1)
 
-Rearranguing {eq}`eq:foc_c_1` and {eq}`eq:foc_n_1`, we have
+Rearranging {eq}`eq:foc_c_1` and {eq}`eq:foc_n_1`, we have
 
 $$
 \begin{aligned}
@@ -296,7 +261,7 @@ $$
 $$ (eq:foc_n)
 
 
-Plugging {eq}`eq:foc_c` into {eq}`eq:terminal` by replacing $q_t$, we get terminal condition
+Plugging {eq}`eq:foc_c` into {eq}`eq:terminal` and replacing $q_t$, we get terminal condition
 
 $$
 -\lim_{T \to \infty} \beta^T \frac{U_{1T}}{(1 + \tau_{cT})} k_{T+1} = 0.
@@ -304,10 +269,53 @@ $$ (eq:terminal_final)
 
 ## Computing Equilibria
 
-To compute an equilibrium we solve a price system $\{q_t, \eta_t, w_t\}$, a budget feasible government policy $\{g_t, \tau_t\} \equiv \{g_t, \tau_{ct}, \tau_{nt}, \tau_{kt}, \tau_{ht}\}$, and an allocation $\{c_t, n_t, k_{t+1}\}$ that solve the system of nonlinear difference equations consisting of 
+To compute an equilibrium,  we seek a  price system $\{q_t, \eta_t, w_t\}$, a budget feasible government policy $\{g_t, \tau_t\} \equiv \{g_t, \tau_{ct}, \tau_{nt}, \tau_{kt}, \tau_{ht}\}$, and an allocation $\{c_t, n_t, k_{t+1}\}$ that solve a system of nonlinear difference equations consisting of 
 
 - feasibility condition {eq}`eq:tech_capital`, no-arbitrage condition for household {eq}`eq:no_arb` and firms {eq}`eq:no_arb_firms`, household's first order conditions {eq}`eq:foc_c` and {eq}`eq:foc_n`.
-- initial condition $k_0$, and terminal condition {eq}`eq:terminal_final`.
+- an initial condition $k_0$ and a terminal condition {eq}`eq:terminal_final`.
+
+
+## Python Code
+
+
+We require the following imports
+
+```{code-cell} ipython3
+import numpy as np
+from scipy.optimize import root
+import matplotlib.pyplot as plt
+from collections import namedtuple
+from mpmath import mp, mpf
+from warnings import warn
+
+# Set the precision
+mp.dps = 40
+mp.pretty = True
+```
+
+We  use the `mpmath` library to perform high-precision arithmetic in the shooting algorithm in cases where the solution diverges due to numerical instability.
+
+We set the following parameters
+
+```{code-cell} ipython3
+# Create a namedtuple to store the model parameters
+Model = namedtuple("Model", 
+            ["β", "γ", "δ", "α", "A"])
+
+def create_model(β=0.95, # discount factor
+                 γ=2.0,  # relative risk aversion coefficient
+                 δ=0.2,  # depreciation rate
+                 α=0.33, # capital share
+                 A=1.0   # TFP
+                 ):
+    """Create a model instance."""
+    return Model(β=β, γ=γ, δ=δ, α=α, A=A)
+
+model = create_model()
+
+# Total number of periods
+S = 100
+```
 
 ### Inelastic Labor Supply
 
@@ -347,25 +355,31 @@ u'(c_t) = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} [(1 - \tau
 \end{aligned}
 $$ (eq:diff_second)
 
-This equation is instrumental in solving for the equilibrium sequence of consumption and capital, as demonstrated in the second method.
+
+Equation {eq}`eq:diff_second` will appear prominently in our equilibrium computation algorithms.
+ 
 
 ### Steady state
 
-Tax rates and government expenditures act as forcing functions for the difference equations {eq}`eq:feasi_capital` and {eq}`eq:diff_second`.
+Tax rates and government expenditures act as **forcing functions** for  difference equations {eq}`eq:feasi_capital` and {eq}`eq:diff_second`.
 
-Define $z_t = [g_t, \tau_{kt}, \tau_{ct}]'$. We can express the second-order difference equation as:
+Define $z_t = [g_t, \tau_{kt}, \tau_{ct}]'$. 
+
+Represent  the second-order difference equation as:
 
 $$
 H(k_t, k_{t+1}, k_{t+2}; z_t, z_{t+1}) = 0.
 $$ (eq:second_ord_diff)
 
-We assume that the government policy reaches a steady state such that $\lim_{t \to \infty} z_t = \bar z$ and that the steady state holds for $t > T$. The terminal steady-state capital stock $\bar{k}$ satisfies:
+We assume that a government policy reaches a steady state such that $\lim_{t \to \infty} z_t = \bar z$ and that the steady state prevails for $t > T$. 
+
+The terminal steady-state capital stock $\bar{k}$ satisfies:
 
 $$
 H(\bar{k}, \bar{k}, \bar{k}, \bar{z}, \bar{z}) = 0.
 $$
 
-From the difference equation {eq}`eq:diff_second`, we can derive the steady-state condition:
+From  difference equation {eq}`eq:diff_second`, we can infer a restriction on  the steady-state:
 
 $$
 \begin{aligned}
@@ -505,9 +519,9 @@ def compute_rts_path(q_path, S, t):
     return rts_path
 ```
 
-## Specifications of the model
+## Some functional forms
 
-In our model, the representative household has the following CRRA preferences over consumption: 
+We assume that  the representative household' period utility has  the following CRRA (constant relative risk aversion) form  
 
 $$
 u(c) = \frac{c^{1 - \gamma}}{1 - \gamma}
@@ -521,7 +535,7 @@ def u_prime(c, model):
     return c ** (-model.γ)
 ```
 
-By substituting {eq}`eq:gross_rate` into {eq}`eq:diff_second`, we have
+By substituting {eq}`eq:gross_rate` into {eq}`eq:diff_second`, we obtain
 
 $$
 c_{t+1} = c_t \left[ \beta \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{k, t+1})(f'(k_{t+1}) - \delta) + 1 \right] \right]^{\frac{1}{\gamma}} = c_t \left[ \beta \overline{R}_{t+1} \right]^{\frac{1}{\gamma}}
@@ -536,7 +550,7 @@ def next_c(c_t, R_bar, model):
     return c_t * (β * R_bar) ** (1 / γ)
 ```
 
-The production function is given by the Cobb-Douglas form with inelastic labor supply:
+For the production function we assume a Cobb-Douglas form:
 
 $$
 F(k, 1) = A k^\alpha
@@ -560,9 +574,14 @@ def f_prime(k, model):
 
 ## Computation
 
-In the following sections, we will apply two methods to solve the model: the shooting algorithm and residual minimization using the Euler equation {eq}`eq:diff_second` and feasibility condition {eq}`eq:feasi_capital`.
+We describe  two ways to compute an equilibrium: 
 
-### Method 1: Shooting Algorithm
+ * a shooting algorithm
+ * a residual-minimization method that focuses on imposing  Euler equation {eq}`eq:diff_second` and the  feasibility condition {eq}`eq:feasi_capital`.
+
+### Shooting Algorithm
+
+This algorithm deploys the following steps.
 
 1. Solve the equation {eq}`eq:diff_second_steady` for the terminal steady-state capital $\bar{k}$ that corresponds to the permanent policy vector $\bar{z}$.
 
@@ -575,6 +594,8 @@ In the following sections, we will apply two methods to solve the model: the sho
 5. Compute the difference $\hat{k}_S - \bar{k}$. If $\left| \hat{k}_S - \bar{k} \right| > \epsilon$ for some small $\epsilon$, adjust $c_0$ and repeat steps 2-5.
 
 6. Adjust $c_0$ iteratively using the bisection method to find a value that ensures $\left| \hat{k}_S - \bar{k} \right| < \epsilon$.
+
+The following code implements these steps.
 
 ```{code-cell} ipython3
 # Steady-state calculation
@@ -694,7 +715,7 @@ def run_shooting(shocks, S, model, c0_func=bisection_c0, shooting_func=shooting_
 (cf:experiments)=
 ### Experiments
 
-We will run a series of experiments and analyze the transition path for the equilibrium in each scenario:
+Let's run some  experiments.
 
 1. A foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 occurring in period 10,
 2. A foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 occurring in period 10,
@@ -703,9 +724,9 @@ We will run a series of experiments and analyze the transition path for the equi
 
 +++
 
-Next we prepare the sequence of variables that will be used to initialize the simulation. 
+To start, we  prepare  sequences that we'll  used to initialize our iterative algorithm. 
 
-We will start from the steady state and then apply the shocks at the appropriate time.
+We will start from an initial  steady state and  apply shocks at an the indicated  time.
 
 ```{code-cell} ipython3
 def plot_results(solution, k_ss, c_ss, shocks, shock_param, 
@@ -746,7 +767,7 @@ def plot_results(solution, k_ss, c_ss, shocks, shock_param,
 
 **Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10**
 
-The figure below shows the effect of a foreseen permanent increase in $g$ at $t = T = 10$ that is financed by an increase in lump-sum taxes
+The figure below shows consequences of a foreseen permanent increase in $g$ at $t = T = 10$ that is financed by an increase in lump-sum taxes
 
 ```{code-cell} ipython3
 # Define shocks as a dictionary
@@ -778,7 +799,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-We note the following features in the figure
+The above figures indicate that an equilibrium **consumption smoothing** mechanism is at work, driven by the representative consumer's preference for smooth consumption paths coming from the curvature of its one-period utility function. 
 
 - The steady-state value of the capital stock remains unaffected:
   - This follows from the fact that $g$ disappears from the steady state version of the Euler equation ({eq}`eq:diff_second_steady`).
@@ -789,9 +810,9 @@ We note the following features in the figure
   - Households, caring about the present value rather than the timing of taxes, experience an adverse wealth effect on consumption, leading to an immediate response.
   
 - Capital gradually accumulates between time $0$ and $T$ due to increased savings and reduces gradually after time $T$:
-    - This temporal variation in capital stock smooths consumption over time, driven by the consumption-smoothing motive.
+    - This temporal variation in capital stock smooths consumption over time, driven by the representative consumer's consumption-smoothing motive.
 
-Let's write the procedures above into a function that runs the solver and draw the plots for a given model
+Let's collect the procedures used above into a function that runs the solver and draws  plots for a given experiment
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -821,10 +842,12 @@ def experiment_model(shocks, S, model, solver, plot_func, policy_shock, T=40):
 ```
 
 The following figure compares responses to a foreseen increase in $g$ at $t = 10$ for
-two economies, our original economy with $\gamma = 2$, shown in the solid line, and an
-otherwise identical economy with $\gamma = 0.2$.
+two economies:
+ 
+ *  our original economy with $\gamma = 2$, shown in the solid line, and
+ *  an otherwise identical economy with $\gamma = 0.2$.
 
-The utility curvature parameter $\gamma$ governs the household's willingness to substitute consumption over time
+This comparison interest us because the  utility curvature parameter $\gamma$ governs the household's willingness to substitute consumption over time, and thus it preferences about smoothness of consumption paths over time.
 
 ```{code-cell} ipython3
 # Solve the model using shooting
@@ -864,18 +887,17 @@ plt.tight_layout()
 plt.show()
 ```
 
-From the graph we can observe that lowering $\gamma$ affects both the consumption and capital stock paths:
+The outcomes indicate  that lowering $\gamma$ affects both the consumption and capital stock paths because - it  increases the representative consumer's willingness to substitute consumption across time:
 
 - Consumption path:
-  - Lowering $\gamma$ increases the willingness to substitute consumption across time.
-  - In the case of $\gamma = 0.2$, consumption becomes less smooth compared to $\gamma = 2$.
+  - When $\gamma = 0.2$, consumption becomes less smooth compared to $\gamma = 2$.
   - For $\gamma = 0.2$, consumption mirrors the government expenditure path more closely, staying higher until $t = 10$.
 
 - Capital stock path:
   - With $\gamma = 0.2$, there are smaller build-ups and drawdowns of capital stock.
-  - Leads to smaller fluctuations in $\bar{R}$ and $\eta$.
+  - There are also smaller fluctuations in $\bar{R}$ and $\eta$.
 
-Let's write another function that runs the solver and draw the plots for two models as we did above
+Let's write another function that runs the solver and draws plots for these two experiments
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -1003,7 +1025,7 @@ At $t = 0$, the term structure of interest rates exhibits a "U-shaped" pattern:
 - It declines until maturity at $s = 10$.
 - After $s = 10$, it increases for longer maturities.
     
-This pattern corresponds to the pattern of consumption growth in the first two figures, 
+This pattern aligns with the pattern of consumption growth in the first two figures, 
 which declines at an increasing rate until $t = 10$ and then declines at a decreasing rate afterward.
 
 +++
@@ -1011,8 +1033,9 @@ which declines at an increasing rate until $t = 10$ and then declines at a decre
 **Experiment 2: Foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 in period 10**
 
 With an inelastic labor supply, the Euler equation {eq}`eq:euler_house` 
-and the other equilibrium conditions show that constant consumption taxes 
-do not distort decisions, but that anticipated changes in them do. 
+and the other equilibrium conditions show that
+- constant consumption taxes do not distort decisions, but 
+- anticipated changes in them do. 
 
 Indeed, {eq}`eq:euler_house` or {eq}`eq:diff_second` indicates that a foreseen in-
 crease in $\tau_{ct}$ (i.e., a decrease in $(1+\tau_{ct})$
@@ -1030,7 +1053,7 @@ shocks = {
 experiment_model(shocks, S, model, run_shooting, plot_results, 'τ_c')
 ```
 
-Notice that while all variables in the figure above eventually return to their initial
+Evidently  all variables in the figures above eventually return to their initial
 steady-state values.
 
 The anticipated increase in $\tau_{ct}$ leads to variations in consumption 
@@ -1038,15 +1061,15 @@ and capital stock across time:
 
 - At $t = 0$:
     - Anticipation of the increase in $\tau_c$ causes an *immediate jump in consumption*.
-    - This is followed by a *consumption binge*, which sends the capital stock downward until $t = T = 10$.
+    - This is followed by a *consumption binge* that sends the capital stock downward until $t = T = 10$.
 - Between $t = 0$ and $t = T = 10$:
     - The decline in the capital stock raises $\bar{R}$ over time.
-    - As per equilibrium conditions, this requires the growth rate of consumption to rise until $t = T$.
+    - The equilibrium conditions require the growth rate of consumption to rise until $t = T$.
 - At $t = T = 10$:
     - The jump in $\tau_c$ depresses $\bar{R}$ below $1$, causing a *sharp drop in consumption*.
 - After $T = 10$:
-    - The effects of anticipated distortion are over, and the economy adjusts to the lower capital stock.
-    - Capital must now rise, requiring *austerity*—consumption plummets after $t = T$ indicated by a lower level of consumption.
+    - The effects of anticipated distortion are over, and the economy gradually adjusts to the lower capital stock.
+    - Capital must now rise, requiring *austerity* —consumption plummets after $t = T$,  indicated by  lower levels of consumption.
     - The interest rate gradually declines, and consumption grows at a diminishing rate along the path to the terminal steady-state.
 
 +++
@@ -1067,16 +1090,17 @@ experiment_two_models(shocks, S, model, model_γ2,
                 run_shooting, plot_results, 'τ_k')
 ```
 
-The path of government expenditures remains fixed, and the increase in $\tau_{kt}$ is offset by a reduction in the present value of lump-sum taxes to keep the budget balanced.
+The path of government expenditures remains fixed
+- the increase in $\tau_{kt}$ is offset by a reduction in the present value of lump-sum taxes to keep the budget balanced.
 
-We note the following features in the figure:
+The  figure shows that:
 
-- Anticipation of the increase in $\tau_{kt}$ leads to immediate decline in capital stock due to increased current consumption and growing consumption flow.
+- Anticipation of the increase in $\tau_{kt}$ leads to immediate decline in capital stock due to increased current consumption and a growing consumption flow.
 - $\bar{R}$ starts rising at $t = 0$ and peaks at $t = 9$, and at $t = 10$, $\bar{R}$ drops sharply due to the tax change.
-    - Variations in $\bar{R}$ reflect the impact of the tax increase at $t = 10$ on consumption across time.
+    - Variations in $\bar{R}$ align with  the impact of the tax increase at $t = 10$ on consumption across time.
 - Transition dynamics push $k_t$ (capital stock) toward a new, lower steady-state level. In the new steady state:
     - Consumption is lower due to reduced output from the lower capital stock.
-    - Smoother consumption paths are observed when $\gamma = 2$ compared to $\gamma = 0.2$.
+    - Smoother consumption paths occur when $\gamma = 2$ than when $\gamma = 0.2$.
     
 
 +++
@@ -1087,7 +1111,7 @@ foreseen one-time change in a policy variable (a "pulse").
 
 **Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever**
 
-The experiment replicates the Figure 12.9.6.
+
 
 ```{code-cell} ipython3
 g_path = np.repeat(0.2, S + 1)
@@ -1102,21 +1126,21 @@ shocks = {
 experiment_model(shocks, S, model, run_shooting, plot_results, 'g')
 ```
 
-We note that such a policy change impacts consumption and capital in an interesting way:
+The figure indicates how:
 
 - Consumption:
-    - Drops immediately at the announcement of the policy and continues to decline over time in anticipation of the one-time surge in $g$.
+    - Drops immediately upon  announcement of the policy and continues to decline over time in anticipation of the one-time surge in $g$.
     - After the shock at $t = 10$, consumption begins to recover, rising at a diminishing rate toward its steady-state value.
     
 - Capital and $\bar{R}$:
-    - Before $t = 10$, capital accumulates as households prepare for the anticipated increase in government spending.
-    - At $t = 10$, capital stock sharply decreases as the government consumes part of it.
+    - Before $t = 10$, capital accumulates as interest rate changes induce households to prepare for the anticipated increase in government spending.
+    - At $t = 10$, the capital stock sharply decreases as the government consumes part of it.
     - $\bar{R}$ jumps above its steady-state value due to the capital reduction and then gradually declines toward its steady-state level.
 +++
 
-### Method 2: Residual Minimization Using the Euler Equation and Feasibility Condition
+### Method 2: Residual Minimization 
 
-The second method involves minimizing the residuals of the following equations:
+The second method involves minimizing residuals (i.e., deviations from equalities) of the following equations:
 
 - The Euler equation {eq}`eq:diff_second`:
 
@@ -1149,14 +1173,14 @@ def feasi_residual(k_t, k_tm1, c_tm1, g_t, model):
     return k_t - (A * k_tm1 ** α + (1 - δ) * k_tm1 - c_tm1 - g_t)
 ```
 
-The algorithm is described as follows:
+The algorithm proceeds follows:
 
-1. Derive intial steady state $k_0$ based on the government plan at $t=0$.
+1. Find initial steady state $k_0$ based on the government plan at $t=0$.
 
 2. Initialize a sequence of initial guesses $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$.
 
-3. Compute the residuals $l_a$ and $l_k$ for $t = 0, \dots, S$, as well as $l_{k_0}$ for $t = 0$ and $l_{k_S}$ for $t = S$:
-   - Compute the Euler's equation residual for $t = 0, \dots, S$ using {eq}`eq:diff_second`:
+3. Compute residuals $l_a$ and $l_k$ for $t = 0, \dots, S$, as well as $l_{k_0}$ for $t = 0$ and $l_{k_S}$ for $t = S$:
+   - Compute the Euler equation residual for $t = 0, \dots, S$ using {eq}`eq:diff_second`:
 
      $$
      l_{ta} = \beta u'(c_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right] - 1
@@ -1168,7 +1192,7 @@ The algorithm is described as follows:
      l_{tk} = k_{t+1} - f(k_t) - (1 - \delta)k_t + g_t + c_t
      $$
 
-   - Compute the residual for the*initial condition for $k_0$ using {eq}`eq:diff_second_steady` and the initial capital $k_0$:
+   - Compute the residual for the initial condition for $k_0$ using {eq}`eq:diff_second_steady` and the initial capital $k_0$:
 
      $$
      l_{k_0} = 1 - \beta \left[ (1 - \tau_{k0}) \left(f'(k_0) - \delta \right) + 1 \right]
@@ -1180,7 +1204,7 @@ The algorithm is described as follows:
      l_{k_S} = \beta u'(c_S) \frac{(1 + \tau_{cS})}{(1 + \tau_{cS})} \left[(1 - \tau_{kS})(f'(k_S) - \delta) + 1 \right] - 1
      $$
 
-4. Iteratively adjust the guesses for $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$ to minimize the residuals $l_{k_0}$, $l_{ta}$, $l_{tk}$, and $l_{k_S}$ for $t = 0, \dots, S$.
+4. Iteratively adjust  guesses for $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$ to minimize  residuals $l_{k_0}$, $l_{ta}$, $l_{tk}$, and $l_{k_S}$ for $t = 0, \dots, S$.
 
 ```{code-cell} ipython3
 # Computing residuals as objective function to minimize
@@ -1235,16 +1259,16 @@ def run_min(shocks, S, model):
     return sol.x.reshape((S + 1, 2))
 ```
 
-This method does not have numerical stability issues, so `mp.mpf` is not necessary.
+We found that  method 2 did  not encounter numerical stability issues, so using  `mp.mpf` is not necessary.
 
-We leave the experiments for you to replicate using the second method.
+We leave as exercises replicating some of our experiments by using the second method.
 
 ## Exercises
 
 ```{exercise}
 :label: cass_fiscal_ex1
 
-Replicate the plots of the four experiments we run before using the second method of residual minimization:
+Replicate the plots of our four experiments  using the second method of residual minimization:
 1. A foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 occurring in period 10,
 2. A foreseen once-and-for-all increase in $\tau_c$ from 0.0 to 0.2 occurring in period 10,
 3. A foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 occurring in period 10, and
