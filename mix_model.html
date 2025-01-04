@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>54. Incorrect Models &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>55. Incorrect Models &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -77,6 +77,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -117,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="55. Bayesian versus Frequentist Decision Rules" href="navy_captain.html" />
-    <link rel="prev" title="53. Likelihood Ratio Processes and Bayesian Learning" href="likelihood_bayes.html" />
+    <link rel="next" title="56. Bayesian versus Frequentist Decision Rules" href="navy_captain.html" />
+    <link rel="prev" title="54. Likelihood Ratio Processes and Bayesian Learning" href="likelihood_bayes.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -166,13 +167,13 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">54.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-from-compound-lottery-h">54.2. Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-1-agent">54.3. Type 1 Agent</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data">54.4. What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kullback-leibler-divergence-governs-limit-of-pi-t">54.5. Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-2-agent">54.6. Type 2 Agent</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">54.7. Concluding Remarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">55.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-from-compound-lottery-h">55.2. Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-1-agent">55.3. Type 1 Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data">55.4. What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kullback-leibler-divergence-governs-limit-of-pi-t">55.5. Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-2-agent">55.6. Type 2 Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">55.7. Concluding Remarks</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -230,7 +231,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="incorrect-models">
-<span id="likelihood-ratio-process"></span><h1><span class="section-number">54. </span>Incorrect Models<a class="headerlink" href="#incorrect-models" title="Permalink to this heading">#</a></h1>
+<span id="likelihood-ratio-process"></span><h1><span class="section-number">55. </span>Incorrect Models<a class="headerlink" href="#incorrect-models" title="Permalink to this heading">#</a></h1>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -245,13 +246,13 @@
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /opt/conda/envs/quantecon/lib/python3.12/site-packages (0.16.0)
-Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.12/site-packages (0.4.35)
-Requirement already satisfied: jaxlib&gt;=0.4.25 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.4.35)
+Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.12/site-packages (0.4.37)
+Requirement already satisfied: jaxlib&gt;=0.4.25 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.4.36)
 Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
 Requirement already satisfied: numpy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (1.26.4)
 Requirement already satisfied: tqdm in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (4.66.5)
-Requirement already satisfied: ml-dtypes&gt;=0.4.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.0)
-Requirement already satisfied: opt-einsum in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (3.4.0)
+Requirement already satisfied: ml_dtypes&gt;=0.4.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.0)
+Requirement already satisfied: opt_einsum in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (3.4.0)
 Requirement already satisfied: scipy&gt;=1.10 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (1.13.1)
 Requirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
 </pre></div>
@@ -264,7 +265,7 @@ Requirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.12/s
 </details>
 </div>
 <section id="overview">
-<h2><span class="section-number">54.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">55.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This  is a sequel to <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this  quantecon lecture</span></a>.</p>
 <p>We discuss  two ways to create compound lottery and their consequences.</p>
 <p>A compound lottery can be said to create a <em>mixture distribution</em>.</p>
@@ -418,7 +419,7 @@ it includes the actual data generating process <span class="math notranslate noh
 </div>
 </section>
 <section id="sampling-from-compound-lottery-h">
-<h2><span class="section-number">54.2. </span>Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span><a class="headerlink" href="#sampling-from-compound-lottery-h" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">55.2. </span>Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span><a class="headerlink" href="#sampling-from-compound-lottery-h" title="Permalink to this heading">#</a></h2>
 <p>We implement two methods  to draw samples from
 our mixture model <span class="math notranslate nohighlight">\(\alpha F + (1-\alpha) G\)</span>.</p>
 <p>We’ll generate samples using each of them and verify that they match well.</p>
@@ -526,7 +527,7 @@ from our target mixture distribution.</p>
 <p><strong>Note:</strong> With numba acceleration the first method is actually only slightly slower than the second when we generated 1,000,000 samples.</p>
 </section>
 <section id="type-1-agent">
-<h2><span class="section-number">54.3. </span>Type 1 Agent<a class="headerlink" href="#type-1-agent" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">55.3. </span>Type 1 Agent<a class="headerlink" href="#type-1-agent" title="Permalink to this heading">#</a></h2>
 <p>We’ll now study what our type 1 agent learns</p>
 <p>Remember that our type 1 agent uses the wrong statistical model, thinking that nature mixed between <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> once and for all at time <span class="math notranslate nohighlight">\(-1\)</span>.</p>
 <p>The type 1 agent thus uses the learning algorithm studied in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this  quantecon lecture</span></a>.</p>
@@ -540,13 +541,13 @@ from our target mixture distribution.</p>
 of the posterior probability <span class="math notranslate nohighlight">\( \pi_t \)</span>, an instance of <strong>Bayes’ Law</strong>.</p>
 <p>Bayes’ law implies that <span class="math notranslate nohighlight">\( \{\pi_t\} \)</span> obeys the recursion</p>
 <div class="math notranslate nohighlight" id="equation-equation-eq-recur1">
-<span class="eqno">(54.1)<a class="headerlink" href="#equation-equation-eq-recur1" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(55.1)<a class="headerlink" href="#equation-equation-eq-recur1" title="Permalink to this equation">#</a></span>\[
 \pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
 \]</div>
 <p>with <span class="math notranslate nohighlight">\( \pi_{0} \)</span> being a Bayesian prior probability that <span class="math notranslate nohighlight">\( q = f \)</span>,
 i.e., a personal or subjective belief about <span class="math notranslate nohighlight">\( q \)</span> based on our having seen no data.</p>
 <p>Below we define a Python function that updates belief <span class="math notranslate nohighlight">\( \pi \)</span> using
-likelihood ratio <span class="math notranslate nohighlight">\( \ell \)</span> according to  recursion <a class="reference internal" href="#equation-equation-eq-recur1">(54.1)</a></p>
+likelihood ratio <span class="math notranslate nohighlight">\( \ell \)</span> according to  recursion <a class="reference internal" href="#equation-equation-eq-recur1">(55.1)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
@@ -561,7 +562,7 @@ likelihood ratio <span class="math notranslate nohighlight">\( \ell \)</span> ac
 </div>
 </div>
 </div>
-<p>Formula <a class="reference internal" href="#equation-equation-eq-recur1">(54.1)</a> can be generalized  by iterating on it and thereby deriving an
+<p>Formula <a class="reference internal" href="#equation-equation-eq-recur1">(55.1)</a> can be generalized  by iterating on it and thereby deriving an
 expression for  the time <span class="math notranslate nohighlight">\( t \)</span> posterior <span class="math notranslate nohighlight">\( \pi_{t+1} \)</span> as a function
 of the time <span class="math notranslate nohighlight">\( 0 \)</span> prior <span class="math notranslate nohighlight">\( \pi_0 \)</span> and the likelihood ratio process
 <span class="math notranslate nohighlight">\( L(w^{t+1}) \)</span> at time <span class="math notranslate nohighlight">\( t \)</span>.</p>
@@ -606,15 +607,15 @@ of the time <span class="math notranslate nohighlight">\( 0 \)</span> prior <spa
 function of  <span class="math notranslate nohighlight">\( L\left(w^{t+1}\right) \)</span>, the  likelihood ratio process at <span class="math notranslate nohighlight">\( t+1 \)</span>,
 and the initial prior <span class="math notranslate nohighlight">\( \pi_{0} \)</span></p>
 <div class="math notranslate nohighlight" id="equation-equation-eq-bayeslaw103">
-<span class="eqno">(54.2)<a class="headerlink" href="#equation-equation-eq-bayeslaw103" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(55.2)<a class="headerlink" href="#equation-equation-eq-bayeslaw103" title="Permalink to this equation">#</a></span>\[
 \pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}}.
 \]</div>
-<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(54.2)</a> generalizes formula <a class="reference internal" href="#equation-equation-eq-recur1">(54.1)</a>.</p>
-<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(54.2)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\( \pi_0 \)</span> after seeing
+<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(55.2)</a> generalizes formula <a class="reference internal" href="#equation-equation-eq-recur1">(55.1)</a>.</p>
+<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(55.2)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\( \pi_0 \)</span> after seeing
 the batch of data <span class="math notranslate nohighlight">\( \left\{ w_{i}\right\} _{i=1}^{t+1} \)</span>.</p>
 </section>
 <section id="what-a-type-1-agent-learns-when-mixture-h-generates-data">
-<h2><span class="section-number">54.4. </span>What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data<a class="headerlink" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">55.4. </span>What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data<a class="headerlink" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data" title="Permalink to this heading">#</a></h2>
 <p>We now study what happens when the mixture distribution <span class="math notranslate nohighlight">\(h;\alpha\)</span>  truly generated the data each period.</p>
 <p>A submartingale or supermartingale continues to describe <span class="math notranslate nohighlight">\(\pi_t\)</span></p>
 <p>It raises its ugly head and causes <span class="math notranslate nohighlight">\(\pi_t\)</span> to converge either to <span class="math notranslate nohighlight">\(0\)</span> or to <span class="math notranslate nohighlight">\(1\)</span>.</p>
@@ -676,9 +677,9 @@ what fundamental force determines the limiting value of <span class="math notran
 &lt;&gt;:35: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:32: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:35: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3112/648395305.py:32: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3141/648395305.py:32: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax1.plot(range(T+1), π_seq_mixed[i, :], label=f&quot;$\pi_0$={π_seq_mixed[i, 0]}&quot;)
-/tmp/ipykernel_3112/648395305.py:35: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3141/648395305.py:35: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax1.set_ylabel(&quot;$\pi_t$&quot;)
 </pre></div>
 </div>
@@ -710,7 +711,7 @@ sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> that
 <p>Evidently, <span class="math notranslate nohighlight">\(\alpha\)</span> is having a big effect on the destination of <span class="math notranslate nohighlight">\(\pi_t\)</span> as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span></p>
 </section>
 <section id="kullback-leibler-divergence-governs-limit-of-pi-t">
-<h2><span class="section-number">54.5. </span>Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#kullback-leibler-divergence-governs-limit-of-pi-t" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">55.5. </span>Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#kullback-leibler-divergence-governs-limit-of-pi-t" title="Permalink to this heading">#</a></h2>
 <p>To understand what determines whether the limit point of  <span class="math notranslate nohighlight">\(\pi_t\)</span> is  <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>  and how the answer depends on the true value of the mixing probability  <span class="math notranslate nohighlight">\(\alpha \in (0,1) \)</span> that generates</p>
 <div class="math notranslate nohighlight">
 \[ h(w) \equiv h(w | \alpha) = \alpha f(w) + (1-\alpha) g(w) \]</div>
@@ -873,7 +874,7 @@ recorded on the <span class="math notranslate nohighlight">\(x\)</span> axis.</p
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3112/651151521.py:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3141/651151521.py:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax2.scatter(α_arr_x, π_lim_arr, facecolors=&#39;none&#39;, edgecolors=&#39;tab:blue&#39;, label=&#39;$\pi$ lim&#39;)
 </pre></div>
 </div>
@@ -884,7 +885,7 @@ recorded on the <span class="math notranslate nohighlight">\(x\)</span> axis.</p
 Kullback-Leibler divergence.</p>
 </section>
 <section id="type-2-agent">
-<h2><span class="section-number">54.6. </span>Type 2 Agent<a class="headerlink" href="#type-2-agent" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">55.6. </span>Type 2 Agent<a class="headerlink" href="#type-2-agent" title="Permalink to this heading">#</a></h2>
 <p>We now describe how our type 2 agent formulates his learning problem and what he eventually learns.</p>
 <p>Our type 2 agent understands the correct statistical  model but acknowledges does not know <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <p>We apply Bayes law to deduce an algorithm for  learning <span class="math notranslate nohighlight">\(\alpha\)</span> under the assumption
@@ -958,7 +959,7 @@ h(w) = h(w| \alpha)
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:9: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:9: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3112/1064323415.py:9: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3141/1064323415.py:9: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.set_title(&#39;$\pi_t(\\alpha)$ as $t$ increases&#39;)
 </pre></div>
 </div>
@@ -968,7 +969,7 @@ h(w) = h(w| \alpha)
 <p>Evidently,  the Bayesian posterior  narrows in on the true value  <span class="math notranslate nohighlight">\(\alpha = .8\)</span> of the mixing parameter as the length of a history of observations grows.</p>
 </section>
 <section id="concluding-remarks">
-<h2><span class="section-number">54.7. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">55.7. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this heading">#</a></h2>
 <p>Our type 1 person  deploys an incorrect statistical  model.</p>
 <p>He believes
 that either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> generated the <span class="math notranslate nohighlight">\(w\)</span> process, but just doesn’t know which one.</p>
@@ -1255,48 +1256,53 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   36. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   36. Transitions in an Overlapping Generations Model
+   37. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   37. Cake Eating I: Introduction to Optimal Saving
+   38. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   38. Cake Eating II: Numerical Methods
+   39. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   39. Optimal Growth I: The Stochastic Optimal Growth Model
+   40. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   40. Optimal Growth II: Accelerating the Code with Numba
+   41. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   41. Optimal Growth III: Time Iteration
+   42. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   42. Optimal Growth IV: The Endogenous Grid Method
+   43. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   43. The Income Fluctuation Problem I: Basic Model
+   44. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   44. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   45. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1308,17 +1314,17 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   45. Non-Conjugate Priors
+   46. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   46. Posterior Distributions for  AR(1) Parameters
+   47. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   47. Forecasting  an AR(1) Process
+   48. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1330,42 +1336,42 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   48. Job Search VII: Search with Learning
+   49. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   49. Likelihood Ratio Processes
+   50. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   50. Computing Mean of a Likelihood Ratio Process
+   51. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   51. A Problem that Stumped Milton Friedman
+   52. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   52. Exchangeability and Bayesian Updating
+   53. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   53. Likelihood Ratio Processes and Bayesian Learning
+   54. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   54. Incorrect Models
+   55. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   55. Bayesian versus Frequentist Decision Rules
+   56. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1377,32 +1383,32 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   56. LQ Control: Foundations
+   57. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   57. Lagrangian for LQ Control
+   58. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   58. Eliminating Cross Products
+   59. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   59. The Permanent Income Model
+   60. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   60. Permanent Income II: LQ Techniques
+   61. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   61. Production Smoothing via Inventories
+   62. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1414,32 +1420,32 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   62. A Lake Model of Employment and Unemployment
+   63. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   63. Rational Expectations Equilibrium
+   64. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   64. Stability in Linear Rational Expectations Models
+   65. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   65. Markov Perfect Equilibrium
+   66. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   66. Uncertainty Traps
+   67. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   67. The Aiyagari Model
+   68. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1451,17 +1457,17 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   68. Asset Pricing: Finite State Models
+   69. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   69. Competitive Equilibria with Arrow Securities
+   70. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   70. Heterogeneous Beliefs and Bubbles
+   71. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1473,17 +1479,17 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   71. Pandas for Panel Data
+   72. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   72. Linear Regression in Python
+   73. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   73. Maximum Likelihood Estimation
+   74. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1495,12 +1501,12 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   74. First-Price and Second-Price Auctions
+   75. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   75. Multiple Good Allocation Mechanisms
+   76. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1512,17 +1518,17 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   76. Troubleshooting
+   77. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   77. References
+   78. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   78. Execution Statistics
+   79. Execution Statistics
   </a>
  </li>
 </ul>

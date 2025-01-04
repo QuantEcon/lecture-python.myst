@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>55. Bayesian versus Frequentist Decision Rules &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>56. Bayesian versus Frequentist Decision Rules &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -77,6 +77,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -117,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="56. LQ Control: Foundations" href="lqcontrol.html" />
-    <link rel="prev" title="54. Incorrect Models" href="mix_model.html" />
+    <link rel="next" title="57. LQ Control: Foundations" href="lqcontrol.html" />
+    <link rel="prev" title="55. Incorrect Models" href="mix_model.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -166,15 +167,15 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">55.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">55.2. Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequentist-decision-rule">55.3. Frequentist Decision Rule</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-decision-rule">55.4. Bayesian Decision Rule</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#was-the-navy-captains-hunch-correct">55.5. Was the Navy Captain’s Hunch Correct?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-details">55.6. More Details</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-bayesian-decision-rules-time-to-decide">55.7. Distribution of Bayesian Decision Rule’s Time to Decide</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-of-making-correct-decision">55.8. Probability of Making Correct Decision</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-likelihood-ratios-at-frequentists-t">55.9. Distribution of Likelihood Ratios at Frequentist’s <span class="math notranslate nohighlight">\(t\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">56.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">56.2. Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequentist-decision-rule">56.3. Frequentist Decision Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-decision-rule">56.4. Bayesian Decision Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#was-the-navy-captains-hunch-correct">56.5. Was the Navy Captain’s Hunch Correct?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-details">56.6. More Details</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-bayesian-decision-rules-time-to-decide">56.7. Distribution of Bayesian Decision Rule’s Time to Decide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-of-making-correct-decision">56.8. Probability of Making Correct Decision</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-likelihood-ratios-at-frequentists-t">56.9. Distribution of Likelihood Ratios at Frequentist’s <span class="math notranslate nohighlight">\(t\)</span></a></li>
 </ul>
                             <p class="logo">
                                 
@@ -232,7 +233,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="bayesian-versus-frequentist-decision-rules">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">55. </span>Bayesian versus Frequentist Decision Rules</a><a class="headerlink" href="#bayesian-versus-frequentist-decision-rules" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id1"><span class="section-number">56. </span>Bayesian versus Frequentist Decision Rules</a><a class="headerlink" href="#bayesian-versus-frequentist-decision-rules" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -264,7 +265,7 @@
 </div>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">55.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2"><span class="section-number">56.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture follows up on ideas presented in the following lectures:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="wald_friedman.html"><span class="doc">A Problem that Stumped Milton Friedman</span></a></p></li>
@@ -289,7 +290,7 @@ decision rules for an instance of the Navy Captain’s decision problem.</p>
 to use.</p>
 </section>
 <section id="setup">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">55.2. </span>Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">56.2. </span>Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
 <p>To formalize the problem of the Navy Captain whose questions posed the
 problem that Milton Friedman and Allan Wallis handed over to Abraham
 Wald, we consider a setting with the following parts.</p>
@@ -439,7 +440,7 @@ frequentist Navy Captains.</p>
 <span class="math notranslate nohighlight">\(f_1\)</span></p>
 </section>
 <section id="frequentist-decision-rule">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">55.3. </span>Frequentist Decision Rule</a><a class="headerlink" href="#frequentist-decision-rule" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">56.3. </span>Frequentist Decision Rule</a><a class="headerlink" href="#frequentist-decision-rule" title="Permalink to this heading">#</a></h2>
 <p>The Navy told the Captain to use a  frequentist decision rule.</p>
 <p>In particular, it gave him a decision rule that the Navy had designed  by using
 frequentist statistical theory to minimize an
@@ -464,7 +465,7 @@ hypotheses be</p>
 <p>Given sample size <span class="math notranslate nohighlight">\(t\)</span> and cutoff <span class="math notranslate nohighlight">\(d\)</span>, under the model
 described above, the mathematical expectation of total loss is</p>
 <div class="math notranslate nohighlight" id="equation-val1">
-<span class="eqno">(55.1)<a class="headerlink" href="#equation-val1" title="Permalink to this equation">#</a></span>\[\begin{aligned}
+<span class="eqno">(56.1)<a class="headerlink" href="#equation-val1" title="Permalink to this equation">#</a></span>\[\begin{aligned}
 \bar{V}_{fre}\left(t,d\right)=ct+\pi^{*}PFA\times \bar L_{1}+\left(1-\pi^{*}\right)\left(1-PD\right)\times \bar L_{0}
 \end{aligned}\]</div>
 <div class="math notranslate nohighlight">
@@ -515,7 +516,7 @@ generates data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2f11b44a92df2427c6db5a14900d1f9fa3a0dfdde0852f5e7c12cf4def87c5ad.png" src="_images/2f11b44a92df2427c6db5a14900d1f9fa3a0dfdde0852f5e7c12cf4def87c5ad.png" />
+<img alt="_images/ebaab6a1c8e03a2523585b38eab43c6132f9285c66161a011f84801679bf68fd.png" src="_images/ebaab6a1c8e03a2523585b38eab43c6132f9285c66161a011f84801679bf68fd.png" />
 </div>
 </div>
 <p>We can compute sequences of likelihood ratios using simulated samples.</p>
@@ -564,11 +565,11 @@ generates data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a6229fb4ffa0619b90c69c1efb84cb56c2c2cbd94eefc46bd149ec4380a15be2.png" src="_images/a6229fb4ffa0619b90c69c1efb84cb56c2c2cbd94eefc46bd149ec4380a15be2.png" />
+<img alt="_images/52317f232658c7f8a63d688865dc1f77fb12fa50bcf3fd1d2d658fc8fcb9f119.png" src="_images/52317f232658c7f8a63d688865dc1f77fb12fa50bcf3fd1d2d658fc8fcb9f119.png" />
 </div>
 </div>
 <p>Our frequentist minimizes the expected total loss presented in equation
-<a class="reference internal" href="#equation-val1">(55.1)</a> by choosing <span class="math notranslate nohighlight">\(\left(t,d\right)\)</span>.</p>
+<a class="reference internal" href="#equation-val1">(56.1)</a> by choosing <span class="math notranslate nohighlight">\(\left(t,d\right)\)</span>.</p>
 <p>Doing that delivers an expected loss</p>
 <div class="math notranslate nohighlight">
 \[
@@ -652,13 +653,13 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\m&#39;
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3509/2885809108.py:4: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/tmp/ipykernel_3548/2885809108.py:4: SyntaxWarning: invalid escape sequence &#39;\m&#39;
   plt.plot(range(T), V_fre_arr, label=&#39;$\min_{d} \overline{V}_{fre}(t,d)$&#39;)
-/tmp/ipykernel_3509/2885809108.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/2885809108.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   plt.title(&#39;$\pi^*=0.5$&#39;)
 </pre></div>
 </div>
-<img alt="_images/f9f0a39b1e4e562a8b43273f8837c3ffb3a733c99731d945fd8d96fed2c01830.png" src="_images/f9f0a39b1e4e562a8b43273f8837c3ffb3a733c99731d945fd8d96fed2c01830.png" />
+<img alt="_images/4129c86da19c6f5f530bfd8f712c04d21fbaa2f6552764b9bd13e58ed572a02a.png" src="_images/4129c86da19c6f5f530bfd8f712c04d21fbaa2f6552764b9bd13e58ed572a02a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -676,7 +677,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The above graph indicates that minimizing over t tells the frequentist to draw 8 observations and then decide.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The above graph indicates that minimizing over t tells the frequentist to draw 9 observations and then decide.
 </pre></div>
 </div>
 </div>
@@ -720,13 +721,13 @@ rule changes.</p>
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
 &lt;&gt;:2: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
-/tmp/ipykernel_3509/1226644597.py:2: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/1226644597.py:2: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   plt.xlabel(&#39;$\pi^*$&#39;)
-/tmp/ipykernel_3509/1226644597.py:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_3548/1226644597.py:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   plt.title(&#39;$\overline{V}_{fre}$&#39;)
 </pre></div>
 </div>
-<img alt="_images/ac4d98cf2bcb6d524a9773ae80f9366743c594b21a998126355f23f301a90f78.png" src="_images/ac4d98cf2bcb6d524a9773ae80f9366743c594b21a998126355f23f301a90f78.png" />
+<img alt="_images/e219105ae16705eff715bb245d0abd4df83e4d7c9be05ea845154fed9c141ea6.png" src="_images/e219105ae16705eff715bb245d0abd4df83e4d7c9be05ea845154fed9c141ea6.png" />
 </div>
 </div>
 <p>The following shows how optimal sample size <span class="math notranslate nohighlight">\(t\)</span> and targeted
@@ -762,26 +763,26 @@ rule changes.</p>
 &lt;&gt;:8: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:9: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3509/1383298710.py:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/1383298710.py:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[0].set_xlabel(&#39;$\pi^*$&#39;)
-/tmp/ipykernel_3509/1383298710.py:5: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/1383298710.py:5: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[0].set_title(&#39;optimal sample size given $\pi^*$&#39;)
-/tmp/ipykernel_3509/1383298710.py:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/1383298710.py:7: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[1].plot(π_star_arr, PFA_optimal_arr, label=&#39;$PFA^*(\pi^*)$&#39;)
-/tmp/ipykernel_3509/1383298710.py:8: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/1383298710.py:8: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[1].plot(π_star_arr, PD_optimal_arr, label=&#39;$PD^*(\pi^*)$&#39;)
-/tmp/ipykernel_3509/1383298710.py:9: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/1383298710.py:9: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[1].set_xlabel(&#39;$\pi^*$&#39;)
-/tmp/ipykernel_3509/1383298710.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/1383298710.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[1].set_title(&#39;optimal PFA and PD given $\pi^*$&#39;)
 </pre></div>
 </div>
-<img alt="_images/12b14eb72b07028c0e7bb036ffd7bfd675adb78dae184efad3daec59b2d644ee.png" src="_images/12b14eb72b07028c0e7bb036ffd7bfd675adb78dae184efad3daec59b2d644ee.png" />
+<img alt="_images/66b4fcb3ddf1f5e93a7123258aca530762b06563f06ca525d074f8a7941d9e01.png" src="_images/66b4fcb3ddf1f5e93a7123258aca530762b06563f06ca525d074f8a7941d9e01.png" />
 </div>
 </div>
 </section>
 <section id="bayesian-decision-rule">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">55.4. </span>Bayesian Decision Rule</a><a class="headerlink" href="#bayesian-decision-rule" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">56.4. </span>Bayesian Decision Rule</a><a class="headerlink" href="#bayesian-decision-rule" title="Permalink to this heading">#</a></h2>
 <p>In  <a class="reference internal" href="wald_friedman.html"><span class="doc">A Problem that Stumped Milton Friedman</span></a>,
 we learned how Abraham Wald confirmed the Navy
 Captain’s hunch that there is a better decision rule.</p>
@@ -925,11 +926,11 @@ that computes <span class="math notranslate nohighlight">\(\alpha\)</span> and <
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3509/3989269396.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/3989269396.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   xlabel=&quot;$\pi$&quot;, title=&quot;Value function&quot;)
 </pre></div>
 </div>
-<img alt="_images/821c65bc2bbaba37237dc83737a5d5b10e162372e99b78aadc0a32820ece09ee.png" src="_images/821c65bc2bbaba37237dc83737a5d5b10e162372e99b78aadc0a32820ece09ee.png" />
+<img alt="_images/c9636f764e734e0873d20f5d4cc95b3ddf0598d2dc03ba510489f94bdf6c7c36.png" src="_images/c9636f764e734e0873d20f5d4cc95b3ddf0598d2dc03ba510489f94bdf6c7c36.png" />
 </div>
 </div>
 <p>The above figure portrays the value function plotted against the decision
@@ -1039,13 +1040,13 @@ numerically.</p>
 &lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:10: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3509/3176181646.py:10: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/3176181646.py:10: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   plt.xlabel(&#39;$\pi$&#39;)
-/tmp/ipykernel_3509/3176181646.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/3176181646.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   plt.title(&#39;Objective value function $V(\pi)$&#39;)
 </pre></div>
 </div>
-<img alt="_images/94d89034a1769a86384e5f4fcccd70f2c823732a17dae1a05bc78e8dd5d5f446.png" src="_images/94d89034a1769a86384e5f4fcccd70f2c823732a17dae1a05bc78e8dd5d5f446.png" />
+<img alt="_images/42a0bba32a929ee4c8d9f79d7a58e381e32783912e8c218d41beb253d5ad1243.png" src="_images/42a0bba32a929ee4c8d9f79d7a58e381e32783912e8c218d41beb253d5ad1243.png" />
 </div>
 </div>
 <p>Given an assumed value for
@@ -1107,19 +1108,19 @@ minimizes this objective concept of expected loss.</p>
 &lt;&gt;:17: SyntaxWarning: invalid escape sequence &#39;\o&#39;
 &lt;&gt;:18: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:20: SyntaxWarning: invalid escape sequence &#39;\o&#39;
-/tmp/ipykernel_3509/229907826.py:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/229907826.py:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   &#39;${\pi_0^*}=$&#39;+f&#39;{π_optimal:0.2f}&#39;)
-/tmp/ipykernel_3509/229907826.py:16: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/229907826.py:16: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[row_i, col_i].set_xlabel(&#39;$\pi$&#39;)
-/tmp/ipykernel_3509/229907826.py:17: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_3548/229907826.py:17: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   axs[row_i, col_i].set_ylabel(&#39;$\overline{V}_{baye}(\pi)$&#39;)
-/tmp/ipykernel_3509/229907826.py:18: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/229907826.py:18: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[row_i, col_i].set_title(&#39;$\pi^*=$&#39; + f&#39;{π_star}&#39;)
-/tmp/ipykernel_3509/229907826.py:20: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_3548/229907826.py:20: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   fig.suptitle(&#39;$\overline{V}_{baye}(\pi)=\pi^*V^0(\pi) + (1-\pi^*)V^1(\pi)$&#39;, fontsize=16)
 </pre></div>
 </div>
-<img alt="_images/bb27678516a1c5b55dfc95d1925c7437a06c6506fe19b5bdb0542d7a8789af10.png" src="_images/bb27678516a1c5b55dfc95d1925c7437a06c6506fe19b5bdb0542d7a8789af10.png" />
+<img alt="_images/98f861aef23e407f035a9054995b8aed1ebb3b713b9eb3ab71340c29bfa0159f.png" src="_images/98f861aef23e407f035a9054995b8aed1ebb3b713b9eb3ab71340c29bfa0159f.png" />
 </div>
 </div>
 <p>This pattern of outcomes holds more generally.</p>
@@ -1166,13 +1167,13 @@ for all <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p>
 &lt;&gt;:16: SyntaxWarning: invalid escape sequence &#39;\o&#39;
 &lt;&gt;:22: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:23: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3509/511963532.py:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/511963532.py:15: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[0].set_xlabel(&#39;$\pi^*$&#39;)
-/tmp/ipykernel_3509/511963532.py:16: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_3548/511963532.py:16: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   axs[0].set_title(&#39;$\overline{V}_{baye}$&#39;)
-/tmp/ipykernel_3509/511963532.py:22: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/511963532.py:22: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[1].set_xlabel(&#39;$\pi^*$&#39;)
-/tmp/ipykernel_3509/511963532.py:23: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/511963532.py:23: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[1].set_title(&#39;optimal prior given $\pi^*$&#39;)
 </pre></div>
 </div>
@@ -1181,7 +1182,7 @@ for all <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p>
 </div>
 </section>
 <section id="was-the-navy-captains-hunch-correct">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">55.5. </span>Was the Navy Captain’s Hunch Correct?</a><a class="headerlink" href="#was-the-navy-captains-hunch-correct" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">56.5. </span>Was the Navy Captain’s Hunch Correct?</a><a class="headerlink" href="#was-the-navy-captains-hunch-correct" title="Permalink to this heading">#</a></h2>
 <p>We now compare average (i.e., frequentist) losses obtained by the
 frequentist and Bayesian decision rules.</p>
 <p>As a starting point, let’s compare average loss functions when
@@ -1223,15 +1224,15 @@ frequentist and Bayesian decision rules.</p>
 &lt;&gt;:1: SyntaxWarning: invalid escape sequence &#39;\m&#39;
 &lt;&gt;:2: SyntaxWarning: invalid escape sequence &#39;\o&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3509/1311672864.py:1: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/tmp/ipykernel_3548/1311672864.py:1: SyntaxWarning: invalid escape sequence &#39;\m&#39;
   plt.plot(range(T), V_fre_arr, label=&#39;$\min_{d} \overline{V}_{fre}(t,d)$&#39;)
-/tmp/ipykernel_3509/1311672864.py:2: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_3548/1311672864.py:2: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   plt.plot([0, T], [V_baye_bar, V_baye_bar], label=&#39;$\overline{V}_{baye}$&#39;)
-/tmp/ipykernel_3509/1311672864.py:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/1311672864.py:4: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   plt.title(&#39;$\pi^*=0.5$&#39;)
 </pre></div>
 </div>
-<img alt="_images/0c7f4d98ef245a6a13f4dc66aa1ff083ee776b816c914adff6f62542108a3318.png" src="_images/0c7f4d98ef245a6a13f4dc66aa1ff083ee776b816c914adff6f62542108a3318.png" />
+<img alt="_images/8aef63c989b71ad6c3526d1f80b7f1a00cd7cf875ae2c185ccd6c7f42b299ba9.png" src="_images/8aef63c989b71ad6c3526d1f80b7f1a00cd7cf875ae2c185ccd6c7f42b299ba9.png" />
 </div>
 </div>
 <p>Evidently, there is no sample size <span class="math notranslate nohighlight">\(t\)</span> at which the frequentist
@@ -1264,17 +1265,17 @@ rule does better on average for all values of <span class="math notranslate nohi
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\o&#39;
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:10: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3509/487680141.py:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_3548/487680141.py:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   axs[0].plot(π_star_arr, V_fre_bar_arr, label=&#39;$\overline{V}_{fre}$&#39;)
-/tmp/ipykernel_3509/487680141.py:4: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_3548/487680141.py:4: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   axs[0].plot(π_star_arr, V_baye_bar_arr, label=&#39;$\overline{V}_{baye}$&#39;)
-/tmp/ipykernel_3509/487680141.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/487680141.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[0].set_xlabel(&#39;$\pi^*$&#39;)
-/tmp/ipykernel_3509/487680141.py:10: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/487680141.py:10: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[1].set_xlabel(&#39;$\pi^*$&#39;)
 </pre></div>
 </div>
-<img alt="_images/e08de2101d7b04e88ac0c08398a7489212064147230831e5d04383ece7cbf460.png" src="_images/e08de2101d7b04e88ac0c08398a7489212064147230831e5d04383ece7cbf460.png" />
+<img alt="_images/0c5bc074ed1cccae087890fa789066944197c97a415ee314963f4045d84a0ee3.png" src="_images/0c5bc074ed1cccae087890fa789066944197c97a415ee314963f4045d84a0ee3.png" />
 </div>
 </div>
 <p>The right panel of the above graph plots the difference
@@ -1282,7 +1283,7 @@ rule does better on average for all values of <span class="math notranslate nohi
 <p>It is always positive.</p>
 </section>
 <section id="more-details">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">55.6. </span>More Details</a><a class="headerlink" href="#more-details" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">56.6. </span>More Details</a><a class="headerlink" href="#more-details" title="Permalink to this heading">#</a></h2>
 <p>We can provide more insights by focusing on the case in which
 <span class="math notranslate nohighlight">\(\pi^{*}=0.5=\pi_{0}\)</span>.</p>
 <div class="cell docutils container">
@@ -1302,7 +1303,7 @@ sample size <code class="docutils literal notranslate"><span class="pre">t_optim
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9
 </pre></div>
 </div>
 </div>
@@ -1318,7 +1319,7 @@ corresponding to <code class="docutils literal notranslate"><span class="pre">t_
 </div>
 </section>
 <section id="distribution-of-bayesian-decision-rules-time-to-decide">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">55.7. </span>Distribution of Bayesian Decision Rule’s Time to Decide</a><a class="headerlink" href="#distribution-of-bayesian-decision-rules-time-to-decide" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">56.7. </span>Distribution of Bayesian Decision Rule’s Time to Decide</a><a class="headerlink" href="#distribution-of-bayesian-decision-rules-time-to-decide" title="Permalink to this heading">#</a></h2>
 <p>By using simulations, we compute the frequency distribution of time to
 deciding for the Bayesian decision rule and compare that time to the
 frequentist rule’s fixed <span class="math notranslate nohighlight">\(t\)</span>.</p>
@@ -1387,7 +1388,7 @@ rule when <span class="math notranslate nohighlight">\(q= f_0\)</span> and <stro
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/413c2f59d16afb42113032af218a072ca611295bda93bd1a4d32947176364da0.png" src="_images/413c2f59d16afb42113032af218a072ca611295bda93bd1a4d32947176364da0.png" />
+<img alt="_images/7a9e50513939fcf2eff2552bc68b2b0bff9ce8af4bcf437dd499bb4a0604dd60.png" src="_images/7a9e50513939fcf2eff2552bc68b2b0bff9ce8af4bcf437dd499bb4a0604dd60.png" />
 </div>
 </div>
 <p>Later we’ll figure out how these distributions ultimately affect
@@ -1431,13 +1432,13 @@ the one-to-one mapping from <span class="math notranslate nohighlight">\(L_{t}\)
 &lt;&gt;:13: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:13: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_3509/2416490984.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/2416490984.py:6: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[0].set_ylabel(&#39;$E(\pi_t)$ or ($1 - E(\pi_t)$)&#39;)
-/tmp/ipykernel_3509/2416490984.py:13: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_3548/2416490984.py:13: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   axs[1].set_ylabel(&#39;var($\pi_t$)&#39;)
 </pre></div>
 </div>
-<img alt="_images/0d2e3fe984698c14641ee26a3459bc27db56d1087e83bb9a6e356f90a7eff656.png" src="_images/0d2e3fe984698c14641ee26a3459bc27db56d1087e83bb9a6e356f90a7eff656.png" />
+<img alt="_images/f93d09938f4f41a0d57f7f88e88b977a2b553859f74d658e6bbc1ff1141feb54.png" src="_images/f93d09938f4f41a0d57f7f88e88b977a2b553859f74d658e6bbc1ff1141feb54.png" />
 </div>
 </div>
 <p>The above figures compare averages and variances of updated Bayesian
@@ -1473,12 +1474,12 @@ confirm the Navy Captain’s hunch.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b13200b800728b9e4f83a2fa55a7626a6abe8a58a0327b0fa9a5b0522ac935a3.png" src="_images/b13200b800728b9e4f83a2fa55a7626a6abe8a58a0327b0fa9a5b0522ac935a3.png" />
+<img alt="_images/52af82ce37577d3afaa91624353e5e3fda7f43c6b0a03e6eb7cc9b5bf9457f42.png" src="_images/52af82ce37577d3afaa91624353e5e3fda7f43c6b0a03e6eb7cc9b5bf9457f42.png" />
 </div>
 </div>
 </section>
 <section id="probability-of-making-correct-decision">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">55.8. </span>Probability of Making Correct Decision</a><a class="headerlink" href="#probability-of-making-correct-decision" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">56.8. </span>Probability of Making Correct Decision</a><a class="headerlink" href="#probability-of-making-correct-decision" title="Permalink to this heading">#</a></h2>
 <p>Now we use simulations to compute the fraction of samples in which the
 Bayesian and the frequentist decision rules decide correctly.</p>
 <p>For the frequentist rule, the probability of making the correct decision
@@ -1519,7 +1520,7 @@ with the conditional probabilities that the Bayesian rule decides before
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/dac364b154f2c26c8801ca7d18ed1dd325078d6a5715063100505db3da931a7f.png" src="_images/dac364b154f2c26c8801ca7d18ed1dd325078d6a5715063100505db3da931a7f.png" />
+<img alt="_images/a6832f2df67fe88c85597fe2312e54374c3f298d8dd833468e8b35351fd2b43d.png" src="_images/a6832f2df67fe88c85597fe2312e54374c3f298d8dd833468e8b35351fd2b43d.png" />
 </div>
 </div>
 <p>By averaging using <span class="math notranslate nohighlight">\(\pi^{*}\)</span>, we also plot the unconditional
@@ -1544,12 +1545,12 @@ distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9a5e15ad463b12025a121f4d94f1d36de942f02a891686aa048972d5814395e6.png" src="_images/9a5e15ad463b12025a121f4d94f1d36de942f02a891686aa048972d5814395e6.png" />
+<img alt="_images/10f0fbf3ae9e9ba8618f5cb30c1009593c5a6d79e8c658fe698ec4ec59b3089e.png" src="_images/10f0fbf3ae9e9ba8618f5cb30c1009593c5a6d79e8c658fe698ec4ec59b3089e.png" />
 </div>
 </div>
 </section>
 <section id="distribution-of-likelihood-ratios-at-frequentists-t">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">55.9. </span>Distribution of Likelihood Ratios at Frequentist’s <span class="math notranslate nohighlight">\(t\)</span></a><a class="headerlink" href="#distribution-of-likelihood-ratios-at-frequentists-t" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">56.9. </span>Distribution of Likelihood Ratios at Frequentist’s <span class="math notranslate nohighlight">\(t\)</span></a><a class="headerlink" href="#distribution-of-likelihood-ratios-at-frequentists-t" title="Permalink to this heading">#</a></h2>
 <p>Next we use simulations to construct distributions of likelihood ratios
 after <span class="math notranslate nohighlight">\(t\)</span> draws.</p>
 <p>To serve as useful reference points, we also show likelihood ratios that
@@ -1588,7 +1589,7 @@ generating the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/114edc0dd4c1fc1aa9716042fc756005fc3792bb9e141491991f437bb7625899.png" src="_images/114edc0dd4c1fc1aa9716042fc756005fc3792bb9e141491991f437bb7625899.png" />
+<img alt="_images/afd9bc909b5d5ef0fb9a5e63556861bc0c75f8087c23c2f28df8e8e670b1291b.png" src="_images/afd9bc909b5d5ef0fb9a5e63556861bc0c75f8087c23c2f28df8e8e670b1291b.png" />
 </div>
 </div>
 <p>The next graph plots the unconditional distribution of Bayesian times to
@@ -1611,7 +1612,7 @@ distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c2d504bc303bb96737b28959b2f7bc2d91b02e8cdbf3d60131cf7162c79aeb87.png" src="_images/c2d504bc303bb96737b28959b2f7bc2d91b02e8cdbf3d60131cf7162c79aeb87.png" />
+<img alt="_images/84536417834d065b6a059c875b87d1a239979aee6bda200bb64f35fb28411658.png" src="_images/84536417834d065b6a059c875b87d1a239979aee6bda200bb64f35fb28411658.png" />
 </div>
 </div>
 </section>
@@ -1883,48 +1884,53 @@ distributions.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   36. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   36. Transitions in an Overlapping Generations Model
+   37. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   37. Cake Eating I: Introduction to Optimal Saving
+   38. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   38. Cake Eating II: Numerical Methods
+   39. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   39. Optimal Growth I: The Stochastic Optimal Growth Model
+   40. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   40. Optimal Growth II: Accelerating the Code with Numba
+   41. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   41. Optimal Growth III: Time Iteration
+   42. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   42. Optimal Growth IV: The Endogenous Grid Method
+   43. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   43. The Income Fluctuation Problem I: Basic Model
+   44. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   44. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   45. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1936,17 +1942,17 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   45. Non-Conjugate Priors
+   46. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   46. Posterior Distributions for  AR(1) Parameters
+   47. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   47. Forecasting  an AR(1) Process
+   48. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1958,42 +1964,42 @@ distributions.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   48. Job Search VII: Search with Learning
+   49. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   49. Likelihood Ratio Processes
+   50. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   50. Computing Mean of a Likelihood Ratio Process
+   51. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   51. A Problem that Stumped Milton Friedman
+   52. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   52. Exchangeability and Bayesian Updating
+   53. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   53. Likelihood Ratio Processes and Bayesian Learning
+   54. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   54. Incorrect Models
+   55. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   55. Bayesian versus Frequentist Decision Rules
+   56. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -2005,32 +2011,32 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   56. LQ Control: Foundations
+   57. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   57. Lagrangian for LQ Control
+   58. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   58. Eliminating Cross Products
+   59. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   59. The Permanent Income Model
+   60. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   60. Permanent Income II: LQ Techniques
+   61. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   61. Production Smoothing via Inventories
+   62. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2042,32 +2048,32 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   62. A Lake Model of Employment and Unemployment
+   63. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   63. Rational Expectations Equilibrium
+   64. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   64. Stability in Linear Rational Expectations Models
+   65. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   65. Markov Perfect Equilibrium
+   66. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   66. Uncertainty Traps
+   67. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   67. The Aiyagari Model
+   68. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -2079,17 +2085,17 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   68. Asset Pricing: Finite State Models
+   69. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   69. Competitive Equilibria with Arrow Securities
+   70. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   70. Heterogeneous Beliefs and Bubbles
+   71. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2101,17 +2107,17 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   71. Pandas for Panel Data
+   72. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   72. Linear Regression in Python
+   73. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   73. Maximum Likelihood Estimation
+   74. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2123,12 +2129,12 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   74. First-Price and Second-Price Auctions
+   75. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   75. Multiple Good Allocation Mechanisms
+   76. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2140,17 +2146,17 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   76. Troubleshooting
+   77. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   77. References
+   78. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   78. Execution Statistics
+   79. Execution Statistics
   </a>
  </li>
 </ul>

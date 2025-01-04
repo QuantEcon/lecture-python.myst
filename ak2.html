@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>36. Transitions in an Overlapping Generations Model &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>37. Transitions in an Overlapping Generations Model &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -77,6 +77,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -117,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="37. Cake Eating I: Introduction to Optimal Saving" href="cake_eating_problem.html" />
-    <link rel="prev" title="35. Cass-Koopmans Competitive Equilibrium" href="cass_koopmans_2.html" />
+    <link rel="next" title="38. Cake Eating I: Introduction to Optimal Saving" href="cake_eating_problem.html" />
+    <link rel="prev" title="36. Cass-Koopmans Model with Distorting Taxes" href="cass_fiscal.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -166,30 +167,30 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">36.1. Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting">36.2. Setting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production">36.3. Production</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#government">36.4. Government</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activities-in-factor-markets">36.5. Activities in Factor Markets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representative-firms-problem">36.6. Representative firm’s problem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#individuals-problems">36.7. Individuals’ problems</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-old-person">36.7.1. Initial old person</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#young-person">36.7.2. Young person</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">37.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting">37.2. Setting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production">37.3. Production</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#government">37.4. Government</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activities-in-factor-markets">37.5. Activities in Factor Markets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representative-firms-problem">37.6. Representative firm’s problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#individuals-problems">37.7. Individuals’ problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-old-person">37.7.1. Initial old person</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#young-person">37.7.2. Young person</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilbrium">36.8. Equilbrium</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">36.9. Next steps</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#closed-form-solution">36.10. Closed form solution</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steady-states">36.10.1. Steady states</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">36.10.2. Implementation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transitions">36.10.3. Transitions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-1-tax-cut">36.10.4. Experiment 1: Tax cut</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-2-government-asset-accumulation">36.10.5. Experiment 2: Government asset accumulation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-3-temporary-expenditure-cut">36.10.6. Experiment 3: Temporary expenditure cut</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilbrium">37.8. Equilbrium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">37.9. Next steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#closed-form-solution">37.10. Closed form solution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steady-states">37.10.1. Steady states</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">37.10.2. Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transitions">37.10.3. Transitions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-1-tax-cut">37.10.4. Experiment 1: Tax cut</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-2-government-asset-accumulation">37.10.5. Experiment 2: Government asset accumulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-3-temporary-expenditure-cut">37.10.6. Experiment 3: Temporary expenditure cut</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-computational-strategy">36.11. A computational strategy</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-4-unfunded-social-security-system">36.11.1. Experiment 4: Unfunded Social Security System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-computational-strategy">37.11. A computational strategy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-4-unfunded-social-security-system">37.11.1. Experiment 4: Unfunded Social Security System</a></li>
 </ul>
 </li>
 </ul>
@@ -249,7 +250,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="transitions-in-an-overlapping-generations-model">
-<h1><span class="section-number">36. </span>Transitions in an Overlapping Generations Model<a class="headerlink" href="#transitions-in-an-overlapping-generations-model" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">37. </span>Transitions in an Overlapping Generations Model<a class="headerlink" href="#transitions-in-an-overlapping-generations-model" title="Permalink to this heading">#</a></h1>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -272,7 +273,9 @@ Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.2)
 Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.43.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
@@ -287,7 +290,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/conda/envs/quant
 </details>
 </div>
 <section id="introduction">
-<h2><span class="section-number">36.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">37.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>This lecture presents a  life-cycle model consisting of overlapping generations of two-period lived people proposed  by Peter Diamond
 <span id="id1">[<a class="reference internal" href="zreferences.html#id259" title="Peter A Diamond. National debt in a neoclassical growth model. The American Economic Review, 55(5):1126–1150, 1965.">Diamond, 1965</a>]</span>.</p>
 <p>We’ll present the version  that was   analyzed  in chapter 2 of Auerbach and
@@ -312,7 +315,7 @@ Kotlikoff (1987) <span id="id2">[<a class="reference internal" href="zreferences
 <p>We  study how  these  arrangements affect capital accumulation and government debt</p>
 </section>
 <section id="setting">
-<h2><span class="section-number">36.2. </span>Setting<a class="headerlink" href="#setting" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">37.2. </span>Setting<a class="headerlink" href="#setting" title="Permalink to this heading">#</a></h2>
 <p>Time is discrete and is indexed by <span class="math notranslate nohighlight">\(t=0, 1, 2, \ldots\)</span>.</p>
 <p>The economy lives forever, but the people  inside  it do not.</p>
 <p>At each time <span class="math notranslate nohighlight">\( t \geq 0\)</span> a representative old person and a representative young person are alive.</p>
@@ -360,7 +363,7 @@ Kotlikoff (1987) <span id="id2">[<a class="reference internal" href="zreferences
 </ul>
 </section>
 <section id="production">
-<h2><span class="section-number">36.3. </span>Production<a class="headerlink" href="#production" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">37.3. </span>Production<a class="headerlink" href="#production" title="Permalink to this heading">#</a></h2>
 <p>There are two factors of production, physical capital <span class="math notranslate nohighlight">\(K_t\)</span> and labor <span class="math notranslate nohighlight">\(L_t\)</span>.</p>
 <p>Capital does not depreciate.</p>
 <p>The initial capital stock <span class="math notranslate nohighlight">\(K_0\)</span> is owned by the representative  initial old person, who rents it to the firm at time <span class="math notranslate nohighlight">\(0\)</span>.</p>
@@ -377,12 +380,12 @@ K_t = K_0 + \sum_{s=0}^{t-1} I_s
 <p>A Cobb-Douglas technology   converts physical capital <span class="math notranslate nohighlight">\(K_t\)</span> and labor services <span class="math notranslate nohighlight">\(L_t\)</span> into
 output <span class="math notranslate nohighlight">\(Y_t\)</span></p>
 <div class="math notranslate nohighlight" id="equation-eq-prodfn">
-<span class="eqno">(36.1)<a class="headerlink" href="#equation-eq-prodfn" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(37.1)<a class="headerlink" href="#equation-eq-prodfn" title="Permalink to this equation">#</a></span>\[
 Y_t  = K_t^\alpha L_t^{1-\alpha}, \quad \alpha \in (0,1)
 \]</div>
 </section>
 <section id="government">
-<h2><span class="section-number">36.4. </span>Government<a class="headerlink" href="#government" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">37.4. </span>Government<a class="headerlink" href="#government" title="Permalink to this heading">#</a></h2>
 <p>At time  <span class="math notranslate nohighlight">\(t-1\)</span>, the government    issues one-period risk-free debt that promises to pay <span class="math notranslate nohighlight">\(D_t\)</span> time <span class="math notranslate nohighlight">\(t\)</span>  goods per capita at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>Young people at time <span class="math notranslate nohighlight">\(t\)</span> purchase government debt <span class="math notranslate nohighlight">\(D_{t+1}\)</span> that matures at time <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
 <p>Government debt issued at <span class="math notranslate nohighlight">\(t\)</span> bears a before-tax net rate of interest rate of <span class="math notranslate nohighlight">\(r_{t}\)</span> at time <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
@@ -393,7 +396,7 @@ D_{t+1} - D_t = r_t D_t + G_t - T_t
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-govbudgetsequence">
-<span class="eqno">(36.2)<a class="headerlink" href="#equation-eq-govbudgetsequence" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(37.2)<a class="headerlink" href="#equation-eq-govbudgetsequence" title="Permalink to this equation">#</a></span>\[
 D_{t+1} = (1 + r_t)  D_t + G_t - T_t  .
 \]</div>
 <p>Total tax collections net of transfers equal  <span class="math notranslate nohighlight">\(T_t\)</span> and satisfy</p>
@@ -403,7 +406,7 @@ T_t = \tau_t W_t L_t + \tau_t r_t (D_t + K_t) + \delta_{yt} + \delta_{ot}
 \]</div>
 </section>
 <section id="activities-in-factor-markets">
-<h2><span class="section-number">36.5. </span>Activities in Factor Markets<a class="headerlink" href="#activities-in-factor-markets" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">37.5. </span>Activities in Factor Markets<a class="headerlink" href="#activities-in-factor-markets" title="Permalink to this heading">#</a></h2>
 <p><strong>Old people:</strong>  At each  <span class="math notranslate nohighlight">\(t \geq 0\)</span>, a representative  old person</p>
 <ul class="simple">
 <li><p>brings <span class="math notranslate nohighlight">\(K_t\)</span> and <span class="math notranslate nohighlight">\(D_t\)</span> into the period,</p></li>
@@ -426,7 +429,7 @@ T_t = \tau_t W_t L_t + \tau_t r_t (D_t + K_t) + \delta_{yt} + \delta_{ot}
 </div>
 </section>
 <section id="representative-firms-problem">
-<h2><span class="section-number">36.6. </span>Representative firm’s problem<a class="headerlink" href="#representative-firms-problem" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">37.6. </span>Representative firm’s problem<a class="headerlink" href="#representative-firms-problem" title="Permalink to this heading">#</a></h2>
 <p>The representative firm hires labor services from  young people  at competitive wage  rate <span class="math notranslate nohighlight">\(W_t\)</span>  and hires  capital from old  people at competitive rental rate
 <span class="math notranslate nohighlight">\(r_t\)</span>.</p>
 <p>The rental rate on capital <span class="math notranslate nohighlight">\(r_t\)</span> equals the interest rate on government one-period bonds.</p>
@@ -443,7 +446,7 @@ K_t^\alpha L_t^{1-\alpha} - r_t K_t - W_t L_t .
 \]</div>
 <p>To maximize profits a firm equates marginal products to rental rates:</p>
 <div class="math notranslate nohighlight" id="equation-eq-firmfonc">
-<span class="eqno">(36.3)<a class="headerlink" href="#equation-eq-firmfonc" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(37.3)<a class="headerlink" href="#equation-eq-firmfonc" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 W_t &amp; = (1-\alpha) K_t^\alpha L_t^{-\alpha} \\
 r_t &amp; = \alpha K_t^\alpha L_t^{1-\alpha}
@@ -453,71 +456,71 @@ r_t &amp; = \alpha K_t^\alpha L_t^{1-\alpha}
 <p>The firm  thus sells output to old people, young people, and the government.</p>
 </section>
 <section id="individuals-problems">
-<h2><span class="section-number">36.7. </span>Individuals’ problems<a class="headerlink" href="#individuals-problems" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">37.7. </span>Individuals’ problems<a class="headerlink" href="#individuals-problems" title="Permalink to this heading">#</a></h2>
 <section id="initial-old-person">
-<h3><span class="section-number">36.7.1. </span>Initial old person<a class="headerlink" href="#initial-old-person" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">37.7.1. </span>Initial old person<a class="headerlink" href="#initial-old-person" title="Permalink to this heading">#</a></h3>
 <p>At time <span class="math notranslate nohighlight">\(t=0\)</span>, a representative initial old person is endowed with  <span class="math notranslate nohighlight">\((1 + r_0(1 - \tau_0)) A_0\)</span> in initial assets.</p>
 <p>It  must pay a lump sum tax to (if positive) or receive a subsidy from  (if negative)
 <span class="math notranslate nohighlight">\(\delta_{ot}\)</span> the government.</p>
 <p>An old   person’s budget constraint is</p>
 <div class="math notranslate nohighlight" id="equation-eq-hbudgetold">
-<span class="eqno">(36.4)<a class="headerlink" href="#equation-eq-hbudgetold" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(37.4)<a class="headerlink" href="#equation-eq-hbudgetold" title="Permalink to this equation">#</a></span>\[
 C_{o0} = (1 + r_0 (1 - \tau_0)) A_0 - \delta_{ot} .
 \]</div>
 <p>An initial old person’s utility function is <span class="math notranslate nohighlight">\(C_{o0}\)</span>, so the person’s optimal consumption plan
-is provided by equation <a class="reference internal" href="#equation-eq-hbudgetold">(36.4)</a>.</p>
+is provided by equation <a class="reference internal" href="#equation-eq-hbudgetold">(37.4)</a>.</p>
 </section>
 <section id="young-person">
-<h3><span class="section-number">36.7.2. </span>Young person<a class="headerlink" href="#young-person" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">37.7.2. </span>Young person<a class="headerlink" href="#young-person" title="Permalink to this heading">#</a></h3>
 <p>At each <span class="math notranslate nohighlight">\(t \geq 0\)</span>, a  young person inelastically supplies one unit of labor and in return
 receives pre-tax labor earnings of <span class="math notranslate nohighlight">\(W_t\)</span> units of output.</p>
 <p>A young person’s post-tax-and-transfer earnings are <span class="math notranslate nohighlight">\(W_t (1 - \tau_t) - \delta_{yt}\)</span>.</p>
 <p>At each <span class="math notranslate nohighlight">\(t \geq 0\)</span>, a young person chooses a consumption plan  <span class="math notranslate nohighlight">\(C_{yt}, C_{ot+1}\)</span>
 to maximize the Cobb-Douglas utility function</p>
 <div class="math notranslate nohighlight" id="equation-eq-utilfn">
-<span class="eqno">(36.5)<a class="headerlink" href="#equation-eq-utilfn" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(37.5)<a class="headerlink" href="#equation-eq-utilfn" title="Permalink to this equation">#</a></span>\[
 U_t  = C_{yt}^\beta C_{o,t+1}^{1-\beta}, \quad \beta \in (0,1)
 \]</div>
 <p>subject to the following  budget constraints at times <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(t+1\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-twobudgetc">
-<span class="eqno">(36.6)<a class="headerlink" href="#equation-eq-twobudgetc" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(37.6)<a class="headerlink" href="#equation-eq-twobudgetc" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 C_{yt} + A_{t+1} &amp; =  W_t (1 - \tau_t) - \delta_{yt} \\
 C_{ot+1} &amp; = (1+ r_{t+1} (1 - \tau_{t+1}))A_{t+1} - \delta_{ot}
 \end{aligned}
 \end{split}\]</div>
-<p>Solving the second equation of <a class="reference internal" href="#equation-eq-twobudgetc">(36.6)</a> for savings  <span class="math notranslate nohighlight">\(A_{t+1}\)</span> and substituting it into the first equation implies the present value budget constraint</p>
+<p>Solving the second equation of <a class="reference internal" href="#equation-eq-twobudgetc">(37.6)</a> for savings  <span class="math notranslate nohighlight">\(A_{t+1}\)</span> and substituting it into the first equation implies the present value budget constraint</p>
 <div class="math notranslate nohighlight" id="equation-eq-onebudgetc">
-<span class="eqno">(36.7)<a class="headerlink" href="#equation-eq-onebudgetc" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(37.7)<a class="headerlink" href="#equation-eq-onebudgetc" title="Permalink to this equation">#</a></span>\[
 C_{yt} + \frac{C_{ot+1}}{1 + r_{t+1}(1 - \tau_{t+1})} = W_t (1 - \tau_t) - \delta_{yt} - \frac{\delta_{ot}}{1 + r_{t+1}(1 - \tau_{t+1})}
 \]</div>
 <p>To solve the young person’s choice problem, form a Lagrangian</p>
 <div class="math notranslate nohighlight" id="equation-eq-lagc">
-<span class="eqno">(36.8)<a class="headerlink" href="#equation-eq-lagc" title="Permalink to this equation">#</a></span>\[\begin{split} 
+<span class="eqno">(37.8)<a class="headerlink" href="#equation-eq-lagc" title="Permalink to this equation">#</a></span>\[\begin{split} 
 \begin{aligned}
 {\mathcal L}  &amp; = C_{yt}^\beta C_{o,t+1}^{1-\beta} \\ &amp;  + \lambda \Bigl[ C_{yt} + \frac{C_{ot+1}}{1 + r_{t+1}(1 - \tau_{t+1})} - W_t (1 - \tau_t) + \delta_{yt} + \frac{\delta_{ot}}{1 + r_{t+1}(1 - \tau_{t+1})}\Bigr],
 \end{aligned}
 \end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is a Lagrange multiplier on the intertemporal budget constraint <a class="reference internal" href="#equation-eq-onebudgetc">(36.7)</a>.</p>
-<p>After several lines of algebra, the intertemporal budget constraint <a class="reference internal" href="#equation-eq-onebudgetc">(36.7)</a> and the first-order conditions for maximizing <span class="math notranslate nohighlight">\({\mathcal L}\)</span> with respect to <span class="math notranslate nohighlight">\(C_{yt}, C_{ot+1}\)</span>
+<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is a Lagrange multiplier on the intertemporal budget constraint <a class="reference internal" href="#equation-eq-onebudgetc">(37.7)</a>.</p>
+<p>After several lines of algebra, the intertemporal budget constraint <a class="reference internal" href="#equation-eq-onebudgetc">(37.7)</a> and the first-order conditions for maximizing <span class="math notranslate nohighlight">\({\mathcal L}\)</span> with respect to <span class="math notranslate nohighlight">\(C_{yt}, C_{ot+1}\)</span>
 imply that an optimal consumption plan satisfies</p>
 <div class="math notranslate nohighlight" id="equation-eq-optconsplan">
-<span class="eqno">(36.9)<a class="headerlink" href="#equation-eq-optconsplan" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(37.9)<a class="headerlink" href="#equation-eq-optconsplan" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 C_{yt} &amp; = \beta \Bigl[ W_t (1 - \tau_t) - \delta_{yt} - \frac{\delta_{ot}}{1 + r_{t+1}(1 - \tau_{t+1})}\Bigr] \\
 \frac{C_{0t+1}}{1 + r_{t+1}(1-\tau_{t+1})  } &amp; = (1-\beta)   \Bigl[ W_t (1 - \tau_t) - \delta_{yt} - \frac{\delta_{ot}}{1 + r_{t+1}(1 - \tau_{t+1})}\Bigr] 
 \end{aligned}
 \end{split}\]</div>
-<p>The first-order condition for minimizing Lagrangian <a class="reference internal" href="#equation-eq-lagc">(36.8)</a> with respect to the Lagrange multipler <span class="math notranslate nohighlight">\(\lambda\)</span> recovers the budget constraint <a class="reference internal" href="#equation-eq-onebudgetc">(36.7)</a>,
-which, using <a class="reference internal" href="#equation-eq-optconsplan">(36.9)</a> gives the optimal savings plan</p>
+<p>The first-order condition for minimizing Lagrangian <a class="reference internal" href="#equation-eq-lagc">(37.8)</a> with respect to the Lagrange multipler <span class="math notranslate nohighlight">\(\lambda\)</span> recovers the budget constraint <a class="reference internal" href="#equation-eq-onebudgetc">(37.7)</a>,
+which, using <a class="reference internal" href="#equation-eq-optconsplan">(37.9)</a> gives the optimal savings plan</p>
 <div class="math notranslate nohighlight" id="equation-eq-optsavingsplan">
-<span class="eqno">(36.10)<a class="headerlink" href="#equation-eq-optsavingsplan" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(37.10)<a class="headerlink" href="#equation-eq-optsavingsplan" title="Permalink to this equation">#</a></span>\[
 A_{t+1} = (1-\beta) [ (1- \tau_t) W_t - \delta_{yt}] + \beta \frac{\delta_{ot}}{1 + r_{t+1}(1 - \tau_{t+1})} 
 \]</div>
 </section>
 </section>
 <section id="equilbrium">
-<span id="sec-equilibrium"></span><h2><span class="section-number">36.8. </span>Equilbrium<a class="headerlink" href="#equilbrium" title="Permalink to this heading">#</a></h2>
+<span id="sec-equilibrium"></span><h2><span class="section-number">37.8. </span>Equilbrium<a class="headerlink" href="#equilbrium" title="Permalink to this heading">#</a></h2>
 <p><strong>Definition:</strong> An equilibrium is an allocation,  a government policy, and a price system with the properties that</p>
 <ul class="simple">
 <li><p>given the price system and the government policy, the allocation solves</p>
@@ -530,7 +533,7 @@ A_{t+1} = (1-\beta) [ (1- \tau_t) W_t - \delta_{yt}] + \beta \frac{\delta_{ot}}{
 </ul>
 </section>
 <section id="next-steps">
-<h2><span class="section-number">36.9. </span>Next steps<a class="headerlink" href="#next-steps" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">37.9. </span>Next steps<a class="headerlink" href="#next-steps" title="Permalink to this heading">#</a></h2>
 <p>To begin our analysis of  equilibrium outcomes, we’ll study the special case of the model with which  Auerbach and
 Kotlikoff (1987) <span id="id3">[<a class="reference internal" href="zreferences.html#id260" title="Alan J Auerbach and Laurence J Kotlikoff. Dynamic fiscal policy. Cambridge University Press, Cambridge, 1987.">Auerbach and Kotlikoff, 1987</a>]</span> began their analysis in chapter 2.</p>
 <p>It can be solved by hand.</p>
@@ -540,9 +543,9 @@ Kotlikoff (1987) <span id="id3">[<a class="reference internal" href="zreferences
 <p>We’ll compute an equilibrium by iterating to convergence on that mapping.</p>
 </section>
 <section id="closed-form-solution">
-<h2><span class="section-number">36.10. </span>Closed form solution<a class="headerlink" href="#closed-form-solution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">37.10. </span>Closed form solution<a class="headerlink" href="#closed-form-solution" title="Permalink to this heading">#</a></h2>
 <p>To get the special chapter 2 case of  Auerbach and Kotlikoff (1987) <span id="id4">[<a class="reference internal" href="zreferences.html#id260" title="Alan J Auerbach and Laurence J Kotlikoff. Dynamic fiscal policy. Cambridge University Press, Cambridge, 1987.">Auerbach and Kotlikoff, 1987</a>]</span>, we  set both <span class="math notranslate nohighlight">\(\delta_{ot}\)</span> and <span class="math notranslate nohighlight">\(\delta_{yt}\)</span> to zero.</p>
-<p>As our special case of <a class="reference internal" href="#equation-eq-optconsplan">(36.9)</a>, we compute the following consumption-savings plan for a representative young person:</p>
+<p>As our special case of <a class="reference internal" href="#equation-eq-optconsplan">(37.9)</a>, we compute the following consumption-savings plan for a representative young person:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -550,16 +553,16 @@ C_{yt} &amp; = \beta (1 - \tau_t) W_t \\
 A_{t+1} &amp;= (1-\beta) (1- \tau_t) W_t
 \end{aligned}
 \end{split}\]</div>
-<p>Using  <a class="reference internal" href="#equation-eq-firmfonc">(36.3)</a> and  <span class="math notranslate nohighlight">\(A_t = K_t + D_t\)</span>, we obtain the following closed form transition law for capital:</p>
+<p>Using  <a class="reference internal" href="#equation-eq-firmfonc">(37.3)</a> and  <span class="math notranslate nohighlight">\(A_t = K_t + D_t\)</span>, we obtain the following closed form transition law for capital:</p>
 <div class="math notranslate nohighlight" id="equation-eq-klawclosed">
-<span class="eqno">(36.11)<a class="headerlink" href="#equation-eq-klawclosed" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(37.11)<a class="headerlink" href="#equation-eq-klawclosed" title="Permalink to this equation">#</a></span>\[\begin{split}
 K_{t+1}=K_{t}^{\alpha}\left(1-\tau_{t}\right)\left(1-\alpha\right)\left(1-\beta\right) - D_{t}\\
 \end{split}\]</div>
 <section id="steady-states">
-<h3><span class="section-number">36.10.1. </span>Steady states<a class="headerlink" href="#steady-states" title="Permalink to this heading">#</a></h3>
-<p>From <a class="reference internal" href="#equation-eq-klawclosed">(36.11)</a> and the government budget constraint <a class="reference internal" href="#equation-eq-govbudgetsequence">(36.2)</a>, we compute <strong>time-invariant</strong> or <strong>steady state values</strong>   <span class="math notranslate nohighlight">\(\hat K, \hat D, \hat T\)</span>:</p>
+<h3><span class="section-number">37.10.1. </span>Steady states<a class="headerlink" href="#steady-states" title="Permalink to this heading">#</a></h3>
+<p>From <a class="reference internal" href="#equation-eq-klawclosed">(37.11)</a> and the government budget constraint <a class="reference internal" href="#equation-eq-govbudgetsequence">(37.2)</a>, we compute <strong>time-invariant</strong> or <strong>steady state values</strong>   <span class="math notranslate nohighlight">\(\hat K, \hat D, \hat T\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-steadystates">
-<span class="eqno">(36.12)<a class="headerlink" href="#equation-eq-steadystates" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(37.12)<a class="headerlink" href="#equation-eq-steadystates" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \hat{K} &amp;=\hat{K}\left(1-\hat{\tau}\right)\left(1-\alpha\right)\left(1-\beta\right) - \hat{D} \\
 \hat{D} &amp;= (1 + \hat{r})  \hat{D} + \hat{G} - \hat{T} \\
@@ -590,7 +593,7 @@ K_{t+1}=K_{t}^{\alpha}\left(1-\tau_{t}\right)\left(1-\alpha\right)\left(1-\beta\
 \end{split}\]</div>
 </section>
 <section id="implementation">
-<h3><span class="section-number">36.10.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">37.10.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -714,7 +717,7 @@ K_{t+1}=K_{t}^{\alpha}\left(1-\tau_{t}\right)\left(1-\alpha\right)\left(1-\beta\
 </div>
 </section>
 <section id="transitions">
-<h3><span class="section-number">36.10.3. </span>Transitions<a class="headerlink" href="#transitions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">37.10.3. </span>Transitions<a class="headerlink" href="#transitions" title="Permalink to this heading">#</a></h3>
 <!--
 %<font color='red'>Zejin: I tried to edit the following part to describe the fiscal policy %experiment and the objects we are interested in computing. </font>
 -->
@@ -894,7 +897,7 @@ approach.</p>
 </div>
 </section>
 <section id="experiment-1-tax-cut">
-<span id="exp-tax-cut"></span><h3><span class="section-number">36.10.4. </span>Experiment 1: Tax cut<a class="headerlink" href="#experiment-1-tax-cut" title="Permalink to this heading">#</a></h3>
+<span id="exp-tax-cut"></span><h3><span class="section-number">37.10.4. </span>Experiment 1: Tax cut<a class="headerlink" href="#experiment-1-tax-cut" title="Permalink to this heading">#</a></h3>
 <p>To illustrate the power of <code class="docutils literal notranslate"><span class="pre">ClosedFormTrans</span></code>, let’s first experiment with the following fiscal policy change:</p>
 <ol class="arabic simple">
 <li><p>at <span class="math notranslate nohighlight">\(t=0\)</span>, the government unexpectedly announces a one-period tax cut, <span class="math notranslate nohighlight">\(\tau_0 =(1-\frac{1}{3}) \hat{\tau}\)</span>, by issuing government debt <span class="math notranslate nohighlight">\(\bar{D}\)</span></p></li>
@@ -1005,7 +1008,7 @@ K_{t+1} &amp;= K_{t}^{\alpha}\left(1-\tau_{t}\right)\left(1-\alpha\right)\left(1
 <p>The economy with lower tax cut rate at <span class="math notranslate nohighlight">\(t=0\)</span> has the same transitional pattern, but is less distorted, and it converges to a new steady state with higher physical capital stock.</p>
 </section>
 <section id="experiment-2-government-asset-accumulation">
-<span id="exp-expen-cut"></span><h3><span class="section-number">36.10.5. </span>Experiment 2: Government asset accumulation<a class="headerlink" href="#experiment-2-government-asset-accumulation" title="Permalink to this heading">#</a></h3>
+<span id="exp-expen-cut"></span><h3><span class="section-number">37.10.5. </span>Experiment 2: Government asset accumulation<a class="headerlink" href="#experiment-2-government-asset-accumulation" title="Permalink to this heading">#</a></h3>
 <p>Assume that the economy is initially in the same steady state.</p>
 <p>Now the government promises to cut its spending on services and goods by  half <span class="math notranslate nohighlight">\(\forall t \geq 0\)</span>.</p>
 <p>The government targets  the same tax rate <span class="math notranslate nohighlight">\(\tau_t=\hat{\tau}\)</span> and to accumulate assets <span class="math notranslate nohighlight">\(-D_t\)</span> over time.</p>
@@ -1051,7 +1054,7 @@ K_{t+1} &amp;= K_{t}^{\alpha}\left(1-\tau_{t}\right)\left(1-\alpha\right)\left(1
 </div>
 </section>
 <section id="experiment-3-temporary-expenditure-cut">
-<h3><span class="section-number">36.10.6. </span>Experiment 3: Temporary expenditure cut<a class="headerlink" href="#experiment-3-temporary-expenditure-cut" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">37.10.6. </span>Experiment 3: Temporary expenditure cut<a class="headerlink" href="#experiment-3-temporary-expenditure-cut" title="Permalink to this heading">#</a></h3>
 <p>Let’s now investigate a   scenario in which  the government also cuts its spending by  half and accumulates the asset.</p>
 <p>But now let  the government cut its  expenditures only  at <span class="math notranslate nohighlight">\(t=0\)</span>.</p>
 <p>From <span class="math notranslate nohighlight">\(t \geq 1\)</span>, the government expeditures  return to  <span class="math notranslate nohighlight">\(\hat{G}\)</span>  and  <span class="math notranslate nohighlight">\(\tau_t\)</span> adjusts to maintain the   asset level <span class="math notranslate nohighlight">\(-D_t = -D_1\)</span>.</p>
@@ -1081,7 +1084,7 @@ K_{t+1} &amp;= K_{t}^{\alpha}\left(1-\tau_{t}\right)\left(1-\alpha\right)\left(1
 </section>
 </section>
 <section id="a-computational-strategy">
-<h2><span class="section-number">36.11. </span>A computational strategy<a class="headerlink" href="#a-computational-strategy" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">37.11. </span>A computational strategy<a class="headerlink" href="#a-computational-strategy" title="Permalink to this heading">#</a></h2>
 <p>With the preceding caluations, we studied  dynamic transitions  instigated by alternative  fiscal policies.</p>
 <p>In  all these experiments, we maintained the assumption that lump sum taxes were  absent  so that <span class="math notranslate nohighlight">\(\delta_{yt}=0, \delta_{ot}=0\)</span>.</p>
 <p>In this section, we investigate the transition dynamics when the lump sum taxes are present.</p>
@@ -1475,7 +1478,7 @@ section <a class="reference internal" href="#sec-equilibrium"><span class="std s
 </div>
 <p>Comparing to <a class="reference internal" href="#exp-tax-cut"><span class="std std-ref">Experiment 1: Tax cut</span></a>, the government raises lump-sum taxes to finance the increasing debt interest payment, which is less distortionary comparing to raising the capital income tax rate.</p>
 <section id="experiment-4-unfunded-social-security-system">
-<h3><span class="section-number">36.11.1. </span>Experiment 4: Unfunded Social Security System<a class="headerlink" href="#experiment-4-unfunded-social-security-system" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">37.11.1. </span>Experiment 4: Unfunded Social Security System<a class="headerlink" href="#experiment-4-unfunded-social-security-system" title="Permalink to this heading">#</a></h3>
 <p>In this experiment,  lump-sum taxes are of equal magnitudes for old and the young, but of opposite signs.</p>
 <p>A negative lump-sum tax is a subsidy.</p>
 <p>Thus, in this experiment we tax the young and subsidize the old.</p>
@@ -1810,49 +1813,54 @@ section <a class="reference internal" href="#sec-equilibrium"><span class="std s
    35. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   36. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   36. Transitions in an Overlapping Generations Model
+   37. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   37. Cake Eating I: Introduction to Optimal Saving
+   38. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   38. Cake Eating II: Numerical Methods
+   39. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   39. Optimal Growth I: The Stochastic Optimal Growth Model
+   40. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   40. Optimal Growth II: Accelerating the Code with Numba
+   41. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   41. Optimal Growth III: Time Iteration
+   42. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   42. Optimal Growth IV: The Endogenous Grid Method
+   43. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   43. The Income Fluctuation Problem I: Basic Model
+   44. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   44. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   45. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1864,17 +1872,17 @@ section <a class="reference internal" href="#sec-equilibrium"><span class="std s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   45. Non-Conjugate Priors
+   46. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   46. Posterior Distributions for  AR(1) Parameters
+   47. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   47. Forecasting  an AR(1) Process
+   48. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1886,42 +1894,42 @@ section <a class="reference internal" href="#sec-equilibrium"><span class="std s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   48. Job Search VII: Search with Learning
+   49. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   49. Likelihood Ratio Processes
+   50. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   50. Computing Mean of a Likelihood Ratio Process
+   51. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   51. A Problem that Stumped Milton Friedman
+   52. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   52. Exchangeability and Bayesian Updating
+   53. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   53. Likelihood Ratio Processes and Bayesian Learning
+   54. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   54. Incorrect Models
+   55. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   55. Bayesian versus Frequentist Decision Rules
+   56. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1933,32 +1941,32 @@ section <a class="reference internal" href="#sec-equilibrium"><span class="std s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   56. LQ Control: Foundations
+   57. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   57. Lagrangian for LQ Control
+   58. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   58. Eliminating Cross Products
+   59. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   59. The Permanent Income Model
+   60. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   60. Permanent Income II: LQ Techniques
+   61. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   61. Production Smoothing via Inventories
+   62. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1970,32 +1978,32 @@ section <a class="reference internal" href="#sec-equilibrium"><span class="std s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   62. A Lake Model of Employment and Unemployment
+   63. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   63. Rational Expectations Equilibrium
+   64. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   64. Stability in Linear Rational Expectations Models
+   65. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   65. Markov Perfect Equilibrium
+   66. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   66. Uncertainty Traps
+   67. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   67. The Aiyagari Model
+   68. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -2007,17 +2015,17 @@ section <a class="reference internal" href="#sec-equilibrium"><span class="std s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   68. Asset Pricing: Finite State Models
+   69. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   69. Competitive Equilibria with Arrow Securities
+   70. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   70. Heterogeneous Beliefs and Bubbles
+   71. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2029,17 +2037,17 @@ section <a class="reference internal" href="#sec-equilibrium"><span class="std s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   71. Pandas for Panel Data
+   72. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   72. Linear Regression in Python
+   73. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   73. Maximum Likelihood Estimation
+   74. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2051,12 +2059,12 @@ section <a class="reference internal" href="#sec-equilibrium"><span class="std s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   74. First-Price and Second-Price Auctions
+   75. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   75. Multiple Good Allocation Mechanisms
+   76. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2068,17 +2076,17 @@ section <a class="reference internal" href="#sec-equilibrium"><span class="std s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   76. Troubleshooting
+   77. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   77. References
+   78. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   78. Execution Statistics
+   79. Execution Statistics
   </a>
  </li>
 </ul>
