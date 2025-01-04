@@ -13,14 +13,6 @@ kernelspec:
 
 # Cass-Koopmans Model with Distorting Taxes 
 
-
-```{code-cell} ipython
----
-tags: [remove-cell]
----
-!pip install sphinx-proof
-```
-
 ## Overview
 
 This lecture studies effects of foreseen   fiscal and technology shocks on competitive equilibrium prices and quantities in a nonstochastic version of a Cass-Koopmans  growth model with features described in this QuantEcon lecture {doc}`cass_koopmans_2`.
