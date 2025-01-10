@@ -452,7 +452,7 @@ fig, ax = plt.subplots(figsize=(6, 6))
 ax.contourf(sp.π_grid, sp.w_grid, v_star, 12, alpha=0.6, cmap=cm.jet)
 cs = ax.contour(sp.π_grid, sp.w_grid, v_star, 12, colors="black")
 ax.clabel(cs, inline=1, fontsize=10)
-ax.set(xlabel='$\pi$', ylabel='$w$')
+ax.set(xlabel=r'$\pi$', ylabel='$w$')
 
 plt.show()
 ```
@@ -466,7 +466,7 @@ T, get_greedy = operator_factory(sp)
 fig, ax = plt.subplots(figsize=(6, 6))
 ax.contourf(sp.π_grid, sp.w_grid, σ_star, 1, alpha=0.6, cmap=cm.jet)
 ax.contour(sp.π_grid, sp.w_grid, σ_star, 1, colors="black")
-ax.set(xlabel='$\pi$', ylabel='$w$')
+ax.set(xlabel=r'$\pi$', ylabel='$w$')
 
 ax.text(0.5, 0.6, 'reject')
 ax.text(0.7, 0.9, 'accept')
@@ -758,7 +758,7 @@ ax.fill_between(sp.π_grid, 0, w_bar, color='blue', alpha=0.15)
 ax.fill_between(sp.π_grid, w_bar, sp.w_max, color='green', alpha=0.15)
 ax.text(0.5, 0.6, 'reject')
 ax.text(0.7, 0.9, 'accept')
-ax.set(xlabel='$\pi$', ylabel='$w$')
+ax.set(xlabel=r'$\pi$', ylabel='$w$')
 ax.grid()
 plt.show()
 ```
@@ -1009,7 +1009,7 @@ def job_search_example(F_a=1, F_b=1, G_a=3, G_b=1.2, c=0.3):
     q = axs[0, 1].quiver(Π, W, ΔΠ, ΔW, scale=2, color='r', alpha=0.8)
 
     axs[0, 1].hlines(roots, 0., 1., linestyle="--")
-    axs[0, 1].set(xlabel='$\pi$', ylabel='$w$')
+    axs[0, 1].set(xlabel=r'$\pi$', ylabel='$w$')
     axs[0, 1].grid()
 
     axs[1, 0].plot(f(x_grid), x_grid, label='$f$', lw=2)
@@ -1024,7 +1024,7 @@ def job_search_example(F_a=1, F_b=1, G_a=3, G_b=1.2, c=0.3):
     axs[1, 1].set_ylim([0., 1.])
     axs[1, 1].grid()
     axs[1, 1].legend(loc=4)
-    axs[1, 1].set(xlabel='$\pi$', ylabel='$\mathbb{P}\{w > \overline{w} (\pi)\}$')
+    axs[1, 1].set(xlabel=r'$\pi$', ylabel=r'$\mathbb{P}\{w > \overline{w} (\pi)\}$')
 
     plt.show()
 
