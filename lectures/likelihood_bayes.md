@@ -646,7 +646,7 @@ for i in range(100):
     ax.plot(range(T+1), π_path[i, :])
 
 ax.set_xlabel('$t$')
-ax.set_ylabel('$\pi_t$')
+ax.set_ylabel(r'$\pi_t$')
 plt.show()
 ```
 
@@ -672,7 +672,7 @@ for t in [1, 10, T-1]:
     ax.hist(π_path[:,t], bins=20, alpha=0.4, label=f'T={t}')
 
 ax.set_ylabel('count')
-ax.set_xlabel('$\pi_T$')
+ax.set_xlabel(r'$\pi_T$')
 ax.legend(loc='lower right')
 plt.show()
 ```
@@ -705,7 +705,7 @@ for t in [1, 10, T-1]:
     ax.hist(π_path3[:,t], bins=20, alpha=0.4, label=f'T={t}')
 
 ax.set_ylabel('count')
-ax.set_xlabel('$\pi_T$')
+ax.set_xlabel(r'$\pi_T$')
 ax.legend(loc='upper right')
 plt.show()
 ```
@@ -726,12 +726,12 @@ $F$ more frequently along a sample path, and this pushes $\pi_t$ toward $0$.
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 for i, j in enumerate([10, 100]):
-    ax.plot(range(T+1), π_path[j,:], color=colors[i], label=f'$\pi$_path, {j}-th simulation')
-    ax.plot(range(1,T+1), w_path[j,:], color=colors[i], label=f'$w$_path, {j}-th simulation', alpha=0.3)
+    ax.plot(range(T+1), π_path[j,:], color=colors[i], label=fr'$\pi$_path, {j}-th simulation')
+    ax.plot(range(1,T+1), w_path[j,:], color=colors[i], label=fr'$w$_path, {j}-th simulation', alpha=0.3)
 
 ax.legend(loc='upper right')
 ax.set_xlabel('$t$')
-ax.set_ylabel('$\pi_t$')
+ax.set_ylabel(r'$\pi_t$')
 ax2 = ax.twinx()
 ax2.set_ylabel("$w_t$")
 plt.show()
@@ -800,8 +800,8 @@ for pi in pi_array:
 
 fig, ax = plt.subplots()
 ax.plot(pi_array, cond_var_array)
-ax.set_xlabel('$\pi_{t-1}$')
-ax.set_ylabel('$\sigma^{2}(\pi_{t}\\vert \pi_{t-1})$')
+ax.set_xlabel(r'$\pi_{t-1}$')
+ax.set_ylabel(r'$\sigma^{2}(\pi_{t}\\vert \pi_{t-1})$')
 plt.show()
 ```
 

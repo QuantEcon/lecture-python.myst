@@ -500,7 +500,7 @@ Now let's check the Gini coefficient.
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(μ_r_vals, gini_vals, label='gini coefficient')
-ax.set_xlabel("$\mu_r$")
+ax.set_xlabel(r"$\mu_r$")
 ax.legend()
 plt.show()
 ```

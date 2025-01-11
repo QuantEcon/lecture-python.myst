@@ -630,7 +630,7 @@ ax.set_xlabel(r'$\alpha$')
 # plot KL
 ax2 = ax.twinx()
 # plot limit point
-ax2.scatter(α_arr_x, π_lim_arr, facecolors='none', edgecolors='tab:blue', label='$\pi$ lim')
+ax2.scatter(α_arr_x, π_lim_arr, facecolors='none', edgecolors='tab:blue', label=r'$\pi$ lim')
 ax2.set_ylabel('π lim')
 
 ax.legend(loc=[0.85, 0.8])
@@ -718,9 +718,9 @@ for i in range(len(sizes)):
         data=sample, kde=True, stat='density', alpha=0.2, ax=ax,
         color=colors[i], binwidth=0.02, linewidth=0.05, label=f't={sizes[i]}'
     )
-ax.set_title('$\pi_t(\\alpha)$ as $t$ increases')
+ax.set_title(r'$\pi_t(\\alpha)$ as $t$ increases')
 ax.legend()
-ax.set_xlabel('$\\alpha$')
+ax.set_xlabel(r'$\\alpha$')
 plt.show()
 ```
 
