@@ -597,7 +597,7 @@ ax.plot(wf.π_grid, cost_L1, label='choose f1')
 ax.plot(wf.π_grid, cost_L0, label='choose f0')
 ax.plot(wf.π_grid,
         np.amin(np.column_stack([h_star, cost_L0, cost_L1]),axis=1),
-        lw=15, alpha=0.1, color='b', label='$J(\pi)$')
+        lw=15, alpha=0.1, color='b', label=r'$J(\pi)$')
 
 ax.annotate(r"$\beta$", xy=(β + 0.01, 0.5), fontsize=14)
 ax.annotate(r"$\alpha$", xy=(α + 0.01, 0.5), fontsize=14)

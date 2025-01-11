@@ -455,7 +455,7 @@ def plot_π_seq(α, π1=0.2, π2=0.8, T=200):
     # plot
     fig, ax1 = plt.subplots()
     for i in range(2):
-        ax1.plot(range(T+1), π_seq_mixed[i, :], label=f"$\pi_0$={π_seq_mixed[i, 0]}")
+        ax1.plot(range(T+1), π_seq_mixed[i, :], label=fr"$\pi_0$={π_seq_mixed[i, 0]}")
 
     ax1.plot(np.nan, np.nan,  '--', color='b', label='Log likelihood ratio process')
     ax1.set_ylabel("$\pi_t$")

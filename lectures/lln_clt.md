@@ -265,7 +265,7 @@ for ax in axes:
     axlabel = '$\\bar{X}_n$ for $X_i \sim$' + name
     ax.plot(list(range(n)), sample_mean, 'g-', lw=3, alpha=0.6, label=axlabel)
     m = distribution.mean()
-    ax.plot(list(range(n)), [m] * n, 'k--', lw=1.5, label='$\mu$')
+    ax.plot(list(range(n)), [m] * n, 'k--', lw=1.5, label=r'$\mu$')
     ax.vlines(list(range(n)), m, data, lw=0.2)
     ax.legend(**legend_args, fontsize=12)
 
@@ -408,7 +408,7 @@ xmin, xmax = -3 * s, 3 * s
 ax.set_xlim(xmin, xmax)
 ax.hist(Y, bins=60, alpha=0.5, density=True)
 xgrid = np.linspace(xmin, xmax, 200)
-ax.plot(xgrid, norm.pdf(xgrid, scale=s), 'k-', lw=2, label='$N(0, \sigma^2)$')
+ax.plot(xgrid, norm.pdf(xgrid, scale=s), 'k-', lw=2, label=r'$N(0, \sigma^2)$')
 ax.legend()
 
 plt.show()
