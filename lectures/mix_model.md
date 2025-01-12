@@ -718,9 +718,9 @@ for i in range(len(sizes)):
         data=sample, kde=True, stat='density', alpha=0.2, ax=ax,
         color=colors[i], binwidth=0.02, linewidth=0.05, label=f't={sizes[i]}'
     )
-ax.set_title(r'$\pi_t(\\alpha)$ as $t$ increases')
+ax.set_title(r'$\pi_t(\alpha)$ as $t$ increases')
 ax.legend()
-ax.set_xlabel('$\\alpha$')
+ax.set_xlabel(r'$\alpha$')
 plt.show()
 ```
 
