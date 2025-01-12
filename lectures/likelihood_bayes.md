@@ -801,7 +801,7 @@ for pi in pi_array:
 fig, ax = plt.subplots()
 ax.plot(pi_array, cond_var_array)
 ax.set_xlabel(r'$\pi_{t-1}$')
-ax.set_ylabel(r'$\sigma^{2}(\pi_{t}\\vert \pi_{t-1})$')
+ax.set_ylabel(r'$\sigma^{2}(\pi_{t}\vert \pi_{t-1})$')
 plt.show()
 ```
 
