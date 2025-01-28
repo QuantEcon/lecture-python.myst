@@ -773,7 +773,7 @@ for i in range(1, n+1):
 μθ_hat_higher = μθ_hat_arr + 1.96 * σθ_hat_arr
 
 plt.hlines(θ, 1, n+1, ls='--', label='true $θ$')
-plt.plot(range(1, n+1), μθ_hat_arr, color='b', label='$\hat{μ}_{θ}$')
+plt.plot(range(1, n+1), μθ_hat_arr, color='b', label=r'$\hat{μ}_{θ}$')
 plt.plot(range(1, n+1), μθ_hat_lower, color='b', ls='--')
 plt.plot(range(1, n+1), μθ_hat_higher, color='b', ls='--')
 plt.fill_between(range(1, n+1), μθ_hat_lower, μθ_hat_higher,
@@ -2277,7 +2277,7 @@ coordinate axis versus $y$ on the ordinate axis.
 
 ```{code-cell} python3
 plt.scatter(range(N), Λ @ f, label='$Ey|f$')
-plt.scatter(range(N), y_hat, label='$\hat{y}$')
+plt.scatter(range(N), y_hat, label=r'$\hat{y}$')
 plt.hlines(f[0], 0, N//2-1, ls='--', label='$f_{1}$')
 plt.hlines(f[1], N//2, N-1, ls='-.', label='$f_{2}$')
 

@@ -738,7 +738,7 @@ y = y.flatten()
 ygrid = np.linspace(ymin, ymax, 150)
 
 ax.hist(y, bins=50, density=True, alpha=0.4)
-ax.plot(ygrid, f_y.pdf(ygrid), 'k-', lw=2, alpha=0.8, label=r'true density')
+ax.plot(ygrid, f_y.pdf(ygrid), 'k-', lw=2, alpha=0.8, label='true density')
 ax.set_xlim(ymin, ymax)
 ax.set_xlabel('$y_t$', fontsize=12)
 ax.set_ylabel('relative frequency', fontsize=12)
@@ -802,7 +802,7 @@ for t in range(T):
     μ_x, μ_y, Σ_x, Σ_y = next(m)
     population_means.append(float(μ_y))
 
-ax.plot(population_means, color='g', lw=2, alpha=0.8, label='$G\mu_t$')
+ax.plot(population_means, color='g', lw=2, alpha=0.8, label=r'$G\mu_t$')
 ax.set_ylim(ymin, ymax)
 ax.set_xlabel('time', fontsize=12)
 ax.set_ylabel('$y_t$', fontsize=12)

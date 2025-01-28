@@ -477,7 +477,7 @@ gini_vals = []
 for μ_r in μ_r_vals:
     wdy = WealthDynamics(μ_r=μ_r)
     gv, (f_vals, l_vals) = generate_lorenz_and_gini(wdy)
-    ax.plot(f_vals, l_vals, label=f'$\psi^*$ at $\mu_r = {μ_r:0.2}$')
+    ax.plot(f_vals, l_vals, label=fr'$\psi^*$ at $\mu_r = {μ_r:0.2}$')
     gini_vals.append(gv)
 
 ax.plot(f_vals, f_vals, label='equality')
@@ -500,7 +500,7 @@ Now let's check the Gini coefficient.
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(μ_r_vals, gini_vals, label='gini coefficient')
-ax.set_xlabel("$\mu_r$")
+ax.set_xlabel(r"$\mu_r$")
 ax.legend()
 plt.show()
 ```
@@ -522,7 +522,7 @@ gini_vals = []
 for σ_r in σ_r_vals:
     wdy = WealthDynamics(σ_r=σ_r)
     gv, (f_vals, l_vals) = generate_lorenz_and_gini(wdy)
-    ax.plot(f_vals, l_vals, label=f'$\psi^*$ at $\sigma_r = {σ_r:0.2}$')
+    ax.plot(f_vals, l_vals, label=fr'$\psi^*$ at $\sigma_r = {σ_r:0.2}$')
     gini_vals.append(gv)
 
 ax.plot(f_vals, f_vals, label='equality')
