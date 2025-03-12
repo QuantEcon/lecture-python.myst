@@ -4,9 +4,9 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.11.5
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -595,9 +595,7 @@ Image(fig.to_image(format="png"))
 
 ```{code-cell} ipython3
 ## to check that gpu is activated in environment
-
-from jax.lib import xla_bridge
-print(xla_bridge.get_backend().platform)
+jax.extend.backend.get_backend()
 ```
 
 ```{note}
