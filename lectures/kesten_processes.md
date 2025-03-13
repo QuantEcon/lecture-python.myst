@@ -108,7 +108,7 @@ Composite Index for the period 1st January 2006 to 1st November 2019.
 ```{code-cell} python3
 import yfinance as yf
 
-s = yf.download('^IXIC', '2006-1-1', '2019-11-1', auto_adjust=True)['Adj Close']
+s = yf.download('^IXIC', '2006-1-1', '2019-11-1', auto_adjust=False)['Adj Close']
 
 r = s.pct_change()
 
