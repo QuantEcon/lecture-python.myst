@@ -141,10 +141,10 @@ which states that the **conditional density** on the left side does not equal th
 But in the special IID case,
 
 $$
-p(W_t | W_{t-1}, \ldots, W_0)   =  p(W_t)
+p(W_t | W_{t-1}, \ldots, W_0)   =  p(W_t) ,
 $$
 
-and partial history $W_{t-1}, \ldots, W_0$ contains no information about the probability of $W_t$.
+so that the  partial history $W_{t-1}, \ldots, W_0$ contains no information about the probability of $W_t$.
 
 So in the IID case, there is **nothing to learn** about the densities of future random variables from past random variables.
 
@@ -176,13 +176,13 @@ $G$.
 We could say that *objectively*, meaning *after* nature has chosen either $F$ or $G$, the probability that the data are generated as draws from $F$ is either $0$
 or $1$.
 
-We now drop into this setting a partially informed decision maker who knows
+We now drop into this setting a partially informed decision maker who 
 
-- both $F$ and $G$, but
+- knows both $F$ and $G$, but
 
-- not the $F$ or $G$ that nature drew once-and-for-all at $t = -1$
+- does not know whether  at $t = -1$ nature had drawn   $F$ or whether nature had drawn   $G$ once-and-for-all
 
-So our decision maker does not know which of the two distributions nature selected.
+Thus, although our decision maker knows $F$ and knows $G$, he does not know which of these two known distributions nature had selected to draw from.
 
 The decision maker describes his ignorance with a **subjective probability**
 $\tilde \pi$ and reasons as if  nature had selected $F$ with probability
@@ -259,12 +259,11 @@ This means that  random variable  $W_0$ contains information about random variab
 
 So there is something to learn from the past about the future.
 
-But what and how?
 
 ## Exchangeability
 
 While the sequence $W_0, W_1, \ldots$ is not IID, it can be verified that it is
-**exchangeable**, which means that the  ``re-ordered'' joint distributions $h(W_0, W_1)$ and $h(W_1, W_0)$
+**exchangeable**, which means that the   joint distributions $h(W_0, W_1)$ and $h(W_1, W_0)$ of the ''re-ordered'' sequences
 satisfy
 
 $$
@@ -280,13 +279,14 @@ appear are altered.
 Equation {eq}`eq_definetti` represents our instance of an exchangeable joint density over a sequence of random
 variables  as a **mixture**  of  two IID joint densities over a sequence of random variables.
 
-For a Bayesian statistician, the mixing parameter $\tilde \pi \in (0,1)$ has a special interpretation
-as a subjective **prior probability** that nature selected probability distribution $F$.
+A Bayesian statistician interprets the mixing parameter $\tilde \pi \in (0,1)$ as a decision maker's subjective belief -- the decision maker's  **prior probability**  -- that nature had  selected probability distribution $F$.
 
+```{note}
 DeFinetti {cite}`definetti` established a related representation of an exchangeable process created by mixing
 sequences of IID Bernoulli random variables with parameter $\theta \in (0,1)$ and mixing probability density $\pi(\theta)$
  that a Bayesian statistician would interpret as a prior over the unknown
 Bernoulli parameter $\theta$.
+```
 
 ## Bayes' Law
 
