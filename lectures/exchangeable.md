@@ -31,8 +31,8 @@ via Bayes' Law.
 
 We touch foundations of Bayesian statistical inference invented by Bruno DeFinetti {cite}`definetti`.
 
-The relevance of DeFinetti's work for economists is presented forcefully
-in chapter 11 of {cite}`Kreps88` by David Kreps.
+The relevance of DeFinetti's work for economists is presented forcefully  by David Kreps
+in chapter 11 of {cite}`Kreps88`.
 
 An example  that we study in this lecture  is a key component of {doc}`this lecture <odu>` that augments the
 {doc}`classic <mccall_model>`  job search model of McCall
