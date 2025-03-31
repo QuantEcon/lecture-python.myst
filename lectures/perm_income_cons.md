@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -29,10 +31,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -74,9 +75,8 @@ The model will prove useful for illustrating concepts such as
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import quantecon as qe
 import numpy as np
 import scipy.linalg as la
@@ -329,7 +329,7 @@ In what follows we set it equal to unity.
 
 First, we create the objects for the optimal linear regulator
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Set parameters
 α, β, ρ1, ρ2, σ = 10.0, 0.95, 0.9, 0.0, 1.0
 
@@ -364,7 +364,7 @@ sxbewley = sxo
 
 The next step is to create the matrices for the LQ system
 
-```{code-cell} python3
+```{code-cell} ipython3
 A12 = np.zeros((3,1))
 ALQ_l = np.hstack([A, A12])
 ALQ_r = np.array([[0, -R, 0, R]])
@@ -383,7 +383,7 @@ CLQ = np.array([0., σ, 0., 0.]).reshape(4,1)
 
 Let's print these out and have a look at them
 
-```{code-cell} python3
+```{code-cell} ipython3
 print(f"A = \n {ALQ}")
 print(f"B = \n {BLQ}")
 print(f"R = \n {RLQ}")
@@ -392,14 +392,14 @@ print(f"Q = \n {QLQ}")
 
 Now create the appropriate instance of an LQ model
 
-```{code-cell} python3
+```{code-cell} ipython3
 lqpi = qe.LQ(QLQ, RLQ, ALQ, BLQ, C=CLQ, beta=β_LQ)
 ```
 
 We'll save the implied optimal policy function soon compare them with what we get by
 employing an alternative solution method
 
-```{code-cell} python3
+```{code-cell} ipython3
 P, F, d = lqpi.stationary_values()  # Compute value function and decision rule
 ABF = ALQ - BLQ @ F  #  Form closed loop system
 ```
@@ -428,7 +428,7 @@ $$
 
 Now we'll apply the formulas in this system
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Use the above formulas to create the optimal policies for b_{t+1} and c_t
 b_pol = G @ la.inv(np.eye(3, 3) - β * A) @ (A - np.eye(3, 3))
 c_pol = (1 - β) * G @ la.inv(np.eye(3, 3) - β * A)
@@ -453,13 +453,13 @@ G_LSS = np.hstack([G_LSS1, G_LSS2])
 
 `A_LSS` calculated as we have here should equal `ABF` calculated above using the LQ model
 
-```{code-cell} python3
+```{code-cell} ipython3
 ABF - A_LSS
 ```
 
 Now compare pertinent elements of `c_pol` and `F`
 
-```{code-cell} python3
+```{code-cell} ipython3
 print(c_pol, "\n", -F)
 ```
 
@@ -501,7 +501,7 @@ A second graph  plots a collection of simulations against the population distrib
 
 Comparing sample paths with population distributions at each date $t$ is a useful exercise---see {ref}`our discussion <lln_mr>` of the laws of large numbers
 
-```{code-cell} python3
+```{code-cell} ipython3
 lss = qe.LinearStateSpace(A_LSS, C_LSS, G_LSS, mu_0=μ_0, Sigma_0=Σ_0)
 ```
 
@@ -514,7 +514,7 @@ In the code below, we use the [LinearStateSpace](https://github.com/QuantEcon/Qu
 - simulate a group of 25 consumers and plot sample paths on the same
   graph as the population distribution.
 
-```{code-cell} python3
+```{code-cell} ipython3
 def income_consumption_debt_series(A, C, G, μ_0, Σ_0, T=150, npaths=25):
     """
     This function takes initial conditions (μ_0, Σ_0) and uses the
@@ -545,8 +545,8 @@ def income_consumption_debt_series(A, C, G, μ_0, Σ_0, T=150, npaths=25):
     debt_var = np.empty(T)
     for t in range(T):
         μ_x, μ_y, Σ_x, Σ_y = next(moment_generator)
-        cons_mean[t], cons_var[t] = μ_y[1], Σ_y[1, 1]
-        debt_mean[t], debt_var[t] = μ_x[3], Σ_x[3, 3]
+        cons_mean[t], cons_var[t] = μ_y[1,0], Σ_y[1, 1]
+        debt_mean[t], debt_var[t] = μ_x[3,0], Σ_x[3, 3]
 
     return bsim, csim, ysim, cons_mean, cons_var, debt_mean, debt_var
 
@@ -622,7 +622,7 @@ def consumption_debt_fanchart(csim, cons_mean, cons_var,
 
 Now let's create figures with initial conditions of zero for $y_0$ and $b_0$
 
-```{code-cell} python3
+```{code-cell} ipython3
 out = income_consumption_debt_series(A_LSS, C_LSS, G_LSS, μ_0, Σ_0)
 bsim0, csim0, ysim0 = out[:3]
 cons_mean0, cons_var0, debt_mean0, debt_var0 = out[3:]
@@ -632,7 +632,7 @@ consumption_income_debt_figure(bsim0, csim0, ysim0)
 plt.show()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 consumption_debt_fanchart(csim0, cons_mean0, cons_var0,
                           bsim0, debt_mean0, debt_var0)
 
@@ -698,7 +698,7 @@ behavior early in the sample.
 
 By altering initial conditions, we shall remove this transient in our second example to be presented below
 
-```{code-cell} python3
+```{code-cell} ipython3
 def cointegration_figure(bsim, csim):
     """
     Plots the cointegration
@@ -713,7 +713,7 @@ def cointegration_figure(bsim, csim):
     return fig
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 cointegration_figure(bsim0, csim0)
 plt.show()
 ```
@@ -756,7 +756,7 @@ There is no need for foreigners to lend to our group.
 
 Let's have a look at the corresponding figures
 
-```{code-cell} python3
+```{code-cell} ipython3
 out = income_consumption_debt_series(A_LSS, C_LSS, G_LSS, mxbewley, sxbewley)
 bsimb, csimb, ysimb = out[:3]
 cons_meanb, cons_varb, debt_meanb, debt_varb = out[3:]
@@ -766,7 +766,7 @@ consumption_income_debt_figure(bsimb, csimb, ysimb)
 plt.show()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 consumption_debt_fanchart(csimb, cons_meanb, cons_varb,
                           bsimb, debt_meanb, debt_varb)
 
@@ -785,7 +785,7 @@ But now there is some initial dispersion because there is *ex-ante* heterogeneit
 
 Let's have a look at the cointegration figure
 
-```{code-cell} python3
+```{code-cell} ipython3
 cointegration_figure(bsimb, csimb)
 plt.show()
 ```
