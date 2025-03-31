@@ -395,8 +395,9 @@ We use  two sets of variational distributions: Beta and TruncatedNormal with sup
   - Learnable parameters for the Beta distribution are (alpha, beta), both of which are positive.
   - Learnable parameters for the Truncated Normal distribution are (loc, scale).
 
-<u> We restrict the truncated Normal paramter 'loc' to be in the interval $[0,1]$</u>.
-
+```{note}
+We restrict the truncated Normal parameter 'loc' to be in the interval $[0,1]$
+```
 
 ## Implementation
 
