@@ -33,7 +33,15 @@ and the following package versions
 !conda list
 ```
 
-This lecture series also has access to the following GPU
+You can check the backend used by JAX using:
+
+```{code-cell} ipython3
+import jax
+# Check if JAX is using GPU
+print(f"JAX backend: {jax.devices()[0].platform}")
+```
+
+and this lecture series also has access to the following GPU
 
 ```{code-cell} ipython
 !nvidia-smi

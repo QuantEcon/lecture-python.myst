@@ -595,7 +595,7 @@ Image(fig.to_image(format="png"))
 
 ```{code-cell} ipython3
 ## to check that gpu is activated in environment
-jax.extend.backend.get_backend()
+print(f"JAX backend: {jax.devices()[0].platform}")
 ```
 
 ```{note}
