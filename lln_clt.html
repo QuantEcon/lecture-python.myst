@@ -429,7 +429,7 @@ of <span class="math notranslate nohighlight">\(\bar X_n\)</span> as <span class
     <span class="n">axlabel</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">bar</span><span class="si">{X}</span><span class="s1">_n$ for $X_i \sim$&#39;</span> <span class="o">+</span> <span class="n">name</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)),</span> <span class="n">sample_mean</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">axlabel</span><span class="p">)</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)),</span> <span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\mu$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)),</span> <span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\mu$&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)),</span> <span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="o">**</span><span class="n">legend_args</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 
@@ -439,16 +439,12 @@ of <span class="math notranslate nohighlight">\(\bar X_n\)</span> as <span class
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:38: SyntaxWarning: invalid escape sequence &#39;\s&#39;
-&lt;&gt;:41: SyntaxWarning: invalid escape sequence &#39;\m&#39;
 &lt;&gt;:38: SyntaxWarning: invalid escape sequence &#39;\s&#39;
-&lt;&gt;:41: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-/tmp/ipykernel_2861/701974088.py:38: SyntaxWarning: invalid escape sequence &#39;\s&#39;
+/tmp/ipykernel_3092/2987866577.py:38: SyntaxWarning: invalid escape sequence &#39;\s&#39;
   axlabel = &#39;$\\bar{X}_n$ for $X_i \sim$&#39; + name
-/tmp/ipykernel_2861/701974088.py:41: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-  ax.plot(list(range(n)), [m] * n, &#39;k--&#39;, lw=1.5, label=&#39;$\mu$&#39;)
 </pre></div>
 </div>
-<img alt="_images/c966acb2b5ca6dbd825a3774aae775f6afe748c5222cf194bb9d565dcd127476.png" src="_images/c966acb2b5ca6dbd825a3774aae775f6afe748c5222cf194bb9d565dcd127476.png" />
+<img alt="_images/159b51e29001eb52f35b7ac914c696f997c7946391ebfc2379f384f6908f7fc2.png" src="_images/159b51e29001eb52f35b7ac914c696f997c7946391ebfc2379f384f6908f7fc2.png" />
 </div>
 </div>
 <p>The three distributions are chosen at random from a selection stored in the dictionary <code class="docutils literal notranslate"><span class="pre">distributions</span></code>.</p>
@@ -557,7 +553,7 @@ fail” are just as likely as the outcomes “fail then fail” and “succeed t
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">s</span><span class="p">),</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$N(0, \sigma^2)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">s</span><span class="p">),</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$N(0, \sigma^2)$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -565,13 +561,7 @@ fail” are just as likely as the outcomes “fail then fail” and “succeed t
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:20: SyntaxWarning: invalid escape sequence &#39;\s&#39;
-&lt;&gt;:20: SyntaxWarning: invalid escape sequence &#39;\s&#39;
-/tmp/ipykernel_2861/3555240017.py:20: SyntaxWarning: invalid escape sequence &#39;\s&#39;
-  ax.plot(xgrid, norm.pdf(xgrid, scale=s), &#39;k-&#39;, lw=2, label=&#39;$N(0, \sigma^2)$&#39;)
-</pre></div>
-</div>
-<img alt="_images/ed6c2a3549d8831da595cad7dd345746c244d2532ed679edf41fac0915b9ea12.png" src="_images/ed6c2a3549d8831da595cad7dd345746c244d2532ed679edf41fac0915b9ea12.png" />
+<img alt="_images/7ad7d6dbe357fcfa400dbaf6c8b6f84378a1477848ce931155e2966bf9bfa873.png" src="_images/7ad7d6dbe357fcfa400dbaf6c8b6f84378a1477848ce931155e2966bf9bfa873.png" />
 </div>
 </div>
 <p>Notice the absence of for loops — every operation is vectorized, meaning that the major calculations are all shifted to highly optimized C code.</p>
@@ -657,7 +647,7 @@ specified as the convex combination of three different beta densities.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/33c30cb12332f9c1f7d56fc2b001dcaad86ff153fd0af10f0071e98ebd84a3b5.png" src="_images/33c30cb12332f9c1f7d56fc2b001dcaad86ff153fd0af10f0071e98ebd84a3b5.png" />
+<img alt="_images/e5fc6bbd7f4b77eb653fd2fb6ecdd462b308d7df23e81c395b914bdcaa988336.png" src="_images/e5fc6bbd7f4b77eb653fd2fb6ecdd462b308d7df23e81c395b914bdcaa988336.png" />
 </div>
 </div>
 <p>As expected, the distribution smooths out into a bell curve as <span class="math notranslate nohighlight">\(n\)</span>
@@ -816,11 +806,11 @@ n \to \infty\]</div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:27: SyntaxWarning: invalid escape sequence &#39;\m&#39;
 &lt;&gt;:27: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-/tmp/ipykernel_2861/3132190149.py:27: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/tmp/ipykernel_3092/3132190149.py:27: SyntaxWarning: invalid escape sequence &#39;\m&#39;
   lb = &quot;$N(0, g&#39;(\mu)^2  \sigma^2)$&quot;
 </pre></div>
 </div>
-<img alt="_images/731df1f9f49d4c29547b7e077e538c40bbefa9d3bd8c7e262920a9656da01934.png" src="_images/731df1f9f49d4c29547b7e077e538c40bbefa9d3bd8c7e262920a9656da01934.png" />
+<img alt="_images/e954c295a4803e071d2327ceae2527489f44ab888bca85ede0799cd044e54086.png" src="_images/e954c295a4803e071d2327ceae2527489f44ab888bca85ede0799cd044e54086.png" />
 </div>
 </div>
 <p>What happens when you replace <span class="math notranslate nohighlight">\([0, \pi / 2]\)</span> with
@@ -1005,7 +995,7 @@ which is what we aimed to show.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7024b406801d367d99586d3d123c5216c96ff4a0eb8766126189ec7cd07427e7.png" src="_images/7024b406801d367d99586d3d123c5216c96ff4a0eb8766126189ec7cd07427e7.png" />
+<img alt="_images/5d9e1911e33a9673ccc9a5b423a7c5b970fa2c3c1ff7abb17d89da7e77564a0d.png" src="_images/5d9e1911e33a9673ccc9a5b423a7c5b970fa2c3c1ff7abb17d89da7e77564a0d.png" />
 </div>
 </div>
 </section>

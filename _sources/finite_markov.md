@@ -1242,11 +1242,11 @@ The following code snippet provides a hint as to how you can go about this
 
 ```{code-cell} python3
 import re
-re.findall('\w', 'x +++ y ****** z')  # \w matches alphanumerics
+re.findall(r'\w', 'x +++ y ****** z')  # \w matches alphanumerics
 ```
 
 ```{code-cell} python3
-re.findall('\w', 'a ^^ b &&& $$ c')
+re.findall(r'\w', 'a ^^ b &&& $$ c')
 ```
 
 When you solve for the ranking, you will find that the highest ranked node is in fact `g`, while the lowest is `a`.

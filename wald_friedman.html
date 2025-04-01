@@ -417,7 +417,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Mixtures&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">π</span> <span class="ow">in</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">:</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="n">f0</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">f1</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;$\pi_k$ = </span><span class="si">{</span><span class="n">π</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">rf</span><span class="s2">&quot;$\pi_k$ = </span><span class="si">{</span><span class="n">π</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -429,12 +429,6 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:19: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-&lt;&gt;:19: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_4339/1196062609.py:19: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-  axes[1].plot(y, lw=2, label=f&quot;$\pi_k$ = {π}&quot;)
-</pre></div>
-</div>
 <img alt="_images/fb544eeb4e65d635fbd5b90a1ebe1f7a97d6a88efea5794863b22d0bde3d7073.png" src="_images/fb544eeb4e65d635fbd5b90a1ebe1f7a97d6a88efea5794863b22d0bde3d7073.png" />
 </div>
 </div>
@@ -801,7 +795,7 @@ and plot these on our cost function plot</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">cost_L0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;choose f0&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span>
         <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">h_star</span><span class="p">,</span> <span class="n">cost_L0</span><span class="p">,</span> <span class="n">cost_L1</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">lw</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$J(\pi)$&#39;</span><span class="p">)</span>
+        <span class="n">lw</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$J(\pi)$&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\beta$&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">β</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\alpha$&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">α</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
@@ -810,7 +804,7 @@ and plot these on our cost function plot</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span><span class="p">)),</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span>
-       <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$\pi$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Cost function $J(\pi)$&quot;</span><span class="p">)</span>
+       <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\pi$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Cost function $J(\pi)$&quot;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">borderpad</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -818,21 +812,13 @@ and plot these on our cost function plot</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:41: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-&lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-&lt;&gt;:41: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-&lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-&lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_4339/2600543715.py:41: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-  lw=15, alpha=0.1, color=&#39;b&#39;, label=&#39;$J(\pi)$&#39;)
-/tmp/ipykernel_4339/2600543715.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-  xlabel=&quot;$\pi$&quot;, title=&quot;Cost function $J(\pi)$&quot;)
-/tmp/ipykernel_4339/2600543715.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-  xlabel=&quot;$\pi$&quot;, title=&quot;Cost function $J(\pi)$&quot;)
+/tmp/ipykernel_4608/3107573283.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+  xlabel=r&quot;$\pi$&quot;, title=&quot;Cost function $J(\pi)$&quot;)
 </pre></div>
 </div>
-<img alt="_images/d39323111369213b77cf2942b9f755c114f19bfb836031606f11f87ef8d9c0bf.png" src="_images/d39323111369213b77cf2942b9f755c114f19bfb836031606f11f87ef8d9c0bf.png" />
+<img alt="_images/0fe6675e03b9761dfe6608318e266409698917f6137e49f7f29e60992e1e5e7d.png" src="_images/0fe6675e03b9761dfe6608318e266409698917f6137e49f7f29e60992e1e5e7d.png" />
 </div>
 </div>
 <p>The cost function <span class="math notranslate nohighlight">\(J\)</span> equals <span class="math notranslate nohighlight">\(\pi L_1\)</span> for <span class="math notranslate nohighlight">\(\pi \leq \beta\)</span>, and <span class="math notranslate nohighlight">\((1-\pi )L_0\)</span> for <span class="math notranslate nohighlight">\(\pi
@@ -947,7 +933,7 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/96b88a3858f06b42bfee6571bdcbc07e4a8b90301ebec3c196941e06cd8b9608.png" src="_images/96b88a3858f06b42bfee6571bdcbc07e4a8b90301ebec3c196941e06cd8b9608.png" />
+<img alt="_images/3b37d638c556be975091d94fa4608ad04d60cdd1b320022401369035e7bc3a58.png" src="_images/3b37d638c556be975091d94fa4608ad04d60cdd1b320022401369035e7bc3a58.png" />
 </div>
 </div>
 </section>
@@ -968,7 +954,7 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d0cfce7a72a076998729590b273f446baf062b02fea1f746124d5c43c273f0ec.png" src="_images/d0cfce7a72a076998729590b273f446baf062b02fea1f746124d5c43c273f0ec.png" />
+<img alt="_images/2425d12dd177419b1db9514c713456b0056c4a79ea4dd8bd406f86c13b9470db.png" src="_images/2425d12dd177419b1db9514c713456b0056c4a79ea4dd8bd406f86c13b9470db.png" />
 </div>
 </div>
 <p>Increased cost per draw has induced the decision-maker to take fewer draws before deciding.</p>

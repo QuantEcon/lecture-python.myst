@@ -281,11 +281,11 @@ y2 = (pow(x2, 0.5) - 0.4)**2
 x3 = np.arange(0.4**0.5, 1, 0.001)
 y3 = pow(x3**2 - 0.4, 0.5)
 plt.figure(figsize=(12, 10))
-plt.plot(x1, y1, 'r-', label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$')
+plt.plot(x1, y1, 'r-', label=r'Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$')
 plt.fill_between(x1, 0, y1, facecolor='red', alpha=0.05)
-plt.plot(x2, y2, 'b-', label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)^{2}+f(\phi_i)$')
+plt.plot(x2, y2, 'b-', label=r'Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)^{2}+f(\phi_i)$')
 plt.fill_between(x2, 0, y2, facecolor='blue', alpha=0.05)
-plt.plot(x3, y3, 'y-', label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-\sqrt{Pr(A|r_i)}+f(\phi_i)$')
+plt.plot(x3, y3, 'y-', label=r'Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-\sqrt{Pr(A|r_i)}+f(\phi_i)$')
 plt.fill_between(x3, 0, y3, facecolor='green', alpha=0.05)
 plt.plot(x1, x1, ':', linewidth=2)
 plt.xlim([0, 1])
@@ -318,7 +318,7 @@ y1 = x1 - 0.4
 z1 = x1
 z2 = 0
 plt.figure(figsize=(12, 10))
-plt.plot(x1, y1,'r-',label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$')
+plt.plot(x1, y1,'r-',label=r'Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$')
 plt.plot(x1, x1, ':', linewidth=2)
 plt.fill_between(x1, y1, z1, facecolor='blue', alpha=0.05, label='truth telling')
 plt.fill_between(x1, z2, y1, facecolor='green', alpha=0.05, label='lying')

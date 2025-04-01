@@ -204,7 +204,7 @@ axes[0].plot(grid, f1(grid), lw=2, label="$f_1$")
 axes[1].set_title("Mixtures")
 for π in 0.25, 0.5, 0.75:
     y = π * f0(grid) + (1 - π) * f1(grid)
-    axes[1].plot(y, lw=2, label=f"$\pi_k$ = {π}")
+    axes[1].plot(y, lw=2, label=rf"$\pi_k$ = {π}")
 
 for ax in axes:
     ax.legend()
@@ -597,7 +597,7 @@ ax.plot(wf.π_grid, cost_L1, label='choose f1')
 ax.plot(wf.π_grid, cost_L0, label='choose f0')
 ax.plot(wf.π_grid,
         np.amin(np.column_stack([h_star, cost_L0, cost_L1]),axis=1),
-        lw=15, alpha=0.1, color='b', label='$J(\pi)$')
+        lw=15, alpha=0.1, color='b', label=r'$J(\pi)$')
 
 ax.annotate(r"$\beta$", xy=(β + 0.01, 0.5), fontsize=14)
 ax.annotate(r"$\alpha$", xy=(α + 0.01, 0.5), fontsize=14)
@@ -606,7 +606,7 @@ plt.vlines(β, 0, β * wf.L0, linestyle="--")
 plt.vlines(α, 0, (1 - α) * wf.L1, linestyle="--")
 
 ax.set(xlim=(0, 1), ylim=(0, 0.5 * max(wf.L0, wf.L1)), ylabel="cost",
-       xlabel="$\pi$", title="Cost function $J(\pi)$")
+       xlabel=r"$\pi$", title="Cost function $J(\pi)$")
 
 plt.legend(borderpad=1.1)
 plt.show()

@@ -394,9 +394,9 @@ def compute_V_fre(L0_arr, L1_arr, π_star, wf):
 π_star = 0.5
 V_fre_arr, PFA_arr, PD_arr = compute_V_fre(L0_arr, L1_arr, π_star, wf)
 
-plt.plot(range(T), V_fre_arr, label='$\min_{d} \overline{V}_{fre}(t,d)$')
+plt.plot(range(T), V_fre_arr, label=r'$\min_{d} \overline{V}_{fre}(t,d)$')
 plt.xlabel('t')
-plt.title('$\pi^*=0.5$')
+plt.title(r'$\pi^*=0.5$')
 plt.legend()
 plt.show()
 ```
@@ -434,8 +434,8 @@ for i, π_star in enumerate(π_star_arr):
 
 ```{code-cell} python3
 plt.plot(π_star_arr, V_fre_bar_arr)
-plt.xlabel('$\pi^*$')
-plt.title('$\overline{V}_{fre}$')
+plt.xlabel(r'$\pi^*$')
+plt.title(r'$\overline{V}_{fre}$')
 
 plt.show()
 ```
@@ -447,12 +447,12 @@ $\left(PFA,PD\right)$ change as $\pi^{*}$ varies.
 fig, axs = plt.subplots(1, 2, figsize=(14, 5))
 
 axs[0].plot(π_star_arr, t_optimal_arr)
-axs[0].set_xlabel('$\pi^*$')
+axs[0].set_xlabel(r'$\pi^*$')
 axs[0].set_title('optimal sample size given $\pi^*$')
 
 axs[1].plot(π_star_arr, PFA_optimal_arr, label='$PFA^*(\pi^*)$')
 axs[1].plot(π_star_arr, PD_optimal_arr, label='$PD^*(\pi^*)$')
-axs[1].set_xlabel('$\pi^*$')
+axs[1].set_xlabel(r'$\pi^*$')
 axs[1].legend()
 axs[1].set_title('optimal PFA and PD given $\pi^*$')
 
@@ -587,7 +587,7 @@ plt.vlines(β, 0, β * wf.L0, linestyle="--")
 plt.vlines(α, 0, (1 - α) * wf.L1, linestyle="--")
 
 ax.set(xlim=(0, 1), ylim=(0, 0.5 * max(wf.L0, wf.L1)), ylabel="cost",
-       xlabel="$\pi$", title="Value function")
+       xlabel=r"$\pi$", title="Value function")
 
 plt.legend(borderpad=1.1)
 plt.show()
@@ -689,7 +689,7 @@ plt.vlines(β, 0, wf.L0, linestyle='--')
 plt.text(β+0.01, wf.L0/2, 'β')
 plt.vlines(α, 0, wf.L0, linestyle='--')
 plt.text(α+0.01, wf.L0/2, 'α')
-plt.xlabel('$\pi$')
+plt.xlabel(r'$\pi$')
 plt.title('Objective value function $V(\pi)$')
 plt.legend()
 plt.show()
@@ -734,11 +734,11 @@ for i, π_star in enumerate(π_star_arr):
     axs[row_i, col_i].vlines(π_optimal, V_baye_bar, V_baye.max(), linestyle='--')
     axs[row_i, col_i].text(π_optimal+0.05, (V_baye_bar + V_baye.max()) / 2,
                         '${\pi_0^*}=$'+f'{π_optimal:0.2f}')
-    axs[row_i, col_i].set_xlabel('$\pi$')
-    axs[row_i, col_i].set_ylabel('$\overline{V}_{baye}(\pi)$')
-    axs[row_i, col_i].set_title('$\pi^*=$' + f'{π_star}')
+    axs[row_i, col_i].set_xlabel(r'$\pi$')
+    axs[row_i, col_i].set_ylabel(r'$\overline{V}_{baye}(\pi)$')
+    axs[row_i, col_i].set_title(r'$\pi^*=$' + f'{π_star}')
 
-fig.suptitle('$\overline{V}_{baye}(\pi)=\pi^*V^0(\pi) + (1-\pi^*)V^1(\pi)$', fontsize=16)
+fig.suptitle(r'$\overline{V}_{baye}(\pi)=\pi^*V^0(\pi) + (1-\pi^*)V^1(\pi)$', fontsize=16)
 plt.show()
 ```
 
@@ -763,14 +763,14 @@ for i, π_star in enumerate(π_star_arr):
 fig, axs = plt.subplots(1, 2, figsize=(14, 5))
 
 axs[0].plot(π_star_arr, V_baye_bar_arr)
-axs[0].set_xlabel('$\pi^*$')
-axs[0].set_title('$\overline{V}_{baye}$')
+axs[0].set_xlabel(r'$\pi^*$')
+axs[0].set_title(r'$\overline{V}_{baye}$')
 
 axs[1].plot(π_star_arr, π_optimal_arr, label='optimal prior')
 axs[1].plot([π_star_arr.min(), π_star_arr.max()],
             [π_star_arr.min(), π_star_arr.max()],
             c='k', linestyle='--', label='45 degree line')
-axs[1].set_xlabel('$\pi^*$')
+axs[1].set_xlabel(r'$\pi^*$')
 axs[1].set_title('optimal prior given $\pi^*$')
 axs[1].legend()
 
@@ -799,10 +799,10 @@ V_baye_bar = V_baye.min()
 ```
 
 ```{code-cell} python3
-plt.plot(range(T), V_fre_arr, label='$\min_{d} \overline{V}_{fre}(t,d)$')
-plt.plot([0, T], [V_baye_bar, V_baye_bar], label='$\overline{V}_{baye}$')
+plt.plot(range(T), V_fre_arr, label=r'$\min_{d} \overline{V}_{fre}(t,d)$')
+plt.plot([0, T], [V_baye_bar, V_baye_bar], label=r'$\overline{V}_{baye}$')
 plt.xlabel('t')
-plt.title('$\pi^*=0.5$')
+plt.title(r'$\pi^*=0.5$')
 plt.legend()
 plt.show()
 ```
@@ -816,14 +816,14 @@ rule does better on average for all values of $\pi^{*}$.
 ```{code-cell} python3
 fig, axs = plt.subplots(1, 2, figsize=(14, 5))
 
-axs[0].plot(π_star_arr, V_fre_bar_arr, label='$\overline{V}_{fre}$')
-axs[0].plot(π_star_arr, V_baye_bar_arr, label='$\overline{V}_{baye}$')
+axs[0].plot(π_star_arr, V_fre_bar_arr, label=r'$\overline{V}_{fre}$')
+axs[0].plot(π_star_arr, V_baye_bar_arr, label=r'$\overline{V}_{baye}$')
 axs[0].legend()
-axs[0].set_xlabel('$\pi^*$')
+axs[0].set_xlabel(r'$\pi^*$')
 
 axs[1].plot(π_star_arr, V_fre_bar_arr - V_baye_bar_arr, label='$diff$')
 axs[1].legend()
-axs[1].set_xlabel('$\pi^*$')
+axs[1].set_xlabel(r'$\pi^*$')
 
 plt.show()
 ```
