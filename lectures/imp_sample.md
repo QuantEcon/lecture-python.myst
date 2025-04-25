@@ -86,7 +86,7 @@ g = jit(lambda w: p(w, G_a, G_b))
 ```
 
 ```{code-cell} ipython3
-w_range = np.linspace(1e-5, 1-1e-5, 1000)
+w_range = np.linspace(1e-2, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range), label='g')
 plt.plot(w_range, f(w_range), label='f')
