@@ -19,6 +19,7 @@ jobs:
       - name: Install jax (and install checks for GPU)
         shell: bash -l {0}
         run: |
+          pip install 'numpyro[cuda]' -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
           pip install -U "jax[cuda12]"
           python --version
           python scripts/test-jax-install.py
