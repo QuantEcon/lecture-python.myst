@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Computing Mean of a Likelihood Ratio Process
+# Mean of a Likelihood Ratio Process
 
 ```{contents} Contents
 :depth: 2
@@ -19,7 +19,7 @@ kernelspec:
 
 ## Overview
 
-In  {doc}`this lecture <likelihood_ratio_process>` we described a peculiar property of a likelihood ratio process, namely, that it's mean equals one for all $t \geq 0$ despite it's converging to zero almost surely.
+In  {doc}`this lecture <likelihood_ratio_process>` we described a peculiar property of a likelihood ratio process, namely, that its mean equals one for all $t \geq 0$ despite it's converging to zero almost surely.
 
 While it is easy to verify that peculiar properly analytically (i.e., in population), it is challenging to use a computer simulation to verify it via an application of a law of large numbers that entails studying sample averages of repeated simulations.
 
@@ -86,7 +86,7 @@ g = jit(lambda w: p(w, G_a, G_b))
 ```
 
 ```{code-cell} ipython3
-w_range = np.linspace(1e-5, 1-1e-5, 1000)
+w_range = np.linspace(1e-2, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range), label='g')
 plt.plot(w_range, f(w_range), label='f')
@@ -178,7 +178,7 @@ plt.ylim([0., 3.])
 plt.show()
 ```
 
-## Approximating a cumulative likelihood ratio
+## Approximating a Cumulative Likelihood Ratio
 
 We now study how to use importance sampling to approximate
 ${E} \left[L(\omega^t)\right] = \left[\prod_{i=1}^T \ell \left(\omega_i\right)\right]$.
@@ -319,12 +319,11 @@ for i, t in enumerate([1, 5, 10, 20]):
 plt.show()
 ```
 
-The simulation exercises above show that the importance sampling estimates are unbiased under all $T$
-while the standard Monte Carlo estimates are biased downwards.
+The simulation exercises above show that the importance sampling estimates are unbiased under all $T$ while the standard Monte Carlo estimates are biased downwards.
 
 Evidently, the bias increases with increases in $T$.
 
-## More Thoughts about Choice of Sampling Distribution
+## Choosing a  Sampling Distribution
 
 +++
 
@@ -375,7 +374,7 @@ plt.ylim([0., 3.])
 plt.show()
 ```
 
-We consider two additonal distributions.
+We consider two additional distributions.
 
 As a reminder $h_1$ is the original $Beta(0.5,0.5)$ distribution that we used above.
 
@@ -458,10 +457,9 @@ for i, t in enumerate([1, 20]):
 plt.show()
 ```
 
-However, $h_3$ is evidently a poor importance sampling distribution forpir problem,
+However, $h_3$ is evidently a poor importance sampling distribution for our problem,
 with a mean estimate far away from $1$ for $T = 20$.
 
-Notice that evan at $T = 1$, the mean estimate with importance sampling is more biased than just sampling with  $g$ itself.
+Notice that even at $T = 1$, the mean estimate with importance sampling is more biased than  sampling with  just $g$ itself.
 
-Thus, our simulations suggest that we would be better off simply using Monte Carlo
-approximations under $g$ than using $h_3$ as an importance sampling distribution for our problem.
+Thus, our simulations suggest that  for our problem we would be better off simply using Monte Carlo approximations under $g$ than using $h_3$ as an importance sampling distribution.

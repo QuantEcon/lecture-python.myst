@@ -296,649 +296,1013 @@ be described below.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting torch
-  Downloading torch-2.6.0-cp312-cp312-manylinux1_x86_64.whl.metadata (28 kB)
-Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.12/site-packages (0.5.3)
+  Downloading torch-2.7.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (29 kB)
+Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.12/site-packages (0.6.0)
+Requirement already satisfied: jaxlib&gt;=0.4.25 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
+Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jaxlib&gt;=0.4.25 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.5.3)
-Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
-Requirement already satisfied: numpy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (1.26.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (1.26.4)
 Requirement already satisfied: tqdm in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numpyro) (4.66.5)
 Requirement already satisfied: opt-einsum&gt;=2.3.2 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from pyro-ppl) (3.4.0)
-Collecting pyro-api&gt;=0.1.1 (from pyro-ppl)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyro-api&gt;=0.1.1 (from pyro-ppl)
   Downloading pyro_api-0.1.2-py3-none-any.whl.metadata (2.5 kB)
 Requirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from torch) (3.18.0)
 Requirement already satisfied: typing-extensions&gt;=4.10.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from torch) (4.11.0)
-Requirement already satisfied: networkx in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from torch) (3.3)
-Requirement already satisfied: jinja2 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from torch) (3.1.4)
-Requirement already satisfied: fsspec in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from torch) (2024.6.1)
-Collecting nvidia-cuda-nvrtc-cu12==12.4.127 (from torch)
-  Downloading nvidia_cuda_nvrtc_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl.metadata (1.5 kB)
-Collecting nvidia-cuda-runtime-cu12==12.4.127 (from torch)
-  Downloading nvidia_cuda_runtime_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl.metadata (1.5 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-cuda-cupti-cu12==12.4.127 (from torch)
-  Downloading nvidia_cuda_cupti_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl.metadata (1.6 kB)
-Collecting nvidia-cudnn-cu12==9.1.0.70 (from torch)
-  Downloading nvidia_cudnn_cu12-9.1.0.70-py3-none-manylinux2014_x86_64.whl.metadata (1.6 kB)
-Collecting nvidia-cublas-cu12==12.4.5.8 (from torch)
-  Downloading nvidia_cublas_cu12-12.4.5.8-py3-none-manylinux2014_x86_64.whl.metadata (1.5 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-cufft-cu12==11.2.1.3 (from torch)
-  Downloading nvidia_cufft_cu12-11.2.1.3-py3-none-manylinux2014_x86_64.whl.metadata (1.5 kB)
-Collecting nvidia-curand-cu12==10.3.5.147 (from torch)
-  Downloading nvidia_curand_cu12-10.3.5.147-py3-none-manylinux2014_x86_64.whl.metadata (1.5 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-cusolver-cu12==11.6.1.9 (from torch)
-  Downloading nvidia_cusolver_cu12-11.6.1.9-py3-none-manylinux2014_x86_64.whl.metadata (1.6 kB)
-Collecting nvidia-cusparse-cu12==12.3.1.170 (from torch)
-  Downloading nvidia_cusparse_cu12-12.3.1.170-py3-none-manylinux2014_x86_64.whl.metadata (1.6 kB)
-Collecting nvidia-cusparselt-cu12==0.6.2 (from torch)
-  Downloading nvidia_cusparselt_cu12-0.6.2-py3-none-manylinux2014_x86_64.whl.metadata (6.8 kB)
-Collecting nvidia-nccl-cu12==2.21.5 (from torch)
-  Downloading nvidia_nccl_cu12-2.21.5-py3-none-manylinux2014_x86_64.whl.metadata (1.8 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-nvtx-cu12==12.4.127 (from torch)
-  Downloading nvidia_nvtx_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl.metadata (1.7 kB)
-Collecting nvidia-nvjitlink-cu12==12.4.127 (from torch)
-  Downloading nvidia_nvjitlink_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl.metadata (1.5 kB)
-Collecting triton==3.2.0 (from torch)
-  Downloading triton-3.2.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.4 kB)
 Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from torch) (75.1.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting sympy==1.13.1 (from torch)
-  Downloading sympy-1.13.1-py3-none-any.whl.metadata (12 kB)
-Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from sympy==1.13.1-&gt;torch) (1.3.0)
-Requirement already satisfied: ml_dtypes&gt;=0.4.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting sympy&gt;=1.13.3 (from torch)
+  Downloading sympy-1.14.0-py3-none-any.whl.metadata (12 kB)
+Requirement already satisfied: networkx in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from torch) (3.3)
+Requirement already satisfied: jinja2 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from torch) (3.1.4)
+Requirement already satisfied: fsspec in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from torch) (2024.6.1)
+Collecting nvidia-cuda-nvrtc-cu12==12.6.77 (from torch)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading nvidia_cuda_nvrtc_cu12-12.6.77-py3-none-manylinux2014_x86_64.whl.metadata (1.5 kB)
+Collecting nvidia-cuda-runtime-cu12==12.6.77 (from torch)
+  Downloading nvidia_cuda_runtime_cu12-12.6.77-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (1.5 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-cuda-cupti-cu12==12.6.80 (from torch)
+  Downloading nvidia_cuda_cupti_cu12-12.6.80-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (1.6 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-cudnn-cu12==9.5.1.17 (from torch)
+  Downloading nvidia_cudnn_cu12-9.5.1.17-py3-none-manylinux_2_28_x86_64.whl.metadata (1.6 kB)
+Collecting nvidia-cublas-cu12==12.6.4.1 (from torch)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading nvidia_cublas_cu12-12.6.4.1-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (1.5 kB)
+Collecting nvidia-cufft-cu12==11.3.0.4 (from torch)
+  Downloading nvidia_cufft_cu12-11.3.0.4-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (1.5 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-curand-cu12==10.3.7.77 (from torch)
+  Downloading nvidia_curand_cu12-10.3.7.77-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (1.5 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-cusolver-cu12==11.7.1.2 (from torch)
+  Downloading nvidia_cusolver_cu12-11.7.1.2-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (1.6 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-cusparse-cu12==12.5.4.2 (from torch)
+  Downloading nvidia_cusparse_cu12-12.5.4.2-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (1.6 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-cusparselt-cu12==0.6.3 (from torch)
+  Downloading nvidia_cusparselt_cu12-0.6.3-py3-none-manylinux2014_x86_64.whl.metadata (6.8 kB)
+Requirement already satisfied: nvidia-nccl-cu12==2.26.2 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from torch) (2.26.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-nvtx-cu12==12.6.77 (from torch)
+  Downloading nvidia_nvtx_cu12-12.6.77-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (1.6 kB)
+Collecting nvidia-nvjitlink-cu12==12.6.85 (from torch)
+  Downloading nvidia_nvjitlink_cu12-12.6.85-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl.metadata (1.5 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting nvidia-cufile-cu12==1.11.1.6 (from torch)
+  Downloading nvidia_cufile_cu12-1.11.1.6-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (1.5 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting triton==3.3.0 (from torch)
+  Downloading triton-3.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (1.5 kB)
+Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.1)
 Requirement already satisfied: scipy&gt;=1.11.1 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jax) (1.13.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jinja2-&gt;torch) (2.1.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from sympy&gt;=1.13.3-&gt;torch) (1.3.0)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from jinja2-&gt;torch) (2.1.3)
 Requirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
 Downloading pyro_ppl-1.9.1-py3-none-any.whl (755 kB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/756.0 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">756.0/756.0 kB</span> <span class=" -Color -Color-Red">90.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading torch-2.6.0-cp312-cp312-manylinux1_x86_64.whl (766.6 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/766.6 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">46.1/766.6 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">756.0/756.0 kB</span> <span class=" -Color -Color-Red">36.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading torch-2.7.0-cp312-cp312-manylinux_2_28_x86_64.whl (865.0 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/865.0 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">91.2/766.6 MB</span> <span class=" -Color -Color-Red">229.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">21.0/865.0 MB</span> <span class=" -Color -Color-Red">104.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:09</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">134.0/766.6 MB</span> <span class=" -Color -Color-Red">222.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">32.2/865.0 MB</span> <span class=" -Color -Color-Red">81.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:11</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">173.5/766.6 MB</span> <span class=" -Color -Color-Red">215.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">44.8/865.0 MB</span> <span class=" -Color -Color-Red">74.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:12</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">218.1/766.6 MB</span> <span class=" -Color -Color-Red">217.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">69.2/865.0 MB</span> <span class=" -Color -Color-Red">86.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:10</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">259.5/766.6 MB</span> <span class=" -Color -Color-Red">214.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">76.8/865.0 MB</span> <span class=" -Color -Color-Red">77.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:11</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">308.8/766.6 MB</span> <span class=" -Color -Color-Red">217.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">86.0/865.0 MB</span> <span class=" -Color -Color-Red">71.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:11</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">355.7/766.6 MB</span> <span class=" -Color -Color-Red">218.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">102.8/865.0 MB</span> <span class=" -Color -Color-Red">72.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:11</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">405.8/766.6 MB</span> <span class=" -Color -Color-Red">227.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">118.5/865.0 MB</span> <span class=" -Color -Color-Red">73.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:11</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">446.2/766.6 MB</span> <span class=" -Color -Color-Red">224.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">134.5/865.0 MB</span> <span class=" -Color -Color-Red">74.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:10</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━ <span class=" -Color -Color-Green">499.1/766.6 MB</span> <span class=" -Color -Color-Red">233.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">148.9/865.0 MB</span> <span class=" -Color -Color-Red">74.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:10</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ <span class=" -Color -Color-Green">539.8/766.6 MB</span> <span class=" -Color -Color-Red">230.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">179.6/865.0 MB</span> <span class=" -Color -Color-Red">81.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:09</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━ <span class=" -Color -Color-Green">588.8/766.6 MB</span> <span class=" -Color -Color-Red">232.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">195.8/865.0 MB</span> <span class=" -Color -Color-Red">81.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:09</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ <span class=" -Color -Color-Green">628.1/766.6 MB</span> <span class=" -Color -Color-Red">225.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">222.3/865.0 MB</span> <span class=" -Color -Color-Red">85.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:08</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ <span class=" -Color -Color-Green">674.0/766.6 MB</span> <span class=" -Color -Color-Red">221.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">239.3/865.0 MB</span> <span class=" -Color -Color-Red">84.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:08</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ <span class=" -Color -Color-Green">720.9/766.6 MB</span> <span class=" -Color -Color-Red">227.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">255.9/865.0 MB</span> <span class=" -Color -Color-Red">84.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:08</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">267.6/865.0 MB</span> <span class=" -Color -Color-Red">82.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:08</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">289.4/865.0 MB</span> <span class=" -Color -Color-Red">82.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:07</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">303.0/865.0 MB</span> <span class=" -Color -Color-Red">84.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:07</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">328.2/865.0 MB</span> <span class=" -Color -Color-Red">86.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:07</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">341.6/865.0 MB</span> <span class=" -Color -Color-Red">90.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:06</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">361.8/865.0 MB</span> <span class=" -Color -Color-Red">92.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:06</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">378.0/865.0 MB</span> <span class=" -Color -Color-Red">92.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:06</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">400.0/865.0 MB</span> <span class=" -Color -Color-Red">93.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">416.5/865.0 MB</span> <span class=" -Color -Color-Red">94.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">436.2/865.0 MB</span> <span class=" -Color -Color-Red">92.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">463.2/865.0 MB</span> <span class=" -Color -Color-Red">94.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">487.1/865.0 MB</span> <span class=" -Color -Color-Red">93.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">512.8/865.0 MB</span> <span class=" -Color -Color-Red">96.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">531.6/865.0 MB</span> <span class=" -Color -Color-Red">100.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">551.6/865.0 MB</span> <span class=" -Color -Color-Red">100.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">558.9/865.0 MB</span> <span class=" -Color -Color-Red">97.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">580.9/865.0 MB</span> <span class=" -Color -Color-Red">96.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━ <span class=" -Color -Color-Green">596.1/865.0 MB</span> <span class=" -Color -Color-Red">95.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ <span class=" -Color -Color-Green">611.3/865.0 MB</span> <span class=" -Color -Color-Red">95.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ <span class=" -Color -Color-Green">628.1/865.0 MB</span> <span class=" -Color -Color-Red">96.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ <span class=" -Color -Color-Green">644.9/865.0 MB</span> <span class=" -Color -Color-Red">97.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">766.5/766.6 MB</span> <span class=" -Color -Color-Red">222.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">766.6/766.6 MB</span> <span class=" -Color -Color-Red">48.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_cublas_cu12-12.4.5.8-py3-none-manylinux2014_x86_64.whl (363.4 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/363.4 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">656.1/865.0 MB</span> <span class=" -Color -Color-Red">90.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">60.0/363.4 MB</span> <span class=" -Color -Color-Red">301.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ <span class=" -Color -Color-Green">683.7/865.0 MB</span> <span class=" -Color -Color-Red">95.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">124.5/363.4 MB</span> <span class=" -Color -Color-Red">310.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ <span class=" -Color -Color-Green">701.0/865.0 MB</span> <span class=" -Color -Color-Red">93.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">188.7/363.4 MB</span> <span class=" -Color -Color-Red">313.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ <span class=" -Color -Color-Green">721.9/865.0 MB</span> <span class=" -Color -Color-Red">91.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ <span class=" -Color -Color-Green">251.7/363.4 MB</span> <span class=" -Color -Color-Red">313.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ <span class=" -Color -Color-Green">744.5/865.0 MB</span> <span class=" -Color -Color-Red">91.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ <span class=" -Color -Color-Green">314.3/363.4 MB</span> <span class=" -Color -Color-Red">315.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ <span class=" -Color -Color-Green">761.3/865.0 MB</span> <span class=" -Color -Color-Red">90.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">363.3/363.4 MB</span> <span class=" -Color -Color-Red">313.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━ <span class=" -Color -Color-Green">780.4/865.0 MB</span> <span class=" -Color -Color-Red">89.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">363.3/363.4 MB</span> <span class=" -Color -Color-Red">313.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ <span class=" -Color -Color-Green">791.9/865.0 MB</span> <span class=" -Color -Color-Red">86.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">363.3/363.4 MB</span> <span class=" -Color -Color-Red">313.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ <span class=" -Color -Color-Green">808.5/865.0 MB</span> <span class=" -Color -Color-Red">85.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">363.3/363.4 MB</span> <span class=" -Color -Color-Red">313.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ <span class=" -Color -Color-Green">827.9/865.0 MB</span> <span class=" -Color -Color-Red">88.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">363.3/363.4 MB</span> <span class=" -Color -Color-Red">313.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ <span class=" -Color -Color-Green">846.2/865.0 MB</span> <span class=" -Color -Color-Red">88.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">363.3/363.4 MB</span> <span class=" -Color -Color-Red">313.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">363.3/363.4 MB</span> <span class=" -Color -Color-Red">313.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">363.3/363.4 MB</span> <span class=" -Color -Color-Red">313.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">363.3/363.4 MB</span> <span class=" -Color -Color-Red">313.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">363.3/363.4 MB</span> <span class=" -Color -Color-Red">313.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">363.4/363.4 MB</span> <span class=" -Color -Color-Red">95.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_cuda_cupti_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl (13.8 MB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/13.8 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">13.8/13.8 MB</span> <span class=" -Color -Color-Red">205.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_cuda_nvrtc_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl (24.6 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/24.6 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">24.6/24.6 MB</span> <span class=" -Color -Color-Red">210.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_cuda_runtime_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl (883 kB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/883.7 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">883.7/883.7 kB</span> <span class=" -Color -Color-Red">131.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_cudnn_cu12-9.1.0.70-py3-none-manylinux2014_x86_64.whl (664.8 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/664.8 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">58.2/664.8 MB</span> <span class=" -Color -Color-Red">292.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">121.1/664.8 MB</span> <span class=" -Color -Color-Red">301.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">179.6/664.8 MB</span> <span class=" -Color -Color-Red">297.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">238.8/664.8 MB</span> <span class=" -Color -Color-Red">296.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">301.5/664.8 MB</span> <span class=" -Color -Color-Red">301.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">353.1/664.8 MB</span> <span class=" -Color -Color-Red">290.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">407.4/664.8 MB</span> <span class=" -Color -Color-Red">281.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ <span class=" -Color -Color-Green">460.6/664.8 MB</span> <span class=" -Color -Color-Red">280.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ <span class=" -Color -Color-Green">514.3/664.8 MB</span> <span class=" -Color -Color-Red">271.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ <span class=" -Color -Color-Green">568.3/664.8 MB</span> <span class=" -Color -Color-Red">264.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ <span class=" -Color -Color-Green">614.7/664.8 MB</span> <span class=" -Color -Color-Red">259.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">864.8/865.0 MB</span> <span class=" -Color -Color-Red">90.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">865.0/865.0 MB</span> <span class=" -Color -Color-Red">33.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading nvidia_cublas_cu12-12.6.4.1-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (393.1 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/393.1 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">21.0/393.1 MB</span> <span class=" -Color -Color-Red">106.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">29.4/393.1 MB</span> <span class=" -Color -Color-Red">72.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">51.4/393.1 MB</span> <span class=" -Color -Color-Red">85.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">71.6/393.1 MB</span> <span class=" -Color -Color-Red">88.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">84.7/393.1 MB</span> <span class=" -Color -Color-Red">84.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">99.6/393.1 MB</span> <span class=" -Color -Color-Red">83.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">103.3/393.1 MB</span> <span class=" -Color -Color-Red">73.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">119.5/393.1 MB</span> <span class=" -Color -Color-Red">74.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">142.9/393.1 MB</span> <span class=" -Color -Color-Red">78.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">161.5/393.1 MB</span> <span class=" -Color -Color-Red">80.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">178.3/393.1 MB</span> <span class=" -Color -Color-Red">81.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">184.5/393.1 MB</span> <span class=" -Color -Color-Red">79.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">200.3/393.1 MB</span> <span class=" -Color -Color-Red">76.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">200.3/393.1 MB</span> <span class=" -Color -Color-Red">76.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">207.6/393.1 MB</span> <span class=" -Color -Color-Red">70.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">216.3/393.1 MB</span> <span class=" -Color -Color-Red">67.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">225.4/393.1 MB</span> <span class=" -Color -Color-Red">66.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">244.3/393.1 MB</span> <span class=" -Color -Color-Red">67.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">254.8/393.1 MB</span> <span class=" -Color -Color-Red">67.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ <span class=" -Color -Color-Green">266.3/393.1 MB</span> <span class=" -Color -Color-Red">65.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ <span class=" -Color -Color-Green">288.4/393.1 MB</span> <span class=" -Color -Color-Red">68.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">664.5/664.8 MB</span> <span class=" -Color -Color-Red">260.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">295.7/393.1 MB</span> <span class=" -Color -Color-Red">65.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">664.8/664.8 MB</span> <span class=" -Color -Color-Red">43.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_cufft_cu12-11.2.1.3-py3-none-manylinux2014_x86_64.whl (211.5 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/211.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ <span class=" -Color -Color-Green">313.5/393.1 MB</span> <span class=" -Color -Color-Red">65.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">54.3/211.5 MB</span> <span class=" -Color -Color-Red">271.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ <span class=" -Color -Color-Green">324.0/393.1 MB</span> <span class=" -Color -Color-Red">63.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">109.1/211.5 MB</span> <span class=" -Color -Color-Red">272.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ <span class=" -Color -Color-Green">336.6/393.1 MB</span> <span class=" -Color -Color-Red">63.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ <span class=" -Color -Color-Green">164.6/211.5 MB</span> <span class=" -Color -Color-Red">273.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ <span class=" -Color -Color-Green">350.5/393.1 MB</span> <span class=" -Color -Color-Red">63.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">211.3/211.5 MB</span> <span class=" -Color -Color-Red">270.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ <span class=" -Color -Color-Green">360.7/393.1 MB</span> <span class=" -Color -Color-Red">61.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">211.3/211.5 MB</span> <span class=" -Color -Color-Red">270.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ <span class=" -Color -Color-Green">373.3/393.1 MB</span> <span class=" -Color -Color-Red">64.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">211.3/211.5 MB</span> <span class=" -Color -Color-Red">270.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">393.0/393.1 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">211.3/211.5 MB</span> <span class=" -Color -Color-Red">270.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">393.0/393.1 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">211.3/211.5 MB</span> <span class=" -Color -Color-Red">270.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">393.0/393.1 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">211.5/211.5 MB</span> <span class=" -Color -Color-Red">120.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_curand_cu12-10.3.5.147-py3-none-manylinux2014_x86_64.whl (56.3 MB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">393.0/393.1 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">393.0/393.1 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">393.0/393.1 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">393.0/393.1 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">393.0/393.1 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">393.0/393.1 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">393.0/393.1 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">393.1/393.1 MB</span> <span class=" -Color -Color-Red">42.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading nvidia_cuda_cupti_cu12-12.6.80-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (8.9 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/8.9 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">8.9/8.9 MB</span> <span class=" -Color -Color-Red">100.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading nvidia_cuda_nvrtc_cu12-12.6.77-py3-none-manylinux2014_x86_64.whl (23.7 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/23.7 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━ <span class=" -Color -Color-Green">17.0/23.7 MB</span> <span class=" -Color -Color-Red">84.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ <span class=" -Color -Color-Green">22.0/23.7 MB</span> <span class=" -Color -Color-Red">55.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">23.7/23.7 MB</span> <span class=" -Color -Color-Red">50.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading nvidia_cuda_runtime_cu12-12.6.77-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (897 kB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/897.7 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">897.7/897.7 kB</span> <span class=" -Color -Color-Red">5.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading nvidia_cudnn_cu12-9.5.1.17-py3-none-manylinux_2_28_x86_64.whl (571.0 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/571.0 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">8.4/571.0 MB</span> <span class=" -Color -Color-Red">42.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:14</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">22.8/571.0 MB</span> <span class=" -Color -Color-Red">57.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:10</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">33.6/571.0 MB</span> <span class=" -Color -Color-Red">58.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:10</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">40.9/571.0 MB</span> <span class=" -Color -Color-Red">53.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:11</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">54.5/571.0 MB</span> <span class=" -Color -Color-Red">55.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:10</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">72.4/571.0 MB</span> <span class=" -Color -Color-Red">60.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:09</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">88.1/571.0 MB</span> <span class=" -Color -Color-Red">62.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:08</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">102.2/571.0 MB</span> <span class=" -Color -Color-Red">63.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:08</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">115.3/571.0 MB</span> <span class=" -Color -Color-Red">63.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:08</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">134.2/571.0 MB</span> <span class=" -Color -Color-Red">67.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:07</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">147.8/571.0 MB</span> <span class=" -Color -Color-Red">66.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:07</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">164.4/571.0 MB</span> <span class=" -Color -Color-Red">68.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:06</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">181.4/571.0 MB</span> <span class=" -Color -Color-Red">69.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:06</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">199.2/571.0 MB</span> <span class=" -Color -Color-Red">70.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:06</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">217.1/571.0 MB</span> <span class=" -Color -Color-Red">72.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">235.7/571.0 MB</span> <span class=" -Color -Color-Red">73.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">245.4/571.0 MB</span> <span class=" -Color -Color-Red">74.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">257.9/571.0 MB</span> <span class=" -Color -Color-Red">71.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">274.7/571.0 MB</span> <span class=" -Color -Color-Red">73.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:05</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">292.3/571.0 MB</span> <span class=" -Color -Color-Red">73.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">297.8/571.0 MB</span> <span class=" -Color -Color-Red">78.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">300.9/571.0 MB</span> <span class=" -Color -Color-Red">72.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">309.1/571.0 MB</span> <span class=" -Color -Color-Red">70.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">317.7/571.0 MB</span> <span class=" -Color -Color-Red">68.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">329.5/571.0 MB</span> <span class=" -Color -Color-Red">67.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">339.2/571.0 MB</span> <span class=" -Color -Color-Red">66.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">352.3/571.0 MB</span> <span class=" -Color -Color-Red">66.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">352.3/571.0 MB</span> <span class=" -Color -Color-Red">66.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">367.3/571.0 MB</span> <span class=" -Color -Color-Red">62.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━ <span class=" -Color -Color-Green">372.5/571.0 MB</span> <span class=" -Color -Color-Red">61.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">378.5/571.0 MB</span> <span class=" -Color -Color-Red">59.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ <span class=" -Color -Color-Green">390.1/571.0 MB</span> <span class=" -Color -Color-Red">58.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ <span class=" -Color -Color-Green">401.1/571.0 MB</span> <span class=" -Color -Color-Red">57.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━ <span class=" -Color -Color-Green">410.5/571.0 MB</span> <span class=" -Color -Color-Red">56.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">428.6/571.0 MB</span> <span class=" -Color -Color-Red">57.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━ <span class=" -Color -Color-Green">438.8/571.0 MB</span> <span class=" -Color -Color-Red">56.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ <span class=" -Color -Color-Green">443.8/571.0 MB</span> <span class=" -Color -Color-Red">54.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ <span class=" -Color -Color-Green">459.3/571.0 MB</span> <span class=" -Color -Color-Red">54.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ <span class=" -Color -Color-Green">466.6/571.0 MB</span> <span class=" -Color -Color-Red">52.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ <span class=" -Color -Color-Green">472.4/571.0 MB</span> <span class=" -Color -Color-Red">51.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ <span class=" -Color -Color-Green">476.1/571.0 MB</span> <span class=" -Color -Color-Red">50.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ <span class=" -Color -Color-Green">481.8/571.0 MB</span> <span class=" -Color -Color-Red">48.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ <span class=" -Color -Color-Green">487.3/571.0 MB</span> <span class=" -Color -Color-Red">47.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ <span class=" -Color -Color-Green">496.0/571.0 MB</span> <span class=" -Color -Color-Red">46.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ <span class=" -Color -Color-Green">507.0/571.0 MB</span> <span class=" -Color -Color-Red">45.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ <span class=" -Color -Color-Green">527.2/571.0 MB</span> <span class=" -Color -Color-Red">47.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ <span class=" -Color -Color-Green">546.3/571.0 MB</span> <span class=" -Color -Color-Red">47.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ <span class=" -Color -Color-Green">559.9/571.0 MB</span> <span class=" -Color -Color-Red">49.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">570.9/571.0 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">571.0/571.0 MB</span> <span class=" -Color -Color-Red">31.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading nvidia_cufft_cu12-11.3.0.4-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (200.2 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/200.2 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.0/200.2 MB</span> <span class=" -Color -Color-Red">408.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5.2/200.2 MB</span> <span class=" -Color -Color-Red">13.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:15</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">19.9/200.2 MB</span> <span class=" -Color -Color-Red">33.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:06</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">33.6/200.2 MB</span> <span class=" -Color -Color-Red">41.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:04</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">50.9/200.2 MB</span> <span class=" -Color -Color-Red">50.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">68.7/200.2 MB</span> <span class=" -Color -Color-Red">56.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">84.1/200.2 MB</span> <span class=" -Color -Color-Red">59.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">108.0/200.2 MB</span> <span class=" -Color -Color-Red">67.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">125.6/200.2 MB</span> <span class=" -Color -Color-Red">69.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ <span class=" -Color -Color-Green">137.4/200.2 MB</span> <span class=" -Color -Color-Red">68.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ <span class=" -Color -Color-Green">148.9/200.2 MB</span> <span class=" -Color -Color-Red">68.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ <span class=" -Color -Color-Green">155.2/200.2 MB</span> <span class=" -Color -Color-Red">64.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ <span class=" -Color -Color-Green">174.9/200.2 MB</span> <span class=" -Color -Color-Red">66.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ <span class=" -Color -Color-Green">186.6/200.2 MB</span> <span class=" -Color -Color-Red">66.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">200.0/200.2 MB</span> <span class=" -Color -Color-Red">67.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">200.0/200.2 MB</span> <span class=" -Color -Color-Red">67.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">200.0/200.2 MB</span> <span class=" -Color -Color-Red">67.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">200.0/200.2 MB</span> <span class=" -Color -Color-Red">67.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">200.0/200.2 MB</span> <span class=" -Color -Color-Red">67.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">200.2/200.2 MB</span> <span class=" -Color -Color-Red">51.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading nvidia_cufile_cu12-1.11.1.6-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.1 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.1 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.1/1.1 MB</span> <span class=" -Color -Color-Red">143.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading nvidia_curand_cu12-10.3.7.77-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (56.3 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/56.3 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">56.1/56.3 MB</span> <span class=" -Color -Color-Red">284.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">7.3/56.3 MB</span> <span class=" -Color -Color-Red">61.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">56.3/56.3 MB</span> <span class=" -Color -Color-Red">199.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_cusolver_cu12-11.6.1.9-py3-none-manylinux2014_x86_64.whl (127.9 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/127.9 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">25.7/56.3 MB</span> <span class=" -Color -Color-Red">63.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">61.3/127.9 MB</span> <span class=" -Color -Color-Red">307.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">37.7/56.3 MB</span> <span class=" -Color -Color-Red">75.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ <span class=" -Color -Color-Green">122.2/127.9 MB</span> <span class=" -Color -Color-Red">304.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ <span class=" -Color -Color-Green">50.3/56.3 MB</span> <span class=" -Color -Color-Red">62.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">56.3/56.3 MB</span> <span class=" -Color -Color-Red">58.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading nvidia_cusolver_cu12-11.7.1.2-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (158.2 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/158.2 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">18.9/158.2 MB</span> <span class=" -Color -Color-Red">94.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">39.8/158.2 MB</span> <span class=" -Color -Color-Red">101.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">55.6/158.2 MB</span> <span class=" -Color -Color-Red">92.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">73.1/158.2 MB</span> <span class=" -Color -Color-Red">90.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">90.2/158.2 MB</span> <span class=" -Color -Color-Red">89.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">99.6/158.2 MB</span> <span class=" -Color -Color-Red">82.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━ <span class=" -Color -Color-Green">113.5/158.2 MB</span> <span class=" -Color -Color-Red">80.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ <span class=" -Color -Color-Green">138.4/158.2 MB</span> <span class=" -Color -Color-Red">86.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ <span class=" -Color -Color-Green">155.2/158.2 MB</span> <span class=" -Color -Color-Red">85.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">158.1/158.2 MB</span> <span class=" -Color -Color-Red">84.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">158.1/158.2 MB</span> <span class=" -Color -Color-Red">84.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">302.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">158.1/158.2 MB</span> <span class=" -Color -Color-Red">84.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">127.9/127.9 MB</span> <span class=" -Color -Color-Red">39.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_cusparse_cu12-12.3.1.170-py3-none-manylinux2014_x86_64.whl (207.5 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/207.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">158.2/158.2 MB</span> <span class=" -Color -Color-Red">62.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading nvidia_cusparse_cu12-12.5.4.2-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (216.6 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/216.6 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">52.2/207.5 MB</span> <span class=" -Color -Color-Red">261.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">21.0/216.6 MB</span> <span class=" -Color -Color-Red">106.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">106.2/207.5 MB</span> <span class=" -Color -Color-Red">264.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">37.7/216.6 MB</span> <span class=" -Color -Color-Red">94.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ <span class=" -Color -Color-Green">159.6/207.5 MB</span> <span class=" -Color -Color-Red">264.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">47.2/216.6 MB</span> <span class=" -Color -Color-Red">78.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">57.7/216.6 MB</span> <span class=" -Color -Color-Red">72.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">68.2/216.6 MB</span> <span class=" -Color -Color-Red">72.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">76.5/216.6 MB</span> <span class=" -Color -Color-Red">63.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">91.2/216.6 MB</span> <span class=" -Color -Color-Red">65.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">100.7/216.6 MB</span> <span class=" -Color -Color-Red">63.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">113.2/216.6 MB</span> <span class=" -Color -Color-Red">62.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">123.7/216.6 MB</span> <span class=" -Color -Color-Red">61.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">137.4/216.6 MB</span> <span class=" -Color -Color-Red">62.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ <span class=" -Color -Color-Green">157.3/216.6 MB</span> <span class=" -Color -Color-Red">65.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ <span class=" -Color -Color-Green">170.7/216.6 MB</span> <span class=" -Color -Color-Red">65.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ <span class=" -Color -Color-Green">180.6/216.6 MB</span> <span class=" -Color -Color-Red">64.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ <span class=" -Color -Color-Green">194.0/216.6 MB</span> <span class=" -Color -Color-Red">65.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ <span class=" -Color -Color-Green">202.9/216.6 MB</span> <span class=" -Color -Color-Red">63.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">216.5/216.6 MB</span> <span class=" -Color -Color-Red">63.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">216.5/216.6 MB</span> <span class=" -Color -Color-Red">63.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">216.5/216.6 MB</span> <span class=" -Color -Color-Red">63.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">216.5/216.6 MB</span> <span class=" -Color -Color-Red">63.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">216.5/216.6 MB</span> <span class=" -Color -Color-Red">63.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">216.6/216.6 MB</span> <span class=" -Color -Color-Red">49.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading nvidia_cusparselt_cu12-0.6.3-py3-none-manylinux2014_x86_64.whl (156.8 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/156.8 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">207.4/207.5 MB</span> <span class=" -Color -Color-Red">266.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">10.5/156.8 MB</span> <span class=" -Color -Color-Red">52.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">207.5/207.5 MB</span> <span class=" -Color -Color-Red">43.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_cusparselt_cu12-0.6.2-py3-none-manylinux2014_x86_64.whl (150.1 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/150.1 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">22.0/156.8 MB</span> <span class=" -Color -Color-Red">55.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">48.2/150.1 MB</span> <span class=" -Color -Color-Red">242.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">35.7/156.8 MB</span> <span class=" -Color -Color-Red">59.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━ <span class=" -Color -Color-Green">103.0/150.1 MB</span> <span class=" -Color -Color-Red">257.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">53.0/156.8 MB</span> <span class=" -Color -Color-Red">65.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">149.9/150.1 MB</span> <span class=" -Color -Color-Red">261.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">57.9/156.8 MB</span> <span class=" -Color -Color-Red">58.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">149.9/150.1 MB</span> <span class=" -Color -Color-Red">261.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">60.8/156.8 MB</span> <span class=" -Color -Color-Red">50.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">149.9/150.1 MB</span> <span class=" -Color -Color-Red">261.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">72.4/156.8 MB</span> <span class=" -Color -Color-Red">51.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">149.9/150.1 MB</span> <span class=" -Color -Color-Red">261.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">94.4/156.8 MB</span> <span class=" -Color -Color-Red">58.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">149.9/150.1 MB</span> <span class=" -Color -Color-Red">261.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">104.6/156.8 MB</span> <span class=" -Color -Color-Red">57.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">149.9/150.1 MB</span> <span class=" -Color -Color-Red">261.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ <span class=" -Color -Color-Green">117.4/156.8 MB</span> <span class=" -Color -Color-Red">59.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">149.9/150.1 MB</span> <span class=" -Color -Color-Red">261.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">150.1/150.1 MB</span> <span class=" -Color -Color-Red">81.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_nccl_cu12-2.21.5-py3-none-manylinux2014_x86_64.whl (188.7 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/188.7 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ <span class=" -Color -Color-Green">134.2/156.8 MB</span> <span class=" -Color -Color-Red">60.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">54.5/188.7 MB</span> <span class=" -Color -Color-Red">272.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━ <span class=" -Color -Color-Green">152.8/156.8 MB</span> <span class=" -Color -Color-Red">63.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">113.0/188.7 MB</span> <span class=" -Color -Color-Red">281.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">156.8/156.8 MB</span> <span class=" -Color -Color-Red">63.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ <span class=" -Color -Color-Green">172.0/188.7 MB</span> <span class=" -Color -Color-Red">285.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">156.8/156.8 MB</span> <span class=" -Color -Color-Red">63.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">188.5/188.7 MB</span> <span class=" -Color -Color-Red">283.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">156.8/156.8 MB</span> <span class=" -Color -Color-Red">63.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">188.5/188.7 MB</span> <span class=" -Color -Color-Red">283.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">156.8/156.8 MB</span> <span class=" -Color -Color-Red">63.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">188.5/188.7 MB</span> <span class=" -Color -Color-Red">283.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">156.8/156.8 MB</span> <span class=" -Color -Color-Red">46.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">188.5/188.7 MB</span> <span class=" -Color -Color-Red">283.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading nvidia_nvjitlink_cu12-12.6.85-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl (19.7 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/19.7 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">188.7/188.7 MB</span> <span class=" -Color -Color-Red">125.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_nvjitlink_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl (21.1 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/21.1 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">11.5/19.7 MB</span> <span class=" -Color -Color-Red">71.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">21.1/21.1 MB</span> <span class=" -Color -Color-Red">198.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading nvidia_nvtx_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl (99 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">19.7/19.7 MB</span> <span class=" -Color -Color-Red">51.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading sympy-1.13.1-py3-none-any.whl (6.2 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/6.2 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">6.2/6.2 MB</span> <span class=" -Color -Color-Red">178.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading triton-3.2.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (253.2 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/253.2 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading nvidia_nvtx_cu12-12.6.77-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (89 kB)
+Downloading triton-3.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (156.5 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/156.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">48.2/253.2 MB</span> <span class=" -Color -Color-Red">242.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">21.5/156.5 MB</span> <span class=" -Color -Color-Red">108.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">96.2/253.2 MB</span> <span class=" -Color -Color-Red">240.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">25.4/156.5 MB</span> <span class=" -Color -Color-Red">64.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:03</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">143.1/253.2 MB</span> <span class=" -Color -Color-Red">237.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">45.1/156.5 MB</span> <span class=" -Color -Color-Red">74.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ <span class=" -Color -Color-Green">195.0/253.2 MB</span> <span class=" -Color -Color-Red">242.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">59.0/156.5 MB</span> <span class=" -Color -Color-Red">73.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ <span class=" -Color -Color-Green">239.3/253.2 MB</span> <span class=" -Color -Color-Red">238.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">60.8/156.5 MB</span> <span class=" -Color -Color-Red">72.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">253.0/253.2 MB</span> <span class=" -Color -Color-Red">237.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">70.5/156.5 MB</span> <span class=" -Color -Color-Red">58.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">253.0/253.2 MB</span> <span class=" -Color -Color-Red">237.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">88.1/156.5 MB</span> <span class=" -Color -Color-Red">62.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:02</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">253.0/253.2 MB</span> <span class=" -Color -Color-Red">237.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ <span class=" -Color -Color-Green">115.6/156.5 MB</span> <span class=" -Color -Color-Red">71.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">253.0/253.2 MB</span> <span class=" -Color -Color-Red">237.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ <span class=" -Color -Color-Green">137.4/156.5 MB</span> <span class=" -Color -Color-Red">75.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">253.0/253.2 MB</span> <span class=" -Color -Color-Red">237.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ <span class=" -Color -Color-Green">147.1/156.5 MB</span> <span class=" -Color -Color-Red">73.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">253.0/253.2 MB</span> <span class=" -Color -Color-Red">237.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">156.5/156.5 MB</span> <span class=" -Color -Color-Red">71.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">253.2/253.2 MB</span> <span class=" -Color -Color-Red">110.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">156.5/156.5 MB</span> <span class=" -Color -Color-Red">71.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">156.5/156.5 MB</span> <span class=" -Color -Color-Red">71.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">156.5/156.5 MB</span> <span class=" -Color -Color-Red">71.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">156.5/156.5 MB</span> <span class=" -Color -Color-Red">71.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">156.5/156.5 MB</span> <span class=" -Color -Color-Red">71.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">156.5/156.5 MB</span> <span class=" -Color -Color-Red">46.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hDownloading pyro_api-0.1.2-py3-none-any.whl (11 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: triton, pyro-api, nvidia-cusparselt-cu12, sympy, nvidia-nvtx-cu12, nvidia-nvjitlink-cu12, nvidia-nccl-cu12, nvidia-curand-cu12, nvidia-cufft-cu12, nvidia-cuda-runtime-cu12, nvidia-cuda-nvrtc-cu12, nvidia-cuda-cupti-cu12, nvidia-cublas-cu12, nvidia-cusparse-cu12, nvidia-cudnn-cu12, nvidia-cusolver-cu12, torch, pyro-ppl
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading sympy-1.14.0-py3-none-any.whl (6.3 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/6.3 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">6.3/6.3 MB</span> <span class=" -Color -Color-Red">101.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">6.3/6.3 MB</span> <span class=" -Color -Color-Red">101.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">6.3/6.3 MB</span> <span class=" -Color -Color-Red">101.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">6.3/6.3 MB</span> <span class=" -Color -Color-Red">101.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">6.3/6.3 MB</span> <span class=" -Color -Color-Red">101.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">6.3/6.3 MB</span> <span class=" -Color -Color-Red">101.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">6.3/6.3 MB</span> <span class=" -Color -Color-Red">4.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: pyro-api, nvidia-cusparselt-cu12, triton, sympy, nvidia-nvtx-cu12, nvidia-nvjitlink-cu12, nvidia-curand-cu12, nvidia-cufile-cu12, nvidia-cuda-runtime-cu12, nvidia-cuda-nvrtc-cu12, nvidia-cuda-cupti-cu12, nvidia-cublas-cu12, nvidia-cusparse-cu12, nvidia-cufft-cu12, nvidia-cudnn-cu12, nvidia-cusolver-cu12, torch, pyro-ppl
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: sympy
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Found existing installation: sympy 1.13.2
+    Found existing installation: sympy 1.13.2
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling sympy-1.13.2:
@@ -950,21 +1314,7 @@ Downloading pyro_ppl-1.9.1-py3-none-any.whl (755 kB)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: nvidia-nvjitlink-cu12
     Found existing installation: nvidia-nvjitlink-cu12 12.8.93
     Uninstalling nvidia-nvjitlink-cu12-12.8.93:
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled nvidia-nvjitlink-cu12-12.8.93
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: nvidia-nccl-cu12
-    Found existing installation: nvidia-nccl-cu12 2.26.2
-    Uninstalling nvidia-nccl-cu12-2.26.2:
-      Successfully uninstalled nvidia-nccl-cu12-2.26.2
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: nvidia-cufft-cu12
-    Found existing installation: nvidia-cufft-cu12 11.3.3.83
-    Uninstalling nvidia-cufft-cu12-11.3.3.83:
-      Successfully uninstalled nvidia-cufft-cu12-11.3.3.83
+      Successfully uninstalled nvidia-nvjitlink-cu12-12.8.93
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: nvidia-cuda-runtime-cu12
@@ -976,10 +1326,10 @@ Downloading pyro_ppl-1.9.1-py3-none-any.whl (755 kB)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: nvidia-cuda-cupti-cu12
+    Found existing installation: nvidia-cuda-cupti-cu12 12.8.90
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Found existing installation: nvidia-cuda-cupti-cu12 12.8.90
-    Uninstalling nvidia-cuda-cupti-cu12-12.8.90:
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling nvidia-cuda-cupti-cu12-12.8.90:
       Successfully uninstalled nvidia-cuda-cupti-cu12-12.8.90
 </pre></div>
 </div>
@@ -990,30 +1340,34 @@ Downloading pyro_ppl-1.9.1-py3-none-any.whl (755 kB)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: nvidia-cusparse-cu12
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Found existing installation: nvidia-cusparse-cu12 12.5.8.93
+    Found existing installation: nvidia-cusparse-cu12 12.5.8.93
     Uninstalling nvidia-cusparse-cu12-12.5.8.93:
+      Successfully uninstalled nvidia-cusparse-cu12-12.5.8.93
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled nvidia-cusparse-cu12-12.5.8.93
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: nvidia-cufft-cu12
+    Found existing installation: nvidia-cufft-cu12 11.3.3.83
+    Uninstalling nvidia-cufft-cu12-11.3.3.83:
+      Successfully uninstalled nvidia-cufft-cu12-11.3.3.83
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: nvidia-cudnn-cu12
     Found existing installation: nvidia-cudnn-cu12 9.8.0.87
     Uninstalling nvidia-cudnn-cu12-9.8.0.87:
-      Successfully uninstalled nvidia-cudnn-cu12-9.8.0.87
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled nvidia-cudnn-cu12-9.8.0.87
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: nvidia-cusolver-cu12
+    Found existing installation: nvidia-cusolver-cu12 11.7.3.90
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Found existing installation: nvidia-cusolver-cu12 11.7.3.90
-    Uninstalling nvidia-cusolver-cu12-11.7.3.90:
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling nvidia-cusolver-cu12-11.7.3.90:
       Successfully uninstalled nvidia-cusolver-cu12-11.7.3.90
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed nvidia-cublas-cu12-12.4.5.8 nvidia-cuda-cupti-cu12-12.4.127 nvidia-cuda-nvrtc-cu12-12.4.127 nvidia-cuda-runtime-cu12-12.4.127 nvidia-cudnn-cu12-9.1.0.70 nvidia-cufft-cu12-11.2.1.3 nvidia-curand-cu12-10.3.5.147 nvidia-cusolver-cu12-11.6.1.9 nvidia-cusparse-cu12-12.3.1.170 nvidia-cusparselt-cu12-0.6.2 nvidia-nccl-cu12-2.21.5 nvidia-nvjitlink-cu12-12.4.127 nvidia-nvtx-cu12-12.4.127 pyro-api-0.1.2 pyro-ppl-1.9.1 sympy-1.13.1 torch-2.6.0 triton-3.2.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed nvidia-cublas-cu12-12.6.4.1 nvidia-cuda-cupti-cu12-12.6.80 nvidia-cuda-nvrtc-cu12-12.6.77 nvidia-cuda-runtime-cu12-12.6.77 nvidia-cudnn-cu12-9.5.1.17 nvidia-cufft-cu12-11.3.0.4 nvidia-cufile-cu12-1.11.1.6 nvidia-curand-cu12-10.3.7.77 nvidia-cusolver-cu12-11.7.1.2 nvidia-cusparse-cu12-12.5.4.2 nvidia-cusparselt-cu12-0.6.3 nvidia-nvjitlink-cu12-12.6.85 nvidia-nvtx-cu12-12.6.77 pyro-api-0.1.2 pyro-ppl-1.9.1 sympy-1.14.0 torch-2.7.0 triton-3.3.0
 <span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.</span>
 
 </pre></div>
@@ -1051,6 +1405,12 @@ Downloading pyro_ppl-1.9.1-py3-none-any.whl (755 kB)
 <span class="kn">from</span> <span class="nn">numpyro.infer</span> <span class="kn">import</span> <span class="n">ELBO</span> <span class="k">as</span> <span class="n">nELBO</span>
 <span class="kn">from</span> <span class="nn">numpyro.infer</span> <span class="kn">import</span> <span class="n">Trace_ELBO</span> <span class="k">as</span> <span class="n">nTrace_ELBO</span>
 <span class="kn">from</span> <span class="nn">numpyro.optim</span> <span class="kn">import</span> <span class="n">Adam</span> <span class="k">as</span> <span class="n">nAdam</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.12/site-packages/jaxlib/plugin_support.py:71: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.5.3 is installed, but it is not compatible with the installed jaxlib version 0.6.0, so it will not be used.
+  warnings.warn(
 </pre></div>
 </div>
 </div>
@@ -1678,7 +2038,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/0cacfb27f9a674cd7068cb43f9260eb966d9967dffe2ecbca7d282d609373b5a.png" src="_images/0cacfb27f9a674cd7068cb43f9260eb966d9967dffe2ecbca7d282d609373b5a.png" />
-<img alt="_images/9b8447d53e68b62729ddced86f69e208c521df6296f09372f3233d78885c2b2b.png" src="_images/9b8447d53e68b62729ddced86f69e208c521df6296f09372f3233d78885c2b2b.png" />
+<img alt="_images/cf50d1ebc2517504e1f9b1ed804f48c2c621f391df7c64cc5a5cfbe7dca40249.png" src="_images/cf50d1ebc2517504e1f9b1ed804f48c2c621f391df7c64cc5a5cfbe7dca40249.png" />
 </div>
 </div>
 <p>These graphs look good too.</p>
@@ -1893,7 +2253,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4b5fc9a28a03289253660a80f5952a7dcfbcdbb3b68a766d554ca966899fb2f3.png" src="_images/4b5fc9a28a03289253660a80f5952a7dcfbcdbb3b68a766d554ca966899fb2f3.png" />
+<img alt="_images/5f8fbd36321202dd9a04bd562f94ee22c529a62a82e9f6fcbc5ea19f63545e60.png" src="_images/5f8fbd36321202dd9a04bd562f94ee22c529a62a82e9f6fcbc5ea19f63545e60.png" />
 </div>
 </div>
 <p>Now let’s use MCMC while still using a beta prior.</p>
@@ -1906,8 +2266,8 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a4660e74ed5423efb5425d00368e24a500bb000222ef5e48fc1f9a97e23237d5.png" src="_images/a4660e74ed5423efb5425d00368e24a500bb000222ef5e48fc1f9a97e23237d5.png" />
-<img alt="_images/5399632153371f607aae51d7f87fc122213974ce624e094534bd2beb8588fdf7.png" src="_images/5399632153371f607aae51d7f87fc122213974ce624e094534bd2beb8588fdf7.png" />
+<img alt="_images/524a297cb8c9389670d5e2d3f1062fe00d8a69279db78d639b61e33a1cdde1e9.png" src="_images/524a297cb8c9389670d5e2d3f1062fe00d8a69279db78d639b61e33a1cdde1e9.png" />
+<img alt="_images/96f34588669cf7b05c3fa2c2b6b9e712186df02bdd39d33b75c4e3f268616ad0.png" src="_images/96f34588669cf7b05c3fa2c2b6b9e712186df02bdd39d33b75c4e3f268616ad0.png" />
 </div>
 </div>
 <p>Here the MCMC approximation looks good.</p>
@@ -1926,7 +2286,7 @@ will be  more accurate, as we shall see next.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2289f24dad48ea3a09e5ce0a1d980489255632c4845d6b48f351e5f1c0f091d9.png" src="_images/2289f24dad48ea3a09e5ce0a1d980489255632c4845d6b48f351e5f1c0f091d9.png" />
+<img alt="_images/21a1cdedd9079950b435c9b537c11d10a6241dd28516248118445e43845bad51.png" src="_images/21a1cdedd9079950b435c9b537c11d10a6241dd28516248118445e43845bad51.png" />
 </div>
 </div>
 </section>
@@ -1983,14 +2343,14 @@ Prior Dist: uniform
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/953107666f7f129581e76d1e9395618fbacb63685393dfd3910e82d5463993c9.png" src="_images/953107666f7f129581e76d1e9395618fbacb63685393dfd3910e82d5463993c9.png" />
+<img alt="_images/218fe42ff991400b1648aa6df0d524c7d84fdab616e105882930650b080e66b3.png" src="_images/218fe42ff991400b1648aa6df0d524c7d84fdab616e105882930650b080e66b3.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0.2, 0.7)
 Prior Dist: uniform
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/27c26c8462ddf539ac3cd1fdcfd5b6b3f0520fd7633eaa1c3b212076210760e2.png" src="_images/27c26c8462ddf539ac3cd1fdcfd5b6b3f0520fd7633eaa1c3b212076210760e2.png" />
+<img alt="_images/392a87feece9c95ab945d2992b70c2da4be5d02870c593b15bb22759f6404aba.png" src="_images/392a87feece9c95ab945d2992b70c2da4be5d02870c593b15bb22759f6404aba.png" />
 </div>
 </div>
 <p>In the situation depicted above, we have assumed a  <span class="math notranslate nohighlight">\(Uniform(\underline{\theta}, \overline{\theta})\)</span> prior that puts zero probability   outside a bounded support that excludes the true value.</p>
@@ -2016,14 +2376,14 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/c85f9aa6e40f7fa3ddc3731d326b400b4fe6f15c7dbd53d09e4ed837041f3f41.png" src="_images/c85f9aa6e40f7fa3ddc3731d326b400b4fe6f15c7dbd53d09e4ed837041f3f41.png" />
+<img alt="_images/1aee08da6ea65c7e59793bf281c782c8e96349fdace908e758fca9ef73036c57.png" src="_images/1aee08da6ea65c7e59793bf281c782c8e96349fdace908e758fca9ef73036c57.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0, 2)
 Prior Dist: lognormal
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/a7645a324750b177006136b11db29850a7c3fa91d5b83cd3feaccf9aca80bdd7.png" src="_images/a7645a324750b177006136b11db29850a7c3fa91d5b83cd3feaccf9aca80bdd7.png" />
+<img alt="_images/ede8d673ea70be280391436188d73d8c507eb0a56e9eff111ff60659453e3aa5.png" src="_images/ede8d673ea70be280391436188d73d8c507eb0a56e9eff111ff60659453e3aa5.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2050,7 +2410,7 @@ Solver: numpyro
 NOTE: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/33f8305be93cb2d9d4489d45b101e4967286221af45fd74bf72b144f7c3da65c.png" src="_images/33f8305be93cb2d9d4489d45b101e4967286221af45fd74bf72b144f7c3da65c.png" />
+<img alt="_images/dc81c9f66f58b6bd1ea88aa684afb3d5ce2e5f11647b1f17bc8ad4aaaef13e1e.png" src="_images/dc81c9f66f58b6bd1ea88aa684afb3d5ce2e5f11647b1f17bc8ad4aaaef13e1e.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: 40
 Prior Dist: vonMises
@@ -2059,7 +2419,7 @@ Solver: pyro
 NOTE: Truncated von Mises
 </pre></div>
 </div>
-<img alt="_images/eb7c50e63ebc5fdf058ffd1499f16e38d3288e76d943089a2b7f88e7e5a18760.png" src="_images/eb7c50e63ebc5fdf058ffd1499f16e38d3288e76d943089a2b7f88e7e5a18760.png" />
+<img alt="_images/1eec0a04a750577c86461725ebd9d7442fd431684ae1b44476ee103e595c0f6c.png" src="_images/1eec0a04a750577c86461725ebd9d7442fd431684ae1b44476ee103e595c0f6c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2078,7 +2438,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/937e378310aab5dfad4e0bdc9abb1135fd3c2c63b9e08392775126ec47790dd4.png" src="_images/937e378310aab5dfad4e0bdc9abb1135fd3c2c63b9e08392775126ec47790dd4.png" />
+<img alt="_images/a3399582d5aa22ae27f1c77128297032a581798513a1c794641374e16fa62049.png" src="_images/a3399582d5aa22ae27f1c77128297032a581798513a1c794641374e16fa62049.png" />
 </div>
 </div>
 <p>To get more accuracy we will now increase the number of steps for Variational Inference (VI)</p>
@@ -2107,7 +2467,7 @@ Prior Dist: uniform
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/853f532c3f1aec902c74458f20603a9835f508301a575ad18fe620b43190f37f.png" src="_images/853f532c3f1aec902c74458f20603a9835f508301a575ad18fe620b43190f37f.png" />
+<img alt="_images/bbb00f6a6a7b12f0b0fe12872b1bd04758a294fec3b3c3b38c190d1084af029c.png" src="_images/bbb00f6a6a7b12f0b0fe12872b1bd04758a294fec3b3c3b38c190d1084af029c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2126,7 +2486,7 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/ee57cae9518dd75554ae9780a63bd2cfdc3807fdc803a6ddb23478f2a7fcc441.png" src="_images/ee57cae9518dd75554ae9780a63bd2cfdc3807fdc803a6ddb23478f2a7fcc441.png" />
+<img alt="_images/d53119be1a20c8b87bf32c34435c9950d2f93136f4ad0f829b17fef5becc646b.png" src="_images/d53119be1a20c8b87bf32c34435c9950d2f93136f4ad0f829b17fef5becc646b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2148,7 +2508,7 @@ Solver: numpyro
 NB: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/71da52eed2ce0c3d61061e4479a32a9bc5c7f72d31bae286c7ca39861da5ce99.png" src="_images/71da52eed2ce0c3d61061e4479a32a9bc5c7f72d31bae286c7ca39861da5ce99.png" />
+<img alt="_images/01885a864ff7270e39d6e712c77583c51ced9e57cec82c0817b0c1427b9748ad.png" src="_images/01885a864ff7270e39d6e712c77583c51ced9e57cec82c0817b0c1427b9748ad.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2167,7 +2527,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/ef7cbba283e1803ce7f42d1b784d4fe2da0048020c67a7e42cb86b1d347b3f15.png" src="_images/ef7cbba283e1803ce7f42d1b784d4fe2da0048020c67a7e42cb86b1d347b3f15.png" />
+<img alt="_images/e90e1d67152d55681b08b3ee0d955ff2b696f99f00b35294a0d9a9b9c907bada.png" src="_images/e90e1d67152d55681b08b3ee0d955ff2b696f99f00b35294a0d9a9b9c907bada.png" />
 </div>
 </div>
 </section>
@@ -2189,7 +2549,7 @@ Prior Dist: uniform
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/6bbef0caf3e7e15f231584f20ae9e65d4a3f0a26f56ffa58b4cb8c4d3d5f7da2.png" src="_images/6bbef0caf3e7e15f231584f20ae9e65d4a3f0a26f56ffa58b4cb8c4d3d5f7da2.png" />
+<img alt="_images/66cff9d546533b894f2d94c2a3677ced48ee3962c7af010f110fd873ac437afa.png" src="_images/66cff9d546533b894f2d94c2a3677ced48ee3962c7af010f110fd873ac437afa.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2212,14 +2572,14 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/ef8f91160245877d084e0b1ad75864a999a3e366445cd24d5abed6769ae63575.png" src="_images/ef8f91160245877d084e0b1ad75864a999a3e366445cd24d5abed6769ae63575.png" />
+<img alt="_images/e6f1863abc3e3908c0b8a63192d26b1e0d699d6490631b77ff1b810bb286b2ed.png" src="_images/e6f1863abc3e3908c0b8a63192d26b1e0d699d6490631b77ff1b810bb286b2ed.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0, 2)
 Prior Dist: lognormal
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/45167bb4996f23f363d8c523ff2a3c6a5c5edda8b39ff7f6df0f24a2d8e1e856.png" src="_images/45167bb4996f23f363d8c523ff2a3c6a5c5edda8b39ff7f6df0f24a2d8e1e856.png" />
+<img alt="_images/bbdc97fb1d4ff18f423faadde6acfbf1878d57252e15e6788e353893eac704dc.png" src="_images/bbdc97fb1d4ff18f423faadde6acfbf1878d57252e15e6788e353893eac704dc.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2246,7 +2606,7 @@ Solver: numpyro
 NB: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/41d2d9b7b7dbf67a523d0f256d8f48bf78acb4da3b0a5e2d0a258244b3ddea0e.png" src="_images/41d2d9b7b7dbf67a523d0f256d8f48bf78acb4da3b0a5e2d0a258244b3ddea0e.png" />
+<img alt="_images/94f75fe35219168ddd9020d4f60ec45e6297a324f011406d350fe9f96d82d008.png" src="_images/94f75fe35219168ddd9020d4f60ec45e6297a324f011406d350fe9f96d82d008.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: 40
 Prior Dist: vonMises
@@ -2255,7 +2615,7 @@ Solver: pyro
 NB: Truncated von Mises
 </pre></div>
 </div>
-<img alt="_images/167e92b4f866f1a4cf1a3f6c7e1e7be897f3b5dfb843fe41320449a4774bcc95.png" src="_images/167e92b4f866f1a4cf1a3f6c7e1e7be897f3b5dfb843fe41320449a4774bcc95.png" />
+<img alt="_images/a51bc6de95f8fbe4045ed7bc12da7fa6e30f055de16d8d332780d61b499ba715.png" src="_images/a51bc6de95f8fbe4045ed7bc12da7fa6e30f055de16d8d332780d61b499ba715.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2274,7 +2634,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/712fa5ce4e4a0748193aa8d0b94bc273cdced560500fcad2d6524f1ecb6bd881.png" src="_images/712fa5ce4e4a0748193aa8d0b94bc273cdced560500fcad2d6524f1ecb6bd881.png" />
+<img alt="_images/c0283f5d1a929766c90a81bc14ae3506c65e573032fea04826e48a4b22208dbd.png" src="_images/c0283f5d1a929766c90a81bc14ae3506c65e573032fea04826e48a4b22208dbd.png" />
 </div>
 </div>
 </section>
@@ -2638,7 +2998,7 @@ Solver: numpyro
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   51. Computing Mean of a Likelihood Ratio Process
+   51. Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">

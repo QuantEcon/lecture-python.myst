@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>51. Computing Mean of a Likelihood Ratio Process &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>51. Mean of a Likelihood Ratio Process &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -129,13 +129,13 @@
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
-<meta name="twitter:title" content="Computing Mean of a Likelihood Ratio Process"/>
+<meta name="twitter:title" content="Mean of a Likelihood Ratio Process"/>
 <meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
 <!-- Opengraph tags -->
-<meta property="og:title" content="Computing Mean of a Likelihood Ratio Process" />
+<meta property="og:title" content="Mean of a Likelihood Ratio Process" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://python.quantecon.org/imp_sample.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
@@ -171,9 +171,9 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-expectation-of-likelihood-ratio">51.2. Mathematical Expectation of Likelihood Ratio</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-sampling">51.3. Importance sampling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-a-sampling-distribution">51.4. Selecting a Sampling Distribution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-a-cumulative-likelihood-ratio">51.5. Approximating a cumulative likelihood ratio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-a-cumulative-likelihood-ratio">51.5. Approximating a Cumulative Likelihood Ratio</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-sample-mean">51.6. Distribution of  Sample Mean</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-thoughts-about-choice-of-sampling-distribution">51.7. More Thoughts about Choice of Sampling Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-sampling-distribution">51.7. Choosing a  Sampling Distribution</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -204,7 +204,7 @@
 
                         <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
-                        <p class="qe-page__header-subheading">Computing Mean of a Likelihood Ratio Process</p>
+                        <p class="qe-page__header-subheading">Mean of a Likelihood Ratio Process</p>
 
                     </div>
                     <!-- length 2, since its a string and empty dict has length 2 - {} -->
@@ -230,27 +230,27 @@
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="computing-mean-of-a-likelihood-ratio-process">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">51. </span>Computing Mean of a Likelihood Ratio Process</a><a class="headerlink" href="#computing-mean-of-a-likelihood-ratio-process" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="mean-of-a-likelihood-ratio-process">
+<h1><a class="toc-backref" href="#id1"><span class="section-number">51. </span>Mean of a Likelihood Ratio Process</a><a class="headerlink" href="#mean-of-a-likelihood-ratio-process" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#computing-mean-of-a-likelihood-ratio-process" id="id1">Computing Mean of a Likelihood Ratio Process</a></p>
+<li><p><a class="reference internal" href="#mean-of-a-likelihood-ratio-process" id="id1">Mean of a Likelihood Ratio Process</a></p>
 <ul>
 <li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
 <li><p><a class="reference internal" href="#mathematical-expectation-of-likelihood-ratio" id="id3">Mathematical Expectation of Likelihood Ratio</a></p></li>
 <li><p><a class="reference internal" href="#importance-sampling" id="id4">Importance sampling</a></p></li>
 <li><p><a class="reference internal" href="#selecting-a-sampling-distribution" id="id5">Selecting a Sampling Distribution</a></p></li>
-<li><p><a class="reference internal" href="#approximating-a-cumulative-likelihood-ratio" id="id6">Approximating a cumulative likelihood ratio</a></p></li>
+<li><p><a class="reference internal" href="#approximating-a-cumulative-likelihood-ratio" id="id6">Approximating a Cumulative Likelihood Ratio</a></p></li>
 <li><p><a class="reference internal" href="#distribution-of-sample-mean" id="id7">Distribution of  Sample Mean</a></p></li>
-<li><p><a class="reference internal" href="#more-thoughts-about-choice-of-sampling-distribution" id="id8">More Thoughts about Choice of Sampling Distribution</a></p></li>
+<li><p><a class="reference internal" href="#choosing-a-sampling-distribution" id="id8">Choosing a  Sampling Distribution</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <section id="overview">
 <h2><a class="toc-backref" href="#id2"><span class="section-number">51.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>In  <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a> we described a peculiar property of a likelihood ratio process, namely, that it’s mean equals one for all <span class="math notranslate nohighlight">\(t \geq 0\)</span> despite it’s converging to zero almost surely.</p>
+<p>In  <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a> we described a peculiar property of a likelihood ratio process, namely, that its mean equals one for all <span class="math notranslate nohighlight">\(t \geq 0\)</span> despite it’s converging to zero almost surely.</p>
 <p>While it is easy to verify that peculiar properly analytically (i.e., in population), it is challenging to use a computer simulation to verify it via an application of a law of large numbers that entails studying sample averages of repeated simulations.</p>
 <p>To confront this challenge, this lecture puts <strong>importance sampling</strong> to work to accelerate convergence of sample averages to population means.</p>
 <p>We use  importance sampling to estimate the mean of a cumulative likelihood ratio <span class="math notranslate nohighlight">\(L\left(\omega^t\right) = \prod_{i=1}^t \ell \left(\omega_i\right)\)</span>.</p>
@@ -310,7 +310,7 @@ provides a more computationally efficient way to approximate the mean of the cum
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">w_range</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">w_range</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
@@ -324,11 +324,11 @@ provides a more computationally efficient way to approximate the mean of the cum
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:5: SyntaxWarning: invalid escape sequence &#39;\o&#39;
 &lt;&gt;:5: SyntaxWarning: invalid escape sequence &#39;\o&#39;
-/tmp/ipykernel_2489/1107513590.py:5: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_2510/955562938.py:5: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   plt.xlabel(&#39;$\omega$&#39;)
 </pre></div>
 </div>
-<img alt="_images/08f299bbc5f0a1d8ab9519a0d811569dc729f652038c614f81f6d7d982820e00.png" src="_images/08f299bbc5f0a1d8ab9519a0d811569dc729f652038c614f81f6d7d982820e00.png" />
+<img alt="_images/5e657bf0441a126f74c6ee453a63fc1a662f6426d3c8def1f73fae2241e3d73f.png" src="_images/5e657bf0441a126f74c6ee453a63fc1a662f6426d3c8def1f73fae2241e3d73f.png" />
 </div>
 </div>
 <p>The likelihood ratio is <code class="docutils literal notranslate"><span class="pre">l(w)=f(w)/g(w)</span></code>.</p>
@@ -353,13 +353,13 @@ provides a more computationally efficient way to approximate the mean of the cum
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
 &lt;&gt;:2: SyntaxWarning: invalid escape sequence &#39;\e&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
-/tmp/ipykernel_2489/233243230.py:2: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+/tmp/ipykernel_2510/233243230.py:2: SyntaxWarning: invalid escape sequence &#39;\e&#39;
   plt.title(&#39;$\ell(\omega)$&#39;)
-/tmp/ipykernel_2489/233243230.py:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
+/tmp/ipykernel_2510/233243230.py:3: SyntaxWarning: invalid escape sequence &#39;\o&#39;
   plt.xlabel(&#39;$\omega$&#39;)
 </pre></div>
 </div>
-<img alt="_images/9f4ec5347c6203a0e1dcefaddebc8fb6fd505b5facba0a1f4d324a529f77a4bd.png" src="_images/9f4ec5347c6203a0e1dcefaddebc8fb6fd505b5facba0a1f4d324a529f77a4bd.png" />
+<img alt="_images/f1e87f9ab3d7514bcd837f89344416dd94334fa83d784bbde4d1a0e1f5ce700a.png" src="_images/f1e87f9ab3d7514bcd837f89344416dd94334fa83d784bbde4d1a0e1f5ce700a.png" />
 </div>
 </div>
 <p>The above plots shows that as <span class="math notranslate nohighlight">\(\omega \rightarrow 0\)</span>, <span class="math notranslate nohighlight">\(f \left(\omega\right)\)</span> is unchanged and <span class="math notranslate nohighlight">\(g \left(\omega\right) \rightarrow 0\)</span>, so  the likelihood ratio approaches infinity.</p>
@@ -427,7 +427,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </section>
 <section id="approximating-a-cumulative-likelihood-ratio">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">51.5. </span>Approximating a cumulative likelihood ratio</a><a class="headerlink" href="#approximating-a-cumulative-likelihood-ratio" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">51.5. </span>Approximating a Cumulative Likelihood Ratio</a><a class="headerlink" href="#approximating-a-cumulative-likelihood-ratio" title="Permalink to this heading">#</a></h2>
 <p>We now study how to use importance sampling to approximate
 <span class="math notranslate nohighlight">\({E} \left[L(\omega^t)\right] = \left[\prod_{i=1}^T \ell \left(\omega_i\right)\right]\)</span>.</p>
 <p>As above, our plan is to draw  sequences <span class="math notranslate nohighlight">\(\omega^t\)</span> from <span class="math notranslate nohighlight">\(q\)</span> and then re-weight the likelihood ratio appropriately:</p>
@@ -474,7 +474,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9950240018494125
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9936572664084169
 </pre></div>
 </div>
 </div>
@@ -487,7 +487,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0029244642097825
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9972036900939464
 </pre></div>
 </div>
 </div>
@@ -503,7 +503,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7123657592678686
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.4013038149254307
 </pre></div>
 </div>
 </div>
@@ -515,7 +515,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0260101055517
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.994559861708666
 </pre></div>
 </div>
 </div>
@@ -560,7 +560,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9996297299867735, 0.05428794965026709)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0019958246278524, 0.010390099045758713)
 </pre></div>
 </div>
 </div>
@@ -573,7 +573,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0002109845703346, 2.2134589298294626e-05)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0000736368971739, 2.3399905137531208e-05)
 </pre></div>
 </div>
 </div>
@@ -615,21 +615,20 @@ still produces an estimate close to its theoretical value of unity.</p>
 &lt;&gt;:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
-/tmp/ipykernel_2489/547428366.py:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2510/547428366.py:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[row, col].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
-/tmp/ipykernel_2489/547428366.py:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2510/547428366.py:23: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[row, col].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
 </pre></div>
 </div>
-<img alt="_images/580a1b340befb1ca9ed38ba2399bcee790466ccbd468e04f8f8be14074e44ed5.png" src="_images/580a1b340befb1ca9ed38ba2399bcee790466ccbd468e04f8f8be14074e44ed5.png" />
+<img alt="_images/153af83cd00645f54703c84335bd91f42680a5be37eeb71145c2e4f12c28664d.png" src="_images/153af83cd00645f54703c84335bd91f42680a5be37eeb71145c2e4f12c28664d.png" />
 </div>
 </div>
-<p>The simulation exercises above show that the importance sampling estimates are unbiased under all <span class="math notranslate nohighlight">\(T\)</span>
-while the standard Monte Carlo estimates are biased downwards.</p>
+<p>The simulation exercises above show that the importance sampling estimates are unbiased under all <span class="math notranslate nohighlight">\(T\)</span> while the standard Monte Carlo estimates are biased downwards.</p>
 <p>Evidently, the bias increases with increases in <span class="math notranslate nohighlight">\(T\)</span>.</p>
 </section>
-<section id="more-thoughts-about-choice-of-sampling-distribution">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">51.7. </span>More Thoughts about Choice of Sampling Distribution</a><a class="headerlink" href="#more-thoughts-about-choice-of-sampling-distribution" title="Permalink to this heading">#</a></h2>
+<section id="choosing-a-sampling-distribution">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">51.7. </span>Choosing a  Sampling Distribution</a><a class="headerlink" href="#choosing-a-sampling-distribution" title="Permalink to this heading">#</a></h2>
 <p>Above, we arbitraily chose <span class="math notranslate nohighlight">\(h = Beta(0.5,0.5)\)</span> as the importance distribution.</p>
 <p>Is there an optimal importance distribution?</p>
 <p>In our particular case, since we  know in advance that <span class="math notranslate nohighlight">\(E_0 \left[ L\left(\omega^t\right) \right] = 1\)</span>.</p>
@@ -689,7 +688,7 @@ while the standard Monte Carlo estimates are biased downwards.</p>
 <img alt="_images/d0d4300c665c61a69a76467c2904ac1914eac5c92bfa64d26e96d966aacc4e9b.png" src="_images/d0d4300c665c61a69a76467c2904ac1914eac5c92bfa64d26e96d966aacc4e9b.png" />
 </div>
 </div>
-<p>We consider two additonal distributions.</p>
+<p>We consider two additional distributions.</p>
 <p>As a reminder <span class="math notranslate nohighlight">\(h_1\)</span> is the original <span class="math notranslate nohighlight">\(Beta(0.5,0.5)\)</span> distribution that we used above.</p>
 <p><span class="math notranslate nohighlight">\(h_2\)</span> is the <span class="math notranslate nohighlight">\(Beta(1,1.2)\)</span> distribution.</p>
 <p>Note how <span class="math notranslate nohighlight">\(h_2\)</span> has a similar shape to <span class="math notranslate nohighlight">\(g\)</span> at higher values of distribution but more mass at lower values.</p>
@@ -735,13 +734,13 @@ while the standard Monte Carlo estimates are biased downwards.</p>
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
-/tmp/ipykernel_2489/1582348873.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2510/1582348873.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[i].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
-/tmp/ipykernel_2489/1582348873.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2510/1582348873.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[i].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
 </pre></div>
 </div>
-<img alt="_images/0b644cf59ae5c47d69434f2513118716c5dc5b1ebb8bf129de1aaed7ef89d7d3.png" src="_images/0b644cf59ae5c47d69434f2513118716c5dc5b1ebb8bf129de1aaed7ef89d7d3.png" />
+<img alt="_images/bf7d9ac3bdd792d8e393b5fe3157d4818d9cae6e9a64f5b4a3896894681a4fb9.png" src="_images/bf7d9ac3bdd792d8e393b5fe3157d4818d9cae6e9a64f5b4a3896894681a4fb9.png" />
 </div>
 </div>
 <p>Our simulations suggest that indeed <span class="math notranslate nohighlight">\(h_2\)</span> is a quite  good importance sampling distribution for our problem.</p>
@@ -783,20 +782,19 @@ while the standard Monte Carlo estimates are biased downwards.</p>
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
 &lt;&gt;:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
-/tmp/ipykernel_2489/2364143561.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2510/2364143561.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[i].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
-/tmp/ipykernel_2489/2364143561.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
+/tmp/ipykernel_2510/2364143561.py:25: SyntaxWarning: invalid escape sequence &#39;\h&#39;
   axs[i].text(bins[idx], n[idx], &#39;$\hat{μ}$=&#39;+f&#39;{μ_hat:.4g}&#39;+&#39;, $\hat{σ}=$&#39;+f&#39;{σ_hat:.4g}&#39;)
 </pre></div>
 </div>
-<img alt="_images/d4fc7e583ee22ea56795e508f69564d257446846cb2f0525192f8dad4fa3e4c4.png" src="_images/d4fc7e583ee22ea56795e508f69564d257446846cb2f0525192f8dad4fa3e4c4.png" />
+<img alt="_images/e234c5bf12f9595f97e9442cf4152da28766595df3272b453aac8022b7aa655c.png" src="_images/e234c5bf12f9595f97e9442cf4152da28766595df3272b453aac8022b7aa655c.png" />
 </div>
 </div>
-<p>However, <span class="math notranslate nohighlight">\(h_3\)</span> is evidently a poor importance sampling distribution forpir problem,
+<p>However, <span class="math notranslate nohighlight">\(h_3\)</span> is evidently a poor importance sampling distribution for our problem,
 with a mean estimate far away from <span class="math notranslate nohighlight">\(1\)</span> for <span class="math notranslate nohighlight">\(T = 20\)</span>.</p>
-<p>Notice that evan at <span class="math notranslate nohighlight">\(T = 1\)</span>, the mean estimate with importance sampling is more biased than just sampling with  <span class="math notranslate nohighlight">\(g\)</span> itself.</p>
-<p>Thus, our simulations suggest that we would be better off simply using Monte Carlo
-approximations under <span class="math notranslate nohighlight">\(g\)</span> than using <span class="math notranslate nohighlight">\(h_3\)</span> as an importance sampling distribution for our problem.</p>
+<p>Notice that even at <span class="math notranslate nohighlight">\(T = 1\)</span>, the mean estimate with importance sampling is more biased than  sampling with  just <span class="math notranslate nohighlight">\(g\)</span> itself.</p>
+<p>Thus, our simulations suggest that  for our problem we would be better off simply using Monte Carlo approximations under <span class="math notranslate nohighlight">\(g\)</span> than using <span class="math notranslate nohighlight">\(h_3\)</span> as an importance sampling distribution.</p>
 </section>
 </section>
 
@@ -1156,7 +1154,7 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   51. Computing Mean of a Likelihood Ratio Process
+   51. Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
