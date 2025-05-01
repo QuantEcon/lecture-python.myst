@@ -6,20 +6,40 @@ on:
 jobs:
   publish:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-    runs-on: quantecon-gpu
-    container:
-      image: ghcr.io/quantecon/lecture-python-container:cuda-12.8.1-anaconda-2024-10-py312
-      options: --gpus all
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=ubuntu24-gpu-x64/disk=large"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install Git (required to commit notebooks)
-        shell: bash -l {0}
-        run: apt-get install -y git
-      - name: Check nvidia drivers
+      - name: Setup Anaconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: "3.12"
+          environment-file: environment.yml
+          activate-environment: quantecon
+      - name: Install jax (and install checks for GPU)
         shell: bash -l {0}
         run: |
+          pip install -U "jax[cuda12]"
+          python --version
+          python scripts/test-jax-install.py
           nvidia-smi
+      - name: Install latex dependencies
+        shell: bash -l {0}
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y     \
+            texlive-latex-recommended \
+            texlive-latex-extra       \
+            texlive-fonts-recommended \
+            texlive-fonts-extra       \
+            texlive-xetex             \
+            latexmk                   \
+            xindy                     \
+            dvipng                    \
+            cm-super  
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
