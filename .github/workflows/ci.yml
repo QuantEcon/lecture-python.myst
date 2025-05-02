@@ -58,6 +58,7 @@ jobs:
         shell: bash -l {0}
         run: |
           export PATH=$PATH:/opt/anaconda3/bin/
+          conda init bash && source ~/.bashrc 
           conda activate quantecon
           jb build lectures --path-output ./ -n -W --keep-going
       - name: Upload Execution Reports (HTML)
