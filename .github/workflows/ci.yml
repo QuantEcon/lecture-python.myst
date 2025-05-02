@@ -11,7 +11,8 @@ jobs:
         run: |
           export PATH=$PATH:/opt/anaconda3/bin/
           conda env create -f environment.yml -y
-          conda init && conda activate quantecon
+          conda init 
+          conda activate quantecon
       - name: Display nvidia
         run: nvidia-smi
       - name: Display Conda Environment Versions
