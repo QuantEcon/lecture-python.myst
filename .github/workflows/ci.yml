@@ -2,49 +2,11 @@ name: Build Project [using jupyter-book]
 on: [pull_request]
 jobs:
   preview:
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=ubuntu24-gpu-x64/disk=large"
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2204_ami/disk=large"
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          auto-update-conda: true
-          auto-activate-base: true
-          miniconda-version: 'latest'
-          python-version: "3.12"
-          environment-file: environment.yml
-          activate-environment: quantecon
-      - name: Install CUDA and CUDANN
-        shell: bash -l {0}
-        run: |
-          wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb
-          sudo dpkg -i cuda-keyring_1.1-1_all.deb
-          sudo apt-get update
-          sudo apt-get -y install cuda-toolkit-12-9
-      - name: Install jax (and install checks for GPU)
-        shell: bash -l {0}
-        run: |
-          pip install 'numpyro[cuda]' -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-          pip install -U "jax[cuda12]"
-          python --version
-          python scripts/test-jax-install.py
-          nvidia-smi
-      - name: Install latex dependencies
-        shell: bash -l {0}
-        run: |
-          sudo apt-get -qq update
-          sudo apt-get install -y     \
-            texlive-latex-recommended \
-            texlive-latex-extra       \
-            texlive-fonts-recommended \
-            texlive-fonts-extra       \
-            texlive-xetex             \
-            latexmk                   \
-            xindy                     \
-            dvipng                    \
-            cm-super  
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
