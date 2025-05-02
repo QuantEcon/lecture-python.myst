@@ -7,6 +7,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Display nvidia
+        shell: bash -l {0}
+        run: nvidia-smi
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
