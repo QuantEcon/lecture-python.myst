@@ -17,6 +17,7 @@ jobs:
         run: nvidia-smi
       - name: Display Conda Environment Versions
         run: |
+          export PATH=$PATH:/opt/anaconda3/bin/
           conda list
       - name: Display Pip Versions
         run: pip list
@@ -28,34 +29,36 @@ jobs:
       #     name: build-cache
       #     path: _build
       # Build Assets (Download Notebooks and PDF via LaTeX)
-      - name: Build Download Notebooks (sphinx-tojupyter)
-        shell: bash -l {0}
-        run: |
-          jb build lectures -n -W --keep-going --path-output ./ --builder=custom --custom-builder=jupyter
-          mkdir -p _build/html/_notebooks
-          cp -u _build/jupyter/*.ipynb _build/html/_notebooks
-      - name: Upload Execution Reports (Download Notebooks)
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: execution-reports
-          path: _build/jupyter/reports
-      - name: Build PDF from LaTeX
-        shell: bash -l {0}
-        run: |
-          jb build lectures --builder pdflatex --path-output ./ -W --keep-going
-          mkdir -p _build/html/_pdf
-          cp -u _build/latex/*.pdf _build/html/_pdf
-      - name: Upload Execution Reports (LaTeX)
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: execution-reports
-          path: _build/latex/reports
+      # - name: Build Download Notebooks (sphinx-tojupyter)
+      #   shell: bash -l {0}
+      #   run: |
+      #     jb build lectures -n -W --keep-going --path-output ./ --builder=custom --custom-builder=jupyter
+      #     mkdir -p _build/html/_notebooks
+      #     cp -u _build/jupyter/*.ipynb _build/html/_notebooks
+      # - name: Upload Execution Reports (Download Notebooks)
+      #   uses: actions/upload-artifact@v4
+      #   if: failure()
+      #   with:
+      #     name: execution-reports
+      #     path: _build/jupyter/reports
+      # - name: Build PDF from LaTeX
+      #   shell: bash -l {0}
+      #   run: |
+      #     jb build lectures --builder pdflatex --path-output ./ -W --keep-going
+      #     mkdir -p _build/html/_pdf
+      #     cp -u _build/latex/*.pdf _build/html/_pdf
+      # - name: Upload Execution Reports (LaTeX)
+      #   uses: actions/upload-artifact@v4
+      #   if: failure()
+      #   with:
+      #     name: execution-reports
+      #     path: _build/latex/reports
       # Final Build of HTML
       - name: Build HTML
         shell: bash -l {0}
         run: |
+          export PATH=$PATH:/opt/anaconda3/bin/
+          conda activate quantecon
           jb build lectures --path-output ./ -n -W --keep-going
       - name: Upload Execution Reports (HTML)
         uses: actions/upload-artifact@v4
