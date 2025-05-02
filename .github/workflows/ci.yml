@@ -11,7 +11,7 @@ jobs:
         run: |
           export PATH=$PATH:/opt/anaconda3/bin/
           conda env create -f environment.yml -y
-          conda init 
+          conda init bash && source ~/.bashrc 
           conda activate quantecon
       - name: Display nvidia
         run: nvidia-smi
