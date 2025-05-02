@@ -7,12 +7,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Setup QuantEcon Environment (/runner/)
+        run: |
+          export PATH=$PATH:/opt/anaconda3/bin/
+          conda env create -f environment.yml
+          conda activate quantecon
       - name: Display nvidia
         run: nvidia-smi
       - name: Display Conda Environment Versions
         run: |
-          more ~/.bashrc
-          whereis python
           conda list
       - name: Display Pip Versions
         run: pip list
