@@ -8,13 +8,10 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Display nvidia
-        shell: bash -l {0}
         run: nvidia-smi
       - name: Display Conda Environment Versions
-        shell: bash -l {0}
         run: conda list
       - name: Display Pip Versions
-        shell: bash -l {0}
         run: pip list
       # - name: Download "build" folder (cache)
       #   uses: dawidd6/action-download-artifact@v9
