@@ -42,59 +42,56 @@ This lecture follows up on ideas presented in the following lectures:
 * {doc}`Exchangeability and Bayesian Updating <exchangeable>`
 * {doc}`Likelihood Ratio Processes <likelihood_ratio_process>`
 
-In {doc}`A Problem that Stumped Milton Friedman <wald_friedman>`  we described a problem
+{doc}`A Problem that Stumped Milton Friedman <wald_friedman>`   described a problem
 that a Navy Captain presented to Milton Friedman during World War II.
 
-The Navy had instructed the Captain to use a decision rule for quality control that the Captain suspected
-could be dominated by a better rule.
+The Navy had told the Captain to use a decision rule for quality control.
 
-(The Navy had ordered the  Captain  to use  an instance of a **frequentist decision rule**.)
+In particular, the Navy had ordered the  Captain  to use  an instance of a **frequentist decision rule**.
 
-Milton Friedman recognized the Captain's conjecture as posing a challenging statistical problem that he and other
-members of the US Government's Statistical Research Group at Columbia University proceeded to try to solve.
+The Captain doubted that that rule was a good one. 
 
-One of the members of the group, the great mathematician Abraham Wald, soon solved the problem.
+Milton Friedman recognized the Captain's conjecture as posing a challenging statistical problem that he and other members of the US Government's Statistical Research Group at Columbia University proceeded to try to solve.
+
+A member of the group, the great mathematician and economist Abraham Wald, soon solved the problem.
 
 A good way to formulate the problem is to use some ideas from Bayesian statistics that we describe in
 this lecture {doc}`Exchangeability and Bayesian Updating <exchangeable>` and in this lecture
 {doc}`Likelihood Ratio Processes <likelihood_ratio_process>`, which describes the link between Bayesian
 updating and likelihood ratio processes.
 
-The present lecture uses Python to generate simulations that evaluate expected losses under **frequentist** and **Bayesian**
-decision rules for an instance of the Navy Captain's decision problem.
+The present lecture uses Python to generate simulations that evaluate expected losses under **frequentist** and **Bayesian** decision rules for an instance of the Navy Captain's decision problem.
 
-The simulations validate the Navy Captain's hunch that there is a better rule than the one the Navy had ordered him
-to use.
+The simulations confirm the Navy Captain's hunch that there is a better rule than the one the Navy had ordered him to use.
 
 ## Setup
 
-To formalize the problem of the Navy Captain whose questions posed the
-problem that Milton Friedman and Allan Wallis handed over to Abraham
-Wald, we consider a setting with the following parts.
+To formalize the problem that had confronted the  Navy Captain, we consider a setting with the following parts.
 
 - Each period a decision maker draws a non-negative random variable
-  $Z$ from a probability distribution that he does not completely
-  understand. He knows that two probability distributions are possible,
+  $Z$. He knows that two probability distributions are possible,
   $f_{0}$ and $f_{1}$, and that which ever distribution it
   is remains fixed over time. The decision maker believes that before
-  the beginning of time, nature once and for all selected either
+  the beginning of time, nature once and for all had selected either
   $f_{0}$ or $f_1$ and that the probability that it
   selected $f_0$ is probability $\pi^{*}$.
 - The decision maker observes a sample
-  $\left\{ z_{i}\right\} _{i=0}^{t}$ from the the distribution
+  $\left\{ z_{i}\right\} _{i=0}^{t}$ from  the distribution
   chosen by nature.
 
 The decision maker wants to decide which distribution actually governs
-$Z$ and is worried by two types of errors and the losses that they
+$Z$.  
+
+He is worried about  two types of errors and the losses that they will 
 impose on him.
 
-- a loss $\bar L_{1}$ from a **type I error** that occurs when he decides that
+- a loss $\bar L_{1}$ from a **type I error** that occurs if he decides that
   $f=f_{1}$ when actually $f=f_{0}$
-- a loss  $\bar L_{0}$ from a **type II error** that occurs when he decides that
+- a loss  $\bar L_{0}$ from a **type II error** that occurs if he decides that
   $f=f_{0}$ when actually $f=f_{1}$
 
 The decision maker pays  a cost $c$ for drawing
-another  $z$
+another  $z$.
 
 We mainly borrow parameters from the quantecon lecture
 {doc}`A Problem that Stumped Milton Friedman <wald_friedman>` except that we increase both $\bar L_{0}$
@@ -215,8 +212,10 @@ In particular, it gave him a decision rule that the Navy had designed  by using
 frequentist statistical theory to minimize an
 expected loss function.
 
-That decision rule is characterized by a sample size $t$ and a
-cutoff $d$ associated with a likelihood ratio.
+That decision rule is characterized by 
+
+ * a sample size $t$, and
+ *  a cutoff value  $d$ of a  likelihood ratio
 
 Let
 $L\left(z^{t}\right)=\prod_{i=0}^{t}\frac{f_{0}\left(z_{i}\right)}{f_{1}\left(z_{i}\right)}$
@@ -227,6 +226,7 @@ The decision rule associated with a sample size $t$ is:
 
 - decide that $f_0$ is the distribution if the likelihood ratio
   is greater than $d$
+- decide that $f_1$ is the distribution if the likelihood ratio is less than $d$
 
 To understand how that rule was engineered, let null and alternative
 hypotheses be
@@ -259,9 +259,8 @@ Here
 - $PD$ denotes the probability of a **detection error**, i.e.,
   not rejecting $H_0$ when $H_1$ is true
 
-For a given sample size $t$, the pairs $\left(PFA,PD\right)$
-lie on a **receiver operating characteristic curve** and can be uniquely
-pinned down by choosing $d$.
+For a given sample size $t$, the pairs $\left(PFA,PD\right)$ lie on a **receiver operating characteristic curve**.
+  * by choosing $d$, we select a particular pair $\left(PFA,PD\right)$ along the curve for a given $t$
 
 To see some receiver operating characteristic curves, please see this
 lecture {doc}`Likelihood Ratio Processes <likelihood_ratio_process>`.
@@ -702,7 +701,7 @@ then compute $\bar{V}_{Bayes}\left(\pi_{0}\right)$.
 We can then determine an initial Bayesian prior $\pi_{0}^{*}$ that
 minimizes this objective concept of expected loss.
 
-The figure 9 below plots four cases corresponding to
+The figure  below plots four cases corresponding to
 $\pi^{*}=0.25,0.3,0.5,0.7$.
 
 We observe that in each case $\pi_{0}^{*}$ equals $\pi^{*}$.
@@ -860,8 +859,8 @@ t_idx = t_optimal - 1
 
 ## Distribution of Bayesian Decision Rule’s Time to Decide
 
-By using simulations, we compute the frequency distribution of time to
-deciding for the Bayesian decision rule and compare that time to the
+We use  simulations to  compute the frequency distribution of the  time to
+decide for the Bayesian decision rule and compare that time to the
 frequentist rule’s fixed $t$.
 
 The following Python code creates a graph that shows the frequency
