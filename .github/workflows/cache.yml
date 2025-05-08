@@ -6,14 +6,27 @@ on:
   workflow_dispatch:
 jobs:
   cache:
-    runs-on: quantecon-gpu
-    container:
-      image: ghcr.io/quantecon/lecture-python-container:cuda-12.8.1-anaconda-2024-10-py312
-      options: --gpus all
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Setup Anaconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: "3.12"
+          environment-file: environment.yml
+          activate-environment: quantecon
+      - name: Install JAX, Numpyro, PyTorch
+        shell: bash -l {0}
+        run: |
+          pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
+          pip install --upgrade "jax[cuda12-local]"
+          pip install numpyro  
+          python scripts/test-jax-install.py
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
