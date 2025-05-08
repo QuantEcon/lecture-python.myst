@@ -44,7 +44,7 @@ The two Python modules are
 As usual, we begin by importing some Python code.
 
 ```{code-cell} ipython3
-:tags: [hide-output]
+:tags: [hide-output, skip-execution]
 
 # install dependencies
 !pip install numpyro pyro-ppl torch jax

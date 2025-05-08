@@ -17,7 +17,7 @@ We'll begin with some Python imports.
 
 
 ```{code-cell} ipython3
-:tags: [hide-output]
+:tags: [hide-output, skip-execution]
 
 !pip install arviz pymc numpyro jax
 ```

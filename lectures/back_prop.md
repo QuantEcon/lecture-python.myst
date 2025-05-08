@@ -14,9 +14,14 @@ kernelspec:
 # Introduction to Artificial Neural Networks
 
 ```{code-cell} ipython3
-:tags: [hide-output]
+:tags: [skip-execution]
 
 !pip install --upgrade jax jaxlib kaleido
+```
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !conda install -y -c plotly plotly plotly-orca retrying
 ```
 
