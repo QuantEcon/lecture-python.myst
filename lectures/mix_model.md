@@ -18,7 +18,7 @@ kernelspec:
 ```
 
 ```{code-cell} ipython
-:tags: [skip-execution]
+:tags: [hide-output]
 
 !pip install numpyro jax
 ```
