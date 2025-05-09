@@ -14,11 +14,12 @@ kernelspec:
 (likelihood-ratio-process)=
 # Incorrect Models
 
-In addition to what's in Anaconda, this lecture will need the following libraries:
+```{include} _admonition/gpu.md
+```
+
 ```{code-cell} ipython
----
-tags: [hide-output]
----
+:tags: [hide-output]
+
 !pip install numpyro jax
 ```
 

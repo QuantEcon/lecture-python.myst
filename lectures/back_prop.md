@@ -13,10 +13,21 @@ kernelspec:
 
 # Introduction to Artificial Neural Networks
 
+```{include} _admonition/gpu.md
+```
+
+```{code-cell} ipython3
+:tags: [skip-execution]
+
+!pip install --upgrade jax
+```
+
+In addition to what's included in base Anaconda, we need to install the following packages
+
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install --upgrade jax jaxlib kaleido
+!pip install kaleido
 !conda install -y -c plotly plotly plotly-orca retrying
 ```
 

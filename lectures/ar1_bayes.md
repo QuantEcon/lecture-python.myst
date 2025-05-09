@@ -13,14 +13,24 @@ kernelspec:
 
 # Posterior Distributions for  AR(1) Parameters
 
-We'll begin with some Python imports.
-
+```{include} _admonition/gpu.md
+```
 
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install arviz pymc numpyro jax
+!pip install numpyro jax
 ```
+
+In addition to what's included in base Anaconda, we need to install the following packages
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install arviz pymc
+```
+
+We'll begin with some Python imports.
 
 ```{code-cell} ipython3
 

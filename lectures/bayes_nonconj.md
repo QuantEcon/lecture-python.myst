@@ -13,6 +13,15 @@ kernelspec:
 
 # Non-Conjugate Priors
 
+```{include} _admonition/gpu.md
+```
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install numpyro pyro-ppl torch jax
+```
+
 This lecture is a sequel to the {doc}`quantecon lecture <prob_meaning>`.
 
 That lecture offers a Bayesian interpretation of probability in a setting in which the likelihood function and the prior distribution
@@ -42,13 +51,6 @@ The two Python modules are
 - `pymc4`
 
 As usual, we begin by importing some Python code.
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-# install dependencies
-!pip install numpyro pyro-ppl torch jax
-```
 
 ```{code-cell} ipython3
 import numpy as np
