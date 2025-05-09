@@ -19,7 +19,15 @@ kernelspec:
 ```{code-cell} ipython3
 :tags: [skip-execution]
 
-!pip install arviz pymc numpyro jax
+!pip install numpyro jax
+```
+
+In addition to what's included in base Anaconda, we need to install the following packages
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install arviz pymc
 ```
 
 We'll begin with some Python imports.
