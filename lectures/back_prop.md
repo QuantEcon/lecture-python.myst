@@ -13,6 +13,9 @@ kernelspec:
 
 # Introduction to Artificial Neural Networks
 
+```{include} _admonition/gpu.md
+```
+
 ```{code-cell} ipython3
 :tags: [skip-execution]
 

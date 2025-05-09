@@ -13,14 +13,16 @@ kernelspec:
 
 # Posterior Distributions for  AR(1) Parameters
 
-We'll begin with some Python imports.
-
+```{include} _admonition/gpu.md
+```
 
 ```{code-cell} ipython3
-:tags: [hide-output, skip-execution]
+:tags: [skip-execution]
 
 !pip install arviz pymc numpyro jax
 ```
+
+We'll begin with some Python imports.
 
 ```{code-cell} ipython3
 
