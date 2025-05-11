@@ -23,7 +23,7 @@ jobs:
         run: |
           pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
           pip install --upgrade "jax[cuda12-local]"
-          pip install numpyro  
+          pip install numpyro pyro-ppl
           python scripts/test-jax-install.py
       - name: Check nvidia Drivers
         shell: bash -l {0}
