@@ -259,7 +259,7 @@
 <li><p>A peculiar property of likelihood ratio processes</p></li>
 <li><p>How a likelihood ratio process is a key ingredient in frequentist hypothesis testing</p></li>
 <li><p>How a <strong>receiver operator characteristic curve</strong> summarizes information about a false alarm probability and power in frequentist hypothesis testing</p></li>
-<li><p>How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged and asked Milton Friedman to justify to him, a topic to be studied in  <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a></p></li>
+<li><p>How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged, a topic to be studied in  <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a></p></li>
 </ul>
 <p>Let’s start  by importing some Python tools.</p>
 <div class="cell docutils container">
@@ -284,14 +284,12 @@
 <p>We will sometimes let <span class="math notranslate nohighlight">\(q\)</span> be the density that nature chose once and for all, so
 that <span class="math notranslate nohighlight">\(q\)</span> is either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>, permanently.</p>
 <p>Nature knows which density it permanently draws from, but we the observers do not.</p>
-<p>We do know both <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> but we don’t know which density nature
+<p>We know both <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> but we don’t know which density nature
 chose.</p>
 <p>But we want to know.</p>
 <p>To do that, we use observations.</p>
-<p>We observe a sequence <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span> of <span class="math notranslate nohighlight">\(T\)</span> IID draws
-from either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>.</p>
-<p>We want to use these observations to infer whether nature chose <span class="math notranslate nohighlight">\(f\)</span> or
-<span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>We observe a sequence <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span> of <span class="math notranslate nohighlight">\(T\)</span> IID draws that we know came from either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>We want to use these observations to infer whether nature chose <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>A <strong>likelihood ratio process</strong> is a useful tool for this task.</p>
 <p>To begin, we define key component of a likelihood ratio process, namely, the time <span class="math notranslate nohighlight">\(t\)</span> likelihood ratio  as the random variable</p>
 <div class="math notranslate nohighlight">
@@ -302,7 +300,7 @@ from either <span class="math notranslate nohighlight">\(f\)</span> or <span cla
 same intervals of possible realizations of the random variable <span class="math notranslate nohighlight">\(W\)</span>.</p>
 <p>That means that under the <span class="math notranslate nohighlight">\(g\)</span> density,  <span class="math notranslate nohighlight">\(\ell (w_t)=
 \frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}\)</span>
-is evidently a nonnegative  random variable with mean <span class="math notranslate nohighlight">\(1\)</span>.</p>
+is a nonnegative  random variable with mean <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <p>A <strong>likelihood ratio process</strong> for sequence
 <span class="math notranslate nohighlight">\(\left\{ w_{t}\right\} _{t=1}^{\infty}\)</span> is defined as</p>
 <div class="math notranslate nohighlight">
@@ -393,7 +391,7 @@ draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b1d410c6ae81603797d89427caae571c531c9adf77b35d7ac4ade77d5ee6a920.png" src="_images/b1d410c6ae81603797d89427caae571c531c9adf77b35d7ac4ade77d5ee6a920.png" />
+<img alt="_images/04bcf4bc8d195c0cd4af40c8e986db880a26f3616b68da2da79e5425346e455d.png" src="_images/04bcf4bc8d195c0cd4af40c8e986db880a26f3616b68da2da79e5425346e455d.png" />
 </div>
 </div>
 <p>Evidently, as sample length <span class="math notranslate nohighlight">\(T\)</span> grows, most probability mass
@@ -408,10 +406,10 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f0963385d90&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7e0ebc278860&gt;]
 </pre></div>
 </div>
-<img alt="_images/f3058a6bc13d36a325717b051f069e3d44b351f6b4c37a0d86179aa802bf594e.png" src="_images/f3058a6bc13d36a325717b051f069e3d44b351f6b4c37a0d86179aa802bf594e.png" />
+<img alt="_images/eff5afeaffa8f1b83f7418dd09121223a027e004df575ddb33de86191cda061c.png" src="_images/eff5afeaffa8f1b83f7418dd09121223a027e004df575ddb33de86191cda061c.png" />
 </div>
 </div>
 <p>Despite the evident convergence of most probability mass to a
@@ -458,7 +456,7 @@ E\left[L\left(w^{t}\right)\bigm|q=g\right]  &amp;=E\left[L\left(w^{t-1}\right)\e
 <p>How can <span class="math notranslate nohighlight">\(E\left[L\left(w^{t}\right)\bigm|q=g\right]=1\)</span> possibly be true when most  probability mass of the likelihood
 ratio process is piling up near <span class="math notranslate nohighlight">\(0\)</span> as
 <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>?</p>
-<p>The answer has to be that as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>, the
+<p>The answer is that as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>, the
 distribution of <span class="math notranslate nohighlight">\(L_t\)</span> becomes more and more fat-tailed:
 enough  mass shifts to larger and larger values of <span class="math notranslate nohighlight">\(L_t\)</span> to make
 the mean of <span class="math notranslate nohighlight">\(L_t\)</span> continue to be one despite most of the probability mass piling up
@@ -520,10 +518,10 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f0963e6e990&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7e0ebd14fb30&gt;]
 </pre></div>
 </div>
-<img alt="_images/67a750f045c7ac0aa2623a1d16febd54688a8ebbfaadde0cda63e11d683c1067.png" src="_images/67a750f045c7ac0aa2623a1d16febd54688a8ebbfaadde0cda63e11d683c1067.png" />
+<img alt="_images/08f5486f1f13159015f0d3187e0afbcdae8a9b5b84bdeacf13bd2c1e1196f138.png" src="_images/08f5486f1f13159015f0d3187e0afbcdae8a9b5b84bdeacf13bd2c1e1196f138.png" />
 </div>
 </div>
 <p>We also plot the probability that <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> falls into
@@ -536,10 +534,10 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f0963e3e810&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7e0ebcebc230&gt;]
 </pre></div>
 </div>
-<img alt="_images/1782db072ddcbf32e2f61eeb4e2a97cb4498c463226c4ce255475a0f192c49ab.png" src="_images/1782db072ddcbf32e2f61eeb4e2a97cb4498c463226c4ce255475a0f192c49ab.png" />
+<img alt="_images/99f4bdecc97dd2c95f0d8d90acb7d048575e50bd1870d27127169ec7d3262174.png" src="_images/99f4bdecc97dd2c95f0d8d90acb7d048575e50bd1870d27127169ec7d3262174.png" />
 </div>
 </div>
 </section>
@@ -658,12 +656,15 @@ is what makes it possible to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bdb44d86e38554354d9e7fbbd493dbccb3dfe89ba81ddb1513ba0c891765be28.png" src="_images/bdb44d86e38554354d9e7fbbd493dbccb3dfe89ba81ddb1513ba0c891765be28.png" />
+<img alt="_images/0fa6133c076d0edf54082abc7e14ad432a1645802b62971cbc8dd9fcd3081d27.png" src="_images/0fa6133c076d0edf54082abc7e14ad432a1645802b62971cbc8dd9fcd3081d27.png" />
 </div>
 </div>
-<p>The graph below shows more clearly that, when we hold the threshold
-<span class="math notranslate nohighlight">\(c\)</span> fixed, the probability of detection monotonically increases with increases in
-<span class="math notranslate nohighlight">\(t\)</span> and that the probability of a false alarm monotonically decreases.</p>
+<p>When we hold <span class="math notranslate nohighlight">\(c\)</span> fixed at <span class="math notranslate nohighlight">\(c=1\)</span>, the following graph shows  that</p>
+<ul class="simple">
+<li><p>the probability of detection monotonically increases with increases in
+<span class="math notranslate nohighlight">\(t\)</span></p></li>
+<li><p>the probability of a false alarm monotonically decreases with increases in <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">PD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
@@ -683,14 +684,14 @@ is what makes it possible to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/54d01d397852567fab322619ab6779f1a1c70f7eab987508a148cfe7cbedd4e2.png" src="_images/54d01d397852567fab322619ab6779f1a1c70f7eab987508a148cfe7cbedd4e2.png" />
+<img alt="_images/f43cabaae87a09412d9d945d02ca325f9c8846169c1fb5b73947400e360ea593.png" src="_images/f43cabaae87a09412d9d945d02ca325f9c8846169c1fb5b73947400e360ea593.png" />
 </div>
 </div>
 <p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>,  the threshold <span class="math notranslate nohighlight">\(c\)</span> uniquely pins down  probabilities
 of both types of error.</p>
 <p>If for a fixed <span class="math notranslate nohighlight">\(t\)</span> we now free up and move <span class="math notranslate nohighlight">\(c\)</span>, we will sweep out the probability
 of detection as a function of the probability of false alarm.</p>
-<p>This produces what is called a <a class="reference external" href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">receiver operating characteristic
+<p>This produces  a <a class="reference external" href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">receiver operating characteristic
 curve</a>.</p>
 <p>Below, we plot receiver operating characteristic curves for different
 sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
@@ -718,7 +719,7 @@ sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0d9292eed997e4713bd8cde8ca488d77c50652d5c15d5791689ed8e40318175b.png" src="_images/0d9292eed997e4713bd8cde8ca488d77c50652d5c15d5791689ed8e40318175b.png" />
+<img alt="_images/c319f076c184d70884bfa4d4ec4aa2a05b5ce10396e624e4aad49aa8f6d98717.png" src="_images/c319f076c184d70884bfa4d4ec4aa2a05b5ce10396e624e4aad49aa8f6d98717.png" />
 </div>
 </div>
 <p>Notice that as <span class="math notranslate nohighlight">\(t\)</span> increases, we are assured a larger probability
@@ -759,7 +760,7 @@ target probability of detection, for example, <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6a93be8dc6d3d8f0b9a8a4270ae86d9b05e7732281e185a2e197a898c7c0207e.png" src="_images/6a93be8dc6d3d8f0b9a8a4270ae86d9b05e7732281e185a2e197a898c7c0207e.png" />
+<img alt="_images/5b8ffb170f6b773ee1048cf04b19d568cca77ed818e92cefac6522033f3cd8bb.png" src="_images/5b8ffb170f6b773ee1048cf04b19d568cca77ed818e92cefac6522033f3cd8bb.png" />
 </div>
 </div>
 <p>The United States Navy evidently used a procedure like this to select a sample size <span class="math notranslate nohighlight">\(t\)</span> for doing quality
@@ -869,7 +870,7 @@ integration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7902536603660161, 0.08554075759988769)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7902536603660161, 0.08554075759988715)
 </pre></div>
 </div>
 </div>
@@ -897,10 +898,10 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f0963b01100&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7e0ebd1b1160&gt;]
 </pre></div>
 </div>
-<img alt="_images/654da47c7893b707e3cdbc32264e0b22a9bfc132005cee66c8da7dac180495de.png" src="_images/654da47c7893b707e3cdbc32264e0b22a9bfc132005cee66c8da7dac180495de.png" />
+<img alt="_images/56bf3674dd5113d35dd4161480b451ceeb409e3872bc784ed0b6da0b898d13a1.png" src="_images/56bf3674dd5113d35dd4161480b451ceeb409e3872bc784ed0b6da0b898d13a1.png" />
 </div>
 </div>
 <p>We can also try an <span class="math notranslate nohighlight">\(h\)</span> that is closer to <span class="math notranslate nohighlight">\(f\)</span> than is
@@ -921,7 +922,7 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.01239249754452668, 0.35377684280997646)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.01239249754452671, 0.3537768428099763)
 </pre></div>
 </div>
 </div>
@@ -944,10 +945,10 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f0963b4f140&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7e0ebcdab230&gt;]
 </pre></div>
 </div>
-<img alt="_images/e2a316e4b56de1854e5109d319d80dfc6bccde67f04defa8a32e75cd1c270ddf.png" src="_images/e2a316e4b56de1854e5109d319d80dfc6bccde67f04defa8a32e75cd1c270ddf.png" />
+<img alt="_images/e6983eefd7d2a684dcb04d6781b9259eea585527da469982ead4e2b2c408b338.png" src="_images/e6983eefd7d2a684dcb04d6781b9259eea585527da469982ead4e2b2c408b338.png" />
 </div>
 </div>
 </section>
