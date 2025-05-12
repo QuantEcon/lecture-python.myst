@@ -10,6 +10,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Install latest arviz
+        shell: bash -l {0}
+        run: |
+          pip install --upgrade arviz
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
