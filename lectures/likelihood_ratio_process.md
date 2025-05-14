@@ -36,7 +36,7 @@ Among  things that we'll learn  are
 * A peculiar property of likelihood ratio processes
 * How a likelihood ratio process is a key ingredient in frequentist hypothesis testing
 * How a **receiver operator characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
-* How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged and asked Milton Friedman to justify to him, a topic to be studied in  {doc}`this lecture <wald_friedman>`
+* How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged, a topic to be studied in  {doc}`this lecture <wald_friedman>`
 
 
 Let's start  by importing some Python tools.
@@ -64,18 +64,16 @@ that $q$ is either $f$ or $g$, permanently.
 
 Nature knows which density it permanently draws from, but we the observers do not.
 
-We do know both $f$ and $g$ but we don’t know which density nature
+We know both $f$ and $g$ but we don’t know which density nature
 chose.
 
 But we want to know.
 
 To do that, we use observations.
 
-We observe a sequence $\{w_t\}_{t=1}^T$ of $T$ IID draws
-from either $f$ or $g$.
+We observe a sequence $\{w_t\}_{t=1}^T$ of $T$ IID draws that we know came from either $f$ or $g$.
 
-We want to use these observations to infer whether nature chose $f$ or
-$g$.
+We want to use these observations to infer whether nature chose $f$ or $g$.
 
 A **likelihood ratio process** is a useful tool for this task.
 
@@ -90,7 +88,7 @@ same intervals of possible realizations of the random variable $W$.
 
 That means that under the $g$ density,  $\ell (w_t)=
 \frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}$
-is evidently a nonnegative  random variable with mean $1$.
+is a nonnegative  random variable with mean $1$.
 
 A **likelihood ratio process** for sequence
 $\left\{ w_{t}\right\} _{t=1}^{\infty}$ is defined as
@@ -237,7 +235,7 @@ How can $E\left[L\left(w^{t}\right)\bigm|q=g\right]=1$ possibly be true when mos
 ratio process is piling up near $0$ as
 $t \rightarrow + \infty$?
 
-The answer has to be that as $t \rightarrow + \infty$, the
+The answer is that as $t \rightarrow + \infty$, the
 distribution of $L_t$ becomes more and more fat-tailed:
 enough  mass shifts to larger and larger values of $L_t$ to make
 the mean of $L_t$ continue to be one despite most of the probability mass piling up
@@ -442,9 +440,11 @@ for i, t in enumerate([1, 7, 14, 21]):
 plt.show()
 ```
 
-The graph below shows more clearly that, when we hold the threshold
-$c$ fixed, the probability of detection monotonically increases with increases in
-$t$ and that the probability of a false alarm monotonically decreases.
+
+When we hold $c$ fixed at $c=1$, the following graph shows  that 
+  *  the probability of detection monotonically increases with increases in
+$t$ 
+  *  the probability of a false alarm monotonically decreases with increases in $t$.
 
 ```{code-cell} python3
 PD = np.empty(T)
@@ -468,7 +468,7 @@ of both types of error.
 If for a fixed $t$ we now free up and move $c$, we will sweep out the probability
 of detection as a function of the probability of false alarm.
 
-This produces what is called a [receiver operating characteristic
+This produces  a [receiver operating characteristic
 curve](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).
 
 Below, we plot receiver operating characteristic curves for different

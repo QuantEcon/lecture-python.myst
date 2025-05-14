@@ -69,7 +69,5 @@ One way to give feedback is to raise an issue through our [issue tracker](https:
 Please be as specific as possible.  Tell us where the problem is and as much
 detail about your local set up as you can provide.
 
-Another feedback option is to use our [discourse forum](https://discourse.quantecon.org/).
-
 Finally, you can provide direct feedback to [contact@quantecon.org](mailto:contact@quantecon.org)
 
