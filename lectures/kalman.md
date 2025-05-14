@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -29,10 +31,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -54,9 +55,8 @@ Required knowledge: Familiarity with matrix manipulations, multivariate normal d
 
 We'll need the following imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from scipy import linalg
 import numpy as np
 import matplotlib.cm as cm
@@ -122,10 +122,13 @@ $2 \times 2$ covariance matrix.  In our simulations, we will suppose that
 
 This density $p(x)$ is shown below as a contour map, with the center of the red ellipse being equal to $\hat x$.
 
-```{code-cell} python3
----
-tags: [output_scroll]
----
+```{code-cell} ipython3
+a
+```
+
+```{code-cell} ipython3
+:tags: [output_scroll]
+
 # Set up the Gaussian prior density p
 Σ = [[0.4, 0.3], [0.3, 0.45]]
 Σ = np.matrix(Σ)
@@ -186,7 +189,7 @@ def bivariate_normal(x, y, σ_x=1.0, σ_y=1.0, μ_x=0.0, μ_y=0.0, σ_xy=0.0):
 
 def gen_gaussian_plot_vals(μ, C):
     "Z values for plotting the bivariate Gaussian N(μ, C)"
-    m_x, m_y = float(μ[0]), float(μ[1])
+    m_x, m_y = float(μ[0,0]), float(μ[1,0])
     s_x, s_y = np.sqrt(C[0, 0]), np.sqrt(C[1, 1])
     s_xy = C[0, 1]
     return bivariate_normal(X, Y, s_x, s_y, m_x, m_y, s_xy)
@@ -213,7 +216,11 @@ The good news is that the missile has been located by our sensors, which report 
 The next figure shows the original prior $p(x)$ and the new reported
 location $y$
 
-```{code-cell} python3
+```{code-cell} ipython3
+y[0].item()
+```
+
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 8))
 ax.grid()
 
@@ -221,7 +228,7 @@ Z = gen_gaussian_plot_vals(x_hat, Σ)
 ax.contourf(X, Y, Z, 6, alpha=0.6, cmap=cm.jet)
 cs = ax.contour(X, Y, Z, 6, colors="black")
 ax.clabel(cs, inline=1, fontsize=10)
-ax.text(float(y[0]), float(y[1]), "$y$", fontsize=20, color="black")
+ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
 
 plt.show()
 ```
@@ -284,7 +291,7 @@ This new density $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is shown in the next fig
 
 The original density is left in as contour lines for comparison
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 8))
 ax.grid()
 
@@ -298,7 +305,7 @@ new_Z = gen_gaussian_plot_vals(x_hat_F, Σ_F)
 cs2 = ax.contour(X, Y, new_Z, 6, colors="black")
 ax.clabel(cs2, inline=1, fontsize=10)
 ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap=cm.jet)
-ax.text(float(y[0]), float(y[1]), "$y$", fontsize=20, color="black")
+ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
 
 plt.show()
 ```
@@ -391,7 +398,7 @@ A
 Q = 0.3 * \Sigma
 $$
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 8))
 ax.grid()
 
@@ -415,7 +422,7 @@ new_Z = gen_gaussian_plot_vals(new_x_hat, new_Σ)
 cs3 = ax.contour(X, Y, new_Z, 6, colors="black")
 ax.clabel(cs3, inline=1, fontsize=10)
 ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap=cm.jet)
-ax.text(float(y[0]), float(y[1]), "$y$", fontsize=20, color="black")
+ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
 
 plt.show()
 ```
@@ -577,7 +584,11 @@ Your figure should -- modulo randomness -- look something like this
 :class: dropdown
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
+kalman.x_hat
+```
+
+```{code-cell} ipython3
 # Parameters
 θ = 10  # Constant value of state x_t
 A, C, G, H = 1, 0, 1, 1
@@ -598,7 +609,7 @@ xgrid = np.linspace(θ - 5, θ + 2, 200)
 
 for i in range(N):
     # Record the current predicted mean and variance
-    m, v = [float(z) for z in (kalman.x_hat, kalman.Sigma)]
+    m, v = [float(z) for z in (kalman.x_hat.item(), kalman.Sigma.item())]
     # Plot, update filter
     ax.plot(xgrid, norm.pdf(xgrid, loc=m, scale=np.sqrt(v)), label=f'$t={i}$')
     kalman.update(y[i])
@@ -641,7 +652,7 @@ Your figure should show error erratically declining something like this
 :class: dropdown
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 ϵ = 0.1
 θ = 10  # Constant value of state x_t
 A, C, G, H = 1, 0, 1, 1
@@ -657,7 +668,7 @@ y = y.flatten()
 
 for t in range(T):
     # Record the current predicted mean and variance and plot their densities
-    m, v = [float(temp) for temp in (kalman.x_hat, kalman.Sigma)]
+    m, v = [float(temp) for temp in (kalman.x_hat.item(), kalman.Sigma.item())]
 
     f = lambda x: norm.pdf(x, loc=m, scale=np.sqrt(v))
     integral, error = quad(f, θ - ϵ, θ + ϵ)
@@ -745,7 +756,7 @@ Observe how, after an initial learning period, the Kalman filter performs quite 
 :class: dropdown
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Define A, C, G, H
 G = np.identity(2)
 H = np.sqrt(0.5) * np.identity(2)
