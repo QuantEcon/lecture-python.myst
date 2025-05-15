@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -62,11 +64,11 @@ countries and assign it to `realwage`.
 
 The dataset can be accessed with the following link:
 
-```{code-cell} python3
+```{code-cell} ipython3
 url1 = 'https://raw.githubusercontent.com/QuantEcon/lecture-python/master/source/_static/lecture_specific/pandas_panel/realwage.csv'
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 import pandas as pd
 
 # Display 6 columns for viewing purposes
@@ -80,7 +82,7 @@ realwage = pd.read_csv(url1)
 
 Let's have a look at what we've got to work with
 
-```{code-cell} python3
+```{code-cell} ipython3
 realwage.head()  # Show first 5 rows
 ```
 
@@ -92,7 +94,7 @@ We will use `pivot_table` to create a wide format panel, with a `MultiIndex` to 
 
 By passing a list in columns, we can create a `MultiIndex` in our column axis
 
-```{code-cell} python3
+```{code-cell} ipython3
 realwage = realwage.pivot_table(values='value',
                                 index='Time',
                                 columns=['Country', 'Series', 'Pay period'])
@@ -101,7 +103,7 @@ realwage.head()
 
 To more easily filter our time series data, later on, we will convert the index into a `DateTimeIndex`
 
-```{code-cell} python3
+```{code-cell} ipython3
 realwage.index = pd.to_datetime(realwage.index)
 type(realwage.index)
 ```
@@ -113,18 +115,18 @@ Series > Pay period).
 A `MultiIndex` is the simplest and most flexible way to manage panel
 data in pandas
 
-```{code-cell} python3
+```{code-cell} ipython3
 type(realwage.columns)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 realwage.columns.names
 ```
 
 Like before, we can select the country (the top level of our
 `MultiIndex`)
 
-```{code-cell} python3
+```{code-cell} ipython3
 realwage['United States'].head()
 ```
 
@@ -135,15 +137,15 @@ throughout this lecture to reshape our dataframe into a format we need.
 the row index (`.unstack()` works in the opposite direction - try it
 out)
 
-```{code-cell} python3
-realwage.stack().head()
+```{code-cell} ipython3
+realwage.stack(future_stack=True).head()
 ```
 
 We can also pass in an argument to select the level we would like to
 stack
 
-```{code-cell} python3
-realwage.stack(level='Country').head()
+```{code-cell} ipython3
+realwage.stack(level='Country', future_stack=True).head()
 ```
 
 Using a `DatetimeIndex` makes it easy to select a particular time
@@ -152,8 +154,8 @@ period.
 Selecting one year and stacking the two lower levels of the
 `MultiIndex` creates a cross-section of our panel data
 
-```{code-cell} python3
-realwage.loc['2015'].stack(level=(1, 2)).transpose().head()
+```{code-cell} ipython3
+realwage.loc['2015'].stack(level=(1, 2), future_stack=True).transpose().head()
 ```
 
 For the rest of lecture, we will work with a dataframe of the hourly
@@ -164,7 +166,7 @@ To create our filtered dataframe (`realwage_f`), we can use the `xs`
 method to select values at lower levels in the multiindex, while keeping
 the higher levels (countries in this case)
 
-```{code-cell} python3
+```{code-cell} ipython3
 realwage_f = realwage.xs(('Hourly', 'In 2015 constant prices at 2015 USD exchange rates'),
                          level=('Pay period', 'Series'), axis=1)
 realwage_f.head()
@@ -182,11 +184,11 @@ function.
 
 The dataset can be accessed with the following link:
 
-```{code-cell} python3
+```{code-cell} ipython3
 url2 = 'https://raw.githubusercontent.com/QuantEcon/lecture-python/master/source/_static/lecture_specific/pandas_panel/countries.csv'
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 worlddata = pd.read_csv(url2, sep=';')
 worlddata.head()
 ```
@@ -194,7 +196,7 @@ worlddata.head()
 First, we'll select just the country and continent variables from
 `worlddata` and rename the column to 'Country'
 
-```{code-cell} python3
+```{code-cell} ipython3
 worlddata = worlddata[['Country (en)', 'Continent']]
 worlddata = worlddata.rename(columns={'Country (en)': 'Country'})
 worlddata.head()
@@ -209,7 +211,7 @@ Our dataframes will be merged using country names, requiring us to use
 the transpose of `realwage_f` so that rows correspond to country names
 in both dataframes
 
-```{code-cell} python3
+```{code-cell} ipython3
 realwage_f.transpose().head()
 ```
 
@@ -243,7 +245,7 @@ the index, so we set `left_index=True`.
 Our 'right' dataframe (`worlddata`) contains countries in the
 'Country' column, so we set `right_on='Country'`
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged = pd.merge(realwage_f.transpose(), worlddata,
                   how='left', left_index=True, right_on='Country')
 merged.head()
@@ -255,7 +257,7 @@ have `NaN` in the Continent column.
 To check whether this has occurred, we can use `.isnull()` on the
 continent column and filter the merged dataframe
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged[merged['Continent'].isnull()]
 ```
 
@@ -269,7 +271,7 @@ continent from the dictionary.
 
 Notice how countries not in our dictionary are mapped with `NaN`
 
-```{code-cell} python3
+```{code-cell} ipython3
 missing_continents = {'Korea': 'Asia',
                       'Russian Federation': 'Europe',
                       'Slovak Republic': 'Europe'}
@@ -282,7 +284,7 @@ We don't want to overwrite the entire series with this mapping.
 `.fillna()` only fills in `NaN` values in `merged['Continent']`
 with the mapping, while leaving other values in the column unchanged
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged['Continent'] = merged['Continent'].fillna(merged['Country'].map(missing_continents))
 
 # Check for whether continents were correctly mapped
@@ -294,13 +296,12 @@ We will also combine the Americas into a single continent - this will make our v
 
 To do this, we will use `.replace()` and loop through a list of the continent values we want to replace
 
-```{code-cell} python3
+```{code-cell} ipython3
 replace = ['Central America', 'North America', 'South America']
 
 for country in replace:
-    merged['Continent'].replace(to_replace=country,
-                                value='America',
-                                inplace=True)
+    merged.Continent = merged.Continent.replace(to_replace=country,
+                                value='America')
 ```
 
 Now that we have all the data we want in a single `DataFrame`, we will
@@ -311,7 +312,7 @@ can efficiently filter our dataframe later on.
 
 By default, levels will be sorted top-down
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged = merged.set_index(['Continent', 'Country']).sort_index()
 merged.head()
 ```
@@ -319,14 +320,14 @@ merged.head()
 While merging, we lost our `DatetimeIndex`, as we merged columns that
 were not in datetime format
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged.columns
 ```
 
 Now that we have set the merged columns as the index, we can recreate a
 `DatetimeIndex` using `.to_datetime()`
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged.columns = pd.to_datetime(merged.columns)
 merged.columns = merged.columns.rename('Time')
 merged.columns
@@ -335,7 +336,7 @@ merged.columns
 The `DatetimeIndex` tends to work more smoothly in the row axis, so we
 will go ahead and transpose `merged`
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged = merged.transpose()
 merged.head()
 ```
@@ -353,20 +354,20 @@ For example, we can calculate the average real minimum wage for each
 country over the period 2006 to 2016 (the default is to aggregate over
 rows)
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged.mean().head(10)
 ```
 
 Using this series, we can plot the average real minimum wage over the
 past decade for each country in our data set
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set_theme()
 ```
 
-```{code-cell} ipython
+```{code-cell} ipython3
 merged.mean().sort_values(ascending=False).plot(kind='bar',
                                                 title="Average real minimum wage 2006 - 2016")
 
@@ -381,13 +382,13 @@ plt.show()
 Passing in `axis=1` to `.mean()` will aggregate over columns (giving
 the average minimum wage for all countries over time)
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged.mean(axis=1).head()
 ```
 
 We can plot this time series as a line graph
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged.mean(axis=1).plot()
 plt.title('Average real minimum wage 2006 - 2016')
 plt.ylabel('2015 USD')
@@ -398,14 +399,14 @@ plt.show()
 We can also specify a level of the `MultiIndex` (in the column axis)
 to aggregate over
 
-```{code-cell} python3
-merged.groupby(level='Continent', axis=1).mean().head()
+```{code-cell} ipython3
+merged.T.groupby(level='Continent').mean().T.head()
 ```
 
 We can plot the average minimum wages in each continent as a time series
 
-```{code-cell} python3
-merged.groupby(level='Continent', axis=1).mean().plot()
+```{code-cell} ipython3
+merged.T.groupby(level='Continent').mean().T.plot()
 plt.title('Average real minimum wage')
 plt.ylabel('2015 USD')
 plt.xlabel('Year')
@@ -414,9 +415,9 @@ plt.show()
 
 We will drop Australia as a continent for plotting purposes
 
-```{code-cell} python3
+```{code-cell} ipython3
 merged = merged.drop('Australia', level='Continent', axis=1)
-merged.groupby(level='Continent', axis=1).mean().plot()
+merged.T.groupby(level='Continent').mean().T.plot()
 plt.title('Average real minimum wage')
 plt.ylabel('2015 USD')
 plt.xlabel('Year')
@@ -426,8 +427,8 @@ plt.show()
 `.describe()` is useful for quickly retrieving a number of common
 summary statistics
 
-```{code-cell} python3
-merged.stack().describe()
+```{code-cell} ipython3
+merged.stack(future_stack=True).describe()
 ```
 
 This is a simplified way to use `groupby`.
@@ -444,8 +445,8 @@ a new `DataFrameGroupBy` object with data split into groups.
 Let's split `merged` by continent again, this time using the
 `groupby` function, and name the resulting object `grouped`
 
-```{code-cell} python3
-grouped = merged.groupby(level='Continent', axis=1)
+```{code-cell} ipython3
+grouped = merged.T.groupby(level='Continent')
 grouped
 ```
 
@@ -457,7 +458,7 @@ each continent using `.size()`.
 
 In this case, our new data structure is a `Series`
 
-```{code-cell} python3
+```{code-cell} ipython3
 grouped.size()
 ```
 
@@ -468,11 +469,11 @@ minimum wages in 2016 for each continent.
 `grouped.groups.keys()` will return the keys from the `groupby`
 object
 
-```{code-cell} python3
+```{code-cell} ipython3
 continents = grouped.groups.keys()
 
 for continent in continents:
-    sns.kdeplot(grouped.get_group(continent).loc['2015'].unstack(), label=continent, fill=True)
+    sns.kdeplot(grouped.get_group(continent).T.loc['2015'].unstack(), label=continent, fill=True)
 
 plt.title('Real minimum wages in 2015')
 plt.xlabel('US dollars')
@@ -500,7 +501,7 @@ in Europe by age and sex from [Eurostat](https://ec.europa.eu/eurostat/data/data
 
 The dataset can be accessed with the following link:
 
-```{code-cell} python3
+```{code-cell} ipython3
 url3 = 'https://raw.githubusercontent.com/QuantEcon/lecture-python/master/source/_static/lecture_specific/pandas_panel/employ.csv'
 ```
 
@@ -519,7 +520,7 @@ Write a program that quickly returns all values in the `MultiIndex`.
 :class: dropdown
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 employ = pd.read_csv(url3)
 employ = employ.pivot_table(values='Value',
                             index=['DATE'],
@@ -531,13 +532,13 @@ employ.head()
 This is a large dataset so it is useful to explore the levels and
 variables available
 
-```{code-cell} python3
+```{code-cell} ipython3
 employ.columns.names
 ```
 
 Variables within levels can be quickly retrieved with a loop
 
-```{code-cell} python3
+```{code-cell} ipython3
 for name in employ.columns.names:
     print(name, employ.columns.get_level_values(name).unique())
 ```
@@ -571,7 +572,7 @@ by age group and sex.
 To easily filter by country, swap `GEO` to the top level and sort the
 `MultiIndex`
 
-```{code-cell} python3
+```{code-cell} ipython3
 employ.columns = employ.columns.swaplevel(0,-1)
 employ = employ.sort_index(axis=1)
 ```
@@ -581,7 +582,7 @@ We need to get rid of a few items in `GEO` which are not countries.
 A fast way to get rid of the EU areas is to use a list comprehension to
 find the level values in `GEO` that begin with 'Euro'
 
-```{code-cell} python3
+```{code-cell} ipython3
 geo_list = employ.columns.get_level_values('GEO').unique().tolist()
 countries = [x for x in geo_list if not x.startswith('Euro')]
 employ = employ[countries]
@@ -591,7 +592,7 @@ employ.columns.get_level_values('GEO').unique()
 Select only percentage employed in the active population from the
 dataframe
 
-```{code-cell} python3
+```{code-cell} ipython3
 employ_f = employ.xs(('Percentage of total population', 'Active population'),
                      level=('UNIT', 'INDIC_EM'),
                      axis=1)
@@ -600,11 +601,11 @@ employ_f.head()
 
 Drop the 'Total' value before creating the grouped boxplot
 
-```{code-cell} python3
+```{code-cell} ipython3
 employ_f = employ_f.drop('Total', level='SEX', axis=1)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 box = employ_f.loc['2015'].unstack().reset_index()
 sns.boxplot(x="AGE", y=0, hue="SEX", data=box, palette=("husl"), showfliers=False)
 plt.xlabel('')
@@ -613,7 +614,4 @@ plt.ylabel('Percentage of population (%)')
 plt.title('Employment in Europe (2015)')
 plt.legend(bbox_to_anchor=(1,0.5))
 plt.show()
-```
-
-```{solution-end}
 ```
