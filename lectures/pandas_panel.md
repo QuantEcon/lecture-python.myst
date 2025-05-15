@@ -615,3 +615,6 @@ plt.title('Employment in Europe (2015)')
 plt.legend(bbox_to_anchor=(1,0.5))
 plt.show()
 ```
+
+```{solution-end}
+ ```
