@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -29,10 +31,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -57,9 +58,8 @@ Other references include chapter 7 of {cite}`Ljungqvist2012`.
 
 Let's start with some standard imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
 ```
@@ -431,8 +431,10 @@ Consider the previously presented duopoly model with parameter values of:
 
 From these, we compute the infinite horizon MPE using the preceding code
 
-```{code-cell} python3
+```{code-cell} ipython3
 :load: _static/lecture_specific/markov_perf/duopoly_mpe.py
+
+
 ```
 
 Running the code produces the following output.
@@ -443,7 +445,7 @@ In particular, let's take F2 as computed above, plug it into {eq}`eq_mpe_p1p` an
 
 We hope that the resulting policy will agree with F1 as computed above
 
-```{code-cell} python3
+```{code-cell} ipython3
 Λ1 = A - B2 @ F2
 lq1 = qe.LQ(Q1, R1, Λ1, B1, beta=β)
 P1_ih, F1_ih, d = lq1.stationary_values()
@@ -454,7 +456,7 @@ This is close enough for rock and roll, as they say in the trade.
 
 Indeed, np.allclose agrees with our assessment
 
-```{code-cell} python3
+```{code-cell} ipython3
 np.allclose(F1, F1_ih)
 ```
 
@@ -470,7 +472,7 @@ The following program
 * computes the evolution of $x_t$ using {eq}`eq_mpe_cle`.
 * extracts and plots industry output $q_t = q_{1t} + q_{2t}$ and price $p_t = a_0 - a_1 q_t$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 AF = A - B1 @ F1 - B2 @ F2
 n = 20
 x = np.empty((3, n))
@@ -527,7 +529,7 @@ The optimal policy in the monopolist case can be computed using [QuantEcon.py](h
 
 First, let's compute the duopoly MPE under the stated parameters
 
-```{code-cell} python3
+```{code-cell} ipython3
 # == Parameters == #
 a0 = 10.0
 a1 = 2.0
@@ -558,7 +560,7 @@ F1, F2, P1, P2 = qe.nnash(A, B1, B2, R1, R2, Q1,
 Now we evaluate the time path of industry output and prices given
 initial condition $q_{10} = q_{20} = 1$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 AF = A - B1 @ F1 - B2 @ F2
 n = 20
 x = np.empty((3, n))
@@ -600,7 +602,7 @@ in the law of motion $x_{t+1} = A x_t + B u_t$.
 We solve for the optimal policy $u_t = - Fx_t$ and track the
 resulting dynamics of $\{q_t\}$, starting at $q_0 = 2.0$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 R = a1
 Q = γ
 A = B = 1
@@ -613,13 +615,13 @@ x0 = qm[0] - q_bar
 x = x0
 for i in range(1, n):
     x = A * x - B * F * x
-    qm[i] = float(x) + q_bar
+    qm[i] = float(x.item()) + q_bar
 pm = a0 - a1 * qm
 ```
 
 Let's have a look at the different time paths
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, axes = plt.subplots(2, 1, figsize=(9, 9))
 
 ax = axes[0]
@@ -712,7 +714,7 @@ The exercise is to calculate these matrices and compute the following figures.
 
 The first figure shows the dynamics of inventories for each firm when the parameters are
 
-```{code-cell} python3
+```{code-cell} ipython3
 δ = 0.02
 D = np.array([[-1, 0.5], [0.5, -1]])
 b = np.array([25, 25])
@@ -743,7 +745,7 @@ In this exercise, reproduce the figure when $\delta = 0.02$.
 
 We treat the case $\delta = 0.02$
 
-```{code-cell} python3
+```{code-cell} ipython3
 δ = 0.02
 D = np.array([[-1, 0.5], [0.5, -1]])
 b = np.array([25, 25])
@@ -772,7 +774,7 @@ $$
 
 we set up the matrices as follows:
 
-```{code-cell} python3
+```{code-cell} ipython3
 # ==  Create matrices needed to compute the Nash feedback equilibrium == #
 
 A = np.array([[δ_1,      0,    -δ_1 * b[0]],
@@ -812,7 +814,7 @@ M2 = np.copy(M1)
 
 We can now compute the equilibrium using `qe.nnash`
 
-```{code-cell} python3
+```{code-cell} ipython3
 F1, F2, P1, P2 = qe.nnash(A, B1, B2, R1,
                           R2, Q1, Q2, S1,
                           S2, W1, W2, M1, M2)
@@ -827,7 +829,7 @@ print(F2)
 Now let's look at the dynamics of inventories, and reproduce the graph
 corresponding to $\delta = 0.02$
 
-```{code-cell} python3
+```{code-cell} ipython3
 AF = A - B1 @ F1 - B2 @ F2
 n = 25
 x = np.empty((3, n))
@@ -842,7 +844,4 @@ ax.plot(I2, 'g-', lw=2, alpha=0.75, label='inventories, firm 2')
 ax.set_title(rf'$\delta = {δ}$')
 ax.legend()
 plt.show()
-```
-
-```{solution-end}
 ```
