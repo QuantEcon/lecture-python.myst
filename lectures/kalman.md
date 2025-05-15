@@ -213,10 +213,6 @@ The next figure shows the original prior $p(x)$ and the new reported
 location $y$
 
 ```{code-cell} ipython3
-y[0].item()
-```
-
-```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 8))
 ax.grid()
 
@@ -578,10 +574,6 @@ Your figure should -- modulo randomness -- look something like this
 
 ```{solution-start} kalman_ex1
 :class: dropdown
-```
-
-```{code-cell} ipython3
-kalman.x_hat
 ```
 
 ```{code-cell} ipython3
