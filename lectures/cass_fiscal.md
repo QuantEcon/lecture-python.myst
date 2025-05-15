@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.6
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -750,7 +750,7 @@ def plot_results(solution, k_ss, c_ss, shocks, shock_param,
     R_bar_path = compute_R_bar_path(shocks, k_path, model, S)
 
     axes[2].plot(R_bar_path[:T], linestyle=linestyle, label=label)
-    axes[2].set_title('$\overline{R}$')
+    axes[2].set_title(r'$\overline{R}$')
     axes[2].axhline(1 / model.β, linestyle='--', color='black')
     
     η_path = compute_η_path(k_path, model, S=T)
@@ -1041,7 +1041,7 @@ Indeed, {eq}`eq:euler_house` or {eq}`eq:diff_second` indicates that a foreseen i
 crease in $\tau_{ct}$ (i.e., a decrease in $(1+\tau_{ct})$
 $(1+\tau_{ct+1})$) operates like an increase in $\tau_{kt}$.
 
-The following figure portrays the response to a foreseen increase in the consumption tax $\tau_c$. 
+The following figure portrays the response to a foreseen increase in the consumption tax $\tau_c$.
 
 ```{code-cell} ipython3
 shocks = {
@@ -1101,7 +1101,6 @@ The  figure shows that:
 - Transition dynamics push $k_t$ (capital stock) toward a new, lower steady-state level. In the new steady state:
     - Consumption is lower due to reduced output from the lower capital stock.
     - Smoother consumption paths occur when $\gamma = 2$ than when $\gamma = 0.2$.
-    
 
 +++
 
@@ -1110,8 +1109,6 @@ in government policy. Next we describe some experiments in which there is a
 foreseen one-time change in a policy variable (a "pulse").
 
 **Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever**
-
-
 
 ```{code-cell} ipython3
 g_path = np.repeat(0.2, S + 1)
@@ -1136,6 +1133,7 @@ The figure indicates how:
     - Before $t = 10$, capital accumulates as interest rate changes induce households to prepare for the anticipated increase in government spending.
     - At $t = 10$, the capital stock sharply decreases as the government consumes part of it.
     - $\bar{R}$ jumps above its steady-state value due to the capital reduction and then gradually declines toward its steady-state level.
+
 +++
 
 ### Method 2: Residual Minimization 

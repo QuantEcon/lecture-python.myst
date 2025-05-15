@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -28,10 +30,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 !pip install --upgrade yfinance
 ```
@@ -53,9 +54,8 @@ We will discuss these issues as we go along.
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
 ```
@@ -63,7 +63,7 @@ import quantecon as qe
 The following two lines are only added to avoid a `FutureWarning` caused by
 compatibility issues between pandas and matplotlib.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 ```
@@ -105,7 +105,8 @@ For example, consider the following plot of daily returns on the Nasdaq
 Composite Index for the period 1st January 2006 to 1st November 2019.
 
 (ndcode)=
-```{code-cell} python3
+
+```{code-cell} ipython3
 import yfinance as yf
 
 s = yf.download('^IXIC', '2006-1-1', '2019-11-1', auto_adjust=False)['Adj Close']

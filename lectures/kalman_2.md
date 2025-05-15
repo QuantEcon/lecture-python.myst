@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -237,7 +237,7 @@ for t in range(1, T):
     x_hat, Σ = kalman.x_hat, kalman.Sigma
     Σ_t[:, :, t-1] = Σ
     x_hat_t[:, t-1] = x_hat.reshape(-1)
-    y_hat_t[t-1] = worker.G @ x_hat
+    [y_hat_t[t-1]] = worker.G @ x_hat
 
 x_hat_t = np.concatenate((x[:, 1][:, np.newaxis], 
                     x_hat_t), axis=1)
@@ -253,7 +253,6 @@ We also plot $E [u_0 | y^{t-1}]$, which is  the firm inference about  a worker's
 We can  watch as the  firm's inference  $E [u_0 | y^{t-1}]$ of the worker's work ethic converges toward the hidden   $u_0$, which is not directly observed by the firm.
 
 ```{code-cell} ipython3
-
 fig, ax = plt.subplots(1, 2)
 
 ax[0].plot(y_hat_t, label=r'$E[y_t| y^{t-1}]$')
@@ -273,6 +272,7 @@ ax[1].legend()
 fig.tight_layout()
 plt.show()
 ```
+
 ## Some Computational Experiments
 
 Let's look at  $\Sigma_0$ and $\Sigma_T$ in order to see how much the firm learns about the hidden state during the horizon we have set.
@@ -290,7 +290,6 @@ Evidently,  entries in the conditional covariance matrix become smaller over tim
 It is enlightening to  portray how  conditional covariance matrices $\Sigma_t$ evolve by plotting confidence ellipsoides around $E [x_t |y^{t-1}] $ at various $t$'s.
 
 ```{code-cell} ipython3
-
 # Create a grid of points for contour plotting
 h_range = np.linspace(x_hat_t[0, :].min()-0.5*Σ_t[0, 0, 1], 
                       x_hat_t[0, :].max()+0.5*Σ_t[0, 0, 1], 100)
@@ -338,7 +337,6 @@ For example, let's say $h_0 = 0$ and $u_0 = 4$.
 Here is one way to do this.
 
 ```{code-cell} ipython3
-
 # For example, we might want h_0 = 0 and u_0 = 4
 mu_0 = np.array([0.0, 4.0])
 
@@ -361,7 +359,6 @@ print('u_0 =', u_0)
 Another way to accomplish the same goal is to use the following code.
 
 ```{code-cell} ipython3
-
 # If we want to set the initial 
 # h_0 = hhat_0 = 0 and u_0 = uhhat_0 = 4.0:
 worker = create_worker(hhat_0=0.0, uhat_0=4.0)
@@ -398,8 +395,8 @@ for t in range(1, T):
     kalman.update(y[t])
     x_hat, Σ = kalman.x_hat, kalman.Sigma
     Σ_t.append(Σ)
-    y_hat_t[t-1] = worker.G @ x_hat
-    u_hat_t[t-1] = x_hat[1]
+    [y_hat_t[t-1]] = worker.G @ x_hat
+    [u_hat_t[t-1]] = x_hat[1]
 
 
 # Generate plots for y_hat_t and u_hat_t
@@ -426,10 +423,9 @@ plt.show()
 More generally, we can change some or all of the parameters defining a worker in our `create_worker`
 namedtuple.
 
-Here is an example. 
+Here is an example.
 
 ```{code-cell} ipython3
-
 # We can set these parameters when creating a worker -- just like classes!
 hard_working_worker =  create_worker(α=.4, β=.8, 
                         hhat_0=7.0, uhat_0=100, σ_h=2.5, σ_u=3.2)
@@ -475,8 +471,8 @@ def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None,
         kalman.update(y[i])
         x_hat, Σ = kalman.x_hat, kalman.Sigma
         Σ_t.append(Σ)
-        y_hat_t[i] = worker.G @ x_hat
-        u_hat_t[i] = x_hat[1]
+        [y_hat_t[i]] = worker.G @ x_hat
+        [u_hat_t[i]] = x_hat[1]
 
     if diff == True:
         title = ('Difference between inferred and true work ethic over time' 
@@ -503,7 +499,6 @@ def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None,
 ```
 
 ```{code-cell} ipython3
-
 num_workers = 3
 T = 50
 fig, ax = plt.subplots(figsize=(7, 7))
@@ -516,7 +511,6 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
-
 # We can also generate plots of u_t:
 
 T = 50
@@ -539,7 +533,6 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
-
 # We can also use exact u_0=1 and h_0=2 for all workers
 
 T = 50
@@ -568,7 +561,6 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
-
 # We can generate a plot for only one of the workers:
 
 T = 50
