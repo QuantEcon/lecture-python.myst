@@ -1384,3 +1384,6 @@ shocks = {
 
 experiment_model(shocks, S, model, run_min, plot_results, 'g')
 ```
+
+```{solution-end}
+```

@@ -845,3 +845,6 @@ ax.set_title(rf'$\delta = {δ}$')
 ax.legend()
 plt.show()
 ```
+
+```{solution-end}
+```
