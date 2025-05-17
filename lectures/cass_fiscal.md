@@ -274,9 +274,8 @@ To compute an equilibrium,  we seek a  price system $\{q_t, \eta_t, w_t\}$, a bu
 - feasibility condition {eq}`eq:tech_capital`, no-arbitrage condition for household {eq}`eq:no_arb` and firms {eq}`eq:no_arb_firms`, household's first order conditions {eq}`eq:foc_c` and {eq}`eq:foc_n`.
 - an initial condition $k_0$ and a terminal condition {eq}`eq:terminal_final`.
 
-
+(cass_fiscal_shooting)=
 ## Python Code
-
 
 We require the following imports
 
@@ -326,6 +325,12 @@ We rewrite {eq}`eq:tech_capital` with $f(k) := F(k, 1)$,
 $$
 k_{t+1} = f(k_t) + (1 - \delta) k_t - g_t - c_t.
 $$ (eq:feasi_capital)
+
+```{note}
+In the functions below, we include routines to handle the growth component, making the code more concise.
+
+A detailed discussion of the growth model is provided later in the section {ref}`growth_model`.
+```
 
 ```{code-cell} ipython3
 def next_k(k_t, g_t, c_t, model, μ_t=None):
@@ -596,21 +601,12 @@ def f_prime(k, model, A=None):
     return model.α * A_val * k ** (model.α - 1)
 ```
 
-(compute_cass_fiscal)=
 ## Computation
 
 We describe  two ways to compute an equilibrium: 
 
  * a shooting algorithm
  * a residual-minimization method that focuses on imposing  Euler equation {eq}`eq:diff_second` and the  feasibility condition {eq}`eq:feasi_capital`.
-
-
-```{note}
-In the functions below, we included routines to handle the growth component to 
-make the code more concise.
-
-A detailed discussion of the growth model is given later in {ref}`growth_model`.
-```
 
 ### Shooting Algorithm
 
@@ -1675,7 +1671,7 @@ $$
 (c_tA_t)^{-\gamma} = \beta (c_{t+1}A_{t+1})^{-\gamma} \bar{R}_{t+1}
 $$
 
-Thus, the counterpart to {eq}`eq:consume_r` is
+Thus, the counterpart to {eq}`eq:consume_R` is
 
 $$
 c_{t+1} = c_t \left[ \beta \bar{R}_{t+1} \right]^{\frac{1}{\gamma}}\mu_{t+1}^{-1}
@@ -1865,6 +1861,7 @@ The figures show that:
 
 ```{exercise}
 :label: cass_fiscal_ex3
+
 Replicate the plots of our two experiments using the second method of residual minimization.
 1. A foreseen increase in $\mu$ from 1.02 to 1.025 at t=10,
 2. A unforeseen increase in $\mu$ from 1.02 to 1.025 at t=0.
@@ -1873,9 +1870,10 @@ Replicate the plots of our two experiments using the second method of residual m
 ```{solution-start} cass_fiscal_ex3
 :class: dropdown
 ```
+
 Here is one solution:
 
-#### Experiment 1:  A foreseen increase in $\mu$ from 1.02 to 1.025 at t=10
+**Experiment 1:  A foreseen increase in $\mu$ from 1.02 to 1.025 at $t=10$**
 
 ```{code-cell} ipython3
 shocks = {
@@ -1890,7 +1888,7 @@ A_path = compute_A_path(1.0, shocks, S)
 experiment_model(shocks, S, model, A_path, run_min, plot_results, 'μ')
 ```
 
-#### Experiment 2:  A unforeseen increase in $\mu$ from 1.02 to 1.025 at t=0
+**Experiment 2:  A unforeseen increase in $\mu$ from 1.02 to 1.025 at $t=0$**
 
 ```{code-cell} ipython3
 shocks = {
@@ -1902,6 +1900,7 @@ shocks = {
 
 experiment_model(shocks, S, model, A_path, run_min, plot_results, 'μ')
 ```
+
 ```{solution-end}
 ```
 
@@ -1910,7 +1909,7 @@ experiment_model(shocks, S, model, A_path, run_min, plot_results, 'μ')
 This section describes a two country version of the basic model of {ref}`cs_fs_model`.
 
 The model has a structure similar to ones used in the international real business cycle literature and is 
-in the spirit of an analysis of distorting taxes by {cite:t}`mendoza_tesar_1998`.
+in the spirit of an analysis of distorting taxes by {cite:t}`mendoza1998international`.
 
 We allow two countries to trade goods, claims on future goods, but not labor. 
 
