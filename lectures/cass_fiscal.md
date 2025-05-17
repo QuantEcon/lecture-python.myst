@@ -1728,7 +1728,6 @@ Let's run some  experiments.
 The figures below show effects of a permanent increase in productivity growth $\mu$ from 1.02 to 1.025 at t=10. They now measure $c$ and $k$ in effective units of labor.
 
 ```{code-cell} ipython3
-
 shocks = {
     'g': np.repeat(0.2, S + 1),
     'τ_c': np.repeat(0.0, S + 1),
@@ -1764,21 +1763,26 @@ plt.tight_layout()
 plt.show()
 ```
 
-The figures indicate that
+The results in the figure is mainly driven by {eq}`eq:diff_mod_st`
+and implies that a permanent increase in
+$\mu$ will lead to a decrease in the steady-state value of capital per unit of eﬀective
+labor.
 
-- Anticipation of the increase in $\mu$ causes an *immediate jump in consumption*, because people are wealthier due to capital being more efficient.
-- The permanent increase in $\mu$ leads to a decrease in the steay-state value of capital per unit of effective labor. In the new steady state:
-  - Consumption is lower due to lower capital.
-- The increased productivity of capital spurred by the increase in $\mu$ leads to an increase in the gross return $\bar{R}$.
+The figures indicate the following:
 
-+++
+- As capital is more eﬃcient, even with less of it, consumption per
+capita can be raised.
+- Consumption smoothing drives *immediate jump in consumption* in anticipation of the increase in $\mu$.
+- The increased productivity of capital leads to an increase in the gross return
+$\bar R$. 
+- Perfect foresight makes the eﬀects of the increase in the growth of capital
+precede it, the effect can be seen at $t=0$.
 
-#### Experiment 2:  A unforeseen increase in $ \mu $ from 1.02 to 1.025 at t=0
+#### Experiment 2:  A unforeseen increase in $\mu$ from 1.02 to 1.025 at t=0
 
 The figures below show effects of an immediate jump in $\mu$ to 1.025 at t=0.
 
 ```{code-cell} ipython3
-
 shocks = {
     'g': np.repeat(0.2, S + 1),
     'τ_c': np.repeat(0.0, S + 1),
@@ -1854,17 +1858,24 @@ experiment_model(shocks, S, model, A_path, run_shooting, plot_results, 'μ')
 The figures show that:
 
 - The paths of all variables are now smooth, due to the absence of feedforward effects.
-- Capital per unit of effective labor gradually declines to a steady state lower level.
+- Capital per eﬀective unit of labor gradually declines to a steady state lower level.
 - Consumption per effective unit of labor jumps immediately then declines smoothly toward its lower steady state value.
 - The after-tax gross return $\bar{R}$ once again comoves with the consumption growth rate, verifying the Euler equation {eq}`eq:diff_mod_st`.
 
 
-### Method 2: Residual Minimization
+```{exercise}
+:label: cass_fiscal_ex3
+Replicate the plots of our two experiments using the second method of residual minimization.
+1. A foreseen increase in $\mu$ from 1.02 to 1.025 at t=10,
+2. A unforeseen increase in $\mu$ from 1.02 to 1.025 at t=0.
+```
 
-Now, we replicate the plots of our two experiments using the second method of residual minimization.
+```{solution-start} cass_fiscal_ex3
+:class: dropdown
+```
+Here is one solution:
 
-
-#### Experiment 1:  A foreseen increase in $ \mu $ from 1.02 to 1.025 at t=10
+#### Experiment 1:  A foreseen increase in $\mu$ from 1.02 to 1.025 at t=10
 
 ```{code-cell} ipython3
 shocks = {
@@ -1879,7 +1890,7 @@ A_path = compute_A_path(1.0, shocks, S)
 experiment_model(shocks, S, model, A_path, run_min, plot_results, 'μ')
 ```
 
-#### Experiment 2:  A unforeseen increase in $ \mu $ from 1.02 to 1.025 at t=0
+#### Experiment 2:  A unforeseen increase in $\mu$ from 1.02 to 1.025 at t=0
 
 ```{code-cell} ipython3
 shocks = {
@@ -1890,6 +1901,8 @@ shocks = {
 }
 
 experiment_model(shocks, S, model, A_path, run_min, plot_results, 'μ')
+```
+```{solution-end}
 ```
 
 ## A two-country model
@@ -2214,7 +2227,7 @@ def plot_global_results(k, k_s, c, c_s, shocks, model,
     axes[1,1].set_xlim(0, T-1)
     
     # Capital flow
-    axes[1,2].plot(x, Bf[1:T+1], lw=1.5)
+    axes[1,2].plot(x, np.append(0, Bf[1:T]), lw=1.5)
     axes[1,2].plot(x, np.zeros(T), 'k-.', lw=1.5)
     axes[1,2].set_title(r'$B^{f}$')
     axes[1,2].set_xlim(0, T-1)
@@ -2222,6 +2235,16 @@ def plot_global_results(k, k_s, c, c_s, shocks, model,
     plt.tight_layout()
     return fig, axes
 ```
+
+#### Experiment 1:  A foreseen increase in $g$ from 0.2 to 0.4 at t=10
+
++++
+
+The figure below presents transition dynamics after an increase in $g$ in the domestic economy from 0.2 to 0.4 that is announced ten periods in advance.
+
+We start both economies from a steady-state with $B_0^f = 0$.
+
+In the figure below, the blue lines represent domestic economy and orange dotted lines represent foreign economy
 
 ```{code-cell} ipython3
 Model = namedtuple("Model", ["β", "γ", "δ", "α", "A"])
@@ -2257,6 +2280,34 @@ plot_global_results(k, k_s, c, c_s,
 plt.show()
 ```
 
+At time 1, the government announces that domestic government purchases $g$ will rise ten periods later, cutting into future private resources.
+
+To smooth consumption, domestic households immediately increase saving, offsetting the anticipated hit to their future wealth.
+
+In a closed economy they would save solely by accumulating extra domestic capital; with open capital markets they can also lend to foreigners.
+
+Once the capital flow opens up at time $1$, the no-arbitrage conditions connect adjustments of both types of saving: the increase in savings by domestic households will reduce the equilibrium return on bonds and capital in the foreign economy to prevent arbitrage opportunities.
+
+Because no-arbitrage equalizes the ratio of marginal utilities, the resulting paths of consumption and capital are synchronized across the two economies.
+
+Up to the date the higher $g$ takes effect, both countries continue to build their capital stocks.
+
+When government spending finally rises 10 periods later, domestic households begin to draw down part of that capital to cushion consumption.
+
+Again by no-arbitrage conditions, when $g$ actually increases both countries reduce their investment rates. 
+
+The domestic economy, in turn, starts running current-account deﬁcits partially to fund the increase in $g$.
+
+This means that foreign households begin repaying part of their external debt by reducing their capital stock.
+
+
+#### Experiment 2:  A foreseen increase in $g$ from 0.2 to 0.4 at t=10
+
+We now explore the impact of an increase in capital taxation in the domestic
+economy $10$ periods after its announcement at $t = 1$.
+
+Because the change is anticipated, households in both countries adjust immediately—even though the tax does not take effect until period $t = 11$
+
 ```{code-cell} ipython3
 shocks_global = {
     'g': np.full(S+1, g_ss),
@@ -2284,15 +2335,32 @@ k, c, k_s, c_s = sol_glob.x.reshape(S+1, 4).T
 # plot 
 fig, axes = plot_global_results(k, k_s, c, c_s, shocks_global, model, 
                                 k0_ss, c0_ss, g_ss, S, shock='τ_k')
-axes[1,0].cla()
-axes[1,0].plot(compute_η_path(k, model)[:40])
-axes[1,0].plot(compute_η_path(k_s, model)[:40], '--')
-axes[1,0].plot(np.full(40, f_prime(k_s, model)[0]), 'k-.', lw=1.5)
-axes[1,0].set_title(r'$\eta$')
-
 plt.tight_layout()
 plt.show()
 ```
+
+After the tax increase is annouced, domestic households foresee lower after-tax returns on capital, so they shift toward higher present consumption and allow the domestic capital stock to decline.
+
+This shrinkage of the world capital supply drives the global real interest rate upward, prompting foreign households to raise current consumption as well.
+
+Prior to the actual tax hike, the domestic economy finances part of its consumption by importing capital, generating a current-account deficit.
+
+When $\tau_k$ finally rises, international arbitrage leads investors to reallocate capital quickly toward the untaxed foreign market, compressing the yield on bonds everywhere.
+
+The bond-rate drop reflects the lower after-tax return on domestic capital and the higher foreign capital stock, which depresses its marginal product.
+
+Foreign households fund their capital purchases by borrowing abroad, creating a pronounced current-account deficit and a buildup of external debt.
+
+After the policy change, both countries move smoothly toward a new steady state in which:
+
+  * Consumption levels in each economy settle below their pre-announcement paths.
+  * Capital stocks differ just enough to equalize after-tax returns across borders.
+  
+Despite carrying positive net liabilities, the foreign country enjoys higher steady-state consumption because its larger capital stock yields greater output.
+
+The episode demonstrates how open capital markets transmit a domestic tax shock internationally: capital flows and interest-rate movements share the burden, smoothing consumption adjustments in both the taxed and untaxed economies over time.
+
++++
 
 ```{exercise}
 :label: cass_fiscal_ex3
