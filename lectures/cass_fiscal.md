@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.6
+    jupytext_version: 1.16.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -32,6 +32,7 @@ We present two ways to approximate an equilibrium:
 - The second method is a root-finding algorithm that  minimizes residuals from the  first-order conditions of a consumer and   a representative firm.
 
 
+(cs_fs_model)=
 ## The Economy
 
 
@@ -157,13 +158,12 @@ Given a budget-feasible government policy $\{g_t\}_{t=0}^\infty$ and $\{\tau_{ct
 ```{prf:definition}
 :label: com_eq_tax
 
-A **competitive equilibrium with distorting taxes** is a **budget-feasible government policy**, **a feasible allocation**, and **a price system** for which, given the price system and the government policy, the allocation solves the household’s problem and the ﬁrm’s problem.
+A **competitive equilibrium with distorting taxes** is a **budget-feasible government policy**, **a feasible allocation**, and **a price system** for which, given the price system and the government policy, the allocation solves the household's problem and the ﬁrm's problem.
 ```
 
 ## No-arbitrage Condition
 
 A no-arbitrage argument implies a restriction on prices and tax rates across time.
-
 
 
 By rearranging {eq}`eq:house_budget` and group $k_t$ at the same $t$, we can get
@@ -289,7 +289,7 @@ from mpmath import mp, mpf
 from warnings import warn
 
 # Set the precision
-mp.dps = 40
+mp.dps = 100
 mp.pretty = True
 ```
 
@@ -328,11 +328,15 @@ k_{t+1} = f(k_t) + (1 - \delta) k_t - g_t - c_t.
 $$ (eq:feasi_capital)
 
 ```{code-cell} ipython3
-def next_k(k_t, g_t, c_t, model):
+def next_k(k_t, g_t, c_t, model, μ_t=None):
     """
     Capital next period: k_{t+1} = f(k_t) + (1 - δ) * k_t - c_t - g_t
+    With optional growth adjustment: k_{t+1} = (f(k_t) + (1 - δ) * k_t - c_t - g_t) / μ_{t+1}
     """
-    return f(k_t, model) + (1 - model.δ) * k_t - g_t - c_t
+    if μ_t is None:
+        return f(k_t, model) + (1 - model.δ) * k_t - g_t - c_t
+    else:
+        return (f(k_t, model) + (1 - model.δ) * k_t - g_t - c_t) / μ_t
 ```
 
 By the properties of a linearly homogeneous production function, we have $F_k(k, n) = f'(k)$ and $F_n(k, 1) = f(k, 1) - f'(k)k$.
@@ -397,14 +401,19 @@ q_t = \frac{\beta^t u'(c_t)}{u'(c_0)}
 $$ (eq:equil_q)
 
 ```{code-cell} ipython3
-def compute_q_path(c_path, model, S=100):
+def compute_q_path(c_path, model, S=100, A_path=None):
     """
     Compute q path: q_t = (β^t * u'(c_t)) / u'(c_0)
+    With optional technology adjustment for growth models
     """
     q_path = np.zeros_like(c_path)
     for t in range(S):
-        q_path[t] = (model.β ** t * 
-                     u_prime(c_path[t], model)) / u_prime(c_path[0], model)
+        if A_path is None:
+            q_path[t] = (model.β ** t * 
+                         u_prime(c_path[t], model)) / u_prime(c_path[0], model)
+        else:
+            q_path[t] = (model.β ** t * 
+                         u_prime(c_path[t], model, A_path[t])) / u_prime(c_path[0], model, A_path[0])
     return q_path
 ```
 
@@ -415,13 +424,17 @@ $$
 $$
 
 ```{code-cell} ipython3
-def compute_η_path(k_path, model, S=100):
+def compute_η_path(k_path, model, S=100, A_path=None):
     """
     Compute η path: η_t = f'(k_t)
+    With optional technology adjustment for growth models
     """
     η_path = np.zeros_like(k_path)
     for t in range(S):
-        η_path[t] = f_prime(k_path[t], model)
+        if A_path is None:
+            η_path[t] = f_prime(k_path[t], model)
+        else:
+            η_path[t] = f_prime(k_path[t], model, A_path[t])
     return η_path
 ```
 
@@ -432,14 +445,17 @@ w_t = f(k_t) - k_t f'(k_t)
 $$
 
 ```{code-cell} ipython3
-def compute_w_path(k_path, η_path, model, S=100):
+def compute_w_path(k_path, η_path, model, S=100, A_path=None):
     """
     Compute w path: w_t = f(k_t) - k_t * f'(k_t)
+    With optional technology adjustment for growth models
     """
-    A, α = model.A, model.α, model.δ
     w_path = np.zeros_like(k_path)
     for t in range(S):
-        w_path[t] = f(k_path[t], model) - k_path[t] * η_path[t]
+        if A_path is None:
+            w_path[t] = f(k_path[t], model) - k_path[t] * η_path[t]
+        else:
+            w_path[t] = f(k_path[t], model, A_path[t]) - k_path[t] * η_path[t]
     return w_path
 ```
 
@@ -453,18 +469,18 @@ $$ (eq:gross_rate)
 def compute_R_bar(τ_ct, τ_ctp1, τ_ktp1, k_tp1, model):
     """
     Gross one-period return on capital:
-    R̄ = [(1 + τ_c_t) / (1 + τ_c_{t+1})] 
+    R_bar = [(1 + τ_c_t) / (1 + τ_c_{t+1})] 
         * { [1 - τ_k_{t+1}] * [f'(k_{t+1}) - δ] + 1 }
     """
-    A, α, δ = model.A, model.α, model.δ
-    return  ((1 + τ_ct) / (1 + τ_ctp1)) * (
-        (1 - τ_ktp1) * (f_prime(k_tp1, model) - δ) + 1) 
+    return ((1 + τ_ct) / (1 + τ_ctp1)) * (
+        (1 - τ_ktp1) * (f_prime(k_tp1, model) - model.δ) + 1)
+```
 
+```{code-cell} ipython3
 def compute_R_bar_path(shocks, k_path, model, S=100):
     """
     Compute R̄ path over time.
     """
-    A, α, δ = model.A, model.α, model.δ
     R_bar_path = np.zeros(S + 1)
     for t in range(S):
         R_bar_path[t] = compute_R_bar(
@@ -528,11 +544,15 @@ u(c) = \frac{c^{1 - \gamma}}{1 - \gamma}
 $$
 
 ```{code-cell} ipython3
-def u_prime(c, model):
+def u_prime(c, model, A_t=None):
     """
     Marginal utility: u'(c) = c^{-γ}
+    With optional technology adjustment: u'(cA) = (cA)^{-γ}
     """
-    return c ** (-model.γ)
+    if A_t is None:
+        return c ** (-model.γ)
+    else:
+        return (c * A_t) ** (-model.γ)
 ```
 
 By substituting {eq}`eq:gross_rate` into {eq}`eq:diff_second`, we obtain
@@ -542,12 +562,16 @@ c_{t+1} = c_t \left[ \beta \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - 
 $$ (eq:consume_R)
 
 ```{code-cell} ipython3
-def next_c(c_t, R_bar, model):
+def next_c(c_t, R_bar, model, μ_t=None):
     """
     Consumption next period: c_{t+1} = c_t * (β * R̄)^{1/γ}
+    With optional growth adjustment: c_{t+1} = c_t * (β * R̄)^{1/γ} * μ_{t+1}^{-1}
     """
     β, γ = model.β, model.γ
-    return c_t * (β * R_bar) ** (1 / γ)
+    if μ_t is None:
+        return c_t * (β * R_bar) ** (1 / γ)
+    else:
+        return (c_t * (β * R_bar) ** (1 / γ)) / μ_t
 ```
 
 For the production function we assume a Cobb-Douglas form:
@@ -557,27 +581,36 @@ F(k, 1) = A k^\alpha
 $$
 
 ```{code-cell} ipython3
-def f(k, model): 
+def f(k, model, A=None): 
     """
     Production function: f(k) = A * k^{α}
     """
-    A, α = model.A, model.α
-    return A * k ** α
+    A_val = 1 if A is None else A
+    return A_val * k ** model.α
 
-def f_prime(k, model):
+def f_prime(k, model, A=None):
     """
     Marginal product of capital: f'(k) = α * A * k^{α - 1}
     """
-    A, α = model.A, model.α
-    return α * A * k ** (α - 1)
+    A_val = 1 if A is None else A
+    return model.α * A_val * k ** (model.α - 1)
 ```
 
+(compute_cass_fiscal)=
 ## Computation
 
 We describe  two ways to compute an equilibrium: 
 
  * a shooting algorithm
  * a residual-minimization method that focuses on imposing  Euler equation {eq}`eq:diff_second` and the  feasibility condition {eq}`eq:feasi_capital`.
+
+
+```{note}
+In the functions below, we included routines to handle the growth component to 
+make the code more concise.
+
+A detailed discussion of the growth model is given later in {ref}`growth_model`.
+```
 
 ### Shooting Algorithm
 
@@ -599,27 +632,50 @@ The following code implements these steps.
 
 ```{code-cell} ipython3
 # Steady-state calculation
-def steady_states(model, g_ss, τ_k_ss=0.0):
+def steady_states(model, g_ss, τ_k_ss=0.0, μ_ss=None):
     """
-    Steady-state values:
-    - Capital: (1 - τ_k_ss) * [α * A * k_ss^{α - 1} - δ] = (1 / β) - 1
-    - Consumption: c_ss = A * k_ss^{α} - δ * k_ss - g_ss
+    Calculate steady state values for capital and consumption.
     """
-    β, δ, α, A = model.β, model.δ, model.α, model.A
-    numerator = δ + (1 / β - 1) / (1 - τ_k_ss)
-    denominator = α * A
+    β, δ, α, γ = model.β, model.δ, model.α, model.γ
+    
+    # Get the effective A value
+    A_val = 1.0 if model.A is None else model.A
+    
+    if μ_ss is None:
+        # No growth case
+        numerator = δ + (1 / β - 1) / (1 - τ_k_ss)
+    else:
+        # Growth case
+        numerator = δ + ((μ_ss**γ) * 1 / β - 1) / (1 - τ_k_ss)
+    
+    denominator = α * A_val
     k_ss = (numerator / denominator) ** (1 / (α - 1))
-    c_ss = A * k_ss ** α - δ * k_ss - g_ss
+    
+    if μ_ss is None:
+        # No growth case
+        c_ss = A_val * k_ss ** α - δ * k_ss - g_ss
+    else:
+        # Growth case
+        c_ss = k_ss ** α + (1-δ-μ_ss) * k_ss - g_ss
+        
     return k_ss, c_ss
 
-def shooting_algorithm(c0, k0, shocks, S, model):
+def shooting_algorithm(c0, k0, shocks, S, model, A_path=None):
     """
     Shooting algorithm for given initial c0 and k0.
     """
+    # Check if it has growth component
+    is_growth_model = 'μ' in shocks
+    
     # Convert shocks to high-precision
     g_path, τ_c_path, τ_k_path = (
         list(map(mpf, shocks[key])) for key in ['g', 'τ_c', 'τ_k']
     )
+    
+    # Convert μ_path if it's a growth model
+    μ_path = None
+    if is_growth_model:
+        μ_path = list(map(mpf, shocks['μ']))
 
     # Initialize paths with initial values
     c_path = [mpf(c0)] + [mpf(0)] * S
@@ -630,7 +686,10 @@ def shooting_algorithm(c0, k0, shocks, S, model):
         k_t, c_t, g_t = k_path[t], c_path[t], g_path[t]
 
         # Calculate next period's capital
-        k_tp1 = next_k(k_t, g_t, c_t, model)
+        if not is_growth_model:
+            k_tp1 = next_k(k_t, g_t, c_t, model)
+        else:
+            k_tp1 = next_k(k_t, g_t, c_t, model, μ_path[t+1])
         
         # Failure due to negative capital
         if k_tp1 < mpf(0):
@@ -640,7 +699,10 @@ def shooting_algorithm(c0, k0, shocks, S, model):
         # Calculate next period's consumption
         R_bar = compute_R_bar(τ_c_path[t], τ_c_path[t + 1], 
                               τ_k_path[t + 1], k_tp1, model)
-        c_tp1 = next_c(c_t, R_bar, model)
+        if not is_growth_model:
+            c_tp1 = next_c(c_t, R_bar, model)
+        else:
+            c_tp1 = next_c(c_t, R_bar, model, μ_path[t+1])
 
         # Failure due to negative consumption
         if c_tp1 < mpf(0):
@@ -651,18 +713,31 @@ def shooting_algorithm(c0, k0, shocks, S, model):
 
 
 def bisection_c0(c0_guess, k0, shocks, S, model, 
-                 tol=mpf('1e-6'), max_iter=1000, verbose=False):
+                 tol=mpf('1e-6'), max_iter=1000, verbose=False, A_path=None):
     """
     Bisection method to find optimal initial consumption c0.
     """
-    k_ss_final, _ = steady_states(model, 
-                                  mpf(shocks['g'][-1]), 
-                                  mpf(shocks['τ_k'][-1]))
+    # Check if it has growth component
+    is_growth_model = 'μ' in shocks
+    
+    if not is_growth_model:
+        k_ss_final, _ = steady_states(model, 
+                                     mpf(shocks['g'][-1]), 
+                                     mpf(shocks['τ_k'][-1]))
+    else:
+        k_ss_final, _ = steady_states(model, 
+                                     mpf(shocks['g'][-1]), 
+                                     mpf(shocks['τ_k'][-1]),
+                                     mpf(shocks['μ'][-1]))
+    
     c0_lower, c0_upper = mpf(0), f(k_ss_final, model)
 
     c0 = c0_guess
     for iter_count in range(max_iter):
-        k_path, _ = shooting_algorithm(c0, k0, shocks, S, model)
+        if not is_growth_model:
+            k_path, _ = shooting_algorithm(c0, k0, shocks, S, model)
+        else:
+            k_path, _ = shooting_algorithm(c0, k0, shocks, S, model, A_path)
         
         # Adjust upper bound when shooting fails
         if k_path is None:
@@ -693,20 +768,35 @@ def bisection_c0(c0_guess, k0, shocks, S, model,
     warn(f"Converged failed. Returning the last c0 = {c0}", stacklevel=2)
     return c0
 
-def run_shooting(shocks, S, model, c0_func=bisection_c0, shooting_func=shooting_algorithm):
+def run_shooting(shocks, S, model, A_path=None, c0_func=bisection_c0, shooting_func=shooting_algorithm):
     """
     Runs the shooting algorithm.
     """
+    # Check if it has growth component
+    is_growth_model = 'μ' in shocks
+    
     # Compute initial steady states
-    k0, c0 = steady_states(model, mpf(shocks['g'][0]), mpf(shocks['τ_k'][0]))
+    if not is_growth_model:
+        k0, c0 = steady_states(model, mpf(shocks['g'][0]), mpf(shocks['τ_k'][0]))
+    else:
+        k0, c0 = steady_states(model, mpf(shocks['g'][0]), mpf(shocks['τ_k'][0]), mpf(shocks['μ'][0]))
     
     # Find the optimal initial consumption
-    optimal_c0 = c0_func(c0, k0, shocks, S, model)
+    if not is_growth_model:
+        optimal_c0 = c0_func(c0, k0, shocks, S, model)
+    else:
+        # Pass A_path to the bisection function when it's provided
+        optimal_c0 = c0_func(c0, k0, shocks, S, model, A_path=A_path)
+    
     print(f"Parameters: {model}")
     print(f"Optimal initial consumption c0: {mp.nstr(optimal_c0, 7)} \n")
     
     # Simulate the model
-    k_path, c_path = shooting_func(optimal_c0, k0, shocks, S, model)
+    if not is_growth_model:
+        k_path, c_path = shooting_func(optimal_c0, k0, shocks, S, model)
+    else:
+        # Pass A_path to the shooting algorithm when it's provided
+        k_path, c_path = shooting_func(optimal_c0, k0, shocks, S, model, A_path)
     
     # Combine and return the results
     return np.column_stack([k_path, c_path])
@@ -730,10 +820,14 @@ We will start from an initial  steady state and  apply shocks at an the indicate
 
 ```{code-cell} ipython3
 def plot_results(solution, k_ss, c_ss, shocks, shock_param, 
-                 axes, model, label='', linestyle='-', T=40):
+                 axes, model, A_path=None, label='', linestyle='-', T=40):
     """
     Plot the results of the simulation replicating graphs in RMT.
+    With optional A_path parameter for growth model.
     """
+    # Check if it has growth component
+    is_growth_model = 'μ' in shocks
+    
     k_path = solution[:, 0]
     c_path = solution[:, 1]
 
@@ -746,20 +840,32 @@ def plot_results(solution, k_ss, c_ss, shocks, shock_param,
     axes[1].axhline(c_ss, linestyle='--', color='black')
     axes[1].set_title('c')
 
-    # Plot for g
+    # Plot for R_bar
     R_bar_path = compute_R_bar_path(shocks, k_path, model, S)
 
     axes[2].plot(R_bar_path[:T], linestyle=linestyle, label=label)
     axes[2].set_title('$\overline{R}$')
-    axes[2].axhline(1 / model.β, linestyle='--', color='black')
     
+    # Set the correct steady state value for R_bar
+    if not is_growth_model:
+        axes[2].axhline(1 / model.β, linestyle='--', color='black')
+    else:
+        axes[2].axhline((1 / model.β) * (shocks['μ'][0] ** model.γ), linestyle='--', color='black')
+    
+    # Plot for η
     η_path = compute_η_path(k_path, model, S=T)
-    η_ss = model.α * model.A * k_ss ** (model.α - 1)
+    
+    # Set the correct steady state value for η
+    if not is_growth_model:
+        η_ss = model.α * model.A * k_ss ** (model.α - 1)
+    else:
+        η_ss = model.α * A_path[0] * k_ss ** (model.α - 1)
     
     axes[3].plot(η_path[:T], linestyle=linestyle, label=label)
     axes[3].axhline(η_ss, linestyle='--', color='black')
     axes[3].set_title(r'$\eta$')
     
+    # Plot for the shock parameter
     axes[4].plot(shocks[shock_param][:T], linestyle=linestyle, label=label)
     axes[4].axhline(shocks[shock_param][0], linestyle='--', color='black')
     axes[4].set_title(rf'${shock_param}$')
@@ -817,11 +923,17 @@ Let's collect the procedures used above into a function that runs the solver and
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-def experiment_model(shocks, S, model, solver, plot_func, policy_shock, T=40):
+def experiment_model(shocks, S, model, A_path=None, solver=run_shooting, plot_func=plot_results, policy_shock='g', T=40):
     """
     Run the shooting algorithm given a model and plot the results.
     """
-    k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
+    # Check if it has growth component
+    is_growth_model = 'μ' in shocks
+    
+    if not is_growth_model:
+        k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
+    else:
+        k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0], shocks['μ'][0])
     
     print(f"Steady-state capital: {k0:.4f}")
     print(f"Steady-state consumption: {c0:.4f}")
@@ -830,9 +942,12 @@ def experiment_model(shocks, S, model, solver, plot_func, policy_shock, T=40):
     fig, axes = plt.subplots(2, 3, figsize=(10, 8))
     axes = axes.flatten()
 
-    solution = solver(shocks, S, model)
-    plot_func(solution, k0, c0, 
-              shocks, policy_shock, axes, model, T=T)
+    if not is_growth_model:
+        solution = solver(shocks, S, model)
+        plot_func(solution, k0, c0, shocks, policy_shock, axes, model, T=T)
+    else:
+        solution = solver(shocks, S, model, A_path)
+        plot_func(solution, k0, c0, shocks, policy_shock, axes, model, A_path, T=T)
 
     for ax in axes[5:]:
         fig.delaxes(ax)
@@ -887,7 +1002,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-The outcomes indicate  that lowering $\gamma$ affects both the consumption and capital stock paths because - it  increases the representative consumer's willingness to substitute consumption across time:
+The outcomes indicate that lowering $\gamma$ affects both the consumption and capital stock paths because - it increases the representative consumer's willingness to substitute consumption across time:
 
 - Consumption path:
   - When $\gamma = 0.2$, consumption becomes less smooth compared to $\gamma = 2$.
@@ -902,12 +1017,19 @@ Let's write another function that runs the solver and draws plots for these two 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-def experiment_two_models(shocks, S, model_1, model_2, solver, plot_func, 
-                          policy_shock, legend_label_fun=None, T=40):
+def experiment_two_models(shocks, S, model_1, model_2, solver=run_shooting, plot_func=plot_results, 
+                          policy_shock='g', legend_label_fun=None, T=40, A_path=None):
     """
     Compares and plots results of the shooting algorithm for two models.
     """
-    k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
+    # Check if it has growth component
+    is_growth_model = 'μ' in shocks
+    
+    if not is_growth_model:
+        k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
+    else:
+        k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0], shocks['μ'][0])
+        
     print(f"Steady-state capital: {k0:.4f}")
     print(f"Steady-state consumption: {c0:.4f}")
     print('-'*64)
@@ -922,9 +1044,14 @@ def experiment_two_models(shocks, S, model_1, model_2, solver, plot_func,
 
     # Function to run and plot for each model
     def run_and_plot(model, linestyle='-'):
-        solution = solver(shocks, S, model)
-        plot_func(solution, k0, c0, shocks, policy_shock, axes, model, 
-                  label=legend_label_fun(model), linestyle=linestyle, T=T)
+        if not is_growth_model:
+            solution = solver(shocks, S, model)
+            plot_func(solution, k0, c0, shocks, policy_shock, axes, model, 
+                     label=legend_label_fun(model), linestyle=linestyle, T=T)
+        else:
+            solution = solver(shocks, S, model, A_path)
+            plot_func(solution, k0, c0, shocks, policy_shock, axes, model, A_path,
+                     label=legend_label_fun(model), linestyle=linestyle, T=T)
 
     # Plot for both models
     run_and_plot(model_1)
@@ -1041,7 +1168,7 @@ Indeed, {eq}`eq:euler_house` or {eq}`eq:diff_second` indicates that a foreseen i
 crease in $\tau_{ct}$ (i.e., a decrease in $(1+\tau_{ct})$
 $(1+\tau_{ct+1})$) operates like an increase in $\tau_{kt}$.
 
-The following figure portrays the response to a foreseen increase in the consumption tax $\tau_c$. 
+The following figure portrays the response to a foreseen increase in the consumption tax $\tau_c$.
 
 ```{code-cell} ipython3
 shocks = {
@@ -1050,7 +1177,10 @@ shocks = {
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_shooting, plot_results, 'τ_c')
+experiment_model(shocks, S, model, 
+                 solver=run_shooting, 
+                 plot_func=plot_results,  
+                 policy_shock='τ_c')
 ```
 
 Evidently  all variables in the figures above eventually return to their initial
@@ -1087,7 +1217,9 @@ shocks = {
 }
 
 experiment_two_models(shocks, S, model, model_γ2, 
-                run_shooting, plot_results, 'τ_k')
+                solver=run_shooting, 
+                 plot_func=plot_results,  
+                 policy_shock='τ_k')
 ```
 
 The path of government expenditures remains fixed
@@ -1101,7 +1233,6 @@ The  figure shows that:
 - Transition dynamics push $k_t$ (capital stock) toward a new, lower steady-state level. In the new steady state:
     - Consumption is lower due to reduced output from the lower capital stock.
     - Smoother consumption paths occur when $\gamma = 2$ than when $\gamma = 0.2$.
-    
 
 +++
 
@@ -1110,8 +1241,6 @@ in government policy. Next we describe some experiments in which there is a
 foreseen one-time change in a policy variable (a "pulse").
 
 **Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever**
-
-
 
 ```{code-cell} ipython3
 g_path = np.repeat(0.2, S + 1)
@@ -1123,7 +1252,10 @@ shocks = {
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_shooting, plot_results, 'g')
+experiment_model(shocks, S, model,
+                 solver=run_shooting, 
+                 plot_func=plot_results,  
+                 policy_shock='g')
 ```
 
 The figure indicates how:
@@ -1136,6 +1268,7 @@ The figure indicates how:
     - Before $t = 10$, capital accumulates as interest rate changes induce households to prepare for the anticipated increase in government spending.
     - At $t = 10$, the capital stock sharply decreases as the government consumes part of it.
     - $\bar{R}$ jumps above its steady-state value due to the capital reduction and then gradually declines toward its steady-state level.
+
 +++
 
 ### Method 2: Residual Minimization 
@@ -1156,21 +1289,34 @@ The second method involves minimizing residuals (i.e., deviations from equalitie
 
 ```{code-cell} ipython3
 # Euler's equation and feasibility condition 
-def euler_residual(c_t, c_tp1, τ_c_t, τ_c_tp1, τ_k_tp1, k_tp1, model):
+def euler_residual(c_t, c_tp1, τ_c_t, τ_c_tp1, τ_k_tp1, k_tp1, model, A_tp1=None, μ_tp1=None):
     """
-    Computes the residuals for Euler's equation.
+    Computes the residuals for Euler's equation with optional growth model parameters.
     """
-    β, γ, δ, α, A = model.β, model.γ, model.δ, model.α, model.A
-    η_tp1 = α * A * k_tp1 ** (α - 1)
-    return β * (c_tp1 / c_t) ** (-γ) * (1 + τ_c_t) / (1 + τ_c_tp1) * (
-        (1 - τ_k_tp1) * (η_tp1 - δ) + 1) - 1
+    R_bar = compute_R_bar(τ_c_t, τ_c_tp1, τ_k_tp1, k_tp1, model)
+    
+    # Check if it has growth component
+    is_growth_model = μ_tp1 is not None
+    
+    if not is_growth_model:
+        β, γ = model.β, model.γ
+        return β * (c_tp1 / c_t) ** (-γ) * (1 + τ_c_t) / (1 + τ_c_tp1) * R_bar - 1
+    else:
+        c_tp1_expected = next_c(c_t, R_bar, model, μ_tp1)
+        return (c_tp1_expected / c_tp1) - 1
 
-def feasi_residual(k_t, k_tm1, c_tm1, g_t, model):
+def feasi_residual(k_t, k_tm1, c_tm1, g_t, model, μ_t=None):
     """
-    Computes the residuals for feasibility condition.
+    Computes the residuals for feasibility condition with optional growth model parameters.
     """
-    α, A, δ = model.α, model.A, model.δ
-    return k_t - (A * k_tm1 ** α + (1 - δ) * k_tm1 - c_tm1 - g_t)
+    # Check if it has growth component
+    is_growth_model = μ_t is not None
+    
+    if not is_growth_model:
+        return k_t - (f(k_tm1, model) + (1 - model.δ) * k_tm1 - c_tm1 - g_t)
+    else:
+        k_t_expected = next_k(k_tm1, g_t, c_tm1, model, μ_t)
+        return k_t_expected - k_t
 ```
 
 The algorithm proceeds follows:
@@ -1198,21 +1344,24 @@ The algorithm proceeds follows:
      l_{k_0} = 1 - \beta \left[ (1 - \tau_{k0}) \left(f'(k_0) - \delta \right) + 1 \right]
      $$
 
-   - Compute the residual for the terminal condition for $t = S$ using {eq}`eq:diff_second` under the assumptions $c_t = c_{t+1} = c_S$, $k_t = k_{t+1} = k_S$, $\tau_{ct} = \tau_{ct+1} = \tau_{cS}$, and $\tau_{kt} = \tau_{kt+1} = \tau_{kS}$:
+   - Compute the residual for the terminal condition for $t = S$ using {eq}`eq:diff_second` under the assumptions $c_t = c_{t+1} = c_S$, $k_t = k_{t+1} = k_S$, $\tau_{ct} = \tau_{ct+1} = \tau_{c_s}$, and $\tau_{kt} = \tau_{kt+1} = \tau_{k_s}$:
      
      $$
-     l_{k_S} = \beta u'(c_S) \frac{(1 + \tau_{cS})}{(1 + \tau_{cS})} \left[(1 - \tau_{kS})(f'(k_S) - \delta) + 1 \right] - 1
+     l_{k_S} = \beta u'(c_S) \frac{(1 + \tau_{c_s})}{(1 + \tau_{c_s})} \left[(1 - \tau_{k_s})(f'(k_S) - \delta) + 1 \right] - 1
      $$
 
 4. Iteratively adjust  guesses for $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$ to minimize  residuals $l_{k_0}$, $l_{ta}$, $l_{tk}$, and $l_{k_S}$ for $t = 0, \dots, S$.
 
 ```{code-cell} ipython3
 # Computing residuals as objective function to minimize
-def compute_residuals(vars_flat, k_init, S, shocks, model):
+def compute_residuals(vars_flat, k_init, S, shocks, model, A_path=None):
     """
     Compute a vector of residuals under Euler's equation, feasibility condition, 
-    and boundary conditions.
+    and boundary conditions with optional growth model parameters.
     """
+    # Check if it has growth component
+    is_growth_model = 'μ' in shocks
+    
     k, c = vars_flat.reshape((S + 1, 2)).T
     residuals = np.zeros(2 * S + 2)
 
@@ -1221,39 +1370,73 @@ def compute_residuals(vars_flat, k_init, S, shocks, model):
 
     # Compute residuals for each time step
     for t in range(S):
-        residuals[2 * t + 1] = euler_residual(
-            c[t], c[t + 1],
-            shocks['τ_c'][t], shocks['τ_c'][t + 1], shocks['τ_k'][t + 1],
-            k[t + 1], model
-        )
-        residuals[2 * t + 2] = feasi_residual(
-            k[t + 1], k[t], c[t],
-            shocks['g'][t], model
-        )
+        # For growth model, pass the growth parameters
+        if is_growth_model:
+            residuals[2*t+1] = euler_residual(
+                c[t], c[t+1],
+                shocks['τ_c'][t], shocks['τ_c'][t+1], shocks['τ_k'][t+1],
+                k[t+1], model, 
+                A_path[t+1] if A_path is not None else None, 
+                shocks['μ'][t+1]
+            )
+            residuals[2*t+2] = feasi_residual(
+                k[t+1], k[t], c[t],
+                shocks['g'][t], model, shocks['μ'][t+1]
+            )
+        else:
+            # For standard model, use without growth parameters
+            residuals[2*t+1] = euler_residual(
+                c[t], c[t+1],
+                shocks['τ_c'][t], shocks['τ_c'][t+1], shocks['τ_k'][t+1],
+                k[t+1], model
+            )
+            residuals[2*t+2] = feasi_residual(
+                k[t+1], k[t], c[t],
+                shocks['g'][t], model
+            )
 
     # Terminal condition
-    residuals[-1] = euler_residual(
-        c[S], c[S],
-        shocks['τ_c'][S], shocks['τ_c'][S], shocks['τ_k'][S],
-        k[S], model
-    )
+    if is_growth_model:
+        residuals[-1] = euler_residual(
+            c[S], c[S],
+            shocks['τ_c'][S], shocks['τ_c'][S], shocks['τ_k'][S],
+            k[S], model, 
+            A_path[S] if A_path is not None else None, 
+            shocks['μ'][S]
+        )
+    else:
+        residuals[-1] = euler_residual(
+            c[S], c[S],
+            shocks['τ_c'][S], shocks['τ_c'][S], shocks['τ_k'][S],
+            k[S], model
+        )
     
     return residuals
 
 # Root-finding Algorithm to minimize the residual
-def run_min(shocks, S, model):
+def run_min(shocks, S, model, A_path=None):
     """
     Root-finding algorithm to minimize the vector of residuals.
     """
-    k_ss, c_ss = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
+    # Check if it has growth component
+    is_growth_model = 'μ' in shocks
+    
+    if not is_growth_model:
+        k_ss, c_ss = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
+    else:
+        k_ss, c_ss = steady_states(model, shocks['g'][0], shocks['τ_k'][0], shocks['μ'][0])
     
     # Initial guess for the solution path
     initial_guess = np.column_stack(
         (np.full(S + 1, k_ss), np.full(S + 1, c_ss))).flatten()
 
     # Solve the system using root-finding
-    sol = root(compute_residuals, initial_guess, 
-               args=(k_ss, S, shocks, model), tol=1e-8)
+    if not is_growth_model:
+        sol = root(compute_residuals, initial_guess, 
+                  args=(k_ss, S, shocks, model), tol=1e-8)
+    else:
+        sol = root(compute_residuals, initial_guess, 
+                  args=(k_ss, S, shocks, model, A_path), tol=1e-8)
 
     # Reshape solution to get time paths for k and c
     return sol.x.reshape((S + 1, 2))
@@ -1262,8 +1445,6 @@ def run_min(shocks, S, model):
 We found that  method 2 did  not encounter numerical stability issues, so using  `mp.mpf` is not necessary.
 
 We leave as exercises replicating some of our experiments by using the second method.
-
-## Exercises
 
 ```{exercise}
 :label: cass_fiscal_ex1
@@ -1284,14 +1465,15 @@ Here is one solution:
 **Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10**
 
 ```{code-cell} ipython3
-S = 100
 shocks = {
     'g': np.concatenate((np.repeat(0.2, 10), np.repeat(0.4, S - 9))),
     'τ_c': np.repeat(0.0, S + 1),
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_min, plot_results, 'g')
+experiment_model(shocks, S, model, solver=run_min, 
+                 plot_func=plot_results,  
+                 policy_shock='g')
 ```
 
 ```{code-cell} ipython3
@@ -1325,7 +1507,9 @@ shocks = {
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_min, plot_results, 'τ_c')
+experiment_model(shocks, S, model, solver=run_min, 
+                 plot_func=plot_results,  
+                 policy_shock='τ_c')
 ```
 
 **Experiment 3: Foreseen once-and-for-all increase in $\tau_k$ from 0.0 to 0.2 in period 10.**
@@ -1338,7 +1522,9 @@ shocks = {
 }
 
 experiment_two_models(shocks, S, model, model_γ2, 
-                run_min, plot_results, 'τ_k')
+                solver=run_min, 
+                 plot_func=plot_results,  
+                 policy_shock='τ_k')
 ```
 
 **Experiment 4: Foreseen one-time increase in $g$ from 0.2 to 0.4 in period 10, after which $g$ returns to 0.2 forever**
@@ -1353,7 +1539,9 @@ shocks = {
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_min, plot_results, 'g')
+experiment_model(shocks, S, model, solver=run_min, 
+                 plot_func=plot_results,  
+                 policy_shock='g')
 ```
 
 ```{solution-end}
@@ -1384,8 +1572,762 @@ shocks = {
     'τ_k': np.repeat(0.0, S + 1)
 }
 
-experiment_model(shocks, S, model, run_min, plot_results, 'g')
+experiment_model(shocks, S, model, solver=run_min, 
+                 plot_func=plot_results,  
+                 policy_shock='g')
 ```
+
+```{solution-end}
+```
+
+(growth_model)=
+## Growth
+
+In the previous section, we considered a model with exogenous growth.
+
+We muted the term $A_t$ in the production function by 
+setting $A_t = 1$ for all $t$.
+
+We are now prepared to consider growth.
+
+In order to consider growth, we modify the production function to be
+
+$$
+Y_t = F(K_t, A_tn_t)
+$$
+
+where $Y_t$ is aggregate output, $N_t$ is total employment, $A_t$ is labor-augmenting technical change, 
+and $F(K, AN)$ is the same linearly homogenous production function as before. 
+
+We assume that $A_t$ follows the process
+
+$$
+A_{t+1} = \mu_{t+1}A_t
+$$ (eq:growth)
+
+and that $\mu_{t+1}=\bar{\mu}>1$.
+
+```{code-cell} ipython3
+# Set the constant A parameter to None
+model = create_model(A=None)
+```
+
+```{code-cell} ipython3
+def compute_A_path(A0, shocks, S=100):
+    """
+    Compute A path over time.
+    """
+    A_path = np.full(S + 1, A0)
+    for t in range(1, S + 1):
+        A_path[t] = A_path[t-1] * shocks['μ'][t-1]
+    return A_path
+```
+
+### Inelastic Labor Supply
+
+By linear homogeneity, the production function can be expressed as
+
+$$
+y_t=f(k_t)
+$$
+
+where $f(k)=F(k,1) = k^\alpha$ and $k_t=\frac{K_t}{n_tA_t}, y_t=\frac{Y_t}{n_tA_t}$. 
+
+$k_t$ and $y_t$ are measured per unit of "effective labor" $A_tn_t$. 
+
+We also let $c_t=\frac{C_t}{A_tn_t}$ and $g_t=\frac{G_t}{A_tn_t}$, where $C_t$ and $G_t$ are total consumption and total government expenditures. 
+
+We still consider the case of inelastic labor supply. 
+
+Based on these, feasibility can be summarized by the following modified version 
+of equation {eq}`eq:feasi_capital`:
+
+$$
+k_{t+1}=\mu_{t+1}^{-1}[f(k_t)+(1-\delta)k_t-g_t-c_t]
+$$ (eq:feasi_mod)
+
+
+Again, by the properties of a linearly homogeneous production function, we have 
+
+$$ 
+\eta_t = F_k(k_t, 1) = f'(k_t), w_t = F_n(k_t, 1) = f(k_t) - f'(k_t)k_t 
+$$
+
+Since per capita consumption is now $c_tA_t$, the counterpart to the Euler equation {eq}`eq:diff_second` is
+
+$$
+\begin{aligned}
+u'(c_tA_t) = \beta u'(c_{t+1}A_{t+1}) \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} [(1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1].
+\end{aligned} 
+$$ (eq:diff_mod)
+
+$\bar{R}_{t+1}$ continues to be defined by {eq}`eq:gross_rate`, except that now $k_t$ is capital per effective unit of labor. 
+
+Thus, substituting {eq}`eq:gross_rate`, {eq}`eq:diff_mod` becomes
+
+$$
+u'(c_tA_t) = \beta u'(c_{t+1}A_{t+1})\bar{R}_{t+1}
+$$
+
+Assuming that household's utility function is the same as before, we have
+
+$$
+(c_tA_t)^{-\gamma} = \beta (c_{t+1}A_{t+1})^{-\gamma} \bar{R}_{t+1}
+$$
+
+Thus, the counterpart to {eq}`eq:consume_r` is
+
+$$
+c_{t+1} = c_t \left[ \beta \bar{R}_{t+1} \right]^{\frac{1}{\gamma}}\mu_{t+1}^{-1}
+$$ (eq:consume_r_mod)
+
+### Steady State
+
+In a steady state, $c_{t+1} = c_t$. Then {eq}`eq:diff_mod` becomes
+
+$$
+1=\mu^{-\gamma}\beta[(1-\tau_k)(f'(k)-\delta)+1] \tag{36.29}
+$$ (eq:diff_mod_st)
+
+from which we can compute that the steady state level of capital per unit of effective labor satisfies
+
+$$
+f'(k)=\delta + (\frac{\frac{1}{\beta}\mu^{\gamma}-1}{1-\tau_k}) \tag{36.30}
+$$ (eq:cap_mod_st)  
+
+and that
+
+$$
+\bar{R}=\frac{\mu^{\gamma}}{\beta} \tag{36.31}
+$$ (eq:Rbar_mod_st)
+
+The steady state level of consumption per unit of effective labor can be found using {eq}`eq:feasi_mod`:
+
+$$
+c = f(k)+(1-\delta-\mu)k-g
+$$
+
+Since the algorithm and plotting routines are the same as before, we include the steady state calculations and 
+shooting routine in the section {ref}`cass_fiscal_shooting`.
+
+### Shooting Algorithm
+
+Now we can apply the shooting algorithm to compute equilibrium. We augment the vector of shock variables by including $\mu_t$, then proceed as before.
+
+### Experiments
+
+Let's run some  experiments.
+
+1. A foreseen once-and-for-all increase in $\mu$ from 1.02 to 1.025 in period 10,  
+2. A unforeseen once-and-for-all increase in $\mu$ to 1.025 in period 0.
+
++++
+
+#### Experiment 1:  A foreseen increase in $\mu$ from 1.02 to 1.025 at t=10
+
+The figures below show effects of a permanent increase in productivity growth $\mu$ from 1.02 to 1.025 at t=10. They now measure $c$ and $k$ in effective units of labor.
+
+```{code-cell} ipython3
+
+shocks = {
+    'g': np.repeat(0.2, S + 1),
+    'τ_c': np.repeat(0.0, S + 1),
+    'τ_k': np.repeat(0.0, S + 1),
+    'μ': np.concatenate((np.repeat(1.02, 10), np.repeat(1.025, S - 9)))
+}
+
+A_path = compute_A_path(1.0, shocks, S)
+
+k_ss_initial, c_ss_initial = steady_states(model, 
+                                         shocks['g'][0],
+                                         shocks['τ_k'][0],
+                                         shocks['μ'][0]
+                                        )
+
+print(f"Steady-state capital: {k_ss_initial:.4f}")
+print(f"Steady-state consumption: {c_ss_initial:.4f}")
+
+# Run the shooting algorithm with the A_path parameter
+solution = run_shooting(shocks, S, model, A_path)
+
+fig, axes = plt.subplots(2, 3, figsize=(10, 8))
+axes = axes.flatten()
+
+plot_results(solution, k_ss_initial, 
+             c_ss_initial, shocks, 'μ', axes, model, 
+             A_path, T=40)
+
+for ax in axes[5:]:
+    fig.delaxes(ax)
+
+plt.tight_layout()
+plt.show()
+```
+
+The figures indicate that
+
+- Anticipation of the increase in $\mu$ causes an *immediate jump in consumption*, because people are wealthier due to capital being more efficient.
+- The permanent increase in $\mu$ leads to a decrease in the steay-state value of capital per unit of effective labor. In the new steady state:
+  - Consumption is lower due to lower capital.
+- The increased productivity of capital spurred by the increase in $\mu$ leads to an increase in the gross return $\bar{R}$.
+
++++
+
+#### Experiment 2:  A unforeseen increase in $ \mu $ from 1.02 to 1.025 at t=0
+
+The figures below show effects of an immediate jump in $\mu$ to 1.025 at t=0.
+
+```{code-cell} ipython3
+
+shocks = {
+    'g': np.repeat(0.2, S + 1),
+    'τ_c': np.repeat(0.0, S + 1),
+    'τ_k': np.repeat(0.0, S + 1),
+    'μ': np.concatenate((np.repeat(1.02, 1), np.repeat(1.025, S)))
+}
+
+A_path = compute_A_path(1.0, shocks, S)
+
+k_ss_initial, c_ss_initial = steady_states(model, 
+                                           shocks['g'][0],
+                                           shocks['τ_k'][0],
+                                           shocks['μ'][0]
+                                          )
+
+print(f"Steady-state capital: {k_ss_initial:.4f}")
+print(f"Steady-state consumption: {c_ss_initial:.4f}")
+
+# Run the shooting algorithm with the A_path parameter
+solution = run_shooting(shocks, S, model, A_path)
+
+fig, axes = plt.subplots(2, 3, figsize=(10, 8))
+axes = axes.flatten()
+
+plot_results(solution, k_ss_initial, 
+             c_ss_initial, shocks, 'μ', axes, model, A_path, T=40)
+
+for ax in axes[5:]:
+    fig.delaxes(ax)
+
+plt.tight_layout()
+plt.show()
+```
+
+Again, we can collect the procedures used above into a function that runs the solver and draws plots for given experiment.
+
+```{code-cell} ipython3
+def experiment_model(shocks, S, model, A_path, solver, plot_func, policy_shock, T=40):
+    """
+    Run the shooting algorithm given a model and plot the results.
+    """
+    k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0], shocks['μ'][0])
+    
+    print(f"Steady-state capital: {k0:.4f}")
+    print(f"Steady-state consumption: {c0:.4f}")
+    print('-'*64)
+    
+    fig, axes = plt.subplots(2, 3, figsize=(10, 8))
+    axes = axes.flatten()
+
+    solution = solver(shocks, S, model, A_path)
+    plot_func(solution, k0, c0, 
+              shocks, policy_shock, axes, model, A_path, T=T)
+
+    for ax in axes[5:]:
+        fig.delaxes(ax)
+
+    plt.tight_layout()
+    plt.show()
+```
+
+```{code-cell} ipython3
+shocks = {
+    'g': np.repeat(0.2, S + 1),
+    'τ_c': np.repeat(0.0, S + 1),
+    'τ_k': np.repeat(0.0, S + 1),
+    'μ': np.concatenate((np.repeat(1.02, 1), np.repeat(1.025, S)))
+}
+
+experiment_model(shocks, S, model, A_path, run_shooting, plot_results, 'μ')
+```
+
+The figures show that:
+
+- The paths of all variables are now smooth, due to the absence of feedforward effects.
+- Capital per unit of effective labor gradually declines to a steady state lower level.
+- Consumption per effective unit of labor jumps immediately then declines smoothly toward its lower steady state value.
+- The after-tax gross return $\bar{R}$ once again comoves with the consumption growth rate, verifying the Euler equation {eq}`eq:diff_mod_st`.
+
+
+### Method 2: Residual Minimization
+
+Now, we replicate the plots of our two experiments using the second method of residual minimization.
+
+
+#### Experiment 1:  A foreseen increase in $ \mu $ from 1.02 to 1.025 at t=10
+
+```{code-cell} ipython3
+shocks = {
+    'g': np.repeat(0.2, S + 1),
+    'τ_c': np.repeat(0.0, S + 1),
+    'τ_k': np.repeat(0.0, S + 1),
+    'μ': np.concatenate((np.repeat(1.02, 10), np.repeat(1.025, S - 9)))
+}
+
+A_path = compute_A_path(1.0, shocks, S)
+
+experiment_model(shocks, S, model, A_path, run_min, plot_results, 'μ')
+```
+
+#### Experiment 2:  A unforeseen increase in $ \mu $ from 1.02 to 1.025 at t=0
+
+```{code-cell} ipython3
+shocks = {
+    'g': np.repeat(0.2, S + 1),
+    'τ_c': np.repeat(0.0, S + 1),
+    'τ_k': np.repeat(0.0, S + 1),
+    'μ': np.concatenate((np.repeat(1.02, 1), np.repeat(1.025, S)))
+}
+
+experiment_model(shocks, S, model, A_path, run_min, plot_results, 'μ')
+```
+
+## A two-country model
+
+This section describes a two country version of the basic model of {ref}`cs_fs_model`.
+
+The model has a structure similar to ones used in the international real business cycle literature and is 
+in the spirit of an analysis of distorting taxes by {cite:t}`mendoza_tesar_1998`.
+
+We allow two countries to trade goods, claims on future goods, but not labor. 
+
+Both countries have production technologies, and consumers in each country can hold capital in either country, subject to different tax treatments. 
+
+We denote variables in the second country with asterisks (*).
+
+Households in both countries maximize lifetime utility:
+
+$$
+\sum_{t=0}^{\infty} \beta^t u(c_t) \quad \text{and} \quad \sum_{t=0}^{\infty} \beta^t u(c_t^*),
+$$
+
+where $u(c) = \frac{c^{1-\gamma}}{1-\gamma}$ with $\gamma > 0$.
+
+Production follows a Cobb-Douglas function with identical technology parameters across countries.
+
+The global resource constraint for this two-country economy is:
+
+$$
+(c_t+c_t^*)+(g_t+g_t^*)+(k_{t+1}-(1-\delta)k_t)+(k_{t+1}^*-(1-\delta)k_t^*) = f(k_t)+f(k_t^*)
+$$
+
+which combines the feasibility constraints for the two countries. 
+
+Later, we will use this constraint to as a global feasibility constraint in our computation.
+
+To connect the two countries, we need to specify how capital flows across borders, and how taxes are levied in different jurisdictions.
+
+### Capital Mobility and Taxation
+
+A consumer in country one can hold capital in either country, but pays taxes on rentals from foreign holdings of capital at the rate set by the foreign country. 
+
+Residents in both countries can purchase consumption at date $t$ at a common Arrow-Debreu price $q_t$. We assume capital markets are complete.
+
+Let $B_t^f$ be the amount of time $t$ goods that the representative domestic consumer raises by issuing a one-period IOU to the representative foreign consumer. 
+
+So $B_t^f > 0$ indicates the domestic consumer is borrowing from abroad at $t$ and $B_t^f < 0$ indicates the domestic consumer is lending abroad at $t$.
+
+Hence, the budget constraint of a representative consumer in country one is:
+
+$$
+\begin{aligned}
+\sum_{t=0}^{\infty} q_t \left( c_t + (k_{t+1} - (1-\delta)k_t) + (\tilde{k}_{t+1} - (1-\delta)\tilde{k}_t) + R_{t-1,t}B_{t-1}^f \right) \leq \\
+\sum_{t=0}^{\infty} q_t \left( (\eta_t - \tau_{kt}(\eta_t - \delta))k_t + (\eta_t^* - \tau_{kt}^*(\eta_t^* - \delta))\tilde{k}_t + (1 - \tau_{nt})w_t n_t - \tau_{ht} + B_t^f \right).
+\end{aligned}
+$$
+
+No-arbitrage conditions for $k_t$ and $\tilde{k}_t$ for $t \geq 1$ imply
+
+$$
+\begin{aligned}
+q_{t-1} &= [(1 - \tau_{kt})(\eta_t - \delta) + 1] q_t, \\
+q_{t-1} &= [(1 - \tau^*_{kt})(\eta^*_t - \delta) + 1] q_t,
+\end{aligned}
+$$
+
+which together imply that after-tax rental rates on capital are equalized across the two countries:
+
+$$
+(1 - \tau^*_{kt})(\eta^*_t - \delta) = (1 - \tau_{kt})(\eta_t - \delta).
+$$
+
+No arbitrage conditions for $B_t^f$ for $t \geq 0$ are $q_t = q_{t+1} R_{t+1,t}$, which implies that
+
+$$
+q_{t-1} = q_t R_{t-1,t}
+$$
+
+for $t \geq 1$.
+
+Since domestic capital, foreign capital, and consumption loans bear the same rates of return, portfolios are indeterminate. 
+
+We are free to set holdings of foreign capital equal to zero in each country if we allow $B_t^f$ to be nonzero. 
+
+Adopting this way of resolving portfolio indeterminacy is convenient because it economizes on the number of initial conditions we have to specify. 
+
+Therefore, we set holdings of foreign capital equal to zero in both countries but allow international lending.
+
+Then given an initial level $B_{-1}^f$ of debt from the domestic country to the foreign country, and where $R_{t-1,t} = \frac{q_{t-1}}{q_t}$, international debt dynamics satisfy
+
+$$
+B^f_t = R_{t-1,t} B^f_{t-1} + c_t + (k_{t+1} - (1 - \delta)k_t) + g_t - f(k_t)
+$$
+
+```{code-cell} ipython3
+def Bf_path(k, c, g, model):
+    """
+    Compute B^{f}_t:
+      Bf_t = R_{t-1} Bf_{t-1} + c_t + (k_{t+1}-(1-δ)k_t) + g_t - f(k_t)
+    with Bf_0 = 0.
+    """
+    S = len(c) - 1                       
+    R = c[:-1]**(-model.γ) / (model.β * c[1:]**(-model.γ))
+
+    Bf = np.zeros(S + 1) 
+    for t in range(1, S + 1):
+        inv = k[t] - (1 - model.δ) * k[t-1]         
+        Bf[t] = (
+            R[t-1] * Bf[t-1] + c[t] + inv + g[t-1] 
+            - f(k[t-1], model))
+    return Bf
+```
+
+and
+
+$$
+c^*_t + (k^*_{t+1} - (1 - \delta)k^*_t) + g^*_t - R_{t-1,t} B^f_{t-1} = f(k^*_t) - B^f_t.
+$$
+
+Firms' first-order conditions in the two countries are:
+
+$$
+\begin{aligned}
+\eta_t &= f'(k_t), \quad w_t = f(k_t) - k_t f'(k_t) \\
+\eta^*_t &= f'(k^*_t), \quad w^*_t = f(k^*_t) - k^*_t f'(k^*_t).
+\end{aligned}
+$$
+
+International trade in goods establishes
+
+$$
+\frac{q_t}{\beta^t} = \frac{u'(c_t)}{1 + \tau_{ct}} = \mu^* \frac{u'(c^*_t)}{1 + \tau^*_{ct}},
+$$
+
+where $\mu^*$ is a nonnegative number that is a function of the Lagrange multiplier on the budget constraint for a consumer in country $*$, and where we have normalized the Lagrange multiplier on the budget constraint of the domestic country to set the corresponding $\mu$ for the domestic country to unity.
+
+```{code-cell} ipython3
+def compute_rs(c_t, c_tp1, c_s_t, c_s_tp1, τc_t, τc_tp1, τc_s_t, τc_s_tp1, model):
+    """
+    Compute international risk sharing after trade starts.
+    """
+
+    return (c_t**(-model.γ)/(1+τc_t)) * ((1+τc_s_t)/c_s_t**(-model.γ)) - (
+        c_tp1**(-model.γ)/(1+τc_tp1)) * ((1+τc_s_tp1)/c_s_tp1**(-model.γ))
+```
+
+Equilibrium requires that the following two national Euler equations be satisfied for $t \geq 0$:
+
+$$
+\begin{aligned}
+u'(c_t) &= \beta u'(c_{t+1}) \left[ (1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right] \left[ \frac{1 + \tau_{ct+1}}{1 + \tau_{ct}} \right], \\
+u'(c^*_t) &= \beta u'(c^*_{t+1}) \left[ (1 - \tau^*_{kt+1})(f'(k^*_{t+1}) - \delta) + 1 \right] \left[ \frac{1 + \tau^*_{ct+1}}{1 + \tau^*_{ct}} \right].
+\end{aligned}
+$$
+
+The following code computes the domestic Euler equation and the foreign Euler equation.
+
+They are of the same form, but with different variables so we write them in one function.
+
+```{code-cell} ipython3
+def compute_euler(c_t, c_tp1, τc_t, 
+                           τc_tp1, τk_tp1, k_tp1, model):
+    """
+    Compute the Euler equation.
+    """
+    Rbar = (1 - τk_tp1)*(f_prime(k_tp1, model) - model.δ) + 1
+    return model.β * (c_tp1/c_t)**(-model.γ) * (1+τc_t)/(1+τc_tp1) * Rbar - 1
+```
+
+### Initial condition and steady state
+
+For the initial conditions, we choose pre-trade allocation of capital be ($k_0, k_0^*$) and 
+initial level $B_{-1}^f$ of international debt owed
+by the unstarred (domestic) country to the starred (foreign) country.
+
+### Equilibrium steady state values
+
+The steady state of the two-country model is characterized by two sets of equations. 
+
+First, the following equations determine the steady-state capital-labor ratios $\bar k$ and $\bar k^*$ in each country:
+
+$$
+f'(\bar{k}) = \delta + \frac{\rho}{1 - \tau_k} \tag{12.13.12}
+$$ (eq:steady_k_bar)
+
+$$
+f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*} \tag{12.13.13}
+$$ (eq:steady_k_star)
+
+Given these steady-state capital-labor ratios, domestic and foreign consumption values $\bar c$ and $\bar c^*$ are determined by:
+
+$$
+(\bar{c} + \bar{c}^*) = f(\bar{k}) + f(\bar{k}^*) - \delta(\bar{k} + \bar{k}^*) - (\bar{g} + \bar{g}^*)
+$$ (eq:steady_c_k_bar)
+
+$$
+\bar{c} = f(\bar{k}) - \delta\bar{k} - \bar{g} - \rho\bar{B}^f
+$$ (eq:steady_c_kB)
+
+Equation {eq}`eq:steady_c_k_bar` expresses feasibility at steady state, while equation {eq}`eq:steady_c_kB` represents the trade balance, including interest payments, at steady state. 
+
+The steady-state level of debt $\bar{B}^f$ from the domestic country to the foreign country influences consumption allocation between countries but not the total world capital stock.
+
+We assume $\bar{B}^f = 0$ in the steady state, which gives us the following function to compute the steady state values of capital and consumption
+
+```{code-cell} ipython3
+def compute_steady_state_global(model, g_ss=0.2):
+    """
+    Calculate steady state values for capital, consumption, and investment.
+    """
+    k_ss = ((1/model.β - (1-model.δ)) / (model.A * model.α)) ** (1/(model.α-1))
+    c_ss = f(k_ss, model) - model.δ * k_ss - g_ss
+    return k_ss, c_ss
+```
+
+Now, we can apply the residual minimization method to compute the steady state values of capital and consumption.
+
+Again, we use the minimize residuals of the Euler equation and the global resource constraint as well as the no-arbitrage condition
+
+```{code-cell} ipython3
+def compute_residuals_global(z, model, shocks, T, k0_ss, k_star, Bf_star):
+    """
+    Compute residuals for the two-country model.
+    """
+    k, c, k_s, c_s = z.reshape(T+1, 4).T
+    g, gs = shocks['g'], shocks['g_s']
+    τc, τk = shocks['τ_c'], shocks['τ_k']
+    τc_s, τk_s = shocks['τ_c_s'], shocks['τ_k_s']
+    
+    res = [k[0] - k0_ss, k_s[0] - k0_ss]
+    CA = 0.0
+    for t in range(T):
+        e_d = compute_euler(
+            c[t], c[t+1], 
+            τc[t], τc[t+1], τk[t+1], 
+            k[t+1], model)
+        e_f = compute_euler(
+            c_s[t], c_s[t+1], 
+            τc_s[t], τc_s[t+1], τk_s[t+1], 
+            k_s[t+1], model)
+        rs = compute_rs(
+            c[t], c[t+1], c_s[t], c_s[t+1], 
+            τc[t], τc[t+1], τc_s[t], τc_s[t+1], 
+            model)
+        # Global resource constraint
+        grc = k[t+1] + k_s[t+1] - (
+            f(k[t], model) + f(k_s[t], model) +
+            (1-model.δ)*(k[t] + k_s[t]) -
+            c[t] - c_s[t] - g[t] - gs[t]
+        )
+        res.extend([e_d, e_f, rs, grc])
+
+    Bf_term = Bf_path(k, c, shocks['g'], model)[-1]
+    res.append(k[T] - k_star)
+    res.append(Bf_term - Bf_star)
+    return np.array(res)
+```
+
+Then we plot the results
+
+```{code-cell} ipython3
+# Function to plot global two-country model results
+def plot_global_results(k, k_s, c, c_s, shocks, model, 
+                        k0_ss, c0_ss, g_ss, S, T=40, shock='g',
+                        # a dictionary storing sequence for lower left panel
+                        ll_series='None'):
+    """
+    Plot results for the two-country model.
+    """
+    fig, axes = plt.subplots(2, 3, figsize=(10, 8))
+    x = np.arange(T)
+    τc, τk = shocks['τ_c'], shocks['τ_k']
+    Bf = Bf_path(k, c, shocks['g'], model)
+    
+    # Compute derived series
+    R_ratio = c[:-1]**(-model.γ) / (model.β * c[1:]**(-model.γ)) \
+    *(1+τc[:-1])/(1+τc[1:])
+    inv = k[1:] - (1-model.δ)*k[:-1]
+    inv_s = k_s[1:] - (1-model.δ)*k_s[:-1]
+
+    # Add initial conditions into the series
+    R_ratio = np.append(1/model.β, R_ratio)
+    c = np.append(c0_ss, c)
+    c_s = np.append(c0_ss, c_s)
+    k = np.append(k0_ss, k)
+    k_s = np.append(k0_ss, k_s)
+
+    # Capital
+    axes[0,0].plot(x, k[:T], '-', lw=1.5)
+    axes[0,0].plot(x, np.full(T, k0_ss), 'k-.', lw=1.5)
+    axes[0,0].plot(x, k_s[:T], '--', lw=1.5)
+    axes[0,0].set_title('k')
+    axes[0,0].set_xlim(0, T-1)
+    
+    # Consumption
+    axes[0,1].plot(x, c[:T], '-', lw=1.5)
+    axes[0,1].plot(x, np.full(T, c0_ss), 'k-.', lw=1.5)
+    axes[0,1].plot(x, c_s[:T], '--', lw=1.5)
+    axes[0,1].set_title('c')
+    axes[0,1].set_xlim(0, T-1)
+    
+    # Interest rate
+    axes[0,2].plot(x, R_ratio[:T], '-', lw=1.5)
+    axes[0,2].plot(x, np.full(T, 1/model.β), 'k-.', lw=1.5)
+    axes[0,2].set_title(r'$\bar{R}$')
+    axes[0,2].set_xlim(0, T-1)
+    
+    # Investment
+    axes[1,0].plot(x, np.full(T, model.δ * k0_ss), 
+    'k-.', lw=1.5)
+    axes[1,0].plot(x, np.append(model.δ*k0_ss, inv[:T-1]), 
+    '-', lw=1.5)
+    axes[1,0].plot(x, np.append(model.δ*k0_ss, inv_s[:T-1]), 
+    '--', lw=1.5)
+    axes[1,0].set_title('x')
+    axes[1,0].set_xlim(0, T-1)
+    
+    # Shock
+    axes[1,1].plot(x, shocks[shock][:T], '-', lw=1.5)
+    axes[1,1].plot(x, np.full(T, shocks[shock][0]), 'k-.', lw=1.5)
+    axes[1,1].set_title(f'${shock}$')
+    axes[1,1].set_ylim(-0.1, 0.5)
+    axes[1,1].set_xlim(0, T-1)
+    
+    # Capital flow
+    axes[1,2].plot(x, Bf[1:T+1], lw=1.5)
+    axes[1,2].plot(x, np.zeros(T), 'k-.', lw=1.5)
+    axes[1,2].set_title(r'$B^{f}$')
+    axes[1,2].set_xlim(0, T-1)
+
+    plt.tight_layout()
+    return fig, axes
+```
+
+```{code-cell} ipython3
+Model = namedtuple("Model", ["β", "γ", "δ", "α", "A"])
+model = Model(β=0.95, γ=2.0, δ=0.2, α=0.33, A=1.0)
+
+shocks_global = {
+    'g': np.concatenate((np.full(10, 0.2), np.full(S-9, 0.4))),
+    'g_s': np.full(S+1, 0.2),
+    'τ_c': np.zeros(S+1),
+    'τ_k': np.zeros(S+1),
+    'τ_c_s': np.zeros(S+1),
+    'τ_k_s': np.zeros(S+1)
+}
+g_ss = 0.2
+k0_ss, c0_ss = compute_steady_state_global(model, g_ss)
+
+k_star = k0_ss
+Bf_star = 0.0
+
+init_glob = np.tile([k0_ss, c0_ss, k0_ss, c0_ss], S+1)
+sol_glob = root(
+    lambda z: compute_residuals_global(z, model, shocks_global,
+                                        S, k0_ss, k_star, Bf_star),
+    init_glob, tol=1e-12
+)
+k, c, k_s, c_s = sol_glob.x.reshape(S+1, 4).T
+
+# Plot global results via function
+plot_global_results(k, k_s, c, c_s,
+                        shocks_global, model,
+                        k0_ss, c0_ss, g_ss,
+                        S)
+plt.show()
+```
+
+```{code-cell} ipython3
+shocks_global = {
+    'g': np.full(S+1, g_ss),
+    'g_s': np.full(S+1, g_ss),
+    'τ_c': np.zeros(S+1),
+    'τ_k': np.concatenate((np.zeros(10), np.full(S-9, 0.2))),
+    'τ_c_s': np.zeros(S+1),
+    'τ_k_s': np.zeros(S+1),
+}
+    
+k0_ss, c0_ss = compute_steady_state_global(model, g_ss)
+k_star = k0_ss
+Bf_star = 0.0
+
+init_glob = np.tile([k0_ss, c0_ss, k0_ss, c0_ss], S+1)
+
+sol_glob = root(
+    lambda z: compute_residuals_global(z, model, 
+                                       shocks_global, S, k0_ss, k_star, Bf_star),
+    init_glob, tol=1e-12
+)
+
+k, c, k_s, c_s = sol_glob.x.reshape(S+1, 4).T
+
+# plot 
+fig, axes = plot_global_results(k, k_s, c, c_s, shocks_global, model, 
+                                k0_ss, c0_ss, g_ss, S, shock='τ_k')
+axes[1,0].cla()
+axes[1,0].plot(compute_η_path(k, model)[:40])
+axes[1,0].plot(compute_η_path(k_s, model)[:40], '--')
+axes[1,0].plot(np.full(40, f_prime(k_s, model)[0]), 'k-.', lw=1.5)
+axes[1,0].set_title(r'$\eta$')
+
+plt.tight_layout()
+plt.show()
+```
+
+```{exercise}
+:label: cass_fiscal_ex3
+
+In this exercise, replace the plot for ${x_t}$ with $\eta_t$ to replicate the figure in {cite}`Ljungqvist2012`.
+
+Compare the figure for ${k_t}$ with the figure for $\eta_t$ and discuss the economic intuition.
+```
+```{solution-start} cass_fiscal_ex3
+:class: dropdown
+```
+
+Here is one solution.
+
+```{code-cell} ipython3
+# plot 
+fig, axes = plot_global_results(k, k_s, c, c_s, shocks_global, model, 
+                                k0_ss, c0_ss, g_ss, S, shock='τ_k')
+
+# Clear the plot for x_t
+axes[1,0].cla()
+
+# Plot η_t
+axes[1,0].plot(compute_η_path(k, model)[:40])
+axes[1,0].plot(compute_η_path(k_s, model)[:40], '--')
+axes[1,0].plot(np.full(40, f_prime(k_s, model)[0]), 'k-.', lw=1.5)
+axes[1,0].set_title(r'$\eta$')
+
+plt.tight_layout()
+plt.show()
+```
+
+When capital ${k_t}$ decreases in the domestic country after the tax shock, the rental rate $\eta_t$ increases in that country. 
+
+This reflects as capital becomes scarcer, its marginal product rises.
 
 ```{solution-end}
 ```
