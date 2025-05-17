@@ -2363,13 +2363,13 @@ The episode demonstrates how open capital markets transmit a domestic tax shock 
 +++
 
 ```{exercise}
-:label: cass_fiscal_ex3
+:label: cass_fiscal_ex4
 
 In this exercise, replace the plot for ${x_t}$ with $\eta_t$ to replicate the figure in {cite}`Ljungqvist2012`.
 
 Compare the figure for ${k_t}$ with the figure for $\eta_t$ and discuss the economic intuition.
 ```
-```{solution-start} cass_fiscal_ex3
+```{solution-start} cass_fiscal_ex4
 :class: dropdown
 ```
 
