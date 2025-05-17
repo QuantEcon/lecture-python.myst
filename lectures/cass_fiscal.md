@@ -288,11 +288,18 @@ from mpmath import mp, mpf
 from warnings import warn
 
 # Set the precision
-mp.dps = 100
+mp.dps = 40
 mp.pretty = True
 ```
 
 We  use the `mpmath` library to perform high-precision arithmetic in the shooting algorithm in cases where the solution diverges due to numerical instability.
+
+```{note}
+In the functions below, we include routines to handle the growth component, which will be discussed further in the section {ref}`growth_model`.
+
+We include them here to avoid code duplication.
+```
+
 
 We set the following parameters
 
@@ -326,22 +333,13 @@ $$
 k_{t+1} = f(k_t) + (1 - \delta) k_t - g_t - c_t.
 $$ (eq:feasi_capital)
 
-```{note}
-In the functions below, we include routines to handle the growth component, making the code more concise.
-
-A detailed discussion of the growth model is provided later in the section {ref}`growth_model`.
-```
-
 ```{code-cell} ipython3
-def next_k(k_t, g_t, c_t, model, μ_t=None):
+def next_k(k_t, g_t, c_t, model, μ_t=1):
     """
     Capital next period: k_{t+1} = f(k_t) + (1 - δ) * k_t - c_t - g_t
-    With optional growth adjustment: k_{t+1} = (f(k_t) + (1 - δ) * k_t - c_t - g_t) / μ_{t+1}
+    with optional growth adjustment: k_{t+1} = (f(k_t) + (1 - δ) * k_t - c_t - g_t) / μ_{t+1}
     """
-    if μ_t is None:
-        return f(k_t, model) + (1 - model.δ) * k_t - g_t - c_t
-    else:
-        return (f(k_t, model) + (1 - model.δ) * k_t - g_t - c_t) / μ_t
+    return (f(k_t, model) + (1 - model.δ) * k_t - g_t - c_t) / μ_t
 ```
 
 By the properties of a linearly homogeneous production function, we have $F_k(k, n) = f'(k)$ and $F_n(k, 1) = f(k, 1) - f'(k)k$.
@@ -409,16 +407,13 @@ $$ (eq:equil_q)
 def compute_q_path(c_path, model, S=100, A_path=None):
     """
     Compute q path: q_t = (β^t * u'(c_t)) / u'(c_0)
-    With optional technology adjustment for growth models
+    with optional A_path for growth models.
     """
+    A = np.ones_like(c_path) if A_path is None else np.asarray(A_path)
     q_path = np.zeros_like(c_path)
     for t in range(S):
-        if A_path is None:
-            q_path[t] = (model.β ** t * 
-                         u_prime(c_path[t], model)) / u_prime(c_path[0], model)
-        else:
-            q_path[t] = (model.β ** t * 
-                         u_prime(c_path[t], model, A_path[t])) / u_prime(c_path[0], model, A_path[0])
+        q_path[t] = (model.β ** t * 
+                         u_prime(c_path[t], model, A[t])) / u_prime(c_path[0], model, A[0])
     return q_path
 ```
 
@@ -432,14 +427,12 @@ $$
 def compute_η_path(k_path, model, S=100, A_path=None):
     """
     Compute η path: η_t = f'(k_t)
-    With optional technology adjustment for growth models
+    with optional A_path for growth models.
     """
+    A = np.ones_like(k_path) if A_path is None else np.asarray(A_path)
     η_path = np.zeros_like(k_path)
     for t in range(S):
-        if A_path is None:
-            η_path[t] = f_prime(k_path[t], model)
-        else:
-            η_path[t] = f_prime(k_path[t], model, A_path[t])
+        η_path[t] = f_prime(k_path[t], model, A[t])
     return η_path
 ```
 
@@ -453,14 +446,12 @@ $$
 def compute_w_path(k_path, η_path, model, S=100, A_path=None):
     """
     Compute w path: w_t = f(k_t) - k_t * f'(k_t)
-    With optional technology adjustment for growth models
+    with optional A_path for growth models.
     """
+    A = np.ones_like(k_path) if A_path is None else np.asarray(A_path)
     w_path = np.zeros_like(k_path)
     for t in range(S):
-        if A_path is None:
-            w_path[t] = f(k_path[t], model) - k_path[t] * η_path[t]
-        else:
-            w_path[t] = f(k_path[t], model, A_path[t]) - k_path[t] * η_path[t]
+        w_path[t] = f(k_path[t], model, A[t]) - k_path[t] * η_path[t]
     return w_path
 ```
 
@@ -484,7 +475,7 @@ def compute_R_bar(τ_ct, τ_ctp1, τ_ktp1, k_tp1, model):
 ```{code-cell} ipython3
 def compute_R_bar_path(shocks, k_path, model, S=100):
     """
-    Compute R̄ path over time.
+    Compute R_bar path over time.
     """
     R_bar_path = np.zeros(S + 1)
     for t in range(S):
@@ -549,15 +540,12 @@ u(c) = \frac{c^{1 - \gamma}}{1 - \gamma}
 $$
 
 ```{code-cell} ipython3
-def u_prime(c, model, A_t=None):
+def u_prime(c, model, A_t=1):
     """
     Marginal utility: u'(c) = c^{-γ}
-    With optional technology adjustment: u'(cA) = (cA)^{-γ}
+    with optional technology adjustment: u'(cA) = (cA)^{-γ}
     """
-    if A_t is None:
-        return c ** (-model.γ)
-    else:
-        return (c * A_t) ** (-model.γ)
+    return (c * A_t) ** (-model.γ)
 ```
 
 By substituting {eq}`eq:gross_rate` into {eq}`eq:diff_second`, we obtain
@@ -567,16 +555,12 @@ c_{t+1} = c_t \left[ \beta \frac{(1 + \tau_{ct})}{(1 + \tau_{ct+1})} \left[(1 - 
 $$ (eq:consume_R)
 
 ```{code-cell} ipython3
-def next_c(c_t, R_bar, model, μ_t=None):
+def next_c(c_t, R_bar, model, μ_t=1):
     """
     Consumption next period: c_{t+1} = c_t * (β * R̄)^{1/γ}
-    With optional growth adjustment: c_{t+1} = c_t * (β * R̄)^{1/γ} * μ_{t+1}^{-1}
+    with optional growth adjustment: c_{t+1} = c_t * (β * R_bar)^{1/γ} * μ_{t+1}^{-1}
     """
-    β, γ = model.β, model.γ
-    if μ_t is None:
-        return c_t * (β * R_bar) ** (1 / γ)
-    else:
-        return (c_t * (β * R_bar) ** (1 / γ)) / μ_t
+    return c_t * (model.β * R_bar) ** (1 / model.γ) / μ_t
 ```
 
 For the production function we assume a Cobb-Douglas form:
@@ -586,19 +570,17 @@ F(k, 1) = A k^\alpha
 $$
 
 ```{code-cell} ipython3
-def f(k, model, A=None): 
+def f(k, model, A=1): 
     """
     Production function: f(k) = A * k^{α}
     """
-    A_val = 1 if A is None else A
-    return A_val * k ** model.α
+    return A * k ** model.α
 
-def f_prime(k, model, A=None):
+def f_prime(k, model, A=1):
     """
     Marginal product of capital: f'(k) = α * A * k^{α - 1}
     """
-    A_val = 1 if A is None else A
-    return model.α * A_val * k ** (model.α - 1)
+    return model.α * A * k ** (model.α - 1)
 ```
 
 ## Computation
@@ -630,171 +612,118 @@ The following code implements these steps.
 # Steady-state calculation
 def steady_states(model, g_ss, τ_k_ss=0.0, μ_ss=None):
     """
-    Calculate steady state values for capital and consumption.
+    Calculate steady state values for capital and 
+    consumption with optional A_path for growth models.
     """
+
     β, δ, α, γ = model.β, model.δ, model.α, model.γ
-    
-    # Get the effective A value
-    A_val = 1.0 if model.A is None else model.A
-    
-    if μ_ss is None:
-        # No growth case
-        numerator = δ + (1 / β - 1) / (1 - τ_k_ss)
-    else:
-        # Growth case
-        numerator = δ + ((μ_ss**γ) * 1 / β - 1) / (1 - τ_k_ss)
-    
-    denominator = α * A_val
-    k_ss = (numerator / denominator) ** (1 / (α - 1))
-    
-    if μ_ss is None:
-        # No growth case
-        c_ss = A_val * k_ss ** α - δ * k_ss - g_ss
-    else:
-        # Growth case
-        c_ss = k_ss ** α + (1-δ-μ_ss) * k_ss - g_ss
-        
+
+    A = model.A or 1.0
+
+    # growth‐adjustment in the numerator: μ^γ or 1
+    μ_eff = μ_ss**γ if μ_ss is not None else 1.0
+
+    num = δ + (μ_eff/β - 1) / (1 - τ_k_ss)
+    k_ss = (num / (α * A)) ** (1 / (α - 1))
+
+    c_ss = (
+        A * k_ss**α - δ * k_ss - g_ss
+        if μ_ss is None
+        else k_ss**α + (1 - δ - μ_ss) * k_ss - g_ss
+    )
+
     return k_ss, c_ss
 
-def shooting_algorithm(c0, k0, shocks, S, model, A_path=None):
+def shooting_algorithm(
+    c0, k0, shocks, S, model, A_path=None):
     """
-    Shooting algorithm for given initial c0 and k0.
+    Shooting algorithm for given initial c0 and k0
+    with optional A_path for growth models.
     """
-    # Check if it has growth component
-    is_growth_model = 'μ' in shocks
-    
-    # Convert shocks to high-precision
-    g_path, τ_c_path, τ_k_path = (
-        list(map(mpf, shocks[key])) for key in ['g', 'τ_c', 'τ_k']
-    )
-    
-    # Convert μ_path if it's a growth model
-    μ_path = None
-    if is_growth_model:
-        μ_path = list(map(mpf, shocks['μ']))
+    # unpack & mpf‐ify shocks, fill μ with ones if missing
+    g = np.array(list(map(mpf, shocks['g'])), dtype=object)
+    τ_c = np.array(list(map(mpf, shocks['τ_c'])), dtype=object)
+    τ_k = np.array(list(map(mpf, shocks['τ_k'])), dtype=object)
+    μ = (np.array(list(map(mpf, shocks['μ'])), dtype=object)
+              if 'μ' in shocks else np.ones_like(g))
+    A = np.ones_like(g) if A_path is None else A_path
 
-    # Initialize paths with initial values
-    c_path = [mpf(c0)] + [mpf(0)] * S
-    k_path = [mpf(k0)] + [mpf(0)] * S
+    k_path = np.empty(S+1, dtype=object)
+    c_path = np.empty(S+1, dtype=object)
+    k_path[0], c_path[0] = mpf(k0), mpf(c0)
 
-    # Generate paths for k_t and c_t
     for t in range(S):
-        k_t, c_t, g_t = k_path[t], c_path[t], g_path[t]
-
-        # Calculate next period's capital
-        if not is_growth_model:
-            k_tp1 = next_k(k_t, g_t, c_t, model)
-        else:
-            k_tp1 = next_k(k_t, g_t, c_t, model, μ_path[t+1])
-        
-        # Failure due to negative capital
-        if k_tp1 < mpf(0):
-            return None, None 
-        k_path[t + 1] = k_tp1
-
-        # Calculate next period's consumption
-        R_bar = compute_R_bar(τ_c_path[t], τ_c_path[t + 1], 
-                              τ_k_path[t + 1], k_tp1, model)
-        if not is_growth_model:
-            c_tp1 = next_c(c_t, R_bar, model)
-        else:
-            c_tp1 = next_c(c_t, R_bar, model, μ_path[t+1])
-
-        # Failure due to negative consumption
-        if c_tp1 < mpf(0):
+        k_t, c_t = k_path[t], c_path[t]
+        k_tp1 = next_k(k_t, g[t], c_t, model, μ[t+1])
+        if k_tp1 < 0:
             return None, None
-        c_path[t + 1] = c_tp1
+        k_path[t+1] = k_tp1
+
+        R_bar = compute_R_bar(
+            τ_c[t], τ_c[t+1], τ_k[t+1], k_tp1, model
+        )
+        c_tp1 = next_c(c_t, R_bar, model, μ[t+1])
+        if c_tp1 < 0:
+            return None, None
+        c_path[t+1] = c_tp1
 
     return k_path, c_path
 
 
-def bisection_c0(c0_guess, k0, shocks, S, model, 
-                 tol=mpf('1e-6'), max_iter=1000, verbose=False, A_path=None):
+def bisection_c0(
+    c0_guess, k0, shocks, S, model, tol=mpf('1e-6'), 
+    max_iter=1000, verbose=False, A_path=None):
     """
-    Bisection method to find optimal initial consumption c0.
+    Bisection method to find initial c0
     """
-    # Check if it has growth component
-    is_growth_model = 'μ' in shocks
-    
-    if not is_growth_model:
-        k_ss_final, _ = steady_states(model, 
-                                     mpf(shocks['g'][-1]), 
-                                     mpf(shocks['τ_k'][-1]))
-    else:
-        k_ss_final, _ = steady_states(model, 
-                                     mpf(shocks['g'][-1]), 
-                                     mpf(shocks['τ_k'][-1]),
-                                     mpf(shocks['μ'][-1]))
-    
-    c0_lower, c0_upper = mpf(0), f(k_ss_final, model)
+    # steady‐state uses last shocks (μ=1 if missing)
+    g_last    = mpf(shocks['g'][-1])
+    τ_k_last  = mpf(shocks['τ_k'][-1])
+    μ_last    = mpf(shocks['μ'][-1]) if 'μ' in shocks else mpf('1')
+    k_ss_fin, _ = steady_states(model, g_last, τ_k_last, μ_last)
 
-    c0 = c0_guess
-    for iter_count in range(max_iter):
-        if not is_growth_model:
-            k_path, _ = shooting_algorithm(c0, k0, shocks, S, model)
-        else:
-            k_path, _ = shooting_algorithm(c0, k0, shocks, S, model, A_path)
-        
-        # Adjust upper bound when shooting fails
+    c0_lo, c0_hi = mpf('0'), f(k_ss_fin, model)
+    c0 = mpf(c0_guess)
+
+    for i in range(1, max_iter+1):
+        k_path, _ = shooting_algorithm(c0, k0, shocks, S, model, A_path)
         if k_path is None:
             if verbose:
-                print(f"Iteration {iter_count + 1}: shooting failed with c0 = {c0}")
-            c0_upper = c0
+                print(f"[{i}] shoot failed at c0={c0}")
+            c0_hi = c0
         else:
-            error = k_path[-1] - k_ss_final
-            if verbose and iter_count % 100 == 0:
-                print(f"Iteration {iter_count + 1}: c0 = {c0}, error = {error}")
+            err = k_path[-1] - k_ss_fin
+            if verbose and i % 100 == 0:
+                print(f"[{i}] c0={c0}, err={err}")
+            if abs(err) < tol:
+                if verbose:
+                    print(f"Converged after {i} iter")
+                return c0
+            # update bounds in one line
+            c0_lo, c0_hi = (c0, c0_hi) if err > 0 else (c0_lo, c0)
+        c0 = (c0_lo + c0_hi) / mpf('2')
 
-            # Check for convergence
-            if abs(error) < tol:
-                print(f"Converged successfully on iteration {iter_count + 1}")
-                return c0 
-
-            # Update bounds based on the error
-            if error > mpf(0):
-                c0_lower = c0
-            else:
-                c0_upper = c0
-
-        # Calculate the new midpoint for bisection
-        c0 = (c0_lower + c0_upper) / mpf('2')
-
-    # Return the last computed c0 if convergence was not achieved
-    # Send a Warning message when this happens
-    warn(f"Converged failed. Returning the last c0 = {c0}", stacklevel=2)
+    warn(f"bisection did not converge after {max_iter} iters; returning c0={c0}")
     return c0
 
-def run_shooting(shocks, S, model, A_path=None, c0_func=bisection_c0, shooting_func=shooting_algorithm):
+
+def run_shooting(
+    shocks, S, model, A_path=None, 
+    c0_finder=bisection_c0, shooter=shooting_algorithm):
     """
-    Runs the shooting algorithm.
+    Compute initial SS, find c0, and return [k,c] paths
+    with optional A_path for growth models.
     """
-    # Check if it has growth component
-    is_growth_model = 'μ' in shocks
-    
-    # Compute initial steady states
-    if not is_growth_model:
-        k0, c0 = steady_states(model, mpf(shocks['g'][0]), mpf(shocks['τ_k'][0]))
-    else:
-        k0, c0 = steady_states(model, mpf(shocks['g'][0]), mpf(shocks['τ_k'][0]), mpf(shocks['μ'][0]))
-    
-    # Find the optimal initial consumption
-    if not is_growth_model:
-        optimal_c0 = c0_func(c0, k0, shocks, S, model)
-    else:
-        # Pass A_path to the bisection function when it's provided
-        optimal_c0 = c0_func(c0, k0, shocks, S, model, A_path=A_path)
-    
-    print(f"Parameters: {model}")
-    print(f"Optimal initial consumption c0: {mp.nstr(optimal_c0, 7)} \n")
-    
-    # Simulate the model
-    if not is_growth_model:
-        k_path, c_path = shooting_func(optimal_c0, k0, shocks, S, model)
-    else:
-        # Pass A_path to the shooting algorithm when it's provided
-        k_path, c_path = shooting_func(optimal_c0, k0, shocks, S, model, A_path)
-    
-    # Combine and return the results
+    # initial SS at t=0 (μ=1 if missing)
+    g0    = mpf(shocks['g'][0])
+    τ_k0  = mpf(shocks['τ_k'][0])
+    μ0    = mpf(shocks['μ'][0]) if 'μ' in shocks else mpf('1')
+    k0, c0 = steady_states(model, g0, τ_k0, μ0)
+
+    optimal_c0 = c0_finder(c0, k0, shocks, S, model, A_path=A_path)
+    print(f"Model: {model}\nOptimal initial consumption c0 = {mpf(optimal_c0)}")
+
+    k_path, c_path = shooter(optimal_c0, k0, shocks, S, model, A_path)
     return np.column_stack([k_path, c_path])
 ```
 
@@ -815,56 +744,57 @@ To start, we  prepare  sequences that we'll  used to initialize our iterative al
 We will start from an initial  steady state and  apply shocks at an the indicated  time.
 
 ```{code-cell} ipython3
-def plot_results(solution, k_ss, c_ss, shocks, shock_param, 
-                 axes, model, A_path=None, label='', linestyle='-', T=40):
+def plot_results(
+    solution, k_ss, c_ss, shocks, shock_param, axes, model,
+    A_path=None, label='', linestyle='-', T=40):
     """
-    Plot the results of the simulation replicating graphs in RMT.
-    With optional A_path parameter for growth model.
+    Plot simulation results (k, c, R, η, and a policy shock)
+    with optional A_path for growth models.
     """
-    # Check if it has growth component
-    is_growth_model = 'μ' in shocks
-    
     k_path = solution[:, 0]
     c_path = solution[:, 1]
+    T = min(T, k_path.size)
 
+    # handle growth parameters
+    μ0 = shocks['μ'][0] if 'μ' in shocks else 1.0
+    A0 = A_path[0] if A_path is not None else (model.A or 1.0)
+
+    # steady‐state lines
+    R_bar_ss = (1 / model.β) * (μ0**model.γ)
+    η_ss     = model.α * A0 * k_ss**(model.α - 1)
+
+    # plot k
     axes[0].plot(k_path[:T], linestyle=linestyle, label=label)
     axes[0].axhline(k_ss, linestyle='--', color='black')
     axes[0].set_title('k')
 
-    # Plot for c
+    # plot c
     axes[1].plot(c_path[:T], linestyle=linestyle, label=label)
     axes[1].axhline(c_ss, linestyle='--', color='black')
     axes[1].set_title('c')
 
-    # Plot for R_bar
-    R_bar_path = compute_R_bar_path(shocks, k_path, model, S)
-
+    # plot R bar
+    S_full    = k_path.size - 1
+    R_bar_path = compute_R_bar_path(shocks, k_path, model, S_full)
     axes[2].plot(R_bar_path[:T], linestyle=linestyle, label=label)
-    axes[2].set_title('$\overline{R}$')
-    
-    # Set the correct steady state value for R_bar
-    if not is_growth_model:
-        axes[2].axhline(1 / model.β, linestyle='--', color='black')
-    else:
-        axes[2].axhline((1 / model.β) * (shocks['μ'][0] ** model.γ), linestyle='--', color='black')
-    
-    # Plot for η
-    η_path = compute_η_path(k_path, model, S=T)
-    
-    # Set the correct steady state value for η
-    if not is_growth_model:
-        η_ss = model.α * model.A * k_ss ** (model.α - 1)
-    else:
-        η_ss = model.α * A_path[0] * k_ss ** (model.α - 1)
-    
+    axes[2].axhline(R_bar_ss, linestyle='--', color='black')
+    axes[2].set_title(r'$\bar{R}$')
+
+    # plot η
+    η_path = compute_η_path(k_path, model, S_full)
     axes[3].plot(η_path[:T], linestyle=linestyle, label=label)
     axes[3].axhline(η_ss, linestyle='--', color='black')
     axes[3].set_title(r'$\eta$')
-    
-    # Plot for the shock parameter
-    axes[4].plot(shocks[shock_param][:T], linestyle=linestyle, label=label)
-    axes[4].axhline(shocks[shock_param][0], linestyle='--', color='black')
+
+    # plot shock
+    shock_series = np.array(shocks[shock_param], dtype=object)
+    axes[4].plot(shock_series[:T], linestyle=linestyle, label=label)
+    axes[4].axhline(shock_series[0], linestyle='--', color='black')
     axes[4].set_title(rf'${shock_param}$')
+
+    if label:
+        for ax in axes[:5]:
+            ax.legend()
 ```
 
 **Experiment 1: Foreseen once-and-for-all increase in $g$ from 0.2 to 0.4 in period 10**
@@ -874,7 +804,9 @@ The figure below shows consequences of a foreseen permanent increase in $g$ at $
 ```{code-cell} ipython3
 # Define shocks as a dictionary
 shocks = {
-    'g': np.concatenate((np.repeat(0.2, 10), np.repeat(0.4, S - 9))),
+    'g': np.concatenate(
+        (np.repeat(0.2, 10), np.repeat(0.4, S - 9))
+    ),
     'τ_c': np.repeat(0.0, S + 1),
     'τ_k': np.repeat(0.0, S + 1)
 }
@@ -919,32 +851,32 @@ Let's collect the procedures used above into a function that runs the solver and
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-def experiment_model(shocks, S, model, A_path=None, solver=run_shooting, plot_func=plot_results, policy_shock='g', T=40):
+def experiment_model(
+    shocks, S, model, A_path=None, solver=run_shooting, 
+    plot_func=plot_results, policy_shock='g', T=40):
     """
-    Run the shooting algorithm given a model and plot the results.
+    Run the shooting algorithm and plot results.
     """
-    # Check if it has growth component
-    is_growth_model = 'μ' in shocks
-    
-    if not is_growth_model:
-        k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
-    else:
-        k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0], shocks['μ'][0])
-    
-    print(f"Steady-state capital: {k0:.4f}")
-    print(f"Steady-state consumption: {c0:.4f}")
+    # initial steady state (μ0=None if no growth)
+    g0   = mpf(shocks['g'][0])
+    τk0  = mpf(shocks['τ_k'][0])
+    μ0   = mpf(shocks['μ'][0]) if 'μ' in shocks else None
+    k_ss, c_ss = steady_states(model, g0, τk0, μ0)
+
+    print(f"Steady-state capital: {float(k_ss):.4f}")
+    print(f"Steady-state consumption: {float(c_ss):.4f}")
     print('-'*64)
-    
+
     fig, axes = plt.subplots(2, 3, figsize=(10, 8))
     axes = axes.flatten()
 
-    if not is_growth_model:
-        solution = solver(shocks, S, model)
-        plot_func(solution, k0, c0, shocks, policy_shock, axes, model, T=T)
-    else:
-        solution = solver(shocks, S, model, A_path)
-        plot_func(solution, k0, c0, shocks, policy_shock, axes, model, A_path, T=T)
+    sol = solver(shocks, S, model, A_path)
+    plot_func(
+        sol, k_ss, c_ss, shocks, policy_shock, axes, model,
+        A_path=A_path, T=T
+    )
 
+    # remove unused axes
     for ax in axes[5:]:
         fig.delaxes(ax)
 
@@ -1013,55 +945,55 @@ Let's write another function that runs the solver and draws plots for these two 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-def experiment_two_models(shocks, S, model_1, model_2, solver=run_shooting, plot_func=plot_results, 
-                          policy_shock='g', legend_label_fun=None, T=40, A_path=None):
+def experiment_two_models(
+    shocks, S, model_1, model_2, solver=run_shooting, plot_func=plot_results, 
+    policy_shock='g', legend_label_fun=None, T=40, A_path=None):
     """
-    Compares and plots results of the shooting algorithm for two models.
+    Compare and plot the shooting algorithm paths for two models.
     """
-    # Check if it has growth component
-    is_growth_model = 'μ' in shocks
-    
-    if not is_growth_model:
-        k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
-    else:
-        k0, c0 = steady_states(model, shocks['g'][0], shocks['τ_k'][0], shocks['μ'][0])
-        
-    print(f"Steady-state capital: {k0:.4f}")
-    print(f"Steady-state consumption: {c0:.4f}")
-    print('-'*64)
-    
-    # Use a default legend labeling function if none is provided
-    if legend_label_fun is None:
-        legend_label_fun = lambda model: fr"$\gamma = {model.γ}$"
+    is_growth = 'μ' in shocks
+    μ0 = mpf(shocks['μ'][0]) if is_growth else None
 
-    # Set up the figure and axes
+    # initial steady states for both models
+    g0   = mpf(shocks['g'][0])
+    τk0  = mpf(shocks['τ_k'][0])
+    k_ss1, c_ss1 = steady_states(model_1, g0, τk0, μ0)
+    k_ss2, c_ss2 = steady_states(model_2, g0, τk0, μ0)
+
+    # print both    
+    print(f"Model 1 (γ={model_1.γ}): steady state k={float(k_ss1):.4f}, c={float(c_ss1):.4f}")
+    print(f"Model 2 (γ={model_2.γ}): steady state k={float(k_ss2):.4f}, c={float(c_ss2):.4f}")
+    print('-'*64)
+
+    # default legend labels
+    if legend_label_fun is None:
+        legend_label_fun = lambda m: fr"$\gamma = {m.γ}$"
+
+    # prepare figure
     fig, axes = plt.subplots(2, 3, figsize=(10, 8))
     axes = axes.flatten()
 
-    # Function to run and plot for each model
-    def run_and_plot(model, linestyle='-'):
-        if not is_growth_model:
-            solution = solver(shocks, S, model)
-            plot_func(solution, k0, c0, shocks, policy_shock, axes, model, 
-                     label=legend_label_fun(model), linestyle=linestyle, T=T)
-        else:
-            solution = solver(shocks, S, model, A_path)
-            plot_func(solution, k0, c0, shocks, policy_shock, axes, model, A_path,
-                     label=legend_label_fun(model), linestyle=linestyle, T=T)
+    # loop over (model, steady‐state, linestyle)
+    for model, (k_ss, c_ss), ls in [
+        (model_1, (k_ss1, c_ss1), '-'),
+        (model_2, (k_ss2, c_ss2), '-.')
+    ]:
+        sol = solver(shocks, S, model, A_path)
+        plot_func(sol, k_ss, c_ss, shocks, policy_shock, axes, 
+                  model, A_path=A_path, 
+                  label=legend_label_fun(model), 
+                  linestyle=ls, T=T)
 
-    # Plot for both models
-    run_and_plot(model_1)
-    run_and_plot(model_2, linestyle='-.')
-
-    # Set legend using labels from the first axis
+    # shared legend in lower‐right
     handles, labels = axes[0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc='lower right', ncol=3, 
-               fontsize=14, bbox_to_anchor=(1, 0.1))
+    fig.legend(
+        handles, labels, loc='lower right', ncol=2, 
+        fontsize=12, bbox_to_anchor=(1, 0.1))
 
-    # Remove extra axes and tidy up the layout
+    # drop the unused subplot
     for ax in axes[5:]:
         fig.delaxes(ax)
-    
+
     plt.tight_layout()
     plt.show()
 ```
@@ -1126,7 +1058,8 @@ for ax in axes[5:]:
     fig.delaxes(ax)
 
 handles, labels = axes[3].get_legend_handles_labels()  
-fig.legend(handles, labels, title=r"$r_{t,t+s}$ with ", loc='lower right', ncol=3, fontsize=10, bbox_to_anchor=(1, 0.1))  
+fig.legend(handles, labels, title=r"$r_{t,t+s}$ with ", loc='lower right', 
+           ncol=3, fontsize=10, bbox_to_anchor=(1, 0.1))  
 plt.tight_layout()
 plt.show()
 ```
@@ -1285,34 +1218,24 @@ The second method involves minimizing residuals (i.e., deviations from equalitie
 
 ```{code-cell} ipython3
 # Euler's equation and feasibility condition 
-def euler_residual(c_t, c_tp1, τ_c_t, τ_c_tp1, τ_k_tp1, k_tp1, model, A_tp1=None, μ_tp1=None):
+def euler_residual(c_t, c_tp1, τ_c_t, τ_c_tp1, τ_k_tp1, k_tp1, model, μ_tp1=1):
     """
-    Computes the residuals for Euler's equation with optional growth model parameters.
+    Computes the residuals for Euler's equation 
+    with optional growth model parameters μ_tp1.
     """
     R_bar = compute_R_bar(τ_c_t, τ_c_tp1, τ_k_tp1, k_tp1, model)
     
-    # Check if it has growth component
-    is_growth_model = μ_tp1 is not None
-    
-    if not is_growth_model:
-        β, γ = model.β, model.γ
-        return β * (c_tp1 / c_t) ** (-γ) * (1 + τ_c_t) / (1 + τ_c_tp1) * R_bar - 1
-    else:
-        c_tp1_expected = next_c(c_t, R_bar, model, μ_tp1)
-        return (c_tp1_expected / c_tp1) - 1
+    c_expected = next_c(c_t, R_bar, model, μ_tp1)
 
-def feasi_residual(k_t, k_tm1, c_tm1, g_t, model, μ_t=None):
+    return c_expected / c_tp1 - 1.0
+
+def feasi_residual(k_t, k_tm1, c_tm1, g_t, model, μ_t=1):
     """
-    Computes the residuals for feasibility condition with optional growth model parameters.
+    Computes the residuals for feasibility condition 
+    with optional growth model parameter μ_t.
     """
-    # Check if it has growth component
-    is_growth_model = μ_t is not None
-    
-    if not is_growth_model:
-        return k_t - (f(k_tm1, model) + (1 - model.δ) * k_tm1 - c_tm1 - g_t)
-    else:
-        k_t_expected = next_k(k_tm1, g_t, c_tm1, model, μ_t)
-        return k_t_expected - k_t
+    k_t_expected = next_k(k_tm1, g_t, c_tm1, model, μ_t)
+    return k_t_expected - k_t
 ```
 
 The algorithm proceeds follows:
@@ -1349,93 +1272,68 @@ The algorithm proceeds follows:
 4. Iteratively adjust  guesses for $\{\hat{c}_t, \hat{k}_t\}_{t=0}^{S}$ to minimize  residuals $l_{k_0}$, $l_{ta}$, $l_{tk}$, and $l_{k_S}$ for $t = 0, \dots, S$.
 
 ```{code-cell} ipython3
-# Computing residuals as objective function to minimize
-def compute_residuals(vars_flat, k_init, S, shocks, model, A_path=None):
+def compute_residuals(vars_flat, k_init, S, shock_paths, model):
     """
-    Compute a vector of residuals under Euler's equation, feasibility condition, 
-    and boundary conditions with optional growth model parameters.
+    Compute the residuals for the Euler equation and feasibility condition.
     """
-    # Check if it has growth component
-    is_growth_model = 'μ' in shocks
-    
-    k, c = vars_flat.reshape((S + 1, 2)).T
-    residuals = np.zeros(2 * S + 2)
+    g, τ_c, τ_k, μ = (shock_paths[key] for key in ('g','τ_c','τ_k','μ'))
+    k, c = vars_flat.reshape((S+1, 2)).T
+    res = np.empty(2*S+2, dtype=float)
 
-    # Initial condition for capital
-    residuals[0] = k[0] - k_init
+    # boundary condition on initial capital
+    res[0] = k[0] - k_init
 
-    # Compute residuals for each time step
+    # interior Euler and feasibility
     for t in range(S):
-        # For growth model, pass the growth parameters
-        if is_growth_model:
-            residuals[2*t+1] = euler_residual(
-                c[t], c[t+1],
-                shocks['τ_c'][t], shocks['τ_c'][t+1], shocks['τ_k'][t+1],
-                k[t+1], model, 
-                A_path[t+1] if A_path is not None else None, 
-                shocks['μ'][t+1]
-            )
-            residuals[2*t+2] = feasi_residual(
-                k[t+1], k[t], c[t],
-                shocks['g'][t], model, shocks['μ'][t+1]
-            )
-        else:
-            # For standard model, use without growth parameters
-            residuals[2*t+1] = euler_residual(
-                c[t], c[t+1],
-                shocks['τ_c'][t], shocks['τ_c'][t+1], shocks['τ_k'][t+1],
-                k[t+1], model
-            )
-            residuals[2*t+2] = feasi_residual(
-                k[t+1], k[t], c[t],
-                shocks['g'][t], model
-            )
+        res[2*t + 1] = euler_residual(
+            c[t],    c[t+1],
+            τ_c[t],  τ_c[t+1],
+            τ_k[t+1],k[t+1],
+            model, μ[t+1])
+        res[2*t + 2] = feasi_residual(
+            k[t+1], k[t], c[t],
+            g[t],  model,
+            μ[t+1])
 
-    # Terminal condition
-    if is_growth_model:
-        residuals[-1] = euler_residual(
-            c[S], c[S],
-            shocks['τ_c'][S], shocks['τ_c'][S], shocks['τ_k'][S],
-            k[S], model, 
-            A_path[S] if A_path is not None else None, 
-            shocks['μ'][S]
-        )
-    else:
-        residuals[-1] = euler_residual(
-            c[S], c[S],
-            shocks['τ_c'][S], shocks['τ_c'][S], shocks['τ_k'][S],
-            k[S], model
-        )
-    
-    return residuals
+    # terminal Euler condition at t=S
+    res[-1] = euler_residual(
+        c[S],   c[S],
+        τ_c[S], τ_c[S],
+        τ_k[S], k[S],
+        model,
+        μ[S])
 
-# Root-finding Algorithm to minimize the residual
+    return res
+
+
 def run_min(shocks, S, model, A_path=None):
     """
-    Root-finding algorithm to minimize the vector of residuals.
+    Solve for the full (k,c) path by root‐finding the residuals.
     """
-    # Check if it has growth component
-    is_growth_model = 'μ' in shocks
-    
-    if not is_growth_model:
-        k_ss, c_ss = steady_states(model, shocks['g'][0], shocks['τ_k'][0])
-    else:
-        k_ss, c_ss = steady_states(model, shocks['g'][0], shocks['τ_k'][0], shocks['μ'][0])
-    
-    # Initial guess for the solution path
-    initial_guess = np.column_stack(
-        (np.full(S + 1, k_ss), np.full(S + 1, c_ss))).flatten()
+    shocks['μ'] = shocks['μ'] if 'μ' in shocks else np.ones_like(shocks['g'])
 
-    # Solve the system using root-finding
-    if not is_growth_model:
-        sol = root(compute_residuals, initial_guess, 
-                  args=(k_ss, S, shocks, model), tol=1e-8)
-    else:
-        sol = root(compute_residuals, initial_guess, 
-                  args=(k_ss, S, shocks, model, A_path), tol=1e-8)
+    # compute the steady‐state to serve as both initial capital and guess
+    k_ss, c_ss = steady_states(
+        model,
+        shocks['g'][0],
+        shocks['τ_k'][0],
+        shocks['μ'][0]  # =1 if no growth
+    )
 
-    # Reshape solution to get time paths for k and c
-    return sol.x.reshape((S + 1, 2))
+    # initial guess: flat at the steady‐state
+    guess = np.column_stack([
+        np.full(S+1, k_ss),
+        np.full(S+1, c_ss)
+    ]).flatten()
+
+    sol = root(
+        compute_residuals,
+        guess,
+        args=(k_ss, S, shocks, model),
+        tol=1e-8
+    )
+
+    return sol.x.reshape((S+1, 2))
 ```
 
 We found that  method 2 did  not encounter numerical stability issues, so using  `mp.mpf` is not necessary.
@@ -1577,7 +1475,7 @@ experiment_model(shocks, S, model, solver=run_min,
 ```
 
 (growth_model)=
-## Growth
+## Exogenous growth
 
 In the previous section, we considered a model with exogenous growth.
 
@@ -2038,7 +1936,8 @@ $$
 where $\mu^*$ is a nonnegative number that is a function of the Lagrange multiplier on the budget constraint for a consumer in country $*$, and where we have normalized the Lagrange multiplier on the budget constraint of the domestic country to set the corresponding $\mu$ for the domestic country to unity.
 
 ```{code-cell} ipython3
-def compute_rs(c_t, c_tp1, c_s_t, c_s_tp1, τc_t, τc_tp1, τc_s_t, τc_s_tp1, model):
+def compute_rs(c_t, c_tp1, c_s_t, c_s_tp1, τc_t, 
+               τc_tp1, τc_s_t, τc_s_tp1, model):
     """
     Compute international risk sharing after trade starts.
     """
@@ -2062,7 +1961,7 @@ They are of the same form, but with different variables so we write them in one 
 
 ```{code-cell} ipython3
 def compute_euler(c_t, c_tp1, τc_t, 
-                           τc_tp1, τk_tp1, k_tp1, model):
+                    τc_tp1, τk_tp1, k_tp1, model):
     """
     Compute the Euler equation.
     """
@@ -2131,26 +2030,30 @@ def compute_residuals_global(z, model, shocks, T, k0_ss, k_star, Bf_star):
     τc_s, τk_s = shocks['τ_c_s'], shocks['τ_k_s']
     
     res = [k[0] - k0_ss, k_s[0] - k0_ss]
-    CA = 0.0
+
     for t in range(T):
         e_d = compute_euler(
             c[t], c[t+1], 
             τc[t], τc[t+1], τk[t+1], 
             k[t+1], model)
+        
         e_f = compute_euler(
             c_s[t], c_s[t+1], 
             τc_s[t], τc_s[t+1], τk_s[t+1], 
             k_s[t+1], model)
+        
         rs = compute_rs(
             c[t], c[t+1], c_s[t], c_s[t+1], 
             τc[t], τc[t+1], τc_s[t], τc_s[t+1], 
             model)
+        
         # Global resource constraint
         grc = k[t+1] + k_s[t+1] - (
             f(k[t], model) + f(k_s[t], model) +
             (1-model.δ)*(k[t] + k_s[t]) -
             c[t] - c_s[t] - g[t] - gs[t]
         )
+        
         res.extend([e_d, e_f, rs, grc])
 
     Bf_term = Bf_path(k, c, shocks['g'], model)[-1]
@@ -2325,9 +2228,8 @@ init_glob = np.tile([k0_ss, c0_ss, k0_ss, c0_ss], S+1)
 
 sol_glob = root(
     lambda z: compute_residuals_global(z, model, 
-                                       shocks_global, S, k0_ss, k_star, Bf_star),
-    init_glob, tol=1e-12
-)
+            shocks_global, S, k0_ss, k_star, Bf_star),
+            init_glob, tol=1e-12)
 
 k, c, k_s, c_s = sol_glob.x.reshape(S+1, 4).T
 
