@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -33,10 +35,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -65,9 +66,8 @@ Its many applications include:
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from quantecon import LinearStateSpace
 from scipy.stats import norm
@@ -186,7 +186,8 @@ You can confirm that under these definitions, {eq}`st_space_rep` and {eq}`st_ex_
 The next figure shows the dynamics of this process when $\phi_0 = 1.1, \phi_1=0.8, \phi_2 = -0.8, y_0 = y_{-1} = 1$.
 
 (lss_sode_fig)=
-```{code-cell} python3
+
+```{code-cell} ipython3
 def plot_lss(A,
          C,
          G,
@@ -205,7 +206,7 @@ def plot_lss(A,
     plt.show()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 ϕ_0, ϕ_1, ϕ_2 = 1.1, 0.8, -0.8
 
 A = [[1,     0,     0  ],
@@ -269,7 +270,8 @@ y_{-3} = 1
 $$
 
 (lss_uap_fig)=
-```{code-cell} python3
+
+```{code-cell} ipython3
 ϕ_1, ϕ_2, ϕ_3, ϕ_4 = 0.5, -0.2, 0, 0.5
 σ = 0.2
 
@@ -651,7 +653,7 @@ The system in question is the univariate autoregressive model {eq}`eq_ar_rep`.
 
 The values of $y_T$ are represented by black dots in the left-hand figure
 
-```{code-cell} python3
+```{code-cell} ipython3
 def cross_section_plot(A,
                    C,
                    G,
@@ -695,7 +697,7 @@ def cross_section_plot(A,
     plt.show()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 ϕ_1, ϕ_2, ϕ_3, ϕ_4 = 0.5, -0.2, 0, 0.5
 σ = 0.1
 
@@ -716,14 +718,14 @@ that shows relative frequencies from our sample of 20 $y_T$'s.
 
 Here is another figure, this time with 100 observations
 
-```{code-cell} python3
+```{code-cell} ipython3
 t = 100
 cross_section_plot(A_2, C_2, G_2, T=t)
 ```
 
 Let's now try with 500,000 observations, showing only the histogram (without rotation)
 
-```{code-cell} python3
+```{code-cell} ipython3
 T = 100
 ymin=-0.8
 ymax=1.25
@@ -733,7 +735,7 @@ ar = LinearStateSpace(A_2, C_2, G_2, mu_0=np.ones(4))
 fig, ax = plt.subplots()
 x, y = ar.simulate(sample_size)
 mu_x, mu_y, Sigma_x, Sigma_y, Sigma_yx = ar.stationary_distributions()
-f_y = norm(loc=float(mu_y), scale=float(np.sqrt(Sigma_y)))
+f_y = norm(loc=float(mu_y.item()), scale=float(np.sqrt(Sigma_y.item())))
 y = y.flatten()
 ygrid = np.linspace(ymin, ymax, 150)
 
@@ -776,7 +778,8 @@ The parameters are the same as for the preceding figures,
 and the sample size is relatively small ($I=20$).
 
 (lss_em_fig)=
-```{code-cell} python3
+
+```{code-cell} ipython3
 I = 20
 T = 50
 ymin = -0.5
@@ -800,7 +803,7 @@ m = ar.moment_sequence()
 population_means = []
 for t in range(T):
     μ_x, μ_y, Σ_x, Σ_y = next(m)
-    population_means.append(float(μ_y))
+    population_means.append(float(μ_y.item()))
 
 ax.plot(population_means, color='g', lw=2, alpha=0.8, label=r'$G\mu_t$')
 ax.set_ylim(ymin, ymax)
@@ -904,7 +907,7 @@ Let's look at some more time series from the same model that we analyzed above.
 This picture shows cross-sectional distributions for $y$ at times
 $T, T', T''$
 
-```{code-cell} python3
+```{code-cell} ipython3
 def cross_plot(A,
             C,
             G,
@@ -944,7 +947,7 @@ def cross_plot(A,
     plt.show()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 cross_plot(A_2, C_2, G_2)
 ```
 
@@ -988,7 +991,8 @@ where $\mu_{\infty}$ and $\Sigma_{\infty}$ are fixed points of {eq}`lss_mut_line
 Let's see what happens to the preceding figure if we start $x_0$ at the stationary distribution.
 
 (lss_s_fig)=
-```{code-cell} python3
+
+```{code-cell} ipython3
 cross_plot(A_2, C_2, G_2, steady_state='True')
 ```
 
