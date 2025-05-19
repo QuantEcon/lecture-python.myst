@@ -780,10 +780,6 @@ and the sample size is relatively small ($I=20$).
 (lss_em_fig)=
 
 ```{code-cell} ipython3
-μ_y.item()
-```
-
-```{code-cell} ipython3
 I = 20
 T = 50
 ymin = -0.5
