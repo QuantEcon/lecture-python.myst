@@ -51,6 +51,12 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 To conduct simulations, we bring in these imports, as in {doc}`A First Look at the Kalman filter <kalman>`.
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
+
+!apt-get install dvipng texlive-latex-extra texlive-fonts-recommended cm-super
+```
+
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
 from quantecon import Kalman, LinearStateSpace
