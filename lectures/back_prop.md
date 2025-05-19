@@ -22,6 +22,12 @@ kernelspec:
 !pip install --upgrade jax
 ```
 
+```{code-cell} ipython3
+import jax
+## to check that gpu is activated in environment
+print(f"JAX backend: {jax.devices()[0].platform}")
+```
+
 In addition to what's included in base Anaconda, we need to install the following packages
 
 ```{code-cell} ipython3
@@ -604,13 +610,4 @@ Image(fig.to_image(format="png"))
 # notebook locally
 ```
 
-```{code-cell} ipython3
-## to check that gpu is activated in environment
-print(f"JAX backend: {jax.devices()[0].platform}")
-```
 
-```{note}
-**Cloud Environment:** This lecture site is built in a server environment that doesn't have access to a `gpu`
-If you run this lecture locally this lets you know where your code is being executed, either
-via the `cpu` or the `gpu`
-```
