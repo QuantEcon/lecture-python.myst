@@ -248,6 +248,90 @@
                         
   <section class="tex2jax_ignore mathjax_ignore" id="non-conjugate-priors">
 <h1><span class="section-number">46. </span>Non-Conjugate Priors<a class="headerlink" href="#non-conjugate-priors" title="Permalink to this heading">#</a></h1>
+<div class="warning admonition">
+<p class="admonition-title">GPU</p>
+<p>This lecture was built using a machine with the latest CUDA and CUDANN frameworks installed with access to a GPU.</p>
+<p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>To run this lecture on your own machine, you need to install the software listed following this notice.</p>
+</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>numpyro<span class="w"> </span>pyro-ppl<span class="w"> </span>torch<span class="w"> </span>jax
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.18.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyro-ppl
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pyro_ppl-1.9.1-py3-none-any.whl.metadata (7.8 kB)
+Requirement already satisfied: torch in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (2.8.0.dev20250518+cu128)
+Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.6.0)
+Requirement already satisfied: jaxlib&gt;=0.4.25 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
+Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
+Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (1.26.4)
+Requirement already satisfied: tqdm in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (4.66.5)
+Requirement already satisfied: opt-einsum&gt;=2.3.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pyro-ppl) (3.4.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyro-api&gt;=0.1.1 (from pyro-ppl)
+  Downloading pyro_api-0.1.2-py3-none-any.whl.metadata (2.5 kB)
+Requirement already satisfied: filelock in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.18.0)
+Requirement already satisfied: typing-extensions&gt;=4.10.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (4.11.0)
+Requirement already satisfied: setuptools in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (75.1.0)
+Requirement already satisfied: sympy&gt;=1.13.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (1.13.3)
+Requirement already satisfied: networkx in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.3)
+Requirement already satisfied: jinja2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.1.4)
+Requirement already satisfied: fsspec in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (2024.6.1)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.61 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.61)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.57 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.57)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.57 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.57)
+Requirement already satisfied: nvidia-cudnn-cu12==9.8.0.87 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (9.8.0.87)
+Requirement already satisfied: nvidia-cublas-cu12==12.8.3.14 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.3.14)
+Requirement already satisfied: nvidia-cufft-cu12==11.3.3.41 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (11.3.3.41)
+Requirement already satisfied: nvidia-curand-cu12==10.3.9.55 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (10.3.9.55)
+Requirement already satisfied: nvidia-cusolver-cu12==11.7.2.55 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (11.7.2.55)
+Requirement already satisfied: nvidia-cusparse-cu12==12.5.7.53 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.5.7.53)
+Requirement already satisfied: nvidia-cusparselt-cu12==0.6.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (0.6.3)
+Requirement already satisfied: nvidia-nccl-cu12==2.26.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (2.26.5)
+Requirement already satisfied: nvidia-nvtx-cu12==12.8.55 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.55)
+Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.61 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.61)
+Requirement already satisfied: nvidia-cufile-cu12==1.13.0.11 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (1.13.0.11)
+Requirement already satisfied: pytorch-triton==3.3.0+git96316ce5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.3.0+git96316ce5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.1)
+Requirement already satisfied: scipy&gt;=1.11.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (1.13.1)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy&gt;=1.13.3-&gt;torch) (1.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jinja2-&gt;torch) (2.1.3)
+Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
+Downloading pyro_ppl-1.9.1-py3-none-any.whl (755 kB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/756.0 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">756.0/756.0 kB</span> <span class=" -Color -Color-Red">9.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading pyro_api-0.1.2-py3-none-any.whl (11 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: pyro-api, pyro-ppl
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed pyro-api-0.1.2 pyro-ppl-1.9.1
+</pre></div>
+</div>
+</div>
+</details>
+</div>
 <p>This lecture is a sequel to the <a class="reference internal" href="prob_meaning.html"><span class="doc">quantecon lecture</span></a>.</p>
 <p>That lecture offers a Bayesian interpretation of probability in a setting in which the likelihood function and the prior distribution
 over parameters just happened to form a <strong>conjugate</strong> pair in which</p>
@@ -273,87 +357,6 @@ be described below.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">pymc4</span></code></p></li>
 </ul>
 <p>As usual, we begin by importing some Python code.</p>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># install dependencies</span>
-<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>numpyro<span class="w"> </span>pyro-ppl<span class="w"> </span>torch<span class="w"> </span>jax
-</pre></div>
-</div>
-</div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.18.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyro-ppl
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pyro_ppl-1.9.1-py3-none-any.whl.metadata (7.8 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: torch in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (2.8.0.dev20250508+cu128)
-Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.6.0)
-Requirement already satisfied: jaxlib&gt;=0.4.25 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
-Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
-Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (1.26.4)
-Requirement already satisfied: tqdm in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (4.66.5)
-Requirement already satisfied: opt-einsum&gt;=2.3.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pyro-ppl) (3.4.0)
-Collecting pyro-api&gt;=0.1.1 (from pyro-ppl)
-  Downloading pyro_api-0.1.2-py3-none-any.whl.metadata (2.5 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: filelock in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.18.0)
-Requirement already satisfied: typing-extensions&gt;=4.10.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (4.11.0)
-Requirement already satisfied: setuptools in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (75.1.0)
-Requirement already satisfied: sympy&gt;=1.13.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (1.13.3)
-Requirement already satisfied: networkx in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.3)
-Requirement already satisfied: jinja2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.1.4)
-Requirement already satisfied: fsspec in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (2024.6.1)
-Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.61 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.61)
-Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.57 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.57)
-Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.57 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.57)
-Requirement already satisfied: nvidia-cudnn-cu12==9.8.0.87 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (9.8.0.87)
-Requirement already satisfied: nvidia-cublas-cu12==12.8.3.14 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.3.14)
-Requirement already satisfied: nvidia-cufft-cu12==11.3.3.41 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (11.3.3.41)
-Requirement already satisfied: nvidia-curand-cu12==10.3.9.55 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (10.3.9.55)
-Requirement already satisfied: nvidia-cusolver-cu12==11.7.2.55 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (11.7.2.55)
-Requirement already satisfied: nvidia-cusparse-cu12==12.5.7.53 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.5.7.53)
-Requirement already satisfied: nvidia-cusparselt-cu12==0.6.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (0.6.3)
-Requirement already satisfied: nvidia-nccl-cu12==2.26.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (2.26.2)
-Requirement already satisfied: nvidia-nvtx-cu12==12.8.55 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.55)
-Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.61 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.61)
-Requirement already satisfied: nvidia-cufile-cu12==1.13.0.11 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (1.13.0.11)
-Requirement already satisfied: pytorch-triton==3.3.0+git96316ce5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.3.0+git96316ce5)
-Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.1)
-Requirement already satisfied: scipy&gt;=1.11.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (1.13.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy&gt;=1.13.3-&gt;torch) (1.3.0)
-Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jinja2-&gt;torch) (2.1.3)
-Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading pyro_ppl-1.9.1-py3-none-any.whl (755 kB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/756.0 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">756.0/756.0 kB</span> <span class=" -Color -Color-Red">9.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading pyro_api-0.1.2-py3-none-any.whl (11 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: pyro-api, pyro-ppl
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed pyro-api-0.1.2 pyro-ppl-1.9.1
-</pre></div>
-</div>
-</div>
-</details>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1011,7 +1014,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/0cacfb27f9a674cd7068cb43f9260eb966d9967dffe2ecbca7d282d609373b5a.png" src="_images/0cacfb27f9a674cd7068cb43f9260eb966d9967dffe2ecbca7d282d609373b5a.png" />
-<img alt="_images/7feae4d52c7f8b8964dc1cdc68610e12ee7c4184ae08c617882d4e65882b4257.png" src="_images/7feae4d52c7f8b8964dc1cdc68610e12ee7c4184ae08c617882d4e65882b4257.png" />
+<img alt="_images/0f1030532889751276c313a566cf5f9235b1835f9818b1c5ddbda05c0e333c81.png" src="_images/0f1030532889751276c313a566cf5f9235b1835f9818b1c5ddbda05c0e333c81.png" />
 </div>
 </div>
 <p>These graphs look good too.</p>
@@ -1226,7 +1229,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/93bc239b72b0fe2a7ac1d9b620027d1b8aeb6dabd61a2663d5857506189ae2c1.png" src="_images/93bc239b72b0fe2a7ac1d9b620027d1b8aeb6dabd61a2663d5857506189ae2c1.png" />
+<img alt="_images/7f6510c86408c8c9735cb27a3d7782ec4e3e17a77b142149b6856f4e276cb739.png" src="_images/7f6510c86408c8c9735cb27a3d7782ec4e3e17a77b142149b6856f4e276cb739.png" />
 </div>
 </div>
 <p>Now let’s use MCMC while still using a beta prior.</p>
@@ -1239,8 +1242,8 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/517b1e04b6d36a03db7733753d8e7dec07567da7779fdf74966b8a42e304c612.png" src="_images/517b1e04b6d36a03db7733753d8e7dec07567da7779fdf74966b8a42e304c612.png" />
-<img alt="_images/3f21c596ec8805cc6f86da7f3da6d7d44f019e3992724d0524defdd09e3cba3a.png" src="_images/3f21c596ec8805cc6f86da7f3da6d7d44f019e3992724d0524defdd09e3cba3a.png" />
+<img alt="_images/9b8247b8b8993eb764b65f882a8a1a6dbcac21333bccc32cf967192f8bd496d0.png" src="_images/9b8247b8b8993eb764b65f882a8a1a6dbcac21333bccc32cf967192f8bd496d0.png" />
+<img alt="_images/8be03f2338010d16e8c6c98f7b8a2dc8021874f827367b3cd50d7ba0aaf5f00b.png" src="_images/8be03f2338010d16e8c6c98f7b8a2dc8021874f827367b3cd50d7ba0aaf5f00b.png" />
 </div>
 </div>
 <p>Here the MCMC approximation looks good.</p>
@@ -1259,7 +1262,7 @@ will be  more accurate, as we shall see next.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6621d65b7aa74c9f693cc01d014ba26ec01159fc2e59c27de6eb0dd961f4deff.png" src="_images/6621d65b7aa74c9f693cc01d014ba26ec01159fc2e59c27de6eb0dd961f4deff.png" />
+<img alt="_images/2a87a2f45b04759635696ad3bbabbd1ef5a92a4bca8a21ce049ddf8f48b9b4e9.png" src="_images/2a87a2f45b04759635696ad3bbabbd1ef5a92a4bca8a21ce049ddf8f48b9b4e9.png" />
 </div>
 </div>
 </section>
@@ -1316,14 +1319,14 @@ Prior Dist: uniform
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/6d89217f4dfd6fdd63674d6cf113d50c61f497f33fd4f3957fc326ef558e0518.png" src="_images/6d89217f4dfd6fdd63674d6cf113d50c61f497f33fd4f3957fc326ef558e0518.png" />
+<img alt="_images/17e1be2408aa632f9b16545f31f65fbac188c3cc1bdd97050f7e9e87b429a8af.png" src="_images/17e1be2408aa632f9b16545f31f65fbac188c3cc1bdd97050f7e9e87b429a8af.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0.2, 0.7)
 Prior Dist: uniform
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/8207f66a346f9e4a658be32353cd3cddcdee00d572913bfda118c1c182bc089f.png" src="_images/8207f66a346f9e4a658be32353cd3cddcdee00d572913bfda118c1c182bc089f.png" />
+<img alt="_images/66471cead613d47a2b19bc0fe90870bdcfa2e8c1349d03a684264cab81189f82.png" src="_images/66471cead613d47a2b19bc0fe90870bdcfa2e8c1349d03a684264cab81189f82.png" />
 </div>
 </div>
 <p>In the situation depicted above, we have assumed a  <span class="math notranslate nohighlight">\(Uniform(\underline{\theta}, \overline{\theta})\)</span> prior that puts zero probability   outside a bounded support that excludes the true value.</p>
@@ -1349,14 +1352,18 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/53b8aff1ecc4bda16998c44963063fea40f09fc42975f544b07271e621b8b7ac.png" src="_images/53b8aff1ecc4bda16998c44963063fea40f09fc42975f544b07271e621b8b7ac.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages/IPython/core/pylabtools.py:170: UserWarning: Creating legend with loc=&quot;best&quot; can be slow with large amounts of data.
+  fig.canvas.print_figure(bytes_io, **kw)
+</pre></div>
+</div>
+<img alt="_images/b7afb2c9601ba39ff5301aad830e6c9474ce412359a6a3dd899abc12c2842f9e.png" src="_images/b7afb2c9601ba39ff5301aad830e6c9474ce412359a6a3dd899abc12c2842f9e.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0, 2)
 Prior Dist: lognormal
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/34ce0d235d269966c3fc69f5f82327216fec842d51c7c9ba99a6a859c9af4aa9.png" src="_images/34ce0d235d269966c3fc69f5f82327216fec842d51c7c9ba99a6a859c9af4aa9.png" />
+<img alt="_images/465ad6ea4b614e21df8d90e7879670bd631c64a5a2092ce807df627b014a561a.png" src="_images/465ad6ea4b614e21df8d90e7879670bd631c64a5a2092ce807df627b014a561a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1383,7 +1390,7 @@ Solver: numpyro
 NOTE: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/0430252ce21645ee75cdd8fcaa586a7b8288ec45fd96c568b5bf9fcc60a645de.png" src="_images/0430252ce21645ee75cdd8fcaa586a7b8288ec45fd96c568b5bf9fcc60a645de.png" />
+<img alt="_images/f86de80df1cb24e5d5522b77e98bb25331f97f7ce4d57a99e886329d3a3aaca3.png" src="_images/f86de80df1cb24e5d5522b77e98bb25331f97f7ce4d57a99e886329d3a3aaca3.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: 40
 Prior Dist: vonMises
@@ -1392,7 +1399,7 @@ Solver: pyro
 NOTE: Truncated von Mises
 </pre></div>
 </div>
-<img alt="_images/cab0ae6ef934feaef79b0fd36e7a5cfaa4e08303c348647f87124eca9d1131d0.png" src="_images/cab0ae6ef934feaef79b0fd36e7a5cfaa4e08303c348647f87124eca9d1131d0.png" />
+<img alt="_images/4f8ecdec982863a0229dacdf7fb0292d5c4ee0cbf99792e6910e1002b1fe9b53.png" src="_images/4f8ecdec982863a0229dacdf7fb0292d5c4ee0cbf99792e6910e1002b1fe9b53.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1411,7 +1418,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/843773781f3cb1f1c9c96a21c318c239a7ba18143188837582018daf5a064a95.png" src="_images/843773781f3cb1f1c9c96a21c318c239a7ba18143188837582018daf5a064a95.png" />
+<img alt="_images/c57eb325bc36b7242529aca86cacde9305e87ec000993ef6d98e031b5e1facb2.png" src="_images/c57eb325bc36b7242529aca86cacde9305e87ec000993ef6d98e031b5e1facb2.png" />
 </div>
 </div>
 <p>To get more accuracy we will now increase the number of steps for Variational Inference (VI)</p>
@@ -1440,7 +1447,7 @@ Prior Dist: uniform
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/99d6975a0c3b60bbdb6be1918471e14510451c346e4e04dee86178fb7244c38b.png" src="_images/99d6975a0c3b60bbdb6be1918471e14510451c346e4e04dee86178fb7244c38b.png" />
+<img alt="_images/7a7b9509d68362bd24bd727f67bed12b6f97f9c46e03f843c8d230c6f345fc97.png" src="_images/7a7b9509d68362bd24bd727f67bed12b6f97f9c46e03f843c8d230c6f345fc97.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1459,7 +1466,7 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/e39fac867d1b47ccfca74beead00be60611a5fbbe874fdd6d0715f0fde7d45e8.png" src="_images/e39fac867d1b47ccfca74beead00be60611a5fbbe874fdd6d0715f0fde7d45e8.png" />
+<img alt="_images/c35253e474daae556453f8d92d96bca2ab550a50e60099a9e30a7cc501622d08.png" src="_images/c35253e474daae556453f8d92d96bca2ab550a50e60099a9e30a7cc501622d08.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1481,7 +1488,7 @@ Solver: numpyro
 NB: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/148ed2b4f2f4cbb2a3a0e0ec73dbbfcbf379cc2b6d4c16627857f781ca6788ae.png" src="_images/148ed2b4f2f4cbb2a3a0e0ec73dbbfcbf379cc2b6d4c16627857f781ca6788ae.png" />
+<img alt="_images/e53905bf138a12728a465e1ae87a5b008373bc17858d22863abd33ea8dd6f89f.png" src="_images/e53905bf138a12728a465e1ae87a5b008373bc17858d22863abd33ea8dd6f89f.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1500,7 +1507,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/5e10ac6a299588756717dc5cd32a3a345027ea62fbda14eef2907a9366053d73.png" src="_images/5e10ac6a299588756717dc5cd32a3a345027ea62fbda14eef2907a9366053d73.png" />
+<img alt="_images/57c3182a3aa120263bc145e47fcb7cd150dbe94c117e0f34f219035f9dc6f187.png" src="_images/57c3182a3aa120263bc145e47fcb7cd150dbe94c117e0f34f219035f9dc6f187.png" />
 </div>
 </div>
 </section>
@@ -1522,7 +1529,7 @@ Prior Dist: uniform
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/5f2229dabbef37e01d2727071d31ccddb1c7c66058628afd371936b95c58f206.png" src="_images/5f2229dabbef37e01d2727071d31ccddb1c7c66058628afd371936b95c58f206.png" />
+<img alt="_images/02d8ea42addb6a979e53650d4de2d206d9be06048fffb85b6447a4fea2ed1098.png" src="_images/02d8ea42addb6a979e53650d4de2d206d9be06048fffb85b6447a4fea2ed1098.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1545,14 +1552,14 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/b0840d00ab00c9b2bdce7dc4d53fea8651cea4df1b58420b7d80266d719cc0f4.png" src="_images/b0840d00ab00c9b2bdce7dc4d53fea8651cea4df1b58420b7d80266d719cc0f4.png" />
+<img alt="_images/bf680a9266a887cb8edabc31b424446826b376e8c606201b3cd00c735ea0df11.png" src="_images/bf680a9266a887cb8edabc31b424446826b376e8c606201b3cd00c735ea0df11.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0, 2)
 Prior Dist: lognormal
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/6bf3343db4bd9bf2f7988b9c0d5e62ada6cc143dc8ff501bcc6b9c5b79517ca3.png" src="_images/6bf3343db4bd9bf2f7988b9c0d5e62ada6cc143dc8ff501bcc6b9c5b79517ca3.png" />
+<img alt="_images/2b5bbf41f9b6d0c9c7c4888bf480b74e244c8a9abcace91f63d4a776cc31a2f6.png" src="_images/2b5bbf41f9b6d0c9c7c4888bf480b74e244c8a9abcace91f63d4a776cc31a2f6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1579,7 +1586,7 @@ Solver: numpyro
 NB: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/1e0db2c1580d095aafe954b69965a6a103f84888cca31a318c45866f39721140.png" src="_images/1e0db2c1580d095aafe954b69965a6a103f84888cca31a318c45866f39721140.png" />
+<img alt="_images/e3f986f3624a6fd80f422230a6e1bc65e2a17b41b8cbd9ca97fbe1552bafc505.png" src="_images/e3f986f3624a6fd80f422230a6e1bc65e2a17b41b8cbd9ca97fbe1552bafc505.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: 40
 Prior Dist: vonMises
@@ -1588,7 +1595,7 @@ Solver: pyro
 NB: Truncated von Mises
 </pre></div>
 </div>
-<img alt="_images/997f750ff3ba0fbf2bd18d80c3775ed67758c07fd460d2724eb083e8c51c81d9.png" src="_images/997f750ff3ba0fbf2bd18d80c3775ed67758c07fd460d2724eb083e8c51c81d9.png" />
+<img alt="_images/3379ed470dc04485dc0a91d9cdedba3a8db04c9093b9db1b69192e45afc77041.png" src="_images/3379ed470dc04485dc0a91d9cdedba3a8db04c9093b9db1b69192e45afc77041.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1607,7 +1614,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/16c4606685120d5ffddd0627d058be264ad50e9f15a69ef81057a0687be79811.png" src="_images/16c4606685120d5ffddd0627d058be264ad50e9f15a69ef81057a0687be79811.png" />
+<img alt="_images/c110188248cafcba7820373b8eab887561aee338ed769fc9a3a833d1bedb749e.png" src="_images/c110188248cafcba7820373b8eab887561aee338ed769fc9a3a833d1bedb749e.png" />
 </div>
 </div>
 </section>

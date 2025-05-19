@@ -273,9 +273,7 @@ Requirement already satisfied: requests in /home/runner/miniconda3/envs/quanteco
 Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
 Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.3)
 Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.43.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
@@ -445,19 +443,13 @@ y_{t} &amp; = G \hat x_t + a_t
     <span class="n">x_hat</span><span class="p">,</span> <span class="n">Σ</span> <span class="o">=</span> <span class="n">kalman</span><span class="o">.</span><span class="n">x_hat</span><span class="p">,</span> <span class="n">kalman</span><span class="o">.</span><span class="n">Sigma</span>
     <span class="n">Σ_t</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Σ</span>
     <span class="n">x_hat_t</span><span class="p">[:,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_hat</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">y_hat_t</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">G</span> <span class="o">@</span> <span class="n">x_hat</span>
+    <span class="p">[</span><span class="n">y_hat_t</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">G</span> <span class="o">@</span> <span class="n">x_hat</span>
 
 <span class="n">x_hat_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> 
                     <span class="n">x_hat_t</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">Σ_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">worker</span><span class="o">.</span><span class="n">Σ_0</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> 
                     <span class="n">Σ_t</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">u_hat_t</span> <span class="o">=</span> <span class="n">x_hat_t</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_7825/2927621375.py:11: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  y_hat_t[t-1] = worker.G @ x_hat
 </pre></div>
 </div>
 </div>
@@ -489,7 +481,7 @@ y_{t} &amp; = G \hat x_t + a_t
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b8afcac6c413e99c3d23612a333838d1cd0e3d7da33a78e37973e4323b4eaf59.png" src="_images/b8afcac6c413e99c3d23612a333838d1cd0e3d7da33a78e37973e4323b4eaf59.png" />
+<img alt="_images/dc5eae8e0a7425c8d62263dc7c8f268d95900ba4bd8e09a6989dbddffbd725b8.png" src="_images/dc5eae8e0a7425c8d62263dc7c8f268d95900ba4bd8e09a6989dbddffbd725b8.png" />
 </div>
 </div>
 </section>
@@ -565,7 +557,7 @@ y_{t} &amp; = G \hat x_t + a_t
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/311c08fc40f033d772b77fac6e36eb80825c64f6e08b92e87d919719fd0e7156.png" src="_images/311c08fc40f033d772b77fac6e36eb80825c64f6e08b92e87d919719fd0e7156.png" />
+<img alt="_images/aa9c73217d0216b459b3cd0d696bd5f60a934ebae3b6f44d9d5196371a054129.png" src="_images/aa9c73217d0216b459b3cd0d696bd5f60a934ebae3b6f44d9d5196371a054129.png" />
 </div>
 </div>
 <p>Note how the accumulation of evidence <span class="math notranslate nohighlight">\(y^t\)</span> affects the shape of the confidence ellipsoid as sample size <span class="math notranslate nohighlight">\(t\)</span> grows.</p>
@@ -649,8 +641,8 @@ u_0 = 4.0
     <span class="n">kalman</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
     <span class="n">x_hat</span><span class="p">,</span> <span class="n">Σ</span> <span class="o">=</span> <span class="n">kalman</span><span class="o">.</span><span class="n">x_hat</span><span class="p">,</span> <span class="n">kalman</span><span class="o">.</span><span class="n">Sigma</span>
     <span class="n">Σ_t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Σ</span><span class="p">)</span>
-    <span class="n">y_hat_t</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">G</span> <span class="o">@</span> <span class="n">x_hat</span>
-    <span class="n">u_hat_t</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_hat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">y_hat_t</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">G</span> <span class="o">@</span> <span class="n">x_hat</span>
+    <span class="p">[</span><span class="n">u_hat_t</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">x_hat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
 
 <span class="c1"># Generate plots for y_hat_t and u_hat_t</span>
@@ -676,13 +668,7 @@ u_0 = 4.0
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_7825/1462412779.py:13: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  y_hat_t[t-1] = worker.G @ x_hat
-/tmp/ipykernel_7825/1462412779.py:14: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  u_hat_t[t-1] = x_hat[1]
-</pre></div>
-</div>
-<img alt="_images/08a2b1f1908d9283e94303c1af735af711e202a018bed0c11a0bbc75dca29c2c.png" src="_images/08a2b1f1908d9283e94303c1af735af711e202a018bed0c11a0bbc75dca29c2c.png" />
+<img alt="_images/b131afc153008e30d0aea337e10b87957d128477f2ab2ca5024b5c5278107011.png" src="_images/b131afc153008e30d0aea337e10b87957d128477f2ab2ca5024b5c5278107011.png" />
 </div>
 </div>
 <p>More generally, we can change some or all of the parameters defining a worker in our <code class="docutils literal notranslate"><span class="pre">create_worker</span></code>
@@ -747,8 +733,8 @@ namedtuple.</p>
         <span class="n">kalman</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
         <span class="n">x_hat</span><span class="p">,</span> <span class="n">Σ</span> <span class="o">=</span> <span class="n">kalman</span><span class="o">.</span><span class="n">x_hat</span><span class="p">,</span> <span class="n">kalman</span><span class="o">.</span><span class="n">Sigma</span>
         <span class="n">Σ_t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Σ</span><span class="p">)</span>
-        <span class="n">y_hat_t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">G</span> <span class="o">@</span> <span class="n">x_hat</span>
-        <span class="n">u_hat_t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_hat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">y_hat_t</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">G</span> <span class="o">@</span> <span class="n">x_hat</span>
+        <span class="p">[</span><span class="n">u_hat_t</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">x_hat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">diff</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">title</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Difference between inferred and true work ethic over time&#39;</span> 
@@ -792,13 +778,7 @@ namedtuple.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_7825/2747793518.py:30: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  y_hat_t[i] = worker.G @ x_hat
-/tmp/ipykernel_7825/2747793518.py:31: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  u_hat_t[i] = x_hat[1]
-</pre></div>
-</div>
-<img alt="_images/b08b4c30404288eabf6122430aeef13b5db7d3a65c365f566fd008c9fad04aad.png" src="_images/b08b4c30404288eabf6122430aeef13b5db7d3a65c365f566fd008c9fad04aad.png" />
+<img alt="_images/b2d63bc3eb6ac7e351db216427291a4f8c31b0976635065367bbd6a666dc923c.png" src="_images/b2d63bc3eb6ac7e351db216427291a4f8c31b0976635065367bbd6a666dc923c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -826,13 +806,7 @@ namedtuple.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_7825/2747793518.py:30: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  y_hat_t[i] = worker.G @ x_hat
-/tmp/ipykernel_7825/2747793518.py:31: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  u_hat_t[i] = x_hat[1]
-</pre></div>
-</div>
-<img alt="_images/d7486c15f39ba3b563f6691061b88a5cd284d632db73212de3f655fbc91990e7.png" src="_images/d7486c15f39ba3b563f6691061b88a5cd284d632db73212de3f655fbc91990e7.png" />
+<img alt="_images/7fd4bd8d6f648fefec12ef1ae76b8fe7f49043bc23ec7778348920ccc9a2bd51.png" src="_images/7fd4bd8d6f648fefec12ef1ae76b8fe7f49043bc23ec7778348920ccc9a2bd51.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -866,13 +840,7 @@ namedtuple.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_7825/2747793518.py:30: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  y_hat_t[i] = worker.G @ x_hat
-/tmp/ipykernel_7825/2747793518.py:31: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  u_hat_t[i] = x_hat[1]
-</pre></div>
-</div>
-<img alt="_images/3cce4b9345cf7f680921f928185c1fd41395a218df38826953d0e1c1339fd2cf.png" src="_images/3cce4b9345cf7f680921f928185c1fd41395a218df38826953d0e1c1339fd2cf.png" />
+<img alt="_images/8d1b232c85651cf5725de55eef0bc405412ae2710adf5e8739e7825e71d06889.png" src="_images/8d1b232c85651cf5725de55eef0bc405412ae2710adf5e8739e7825e71d06889.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -907,13 +875,7 @@ namedtuple.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_7825/2747793518.py:30: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  y_hat_t[i] = worker.G @ x_hat
-/tmp/ipykernel_7825/2747793518.py:31: DeprecationWarning: Conversion of an array with ndim &gt; 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
-  u_hat_t[i] = x_hat[1]
-</pre></div>
-</div>
-<img alt="_images/d960509f3290adb1aeff44b0a183dcf374f2300846d99f828efefbfbfdf20141.png" src="_images/d960509f3290adb1aeff44b0a183dcf374f2300846d99f828efefbfbfdf20141.png" />
+<img alt="_images/087d4a978f97a96e82d34ff18d9ccd42977d9e5701d8f32b6f4d8dc917b87fd0.png" src="_images/087d4a978f97a96e82d34ff18d9ccd42977d9e5701d8f32b6f4d8dc917b87fd0.png" />
 </div>
 </div>
 </section>
