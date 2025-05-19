@@ -780,6 +780,10 @@ and the sample size is relatively small ($I=20$).
 (lss_em_fig)=
 
 ```{code-cell} ipython3
+μ_y.item()
+```
+
+```{code-cell} ipython3
 I = 20
 T = 50
 ymin = -0.5
@@ -803,7 +807,7 @@ m = ar.moment_sequence()
 population_means = []
 for t in range(T):
     μ_x, μ_y, Σ_x, Σ_y = next(m)
-    population_means.append(float(μ_y))
+    population_means.append(float(μ_y.item()))
 
 ax.plot(population_means, color='g', lw=2, alpha=0.8, label=r'$G\mu_t$')
 ax.set_ylim(ymin, ymax)
