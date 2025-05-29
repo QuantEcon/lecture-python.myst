@@ -17,6 +17,8 @@ kernelspec:
 
 This lecture studies effects of foreseen   fiscal and technology shocks on competitive equilibrium prices and quantities in a nonstochastic version of a Cass-Koopmans  growth model with features described in this QuantEcon lecture {doc}`cass_koopmans_2`.
 
+This model is discussed in more  detail  in chapter 11 of   {cite}`Ljungqvist2012`.
+
 We use the model as a laboratory to experiment with  numerical techniques for approximating equilibria and to display the structure of dynamic models in which decision makers have perfect foresight about future government decisions. 
 
 Following a classic paper by Robert E. Hall {cite}`hall1971dynamic`, we augment a nonstochastic version of the Cass-Koopmans optimal  growth model with a government that purchases a stream of goods and that finances its purchases  with an sequences of several  distorting flat-rate taxes.
@@ -29,7 +31,9 @@ We present two ways to approximate an equilibrium:
 
 - The first is a shooting algorithm like the one that we deployed  in {doc}`cass_koopmans_2`.
 
-- The second method is a root-finding algorithm that  minimizes residuals from the  first-order conditions of a consumer and   a representative firm.
+- The second method is a root-finding algorithm that  minimizes residuals from the  first-order conditions of the consumer and   representative firm.
+
+After studying the behavior of the closed one-country model, we study a two-country version of the model that is closely related to  {cite:t}`mendoza1998international`.
 
 
 (cs_fs_model)=
