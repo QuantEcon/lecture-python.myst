@@ -4,9 +4,9 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.11.5
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -20,6 +20,12 @@ kernelspec:
 :tags: [skip-execution]
 
 !pip install --upgrade jax
+```
+
+```{code-cell} ipython3
+import jax
+## to check that gpu is activated in environment
+print(f"JAX backend: {jax.devices()[0].platform}")
 ```
 
 In addition to what's included in base Anaconda, we need to install the following packages
@@ -604,15 +610,4 @@ Image(fig.to_image(format="png"))
 # notebook locally
 ```
 
-```{code-cell} ipython3
-## to check that gpu is activated in environment
 
-from jax.lib import xla_bridge
-print(xla_bridge.get_backend().platform)
-```
-
-```{note}
-**Cloud Environment:** This lecture site is built in a server environment that doesn't have access to a `gpu`
-If you run this lecture locally this lets you know where your code is being executed, either
-via the `cpu` or the `gpu`
-```
