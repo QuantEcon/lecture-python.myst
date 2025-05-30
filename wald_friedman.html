@@ -266,7 +266,7 @@
 <p>This lecture describes a statistical decision problem presented to Milton
 Friedman and W. Allen Wallis during World War II when they were analysts at
 the U.S. Government’s  Statistical Research Group at Columbia University.</p>
-<p>This problem led Abraham Wald <span id="id1">[<a class="reference internal" href="zreferences.html#id112" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> to formulate <strong>sequential analysis</strong>,
+<p>This problem led Abraham Wald <span id="id1">[<a class="reference internal" href="zreferences.html#id113" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> to formulate <strong>sequential analysis</strong>,
 an approach to statistical decision problems intimately related to dynamic programming.</p>
 <p>In this lecture, we apply dynamic programming algorithms to Friedman and Wallis and Wald’s problem.</p>
 <p>Key ideas in play will be:</p>
@@ -301,14 +301,14 @@ and <a class="reference internal" href="exchangeable.html"><span class="doc">thi
 </section>
 <section id="origin-of-the-problem">
 <h2><a class="toc-backref" href="#id13"><span class="section-number">52.2. </span>Origin of the Problem</a><a class="headerlink" href="#origin-of-the-problem" title="Permalink to this heading">#</a></h2>
-<p>On pages 137-139 of his 1998 book <em>Two Lucky People</em> with Rose Friedman <span id="id2">[<a class="reference internal" href="zreferences.html#id107" title="Milton Friedman and Rose D Friedman. Two Lucky People. University of Chicago Press, 1998.">Friedman and Friedman, 1998</a>]</span>,
+<p>On pages 137-139 of his 1998 book <em>Two Lucky People</em> with Rose Friedman <span id="id2">[<a class="reference internal" href="zreferences.html#id108" title="Milton Friedman and Rose D Friedman. Two Lucky People. University of Chicago Press, 1998.">Friedman and Friedman, 1998</a>]</span>,
 Milton Friedman described a problem presented to him and Allen Wallis
 during World War II, when they worked at the US Government’s
 Statistical Research Group at Columbia University.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>See pages 25 and 26  of Allen Wallis’s 1980 article <span id="id3">[<a class="reference internal" href="zreferences.html#id4" title="W Allen Wallis. The statistical research group, 1942–1945. Journal of the American Statistical Association, 75(370):320–330, 1980.">Wallis, 1980</a>]</span>  about the Statistical Research Group at Columbia University during World War II for his account of the episode and  for important contributions  that Harold Hotelling made to formulating the problem.   Also see  chapter 5 of Jennifer Burns book about
-Milton Friedman <span id="id4">[<a class="reference internal" href="zreferences.html#id5" title="Jennifer Burns. Milton Friedman: The Last Conservative. Farrar, Straus, and Giroux, New York, 2023.">Burns, 2023</a>]</span>.</p>
+<p>See pages 25 and 26  of Allen Wallis’s 1980 article <span id="id3">[<a class="reference internal" href="zreferences.html#id5" title="W Allen Wallis. The statistical research group, 1942–1945. Journal of the American Statistical Association, 75(370):320–330, 1980.">Wallis, 1980</a>]</span>  about the Statistical Research Group at Columbia University during World War II for his account of the episode and  for important contributions  that Harold Hotelling made to formulating the problem.   Also see  chapter 5 of Jennifer Burns book about
+Milton Friedman <span id="id4">[<a class="reference internal" href="zreferences.html#id6" title="Jennifer Burns. Milton Friedman: The Last Conservative. Farrar, Straus, and Giroux, New York, 2023.">Burns, 2023</a>]</span>.</p>
 </div>
 <p>Let’s listen to Milton Friedman tell us what happened</p>
 <blockquote>
@@ -342,13 +342,13 @@ because it is obviously superior beyond what was hoped for
 </div></blockquote>
 <p>Friedman and Wallis struggled with the problem but, after realizing that
 they were not able to solve it,  described the problem to  Abraham Wald.</p>
-<p>That started Wald on the path that led him  to <em>Sequential Analysis</em> <span id="id5">[<a class="reference internal" href="zreferences.html#id112" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span>.</p>
+<p>That started Wald on the path that led him  to <em>Sequential Analysis</em> <span id="id5">[<a class="reference internal" href="zreferences.html#id113" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span>.</p>
 <p>We’ll formulate the problem using dynamic programming.</p>
 </section>
 <section id="a-dynamic-programming-approach">
 <h2><a class="toc-backref" href="#id14"><span class="section-number">52.3. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Permalink to this heading">#</a></h2>
 <p>The following presentation of the problem closely follows Dmitri
-Berskekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id6">[<a class="reference internal" href="zreferences.html#id111" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">Bertsekas, 1975</a>]</span>.</p>
+Berskekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id6">[<a class="reference internal" href="zreferences.html#id112" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">Bertsekas, 1975</a>]</span>.</p>
 <p>A decision-maker can observe a sequence of draws of a random variable <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>He (or she) wants to know which of two probability distributions <span class="math notranslate nohighlight">\(f_0\)</span> or <span class="math notranslate nohighlight">\(f_1\)</span> governs <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>Conditional on knowing that successive observations are drawn from distribution <span class="math notranslate nohighlight">\(f_0\)</span>, the sequence of
@@ -814,11 +814,11 @@ and plot these on our cost function plot</p>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_10613/3107573283.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_10746/3107573283.py:50: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   xlabel=r&quot;$\pi$&quot;, title=&quot;Cost function $J(\pi)$&quot;)
 </pre></div>
 </div>
-<img alt="_images/2088fc4b045c892412e8d01e074b9d070e2854b6c206b46de359f200a221b047.png" src="_images/2088fc4b045c892412e8d01e074b9d070e2854b6c206b46de359f200a221b047.png" />
+<img alt="_images/29e974dfc392c387b8fd277048d9dc8e88dcd7f5c697623f66fc8f516e9f0b69.png" src="_images/29e974dfc392c387b8fd277048d9dc8e88dcd7f5c697623f66fc8f516e9f0b69.png" />
 </div>
 </div>
 <p>The cost function <span class="math notranslate nohighlight">\(J\)</span> equals <span class="math notranslate nohighlight">\(\pi L_1\)</span> for <span class="math notranslate nohighlight">\(\pi \leq \beta\)</span>, and <span class="math notranslate nohighlight">\((1-\pi )L_0\)</span> for <span class="math notranslate nohighlight">\(\pi
@@ -933,7 +933,7 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6d871991307ddd5235a72378cda69eead9f9ee44bba69e4a2187d6c18fb9f401.png" src="_images/6d871991307ddd5235a72378cda69eead9f9ee44bba69e4a2187d6c18fb9f401.png" />
+<img alt="_images/a0b5847ce1fded37b82ccb4189a09b17ffb3d27e994fadb6ef9283c67cc5a010.png" src="_images/a0b5847ce1fded37b82ccb4189a09b17ffb3d27e994fadb6ef9283c67cc5a010.png" />
 </div>
 </div>
 </section>
@@ -954,7 +954,7 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e817fa568c0a99ee7a406d010aecba4d322b6150aea943aa470eda272e643bb4.png" src="_images/e817fa568c0a99ee7a406d010aecba4d322b6150aea943aa470eda272e643bb4.png" />
+<img alt="_images/4f6b75e14f86e0e38588fd17728fb08de1da338a1d8235e09e0f66ac27f8b2ac.png" src="_images/4f6b75e14f86e0e38588fd17728fb08de1da338a1d8235e09e0f66ac27f8b2ac.png" />
 </div>
 </div>
 <p>Increased cost per draw has induced the decision-maker to take fewer draws before deciding.</p>
@@ -987,7 +987,7 @@ that superior practical procedures existed.</p>
 <p>Evidently, the Navy had told
 Captail Schuyler to use what it knew to be a state-of-the-art
 Neyman-Pearson test.</p>
-<p>We’ll rely on Abraham Wald’s <span id="id8">[<a class="reference internal" href="zreferences.html#id112" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> elegant summary of Neyman-Pearson theory.</p>
+<p>We’ll rely on Abraham Wald’s <span id="id8">[<a class="reference internal" href="zreferences.html#id113" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> elegant summary of Neyman-Pearson theory.</p>
 <p>For our purposes, watch for there features of the setup:</p>
 <ul class="simple">
 <li><p>the assumption of a <em>fixed</em> sample size <span class="math notranslate nohighlight">\(n\)</span></p></li>
@@ -1004,7 +1004,7 @@ rules used to determine <span class="math notranslate nohighlight">\(n\)</span> 
 <li><p>Laws of large numbers make no appearances in the sequential
 construction.</p></li>
 </ul>
-<p>In chapter 1 of <strong>Sequential Analysis</strong> <span id="id9">[<a class="reference internal" href="zreferences.html#id112" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> Abraham Wald summarizes the
+<p>In chapter 1 of <strong>Sequential Analysis</strong> <span id="id9">[<a class="reference internal" href="zreferences.html#id113" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> Abraham Wald summarizes the
 Neyman-Pearson approach to hypothesis testing.</p>
 <p>Wald frames the problem as making a decision about a probability
 distribution that is partially known.</p>
@@ -1144,7 +1144,7 @@ observations.</p>
 <dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id7">1</a></span></dt>
 <dd><p>The decision maker acts as if he believes that the sequence of random variables
 <span class="math notranslate nohighlight">\([z_{0}, z_{1}, \ldots]\)</span> is <em>exchangeable</em>.  See <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a> and
-<span id="id10">[<a class="reference internal" href="zreferences.html#id110" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kreps, 1988</a>]</span> chapter 11, for  discussions of exchangeability.</p>
+<span id="id10">[<a class="reference internal" href="zreferences.html#id111" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kreps, 1988</a>]</span> chapter 11, for  discussions of exchangeability.</p>
 </dd>
 </dl>
 </section>

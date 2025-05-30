@@ -262,30 +262,20 @@
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.8.0-py3-none-any.whl.metadata (5.2 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.0)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
 Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
 Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.3)
 Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.43.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
-Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
-Downloading quantecon-0.8.0-py3-none-any.whl (322 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.8.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 </div>
@@ -300,8 +290,8 @@ Downloading quantecon-0.8.0-py3-none-any.whl (322 kB)
 </ul>
 <p>For additional (more advanced) reading on the Kalman filter, see</p>
 <ul class="simple">
-<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id186" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 2.7</p></li>
-<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id146" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span></p></li>
+<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id187" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 2.7</p></li>
+<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id147" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span></p></li>
 </ul>
 <p>The second reference presents a  comprehensive treatment of the Kalman filter.</p>
 <p>Required knowledge: Familiarity with matrix manipulations, multivariate normal distributions, covariance matrices, etc.</p>
@@ -660,7 +650,7 @@ as the current prior.</p>
     \hat x_{t+1} &amp;= A \hat x_t + K_{\Sigma_t} (y_t - G \hat x_t) \\
     \Sigma_{t+1} &amp;= A \Sigma_t A' - K_{\Sigma_t} G \Sigma_t A' + Q \nonumber
 \end{aligned}\end{split}\]</div>
-<p>These are the standard dynamic equations for the Kalman filter (see, for example, <span id="id4">[<a class="reference internal" href="zreferences.html#id186" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, page 58).</p>
+<p>These are the standard dynamic equations for the Kalman filter (see, for example, <span id="id4">[<a class="reference internal" href="zreferences.html#id187" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, page 58).</p>
 </section>
 </section>
 <section id="convergence">
@@ -680,8 +670,8 @@ as the current prior.</p>
 <span class="eqno">(25.9)<a class="headerlink" href="#equation-kalman-dare" title="Permalink to this equation">#</a></span>\[\Sigma = A \Sigma A' -  A \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma A' + Q\]</div>
 <p>Equation <a class="reference internal" href="#equation-kalman-sdy">(25.8)</a> is known as a discrete-time Riccati difference equation.</p>
 <p>Equation <a class="reference internal" href="#equation-kalman-dare">(25.9)</a> is known as a <a class="reference external" href="https://en.wikipedia.org/wiki/Algebraic_Riccati_equation">discrete-time algebraic Riccati equation</a>.</p>
-<p>Conditions under which a fixed point exists and the sequence <span class="math notranslate nohighlight">\(\{\Sigma_t\}\)</span> converges to it are discussed in <span id="id5">[<a class="reference internal" href="zreferences.html#id148" title="E. W. Anderson, L. P. Hansen, E. R. McGrattan, and T. J. Sargent. Mechanics of Forming and Estimating Dynamic Linear Economies. In Handbook of Computational Economics. Elsevier, vol 1 edition, 1996.">Anderson <em>et al.</em>, 1996</a>]</span> and <span id="id6">[<a class="reference internal" href="zreferences.html#id146" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span>, chapter 4.</p>
-<p>A sufficient (but not necessary) condition is that all the eigenvalues <span class="math notranslate nohighlight">\(\lambda_i\)</span> of <span class="math notranslate nohighlight">\(A\)</span> satisfy <span class="math notranslate nohighlight">\(|\lambda_i| &lt; 1\)</span> (cf. e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id146" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span>, p. 77).</p>
+<p>Conditions under which a fixed point exists and the sequence <span class="math notranslate nohighlight">\(\{\Sigma_t\}\)</span> converges to it are discussed in <span id="id5">[<a class="reference internal" href="zreferences.html#id149" title="E. W. Anderson, L. P. Hansen, E. R. McGrattan, and T. J. Sargent. Mechanics of Forming and Estimating Dynamic Linear Economies. In Handbook of Computational Economics. Elsevier, vol 1 edition, 1996.">Anderson <em>et al.</em>, 1996</a>]</span> and <span id="id6">[<a class="reference internal" href="zreferences.html#id147" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span>, chapter 4.</p>
+<p>A sufficient (but not necessary) condition is that all the eigenvalues <span class="math notranslate nohighlight">\(\lambda_i\)</span> of <span class="math notranslate nohighlight">\(A\)</span> satisfy <span class="math notranslate nohighlight">\(|\lambda_i| &lt; 1\)</span> (cf. e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id147" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span>, p. 77).</p>
 <p>(This strong condition assures that the unconditional  distribution of <span class="math notranslate nohighlight">\(x_t\)</span>  converges as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.)</p>
 <p>In this case, for any initial choice of <span class="math notranslate nohighlight">\(\Sigma_0\)</span> that is both non-negative and symmetric, the sequence <span class="math notranslate nohighlight">\(\{\Sigma_t\}\)</span> in <a class="reference internal" href="#equation-kalman-sdy">(25.8)</a> converges to a non-negative symmetric matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> that solves <a class="reference internal" href="#equation-kalman-dare">(25.9)</a>.</p>
 </section>
@@ -731,7 +721,7 @@ Q := CC' \quad \text{and} \quad R := HH'
 <p class="admonition-title"><span class="caption-number">Exercise 25.1 </span></p>
 <section id="exercise-content">
 <p>Consider the following simple application of the Kalman filter, loosely based
-on <span id="id8">[<a class="reference internal" href="zreferences.html#id186" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 2.9.2.</p>
+on <span id="id8">[<a class="reference internal" href="zreferences.html#id187" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 2.9.2.</p>
 <p>Suppose that</p>
 <ul class="simple">
 <li><p>all variables are scalars</p></li>
@@ -740,7 +730,7 @@ on <span id="id8">[<a class="reference internal" href="zreferences.html#id186" t
 <p>State dynamics are therefore given by <a class="reference internal" href="#equation-kl-xdynam">(25.5)</a> with <span class="math notranslate nohighlight">\(A=1\)</span>, <span class="math notranslate nohighlight">\(Q=0\)</span> and <span class="math notranslate nohighlight">\(x_0 = \theta\)</span>.</p>
 <p>The measurement equation is <span class="math notranslate nohighlight">\(y_t = \theta + v_t\)</span> where <span class="math notranslate nohighlight">\(v_t\)</span> is <span class="math notranslate nohighlight">\(N(0,1)\)</span> and IID.</p>
 <p>The task of this exercise to simulate the model and, using the code from <code class="docutils literal notranslate"><span class="pre">kalman.py</span></code>, plot the first five predictive densities <span class="math notranslate nohighlight">\(p_t(x) = N(\hat x_t, \Sigma_t)\)</span>.</p>
-<p>As shown in <span id="id9">[<a class="reference internal" href="zreferences.html#id186" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, sections 2.9.1–2.9.2, these distributions asymptotically put all mass on the unknown value <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>As shown in <span id="id9">[<a class="reference internal" href="zreferences.html#id187" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, sections 2.9.1–2.9.2, these distributions asymptotically put all mass on the unknown value <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p>In the simulation, take <span class="math notranslate nohighlight">\(\theta = 10\)</span>, <span class="math notranslate nohighlight">\(\hat x_0 = 8\)</span> and <span class="math notranslate nohighlight">\(\Sigma_0 = 1\)</span>.</p>
 <p>Your figure should – modulo randomness – look something like this</p>
 <figure class="align-default">
@@ -786,7 +776,7 @@ on <span id="id8">[<a class="reference internal" href="zreferences.html#id186" t
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2cd5fc7aaa0b40839a07f5bf210ccee9c74cab1a73529539066da4ffd507e538.png" src="_images/2cd5fc7aaa0b40839a07f5bf210ccee9c74cab1a73529539066da4ffd507e538.png" />
+<img alt="_images/561bee94f0e9ef1d41da97b5dfcf4263c1c9406ebd566d0a7443a692c18cae9b.png" src="_images/561bee94f0e9ef1d41da97b5dfcf4263c1c9406ebd566d0a7443a692c18cae9b.png" />
 </div>
 </div>
 </section>
@@ -849,7 +839,7 @@ z_t := 1 - \int_{\theta - \epsilon}^{\theta + \epsilon} p_t(x) dx
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f81f09c7152077bb5b9cacd82dc5934cfd57200ff95ab90c3578f40f74ad6ef1.png" src="_images/f81f09c7152077bb5b9cacd82dc5934cfd57200ff95ab90c3578f40f74ad6ef1.png" />
+<img alt="_images/faa921babcb29df523254ee8fc861d815b7feb66bd58b69aa1f773265ede9f0a.png" src="_images/faa921babcb29df523254ee8fc861d815b7feb66bd58b69aa1f773265ede9f0a.png" />
 </div>
 </div>
 </section>
@@ -968,7 +958,7 @@ Stationary prediction error variance:
  [0.1050718  0.41061709]]
 </pre></div>
 </div>
-<img alt="_images/11df0fa6ee67c08c9c984b309524633e3fa3741715b013a384350e4e7d7c7924.png" src="_images/11df0fa6ee67c08c9c984b309524633e3fa3741715b013a384350e4e7d7c7924.png" />
+<img alt="_images/07f64bf156ad38acf23aa7566204019a810abd18929c53a3869c85732e61b762.png" src="_images/07f64bf156ad38acf23aa7566204019a810abd18929c53a3869c85732e61b762.png" />
 </div>
 </div>
 </section>
@@ -985,7 +975,7 @@ Stationary prediction error variance:
 <hr class="footnotes docutils" />
 <dl class="footnote brackets">
 <dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
-<dd><p>See, for example, page 93 of <span id="id10">[<a class="reference internal" href="zreferences.html#id151" title="C. M. Bishop. Pattern Recognition and Machine Learning. Springer, 2006.">Bishop, 2006</a>]</span>. To get from his expressions to the ones used above, you will also need to apply the <a class="reference external" href="https://en.wikipedia.org/wiki/Woodbury_matrix_identity">Woodbury matrix identity</a>.</p>
+<dd><p>See, for example, page 93 of <span id="id10">[<a class="reference internal" href="zreferences.html#id152" title="C. M. Bishop. Pattern Recognition and Machine Learning. Springer, 2006.">Bishop, 2006</a>]</span>. To get from his expressions to the ones used above, you will also need to apply the <a class="reference external" href="https://en.wikipedia.org/wiki/Woodbury_matrix_identity">Woodbury matrix identity</a>.</p>
 </dd>
 </dl>
 </section>
