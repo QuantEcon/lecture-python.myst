@@ -162,7 +162,9 @@ Given a budget-feasible government policy $\{g_t\}_{t=0}^\infty$ and $\{\tau_{ct
 ```{prf:definition}
 :label: com_eq_tax
 
-A **competitive equilibrium with distorting taxes** is a **budget-feasible government policy**, **a feasible allocation**, and **a price system** for which, given the price system and the government policy, the allocation solves the household's problem and the ﬁrm's problem.
+A **competitive equilibrium with distorting taxes** is a **budget-feasible government policy**, 
+**a feasible allocation**, and **a price system** for which, given the price system and the government 
+policy, the allocation solves the household's problem and the firm's problem.
 ```
 
 ## No-arbitrage Condition
@@ -1481,21 +1483,21 @@ experiment_model(shocks, S, model, solver=run_min,
 (growth_model)=
 ## Exogenous growth
 
-In the previous section, we considered a model with exogenous growth.
+In the previous section, we considered a model without exogenous growth.
 
-We muted the term $A_t$ in the production function by 
+We set the term $A_t$ in the production function to a constant by
 setting $A_t = 1$ for all $t$.
 
-We are now prepared to consider growth.
+Now we are ready to consider growth.
 
-In order to consider growth, we modify the production function to be
+To incorporate growth, we modify the production function to be
 
 $$
 Y_t = F(K_t, A_tn_t)
 $$
 
-where $Y_t$ is aggregate output, $N_t$ is total employment, $A_t$ is labor-augmenting technical change, 
-and $F(K, AN)$ is the same linearly homogenous production function as before. 
+where $Y_t$ is aggregate output, $N_t$ is total employment, $A_t$ is labor-augmenting technical change,
+and $F(K, AN)$ is the same linearly homogeneous production function as before.
 
 We assume that $A_t$ follows the process
 
@@ -1529,15 +1531,15 @@ $$
 y_t=f(k_t)
 $$
 
-where $f(k)=F(k,1) = k^\alpha$ and $k_t=\frac{K_t}{n_tA_t}, y_t=\frac{Y_t}{n_tA_t}$. 
+where $f(k)=F(k,1) = k^\alpha$ and $k_t=\frac{K_t}{n_tA_t}$, $y_t=\frac{Y_t}{n_tA_t}$.
 
-$k_t$ and $y_t$ are measured per unit of "effective labor" $A_tn_t$. 
+$k_t$ and $y_t$ are measured per unit of "effective labor" $A_tn_t$.
 
-We also let $c_t=\frac{C_t}{A_tn_t}$ and $g_t=\frac{G_t}{A_tn_t}$, where $C_t$ and $G_t$ are total consumption and total government expenditures. 
+We also let $c_t=\frac{C_t}{A_tn_t}$ and $g_t=\frac{G_t}{A_tn_t}$, where $C_t$ and $G_t$ are total consumption and total government expenditures.
 
-We still consider the case of inelastic labor supply. 
+We continue to consider the case of inelastic labor supply.
 
-Based on these, feasibility can be summarized by the following modified version 
+Based on this, feasibility can be summarized by the following modified version
 of equation {eq}`eq:feasi_capital`:
 
 $$
@@ -1567,7 +1569,7 @@ $$
 u'(c_tA_t) = \beta u'(c_{t+1}A_{t+1})\bar{R}_{t+1}
 $$
 
-Assuming that household's utility function is the same as before, we have
+Assuming that the household's utility function is the same as before, we have
 
 $$
 (c_tA_t)^{-\gamma} = \beta (c_{t+1}A_{t+1})^{-\gamma} \bar{R}_{t+1}
@@ -1587,7 +1589,7 @@ $$
 1=\mu^{-\gamma}\beta[(1-\tau_k)(f'(k)-\delta)+1] \tag{36.29}
 $$ (eq:diff_mod_st)
 
-from which we can compute that the steady state level of capital per unit of effective labor satisfies
+from which we can compute that the steady-state level of capital per unit of effective labor satisfies
 
 $$
 f'(k)=\delta + (\frac{\frac{1}{\beta}\mu^{\gamma}-1}{1-\tau_k}) \tag{36.30}
@@ -1599,13 +1601,13 @@ $$
 \bar{R}=\frac{\mu^{\gamma}}{\beta} \tag{36.31}
 $$ (eq:Rbar_mod_st)
 
-The steady state level of consumption per unit of effective labor can be found using {eq}`eq:feasi_mod`:
+The steady-state level of consumption per unit of effective labor can be found using {eq}`eq:feasi_mod`:
 
 $$
 c = f(k)+(1-\delta-\mu)k-g
 $$
 
-Since the algorithm and plotting routines are the same as before, we include the steady state calculations and 
+Since the algorithm and plotting routines are the same as before, we include the steady-state calculations and 
 shooting routine in the section {ref}`cass_fiscal_shooting`.
 
 ### Shooting Algorithm
@@ -1614,16 +1616,18 @@ Now we can apply the shooting algorithm to compute equilibrium. We augment the v
 
 ### Experiments
 
-Let's run some  experiments.
+Let's run some experiments:
 
-1. A foreseen once-and-for-all increase in $\mu$ from 1.02 to 1.025 in period 10,  
-2. A unforeseen once-and-for-all increase in $\mu$ to 1.025 in period 0.
+1. A foreseen once-and-for-all increase in $\mu$ from 1.02 to 1.025 in period 10
+2. An unforeseen once-and-for-all increase in $\mu$ to 1.025 in period 0
 
 +++
 
-#### Experiment 1:  A foreseen increase in $\mu$ from 1.02 to 1.025 at t=10
+#### Experiment 1: A foreseen increase in $\mu$ from 1.02 to 1.025 at t=10
 
-The figures below show effects of a permanent increase in productivity growth $\mu$ from 1.02 to 1.025 at t=10. They now measure $c$ and $k$ in effective units of labor.
+The figures below show the effects of a permanent increase in productivity growth $\mu$ from 1.02 to 1.025 at t=10. 
+
+They now measure $c$ and $k$ in effective units of labor.
 
 ```{code-cell} ipython3
 shocks = {
@@ -1660,25 +1664,24 @@ for ax in axes[5:]:
 plt.tight_layout()
 plt.show()
 ```
-
-The results in the figure is mainly driven by {eq}`eq:diff_mod_st`
-and implies that a permanent increase in
-$\mu$ will lead to a decrease in the steady-state value of capital per unit of eﬀective
+The results in the figures are mainly driven by {eq}`eq:diff_mod_st`
+and imply that a permanent increase in
+$\mu$ will lead to a decrease in the steady-state value of capital per unit of effective
 labor.
 
 The figures indicate the following:
 
-- As capital is more eﬃcient, even with less of it, consumption per
+- As capital becomes more efficient, even with less of it, consumption per
 capita can be raised.
-- Consumption smoothing drives *immediate jump in consumption* in anticipation of the increase in $\mu$.
+- Consumption smoothing drives an *immediate jump in consumption* in anticipation of the increase in $\mu$.
 - The increased productivity of capital leads to an increase in the gross return
 $\bar R$. 
-- Perfect foresight makes the eﬀects of the increase in the growth of capital
-precede it, the effect can be seen at $t=0$.
+- Perfect foresight makes the effects of the increase in the growth of capital
+precede it, with the effect visible at $t=0$.
 
-#### Experiment 2:  A unforeseen increase in $\mu$ from 1.02 to 1.025 at t=0
+#### Experiment 2: An unforeseen increase in $\mu$ from 1.02 to 1.025 at t=0
 
-The figures below show effects of an immediate jump in $\mu$ to 1.025 at t=0.
+The figures below show the effects of an immediate jump in $\mu$ to 1.025 at t=0.
 
 ```{code-cell} ipython3
 shocks = {
@@ -1715,7 +1718,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Again, we can collect the procedures used above into a function that runs the solver and draws plots for given experiment.
+Again, we can collect the procedures used above into a function that runs the solver and draws plots for a given experiment.
 
 ```{code-cell} ipython3
 def experiment_model(shocks, S, model, A_path, solver, plot_func, policy_shock, T=40):
@@ -1755,18 +1758,17 @@ experiment_model(shocks, S, model, A_path, run_shooting, plot_results, 'μ')
 
 The figures show that:
 
-- The paths of all variables are now smooth, due to the absence of feedforward effects.
-- Capital per eﬀective unit of labor gradually declines to a steady state lower level.
-- Consumption per effective unit of labor jumps immediately then declines smoothly toward its lower steady state value.
-- The after-tax gross return $\bar{R}$ once again comoves with the consumption growth rate, verifying the Euler equation {eq}`eq:diff_mod_st`.
-
+- The paths of all variables are now smooth due to the absence of feedforward effects.
+- Capital per effective unit of labor gradually declines to a lower steady-state level.
+- Consumption per effective unit of labor jumps immediately and then declines smoothly toward its lower steady-state value.
+- The after-tax gross return $\bar{R}$ once again co-moves with the consumption growth rate, verifying the Euler equation {eq}`eq:diff_mod_st`.
 
 ```{exercise}
 :label: cass_fiscal_ex3
 
-Replicate the plots of our two experiments using the second method of residual minimization.
-1. A foreseen increase in $\mu$ from 1.02 to 1.025 at t=10,
-2. A unforeseen increase in $\mu$ from 1.02 to 1.025 at t=0.
+Replicate the plots of our two experiments using the second method of residual minimization:
+1. A foreseen increase in $\mu$ from 1.02 to 1.025$ at t=10
+2. An unforeseen increase in $\mu$ from 1.02 to 1.025$ at t=0
 ```
 
 ```{solution-start} cass_fiscal_ex3
@@ -1790,7 +1792,7 @@ A_path = compute_A_path(1.0, shocks, S)
 experiment_model(shocks, S, model, A_path, run_min, plot_results, 'μ')
 ```
 
-**Experiment 2:  A unforeseen increase in $\mu$ from 1.02 to 1.025 at $t=0$**
+**Experiment 2:  An unforeseen increase in $\mu$ from 1.02 to 1.025 at $t=0$**
 
 ```{code-cell} ipython3
 shocks = {
@@ -1808,12 +1810,12 @@ experiment_model(shocks, S, model, A_path, run_min, plot_results, 'μ')
 
 ## A two-country model
 
-This section describes a two country version of the basic model of {ref}`cs_fs_model`.
+This section describes a two-country version of the basic model of {ref}`cs_fs_model`.
 
 The model has a structure similar to ones used in the international real business cycle literature and is 
 in the spirit of an analysis of distorting taxes by {cite:t}`mendoza1998international`.
 
-We allow two countries to trade goods, claims on future goods, but not labor. 
+We allow two countries to trade goods and claims on future goods, but not labor. 
 
 Both countries have production technologies, and consumers in each country can hold capital in either country, subject to different tax treatments. 
 
@@ -1837,19 +1839,19 @@ $$
 
 which combines the feasibility constraints for the two countries. 
 
-Later, we will use this constraint to as a global feasibility constraint in our computation.
+Later, we will use this constraint as a global feasibility constraint in our computation.
 
-To connect the two countries, we need to specify how capital flows across borders, and how taxes are levied in different jurisdictions.
+To connect the two countries, we need to specify how capital flows across borders and how taxes are levied in different jurisdictions.
 
 ### Capital Mobility and Taxation
 
-A consumer in country one can hold capital in either country, but pays taxes on rentals from foreign holdings of capital at the rate set by the foreign country. 
+A consumer in country one can hold capital in either country but pays taxes on rentals from foreign holdings of capital at the rate set by the foreign country. 
 
 Residents in both countries can purchase consumption at date $t$ at a common Arrow-Debreu price $q_t$. We assume capital markets are complete.
 
 Let $B_t^f$ be the amount of time $t$ goods that the representative domestic consumer raises by issuing a one-period IOU to the representative foreign consumer. 
 
-So $B_t^f > 0$ indicates the domestic consumer is borrowing from abroad at $t$ and $B_t^f < 0$ indicates the domestic consumer is lending abroad at $t$.
+So $B_t^f > 0$ indicates the domestic consumer is borrowing from abroad at $t$, and $B_t^f < 0$ indicates the domestic consumer is lending abroad at $t$.
 
 Hence, the budget constraint of a representative consumer in country one is:
 
@@ -1875,7 +1877,7 @@ $$
 (1 - \tau^*_{kt})(\eta^*_t - \delta) = (1 - \tau_{kt})(\eta_t - \delta).
 $$
 
-No arbitrage conditions for $B_t^f$ for $t \geq 0$ are $q_t = q_{t+1} R_{t+1,t}$, which implies that
+The no-arbitrage conditions for $B_t^f$ for $t \geq 0$ are $q_t = q_{t+1} R_{t+1,t}$, which implies that
 
 $$
 q_{t-1} = q_t R_{t-1,t}
@@ -1885,13 +1887,13 @@ for $t \geq 1$.
 
 Since domestic capital, foreign capital, and consumption loans bear the same rates of return, portfolios are indeterminate. 
 
-We are free to set holdings of foreign capital equal to zero in each country if we allow $B_t^f$ to be nonzero. 
+We can set holdings of foreign capital equal to zero in each country if we allow $B_t^f$ to be nonzero. 
 
-Adopting this way of resolving portfolio indeterminacy is convenient because it economizes on the number of initial conditions we have to specify. 
+This way of resolving portfolio indeterminacy is convenient because it reduces the number of initial conditions we need to specify. 
 
-Therefore, we set holdings of foreign capital equal to zero in both countries but allow international lending.
+Therefore, we set holdings of foreign capital equal to zero in both countries while allowing international lending.
 
-Then given an initial level $B_{-1}^f$ of debt from the domestic country to the foreign country, and where $R_{t-1,t} = \frac{q_{t-1}}{q_t}$, international debt dynamics satisfy
+Given an initial level $B_{-1}^f$ of debt from the domestic country to the foreign country, and where $R_{t-1,t} = \frac{q_{t-1}}{q_t}$, international debt dynamics satisfy
 
 $$
 B^f_t = R_{t-1,t} B^f_{t-1} + c_t + (k_{t+1} - (1 - \delta)k_t) + g_t - f(k_t)
@@ -1922,7 +1924,7 @@ $$
 c^*_t + (k^*_{t+1} - (1 - \delta)k^*_t) + g^*_t - R_{t-1,t} B^f_{t-1} = f(k^*_t) - B^f_t.
 $$
 
-Firms' first-order conditions in the two countries are:
+The firms' first-order conditions in the two countries are:
 
 $$
 \begin{aligned}
@@ -1931,13 +1933,17 @@ $$
 \end{aligned}
 $$
 
-International trade in goods establishes
+International trade in goods establishes:
 
 $$
 \frac{q_t}{\beta^t} = \frac{u'(c_t)}{1 + \tau_{ct}} = \mu^* \frac{u'(c^*_t)}{1 + \tau^*_{ct}},
 $$
 
-where $\mu^*$ is a nonnegative number that is a function of the Lagrange multiplier on the budget constraint for a consumer in country $*$, and where we have normalized the Lagrange multiplier on the budget constraint of the domestic country to set the corresponding $\mu$ for the domestic country to unity.
+where $\mu^*$ is a nonnegative number that is a function of the Lagrange multiplier 
+on the budget constraint for a consumer in country $*$. 
+
+We have normalized the Lagrange multiplier on the budget constraint of the domestic country 
+to set the corresponding $\mu$ for the domestic country to unity.
 
 ```{code-cell} ipython3
 def compute_rs(c_t, c_tp1, c_s_t, c_s_tp1, τc_t, 
@@ -1959,9 +1965,9 @@ u'(c^*_t) &= \beta u'(c^*_{t+1}) \left[ (1 - \tau^*_{kt+1})(f'(k^*_{t+1}) - \del
 \end{aligned}
 $$
 
-The following code computes the domestic Euler equation and the foreign Euler equation.
+The following code computes both the domestic and foreign Euler equations.
 
-They are of the same form, but with different variables so we write them in one function.
+Since they have the same form but use different variables, we can write a single function that handles both cases.
 
 ```{code-cell} ipython3
 def compute_euler(c_t, c_tp1, τc_t, 
@@ -1975,13 +1981,13 @@ def compute_euler(c_t, c_tp1, τc_t,
 
 ### Initial condition and steady state
 
-For the initial conditions, we choose pre-trade allocation of capital be ($k_0, k_0^*$) and 
+For the initial conditions, we choose the pre-trade allocation of capital ($k_0, k_0^*$) and the
 initial level $B_{-1}^f$ of international debt owed
 by the unstarred (domestic) country to the starred (foreign) country.
 
 ### Equilibrium steady state values
 
-The steady state of the two-country model is characterized by two sets of equations. 
+The steady state of the two-country model is characterized by two sets of equations.
 
 First, the following equations determine the steady-state capital-labor ratios $\bar k$ and $\bar k^*$ in each country:
 
@@ -1993,7 +1999,7 @@ $$
 f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*} \tag{12.13.13}
 $$ (eq:steady_k_star)
 
-Given these steady-state capital-labor ratios, domestic and foreign consumption values $\bar c$ and $\bar c^*$ are determined by:
+Given these steady-state capital-labor ratios, the domestic and foreign consumption values $\bar c$ and $\bar c^*$ are determined by:
 
 $$
 (\bar{c} + \bar{c}^*) = f(\bar{k}) + f(\bar{k}^*) - \delta(\bar{k} + \bar{k}^*) - (\bar{g} + \bar{g}^*)
@@ -2003,11 +2009,11 @@ $$
 \bar{c} = f(\bar{k}) - \delta\bar{k} - \bar{g} - \rho\bar{B}^f
 $$ (eq:steady_c_kB)
 
-Equation {eq}`eq:steady_c_k_bar` expresses feasibility at steady state, while equation {eq}`eq:steady_c_kB` represents the trade balance, including interest payments, at steady state. 
+Equation {eq}`eq:steady_c_k_bar` expresses feasibility at the steady state, while equation {eq}`eq:steady_c_kB` represents the trade balance, including interest payments, at the steady state.
 
-The steady-state level of debt $\bar{B}^f$ from the domestic country to the foreign country influences consumption allocation between countries but not the total world capital stock.
+The steady-state level of debt $\bar{B}^f$ from the domestic country to the foreign country influences the consumption allocation between countries but not the total world capital stock.
 
-We assume $\bar{B}^f = 0$ in the steady state, which gives us the following function to compute the steady state values of capital and consumption
+We assume $\bar{B}^f = 0$ in the steady state, which gives us the following function to compute the steady-state values of capital and consumption
 
 ```{code-cell} ipython3
 def compute_steady_state_global(model, g_ss=0.2):
@@ -2019,9 +2025,9 @@ def compute_steady_state_global(model, g_ss=0.2):
     return k_ss, c_ss
 ```
 
-Now, we can apply the residual minimization method to compute the steady state values of capital and consumption.
+Now, we can apply the residual minimization method to compute the steady-state values of capital and consumption.
 
-Again, we use the minimize residuals of the Euler equation and the global resource constraint as well as the no-arbitrage condition
+Again, we minimize the residuals of the Euler equation, the global resource constraint, and the no-arbitrage condition.
 
 ```{code-cell} ipython3
 def compute_residuals_global(z, model, shocks, T, k0_ss, k_star, Bf_star):
@@ -2066,7 +2072,7 @@ def compute_residuals_global(z, model, shocks, T, k0_ss, k_star, Bf_star):
     return np.array(res)
 ```
 
-Then we plot the results
+Now we plot the results
 
 ```{code-cell} ipython3
 # Function to plot global two-country model results
@@ -2142,15 +2148,13 @@ def plot_global_results(k, k_s, c, c_s, shocks, model,
     return fig, axes
 ```
 
-#### Experiment 1:  A foreseen increase in $g$ from 0.2 to 0.4 at t=10
-
-+++
+#### Experiment 1: A foreseen increase in $g$ from 0.2 to 0.4 at t=10
 
 The figure below presents transition dynamics after an increase in $g$ in the domestic economy from 0.2 to 0.4 that is announced ten periods in advance.
 
-We start both economies from a steady-state with $B_0^f = 0$.
+We start both economies from a steady state with $B_0^f = 0$.
 
-In the figure below, the blue lines represent domestic economy and orange dotted lines represent foreign economy
+In the figure below, the blue lines represent the domestic economy and orange dotted lines represent the foreign economy.
 
 ```{code-cell} ipython3
 Model = namedtuple("Model", ["β", "γ", "δ", "α", "A"])
@@ -2190,7 +2194,7 @@ At time 1, the government announces that domestic government purchases $g$ will 
 
 To smooth consumption, domestic households immediately increase saving, offsetting the anticipated hit to their future wealth.
 
-In a closed economy they would save solely by accumulating extra domestic capital; with open capital markets they can also lend to foreigners.
+In a closed economy, they would save solely by accumulating extra domestic capital; with open capital markets, they can also lend to foreigners.
 
 Once the capital flow opens up at time $1$, the no-arbitrage conditions connect adjustments of both types of saving: the increase in savings by domestic households will reduce the equilibrium return on bonds and capital in the foreign economy to prevent arbitrage opportunities.
 
@@ -2200,19 +2204,18 @@ Up to the date the higher $g$ takes effect, both countries continue to build the
 
 When government spending finally rises 10 periods later, domestic households begin to draw down part of that capital to cushion consumption.
 
-Again by no-arbitrage conditions, when $g$ actually increases both countries reduce their investment rates. 
+Again by no-arbitrage conditions, when $g$ actually increases, both countries reduce their investment rates.
 
-The domestic economy, in turn, starts running current-account deﬁcits partially to fund the increase in $g$.
+The domestic economy, in turn, starts running current-account deficits partially to fund the increase in $g$.
 
 This means that foreign households begin repaying part of their external debt by reducing their capital stock.
 
 
-#### Experiment 2:  A foreseen increase in $g$ from 0.2 to 0.4 at t=10
+#### Experiment 2: A foreseen increase in $g$ from 0.2 to 0.4 at t=10
 
-We now explore the impact of an increase in capital taxation in the domestic
-economy $10$ periods after its announcement at $t = 1$.
+We now explore the impact of an increase in capital taxation in the domestic economy $10$ periods after its announcement at $t = 1$.
 
-Because the change is anticipated, households in both countries adjust immediately—even though the tax does not take effect until period $t = 11$
+Because the change is anticipated, households in both countries adjust immediately—even though the tax does not take effect until period $t = 11$.
 
 ```{code-cell} ipython3
 shocks_global = {
@@ -2244,7 +2247,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-After the tax increase is annouced, domestic households foresee lower after-tax returns on capital, so they shift toward higher present consumption and allow the domestic capital stock to decline.
+After the tax increase is announced, domestic households foresee lower after-tax returns on capital, so they shift toward higher present consumption and allow the domestic capital stock to decline.
 
 This shrinkage of the world capital supply drives the global real interest rate upward, prompting foreign households to raise current consumption as well.
 
@@ -2272,7 +2275,7 @@ The episode demonstrates how open capital markets transmit a domestic tax shock 
 
 In this exercise, replace the plot for ${x_t}$ with $\eta_t$ to replicate the figure in {cite}`Ljungqvist2012`.
 
-Compare the figure for ${k_t}$ with the figure for $\eta_t$ and discuss the economic intuition.
+Compare the figures for ${k_t}$ and $\eta_t$ and discuss the economic intuition.
 ```
 ```{solution-start} cass_fiscal_ex4
 :class: dropdown
@@ -2281,7 +2284,6 @@ Compare the figure for ${k_t}$ with the figure for $\eta_t$ and discuss the econ
 Here is one solution.
 
 ```{code-cell} ipython3
-# plot 
 fig, axes = plot_global_results(k, k_s, c, c_s, shocks_global, model, 
                                 k0_ss, c0_ss, g_ss, S, shock='τ_k')
 
@@ -2298,9 +2300,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-When capital ${k_t}$ decreases in the domestic country after the tax shock, the rental rate $\eta_t$ increases in that country. 
+When capital ${k_t}$ decreases in the domestic country after the tax shock, the rental rate $\eta_t$ increases in that country.
 
-This reflects as capital becomes scarcer, its marginal product rises.
+This reflects that as capital becomes scarcer, its marginal product rises.
 
 ```{solution-end}
 ```
