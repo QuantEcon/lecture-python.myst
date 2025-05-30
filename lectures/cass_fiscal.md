@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.4
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -1586,19 +1586,19 @@ $$ (eq:consume_r_mod)
 In a steady state, $c_{t+1} = c_t$. Then {eq}`eq:diff_mod` becomes
 
 $$
-1=\mu^{-\gamma}\beta[(1-\tau_k)(f'(k)-\delta)+1] \tag{36.29}
+1=\mu^{-\gamma}\beta[(1-\tau_k)(f'(k)-\delta)+1] 
 $$ (eq:diff_mod_st)
 
 from which we can compute that the steady-state level of capital per unit of effective labor satisfies
 
 $$
-f'(k)=\delta + (\frac{\frac{1}{\beta}\mu^{\gamma}-1}{1-\tau_k}) \tag{36.30}
+f'(k)=\delta + (\frac{\frac{1}{\beta}\mu^{\gamma}-1}{1-\tau_k})
 $$ (eq:cap_mod_st)  
 
 and that
 
 $$
-\bar{R}=\frac{\mu^{\gamma}}{\beta} \tag{36.31}
+\bar{R}=\frac{\mu^{\gamma}}{\beta}
 $$ (eq:Rbar_mod_st)
 
 The steady-state level of consumption per unit of effective labor can be found using {eq}`eq:feasi_mod`:
@@ -1664,6 +1664,7 @@ for ax in axes[5:]:
 plt.tight_layout()
 plt.show()
 ```
+
 The results in the figures are mainly driven by {eq}`eq:diff_mod_st`
 and imply that a permanent increase in
 $\mu$ will lead to a decrease in the steady-state value of capital per unit of effective
@@ -1916,6 +1917,16 @@ def Bf_path(k, c, g, model):
             R[t-1] * Bf[t-1] + c[t] + inv + g[t-1] 
             - f(k[t-1], model))
     return Bf
+
+def Bf_ss(c_ss, k_ss, g_ss, model):
+    """
+    Compute the steady-state B^f
+    """
+    R_ss   = 1.0 / model.β  
+    inv_ss = model.δ * k_ss 
+    num    = c_ss + inv_ss + g_ss - f(k_ss, model)
+    den    = 1.0 - R_ss
+    return num / den
 ```
 
 and
@@ -1992,11 +2003,11 @@ The steady state of the two-country model is characterized by two sets of equati
 First, the following equations determine the steady-state capital-labor ratios $\bar k$ and $\bar k^*$ in each country:
 
 $$
-f'(\bar{k}) = \delta + \frac{\rho}{1 - \tau_k} \tag{12.13.12}
+f'(\bar{k}) = \delta + \frac{\rho}{1 - \tau_k}
 $$ (eq:steady_k_bar)
 
 $$
-f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*} \tag{12.13.13}
+f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*}
 $$ (eq:steady_k_star)
 
 Given these steady-state capital-labor ratios, the domestic and foreign consumption values $\bar c$ and $\bar c^*$ are determined by:
@@ -2172,7 +2183,7 @@ g_ss = 0.2
 k0_ss, c0_ss = compute_steady_state_global(model, g_ss)
 
 k_star = k0_ss
-Bf_star = 0.0
+Bf_star = Bf_ss(c0_ss, k_star, g_ss, model)
 
 init_glob = np.tile([k0_ss, c0_ss, k0_ss, c0_ss], S+1)
 sol_glob = root(
@@ -2229,7 +2240,7 @@ shocks_global = {
     
 k0_ss, c0_ss = compute_steady_state_global(model, g_ss)
 k_star = k0_ss
-Bf_star = 0.0
+Bf_star = Bf_ss(c0_ss, k_star, g_ss, model)
 
 init_glob = np.tile([k0_ss, c0_ss, k0_ss, c0_ss], S+1)
 
