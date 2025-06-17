@@ -197,7 +197,7 @@ states to actions.
 Given *any* $w$, we can read off the corresponding best choice (accept or
 reject) by picking the max on the right-hand side of {eq}`odu_pv`.
 
-Thus, we have a map from $\mathbb R$ to $\{0, 1\}$, with 1 meaning accept and 0 meaning reject.
+Thus, we have a map from $\mathbb W$ to $\{0, 1\}$, with 1 meaning accept and 0 meaning reject.
 
 We can write the policy as follows
 
