@@ -513,7 +513,7 @@ While the two LP solvers use different algorithms (HiGHS vs. simplex), both shou
 The solutions differs since there are multiple optimal solutions, but the objective values are the same
 
 ```{code-cell} ipython3
-np.allclose(- res_qe.fun, res.fun)
+np.allclose(-res_qe.fun, res.fun)
 ```
 
 ```{code-cell} ipython3
