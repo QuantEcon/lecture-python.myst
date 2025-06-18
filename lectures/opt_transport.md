@@ -513,7 +513,7 @@ While the two LP solvers use different algorithms (HiGHS vs. simplex), both shou
 The solutions differs since there are multiple optimal solutions, but the objective values are the same
 
 ```{code-cell} ipython3
-- res_qe.fun == res.fun
+np.allclose(- res_qe.fun, res.fun)
 ```
 
 ```{code-cell} ipython3
@@ -537,6 +537,10 @@ Let's do a speed comparison between `scipy.optimize.linprog` and `quantecon.opti
 ```
 
 As you can see, the `quantecon.optimize.linprog_simplex` is much faster.
+
+(Note however, that the SciPy version is probably more stable than the
+QuantEcon version, having been tested more extensively over a longer period of
+time.)
 
 ## The Dual Problem
 
@@ -591,15 +595,15 @@ print("u:", res_dual.x[:m])
 print("v:", res_dual.x[-n:])
 ```
 
-Fortunately, `quantecon.optimize.linprog_simplex` already computes and returns the dual variables alongside the primal solution, eliminating the need for a separate dual solve.
+`quantecon.optimize.linprog_simplex` computes and returns the dual variables alongside the primal solution.
 
 The dual variables (shadow prices) can be extracted directly from the primal solution:
 
 ```{code-cell} ipython3
-# The dual variables are returned automatically by linprog_simplex
+# The dual variables are returned by linprog_simplex
 print("Dual variables from linprog_simplex:")
-print("u (factory shadow prices):", -res_qe.lambd[:m])
-print("v (location shadow prices):", -res_qe.lambd[m:])
+print("u:", -res_qe.lambd[:m])
+print("v:", -res_qe.lambd[m:])
 ```
 
 We can verify these match the dual solution from SciPy:
