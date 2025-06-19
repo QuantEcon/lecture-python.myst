@@ -368,7 +368,7 @@ The following code draws aggregate supply and demand curves.
 The intersection gives equilibrium interest rates and capital.
 
 ```{code-cell} ipython3
-:tags: hide-input
+:tags: [hide-input]
 
 A = 1.0
 N = 1.0
