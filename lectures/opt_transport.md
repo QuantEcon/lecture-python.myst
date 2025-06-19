@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -330,12 +330,12 @@ Let's write Python code that sets up the problem and solves it.
 m = 3
 n = 5
 
-p = np.array([50, 100, 150])
-q = np.array([25, 115, 60, 30, 70])
+p = np.array([50.0, 100.0, 150.0])
+q = np.array([25.0, 115.0, 60.0, 30.0, 70.0])
 
-C = np.array([[10, 15, 20, 20, 40],
-              [20, 40, 15, 30, 30],
-              [30, 35, 40, 55, 25]])
+C = np.array([[10.0, 15.0, 20.0, 20.0, 40.0],
+              [20.0, 40.0, 15.0, 30.0, 30.0],
+              [30.0, 35.0, 40.0, 55.0, 25.0]])
 
 # Vectorize matrix C
 C_vec = C.reshape((m*n, 1), order='F')
@@ -371,9 +371,13 @@ Here `'F'` stands for "Fortran", and we are using Fortran style column-major ord
         lecture by Alfred
         Galichon](https://www.math-econ-code.org/dynamic-programming).)
 
-**Interpreting the warning:**
+**Interpreting the solver behavior:**
 
-The above warning message from SciPy points out that A is not full rank.
+Looking at matrix $A$, we can see that it is rank deficient.
+
+```{code-cell} ipython3
+np.linalg.matrix_rank(A) < min(A.shape)
+```
 
 This indicates that the linear program has been set up to include one or more redundant constraints.
 
@@ -389,7 +393,9 @@ The singularity of $A$ reflects that the  first three constraints and the last f
 
 One  equality constraint here is redundant.
 
-Below we drop one of the equality constraints, and use only  7 of them.
+Fortunately, SciPy's `linprog` function handles the redundant constraints automatically without explicitly warning about rank deficiency.
+
+But we can drop one of the equality constraints, and use only  7 of them.
 
 After doing this, we attain the same minimized cost.
 
@@ -475,11 +481,11 @@ The minimized cost from the optimal transport plan is given by the $fun$ variabl
 We can also solve optimal transportation problems using a powerful tool from
 QuantEcon, namely, `quantecon.optimize.linprog_simplex`.
 
-While this routine uses the same simplex algorithm as
-`scipy.optimize.linprog`, the code is accelerated by using a just-in-time
+While `scipy.optimize.linprog` uses the HiGHS solver by default, 
+`quantecon.optimize.linprog_simplex` implements the simplex algorithm accelerated by using a just-in-time
 compiler shipped in the `numba` library.
 
-As you will see very soon, by using `scipy.optimize.linprog` the time required to solve an optimal transportation problem can be reduced significantly.
+As you will see very soon, by using `quantecon.optimize.linprog_simplex` the time required to solve an optimal transportation problem can be reduced significantly.
 
 ```{code-cell} ipython3
 # construct matrices/vectors for linprog_simplex
@@ -502,7 +508,13 @@ minimization, we need to put a negative sign before vector `c`.
 res_qe = linprog_simplex(-c, A_eq=A_eq, b_eq=b_eq)
 ```
 
-Since the two LP solvers use the same simplex algorithm, we expect to get exactly the same solutions
+While the two LP solvers use different algorithms (HiGHS vs. simplex), both should find optimal solutions.
+
+The solutions differs since there are multiple optimal solutions, but the objective values are the same
+
+```{code-cell} ipython3
+np.allclose(-res_qe.fun, res.fun)
+```
 
 ```{code-cell} ipython3
 res_qe.x.reshape((m, n), order='C')
@@ -529,7 +541,6 @@ As you can see, the `quantecon.optimize.linprog_simplex` is much faster.
 (Note however, that the SciPy version is probably more stable than the
 QuantEcon version, having been tested more extensively over a longer period of
 time.)
-
 
 ## The Dual Problem
 
@@ -584,48 +595,23 @@ print("u:", res_dual.x[:m])
 print("v:", res_dual.x[-n:])
 ```
 
-We can also solve the dual problem using [quantecon.optimize.linprog_simplex](https://quanteconpy.readthedocs.io/en/latest/optimize/linprog_simplex.html).
+`quantecon.optimize.linprog_simplex` computes and returns the dual variables alongside the primal solution.
+
+The dual variables (shadow prices) can be extracted directly from the primal solution:
 
 ```{code-cell} ipython3
-res_dual_qe = linprog_simplex(b_eq, A_ub=A_eq.T, b_ub=c)
+# The dual variables are returned by linprog_simplex
+print("Dual variables from linprog_simplex:")
+print("u:", -res_qe.lambd[:m])
+print("v:", -res_qe.lambd[m:])
 ```
 
-And the shadow prices computed by the two programs are identical.
+We can verify these match the dual solution from SciPy:
 
 ```{code-cell} ipython3
-res_dual_qe.x
-```
-
-```{code-cell} ipython3
-res_dual.x
-```
-
-We can compare computational times from using our two tools.
-
-```{code-cell} ipython3
-%time linprog(-b, A_ub=A.T, b_ub=C_vec, bounds=[(None, None)]*(m+n))
-```
-
-```{code-cell} ipython3
-%time linprog_simplex(b_eq, A_ub=A_eq.T, b_ub=c)
-```
-
-`quantecon.optimize.linprog_simplex` solves the dual problem 10 times faster.
-
-Just for completeness, let's  solve the dual problems with nonsingular $A$ matrices that we create by dropping a redundant equality constraint.
-
-Try first leaving out the first constraint:
-
-```{code-cell} ipython3
-linprog(-b[1:], A_ub=A[1:].T, b_ub=C_vec,
-        bounds=[(None, None)]*(m+n-1))
-```
-
-Not let's instead leave out the last constraint:
-
-```{code-cell} ipython3
-linprog(-b[:-1], A_ub=A[:-1].T, b_ub=C_vec,
-        bounds=[(None, None)]*(m+n-1))
+print("Dual variables from SciPy linprog:")
+print("u:", res_dual.x[:m])
+print("v:", res_dual.x[-n:])
 ```
 
 ### Interpretation of dual problem
