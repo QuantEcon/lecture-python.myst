@@ -782,7 +782,24 @@ the optimal capital stock stays close to
 its steady state value most of the time.
 
 ```{code-cell} ipython3
-plot_paths(pp, 0.3, k_ss/3, [250, 150, 50, 25], k_ss=k_ss);
+# 34.6. A Turnpike Property
+
+# The following calculation indicates that when T is very large, the optimal capital 
+# stock stays close to its steady state value most of the time, REGARDLESS of the 
+# initial capital stock K_0.
+
+# Let's demonstrate this key property by starting from multiple different initial 
+# capital levels, both above and below the steady state:
+
+k0_values = [k_ss/4, k_ss/2, k_ss*0.8, k_ss*1.2, k_ss*1.5, k_ss*2]
+
+print("Demonstrating Turnpike Property with different initial capital stocks:")
+for i, k0 in enumerate(k0_values):
+    ratio = k0/k_ss
+    print(f"  K_0_{i+1} = {k0:.2f} ({ratio:.1f} × K_ss)")
+
+# Plot optimal paths from different starting points
+plot_saving_rate(pp, 0.3, k0_values, [200], k_ter=k_ss, k_ss=k_ss, s_ss=s_ss);
 ```
 
 In the above graphs, different colors  are associated with
@@ -793,10 +810,26 @@ closer to the steady state value $\bar K$ for longer.
 
 This pattern reflects a **turnpike** property of the steady state.
 
-A rule of thumb for the planner is
+Notice how all paths, regardless of their starting point, converge to and stay 
+near the steady state for most of the time horizon. This demonstrates the key 
+insight of the turnpike property:
 
-- from $K_0$, push $K_t$ toward
-  the steady state and stay close to the steady state until time approaches $T$.
+1. **Path Independence**: The long-run behavior is independent of initial conditions
+2. **Convergence**: All paths converge to the steady state neighborhood  
+3. **Persistence**: Paths stay near steady state for most of the horizon
+
+Let's also compare different time horizons starting from the same initial condition
+to show how longer horizons lead to more time spent near the steady state:
+
+```{code-cell} ipython3
+plot_saving_rate(pp, 0.3, k_ss/3, [250, 150, 75, 50], k_ter=k_ss, k_ss=k_ss, s_ss=s_ss)
+
+```
+
+A rule of thumb for the planner is:
+1. From any K_0, push K_t toward the steady state  
+2. Stay close to the steady state until time approaches T
+3. Then optimally wind down capital to meet terminal condition K_{T+1} = K_ter
 
 The planner accomplishes this by adjusting the saving rate $\frac{f(K_t) - C_t}{f(K_t)}$
 over time.
@@ -813,20 +846,68 @@ def saving_rate(pp, c_path, k_path):
 ```
 
 ```{code-cell} ipython3
-def plot_saving_rate(pp, c0, k0, T_arr, k_ter=0, k_ss=None, s_ss=None):
-
-    fix, axs = plt.subplots(2, 2, figsize=(12, 9))
-
-    c_paths, k_paths = plot_paths(pp, c0, k0, T_arr, k_ter=k_ter, k_ss=k_ss, axs=axs.flatten())
-
-    for i, T in enumerate(T_arr):
-        s_path = saving_rate(pp, c_paths[i], k_paths[i])
-        axs[1, 1].plot(s_path)
-
-    axs[1, 1].set(xlabel='t', ylabel='$s_t$', title='Saving rate')
-
-    if s_ss is not None:
-        axs[1, 1].hlines(s_ss, 0, np.max(T_arr), linestyle='--')
+def plot_saving_rate(pp, c0, k0_arr, T_arr, k_ter=0, k_ss=None, s_ss=None):
+    """
+    Enhanced saving rate plotting function that accepts either:
+    - A single k0 value (backward compatibility)
+    - A list of k0 values to demonstrate turnpike property
+    """
+    # Handle backward compatibility - if k0_arr is a scalar, convert to list
+    if np.isscalar(k0_arr):
+        k0_arr = [k0_arr]
+        single_k0 = True
+    else:
+        single_k0 = False
+    
+    if single_k0:
+        # Original behavior for single k0
+        fig, axs = plt.subplots(2, 2, figsize=(12, 9))
+        c_paths, k_paths = plot_paths(pp, c0, k0_arr[0], T_arr, k_ter=k_ter, k_ss=k_ss, axs=axs.flatten())
+        for i, T in enumerate(T_arr):
+            s_path = saving_rate(pp, c_paths[i], k_paths[i])
+            axs[1, 1].plot(s_path)
+        axs[1, 1].set(xlabel='t', ylabel='$s_t$', title='Saving rate')
+        if s_ss is not None:
+            axs[1, 1].hlines(s_ss, 0, np.max(T_arr), linestyle='--')
+    else:
+        # Enhanced behavior for multiple k0 values
+        fig, axs = plt.subplots(2, 2, figsize=(15, 10))
+        
+        # Use the largest T for the main comparison
+        T_main = max(T_arr)
+        
+        # Plot consumption, capital, and multiplier paths for different k0 values
+        colors = plt.cm.viridis(np.linspace(0, 1, len(k0_arr)))
+        ylabels = ['$c_t$', '$k_t$', '$\mu_t$']
+        titles = ['Consumption', 'Capital', 'Lagrange Multiplier']
+        
+        for i, k0 in enumerate(k0_arr):
+            c_vec, k_vec = bisection(pp, c0, k0, T_main, k_ter=k_ter, verbose=False)
+            μ_vec = pp.u_prime(c_vec)
+            paths = [c_vec, k_vec, μ_vec]
+            
+            for j in range(3):
+                axs[j//2, j%2].plot(paths[j], color=colors[i], 
+                                   label=f'$K_0$ = {k0:.2f}' if j == 1 else "")
+                axs[j//2, j%2].set(xlabel='t', ylabel=ylabels[j], title=titles[j])
+            
+            # Plot saving rate
+            s_path = saving_rate(pp, c_vec, k_vec)
+            axs[1, 1].plot(s_path, color=colors[i], label=f'$K_0$ = {k0:.2f}')
+        
+        # Add steady state lines and legends
+        if k_ss is not None:
+            axs[0, 1].axhline(k_ss, c='k', ls='--', lw=1, label='Steady state')
+        
+        if s_ss is not None:
+            axs[1, 1].axhline(s_ss, c='k', ls='--', lw=1, label='Steady state')
+        
+        axs[0, 1].legend()
+        axs[1, 1].set(xlabel='t', ylabel='$s_t$', title='Saving rate')
+        axs[1, 1].legend()
+    
+    plt.tight_layout()
+    plt.show()
 ```
 
 ```{code-cell} ipython3
