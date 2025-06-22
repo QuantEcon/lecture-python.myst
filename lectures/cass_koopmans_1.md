@@ -804,7 +804,7 @@ over time.
 ```{exercise}
 :label: ck1_ex1
 
-The turnpike property is a property that is independent of the initial condition 
+The turnpike property is independent of the initial condition 
 $K_0$ provided that $T$ is sufficiently large.
 
 Expand the `plot_paths` function so that it plots trajectories for multiple initial points using `k0s = [k_ss*2, k_ss*3, k_ss/3]`.
