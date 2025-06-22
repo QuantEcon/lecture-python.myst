@@ -804,11 +804,10 @@ over time.
 ```{exercise}
 :label: ck1_ex1
 
-Turnspike property is an property that is independent of the 
-initial condition $K_0$ as long as $T$ is large enough.
+The turnpike property is a property that is independent of the initial condition 
+$K_0$ provided that $T$ is sufficiently large.
 
-Try to expand the function `plot_paths` to plot paths 
-of multiple initial points. 
+Expand the `plot_paths` function so that it plots trajectories for multiple initial points using `k0s = [k_ss*2, k_ss*3, k_ss/3]`.
 ```
 
 ```{solution-start} ck1_ex1
@@ -867,7 +866,7 @@ def plot_multiple_paths(pp, c0, k0s, T_arr, k_ter=0, k_ss=None, axs=None):
 _ = plot_multiple_paths(pp, 0.3, [k_ss*2, k_ss*3, k_ss/3], [250, 150, 75, 50], k_ss=k_ss)
 ```
 
-We can see that the turnpike property holds for different initial capital stocks $K_0$.
+We see that the turnpike property holds for various initial values of $K_0$.
 
 ```{solution-end}
 ```
