@@ -62,6 +62,15 @@ The lecture uses important ideas including
   long but finite-horizon economies.
 - A **stable manifold** and a **phase plane**
 
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython
+---
+tags: [hide-output]
+---
+!pip install quantecon
+```
+
 Let's start with some standard imports:
 
 ```{code-cell} ipython3
