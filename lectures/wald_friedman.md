@@ -431,6 +431,28 @@ Now we can run the simulation following Wald's recommendation.
 
 We use the log-likelihood ratio and compare it to the logarithms of the thresholds $\log(A)$ and $\log(B)$.
 
+Below is the algorithm for the simulation.
+
+1. Compute thresholds $A = \frac{1-\beta}{\alpha}$, $B = \frac{\beta}{1-\alpha}$ and work with $\log A$, $\log B$.
+
+2. Given true distribution (either $f_0$ or $f_1$):
+   - Initialize log-likelihood ratio $\log L = 0$ and observation counter $n = 0$
+   - Repeat:
+     - Draw observation $z$ from the true distribution
+     - Update: $\log L \leftarrow \log L + \log f_1(z) - \log f_0(z)$, $n \leftarrow n + 1$
+     - If $\log L \geq \log A$: stop, reject $H_0$ (decide $f_1$)
+     - If $\log L \leq \log B$: stop, accept $H_0$ (decide $f_0$)
+
+3. Monte Carlo: Repeat step 2 for $N$ replications with $N/2$ replications for each distribution, compute the empirical type I and type II error rates with 
+
+$$
+\hat{\alpha} = \frac{\text{# of times reject } H_0 \text{ when } f_0 \text{ is true}}{\text{# of replications with } f_0 \text{ true}}
+$$
+
+$$
+\hat{\beta} = \frac{\text{# of times accept } H_0 \text{ when } f_1 \text{ is true}}{\text{# of replications with } f_1 \text{ true}}
+$$
+
 ```{code-cell} ipython3
 def run_sprt_simulation(params):
     """Run SPRT simulation with given parameters."""
@@ -443,7 +465,7 @@ def run_sprt_simulation(params):
     f1 = beta(params.a1, params.b1)
     
     rng = np.random.default_rng(seed=params.seed)
-    
+
     def sprt(true_f0):
         """Run one SPRT until a decision is reached."""
         log_L = 0.0
@@ -457,7 +479,7 @@ def run_sprt_simulation(params):
                 return n, False
             elif log_L <= logB:
                 return n, True
-    
+        
     # Monte Carlo experiment
     stopping_times = []
     decisions = []
@@ -476,9 +498,8 @@ def run_sprt_simulation(params):
     truth = np.asarray(truth)
     
     # Calculate error rates
-    type_I = np.mean(truth & (~decisions))
-    type_II = np.mean((~truth) & decisions)
-    accuracy = np.mean(decisions == truth)
+    type_I = np.sum(truth & ~decisions) / np.sum(truth)
+    type_II = np.sum(~truth & decisions) / np.sum(~truth)
     
     return {
         'stopping_times': stopping_times,
@@ -486,7 +507,6 @@ def run_sprt_simulation(params):
         'truth': truth,
         'type_I': type_I,
         'type_II': type_II,
-        'accuracy': accuracy,
         'f0': f0,
         'f1': f1
     }
@@ -542,6 +562,7 @@ f1_incorrect = np.sum((~results['truth']) & results['decisions'])
 
 confusion_data = np.array([[f0_correct, f0_incorrect], 
                           [f1_incorrect, f1_correct]])
+row_totals = confusion_data.sum(axis=1, keepdims=True)
 
 fig, ax = plt.subplots()
 ax.imshow(confusion_data, cmap='Blues', aspect='equal')
@@ -552,8 +573,9 @@ ax.set_yticklabels(['true $f_0$', 'true $f_1$'])
 
 for i in range(2):
     for j in range(2):
+        percent = confusion_data[i, j] / row_totals[i, 0] if row_totals[i, 0] > 0 else 0
         color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 else 'black'
-        ax.text(j, i, f'{confusion_data[i, j]}\n({confusion_data[i, j]/params.N:.1%})',
+        ax.text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
                       ha="center", va="center", color=color, fontweight='bold')
 
 plt.tight_layout()
@@ -573,7 +595,7 @@ params_3 = SPRTParams(α=0.05, β=0.10, a0=0.5, b0=0.4, a1=0.4, b1=0.5, N=5000, 
 results_3 = run_sprt_simulation(params_3)
 
 # Create comparison plots
-fig, axes = plt.subplots(3, 3, figsize=(18, 18))
+fig, axes = plt.subplots(3, 3, figsize=(18, 20))
 
 scenarios = [
     (results_1, params_1, "Well-separated", 0),
@@ -615,6 +637,7 @@ for results, params, title, row in scenarios:
     
     confusion_data = np.array([[f0_correct, f0_incorrect], 
                               [f1_incorrect, f1_correct]])
+    row_totals = confusion_data.sum(axis=1, keepdims=True)
     
     im = axes[row, 2].imshow(confusion_data, cmap='Blues', aspect='equal')
     axes[row, 2].set_title(f'Errors: I={results["type_I"]:.3f}, II={results["type_II"]:.3f}')
@@ -627,12 +650,89 @@ for results, params, title, row in scenarios:
     
     for i in range(2):
         for j in range(2):
+            percent = confusion_data[i, j] / row_totals[i, 0] if row_totals[i, 0] > 0 else 0
             color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 else 'black'
-            axes[row, 2].text(j, i, f'{confusion_data[i, j]}\n({confusion_data[i, j]/params.N:.1%})',
+            axes[row, 2].text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
                              ha="center", va="center", color=color, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
+```
+
+Let's visualize individual likelihood ratio processes to see how they evolve toward the decision boundaries.
+
+```{code-cell} ipython3
+def plot_likelihood_paths(params, n_highlight=10, n_background=200):
+    """Plot likelihood ratio paths"""
+    
+    A = (1 - params.β) / params.α
+    B = params.β / (1 - params.α)
+    logA, logB = np.log(A), np.log(B)
+    
+    f0 = beta(params.a0, params.b0)
+    f1 = beta(params.a1, params.b1)
+    
+    fig, axes = plt.subplots(1, 2, figsize=(14, 7))
+    
+    stopping_times_f0 = []
+    stopping_times_f1 = []
+    decisions_f0 = []
+    decisions_f1 = []
+    
+    # Generate and plot paths for each distribution
+    for dist_idx, (true_f0, ax, title, color_main) in enumerate([
+        (True, axes[0], 'true distribution: $f_0$', 'blue'),
+        (False, axes[1], 'true distribution: $f_1$', 'red')
+    ]):
+        rng = np.random.default_rng(seed=42 + dist_idx)
+        paths_data = []
+        
+        for path in range(n_background + n_highlight):
+            log_L_path = [0.0]  # Start at 0
+            log_L = 0.0
+            n = 0
+            
+            while True:
+                z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
+                n += 1
+                log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
+                log_L_path.append(log_L)
+                
+                # Check stopping conditions
+                if log_L >= logA or log_L <= logB:
+                    decision = log_L >= logA  # True = reject H0, False = accept H0
+                    break
+            
+            paths_data.append((log_L_path, n, decision))
+            
+        for i, (path, n, decision) in enumerate(paths_data[:n_background]):
+            color = 'C1' if decision else 'C0'
+            ax.plot(range(len(path)), path, color=color, alpha=0.2, linewidth=0.5)
+        
+        for i, (path, n, decision) in enumerate(paths_data[n_background:]):
+            # Color code by decision
+            color = 'C1' if decision else 'C0'
+            ax.plot(range(len(path)), path, color=color, alpha=0.8, linewidth=1.5,
+                   label='reject $H_0$' if decision and i == 0 else ('accept $H_0$' if not decision and i == 0 else ''))
+        
+        ax.axhline(y=logA, color='C1', linestyle='--', linewidth=2, 
+                  label=f'$\\log A = {logA:.2f}$')
+        ax.axhline(y=logB, color='C0', linestyle='--', linewidth=2, 
+                  label=f'$\\log B = {logB:.2f}$')
+        ax.axhline(y=0, color='black', linestyle='-', alpha=0.5, linewidth=1)
+        
+        ax.set_xlabel('observation number')
+        ax.set_ylabel('log-likelihood ratio')
+        ax.set_title(title)
+        ax.legend()
+        
+        y_margin = max(abs(logA), abs(logB)) * 0.2
+        ax.set_ylim(logB - y_margin, logA + y_margin)
+    
+    plt.tight_layout()
+    plt.show()
+
+plot_likelihood_paths(params_3, n_highlight=10, n_background=100)
 ```
 
 Next, let's adjust the decision thresholds $A$ and $B$ and examine how the mean stopping time and the type I and type II error rates change.
@@ -727,8 +827,7 @@ When we multiply $A$ by a factor less than 1 (making $A$ smaller), we are effect
 
 When we multiply $B$ by a factor greater than 1 (making $B$ larger), we are making it easier to accept the null hypothesis $H_0$. This increases the probability of Type II errors.
 
-The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases. 
-+++
+The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases.
 
 ## Related lectures
 
