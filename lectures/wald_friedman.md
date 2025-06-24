@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.11.5
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -60,6 +60,8 @@ import matplotlib.pyplot as plt
 from numba import jit, prange, float64, int64
 from numba.experimental import jitclass
 from math import gamma
+from scipy.stats import beta
+from collections import namedtuple
 ```
 
 This lecture uses ideas studied in {doc}`this lecture <likelihood_ratio_process>` and  {doc}`this lecture <likelihood_bayes>`.
@@ -108,8 +110,6 @@ Friedman and Wallis struggled with the problem but, after realizing that
 they were not able to solve it,  described the problem to  Abraham Wald.
 
 That started Wald on the path that led him  to *Sequential Analysis* {cite}`Wald47`.
-
-
 
 ##  Neyman-Pearson Formulation
 
@@ -235,7 +235,7 @@ Wald summarizes Neyman and Pearson's setup as follows:
 >
 > $$
   \frac{ f_1(z_1) \cdots f_1(z_n)}{f_0(z_1) \cdots f_0(z_n)} \geq k
-  $$
+ $$
 >
 > is a most powerful critical region for testing the hypothesis
 > $H_0$ against the alternative hypothesis $H_1$. The term
@@ -278,9 +278,9 @@ A decision-maker can observe a sequence of draws of a random variable $z$.
 He (or she) wants to know which of two probability distributions $f_0$ or $f_1$ governs $z$.
 
 
-To  illustrate, let's inspect some  beta distributions.
+To  illustrate, let's inspect some Beta distributions.
 
-The density of a beta probability distribution with parameters $a$ and $b$ is
+The density of a Beta probability distribution with parameters $a$ and $b$ is
 
 $$
 f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
@@ -288,16 +288,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 \Gamma(t) := \int_{0}^{\infty} x^{t-1} e^{-x} dx
 $$
 
-The next figure shows two beta distributions.
-
-## Request for Humphrey. 
-
-The bottom panel presents mixtures of these distributions, with various mixing probabilities $\pi_k$ --
-that is inherited from the Bayesian lecture.
-
-Please remove the bottom panel and just leave the top panel.  
-
-This is the end of the "message"
+The next figure shows two Beta distributions.
 
 ```{code-cell} ipython3
 @jit
@@ -309,20 +300,14 @@ f0 = lambda x: p(x, 1, 1)
 f1 = lambda x: p(x, 9, 9)
 grid = np.linspace(0, 1, 50)
 
-fig, axes = plt.subplots(2, figsize=(10, 8))
+fig, ax = plt.subplots(figsize=(10, 8))
 
-axes[0].set_title("Original Distributions")
-axes[0].plot(grid, f0(grid), lw=2, label="$f_0$")
-axes[0].plot(grid, f1(grid), lw=2, label="$f_1$")
+ax.set_title("Original Distributions")
+ax.plot(grid, f0(grid), lw=2, label="$f_0$")
+ax.plot(grid, f1(grid), lw=2, label="$f_1$")
 
-axes[1].set_title("Mixtures")
-for π in 0.25, 0.5, 0.75:
-    y = π * f0(grid) + (1 - π) * f1(grid)
-    axes[1].plot(y, lw=2, label=rf"$\pi_k$ = {π}")
-
-for ax in axes:
-    ax.legend()
-    ax.set(xlabel="$z$ values", ylabel="probability of $z_k$")
+ax.legend()
+ax.set(xlabel="$z$ values", ylabel="probability of $z_k$")
 
 plt.tight_layout()
 plt.show()
@@ -344,9 +329,6 @@ The observer has something to learn, namely, whether the observations are drawn 
 The decision maker   wants  to decide which of the  two distributions is generating outcomes.
 
 
-
-
-
 ### Type I and Type II Errors
 
 If we regard  $f=f_0$ as a null hypothesis and $f=f_1$ as an alternative hypothesis,
@@ -360,8 +342,6 @@ To repeat ourselves
 - $\alpha$ is the probability of a type I error
 - $\beta$ is the probability of a type II error
 
-**note to Humphrey -- please leave the alpha and beta as they are in this section!
-
 ### Choices
 
 After observing $z_k, z_{k-1}, \ldots, z_0$, the decision-maker
@@ -372,21 +352,9 @@ chooses among three distinct actions:
 - He postpones deciding now and instead chooses to draw a
   $z_{k+1}$
 
-
-### Message to Humphrey
-
-We want to redraw this figure with $A$ and $B$ replacing $\alpha$ and $\beta$. I suspect that we
-used the notebook to generate the figure.  
-
-
-
 ```{figure} /_static/lecture_specific/wald_friedman/wald_dec_rule.png
 
 ```
-
-
-
-
 
 Wald proceeds as follows.
 
@@ -434,132 +402,344 @@ $$ (eq:Waldrule)
 
  For small values of $\alpha $ and $\beta$, Wald shows that {eq}`eq:Waldrule` provides  good ways to set $A$ and $B$. 
 
-
-## Message to Humphrey
-
-I want drastically to edit the following section.  We want instead to create some examples along the following lines.
-
-- we'll set a pair of target $\alpha, \beta$ (size, power parameters)
-- we'll use formulas {eq}`eq:Waldrule` for $A(\alpha,\beta), B(\alpha, \beta)$
-- we'll set beta distributions for $f_1$ and $f_2$ that have lots of overlap and are more or less challenging to distinguish.
-- we'll then simulate Wald's decision rule and generate distributions of 
-    - stopping times $n$
-    - probabilities of making type I and type II errors that we'll compare with our target $\alpha, \beta$
-
-I welcome your suggestions for improvements and more interesting experiments.
-
 ## Simulations
 
+In this section, we experiment with different distributions $f_0$ and $f_1$ to examine how Wald's test performs under various conditions.
 
-The next figure shows the outcomes of 500 simulations of the decision process.
+The goal of these simulations is to understand the trade-offs between decision speed and accuracy in sequential hypothesis testing.
 
-On the left is a histogram of **stopping times**, i.e.,  the number of draws of $z_k$ required to make a decision.
+Specifically, we will see how:
 
-The average number of draws is around 6.6.
+- The decision thresholds $A$ and $B$ (or equivalently the target error rates $\alpha$ and $\beta$) affect the average stopping time
+- The separability between distributions affects the average stopping time
 
-On the right is the fraction of correct decisions at the stopping time.
+We will focus on the case where $f_0$ and $f_1$ are beta distributions since it is easy to control the overlapping regions of the two densities by adjusting their shape parameters.
 
-In this case, the decision-maker is correct 80% of the time
+First, we define a namedtuple to store all the parameters we need for our simulation studies.
 
 ```{code-cell} ipython3
-def simulate(wf, true_dist, h_star, π_0=0.5):
-
-    """
-    This function takes an initial condition and simulates until it
-    stops (when a decision is made)
-    """
-
-    f0, f1 = wf.f0, wf.f1
-    f0_rvs, f1_rvs = wf.f0_rvs, wf.f1_rvs
-    π_grid = wf.π_grid
-    κ = wf.κ
-
-    if true_dist == "f0":
-        f, f_rvs = wf.f0, wf.f0_rvs
-    elif true_dist == "f1":
-        f, f_rvs = wf.f1, wf.f1_rvs
-
-    # Find cutoffs
-    β, α = find_cutoff_rule(wf, h_star)
-
-    # Initialize a couple of useful variables
-    decision_made = False
-    π = π_0
-    t = 0
-
-    while decision_made is False:
-        # Maybe should specify which distribution is correct one so that
-        # the draws come from the "right" distribution
-        z = f_rvs()
-        t = t + 1
-        π = κ(z, π)
-        if π < β:
-            decision_made = True
-            decision = 1
-        elif π > α:
-            decision_made = True
-            decision = 0
-
-    if true_dist == "f0":
-        if decision == 0:
-            correct = True
-        else:
-            correct = False
-
-    elif true_dist == "f1":
-        if decision == 1:
-            correct = True
-        else:
-            correct = False
-
-    return correct, π, t
-
-def stopping_dist(wf, h_star, ndraws=250, true_dist="f0"):
-
-    """
-    Simulates repeatedly to get distributions of time needed to make a
-    decision and how often they are correct
-    """
-
-    tdist = np.empty(ndraws, int)
-    cdist = np.empty(ndraws, bool)
-
-    for i in range(ndraws):
-        correct, π, t = simulate(wf, true_dist, h_star)
-        tdist[i] = t
-        cdist[i] = correct
-
-    return cdist, tdist
-
-def simulation_plot(wf):
-    h_star = solve_model(wf)
-    ndraws = 500
-    cdist, tdist = stopping_dist(wf, h_star, ndraws)
-
-    fig, ax = plt.subplots(1, 2, figsize=(16, 5))
-
-    ax[0].hist(tdist, bins=np.max(tdist))
-    ax[0].set_title(f"Stopping times over {ndraws} replications")
-    ax[0].set(xlabel="time", ylabel="number of stops")
-    ax[0].annotate(f"mean = {np.mean(tdist)}", xy=(max(tdist) / 2,
-                   max(np.histogram(tdist, bins=max(tdist))[0]) / 2))
-
-    ax[1].hist(cdist.astype(int), bins=2)
-    ax[1].set_title(f"Correct decisions over {ndraws} replications")
-    ax[1].annotate(f"% correct = {np.mean(cdist)}",
-                   xy=(0.05, ndraws / 2))
-
-    plt.show()
-
-simulation_plot(wf)
+SPRTParams = namedtuple('SPRTParams', ['α', 'β',   # Target type I and type II errors
+                                       'a0', 'b0', # Shape parameters for f_0
+                                       'a1', 'b1', # Shape parameters for f_1
+                                       'N',        # Number of simulations to run
+                                       'seed'])
 ```
 
+Now we can run the simulation following Wald's recommendation. 
 
+We use the log-likelihood ratio and compare it to the logarithms of the thresholds $\log(A)$ and $\log(B)$.
 
+```{code-cell} ipython3
+def run_sprt_simulation(params):
+    """Run SPRT simulation with given parameters."""
+    
+    A = (1 - params.β) / params.α
+    B = params.β / (1 - params.α)
+    logA, logB = np.log(A), np.log(B)
+    
+    f0 = beta(params.a0, params.b0)
+    f1 = beta(params.a1, params.b1)
+    
+    rng = np.random.default_rng(seed=params.seed)
+    
+    def sprt(true_f0):
+        """Run one SPRT until a decision is reached."""
+        log_L = 0.0
+        n = 0
+        while True:
+            z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
+            n += 1
+            log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
+            
+            if log_L >= logA:
+                return n, False
+            elif log_L <= logB:
+                return n, True
+    
+    # Monte Carlo experiment
+    stopping_times = []
+    decisions = []
+    truth = []
+    
+    for i in range(params.N):
+        # Alternate true distribution for each simulation
+        true_f0 = (i % 2 == 0)
+        n, decide_f0 = sprt(true_f0)
+        stopping_times.append(n)
+        decisions.append(decide_f0)
+        truth.append(true_f0)
+    
+    stopping_times = np.asarray(stopping_times)
+    decisions = np.asarray(decisions)
+    truth = np.asarray(truth)
+    
+    # Calculate error rates
+    type_I = np.mean(truth & (~decisions))
+    type_II = np.mean((~truth) & decisions)
+    accuracy = np.mean(decisions == truth)
+    
+    return {
+        'stopping_times': stopping_times,
+        'decisions': decisions,
+        'truth': truth,
+        'type_I': type_I,
+        'type_II': type_II,
+        'accuracy': accuracy,
+        'f0': f0,
+        'f1': f1
+    }
 
-[^f1]: The decision maker acts as if he believes that the sequence of random variables
-$[z_{0}, z_{1}, \ldots]$ is *exchangeable*.  See [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html) and
-{cite}`Kreps88` chapter 11, for  discussions of exchangeability.
+# Run simulation
+params = SPRTParams(α=0.05, β=0.10, a0=2, b0=5, a1=5, b1=2, N=15000, seed=1)
+results = run_sprt_simulation(params)
+
+print(f"Average stopping time: {results['stopping_times'].mean():.2f}")
+print(f"Empirical type I  error: {results['type_I']:.3f}   (target = {params.α})")
+print(f"Empirical type II error: {results['type_II']:.3f}   (target = {params.β})")
+```
+
+We visualize the two distributions and the distribution of stopping times to reach a decision.
+
+```{code-cell} ipython3
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+z_grid = np.linspace(0, 1, 200)
+axes[0].plot(z_grid, results['f0'].pdf(z_grid), 'b-', 
+             lw=2, label=f'$f_0 = \\text{{Beta}}({params.a0},{params.b0})$')
+axes[0].plot(z_grid, results['f1'].pdf(z_grid), 'r-', 
+             lw=2, label=f'$f_1 = \\text{{Beta}}({params.a1},{params.b1})$')
+axes[0].fill_between(z_grid, 0, 
+                     np.minimum(results['f0'].pdf(z_grid), 
+                                results['f1'].pdf(z_grid)), 
+                     alpha=0.3, color='purple', label='Overlap region')
+axes[0].set_xlabel('z')
+axes[0].set_ylabel('Density')
+axes[0].legend()
+
+axes[1].hist(results['stopping_times'], 
+             bins=np.arange(1, results['stopping_times'].max() + 1.5) - 0.5,
+            color="steelblue", alpha=0.8, edgecolor="black")
+axes[1].set_title("distribution of stopping times $n$")
+axes[1].set_xlabel("$n$")
+axes[1].set_ylabel("Frequency")
+
+plt.show()
+```
+
+In this simple case, the stopping time stays below 10.
+
+We can also examine the confusion matrix for this decision problem. 
+
+The diagonal elements show the number of times when Wald's rule results in correct acceptance/rejection of the null hypothesis.
+
+```{code-cell} ipython3
+f0_correct = np.sum(results['truth'] & results['decisions'])
+f0_incorrect = np.sum(results['truth'] & (~results['decisions']))
+f1_correct = np.sum((~results['truth']) & (~results['decisions']))
+f1_incorrect = np.sum((~results['truth']) & results['decisions'])
+
+confusion_data = np.array([[f0_correct, f0_incorrect], 
+                          [f1_incorrect, f1_correct]])
+
+fig, ax = plt.subplots()
+ax.imshow(confusion_data, cmap='Blues', aspect='equal')
+ax.set_xticks([0, 1])
+ax.set_xticklabels(['accept $H_0$', 'reject $H_0$'])
+ax.set_yticks([0, 1])
+ax.set_yticklabels(['true $f_0$', 'true $f_1$'])
+
+for i in range(2):
+    for j in range(2):
+        color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 else 'black'
+        ax.text(j, i, f'{confusion_data[i, j]}\n({confusion_data[i, j]/params.N:.1%})',
+                      ha="center", va="center", color=color, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
+```
+
+Now we compare three different scenarios with varying degrees of overlap between the distributions:
+
+```{code-cell} ipython3
+params_1 = SPRTParams(α=0.05, β=0.10, a0=2, b0=8, a1=8, b1=2, N=5000, seed=42)
+results_1 = run_sprt_simulation(params_1)
+
+params_2 = SPRTParams(α=0.05, β=0.10, a0=4, b0=5, a1=5, b1=4, N=5000, seed=42)
+results_2 = run_sprt_simulation(params_2)
+
+params_3 = SPRTParams(α=0.05, β=0.10, a0=0.5, b0=0.4, a1=0.4, b1=0.5, N=5000, seed=42)
+results_3 = run_sprt_simulation(params_3)
+
+# Create comparison plots
+fig, axes = plt.subplots(3, 3, figsize=(18, 18))
+
+scenarios = [
+    (results_1, params_1, "Well-separated", 0),
+    (results_2, params_2, "Moderate overlap", 1),
+    (results_3, params_3, "Highly overlapping", 2)
+]
+
+for results, params, title, row in scenarios:
+    
+    # Distribution plots
+    z_grid = np.linspace(0, 1, 200)
+    axes[row, 0].plot(z_grid, results['f0'].pdf(z_grid), 'b-', lw=2, 
+                     label=f'$f_0 = \\text{{Beta}}({params.a0},{params.b0})$')
+    axes[row, 0].plot(z_grid, results['f1'].pdf(z_grid), 'r-', lw=2, 
+                     label=f'$f_1 = \\text{{Beta}}({params.a1},{params.b1})$')
+    axes[row, 0].fill_between(z_grid, 0, 
+                np.minimum(results['f0'].pdf(z_grid), results['f1'].pdf(z_grid)), 
+                alpha=0.3, color='purple', label='Overlap')
+    axes[row, 0].set_title(f'{title}')
+    axes[row, 0].set_xlabel('z')
+    axes[row, 0].set_ylabel('Density')
+    axes[row, 0].legend()
+    
+    # Stopping times
+    max_n = max(results['stopping_times'].max(), 101)
+    bins = np.arange(1, min(max_n, 101)) - 0.5
+    axes[row, 1].hist(results['stopping_times'], bins=bins, 
+                     color="steelblue", alpha=0.8, edgecolor="black")
+    axes[row, 1].set_title(f'Stopping times (mean={results["stopping_times"].mean():.1f})')
+    axes[row, 1].set_xlabel('n')
+    axes[row, 1].set_ylabel('Frequency')
+    axes[row, 1].set_xlim(0, 100)
+    
+    # Confusion matrix
+    f0_correct = np.sum(results['truth'] & results['decisions'])
+    f0_incorrect = np.sum(results['truth'] & (~results['decisions']))
+    f1_correct = np.sum((~results['truth']) & (~results['decisions']))
+    f1_incorrect = np.sum((~results['truth']) & results['decisions'])
+    
+    confusion_data = np.array([[f0_correct, f0_incorrect], 
+                              [f1_incorrect, f1_correct]])
+    
+    im = axes[row, 2].imshow(confusion_data, cmap='Blues', aspect='equal')
+    axes[row, 2].set_title(f'Errors: I={results["type_I"]:.3f}, II={results["type_II"]:.3f}')
+    axes[row, 2].set_xlabel('Decision')
+    axes[row, 2].set_ylabel('Truth')
+    axes[row, 2].set_xticks([0, 1])
+    axes[row, 2].set_xticklabels(['Accept $H_0$', 'Reject $H_0$'])
+    axes[row, 2].set_yticks([0, 1])
+    axes[row, 2].set_yticklabels(['True $f_0$', 'True $f_1$'])
+    
+    for i in range(2):
+        for j in range(2):
+            color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 else 'black'
+            axes[row, 2].text(j, i, f'{confusion_data[i, j]}\n({confusion_data[i, j]/params.N:.1%})',
+                             ha="center", va="center", color=color, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
+```
+
+Next, let's adjust the decision thresholds $A$ and $B$ and examine how the mean stopping time and the type I and type II error rates change.
+
+```{code-cell} ipython3
+def run_with_adjusted_thresholds(params, A_factor=1.0, B_factor=1.0):
+    """Wrapper to run SPRT with adjusted A and B thresholds."""
+    
+    # Calculate original thresholds
+    A_original = (1 - params.β) / params.α
+    B_original = params.β / (1 - params.α)
+    
+    # Apply adjustment factors
+    A_adj = A_original * A_factor
+    B_adj = B_original * B_factor
+    logA, logB = np.log(A_adj), np.log(B_adj)
+    
+    f0 = beta(params.a0, params.b0)
+    f1 = beta(params.a1, params.b1)
+    rng = np.random.default_rng(seed=params.seed)
+    
+    def sprt_adjusted(true_f0):
+        log_L = 0.0
+        n = 0
+        while True:
+            z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
+            n += 1
+            log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
+            
+            if log_L >= logA:
+                return n, False
+            elif log_L <= logB:
+                return n, True
+    
+    # Run simulation
+    stopping_times = []
+    decisions = []
+    truth = []
+    
+    for i in range(params.N):
+        true_f0 = (i % 2 == 0)
+        n, decide_f0 = sprt_adjusted(true_f0)
+        stopping_times.append(n)
+        decisions.append(decide_f0)
+        truth.append(true_f0)
+    
+    stopping_times = np.asarray(stopping_times)
+    decisions = np.asarray(decisions)
+    truth = np.asarray(truth)
+    
+    type_I = np.mean(truth & (~decisions))
+    type_II = np.mean((~truth) & decisions)
+    
+    return {
+        'stopping_times': stopping_times,
+        'type_I': type_I,
+        'type_II': type_II,
+        'A_used': A_adj,
+        'B_used': B_adj
+    }
+
+adjustments = [
+    (5.0, 0.5), 
+    (1.0, 1.0),    
+    (0.3, 3.0),    
+    (0.2, 5.0),    
+    (0.15, 7.0),   
+]
+
+results_table = []
+for A_factor, B_factor in adjustments:
+    result = run_with_adjusted_thresholds(params_2, A_factor, B_factor)
+    results_table.append([
+        A_factor, B_factor, 
+        f"{result['stopping_times'].mean():.1f}",
+        f"{result['type_I']:.3f}",
+        f"{result['type_II']:.3f}"
+    ])
+
+# Generate markdown table
+from IPython.display import Markdown, display
+
+table_header = """
+| A factor | B factor | Mean Stop Time | Type I Error | Type II Error |
+|----------|----------|----------------|--------------|---------------|
+"""
+
+table_rows = ""
+for row in results_table:
+    table_rows += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} | {row[4]} |\n"
+
+markdown_table = table_header + table_rows
+
+display(Markdown(markdown_table))
+```
+
+Let's pause and think about the table more carefully by referring back to {eq}`eq:Waldrule`.
+
+Recall that $A = \frac{1-\beta}{\alpha}$ and $B = \frac{\beta}{1-\alpha}$.
+
+When we multiply $A$ by a factor less than 1 (making $A$ smaller), we are effectively making it easier to reject the null hypothesis $H_0$. This increases the probability of Type I errors.
+
+When we multiply $B$ by a factor greater than 1 (making $B$ larger), we are making it easier to accept the null hypothesis $H_0$. This increases the probability of Type II errors.
+
+The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases. 
+
+This demonstrates the trade-off in sequential testing between speed and accuracy.
+
++++
 
 ## Related lectures
 
@@ -568,4 +748,4 @@ We'll dig deeper into some of the ideas used here in the following earlier and l
 * {doc}`this lecture <exchangeable>` discusses the key concept of **exchangeability** that rationalizes statistical learning
 * {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes** and their role in frequentist and Bayesian statistical theories
 * {doc}`this lecture <likelihood_bayes>` discusses the role of likelihood ratio processes in **Bayesian learning**
-* {doc}`this lecture <navy_captain>` takes up the subject of this lecture and studies whether the Captain's hunch that the (frequentist) decision rule  that the Navy had ordered him to use can be expected to be better or worse than our sequential decision rule 
+* {doc}`this lecture <navy_captain>` takes up the subject of this lecture and studies whether the Captain's hunch that the (frequentist) decision rule  that the Navy had ordered him to use can be expected to be better or worse than our sequential decision rule
