@@ -180,7 +180,7 @@ axes[0].plot(grid, f1(grid), lw=2, label="$f_1$")
 axes[1].set_title("Mixtures")
 for π in 0.25, 0.5, 0.75:
     y = π * f0(grid) + (1 - π) * f1(grid)
-    axes[1].plot(y, lw=2, label=rf"$\pi_k$ = {π}")
+    axes[1].plot(y, lw=2, label=fr"$\pi_k$ = {π}")
 
 for ax in axes:
     ax.legend()
@@ -580,7 +580,7 @@ plt.vlines(B, 0, B * wf.L1, linestyle="--")
 plt.vlines(A, 0, (1 - A) * wf.L0, linestyle="--")
 
 ax.set(xlim=(0, 1), ylim=(0, 0.5 * max(wf.L0, wf.L1)), ylabel="cost",
-       xlabel=r"$\pi$", title="Cost function $J(\pi)$")
+       xlabel=r"$\pi$", title=r"Cost function $J(\pi)$")
 
 plt.legend(borderpad=1.1)
 plt.show()

@@ -62,6 +62,8 @@ from numba.experimental import jitclass
 from math import gamma
 from scipy.stats import beta
 from collections import namedtuple
+import pandas as pd
+from IPython.display import display
 ```
 
 This lecture uses ideas studied in {doc}`this lecture <likelihood_ratio_process>` and  {doc}`this lecture <likelihood_bayes>`.
@@ -589,7 +591,7 @@ for results, params, title, row in scenarios:
                      label=f'$f_1 = \\text{{Beta}}({params.a1},{params.b1})$')
     axes[row, 0].fill_between(z_grid, 0, 
                 np.minimum(results['f0'].pdf(z_grid), results['f1'].pdf(z_grid)), 
-                alpha=0.3, color='purple', label='Overlap')
+                alpha=0.3, color='purple', label='overlap')
     axes[row, 0].set_title(f'{title}')
     axes[row, 0].set_xlabel('z')
     axes[row, 0].set_ylabel('Density')
@@ -636,7 +638,7 @@ plt.show()
 Next, let's adjust the decision thresholds $A$ and $B$ and examine how the mean stopping time and the type I and type II error rates change.
 
 ```{code-cell} ipython3
-def run_with_adjusted_thresholds(params, A_factor=1.0, B_factor=1.0):
+def run_adjusted_thresholds(params, A_factor=1.0, B_factor=1.0):
     """Wrapper to run SPRT with adjusted A and B thresholds."""
     
     # Calculate original thresholds
@@ -702,7 +704,7 @@ adjustments = [
 
 results_table = []
 for A_factor, B_factor in adjustments:
-    result = run_with_adjusted_thresholds(params_2, A_factor, B_factor)
+    result = run_adjusted_thresholds(params_2, A_factor, B_factor)
     results_table.append([
         A_factor, B_factor, 
         f"{result['stopping_times'].mean():.1f}",
@@ -710,21 +712,11 @@ for A_factor, B_factor in adjustments:
         f"{result['type_II']:.3f}"
     ])
 
-# Generate markdown table
-from IPython.display import Markdown, display
-
-table_header = """
-| A factor | B factor | Mean Stop Time | Type I Error | Type II Error |
-|----------|----------|----------------|--------------|---------------|
-"""
-
-table_rows = ""
-for row in results_table:
-    table_rows += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} | {row[4]} |\n"
-
-markdown_table = table_header + table_rows
-
-display(Markdown(markdown_table))
+df = pd.DataFrame(results_table, 
+                 columns=["A factor", "B factor", "Mean Stop Time", 
+                          "Type I Error", "Type II Error"])
+df = df.set_index(["A factor", "B factor"])
+df
 ```
 
 Let's pause and think about the table more carefully by referring back to {eq}`eq:Waldrule`.
@@ -736,9 +728,6 @@ When we multiply $A$ by a factor less than 1 (making $A$ smaller), we are effect
 When we multiply $B$ by a factor greater than 1 (making $B$ larger), we are making it easier to accept the null hypothesis $H_0$. This increases the probability of Type II errors.
 
 The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases. 
-
-This demonstrates the trade-off in sequential testing between speed and accuracy.
-
 +++
 
 ## Related lectures
