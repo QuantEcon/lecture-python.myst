@@ -63,7 +63,6 @@ from math import gamma
 from scipy.stats import beta
 from collections import namedtuple
 import pandas as pd
-from IPython.display import display
 ```
 
 This lecture uses ideas studied in {doc}`this lecture <likelihood_ratio_process>` and  {doc}`this lecture <likelihood_bayes>`.
@@ -362,8 +361,8 @@ Wald proceeds as follows.
 
 He defines
 
-- $p_{0m} = f_0(z_0) \cdots f_0(z_k)$
-- $p_{1m} = f_1(z_0) \cdots f_1(z_k)$
+- $p_{0m} = f_0(z_0) \cdots f_0(z_m)$
+- $p_{1m} = f_1(z_0) \cdots f_1(z_m)$
 - $L_{m} = \frac{p_{1m}}{p_{0m}}$
 
 Here $\{L_m\}_{m=0}^\infty$ is a **likelihood ratio process**.
@@ -488,9 +487,9 @@ def run_sprt_simulation(params):
     for i in range(params.N):
         # Alternate true distribution for each simulation
         true_f0 = (i % 2 == 0)
-        n, decide_f0 = sprt(true_f0)
+        n, accept_f0 = sprt(true_f0)
         stopping_times.append(n)
-        decisions.append(decide_f0)
+        decisions.append(accept_f0)
         truth.append(true_f0)
     
     stopping_times = np.asarray(stopping_times)
@@ -511,13 +510,93 @@ def run_sprt_simulation(params):
         'f1': f1
     }
 
+def run_sprt_single_distribution(params, use_f0=True):
+    """
+    Run SPRT simulation drawing from only one distribution.
+
+    This is a version of the function above except the previous 
+    function alternates between the two distributions automatically.
+    """
+    
+    A = (1 - params.β) / params.α
+    B = params.β / (1 - params.α)
+    logA, logB = np.log(A), np.log(B)
+    
+    f0 = beta(params.a0, params.b0)
+    f1 = beta(params.a1, params.b1)
+    
+    rng = np.random.default_rng(seed=params.seed)
+
+    def sprt(true_f0):
+        """Run one SPRT until a decision is reached."""
+        log_L = 0.0
+        n = 0
+        while True:
+            z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
+            n += 1
+            log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
+            
+            if log_L >= logA:
+                return n, False  # Reject H0 (decide f1)
+            elif log_L <= logB:
+                return n, True   # Accept H0 (decide f0)
+        
+    # Monte Carlo experiment - all draws from same distribution
+    stopping_times = []
+    decisions = []
+    truth = []
+    
+    for i in range(params.N):
+        # Use the same distribution for all simulations
+        true_f0 = use_f0
+        n, accept_f0 = sprt(true_f0)
+        stopping_times.append(n)
+        decisions.append(accept_f0)
+        truth.append(true_f0)
+    
+    stopping_times = np.asarray(stopping_times)
+    decisions = np.asarray(decisions)
+    truth = np.asarray(truth)
+    
+    # Calculate error rates based on which distribution was used
+    if use_f0:
+        # All samples from f0, so we can only calculate type I error
+        type_I = np.sum(~decisions) / len(decisions)  # Rejecting H0 when f0 is true
+        type_II = None 
+    else:
+        # All samples from f1, so we can only calculate type II error
+        type_I = None
+        type_II = np.sum(decisions) / len(decisions)  # Accepting H0 when f1 is true
+    
+    return {
+        'stopping_times': stopping_times,
+        'decisions': decisions,
+        'truth': truth,
+        'type_I': type_I,
+        'type_II': type_II,
+        'f0': f0,
+        'f1': f1,
+        'distribution_used': 'f0' if use_f0 else 'f1'
+    }
+
 # Run simulation
-params = SPRTParams(α=0.05, β=0.10, a0=2, b0=5, a1=5, b1=2, N=15000, seed=1)
+params = SPRTParams(α=0.05, β=0.10, a0=2, b0=5, a1=5, b1=2, N=20000, seed=1)
 results = run_sprt_simulation(params)
 
 print(f"Average stopping time: {results['stopping_times'].mean():.2f}")
 print(f"Empirical type I  error: {results['type_I']:.3f}   (target = {params.α})")
 print(f"Empirical type II error: {results['type_II']:.3f}   (target = {params.β})")
+
+print("\nDrawing only from f0 (null hypothesis):")
+results_f0 = run_sprt_single_distribution(params, use_f0=True)
+print(f"Average stopping time: {results_f0['stopping_times'].mean():.2f}")
+print(f"Empirical type I error: {results_f0['type_I']:.3f}   (target = {params.α})")
+
+
+print("\nDrawing only from f1 (alternative hypothesis):")
+results_f1 = run_sprt_single_distribution(params, use_f0=False)
+print(f"Average stopping time: {results_f1['stopping_times'].mean():.2f}")
+print(f"Empirical type II error: {results_f1['type_II']:.3f}   (target = {params.β})")
 ```
 
 We visualize the two distributions and the distribution of stopping times to reach a decision.
@@ -594,40 +673,36 @@ results_2 = run_sprt_simulation(params_2)
 params_3 = SPRTParams(α=0.05, β=0.10, a0=0.5, b0=0.4, a1=0.4, b1=0.5, N=5000, seed=42)
 results_3 = run_sprt_simulation(params_3)
 
-# Create comparison plots
-fig, axes = plt.subplots(3, 3, figsize=(18, 20))
-
-scenarios = [
-    (results_1, params_1, "well-separated", 0),
-    (results_2, params_2, "moderate overlap", 1),
-    (results_3, params_3, "highly overlapping", 2)
-]
-
-for results, params, title, row in scenarios:
+def plot_sprt_results(results, params, title=""):
+    """Plot SPRT simulation results with distributions, stopping times, and confusion matrix."""
+    fig, axes = plt.subplots(1, 3, figsize=(22, 8))
     
     # Distribution plots
     z_grid = np.linspace(0, 1, 200)
-    axes[row, 0].plot(z_grid, results['f0'].pdf(z_grid), 'b-', lw=2, 
+    axes[0].plot(z_grid, results['f0'].pdf(z_grid), 'b-', lw=2, 
                      label=f'$f_0 = \\text{{Beta}}({params.a0},{params.b0})$')
-    axes[row, 0].plot(z_grid, results['f1'].pdf(z_grid), 'r-', lw=2, 
+    axes[0].plot(z_grid, results['f1'].pdf(z_grid), 'r-', lw=2, 
                      label=f'$f_1 = \\text{{Beta}}({params.a1},{params.b1})$')
-    axes[row, 0].fill_between(z_grid, 0, 
+    axes[0].fill_between(z_grid, 0, 
                 np.minimum(results['f0'].pdf(z_grid), results['f1'].pdf(z_grid)), 
                 alpha=0.3, color='purple', label='overlap')
-    axes[row, 0].set_title(f'{title}')
-    axes[row, 0].set_xlabel('z')
-    axes[row, 0].set_ylabel('density')
-    axes[row, 0].legend()
+    if title:
+        axes[0].set_title(title, fontsize=25)
+    axes[0].set_xlabel('z', fontsize=25)
+    axes[0].set_ylabel('density', fontsize=25)
+    axes[0].legend(fontsize=18)
+    axes[0].tick_params(axis='both', which='major', labelsize=18)
     
     # Stopping times
     max_n = max(results['stopping_times'].max(), 101)
     bins = np.arange(1, min(max_n, 101)) - 0.5
-    axes[row, 1].hist(results['stopping_times'], bins=bins, 
+    axes[1].hist(results['stopping_times'], bins=bins, 
                      color="steelblue", alpha=0.8, edgecolor="black")
-    axes[row, 1].set_title(f'Stopping times (mean={results["stopping_times"].mean():.1f})')
-    axes[row, 1].set_xlabel('n')
-    axes[row, 1].set_ylabel('frequency')
-    axes[row, 1].set_xlim(0, 100)
+    axes[1].set_title(f'stopping times (mean={results["stopping_times"].mean():.1f})', fontsize=25)
+    axes[1].set_xlabel('n', fontsize=25)
+    axes[1].set_ylabel('frequency', fontsize=25)
+    axes[1].set_xlim(0, 100)
+    axes[1].tick_params(axis='both', which='major', labelsize=18)
     
     # Confusion matrix
     f0_correct = np.sum(results['truth'] & results['decisions'])
@@ -639,22 +714,36 @@ for results, params, title, row in scenarios:
                               [f1_incorrect, f1_correct]])
     row_totals = confusion_data.sum(axis=1, keepdims=True)
     
-    im = axes[row, 2].imshow(confusion_data, cmap='Blues', aspect='equal')
-    axes[row, 2].set_title(f'Errors: I={results["type_I"]:.3f}, II={results["type_II"]:.3f}')
-    axes[row, 2].set_xticks([0, 1])
-    axes[row, 2].set_xticklabels(['accept $H_0$', 'reject $H_0$'])
-    axes[row, 2].set_yticks([0, 1])
-    axes[row, 2].set_yticklabels(['true $f_0$', 'true $f_1$'])
+    im = axes[2].imshow(confusion_data, cmap='Blues', aspect='equal')
+    axes[2].set_title(f'errors: I={results["type_I"]:.3f}, II={results["type_II"]:.3f}', fontsize=25)
+    axes[2].set_xticks([0, 1])
+    axes[2].set_xticklabels(['accept $H_0$', 'reject $H_0$'], fontsize=22)
+    axes[2].set_yticks([0, 1])
+    axes[2].set_yticklabels(['true $f_0$', 'true $f_1$'], fontsize=22)
+    axes[2].tick_params(axis='both', which='major', labelsize=18)
+
     
     for i in range(2):
         for j in range(2):
             percent = confusion_data[i, j] / row_totals[i, 0] if row_totals[i, 0] > 0 else 0
             color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 else 'black'
-            axes[row, 2].text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
-                             ha="center", va="center", color=color, fontweight='bold')
+            axes[2].text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
+                             ha="center", va="center", color=color, fontweight='bold', fontsize=18)
 
-plt.tight_layout()
-plt.show()
+    plt.tight_layout()
+    plt.show()
+```
+
+```{code-cell} ipython3
+plot_sprt_results(results_1, params_1)
+```
+
+```{code-cell} ipython3
+plot_sprt_results(results_2, params_2)
+```
+
+```{code-cell} ipython3
+plot_sprt_results(results_3, params_3)
 ```
 
 Let's visualize individual likelihood ratio processes to see how they evolve toward the decision boundaries.
@@ -672,15 +761,10 @@ def plot_likelihood_paths(params, n_highlight=10, n_background=200):
     
     fig, axes = plt.subplots(1, 2, figsize=(14, 7))
     
-    stopping_times_f0 = []
-    stopping_times_f1 = []
-    decisions_f0 = []
-    decisions_f1 = []
-    
     # Generate and plot paths for each distribution
-    for dist_idx, (true_f0, ax, title, color_main) in enumerate([
-        (True, axes[0], 'true distribution: $f_0$', 'blue'),
-        (False, axes[1], 'true distribution: $f_1$', 'red')
+    for dist_idx, (true_f0, ax, title) in enumerate([
+        (True, axes[0], 'true distribution: $f_0$'),
+        (False, axes[1], 'true distribution: $f_1$')
     ]):
         rng = np.random.default_rng(seed=42 + dist_idx)
         paths_data = []
@@ -702,7 +786,7 @@ def plot_likelihood_paths(params, n_highlight=10, n_background=200):
                     break
             
             paths_data.append((log_L_path, n, decision))
-            
+        
         for i, (path, n, decision) in enumerate(paths_data[:n_background]):
             color = 'C1' if decision else 'C0'
             ax.plot(range(len(path)), path, color=color, alpha=0.2, linewidth=0.5)
@@ -711,7 +795,8 @@ def plot_likelihood_paths(params, n_highlight=10, n_background=200):
             # Color code by decision
             color = 'C1' if decision else 'C0'
             ax.plot(range(len(path)), path, color=color, alpha=0.8, linewidth=1.5,
-                   label='reject $H_0$' if decision and i == 0 else ('accept $H_0$' if not decision and i == 0 else ''))
+                   label='reject $H_0$' if decision and i == 0 else (
+                    'accept $H_0$' if not decision and i == 0 else ''))
         
         ax.axhline(y=logA, color='C1', linestyle='--', linewidth=2, 
                   label=f'$\\log A = {logA:.2f}$')
@@ -721,8 +806,8 @@ def plot_likelihood_paths(params, n_highlight=10, n_background=200):
         
         ax.set_xlabel(r'$n$')
         ax.set_ylabel(r'$log(L_m)$')
-        ax.set_title(title)
-        ax.legend()
+        ax.set_title(title, fontsize=20)
+        ax.legend(fontsize=18, loc='center right')
         
         y_margin = max(abs(logA), abs(logB)) * 0.2
         ax.set_ylim(logB - y_margin, logA + y_margin)
@@ -772,17 +857,17 @@ def run_adjusted_thresholds(params, A_factor=1.0, B_factor=1.0):
     
     for i in range(params.N):
         true_f0 = (i % 2 == 0)
-        n, decide_f0 = sprt_adjusted(true_f0)
+        n, accept_f0 = sprt_adjusted(true_f0)
         stopping_times.append(n)
-        decisions.append(decide_f0)
+        decisions.append(accept_f0)
         truth.append(true_f0)
     
     stopping_times = np.asarray(stopping_times)
     decisions = np.asarray(decisions)
     truth = np.asarray(truth)
     
-    type_I = np.mean(truth & (~decisions))
-    type_II = np.mean((~truth) & decisions)
+    type_I = np.sum(truth & (~decisions)) / np.sum(truth)
+    type_II = np.sum((~truth) & decisions) / np.sum(~truth)
     
     return {
         'stopping_times': stopping_times,

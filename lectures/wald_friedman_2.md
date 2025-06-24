@@ -71,25 +71,6 @@ This lecture uses ideas studied in {doc}`this lecture <likelihood_ratio_process>
 
 We'll formulate the problem using dynamic programming.
 
-## Message/request for Humphrey
-
-Below in order to remove some bad recycling of notation, I ask you everywhre in the Dynamic programming presentation below please to
-
-*  change $\alpha$ to $A$
-*  change $\beta$ to $B$
-
-However, if there are places where $\alpha$ is used to be the probability of a type I error 
-and $\beta$ is used to be the probability of a type II error, please don't change them. There might be a few such cases.
-
-This request applies to the
-
-* written text
-* the graphs
-* the Python code I suppose
-
-this is the end of the "message"
-
-
 ## A Dynamic Programming Approach
 
 The following presentation of the problem closely follows Dmitri
@@ -239,7 +220,7 @@ Finally, if $\pi$ is in the middle of the interval $[0, 1]$, then we are confron
 
 This reasoning suggests a decision rule such as the one shown in the figure
 
-```{figure} /_static/lecture_specific/wald_friedman/wald_dec_rule.png
+```{figure} /_static/lecture_specific/wald_friedman_2/wald_dec_rule.png
 
 ```
 
