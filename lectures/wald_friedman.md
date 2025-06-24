@@ -598,9 +598,9 @@ results_3 = run_sprt_simulation(params_3)
 fig, axes = plt.subplots(3, 3, figsize=(18, 20))
 
 scenarios = [
-    (results_1, params_1, "Well-separated", 0),
-    (results_2, params_2, "Moderate overlap", 1),
-    (results_3, params_3, "Highly overlapping", 2)
+    (results_1, params_1, "well-separated", 0),
+    (results_2, params_2, "moderate overlap", 1),
+    (results_3, params_3, "highly overlapping", 2)
 ]
 
 for results, params, title, row in scenarios:
@@ -616,7 +616,7 @@ for results, params, title, row in scenarios:
                 alpha=0.3, color='purple', label='overlap')
     axes[row, 0].set_title(f'{title}')
     axes[row, 0].set_xlabel('z')
-    axes[row, 0].set_ylabel('Density')
+    axes[row, 0].set_ylabel('density')
     axes[row, 0].legend()
     
     # Stopping times
@@ -626,7 +626,7 @@ for results, params, title, row in scenarios:
                      color="steelblue", alpha=0.8, edgecolor="black")
     axes[row, 1].set_title(f'Stopping times (mean={results["stopping_times"].mean():.1f})')
     axes[row, 1].set_xlabel('n')
-    axes[row, 1].set_ylabel('Frequency')
+    axes[row, 1].set_ylabel('frequency')
     axes[row, 1].set_xlim(0, 100)
     
     # Confusion matrix
@@ -641,12 +641,10 @@ for results, params, title, row in scenarios:
     
     im = axes[row, 2].imshow(confusion_data, cmap='Blues', aspect='equal')
     axes[row, 2].set_title(f'Errors: I={results["type_I"]:.3f}, II={results["type_II"]:.3f}')
-    axes[row, 2].set_xlabel('Decision')
-    axes[row, 2].set_ylabel('Truth')
     axes[row, 2].set_xticks([0, 1])
-    axes[row, 2].set_xticklabels(['Accept $H_0$', 'Reject $H_0$'])
+    axes[row, 2].set_xticklabels(['accept $H_0$', 'reject $H_0$'])
     axes[row, 2].set_yticks([0, 1])
-    axes[row, 2].set_yticklabels(['True $f_0$', 'True $f_1$'])
+    axes[row, 2].set_yticklabels(['true $f_0$', 'true $f_1$'])
     
     for i in range(2):
         for j in range(2):
@@ -721,8 +719,8 @@ def plot_likelihood_paths(params, n_highlight=10, n_background=200):
                   label=f'$\\log B = {logB:.2f}$')
         ax.axhline(y=0, color='black', linestyle='-', alpha=0.5, linewidth=1)
         
-        ax.set_xlabel('observation number')
-        ax.set_ylabel('log-likelihood ratio')
+        ax.set_xlabel(r'$n$')
+        ax.set_ylabel(r'$log(L_m)$')
         ax.set_title(title)
         ax.legend()
         
