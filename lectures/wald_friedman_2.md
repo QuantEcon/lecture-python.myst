@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.11.5
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -245,10 +245,10 @@ This reasoning suggests a decision rule such as the one shown in the figure
 
 As we'll see, this is indeed the correct form of the decision rule.
 
-Our problem is to determine threshold values $\alpha, \beta$ that somehow depend on the parameters described  above.
+Our problem is to determine threshold values $A, B$ that somehow depend on the parameters described  above.
 
 You might like to pause at this point and try to predict the impact of a
-parameter such as $c$ or $L_0$ on $\alpha$ or $\beta$.
+parameter such as $c$ or $L_0$ on $A$ or $B$.
 
 ### A Bellman Equation
 
@@ -303,30 +303,30 @@ where $\pi \in [0,1]$ and
 - $h(\pi) :=  c + \mathbb E [J(\pi')]$; this is the continuation value; i.e.,
   the expected cost associated with drawing one more $z$.
 
-The optimal decision rule is characterized by two numbers $\alpha, \beta \in (0,1) \times (0,1)$ that satisfy
+The optimal decision rule is characterized by two numbers $A, B \in (0,1) \times (0,1)$ that satisfy
 
 $$
-(1- \pi) L_0 < \min \{ \pi L_1, c + \mathbb E [J(\pi')] \}  \textrm { if } \pi \geq \alpha
+(1- \pi) L_0 < \min \{ \pi L_1, c + \mathbb E [J(\pi')] \}  \textrm { if } \pi \geq A
 $$
 
 and
 
 $$
-\pi L_1 < \min \{ (1-\pi) L_0,  c + \mathbb E [J(\pi')] \} \textrm { if } \pi \leq \beta
+\pi L_1 < \min \{ (1-\pi) L_0,  c + \mathbb E [J(\pi')] \} \textrm { if } \pi \leq B
 $$
 
 The optimal decision rule is then
 
 $$
 \begin{aligned}
-\textrm { accept } f=f_0 \textrm{ if } \pi \geq \alpha \\
-\textrm { accept } f=f_1 \textrm{ if } \pi \leq \beta \\
-\textrm { draw another }  z \textrm{ if }  \beta \leq \pi \leq \alpha
+\textrm { accept } f=f_0 \textrm{ if } \pi \geq A \\
+\textrm { accept } f=f_1 \textrm{ if } \pi \leq B \\
+\textrm { draw another }  z \textrm{ if }  B \leq \pi \leq A
 \end{aligned}
 $$
 
-Our aim is to compute the cost function $J$, and from it the associated cutoffs $\alpha$
-and $\beta$.
+Our aim is to compute the cost function $J$, and from it the associated cutoffs $A$
+and $B$.
 
 To make our computations manageable, using {eq}`optdec`, we can write the continuation cost $h(\pi)$ as
 
@@ -529,7 +529,7 @@ To solve the model, we will call our `solve_model` function
 h_star = solve_model(wf)    # Solve the model
 ```
 
-We will also set up a function to compute the cutoffs $\alpha$ and $\beta$
+We will also set up a function to compute the cutoffs $A$ and $B$
 and plot these on our cost function plot
 
 ```{code-cell} ipython3
@@ -551,18 +551,16 @@ def find_cutoff_rule(wf, h):
 
     # The cutoff points can be found by differencing these costs with
     # The Bellman equation (J is always less than or equal to p_c_i)
-    β = π_grid[np.searchsorted(
+    B = π_grid[np.searchsorted(
                               payoff_f1 - np.minimum(h, payoff_f0),
-                              1e-10)
-               - 1]
-    α = π_grid[np.searchsorted(
+                              1e-10) - 1]
+    A = π_grid[np.searchsorted(
                               np.minimum(h, payoff_f1) - payoff_f0,
-                              1e-10)
-               - 1]
+                              1e-10) - 1]
 
-    return (β, α)
+    return (B, A)
 
-β, α = find_cutoff_rule(wf, h_star)
+B, A = find_cutoff_rule(wf, h_star)
 cost_L0 = (1 - wf.π_grid) * wf.L0
 cost_L1 = wf.π_grid * wf.L1
 
@@ -575,11 +573,11 @@ ax.plot(wf.π_grid,
         np.amin(np.column_stack([h_star, cost_L0, cost_L1]),axis=1),
         lw=15, alpha=0.1, color='b', label=r'$J(\pi)$')
 
-ax.annotate(r"$\beta$", xy=(β + 0.01, 0.5), fontsize=14)
-ax.annotate(r"$\alpha$", xy=(α + 0.01, 0.5), fontsize=14)
+ax.annotate(r"$B$", xy=(B + 0.01, 0.5), fontsize=14)
+ax.annotate(r"$A$", xy=(A + 0.01, 0.5), fontsize=14)
 
-plt.vlines(β, 0, β * wf.L0, linestyle="--")
-plt.vlines(α, 0, (1 - α) * wf.L1, linestyle="--")
+plt.vlines(B, 0, B * wf.L1, linestyle="--")
+plt.vlines(A, 0, (1 - A) * wf.L0, linestyle="--")
 
 ax.set(xlim=(0, 1), ylim=(0, 0.5 * max(wf.L0, wf.L1)), ylabel="cost",
        xlabel=r"$\pi$", title="Cost function $J(\pi)$")
@@ -588,17 +586,17 @@ plt.legend(borderpad=1.1)
 plt.show()
 ```
 
-The cost function $J$ equals $\pi L_1$ for $\pi \leq \beta$, and $(1-\pi )L_0$ for $\pi
-\geq \alpha$.
+The cost function $J$ equals $\pi L_1$ for $\pi \leq B$, and $(1-\pi )L_0$ for $\pi
+\geq A$.
 
 The slopes of the two linear pieces of the cost   function $J(\pi)$ are determined by $L_1$
 and $- L_0$.
 
 The cost function $J$ is smooth in the interior region, where the posterior
-probability assigned to $f_0$ is in the indecisive region $\pi \in (\beta, \alpha)$.
+probability assigned to $f_0$ is in the indecisive region $\pi \in (B, A)$.
 
 The decision-maker continues to sample until the probability that he attaches to
-model $f_0$ falls below $\beta$ or above $\alpha$.
+model $f_0$ falls below $B$ or above $A$.
 
 ### Simulations
 
@@ -631,7 +629,7 @@ def simulate(wf, true_dist, h_star, π_0=0.5):
         f, f_rvs = wf.f1, wf.f1_rvs
 
     # Find cutoffs
-    β, α = find_cutoff_rule(wf, h_star)
+    B, A = find_cutoff_rule(wf, h_star)
 
     # Initialize a couple of useful variables
     decision_made = False
@@ -639,15 +637,13 @@ def simulate(wf, true_dist, h_star, π_0=0.5):
     t = 0
 
     while decision_made is False:
-        # Maybe should specify which distribution is correct one so that
-        # the draws come from the "right" distribution
         z = f_rvs()
         t = t + 1
         π = κ(z, π)
-        if π < β:
+        if π < B:
             decision_made = True
             decision = 1
-        elif π > α:
+        elif π > A:
             decision_made = True
             decision = 0
 
@@ -755,4 +751,4 @@ We'll dig deeper into some of the ideas used here in the following lectures:
 * {doc}`this lecture <exchangeable>` discusses the key concept of **exchangeability** that rationalizes statistical learning
 * {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes** and their role in frequentist and Bayesian statistical theories
 * {doc}`this lecture <likelihood_bayes>` discusses the role of likelihood ratio processes in **Bayesian learning**
-* {doc}`this lecture <navy_captain>` returns to the subject of this lecture and studies whether the Captain's hunch that the (frequentist) decision rule  that the Navy had ordered him to use can be expected to be better or worse than our sequential decision rule 
+* {doc}`this lecture <navy_captain>` returns to the subject of this lecture and studies whether the Captain's hunch that the (frequentist) decision rule  that the Navy had ordered him to use can be expected to be better or worse than our sequential decision rule

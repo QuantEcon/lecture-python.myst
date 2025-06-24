@@ -278,7 +278,7 @@ A decision-maker can observe a sequence of draws of a random variable $z$.
 He (or she) wants to know which of two probability distributions $f_0$ or $f_1$ governs $z$.
 
 
-To  illustrate, let's inspect some Beta distributions.
+To  illustrate, let's inspect some beta distributions.
 
 The density of a Beta probability distribution with parameters $a$ and $b$ is
 
@@ -288,7 +288,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 \Gamma(t) := \int_{0}^{\infty} x^{t-1} e^{-x} dx
 $$
 
-The next figure shows two Beta distributions.
+The next figure shows two beta distributions.
 
 ```{code-cell} ipython3
 @jit
