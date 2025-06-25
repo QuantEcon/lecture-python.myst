@@ -47,7 +47,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numpy import exp
-from scipy.special import factorial
+from scipy.special import factorial, gammaln
 import pandas as pd
 from mpl_toolkits.mplot3d import Axes3D
 import statsmodels.api as sm
@@ -458,7 +458,7 @@ class PoissonRegression:
     def logL(self):
         y = self.y
         μ = self.μ()
-        return np.sum(y * np.log(μ) - μ - scipy.special.gammaln(y + 1))
+        return np.sum(y * np.log(μ) - μ - gammaln(y + 1))
 
     def G(self):
         y = self.y
