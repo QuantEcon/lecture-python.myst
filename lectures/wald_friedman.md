@@ -628,6 +628,11 @@ print(f"Empirical type II error: {results_f1['type_II']:.3f}   (target = {params
 We can see that the single distribution simulations are the same as the two distribution simulations
 subject to Monte Carlo sampling differences.
 
+We find that the algorithm "overshoots" the error rates by giving us a 
+lower type I and type II error rates than the target values.
+
+This has been documented in the literature (see, e.g., {cite}`fischer2024improving`).
+
 We visualize the two distributions and the distribution of stopping times to reach a decision.
 
 ```{code-cell} ipython3
