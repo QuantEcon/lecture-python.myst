@@ -756,13 +756,13 @@ We verify the above and compute the mean and variance using `numpy`.
 
 ```{code-cell} ipython3
 Benford_pmf = np.array([np.log10(1+1/d) for d in range(1,10)])
-k = np.array(range(1,10))
+k = np.arange(1, 10)
 
 # mean
-mean = np.sum(Benford_pmf * k)
+mean = Benford_pmf @ k
 
 # variance
-var = np.sum([(k-mean)**2 * Benford_pmf])
+var = ((k - mean) ** 2) @ Benford_pmf
 
 # verify sum to 1
 print(np.sum(Benford_pmf))
