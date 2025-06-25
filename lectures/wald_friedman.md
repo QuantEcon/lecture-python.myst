@@ -813,7 +813,7 @@ for i, idx in enumerate(selected_indices):
     col = i % 3
     
     a0, b0, a1, b1 = param_list[idx]
-    kl_div = js_dists[idx]
+    js_dist = js_dists[idx]
     mean_time = mean_stopping_times[idx]
     
     # Plot the distributions
@@ -827,14 +827,12 @@ for i, idx in enumerate(selected_indices):
                         np.minimum(f0_dist.pdf(z_grid), f1_dist.pdf(z_grid)), 
                         alpha=0.3, color='purple')
     
-    axes[row, col].set_title(f'KL div: {kl_div:.3f}\nMean time: {mean_time:.1f}', fontsize=12)
+    axes[row, col].set_title(f'JS dist: {js_dist:.3f}\nMean time: {mean_time:.1f}', fontsize=12)
     axes[row, col].set_xlabel('z', fontsize=10)
     if i == 0:
-        axes[row, col].set_ylabel('Density', fontsize=10)
+        axes[row, col].set_ylabel('density', fontsize=10)
         axes[row, col].legend(fontsize=10)
 
-# Hide the last subplot since we only have 5 plots
-axes[1, 2].axis('off')
 
 plt.tight_layout()
 plt.show()

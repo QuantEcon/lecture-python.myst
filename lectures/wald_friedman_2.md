@@ -102,19 +102,19 @@ The decision maker begins  with a prior probability
 
 $$
 \pi_{-1} =
-\mathbb P \{ f = f_0 \mid \textrm{ no observations} \} \in (0, 1)
+\mathbb P \{ f = f_1 \mid \textrm{ no observations} \} \in (0, 1)
 $$
 
-After observing $k+1$ observations $z_k, z_{k-1}, \ldots, z_0$, he updates his personal probability that the observations are described by distribution $f_0$  to
+After observing $k+1$ observations $z_k, z_{k-1}, \ldots, z_0$, he updates his personal probability that the observations are described by distribution $f_1$  to
 
 $$
-\pi_k = \mathbb P \{ f = f_0 \mid z_k, z_{k-1}, \ldots, z_0 \}
+\pi_k = \mathbb P \{ f = f_1 \mid z_k, z_{k-1}, \ldots, z_0 \}
 $$
 
 which is calculated recursively by applying Bayes' law:
 
 $$
-\pi_{k+1} = \frac{ \pi_k f_0(z_{k+1})}{ \pi_k f_0(z_{k+1}) + (1-\pi_k) f_1 (z_{k+1}) },
+\pi_{k+1} = \frac{ \pi_k f_1(z_{k+1})}{ (1-\pi_k) f_0(z_{k+1}) + \pi_k f_1 (z_{k+1}) },
 \quad k = -1, 0, 1, \ldots
 $$
 
@@ -122,11 +122,11 @@ After observing $z_k, z_{k-1}, \ldots, z_0$, the decision-maker believes
 that $z_{k+1}$ has probability distribution
 
 $$
-f_{{\pi}_k} (v) = \pi_k f_0(v) + (1-\pi_k) f_1 (v) ,
+f_{{\pi}_k} (v) = (1-\pi_k) f_0(v) + \pi_k f_1 (v) ,
 $$
 
 which  is a mixture of distributions $f_0$ and $f_1$, with the weight
-on $f_0$ being the posterior probability that $f = f_0$ [^f1].
+on $f_1$ being the posterior probability that $f = f_1$ [^f1].
 
 To  illustrate such a distribution, let's inspect some mixtures of beta distributions.
 
@@ -160,7 +160,7 @@ axes[0].plot(grid, f1(grid), lw=2, label="$f_1$")
 
 axes[1].set_title("Mixtures")
 for π in 0.25, 0.5, 0.75:
-    y = π * f0(grid) + (1 - π) * f1(grid)
+    y = (1 - π) * f0(grid) + π * f1(grid)
     axes[1].plot(y, lw=2, label=fr"$\pi_k$ = {π}")
 
 for ax in axes:
@@ -212,9 +212,9 @@ Before proceeding,  let's try to guess what an optimal decision rule might look 
 
 Suppose at some given point in time that $\pi$ is close to 1.
 
-Then our prior beliefs and the evidence so far point strongly to $f = f_0$.
+Then our prior beliefs and the evidence so far point strongly to $f = f_1$.
 
-If, on the other hand, $\pi$ is close to 0, then $f = f_1$ is strongly favored.
+If, on the other hand, $\pi$ is close to 0, then $f = f_0$ is strongly favored.
 
 Finally, if $\pi$ is in the middle of the interval $[0, 1]$, then we are confronted with more uncertainty.
 
@@ -243,7 +243,7 @@ With some thought, you will agree that $J$ should satisfy the Bellman equation
 J(\pi) =
     \min
     \left\{
-        (1-\pi) L_0, \; \pi L_1, \;
+        \pi L_0, \; (1-\pi) L_1, \;
         c + \mathbb E [ J (\pi') ]
     \right\}
 ```
@@ -251,13 +251,13 @@ J(\pi) =
 where $\pi'$ is the random variable defined by Bayes' Law
 
 $$
-\pi' = \kappa(z', \pi) = \frac{ \pi f_0(z')}{ \pi f_0(z') + (1-\pi) f_1 (z') }
+\pi' = \kappa(z', \pi) = \frac{ \pi f_1(z')}{ (1-\pi) f_0(z') + \pi f_1 (z') }
 $$
 
 when $\pi$ is fixed and $z'$ is drawn from the current best guess, which is the distribution $f$ defined by
 
 $$
-f_{\pi}(v) = \pi f_0(v) + (1-\pi) f_1 (v)
+f_{\pi}(v) = (1-\pi) f_0(v) + \pi f_1 (v)
 $$
 
 In the Bellman equation, minimization is over three actions:
@@ -272,14 +272,14 @@ We can represent the  Bellman equation as
 :label: optdec
 
 J(\pi) =
-\min \left\{ (1-\pi) L_0, \; \pi L_1, \; h(\pi) \right\}
+\min \left\{ \pi L_0, \; (1-\pi) L_1, \; h(\pi) \right\}
 ```
 
 where $\pi \in [0,1]$ and
 
-- $(1-\pi) L_0$ is the expected loss associated with accepting
+- $\pi L_0$ is the expected loss associated with accepting
   $f_0$ (i.e., the cost of making a type II error).
-- $\pi L_1$ is the expected loss associated with accepting
+- $(1-\pi) L_1$ is the expected loss associated with accepting
   $f_1$ (i.e., the cost of making a type I error).
 - $h(\pi) :=  c + \mathbb E [J(\pi')]$; this is the continuation value; i.e.,
   the expected cost associated with drawing one more $z$.
@@ -287,21 +287,21 @@ where $\pi \in [0,1]$ and
 The optimal decision rule is characterized by two numbers $A, B \in (0,1) \times (0,1)$ that satisfy
 
 $$
-(1- \pi) L_0 < \min \{ \pi L_1, c + \mathbb E [J(\pi')] \}  \textrm { if } \pi \geq A
+(1- \pi) L_1 < \min \{ \pi L_0, c + \mathbb E [J(\pi')] \}  \textrm { if } \pi \leq B
 $$
 
 and
 
 $$
-\pi L_1 < \min \{ (1-\pi) L_0,  c + \mathbb E [J(\pi')] \} \textrm { if } \pi \leq B
+\pi L_0 < \min \{ (1-\pi) L_1,  c + \mathbb E [J(\pi')] \} \textrm { if } \pi \geq A
 $$
 
 The optimal decision rule is then
 
 $$
 \begin{aligned}
-\textrm { accept } f=f_0 \textrm{ if } \pi \geq A \\
-\textrm { accept } f=f_1 \textrm{ if } \pi \leq B \\
+\textrm { accept } f=f_1 \textrm{ if } \pi \geq A \\
+\textrm { accept } f=f_0 \textrm{ if } \pi \leq B \\
 \textrm { draw another }  z \textrm{ if }  B \leq \pi \leq A
 \end{aligned}
 $$
@@ -316,8 +316,8 @@ To make our computations manageable, using {eq}`optdec`, we can write the contin
 
 \begin{aligned}
 h(\pi) &= c + \mathbb E [J(\pi')] \\
-&= c + \mathbb E_{\pi'} \min \{ (1 - \pi') L_0, \pi' L_1, h(\pi') \} \\
-&= c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
+&= c + \mathbb E_{\pi'} \min \{ \pi' L_0, (1 - \pi') L_1, h(\pi') \} \\
+&= c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 \end{aligned}
 ```
 
@@ -327,7 +327,7 @@ The equality
 :label: funceq
 
 h(\pi) =
-c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
+c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 ```
 
 is a **functional equation** in an unknown function  $h$.
@@ -342,7 +342,7 @@ Thus, we iterate with an operator $Q$, where
 
 $$
 Q h(\pi) =
-c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
+c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 $$
 
 ## Implementation
@@ -410,8 +410,8 @@ class WaldFriedman:
 
         f0, f1 = self.f0, self.f1
 
-        π_f0, π_f1 = π * f0(z), (1 - π) * f1(z)
-        π_new = π_f0 / (π_f0 + π_f1)
+        π_f0, π_f1 = (1 - π) * f0(z), π * f1(z)
+        π_new = π_f1 / (π_f0 + π_f1)
 
         return π_new
 ```
@@ -444,12 +444,12 @@ def Q(h, wf):
         integral_f0, integral_f1 = 0, 0
         for m in range(mc_size):
             π_0 = κ(z0[m], π)  # Draw z from f0 and update π
-            integral_f0 += min((1 - π_0) * L0, π_0 * L1, h_func(π_0))
+            integral_f0 += min(π_0 * L0, (1 - π_0) * L1, h_func(π_0))
 
             π_1 = κ(z1[m], π)  # Draw z from f1 and update π
-            integral_f1 += min((1 - π_1) * L0, π_1 * L1, h_func(π_1))
+            integral_f1 += min(π_1 * L0, (1 - π_1) * L1, h_func(π_1))
 
-        integral = (π * integral_f0 + (1 - π) * integral_f1) / mc_size
+        integral = ((1 - π) * integral_f0 + π * integral_f1) / mc_size
 
         h_new[i] = c + integral
 
@@ -527,23 +527,31 @@ def find_cutoff_rule(wf, h):
     L0, L1 = wf.L0, wf.L1
 
     # Evaluate cost at all points on grid for choosing a model
-    payoff_f0 = (1 - π_grid) * L0
-    payoff_f1 = π_grid * L1
-
-    # The cutoff points can be found by differencing these costs with
-    # The Bellman equation (J is always less than or equal to p_c_i)
-    B = π_grid[np.searchsorted(
-                              payoff_f1 - np.minimum(h, payoff_f0),
-                              1e-10) - 1]
-    A = π_grid[np.searchsorted(
-                              np.minimum(h, payoff_f1) - payoff_f0,
-                              1e-10) - 1]
+    cost_f0 = π_grid * L0           # Cost of choosing f0 when π = P(f=f0)
+    cost_f1 = (1 - π_grid) * L1     # Cost of choosing f1 when π = P(f=f1)
+    
+    # Find B: largest π where cost_f0 ≤ min(cost_f1, h)
+    optimal_cost = np.minimum(np.minimum(cost_f0, cost_f1), h)
+    choose_f0 = (cost_f0 <= cost_f1) & (cost_f0 <= h)
+    
+    if np.any(choose_f0):
+        B = π_grid[choose_f0][-1]  # Last point where we choose f0
+    else:
+        assert False, "No point where we choose f0"
+    
+    # Find A: smallest π where cost_f1 ≤ min(cost_f0, h)  
+    choose_f1 = (cost_f1 <= cost_f0) & (cost_f1 <= h)
+    
+    if np.any(choose_f1):
+        A = π_grid[choose_f1][0]  # First point where we choose f1
+    else:
+        assert False, "No point where we choose f1"
 
     return (B, A)
 
 B, A = find_cutoff_rule(wf, h_star)
-cost_L0 = (1 - wf.π_grid) * wf.L0
-cost_L1 = wf.π_grid * wf.L1
+cost_L0 = wf.π_grid * wf.L0
+cost_L1 = (1 - wf.π_grid) * wf.L1
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -557,8 +565,8 @@ ax.plot(wf.π_grid,
 ax.annotate(r"$B$", xy=(B + 0.01, 0.5), fontsize=14)
 ax.annotate(r"$A$", xy=(A + 0.01, 0.5), fontsize=14)
 
-plt.vlines(B, 0, B * wf.L1, linestyle="--")
-plt.vlines(A, 0, (1 - A) * wf.L0, linestyle="--")
+plt.vlines(B, 0, (1 - B) * wf.L1, linestyle="--")
+plt.vlines(A, 0, A * wf.L0, linestyle="--")
 
 ax.set(xlim=(0, 1), ylim=(0, 0.5 * max(wf.L0, wf.L1)), ylabel="cost",
        xlabel=r"$\pi$", title=r"Cost function $J(\pi)$")
@@ -567,17 +575,17 @@ plt.legend(borderpad=1.1)
 plt.show()
 ```
 
-The cost function $J$ equals $\pi L_1$ for $\pi \leq B$, and $(1-\pi )L_0$ for $\pi
+The cost function $J$ equals $(1-\pi) L_1$ for $\pi \leq B$, and $\pi L_0$ for $\pi
 \geq A$.
 
-The slopes of the two linear pieces of the cost   function $J(\pi)$ are determined by $L_1$
-and $- L_0$.
+The slopes of the two linear pieces of the cost   function $J(\pi)$ are determined by $-L_1$
+and $L_0$.
 
 The cost function $J$ is smooth in the interior region, where the posterior
-probability assigned to $f_0$ is in the indecisive region $\pi \in (B, A)$.
+probability assigned to $f_1$ is in the indecisive region $\pi \in (B, A)$.
 
 The decision-maker continues to sample until the probability that he attaches to
-model $f_0$ falls below $B$ or above $A$.
+model $f_1$ falls below $B$ or above $A$.
 
 ### Simulations
 
@@ -623,10 +631,10 @@ def simulate(wf, true_dist, h_star, π_0=0.5):
         π = κ(z, π)
         if π < B:
             decision_made = True
-            decision = 1
+            decision = 0
         elif π > A:
             decision_made = True
-            decision = 0
+            decision = 1
 
     if true_dist == "f0":
         if decision == 0:
