@@ -48,9 +48,11 @@ Key ideas in play will be:
     - a type I error occurs when you reject a null hypothesis that is true
     - a type II error occures when you accept a null hypothesis that is false
 - Abraham Wald's **sequential probability ratio test**
-- The **power** of a statistical test
+- The **power** of a frequentist statistical test
+- The **size** of a frequentist statistical test 
 - The **critical region** of a statistical test
 - A **uniformly most powerful test**
+- The role of a Law of Large Numbers (LLN) in interpreting **power** and **size** of a frequentist statistical test
 
 We'll begin with some imports:
 
@@ -67,7 +69,7 @@ import pandas as pd
 
 This lecture uses ideas studied in {doc}`this lecture <likelihood_ratio_process>` and  {doc}`this lecture <likelihood_bayes>`.
 
-## Origin of the Problem
+## Source of the Problem
 
 On pages 137-139 of his 1998 book *Two Lucky People* with Rose Friedman {cite}`Friedman98`,
 Milton Friedman described a problem presented to him and Allen Wallis
@@ -107,8 +109,8 @@ Let's listen to Milton Friedman tell us what happened
 > because it is obviously superior beyond what was hoped for
 > $\ldots$.
 
-Friedman and Wallis struggled with the problem but, after realizing that
-they were not able to solve it,  described the problem to  Abraham Wald.
+Friedman and Wallis worked on  the problem but, after realizing that
+they were not able to solve it,  they described the problem to  Abraham Wald.
 
 That started Wald on the path that led him  to *Sequential Analysis* {cite}`Wald47`.
 
@@ -119,8 +121,8 @@ that Navy Captain G. S. Schuyler had been told to use and that led him
 to approach Milton Friedman and Allan Wallis to convey his conjecture
 that superior practical procedures existed.
 
-Evidently, the Navy had told Captail Schuyler to use what was then  the state-of-the-art
-Neyman-Pearson test.
+Evidently, the Navy had told Captain Schuyler to use what was then  a state-of-the-art
+Neyman-Pearson  hypothesis test.
 
 We'll rely on Abraham Wald's {cite}`Wald47` elegant summary of Neyman-Pearson theory.
 
@@ -128,8 +130,8 @@ Watch for these features of the setup:
 
 - the assumption of a *fixed* sample size $n$
 - the application of laws of large numbers, conditioned on alternative
-  probability models, to interpret the probabilities $\alpha$ and
-  $\beta$ defined in the Neyman-Pearson theory
+  probability models, to interpret  probabilities $\alpha$ and
+  $\beta$ of the type I and type II errors defined in the Neyman-Pearson theory
 
 
 In chapter 1 of **Sequential Analysis** {cite}`Wald47` Abraham Wald summarizes the
@@ -263,14 +265,14 @@ Here is how Wald introduces the notion of a sequential test
 > a random variable, since the value of n depends on the outcome of the
 > observations.
 
-## Wald's sequential formulation 
+## Wald's Sequential Formulation 
 
-In contradistinction to Neyman-Pearson formulation of the problemm, in Wald's formulation
+In contradistinction to Neyman and Pearson's formulation of the problemm, in Wald's formulation
 
 
-- The sample size $n$ is not fixed but rather an object to be
-  chosen; technically $n$ is a random variable.
-- Two  parameters $A$ and $B$ that are related to but distinct from Neyman and Pearson's  $\alpha$ and  $\beta$,  characterize cut-off   rules that Wald  uses to determine the random variable $n$.
+- The sample size $n$ is not fixed but rather  a random variable.
+- Two  parameters $A$ and $B$ that are related to but distinct from Neyman and Pearson's  $\alpha$ and  $\beta$;
+$A$ and $B$  characterize cut-off   rules that Wald  uses to determine the random variable $n$ as a function of random outcomes.
 
 Here is how Wald sets up the problem.
 
@@ -353,9 +355,6 @@ chooses among three distinct actions:
 - He postpones deciding now and instead chooses to draw a
   $z_{k+1}$
 
-```{figure} /_static/lecture_specific/wald_friedman/wald_dec_rule.png
-
-```
 
 Wald proceeds as follows.
 
@@ -379,7 +378,14 @@ $$
 \end{aligned}
 $$
 
-### Links between $A,B$ and $\alpha, \beta$
+
+The following figure illustrates aspects of Wald's procedure.
+
+```{figure} /_static/lecture_specific/wald_friedman/wald_dec_rule.png
+
+```
+
+## Links Between $A,B$ and $\alpha, \beta$
 
 In chapter 3 of **Sequential Analysis** {cite}`Wald47`  Wald establishes the inequalities
 
@@ -390,31 +396,47 @@ $$
 \end{align}
 $$
 
-His analysis of these inequalities leads Wald to recommend the following as rules for setting 
+His analysis of these inequalities leads Wald to recommend the following approximations as rules for setting 
 $A$ and $B$ that come close to attaining a decision maker's target values for probabilities $\alpha$ of
 a  type I  and $\beta$ of a type II error:
 
 $$
 \begin{align}
-A(\alpha,\beta) & = \frac{1-\beta}{\alpha} \\
-B(\alpha,\beta)  & = \frac{\beta}{1-\alpha} 
+A \approx a(\alpha,\beta) & \equiv \frac{1-\beta}{\alpha} \\
+B \approx b(\alpha,\beta)  & \equiv \frac{\beta}{1-\alpha} 
 \end{align} 
 $$ (eq:Waldrule)
 
- For small values of $\alpha $ and $\beta$, Wald shows that {eq}`eq:Waldrule` provides  good ways to set $A$ and $B$. 
+For small values of $\alpha $ and $\beta$, Wald shows that approximation  {eq}`eq:Waldrule` provides a  good way to set $A$ and $B$. 
+
+In particular, Wald constructs a mathematical argument that leads him to conclude that the use of approximation
+ {eq}`eq:Waldrule` rather than the true functions $A (\alpha, \beta), B(\alpha,\beta)$ for setting $A$ and $B$
+ 
+ > $\ldots$ cannot result in any appreciable increase in the value of either $\alpha$ or $\beta$. In other words,
+ > for all practical purposes the test corresponding to $A = a(\alpha, \beta), B = b(\alpha,\beta)$ provides as
+ > least the same protection against wrong decisions as the test corresponding to $A = A(\alpha, \beta)$ and 
+ > $B = b(\alpha, \beta)$.
+
+ > Thus, the only disadvantage that may arise from using $ a(\alpha, \beta),  b(\alpha,\beta)$ instead of
+ > $ A(\alpha, \beta),  B(\alpha,\beta)$, respectively, is that it may result in an appreciable increase in
+ > the  number of observations required by the test. 
+
+
 
 ## Simulations
 
 In this section, we experiment with different distributions $f_0$ and $f_1$ to examine how Wald's test performs under various conditions.
 
-The goal of these simulations is to understand the trade-offs between decision speed and accuracy in sequential hypothesis testing.
+The goal of these simulations is to understand  trade-offs between decision speed and accuracy associated with Wald's  **sequential probability ratio test**.
 
-Specifically, we will see how:
+Specifically, we will watch  how:
 
 - The decision thresholds $A$ and $B$ (or equivalently the target error rates $\alpha$ and $\beta$) affect the average stopping time
-- The separability between distributions affects the average stopping time
+- The discrepancy  between distributions $f_0$ and $f_1$  affects  average stopping times
 
-We will focus on the case where $f_0$ and $f_1$ are beta distributions since it is easy to control the overlapping regions of the two densities by adjusting their shape parameters.
+We will focus on the case where $f_0$ and $f_1$ are beta distributions since it is easy to control the overlapping regions of the two densities by adjusting their shape parameters. 
+
+**Tom and Humphrey: maybe we should compute relative entropies of $f_0, f_1$ and make a graph of mean stoppcing times versus relative entropy.  We could link nicely to the lecture in the series that talks about relative entropy.**
 
 First, we define a namedtuple to store all the parameters we need for our simulation studies.
 
@@ -628,12 +650,14 @@ print(f"Empirical type II error: {results_f1['type_II']:.3f}   (target = {params
 We can see that the single distribution simulations are the same as the two distribution simulations
 subject to Monte Carlo sampling differences.
 
-We find that the algorithm "overshoots" the error rates by giving us a 
+As anticipated in the passage above in which Wald discussed the quality of $a(\alpha), \beta), b(\alpha, \beta)$ given in approximation {eq}`eq:Waldrule`, we find that the algorithm "overshoots" the error rates by giving us a 
 lower type I and type II error rates than the target values.
 
-This has been documented in the literature (see, e.g., {cite}`fischer2024improving`).
+```{note}
+For recent work on the quality of approximation {eq}`eq:Waldrule`, see, e.g., {cite}`fischer2024improving`.
+```
 
-We visualize the two distributions and the distribution of stopping times to reach a decision.
+The following code constructs a graph that lets us  visualize two distributions and the distribution of stimes to reach a decision.
 
 ```{code-cell} ipython3
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -663,10 +687,7 @@ plt.show()
 
 In this simple case, the stopping time stays below 10.
 
-We can also examine the confusion matrix for this decision problem. 
-
-The diagonal elements show the number of times when Wald's rule results in 
-correct acceptance/rejection of the null hypothesis.
+We can also examine a $2 \times 2$  "confusion matrix" whose  diagonal elements show the number of times when Wald's rule results in correct acceptance and rejection of the null hypothesis.
 
 ```{code-cell} ipython3
 f0_correct = np.sum(results['truth'] & results['decisions']) # Accept H0 when H0 is true
@@ -696,8 +717,8 @@ plt.tight_layout()
 plt.show()
 ```
 
-Now we compare three different scenarios with varying degrees of overlap between the distributions
-using the three plots we have just seen
+Next we use our code to study  three different $f_0, f_1$ pairs having different discrepancies between distributions.
+
 
 ```{code-cell} ipython3
 params_1 = SPRTParams(α=0.05, β=0.10, a0=2, b0=8, a1=8, b1=2, N=5000, seed=42)
