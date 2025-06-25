@@ -62,6 +62,7 @@ import matplotlib.pyplot as plt
 from numba import njit, prange
 from numba.experimental import jitclass
 from math import gamma
+from scipy.integrate import quad
 from scipy.stats import beta
 from collections import namedtuple
 import pandas as pd
@@ -749,8 +750,8 @@ def kl_div(h, f):
 
 def js_dist(a0, b0, a1, b1):
     """Jensen–Shannon distance"""
-    f0 = lambda w: p(w, a0, b0)
-    f1 = lambda w: p(w, a1, b1)
+    f0 = lambda w: beta_pdf(w, a0, b0)
+    f1 = lambda w: beta_pdf(w, a1, b1)
     # mixture
     m = lambda w: 0.5*(f0(w) + f1(w))
     return np.sqrt(0.5*kl_div(m, f0) + 0.5*kl_div(m, f1))
@@ -784,8 +785,8 @@ for a0, b0, a1, b1 in param_comb:
 # Create the plot
 fig, ax = plt.subplots(figsize=(6, 6))
 
-scatter = ax.scatter(kl_divergences, mean_stopping_times, 
-                    s=80, alpha=0.7, c=range(len(kl_divergences)),
+scatter = ax.scatter(js_dists, mean_stopping_times, 
+                    s=80, alpha=0.7, c=range(len(js_dists)),
                     linewidth=0.5)
 
 ax.set_xlabel('Jensen–Shannon distance', fontsize=14)
@@ -802,14 +803,17 @@ As the KL divergence increases (distributions become more separated), the mean s
 Below are sampled examples from the experiments we have above
 
 ```{code-cell} ipython3
-selected_indices = [0, len(param_comb)//4, len(param_comb)//2, 
-                   3*len(param_comb)//4, -1]
+selected_indices = [0, len(param_comb)//6,  len(param_comb)//3, len(param_comb)//2, 
+                   2*len(param_comb)//3, -1]
 
-fig, axes = plt.subplots(1, len(selected_indices), figsize=(20, 4))
+fig, axes = plt.subplots(2, 3, figsize=(15, 8))
 
 for i, idx in enumerate(selected_indices):
+    row = i // 3
+    col = i % 3
+    
     a0, b0, a1, b1 = param_list[idx]
-    kl_div = kl_divergences[idx]
+    kl_div = js_dists[idx]
     mean_time = mean_stopping_times[idx]
     
     # Plot the distributions
@@ -817,17 +821,21 @@ for i, idx in enumerate(selected_indices):
     f0_dist = beta(a0, b0)
     f1_dist = beta(a1, b1)
     
-    axes[i].plot(z_grid, f0_dist.pdf(z_grid), 'b-', lw=2, label='$f_0$')
-    axes[i].plot(z_grid, f1_dist.pdf(z_grid), 'r-', lw=2, label='$f_1$')
-    axes[i].fill_between(z_grid, 0, 
+    axes[row, col].plot(z_grid, f0_dist.pdf(z_grid), 'b-', lw=2, label='$f_0$')
+    axes[row, col].plot(z_grid, f1_dist.pdf(z_grid), 'r-', lw=2, label='$f_1$')
+    axes[row, col].fill_between(z_grid, 0, 
                         np.minimum(f0_dist.pdf(z_grid), f1_dist.pdf(z_grid)), 
                         alpha=0.3, color='purple')
     
-    axes[i].set_title(f'KL div: {kl_div:.3f}\nMean time: {mean_time:.1f}', fontsize=12)
-    axes[i].set_xlabel('z', fontsize=10)
+    axes[row, col].set_title(f'KL div: {kl_div:.3f}\nMean time: {mean_time:.1f}', fontsize=12)
+    axes[row, col].set_xlabel('z', fontsize=10)
     if i == 0:
-        axes[i].set_ylabel('Density', fontsize=10)
-        axes[i].legend(fontsize=10)
+        axes[row, col].set_ylabel('Density', fontsize=10)
+        axes[row, col].legend(fontsize=10)
+
+# Hide the last subplot since we only have 5 plots
+axes[1, 2].axis('off')
+
 plt.tight_layout()
 plt.show()
 ```
@@ -947,8 +955,6 @@ def run_adjusted(params, A_factor=1.0, B_factor=1.0):
         params.a0, params.b0, params.a1, params.b1, 
         params.α, params.β, params.N, params.seed, A_factor, B_factor
     )
-    
-    # Convert to boolean arrays
     truth_bool = truth.astype(bool)
     decisions_bool = decisions.astype(bool)
     
