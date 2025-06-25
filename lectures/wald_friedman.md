@@ -59,7 +59,7 @@ We'll begin with some imports:
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-from numba import jit, prange, float64, int64
+from numba import njit, prange
 from numba.experimental import jitclass
 from math import gamma
 from scipy.stats import beta
@@ -294,13 +294,13 @@ $$
 The next figure shows two beta distributions.
 
 ```{code-cell} ipython3
-@jit
-def p(x, a, b):
+@njit
+def beta_pdf(x, a, b):
     r = gamma(a + b) / (gamma(a) * gamma(b))
     return r * x**(a-1) * (1 - x)**(b-1)
 
-f0 = lambda x: p(x, 1, 1)
-f1 = lambda x: p(x, 9, 9)
+f0 = lambda x: beta_pdf(x, 1, 1)
+f1 = lambda x: beta_pdf(x, 9, 9)
 grid = np.linspace(0, 1, 50)
 
 fig, ax = plt.subplots(figsize=(10, 8))
@@ -476,175 +476,105 @@ $$
 $$
 
 ```{code-cell} ipython3
-def run_sprt_simulation(params):
-    """Run SPRT simulation with given parameters."""
+@njit
+def beta_pdf(x, a, b):
+    r = gamma(a + b) / (gamma(a) * gamma(b))
+    return r * x**(a-1) * (1 - x)**(b-1)
+
+@njit
+def sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed):
+    """Run a single SPRT until a decision is reached."""
+    log_L = 0.0
+    n = 0
     
-    # Define the thresholds
-    A = (1 - params.β) / params.α
-    B = params.β / (1 - params.α)
-    logA, logB = np.log(A), np.log(B)
+    # Set seed for this run
+    np.random.seed(seed)
     
-    # Define the two distributions
+    while True:
+        # Draw a random variable from the appropriate distribution
+        if true_f0:
+            z = np.random.beta(a0, b0)
+        else:
+            z = np.random.beta(a1, b1)
+        
+        n += 1
+        
+        # Update the log-likelihood ratio
+        log_f1_z = np.log(beta_pdf(z, a1, b1))
+        log_f0_z = np.log(beta_pdf(z, a0, b0))
+        log_L += log_f1_z - log_f0_z
+        
+        # Check stopping conditions
+        if log_L >= logA:
+            return n, False  # Reject H0
+        elif log_L <= logB:
+            return n, True   # Accept H0
+
+@njit(parallel=True)
+def run_sprt_simulation(a0, b0, a1, b1, alpha, βs, N, seed):
+    """SPRT simulation."""
+    
+    # Calculate thresholds
+    A = (1 - βs) / alpha
+    B = βs / (1 - alpha)
+    logA = np.log(A)
+    logB = np.log(B)
+    
+    # Pre-allocate arrays
+    stopping_times = np.zeros(N, dtype=np.int64)
+    decisions = np.zeros(N, dtype=np.bool_)
+    truth = np.zeros(N, dtype=np.bool_)
+    
+    # Run simulations in parallel
+    for i in prange(N):
+        true_f0 = (i % 2 == 0)
+        truth[i] = true_f0
+        
+        n, accept_f0 = sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed + i)
+        stopping_times[i] = n
+        decisions[i] = accept_f0
+    
+    return stopping_times, decisions, truth
+
+def run_sprt(params):
+    """Wrapper to run SPRT simulation with given parameters."""
+    
+    stopping_times, decisions, truth = run_sprt_simulation(
+        params.a0, params.b0, params.a1, params.b1, 
+        params.α, params.β, params.N, params.seed
+    )
+    
+    # Calculate error rates
+    truth_bool = truth.astype(bool)
+    decisions_bool = decisions.astype(bool)
+    
+    # For type I error: P(reject H0 | H0 is true)
+    type_I = np.sum(truth_bool & ~decisions_bool) / np.sum(truth_bool)
+    
+    # For type II error: P(accept H0 | H0 is false)  
+    type_II = np.sum(~truth_bool & decisions_bool) / np.sum(~truth_bool)
+    
+    # Create scipy distributions for compatibility
     f0 = beta(params.a0, params.b0)
     f1 = beta(params.a1, params.b1)
     
-    # Set the random number generator
-    rng = np.random.default_rng(seed=params.seed)
-
-    def sprt(true_f0):
-        """Run one SPRT until a decision is reached."""
-        log_L = 0.0
-        n = 0
-        while True:
-
-            # Draw a random variable from the true distribution
-            z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
-            n += 1
-
-            # Update the log-likelihood ratio
-            log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
-
-            # If the log-likelihood ratio is greater than the threshold, reject the null hypothesis
-            if log_L >= logA:
-                return n, False
-
-            # If the log-likelihood ratio is less than the threshold, accept the null hypothesis
-            elif log_L <= logB:
-                return n, True
-        
-    # Monte Carlo experiment
-    stopping_times = []
-    decisions = []
-    truth = []
-    
-    for i in range(params.N):
-        # H0 is true for half of the simulations and H1 is true for the other half
-        # Later we will calculate the type I and type II errors by counting the number of times
-        # we reject H0 when H0 is true and accept H0 when H0 is false divided by the number of simulations 
-        # for each distribution
-        true_f0 = (i % 2 == 0)
-        n, accept_f0 = sprt(true_f0)
-        stopping_times.append(n)
-        decisions.append(accept_f0)
-        truth.append(true_f0)
-    
-    stopping_times = np.asarray(stopping_times)
-    decisions = np.asarray(decisions)
-    truth = np.asarray(truth)
-    
-    # Calculate error rates
-
-    # For type I error: P(reject H0 | H0 is true) = P(H0 is true and reject H0) / P(H0 is true)
-    type_I = np.mean(truth & ~decisions) / np.mean(truth)
-    
-    # For type II error: P(accept H0 | H0 is false) = P(H0 is false and accept H0) / P(H0 is false)
-    type_II = np.mean(~truth & decisions) / np.mean(~truth)
-    
     return {
         'stopping_times': stopping_times,
-        'decisions': decisions,
-        'truth': truth,
+        'decisions': decisions_bool,
+        'truth': truth_bool,
         'type_I': type_I,
         'type_II': type_II,
         'f0': f0,
         'f1': f1
     }
-
-def run_sprt_single_distribution(params, use_f0=True):
-    """
-    Run SPRT simulation drawing from only one distribution.
-
-    This is a version of the function above except the previous 
-    function alternates between the two distributions automatically.
-    """
-    # Define the thresholds
-    A = (1 - params.β) / params.α
-    B = params.β / (1 - params.α)
-    logA, logB = np.log(A), np.log(B)
     
-    # Define the two distributions
-    f0 = beta(params.a0, params.b0)
-    f1 = beta(params.a1, params.b1)
-    
-    # Set the random number generator
-    rng = np.random.default_rng(seed=params.seed)
-
-    def sprt(true_f0):
-        """Run one SPRT until a decision is reached."""
-        log_L = 0.0
-        n = 0
-        while True:
-            # Draw a random variable from the true distribution
-            z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
-            n += 1
-
-            # Update the log-likelihood ratio
-            log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
-            
-            # If the log-likelihood ratio is greater than the threshold, reject the null hypothesis
-            if log_L >= logA:
-                return n, False 
-
-            # If the log-likelihood ratio is less than the threshold, accept the null hypothesis
-            elif log_L <= logB:
-                return n, True  
-        
-    # Monte Carlo experiment - all draws from same distribution
-    stopping_times = []
-    decisions = []
-    truth = []
-    
-    for i in range(params.N):
-        # Use the same distribution for all simulations
-        true_f0 = use_f0
-        n, accept_f0 = sprt(true_f0)
-        stopping_times.append(n)
-        decisions.append(accept_f0)
-        truth.append(true_f0)
-    
-    stopping_times = np.asarray(stopping_times)
-    decisions = np.asarray(decisions)
-    truth = np.asarray(truth)
-    
-    # Calculate error rates based on which distribution was used
-    if use_f0:
-        # All samples from f0, so we can only calculate type I error
-        type_I = np.sum(~decisions) / len(decisions)  # Rejecting H0 when f0 is true
-        type_II = None 
-    else:
-        # All samples from f1, so we can only calculate type II error
-        type_I = None
-        type_II = np.sum(decisions) / len(decisions)  # Accepting H0 when f1 is true
-    
-    return {
-        'stopping_times': stopping_times,
-        'decisions': decisions,
-        'truth': truth,
-        'type_I': type_I,
-        'type_II': type_II,
-        'f0': f0,
-        'f1': f1,
-        'distribution_used': 'f0' if use_f0 else 'f1'
-    }
-
 # Run simulation
 params = SPRTParams(α=0.05, β=0.10, a0=2, b0=5, a1=5, b1=2, N=20000, seed=1)
-results = run_sprt_simulation(params)
+results = run_sprt(params)
 
 print(f"Average stopping time: {results['stopping_times'].mean():.2f}")
 print(f"Empirical type I  error: {results['type_I']:.3f}   (target = {params.α})")
 print(f"Empirical type II error: {results['type_II']:.3f}   (target = {params.β})")
-
-print("\nDrawing only from f0 (null hypothesis):")
-results_f0 = run_sprt_single_distribution(params, use_f0=True)
-print(f"Average stopping time: {results_f0['stopping_times'].mean():.2f}")
-print(f"Empirical type I error: {results_f0['type_I']:.3f}   (target = {params.α})")
-
-
-print("\nDrawing only from f1 (alternative hypothesis):")
-results_f1 = run_sprt_single_distribution(params, use_f0=False)
-print(f"Average stopping time: {results_f1['stopping_times'].mean():.2f}")
-print(f"Empirical type II error: {results_f1['type_II']:.3f}   (target = {params.β})")
 ```
 
 We can see that the single distribution simulations are the same as the two distribution simulations
@@ -719,16 +649,15 @@ plt.show()
 
 Next we use our code to study  three different $f_0, f_1$ pairs having different discrepancies between distributions.
 
-
 ```{code-cell} ipython3
 params_1 = SPRTParams(α=0.05, β=0.10, a0=2, b0=8, a1=8, b1=2, N=5000, seed=42)
-results_1 = run_sprt_simulation(params_1)
+results_1 = run_sprt(params_1)
 
 params_2 = SPRTParams(α=0.05, β=0.10, a0=4, b0=5, a1=5, b1=4, N=5000, seed=42)
-results_2 = run_sprt_simulation(params_2)
+results_2 = run_sprt(params_2)
 
 params_3 = SPRTParams(α=0.05, β=0.10, a0=0.5, b0=0.4, a1=0.4, b1=0.5, N=5000, seed=42)
-results_3 = run_sprt_simulation(params_3)
+results_3 = run_sprt(params_3)
 
 def plot_sprt_results(results, params, title=""):
     """Plot SPRT simulation results with distributions, stopping times, and confusion matrix."""
@@ -802,6 +731,109 @@ plot_sprt_results(results_2, params_2)
 ```{code-cell} ipython3
 plot_sprt_results(results_3, params_3)
 ```
+
+We can see a clear pattern in the stopping times and how close "separated" the two distributions are.
+
+We can link this to the discussion of [Kullback–Leibler divergence](rel_entropy) in {doc}`this lecture <likelihood_ratio_process>`.
+
+Intuitively, KL divergence is large from one distribution is large, it should be easier to distinguish between them with shorter stopping times.
+
+We use a metric called [Jensen-Shannon distance](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html) and plot it against the average stopping times.
+
+```{code-cell} ipython3
+def kl_div(h, f):
+    """KL divergence"""
+    integrand = lambda w: f(w) * np.log(f(w) / h(w))
+    val, _ = quad(integrand, 0, 1)
+    return val
+
+def js_dist(a0, b0, a1, b1):
+    """Jensen–Shannon distance"""
+    f0 = lambda w: p(w, a0, b0)
+    f1 = lambda w: p(w, a1, b1)
+    # mixture
+    m = lambda w: 0.5*(f0(w) + f1(w))
+    return np.sqrt(0.5*kl_div(m, f0) + 0.5*kl_div(m, f1))
+    
+def generate_linspace_beta_pairs(N=100, T=10.0, d_min=0.5, d_max=9.5):
+    ds = np.linspace(d_min, d_max, N)
+    a0 = (T - ds) / 2
+    b0 = (T + ds) / 2
+    return list(zip(a0, b0, b0, a0))
+
+param_comb = generate_linspace_beta_pairs()
+
+# Run simulations for each parameter combination
+js_dists = []
+mean_stopping_times = []
+param_list = []
+
+for a0, b0, a1, b1 in param_comb:
+    # Compute KL divergence
+    js_div = js_dist(a1, b1, a0, b0)
+    
+    # Run SPRT simulation
+    params = SPRTParams(α=0.05, β=0.10, a0=a0, b0=b0, 
+                        a1=a1, b1=b1, N=5000, seed=42)
+    results = run_sprt(params)
+    
+    js_dists.append(js_div)
+    mean_stopping_times.append(results['stopping_times'].mean())
+    param_list.append((a0, b0, a1, b1))
+
+# Create the plot
+fig, ax = plt.subplots(figsize=(6, 6))
+
+scatter = ax.scatter(kl_divergences, mean_stopping_times, 
+                    s=80, alpha=0.7, c=range(len(kl_divergences)),
+                    linewidth=0.5)
+
+ax.set_xlabel('Jensen–Shannon distance', fontsize=14)
+ax.set_ylabel('mean stopping time', fontsize=14)
+
+plt.tight_layout()
+plt.show()
+```
+
+The plot demonstrates a clear negative correlation between relative entropy and mean stopping time. 
+
+As the KL divergence increases (distributions become more separated), the mean stopping time decreases exponentially.
+
+Below are sampled examples from the experiments we have above
+
+```{code-cell} ipython3
+selected_indices = [0, len(param_comb)//4, len(param_comb)//2, 
+                   3*len(param_comb)//4, -1]
+
+fig, axes = plt.subplots(1, len(selected_indices), figsize=(20, 4))
+
+for i, idx in enumerate(selected_indices):
+    a0, b0, a1, b1 = param_list[idx]
+    kl_div = kl_divergences[idx]
+    mean_time = mean_stopping_times[idx]
+    
+    # Plot the distributions
+    z_grid = np.linspace(0, 1, 200)
+    f0_dist = beta(a0, b0)
+    f1_dist = beta(a1, b1)
+    
+    axes[i].plot(z_grid, f0_dist.pdf(z_grid), 'b-', lw=2, label='$f_0$')
+    axes[i].plot(z_grid, f1_dist.pdf(z_grid), 'r-', lw=2, label='$f_1$')
+    axes[i].fill_between(z_grid, 0, 
+                        np.minimum(f0_dist.pdf(z_grid), f1_dist.pdf(z_grid)), 
+                        alpha=0.3, color='purple')
+    
+    axes[i].set_title(f'KL div: {kl_div:.3f}\nMean time: {mean_time:.1f}', fontsize=12)
+    axes[i].set_xlabel('z', fontsize=10)
+    if i == 0:
+        axes[i].set_ylabel('Density', fontsize=10)
+        axes[i].legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+Again, we find that the stopping time is shorter when the distributions are more separated
+measured by Jensen-Shannon distance.
 
 Let's visualize individual likelihood ratio processes to see how they evolve toward the decision boundaries.
 
@@ -878,53 +910,51 @@ plot_likelihood_paths(params_3, n_highlight=10, n_background=100)
 Next, let's adjust the decision thresholds $A$ and $B$ and examine how the mean stopping time and the type I and type II error rates change.
 
 ```{code-cell} ipython3
-def run_adjusted_thresholds(params, A_factor=1.0, B_factor=1.0):
-    """Wrapper to run SPRT with adjusted A and B thresholds."""
+@njit(parallel=True)  
+def run_adjusted_thresholds(a0, b0, a1, b1, alpha, βs, N, seed, A_factor, B_factor):
+    """SPRT simulation with adjusted thresholds."""
     
-    # Calculate original thresholds
-    A_original = (1 - params.β) / params.α
-    B_original = params.β / (1 - params.α)
+    # Calculate original thresholds  
+    A_original = (1 - βs) / alpha
+    B_original = βs / (1 - alpha)
     
     # Apply adjustment factors
     A_adj = A_original * A_factor
     B_adj = B_original * B_factor
-    logA, logB = np.log(A_adj), np.log(B_adj)
+    logA = np.log(A_adj)
+    logB = np.log(B_adj)
     
-    f0 = beta(params.a0, params.b0)
-    f1 = beta(params.a1, params.b1)
-    rng = np.random.default_rng(seed=params.seed)
+    # Pre-allocate arrays
+    stopping_times = np.zeros(N, dtype=np.int64)
+    decisions = np.zeros(N, dtype=np.bool_)
+    truth = np.zeros(N, dtype=np.bool_)
     
-    def sprt_adjusted(true_f0):
-        log_L = 0.0
-        n = 0
-        while True:
-            z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
-            n += 1
-            log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
-            
-            if log_L >= logA:
-                return n, False
-            elif log_L <= logB:
-                return n, True
-    
-    # Run simulation
-    stopping_times = []
-    decisions = []
-    truth = []
-    
-    for i in range(params.N):
+    # Run simulations in parallel
+    for i in prange(N):
         true_f0 = (i % 2 == 0)
-        n, accept_f0 = sprt_adjusted(true_f0)
-        stopping_times.append(n)
-        decisions.append(accept_f0)
-        truth.append(true_f0)
+        truth[i] = true_f0
+        
+        n, accept_f0 = sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed + i)
+        stopping_times[i] = n
+        decisions[i] = accept_f0
     
-    stopping_times = np.asarray(stopping_times)
-    decisions = np.asarray(decisions)
-    truth = np.asarray(truth)
+    return stopping_times, decisions, truth, A_adj, B_adj
+
+def run_adjusted(params, A_factor=1.0, B_factor=1.0):
+    """Wrapper to run SPRT with adjusted A and B thresholds."""
     
-    type_I = np.sum(truth & (~decisions)) / np.sum(truth)
-    type_II = np.sum((~truth) & decisions) / np.sum(~truth)
+    stopping_times, decisions, truth, A_adj, B_adj = run_adjusted_thresholds(
+        params.a0, params.b0, params.a1, params.b1, 
+        params.α, params.β, params.N, params.seed, A_factor, B_factor
+    )
+    
+    # Convert to boolean arrays
+    truth_bool = truth.astype(bool)
+    decisions_bool = decisions.astype(bool)
+    
+    # Calculate error rates
+    type_I = np.sum(truth_bool & ~decisions_bool) / np.sum(truth_bool)
+    type_II = np.sum(~truth_bool & decisions_bool) / np.sum(~truth_bool)
     
     return {
         'stopping_times': stopping_times,
@@ -944,7 +974,7 @@ adjustments = [
 
 results_table = []
 for A_factor, B_factor in adjustments:
-    result = run_adjusted_thresholds(params_2, A_factor, B_factor)
+    result = run_adjusted(params_2, A_factor, B_factor)
     results_table.append([
         A_factor, B_factor, 
         f"{result['stopping_times'].mean():.1f}",
