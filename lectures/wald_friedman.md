@@ -439,8 +439,8 @@ Below is the algorithm for the simulation.
    - Repeat:
      - Draw observation $z$ from the true distribution
      - Update: $\log L_{n+1} \leftarrow \log L_n + (\log f_1(z) - \log f_0(z))$
-     - If $\log L_{n+1} \geq \log A$: stop, reject $H_0$ (decide $f_1$)
-     - If $\log L_{n+1} \leq \log B$: stop, accept $H_0$ (decide $f_0$)
+     - If $\log L_{n+1} \geq \log A$: stop, reject $H_0$
+     - If $\log L_{n+1} \leq \log B$: stop, accept $H_0$
 
 3. Monte Carlo: Repeat step 2 for $N$ replications with $N/2$ replications 
    for each distribution, compute the empirical type I and type II error rates with 
