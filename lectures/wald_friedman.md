@@ -373,8 +373,8 @@ For a given pair $A, B$ the decision rule is
 
 $$
 \begin{aligned}
-\textrm { accept } f=f_0 \textrm{ if } L_m \geq A \\
-\textrm { accept } f=f_1 \textrm{ if } L_m \leq B \\
+\textrm { accept } f=f_1 \textrm{ if } L_m \geq A \\
+\textrm { accept } f=f_0 \textrm{ if } L_m \leq B \\
 \textrm { draw another }  z \textrm{ if }  B < L_m < A
 \end{aligned}
 $$
@@ -435,14 +435,15 @@ Below is the algorithm for the simulation.
 1. Compute thresholds $A = \frac{1-\beta}{\alpha}$, $B = \frac{\beta}{1-\alpha}$ and work with $\log A$, $\log B$.
 
 2. Given true distribution (either $f_0$ or $f_1$):
-   - Initialize log-likelihood ratio $\log L = 0$ and observation counter $n = 0$
+   - Initialize log-likelihood ratio $\log L_0 = 0$ and observation counter $n = 0$
    - Repeat:
      - Draw observation $z$ from the true distribution
-     - Update: $\log L \leftarrow \log L + \log f_1(z) - \log f_0(z)$, $n \leftarrow n + 1$
-     - If $\log L \geq \log A$: stop, reject $H_0$ (decide $f_1$)
-     - If $\log L \leq \log B$: stop, accept $H_0$ (decide $f_0$)
+     - Update: $\log L_{n+1} \leftarrow \log L_n + (\log f_1(z) - \log f_0(z))$
+     - If $\log L_{n+1} \geq \log A$: stop, reject $H_0$ (decide $f_1$)
+     - If $\log L_{n+1} \leq \log B$: stop, accept $H_0$ (decide $f_0$)
 
-3. Monte Carlo: Repeat step 2 for $N$ replications with $N/2$ replications for each distribution, compute the empirical type I and type II error rates with 
+3. Monte Carlo: Repeat step 2 for $N$ replications with $N/2$ replications 
+   for each distribution, compute the empirical type I and type II error rates with 
 
 $$
 \hat{\alpha} = \frac{\text{# of times reject } H_0 \text{ when } f_0 \text{ is true}}{\text{# of replications with } f_0 \text{ true}}
@@ -456,13 +457,16 @@ $$
 def run_sprt_simulation(params):
     """Run SPRT simulation with given parameters."""
     
+    # Define the thresholds
     A = (1 - params.β) / params.α
     B = params.β / (1 - params.α)
     logA, logB = np.log(A), np.log(B)
     
+    # Define the two distributions
     f0 = beta(params.a0, params.b0)
     f1 = beta(params.a1, params.b1)
     
+    # Set the random number generator
     rng = np.random.default_rng(seed=params.seed)
 
     def sprt(true_f0):
@@ -470,12 +474,19 @@ def run_sprt_simulation(params):
         log_L = 0.0
         n = 0
         while True:
+
+            # Draw a random variable from the true distribution
             z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
             n += 1
+
+            # Update the log-likelihood ratio
             log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
-            
+
+            # If the log-likelihood ratio is greater than the threshold, reject the null hypothesis
             if log_L >= logA:
                 return n, False
+
+            # If the log-likelihood ratio is less than the threshold, accept the null hypothesis
             elif log_L <= logB:
                 return n, True
         
@@ -485,7 +496,10 @@ def run_sprt_simulation(params):
     truth = []
     
     for i in range(params.N):
-        # Alternate true distribution for each simulation
+        # H0 is true for half of the simulations and H1 is true for the other half
+        # Later we will calculate the type I and type II errors by counting the number of times
+        # we reject H0 when H0 is true and accept H0 when H0 is false divided by the number of simulations 
+        # for each distribution
         true_f0 = (i % 2 == 0)
         n, accept_f0 = sprt(true_f0)
         stopping_times.append(n)
@@ -497,8 +511,12 @@ def run_sprt_simulation(params):
     truth = np.asarray(truth)
     
     # Calculate error rates
-    type_I = np.sum(truth & ~decisions) / np.sum(truth)
-    type_II = np.sum(~truth & decisions) / np.sum(~truth)
+
+    # For type I error: P(reject H0 | H0 is true) = P(H0 is true and reject H0) / P(H0 is true)
+    type_I = np.mean(truth & ~decisions) / np.mean(truth)
+    
+    # For type II error: P(accept H0 | H0 is false) = P(H0 is false and accept H0) / P(H0 is false)
+    type_II = np.mean(~truth & decisions) / np.mean(~truth)
     
     return {
         'stopping_times': stopping_times,
@@ -517,14 +535,16 @@ def run_sprt_single_distribution(params, use_f0=True):
     This is a version of the function above except the previous 
     function alternates between the two distributions automatically.
     """
-    
+    # Define the thresholds
     A = (1 - params.β) / params.α
     B = params.β / (1 - params.α)
     logA, logB = np.log(A), np.log(B)
     
+    # Define the two distributions
     f0 = beta(params.a0, params.b0)
     f1 = beta(params.a1, params.b1)
     
+    # Set the random number generator
     rng = np.random.default_rng(seed=params.seed)
 
     def sprt(true_f0):
@@ -532,14 +552,20 @@ def run_sprt_single_distribution(params, use_f0=True):
         log_L = 0.0
         n = 0
         while True:
+            # Draw a random variable from the true distribution
             z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
             n += 1
+
+            # Update the log-likelihood ratio
             log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
             
+            # If the log-likelihood ratio is greater than the threshold, reject the null hypothesis
             if log_L >= logA:
-                return n, False  # Reject H0 (decide f1)
+                return n, False 
+
+            # If the log-likelihood ratio is less than the threshold, accept the null hypothesis
             elif log_L <= logB:
-                return n, True   # Accept H0 (decide f0)
+                return n, True  
         
     # Monte Carlo experiment - all draws from same distribution
     stopping_times = []
@@ -599,6 +625,9 @@ print(f"Average stopping time: {results_f1['stopping_times'].mean():.2f}")
 print(f"Empirical type II error: {results_f1['type_II']:.3f}   (target = {params.β})")
 ```
 
+We can see that the single distribution simulations are the same as the two distribution simulations
+subject to Monte Carlo sampling differences.
+
 We visualize the two distributions and the distribution of stopping times to reach a decision.
 
 ```{code-cell} ipython3
@@ -631,13 +660,14 @@ In this simple case, the stopping time stays below 10.
 
 We can also examine the confusion matrix for this decision problem. 
 
-The diagonal elements show the number of times when Wald's rule results in correct acceptance/rejection of the null hypothesis.
+The diagonal elements show the number of times when Wald's rule results in 
+correct acceptance/rejection of the null hypothesis.
 
 ```{code-cell} ipython3
-f0_correct = np.sum(results['truth'] & results['decisions'])
-f0_incorrect = np.sum(results['truth'] & (~results['decisions']))
-f1_correct = np.sum((~results['truth']) & (~results['decisions']))
-f1_incorrect = np.sum((~results['truth']) & results['decisions'])
+f0_correct = np.sum(results['truth'] & results['decisions']) # Accept H0 when H0 is true
+f0_incorrect = np.sum(results['truth'] & (~results['decisions'])) # Reject H0 when H0 is true
+f1_correct = np.sum((~results['truth']) & (~results['decisions'])) # Accept H0 when H1 is true
+f1_incorrect = np.sum((~results['truth']) & results['decisions']) # Reject H0 when H1 is true
 
 confusion_data = np.array([[f0_correct, f0_incorrect], 
                           [f1_incorrect, f1_correct]])
@@ -661,7 +691,8 @@ plt.tight_layout()
 plt.show()
 ```
 
-Now we compare three different scenarios with varying degrees of overlap between the distributions:
+Now we compare three different scenarios with varying degrees of overlap between the distributions
+using the three plots we have just seen
 
 ```{code-cell} ipython3
 params_1 = SPRTParams(α=0.05, β=0.10, a0=2, b0=8, a1=8, b1=2, N=5000, seed=42)
