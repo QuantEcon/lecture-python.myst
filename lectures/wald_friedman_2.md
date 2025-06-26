@@ -35,12 +35,21 @@ kernelspec:
 
 This lecture revisits the  statistical decision problem presented to Milton
 Friedman and W. Allen Wallis during World War II when they were analysts at
-the U.S. Government's  Statistical Research Group at Columbia University.
+the U.S. Government's  Statistical Research Group at Columbia University. 
 
-This problem led Abraham Wald {cite}`Wald47` to formulate **sequential analysis**,
-an approach to statistical decision problems intimately related to dynamic programming.
+In  {doc}`this lecture <wald_friedman>`, we described how  Abraham Wald {cite}`Wald47`  solved the problem by  extending frequentist hypothesis testing techniques and formulating the problem sequentially.
 
-In this lecture, we apply dynamic programming algorithms to Friedman and Wallis and Wald's problem.
+```{note}
+Wald's idea of formulating the problem sequentially created links to the **dynamic programming** that Richard Bellman developed in the 1950s.
+```
+
+In this lecture, we reformulate the problem in a way that invites us to apply dynamic programming.
+
+We'll do this by transforming our point of view from the 'objective' frequentist perspective of {doc}`this lecture <wald_friedman>` to an explicitly 'subjective' perspective taken by a Bayesian decision maker who is equipped with
+
+- an initial prior subjective probability $\pi_{-1} \in (0,1)$  that nature is generating the $\{z_k\}$ sequence as a sequence of i.i.d. draws from $f_1$ rather than $f_0$.
+- faith in Bayes' law as a way to revise his subjective beliefs as observations on $\{z_k\}$ sequence arrive each period. 
+- a loss function that tells how the decision maker values type I and type II errors.  
 
 In our {doc}`previous lecture <wald_friedman>`, key ideas in play were:
 
@@ -52,10 +61,15 @@ In our {doc}`previous lecture <wald_friedman>`, key ideas in play were:
 - The **critical region** of a statistical test
 - A **uniformly most powerful test**
 
-In this lecture, additional key ideas are
-
+In this lecture, additional  ideas are
+- an initial prior probability $\pi_{-1}$ that 
+- a sequence of posterior probabilities
 - Bayes' Law
 - Dynamic programming
+
+
+This lecture uses ideas studied in {doc}`this lecture <likelihood_ratio_process>`, {doc}`this lecture <likelihood_bayes>`, and {doc}`this lecture <exchangeable>`.
+
 
 We'll begin with some imports:
 
@@ -67,9 +81,7 @@ from numba.experimental import jitclass
 from math import gamma
 ```
 
-This lecture uses ideas studied in {doc}`this lecture <likelihood_ratio_process>`, {doc}`this lecture <likelihood_bayes>`, and {doc}`this lecture <exchangeable>`.
 
-We'll formulate the problem using dynamic programming.
 
 ## A Dynamic Programming Approach
 
@@ -223,7 +235,7 @@ If, on the other hand, $\pi$ is close to 0, then $f = f_0$ is strongly favored.
 
 Finally, if $\pi$ is in the middle of the interval $[0, 1]$, then we are confronted with more uncertainty.
 
-This reasoning suggests a decision rule such as the one shown in the figure
+This reasoning suggests a sequential  decision rule that we illustrate  in the following figure:
 
 ```{figure} /_static/lecture_specific/wald_friedman_2/wald_dec_rule.png
 
@@ -311,7 +323,7 @@ $$
 \end{aligned}
 $$
 
-Our aim is to compute the cost function $J$, and from it the associated cutoffs $A$
+Our aim is to compute the cost function $J$ as well as  the associated cutoffs $A$
 and $B$.
 
 To make our computations manageable, using {eq}`optdec`, we can write the continuation cost $h(\pi)$ as
@@ -335,7 +347,11 @@ h(\pi) =
 c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 ```
 
-is a **functional equation** in an unknown function  $h$.
+is an equation  in an unknown function  $h$.
+
+```{note}
+Such an equation is called a **functional equation**.
+```
 
 Using the functional equation, {eq}`funceq`, for the continuation cost, we can back out
 optimal choices using the right side of {eq}`optdec`.
@@ -507,7 +523,7 @@ ax.legend()
 plt.show()
 ```
 
-### Value Function
+### Cost Function
 
 To solve the model, we will call our `solve_model` function
 
@@ -738,11 +754,11 @@ With these sliders, you can adjust parameters and immediately observe
 $[z_{0}, z_{1}, \ldots]$ is *exchangeable*.  See [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html) and
 {cite}`Kreps88` chapter 11, for  discussions of exchangeability.
 
-## Sequels
+## Related Lectures
 
 We'll dig deeper into some of the ideas used here in the following lectures:
 
-* {doc}`this lecture <exchangeable>` discusses the key concept of **exchangeability** that rationalizes statistical learning
+* {doc}`this lecture <exchangeable>` discusses the key concept of **exchangeability** -- a notion of conditional independences associated with foundations of statistical learning
 * {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes** and their role in frequentist and Bayesian statistical theories
 * {doc}`this lecture <likelihood_bayes>` discusses the role of likelihood ratio processes in **Bayesian learning**
 * {doc}`this lecture <navy_captain>` returns to the subject of this lecture and studies whether the Captain's hunch that the (frequentist) decision rule  that the Navy had ordered him to use can be expected to be better or worse than our sequential decision rule

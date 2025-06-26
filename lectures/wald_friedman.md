@@ -437,7 +437,6 @@ Specifically, we will watch  how:
 
 We will focus on the case where $f_0$ and $f_1$ are beta distributions since it is easy to control the overlapping regions of the two densities by adjusting their shape parameters. 
 
-**Tom and Humphrey: maybe we should compute relative entropies of $f_0, f_1$ and make a graph of mean stoppcing times versus relative entropy.  We could link nicely to the lecture in the series that talks about relative entropy.**
 
 First, we define a namedtuple to store all the parameters we need for our simulation studies.
 
@@ -583,7 +582,7 @@ lower type I and type II error rates than the target values.
 For recent work on the quality of approximation {eq}`eq:Waldrule`, see, e.g., {cite}`fischer2024improving`.
 ```
 
-The following code constructs a graph that lets us  visualize two distributions and the distribution of stimes to reach a decision.
+The following code constructs a graph that lets us  visualize two distributions and the distribution of times to reach a decision.
 
 ```{code-cell} ipython3
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -734,7 +733,7 @@ We can link this to the discussion of [Kullback–Leibler divergence](rel_entrop
 
 Intuitively, KL divergence is large from one distribution is large, it should be easier to distinguish between them with shorter stopping times.
 
-We use a metric called [Jensen-Shannon distance](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html) and plot it against the average stopping times.
+To measure the discrepancy between two distributions, we use a metric called [Jensen-Shannon distance](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html) and plot it against the average stopping times.
 
 ```{code-cell} ipython3
 def kl_div(h, f):
@@ -998,11 +997,11 @@ When we multiply $B$ by a factor greater than 1 (making $B$ larger), we are maki
 
 The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases.
 
-## Related lectures
+## Related Lectures
 
 We'll dig deeper into some of the ideas used here in the following earlier and later lectures:
 
-* {doc}`this lecture <exchangeable>` discusses the key concept of **exchangeability** that rationalizes statistical learning
+* {doc}`this lecture <exchangeable>` discusses the key concept of **exchangeability** that underlies statistical learning
 * {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes** and their role in frequentist and Bayesian statistical theories
 * {doc}`this lecture <likelihood_bayes>` discusses the role of likelihood ratio processes in **Bayesian learning**
 * {doc}`this lecture <navy_captain>` takes up the subject of this lecture and studies whether the Captain's hunch that the (frequentist) decision rule  that the Navy had ordered him to use can be expected to be better or worse than our sequential decision rule
