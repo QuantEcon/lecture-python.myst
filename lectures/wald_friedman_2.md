@@ -46,7 +46,7 @@ In our {doc}`previous lecture <wald_friedman>`, key ideas in play were:
 
 - Type I and type II statistical errors
     - a type I error occurs when you reject a null hypothesis that is true
-    - a type II error occures when you accept a null hypothesis that is false
+    - a type II error occurs when you accept a null hypothesis that is false
 - Abraham Wald's **sequential probability ratio test**
 - The **power** of a statistical test
 - The **critical region** of a statistical test
@@ -307,7 +307,7 @@ $$
 \begin{aligned}
 \textrm { accept } f=f_1 \textrm{ if } \pi \geq A \\
 \textrm { accept } f=f_0 \textrm{ if } \pi \leq B \\
-\textrm { draw another }  z \textrm{ if }  B \leq \pi \leq A
+\textrm { draw another }  z \textrm{ if }  B < \pi < A
 \end{aligned}
 $$
 
