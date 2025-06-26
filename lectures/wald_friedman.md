@@ -296,12 +296,12 @@ The next figure shows two beta distributions.
 
 ```{code-cell} ipython3
 @njit
-def beta_pdf(x, a, b):
+def p(x, a, b):
     r = gamma(a + b) / (gamma(a) * gamma(b))
     return r * x**(a-1) * (1 - x)**(b-1)
 
-f0 = lambda x: beta_pdf(x, 1, 1)
-f1 = lambda x: beta_pdf(x, 9, 9)
+f0 = lambda x: p(x, 1, 1)
+f1 = lambda x: p(x, 9, 9)
 grid = np.linspace(0, 1, 50)
 
 fig, ax = plt.subplots(figsize=(10, 8))
@@ -478,11 +478,6 @@ $$
 
 ```{code-cell} ipython3
 @njit
-def beta_pdf(x, a, b):
-    r = gamma(a + b) / (gamma(a) * gamma(b))
-    return r * x**(a-1) * (1 - x)**(b-1)
-
-@njit
 def sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed):
     """Run a single SPRT until a decision is reached."""
     log_L = 0.0
@@ -501,8 +496,8 @@ def sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed):
         n += 1
         
         # Update the log-likelihood ratio
-        log_f1_z = np.log(beta_pdf(z, a1, b1))
-        log_f0_z = np.log(beta_pdf(z, a0, b0))
+        log_f1_z = np.log(p(z, a1, b1))
+        log_f0_z = np.log(p(z, a0, b0))
         log_L += log_f1_z - log_f0_z
         
         # Check stopping conditions
@@ -750,8 +745,8 @@ def kl_div(h, f):
 
 def js_dist(a0, b0, a1, b1):
     """Jensen–Shannon distance"""
-    f0 = lambda w: beta_pdf(w, a0, b0)
-    f1 = lambda w: beta_pdf(w, a1, b1)
+    f0 = lambda w: p(w, a0, b0)
+    f1 = lambda w: p(w, a1, b1)
     # mixture
     m = lambda w: 0.5*(f0(w) + f1(w))
     return np.sqrt(0.5*kl_div(m, f0) + 0.5*kl_div(m, f1))

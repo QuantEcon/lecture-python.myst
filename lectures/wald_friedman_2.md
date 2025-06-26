@@ -42,7 +42,7 @@ an approach to statistical decision problems intimately related to dynamic progr
 
 In this lecture, we apply dynamic programming algorithms to Friedman and Wallis and Wald's problem.
 
-In our previous lecture, key ideas in play were:
+In our {doc}`previous lecture <wald_friedman>`, key ideas in play were:
 
 - Type I and type II statistical errors
     - a type I error occurs when you reject a null hypothesis that is true
@@ -74,7 +74,7 @@ We'll formulate the problem using dynamic programming.
 ## A Dynamic Programming Approach
 
 The following presentation of the problem closely follows Dmitri
-Berskekas's treatment in **Dynamic Programming and Stochastic Control** {cite}`Bertekas75`.
+Berskekas's treatment in **Dynamic Programming and Stochastic Control** {cite}`Bertekas75`. 
 
 A decision-maker can observe a sequence of draws of a random variable $z$.
 
@@ -104,6 +104,11 @@ $$
 \pi_{-1} =
 \mathbb P \{ f = f_1 \mid \textrm{ no observations} \} \in (0, 1)
 $$
+
+```{note}
+In {cite:t}`Bertekas75`, the belief is associated with the distribution $f_0$, but here 
+we associate the belief with the distribution $f_1$ to match the discussions in {doc}`this lecture <wald_friedman>`.
+```
 
 After observing $k+1$ observations $z_k, z_{k-1}, \ldots, z_0$, he updates his personal probability that the observations are described by distribution $f_1$  to
 
@@ -243,8 +248,8 @@ With some thought, you will agree that $J$ should satisfy the Bellman equation
 J(\pi) =
     \min
     \left\{
-        \pi L_0, \; (1-\pi) L_1, \;
-        c + \mathbb E [ J (\pi') ]
+        \underbrace{\pi L_0}_{ \text{accept } f_0 } \; , \; \underbrace{(1-\pi) L_1}_{ \text{accept } f_1 } \; , \;
+        \underbrace{c + \mathbb E [ J (\pi') ]}_{ \text{draw again} }
     \right\}
 ```
 
@@ -287,13 +292,13 @@ where $\pi \in [0,1]$ and
 The optimal decision rule is characterized by two numbers $A, B \in (0,1) \times (0,1)$ that satisfy
 
 $$
-(1- \pi) L_1 < \min \{ \pi L_0, c + \mathbb E [J(\pi')] \}  \textrm { if } \pi \leq B
+\pi L_0 < \min \{ (1-\pi) L_1, c + \mathbb E [J(\pi')] \}  \textrm { if } \pi \leq B
 $$
 
 and
 
 $$
-\pi L_0 < \min \{ (1-\pi) L_1,  c + \mathbb E [J(\pi')] \} \textrm { if } \pi \geq A
+(1- \pi) L_1 < \min \{ \pi L_0,  c + \mathbb E [J(\pi')] \} \textrm { if } \pi \geq A
 $$
 
 The optimal decision rule is then
@@ -527,10 +532,10 @@ def find_cutoff_rule(wf, h):
     L0, L1 = wf.L0, wf.L1
 
     # Evaluate cost at all points on grid for choosing a model
-    cost_f0 = π_grid * L0           # Cost of choosing f0 when π = P(f=f0)
-    cost_f1 = (1 - π_grid) * L1     # Cost of choosing f1 when π = P(f=f1)
+    cost_f0 = π_grid * L0
+    cost_f1 = (1 - π_grid) * L1
     
-    # Find B: largest π where cost_f0 ≤ min(cost_f1, h)
+    # Find B: largest π where cost_f0 <= min(cost_f1, h)
     optimal_cost = np.minimum(np.minimum(cost_f0, cost_f1), h)
     choose_f0 = (cost_f0 <= cost_f1) & (cost_f0 <= h)
     
@@ -539,7 +544,7 @@ def find_cutoff_rule(wf, h):
     else:
         assert False, "No point where we choose f0"
     
-    # Find A: smallest π where cost_f1 ≤ min(cost_f0, h)  
+    # Find A: smallest π where cost_f1 <= min(cost_f0, h)  
     choose_f1 = (cost_f1 <= cost_f0) & (cost_f1 <= h)
     
     if np.any(choose_f1):
@@ -575,11 +580,11 @@ plt.legend(borderpad=1.1)
 plt.show()
 ```
 
-The cost function $J$ equals $(1-\pi) L_1$ for $\pi \leq B$, and $\pi L_0$ for $\pi
+The cost function $J$ equals $\pi L_0$ for $\pi \leq B$, and $(1-\pi) L_1$ for $\pi
 \geq A$.
 
-The slopes of the two linear pieces of the cost   function $J(\pi)$ are determined by $-L_1$
-and $L_0$.
+The slopes of the two linear pieces of the cost   function $J(\pi)$ are determined by $L_0$
+and $-L_1$.
 
 The cost function $J$ is smooth in the interior region, where the posterior
 probability assigned to $f_1$ is in the indecisive region $\pi \in (B, A)$.
