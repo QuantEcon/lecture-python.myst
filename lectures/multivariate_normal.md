@@ -907,7 +907,7 @@ cε = C[n, :] * ε
 
 # compute the sequence of μθ and Σθ conditional on y1, y2, ..., yk
 μθ_hat_arr_C = np.array([np.sum(cε[:k+1]) for k in range(n)]) + μθ
-Σθ_hat_arr_C = np.array([(C[n, i+1:n+1] @ C[n, i+1:n+1]) for i in range(n)])
+Σθ_hat_arr_C = np.array([C[n, i+1:n+1] @ C[n, i+1:n+1] for i in range(n)])
 ```
 
 To confirm that these formulas give the same answers that we computed
