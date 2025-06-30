@@ -868,16 +868,20 @@ class ProbitRegression:
         return norm.pdf(self.X @ self.β.T)
 
     def logL(self):
+        y = self.y
         μ = self.μ()
         return y @ np.log(μ) + (1 - y) @ np.log(1 - μ)
 
     def G(self):
+        X = self.X
+        y = self.y  
         μ = self.μ()
         ϕ = self.ϕ()
         return X.T @ (y * ϕ / μ - (1 - y) * ϕ / (1 - μ))
 
     def H(self):
         X = self.X
+        y = self.y
         β = self.β
         μ = self.μ()
         ϕ = self.ϕ()
