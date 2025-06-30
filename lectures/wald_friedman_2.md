@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`A Bayesian Formulation of Friedman's Problem <single: A Bayesian Formulation of Friedman's Problem>`
+# {index}`A Bayesian Formulation of Friedman and Wald's Problem <single: A Bayesian Formulation of Friedman and Wald's Problem>`
 
 
 
@@ -45,13 +45,13 @@ Wald's idea of formulating the problem sequentially created links to the **dynam
 
 In this lecture, we reformulate the problem in a way that invites us to apply dynamic programming.
 
-We'll do this by transforming our point of view from the 'objective' frequentist perspective of {doc}`this lecture <wald_friedman>` to an explicitly 'subjective' perspective taken by a Bayesian decision maker who is equipped with
+We'll do this by transforming our point of view from the 'objective' frequentist perspective of {doc}`this lecture <wald_friedman>` to the explicitly 'subjective' perspective taken by a Bayesian decision maker who is equipped with
 
-- an initial prior subjective probability $\pi_{-1} \in (0,1)$  that nature is generating the $\{z_k\}$ sequence as a sequence of i.i.d. draws from $f_1$ rather than $f_0$.
+- an initial prior subjective probability $\pi_{-1} \in (0,1)$  that nature uses to  generate  $\{z_k\}$ as a sequence of i.i.d. draws from $f_1$ rather than $f_0$.
 - faith in Bayes' law as a way to revise his subjective beliefs as observations on $\{z_k\}$ sequence arrive each period. 
 - a loss function that tells how the decision maker values type I and type II errors.  
 
-In our {doc}`previous lecture <wald_friedman>`, key ideas in play were:
+In our {doc}`previous frequentist version <wald_friedman>`, key ideas in play were:
 
 - Type I and type II statistical errors
     - a type I error occurs when you reject a null hypothesis that is true
@@ -61,7 +61,7 @@ In our {doc}`previous lecture <wald_friedman>`, key ideas in play were:
 - The **critical region** of a statistical test
 - A **uniformly most powerful test**
 
-In this lecture, additional  ideas are
+In this lecture about a Bayesian reformulation of the problem, additional  ideas at work are
 - an initial prior probability $\pi_{-1}$ that 
 - a sequence of posterior probabilities
 - Bayes' Law

@@ -33,16 +33,24 @@ kernelspec:
 
 ## Overview
 
-This lecture describes a statistical decision problem presented to Milton
-Friedman and W. Allen Wallis during World War II when they were analysts at
-the U.S. Government's  Statistical Research Group at Columbia University.
+This is the first of two lectures about  a statistical decision problem that a US Navy Captain  presented to Milton
+Friedman and W. Allen Wallis during World War II when they were analysts at the U.S. Government's  Statistical Research Group at Columbia University.
 
 This problem led Abraham Wald {cite}`Wald47` to formulate **sequential analysis**,
-an approach to statistical decision problems intimately related to dynamic programming.
+an approach to statistical decision problems that is  intimately related to dynamic programming.
 
-In this lecture, we describe elements of Wald's formulation of the problem.
+In the spirit of {doc}`this lecture <prob_meaning>`, the present  lecture and its {doc}`sequel <wald_friedman_2>` approach the problem from two distinct points of view.
 
-Key ideas in play will be:
+In this lecture, we describe  Wald's formulation of the problem from the perspective of a  statistician
+working within the Neyman-Pearson tradition of a frequentist statistician who thinks about testing  hypotheses and consequently  use  laws of large numbers to  investigate limiting properties of particular statistics under a given  **hypothesis**, i.e., a vector of **parameters** that pins down a  particular member of a manifold of statistical models that interest the statistician.   
+
+  * From {doc}`this lecture <prob_meaning>`, please remember that a  frequentist statistician routinely calculates functions of sequences of random variables, conditioning on a vector of parameters.
+
+In {doc}`this sequel <wald_friedman_2>` we'll discuss another formulation that adopts   the perspective of a **Bayesian statistician** who views 
+parameter vectors as vectors of random variables that are jointly distributed with  observable variables that he is concerned about.
+
+Because we are taking a frequentist perspective that is concerned about relative frequencies conditioned on alternative parameter values, i.e., 
+alternative **hypotheses**, key ideas in this lecture
 
 - Type I and type II statistical errors
     - a type I error occurs when you reject a null hypothesis that is true
@@ -1001,6 +1009,8 @@ The table confirms this intuition: as $A$ decreases and $B$ increases from their
 
 We'll dig deeper into some of the ideas used here in the following earlier and later lectures:
 
+* {doc}`this sequel <wald_friedman_2>` reformulates the problem from   the perspective of a **Bayesian statistician** who views 
+parameters as vectors of random variables that are jointly distributed with  the observable  that he is concerned about.
 * {doc}`this lecture <exchangeable>` discusses the key concept of **exchangeability** that underlies statistical learning
 * {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes** and their role in frequentist and Bayesian statistical theories
 * {doc}`this lecture <likelihood_bayes>` discusses the role of likelihood ratio processes in **Bayesian learning**
