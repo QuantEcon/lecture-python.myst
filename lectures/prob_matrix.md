@@ -759,7 +759,7 @@ Benford_pmf = np.array([np.log10(1+1/d) for d in range(1,10)])
 k = np.arange(1, 10)
 
 # mean
-mean = Benford_pmf @ k
+mean = k @ Benford_pmf
 
 # variance
 var = ((k - mean) ** 2) @ Benford_pmf
