@@ -399,7 +399,7 @@ The following figure illustrates aspects of Wald's procedure.
 In chapter 3 of **Sequential Analysis** {cite}`Wald47`  Wald establishes the inequalities
 
 $$ 
-\begin{align} 
+\begin{aligned} 
  \frac{\alpha}{1 -\beta} & \leq \frac{1}{A} \\
  \frac{\beta}{1 - \alpha} & \leq B 
 \end{align}
