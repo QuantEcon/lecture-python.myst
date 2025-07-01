@@ -410,7 +410,7 @@ $A$ and $B$ that come close to attaining a decision maker's target values for pr
 a  type I  and $\beta$ of a type II error:
 
 $$
-\begin{align}
+\begin{aligned}
 A \approx a(\alpha,\beta) & \equiv \frac{1-\beta}{\alpha} \\
 B \approx b(\alpha,\beta)  & \equiv \frac{\beta}{1-\alpha} 
 \end{align} 
