@@ -276,7 +276,7 @@ Here is how Wald introduces the notion of a sequential test
 
 ## Wald's Sequential Formulation 
 
-In contradistinction to Neyman and Pearson's formulation of the problemm, in Wald's formulation
+In contradistinction to Neyman and Pearson's formulation of the problem, in Wald's formulation
 
 
 - The sample size $n$ is not fixed but rather  a random variable.

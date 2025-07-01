@@ -43,9 +43,23 @@ In  {doc}`this lecture <wald_friedman>`, we described how  Abraham Wald {cite}`W
 Wald's idea of formulating the problem sequentially created links to the **dynamic programming** that Richard Bellman developed in the 1950s.
 ```
 
-In this lecture, we reformulate the problem in a way that invites us to apply dynamic programming.
+As we learned in {doc}`probability with matrices <prob_matrix>` and  {doc}`two meanings of probability<prob_meaning>`, a frequentist statistician views a probability distribution as measuring relative frequencies of a statistic that he anticipates constructing  from a very long sequence of i.i.d. draws from a known probability distribution.  
 
-We'll do this by transforming our point of view from the 'objective' frequentist perspective of {doc}`this lecture <wald_friedman>` to the explicitly 'subjective' perspective taken by a Bayesian decision maker who is equipped with
+That known probability distribution is his 'hypothesis'.    
+
+A frequentist statistician studies the distribution of that statistic under that known probability distribution
+
+* when the distribution is a member of a set of parameterized probability distribution, his hypothesis takes the form of a particular parameter vector.
+* this is what we mean when we say that the frequentist statistician 'conditions on the parameters' 
+* he regards the parameters that are fixed numbers, known to nature, but not to him.
+* the statistician copes with his ignorane of those parameters by constructing the type I and type II errors associated with frequentist hypothesis testing. 
+
+In this lecture, we reformulate Friedman and Wald's  problem  by transforming our point of view from the 'objective' frequentist perspective of {doc}`this lecture <wald_friedman>` to an explicitly 'subjective' perspective taken by a Bayesian decision maker who regards parameters not as fixed numbers but as (hidden) random variables that are jointly distributed with the random variables that can be observed by sampling from that joint distribution.
+
+To form that joint distribution, the Bayesian statistician supplements the conditional distributions used by the frequentist statistician with 
+a prior probability distribution over the parameters that representive his personal, subjective opinion about those them. 
+
+To proceed in the way, we endow our decision maker with 
 
 - an initial prior subjective probability $\pi_{-1} \in (0,1)$  that nature uses to  generate  $\{z_k\}$ as a sequence of i.i.d. draws from $f_1$ rather than $f_0$.
 - faith in Bayes' law as a way to revise his subjective beliefs as observations on $\{z_k\}$ sequence arrive each period. 
@@ -62,10 +76,10 @@ In our {doc}`previous frequentist version <wald_friedman>`, key ideas in play we
 - A **uniformly most powerful test**
 
 In this lecture about a Bayesian reformulation of the problem, additional  ideas at work are
-- an initial prior probability $\pi_{-1}$ that 
-- a sequence of posterior probabilities
+- an initial prior probability $\pi_{-1}$ that model $f_1$ generates the data 
 - Bayes' Law
-- Dynamic programming
+- a sequence of posterior probabilities that model $f_1$ is  generating the data
+- dynamic programming
 
 
 This lecture uses ideas studied in {doc}`this lecture <likelihood_ratio_process>`, {doc}`this lecture <likelihood_bayes>`, and {doc}`this lecture <exchangeable>`.
