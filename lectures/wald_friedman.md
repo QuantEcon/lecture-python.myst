@@ -413,7 +413,7 @@ $$
 \begin{aligned}
 A \approx a(\alpha,\beta) & \equiv \frac{1-\beta}{\alpha} \\
 B \approx b(\alpha,\beta)  & \equiv \frac{\beta}{1-\alpha} 
-\end{align} 
+\end{aligned} 
 $$ (eq:Waldrule)
 
 For small values of $\alpha $ and $\beta$, Wald shows that approximation  {eq}`eq:Waldrule` provides a  good way to set $A$ and $B$. 
