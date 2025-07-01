@@ -749,11 +749,8 @@ This leads to him having a higher expected loss when he puts equal weight on bot
 
 ### A Notebook Implementation
 
-To facilitate comparative statics, we provide
-a [Jupyter notebook](https://nbviewer.org/github/QuantEcon/lecture-python.notebooks/blob/main/wald_friedman.ipynb) that
-generates the same plots, but with sliders.
-
-With these sliders, you can adjust parameters and immediately observe
+To facilitate comparative statics, we invite you to change the parameters of the model 
+and investigate
 
 * effects on the smoothness of the value function in the indecisive middle range
   as we increase the number of grid points in the piecewise linear  approximation.

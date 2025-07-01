@@ -449,11 +449,12 @@ We will focus on the case where $f_0$ and $f_1$ are beta distributions since it 
 First, we define a namedtuple to store all the parameters we need for our simulation studies.
 
 ```{code-cell} ipython3
-SPRTParams = namedtuple('SPRTParams', ['α', 'β',   # Target type I and type II errors
-                                       'a0', 'b0', # Shape parameters for f_0
-                                       'a1', 'b1', # Shape parameters for f_1
-                                       'N',        # Number of simulations to run
-                                       'seed'])
+SPRTParams = namedtuple('SPRTParams', 
+                ['α', 'β',  # Target type I and type II errors
+                'a0', 'b0', # Shape parameters for f_0
+                'a1', 'b1', # Shape parameters for f_1
+                'N',        # Number of simulations
+                'seed'])
 ```
 
 Now we can run the simulation following Wald's recommendation. 
@@ -465,15 +466,15 @@ Below is the algorithm for the simulation.
 1. Compute thresholds $A = \frac{1-\beta}{\alpha}$, $B = \frac{\beta}{1-\alpha}$ and work with $\log A$, $\log B$.
 
 2. Given true distribution (either $f_0$ or $f_1$):
-   - Initialize log-likelihood ratio $\log L_0 = 0$ and observation counter $n = 0$
+   - Initialize log-likelihood ratio $\log L_0 = 0$
    - Repeat:
      - Draw observation $z$ from the true distribution
      - Update: $\log L_{n+1} \leftarrow \log L_n + (\log f_1(z) - \log f_0(z))$
      - If $\log L_{n+1} \geq \log A$: stop, reject $H_0$
      - If $\log L_{n+1} \leq \log B$: stop, accept $H_0$
 
-3. Monte Carlo: Repeat step 2 for $N$ replications with $N/2$ replications 
-   for each distribution, compute the empirical type I and type II error rates with 
+3. Repeat step 2 for $N$ replications with $N/2$ replications
+   for each distribution, compute the empirical type I error $\hat{\alpha}$ and type II error $\hat{\beta}$ with
 
 $$
 \hat{\alpha} = \frac{\text{# of times reject } H_0 \text{ when } f_0 \text{ is true}}{\text{# of replications with } f_0 \text{ true}}
@@ -515,7 +516,7 @@ def sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed):
 
 @njit(parallel=True)
 def run_sprt_simulation(a0, b0, a1, b1, alpha, βs, N, seed):
-    """SPRT simulation."""
+    """SPRT simulation described by the algorithm."""
     
     # Calculate thresholds
     A = (1 - βs) / alpha
@@ -525,37 +526,45 @@ def run_sprt_simulation(a0, b0, a1, b1, alpha, βs, N, seed):
     
     # Pre-allocate arrays
     stopping_times = np.zeros(N, dtype=np.int64)
-    decisions = np.zeros(N, dtype=np.bool_)
-    truth = np.zeros(N, dtype=np.bool_)
+
+    # Store decision and ground truth as boolean arrays
+    decisions_h0 = np.zeros(N, dtype=np.bool_)
+    truth_h0 = np.zeros(N, dtype=np.bool_)
     
     # Run simulations in parallel
     for i in prange(N):
         true_f0 = (i % 2 == 0)
-        truth[i] = true_f0
+        truth_h0[i] = true_f0
         
-        n, accept_f0 = sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed + i)
+        n, accept_f0 = sprt_single_run(
+                            a0, b0, a1, b1, 
+                            logA, logB, 
+                            true_f0, seed + i)
+
         stopping_times[i] = n
-        decisions[i] = accept_f0
+        decisions_h0[i] = accept_f0
     
-    return stopping_times, decisions, truth
+    return stopping_times, decisions_h0, truth_h0
 
 def run_sprt(params):
-    """Wrapper to run SPRT simulation with given parameters."""
+    """Run SPRT simulations with given parameters."""
     
-    stopping_times, decisions, truth = run_sprt_simulation(
+    stopping_times, decisions_h0, truth_h0 = run_sprt_simulation(
         params.a0, params.b0, params.a1, params.b1, 
         params.α, params.β, params.N, params.seed
     )
     
     # Calculate error rates
-    truth_bool = truth.astype(bool)
-    decisions_bool = decisions.astype(bool)
-    
+    truth_h0_bool = truth_h0.astype(bool)
+    decisions_h0_bool = decisions_h0.astype(bool)
+
     # For type I error: P(reject H0 | H0 is true)
-    type_I = np.sum(truth_bool & ~decisions_bool) / np.sum(truth_bool)
+    type_I = np.sum(truth_h0_bool 
+                    & ~decisions_h0_bool) / np.sum(truth_h0_bool)
     
     # For type II error: P(accept H0 | H0 is false)  
-    type_II = np.sum(~truth_bool & decisions_bool) / np.sum(~truth_bool)
+    type_II = np.sum(~truth_h0_bool 
+                    & decisions_h0_bool) / np.sum(~truth_h0_bool)
     
     # Create scipy distributions for compatibility
     f0 = beta(params.a0, params.b0)
@@ -563,8 +572,8 @@ def run_sprt(params):
     
     return {
         'stopping_times': stopping_times,
-        'decisions': decisions_bool,
-        'truth': truth_bool,
+        'decisions_h0': decisions_h0_bool,
+        'truth_h0': truth_h0_bool,
         'type_I': type_I,
         'type_II': type_II,
         'f0': f0,
@@ -580,10 +589,9 @@ print(f"Empirical type I  error: {results['type_I']:.3f}   (target = {params.α}
 print(f"Empirical type II error: {results['type_II']:.3f}   (target = {params.β})")
 ```
 
-We can see that the single distribution simulations are the same as the two distribution simulations
-subject to Monte Carlo sampling differences.
-
-As anticipated in the passage above in which Wald discussed the quality of $a(\alpha), \beta), b(\alpha, \beta)$ given in approximation {eq}`eq:Waldrule`, we find that the algorithm "overshoots" the error rates by giving us a 
+As anticipated in the passage above in which Wald discussed the quality of 
+$a(\alpha, \beta), b(\alpha, \beta)$ given in approximation {eq}`eq:Waldrule`, 
+we find that the algorithm "overshoots" the error rates by giving us a 
 lower type I and type II error rates than the target values.
 
 ```{note}
@@ -603,9 +611,9 @@ axes[0].plot(z_grid, results['f1'].pdf(z_grid), 'r-',
 axes[0].fill_between(z_grid, 0, 
                      np.minimum(results['f0'].pdf(z_grid), 
                                 results['f1'].pdf(z_grid)), 
-                     alpha=0.3, color='purple', label='Overlap region')
+                     alpha=0.3, color='purple', label='overlap region')
 axes[0].set_xlabel('z')
-axes[0].set_ylabel('Density')
+axes[0].set_ylabel('density')
 axes[0].legend()
 
 axes[1].hist(results['stopping_times'], 
@@ -613,24 +621,39 @@ axes[1].hist(results['stopping_times'],
             color="steelblue", alpha=0.8, edgecolor="black")
 axes[1].set_title("distribution of stopping times $n$")
 axes[1].set_xlabel("$n$")
-axes[1].set_ylabel("Frequency")
+axes[1].set_ylabel("frequency")
 
 plt.show()
 ```
 
 In this simple case, the stopping time stays below 10.
 
-We can also examine a $2 \times 2$  "confusion matrix" whose  diagonal elements show the number of times when Wald's rule results in correct acceptance and rejection of the null hypothesis.
+We can also examine a $2 \times 2$  "confusion matrix" whose  diagonal elements 
+show the number of times when Wald's rule results in correct acceptance and 
+rejection of the null hypothesis.
 
 ```{code-cell} ipython3
-f0_correct = np.sum(results['truth'] & results['decisions']) # Accept H0 when H0 is true
-f0_incorrect = np.sum(results['truth'] & (~results['decisions'])) # Reject H0 when H0 is true
-f1_correct = np.sum((~results['truth']) & (~results['decisions'])) # Accept H0 when H1 is true
-f1_incorrect = np.sum((~results['truth']) & results['decisions']) # Reject H0 when H1 is true
+# Accept H0 when H0 is true (correct)
+f0_correct = np.sum(results['truth_h0'] & results['decisions_h0'])
 
-confusion_data = np.array([[f0_correct, f0_incorrect], 
+# Reject H0 when H0 is true (incorrect)
+f0_incorrect = np.sum(results['truth_h0'] & (~results['decisions_h0']))
+
+# Reject H0 when H1 is true (correct)
+f1_correct = np.sum((~results['truth_h0']) & (~results['decisions_h0']))
+
+# Accept H0 when H1 is true (incorrect)
+f1_incorrect = np.sum((~results['truth_h0']) & results['decisions_h0'])
+
+# First row is when f0 is the true distribution
+# Second row is when f1 is true
+confusion_data = np.array([[f0_correct, f0_incorrect],
                           [f1_incorrect, f1_correct]])
+
 row_totals = confusion_data.sum(axis=1, keepdims=True)
+
+print("Confusion Matrix:")
+print(confusion_data)
 
 fig, ax = plt.subplots()
 ax.imshow(confusion_data, cmap='Blues', aspect='equal')
@@ -644,13 +667,15 @@ for i in range(2):
         percent = confusion_data[i, j] / row_totals[i, 0] if row_totals[i, 0] > 0 else 0
         color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 else 'black'
         ax.text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
-                      ha="center", va="center", color=color, fontweight='bold')
-
+                      ha="center", va="center", 
+                      color=color, fontweight='bold')
 plt.tight_layout()
 plt.show()
 ```
 
-Next we use our code to study  three different $f_0, f_1$ pairs having different discrepancies between distributions.
+Next we use our code to study three different $f_0, f_1$ pairs having different discrepancies between distributions.
+
+We plot the same three graphs we used above for each pair of distributions
 
 ```{code-cell} ipython3
 params_1 = SPRTParams(α=0.05, β=0.10, a0=2, b0=8, a1=8, b1=2, N=5000, seed=42)
@@ -659,11 +684,18 @@ results_1 = run_sprt(params_1)
 params_2 = SPRTParams(α=0.05, β=0.10, a0=4, b0=5, a1=5, b1=4, N=5000, seed=42)
 results_2 = run_sprt(params_2)
 
-params_3 = SPRTParams(α=0.05, β=0.10, a0=0.5, b0=0.4, a1=0.4, b1=0.5, N=5000, seed=42)
+params_3 = SPRTParams(α=0.05, β=0.10, a0=0.5, b0=0.4, a1=0.4, 
+                      b1=0.5, N=5000, seed=42)
 results_3 = run_sprt(params_3)
+```
+
+```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 
 def plot_sprt_results(results, params, title=""):
-    """Plot SPRT simulation results with distributions, stopping times, and confusion matrix."""
+    """Plot SPRT simulation results."""
     fig, axes = plt.subplots(1, 3, figsize=(22, 8))
     
     # Distribution plots
@@ -687,24 +719,26 @@ def plot_sprt_results(results, params, title=""):
     bins = np.arange(1, min(max_n, 101)) - 0.5
     axes[1].hist(results['stopping_times'], bins=bins, 
                      color="steelblue", alpha=0.8, edgecolor="black")
-    axes[1].set_title(f'stopping times (mean={results["stopping_times"].mean():.1f})', fontsize=25)
+    axes[1].set_title(f'stopping times (mean={results["stopping_times"].mean():.1f})', 
+                    fontsize=25)
     axes[1].set_xlabel('n', fontsize=25)
     axes[1].set_ylabel('frequency', fontsize=25)
     axes[1].set_xlim(0, 100)
     axes[1].tick_params(axis='both', which='major', labelsize=18)
     
     # Confusion matrix
-    f0_correct = np.sum(results['truth'] & results['decisions'])
-    f0_incorrect = np.sum(results['truth'] & (~results['decisions']))
-    f1_correct = np.sum((~results['truth']) & (~results['decisions']))
-    f1_incorrect = np.sum((~results['truth']) & results['decisions'])
+    f0_correct = np.sum(results['truth_h0'] & results['decisions_h0'])
+    f0_incorrect = np.sum(results['truth_h0'] & (~results['decisions_h0']))
+    f1_correct = np.sum((~results['truth_h0']) & (~results['decisions_h0']))
+    f1_incorrect = np.sum((~results['truth_h0']) & results['decisions_h0'])
     
     confusion_data = np.array([[f0_correct, f0_incorrect], 
                               [f1_incorrect, f1_correct]])
     row_totals = confusion_data.sum(axis=1, keepdims=True)
     
     im = axes[2].imshow(confusion_data, cmap='Blues', aspect='equal')
-    axes[2].set_title(f'errors: I={results["type_I"]:.3f}, II={results["type_II"]:.3f}', fontsize=25)
+    axes[2].set_title(f'errors: I={results["type_I"]:.3f} '+ 
+                      f'II={results["type_II"]:.3f}', fontsize=25)
     axes[2].set_xticks([0, 1])
     axes[2].set_xticklabels(['accept $H_0$', 'reject $H_0$'], fontsize=22)
     axes[2].set_yticks([0, 1])
@@ -717,7 +751,9 @@ def plot_sprt_results(results, params, title=""):
             percent = confusion_data[i, j] / row_totals[i, 0] if row_totals[i, 0] > 0 else 0
             color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 else 'black'
             axes[2].text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
-                             ha="center", va="center", color=color, fontweight='bold', fontsize=18)
+                             ha="center", va="center", 
+                             color=color, fontweight='bold', 
+                             fontsize=18)
 
     plt.tight_layout()
     plt.show()
@@ -739,9 +775,17 @@ We can see a clear pattern in the stopping times and how close "separated" the t
 
 We can link this to the discussion of [Kullback–Leibler divergence](rel_entropy) in {doc}`this lecture <likelihood_ratio_process>`.
 
-Intuitively, KL divergence is large from one distribution is large, it should be easier to distinguish between them with shorter stopping times.
+Intuitively, KL divergence is large when the distribution from one distribution to another is 
+large. 
 
-To measure the discrepancy between two distributions, we use a metric called [Jensen-Shannon distance](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html) and plot it against the average stopping times.
+When two distributions are "far apart", it should not take long to decide which one is generating the data.
+
+When two distributions are "close" to each other, it takes longer to decide which one is generating the data.
+
+However, KL divergence is not symmetric, meaning that the divergence from one distribution to another is not necessarily the same as the reverse.
+
+To measure the discrepancy between two distributions, we use a metric 
+called [Jensen-Shannon distance](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html) and plot it against the average stopping times.
 
 ```{code-cell} ipython3
 def kl_div(h, f):
@@ -754,17 +798,18 @@ def js_dist(a0, b0, a1, b1):
     """Jensen–Shannon distance"""
     f0 = lambda w: p(w, a0, b0)
     f1 = lambda w: p(w, a1, b1)
-    # mixture
+
+    # Mixture
     m = lambda w: 0.5*(f0(w) + f1(w))
     return np.sqrt(0.5*kl_div(m, f0) + 0.5*kl_div(m, f1))
     
-def generate_linspace_beta_pairs(N=100, T=10.0, d_min=0.5, d_max=9.5):
+def generate_β_pairs(N=100, T=10.0, d_min=0.5, d_max=9.5):
     ds = np.linspace(d_min, d_max, N)
     a0 = (T - ds) / 2
     b0 = (T + ds) / 2
     return list(zip(a0, b0, b0, a0))
 
-param_comb = generate_linspace_beta_pairs()
+param_comb = generate_β_pairs()
 
 # Run simulations for each parameter combination
 js_dists = []
@@ -775,7 +820,7 @@ for a0, b0, a1, b1 in param_comb:
     # Compute KL divergence
     js_div = js_dist(a1, b1, a0, b0)
     
-    # Run SPRT simulation
+    # Run SPRT simulation with a fixed set of parameters d d
     params = SPRTParams(α=0.05, β=0.10, a0=a0, b0=b0, 
                         a1=a1, b1=b1, N=5000, seed=42)
     results = run_sprt(params)
@@ -805,8 +850,12 @@ As the KL divergence increases (distributions become more separated), the mean s
 Below are sampled examples from the experiments we have above
 
 ```{code-cell} ipython3
-selected_indices = [0, len(param_comb)//6,  len(param_comb)//3, len(param_comb)//2, 
-                   2*len(param_comb)//3, -1]
+selected_indices = [0, 
+                    len(param_comb)//6, 
+                    len(param_comb)//3, 
+                    len(param_comb)//2, 
+                    2*len(param_comb)//3, 
+                    -1]
 
 fig, axes = plt.subplots(2, 3, figsize=(15, 8))
 
@@ -823,13 +872,17 @@ for i, idx in enumerate(selected_indices):
     f0_dist = beta(a0, b0)
     f1_dist = beta(a1, b1)
     
-    axes[row, col].plot(z_grid, f0_dist.pdf(z_grid), 'b-', lw=2, label='$f_0$')
-    axes[row, col].plot(z_grid, f1_dist.pdf(z_grid), 'r-', lw=2, label='$f_1$')
+    axes[row, col].plot(z_grid, f0_dist.pdf(z_grid), 'b-', 
+                        lw=2, label='$f_0$')
+    axes[row, col].plot(z_grid, f1_dist.pdf(z_grid), 'r-', 
+                        lw=2, label='$f_1$')
     axes[row, col].fill_between(z_grid, 0, 
-                        np.minimum(f0_dist.pdf(z_grid), f1_dist.pdf(z_grid)), 
+                        np.minimum(f0_dist.pdf(z_grid), 
+                        f1_dist.pdf(z_grid)), 
                         alpha=0.3, color='purple')
     
-    axes[row, col].set_title(f'JS dist: {js_dist:.3f}\nMean time: {mean_time:.1f}', fontsize=12)
+    axes[row, col].set_title(f'JS dist: {js_dist:.3f}'
+                +f'\nMean time: {mean_time:.1f}', fontsize=12)
     axes[row, col].set_xlabel('z', fontsize=10)
     if i == 0:
         axes[row, col].set_ylabel('density', fontsize=10)
@@ -879,30 +932,34 @@ def plot_likelihood_paths(params, n_highlight=10, n_background=200):
                 
                 # Check stopping conditions
                 if log_L >= logA or log_L <= logB:
-                    decision = log_L >= logA  # True = reject H0, False = accept H0
+                    # True = reject H0, False = accept H0
+                    decision = log_L >= logA
                     break
             
             paths_data.append((log_L_path, n, decision))
         
         for i, (path, n, decision) in enumerate(paths_data[:n_background]):
             color = 'C1' if decision else 'C0'
-            ax.plot(range(len(path)), path, color=color, alpha=0.2, linewidth=0.5)
+            ax.plot(range(len(path)), path, 
+                    color=color, alpha=0.2, linewidth=0.5)
         
         for i, (path, n, decision) in enumerate(paths_data[n_background:]):
             # Color code by decision
             color = 'C1' if decision else 'C0'
-            ax.plot(range(len(path)), path, color=color, alpha=0.8, linewidth=1.5,
-                   label='reject $H_0$' if decision and i == 0 else (
+            ax.plot(range(len(path)), path, color=color, 
+                    alpha=0.8, linewidth=1.5,
+                    label='reject $H_0$' if decision and i == 0 else (
                     'accept $H_0$' if not decision and i == 0 else ''))
         
         ax.axhline(y=logA, color='C1', linestyle='--', linewidth=2, 
                   label=f'$\\log A = {logA:.2f}$')
         ax.axhline(y=logB, color='C0', linestyle='--', linewidth=2, 
                   label=f'$\\log B = {logB:.2f}$')
-        ax.axhline(y=0, color='black', linestyle='-', alpha=0.5, linewidth=1)
+        ax.axhline(y=0, color='black', linestyle='-', 
+                  alpha=0.5, linewidth=1)
         
         ax.set_xlabel(r'$n$')
-        ax.set_ylabel(r'$log(L_m)$')
+        ax.set_ylabel(r'$log(L_n)$')
         ax.set_title(title, fontsize=20)
         ax.legend(fontsize=18, loc='center right')
         
@@ -917,9 +974,11 @@ plot_likelihood_paths(params_3, n_highlight=10, n_background=100)
 
 Next, let's adjust the decision thresholds $A$ and $B$ and examine how the mean stopping time and the type I and type II error rates change.
 
+In the code below, we break Wald's rule by adjusting the thresholds $A$ and $B$ using factors $A_f$ and $B_f$.
+
 ```{code-cell} ipython3
 @njit(parallel=True)  
-def run_adjusted_thresholds(a0, b0, a1, b1, alpha, βs, N, seed, A_factor, B_factor):
+def run_adjusted_thresholds(a0, b0, a1, b1, alpha, βs, N, seed, A_f, B_f):
     """SPRT simulation with adjusted thresholds."""
     
     # Calculate original thresholds  
@@ -927,40 +986,43 @@ def run_adjusted_thresholds(a0, b0, a1, b1, alpha, βs, N, seed, A_factor, B_fac
     B_original = βs / (1 - alpha)
     
     # Apply adjustment factors
-    A_adj = A_original * A_factor
-    B_adj = B_original * B_factor
+    A_adj = A_original * A_f
+    B_adj = B_original * B_f
     logA = np.log(A_adj)
     logB = np.log(B_adj)
     
     # Pre-allocate arrays
     stopping_times = np.zeros(N, dtype=np.int64)
-    decisions = np.zeros(N, dtype=np.bool_)
-    truth = np.zeros(N, dtype=np.bool_)
+    decisions_h0 = np.zeros(N, dtype=np.bool_)
+    truth_h0 = np.zeros(N, dtype=np.bool_)
     
     # Run simulations in parallel
     for i in prange(N):
         true_f0 = (i % 2 == 0)
-        truth[i] = true_f0
+        truth_h0[i] = true_f0
         
-        n, accept_f0 = sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed + i)
+        n, accept_f0 = sprt_single_run(a0, b0, a1, b1, 
+                        logA, logB, true_f0, seed + i)
         stopping_times[i] = n
-        decisions[i] = accept_f0
+        decisions_h0[i] = accept_f0
     
-    return stopping_times, decisions, truth, A_adj, B_adj
+    return stopping_times, decisions_h0, truth_h0, A_adj, B_adj
 
-def run_adjusted(params, A_factor=1.0, B_factor=1.0):
+def run_adjusted(params, A_f=1.0, B_f=1.0):
     """Wrapper to run SPRT with adjusted A and B thresholds."""
     
-    stopping_times, decisions, truth, A_adj, B_adj = run_adjusted_thresholds(
+    stopping_times, decisions_h0, truth_h0, A_adj, B_adj = run_adjusted_thresholds(
         params.a0, params.b0, params.a1, params.b1, 
-        params.α, params.β, params.N, params.seed, A_factor, B_factor
+        params.α, params.β, params.N, params.seed, A_f, B_f
     )
-    truth_bool = truth.astype(bool)
-    decisions_bool = decisions.astype(bool)
+    truth_h0_bool = truth_h0.astype(bool)
+    decisions_h0_bool = decisions_h0.astype(bool)
     
     # Calculate error rates
-    type_I = np.sum(truth_bool & ~decisions_bool) / np.sum(truth_bool)
-    type_II = np.sum(~truth_bool & decisions_bool) / np.sum(~truth_bool)
+    type_I = np.sum(truth_h0_bool 
+                    & ~decisions_h0_bool) / np.sum(truth_h0_bool)
+    type_II = np.sum(~truth_h0_bool 
+                    & decisions_h0_bool) / np.sum(~truth_h0_bool)
     
     return {
         'stopping_times': stopping_times,
@@ -979,19 +1041,19 @@ adjustments = [
 ]
 
 results_table = []
-for A_factor, B_factor in adjustments:
-    result = run_adjusted(params_2, A_factor, B_factor)
+for A_f, B_f in adjustments:
+    result = run_adjusted(params_2, A_f, B_f)
     results_table.append([
-        A_factor, B_factor, 
+        A_f, B_f, 
         f"{result['stopping_times'].mean():.1f}",
         f"{result['type_I']:.3f}",
         f"{result['type_II']:.3f}"
     ])
 
 df = pd.DataFrame(results_table, 
-                 columns=["A factor", "B factor", "Mean Stop Time", 
-                          "Type I Error", "Type II Error"])
-df = df.set_index(["A factor", "B factor"])
+                 columns=["A_f", "B_f", "mean stop time", 
+                          "Type I error", "Type II error"])
+df = df.set_index(["A_f", "B_f"])
 df
 ```
 
@@ -999,9 +1061,13 @@ Let's pause and think about the table more carefully by referring back to {eq}`e
 
 Recall that $A = \frac{1-\beta}{\alpha}$ and $B = \frac{\beta}{1-\alpha}$.
 
-When we multiply $A$ by a factor less than 1 (making $A$ smaller), we are effectively making it easier to reject the null hypothesis $H_0$. This increases the probability of Type I errors.
+When we multiply $A$ by a factor less than 1 (making $A$ smaller), we are effectively making it easier to reject the null hypothesis $H_0$. 
 
-When we multiply $B$ by a factor greater than 1 (making $B$ larger), we are making it easier to accept the null hypothesis $H_0$. This increases the probability of Type II errors.
+This increases the probability of Type I errors.
+
+When we multiply $B$ by a factor greater than 1 (making $B$ larger), we are making it easier to accept the null hypothesis $H_0$. 
+
+This increases the probability of Type II errors.
 
 The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases.
 
