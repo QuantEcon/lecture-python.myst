@@ -477,11 +477,11 @@ Below is the algorithm for the simulation.
    for each distribution, compute the empirical type I error $\hat{\alpha}$ and type II error $\hat{\beta}$ with
 
 $$
-\hat{\alpha} = \frac{\text{# of times reject } H_0 \text{ when } f_0 \text{ is true}}{\text{# of replications with } f_0 \text{ true}}
+\hat{\alpha} = \frac{\text{\# of times reject } H_0 \text{ when } f_0 \text{ is true}}{\text{\# of replications with } f_0 \text{ true}}
 $$
 
 $$
-\hat{\beta} = \frac{\text{# of times accept } H_0 \text{ when } f_1 \text{ is true}}{\text{# of replications with } f_1 \text{ true}}
+\hat{\beta} = \frac{\text{\# of times accept } H_0 \text{ when } f_1 \text{ is true}}{\text{\# of replications with } f_1 \text{ true}}
 $$
 
 ```{code-cell} ipython3

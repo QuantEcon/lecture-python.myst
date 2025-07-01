@@ -747,9 +747,7 @@ Because he decides with fewer draws, the percentage of time he is correct drops.
 
 This leads to him having a higher expected loss when he puts equal weight on both models.
 
-### A Notebook Implementation
-
-To facilitate comparative statics, we invite you to change the parameters of the model 
+To facilitate comparative statics, we invite you to adjust the parameters of the model 
 and investigate
 
 * effects on the smoothness of the value function in the indecisive middle range
