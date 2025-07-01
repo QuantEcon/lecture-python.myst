@@ -402,7 +402,7 @@ $$
 \begin{aligned} 
  \frac{\alpha}{1 -\beta} & \leq \frac{1}{A} \\
  \frac{\beta}{1 - \alpha} & \leq B 
-\end{align}
+\end{aligned}
 $$
 
 His analysis of these inequalities leads Wald to recommend the following approximations as rules for setting 
