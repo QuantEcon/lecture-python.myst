@@ -65,9 +65,7 @@ The lecture uses important ideas including
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython
----
-tags: [hide-output]
----
+:tags: [hide-output]
 !pip install quantecon
 ```
 
