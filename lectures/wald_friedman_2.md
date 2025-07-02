@@ -43,7 +43,7 @@ In  {doc}`an earlier lecture<wald_friedman>`, we described how  Abraham Wald {ci
 Wald's idea of formulating the problem sequentially created links to the **dynamic programming** that Richard Bellman developed in the 1950s.
 ```
 
-As we learned in {doc}`<prob_matrix>` and  {doc}`<prob_meaning>`, a frequentist statistician views a probability distribution as measuring relative frequencies of a statistic that he anticipates constructing  from a very long sequence of i.i.d. draws from a known probability distribution.  
+As we learned in {doc}`prob_matrix` and  {doc}`prob_meaning`, a frequentist statistician views a probability distribution as measuring relative frequencies of a statistic that he anticipates constructing  from a very long sequence of i.i.d. draws from a known probability distribution.  
 
 That known probability distribution is his 'hypothesis'.    
 

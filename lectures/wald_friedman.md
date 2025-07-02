@@ -39,12 +39,12 @@ Friedman and W. Allen Wallis during World War II when they were analysts at the 
 This problem led Abraham Wald {cite}`Wald47` to formulate **sequential analysis**,
 an approach to statistical decision problems that is  intimately related to dynamic programming.
 
-In the spirit of {doc}`this lecture <prob_meaning>`, the present  lecture and its {doc}`sequel <wald_friedman_2>` approach the problem from two distinct points of view.
+In the spirit of {doc}`this earlier lecture <prob_meaning>`, the present lecture and its {doc}`sequel <wald_friedman_2>` approach the problem from two distinct points of view.
 
 In this lecture, we describe  Wald's formulation of the problem from the perspective of a  statistician
 working within the Neyman-Pearson tradition of a frequentist statistician who thinks about testing  hypotheses and consequently  use  laws of large numbers to  investigate limiting properties of particular statistics under a given  **hypothesis**, i.e., a vector of **parameters** that pins down a  particular member of a manifold of statistical models that interest the statistician.   
 
-  * From {doc}`this lecture <prob_meaning>`, please remember that a  frequentist statistician routinely calculates functions of sequences of random variables, conditioning on a vector of parameters.
+  * From {doc}`this earlier lecture on frequentist and bayesian statistics<prob_meaning>`, please remember that a  frequentist statistician routinely calculates functions of sequences of random variables, conditioning on a vector of parameters.
 
 In {doc}`this sequel <wald_friedman_2>` we'll discuss another formulation that adopts   the perspective of a **Bayesian statistician** who views 
 parameter vectors as vectors of random variables that are jointly distributed with  observable variables that he is concerned about.
@@ -76,7 +76,7 @@ from collections import namedtuple
 import pandas as pd
 ```
 
-This lecture uses ideas studied in {doc}`this lecture <likelihood_ratio_process>` and  {doc}`this lecture <likelihood_bayes>`.
+This lecture uses ideas studied in {doc}`the lecture on likelihood ratio processes<likelihood_ratio_process>` and  {doc}`the lecture on Bayesian learning<likelihood_bayes>`.
 
 ## Source of the Problem
 
@@ -773,7 +773,7 @@ plot_sprt_results(results_3, params_3)
 
 We can see a clear pattern in the stopping times and how close "separated" the two distributions are.
 
-We can link this to the discussion of [Kullback–Leibler divergence](rel_entropy) in {doc}`this lecture <likelihood_ratio_process>`.
+We can link this to the discussion of [Kullback–Leibler divergence](rel_entropy) in {doc}`likelihood_ratio_process`.
 
 Intuitively, KL divergence is large when the distribution from one distribution to another is 
 large. 
@@ -1077,6 +1077,6 @@ We'll dig deeper into some of the ideas used here in the following earlier and l
 
 * In {doc}`this sequel <wald_friedman_2>`, we reformulate the problem from the perspective of a **Bayesian statistician** who views parameters as vectors of random variables that are jointly distributed with the observables they are concerned about.
 * The concept of **exchangeability**, which underlies much of statistical learning, is explored in depth in our {doc}`lecture on exchangeable random variables <exchangeable>`.
-* For a deeper understanding of likelihood ratio processes and their role in frequentist and Bayesian statistical theories, see {doc}`this lecture <likelihood_ratio_process>`.
-* Building on that foundation, {doc}`this lecture <likelihood_bayes>` examines the role of likelihood ratio processes in **Bayesian learning**.
+* For a deeper understanding of likelihood ratio processes and their role in frequentist and Bayesian statistical theories, see {doc}`likelihood_ratio_process`.
+* Building on that foundation, {doc}`likelihood_bayes` examines the role of likelihood ratio processes in **Bayesian learning**.
 * Finally, {doc}`this later lecture <navy_captain>` revisits the subject discussed here and examines whether the frequentist decision rule that the Navy ordered the captain to use would perform better or worse than the sequential decision rule we've developed.
