@@ -1075,9 +1075,8 @@ The table confirms this intuition: as $A$ decreases and $B$ increases from their
 
 We'll dig deeper into some of the ideas used here in the following earlier and later lectures:
 
-* {doc}`this sequel <wald_friedman_2>` reformulates the problem from   the perspective of a **Bayesian statistician** who views 
-parameters as vectors of random variables that are jointly distributed with  the observable  that he is concerned about.
-* {doc}`this lecture <exchangeable>` discusses the key concept of **exchangeability** that underlies statistical learning
-* {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes** and their role in frequentist and Bayesian statistical theories
-* {doc}`this lecture <likelihood_bayes>` discusses the role of likelihood ratio processes in **Bayesian learning**
-* {doc}`this lecture <navy_captain>` takes up the subject of this lecture and studies whether the Captain's hunch that the (frequentist) decision rule  that the Navy had ordered him to use can be expected to be better or worse than our sequential decision rule
+* In {doc}`this sequel <wald_friedman_2>`, we reformulate the problem from the perspective of a **Bayesian statistician** who views parameters as vectors of random variables that are jointly distributed with the observables they are concerned about.
+* The concept of **exchangeability**, which underlies much of statistical learning, is explored in depth in our {doc}`lecture on exchangeable random variables <exchangeable>`.
+* For a deeper understanding of likelihood ratio processes and their role in frequentist and Bayesian statistical theories, see {doc}`this lecture <likelihood_ratio_process>`.
+* Building on that foundation, {doc}`this lecture <likelihood_bayes>` examines the role of likelihood ratio processes in **Bayesian learning**.
+* Finally, {doc}`this later lecture <navy_captain>` revisits the subject discussed here and examines whether the frequentist decision rule that the Navy ordered the captain to use would perform better or worse than the sequential decision rule we've developed.

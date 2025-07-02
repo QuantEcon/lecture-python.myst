@@ -37,13 +37,13 @@ This lecture revisits the  statistical decision problem presented to Milton
 Friedman and W. Allen Wallis during World War II when they were analysts at
 the U.S. Government's  Statistical Research Group at Columbia University. 
 
-In  {doc}`this lecture <wald_friedman>`, we described how  Abraham Wald {cite}`Wald47`  solved the problem by  extending frequentist hypothesis testing techniques and formulating the problem sequentially.
+In  {doc}`an earlier lecture<wald_friedman>`, we described how  Abraham Wald {cite}`Wald47`  solved the problem by  extending frequentist hypothesis testing techniques and formulating the problem sequentially.
 
 ```{note}
 Wald's idea of formulating the problem sequentially created links to the **dynamic programming** that Richard Bellman developed in the 1950s.
 ```
 
-As we learned in {doc}`probability with matrices <prob_matrix>` and  {doc}`two meanings of probability<prob_meaning>`, a frequentist statistician views a probability distribution as measuring relative frequencies of a statistic that he anticipates constructing  from a very long sequence of i.i.d. draws from a known probability distribution.  
+As we learned in {doc}`<prob_matrix>` and  {doc}`<prob_meaning>`, a frequentist statistician views a probability distribution as measuring relative frequencies of a statistic that he anticipates constructing  from a very long sequence of i.i.d. draws from a known probability distribution.  
 
 That known probability distribution is his 'hypothesis'.    
 
@@ -52,9 +52,9 @@ A frequentist statistician studies the distribution of that statistic under that
 * when the distribution is a member of a set of parameterized probability distribution, his hypothesis takes the form of a particular parameter vector.
 * this is what we mean when we say that the frequentist statistician 'conditions on the parameters' 
 * he regards the parameters that are fixed numbers, known to nature, but not to him.
-* the statistician copes with his ignorane of those parameters by constructing the type I and type II errors associated with frequentist hypothesis testing. 
+* the statistician copes with his ignorance of those parameters by constructing the type I and type II errors associated with frequentist hypothesis testing.
 
-In this lecture, we reformulate Friedman and Wald's  problem  by transforming our point of view from the 'objective' frequentist perspective of {doc}`this lecture <wald_friedman>` to an explicitly 'subjective' perspective taken by a Bayesian decision maker who regards parameters not as fixed numbers but as (hidden) random variables that are jointly distributed with the random variables that can be observed by sampling from that joint distribution.
+In this lecture, we reformulate Friedman and Wald's  problem  by transforming our point of view from the 'objective' frequentist perspective of {doc}`the lecture on Wald's sequential analysis<wald_friedman>` to an explicitly 'subjective' perspective taken by a Bayesian decision maker who regards parameters not as fixed numbers but as (hidden) random variables that are jointly distributed with the random variables that can be observed by sampling from that joint distribution.
 
 To form that joint distribution, the Bayesian statistician supplements the conditional distributions used by the frequentist statistician with 
 a prior probability distribution over the parameters that representive his personal, subjective opinion about those them. 
@@ -82,7 +82,7 @@ In this lecture about a Bayesian reformulation of the problem, additional  ideas
 - dynamic programming
 
 
-This lecture uses ideas studied in {doc}`this lecture <likelihood_ratio_process>`, {doc}`this lecture <likelihood_bayes>`, and {doc}`this lecture <exchangeable>`.
+This lecture uses ideas studied in the lectures on {doc}`likelihood ratio processes<likelihood_ratio_process>`, and {doc}` their roles in Bayesian learning<likelihood_bayes>`, and {doc}`this lecture on exchangeability<exchangeable>`.
 
 
 We'll begin with some imports:
@@ -132,8 +132,8 @@ $$
 $$
 
 ```{note}
-In {cite:t}`Bertekas75`, the belief is associated with the distribution $f_0$, but here 
-we associate the belief with the distribution $f_1$ to match the discussions in {doc}`this lecture <wald_friedman>`.
+In {cite:t}`Bertekas75`, the belief is associated with the distribution $f_0$, but here
+we associate the belief with the distribution $f_1$ to match the discussions in {doc}`the lecture on Wald's sequential analysis<wald_friedman>`.
 ```
 
 After observing $k+1$ observations $z_k, z_{k-1}, \ldots, z_0$, he updates his personal probability that the observations are described by distribution $f_1$  to
@@ -762,12 +762,3 @@ and investigate
 [^f1]: The decision maker acts as if he believes that the sequence of random variables
 $[z_{0}, z_{1}, \ldots]$ is *exchangeable*.  See [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html) and
 {cite}`Kreps88` chapter 11, for  discussions of exchangeability.
-
-## Related Lectures
-
-We'll dig deeper into some of the ideas used here in the following lectures:
-
-* {doc}`this lecture <exchangeable>` discusses the key concept of **exchangeability** -- a notion of conditional independences associated with foundations of statistical learning
-* {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes** and their role in frequentist and Bayesian statistical theories
-* {doc}`this lecture <likelihood_bayes>` discusses the role of likelihood ratio processes in **Bayesian learning**
-* {doc}`this lecture <navy_captain>` returns to the subject of this lecture and studies whether the Captain's hunch that the (frequentist) decision rule  that the Navy had ordered him to use can be expected to be better or worse than our sequential decision rule
