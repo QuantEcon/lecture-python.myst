@@ -82,7 +82,7 @@ In this lecture about a Bayesian reformulation of the problem, additional  ideas
 - dynamic programming
 
 
-This lecture uses ideas studied in the lectures on {doc}`likelihood ratio processes<likelihood_ratio_process>`, and {doc}` their roles in Bayesian learning<likelihood_bayes>`, and {doc}`this lecture on exchangeability<exchangeable>`.
+This lecture uses ideas studied in the lectures on {doc}`likelihood ratio processes<likelihood_ratio_process>`, {doc}`their roles in Bayesian learning<likelihood_bayes>`, and {doc}`this lecture on exchangeability<exchangeable>`.
 
 
 We'll begin with some imports:
