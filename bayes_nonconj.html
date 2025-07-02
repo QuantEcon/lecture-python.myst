@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>46. Non-Conjugate Priors &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>17. Non-Conjugate Priors &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -118,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="47. Posterior Distributions for AR(1) Parameters" href="ar1_bayes.html" />
-    <link rel="prev" title="45. The Income Fluctuation Problem II: Stochastic Returns on Assets" href="ifp_advanced.html" />
+    <link rel="next" title="18. Posterior Distributions for AR(1) Parameters" href="ar1_bayes.html" />
+    <link rel="prev" title="16. Expected Utilities of Random Responses" href="util_rand_resp.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -167,25 +167,25 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unleashing-mcmc-on-a-binomial-likelihood">46.1. Unleashing MCMC on a  Binomial Likelihood</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analytical-posterior">46.1.1. Analytical Posterior</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-ways-to-approximate-posteriors">46.1.2. Two Ways to Approximate Posteriors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unleashing-mcmc-on-a-binomial-likelihood">17.1. Unleashing MCMC on a  Binomial Likelihood</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analytical-posterior">17.1.1. Analytical Posterior</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-ways-to-approximate-posteriors">17.1.2. Two Ways to Approximate Posteriors</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-distributions">46.2. Prior Distributions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-inference">46.2.1. Variational Inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-distributions">17.2. Prior Distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-inference">17.2.1. Variational Inference</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">46.3. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-prior-distributions">46.4. Alternative Prior Distributions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posteriors-via-mcmc-and-vi">46.5. Posteriors Via MCMC and VI</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beta-prior-and-posteriors">46.5.1. Beta Prior and Posteriors:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">17.3. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-prior-distributions">17.4. Alternative Prior Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posteriors-via-mcmc-and-vi">17.5. Posteriors Via MCMC and VI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beta-prior-and-posteriors">17.5.1. Beta Prior and Posteriors:</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-conjugate-prior-distributions">46.6. Non-conjugate Prior Distributions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mcmc">46.6.1. MCMC</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vi-with-a-truncated-normal-guide">46.6.1.1. VI with a  Truncated Normal Guide</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-inference-with-a-beta-guide-distribution">46.6.1.2. Variational Inference with a  Beta Guide Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-conjugate-prior-distributions">17.6. Non-conjugate Prior Distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mcmc">17.6.1. MCMC</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vi-with-a-truncated-normal-guide">17.6.1.1. VI with a  Truncated Normal Guide</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-inference-with-a-beta-guide-distribution">17.6.1.2. Variational Inference with a  Beta Guide Distribution</a></li>
 </ul>
 </li>
 </ul>
@@ -247,7 +247,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="non-conjugate-priors">
-<h1><span class="section-number">46. </span>Non-Conjugate Priors<a class="headerlink" href="#non-conjugate-priors" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">17. </span>Non-Conjugate Priors<a class="headerlink" href="#non-conjugate-priors" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with the latest CUDA and CUDANN frameworks installed with access to a GPU.</p>
@@ -393,7 +393,7 @@ be described below.</p>
 </div>
 </div>
 <section id="unleashing-mcmc-on-a-binomial-likelihood">
-<h2><span class="section-number">46.1. </span>Unleashing MCMC on a  Binomial Likelihood<a class="headerlink" href="#unleashing-mcmc-on-a-binomial-likelihood" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.1. </span>Unleashing MCMC on a  Binomial Likelihood<a class="headerlink" href="#unleashing-mcmc-on-a-binomial-likelihood" title="Permalink to this heading">#</a></h2>
 <p>This lecture begins with the binomial example in the <a class="reference internal" href="prob_meaning.html"><span class="doc">quantecon lecture</span></a>.</p>
 <p>That lecture computed a posterior</p>
 <ul class="simple">
@@ -408,7 +408,7 @@ be described below.</p>
 <p>We use several alternative prior distributions</p>
 <p>We  compare computed posteriors  with ones associated with a conjugate prior as described in  <a class="reference internal" href="prob_meaning.html"><span class="doc">the quantecon lecture</span></a></p>
 <section id="analytical-posterior">
-<h3><span class="section-number">46.1.1. </span>Analytical Posterior<a class="headerlink" href="#analytical-posterior" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.1.1. </span>Analytical Posterior<a class="headerlink" href="#analytical-posterior" title="Permalink to this heading">#</a></h3>
 <p>Assume that the random variable <span class="math notranslate nohighlight">\(X\sim Binom\left(n,\theta\right)\)</span>.</p>
 <p>This defines a likelihood function</p>
 <div class="math notranslate nohighlight">
@@ -480,7 +480,7 @@ f(\theta) = \textrm{Prob}(\theta) = \frac{\theta^{\alpha - 1} (1 - \theta)^{\bet
 </div>
 </section>
 <section id="two-ways-to-approximate-posteriors">
-<h3><span class="section-number">46.1.2. </span>Two Ways to Approximate Posteriors<a class="headerlink" href="#two-ways-to-approximate-posteriors" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.1.2. </span>Two Ways to Approximate Posteriors<a class="headerlink" href="#two-ways-to-approximate-posteriors" title="Permalink to this heading">#</a></h3>
 <p>Suppose that we don’t have a conjugate prior.</p>
 <p>Then  we  can’t compute posteriors analytically.</p>
 <p>Instead,  we use computational tools to approximate the posterior distribution for a set of alternative prior distributions using both <code class="docutils literal notranslate"><span class="pre">Pyro</span></code> and <code class="docutils literal notranslate"><span class="pre">Numpyro</span></code> packages in Python.</p>
@@ -502,7 +502,7 @@ a Kullback-Leibler (KL) divergence between true posterior and the putatitive pos
 </section>
 </section>
 <section id="prior-distributions">
-<h2><span class="section-number">46.2. </span>Prior Distributions<a class="headerlink" href="#prior-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.2. </span>Prior Distributions<a class="headerlink" href="#prior-distributions" title="Permalink to this heading">#</a></h2>
 <p>In order to be able to apply MCMC sampling or VI, <code class="docutils literal notranslate"><span class="pre">Pyro</span></code> and <code class="docutils literal notranslate"><span class="pre">Numpyro</span></code> require  that a prior distribution satisfy special properties:</p>
 <ul class="simple">
 <li><p>we must be able sample from it;</p></li>
@@ -610,7 +610,7 @@ a Kullback-Leibler (KL) divergence between true posterior and the putatitive pos
 </div>
 </div>
 <section id="variational-inference">
-<h3><span class="section-number">46.2.1. </span>Variational Inference<a class="headerlink" href="#variational-inference" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.2.1. </span>Variational Inference<a class="headerlink" href="#variational-inference" title="Permalink to this heading">#</a></h3>
 <p>Instead of directly sampling from the posterior,  the <strong>variational inference</strong>  methodw approximates an unknown posterior distribution with  a family of tractable distributions/densities.</p>
 <p>It then seeks to minimizes a measure of statistical discrepancy between the approximating and  true posteriors.</p>
 <p>Thus variational inference (VI)  approximates a posterior by solving  a  minimization problem.</p>
@@ -624,10 +624,10 @@ p\left(\theta\vert Y\right)=\frac{p\left(Y,\theta\right)}{p\left(Y\right)}=\frac
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-eq-intchallenge">
-<span class="eqno">(46.1)<a class="headerlink" href="#equation-eq-intchallenge" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(17.1)<a class="headerlink" href="#equation-eq-intchallenge" title="Permalink to this equation">#</a></span>\[
 p\left(Y\right)=\int d\theta p\left(Y\mid\theta\right)p\left(Y\right).
 \]</div>
-<p>The integral on the right side of <a class="reference internal" href="#equation-eq-intchallenge">(46.1)</a>  is typically difficult to compute.</p>
+<p>The integral on the right side of <a class="reference internal" href="#equation-eq-intchallenge">(17.1)</a>  is typically difficult to compute.</p>
 <p>Consider a  <strong>guide distribution</strong> <span class="math notranslate nohighlight">\(q_{\phi}(\theta)\)</span> parameterized by <span class="math notranslate nohighlight">\(\phi\)</span> that we’ll use to approximate the posterior.</p>
 <p>We choose  parameters <span class="math notranslate nohighlight">\(\phi\)</span> of the guide distribution to minimize a Kullback-Leibler (KL)  divergence between the approximate posterior <span class="math notranslate nohighlight">\(q_{\phi}(\theta)\)</span> and  the posterior:</p>
 <div class="math notranslate nohighlight">
@@ -653,10 +653,10 @@ p\left(Y\right)=\int d\theta p\left(Y\mid\theta\right)p\left(Y\right).
 \end{split}\]</div>
 <p>For  observed data <span class="math notranslate nohighlight">\(Y\)</span>, <span class="math notranslate nohighlight">\(p(\theta,Y)\)</span> is a constant, so minimizing KL divergence is equivalent to maximizing</p>
 <div class="math notranslate nohighlight" id="equation-eq-elbo">
-<span class="eqno">(46.2)<a class="headerlink" href="#equation-eq-elbo" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(17.2)<a class="headerlink" href="#equation-eq-elbo" title="Permalink to this equation">#</a></span>\[
 ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=\mathbb{E}_{q_{\phi}(\theta)}\left[\log p(\theta,Y)-\log q_{\phi}(\theta)\right]
 \]</div>
-<p>Formula <a class="reference internal" href="#equation-eq-elbo">(46.2)</a> is called  the evidence lower bound (ELBO).</p>
+<p>Formula <a class="reference internal" href="#equation-eq-elbo">(17.2)</a> is called  the evidence lower bound (ELBO).</p>
 <p>A standard optimization routine can used to search for the optimal <span class="math notranslate nohighlight">\(\phi\)</span> in our parametrized distribution <span class="math notranslate nohighlight">\(q_{\phi}(\theta)\)</span>.</p>
 <p>The parameterized  distribution <span class="math notranslate nohighlight">\(q_{\phi}(\theta)\)</span> is called the <strong>variational distribution</strong>.</p>
 <p>We can implement Stochastic Variational Inference (SVI) in Pyro and Numpyro using the <code class="docutils literal notranslate"><span class="pre">Adam</span></code> gradient descent algorithm to approximate posterior.</p>
@@ -672,7 +672,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </section>
 </section>
 <section id="implementation">
-<h2><span class="section-number">46.3. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.3. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>We have constructed a Python class <code class="docutils literal notranslate"><span class="pre">BaysianInference</span></code> that requires the following arguments to be initialized:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">param</span></code>: a tuple/scalar of parameters dependent on distribution types</p></li>
@@ -974,7 +974,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </section>
 <section id="alternative-prior-distributions">
-<h2><span class="section-number">46.4. </span>Alternative Prior Distributions<a class="headerlink" href="#alternative-prior-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.4. </span>Alternative Prior Distributions<a class="headerlink" href="#alternative-prior-distributions" title="Permalink to this heading">#</a></h2>
 <p>Let’s see how well our sampling algorithm does in approximating</p>
 <ul class="simple">
 <li><p>a log normal distribution</p></li>
@@ -1035,7 +1035,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 <p>Having assured ourselves that our sampler seems to do a good job, let’s put it to work in using MCMC to compute posterior probabilities.</p>
 </section>
 <section id="posteriors-via-mcmc-and-vi">
-<h2><span class="section-number">46.5. </span>Posteriors Via MCMC and VI<a class="headerlink" href="#posteriors-via-mcmc-and-vi" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.5. </span>Posteriors Via MCMC and VI<a class="headerlink" href="#posteriors-via-mcmc-and-vi" title="Permalink to this heading">#</a></h2>
 <p>We construct a class  <code class="docutils literal notranslate"><span class="pre">BayesianInferencePlot</span></code> to implement MCMC or VI algorithms and plot multiple posteriors for different updating data sizes and different  possible prior.</p>
 <p>This class takes as inputs the true data generating parameter ‘theta’, a list of updating data sizes for multiple posterior plotting, and a defined and parametrized <code class="docutils literal notranslate"><span class="pre">BayesianInference</span></code> class.</p>
 <p>It has two key methods:</p>
@@ -1188,7 +1188,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <section id="beta-prior-and-posteriors">
-<h3><span class="section-number">46.5.1. </span>Beta Prior and Posteriors:<a class="headerlink" href="#beta-prior-and-posteriors" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.5.1. </span>Beta Prior and Posteriors:<a class="headerlink" href="#beta-prior-and-posteriors" title="Permalink to this heading">#</a></h3>
 <p>Let’s compare outcomes when we use a Beta prior.</p>
 <p>For the same Beta prior, we shall</p>
 <ul class="simple">
@@ -1269,12 +1269,12 @@ will be  more accurate, as we shall see next.</p>
 </section>
 </section>
 <section id="non-conjugate-prior-distributions">
-<h2><span class="section-number">46.6. </span>Non-conjugate Prior Distributions<a class="headerlink" href="#non-conjugate-prior-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.6. </span>Non-conjugate Prior Distributions<a class="headerlink" href="#non-conjugate-prior-distributions" title="Permalink to this heading">#</a></h2>
 <p>Having assured ourselves that our MCMC and VI methods can work well when we have  conjugate prior and so can also compute analytically, we
 next proceed to situations in which our  prior  is not a beta distribution, so we don’t have a conjugate prior.</p>
 <p>So we will have non-conjugate priors and are cast into situations in which we can’t calculate posteriors analytically.</p>
 <section id="mcmc">
-<h3><span class="section-number">46.6.1. </span>MCMC<a class="headerlink" href="#mcmc" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.6.1. </span>MCMC<a class="headerlink" href="#mcmc" title="Permalink to this heading">#</a></h3>
 <p>First, we implement and display  MCMC.</p>
 <p>We first initialize the <code class="docutils literal notranslate"><span class="pre">BayesianInference</span></code> classes and then can directly call <code class="docutils literal notranslate"><span class="pre">BayesianInferencePlot</span></code> to plot both MCMC and SVI approximating posteriors.</p>
 <div class="cell docutils container">
@@ -1427,7 +1427,7 @@ Solver: numpyro
 </div>
 </div>
 <section id="vi-with-a-truncated-normal-guide">
-<h4><span class="section-number">46.6.1.1. </span>VI with a  Truncated Normal Guide<a class="headerlink" href="#vi-with-a-truncated-normal-guide" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">17.6.1.1. </span>VI with a  Truncated Normal Guide<a class="headerlink" href="#vi-with-a-truncated-normal-guide" title="Permalink to this heading">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uniform</span>
@@ -1509,7 +1509,7 @@ Solver: numpyro
 </div>
 </section>
 <section id="variational-inference-with-a-beta-guide-distribution">
-<h4><span class="section-number">46.6.1.2. </span>Variational Inference with a  Beta Guide Distribution<a class="headerlink" href="#variational-inference-with-a-beta-guide-distribution" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">17.6.1.2. </span>Variational Inference with a  Beta Guide Distribution<a class="headerlink" href="#variational-inference-with-a-beta-guide-distribution" title="Permalink to this heading">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uniform</span>
@@ -1764,18 +1764,87 @@ Solver: numpyro
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   17. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   18. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   19. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   20. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   21. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   22. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   23. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   24. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   25. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   26. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   27. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Linear Programming
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   17. Optimal Transport
+   28. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   18. Von Neumann Growth Model (and a Generalization)
+   29. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1787,42 +1856,42 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   19. Finite Markov Chains
+   30. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   20. Inventory Dynamics
+   31. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   21. Linear State Space Models
+   32. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   22. Samuelson Multiplier-Accelerator
+   33. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   23. Kesten Processes and Firm Dynamics
+   34. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   24. Wealth Distribution Dynamics
+   35. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   25. A First Look at the Kalman Filter
+   36. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   26. Another Look at the Kalman Filter
+   37. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1834,37 +1903,42 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   27. Job Search I: The McCall Search Model
+   38. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   28. Job Search II: Search and Separation
+   39. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   29. Job Search III: Fitted Value Function Iteration
+   40. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   30. Job Search IV: Correlated Wage Offers
+   41. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   31. Job Search V: Modeling Career Choice
+   42. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   32. Job Search VI: On-the-Job Search
+   43. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   33. Job Search VII: A McCall Worker Q-Learns
+   44. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   45. Job Search VII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1876,131 +1950,62 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   34. Cass-Koopmans Model
+   46. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   35. Cass-Koopmans Competitive Equilibrium
+   47. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   36. Cass-Koopmans Model with Distorting Taxes
+   48. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   37. Transitions in an Overlapping Generations Model
+   49. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   38. Cake Eating I: Introduction to Optimal Saving
+   50. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   39. Cake Eating II: Numerical Methods
+   51. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   40. Optimal Growth I: The Stochastic Optimal Growth Model
+   52. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   41. Optimal Growth II: Accelerating the Code with Numba
+   53. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   42. Optimal Growth III: Time Iteration
+   54. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   43. Optimal Growth IV: The Endogenous Grid Method
+   55. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   44. The Income Fluctuation Problem I: Basic Model
+   56. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   45. The Income Fluctuation Problem II: Stochastic Returns on Assets
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Bayes Law
- </span>
-</p>
-<ul class="current nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1 current active active">
-  <a class="current reference internal" href="#">
-   46. Non-Conjugate Priors
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ar1_bayes.html">
-   47. Posterior Distributions for  AR(1) Parameters
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ar1_turningpts.html">
-   48. Forecasting  an AR(1) Process
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Information
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="odu.html">
-   49. Job Search VII: Search with Learning
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="likelihood_ratio_process.html">
-   50. Likelihood Ratio Processes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="imp_sample.html">
-   51. Mean of a Likelihood Ratio Process
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="wald_friedman.html">
-   52. A Problem that Stumped Milton Friedman
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="exchangeable.html">
-   53. Exchangeability and Bayesian Updating
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="likelihood_bayes.html">
-   54. Likelihood Ratio Processes and Bayesian Learning
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="mix_model.html">
-   55. Incorrect Models
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="navy_captain.html">
-   56. Bayesian versus Frequentist Decision Rules
+   57. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2012,32 +2017,32 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   57. LQ Control: Foundations
+   58. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   58. Lagrangian for LQ Control
+   59. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   59. Eliminating Cross Products
+   60. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   60. The Permanent Income Model
+   61. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   61. Permanent Income II: LQ Techniques
+   62. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   62. Production Smoothing via Inventories
+   63. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2049,32 +2054,32 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   63. A Lake Model of Employment and Unemployment
+   64. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   64. Rational Expectations Equilibrium
+   65. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   65. Stability in Linear Rational Expectations Models
+   66. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   66. Markov Perfect Equilibrium
+   67. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   67. Uncertainty Traps
+   68. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   68. The Aiyagari Model
+   69. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -2086,17 +2091,17 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   69. Asset Pricing: Finite State Models
+   70. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   70. Competitive Equilibria with Arrow Securities
+   71. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   71. Heterogeneous Beliefs and Bubbles
+   72. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2108,17 +2113,17 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   72. Pandas for Panel Data
+   73. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   73. Linear Regression in Python
+   74. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   74. Maximum Likelihood Estimation
+   75. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2130,12 +2135,12 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   75. First-Price and Second-Price Auctions
+   76. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   76. Multiple Good Allocation Mechanisms
+   77. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2147,17 +2152,17 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   77. Troubleshooting
+   78. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   78. References
+   79. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   79. Execution Statistics
+   80. Execution Statistics
   </a>
  </li>
 </ul>

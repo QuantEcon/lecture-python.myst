@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>26. Another Look at the Kalman Filter &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>37. Another Look at the Kalman Filter &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -118,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="27. Job Search I: The McCall Search Model" href="mccall_model.html" />
-    <link rel="prev" title="25. A First Look at the Kalman Filter" href="kalman.html" />
+    <link rel="next" title="38. Job Search I: The McCall Search Model" href="mccall_model.html" />
+    <link rel="prev" title="36. A First Look at the Kalman Filter" href="kalman.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -167,12 +167,12 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-workers-output">26.1. A worker’s output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-firms-wage-setting-policy">26.2. A firm’s wage-setting policy</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-state-space-representation">26.3. A state-space representation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-innovations-representation">26.4. An Innovations Representation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-computational-experiments">26.5. Some Computational Experiments</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#future-extensions">26.6. Future Extensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-workers-output">37.1. A worker’s output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-firms-wage-setting-policy">37.2. A firm’s wage-setting policy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-state-space-representation">37.3. A state-space representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-innovations-representation">37.4. An Innovations Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-computational-experiments">37.5. Some Computational Experiments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#future-extensions">37.6. Future Extensions</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -230,7 +230,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="another-look-at-the-kalman-filter">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">26. </span>Another Look at the Kalman Filter</a><a class="headerlink" href="#another-look-at-the-kalman-filter" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id1"><span class="section-number">37. </span>Another Look at the Kalman Filter</a><a class="headerlink" href="#another-look-at-the-kalman-filter" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -301,11 +301,11 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <section id="a-workers-output">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">26.1. </span>A worker’s output</a><a class="headerlink" href="#a-workers-output" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2"><span class="section-number">37.1. </span>A worker’s output</a><a class="headerlink" href="#a-workers-output" title="Permalink to this heading">#</a></h2>
 <p>A representative worker is permanently employed at a firm.</p>
 <p>The workers’  output  is  described by the following dynamic process:</p>
 <div class="math notranslate nohighlight" id="equation-worker-model">
-<span class="eqno">(26.1)<a class="headerlink" href="#equation-worker-model" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(37.1)<a class="headerlink" href="#equation-worker-model" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
 h_{t+1} &amp;= \alpha h_t + \beta u_t + c w_{t+1}, \quad c_{t+1} \sim {\mathcal N}(0,1) \\
 u_{t+1} &amp; = u_t \\
 y_t &amp; = g h_t + v_t , \quad v_t \sim {\mathcal N} (0, R)
@@ -330,7 +330,7 @@ y_t &amp; = g h_t + v_t , \quad v_t \sim {\mathcal N} (0, R)
 <p>But the firm  does observe the worker’s  output <span class="math notranslate nohighlight">\(y_t\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> and remembers the worker’s past outputs <span class="math notranslate nohighlight">\(y^{t-1}\)</span>.</p>
 </section>
 <section id="a-firms-wage-setting-policy">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">26.2. </span>A firm’s wage-setting policy</a><a class="headerlink" href="#a-firms-wage-setting-policy" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">37.2. </span>A firm’s wage-setting policy</a><a class="headerlink" href="#a-firms-wage-setting-policy" title="Permalink to this heading">#</a></h2>
 <p>Based on information about the worker that the firm has at time <span class="math notranslate nohighlight">\(t \geq 1\)</span>, the firm pays the worker log wage</p>
 <div class="math notranslate nohighlight">
 \[
@@ -345,8 +345,8 @@ w_0 = g \hat h_0
 to the random component <span class="math notranslate nohighlight">\(v_t\)</span> that comes entirely from luck, and that is assumed to be independent of <span class="math notranslate nohighlight">\(h_t\)</span> and <span class="math notranslate nohighlight">\(u_t\)</span>.</p>
 </section>
 <section id="a-state-space-representation">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">26.3. </span>A state-space representation</a><a class="headerlink" href="#a-state-space-representation" title="Permalink to this heading">#</a></h2>
-<p>Write system <a class="reference internal" href="#equation-worker-model">(26.1)</a> in the state-space form</p>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">37.3. </span>A state-space representation</a><a class="headerlink" href="#a-state-space-representation" title="Permalink to this heading">#</a></h2>
+<p>Write system <a class="reference internal" href="#equation-worker-model">(37.1)</a> in the state-space form</p>
 <div class="math notranslate nohighlight">
 \[\begin{aligned}
 \begin{bmatrix} h_{t+1} \cr u_{t+1} \end{bmatrix} &amp;= \begin{bmatrix} \alpha &amp; \beta \cr 0 &amp; 1 \end{bmatrix}\begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + \begin{bmatrix} c \cr 0 \end{bmatrix} w_{t+1} \cr
@@ -354,7 +354,7 @@ y_t &amp; = \begin{bmatrix} g &amp; 0 \end{bmatrix} \begin{bmatrix} h_{t} \cr u_
 \end{aligned}\]</div>
 <p>which is equivalent with</p>
 <div class="math notranslate nohighlight" id="equation-ssrepresent">
-<span class="eqno">(26.2)<a class="headerlink" href="#equation-ssrepresent" title="Permalink to this equation">#</a></span>\[\begin{aligned} 
+<span class="eqno">(37.2)<a class="headerlink" href="#equation-ssrepresent" title="Permalink to this equation">#</a></span>\[\begin{aligned} 
 x_{t+1} &amp; = A x_t + C w_{t+1} \cr
 y_t &amp; = G x_t + v_t \cr
 x_0 &amp; \sim {\mathcal N}(\hat x_0, \Sigma_0) 
@@ -394,7 +394,7 @@ x_0 &amp; \sim {\mathcal N}(\hat x_0, \Sigma_0)
 </div>
 </div>
 <p>Please note how the <code class="docutils literal notranslate"><span class="pre">WorkerModel</span></code> namedtuple creates all of the objects required to compute an associated
-state-space representation <a class="reference internal" href="#equation-ssrepresent">(26.2)</a>.</p>
+state-space representation <a class="reference internal" href="#equation-ssrepresent">(37.2)</a>.</p>
 <p>This is handy, because in order to  simulate a history <span class="math notranslate nohighlight">\(\{y_t, h_t\}\)</span> for a worker, we’ll want to form
 state space system for him/her by using the <a class="reference external" href="https://quanteconpy.readthedocs.io/en/latest/tools/lss.html"><code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code></a> class.</p>
 <div class="cell docutils container">
@@ -422,7 +422,7 @@ we  use the Kalman filter described in this quantecon lecture <a class="referenc
 <p>In particular, we want to compute all of the objects in an “innovation representation”.</p>
 </section>
 <section id="an-innovations-representation">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">26.4. </span>An Innovations Representation</a><a class="headerlink" href="#an-innovations-representation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">37.4. </span>An Innovations Representation</a><a class="headerlink" href="#an-innovations-representation" title="Permalink to this heading">#</a></h2>
 <p>We have all the objects in hand required to form an innovations representation for the output
 process <span class="math notranslate nohighlight">\(\{y_t\}_{t=0}^T\)</span> for a worker.</p>
 <p>Let’s code that up now.</p>
@@ -488,7 +488,7 @@ y_{t} &amp; = G \hat x_t + a_t
 </div>
 </section>
 <section id="some-computational-experiments">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">26.5. </span>Some Computational Experiments</a><a class="headerlink" href="#some-computational-experiments" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">37.5. </span>Some Computational Experiments</a><a class="headerlink" href="#some-computational-experiments" title="Permalink to this heading">#</a></h2>
 <p>Let’s look at  <span class="math notranslate nohighlight">\(\Sigma_0\)</span> and <span class="math notranslate nohighlight">\(\Sigma_T\)</span> in order to see how much the firm learns about the hidden state during the horizon we have set.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -882,7 +882,7 @@ namedtuple.</p>
 </div>
 </section>
 <section id="future-extensions">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">26.6. </span>Future Extensions</a><a class="headerlink" href="#future-extensions" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">37.6. </span>Future Extensions</a><a class="headerlink" href="#future-extensions" title="Permalink to this heading">#</a></h2>
 <p>We can do lots of enlightening experiments by creating new types of workers and letting the firm
 learn about their hidden (to the firm) states by observing just their output histories.</p>
 </section>
@@ -1033,18 +1033,87 @@ learn about their hidden (to the firm) states by observing just their output his
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   17. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   18. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   19. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   20. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   21. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   22. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   23. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   24. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   25. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   26. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   27. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Linear Programming
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   17. Optimal Transport
+   28. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   18. Von Neumann Growth Model (and a Generalization)
+   29. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1056,42 +1125,42 @@ learn about their hidden (to the firm) states by observing just their output his
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   19. Finite Markov Chains
+   30. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   20. Inventory Dynamics
+   31. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   21. Linear State Space Models
+   32. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   22. Samuelson Multiplier-Accelerator
+   33. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   23. Kesten Processes and Firm Dynamics
+   34. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   24. Wealth Distribution Dynamics
+   35. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   25. A First Look at the Kalman Filter
+   36. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   26. Another Look at the Kalman Filter
+   37. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1103,37 +1172,42 @@ learn about their hidden (to the firm) states by observing just their output his
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   27. Job Search I: The McCall Search Model
+   38. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   28. Job Search II: Search and Separation
+   39. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   29. Job Search III: Fitted Value Function Iteration
+   40. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   30. Job Search IV: Correlated Wage Offers
+   41. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   31. Job Search V: Modeling Career Choice
+   42. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   32. Job Search VI: On-the-Job Search
+   43. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   33. Job Search VII: A McCall Worker Q-Learns
+   44. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   45. Job Search VII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1145,131 +1219,62 @@ learn about their hidden (to the firm) states by observing just their output his
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   34. Cass-Koopmans Model
+   46. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   35. Cass-Koopmans Competitive Equilibrium
+   47. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   36. Cass-Koopmans Model with Distorting Taxes
+   48. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   37. Transitions in an Overlapping Generations Model
+   49. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   38. Cake Eating I: Introduction to Optimal Saving
+   50. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   39. Cake Eating II: Numerical Methods
+   51. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   40. Optimal Growth I: The Stochastic Optimal Growth Model
+   52. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   41. Optimal Growth II: Accelerating the Code with Numba
+   53. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   42. Optimal Growth III: Time Iteration
+   54. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   43. Optimal Growth IV: The Endogenous Grid Method
+   55. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   44. The Income Fluctuation Problem I: Basic Model
+   56. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   45. The Income Fluctuation Problem II: Stochastic Returns on Assets
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Bayes Law
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="bayes_nonconj.html">
-   46. Non-Conjugate Priors
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ar1_bayes.html">
-   47. Posterior Distributions for  AR(1) Parameters
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ar1_turningpts.html">
-   48. Forecasting  an AR(1) Process
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Information
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="odu.html">
-   49. Job Search VII: Search with Learning
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="likelihood_ratio_process.html">
-   50. Likelihood Ratio Processes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="imp_sample.html">
-   51. Mean of a Likelihood Ratio Process
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="wald_friedman.html">
-   52. A Problem that Stumped Milton Friedman
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="exchangeable.html">
-   53. Exchangeability and Bayesian Updating
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="likelihood_bayes.html">
-   54. Likelihood Ratio Processes and Bayesian Learning
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="mix_model.html">
-   55. Incorrect Models
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="navy_captain.html">
-   56. Bayesian versus Frequentist Decision Rules
+   57. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1281,32 +1286,32 @@ learn about their hidden (to the firm) states by observing just their output his
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   57. LQ Control: Foundations
+   58. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   58. Lagrangian for LQ Control
+   59. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   59. Eliminating Cross Products
+   60. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   60. The Permanent Income Model
+   61. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   61. Permanent Income II: LQ Techniques
+   62. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   62. Production Smoothing via Inventories
+   63. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1318,32 +1323,32 @@ learn about their hidden (to the firm) states by observing just their output his
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   63. A Lake Model of Employment and Unemployment
+   64. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   64. Rational Expectations Equilibrium
+   65. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   65. Stability in Linear Rational Expectations Models
+   66. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   66. Markov Perfect Equilibrium
+   67. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   67. Uncertainty Traps
+   68. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   68. The Aiyagari Model
+   69. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1355,17 +1360,17 @@ learn about their hidden (to the firm) states by observing just their output his
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   69. Asset Pricing: Finite State Models
+   70. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   70. Competitive Equilibria with Arrow Securities
+   71. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   71. Heterogeneous Beliefs and Bubbles
+   72. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1377,17 +1382,17 @@ learn about their hidden (to the firm) states by observing just their output his
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   72. Pandas for Panel Data
+   73. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   73. Linear Regression in Python
+   74. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   74. Maximum Likelihood Estimation
+   75. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1399,12 +1404,12 @@ learn about their hidden (to the firm) states by observing just their output his
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   75. First-Price and Second-Price Auctions
+   76. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   76. Multiple Good Allocation Mechanisms
+   77. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1416,17 +1421,17 @@ learn about their hidden (to the firm) states by observing just their output his
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   77. Troubleshooting
+   78. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   78. References
+   79. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   79. Execution Statistics
+   80. Execution Statistics
   </a>
  </li>
 </ul>

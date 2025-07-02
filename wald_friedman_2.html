@@ -1,0 +1,1676 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>23. A Bayesian Formulation of Friedman and Wald’s Problem &#8212; Intermediate Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'wald_friedman_2';</script>
+    <link rel="canonical" href="https://python.quantecon.org/wald_friedman_2.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="24. Exchangeability and Bayesian Updating" href="exchangeable.html" />
+    <link rel="prev" title="22. A Problem that Stumped Milton Friedman" href="wald_friedman.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="A Bayesian Formulation of Friedman and Wald’s Problem"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="A Bayesian Formulation of Friedman and Wald’s Problem" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/wald_friedman_2.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=wald_friedman_2>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">23.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-dynamic-programming-approach">23.2. A Dynamic Programming Approach</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#losses-and-costs">23.2.1. Losses and Costs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#digression-on-type-i-and-type-ii-errors">23.2.2. Digression on Type I and Type II Errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intuition">23.2.3. Intuition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-bellman-equation">23.2.4. A Bellman Equation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">23.3. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis">23.4. Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-function">23.4.1. Cost Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulations">23.4.2. Simulations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparative-statics">23.4.3. Comparative Statics</a></li>
+</ul>
+</li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">A Bayesian Formulation of Friedman and Wald’s Problem</p>
+
+                    </div>
+                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="a-bayesian-formulation-of-friedman-and-wald-s-problem">
+<h1><a class="toc-backref" href="#id6"><span class="section-number">23. </span><span class="target" id="index-0"></span>A Bayesian Formulation of Friedman and Wald’s Problem</a><a class="headerlink" href="#a-bayesian-formulation-of-friedman-and-wald-s-problem" title="Permalink to this heading">#</a></h1>
+<div class="contents topic" id="contents">
+<span id="index-1"></span><p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#a-bayesian-formulation-of-friedman-and-wald-s-problem" id="id6">A Bayesian Formulation of Friedman and Wald’s Problem</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id7">Overview</a></p></li>
+<li><p><a class="reference internal" href="#a-dynamic-programming-approach" id="id8">A Dynamic Programming Approach</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id9">Implementation</a></p></li>
+<li><p><a class="reference internal" href="#analysis" id="id10">Analysis</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="overview">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">23.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>This lecture revisits the  statistical decision problem presented to Milton
+Friedman and W. Allen Wallis during World War II when they were analysts at
+the U.S. Government’s  Statistical Research Group at Columbia University.</p>
+<p>In  <a class="reference internal" href="wald_friedman.html"><span class="doc">an earlier lecture</span></a>, we described how  Abraham Wald <span id="id1">[<a class="reference internal" href="zreferences.html#id113" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span>  solved the problem by  extending frequentist hypothesis testing techniques and formulating the problem sequentially.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Wald’s idea of formulating the problem sequentially created links to the <strong>dynamic programming</strong> that Richard Bellman developed in the 1950s.</p>
+</div>
+<p>As we learned in <a class="reference internal" href="prob_matrix.html"><span class="doc">Elementary Probability with Matrices</span></a> and  <a class="reference internal" href="prob_meaning.html"><span class="doc">Two Meanings of Probability</span></a>, a frequentist statistician views a probability distribution as measuring relative frequencies of a statistic that he anticipates constructing  from a very long sequence of i.i.d. draws from a known probability distribution.</p>
+<p>That known probability distribution is his ‘hypothesis’.</p>
+<p>A frequentist statistician studies the distribution of that statistic under that known probability distribution</p>
+<ul class="simple">
+<li><p>when the distribution is a member of a set of parameterized probability distribution, his hypothesis takes the form of a particular parameter vector.</p></li>
+<li><p>this is what we mean when we say that the frequentist statistician ‘conditions on the parameters’</p></li>
+<li><p>he regards the parameters that are fixed numbers, known to nature, but not to him.</p></li>
+<li><p>the statistician copes with his ignorance of those parameters by constructing the type I and type II errors associated with frequentist hypothesis testing.</p></li>
+</ul>
+<p>In this lecture, we reformulate Friedman and Wald’s  problem  by transforming our point of view from the ‘objective’ frequentist perspective of <a class="reference internal" href="wald_friedman.html"><span class="doc">the lecture on Wald’s sequential analysis</span></a> to an explicitly ‘subjective’ perspective taken by a Bayesian decision maker who regards parameters not as fixed numbers but as (hidden) random variables that are jointly distributed with the random variables that can be observed by sampling from that joint distribution.</p>
+<p>To form that joint distribution, the Bayesian statistician supplements the conditional distributions used by the frequentist statistician with
+a prior probability distribution over the parameters that representive his personal, subjective opinion about those them.</p>
+<p>To proceed in the way, we endow our decision maker with</p>
+<ul class="simple">
+<li><p>an initial prior subjective probability <span class="math notranslate nohighlight">\(\pi_{-1} \in (0,1)\)</span>  that nature uses to  generate  <span class="math notranslate nohighlight">\(\{z_k\}\)</span> as a sequence of i.i.d. draws from <span class="math notranslate nohighlight">\(f_1\)</span> rather than <span class="math notranslate nohighlight">\(f_0\)</span>.</p></li>
+<li><p>faith in Bayes’ law as a way to revise his subjective beliefs as observations on <span class="math notranslate nohighlight">\(\{z_k\}\)</span> sequence arrive each period.</p></li>
+<li><p>a loss function that tells how the decision maker values type I and type II errors.</p></li>
+</ul>
+<p>In our <a class="reference internal" href="wald_friedman.html"><span class="doc">previous frequentist version</span></a>, key ideas in play were:</p>
+<ul class="simple">
+<li><p>Type I and type II statistical errors</p>
+<ul>
+<li><p>a type I error occurs when you reject a null hypothesis that is true</p></li>
+<li><p>a type II error occurs when you accept a null hypothesis that is false</p></li>
+</ul>
+</li>
+<li><p>Abraham Wald’s <strong>sequential probability ratio test</strong></p></li>
+<li><p>The <strong>power</strong> of a statistical test</p></li>
+<li><p>The <strong>critical region</strong> of a statistical test</p></li>
+<li><p>A <strong>uniformly most powerful test</strong></p></li>
+</ul>
+<p>In this lecture about a Bayesian reformulation of the problem, additional  ideas at work are</p>
+<ul class="simple">
+<li><p>an initial prior probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> that model <span class="math notranslate nohighlight">\(f_1\)</span> generates the data</p></li>
+<li><p>Bayes’ Law</p></li>
+<li><p>a sequence of posterior probabilities that model <span class="math notranslate nohighlight">\(f_1\)</span> is  generating the data</p></li>
+<li><p>dynamic programming</p></li>
+</ul>
+<p>This lecture uses ideas studied in the lectures on <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">likelihood ratio processes</span></a>, <a class="reference internal" href="likelihood_bayes.html"><span class="doc">their roles in Bayesian learning</span></a>, and <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture on exchangeability</span></a>.</p>
+<p>We’ll begin with some imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
+<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-dynamic-programming-approach">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">23.2. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Permalink to this heading">#</a></h2>
+<p>The following presentation of the problem closely follows Dmitri
+Berskekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id2">[<a class="reference internal" href="zreferences.html#id112" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">Bertsekas, 1975</a>]</span>.</p>
+<p>A decision-maker can observe a sequence of draws of a random variable <span class="math notranslate nohighlight">\(z\)</span>.</p>
+<p>He (or she) wants to know which of two probability distributions <span class="math notranslate nohighlight">\(f_0\)</span> or <span class="math notranslate nohighlight">\(f_1\)</span> governs <span class="math notranslate nohighlight">\(z\)</span>.</p>
+<p>Conditional on knowing that successive observations are drawn from distribution <span class="math notranslate nohighlight">\(f_0\)</span>, the sequence of
+random variables is independently and identically distributed (IID).</p>
+<p>Conditional on knowing that successive observations are drawn from distribution <span class="math notranslate nohighlight">\(f_1\)</span>, the sequence of
+random variables is also independently and identically distributed (IID).</p>
+<p>But the observer does not know which of the two distributions generated the sequence.</p>
+<p>For reasons explained in  <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a>, this means that the sequence is not
+IID.</p>
+<p>The observer has something to learn, namely, whether the observations are drawn from  <span class="math notranslate nohighlight">\(f_0\)</span> or from <span class="math notranslate nohighlight">\(f_1\)</span>.</p>
+<p>The decision maker   wants  to decide
+which of the  two distributions is generating outcomes.</p>
+<p>We adopt a Bayesian formulation.</p>
+<p>The decision maker begins  with a prior probability</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{-1} =
+\mathbb P \{ f = f_1 \mid \textrm{ no observations} \} \in (0, 1)
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In <span id="id3">Bertsekas [<a class="reference internal" href="zreferences.html#id112" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">1975</a>]</span>, the belief is associated with the distribution <span class="math notranslate nohighlight">\(f_0\)</span>, but here
+we associate the belief with the distribution <span class="math notranslate nohighlight">\(f_1\)</span> to match the discussions in <a class="reference internal" href="wald_friedman.html"><span class="doc">the lecture on Wald’s sequential analysis</span></a>.</p>
+</div>
+<p>After observing <span class="math notranslate nohighlight">\(k+1\)</span> observations <span class="math notranslate nohighlight">\(z_k, z_{k-1}, \ldots, z_0\)</span>, he updates his personal probability that the observations are described by distribution <span class="math notranslate nohighlight">\(f_1\)</span>  to</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_k = \mathbb P \{ f = f_1 \mid z_k, z_{k-1}, \ldots, z_0 \}
+\]</div>
+<p>which is calculated recursively by applying Bayes’ law:</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{k+1} = \frac{ \pi_k f_1(z_{k+1})}{ (1-\pi_k) f_0(z_{k+1}) + \pi_k f_1 (z_{k+1}) },
+\quad k = -1, 0, 1, \ldots
+\]</div>
+<p>After observing <span class="math notranslate nohighlight">\(z_k, z_{k-1}, \ldots, z_0\)</span>, the decision-maker believes
+that <span class="math notranslate nohighlight">\(z_{k+1}\)</span> has probability distribution</p>
+<div class="math notranslate nohighlight">
+\[
+f_{{\pi}_k} (v) = (1-\pi_k) f_0(v) + \pi_k f_1 (v) ,
+\]</div>
+<p>which  is a mixture of distributions <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span>, with the weight
+on <span class="math notranslate nohighlight">\(f_1\)</span> being the posterior probability that <span class="math notranslate nohighlight">\(f = f_1\)</span> <a class="footnote-reference brackets" href="#f1" id="id4">1</a>.</p>
+<p>To  illustrate such a distribution, let’s inspect some mixtures of beta distributions.</p>
+<p>The density of a beta probability distribution with parameters <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
+\quad \text{where} \quad
+\Gamma(t) := \int_{0}^{\infty} x^{t-1} e^{-x} dx
+\]</div>
+<p>The next figure shows two beta distributions in the top panel.</p>
+<p>The bottom panel presents mixtures of these distributions, with various mixing probabilities <span class="math notranslate nohighlight">\(\pi_k\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">f0</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">f1</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Original Distributions&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">f0</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$f_0$&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">f1</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$f_1$&quot;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Mixtures&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">π</span> <span class="ow">in</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">:</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">f0</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">+</span> <span class="n">π</span> <span class="o">*</span> <span class="n">f1</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s2">&quot;$\pi_k$ = </span><span class="si">{</span><span class="n">π</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$z$ values&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;probability of $z_k$&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/bed4bfc187ed0724e2cee059a7a7e3c7d4c5c19de5ff526a98480a8a5c07f2de.png" src="_images/bed4bfc187ed0724e2cee059a7a7e3c7d4c5c19de5ff526a98480a8a5c07f2de.png" />
+</div>
+</div>
+<section id="losses-and-costs">
+<h3><span class="section-number">23.2.1. </span>Losses and Costs<a class="headerlink" href="#losses-and-costs" title="Permalink to this heading">#</a></h3>
+<p>After observing <span class="math notranslate nohighlight">\(z_k, z_{k-1}, \ldots, z_0\)</span>, the decision-maker
+chooses among three distinct actions:</p>
+<ul class="simple">
+<li><p>He decides that <span class="math notranslate nohighlight">\(f = f_0\)</span> and draws no more <span class="math notranslate nohighlight">\(z\)</span>’s</p></li>
+<li><p>He decides that <span class="math notranslate nohighlight">\(f = f_1\)</span> and draws no more <span class="math notranslate nohighlight">\(z\)</span>’s</p></li>
+<li><p>He postpones deciding now and instead chooses to draw a
+<span class="math notranslate nohighlight">\(z_{k+1}\)</span></p></li>
+</ul>
+<p>Associated with these three actions, the decision-maker can suffer three
+kinds of losses:</p>
+<ul class="simple">
+<li><p>A loss <span class="math notranslate nohighlight">\(L_0\)</span> if he decides <span class="math notranslate nohighlight">\(f = f_0\)</span> when actually
+<span class="math notranslate nohighlight">\(f=f_1\)</span></p></li>
+<li><p>A loss <span class="math notranslate nohighlight">\(L_1\)</span> if he decides <span class="math notranslate nohighlight">\(f = f_1\)</span> when actually
+<span class="math notranslate nohighlight">\(f=f_0\)</span></p></li>
+<li><p>A cost <span class="math notranslate nohighlight">\(c\)</span> if he postpones deciding and chooses instead to draw
+another <span class="math notranslate nohighlight">\(z\)</span></p></li>
+</ul>
+</section>
+<section id="digression-on-type-i-and-type-ii-errors">
+<h3><span class="section-number">23.2.2. </span>Digression on Type I and Type II Errors<a class="headerlink" href="#digression-on-type-i-and-type-ii-errors" title="Permalink to this heading">#</a></h3>
+<p>If we regard  <span class="math notranslate nohighlight">\(f=f_0\)</span> as a null hypothesis and <span class="math notranslate nohighlight">\(f=f_1\)</span> as an alternative hypothesis,
+then <span class="math notranslate nohighlight">\(L_1\)</span> and <span class="math notranslate nohighlight">\(L_0\)</span> are losses associated with two types of statistical errors</p>
+<ul class="simple">
+<li><p>a type I error is an incorrect rejection of a true null hypothesis (a “false positive”)</p></li>
+<li><p>a type II error is a failure to reject a false null hypothesis (a “false negative”)</p></li>
+</ul>
+<p>So when we treat <span class="math notranslate nohighlight">\(f=f_0\)</span> as the null hypothesis</p>
+<ul class="simple">
+<li><p>We can think of <span class="math notranslate nohighlight">\(L_1\)</span> as the loss associated with a type I
+error.</p></li>
+<li><p>We can think of <span class="math notranslate nohighlight">\(L_0\)</span> as the loss associated with a type II
+error.</p></li>
+</ul>
+</section>
+<section id="intuition">
+<h3><span class="section-number">23.2.3. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this heading">#</a></h3>
+<p>Before proceeding,  let’s try to guess what an optimal decision rule might look like.</p>
+<p>Suppose at some given point in time that <span class="math notranslate nohighlight">\(\pi\)</span> is close to 1.</p>
+<p>Then our prior beliefs and the evidence so far point strongly to <span class="math notranslate nohighlight">\(f = f_1\)</span>.</p>
+<p>If, on the other hand, <span class="math notranslate nohighlight">\(\pi\)</span> is close to 0, then <span class="math notranslate nohighlight">\(f = f_0\)</span> is strongly favored.</p>
+<p>Finally, if <span class="math notranslate nohighlight">\(\pi\)</span> is in the middle of the interval <span class="math notranslate nohighlight">\([0, 1]\)</span>, then we are confronted with more uncertainty.</p>
+<p>This reasoning suggests a sequential  decision rule that we illustrate  in the following figure:</p>
+<figure class="align-default">
+<img alt="_images/wald_dec_rule1.png" src="_images/wald_dec_rule1.png" />
+</figure>
+<p>As we’ll see, this is indeed the correct form of the decision rule.</p>
+<p>Our problem is to determine threshold values <span class="math notranslate nohighlight">\(A, B\)</span> that somehow depend on the parameters described  above.</p>
+<p>You might like to pause at this point and try to predict the impact of a
+parameter such as <span class="math notranslate nohighlight">\(c\)</span> or <span class="math notranslate nohighlight">\(L_0\)</span> on <span class="math notranslate nohighlight">\(A\)</span> or <span class="math notranslate nohighlight">\(B\)</span>.</p>
+</section>
+<section id="a-bellman-equation">
+<h3><span class="section-number">23.2.4. </span>A Bellman Equation<a class="headerlink" href="#a-bellman-equation" title="Permalink to this heading">#</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(J(\pi)\)</span> be the total loss for a decision-maker with current belief <span class="math notranslate nohighlight">\(\pi\)</span> who chooses optimally.</p>
+<p>With some thought, you will agree that <span class="math notranslate nohighlight">\(J\)</span> should satisfy the Bellman equation</p>
+<div class="math notranslate nohighlight" id="equation-new1">
+<span class="eqno">(23.1)<a class="headerlink" href="#equation-new1" title="Permalink to this equation">#</a></span>\[J(\pi) =
+    \min
+    \left\{
+        \underbrace{\pi L_0}_{ \text{accept } f_0 } \; , \; \underbrace{(1-\pi) L_1}_{ \text{accept } f_1 } \; , \;
+        \underbrace{c + \mathbb E [ J (\pi') ]}_{ \text{draw again} }
+    \right\}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\pi'\)</span> is the random variable defined by Bayes’ Law</p>
+<div class="math notranslate nohighlight">
+\[
+\pi' = \kappa(z', \pi) = \frac{ \pi f_1(z')}{ (1-\pi) f_0(z') + \pi f_1 (z') }
+\]</div>
+<p>when <span class="math notranslate nohighlight">\(\pi\)</span> is fixed and <span class="math notranslate nohighlight">\(z'\)</span> is drawn from the current best guess, which is the distribution <span class="math notranslate nohighlight">\(f\)</span> defined by</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\pi}(v) = (1-\pi) f_0(v) + \pi f_1 (v)
+\]</div>
+<p>In the Bellman equation, minimization is over three actions:</p>
+<ol class="arabic simple">
+<li><p>Accept the hypothesis that <span class="math notranslate nohighlight">\(f = f_0\)</span></p></li>
+<li><p>Accept the hypothesis that <span class="math notranslate nohighlight">\(f = f_1\)</span></p></li>
+<li><p>Postpone deciding and draw again</p></li>
+</ol>
+<p>We can represent the  Bellman equation as</p>
+<div class="math notranslate nohighlight" id="equation-optdec">
+<span class="eqno">(23.2)<a class="headerlink" href="#equation-optdec" title="Permalink to this equation">#</a></span>\[J(\pi) =
+\min \left\{ \pi L_0, \; (1-\pi) L_1, \; h(\pi) \right\}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\pi \in [0,1]\)</span> and</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\pi L_0\)</span> is the expected loss associated with accepting
+<span class="math notranslate nohighlight">\(f_0\)</span> (i.e., the cost of making a type II error).</p></li>
+<li><p><span class="math notranslate nohighlight">\((1-\pi) L_1\)</span> is the expected loss associated with accepting
+<span class="math notranslate nohighlight">\(f_1\)</span> (i.e., the cost of making a type I error).</p></li>
+<li><p><span class="math notranslate nohighlight">\(h(\pi) :=  c + \mathbb E [J(\pi')]\)</span>; this is the continuation value; i.e.,
+the expected cost associated with drawing one more <span class="math notranslate nohighlight">\(z\)</span>.</p></li>
+</ul>
+<p>The optimal decision rule is characterized by two numbers <span class="math notranslate nohighlight">\(A, B \in (0,1) \times (0,1)\)</span> that satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+\pi L_0 &lt; \min \{ (1-\pi) L_1, c + \mathbb E [J(\pi')] \}  \textrm { if } \pi \leq B
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+(1- \pi) L_1 &lt; \min \{ \pi L_0,  c + \mathbb E [J(\pi')] \} \textrm { if } \pi \geq A
+\]</div>
+<p>The optimal decision rule is then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\textrm { accept } f=f_1 \textrm{ if } \pi \geq A \\
+\textrm { accept } f=f_0 \textrm{ if } \pi \leq B \\
+\textrm { draw another }  z \textrm{ if }  B &lt; \pi &lt; A
+\end{aligned}
+\end{split}\]</div>
+<p>Our aim is to compute the cost function <span class="math notranslate nohighlight">\(J\)</span> as well as  the associated cutoffs <span class="math notranslate nohighlight">\(A\)</span>
+and <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p>To make our computations manageable, using <a class="reference internal" href="#equation-optdec">(23.2)</a>, we can write the continuation cost <span class="math notranslate nohighlight">\(h(\pi)\)</span> as</p>
+<div class="math notranslate nohighlight" id="equation-optdec2">
+<span class="eqno">(23.3)<a class="headerlink" href="#equation-optdec2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+h(\pi) &amp;= c + \mathbb E [J(\pi')] \\
+&amp;= c + \mathbb E_{\pi'} \min \{ \pi' L_0, (1 - \pi') L_1, h(\pi') \} \\
+&amp;= c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
+\end{aligned}\end{split}\]</div>
+<p>The equality</p>
+<div class="math notranslate nohighlight" id="equation-funceq">
+<span class="eqno">(23.4)<a class="headerlink" href="#equation-funceq" title="Permalink to this equation">#</a></span>\[h(\pi) =
+c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'\]</div>
+<p>is an equation  in an unknown function  <span class="math notranslate nohighlight">\(h\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Such an equation is called a <strong>functional equation</strong>.</p>
+</div>
+<p>Using the functional equation, <a class="reference internal" href="#equation-funceq">(23.4)</a>, for the continuation cost, we can back out
+optimal choices using the right side of <a class="reference internal" href="#equation-optdec">(23.2)</a>.</p>
+<p>This functional equation can be solved by taking an initial guess and iterating
+to find a fixed point.</p>
+<p>Thus, we iterate with an operator <span class="math notranslate nohighlight">\(Q\)</span>, where</p>
+<div class="math notranslate nohighlight">
+\[
+Q h(\pi) =
+c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
+\]</div>
+</section>
+</section>
+<section id="implementation">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">23.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<p>First, we will construct a <code class="docutils literal notranslate"><span class="pre">jitclass</span></code> to store the parameters of the model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf_data</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;a0&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>          <span class="c1"># Parameters of beta distributions</span>
+           <span class="p">(</span><span class="s1">&#39;b0&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>
+           <span class="p">(</span><span class="s1">&#39;a1&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>
+           <span class="p">(</span><span class="s1">&#39;b1&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>
+           <span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>           <span class="c1"># Cost of another draw</span>
+           <span class="p">(</span><span class="s1">&#39;π_grid_size&#39;</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span>
+           <span class="p">(</span><span class="s1">&#39;L0&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>          <span class="c1"># Cost of selecting f0 when f1 is true</span>
+           <span class="p">(</span><span class="s1">&#39;L1&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>          <span class="c1"># Cost of selecting f1 when f0 is true</span>
+           <span class="p">(</span><span class="s1">&#39;π_grid&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>
+           <span class="p">(</span><span class="s1">&#39;mc_size&#39;</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span>
+           <span class="p">(</span><span class="s1">&#39;z0&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>
+           <span class="p">(</span><span class="s1">&#39;z1&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:])]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jitclass</span><span class="p">(</span><span class="n">wf_data</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">WaldFriedman</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">c</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+                 <span class="n">a0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">b0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">a1</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                 <span class="n">b1</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+                 <span class="n">L0</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                 <span class="n">L1</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                 <span class="n">π_grid_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                 <span class="n">mc_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">a0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b0</span> <span class="o">=</span> <span class="n">a0</span><span class="p">,</span> <span class="n">b0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span> <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">π_grid_size</span> <span class="o">=</span> <span class="n">c</span><span class="p">,</span> <span class="n">π_grid_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">L1</span> <span class="o">=</span> <span class="n">L0</span><span class="p">,</span> <span class="n">L1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">π_grid_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mc_size</span> <span class="o">=</span> <span class="n">mc_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">z0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">mc_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">mc_size</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f0_rvs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f1_rvs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates π using Bayes&#39; rule and the current observation z</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">f0</span><span class="p">,</span> <span class="n">f1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f1</span>
+
+        <span class="n">π_f0</span><span class="p">,</span> <span class="n">π_f1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">f0</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="n">π</span> <span class="o">*</span> <span class="n">f1</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">π_new</span> <span class="o">=</span> <span class="n">π_f1</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_f0</span> <span class="o">+</span> <span class="n">π_f1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">π_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As in the <a class="reference internal" href="optgrowth.html"><span class="doc">optimal growth lecture</span></a>, to approximate a continuous value function</p>
+<ul class="simple">
+<li><p>We iterate at a finite grid of possible values of <span class="math notranslate nohighlight">\(\pi\)</span>.</p></li>
+<li><p>When we evaluate <span class="math notranslate nohighlight">\(\mathbb E[J(\pi')]\)</span> between grid points, we use linear interpolation.</p></li>
+</ul>
+<p>We define the operator function <code class="docutils literal notranslate"><span class="pre">Q</span></code> below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">Q</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+
+    <span class="n">c</span><span class="p">,</span> <span class="n">π_grid</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span>
+    <span class="n">L0</span><span class="p">,</span> <span class="n">L1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
+    <span class="n">z0</span><span class="p">,</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">z0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">z1</span>
+    <span class="n">mc_size</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">mc_size</span>
+
+    <span class="n">κ</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">κ</span>
+
+    <span class="n">h_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">π_grid</span><span class="p">)</span>
+    <span class="n">h_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">π_grid</span><span class="p">)):</span>
+        <span class="n">π</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># Find the expected value of J by integrating over z</span>
+        <span class="n">integral_f0</span><span class="p">,</span> <span class="n">integral_f1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mc_size</span><span class="p">):</span>
+            <span class="n">π_0</span> <span class="o">=</span> <span class="n">κ</span><span class="p">(</span><span class="n">z0</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">π</span><span class="p">)</span>  <span class="c1"># Draw z from f0 and update π</span>
+            <span class="n">integral_f0</span> <span class="o">+=</span> <span class="nb">min</span><span class="p">(</span><span class="n">π_0</span> <span class="o">*</span> <span class="n">L0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_0</span><span class="p">)</span> <span class="o">*</span> <span class="n">L1</span><span class="p">,</span> <span class="n">h_func</span><span class="p">(</span><span class="n">π_0</span><span class="p">))</span>
+
+            <span class="n">π_1</span> <span class="o">=</span> <span class="n">κ</span><span class="p">(</span><span class="n">z1</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">π</span><span class="p">)</span>  <span class="c1"># Draw z from f1 and update π</span>
+            <span class="n">integral_f1</span> <span class="o">+=</span> <span class="nb">min</span><span class="p">(</span><span class="n">π_1</span> <span class="o">*</span> <span class="n">L0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_1</span><span class="p">)</span> <span class="o">*</span> <span class="n">L1</span><span class="p">,</span> <span class="n">h_func</span><span class="p">(</span><span class="n">π_1</span><span class="p">))</span>
+
+        <span class="n">integral</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">integral_f0</span> <span class="o">+</span> <span class="n">π</span> <span class="o">*</span> <span class="n">integral_f1</span><span class="p">)</span> <span class="o">/</span> <span class="n">mc_size</span>
+
+        <span class="n">h_new</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">integral</span>
+
+    <span class="k">return</span> <span class="n">h_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To solve the key functional equation, we will iterate using <code class="docutils literal notranslate"><span class="pre">Q</span></code> to find the fixed point</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the continuation cost function</span>
+
+<span class="sd">    * wf is an instance of WaldFriedman</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set up loop</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">))</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="n">h_new</span> <span class="o">=</span> <span class="n">Q</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">wf</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="n">h_new</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">h_new</span>
+
+    <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to converge!&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">h_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="analysis">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">23.4. </span>Analysis</a><a class="headerlink" href="#analysis" title="Permalink to this heading">#</a></h2>
+<p>Let’s inspect outcomes.</p>
+<p>We will be using the default parameterization with distributions like so</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf</span> <span class="o">=</span> <span class="n">WaldFriedman</span><span class="p">()</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">f0</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$f_0$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">f1</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$f_1$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;probability of $z_k$&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$z_k$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Distributions&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/430de3682834c712ee387e74cd11a94a202fbdf96ffd0a2a77db4a052661bbc6.png" src="_images/430de3682834c712ee387e74cd11a94a202fbdf96ffd0a2a77db4a052661bbc6.png" />
+</div>
+</div>
+<section id="cost-function">
+<h3><span class="section-number">23.4.1. </span>Cost Function<a class="headerlink" href="#cost-function" title="Permalink to this heading">#</a></h3>
+<p>To solve the model, we will call our <code class="docutils literal notranslate"><span class="pre">solve_model</span></code> function</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h_star</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>    <span class="c1"># Solve the model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will also set up a function to compute the cutoffs <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>
+and plot these on our cost function plot</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function takes a continuation cost function and returns the</span>
+<span class="sd">    corresponding cutoffs of where you transition between continuing and</span>
+<span class="sd">    choosing a specific model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">π_grid</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span>
+    <span class="n">L0</span><span class="p">,</span> <span class="n">L1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
+
+    <span class="c1"># Evaluate cost at all points on grid for choosing a model</span>
+    <span class="n">cost_f0</span> <span class="o">=</span> <span class="n">π_grid</span> <span class="o">*</span> <span class="n">L0</span>
+    <span class="n">cost_f1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">L1</span>
+    
+    <span class="c1"># Find B: largest π where cost_f0 &lt;= min(cost_f1, h)</span>
+    <span class="n">optimal_cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">cost_f0</span><span class="p">,</span> <span class="n">cost_f1</span><span class="p">),</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">choose_f0</span> <span class="o">=</span> <span class="p">(</span><span class="n">cost_f0</span> <span class="o">&lt;=</span> <span class="n">cost_f1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cost_f0</span> <span class="o">&lt;=</span> <span class="n">h</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">choose_f0</span><span class="p">):</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">choose_f0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Last point where we choose f0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;No point where we choose f0&quot;</span>
+    
+    <span class="c1"># Find A: smallest π where cost_f1 &lt;= min(cost_f0, h)  </span>
+    <span class="n">choose_f1</span> <span class="o">=</span> <span class="p">(</span><span class="n">cost_f1</span> <span class="o">&lt;=</span> <span class="n">cost_f0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cost_f1</span> <span class="o">&lt;=</span> <span class="n">h</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">choose_f1</span><span class="p">):</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">choose_f1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># First point where we choose f1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;No point where we choose f1&quot;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+
+<span class="n">B</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="n">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h_star</span><span class="p">)</span>
+<span class="n">cost_L0</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span>
+<span class="n">cost_L1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;sample again&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">cost_L1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;choose f1&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">cost_L0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;choose f0&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">h_star</span><span class="p">,</span> <span class="n">cost_L0</span><span class="p">,</span> <span class="n">cost_L1</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">lw</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$J(\pi)$&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$B$&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">B</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$A$&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">B</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span><span class="p">)),</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span>
+       <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\pi$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Cost function $J(\pi)$&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">borderpad</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/37bf2a6e51bfd0d787c7c206564d0d32955a9655cd3d8dc07e4d77711239dc2d.png" src="_images/37bf2a6e51bfd0d787c7c206564d0d32955a9655cd3d8dc07e4d77711239dc2d.png" />
+</div>
+</div>
+<p>The cost function <span class="math notranslate nohighlight">\(J\)</span> equals <span class="math notranslate nohighlight">\(\pi L_0\)</span> for <span class="math notranslate nohighlight">\(\pi \leq B\)</span>, and <span class="math notranslate nohighlight">\((1-\pi) L_1\)</span> for <span class="math notranslate nohighlight">\(\pi
+\geq A\)</span>.</p>
+<p>The slopes of the two linear pieces of the cost   function <span class="math notranslate nohighlight">\(J(\pi)\)</span> are determined by <span class="math notranslate nohighlight">\(L_0\)</span>
+and <span class="math notranslate nohighlight">\(-L_1\)</span>.</p>
+<p>The cost function <span class="math notranslate nohighlight">\(J\)</span> is smooth in the interior region, where the posterior
+probability assigned to <span class="math notranslate nohighlight">\(f_1\)</span> is in the indecisive region <span class="math notranslate nohighlight">\(\pi \in (B, A)\)</span>.</p>
+<p>The decision-maker continues to sample until the probability that he attaches to
+model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <span class="math notranslate nohighlight">\(B\)</span> or above <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</section>
+<section id="simulations">
+<h3><span class="section-number">23.4.2. </span>Simulations<a class="headerlink" href="#simulations" title="Permalink to this heading">#</a></h3>
+<p>The next figure shows the outcomes of 500 simulations of the decision process.</p>
+<p>On the left is a histogram of <strong>stopping times</strong>, i.e.,  the number of draws of <span class="math notranslate nohighlight">\(z_k\)</span> required to make a decision.</p>
+<p>The average number of draws is around 6.6.</p>
+<p>On the right is the fraction of correct decisions at the stopping time.</p>
+<p>In this case, the decision-maker is correct 80% of the time</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">true_dist</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">π_0</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function takes an initial condition and simulates until it</span>
+<span class="sd">    stops (when a decision is made)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">f0</span><span class="p">,</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">f0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">f1</span>
+    <span class="n">f0_rvs</span><span class="p">,</span> <span class="n">f1_rvs</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">f0_rvs</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">f1_rvs</span>
+    <span class="n">π_grid</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span>
+    <span class="n">κ</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">κ</span>
+
+    <span class="k">if</span> <span class="n">true_dist</span> <span class="o">==</span> <span class="s2">&quot;f0&quot;</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">f_rvs</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">f0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">f0_rvs</span>
+    <span class="k">elif</span> <span class="n">true_dist</span> <span class="o">==</span> <span class="s2">&quot;f1&quot;</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">f_rvs</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">f1</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">f1_rvs</span>
+
+    <span class="c1"># Find cutoffs</span>
+    <span class="n">B</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="n">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h_star</span><span class="p">)</span>
+
+    <span class="c1"># Initialize a couple of useful variables</span>
+    <span class="n">decision_made</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">π</span> <span class="o">=</span> <span class="n">π_0</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">while</span> <span class="n">decision_made</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">f_rvs</span><span class="p">()</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">π</span> <span class="o">=</span> <span class="n">κ</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">π</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">π</span> <span class="o">&lt;</span> <span class="n">B</span><span class="p">:</span>
+            <span class="n">decision_made</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">decision</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">π</span> <span class="o">&gt;</span> <span class="n">A</span><span class="p">:</span>
+            <span class="n">decision_made</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">decision</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">true_dist</span> <span class="o">==</span> <span class="s2">&quot;f0&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">decision</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">correct</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">correct</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">elif</span> <span class="n">true_dist</span> <span class="o">==</span> <span class="s2">&quot;f1&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">decision</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">correct</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">correct</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="n">correct</span><span class="p">,</span> <span class="n">π</span><span class="p">,</span> <span class="n">t</span>
+
+<span class="k">def</span> <span class="nf">stopping_dist</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">ndraws</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">true_dist</span><span class="o">=</span><span class="s2">&quot;f0&quot;</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulates repeatedly to get distributions of time needed to make a</span>
+<span class="sd">    decision and how often they are correct</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tdist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">ndraws</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="n">cdist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">ndraws</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndraws</span><span class="p">):</span>
+        <span class="n">correct</span><span class="p">,</span> <span class="n">π</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">true_dist</span><span class="p">,</span> <span class="n">h_star</span><span class="p">)</span>
+        <span class="n">tdist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="n">cdist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">correct</span>
+
+    <span class="k">return</span> <span class="n">cdist</span><span class="p">,</span> <span class="n">tdist</span>
+
+<span class="k">def</span> <span class="nf">simulation_plot</span><span class="p">(</span><span class="n">wf</span><span class="p">):</span>
+    <span class="n">h_star</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
+    <span class="n">ndraws</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="n">cdist</span><span class="p">,</span> <span class="n">tdist</span> <span class="o">=</span> <span class="n">stopping_dist</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">ndraws</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">tdist</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tdist</span><span class="p">))</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stopping times over </span><span class="si">{</span><span class="n">ndraws</span><span class="si">}</span><span class="s2"> replications&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;number of stops&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mean = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tdist</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">tdist</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                   <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">tdist</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">tdist</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">cdist</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Correct decisions over </span><span class="si">{</span><span class="n">ndraws</span><span class="si">}</span><span class="s2"> replications&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;% correct = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cdist</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                   <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">ndraws</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">simulation_plot</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a7a6a1cf2b74f57b72280065913ad03979fd8a17db0c9237c78e4d63695f9051.png" src="_images/a7a6a1cf2b74f57b72280065913ad03979fd8a17db0c9237c78e4d63695f9051.png" />
+</div>
+</div>
+</section>
+<section id="comparative-statics">
+<h3><span class="section-number">23.4.3. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Permalink to this heading">#</a></h3>
+<p>Now let’s consider the following exercise.</p>
+<p>We double the cost of drawing an additional observation.</p>
+<p>Before you look, think about what will happen:</p>
+<ul class="simple">
+<li><p>Will the decision-maker be correct more or less often?</p></li>
+<li><p>Will he make decisions sooner or later?</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf</span> <span class="o">=</span> <span class="n">WaldFriedman</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="n">simulation_plot</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/37ee5c616a3883131fdd7a103a572c36086b4461d6e68db7be5ad9542b142f40.png" src="_images/37ee5c616a3883131fdd7a103a572c36086b4461d6e68db7be5ad9542b142f40.png" />
+</div>
+</div>
+<p>Increased cost per draw has induced the decision-maker to take fewer draws before deciding.</p>
+<p>Because he decides with fewer draws, the percentage of time he is correct drops.</p>
+<p>This leads to him having a higher expected loss when he puts equal weight on both models.</p>
+<p>To facilitate comparative statics, we invite you to adjust the parameters of the model
+and investigate</p>
+<ul class="simple">
+<li><p>effects on the smoothness of the value function in the indecisive middle range
+as we increase the number of grid points in the piecewise linear  approximation.</p></li>
+<li><p>effects of different settings for the cost parameters <span class="math notranslate nohighlight">\(L_0, L_1, c\)</span>, the
+parameters of two beta distributions <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span>, and the number
+of points and linear functions <span class="math notranslate nohighlight">\(m\)</span> to use in the piece-wise continuous approximation to the value function.</p></li>
+<li><p>various simulations from <span class="math notranslate nohighlight">\(f_0\)</span> and associated distributions of waiting times to making a decision.</p></li>
+<li><p>associated histograms of correct and incorrect decisions.</p></li>
+</ul>
+<hr class="footnotes docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id4">1</a></span></dt>
+<dd><p>The decision maker acts as if he believes that the sequence of random variables
+<span class="math notranslate nohighlight">\([z_{0}, z_{1}, \ldots]\)</span> is <em>exchangeable</em>.  See <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a> and
+<span id="id5">[<a class="reference internal" href="zreferences.html#id111" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kreps, 1988</a>]</span> chapter 11, for  discussions of exchangeability.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   1. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   2. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   3. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   4. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   5. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="var_dmd.html">
+   6. VARs and DMDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   7. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   9. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   10. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   11. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   12. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   13. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   14. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   15. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   16. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   17. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   18. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   19. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   20. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   21. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   22. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   23. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   24. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   25. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   26. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   27. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   28. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   29. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   30. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   31. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   32. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   33. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   34. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   35. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   36. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   37. Another Look at the Kalman Filter
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   38. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   39. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   40. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   41. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   42. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   43. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   44. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   45. Job Search VII: Search with Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Capital
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   46. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   47. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   48. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   49. Transitions in an Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   50. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   51. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   52. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   53. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   54. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   55. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   56. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   57. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   58. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   59. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   60. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   61. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   62. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   63. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   64. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   65. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   66. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   67. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   68. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   69. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   70. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   71. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   72. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   73. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   74. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   75. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   76. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   77. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   78. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   79. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   80. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/wald_friedman_2.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/wald_friedman_2.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/wald_friedman_2.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/wald_friedman_2.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/wald_friedman_2.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "wald_friedman_2";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/wald_friedman_2.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>

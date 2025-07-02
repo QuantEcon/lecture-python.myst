@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>55. Incorrect Models &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>26. Incorrect Models &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -118,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="56. Bayesian versus Frequentist Decision Rules" href="navy_captain.html" />
-    <link rel="prev" title="54. Likelihood Ratio Processes and Bayesian Learning" href="likelihood_bayes.html" />
+    <link rel="next" title="27. Bayesian versus Frequentist Decision Rules" href="navy_captain.html" />
+    <link rel="prev" title="25. Likelihood Ratio Processes and Bayesian Learning" href="likelihood_bayes.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -167,13 +167,13 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">55.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-from-compound-lottery-h">55.2. Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-1-agent">55.3. Type 1 Agent</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data">55.4. What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kullback-leibler-divergence-governs-limit-of-pi-t">55.5. Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-2-agent">55.6. Type 2 Agent</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">55.7. Concluding Remarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">26.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-from-compound-lottery-h">26.2. Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-1-agent">26.3. Type 1 Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data">26.4. What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kullback-leibler-divergence-governs-limit-of-pi-t">26.5. Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-2-agent">26.6. Type 2 Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">26.7. Concluding Remarks</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -231,7 +231,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="incorrect-models">
-<span id="likelihood-ratio-process"></span><h1><span class="section-number">55. </span>Incorrect Models<a class="headerlink" href="#incorrect-models" title="Permalink to this heading">#</a></h1>
+<span id="likelihood-ratio-process"></span><h1><span class="section-number">26. </span>Incorrect Models<a class="headerlink" href="#incorrect-models" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with the latest CUDA and CUDANN frameworks installed with access to a GPU.</p>
@@ -268,7 +268,7 @@ Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib
 </details>
 </div>
 <section id="overview">
-<h2><span class="section-number">55.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">26.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This  is a sequel to <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this  quantecon lecture</span></a>.</p>
 <p>We discuss  two ways to create compound lottery and their consequences.</p>
 <p>A compound lottery can be said to create a <em>mixture distribution</em>.</p>
@@ -422,7 +422,7 @@ it includes the actual data generating process <span class="math notranslate noh
 </div>
 </section>
 <section id="sampling-from-compound-lottery-h">
-<h2><span class="section-number">55.2. </span>Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span><a class="headerlink" href="#sampling-from-compound-lottery-h" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">26.2. </span>Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span><a class="headerlink" href="#sampling-from-compound-lottery-h" title="Permalink to this heading">#</a></h2>
 <p>We implement two methods  to draw samples from
 our mixture model <span class="math notranslate nohighlight">\(\alpha F + (1-\alpha) G\)</span>.</p>
 <p>We’ll generate samples using each of them and verify that they match well.</p>
@@ -530,7 +530,7 @@ from our target mixture distribution.</p>
 <p><strong>Note:</strong> With numba acceleration the first method is actually only slightly slower than the second when we generated 1,000,000 samples.</p>
 </section>
 <section id="type-1-agent">
-<h2><span class="section-number">55.3. </span>Type 1 Agent<a class="headerlink" href="#type-1-agent" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">26.3. </span>Type 1 Agent<a class="headerlink" href="#type-1-agent" title="Permalink to this heading">#</a></h2>
 <p>We’ll now study what our type 1 agent learns</p>
 <p>Remember that our type 1 agent uses the wrong statistical model, thinking that nature mixed between <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> once and for all at time <span class="math notranslate nohighlight">\(-1\)</span>.</p>
 <p>The type 1 agent thus uses the learning algorithm studied in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this  quantecon lecture</span></a>.</p>
@@ -544,13 +544,13 @@ from our target mixture distribution.</p>
 of the posterior probability <span class="math notranslate nohighlight">\( \pi_t \)</span>, an instance of <strong>Bayes’ Law</strong>.</p>
 <p>Bayes’ law implies that <span class="math notranslate nohighlight">\( \{\pi_t\} \)</span> obeys the recursion</p>
 <div class="math notranslate nohighlight" id="equation-equation-eq-recur1">
-<span class="eqno">(55.1)<a class="headerlink" href="#equation-equation-eq-recur1" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(26.1)<a class="headerlink" href="#equation-equation-eq-recur1" title="Permalink to this equation">#</a></span>\[
 \pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
 \]</div>
 <p>with <span class="math notranslate nohighlight">\( \pi_{0} \)</span> being a Bayesian prior probability that <span class="math notranslate nohighlight">\( q = f \)</span>,
 i.e., a personal or subjective belief about <span class="math notranslate nohighlight">\( q \)</span> based on our having seen no data.</p>
 <p>Below we define a Python function that updates belief <span class="math notranslate nohighlight">\( \pi \)</span> using
-likelihood ratio <span class="math notranslate nohighlight">\( \ell \)</span> according to  recursion <a class="reference internal" href="#equation-equation-eq-recur1">(55.1)</a></p>
+likelihood ratio <span class="math notranslate nohighlight">\( \ell \)</span> according to  recursion <a class="reference internal" href="#equation-equation-eq-recur1">(26.1)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
@@ -565,7 +565,7 @@ likelihood ratio <span class="math notranslate nohighlight">\( \ell \)</span> ac
 </div>
 </div>
 </div>
-<p>Formula <a class="reference internal" href="#equation-equation-eq-recur1">(55.1)</a> can be generalized  by iterating on it and thereby deriving an
+<p>Formula <a class="reference internal" href="#equation-equation-eq-recur1">(26.1)</a> can be generalized  by iterating on it and thereby deriving an
 expression for  the time <span class="math notranslate nohighlight">\( t \)</span> posterior <span class="math notranslate nohighlight">\( \pi_{t+1} \)</span> as a function
 of the time <span class="math notranslate nohighlight">\( 0 \)</span> prior <span class="math notranslate nohighlight">\( \pi_0 \)</span> and the likelihood ratio process
 <span class="math notranslate nohighlight">\( L(w^{t+1}) \)</span> at time <span class="math notranslate nohighlight">\( t \)</span>.</p>
@@ -610,15 +610,15 @@ of the time <span class="math notranslate nohighlight">\( 0 \)</span> prior <spa
 function of  <span class="math notranslate nohighlight">\( L\left(w^{t+1}\right) \)</span>, the  likelihood ratio process at <span class="math notranslate nohighlight">\( t+1 \)</span>,
 and the initial prior <span class="math notranslate nohighlight">\( \pi_{0} \)</span></p>
 <div class="math notranslate nohighlight" id="equation-equation-eq-bayeslaw103">
-<span class="eqno">(55.2)<a class="headerlink" href="#equation-equation-eq-bayeslaw103" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(26.2)<a class="headerlink" href="#equation-equation-eq-bayeslaw103" title="Permalink to this equation">#</a></span>\[
 \pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}}.
 \]</div>
-<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(55.2)</a> generalizes formula <a class="reference internal" href="#equation-equation-eq-recur1">(55.1)</a>.</p>
-<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(55.2)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\( \pi_0 \)</span> after seeing
+<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(26.2)</a> generalizes formula <a class="reference internal" href="#equation-equation-eq-recur1">(26.1)</a>.</p>
+<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(26.2)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\( \pi_0 \)</span> after seeing
 the batch of data <span class="math notranslate nohighlight">\( \left\{ w_{i}\right\} _{i=1}^{t+1} \)</span>.</p>
 </section>
 <section id="what-a-type-1-agent-learns-when-mixture-h-generates-data">
-<h2><span class="section-number">55.4. </span>What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data<a class="headerlink" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">26.4. </span>What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data<a class="headerlink" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data" title="Permalink to this heading">#</a></h2>
 <p>We now study what happens when the mixture distribution <span class="math notranslate nohighlight">\(h;\alpha\)</span>  truly generated the data each period.</p>
 <p>A submartingale or supermartingale continues to describe <span class="math notranslate nohighlight">\(\pi_t\)</span></p>
 <p>It raises its ugly head and causes <span class="math notranslate nohighlight">\(\pi_t\)</span> to converge either to <span class="math notranslate nohighlight">\(0\)</span> or to <span class="math notranslate nohighlight">\(1\)</span>.</p>
@@ -710,7 +710,7 @@ sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> that
 <p>Evidently, <span class="math notranslate nohighlight">\(\alpha\)</span> is having a big effect on the destination of <span class="math notranslate nohighlight">\(\pi_t\)</span> as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span></p>
 </section>
 <section id="kullback-leibler-divergence-governs-limit-of-pi-t">
-<h2><span class="section-number">55.5. </span>Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#kullback-leibler-divergence-governs-limit-of-pi-t" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">26.5. </span>Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#kullback-leibler-divergence-governs-limit-of-pi-t" title="Permalink to this heading">#</a></h2>
 <p>To understand what determines whether the limit point of  <span class="math notranslate nohighlight">\(\pi_t\)</span> is  <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>  and how the answer depends on the true value of the mixing probability  <span class="math notranslate nohighlight">\(\alpha \in (0,1) \)</span> that generates</p>
 <div class="math notranslate nohighlight">
 \[ h(w) \equiv h(w | \alpha) = \alpha f(w) + (1-\alpha) g(w) \]</div>
@@ -878,7 +878,7 @@ recorded on the <span class="math notranslate nohighlight">\(x\)</span> axis.</p
 Kullback-Leibler divergence.</p>
 </section>
 <section id="type-2-agent">
-<h2><span class="section-number">55.6. </span>Type 2 Agent<a class="headerlink" href="#type-2-agent" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">26.6. </span>Type 2 Agent<a class="headerlink" href="#type-2-agent" title="Permalink to this heading">#</a></h2>
 <p>We now describe how our type 2 agent formulates his learning problem and what he eventually learns.</p>
 <p>Our type 2 agent understands the correct statistical  model but acknowledges does not know <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <p>We apply Bayes law to deduce an algorithm for  learning <span class="math notranslate nohighlight">\(\alpha\)</span> under the assumption
@@ -956,7 +956,7 @@ h(w) = h(w| \alpha)
 <p>Evidently,  the Bayesian posterior  narrows in on the true value  <span class="math notranslate nohighlight">\(\alpha = .8\)</span> of the mixing parameter as the length of a history of observations grows.</p>
 </section>
 <section id="concluding-remarks">
-<h2><span class="section-number">55.7. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">26.7. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this heading">#</a></h2>
 <p>Our type 1 person  deploys an incorrect statistical  model.</p>
 <p>He believes
 that either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> generated the <span class="math notranslate nohighlight">\(w\)</span> process, but just doesn’t know which one.</p>
@@ -1122,18 +1122,87 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   17. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   18. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   19. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   20. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   21. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   22. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   23. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   24. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   25. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   26. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   27. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Linear Programming
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   17. Optimal Transport
+   28. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   18. Von Neumann Growth Model (and a Generalization)
+   29. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1145,42 +1214,42 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   19. Finite Markov Chains
+   30. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   20. Inventory Dynamics
+   31. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   21. Linear State Space Models
+   32. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   22. Samuelson Multiplier-Accelerator
+   33. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   23. Kesten Processes and Firm Dynamics
+   34. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   24. Wealth Distribution Dynamics
+   35. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   25. A First Look at the Kalman Filter
+   36. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   26. Another Look at the Kalman Filter
+   37. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1192,37 +1261,42 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   27. Job Search I: The McCall Search Model
+   38. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   28. Job Search II: Search and Separation
+   39. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   29. Job Search III: Fitted Value Function Iteration
+   40. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   30. Job Search IV: Correlated Wage Offers
+   41. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   31. Job Search V: Modeling Career Choice
+   42. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   32. Job Search VI: On-the-Job Search
+   43. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   33. Job Search VII: A McCall Worker Q-Learns
+   44. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   45. Job Search VII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1234,131 +1308,62 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   34. Cass-Koopmans Model
+   46. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   35. Cass-Koopmans Competitive Equilibrium
+   47. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   36. Cass-Koopmans Model with Distorting Taxes
+   48. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   37. Transitions in an Overlapping Generations Model
+   49. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   38. Cake Eating I: Introduction to Optimal Saving
+   50. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   39. Cake Eating II: Numerical Methods
+   51. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   40. Optimal Growth I: The Stochastic Optimal Growth Model
+   52. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   41. Optimal Growth II: Accelerating the Code with Numba
+   53. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   42. Optimal Growth III: Time Iteration
+   54. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   43. Optimal Growth IV: The Endogenous Grid Method
+   55. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   44. The Income Fluctuation Problem I: Basic Model
+   56. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   45. The Income Fluctuation Problem II: Stochastic Returns on Assets
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Bayes Law
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="bayes_nonconj.html">
-   46. Non-Conjugate Priors
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ar1_bayes.html">
-   47. Posterior Distributions for  AR(1) Parameters
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ar1_turningpts.html">
-   48. Forecasting  an AR(1) Process
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Information
- </span>
-</p>
-<ul class="current nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="odu.html">
-   49. Job Search VII: Search with Learning
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="likelihood_ratio_process.html">
-   50. Likelihood Ratio Processes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="imp_sample.html">
-   51. Mean of a Likelihood Ratio Process
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="wald_friedman.html">
-   52. A Problem that Stumped Milton Friedman
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="exchangeable.html">
-   53. Exchangeability and Bayesian Updating
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="likelihood_bayes.html">
-   54. Likelihood Ratio Processes and Bayesian Learning
-  </a>
- </li>
- <li class="toctree-l1 current active active">
-  <a class="current reference internal" href="#">
-   55. Incorrect Models
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="navy_captain.html">
-   56. Bayesian versus Frequentist Decision Rules
+   57. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1370,32 +1375,32 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   57. LQ Control: Foundations
+   58. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   58. Lagrangian for LQ Control
+   59. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   59. Eliminating Cross Products
+   60. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   60. The Permanent Income Model
+   61. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   61. Permanent Income II: LQ Techniques
+   62. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   62. Production Smoothing via Inventories
+   63. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1407,32 +1412,32 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   63. A Lake Model of Employment and Unemployment
+   64. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   64. Rational Expectations Equilibrium
+   65. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   65. Stability in Linear Rational Expectations Models
+   66. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   66. Markov Perfect Equilibrium
+   67. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   67. Uncertainty Traps
+   68. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   68. The Aiyagari Model
+   69. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1444,17 +1449,17 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   69. Asset Pricing: Finite State Models
+   70. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   70. Competitive Equilibria with Arrow Securities
+   71. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   71. Heterogeneous Beliefs and Bubbles
+   72. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1466,17 +1471,17 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   72. Pandas for Panel Data
+   73. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   73. Linear Regression in Python
+   74. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   74. Maximum Likelihood Estimation
+   75. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1488,12 +1493,12 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   75. First-Price and Second-Price Auctions
+   76. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   76. Multiple Good Allocation Mechanisms
+   77. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1505,17 +1510,17 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   77. Troubleshooting
+   78. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   78. References
+   79. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   79. Execution Statistics
+   80. Execution Statistics
   </a>
  </li>
 </ul>

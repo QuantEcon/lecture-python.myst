@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>24. Wealth Distribution Dynamics &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>35. Wealth Distribution Dynamics &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -118,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="25. A First Look at the Kalman Filter" href="kalman.html" />
-    <link rel="prev" title="23. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
+    <link rel="next" title="36. A First Look at the Kalman Filter" href="kalman.html" />
+    <link rel="prev" title="34. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -167,23 +167,23 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">24.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-note-on-assumptions">24.1.1. A Note on Assumptions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">35.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-note-on-assumptions">35.1.1. A Note on Assumptions</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves-and-the-gini-coefficient">24.2. Lorenz Curves and the Gini Coefficient</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves">24.2.1. Lorenz Curves</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gini-coefficient">24.2.2. The Gini Coefficient</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves-and-the-gini-coefficient">35.2. Lorenz Curves and the Gini Coefficient</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves">35.2.1. Lorenz Curves</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gini-coefficient">35.2.2. The Gini Coefficient</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-model-of-wealth-dynamics">24.3. A Model of Wealth Dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">24.4. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">24.5. Applications</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">24.5.1. Time Series</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inequality-measures">24.5.2. Inequality Measures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-model-of-wealth-dynamics">35.3. A Model of Wealth Dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">35.4. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">35.5. Applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">35.5.1. Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inequality-measures">35.5.2. Inequality Measures</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">24.6. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">35.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -241,7 +241,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="wealth-distribution-dynamics">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">24. </span>Wealth Distribution Dynamics</a><a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id2"><span class="section-number">35. </span>Wealth Distribution Dynamics</a><a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -293,7 +293,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">24.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">35.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This notebook gives an introduction to wealth distribution dynamics, with a
 focus on</p>
 <ul class="simple">
@@ -312,7 +312,7 @@ tails.</p>
 <p>It also gives us a way to quantify such concentration, in terms of the tail index.</p>
 <p>One question of interest is whether or not we can replicate Pareto tails from a relatively simple model.</p>
 <section id="a-note-on-assumptions">
-<h3><span class="section-number">24.1.1. </span>A Note on Assumptions<a class="headerlink" href="#a-note-on-assumptions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">35.1.1. </span>A Note on Assumptions<a class="headerlink" href="#a-note-on-assumptions" title="Permalink to this heading">#</a></h3>
 <p>The evolution of wealth for any given household depends on their
 savings behavior.</p>
 <p>Modeling such behavior will form an important part of this lecture series.</p>
@@ -335,11 +335,11 @@ savings behavior.</p>
 </section>
 </section>
 <section id="lorenz-curves-and-the-gini-coefficient">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">24.2. </span>Lorenz Curves and the Gini Coefficient</a><a class="headerlink" href="#lorenz-curves-and-the-gini-coefficient" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">35.2. </span>Lorenz Curves and the Gini Coefficient</a><a class="headerlink" href="#lorenz-curves-and-the-gini-coefficient" title="Permalink to this heading">#</a></h2>
 <p>Before we investigate wealth dynamics, we briefly review some measures of
 inequality.</p>
 <section id="lorenz-curves">
-<h3><span class="section-number">24.2.1. </span>Lorenz Curves<a class="headerlink" href="#lorenz-curves" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">35.2.1. </span>Lorenz Curves<a class="headerlink" href="#lorenz-curves" title="Permalink to this heading">#</a></h3>
 <p>One popular graphical measure of inequality is the <a class="reference external" href="https://en.wikipedia.org/wiki/Lorenz_curve">Lorenz curve</a>.</p>
 <p>The package <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py">QuantEcon.py</a>, already imported above, contains a function to compute Lorenz curves.</p>
 <p>To illustrate, suppose that</p>
@@ -404,7 +404,7 @@ observations.</p>
 <p>This is to be expected, because a higher tail index implies less weight in the tail of the Pareto distribution.</p>
 </section>
 <section id="the-gini-coefficient">
-<h3><span class="section-number">24.2.2. </span>The Gini Coefficient<a class="headerlink" href="#the-gini-coefficient" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">35.2.2. </span>The Gini Coefficient<a class="headerlink" href="#the-gini-coefficient" title="Permalink to this heading">#</a></h3>
 <p>The definition and interpretation of the Gini coefficient can be found on the corresponding <a class="reference external" href="https://en.wikipedia.org/wiki/Gini_coefficient">Wikipedia page</a>.</p>
 <p>A value of 0 indicates perfect equality (corresponding the case where the
 Lorenz curve matches the 45 degree line) and a value of 1 indicates complete
@@ -446,11 +446,11 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </section>
 </section>
 <section id="a-model-of-wealth-dynamics">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">24.3. </span>A Model of Wealth Dynamics</a><a class="headerlink" href="#a-model-of-wealth-dynamics" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">35.3. </span>A Model of Wealth Dynamics</a><a class="headerlink" href="#a-model-of-wealth-dynamics" title="Permalink to this heading">#</a></h2>
 <p>Having discussed inequality measures, let us now turn to wealth dynamics.</p>
 <p>The model we will study is</p>
 <div class="math notranslate nohighlight" id="equation-wealth-dynam-ah">
-<span class="eqno">(24.1)<a class="headerlink" href="#equation-wealth-dynam-ah" title="Permalink to this equation">#</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
+<span class="eqno">(35.1)<a class="headerlink" href="#equation-wealth-dynam-ah" title="Permalink to this equation">#</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(w_t\)</span> is wealth at time <span class="math notranslate nohighlight">\(t\)</span> for a given household,</p></li>
@@ -480,7 +480,7 @@ on assets do not exhibit large trends.</p>
 <p>When we simulate a population of households, we will assume all shocks are idiosyncratic (i.e.,  specific to individual households and independent across them).</p>
 <p>Regarding the savings function <span class="math notranslate nohighlight">\(s\)</span>, our default model will be</p>
 <div class="math notranslate nohighlight" id="equation-sav-ah">
-<span class="eqno">(24.2)<a class="headerlink" href="#equation-sav-ah" title="Permalink to this equation">#</a></span>\[s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}\]</div>
+<span class="eqno">(35.2)<a class="headerlink" href="#equation-sav-ah" title="Permalink to this equation">#</a></span>\[s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}\]</div>
 <p>where <span class="math notranslate nohighlight">\(s_0\)</span> is a positive constant.</p>
 <p>Thus, for <span class="math notranslate nohighlight">\(w &lt; \hat w\)</span>, the household saves nothing. For
 <span class="math notranslate nohighlight">\(w \geq \bar w\)</span>, the household saves a fraction <span class="math notranslate nohighlight">\(s_0\)</span> of
@@ -489,7 +489,7 @@ their wealth.</p>
 acknowledging that low wealth households tend to save very little.</p>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">24.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">35.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>Here’s some type information to help Numba.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -650,11 +650,11 @@ of each household can be calculated independently once the path for the
 aggregate state is known.</p>
 </section>
 <section id="applications">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">24.5. </span>Applications</a><a class="headerlink" href="#applications" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">35.5. </span>Applications</a><a class="headerlink" href="#applications" title="Permalink to this heading">#</a></h2>
 <p>Let’s try simulating the model at different parameter values and investigate
 the implications for the wealth distribution.</p>
 <section id="time-series">
-<h3><span class="section-number">24.5.1. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">35.5.1. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this heading">#</a></h3>
 <p>Let’s look at the wealth dynamics of an individual household.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -681,7 +681,7 @@ the implications for the wealth distribution.</p>
 <p>Such spikes are similar to what we observed in time series when <a class="reference internal" href="kesten_processes.html"><span class="doc">we studied Kesten processes</span></a>.</p>
 </section>
 <section id="inequality-measures">
-<h3><span class="section-number">24.5.2. </span>Inequality Measures<a class="headerlink" href="#inequality-measures" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">35.5.2. </span>Inequality Measures<a class="headerlink" href="#inequality-measures" title="Permalink to this heading">#</a></h3>
 <p>Let’s look at how inequality varies with returns on financial assets.</p>
 <p>The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.</p>
@@ -792,10 +792,10 @@ Wall time: 8.83 s
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">24.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">35.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="wd_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 24.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 35.1 </span></p>
 <section id="exercise-content">
 <p>For a wealth or income distribution with Pareto tail, a higher tail index suggests lower inequality.</p>
 <p>Indeed, it is possible to prove that the Gini coefficient of the Pareto
@@ -811,7 +811,7 @@ Gini index and <span class="math notranslate nohighlight">\(a\)</span>.</p>
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 24.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 35.1</a></p>
 <section id="solution-content">
 <p>Here is one solution, which produces a good match between theory and
 simulation.</p>
@@ -844,14 +844,14 @@ in the right hand tail.</p>
 </div>
 <div class="exercise admonition" id="wd_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 24.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 35.2 </span></p>
 <section id="exercise-content">
-<p>The wealth process <a class="reference internal" href="#equation-wealth-dynam-ah">(24.1)</a> is similar to a <a class="reference internal" href="kesten_processes.html"><span class="doc">Kesten process</span></a>.</p>
-<p>This is because, according to <a class="reference internal" href="#equation-sav-ah">(24.2)</a>, savings is constant for all wealth levels above <span class="math notranslate nohighlight">\(\hat w\)</span>.</p>
+<p>The wealth process <a class="reference internal" href="#equation-wealth-dynam-ah">(35.1)</a> is similar to a <a class="reference internal" href="kesten_processes.html"><span class="doc">Kesten process</span></a>.</p>
+<p>This is because, according to <a class="reference internal" href="#equation-sav-ah">(35.2)</a>, savings is constant for all wealth levels above <span class="math notranslate nohighlight">\(\hat w\)</span>.</p>
 <p>When savings is constant, the wealth process has the same quasi-linear
 structure as a Kesten process, with multiplicative and additive shocks.</p>
 <p>The Kesten–Goldie theorem tells us that Kesten processes have Pareto tails under a range of parameterizations.</p>
-<p>The theorem does not directly apply here, since savings is not always constant and since the multiplicative and additive terms in <a class="reference internal" href="#equation-wealth-dynam-ah">(24.1)</a> are not IID.</p>
+<p>The theorem does not directly apply here, since savings is not always constant and since the multiplicative and additive terms in <a class="reference internal" href="#equation-wealth-dynam-ah">(35.1)</a> are not IID.</p>
 <p>At the same time, given the similarities, perhaps Pareto tails will arise.</p>
 <p>To test this, run a simulation that generates a cross-section of wealth and
 generate a rank-size plot.</p>
@@ -873,7 +873,7 @@ this what you see?</p>
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 24.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 35.2</a></p>
 <section id="solution-content">
 <p>First let’s generate the distribution:</p>
 <div class="cell docutils container">
@@ -1057,18 +1057,87 @@ this what you see?</p>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   17. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   18. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   19. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   20. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   21. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   22. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   23. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   24. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   25. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   26. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   27. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Linear Programming
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   17. Optimal Transport
+   28. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   18. Von Neumann Growth Model (and a Generalization)
+   29. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1080,42 +1149,42 @@ this what you see?</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   19. Finite Markov Chains
+   30. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   20. Inventory Dynamics
+   31. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   21. Linear State Space Models
+   32. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   22. Samuelson Multiplier-Accelerator
+   33. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   23. Kesten Processes and Firm Dynamics
+   34. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   24. Wealth Distribution Dynamics
+   35. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   25. A First Look at the Kalman Filter
+   36. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   26. Another Look at the Kalman Filter
+   37. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1127,37 +1196,42 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   27. Job Search I: The McCall Search Model
+   38. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   28. Job Search II: Search and Separation
+   39. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   29. Job Search III: Fitted Value Function Iteration
+   40. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   30. Job Search IV: Correlated Wage Offers
+   41. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   31. Job Search V: Modeling Career Choice
+   42. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   32. Job Search VI: On-the-Job Search
+   43. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   33. Job Search VII: A McCall Worker Q-Learns
+   44. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   45. Job Search VII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1169,131 +1243,62 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   34. Cass-Koopmans Model
+   46. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   35. Cass-Koopmans Competitive Equilibrium
+   47. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   36. Cass-Koopmans Model with Distorting Taxes
+   48. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   37. Transitions in an Overlapping Generations Model
+   49. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   38. Cake Eating I: Introduction to Optimal Saving
+   50. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   39. Cake Eating II: Numerical Methods
+   51. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   40. Optimal Growth I: The Stochastic Optimal Growth Model
+   52. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   41. Optimal Growth II: Accelerating the Code with Numba
+   53. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   42. Optimal Growth III: Time Iteration
+   54. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   43. Optimal Growth IV: The Endogenous Grid Method
+   55. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   44. The Income Fluctuation Problem I: Basic Model
+   56. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   45. The Income Fluctuation Problem II: Stochastic Returns on Assets
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Bayes Law
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="bayes_nonconj.html">
-   46. Non-Conjugate Priors
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ar1_bayes.html">
-   47. Posterior Distributions for  AR(1) Parameters
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ar1_turningpts.html">
-   48. Forecasting  an AR(1) Process
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Information
- </span>
-</p>
-<ul class="nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="odu.html">
-   49. Job Search VII: Search with Learning
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="likelihood_ratio_process.html">
-   50. Likelihood Ratio Processes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="imp_sample.html">
-   51. Mean of a Likelihood Ratio Process
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="wald_friedman.html">
-   52. A Problem that Stumped Milton Friedman
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="exchangeable.html">
-   53. Exchangeability and Bayesian Updating
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="likelihood_bayes.html">
-   54. Likelihood Ratio Processes and Bayesian Learning
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="mix_model.html">
-   55. Incorrect Models
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="navy_captain.html">
-   56. Bayesian versus Frequentist Decision Rules
+   57. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1305,32 +1310,32 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   57. LQ Control: Foundations
+   58. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   58. Lagrangian for LQ Control
+   59. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   59. Eliminating Cross Products
+   60. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   60. The Permanent Income Model
+   61. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   61. Permanent Income II: LQ Techniques
+   62. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   62. Production Smoothing via Inventories
+   63. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1342,32 +1347,32 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   63. A Lake Model of Employment and Unemployment
+   64. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   64. Rational Expectations Equilibrium
+   65. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   65. Stability in Linear Rational Expectations Models
+   66. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   66. Markov Perfect Equilibrium
+   67. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   67. Uncertainty Traps
+   68. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   68. The Aiyagari Model
+   69. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1379,17 +1384,17 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   69. Asset Pricing: Finite State Models
+   70. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   70. Competitive Equilibria with Arrow Securities
+   71. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   71. Heterogeneous Beliefs and Bubbles
+   72. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1401,17 +1406,17 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   72. Pandas for Panel Data
+   73. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   73. Linear Regression in Python
+   74. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   74. Maximum Likelihood Estimation
+   75. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1423,12 +1428,12 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   75. First-Price and Second-Price Auctions
+   76. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   76. Multiple Good Allocation Mechanisms
+   77. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1440,17 +1445,17 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   77. Troubleshooting
+   78. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   78. References
+   79. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   79. Execution Statistics
+   80. Execution Statistics
   </a>
  </li>
 </ul>

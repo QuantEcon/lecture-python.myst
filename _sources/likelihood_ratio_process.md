@@ -544,6 +544,7 @@ control tests during World War II.
 A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in  {doc}`this lecture <wald_friedman>`.
 
+(rel_entropy)=
 ## Kullback–Leibler Divergence
 
 Now let’s consider a case in which neither $g$ nor $f$
