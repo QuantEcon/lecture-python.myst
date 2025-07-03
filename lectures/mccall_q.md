@@ -171,7 +171,7 @@ class McCallModel:
         # Evaluate value for each state-action pair
         # Consider action = accept or reject the current offer
         accept = w[i] / (1 - β)
-        reject = c + β * np.sum(v * q)
+        reject = c + β * (v @ q)
 
         return np.array([accept, reject])
 
