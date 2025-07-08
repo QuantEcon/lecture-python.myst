@@ -525,9 +525,7 @@ for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
     simulate_workers(worker, T, ax,
                     # By setting diff=False, it will give u_t
                     diff=False, name=r'$u_{{{}, t}}$'.format(i))
-    
-ax.axhline(y=u_0, xmin=0, xmax=0, color='grey', 
-           linestyle='dashed', label=r'$u_{i, 0}$')
+
 ax.legend(bbox_to_anchor=(1, 0.5))
 plt.show()
 ```
@@ -554,8 +552,6 @@ for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
     
 # This controls the boundary of plots
 ax.set_ylim(ymin=-3, ymax=3)
-ax.axhline(y=u_0, xmin=0, xmax=0, color='grey', 
-           linestyle='dashed', label=r'$u_{i, 0}$')
 ax.legend(bbox_to_anchor=(1, 0.5))
 plt.show()
 ```
