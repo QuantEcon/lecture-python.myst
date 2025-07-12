@@ -17,6 +17,20 @@ kernelspec:
 
 This lecture studies effects of foreseen   fiscal and technology shocks on competitive equilibrium prices and quantities in a nonstochastic version of a Cass-Koopmans  growth model with features described in this QuantEcon lecture {doc}`cass_koopmans_2`.
 
+Let's start with some imports:
+
+```{code-cell} ipython3
+import numpy as np
+from scipy.optimize import root
+import matplotlib.pyplot as plt
+from collections import namedtuple
+from mpmath import mp, mpf
+from warnings import warn
+
+# Set the precision
+mp.dps = 40
+mp.pretty = True
+```
 
 ## A two-country model
 
@@ -368,6 +382,45 @@ def plot_global_results(k, k_s, c, c_s, shocks, model,
     return fig, axes
 ```
 
+Similar to {doc}`cass_fiscal`, we assume a Cobb-Douglas production function:
+
+$$
+F(k, 1) = A k^\alpha
+$$
+
+```{code-cell} ipython3
+def f(k, model, A=1): 
+    """
+    Production function: f(k) = A * k^{α}
+    """
+    return A * k ** model.α
+
+def f_prime(k, model, A=1):
+    """
+    Marginal product of capital: f'(k) = α * A * k^{α - 1}
+    """
+    return model.α * A * k ** (model.α - 1)
+```
+
+Similarly, we define the capital rental rate
+
+$$
+\eta_t = f'(k_t)  
+$$
+
+```{code-cell} ipython3
+def compute_η_path(k_path, model, S=100, A_path=None):
+    """
+    Compute η path: η_t = f'(k_t)
+    with optional A_path for growth models.
+    """
+    A = np.ones_like(k_path) if A_path is None else np.asarray(A_path)
+    η_path = np.zeros_like(k_path)
+    for t in range(S):
+        η_path[t] = f_prime(k_path[t], model, A[t])
+    return η_path
+```
+
 #### Experiment 1: A foreseen increase in $g$ from 0.2 to 0.4 at t=10
 
 The figure below presents transition dynamics after an increase in $g$ in the domestic economy from 0.2 to 0.4 that is announced ten periods in advance.
@@ -379,6 +432,7 @@ In the figure below, the blue lines represent the domestic economy and orange do
 ```{code-cell} ipython3
 Model = namedtuple("Model", ["β", "γ", "δ", "α", "A"])
 model = Model(β=0.95, γ=2.0, δ=0.2, α=0.33, A=1.0)
+S = 100
 
 shocks_global = {
     'g': np.concatenate((np.full(10, 0.2), np.full(S-9, 0.4))),
