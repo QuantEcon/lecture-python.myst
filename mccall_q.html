@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>44. Job Search VII: A McCall Worker Q-Learns &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>45. Job Search VII: A McCall Worker Q-Learns &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -118,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="45. Job Search VII: Search with Learning" href="odu.html" />
-    <link rel="prev" title="43. Job Search VI: On-the-Job Search" href="jv.html" />
+    <link rel="next" title="46. Job Search VII: Search with Learning" href="odu.html" />
+    <link rel="prev" title="44. Job Search VI: On-the-Job Search" href="jv.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -167,13 +167,13 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">44.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-of-mccall-model">44.2. Review of McCall Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implied-quality-function-q">44.3. Implied Quality Function  <span class="math notranslate nohighlight">\(Q\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-probabilities-to-samples">44.4. From Probabilities  to Samples</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q-learning">44.5. Q-Learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#employed-worker-cant-quit">44.6. Employed Worker Can’t Quit</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-extensions">44.7. Possible Extensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">45.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-of-mccall-model">45.2. Review of McCall Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implied-quality-function-q">45.3. Implied Quality Function  <span class="math notranslate nohighlight">\(Q\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-probabilities-to-samples">45.4. From Probabilities  to Samples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q-learning">45.5. Q-Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#employed-worker-cant-quit">45.6. Employed Worker Can’t Quit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-extensions">45.7. Possible Extensions</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -231,9 +231,9 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="job-search-vii-a-mccall-worker-q-learns">
-<h1><span class="section-number">44. </span>Job Search VII: A McCall Worker Q-Learns<a class="headerlink" href="#job-search-vii-a-mccall-worker-q-learns" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">45. </span>Job Search VII: A McCall Worker Q-Learns<a class="headerlink" href="#job-search-vii-a-mccall-worker-q-learns" title="Permalink to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">44.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">45.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture illustrates a powerful machine learning technique called Q-learning.</p>
 <p><span id="id1">[<a class="reference internal" href="zreferences.html#id33" title="Richard S Sutton and Andrew G Barto. Reinforcement learning: An introduction. MIT press, 2018.">Sutton and Barto, 2018</a>]</span> presents Q-learning and a variety of other statistical learning procedures.</p>
 <p>The Q-learning algorithm combines ideas from</p>
@@ -312,7 +312,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </section>
 <section id="review-of-mccall-model">
-<h2><span class="section-number">44.2. </span>Review of McCall Model<a class="headerlink" href="#review-of-mccall-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">45.2. </span>Review of McCall Model<a class="headerlink" href="#review-of-mccall-model" title="Permalink to this heading">#</a></h2>
 <p>We begin by reviewing the McCall model described in <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a>.</p>
 <p>We’ll  compute an optimal value function and a policy that attains it.</p>
 <p>We’ll eventually compare that optimal policy to what the Q-learning McCall worker learns.</p>
@@ -326,7 +326,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>An optimal value  <span class="math notranslate nohighlight">\(V\left(w\right) \)</span> for a McCall worker who has just received a wage offer <span class="math notranslate nohighlight">\(w\)</span> and is deciding whether
 to accept or reject it satisfies the Bellman equation</p>
 <div class="math notranslate nohighlight" id="equation-eq-mccallbellman">
-<span class="eqno">(44.1)<a class="headerlink" href="#equation-eq-mccallbellman" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(45.1)<a class="headerlink" href="#equation-eq-mccallbellman" title="Permalink to this equation">#</a></span>\[
 V\left(w\right)=\max_{\text{accept, reject}}\;\left\{ \frac{w}{1-\beta},c+\beta\int V\left(w'\right)dF\left(w'\right)\right\}
 \]</div>
 <p>To form a benchmark to compare with results from Q-learning, we  first approximate the optimal value function.</p>
@@ -474,7 +474,7 @@ v^{\prime}(i)=\max \left\{\frac{w(i)}{1-\beta}, c+\beta \sum_{1 \leq j \leq n} v
 </div>
 </section>
 <section id="implied-quality-function-q">
-<h2><span class="section-number">44.3. </span>Implied Quality Function  <span class="math notranslate nohighlight">\(Q\)</span><a class="headerlink" href="#implied-quality-function-q" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">45.3. </span>Implied Quality Function  <span class="math notranslate nohighlight">\(Q\)</span><a class="headerlink" href="#implied-quality-function-q" title="Permalink to this heading">#</a></h2>
 <p>A <strong>quality function</strong> <span class="math notranslate nohighlight">\(Q\)</span> map  state-action pairs into optimal values.</p>
 <p>They are tightly linked to optimal  value functions.</p>
 <p>But value functions  are functions just of states, and not actions.</p>
@@ -490,20 +490,20 @@ state, with each component of the list indicating one of the possible actions th
 <p>This definition of <span class="math notranslate nohighlight">\(Q(w,a)\)</span> presumes that in subsequent periods the worker  takes  optimal actions.</p>
 <p>An optimal   Q-function for our McCall worker satisfies</p>
 <div class="math notranslate nohighlight" id="equation-eq-impliedq">
-<span class="eqno">(44.2)<a class="headerlink" href="#equation-eq-impliedq" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(45.2)<a class="headerlink" href="#equation-eq-impliedq" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 Q\left(w,\text{accept}\right) &amp; =\frac{w}{1-\beta} \\
 Q\left(w,\text{reject}\right) &amp; =c+\beta\int\max_{\text{accept, reject}}\left\{ \frac{w'}{1-\beta},Q\left(w',\text{reject}\right)\right\} dF\left(w'\right)
 \end{aligned}
 \end{split}\]</div>
-<p>Note that the first equation of system <a class="reference internal" href="#equation-eq-impliedq">(44.2)</a> presumes that after  the agent has  accepted an offer, he will not have the objection to reject that same offer in the future.</p>
+<p>Note that the first equation of system <a class="reference internal" href="#equation-eq-impliedq">(45.2)</a> presumes that after  the agent has  accepted an offer, he will not have the objection to reject that same offer in the future.</p>
 <p>These equations are aligned with the Bellman equation for the worker’s  optimal value function that we studied in <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a>.</p>
 <p>Evidently, the optimal value function <span class="math notranslate nohighlight">\(V(w)\)</span> described in that lecture is related to our Q-function by</p>
 <div class="math notranslate nohighlight">
 \[
 V(w) = \max_{\textrm{accept},\textrm{reject}} \left\{ Q(w, \text{accept} \right), Q\left(w,\text{reject} \right)\}
 \]</div>
-<p>If we stare at the second equation of system <a class="reference internal" href="#equation-eq-impliedq">(44.2)</a>, we notice that since the wage process is identically and independently distributed over time,
+<p>If we stare at the second equation of system <a class="reference internal" href="#equation-eq-impliedq">(45.2)</a>, we notice that since the wage process is identically and independently distributed over time,
 <span class="math notranslate nohighlight">\(Q\left(w,\text{reject}\right)\)</span>, the right side of the equation is independent of the current state   <span class="math notranslate nohighlight">\(w\)</span>.</p>
 <p>So we can denote it as a scalar</p>
 <div class="math notranslate nohighlight">
@@ -511,7 +511,7 @@ V(w) = \max_{\textrm{accept},\textrm{reject}} \left\{ Q(w, \text{accept} \right)
 \]</div>
 <p>This fact provides us with an
 an alternative, and  as it turns out in this case, a faster way to compute an optimal value function and associated optimal policy for the McCall worker.</p>
-<p>Instead of using the  value function iterations that we deployed above, we can instead  iterate to convergence on a version of the second equation in system <a class="reference internal" href="#equation-eq-impliedq">(44.2)</a>  that maps an estimate of  <span class="math notranslate nohighlight">\(Q_r\)</span> into an improved estimate <span class="math notranslate nohighlight">\(Q_r'\)</span>:</p>
+<p>Instead of using the  value function iterations that we deployed above, we can instead  iterate to convergence on a version of the second equation in system <a class="reference internal" href="#equation-eq-impliedq">(45.2)</a>  that maps an estimate of  <span class="math notranslate nohighlight">\(Q_r\)</span> into an improved estimate <span class="math notranslate nohighlight">\(Q_r'\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
 Q_{r}^\prime=c+\beta\int\max_{\text{}}\left\{ \frac{w'}{1-\beta},Q_{r}\right\} dF\left(w'\right)
@@ -523,10 +523,10 @@ V\left(w\right)=\max\left\{ \frac{w}{1-\beta},Q_{r}\right\}
 \]</div>
 </section>
 <section id="from-probabilities-to-samples">
-<h2><span class="section-number">44.4. </span>From Probabilities  to Samples<a class="headerlink" href="#from-probabilities-to-samples" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">45.4. </span>From Probabilities  to Samples<a class="headerlink" href="#from-probabilities-to-samples" title="Permalink to this heading">#</a></h2>
 <p>We noted  above that  the optimal Q function for our McCall worker satisfies the Bellman equations</p>
 <div class="math notranslate nohighlight" id="equation-eq-probtosample1">
-<span class="eqno">(44.3)<a class="headerlink" href="#equation-eq-probtosample1" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(45.3)<a class="headerlink" href="#equation-eq-probtosample1" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
          w  &amp; + \beta \max_{\textrm{accept, reject}} \left\{ Q (w, \textrm{accept}), Q(w, \textrm{reject}) \right\} - Q (w, \textrm{accept})   = 0  \cr
          c  &amp; +\beta\int\max_{\text{accept, reject}}\left\{ Q(w', \textrm{accept}),Q\left(w',\text{reject}\right)\right\} dF\left(w'\right) - Q\left(w,\text{reject}\right)  = 0  \cr
@@ -534,10 +534,10 @@ V\left(w\right)=\max\left\{ \frac{w}{1-\beta},Q_{r}\right\}
 \]</div>
 <p>Notice the integral over <span class="math notranslate nohighlight">\(F(w')\)</span> on the second line.</p>
 <p>Erasing the integral sign sets the stage for an illegitmate argument that can get us started thinking about  Q-learning.</p>
-<p>Thus, construct a difference  equation system that keeps the first equation of <a class="reference internal" href="#equation-eq-probtosample1">(44.3)</a>
+<p>Thus, construct a difference  equation system that keeps the first equation of <a class="reference internal" href="#equation-eq-probtosample1">(45.3)</a>
 but replaces the second by removing integration over <span class="math notranslate nohighlight">\(F (w')\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-probtosample2">
-<span class="eqno">(44.4)<a class="headerlink" href="#equation-eq-probtosample2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(45.4)<a class="headerlink" href="#equation-eq-probtosample2" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
          w  &amp; + \beta \max_{\textrm{accept, reject}} \left\{ Q (w, \textrm{accept}), Q(w, \textrm{reject}) \right\} - Q (w, \textrm{accept})   = 0  \cr
          c  &amp; +\beta \max_{\text{accept, reject}}\left\{ Q(w', \textrm{accept}),Q\left(w',\text{reject}\right)\right\}  - Q\left(w,\text{reject}\right)  \approx 0  \cr
@@ -553,7 +553,7 @@ that maps an estimate <span class="math notranslate nohighlight">\(\hat Q_t\)</s
 <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
 <p>To set up such an algorithm, we first define some errors or “differences”</p>
 <div class="math notranslate nohighlight" id="equation-eq-old105">
-<span class="eqno">(44.5)<a class="headerlink" href="#equation-eq-old105" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(45.5)<a class="headerlink" href="#equation-eq-old105" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
          w  &amp; + \beta \max_{\textrm{accept, reject}} \left\{ \hat Q_t (w_t, \textrm{accept}), \hat Q_t(w_t, \textrm{reject}) \right\} - \hat Q_t(w_t, \textrm{accept})   = \textrm{diff}_{\textrm{accept},t}  \cr
          c  &amp; +\beta \max_{\text{accept, reject}}\left\{ \hat Q_t(w_{t+1}, \textrm{accept}),\hat Q_t\left(w_{t+1},\text{reject}\right)\right\}  - \hat Q_t\left(w_t,\text{reject}\right)  = \textrm{diff}_{\textrm{reject},t}  \cr
@@ -561,15 +561,15 @@ that maps an estimate <span class="math notranslate nohighlight">\(\hat Q_t\)</s
 \]</div>
 <p>The adaptive learning scheme would then be some version of</p>
 <div class="math notranslate nohighlight" id="equation-eq-old106">
-<span class="eqno">(44.6)<a class="headerlink" href="#equation-eq-old106" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(45.6)<a class="headerlink" href="#equation-eq-old106" title="Permalink to this equation">#</a></span>\[
 \hat Q_{t+1} = \hat Q_t + \alpha \ \textrm{diff}_t
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span> is a small <strong>gain</strong> parameter that governs the rate of learning and  <span class="math notranslate nohighlight">\(\hat Q_t\)</span> and <span class="math notranslate nohighlight">\(\textrm{diff}_t\)</span> are <span class="math notranslate nohighlight">\(2 \times 1\)</span> vectors corresponding
-to  objects in equation system <a class="reference internal" href="#equation-eq-old105">(44.5)</a>.</p>
+to  objects in equation system <a class="reference internal" href="#equation-eq-old105">(45.5)</a>.</p>
 <p>This informal argument takes us to the threshold of Q-learning.</p>
 </section>
 <section id="q-learning">
-<h2><span class="section-number">44.5. </span>Q-Learning<a class="headerlink" href="#q-learning" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">45.5. </span>Q-Learning<a class="headerlink" href="#q-learning" title="Permalink to this heading">#</a></h2>
 <p>Let’s first describe  a <span class="math notranslate nohighlight">\(Q\)</span>-learning algorithm precisely.</p>
 <p>Then we’ll  implement it.</p>
 <p>The algorithm works by using a Monte Carlo method to  update estimates of a Q-function.</p>
@@ -583,12 +583,12 @@ experiences rewards that are consequences of those actions.</p>
 in this case the unemployment compensation <span class="math notranslate nohighlight">\(c\)</span> and the present value of wages.</p>
 <p>The updating algorithm is based on a slight modification (to be described soon) of  a  recursion  like</p>
 <div class="math notranslate nohighlight" id="equation-eq-old3">
-<span class="eqno">(44.7)<a class="headerlink" href="#equation-eq-old3" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(45.7)<a class="headerlink" href="#equation-eq-old3" title="Permalink to this equation">#</a></span>\[
 \widetilde{Q}^{new}\left(w,a\right)=\widetilde{Q}^{old}\left(w,a\right)+\alpha \widetilde{TD}\left(w,a\right)
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-eq-old4">
-<span class="eqno">(44.8)<a class="headerlink" href="#equation-eq-old4" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(45.8)<a class="headerlink" href="#equation-eq-old4" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \widetilde{TD}\left(w,\text{accept}\right) &amp; = \left[ w+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w,a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{accept}\right) \\
 \widetilde{TD}\left(w,\text{reject}\right) &amp; = \left[ c+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{reject}\right),\;w'\sim F
@@ -596,8 +596,8 @@ in this case the unemployment compensation <span class="math notranslate nohighl
 \end{split}\]</div>
 <p>The terms  <span class="math notranslate nohighlight">\(\widetilde{TD}(w,a) \)</span> for <span class="math notranslate nohighlight">\(a = \left\{\textrm{accept,reject} \right\}\)</span>  are the <strong>temporal difference errors</strong> that drive the updates.</p>
 <p>This system is thus a version of the adaptive system that we sketched informally
-in equation <a class="reference internal" href="#equation-eq-old106">(44.6)</a>.</p>
-<p>An aspect of the algorithm not yet captured by equation system <a class="reference internal" href="#equation-eq-old4">(44.8)</a> is random <strong>experimentation</strong> that
+in equation <a class="reference internal" href="#equation-eq-old106">(45.6)</a>.</p>
+<p>An aspect of the algorithm not yet captured by equation system <a class="reference internal" href="#equation-eq-old4">(45.8)</a> is random <strong>experimentation</strong> that
 we add by occasionally randomly replacing</p>
 <div class="math notranslate nohighlight">
 \[
@@ -630,8 +630,8 @@ pseudo-code for   our McCall worker to do Q-learning:</p>
 <li><p>with probability <span class="math notranslate nohighlight">\(\epsilon\)</span>, choose the alternative action.</p></li>
 </ul>
 </li>
-<li><p>Update the state associated with the chosen action and compute <span class="math notranslate nohighlight">\(\widetilde{TD}\)</span> according to <a class="reference internal" href="#equation-eq-old4">(44.8)</a> and update <span class="math notranslate nohighlight">\(\widetilde{Q}\)</span> according to <a class="reference internal" href="#equation-eq-old3">(44.7)</a>.</p></li>
-<li><p>Either draw a new state  <span class="math notranslate nohighlight">\(w'\)</span> if required or else take existing wage if and update the Q-table again according to <a class="reference internal" href="#equation-eq-old3">(44.7)</a>.</p></li>
+<li><p>Update the state associated with the chosen action and compute <span class="math notranslate nohighlight">\(\widetilde{TD}\)</span> according to <a class="reference internal" href="#equation-eq-old4">(45.8)</a> and update <span class="math notranslate nohighlight">\(\widetilde{Q}\)</span> according to <a class="reference internal" href="#equation-eq-old3">(45.7)</a>.</p></li>
+<li><p>Either draw a new state  <span class="math notranslate nohighlight">\(w'\)</span> if required or else take existing wage if and update the Q-table again according to <a class="reference internal" href="#equation-eq-old3">(45.7)</a>.</p></li>
 <li><p>Stop when the old and new Q-tables are close enough, i.e., <span class="math notranslate nohighlight">\(\lVert\tilde{Q}^{new}-\tilde{Q}^{old}\rVert_{\infty}\leq\delta\)</span> for given <span class="math notranslate nohighlight">\(\delta\)</span> or if the worker keeps accepting for <span class="math notranslate nohighlight">\(T\)</span> periods for a prescribed <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
 <li><p>Return to step 2 with the updated Q-table.</p></li>
 </ol>
@@ -644,7 +644,7 @@ pseudo-code for   our McCall worker to do Q-learning:</p>
 <p>Multiple episodes allow the agent to start afresh and visit states that she was less likely to visit from the terminal state of a previos episode.</p>
 <p>For example, an agent who has accepted a wage offer based on her Q-table will be less likely to draw a new offer from other parts of the wage distribution.</p>
 <p>By using the <span class="math notranslate nohighlight">\(\epsilon\)</span>-greedy method and also by increasing the number of episodes, the Q-learning algorithm  balances  gains from exploration and from exploitation.</p>
-<p><strong>Remark:</strong> Notice that    <span class="math notranslate nohighlight">\(\widetilde{TD}\)</span> associated with  an optimal Q-table defined in <a class="reference internal" href="#equation-eq-old3">(44.7)</a> automatically above satisfies  <span class="math notranslate nohighlight">\(\widetilde{TD}=0\)</span> for all state action pairs.  Whether a limit of our Q-learning algorithm converges to an optimal Q-table depends on whether the algorithm visits all state-action pairs often enough.</p>
+<p><strong>Remark:</strong> Notice that    <span class="math notranslate nohighlight">\(\widetilde{TD}\)</span> associated with  an optimal Q-table defined in <a class="reference internal" href="#equation-eq-old3">(45.7)</a> automatically above satisfies  <span class="math notranslate nohighlight">\(\widetilde{TD}=0\)</span> for all state action pairs.  Whether a limit of our Q-learning algorithm converges to an optimal Q-table depends on whether the algorithm visits all state-action pairs often enough.</p>
 <p>We implement this pseudo code  in a Python class.</p>
 <p>For simplicity and convenience, we let <code class="docutils literal notranslate"><span class="pre">s</span></code> represent the state index between <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(n=50\)</span> and <span class="math notranslate nohighlight">\(w_s=w[s]\)</span>.</p>
 <p>The first column of the Q-table represents the value associated with rejecting the wage and the second represents accepting the wage.</p>
@@ -970,8 +970,8 @@ Progress: EPOCHs = 200000
 </ul>
 </section>
 <section id="employed-worker-cant-quit">
-<h2><span class="section-number">44.6. </span>Employed Worker Can’t Quit<a class="headerlink" href="#employed-worker-cant-quit" title="Permalink to this heading">#</a></h2>
-<p>The preceding version of temporal difference Q-learning described in  equation system  <a class="reference internal" href="#equation-eq-old4">(44.8)</a> lets an employed  worker quit, i.e., reject her wage as an incumbent and instead receive unemployment compensation this period
+<h2><span class="section-number">45.6. </span>Employed Worker Can’t Quit<a class="headerlink" href="#employed-worker-cant-quit" title="Permalink to this heading">#</a></h2>
+<p>The preceding version of temporal difference Q-learning described in  equation system  <a class="reference internal" href="#equation-eq-old4">(45.8)</a> lets an employed  worker quit, i.e., reject her wage as an incumbent and instead receive unemployment compensation this period
 and draw a new offer next period.</p>
 <p>This is an option that the McCall worker described in <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a> would not take.</p>
 <p>See <span id="id2">[<a class="reference internal" href="zreferences.html#id187" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, chapter 6 on search, for a proof.</p>
@@ -981,13 +981,13 @@ exploitation only.</p>
 <p>To illustrate this, we’ll amend our formulas for temporal differences to forbid an employed worker from quitting a job she had accepted earlier.</p>
 <p>With this understanding about available choices, we obtain the following temporal difference values:</p>
 <div class="math notranslate nohighlight" id="equation-eq-temp-diff">
-<span class="eqno">(44.9)<a class="headerlink" href="#equation-eq-temp-diff" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(45.9)<a class="headerlink" href="#equation-eq-temp-diff" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \widetilde{TD}\left(w,\text{accept}\right) &amp; = \left[ w+\beta\widetilde{Q}^{old}\left(w,\text{accept}\right) \right]-\widetilde{Q}^{old}\left(w,\text{accept}\right) \\
 \widetilde{TD}\left(w,\text{reject}\right) &amp; = \left[ c+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{reject}\right),\;w'\sim F
 \end{aligned}
 \end{split}\]</div>
-<p>It turns out that formulas <a class="reference internal" href="#equation-eq-temp-diff">(44.9)</a> combined with our Q-learning recursion <a class="reference internal" href="#equation-eq-old3">(44.7)</a> can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised.</p>
+<p>It turns out that formulas <a class="reference internal" href="#equation-eq-temp-diff">(45.9)</a> combined with our Q-learning recursion <a class="reference internal" href="#equation-eq-old3">(45.7)</a> can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised.</p>
 <p>But learning is slower because  an agent who ends up accepting a wage offer prematurally loses the option to explore new states in the same episode and to adjust the value associated with that state.</p>
 <p>This can lead to inferior outcomes when the number of epochs/episodes is low.</p>
 <p>But if we increase the number of epochs/episodes, we can observe that the error decreases and the outcomes get better.</p>
@@ -1037,7 +1037,7 @@ exploitation only.</p>
 </div>
 </section>
 <section id="possible-extensions">
-<h2><span class="section-number">44.7. </span>Possible Extensions<a class="headerlink" href="#possible-extensions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">45.7. </span>Possible Extensions<a class="headerlink" href="#possible-extensions" title="Permalink to this heading">#</a></h2>
 <p>To extend the algorthm to handle problems with continuous state spaces,
 a typical approach is to restrict Q-functions and policy functions to take particular
 functional forms.</p>
@@ -1150,43 +1150,48 @@ network as a good function approximator.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="stats_examples.html">
+   9. Some Probability Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   9. LLN and CLT
+   10. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   10. Two Meanings of Probability
+   11. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   11. Multivariate Hypergeometric Distribution
+   12. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   12. Multivariate Normal Distribution
+   13. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   13. Fault Tree Uncertainties
+   14. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   14. Introduction to Artificial Neural Networks
+   15. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   15. Randomized Response Surveys
+   16. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   16. Expected Utilities of Random Responses
+   17. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1198,17 +1203,17 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   17. Non-Conjugate Priors
+   18. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   18. Posterior Distributions for  AR(1) Parameters
+   19. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   19. Forecasting  an AR(1) Process
+   20. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1220,42 +1225,42 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   20. Likelihood Ratio Processes
+   21. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   21. Mean of a Likelihood Ratio Process
+   22. Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   22. A Problem that Stumped Milton Friedman
+   23. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman_2.html">
-   23. A Bayesian Formulation of Friedman and Wald’s Problem
+   24. A Bayesian Formulation of Friedman and Wald’s Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   24. Exchangeability and Bayesian Updating
+   25. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   25. Likelihood Ratio Processes and Bayesian Learning
+   26. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   26. Incorrect Models
+   27. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   27. Bayesian versus Frequentist Decision Rules
+   28. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1267,12 +1272,12 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   28. Optimal Transport
+   29. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   29. Von Neumann Growth Model (and a Generalization)
+   30. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1284,42 +1289,42 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   30. Finite Markov Chains
+   31. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   31. Inventory Dynamics
+   32. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   32. Linear State Space Models
+   33. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   33. Samuelson Multiplier-Accelerator
+   34. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   34. Kesten Processes and Firm Dynamics
+   35. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   35. Wealth Distribution Dynamics
+   36. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   36. A First Look at the Kalman Filter
+   37. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   37. Another Look at the Kalman Filter
+   38. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1331,42 +1336,42 @@ network as a good function approximator.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   38. Job Search I: The McCall Search Model
+   39. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   39. Job Search II: Search and Separation
+   40. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   40. Job Search III: Fitted Value Function Iteration
+   41. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   41. Job Search IV: Correlated Wage Offers
+   42. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   42. Job Search V: Modeling Career Choice
+   43. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   43. Job Search VI: On-the-Job Search
+   44. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   44. Job Search VII: A McCall Worker Q-Learns
+   45. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   45. Job Search VII: Search with Learning
+   46. Job Search VII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1378,62 +1383,62 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   46. Cass-Koopmans Model
+   47. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   47. Cass-Koopmans Competitive Equilibrium
+   48. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   48. Cass-Koopmans Model with Distorting Taxes
+   49. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   49. Transitions in an Overlapping Generations Model
+   50. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   50. Cake Eating I: Introduction to Optimal Saving
+   51. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   51. Cake Eating II: Numerical Methods
+   52. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   52. Optimal Growth I: The Stochastic Optimal Growth Model
+   53. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   53. Optimal Growth II: Accelerating the Code with Numba
+   54. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   54. Optimal Growth III: Time Iteration
+   55. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   55. Optimal Growth IV: The Endogenous Grid Method
+   56. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   56. The Income Fluctuation Problem I: Basic Model
+   57. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   57. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   58. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1445,32 +1450,32 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   58. LQ Control: Foundations
+   59. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   59. Lagrangian for LQ Control
+   60. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   60. Eliminating Cross Products
+   61. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   61. The Permanent Income Model
+   62. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   62. Permanent Income II: LQ Techniques
+   63. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   63. Production Smoothing via Inventories
+   64. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1482,32 +1487,32 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   64. A Lake Model of Employment and Unemployment
+   65. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   65. Rational Expectations Equilibrium
+   66. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   66. Stability in Linear Rational Expectations Models
+   67. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   67. Markov Perfect Equilibrium
+   68. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   68. Uncertainty Traps
+   69. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   69. The Aiyagari Model
+   70. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1519,17 +1524,17 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   70. Asset Pricing: Finite State Models
+   71. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   71. Competitive Equilibria with Arrow Securities
+   72. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   72. Heterogeneous Beliefs and Bubbles
+   73. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1541,17 +1546,17 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   73. Pandas for Panel Data
+   74. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   74. Linear Regression in Python
+   75. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   75. Maximum Likelihood Estimation
+   76. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1563,12 +1568,12 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   76. First-Price and Second-Price Auctions
+   77. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   77. Multiple Good Allocation Mechanisms
+   78. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1580,17 +1585,17 @@ network as a good function approximator.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   78. Troubleshooting
+   79. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   79. References
+   80. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   80. Execution Statistics
+   81. Execution Statistics
   </a>
  </li>
 </ul>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>23. A Bayesian Formulation of Friedman and Wald’s Problem &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>24. A Bayesian Formulation of Friedman and Wald’s Problem &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -118,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="24. Exchangeability and Bayesian Updating" href="exchangeable.html" />
-    <link rel="prev" title="22. A Problem that Stumped Milton Friedman" href="wald_friedman.html" />
+    <link rel="next" title="25. Exchangeability and Bayesian Updating" href="exchangeable.html" />
+    <link rel="prev" title="23. A Problem that Stumped Milton Friedman" href="wald_friedman.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -167,19 +167,19 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">23.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-dynamic-programming-approach">23.2. A Dynamic Programming Approach</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#losses-and-costs">23.2.1. Losses and Costs</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#digression-on-type-i-and-type-ii-errors">23.2.2. Digression on Type I and Type II Errors</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intuition">23.2.3. Intuition</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-bellman-equation">23.2.4. A Bellman Equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">24.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-dynamic-programming-approach">24.2. A Dynamic Programming Approach</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#losses-and-costs">24.2.1. Losses and Costs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#digression-on-type-i-and-type-ii-errors">24.2.2. Digression on Type I and Type II Errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intuition">24.2.3. Intuition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-bellman-equation">24.2.4. A Bellman Equation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">23.3. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis">23.4. Analysis</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-function">23.4.1. Cost Function</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulations">23.4.2. Simulations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparative-statics">23.4.3. Comparative Statics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">24.3. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis">24.4. Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-function">24.4.1. Cost Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulations">24.4.2. Simulations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparative-statics">24.4.3. Comparative Statics</a></li>
 </ul>
 </li>
 </ul>
@@ -239,7 +239,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="a-bayesian-formulation-of-friedman-and-wald-s-problem">
-<h1><a class="toc-backref" href="#id6"><span class="section-number">23. </span><span class="target" id="index-0"></span>A Bayesian Formulation of Friedman and Wald’s Problem</a><a class="headerlink" href="#a-bayesian-formulation-of-friedman-and-wald-s-problem" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id6"><span class="section-number">24. </span><span class="target" id="index-0"></span>A Bayesian Formulation of Friedman and Wald’s Problem</a><a class="headerlink" href="#a-bayesian-formulation-of-friedman-and-wald-s-problem" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -254,7 +254,7 @@
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">23.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">24.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture revisits the  statistical decision problem presented to Milton
 Friedman and W. Allen Wallis during World War II when they were analysts at
 the U.S. Government’s  Statistical Research Group at Columbia University.</p>
@@ -316,7 +316,7 @@ a prior probability distribution over the parameters that representive his perso
 </div>
 </section>
 <section id="a-dynamic-programming-approach">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">23.2. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">24.2. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Permalink to this heading">#</a></h2>
 <p>The following presentation of the problem closely follows Dmitri
 Berskekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id2">[<a class="reference internal" href="zreferences.html#id112" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">Bertsekas, 1975</a>]</span>.</p>
 <p>A decision-maker can observe a sequence of draws of a random variable <span class="math notranslate nohighlight">\(z\)</span>.</p>
@@ -408,7 +408,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 </div>
 </div>
 <section id="losses-and-costs">
-<h3><span class="section-number">23.2.1. </span>Losses and Costs<a class="headerlink" href="#losses-and-costs" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">24.2.1. </span>Losses and Costs<a class="headerlink" href="#losses-and-costs" title="Permalink to this heading">#</a></h3>
 <p>After observing <span class="math notranslate nohighlight">\(z_k, z_{k-1}, \ldots, z_0\)</span>, the decision-maker
 chooses among three distinct actions:</p>
 <ul class="simple">
@@ -429,7 +429,7 @@ another <span class="math notranslate nohighlight">\(z\)</span></p></li>
 </ul>
 </section>
 <section id="digression-on-type-i-and-type-ii-errors">
-<h3><span class="section-number">23.2.2. </span>Digression on Type I and Type II Errors<a class="headerlink" href="#digression-on-type-i-and-type-ii-errors" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">24.2.2. </span>Digression on Type I and Type II Errors<a class="headerlink" href="#digression-on-type-i-and-type-ii-errors" title="Permalink to this heading">#</a></h3>
 <p>If we regard  <span class="math notranslate nohighlight">\(f=f_0\)</span> as a null hypothesis and <span class="math notranslate nohighlight">\(f=f_1\)</span> as an alternative hypothesis,
 then <span class="math notranslate nohighlight">\(L_1\)</span> and <span class="math notranslate nohighlight">\(L_0\)</span> are losses associated with two types of statistical errors</p>
 <ul class="simple">
@@ -445,7 +445,7 @@ error.</p></li>
 </ul>
 </section>
 <section id="intuition">
-<h3><span class="section-number">23.2.3. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">24.2.3. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this heading">#</a></h3>
 <p>Before proceeding,  let’s try to guess what an optimal decision rule might look like.</p>
 <p>Suppose at some given point in time that <span class="math notranslate nohighlight">\(\pi\)</span> is close to 1.</p>
 <p>Then our prior beliefs and the evidence so far point strongly to <span class="math notranslate nohighlight">\(f = f_1\)</span>.</p>
@@ -461,11 +461,11 @@ error.</p></li>
 parameter such as <span class="math notranslate nohighlight">\(c\)</span> or <span class="math notranslate nohighlight">\(L_0\)</span> on <span class="math notranslate nohighlight">\(A\)</span> or <span class="math notranslate nohighlight">\(B\)</span>.</p>
 </section>
 <section id="a-bellman-equation">
-<h3><span class="section-number">23.2.4. </span>A Bellman Equation<a class="headerlink" href="#a-bellman-equation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">24.2.4. </span>A Bellman Equation<a class="headerlink" href="#a-bellman-equation" title="Permalink to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(J(\pi)\)</span> be the total loss for a decision-maker with current belief <span class="math notranslate nohighlight">\(\pi\)</span> who chooses optimally.</p>
 <p>With some thought, you will agree that <span class="math notranslate nohighlight">\(J\)</span> should satisfy the Bellman equation</p>
 <div class="math notranslate nohighlight" id="equation-new1">
-<span class="eqno">(23.1)<a class="headerlink" href="#equation-new1" title="Permalink to this equation">#</a></span>\[J(\pi) =
+<span class="eqno">(24.1)<a class="headerlink" href="#equation-new1" title="Permalink to this equation">#</a></span>\[J(\pi) =
     \min
     \left\{
         \underbrace{\pi L_0}_{ \text{accept } f_0 } \; , \; \underbrace{(1-\pi) L_1}_{ \text{accept } f_1 } \; , \;
@@ -489,7 +489,7 @@ f_{\pi}(v) = (1-\pi) f_0(v) + \pi f_1 (v)
 </ol>
 <p>We can represent the  Bellman equation as</p>
 <div class="math notranslate nohighlight" id="equation-optdec">
-<span class="eqno">(23.2)<a class="headerlink" href="#equation-optdec" title="Permalink to this equation">#</a></span>\[J(\pi) =
+<span class="eqno">(24.2)<a class="headerlink" href="#equation-optdec" title="Permalink to this equation">#</a></span>\[J(\pi) =
 \min \left\{ \pi L_0, \; (1-\pi) L_1, \; h(\pi) \right\}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\pi \in [0,1]\)</span> and</p>
 <ul class="simple">
@@ -521,24 +521,24 @@ the expected cost associated with drawing one more <span class="math notranslate
 \end{split}\]</div>
 <p>Our aim is to compute the cost function <span class="math notranslate nohighlight">\(J\)</span> as well as  the associated cutoffs <span class="math notranslate nohighlight">\(A\)</span>
 and <span class="math notranslate nohighlight">\(B\)</span>.</p>
-<p>To make our computations manageable, using <a class="reference internal" href="#equation-optdec">(23.2)</a>, we can write the continuation cost <span class="math notranslate nohighlight">\(h(\pi)\)</span> as</p>
+<p>To make our computations manageable, using <a class="reference internal" href="#equation-optdec">(24.2)</a>, we can write the continuation cost <span class="math notranslate nohighlight">\(h(\pi)\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-optdec2">
-<span class="eqno">(23.3)<a class="headerlink" href="#equation-optdec2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(24.3)<a class="headerlink" href="#equation-optdec2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
 h(\pi) &amp;= c + \mathbb E [J(\pi')] \\
 &amp;= c + \mathbb E_{\pi'} \min \{ \pi' L_0, (1 - \pi') L_1, h(\pi') \} \\
 &amp;= c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 \end{aligned}\end{split}\]</div>
 <p>The equality</p>
 <div class="math notranslate nohighlight" id="equation-funceq">
-<span class="eqno">(23.4)<a class="headerlink" href="#equation-funceq" title="Permalink to this equation">#</a></span>\[h(\pi) =
+<span class="eqno">(24.4)<a class="headerlink" href="#equation-funceq" title="Permalink to this equation">#</a></span>\[h(\pi) =
 c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'\]</div>
 <p>is an equation  in an unknown function  <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Such an equation is called a <strong>functional equation</strong>.</p>
 </div>
-<p>Using the functional equation, <a class="reference internal" href="#equation-funceq">(23.4)</a>, for the continuation cost, we can back out
-optimal choices using the right side of <a class="reference internal" href="#equation-optdec">(23.2)</a>.</p>
+<p>Using the functional equation, <a class="reference internal" href="#equation-funceq">(24.4)</a>, for the continuation cost, we can back out
+optimal choices using the right side of <a class="reference internal" href="#equation-optdec">(24.2)</a>.</p>
 <p>This functional equation can be solved by taking an initial guess and iterating
 to find a fixed point.</p>
 <p>Thus, we iterate with an operator <span class="math notranslate nohighlight">\(Q\)</span>, where</p>
@@ -550,7 +550,7 @@ c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">23.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">24.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>First, we will construct a <code class="docutils literal notranslate"><span class="pre">jitclass</span></code> to store the parameters of the model</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -699,7 +699,7 @@ c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \
 </div>
 </section>
 <section id="analysis">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">23.4. </span>Analysis</a><a class="headerlink" href="#analysis" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">24.4. </span>Analysis</a><a class="headerlink" href="#analysis" title="Permalink to this heading">#</a></h2>
 <p>Let’s inspect outcomes.</p>
 <p>We will be using the default parameterization with distributions like so</p>
 <div class="cell docutils container">
@@ -721,7 +721,7 @@ c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \
 </div>
 </div>
 <section id="cost-function">
-<h3><span class="section-number">23.4.1. </span>Cost Function<a class="headerlink" href="#cost-function" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">24.4.1. </span>Cost Function<a class="headerlink" href="#cost-function" title="Permalink to this heading">#</a></h3>
 <p>To solve the model, we will call our <code class="docutils literal notranslate"><span class="pre">solve_model</span></code> function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -797,7 +797,7 @@ and plot these on our cost function plot</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/37bf2a6e51bfd0d787c7c206564d0d32955a9655cd3d8dc07e4d77711239dc2d.png" src="_images/37bf2a6e51bfd0d787c7c206564d0d32955a9655cd3d8dc07e4d77711239dc2d.png" />
+<img alt="_images/0768b740122104fbb3e051109c2b838aea033d117e8a34f67305715cfc4a248e.png" src="_images/0768b740122104fbb3e051109c2b838aea033d117e8a34f67305715cfc4a248e.png" />
 </div>
 </div>
 <p>The cost function <span class="math notranslate nohighlight">\(J\)</span> equals <span class="math notranslate nohighlight">\(\pi L_0\)</span> for <span class="math notranslate nohighlight">\(\pi \leq B\)</span>, and <span class="math notranslate nohighlight">\((1-\pi) L_1\)</span> for <span class="math notranslate nohighlight">\(\pi
@@ -810,7 +810,7 @@ probability assigned to <span class="math notranslate nohighlight">\(f_1\)</span
 model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <span class="math notranslate nohighlight">\(B\)</span> or above <span class="math notranslate nohighlight">\(A\)</span>.</p>
 </section>
 <section id="simulations">
-<h3><span class="section-number">23.4.2. </span>Simulations<a class="headerlink" href="#simulations" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">24.4.2. </span>Simulations<a class="headerlink" href="#simulations" title="Permalink to this heading">#</a></h3>
 <p>The next figure shows the outcomes of 500 simulations of the decision process.</p>
 <p>On the left is a histogram of <strong>stopping times</strong>, i.e.,  the number of draws of <span class="math notranslate nohighlight">\(z_k\)</span> required to make a decision.</p>
 <p>The average number of draws is around 6.6.</p>
@@ -910,12 +910,12 @@ model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a7a6a1cf2b74f57b72280065913ad03979fd8a17db0c9237c78e4d63695f9051.png" src="_images/a7a6a1cf2b74f57b72280065913ad03979fd8a17db0c9237c78e4d63695f9051.png" />
+<img alt="_images/3605b314100aa16c86ee27c5ebd6db8eb4bab9d405ba1fafd4399392bdd32a01.png" src="_images/3605b314100aa16c86ee27c5ebd6db8eb4bab9d405ba1fafd4399392bdd32a01.png" />
 </div>
 </div>
 </section>
 <section id="comparative-statics">
-<h3><span class="section-number">23.4.3. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">24.4.3. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Permalink to this heading">#</a></h3>
 <p>Now let’s consider the following exercise.</p>
 <p>We double the cost of drawing an additional observation.</p>
 <p>Before you look, think about what will happen:</p>
@@ -931,7 +931,7 @@ model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/37ee5c616a3883131fdd7a103a572c36086b4461d6e68db7be5ad9542b142f40.png" src="_images/37ee5c616a3883131fdd7a103a572c36086b4461d6e68db7be5ad9542b142f40.png" />
+<img alt="_images/9bb2f514130e0a84f39e50d7ed58c788a41e1404386dd21db7e351d1dfc6cb81.png" src="_images/9bb2f514130e0a84f39e50d7ed58c788a41e1404386dd21db7e351d1dfc6cb81.png" />
 </div>
 </div>
 <p>Increased cost per draw has induced the decision-maker to take fewer draws before deciding.</p>
@@ -1063,43 +1063,48 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="stats_examples.html">
+   9. Some Probability Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   9. LLN and CLT
+   10. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   10. Two Meanings of Probability
+   11. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   11. Multivariate Hypergeometric Distribution
+   12. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   12. Multivariate Normal Distribution
+   13. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   13. Fault Tree Uncertainties
+   14. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   14. Introduction to Artificial Neural Networks
+   15. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   15. Randomized Response Surveys
+   16. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   16. Expected Utilities of Random Responses
+   17. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1111,17 +1116,17 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   17. Non-Conjugate Priors
+   18. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   18. Posterior Distributions for  AR(1) Parameters
+   19. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   19. Forecasting  an AR(1) Process
+   20. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -1133,42 +1138,42 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   20. Likelihood Ratio Processes
+   21. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   21. Mean of a Likelihood Ratio Process
+   22. Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   22. A Problem that Stumped Milton Friedman
+   23. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   23. A Bayesian Formulation of Friedman and Wald’s Problem
+   24. A Bayesian Formulation of Friedman and Wald’s Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   24. Exchangeability and Bayesian Updating
+   25. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   25. Likelihood Ratio Processes and Bayesian Learning
+   26. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   26. Incorrect Models
+   27. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   27. Bayesian versus Frequentist Decision Rules
+   28. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1180,12 +1185,12 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   28. Optimal Transport
+   29. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   29. Von Neumann Growth Model (and a Generalization)
+   30. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1197,42 +1202,42 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   30. Finite Markov Chains
+   31. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   31. Inventory Dynamics
+   32. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   32. Linear State Space Models
+   33. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   33. Samuelson Multiplier-Accelerator
+   34. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   34. Kesten Processes and Firm Dynamics
+   35. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   35. Wealth Distribution Dynamics
+   36. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   36. A First Look at the Kalman Filter
+   37. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   37. Another Look at the Kalman Filter
+   38. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1244,42 +1249,42 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   38. Job Search I: The McCall Search Model
+   39. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   39. Job Search II: Search and Separation
+   40. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   40. Job Search III: Fitted Value Function Iteration
+   41. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   41. Job Search IV: Correlated Wage Offers
+   42. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   42. Job Search V: Modeling Career Choice
+   43. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   43. Job Search VI: On-the-Job Search
+   44. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   44. Job Search VII: A McCall Worker Q-Learns
+   45. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   45. Job Search VII: Search with Learning
+   46. Job Search VII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1291,62 +1296,62 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   46. Cass-Koopmans Model
+   47. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   47. Cass-Koopmans Competitive Equilibrium
+   48. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   48. Cass-Koopmans Model with Distorting Taxes
+   49. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   49. Transitions in an Overlapping Generations Model
+   50. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   50. Cake Eating I: Introduction to Optimal Saving
+   51. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   51. Cake Eating II: Numerical Methods
+   52. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   52. Optimal Growth I: The Stochastic Optimal Growth Model
+   53. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   53. Optimal Growth II: Accelerating the Code with Numba
+   54. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   54. Optimal Growth III: Time Iteration
+   55. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   55. Optimal Growth IV: The Endogenous Grid Method
+   56. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   56. The Income Fluctuation Problem I: Basic Model
+   57. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   57. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   58. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1358,32 +1363,32 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   58. LQ Control: Foundations
+   59. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   59. Lagrangian for LQ Control
+   60. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   60. Eliminating Cross Products
+   61. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   61. The Permanent Income Model
+   62. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   62. Permanent Income II: LQ Techniques
+   63. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   63. Production Smoothing via Inventories
+   64. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1395,32 +1400,32 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   64. A Lake Model of Employment and Unemployment
+   65. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   65. Rational Expectations Equilibrium
+   66. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   66. Stability in Linear Rational Expectations Models
+   67. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   67. Markov Perfect Equilibrium
+   68. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   68. Uncertainty Traps
+   69. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   69. The Aiyagari Model
+   70. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1432,17 +1437,17 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   70. Asset Pricing: Finite State Models
+   71. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   71. Competitive Equilibria with Arrow Securities
+   72. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   72. Heterogeneous Beliefs and Bubbles
+   73. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1454,17 +1459,17 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   73. Pandas for Panel Data
+   74. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   74. Linear Regression in Python
+   75. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   75. Maximum Likelihood Estimation
+   76. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1476,12 +1481,12 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   76. First-Price and Second-Price Auctions
+   77. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   77. Multiple Good Allocation Mechanisms
+   78. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1493,17 +1498,17 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   78. Troubleshooting
+   79. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   79. References
+   80. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   80. Execution Statistics
+   81. Execution Statistics
   </a>
  </li>
 </ul>

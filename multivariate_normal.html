@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>12. Multivariate Normal Distribution &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>13. Multivariate Normal Distribution &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -118,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="13. Fault Tree Uncertainties" href="hoist_failure.html" />
-    <link rel="prev" title="11. Multivariate Hypergeometric Distribution" href="multi_hyper.html" />
+    <link rel="next" title="14. Fault Tree Uncertainties" href="hoist_failure.html" />
+    <link rel="prev" title="12. Multivariate Hypergeometric Distribution" href="multi_hyper.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -167,32 +167,32 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">12.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariate-normal-distribution">12.2. The Multivariate Normal Distribution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bivariate-example">12.3. Bivariate Example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trivariate-example">12.4. Trivariate Example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-dimensional-intelligence-iq">12.5. One Dimensional Intelligence (IQ)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#information-as-surprise">12.6. Information as Surprise</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cholesky-factor-magic">12.7. Cholesky Factor Magic</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#math-and-verbal-intelligence">12.8. Math and Verbal  Intelligence</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-time-series-analysis">12.9. Univariate Time Series Analysis</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-example">12.9.1. Smoothing Example</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-exercise">12.9.2. Filtering Exercise</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-exercise">12.9.3. Prediction Exercise</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-a-wold-representation">12.9.4. Constructing a Wold Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">13.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariate-normal-distribution">13.2. The Multivariate Normal Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bivariate-example">13.3. Bivariate Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trivariate-example">13.4. Trivariate Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-dimensional-intelligence-iq">13.5. One Dimensional Intelligence (IQ)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#information-as-surprise">13.6. Information as Surprise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cholesky-factor-magic">13.7. Cholesky Factor Magic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#math-and-verbal-intelligence">13.8. Math and Verbal  Intelligence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-time-series-analysis">13.9. Univariate Time Series Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-example">13.9.1. Smoothing Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-exercise">13.9.2. Filtering Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-exercise">13.9.3. Prediction Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-a-wold-representation">13.9.4. Constructing a Wold Representation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stochastic-difference-equation">12.10. Stochastic Difference Equation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-stock-price-model">12.11. Application to Stock Price Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-foundations">12.12. Filtering Foundations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-toward-dynamics">12.12.1. Step toward dynamics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-version">12.12.2. Dynamic version</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example">12.12.3. An example</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-for-iterating">12.12.4. Code for Iterating</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stochastic-difference-equation">13.10. Stochastic Difference Equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-stock-price-model">13.11. Application to Stock Price Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-foundations">13.12. Filtering Foundations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-toward-dynamics">13.12.1. Step toward dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-version">13.12.2. Dynamic version</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example">13.12.3. An example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-for-iterating">13.12.4. Code for Iterating</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-factor-analysis-model">12.13. Classic Factor Analysis Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-and-factor-analysis">12.14. PCA and Factor Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-factor-analysis-model">13.13. Classic Factor Analysis Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-and-factor-analysis">13.14. PCA and Factor Analysis</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -250,7 +250,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="multivariate-normal-distribution">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">12. </span>Multivariate Normal Distribution</a><a class="headerlink" href="#multivariate-normal-distribution" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id1"><span class="section-number">13. </span>Multivariate Normal Distribution</a><a class="headerlink" href="#multivariate-normal-distribution" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -275,7 +275,7 @@
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">12.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2"><span class="section-number">13.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes a workhorse in probability theory, statistics, and economics, namely,
 the <strong>multivariate normal distribution</strong>.</p>
 <p>In this lecture, you will learn formulas for</p>
@@ -295,7 +295,7 @@ the <strong>multivariate normal distribution</strong>.</p>
 </ul>
 </section>
 <section id="the-multivariate-normal-distribution">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">12.2. </span>The Multivariate Normal Distribution</a><a class="headerlink" href="#the-multivariate-normal-distribution" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">13.2. </span>The Multivariate Normal Distribution</a><a class="headerlink" href="#the-multivariate-normal-distribution" title="Permalink to this heading">#</a></h2>
 <p>This lecture defines a Python class <code class="docutils literal notranslate"><span class="pre">MultivariateNormal</span></code> to be used
 to generate <strong>marginal</strong> and <strong>conditional</strong> distributions associated
 with a multivariate normal distribution.</p>
@@ -505,7 +505,7 @@ squares regressions.</p>
 data to their population counterparts.</p>
 </section>
 <section id="bivariate-example">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">12.3. </span>Bivariate Example</a><a class="headerlink" href="#bivariate-example" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">13.3. </span>Bivariate Example</a><a class="headerlink" href="#bivariate-example" title="Permalink to this heading">#</a></h2>
 <p>We start with a bivariate normal distribution pinned down by</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -804,7 +804,7 @@ closely approximate their population counterparts.</p>
 Numbers explains why  sample analogues approximate  population objects.</p>
 </section>
 <section id="trivariate-example">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">12.4. </span>Trivariate Example</a><a class="headerlink" href="#trivariate-example" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">13.4. </span>Trivariate Example</a><a class="headerlink" href="#trivariate-example" title="Permalink to this heading">#</a></h2>
 <p>Let’s apply our code to a trivariate example.</p>
 <p>We’ll specify the mean vector and the covariance matrix as follows.</p>
 <div class="cell docutils container">
@@ -914,7 +914,7 @@ order.</p>
 populations counterparts.</p>
 </section>
 <section id="one-dimensional-intelligence-iq">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">12.5. </span>One Dimensional Intelligence (IQ)</a><a class="headerlink" href="#one-dimensional-intelligence-iq" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">13.5. </span>One Dimensional Intelligence (IQ)</a><a class="headerlink" href="#one-dimensional-intelligence-iq" title="Permalink to this heading">#</a></h2>
 <p>Let’s move closer to a real-life example, namely, inferring a
 one-dimensional measure of intelligence called IQ from a list of test
 scores.</p>
@@ -1191,7 +1191,7 @@ conditional standard deviation <span class="math notranslate nohighlight">\(\hat
 converge to <span class="math notranslate nohighlight">\(0\)</span> at  rate <span class="math notranslate nohighlight">\(\frac{1}{n^{.5}}\)</span>.</p>
 </section>
 <section id="information-as-surprise">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">12.6. </span>Information as Surprise</a><a class="headerlink" href="#information-as-surprise" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">13.6. </span>Information as Surprise</a><a class="headerlink" href="#information-as-surprise" title="Permalink to this heading">#</a></h2>
 <p>By using a different representation, let’s look at things from a
 different perspective.</p>
 <p>We can represent the random vector <span class="math notranslate nohighlight">\(X\)</span> defined above as</p>
@@ -1231,15 +1231,15 @@ contains the same information as the non-orthogonal vector
 <span class="math notranslate nohighlight">\(C\)</span>.</p>
 <p>Then we can write</p>
 <div class="math notranslate nohighlight" id="equation-mnv-1">
-<span class="eqno">(12.1)<a class="headerlink" href="#equation-mnv-1" title="Permalink to this equation">#</a></span>\[\theta = \mu_{\theta} + c_1 \epsilon_1 + c_2 \epsilon_2 + \dots + c_n \epsilon_n + c_{n+1} \epsilon_{n+1}\]</div>
+<span class="eqno">(13.1)<a class="headerlink" href="#equation-mnv-1" title="Permalink to this equation">#</a></span>\[\theta = \mu_{\theta} + c_1 \epsilon_1 + c_2 \epsilon_2 + \dots + c_n \epsilon_n + c_{n+1} \epsilon_{n+1}\]</div>
 <p>The mutual orthogonality of the <span class="math notranslate nohighlight">\(\epsilon_i\)</span>’s provides us with an
-informative way to interpret them in light of equation <a class="reference internal" href="#equation-mnv-1">(12.1)</a>.</p>
+informative way to interpret them in light of equation <a class="reference internal" href="#equation-mnv-1">(13.1)</a>.</p>
 <p>Thus, relative to what is known from tests <span class="math notranslate nohighlight">\(i=1, \ldots, n-1\)</span>,
 <span class="math notranslate nohighlight">\(c_i \epsilon_i\)</span> is the amount of <strong>new information</strong> about
 <span class="math notranslate nohighlight">\(\theta\)</span> brought by the test number <span class="math notranslate nohighlight">\(i\)</span>.</p>
 <p>Here <strong>new information</strong> means <strong>surprise</strong> or what could not be
 predicted from earlier information.</p>
-<p>Formula <a class="reference internal" href="#equation-mnv-1">(12.1)</a> also provides us with an enlightening way to express
+<p>Formula <a class="reference internal" href="#equation-mnv-1">(13.1)</a> also provides us with an enlightening way to express
 conditional means and conditional variances that we computed earlier.</p>
 <p>In particular,</p>
 <div class="math notranslate nohighlight">
@@ -1306,12 +1306,12 @@ multivariate normal distributions.</p>
 </div>
 </section>
 <section id="cholesky-factor-magic">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">12.7. </span>Cholesky Factor Magic</a><a class="headerlink" href="#cholesky-factor-magic" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">13.7. </span>Cholesky Factor Magic</a><a class="headerlink" href="#cholesky-factor-magic" title="Permalink to this heading">#</a></h2>
 <p>Evidently, the Cholesky factorizations automatically computes the
 population  <strong>regression coefficients</strong> and associated statistics
 that are produced by our <code class="docutils literal notranslate"><span class="pre">MultivariateNormal</span></code> class.</p>
 <p>The Cholesky factorization  computes these things <strong>recursively</strong>.</p>
-<p>Indeed, in formula <a class="reference internal" href="#equation-mnv-1">(12.1)</a>,</p>
+<p>Indeed, in formula <a class="reference internal" href="#equation-mnv-1">(13.1)</a>,</p>
 <ul class="simple">
 <li><p>the random variable <span class="math notranslate nohighlight">\(c_i \epsilon_i\)</span> is information about
 <span class="math notranslate nohighlight">\(\theta\)</span> that is not contained by the information in
@@ -1321,7 +1321,7 @@ coefficient of <span class="math notranslate nohighlight">\(\theta - \mu_\theta\
 </ul>
 </section>
 <section id="math-and-verbal-intelligence">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">12.8. </span>Math and Verbal  Intelligence</a><a class="headerlink" href="#math-and-verbal-intelligence" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">13.8. </span>Math and Verbal  Intelligence</a><a class="headerlink" href="#math-and-verbal-intelligence" title="Permalink to this heading">#</a></h2>
 <p>We can alter the preceding example to be more realistic.</p>
 <p>There is ample evidence that IQ is not a scalar.</p>
 <p>Some people are good in math skills but poor in language skills.</p>
@@ -1517,7 +1517,7 @@ The mean and variance of η conditional on y3, y4          are 97.02 and 33.33 r
 language tests provide no information about <span class="math notranslate nohighlight">\(\eta\)</span>.</p>
 </section>
 <section id="univariate-time-series-analysis">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">12.9. </span>Univariate Time Series Analysis</a><a class="headerlink" href="#univariate-time-series-analysis" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">13.9. </span>Univariate Time Series Analysis</a><a class="headerlink" href="#univariate-time-series-analysis" title="Permalink to this heading">#</a></h2>
 <p>We can use the multivariate normal distribution and a little matrix
 algebra to present foundations of univariate linear time series
 analysis.</p>
@@ -1723,7 +1723,7 @@ the fun exercises below.</p>
 </div>
 </div>
 <section id="smoothing-example">
-<h3><span class="section-number">12.9.1. </span>Smoothing Example<a class="headerlink" href="#smoothing-example" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">13.9.1. </span>Smoothing Example<a class="headerlink" href="#smoothing-example" title="Permalink to this heading">#</a></h3>
 <p>This is an instance of a classic <code class="docutils literal notranslate"><span class="pre">smoothing</span></code> calculation whose purpose
 is to compute <span class="math notranslate nohighlight">\(E X \mid Y\)</span>.</p>
 <p>An interpretation of this example is</p>
@@ -1780,7 +1780,7 @@ Y =  [-1.77368314 -0.72845598 -3.84781329 -4.30029643]
 </div>
 </section>
 <section id="filtering-exercise">
-<h3><span class="section-number">12.9.2. </span>Filtering Exercise<a class="headerlink" href="#filtering-exercise" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">13.9.2. </span>Filtering Exercise<a class="headerlink" href="#filtering-exercise" title="Permalink to this heading">#</a></h3>
 <p>Compute <span class="math notranslate nohighlight">\(E\left[x_{t} \mid y_{t-1}, y_{t-2}, \dots, y_{0}\right]\)</span>.</p>
 <p>To do so, we need to first construct the mean vector and the covariance
 matrix of the subvector
@@ -1849,7 +1849,7 @@ matrix of the subvector
 </div>
 </section>
 <section id="prediction-exercise">
-<h3><span class="section-number">12.9.3. </span>Prediction Exercise<a class="headerlink" href="#prediction-exercise" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">13.9.3. </span>Prediction Exercise<a class="headerlink" href="#prediction-exercise" title="Permalink to this heading">#</a></h3>
 <p>Compute <span class="math notranslate nohighlight">\(E\left[y_{t} \mid y_{t-j}, \dots, y_{0} \right]\)</span>.</p>
 <p>As what we did in exercise 2, we will construct the mean vector and
 covariance matrix of the subvector
@@ -1914,7 +1914,7 @@ covariance matrix of the subvector
 </div>
 </section>
 <section id="constructing-a-wold-representation">
-<h3><span class="section-number">12.9.4. </span>Constructing a Wold Representation<a class="headerlink" href="#constructing-a-wold-representation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">13.9.4. </span>Constructing a Wold Representation<a class="headerlink" href="#constructing-a-wold-representation" title="Permalink to this heading">#</a></h3>
 <p>Now we’ll apply Cholesky decomposition to decompose
 <span class="math notranslate nohighlight">\(\Sigma_{y}=H H^{\prime}\)</span> and form</p>
 <div class="math notranslate nohighlight">
@@ -1973,7 +1973,7 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </section>
 </section>
 <section id="stochastic-difference-equation">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">12.10. </span>Stochastic Difference Equation</a><a class="headerlink" href="#stochastic-difference-equation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">13.10. </span>Stochastic Difference Equation</a><a class="headerlink" href="#stochastic-difference-equation" title="Permalink to this heading">#</a></h2>
 <p>Consider the stochastic second-order linear difference equation</p>
 <div class="math notranslate nohighlight">
 \[
@@ -2133,7 +2133,7 @@ C\Sigma_{\tilde{y}}C^{\prime} &amp; \boldsymbol{0}_{N-2\times N-2}\\
 </div>
 </section>
 <section id="application-to-stock-price-model">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">12.11. </span>Application to Stock Price Model</a><a class="headerlink" href="#application-to-stock-price-model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">13.11. </span>Application to Stock Price Model</a><a class="headerlink" href="#application-to-stock-price-model" title="Permalink to this heading">#</a></h2>
 <p>Let</p>
 <div class="math notranslate nohighlight">
 \[
@@ -2279,7 +2279,7 @@ predicting future dividends on the basis of the information
 <span class="math notranslate nohighlight">\(y_t, y_{t-1}\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </section>
 <section id="filtering-foundations">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">12.12. </span>Filtering Foundations</a><a class="headerlink" href="#filtering-foundations" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">13.12. </span>Filtering Foundations</a><a class="headerlink" href="#filtering-foundations" title="Permalink to this heading">#</a></h2>
 <p>Assume that <span class="math notranslate nohighlight">\(x_0\)</span> is an <span class="math notranslate nohighlight">\(n \times 1\)</span> random vector and that
 <span class="math notranslate nohighlight">\(y_0\)</span> is a <span class="math notranslate nohighlight">\(p \times 1\)</span> random vector determined by the
 <em>observation equation</em></p>
@@ -2324,13 +2324,13 @@ joint probability distribution.</p></li>
 <span class="math notranslate nohighlight">\(x_0\)</span> conditional on <span class="math notranslate nohighlight">\(y_0\)</span> is <span class="math notranslate nohighlight">\({\mathcal N}(\tilde x_0, \tilde \Sigma_0)\)</span> by representing <span class="math notranslate nohighlight">\(x_0\)</span>
 as</p>
 <div class="math notranslate nohighlight" id="equation-eq-x0rep2">
-<span class="eqno">(12.2)<a class="headerlink" href="#equation-eq-x0rep2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(13.2)<a class="headerlink" href="#equation-eq-x0rep2" title="Permalink to this equation">#</a></span>\[
  x_0 = \tilde x_0 + \zeta_0
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\zeta_0\)</span> is a Gaussian random vector that is orthogonal to <span class="math notranslate nohighlight">\(\tilde x_0\)</span> and <span class="math notranslate nohighlight">\(y_0\)</span> and that
 has mean vector  <span class="math notranslate nohighlight">\(0\)</span> and conditional covariance matrix <span class="math notranslate nohighlight">\( E [\zeta_0 \zeta_0' | y_0] = \tilde \Sigma_0\)</span>.</p>
 <section id="step-toward-dynamics">
-<h3><span class="section-number">12.12.1. </span>Step toward dynamics<a class="headerlink" href="#step-toward-dynamics" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">13.12.1. </span>Step toward dynamics<a class="headerlink" href="#step-toward-dynamics" title="Permalink to this heading">#</a></h3>
 <p>Now suppose that we are in a time series setting and that we have the
 one-step state transition equation</p>
 <div class="math notranslate nohighlight">
@@ -2339,7 +2339,7 @@ x_1 = A x_0 + C w_1 ,  \quad w_1 \sim {\mathcal N}(0, I )
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(A\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> matrix and <span class="math notranslate nohighlight">\(C\)</span> is an
 <span class="math notranslate nohighlight">\(n \times m\)</span> matrix.</p>
-<p>Using equation <a class="reference internal" href="#equation-eq-x0rep2">(12.2)</a>, we can also represent <span class="math notranslate nohighlight">\(x_1\)</span> as</p>
+<p>Using equation <a class="reference internal" href="#equation-eq-x0rep2">(13.2)</a>, we can also represent <span class="math notranslate nohighlight">\(x_1\)</span> as</p>
 <div class="math notranslate nohighlight">
 \[
 x_1 = A (\tilde x_0 + \zeta_0) + C w_1
@@ -2375,7 +2375,7 @@ K_0 = A \Sigma_0 G' (G \Sigma_0 G' + R)^{-1}
 \]</div>
 </section>
 <section id="dynamic-version">
-<h3><span class="section-number">12.12.2. </span>Dynamic version<a class="headerlink" href="#dynamic-version" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">13.12.2. </span>Dynamic version<a class="headerlink" href="#dynamic-version" title="Permalink to this heading">#</a></h3>
 <p>Suppose now that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>,
 <span class="math notranslate nohighlight">\(\{x_{t+1}, y_t\}_{t=0}^\infty\)</span> are governed by the equations</p>
 <div class="math notranslate nohighlight">
@@ -2436,7 +2436,7 @@ second being a matrix difference equation in the matrix appearing in a quadratic
 <p>The family resemblences of these two equations reflects a transcendent <strong>duality</strong> that prevails between control theory and filtering theory.</p>
 </section>
 <section id="an-example">
-<h3><span class="section-number">12.12.3. </span>An example<a class="headerlink" href="#an-example" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">13.12.3. </span>An example<a class="headerlink" href="#an-example" title="Permalink to this heading">#</a></h3>
 <p>We can use the Python class <em>MultivariateNormal</em> to construct examples.</p>
 <p>Here is an example for a single period problem at time <span class="math notranslate nohighlight">\(0\)</span></p>
 <div class="cell docutils container">
@@ -2509,7 +2509,7 @@ second being a matrix difference equation in the matrix appearing in a quadratic
 </div>
 </section>
 <section id="code-for-iterating">
-<h3><span class="section-number">12.12.4. </span>Code for Iterating<a class="headerlink" href="#code-for-iterating" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">13.12.4. </span>Code for Iterating<a class="headerlink" href="#code-for-iterating" title="Permalink to this heading">#</a></h3>
 <p>Here is code for solving a dynamic filtering problem by iterating on our
 equations, followed by an example.</p>
 <div class="cell docutils container">
@@ -2576,7 +2576,7 @@ equations, followed by an example.</p>
 </section>
 </section>
 <section id="classic-factor-analysis-model">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">12.13. </span>Classic Factor Analysis Model</a><a class="headerlink" href="#classic-factor-analysis-model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">13.13. </span>Classic Factor Analysis Model</a><a class="headerlink" href="#classic-factor-analysis-model" title="Permalink to this heading">#</a></h2>
 <p>The factor analysis model widely used in psychology and other fields can
 be represented as</p>
 <div class="math notranslate nohighlight">
@@ -2787,7 +2787,7 @@ for the second column.</p>
 </div>
 </section>
 <section id="pca-and-factor-analysis">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">12.14. </span>PCA and Factor Analysis</a><a class="headerlink" href="#pca-and-factor-analysis" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">13.14. </span>PCA and Factor Analysis</a><a class="headerlink" href="#pca-and-factor-analysis" title="Permalink to this heading">#</a></h2>
 <p>To learn about Principal Components Analysis (PCA), please see this lecture <a class="reference internal" href="svd_intro.html"><span class="doc">Singular Value Decompositions</span></a>.</p>
 <p>For fun, let’s apply a PCA decomposition
 to a covariance matrix <span class="math notranslate nohighlight">\(\Sigma_y\)</span> that in fact is governed by our factor-analytic
@@ -3153,43 +3153,48 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="stats_examples.html">
+   9. Some Probability Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   9. LLN and CLT
+   10. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   10. Two Meanings of Probability
+   11. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   11. Multivariate Hypergeometric Distribution
+   12. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   12. Multivariate Normal Distribution
+   13. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   13. Fault Tree Uncertainties
+   14. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   14. Introduction to Artificial Neural Networks
+   15. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   15. Randomized Response Surveys
+   16. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   16. Expected Utilities of Random Responses
+   17. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -3201,17 +3206,17 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   17. Non-Conjugate Priors
+   18. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   18. Posterior Distributions for  AR(1) Parameters
+   19. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   19. Forecasting  an AR(1) Process
+   20. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
@@ -3223,42 +3228,42 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   20. Likelihood Ratio Processes
+   21. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   21. Mean of a Likelihood Ratio Process
+   22. Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   22. A Problem that Stumped Milton Friedman
+   23. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman_2.html">
-   23. A Bayesian Formulation of Friedman and Wald’s Problem
+   24. A Bayesian Formulation of Friedman and Wald’s Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   24. Exchangeability and Bayesian Updating
+   25. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   25. Likelihood Ratio Processes and Bayesian Learning
+   26. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   26. Incorrect Models
+   27. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   27. Bayesian versus Frequentist Decision Rules
+   28. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -3270,12 +3275,12 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   28. Optimal Transport
+   29. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   29. Von Neumann Growth Model (and a Generalization)
+   30. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -3287,42 +3292,42 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   30. Finite Markov Chains
+   31. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   31. Inventory Dynamics
+   32. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   32. Linear State Space Models
+   33. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   33. Samuelson Multiplier-Accelerator
+   34. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   34. Kesten Processes and Firm Dynamics
+   35. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   35. Wealth Distribution Dynamics
+   36. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   36. A First Look at the Kalman Filter
+   37. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   37. Another Look at the Kalman Filter
+   38. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -3334,42 +3339,42 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   38. Job Search I: The McCall Search Model
+   39. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   39. Job Search II: Search and Separation
+   40. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   40. Job Search III: Fitted Value Function Iteration
+   41. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   41. Job Search IV: Correlated Wage Offers
+   42. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   42. Job Search V: Modeling Career Choice
+   43. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   43. Job Search VI: On-the-Job Search
+   44. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   44. Job Search VII: A McCall Worker Q-Learns
+   45. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   45. Job Search VII: Search with Learning
+   46. Job Search VII: Search with Learning
   </a>
  </li>
 </ul>
@@ -3381,62 +3386,62 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   46. Cass-Koopmans Model
+   47. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   47. Cass-Koopmans Competitive Equilibrium
+   48. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   48. Cass-Koopmans Model with Distorting Taxes
+   49. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   49. Transitions in an Overlapping Generations Model
+   50. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   50. Cake Eating I: Introduction to Optimal Saving
+   51. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   51. Cake Eating II: Numerical Methods
+   52. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   52. Optimal Growth I: The Stochastic Optimal Growth Model
+   53. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   53. Optimal Growth II: Accelerating the Code with Numba
+   54. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   54. Optimal Growth III: Time Iteration
+   55. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   55. Optimal Growth IV: The Endogenous Grid Method
+   56. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   56. The Income Fluctuation Problem I: Basic Model
+   57. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   57. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   58. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -3448,32 +3453,32 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   58. LQ Control: Foundations
+   59. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   59. Lagrangian for LQ Control
+   60. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   60. Eliminating Cross Products
+   61. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   61. The Permanent Income Model
+   62. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   62. Permanent Income II: LQ Techniques
+   63. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   63. Production Smoothing via Inventories
+   64. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -3485,32 +3490,32 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   64. A Lake Model of Employment and Unemployment
+   65. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   65. Rational Expectations Equilibrium
+   66. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   66. Stability in Linear Rational Expectations Models
+   67. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   67. Markov Perfect Equilibrium
+   68. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   68. Uncertainty Traps
+   69. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   69. The Aiyagari Model
+   70. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -3522,17 +3527,17 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   70. Asset Pricing: Finite State Models
+   71. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   71. Competitive Equilibria with Arrow Securities
+   72. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   72. Heterogeneous Beliefs and Bubbles
+   73. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -3544,17 +3549,17 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   73. Pandas for Panel Data
+   74. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   74. Linear Regression in Python
+   75. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   75. Maximum Likelihood Estimation
+   76. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -3566,12 +3571,12 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   76. First-Price and Second-Price Auctions
+   77. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   77. Multiple Good Allocation Mechanisms
+   78. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -3583,17 +3588,17 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   78. Troubleshooting
+   79. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   79. References
+   80. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   80. Execution Statistics
+   81. Execution Statistics
   </a>
  </li>
 </ul>

@@ -1,0 +1,1558 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>9. Some Probability Distributions &#8212; Intermediate Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'stats_examples';</script>
+    <link rel="canonical" href="https://python.quantecon.org/stats_examples.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="10. LLN and CLT" href="lln_clt.html" />
+    <link rel="prev" title="8. Elementary Probability with Matrices" href="prob_matrix.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Some Probability Distributions"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Some Probability Distributions" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/stats_examples.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=stats_examples>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-discrete-probability-distributions">9.1. Some Discrete Probability Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-distribution">9.2. Geometric distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pascal-negative-binomial-distribution">9.3. Pascal (negative binomial) distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#newcombbenford-distribution">9.4. Newcomb–Benford distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-gaussian-distribution">9.5. Univariate Gaussian distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniform-distribution">9.6. Uniform Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-mixed-discrete-continuous-distribution">9.7. A Mixed Discrete-Continuous Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drawing-a-random-number-from-a-particular-distribution">9.8. Drawing a  Random Number from a Particular Distribution</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">Some Probability Distributions</p>
+
+                    </div>
+                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="some-probability-distributions">
+<h1><span class="section-number">9. </span>Some Probability Distributions<a class="headerlink" href="#some-probability-distributions" title="Permalink to this heading">#</a></h1>
+<p>This lecture is a supplement to <a class="reference internal" href="prob_matrix.html"><span class="doc">this lecture on statistics with matrices</span></a>.</p>
+<p>It describes some popular distributions and uses Python to sample from them.</p>
+<p>It also describes a way to sample from an arbitrary probability distribution that you make up by
+transforming a sample from a uniform probability distribution.</p>
+<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>prettytable
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (3.16.0)
+Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from prettytable) (0.2.5)
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>As usual, we’ll start with some imports</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">prettytable</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="kn">from</span> <span class="nn">matplotlib_inline.backend_inline</span> <span class="kn">import</span> <span class="n">set_matplotlib_formats</span>
+<span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;retina&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="some-discrete-probability-distributions">
+<h2><span class="section-number">9.1. </span>Some Discrete Probability Distributions<a class="headerlink" href="#some-discrete-probability-distributions" title="Permalink to this heading">#</a></h2>
+<p>Let’s write some Python code to compute   means and variances of some  univariate random variables.</p>
+<p>We’ll use our code to</p>
+<ul class="simple">
+<li><p>compute population means and variances from the probability distribution</p></li>
+<li><p>generate  a sample  of <span class="math notranslate nohighlight">\(N\)</span> independently and identically distributed draws and compute sample means and variances</p></li>
+<li><p>compare population and sample means and variances</p></li>
+</ul>
+</section>
+<section id="geometric-distribution">
+<h2><span class="section-number">9.2. </span>Geometric distribution<a class="headerlink" href="#geometric-distribution" title="Permalink to this heading">#</a></h2>
+<div class="math notranslate nohighlight">
+\[
+\textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots
+\]</div>
+<p><span class="math notranslate nohighlight">\(\implies\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathbb{E}(X) &amp; =\frac{1}{p}\\\mathbb{D}(X) &amp; =\frac{1-p}{p^2}
+\end{aligned}
+\end{split}\]</div>
+<p>We draw observations from the distribution and compare the sample mean and variance with the theoretical results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># specify parameters</span>
+<span class="n">p</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1_000_000</span>
+
+<span class="c1"># draw observations from the distribution</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">geometric</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># compute sample mean and variance</span>
+<span class="n">μ_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">σ2_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The sample mean is: &quot;</span><span class="p">,</span> <span class="n">μ_hat</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The sample variance is: &quot;</span><span class="p">,</span> <span class="n">σ2_hat</span><span class="p">)</span>
+
+<span class="c1"># compare with theoretical results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The population mean is: &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">p</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The population variance is: &quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">p</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.329782 
+The sample variance is:  7.763935832475996
+
+The population mean is:  3.3333333333333335
+The population variance is:  7.777777777777778
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="pascal-negative-binomial-distribution">
+<h2><span class="section-number">9.3. </span>Pascal (negative binomial) distribution<a class="headerlink" href="#pascal-negative-binomial-distribution" title="Permalink to this heading">#</a></h2>
+<p>Consider a sequence of independent Bernoulli trials.</p>
+<p>Let <span class="math notranslate nohighlight">\(p\)</span> be the probability of success.</p>
+<p>Let <span class="math notranslate nohighlight">\(X\)</span> be a random variable that represents the number of failures before we get <span class="math notranslate nohighlight">\(r\)</span> success.</p>
+<p>Its distribution is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+X  &amp; \sim NB(r,p) \\
+\textrm{Prob}(X=k;r,p) &amp; = \begin{pmatrix}k+r-1 \\ r-1 \end{pmatrix}p^r(1-p)^{k}
+\end{aligned}
+\end{split}\]</div>
+<p>Here, we choose from among <span class="math notranslate nohighlight">\(k+r-1\)</span> possible outcomes  because the last draw is by definition a success.</p>
+<p>We compute the mean and variance to be</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathbb{E}(X) &amp; = \frac{k(1-p)}{p} \\
+\mathbb{V}(X) &amp; = \frac{k(1-p)}{p^2}
+\end{aligned}
+\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># specify parameters</span>
+<span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1_000_000</span>
+
+<span class="c1"># draw observations from the distribution</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">negative_binomial</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># compute sample mean and variance</span>
+<span class="n">μ_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">σ2_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The sample mean is: &quot;</span><span class="p">,</span> <span class="n">μ_hat</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The sample variance is: &quot;</span><span class="p">,</span> <span class="n">σ2_hat</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The population mean is: &quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="n">p</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The population variance is: &quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="n">p</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.332064 
+The sample variance is:  77.85125949990396
+
+The population mean is:  23.333333333333336
+The population variance is:  77.77777777777779
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="newcombbenford-distribution">
+<h2><span class="section-number">9.4. </span>Newcomb–Benford distribution<a class="headerlink" href="#newcombbenford-distribution" title="Permalink to this heading">#</a></h2>
+<p>The <strong>Newcomb–Benford law</strong> fits  many data sets, e.g., reports of incomes to tax authorities, in which
+the leading digit is more likely to be small than large.</p>
+<p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Benford%27s_law">https://en.wikipedia.org/wiki/Benford’s_law</a></p>
+<p>A Benford probability distribution is</p>
+<div class="math notranslate nohighlight">
+\[
+\textrm{Prob}\{X=d\}=\log _{10}(d+1)-\log _{10}(d)=\log _{10}\left(1+\frac{1}{d}\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(d\in\{1,2,\cdots,9\}\)</span> can be thought of as a <strong>first digit</strong> in a sequence of digits.</p>
+<p>This is a well defined discrete distribution since we can verify that probabilities are nonnegative and sum to <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+\log_{10}\left(1+\frac{1}{d}\right)\geq0,\quad\sum_{d=1}^{9}\log_{10}\left(1+\frac{1}{d}\right)=1
+\]</div>
+<p>The mean and variance of a Benford distribution are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathbb{E}\left[X\right]	 &amp;=\sum_{d=1}^{9}d\log_{10}\left(1+\frac{1}{d}\right)\simeq3.4402 \\
+\mathbb{V}\left[X\right]	 &amp; =\sum_{d=1}^{9}\left(d-\mathbb{E}\left[X\right]\right)^{2}\log_{10}\left(1+\frac{1}{d}\right)\simeq6.0565
+\end{aligned}
+\end{split}\]</div>
+<p>We verify the above and compute the mean and variance using <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Benford_pmf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># mean</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Benford_pmf</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span>
+
+<span class="c1"># variance</span>
+<span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([(</span><span class="n">k</span><span class="o">-</span><span class="n">mean</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">Benford_pmf</span><span class="p">])</span>
+
+<span class="c1"># verify sum to 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Benford_pmf</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
+3.4402369671232065
+6.056512631375665
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot distribution</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">Benford_pmf</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Benford</span><span class="se">\&#39;</span><span class="s1">s distribution&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/0085ffe51ace5be2b9f5bf6cf450d92603275505637803a0631c3cf0a4751f6c.png"><img alt="_images/0085ffe51ace5be2b9f5bf6cf450d92603275505637803a0631c3cf0a4751f6c.png" src="_images/0085ffe51ace5be2b9f5bf6cf450d92603275505637803a0631c3cf0a4751f6c.png" style="width: 556px; height: 434px;" /></a>
+</div>
+</div>
+<p>Now let’s turn to some continuous random variables.</p>
+</section>
+<section id="univariate-gaussian-distribution">
+<h2><span class="section-number">9.5. </span>Univariate Gaussian distribution<a class="headerlink" href="#univariate-gaussian-distribution" title="Permalink to this heading">#</a></h2>
+<p>We write</p>
+<div class="math notranslate nohighlight">
+\[
+X \sim N(\mu,\sigma^2)
+\]</div>
+<p>to indicate the probability distribution</p>
+<div class="math notranslate nohighlight">
+\[f(x|u,\sigma^2)=\frac{1}{\sqrt{2\pi \sigma^2}}e^{[-\frac{1}{2\sigma^2}(x-u)^2]} \]</div>
+<p>In the below example, we set <span class="math notranslate nohighlight">\(\mu = 0, \sigma = 0.1\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># specify parameters</span>
+<span class="n">μ</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span>
+
+<span class="c1"># specify number of draws</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1_000_000</span>
+
+<span class="c1"># draw observations from the distribution</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">μ</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># compute sample mean and variance</span>
+<span class="n">μ_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">σ_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The sample mean is: &quot;</span><span class="p">,</span> <span class="n">μ_hat</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The sample standard deviation is: &quot;</span><span class="p">,</span> <span class="n">σ_hat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  8.767936470657966e-05
+The sample standard deviation is:  0.100047894727978
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compare</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">μ</span><span class="o">-</span><span class="n">μ_hat</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">σ</span><span class="o">-</span><span class="n">σ_hat</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="uniform-distribution">
+<h2><span class="section-number">9.6. </span>Uniform Distribution<a class="headerlink" href="#uniform-distribution" title="Permalink to this heading">#</a></h2>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+X &amp; \sim U[a,b] \\
+f(x)&amp; = \begin{cases} \frac{1}{b-a}, &amp; a \leq x \leq b \\ \quad0, &amp; \text{otherwise}  \end{cases}
+\end{aligned}
+\end{split}\]</div>
+<p>The population mean and variance are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathbb{E}(X) &amp; = \frac{a+b}{2} \\
+\mathbb{V}(X) &amp; = \frac{(b-a)^2}{12}
+\end{aligned}
+\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># specify parameters</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span>
+
+<span class="c1"># specify number of draws</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1_000_000</span>
+
+<span class="c1"># draw observations from the distribution</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># compute sample mean and variance</span>
+<span class="n">μ_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">σ2_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The sample mean is: &quot;</span><span class="p">,</span> <span class="n">μ_hat</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The sample variance is: &quot;</span><span class="p">,</span> <span class="n">σ2_hat</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The population mean is: &quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The population variance is: &quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.99845819758124 
+The sample variance is:  8.323275782417051
+
+The population mean is:  15.0
+The population variance is:  8.333333333333334
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-mixed-discrete-continuous-distribution">
+<h2><span class="section-number">9.7. </span>A Mixed Discrete-Continuous Distribution<a class="headerlink" href="#a-mixed-discrete-continuous-distribution" title="Permalink to this heading">#</a></h2>
+<p>We’ll motivate this example with  a little story.</p>
+<p>Suppose that  to apply for a job  you take an interview and either pass or fail it.</p>
+<p>You have <span class="math notranslate nohighlight">\(5\%\)</span> chance to pass an interview and you know your salary will uniformly distributed in the interval 300~400 a day only if you pass.</p>
+<p>We can describe your daily salary as  a discrete-continuous variable with the following probabilities:</p>
+<div class="math notranslate nohighlight">
+\[
+P(X=0)=0.95
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+P(300\le X \le 400)=\int_{300}^{400} f(x)\, dx=0.05
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+f(x) = 0.0005
+\]</div>
+<p>Let’s start by generating a random sample and computing sample moments.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">)</span>
+<span class="c1"># x[x &gt; 0.95] = 100*x[x &gt; 0.95]+300</span>
+<span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mf">0.95</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mf">0.95</span><span class="p">]))</span><span class="o">+</span><span class="mi">300</span>
+<span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mf">0.95</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">μ_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">σ2_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The sample mean is: &quot;</span><span class="p">,</span> <span class="n">μ_hat</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The sample variance is: &quot;</span><span class="p">,</span> <span class="n">σ2_hat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.382020814460976 
+The sample variance is:  5823.624676384258
+</pre></div>
+</div>
+</div>
+</div>
+<p>The analytical mean and variance can be computed:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mu &amp;= \int_{300}^{400}xf(x)dx \\
+&amp;= 0.0005\int_{300}^{400}xdx \\
+&amp;= 0.0005 \times \frac{1}{2}x^2\bigg|_{300}^{400}
+\end{aligned}
+\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\sigma^2 &amp;= 0.95\times(0-17.5)^2+\int_{300}^{400}(x-17.5)^2f(x)dx \\
+&amp;= 0.95\times17.5^2+0.0005\int_{300}^{400}(x-17.5)^2dx \\
+&amp;= 0.95\times17.5^2+0.0005 \times \frac{1}{3}(x-17.5)^3 \bigg|_{300}^{400}
+\end{aligned}
+\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="o">=</span> <span class="mf">0.0005</span><span class="o">*</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mi">400</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">300</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">var</span> <span class="o">=</span> <span class="mf">0.95</span><span class="o">*</span><span class="mf">17.5</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="mf">0.0005</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="p">((</span><span class="mi">400</span><span class="o">-</span><span class="mf">17.5</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="p">(</span><span class="mi">300</span><span class="o">-</span><span class="mf">17.5</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean: &quot;</span><span class="p">,</span> <span class="n">mean</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;variance: &quot;</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean:  17.5
+variance:  5860.416666666666
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="drawing-a-random-number-from-a-particular-distribution">
+<h2><span class="section-number">9.8. </span>Drawing a  Random Number from a Particular Distribution<a class="headerlink" href="#drawing-a-random-number-from-a-particular-distribution" title="Permalink to this heading">#</a></h2>
+<p>Suppose we have at our disposal a pseudo random number that draws a uniform random variable, i.e., one with probability distribution</p>
+<div class="math notranslate nohighlight">
+\[
+\textrm{Prob}\{\tilde{X}=i\}=\frac{1}{I},\quad i=0,\ldots,I-1
+\]</div>
+<p>How can we transform <span class="math notranslate nohighlight">\(\tilde{X}\)</span> to get a random variable <span class="math notranslate nohighlight">\(X\)</span> for which <span class="math notranslate nohighlight">\(\textrm{Prob}\{X=i\}=f_i,\quad i=0,\ldots,I-1\)</span>,
+where <span class="math notranslate nohighlight">\(f_i\)</span> is an arbitary discrete probability distribution on <span class="math notranslate nohighlight">\(i=0,1,\dots,I-1\)</span>?</p>
+<p>The key tool is the inverse of a cumulative distribution function (CDF).</p>
+<p>Observe that the CDF of a distribution is monotone and non-decreasing, taking values between <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>We can draw a sample of a random variable <span class="math notranslate nohighlight">\(X\)</span> with a known CDF as follows:</p>
+<ul class="simple">
+<li><p>draw a random variable  <span class="math notranslate nohighlight">\(u\)</span> from a uniform distribution on <span class="math notranslate nohighlight">\([0,1]\)</span></p></li>
+<li><p>pass the sample value of <span class="math notranslate nohighlight">\(u\)</span> into the <strong>“inverse”</strong> target  CDF for <span class="math notranslate nohighlight">\(X\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(X\)</span> has the target CDF</p></li>
+</ul>
+<p>Thus, knowing the <strong>“inverse”</strong> CDF of a distribution is enough to simulate from this distribution.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The “inverse” CDF needs to exist for this method to work.</p>
+</div>
+<p>The inverse CDF is</p>
+<div class="math notranslate nohighlight">
+\[
+F^{-1}(u)\equiv\inf \{x\in \mathbb{R}: F(x) \geq u\} \quad(0&lt;u&lt;1)
+\]</div>
+<p>Here  we use infimum because a CDF is a non-decreasing and right-continuous function.</p>
+<p>Thus, suppose that</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(U\)</span> is a uniform random variable <span class="math notranslate nohighlight">\(U\in[0,1]\)</span></p></li>
+<li><p>We want to sample a random variable <span class="math notranslate nohighlight">\(X\)</span> whose  CDF is  <span class="math notranslate nohighlight">\(F\)</span>.</p></li>
+</ul>
+<p>It turns out that if we use draw uniform random numbers <span class="math notranslate nohighlight">\(U\)</span> and then compute  <span class="math notranslate nohighlight">\(X\)</span> from</p>
+<div class="math notranslate nohighlight">
+\[
+X=F^{-1}(U),
+\]</div>
+<p>then <span class="math notranslate nohighlight">\(X\)</span> is a random variable  with CDF <span class="math notranslate nohighlight">\(F_X(x)=F(x)=\textrm{Prob}\{X\le x\}\)</span>.</p>
+<p>We’ll verify this in  the special case in which  <span class="math notranslate nohighlight">\(F\)</span> is continuous and bijective so that its inverse function exists and  can be  denoted by <span class="math notranslate nohighlight">\(F^{-1}\)</span>.</p>
+<p>Note that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+F_{X}\left(x\right)	&amp; =\textrm{Prob}\left\{ X\leq x\right\} \\
+	&amp; =\textrm{Prob}\left\{ F^{-1}\left(U\right)\leq x\right\} \\
+	&amp; =\textrm{Prob}\left\{ U\leq F\left(x\right)\right\} \\
+	&amp; =F\left(x\right)
+\end{aligned}
+\end{split}\]</div>
+<p>where the last equality occurs  because <span class="math notranslate nohighlight">\(U\)</span> is distributed uniformly on <span class="math notranslate nohighlight">\([0,1]\)</span> while <span class="math notranslate nohighlight">\(F(x)\)</span> is a constant given <span class="math notranslate nohighlight">\(x\)</span> that also lies on <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
+<p>Let’s use  <code class="docutils literal notranslate"><span class="pre">numpy</span></code> to compute some examples.</p>
+<p><strong>Example: A continuous geometric (exponential) distribution</strong></p>
+<p>Let <span class="math notranslate nohighlight">\(X\)</span> follow a geometric distribution, with parameter <span class="math notranslate nohighlight">\(\lambda&gt;0\)</span>.</p>
+<p>Its density function is</p>
+<div class="math notranslate nohighlight">
+\[
+\quad f(x)=\lambda e^{-\lambda x}
+\]</div>
+<p>Its CDF is</p>
+<div class="math notranslate nohighlight">
+\[
+F(x)=\int_{0}^{\infty}\lambda e^{-\lambda x}=1-e^{-\lambda x}
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(U\)</span> follow a uniform distribution on <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(X\)</span> is a random variable such that <span class="math notranslate nohighlight">\(U=F(X)\)</span>.</p>
+<p>The distribution <span class="math notranslate nohighlight">\(X\)</span> can be deduced from</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
+\implies &amp; \quad -U=e^{-\lambda X}\\
+\implies&amp;  \quad \log(1-U)=-\lambda X\\
+\implies &amp; \quad X=\frac{(1-U)}{-\lambda}
+\end{aligned}
+\end{split}\]</div>
+<p>Let’s draw <span class="math notranslate nohighlight">\(u\)</span> from <span class="math notranslate nohighlight">\(U[0,1]\)</span> and calculate <span class="math notranslate nohighlight">\(x=\frac{log(1-U)}{-\lambda}\)</span>.</p>
+<p>We’ll check whether  <span class="math notranslate nohighlight">\(X\)</span>  seems to follow a <strong>continuous geometric</strong> (exponential) distribution.</p>
+<p>Let’s check with <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">λ</span> <span class="o">=</span> <span class="mi">1_000_000</span><span class="p">,</span> <span class="mf">0.3</span>
+
+<span class="c1"># draw uniform numbers</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># transform</span>
+<span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="p">)</span><span class="o">/</span><span class="n">λ</span>
+
+<span class="c1"># draw geometric distributions</span>
+<span class="n">x_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">λ</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># plot and compare</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/cad9094d50ec65936dcdd768d89c22a877629e948297257476df19961e6faf56.png"><img alt="_images/cad9094d50ec65936dcdd768d89c22a877629e948297257476df19961e6faf56.png" src="_images/cad9094d50ec65936dcdd768d89c22a877629e948297257476df19961e6faf56.png" style="width: 560px; height: 413px;" /></a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">x_g</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/51e289e61a0cc74daf8b61c0f892f567948aeee19aa23c9560dbfd0b87984b13.png"><img alt="_images/51e289e61a0cc74daf8b61c0f892f567948aeee19aa23c9560dbfd0b87984b13.png" src="_images/51e289e61a0cc74daf8b61c0f892f567948aeee19aa23c9560dbfd0b87984b13.png" style="width: 556px; height: 413px;" /></a>
+</div>
+</div>
+<p><strong>Geometric distribution</strong></p>
+<p>Let <span class="math notranslate nohighlight">\(X\)</span> distributed geometrically, that is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\textrm{Prob}(X=i) &amp; =(1-\lambda)\lambda^i,\quad\lambda\in(0,1), \quad  i=0,1,\dots \\
+ &amp; \sum_{i=0}^{\infty}\textrm{Prob}(X=i)=1\longleftrightarrow(1- \lambda)\sum_{i=0}^{\infty}\lambda^i=\frac{1-\lambda}{1-\lambda}=1
+\end{aligned}
+\end{split}\]</div>
+<p>Its CDF is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\textrm{Prob}(X\le i)&amp; =(1-\lambda)\sum_{j=0}^{i}\lambda^i\\
+&amp; =(1-\lambda)[\frac{1-\lambda^{i+1}}{1-\lambda}]\\
+&amp; =1-\lambda^{i+1}\\
+&amp; =F(X)=F_i \quad
+\end{aligned}
+\end{split}\]</div>
+<p>Again, let <span class="math notranslate nohighlight">\(\tilde{U}\)</span> follow a uniform distribution and we want to find <span class="math notranslate nohighlight">\(X\)</span> such that <span class="math notranslate nohighlight">\(F(X)=\tilde{U}\)</span>.</p>
+<p>Let’s deduce the distribution of <span class="math notranslate nohighlight">\(X\)</span> from</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\tilde{U} &amp; =F(X)=1-\lambda^{x+1}\\
+1-\tilde{U} &amp; =\lambda^{x+1}\\
+\log(1-\tilde{U})&amp; =(x+1)\log\lambda\\
+\frac{\log(1-\tilde{U})}{\log\lambda}&amp; =x+1\\
+\frac{\log(1-\tilde{U})}{\log\lambda}-1 &amp;=x
+\end{aligned}
+\end{split}\]</div>
+<p>However, <span class="math notranslate nohighlight">\(\tilde{U}=F^{-1}(X)\)</span> may not be an integer for any <span class="math notranslate nohighlight">\(x\geq0\)</span>.</p>
+<p>So let</p>
+<div class="math notranslate nohighlight">
+\[
+x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lceil . \rceil\)</span> is the ceiling function.</p>
+<p>Thus <span class="math notranslate nohighlight">\(x\)</span> is the smallest integer such that the discrete geometric CDF is greater than or equal to <span class="math notranslate nohighlight">\(\tilde{U}\)</span>.</p>
+<p>We can verify that <span class="math notranslate nohighlight">\(x\)</span> is indeed geometrically distributed by the following <code class="docutils literal notranslate"><span class="pre">numpy</span></code> program.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The exponential distribution is the continuous analog of geometric distribution.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">λ</span> <span class="o">=</span> <span class="mi">1_000_000</span><span class="p">,</span> <span class="mf">0.8</span>
+
+<span class="c1"># draw uniform numbers</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># transform</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">λ</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># draw geometric distributions</span>
+<span class="n">x_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">geometric</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">λ</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># plot and compare</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/37659f4e886b4d282280d3a674e09996a8bdfa5948585baf6d054f7cb62d3aee.png"><img alt="_images/37659f4e886b4d282280d3a674e09996a8bdfa5948585baf6d054f7cb62d3aee.png" src="_images/37659f4e886b4d282280d3a674e09996a8bdfa5948585baf6d054f7cb62d3aee.png" style="width: 547px; height: 413px;" /></a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">geometric</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">λ</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>67
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.4</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7610560044063084
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">x_g</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/264c9396e8e810cb7b5808b6f5c24c2ade3702fbd8433e92e50ffd35442b148a.png"><img alt="_images/264c9396e8e810cb7b5808b6f5c24c2ade3702fbd8433e92e50ffd35442b148a.png" src="_images/264c9396e8e810cb7b5808b6f5c24c2ade3702fbd8433e92e50ffd35442b148a.png" style="width: 547px; height: 413px;" /></a>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   1. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   2. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   3. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   4. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   5. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="var_dmd.html">
+   6. VARs and DMDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   7. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   9. Some Probability Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   14. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   16. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   17. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   18. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   19. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   20. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   21. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   22. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   23. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   24. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   25. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   26. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   27. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   28. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   29. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   30. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   31. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   32. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   33. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   34. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   35. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   36. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   37. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   38. Another Look at the Kalman Filter
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   39. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   40. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   41. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   42. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   43. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   44. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   45. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   46. Job Search VII: Search with Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Capital
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   47. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   48. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   49. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   50. Transitions in an Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   51. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   52. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   53. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   54. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   55. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   56. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   57. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   58. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   59. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   60. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   61. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   62. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   63. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   64. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   65. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   66. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   67. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   68. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   69. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   70. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   71. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   72. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   73. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   74. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   75. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   76. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   77. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   78. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   79. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   80. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   81. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/stats_examples.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/stats_examples.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/stats_examples.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/stats_examples.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/stats_examples.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "stats_examples";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/stats_examples.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>
