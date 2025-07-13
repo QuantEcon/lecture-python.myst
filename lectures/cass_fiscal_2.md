@@ -15,7 +15,16 @@ kernelspec:
 
 ## Overview
 
-This lecture studies effects of foreseen   fiscal and technology shocks on competitive equilibrium prices and quantities in a nonstochastic version of a Cass-Koopmans  growth model with features described in this QuantEcon lecture {doc}`cass_koopmans_2`.
+This lecture is a sequel to this QuantEcon lecture {doc}`cass_fiscal` in which we studied consequences of  foreseen   fiscal and technology shocks on competitive equilibrium prices and quantities in a nonstochastic version of a Cass-Koopmans  growth model like the one described in this QuantEcon lecture {doc}`cass_koopmans_2`.
+
+Here we study a two-country version of that model.  
+
+We construct it by putting instances of two   {doc}`cass_koopmans_2` economies together back to back, and then opening 
+international trade in some commodities, but not in others.  
+
+This lets us focus on some of the issues studied by {cite:t}`mendoza1998international`.
+
+
 
 Let's start with some imports:
 
@@ -32,7 +41,7 @@ mp.dps = 40
 mp.pretty = True
 ```
 
-## A two-country model
+## A Two-Country Cass-Koopmans Model
 
 This section describes a two-country version of the basic model of {ref}`cs_fs_model`.
 
@@ -53,9 +62,9 @@ $$
 
 where $u(c) = \frac{c^{1-\gamma}}{1-\gamma}$ with $\gamma > 0$.
 
-Production follows a Cobb-Douglas function with identical technology parameters across countries.
+There are  Cobb-Douglas functions with identical technology parameters in the two  countries.
 
-The global resource constraint for this two-country economy is:
+The world resource constraint in this two-country economy is:
 
 $$
 (c_t+c_t^*)+(g_t+g_t^*)+(k_{t+1}-(1-\delta)k_t)+(k_{t+1}^*-(1-\delta)k_t^*) = f(k_t)+f(k_t^*)
@@ -382,7 +391,7 @@ def plot_global_results(k, k_s, c, c_s, shocks, model,
     return fig, axes
 ```
 
-Similar to {doc}`cass_fiscal`, we assume a Cobb-Douglas production function:
+As in our in the one-country model in  {doc}`cass_fiscal`, we assume a Cobb-Douglas production function:
 
 $$
 F(k, 1) = A k^\alpha
@@ -576,7 +585,7 @@ plt.show()
 
 When capital ${k_t}$ decreases in the domestic country after the tax shock, the rental rate $\eta_t$ increases in that country.
 
-This reflects that as capital becomes scarcer, its marginal product rises.
+This happens because when  capital becomes scarcer, its marginal product rises.
 
 ```{solution-end}
 ```
