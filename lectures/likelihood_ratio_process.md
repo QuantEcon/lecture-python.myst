@@ -36,7 +36,9 @@ Among  things that we'll learn  are
 * A peculiar property of likelihood ratio processes
 * How a likelihood ratio process is a key ingredient in frequentist hypothesis testing
 * How a **receiver operator characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
+* How a Bayesian statistician combines frequentist probabilities of type I and type II errors to form posterior probabilities of erroneous model selection or missclassification of individuals 
 * How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged, a topic to be studied in  {doc}`this lecture <wald_friedman>`
+
 
 
 Let's start  by importing some Python tools.
@@ -115,7 +117,7 @@ Pearson {cite}`Neyman_Pearson`.
 To help us appreciate how things work, the following Python code evaluates $f$ and $g$ as two different
 beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence $w^t$ from one of the two
-probability distributionss, for example, a sequence of  IID draws from $g$.
+probability distributions, for example, a sequence of  IID draws from $g$.
 
 ```{code-cell} python3
 # Parameters in the two beta distributions.
@@ -330,10 +332,15 @@ We specify
 Neyman and Pearson proved that the best way to test this hypothesis is to use a **likelihood ratio test** that takes the
 form:
 
+- accept $H_0$ if $L(W^t) > c$,
 - reject $H_0$ if $L(W^t) < c$,
-- accept $H_0$ otherwise.
 
-where $c$ is a given  discrimination threshold, to be chosen in a way we'll soon describe.
+
+where $c$ is a given  discrimination threshold.
+
+Setting $c =1$ is a common choice.
+
+We'll discuss consequences of other choices of $c$ below.  
 
 This test is *best* in the sense that it is  **uniformly most powerful**.
 
@@ -343,12 +350,21 @@ threshold $c$.
 
 The two probabilities are:
 
-- Probability of detection (= power = 1 minus probability
-  of Type II error):
+
+- Probability of a Type I error in which we reject $H_0$ when it is true: 
+  
+  $$
+  \alpha \equiv  \Pr\left\{ L\left(w^{t}\right)<c\mid q=f\right\}
+  $$
+
+- Probability of a Type II error in which we accept $H_0$ when it is false:
 
   $$
-  1-\beta \equiv \Pr\left\{ L\left(w^{t}\right)<c\mid q=g\right\}
+  \beta \equiv \Pr\left\{ L\left(w^{t}\right)>c\mid q=g\right\}
   $$
+
+These two probabilities underly  the following two concepts: 
+
 
 - Probability of false alarm (= significance level = probability of
   Type I error):
@@ -356,6 +372,14 @@ The two probabilities are:
   $$
   \alpha \equiv  \Pr\left\{ L\left(w^{t}\right)<c\mid q=f\right\}
   $$
+
+- Probability of detection (= power = 1 minus probability
+  of Type II error):
+
+  $$
+  1-\beta \equiv \Pr\left\{ L\left(w^{t}\right)<c\mid q=g\right\}
+  $$
+
 
 
 The [Neyman-Pearson
@@ -415,7 +439,7 @@ $q=f$ from $q=g$.
 
 ```{code-cell} python3
 fig, axs = plt.subplots(2, 2, figsize=(12, 8))
-fig.suptitle('distribution of $log(L(w^t))$ under f or g', fontsize=15)
+fig.suptitle('distribution of $log(L(w^t))$ under f or under g', fontsize=15)
 
 for i, t in enumerate([1, 7, 14, 21]):
     nr = i // 2
@@ -438,6 +462,12 @@ for i, t in enumerate([1, 7, 14, 21]):
 
 plt.show()
 ```
+
+In the above graphs, 
+  * the blue areas are related to but not equal to probabilities $\alpha $ of a type I error because 
+they are integrals of $\log L_t$, not integrals of $L_t$, over  rejection region $L_t < 1$  
+* the orange areas are related to but not equal to probabilities $\beta $ of a type II error because 
+they are integrals of $\log L_t$, not integrals of $L_t$, over  acceptance region $L_t > 1$
 
 
 When we hold $c$ fixed at $c=1$, the following graph shows  that 
@@ -686,6 +716,104 @@ N, T = l_arr_h.shape
 plt.plot(range(T), np.sum(l_seq_h > 10000, axis=0) / N)
 ```
 
+
+
+## Bayesian Classification and Hypothesis Testing
+
+We now describe how a Bayesian statistician can combine frequentist probabilities of type I and type II errors in order to 
+
+* compute a posterior probability of selecting a wrong model
+* compute an anticipated error  rate in a classification problem 
+
+We consider a situation in which  nature generates data by mixing known densities $f$ and $g$ with known mixing
+parameter $\pi_{-1} \in (0,1)$ so that the random variable $w$ is drawn from the density
+
+$$
+h (w) = \pi_{-1} f(w) + (1-\pi_{-1}) g(w) 
+$$
+
+We'll often set $\pi_{-1} = .5$.  
+
+We assume that $f$ and $g$ both put positive probabilities on the same intervals of possible realizations of the random variable $W$.
+
+
+We consider two alternative timing protocols.  
+
+**Protocol 1:**  Nature flips a coin once at time $t=-1$ and with probability $\pi_{-1}$  generates a sequence  $\{w_t\}_{t=1}^T$
+of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
+of  IID  draws from  $g$.
+
+**Protocol 2.** At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
+
+**Remark:** Under protocol 2, the $\{w_t\}_{t=1}^T$ is a sequence of IID draws from $h(w)$. Under protocol 1, the the $\{w_t\}_{t=1}^T$ is 
+not IID.  It is **conditionally IID** -- meaning that with probability $\pi_{-1}$ it is a sequence of IID draws from $f(w)$ and with probability $1-\pi_{-1}$ it is a sequence of IID draws from $g(w)$. For more about this, see {doc}`this lecture about exchangeability <exchangeable>`.
+
+We  again deploy a **likelihood ratio process** with time $t$ component being the likelihood ratio  
+
+$$
+\ell (w_t)=\frac{f\left(w_t\right)}{g\left(w_t\right)},\quad t\geq1.
+$$
+
+The **likelihood ratio process** for sequence $\left\{ w_{t}\right\} _{t=1}^{\infty}$ is 
+
+$$
+L\left(w^{t}\right)=\prod_{i=1}^{t} \ell (w_i),
+$$
+
+For shorthand we'll write $L_t =  L(w^t)$.
+
+## Bayesian Model Selection 
+
+We first study  a problem that assumes  timing protocol 1.  
+
+Consider a decision maker who wants to know whether model $f$ or model $g$ governs the data.
+
+The decision makers has observed a sequence $\{w_t\}_{t=1}^T$.
+
+On the basis of that observed  sequence, a likelihood ratio test selects model $f$ when
+ $L_T > 1 $ and model $g$ when  $L_T < 1$.  
+ 
+When model $f$ generates the data, the probability that the likelihood ratio test selects the wrong model is 
+
+$$ 
+p_f = {\rm Prob}\left(L_T < 1\Big| f\right) = \alpha_T .
+$$
+
+When model $g$ generates the data, the probability that the likelihood ratio test selects the wrong model is 
+
+$$ 
+p_g = {\rm Prob}\left(L_T >1 \Big|g \right) = \beta_T. 
+$$
+
+We can form a Bayesian prior  probability that the likelihood ratio selects the wrong model by assigning a prior probability of $\pi_{-1} = .5$ that it selects the wrong model and then  averaging $p_f$ and $p_g$ to form the Bayesian posterior probability of a detection error equal to
+
+$$ 
+p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
+$$ (eq:detectionerrorprob)
+
+## Classification
+
+We now consider a problem that assumes timing protocol 2.
+
+A decision maker wants to classify components of an observed sequence $\{w_t\}_{t=1}^T$ as having been drawn from either $f$ or $g$.
+
+The decision maker uses the following classification rule:
+
+$$
+\begin{align*}
+w_t  & \ {\rm is \ from \  f  \ if \ } l_t > 1 \\
+w_t  & \ {\rm is \ from \  g  \ if \ } l_t < 1 . 
+\end{align*}
+$$
+
+Under this rule, the expected misclassification rate is
+
+$$
+p(\textrm{misclassification}) = {1 \over 2} (\alpha_1 + \beta_1) 
+$$ (eq:classerrorprob)
+
+
+
 ## Sequels
 
 Likelihood processes play an important role in Bayesian learning, as described in {doc}`this lecture <likelihood_bayes>`
@@ -693,3 +821,7 @@ and as applied in {doc}`this lecture <odu>`.
 
 Likelihood ratio processes appear again in [this lecture](https://python-advanced.quantecon.org/additive_functionals.html), which contains another illustration
 of the **peculiar property** of likelihood ratio processes described above.
+
+
+
+
