@@ -53,6 +53,8 @@ from numba import vectorize, jit
 from math import gamma
 from scipy.integrate import quad
 from scipy.optimize import brentq
+from scipy.stats import beta as beta_dist
+
 ```
 
 ## Likelihood Ratio Process
@@ -187,6 +189,7 @@ $\left[0, 0.01\right]$.
 
 ```{code-cell} ipython3
 plt.plot(range(T), np.sum(l_seq_g <= 0.01, axis=0) / N)
+plt.show()
 ```
 
 Despite the evident convergence of most probability mass to a
@@ -304,6 +307,7 @@ l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```{code-cell} ipython3
 N, T = l_arr_f.shape
 plt.plot(range(T), np.mean(l_seq_f, axis=0))
+plt.show()
 ```
 
 We also plot the probability that $L\left(w^t\right)$ falls into
@@ -312,6 +316,7 @@ fast probability mass diverges  to $+\infty$.
 
 ```{code-cell} ipython3
 plt.plot(range(T), np.sum(l_seq_f > 10000, axis=0) / N)
+plt.show()
 ```
 
 ## Likelihood Ratio Test
@@ -752,19 +757,17 @@ def protocol_1(π_minus_1, T, N=1000):
     Nature decides once at t=-1 which model to use.
     """
     
-    sequences = np.empty((N, T))
-    true_models_F = np.empty(N, dtype=bool)
+    # On-off coin flip for the true model
+    true_models_F = np.random.rand(N) < π_minus_1
     
-    for i in range(N):
-        # Nature flips coin
-        if np.random.rand() < π_minus_1:
-            # Generate entire sequence from f
-            sequences[i, :] = np.random.beta(F_a, F_b, T)
-            true_models_F[i] = True
-        else:
-            # Generate entire sequence from g
-            sequences[i, :] = np.random.beta(G_a, G_b, T)
-            true_models_F[i] = False
+    sequences = np.empty((N, T))
+    
+    n_f = np.sum(true_models_F)
+    n_g = N - n_f
+    if n_f > 0:
+        sequences[true_models_F, :] = np.random.beta(F_a, F_b, (n_f, T))
+    if n_g > 0:
+        sequences[~true_models_F, :] = np.random.beta(G_a, G_b, (n_g, T))
     
     return sequences, true_models_F
 ```
@@ -778,19 +781,18 @@ def protocol_2(π_minus_1, T, N=1000):
     Nature decides at each time step which model to use.
     """
     
-    sequences = np.empty((N, T))
-    true_models_F = np.empty((N, T), dtype=bool)
+    # Coin flips for each time t upto T
+    true_models_F = np.random.rand(N, T) < π_minus_1
     
-    for i in range(N):
-        for t in range(T):
-            # Nature flips coin at each time step t
-            if np.random.rand() < π_minus_1:
-                sequences[i, t] = np.random.beta(F_a, F_b)
-                true_models_F[i, t] = True
-            else:
-                sequences[i, t] = np.random.beta(G_a, G_b)
-                true_models_F[i, t] = False
-                
+    sequences = np.empty((N, T))
+    
+    n_f = np.sum(true_models_F)
+    n_g = N * T - n_f
+    if n_f > 0:
+        sequences[true_models_F] = np.random.beta(F_a, F_b, n_f)
+    if n_g > 0:
+        sequences[~true_models_F] = np.random.beta(G_a, G_b, n_g)
+    
     return sequences, true_models_F
 ```
 
@@ -819,17 +821,8 @@ def compute_likelihood_ratios(sequences):
     Compute likelihood ratios for given sequences.
     """
     
-    N, T = sequences.shape
-    l_ratios = np.empty((N, T))
-    L_cumulative = np.empty((N, T))
-    
-    for i in range(N):
-        for t in range(T):
-            l_ratios[i, t] = f(sequences[i, t]) / g(sequences[i, t])
-            
-        # Compute cumulative products
-        L_cumulative[i, :] = np.cumprod(l_ratios[i, :])
-    
+    l_ratios = f(sequences) / g(sequences) 
+    L_cumulative = np.cumprod(l_ratios, axis=1)
     return l_ratios, L_cumulative
 ```
 
@@ -868,49 +861,40 @@ Now let's simulate the protocol 1 and compute the error probabilities
 # Set parameters
 π_minus_1 = 0.5
 T_max = 30
-N_simulations = 5000
-
-# Protocol 1: Bayesian Model Selection
-print("Protocol 1: Bayesian Model Selection")
+N_simulations = 10_000
 
 sequences_p1, true_models_p1 = protocol_1(
                             π_minus_1, T_max, N_simulations)
 l_ratios_p1, L_cumulative_p1 = compute_likelihood_ratios(sequences_p1)
 
 # Compute error probabilities for different sample sizes
-T_range = range(1, T_max + 1)
-α_T = np.empty(T_max)  # P(L_T < 1 | f)
-β_T = np.empty(T_max)   # P(L_T >= 1 | g)
-bayesian_error_prob = np.empty(T_max)
+T_range = np.arange(1, T_max + 1)
 
-for t in T_range:
-    t_idx = t - 1
-    
-    # Type I error: reject H_0 when it's true 
-    # (model f generates data)
-    f_sequences = L_cumulative_p1[true_models_p1, t_idx]
-    α_T[t_idx] = np.mean(f_sequences < 1)
-    
-    # Type II error: accept H_0 when it's false 
-    # (model g generates data)
-    g_sequences = L_cumulative_p1[~true_models_p1, t_idx]
-    β_T[t_idx] = np.mean(g_sequences >= 1)
-    
-    # Bayesian error probability
-    bayesian_error_prob[t_idx] = 0.5 * (α_T[t_idx] + β_T[t_idx])
+# Boolean masks for true models
+mask_f = true_models_p1
+mask_g = ~true_models_p1
 
-# Plot results for Protocol 1
+# Select cumulative likelihoods for each model
+L_f = L_cumulative_p1[mask_f, :]
+L_g = L_cumulative_p1[mask_g, :]
+
+α_T = np.mean(L_f < 1, axis=0)
+β_T = np.mean(L_g >= 1, axis=0)
+
+error_prob = 0.5 * (α_T + β_T)
+
+# Plot results
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
 ax1.plot(T_range, α_T, 'b-', 
-         label=r'$\alpha_T$ (Type I error)', linewidth=2)
+         label=r'$\alpha_T$', linewidth=2)
 ax1.plot(T_range, β_T, 'r-', 
-         label=r'$\beta_T$ (Type II error)', linewidth=2)
+         label=r'$\beta_T$', linewidth=2)
 ax1.set_xlabel('$T$')
 ax1.set_ylabel('error probability')
 ax1.legend()
 
-ax2.plot(T_range, bayesian_error_prob, 'g-', 
+ax2.plot(T_range, error_prob, 'g-', 
          label=r'$\frac{1}{2}(\alpha_T+\beta_T)$', linewidth=2)
 ax2.set_xlabel('$T$')
 ax2.set_ylabel('error probability')
@@ -922,7 +906,7 @@ plt.show()
 print(f"At T={T_max}:")
 print(f"α_{T_max} = {α_T[-1]:.4f}")
 print(f"β_{T_max} = {β_T[-1]:.4f}")
-print(f"Bayesian error probability = {bayesian_error_prob[-1]:.4f}")
+print(f"Bayesian error probability = {error_prob[-1]:.4f}")
 ```
 
 ## Classification
@@ -943,8 +927,10 @@ $$
 Under this rule, the expected misclassification rate is
 
 $$
-p(\textrm{misclassification}) = {1 \over 2} (\alpha_1 + \beta_1) 
+p(\textrm{misclassification}) = {1 \over 2} (\tilde \alpha_t + \tilde \beta_t) 
 $$ (eq:classerrorprob)
+
+where $\tilde \alpha_t = {\rm Prob}(l_t < 1 \mid f)$ and $\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)$.
 
 Now let's simulate protocol 2 and compute the error probabilities
 
@@ -956,28 +942,31 @@ l_ratios_p2, _ = compute_likelihood_ratios(sequences_p2)
 # Find decision boundary where f(w) = g(w)
 root = brentq(lambda w: f(w) / g(w) - 1, 0.001, 0.999)
 
-print(f"Decision boundary points: {root}")
-
-# Compute theoretical α_1 and β_1 using integration
+# Compute theoretical tilde α_t and tilde β_t
 def α_integrand(w):
-    """Integrand for α_1 = P(l_1 < 1 | f)"""
+    """Integrand for tilde α_t = P(l_t < 1 | f)"""
     return f(w) if f(w) / g(w) < 1 else 0
 
 def β_integrand(w):
-    """Integrand for β_1 = P(l_1 >= 1 | g)"""
+    """Integrand for tilde β_t = P(l_t >= 1 | g)"""
     return g(w) if f(w) / g(w) >= 1 else 0
 
 # Compute the integrals
-α_1_theory, _ = quad(α_integrand, 0, 1, limit=100)
-β_1_theory, _ = quad(β_integrand, 0, 1, limit=100)
+α_theory, _ = quad(α_integrand, 0, 1, limit=100)
+β_theory, _ = quad(β_integrand, 0, 1, limit=100)
 
-theory_error = 0.5 * (α_1_theory + β_1_theory)
+theory_error = 0.5 * (α_theory + β_theory)
 
-print(f"theoretical α_1 = {α_1_theory:.4f}")
-print(f"theoretical β_1 = {β_1_theory:.4f}")
+print(f"theoretical tilde α_t = {α_theory:.4f}")
+print(f"theoretical tilde β_t = {β_theory:.4f}")
 print(f"theoretical classification error probability = {theory_error:.4f}")
+```
 
-# Visualization of distributions and decision boundary
+Since for each $t$, the decision boundary is the same, we can plot the distributions of $f$ and $g$ and the decision boundary
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
 fig, ax = plt.subplots(figsize=(7, 6))
 
 w_range = np.linspace(0.001, 0.999, 1000)
@@ -990,6 +979,19 @@ ax.plot(w_range, f_values, 'b-',
 ax.plot(w_range, g_values, 'r-', 
         label=r'$g(w) \sim Beta(3,1.2)$', linewidth=2)
 
+type1_prob = 1 - beta_dist.cdf(root, F_a, F_b)
+type2_prob = beta_dist.cdf(root, G_a, G_b)
+
+w_type1 = w_range[w_range >= root]
+f_type1 = [f(w) for w in w_type1]
+ax.fill_between(w_type1, 0, f_type1, alpha=0.3, color='blue', 
+                label=fr'$\tilde \alpha_t = {type1_prob:.2f}$')
+
+w_type2 = w_range[w_range <= root]
+g_type2 = [g(w) for w in w_type2]
+ax.fill_between(w_type2, 0, g_type2, alpha=0.3, color='red', 
+                label=fr'$\tilde \beta_t = {type2_prob:.2f}$')
+
 ax.axvline(root, color='green', linestyle='--', alpha=0.7, 
             label=f'decision boundary: $w=${root:.3f}')
 
@@ -1001,39 +1003,41 @@ plt.tight_layout()
 plt.show()
 ```
 
+On the left of the decision boundary, $f$ is more likely than $g$ with $l_t < 1$.
+
+On the right of the decision boundary, $g$ is more likely than $f$ with $l_t \geq 1$.
+
 Let's see how it performs in the simulated data
 
 ```{code-cell} ipython3
-correct_classifications = np.empty(T_max)
+accuracy = np.empty(T_max)
 
 for t in range(T_max):
-    predictions = (l_ratios_p2[:, t] > 1).astype(int)
+    predictions = (l_ratios_p2[:, t] >= 1)
     actual = true_sources_p2[:, t]
-    correct_classifications[t] = np.mean(predictions == actual)
+    accuracy[t] = np.mean(predictions == actual)
 
 plt.figure(figsize=(10, 6))
-plt.plot(range(1, T_max + 1), correct_classifications, 
+plt.plot(range(1, T_max + 1), accuracy, 
                 'b-', linewidth=2, label='empirical accuracy')
 plt.axhline(1 - theory_error, color='r', linestyle='--', 
                 label=f'theoretical accuracy = {1 - theory_error:.4f}')
-plt.xlabel('time step')
+plt.xlabel('$t$')
 plt.ylabel('accuracy')
 plt.legend()
 plt.ylim(0.5, 1.0)
 plt.show()
 ```
 
-Let's also compare the two protocols by showing how the error probabilities evolve differently.
+Let's also compare the two protocols by showing how the error probabilities evolve differently
 
 ```{code-cell} ipython3
-# Comparison of error probabilities between protocols
 fig, ax = plt.subplots(figsize=(7, 6))
 
-ax.plot(T_range, bayesian_error_prob, 'b-', linewidth=2, 
-        label='Protocol 1 (Model Selection)')
-ax.axhline(theory_error, color='r', linestyle='--', linewidth=2, 
-        label=f'Protocol 2 (Classification) = {theory_error:.4f}')
-ax.set_xlabel('T')
+ax.plot(T_range, error_prob, linewidth=2, 
+        label='Protocol 1')
+ax.plot(T_range, 1-accuracy, linestyle='--', linewidth=2, 
+        label=f'Protocol 2')
 ax.set_ylabel('error probability')
 ax.legend()
 plt.show()
@@ -1041,16 +1045,16 @@ plt.show()
 
 From the figure above, we can see:
 
+- For both protocols, the error probability starts at the same level subject to randomness.
+
 - For protocol 1, the error probability decreases as we collect more data because we're trying to determine which single model generated the entire sequence. More data provides stronger evidence.
 
 - For protocol 2, the error probability remains constant because each observation is classified independently. The accuracy depends only on the likelihood that the two models generates the single observation.
-
-- Under Protocol 1, the Bayesian error probability converges to zero as $T \to \infty$, while under Protocol 2, it remains constant at ${1 \over 2}(\alpha_1 + \beta_1)$.
 
 ## Sequels
 
 Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes`
 and as applied in {doc}`odu`.
 
-Likelihood ratio processes appear again in {doc}`additive_functionals`, which contains another illustration
+Likelihood ratio processes appear again in {doc}`advanced:additive_functionals`, which contains another illustration
 of the **peculiar property** of likelihood ratio processes described above.
