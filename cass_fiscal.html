@@ -74,7 +74,7 @@
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
     <link rel="stylesheet" type="text/css" href="_static/proof.css" />
@@ -118,7 +118,7 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="50. Transitions in an Overlapping Generations Model" href="ak2.html" />
+    <link rel="next" title="50. Two-Country Model with Distorting Taxes" href="cass_fiscal_2.html" />
     <link rel="prev" title="48. Cass-Koopmans Competitive Equilibrium" href="cass_koopmans_2.html" />
 
 <!-- Normal Meta Tags -->
@@ -193,22 +193,12 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exogenous-growth">49.10. Exogenous growth</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">49.10.1. Inelastic Labor Supply</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">49.10.2. Steady State</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">49.10.3. Shooting Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">49.10.4. Experiments</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">49.10.1. Inelastic Labor Supply</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">49.10.2. Steady State</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">49.10.3. Shooting Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">49.10.4. Experiments</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-1-a-foreseen-increase-in-mu-from-1-02-to-1-025-at-t-10">49.10.4.1. Experiment 1: A foreseen increase in <span class="math notranslate nohighlight">\(\mu\)</span> from 1.02 to 1.025 at t=10</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-2-an-unforeseen-increase-in-mu-from-1-02-to-1-025-at-t-0">49.10.4.2. Experiment 2: An unforeseen increase in <span class="math notranslate nohighlight">\(\mu\)</span> from 1.02 to 1.025 at t=0</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-two-country-model">49.11. A two-country model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capital-mobility-and-taxation">49.11.1. Capital Mobility and Taxation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-condition-and-steady-state">49.11.2. Initial condition and steady state</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium-steady-state-values">49.11.3. Equilibrium steady state values</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-1-a-foreseen-increase-in-g-from-0-2-to-0-4-at-t-10">49.11.3.1. Experiment 1: A foreseen increase in <span class="math notranslate nohighlight">\(g\)</span> from 0.2 to 0.4 at t=10</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-2-a-foreseen-increase-in-g-from-0-2-to-0-4-at-t-10">49.11.3.2. Experiment 2: A foreseen increase in <span class="math notranslate nohighlight">\(g\)</span> from 0.2 to 0.4 at t=10</a></li>
 </ul>
 </li>
 </ul>
@@ -284,7 +274,6 @@
 <li><p>The first is a shooting algorithm like the one that we deployed  in <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>.</p></li>
 <li><p>The second method is a root-finding algorithm that  minimizes residuals from the  first-order conditions of the consumer and   representative firm.</p></li>
 </ul>
-<p>After studying the behavior of the closed one-country model, we study a two-country version of the model that is closely related to  <span id="id3">Mendoza and Tesar [<a class="reference internal" href="zreferences.html#id3" title="Enrique G Mendoza and Linda L Tesar. The international ramifications of tax reforms: supply-side economics in a global economy. American Economic Review, pages 226–245, 1998.">1998</a>]</span>.</p>
 </section>
 <section id="the-economy">
 <span id="cs-fs-model"></span><h2><span class="section-number">49.2. </span>The Economy<a class="headerlink" href="#the-economy" title="Permalink to this heading">#</a></h2>
@@ -340,7 +329,7 @@ where</p>
 </ul>
 <p>Because  lump-sum taxes <span class="math notranslate nohighlight">\(\tau_{ht}\)</span> are available, the government actually should not
 use any distorting taxes.</p>
-<p>Nevertheless, we include all of these taxes because, like <span id="id4">[<a class="reference internal" href="zreferences.html#id262" title="Robert E Hall. The dynamic effects of fiscal policy in an economy with foresight. The Review of Economic Studies, 38(2):229–244, 1971.">Hall, 1971</a>]</span>,
+<p>Nevertheless, we include all of these taxes because, like <span id="id3">[<a class="reference internal" href="zreferences.html#id262" title="Robert E Hall. The dynamic effects of fiscal policy in an economy with foresight. The Review of Economic Studies, 38(2):229–244, 1971.">Hall, 1971</a>]</span>,
 they allow us to analyze how various taxes distort production and consumption decisions.</p>
 <p>In the <a class="reference internal" href="#cf-experiments"><span class="std std-ref">experiment section</span></a>, we shall see how variations in government tax plan affect
 the transition path and equilibrium.</p>
@@ -1088,10 +1077,10 @@ Optimal initial consumption c0 = 0.6092419528879239645312185699727132533517
 </ul>
 <p>Let’s collect the procedures used above into a function that runs the solver and draws  plots for a given experiment</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">experiment_model</span><span class="p">(</span>
@@ -1206,10 +1195,10 @@ Optimal initial consumption c0 = 0.6420330412987902926414768724607623681745
 </ul>
 <p>Let’s write another function that runs the solver and draws plots for these two experiments</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">experiment_two_models</span><span class="p">(</span>
@@ -1924,8 +1913,8 @@ A_{t+1} = \mu_{t+1}A_t
 </div>
 </div>
 </div>
-<section id="id5">
-<h3><span class="section-number">49.10.1. </span>Inelastic Labor Supply<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<section id="id4">
+<h3><span class="section-number">49.10.1. </span>Inelastic Labor Supply<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
 <p>By linear homogeneity, the production function can be expressed as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1970,8 +1959,8 @@ u'(c_tA_t) = \beta u'(c_{t+1}A_{t+1})\bar{R}_{t+1}
 c_{t+1} = c_t \left[ \beta \bar{R}_{t+1} \right]^{\frac{1}{\gamma}}\mu_{t+1}^{-1}
 \]</div>
 </section>
-<section id="id6">
-<h3><span class="section-number">49.10.2. </span>Steady State<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<section id="id5">
+<h3><span class="section-number">49.10.2. </span>Steady State<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
 <p>In a steady state, <span class="math notranslate nohighlight">\(c_{t+1} = c_t\)</span>. Then <a class="reference internal" href="#equation-eq-diff-mod">(49.27)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-eq-diff-mod-st">
 <span class="eqno">(49.29)<a class="headerlink" href="#equation-eq-diff-mod-st" title="Permalink to this equation">#</a></span>\[
@@ -1995,12 +1984,12 @@ c = f(k)+(1-\delta-\mu)k-g
 <p>Since the algorithm and plotting routines are the same as before, we include the steady-state calculations and
 shooting routine in the section <a class="reference internal" href="#cass-fiscal-shooting"><span class="std std-ref">Python Code</span></a>.</p>
 </section>
-<section id="id7">
-<h3><span class="section-number">49.10.3. </span>Shooting Algorithm<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<section id="id6">
+<h3><span class="section-number">49.10.3. </span>Shooting Algorithm<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
 <p>Now we can apply the shooting algorithm to compute equilibrium. We augment the vector of shock variables by including <span class="math notranslate nohighlight">\(\mu_t\)</span>, then proceed as before.</p>
 </section>
-<section id="id8">
-<h3><span class="section-number">49.10.4. </span>Experiments<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
+<section id="id7">
+<h3><span class="section-number">49.10.4. </span>Experiments<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
 <p>Let’s run some experiments:</p>
 <ol class="arabic simple">
 <li><p>A foreseen once-and-for-all increase in <span class="math notranslate nohighlight">\(\mu\)</span> from 1.02 to 1.025 in period 10</p></li>
@@ -2255,484 +2244,7 @@ Steady-state consumption: 0.5966
 </div>
 </section>
 </div>
-</section>
-</section>
-</section>
-<section id="a-two-country-model">
-<h2><span class="section-number">49.11. </span>A two-country model<a class="headerlink" href="#a-two-country-model" title="Permalink to this heading">#</a></h2>
-<p>This section describes a two-country version of the basic model of <a class="reference internal" href="#cs-fs-model"><span class="std std-ref">The Economy</span></a>.</p>
-<p>The model has a structure similar to ones used in the international real business cycle literature and is
-in the spirit of an analysis of distorting taxes by <span id="id9">Mendoza and Tesar [<a class="reference internal" href="zreferences.html#id3" title="Enrique G Mendoza and Linda L Tesar. The international ramifications of tax reforms: supply-side economics in a global economy. American Economic Review, pages 226–245, 1998.">1998</a>]</span>.</p>
-<p>We allow two countries to trade goods and claims on future goods, but not labor.</p>
-<p>Both countries have production technologies, and consumers in each country can hold capital in either country, subject to different tax treatments.</p>
-<p>We denote variables in the second country with asterisks (*).</p>
-<p>Households in both countries maximize lifetime utility:</p>
-<div class="math notranslate nohighlight">
-\[
-\sum_{t=0}^{\infty} \beta^t u(c_t) \quad \text{and} \quad \sum_{t=0}^{\infty} \beta^t u(c_t^*),
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(u(c) = \frac{c^{1-\gamma}}{1-\gamma}\)</span> with <span class="math notranslate nohighlight">\(\gamma &gt; 0\)</span>.</p>
-<p>Production follows a Cobb-Douglas function with identical technology parameters across countries.</p>
-<p>The global resource constraint for this two-country economy is:</p>
-<div class="math notranslate nohighlight">
-\[
-(c_t+c_t^*)+(g_t+g_t^*)+(k_{t+1}-(1-\delta)k_t)+(k_{t+1}^*-(1-\delta)k_t^*) = f(k_t)+f(k_t^*)
-\]</div>
-<p>which combines the feasibility constraints for the two countries.</p>
-<p>Later, we will use this constraint as a global feasibility constraint in our computation.</p>
-<p>To connect the two countries, we need to specify how capital flows across borders and how taxes are levied in different jurisdictions.</p>
-<section id="capital-mobility-and-taxation">
-<h3><span class="section-number">49.11.1. </span>Capital Mobility and Taxation<a class="headerlink" href="#capital-mobility-and-taxation" title="Permalink to this heading">#</a></h3>
-<p>A consumer in country one can hold capital in either country but pays taxes on rentals from foreign holdings of capital at the rate set by the foreign country.</p>
-<p>Residents in both countries can purchase consumption at date <span class="math notranslate nohighlight">\(t\)</span> at a common Arrow-Debreu price <span class="math notranslate nohighlight">\(q_t\)</span>. We assume capital markets are complete.</p>
-<p>Let <span class="math notranslate nohighlight">\(B_t^f\)</span> be the amount of time <span class="math notranslate nohighlight">\(t\)</span> goods that the representative domestic consumer raises by issuing a one-period IOU to the representative foreign consumer.</p>
-<p>So <span class="math notranslate nohighlight">\(B_t^f &gt; 0\)</span> indicates the domestic consumer is borrowing from abroad at <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(B_t^f &lt; 0\)</span> indicates the domestic consumer is lending abroad at <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>Hence, the budget constraint of a representative consumer in country one is:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-\sum_{t=0}^{\infty} q_t \left( c_t + (k_{t+1} - (1-\delta)k_t) + (\tilde{k}_{t+1} - (1-\delta)\tilde{k}_t) + R_{t-1,t}B_{t-1}^f \right) \leq \\
-\sum_{t=0}^{\infty} q_t \left( (\eta_t - \tau_{kt}(\eta_t - \delta))k_t + (\eta_t^* - \tau_{kt}^*(\eta_t^* - \delta))\tilde{k}_t + (1 - \tau_{nt})w_t n_t - \tau_{ht} + B_t^f \right).
-\end{aligned}
-\end{split}\]</div>
-<p>No-arbitrage conditions for <span class="math notranslate nohighlight">\(k_t\)</span> and <span class="math notranslate nohighlight">\(\tilde{k}_t\)</span> for <span class="math notranslate nohighlight">\(t \geq 1\)</span> imply</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-q_{t-1} &amp;= [(1 - \tau_{kt})(\eta_t - \delta) + 1] q_t, \\
-q_{t-1} &amp;= [(1 - \tau^*_{kt})(\eta^*_t - \delta) + 1] q_t,
-\end{aligned}
-\end{split}\]</div>
-<p>which together imply that after-tax rental rates on capital are equalized across the two countries:</p>
-<div class="math notranslate nohighlight">
-\[
-(1 - \tau^*_{kt})(\eta^*_t - \delta) = (1 - \tau_{kt})(\eta_t - \delta).
-\]</div>
-<p>The no-arbitrage conditions for <span class="math notranslate nohighlight">\(B_t^f\)</span> for <span class="math notranslate nohighlight">\(t \geq 0\)</span> are <span class="math notranslate nohighlight">\(q_t = q_{t+1} R_{t+1,t}\)</span>, which implies that</p>
-<div class="math notranslate nohighlight">
-\[
-q_{t-1} = q_t R_{t-1,t}
-\]</div>
-<p>for <span class="math notranslate nohighlight">\(t \geq 1\)</span>.</p>
-<p>Since domestic capital, foreign capital, and consumption loans bear the same rates of return, portfolios are indeterminate.</p>
-<p>We can set holdings of foreign capital equal to zero in each country if we allow <span class="math notranslate nohighlight">\(B_t^f\)</span> to be nonzero.</p>
-<p>This way of resolving portfolio indeterminacy is convenient because it reduces the number of initial conditions we need to specify.</p>
-<p>Therefore, we set holdings of foreign capital equal to zero in both countries while allowing international lending.</p>
-<p>Given an initial level <span class="math notranslate nohighlight">\(B_{-1}^f\)</span> of debt from the domestic country to the foreign country, and where <span class="math notranslate nohighlight">\(R_{t-1,t} = \frac{q_{t-1}}{q_t}\)</span>, international debt dynamics satisfy</p>
-<div class="math notranslate nohighlight">
-\[
-B^f_t = R_{t-1,t} B^f_{t-1} + c_t + (k_{t+1} - (1 - \delta)k_t) + g_t - f(k_t)
-\]</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Bf_path</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute B^{f}_t:</span>
-<span class="sd">      Bf_t = R_{t-1} Bf_{t-1} + c_t + (k_{t+1}-(1-δ)k_t) + g_t - f(k_t)</span>
-<span class="sd">    with Bf_0 = 0.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">S</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>                       
-    <span class="n">R</span> <span class="o">=</span> <span class="n">c</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">β</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">))</span>
-
-    <span class="n">Bf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> 
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">S</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">inv</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span> <span class="o">*</span> <span class="n">k</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>         
-        <span class="n">Bf</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">R</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">Bf</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">inv</span> <span class="o">+</span> <span class="n">g</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
-            <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">Bf</span>
-
-<span class="k">def</span> <span class="nf">Bf_ss</span><span class="p">(</span><span class="n">c_ss</span><span class="p">,</span> <span class="n">k_ss</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the steady-state B^f</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">R_ss</span>   <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span>  
-    <span class="n">inv_ss</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">δ</span> <span class="o">*</span> <span class="n">k_ss</span> 
-    <span class="n">num</span>    <span class="o">=</span> <span class="n">c_ss</span> <span class="o">+</span> <span class="n">inv_ss</span> <span class="o">+</span> <span class="n">g_ss</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-    <span class="n">den</span>    <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">R_ss</span>
-    <span class="k">return</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>and</p>
-<div class="math notranslate nohighlight">
-\[
-c^*_t + (k^*_{t+1} - (1 - \delta)k^*_t) + g^*_t - R_{t-1,t} B^f_{t-1} = f(k^*_t) - B^f_t.
-\]</div>
-<p>The firms’ first-order conditions in the two countries are:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-\eta_t &amp;= f'(k_t), \quad w_t = f(k_t) - k_t f'(k_t) \\
-\eta^*_t &amp;= f'(k^*_t), \quad w^*_t = f(k^*_t) - k^*_t f'(k^*_t).
-\end{aligned}
-\end{split}\]</div>
-<p>International trade in goods establishes:</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{q_t}{\beta^t} = \frac{u'(c_t)}{1 + \tau_{ct}} = \mu^* \frac{u'(c^*_t)}{1 + \tau^*_{ct}},
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mu^*\)</span> is a nonnegative number that is a function of the Lagrange multiplier
-on the budget constraint for a consumer in country <span class="math notranslate nohighlight">\(*\)</span>.</p>
-<p>We have normalized the Lagrange multiplier on the budget constraint of the domestic country
-to set the corresponding <span class="math notranslate nohighlight">\(\mu\)</span> for the domestic country to unity.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_rs</span><span class="p">(</span><span class="n">c_t</span><span class="p">,</span> <span class="n">c_tp1</span><span class="p">,</span> <span class="n">c_s_t</span><span class="p">,</span> <span class="n">c_s_tp1</span><span class="p">,</span> <span class="n">τc_t</span><span class="p">,</span> 
-               <span class="n">τc_tp1</span><span class="p">,</span> <span class="n">τc_s_t</span><span class="p">,</span> <span class="n">τc_s_tp1</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute international risk sharing after trade starts.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">return</span> <span class="p">(</span><span class="n">c_t</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">τc_t</span><span class="p">))</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">τc_s_t</span><span class="p">)</span><span class="o">/</span><span class="n">c_s_t</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span>
-        <span class="n">c_tp1</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">τc_tp1</span><span class="p">))</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">τc_s_tp1</span><span class="p">)</span><span class="o">/</span><span class="n">c_s_tp1</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Equilibrium requires that the following two national Euler equations be satisfied for <span class="math notranslate nohighlight">\(t \geq 0\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-u'(c_t) &amp;= \beta u'(c_{t+1}) \left[ (1 - \tau_{kt+1})(f'(k_{t+1}) - \delta) + 1 \right] \left[ \frac{1 + \tau_{ct+1}}{1 + \tau_{ct}} \right], \\
-u'(c^*_t) &amp;= \beta u'(c^*_{t+1}) \left[ (1 - \tau^*_{kt+1})(f'(k^*_{t+1}) - \delta) + 1 \right] \left[ \frac{1 + \tau^*_{ct+1}}{1 + \tau^*_{ct}} \right].
-\end{aligned}
-\end{split}\]</div>
-<p>The following code computes both the domestic and foreign Euler equations.</p>
-<p>Since they have the same form but use different variables, we can write a single function that handles both cases.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_euler</span><span class="p">(</span><span class="n">c_t</span><span class="p">,</span> <span class="n">c_tp1</span><span class="p">,</span> <span class="n">τc_t</span><span class="p">,</span> 
-                    <span class="n">τc_tp1</span><span class="p">,</span> <span class="n">τk_tp1</span><span class="p">,</span> <span class="n">k_tp1</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the Euler equation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">Rbar</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">τk_tp1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">f_prime</span><span class="p">(</span><span class="n">k_tp1</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_tp1</span><span class="o">/</span><span class="n">c_t</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">τc_t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">τc_tp1</span><span class="p">)</span> <span class="o">*</span> <span class="n">Rbar</span> <span class="o">-</span> <span class="mi">1</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="initial-condition-and-steady-state">
-<h3><span class="section-number">49.11.2. </span>Initial condition and steady state<a class="headerlink" href="#initial-condition-and-steady-state" title="Permalink to this heading">#</a></h3>
-<p>For the initial conditions, we choose the pre-trade allocation of capital (<span class="math notranslate nohighlight">\(k_0, k_0^*\)</span>) and the
-initial level <span class="math notranslate nohighlight">\(B_{-1}^f\)</span> of international debt owed
-by the unstarred (domestic) country to the starred (foreign) country.</p>
-</section>
-<section id="equilibrium-steady-state-values">
-<h3><span class="section-number">49.11.3. </span>Equilibrium steady state values<a class="headerlink" href="#equilibrium-steady-state-values" title="Permalink to this heading">#</a></h3>
-<p>The steady state of the two-country model is characterized by two sets of equations.</p>
-<p>First, the following equations determine the steady-state capital-labor ratios <span class="math notranslate nohighlight">\(\bar k\)</span> and <span class="math notranslate nohighlight">\(\bar k^*\)</span> in each country:</p>
-<div class="math notranslate nohighlight" id="equation-eq-steady-k-bar">
-<span class="eqno">(49.32)<a class="headerlink" href="#equation-eq-steady-k-bar" title="Permalink to this equation">#</a></span>\[
-f'(\bar{k}) = \delta + \frac{\rho}{1 - \tau_k}
-\]</div>
-<div class="math notranslate nohighlight" id="equation-eq-steady-k-star">
-<span class="eqno">(49.33)<a class="headerlink" href="#equation-eq-steady-k-star" title="Permalink to this equation">#</a></span>\[
-f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*}
-\]</div>
-<p>Given these steady-state capital-labor ratios, the domestic and foreign consumption values <span class="math notranslate nohighlight">\(\bar c\)</span> and <span class="math notranslate nohighlight">\(\bar c^*\)</span> are determined by:</p>
-<div class="math notranslate nohighlight" id="equation-eq-steady-c-k-bar">
-<span class="eqno">(49.34)<a class="headerlink" href="#equation-eq-steady-c-k-bar" title="Permalink to this equation">#</a></span>\[
-(\bar{c} + \bar{c}^*) = f(\bar{k}) + f(\bar{k}^*) - \delta(\bar{k} + \bar{k}^*) - (\bar{g} + \bar{g}^*)
-\]</div>
-<div class="math notranslate nohighlight" id="equation-eq-steady-c-kb">
-<span class="eqno">(49.35)<a class="headerlink" href="#equation-eq-steady-c-kb" title="Permalink to this equation">#</a></span>\[
-\bar{c} = f(\bar{k}) - \delta\bar{k} - \bar{g} - \rho\bar{B}^f
-\]</div>
-<p>Equation <a class="reference internal" href="#equation-eq-steady-c-k-bar">(49.34)</a> expresses feasibility at the steady state, while equation <a class="reference internal" href="#equation-eq-steady-c-kb">(49.35)</a> represents the trade balance, including interest payments, at the steady state.</p>
-<p>The steady-state level of debt <span class="math notranslate nohighlight">\(\bar{B}^f\)</span> from the domestic country to the foreign country influences the consumption allocation between countries but not the total world capital stock.</p>
-<p>We assume <span class="math notranslate nohighlight">\(\bar{B}^f = 0\)</span> in the steady state, which gives us the following function to compute the steady-state values of capital and consumption</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_steady_state_global</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">g_ss</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate steady state values for capital, consumption, and investment.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">k_ss</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">β</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">δ</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">A</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">α</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">α</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">c_ss</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">δ</span> <span class="o">*</span> <span class="n">k_ss</span> <span class="o">-</span> <span class="n">g_ss</span>
-    <span class="k">return</span> <span class="n">k_ss</span><span class="p">,</span> <span class="n">c_ss</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now, we can apply the residual minimization method to compute the steady-state values of capital and consumption.</p>
-<p>Again, we minimize the residuals of the Euler equation, the global resource constraint, and the no-arbitrage condition.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_residuals_global</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">shocks</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">k0_ss</span><span class="p">,</span> <span class="n">k_star</span><span class="p">,</span> <span class="n">Bf_star</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute residuals for the two-country model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">k_s</span><span class="p">,</span> <span class="n">c_s</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-    <span class="n">g</span><span class="p">,</span> <span class="n">gs</span> <span class="o">=</span> <span class="n">shocks</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">],</span> <span class="n">shocks</span><span class="p">[</span><span class="s1">&#39;g_s&#39;</span><span class="p">]</span>
-    <span class="n">τc</span><span class="p">,</span> <span class="n">τk</span> <span class="o">=</span> <span class="n">shocks</span><span class="p">[</span><span class="s1">&#39;τ_c&#39;</span><span class="p">],</span> <span class="n">shocks</span><span class="p">[</span><span class="s1">&#39;τ_k&#39;</span><span class="p">]</span>
-    <span class="n">τc_s</span><span class="p">,</span> <span class="n">τk_s</span> <span class="o">=</span> <span class="n">shocks</span><span class="p">[</span><span class="s1">&#39;τ_c_s&#39;</span><span class="p">],</span> <span class="n">shocks</span><span class="p">[</span><span class="s1">&#39;τ_k_s&#39;</span><span class="p">]</span>
-    
-    <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">k0_ss</span><span class="p">,</span> <span class="n">k_s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">k0_ss</span><span class="p">]</span>
-
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-        <span class="n">e_d</span> <span class="o">=</span> <span class="n">compute_euler</span><span class="p">(</span>
-            <span class="n">c</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> 
-            <span class="n">τc</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">τc</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">τk</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> 
-            <span class="n">k</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="p">)</span>
-        
-        <span class="n">e_f</span> <span class="o">=</span> <span class="n">compute_euler</span><span class="p">(</span>
-            <span class="n">c_s</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">c_s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> 
-            <span class="n">τc_s</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">τc_s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">τk_s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> 
-            <span class="n">k_s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="p">)</span>
-        
-        <span class="n">rs</span> <span class="o">=</span> <span class="n">compute_rs</span><span class="p">(</span>
-            <span class="n">c</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">c_s</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">c_s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> 
-            <span class="n">τc</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">τc</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">τc_s</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">τc_s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> 
-            <span class="n">model</span><span class="p">)</span>
-        
-        <span class="c1"># Global resource constraint</span>
-        <span class="n">grc</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">k_s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span>
-            <span class="n">f</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">model</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">k_s</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">model</span><span class="p">)</span> <span class="o">+</span>
-            <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">k_s</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="o">-</span>
-            <span class="n">c</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">c_s</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">g</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">gs</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
-        <span class="p">)</span>
-        
-        <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">e_d</span><span class="p">,</span> <span class="n">e_f</span><span class="p">,</span> <span class="n">rs</span><span class="p">,</span> <span class="n">grc</span><span class="p">])</span>
-
-    <span class="n">Bf_term</span> <span class="o">=</span> <span class="n">Bf_path</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">shocks</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">],</span> <span class="n">model</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">-</span> <span class="n">k_star</span><span class="p">)</span>
-    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Bf_term</span> <span class="o">-</span> <span class="n">Bf_star</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now we plot the results</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Function to plot global two-country model results</span>
-<span class="k">def</span> <span class="nf">plot_global_results</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k_s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_s</span><span class="p">,</span> <span class="n">shocks</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> 
-                        <span class="n">k0_ss</span><span class="p">,</span> <span class="n">c0_ss</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">shock</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span>
-                        <span class="c1"># a dictionary storing sequence for lower left panel</span>
-                        <span class="n">ll_series</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Plot results for the two-country model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-    <span class="n">τc</span><span class="p">,</span> <span class="n">τk</span> <span class="o">=</span> <span class="n">shocks</span><span class="p">[</span><span class="s1">&#39;τ_c&#39;</span><span class="p">],</span> <span class="n">shocks</span><span class="p">[</span><span class="s1">&#39;τ_k&#39;</span><span class="p">]</span>
-    <span class="n">Bf</span> <span class="o">=</span> <span class="n">Bf_path</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">shocks</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">],</span> <span class="n">model</span><span class="p">)</span>
-    
-    <span class="c1"># Compute derived series</span>
-    <span class="n">R_ratio</span> <span class="o">=</span> <span class="n">c</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">β</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">))</span> \
-    <span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">τc</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">τc</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-    <span class="n">inv</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span><span class="o">*</span><span class="n">k</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">inv_s</span> <span class="o">=</span> <span class="n">k_s</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span><span class="o">*</span><span class="n">k_s</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="c1"># Add initial conditions into the series</span>
-    <span class="n">R_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">R_ratio</span><span class="p">)</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c0_ss</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
-    <span class="n">c_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c0_ss</span><span class="p">,</span> <span class="n">c_s</span><span class="p">)</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k0_ss</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-    <span class="n">k_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k0_ss</span><span class="p">,</span> <span class="n">k_s</span><span class="p">)</span>
-
-    <span class="c1"># Capital</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">[:</span><span class="n">T</span><span class="p">],</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">k0_ss</span><span class="p">),</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k_s</span><span class="p">[:</span><span class="n">T</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    
-    <span class="c1"># Consumption</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">[:</span><span class="n">T</span><span class="p">],</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">c0_ss</span><span class="p">),</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c_s</span><span class="p">[:</span><span class="n">T</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    
-    <span class="c1"># Interest rate</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">R_ratio</span><span class="p">[:</span><span class="n">T</span><span class="p">],</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">),</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\bar</span><span class="si">{R}</span><span class="s1">$&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    
-    <span class="c1"># Investment</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">δ</span> <span class="o">*</span> <span class="n">k0_ss</span><span class="p">),</span> 
-    <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">δ</span><span class="o">*</span><span class="n">k0_ss</span><span class="p">,</span> <span class="n">inv</span><span class="p">[:</span><span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> 
-    <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">δ</span><span class="o">*</span><span class="n">k0_ss</span><span class="p">,</span> <span class="n">inv_s</span><span class="p">[:</span><span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> 
-    <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    
-    <span class="c1"># Shock</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shocks</span><span class="p">[</span><span class="n">shock</span><span class="p">][:</span><span class="n">T</span><span class="p">],</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">shocks</span><span class="p">[</span><span class="n">shock</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$</span><span class="si">{</span><span class="n">shock</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    
-    <span class="c1"># Capital flow</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Bf</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">T</span><span class="p">]),</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$B^</span><span class="si">{f}</span><span class="s1">$&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section id="experiment-1-a-foreseen-increase-in-g-from-0-2-to-0-4-at-t-10">
-<h4><span class="section-number">49.11.3.1. </span>Experiment 1: A foreseen increase in <span class="math notranslate nohighlight">\(g\)</span> from 0.2 to 0.4 at t=10<a class="headerlink" href="#experiment-1-a-foreseen-increase-in-g-from-0-2-to-0-4-at-t-10" title="Permalink to this heading">#</a></h4>
-<p>The figure below presents transition dynamics after an increase in <span class="math notranslate nohighlight">\(g\)</span> in the domestic economy from 0.2 to 0.4 that is announced ten periods in advance.</p>
-<p>We start both economies from a steady state with <span class="math notranslate nohighlight">\(B_0^f = 0\)</span>.</p>
-<p>In the figure below, the blue lines represent the domestic economy and orange dotted lines represent the foreign economy.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Model</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Model&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;β&quot;</span><span class="p">,</span> <span class="s2">&quot;γ&quot;</span><span class="p">,</span> <span class="s2">&quot;δ&quot;</span><span class="p">,</span> <span class="s2">&quot;α&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">])</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-
-<span class="n">shocks_global</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;g&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">S</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">))),</span>
-    <span class="s1">&#39;g_s&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
-    <span class="s1">&#39;τ_c&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
-    <span class="s1">&#39;τ_k&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
-    <span class="s1">&#39;τ_c_s&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
-    <span class="s1">&#39;τ_k_s&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-<span class="p">}</span>
-<span class="n">g_ss</span> <span class="o">=</span> <span class="mf">0.2</span>
-<span class="n">k0_ss</span><span class="p">,</span> <span class="n">c0_ss</span> <span class="o">=</span> <span class="n">compute_steady_state_global</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">)</span>
-
-<span class="n">k_star</span> <span class="o">=</span> <span class="n">k0_ss</span>
-<span class="n">Bf_star</span> <span class="o">=</span> <span class="n">Bf_ss</span><span class="p">(</span><span class="n">c0_ss</span><span class="p">,</span> <span class="n">k_star</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-
-<span class="n">init_glob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">([</span><span class="n">k0_ss</span><span class="p">,</span> <span class="n">c0_ss</span><span class="p">,</span> <span class="n">k0_ss</span><span class="p">,</span> <span class="n">c0_ss</span><span class="p">],</span> <span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">sol_glob</span> <span class="o">=</span> <span class="n">root</span><span class="p">(</span>
-    <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">compute_residuals_global</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">shocks_global</span><span class="p">,</span>
-                                        <span class="n">S</span><span class="p">,</span> <span class="n">k0_ss</span><span class="p">,</span> <span class="n">k_star</span><span class="p">,</span> <span class="n">Bf_star</span><span class="p">),</span>
-    <span class="n">init_glob</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-12</span>
-<span class="p">)</span>
-<span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">k_s</span><span class="p">,</span> <span class="n">c_s</span> <span class="o">=</span> <span class="n">sol_glob</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-
-<span class="c1"># Plot global results via function</span>
-<span class="n">plot_global_results</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k_s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_s</span><span class="p">,</span>
-                        <span class="n">shocks_global</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span>
-                        <span class="n">k0_ss</span><span class="p">,</span> <span class="n">c0_ss</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">,</span>
-                        <span class="n">S</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/993e9b9afc5cc2a35d806f0b0b9f07d4e92fa67f18c456b250f2bd39d095940c.png" src="_images/993e9b9afc5cc2a35d806f0b0b9f07d4e92fa67f18c456b250f2bd39d095940c.png" />
-</div>
-</div>
-<p>At time 1, the government announces that domestic government purchases <span class="math notranslate nohighlight">\(g\)</span> will rise ten periods later, cutting into future private resources.</p>
-<p>To smooth consumption, domestic households immediately increase saving, offsetting the anticipated hit to their future wealth.</p>
-<p>In a closed economy, they would save solely by accumulating extra domestic capital; with open capital markets, they can also lend to foreigners.</p>
-<p>Once the capital flow opens up at time <span class="math notranslate nohighlight">\(1\)</span>, the no-arbitrage conditions connect adjustments of both types of saving: the increase in savings by domestic households will reduce the equilibrium return on bonds and capital in the foreign economy to prevent arbitrage opportunities.</p>
-<p>Because no-arbitrage equalizes the ratio of marginal utilities, the resulting paths of consumption and capital are synchronized across the two economies.</p>
-<p>Up to the date the higher <span class="math notranslate nohighlight">\(g\)</span> takes effect, both countries continue to build their capital stocks.</p>
-<p>When government spending finally rises 10 periods later, domestic households begin to draw down part of that capital to cushion consumption.</p>
-<p>Again by no-arbitrage conditions, when <span class="math notranslate nohighlight">\(g\)</span> actually increases, both countries reduce their investment rates.</p>
-<p>The domestic economy, in turn, starts running current-account deficits partially to fund the increase in <span class="math notranslate nohighlight">\(g\)</span>.</p>
-<p>This means that foreign households begin repaying part of their external debt by reducing their capital stock.</p>
-</section>
-<section id="experiment-2-a-foreseen-increase-in-g-from-0-2-to-0-4-at-t-10">
-<h4><span class="section-number">49.11.3.2. </span>Experiment 2: A foreseen increase in <span class="math notranslate nohighlight">\(g\)</span> from 0.2 to 0.4 at t=10<a class="headerlink" href="#experiment-2-a-foreseen-increase-in-g-from-0-2-to-0-4-at-t-10" title="Permalink to this heading">#</a></h4>
-<p>We now explore the impact of an increase in capital taxation in the domestic economy <span class="math notranslate nohighlight">\(10\)</span> periods after its announcement at <span class="math notranslate nohighlight">\(t = 1\)</span>.</p>
-<p>Because the change is anticipated, households in both countries adjust immediately—even though the tax does not take effect until period <span class="math notranslate nohighlight">\(t = 11\)</span>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">shocks_global</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;g&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">),</span>
-    <span class="s1">&#39;g_s&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">),</span>
-    <span class="s1">&#39;τ_c&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
-    <span class="s1">&#39;τ_k&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">S</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">))),</span>
-    <span class="s1">&#39;τ_c_s&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
-    <span class="s1">&#39;τ_k_s&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
-<span class="p">}</span>
-    
-<span class="n">k0_ss</span><span class="p">,</span> <span class="n">c0_ss</span> <span class="o">=</span> <span class="n">compute_steady_state_global</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">)</span>
-<span class="n">k_star</span> <span class="o">=</span> <span class="n">k0_ss</span>
-<span class="n">Bf_star</span> <span class="o">=</span> <span class="n">Bf_ss</span><span class="p">(</span><span class="n">c0_ss</span><span class="p">,</span> <span class="n">k_star</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-
-<span class="n">init_glob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">([</span><span class="n">k0_ss</span><span class="p">,</span> <span class="n">c0_ss</span><span class="p">,</span> <span class="n">k0_ss</span><span class="p">,</span> <span class="n">c0_ss</span><span class="p">],</span> <span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">sol_glob</span> <span class="o">=</span> <span class="n">root</span><span class="p">(</span>
-    <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">compute_residuals_global</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> 
-            <span class="n">shocks_global</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">k0_ss</span><span class="p">,</span> <span class="n">k_star</span><span class="p">,</span> <span class="n">Bf_star</span><span class="p">),</span>
-            <span class="n">init_glob</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
-
-<span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">k_s</span><span class="p">,</span> <span class="n">c_s</span> <span class="o">=</span> <span class="n">sol_glob</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-
-<span class="c1"># plot </span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plot_global_results</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k_s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_s</span><span class="p">,</span> <span class="n">shocks_global</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> 
-                                <span class="n">k0_ss</span><span class="p">,</span> <span class="n">c0_ss</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">shock</span><span class="o">=</span><span class="s1">&#39;τ_k&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/ce1943480ddd9c0962d4b0f519a8273146d95b82ca245d1ba098a59b73e490ec.png" src="_images/ce1943480ddd9c0962d4b0f519a8273146d95b82ca245d1ba098a59b73e490ec.png" />
-</div>
-</div>
-<p>After the tax increase is announced, domestic households foresee lower after-tax returns on capital, so they shift toward higher present consumption and allow the domestic capital stock to decline.</p>
-<p>This shrinkage of the world capital supply drives the global real interest rate upward, prompting foreign households to raise current consumption as well.</p>
-<p>Prior to the actual tax hike, the domestic economy finances part of its consumption by importing capital, generating a current-account deficit.</p>
-<p>When <span class="math notranslate nohighlight">\(\tau_k\)</span> finally rises, international arbitrage leads investors to reallocate capital quickly toward the untaxed foreign market, compressing the yield on bonds everywhere.</p>
-<p>The bond-rate drop reflects the lower after-tax return on domestic capital and the higher foreign capital stock, which depresses its marginal product.</p>
-<p>Foreign households fund their capital purchases by borrowing abroad, creating a pronounced current-account deficit and a buildup of external debt.</p>
-<p>After the policy change, both countries move smoothly toward a new steady state in which:</p>
-<ul class="simple">
-<li><p>Consumption levels in each economy settle below their pre-announcement paths.</p></li>
-<li><p>Capital stocks differ just enough to equalize after-tax returns across borders.</p></li>
-</ul>
-<p>Despite carrying positive net liabilities, the foreign country enjoys higher steady-state consumption because its larger capital stock yields greater output.</p>
-<p>The episode demonstrates how open capital markets transmit a domestic tax shock internationally: capital flows and interest-rate movements share the burden, smoothing consumption adjustments in both the taxed and untaxed economies over time.</p>
-<div class="exercise admonition" id="cass_fiscal_ex4">
-
-<p class="admonition-title"><span class="caption-number">Exercise 49.4 </span></p>
-<section id="exercise-content">
-<p>In this exercise, replace the plot for <span class="math notranslate nohighlight">\({x_t}\)</span> with <span class="math notranslate nohighlight">\(\eta_t\)</span> to replicate the figure in <span id="id10">[<a class="reference internal" href="zreferences.html#id187" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>.</p>
-<p>Compare the figures for <span class="math notranslate nohighlight">\({k_t}\)</span> and <span class="math notranslate nohighlight">\(\eta_t\)</span> and discuss the economic intuition.</p>
-</section>
-</div>
-<div class="solution dropdown admonition" id="cass_fiscal-solution-8">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#cass_fiscal_ex4"> Exercise 49.4</a></p>
-<section id="solution-content">
-<p>Here is one solution.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plot_global_results</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k_s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_s</span><span class="p">,</span> <span class="n">shocks_global</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> 
-                                <span class="n">k0_ss</span><span class="p">,</span> <span class="n">c0_ss</span><span class="p">,</span> <span class="n">g_ss</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">shock</span><span class="o">=</span><span class="s1">&#39;τ_k&#39;</span><span class="p">)</span>
-
-<span class="c1"># Clear the plot for x_t</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
-
-<span class="c1"># Plot η_t</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">compute_η_path</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">model</span><span class="p">)[:</span><span class="mi">40</span><span class="p">])</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">compute_η_path</span><span class="p">(</span><span class="n">k_s</span><span class="p">,</span> <span class="n">model</span><span class="p">)[:</span><span class="mi">40</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">(</span><span class="n">k_s</span><span class="p">,</span> <span class="n">model</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\eta$&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/a37b74b79cdc8bacf823c77cffcdb90021634a712363d5164a52043e1c4a8c12.png" src="_images/a37b74b79cdc8bacf823c77cffcdb90021634a712363d5164a52043e1c4a8c12.png" />
-</div>
-</div>
-<p>When capital <span class="math notranslate nohighlight">\({k_t}\)</span> decreases in the domestic country after the tax shock, the rental rate <span class="math notranslate nohighlight">\(\eta_t\)</span> increases in that country.</p>
-<p>This reflects that as capital becomes scarcer, its marginal product rises.</p>
-</section>
-</div>
+<p>In this this sequel <a class="reference internal" href="cass_fiscal_2.html"><span class="doc">Two-Country Model with Distorting Taxes</span></a>, we  study a two-country version of our one-country model  that is closely related to  <span id="id8">Mendoza and Tesar [<a class="reference internal" href="zreferences.html#id3" title="Enrique G Mendoza and Linda L Tesar. The international ramifications of tax reforms: supply-side economics in a global economy. American Economic Review, pages 226–245, 1998.">1998</a>]</span>.</p>
 </section>
 </section>
 </section>
@@ -3088,48 +2600,53 @@ f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*}
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal_2.html">
+   50. Two-Country Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   50. Transitions in an Overlapping Generations Model
+   51. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   51. Cake Eating I: Introduction to Optimal Saving
+   52. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   52. Cake Eating II: Numerical Methods
+   53. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   53. Optimal Growth I: The Stochastic Optimal Growth Model
+   54. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   54. Optimal Growth II: Accelerating the Code with Numba
+   55. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   55. Optimal Growth III: Time Iteration
+   56. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   56. Optimal Growth IV: The Endogenous Grid Method
+   57. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   57. The Income Fluctuation Problem I: Basic Model
+   58. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   58. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   59. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -3141,32 +2658,32 @@ f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*}
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   59. LQ Control: Foundations
+   60. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   60. Lagrangian for LQ Control
+   61. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   61. Eliminating Cross Products
+   62. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   62. The Permanent Income Model
+   63. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   63. Permanent Income II: LQ Techniques
+   64. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   64. Production Smoothing via Inventories
+   65. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -3178,32 +2695,32 @@ f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*}
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   65. A Lake Model of Employment and Unemployment
+   66. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   66. Rational Expectations Equilibrium
+   67. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   67. Stability in Linear Rational Expectations Models
+   68. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   68. Markov Perfect Equilibrium
+   69. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   69. Uncertainty Traps
+   70. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   70. The Aiyagari Model
+   71. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -3215,17 +2732,17 @@ f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*}
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   71. Asset Pricing: Finite State Models
+   72. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   72. Competitive Equilibria with Arrow Securities
+   73. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   73. Heterogeneous Beliefs and Bubbles
+   74. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -3237,17 +2754,17 @@ f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*}
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   74. Pandas for Panel Data
+   75. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   75. Linear Regression in Python
+   76. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   76. Maximum Likelihood Estimation
+   77. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -3259,12 +2776,12 @@ f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*}
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   77. First-Price and Second-Price Auctions
+   78. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   78. Multiple Good Allocation Mechanisms
+   79. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -3276,17 +2793,17 @@ f'(\bar{k}^*) = \delta + \frac{\rho}{1 - \tau_k^*}
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   79. Troubleshooting
+   80. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   80. References
+   81. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   81. Execution Statistics
+   82. Execution Statistics
   </a>
  </li>
 </ul>
