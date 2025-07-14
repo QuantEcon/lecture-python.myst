@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.4
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -753,20 +753,20 @@ def protocol_1(π_minus_1, T, N=1000):
     """
     
     sequences = np.empty((N, T))
-    true_models = np.empty(N, dtype=int)
+    true_models_F = np.empty(N, dtype=bool)
     
     for i in range(N):
         # Nature flips coin
         if np.random.rand() < π_minus_1:
             # Generate entire sequence from f
             sequences[i, :] = np.random.beta(F_a, F_b, T)
-            true_models[i] = 1
+            true_models_F[i] = True
         else:
             # Generate entire sequence from g
             sequences[i, :] = np.random.beta(G_a, G_b, T)
-            true_models[i] = 0
+            true_models_F[i] = False
     
-    return sequences, true_models
+    return sequences, true_models_F
 ```
 
 **Protocol 2.** At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
@@ -779,19 +779,19 @@ def protocol_2(π_minus_1, T, N=1000):
     """
     
     sequences = np.empty((N, T))
-    true_models = np.empty((N, T), dtype=int)
+    true_models_F = np.empty((N, T), dtype=bool)
     
     for i in range(N):
         for t in range(T):
             # Nature flips coin at each time step t
             if np.random.rand() < π_minus_1:
                 sequences[i, t] = np.random.beta(F_a, F_b)
-                true_models[i, t] = 1
+                true_models_F[i, t] = True
             else:
                 sequences[i, t] = np.random.beta(G_a, G_b)
-                true_models[i, t] = 0
+                true_models_F[i, t] = False
                 
-    return sequences, true_models
+    return sequences, true_models_F
 ```
 
 **Remark:** Under protocol 2, the $\{w_t\}_{t=1}^T$ is a sequence of IID draws from $h(w)$. Under protocol 1, the the $\{w_t\}_{t=1}^T$ is 
@@ -888,12 +888,12 @@ for t in T_range:
     
     # Type I error: reject H_0 when it's true 
     # (model f generates data)
-    f_sequences = L_cumulative_p1[true_models_p1 == 1, t_idx]
+    f_sequences = L_cumulative_p1[true_models_p1, t_idx]
     α_T[t_idx] = np.mean(f_sequences < 1)
     
     # Type II error: accept H_0 when it's false 
     # (model g generates data)
-    g_sequences = L_cumulative_p1[true_models_p1 == 0, t_idx]
+    g_sequences = L_cumulative_p1[~true_models_p1, t_idx]
     β_T[t_idx] = np.mean(g_sequences >= 1)
     
     # Bayesian error probability
@@ -986,9 +986,9 @@ g_values = [g(w) for w in w_range]
 ratio_values = [f(w)/g(w) for w in w_range]
 
 ax.plot(w_range, f_values, 'b-', 
-        label='$f(w) \sim Beta(1,1)$', linewidth=2)
+        label=r'$f(w) \sim Beta(1,1)$', linewidth=2)
 ax.plot(w_range, g_values, 'r-', 
-        label='$g(w) \sim Beta(3,1.2)$', linewidth=2)
+        label=r'$g(w) \sim Beta(3,1.2)$', linewidth=2)
 
 ax.axvline(root, color='green', linestyle='--', alpha=0.7, 
             label=f'decision boundary: $w=${root:.3f}')
@@ -1012,7 +1012,8 @@ for t in range(T_max):
     correct_classifications[t] = np.mean(predictions == actual)
 
 plt.figure(figsize=(10, 6))
-plt.plot(range(1, T_max + 1), correct_classifications, 'b-', linewidth=2, label='empirical accuracy')
+plt.plot(range(1, T_max + 1), correct_classifications, 
+                'b-', linewidth=2, label='empirical accuracy')
 plt.axhline(1 - theory_error, color='r', linestyle='--', 
                 label=f'theoretical accuracy = {1 - theory_error:.4f}')
 plt.xlabel('time step')
