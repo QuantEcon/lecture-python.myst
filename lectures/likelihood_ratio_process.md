@@ -31,15 +31,15 @@ kernelspec:
 
 This lecture describes likelihood ratio processes and some of their uses.
 
-We'll use a setting described in {doc}`this lecture <exchangeable>`.
+We'll study the same  setting that is also used in  {doc}`this lecture on exchangeability <exchangeable>`.
 
 Among  things that we'll learn  are
 
-* A peculiar property of likelihood ratio processes
 * How a likelihood ratio process is a key ingredient in frequentist hypothesis testing
 * How a **receiver operator characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
-* How a Bayesian statistician combines frequentist probabilities of type I and type II errors to form posterior probabilities of erroneous model selection or missclassification of individuals 
+* How a  statistician can combine frequentist probabilities of type I and type II errors to form posterior probabilities of erroneous model selection or missclassification of individuals 
 * How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged, a topic to be studied in  {doc}`this lecture <wald_friedman>`
+* A peculiar property of likelihood ratio processes
 
 
 
@@ -724,11 +724,11 @@ N, T = l_arr_h.shape
 plt.plot(range(T), np.sum(l_seq_h > 10000, axis=0) / N)
 ```
 
-## Bayesian Classification and Hypothesis Testing
+## Hypothesis Testing and Classification 
 
-We now describe how a Bayesian statistician can combine frequentist probabilities of type I and type II errors in order to 
+We now describe how a  statistician can combine frequentist probabilities of type I and type II errors in order to 
 
-* compute a posterior probability of selecting a wrong model
+* compute an anticipated frequency of  selecting a wrong model based on a sample length $T$
 * compute an anticipated error  rate in a classification problem 
 
 We consider a situation in which  nature generates data by mixing known densities $f$ and $g$ with known mixing
@@ -738,17 +738,27 @@ $$
 h (w) = \pi_{-1} f(w) + (1-\pi_{-1}) g(w) 
 $$
 
-We'll often set $\pi_{-1} = .5$.  
+We assume that the statistician knows the densities $f$ and $g$ and also the mixing parameter $\pi_{-1}$.
+
+Below, we'll  set $\pi_{-1} = .5$, although much of the analysis would follow through with other settings of $\pi_{-1} \in (0,1)$.  
 
 We assume that $f$ and $g$ both put positive probabilities on the same intervals of possible realizations of the random variable $W$.
 
-In the simulation below, we define $f$ as the probability density function of a $\text{Beta}(1, 1)$ distribution and $g$ as the probability density function of a $\text{Beta}(3, 1.2)$ distribution as we did above.
+  
 
-We consider two alternative timing protocols.  
+In the simulations below, we specify that  $f$ is a $\text{Beta}(1, 1)$ distribution and that  $g$ is $\text{Beta}(3, 1.2)$ distribution,
+just as we did often earlier in this lecture.
+
+We consider two alternative timing protocols. 
+
+ * Timing protocol 1 is for   the model selection problem
+ * Timing protocol 2 is for the individual classification problem 
 
 **Protocol 1:**  Nature flips a coin once at time $t=-1$ and with probability $\pi_{-1}$  generates a sequence  $\{w_t\}_{t=1}^T$
 of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
-of  IID  draws from  $g$
+of  IID  draws from  $g$.
+
+Let's write some Python code that implements timing protocol 1. 
 
 ```{code-cell} ipython3
 def protocol_1(π_minus_1, T, N=1000):
@@ -773,6 +783,8 @@ def protocol_1(π_minus_1, T, N=1000):
 ```
 
 **Protocol 2.** At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
+
+Here is  Python code that we'll use to implement timing protocol 2.  
 
 ```{code-cell} ipython3
 def protocol_2(π_minus_1, T, N=1000):
@@ -826,11 +838,11 @@ def compute_likelihood_ratios(sequences):
     return l_ratios, L_cumulative
 ```
 
-## Bayesian Model Selection 
+## Model Selection Mistake Probability 
 
 We first study  a problem that assumes  timing protocol 1.  
 
-Consider a decision maker who wants to know whether model $f$ or model $g$ governs the data.
+Consider a decision maker who wants to know whether model $f$ or model $g$ governs a data set of length $T$ observations.
 
 The decision makers has observed a sequence $\{w_t\}_{t=1}^T$.
 
@@ -849,7 +861,7 @@ $$
 p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T. 
 $$
 
-We can form a Bayesian prior  probability that the likelihood ratio selects the wrong model by assigning a prior probability of $\pi_{-1} = .5$ that it selects the wrong model and then  averaging $p_f$ and $p_g$ to form the Bayesian posterior probability of a detection error equal to
+We can construct a probability that the likelihood ratio selects the wrong model by assigning a Bayesian prior probability of $\pi_{-1} = .5$ that nature selects model $f$ then  averaging $p_f$ and $p_g$ to form the Bayesian posterior probability of a detection error equal to
 
 $$ 
 p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
@@ -906,8 +918,11 @@ plt.show()
 print(f"At T={T_max}:")
 print(f"α_{T_max} = {α_T[-1]:.4f}")
 print(f"β_{T_max} = {β_T[-1]:.4f}")
-print(f"Bayesian error probability = {error_prob[-1]:.4f}")
+print(f"Model selection error probability = {error_prob[-1]:.4f}")
 ```
+
+
+Notice how the model selection  error probability approaches zero as $T$ grows.  
 
 ## Classification
 
@@ -932,7 +947,7 @@ $$ (eq:classerrorprob)
 
 where $\tilde \alpha_t = {\rm Prob}(l_t < 1 \mid f)$ and $\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)$.
 
-Now let's simulate protocol 2 and compute the error probabilities
+Now let's simulate protocol 2 and compute the classification error probability.
 
 ```{code-cell} ipython3
 sequences_p2, true_sources_p2 = protocol_2(
@@ -1003,11 +1018,17 @@ plt.tight_layout()
 plt.show()
 ```
 
-On the left of the decision boundary, $f$ is more likely than $g$ with $l_t < 1$.
+To  the left of the  green vertical line  $f < g $,  so $l_t < 1$; therefore a  $w_t$ that falls to the left of the green line is classified as a type $g$ individual. 
 
-On the right of the decision boundary, $g$ is more likely than $f$ with $l_t \geq 1$.
+ * The shaded orange area equals $\beta$ -- the probability of classifying someone as a type $g$ individual when it is really a type $f$ individual.
 
-Let's see how it performs in the simulated data
+To  the right of the  green vertical line $g > f$, so $l_t >1 $; therefore  a  $w_t$ that falls to the right  of the green line is classified as a type $f$ individual. 
+
+ * The shaded blue area equals $\alpha$ -- the probability of classifying someone as a type $f$ when it is really a type $g$ individual.  
+
+
+
+Let's see the classification algorithm performs in  simulated data.
 
 ```{code-cell} ipython3
 accuracy = np.empty(T_max)
@@ -1029,7 +1050,7 @@ plt.ylim(0.5, 1.0)
 plt.show()
 ```
 
-Let's also compare the two protocols by showing how the error probabilities evolve differently
+Let's watch decisions made by  the two protocols as more and more observations accrue.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(7, 6))
@@ -1045,11 +1066,13 @@ plt.show()
 
 From the figure above, we can see:
 
-- For both protocols, the error probability starts at the same level subject to randomness.
+- For both protocols, the error probability starts at the same level, subject to a little randomness.
 
-- For protocol 1, the error probability decreases as we collect more data because we're trying to determine which single model generated the entire sequence. More data provides stronger evidence.
+- For protocol 1, the error probability decreases as the sample size increaes because we are just making **one** decision -- i.e., selecting whether $f$ or $g$ governs  **all** individuals.  More data provides better evidence.
 
-- For protocol 2, the error probability remains constant because each observation is classified independently. The accuracy depends only on the likelihood that the two models generates the single observation.
+- For protocol 2, the error probability remains constant because we are making **many** decisions -- one classification decision for each observation.  
+
+**Remark:** Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem. 
 
 ## Sequels
 
