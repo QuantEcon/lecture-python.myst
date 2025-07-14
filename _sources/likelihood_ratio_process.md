@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.1
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -29,26 +31,30 @@ kernelspec:
 
 This lecture describes likelihood ratio processes and some of their uses.
 
-We'll use a setting described in {doc}`this lecture <exchangeable>`.
+We'll study the same  setting that is also used in  {doc}`this lecture on exchangeability <exchangeable>`.
 
 Among  things that we'll learn  are
 
-* A peculiar property of likelihood ratio processes
 * How a likelihood ratio process is a key ingredient in frequentist hypothesis testing
 * How a **receiver operator characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
+* How a  statistician can combine frequentist probabilities of type I and type II errors to form posterior probabilities of erroneous model selection or missclassification of individuals 
 * How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged, a topic to be studied in  {doc}`this lecture <wald_friedman>`
+* A peculiar property of likelihood ratio processes
+
 
 
 Let's start  by importing some Python tools.
 
-
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numba import vectorize, jit
 from math import gamma
 from scipy.integrate import quad
+from scipy.optimize import brentq
+from scipy.stats import beta as beta_dist
+
 ```
 
 ## Likelihood Ratio Process
@@ -102,8 +108,7 @@ observations up to and including time $t$.
 
 Sometimes for shorthand we'll write $L_t =  L(w^t)$.
 
-Notice that the likelihood process satisfies the *recursion* or
-*multiplicative decomposition*
+Notice that the likelihood process satisfies the *recursion* 
 
 $$
 L(w^t) = \ell (w_t) L (w^{t-1}) .
@@ -116,9 +121,9 @@ Pearson {cite}`Neyman_Pearson`.
 To help us appreciate how things work, the following Python code evaluates $f$ and $g$ as two different
 beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence $w^t$ from one of the two
-probability distributionss, for example, a sequence of  IID draws from $g$.
+probability distributions, for example, a sequence of  IID draws from $g$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Parameters in the two beta distributions.
 F_a, F_b = 1, 1
 G_a, G_b = 3, 1.2
@@ -133,7 +138,7 @@ f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit
 def simulate(a, b, T=50, N=500):
     '''
@@ -153,17 +158,18 @@ def simulate(a, b, T=50, N=500):
     return l_arr
 ```
 
+(nature_likeli)=
 ## Nature Permanently Draws from Density g
 
 We first simulate the likelihood ratio process when nature permanently
 draws from $g$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 l_arr_g = simulate(G_a, G_b)
 l_seq_g = np.cumprod(l_arr_g, axis=1)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 N, T = l_arr_g.shape
 
 for i in range(N):
@@ -181,8 +187,9 @@ To see it this more clearly clearly, we plot over time the fraction of
 paths $L\left(w^{t}\right)$ that fall in the interval
 $\left[0, 0.01\right]$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 plt.plot(range(T), np.sum(l_seq_g <= 0.01, axis=0) / N)
+plt.show()
 ```
 
 Despite the evident convergence of most probability mass to a
@@ -245,7 +252,7 @@ To illustrate this peculiar property, we simulate many paths and
 calculate the unconditional mean of $L\left(w^t\right)$ by
 averaging across these many paths at each $t$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 l_arr_g = simulate(G_a, G_b, N=50000)
 l_seq_g = np.cumprod(l_arr_g, axis=1)
 ```
@@ -292,22 +299,24 @@ Simulations below confirm this conclusion.
 
 Please note the scale of the $y$ axis.
 
-```{code-cell} python3
+```{code-cell} ipython3
 l_arr_f = simulate(F_a, F_b, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 N, T = l_arr_f.shape
 plt.plot(range(T), np.mean(l_seq_f, axis=0))
+plt.show()
 ```
 
 We also plot the probability that $L\left(w^t\right)$ falls into
 the interval $[10000, \infty)$ as a function of time and watch how
 fast probability mass diverges  to $+\infty$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 plt.plot(range(T), np.sum(l_seq_f > 10000, axis=0) / N)
+plt.show()
 ```
 
 ## Likelihood Ratio Test
@@ -331,18 +340,46 @@ We specify
 Neyman and Pearson proved that the best way to test this hypothesis is to use a **likelihood ratio test** that takes the
 form:
 
+- accept $H_0$ if $L(W^t) > c$,
 - reject $H_0$ if $L(W^t) < c$,
-- accept $H_0$ otherwise.
 
-where $c$ is a given  discrimination threshold, to be chosen in a way we'll soon describe.
 
-This test is *best* in the sense that it is a **uniformly most powerful** test.
+where $c$ is a given  discrimination threshold.
+
+Setting $c =1$ is a common choice.
+
+We'll discuss consequences of other choices of $c$ below.  
+
+This test is *best* in the sense that it is  **uniformly most powerful**.
 
 To understand what this means, we have to define probabilities of two important events that
 allow us to characterize a test associated with a given
 threshold $c$.
 
 The two probabilities are:
+
+
+- Probability of a Type I error in which we reject $H_0$ when it is true: 
+  
+  $$
+  \alpha \equiv  \Pr\left\{ L\left(w^{t}\right)<c\mid q=f\right\}
+  $$
+
+- Probability of a Type II error in which we accept $H_0$ when it is false:
+
+  $$
+  \beta \equiv \Pr\left\{ L\left(w^{t}\right)>c\mid q=g\right\}
+  $$
+
+These two probabilities underly  the following two concepts: 
+
+
+- Probability of false alarm (= significance level = probability of
+  Type I error):
+
+  $$
+  \alpha \equiv  \Pr\left\{ L\left(w^{t}\right)<c\mid q=f\right\}
+  $$
 
 - Probability of detection (= power = 1 minus probability
   of Type II error):
@@ -351,12 +388,6 @@ The two probabilities are:
   1-\beta \equiv \Pr\left\{ L\left(w^{t}\right)<c\mid q=g\right\}
   $$
 
-- Probability of false alarm (= significance level = probability of
-  Type I error):
-
-  $$
-  \alpha \equiv  \Pr\left\{ L\left(w^{t}\right)<c\mid q=f\right\}
-  $$
 
 
 The [Neyman-Pearson
@@ -368,7 +399,7 @@ alarm.
 Another way to say the same thing is that  among all possible tests, a likelihood ratio test
 maximizes **power** for a given **significance level**.
 
-To have made a good inference, we want a small probability of
+We want a small probability of
 false alarm and a large probability of detection.
 
 With sample size $t$ fixed, we can change our two probabilities by
@@ -391,7 +422,7 @@ size $t$.
 Let’s start with a case in which we fix the threshold $c$ at
 $1$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 c = 1
 ```
 
@@ -411,12 +442,12 @@ process, ; while log$(L(w^t))$ goes to
 $\infty$ when data are generated by $f$.
 
 That disparate  behavior of log$(L(w^t))$ under $f$ and $q$
-is what makes it possible to distinguish
+is what makes it possible eventually to distinguish
 $q=f$ from $q=g$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, axs = plt.subplots(2, 2, figsize=(12, 8))
-fig.suptitle('distribution of $log(L(w^t))$ under f or g', fontsize=15)
+fig.suptitle('distribution of $log(L(w^t))$ under f or under g', fontsize=15)
 
 for i, t in enumerate([1, 7, 14, 21]):
     nr = i // 2
@@ -440,13 +471,19 @@ for i, t in enumerate([1, 7, 14, 21]):
 plt.show()
 ```
 
+In the above graphs, 
+  * the blue areas are related to but not equal to probabilities $\alpha $ of a type I error because 
+they are integrals of $\log L_t$, not integrals of $L_t$, over  rejection region $L_t < 1$  
+* the orange areas are related to but not equal to probabilities $\beta $ of a type II error because 
+they are integrals of $\log L_t$, not integrals of $L_t$, over  acceptance region $L_t > 1$
+
 
 When we hold $c$ fixed at $c=1$, the following graph shows  that 
   *  the probability of detection monotonically increases with increases in
 $t$ 
   *  the probability of a false alarm monotonically decreases with increases in $t$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 PD = np.empty(T)
 PFA = np.empty(T)
 
@@ -474,7 +511,7 @@ curve](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).
 Below, we plot receiver operating characteristic curves for different
 sample sizes $t$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 PFA = np.arange(0, 100, 1)
 
 for t in range(1, 15, 4):
@@ -520,7 +557,7 @@ $0.05$.
 The required sample size for making a decision is then determined by a
 target probability of detection, for example, $0.9$, as depicted in the following graph.
 
-```{code-cell} python3
+```{code-cell} ipython3
 PFA = 0.05
 PD = np.empty(T)
 
@@ -599,13 +636,13 @@ We’ll now experiment with an $h$ is also a beta distribution
 We’ll start by setting parameters $G_a$ and $G_b$ so that
 $h$ is closer to $g$
 
-```{code-cell} python3
+```{code-cell} ipython3
 H_a, H_b = 3.5, 1.8
 
 h = jit(lambda x: p(x, H_a, H_b))
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 x_range = np.linspace(0, 1, 100)
 plt.plot(x_range, f(x_range), label='f')
 plt.plot(x_range, g(x_range), label='g')
@@ -618,7 +655,7 @@ plt.show()
 Let’s compute the Kullback–Leibler discrepancies by quadrature
 integration.
 
-```{code-cell} python3
+```{code-cell} ipython3
 def KL_integrand(w, q, h):
 
     m = q(w) / h(w)
@@ -626,7 +663,7 @@ def KL_integrand(w, q, h):
     return np.log(m) * q(w)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 def compute_KL(h, f, g):
 
     Kf, _ = quad(KL_integrand, 0, 1, args=(f, h))
@@ -635,7 +672,7 @@ def compute_KL(h, f, g):
     return Kf, Kg
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 Kf, Kg = compute_KL(h, f, g)
 Kf, Kg
 ```
@@ -645,7 +682,7 @@ We have $K_g < K_f$.
 Next, we can verify our conjecture about $L\left(w^t\right)$ by
 simulation.
 
-```{code-cell} python3
+```{code-cell} ipython3
 l_arr_h = simulate(H_a, H_b)
 l_seq_h = np.cumprod(l_arr_h, axis=1)
 ```
@@ -653,10 +690,10 @@ l_seq_h = np.cumprod(l_arr_h, axis=1)
 The figure below plots over time the fraction of paths
 $L\left(w^t\right)$ that fall in the interval $[0,0.01]$.
 
-Notice that it converges to 1 as expected when $g$ is closer to
+Notice that, as expected,  it converges to 1  when $g$ is closer to
 $h$ than $f$ is.
 
-```{code-cell} python3
+```{code-cell} ipython3
 N, T = l_arr_h.shape
 plt.plot(range(T), np.sum(l_seq_h <= 0.01, axis=0) / N)
 ```
@@ -664,17 +701,17 @@ plt.plot(range(T), np.sum(l_seq_h <= 0.01, axis=0) / N)
 We can also try an $h$ that is closer to $f$ than is
 $g$ so that now $K_g$ is larger than $K_f$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 H_a, H_b = 1.2, 1.2
 h = jit(lambda x: p(x, H_a, H_b))
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 Kf, Kg = compute_KL(h, f, g)
 Kf, Kg
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 l_arr_h = simulate(H_a, H_b)
 l_seq_h = np.cumprod(l_arr_h, axis=1)
 ```
@@ -682,15 +719,365 @@ l_seq_h = np.cumprod(l_arr_h, axis=1)
 Now probability mass of $L\left(w^t\right)$ falling above
 $10000$ diverges to $+\infty$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 N, T = l_arr_h.shape
 plt.plot(range(T), np.sum(l_seq_h > 10000, axis=0) / N)
 ```
 
+## Hypothesis Testing and Classification 
+
+We now describe how a  statistician can combine frequentist probabilities of type I and type II errors in order to 
+
+* compute an anticipated frequency of  selecting a wrong model based on a sample length $T$
+* compute an anticipated error  rate in a classification problem 
+
+We consider a situation in which  nature generates data by mixing known densities $f$ and $g$ with known mixing
+parameter $\pi_{-1} \in (0,1)$ so that the random variable $w$ is drawn from the density
+
+$$
+h (w) = \pi_{-1} f(w) + (1-\pi_{-1}) g(w) 
+$$
+
+We assume that the statistician knows the densities $f$ and $g$ and also the mixing parameter $\pi_{-1}$.
+
+Below, we'll  set $\pi_{-1} = .5$, although much of the analysis would follow through with other settings of $\pi_{-1} \in (0,1)$.  
+
+We assume that $f$ and $g$ both put positive probabilities on the same intervals of possible realizations of the random variable $W$.
+
+  
+
+In the simulations below, we specify that  $f$ is a $\text{Beta}(1, 1)$ distribution and that  $g$ is $\text{Beta}(3, 1.2)$ distribution,
+just as we did often earlier in this lecture.
+
+We consider two alternative timing protocols. 
+
+ * Timing protocol 1 is for   the model selection problem
+ * Timing protocol 2 is for the individual classification problem 
+
+**Protocol 1:**  Nature flips a coin once at time $t=-1$ and with probability $\pi_{-1}$  generates a sequence  $\{w_t\}_{t=1}^T$
+of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
+of  IID  draws from  $g$.
+
+Let's write some Python code that implements timing protocol 1. 
+
+```{code-cell} ipython3
+def protocol_1(π_minus_1, T, N=1000):
+    """
+    Simulate Protocol 1: 
+    Nature decides once at t=-1 which model to use.
+    """
+    
+    # On-off coin flip for the true model
+    true_models_F = np.random.rand(N) < π_minus_1
+    
+    sequences = np.empty((N, T))
+    
+    n_f = np.sum(true_models_F)
+    n_g = N - n_f
+    if n_f > 0:
+        sequences[true_models_F, :] = np.random.beta(F_a, F_b, (n_f, T))
+    if n_g > 0:
+        sequences[~true_models_F, :] = np.random.beta(G_a, G_b, (n_g, T))
+    
+    return sequences, true_models_F
+```
+
+**Protocol 2.** At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
+
+Here is  Python code that we'll use to implement timing protocol 2.  
+
+```{code-cell} ipython3
+def protocol_2(π_minus_1, T, N=1000):
+    """
+    Simulate Protocol 2: 
+    Nature decides at each time step which model to use.
+    """
+    
+    # Coin flips for each time t upto T
+    true_models_F = np.random.rand(N, T) < π_minus_1
+    
+    sequences = np.empty((N, T))
+    
+    n_f = np.sum(true_models_F)
+    n_g = N * T - n_f
+    if n_f > 0:
+        sequences[true_models_F] = np.random.beta(F_a, F_b, n_f)
+    if n_g > 0:
+        sequences[~true_models_F] = np.random.beta(G_a, G_b, n_g)
+    
+    return sequences, true_models_F
+```
+
+**Remark:** Under protocol 2, the $\{w_t\}_{t=1}^T$ is a sequence of IID draws from $h(w)$. Under protocol 1, the the $\{w_t\}_{t=1}^T$ is 
+not IID.  It is **conditionally IID** -- meaning that with probability $\pi_{-1}$ it is a sequence of IID draws from $f(w)$ and with probability $1-\pi_{-1}$ it is a sequence of IID draws from $g(w)$. For more about this, see {doc}`this lecture about exchangeability <exchangeable>`.
+
+We  again deploy a **likelihood ratio process** with time $t$ component being the likelihood ratio  
+
+$$
+\ell (w_t)=\frac{f\left(w_t\right)}{g\left(w_t\right)},\quad t\geq1.
+$$
+
+The **likelihood ratio process** for sequence $\left\{ w_{t}\right\} _{t=1}^{\infty}$ is 
+
+$$
+L\left(w^{t}\right)=\prod_{i=1}^{t} \ell (w_i),
+$$
+
+For shorthand we'll write $L_t =  L(w^t)$.
+
+In the next cell, we write the likelihood ratio calculation that we have done [previously](nature_likeli) into a function
+
+```{code-cell} ipython3
+def compute_likelihood_ratios(sequences):
+    """
+    Compute likelihood ratios for given sequences.
+    """
+    
+    l_ratios = f(sequences) / g(sequences) 
+    L_cumulative = np.cumprod(l_ratios, axis=1)
+    return l_ratios, L_cumulative
+```
+
+## Model Selection Mistake Probability 
+
+We first study  a problem that assumes  timing protocol 1.  
+
+Consider a decision maker who wants to know whether model $f$ or model $g$ governs a data set of length $T$ observations.
+
+The decision makers has observed a sequence $\{w_t\}_{t=1}^T$.
+
+On the basis of that observed  sequence, a likelihood ratio test selects model $f$ when
+ $L_T \geq 1 $ and model $g$ when  $L_T < 1$.  
+ 
+When model $f$ generates the data, the probability that the likelihood ratio test selects the wrong model is 
+
+$$ 
+p_f = {\rm Prob}\left(L_T < 1\Big| f\right) = \alpha_T .
+$$
+
+When model $g$ generates the data, the probability that the likelihood ratio test selects the wrong model is 
+
+$$ 
+p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T. 
+$$
+
+We can construct a probability that the likelihood ratio selects the wrong model by assigning a Bayesian prior probability of $\pi_{-1} = .5$ that nature selects model $f$ then  averaging $p_f$ and $p_g$ to form the Bayesian posterior probability of a detection error equal to
+
+$$ 
+p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
+$$ (eq:detectionerrorprob)
+
+Now let's simulate the protocol 1 and compute the error probabilities
+
+```{code-cell} ipython3
+# Set parameters
+π_minus_1 = 0.5
+T_max = 30
+N_simulations = 10_000
+
+sequences_p1, true_models_p1 = protocol_1(
+                            π_minus_1, T_max, N_simulations)
+l_ratios_p1, L_cumulative_p1 = compute_likelihood_ratios(sequences_p1)
+
+# Compute error probabilities for different sample sizes
+T_range = np.arange(1, T_max + 1)
+
+# Boolean masks for true models
+mask_f = true_models_p1
+mask_g = ~true_models_p1
+
+# Select cumulative likelihoods for each model
+L_f = L_cumulative_p1[mask_f, :]
+L_g = L_cumulative_p1[mask_g, :]
+
+α_T = np.mean(L_f < 1, axis=0)
+β_T = np.mean(L_g >= 1, axis=0)
+
+error_prob = 0.5 * (α_T + β_T)
+
+# Plot results
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+
+ax1.plot(T_range, α_T, 'b-', 
+         label=r'$\alpha_T$', linewidth=2)
+ax1.plot(T_range, β_T, 'r-', 
+         label=r'$\beta_T$', linewidth=2)
+ax1.set_xlabel('$T$')
+ax1.set_ylabel('error probability')
+ax1.legend()
+
+ax2.plot(T_range, error_prob, 'g-', 
+         label=r'$\frac{1}{2}(\alpha_T+\beta_T)$', linewidth=2)
+ax2.set_xlabel('$T$')
+ax2.set_ylabel('error probability')
+ax2.legend()
+
+plt.tight_layout()
+plt.show()
+
+print(f"At T={T_max}:")
+print(f"α_{T_max} = {α_T[-1]:.4f}")
+print(f"β_{T_max} = {β_T[-1]:.4f}")
+print(f"Model selection error probability = {error_prob[-1]:.4f}")
+```
+
+
+Notice how the model selection  error probability approaches zero as $T$ grows.  
+
+## Classification
+
+We now consider a problem that assumes timing protocol 2.
+
+A decision maker wants to classify components of an observed sequence $\{w_t\}_{t=1}^T$ as having been drawn from either $f$ or $g$.
+
+The decision maker uses the following classification rule:
+
+$$
+\begin{aligned}
+w_t  & \ {\rm is \ from \  f  \ if \ } l_t > 1 \\
+w_t  & \ {\rm is \ from \  g  \ if \ } l_t \leq 1 . 
+\end{aligned}
+$$
+
+Under this rule, the expected misclassification rate is
+
+$$
+p(\textrm{misclassification}) = {1 \over 2} (\tilde \alpha_t + \tilde \beta_t) 
+$$ (eq:classerrorprob)
+
+where $\tilde \alpha_t = {\rm Prob}(l_t < 1 \mid f)$ and $\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)$.
+
+Now let's simulate protocol 2 and compute the classification error probability.
+
+```{code-cell} ipython3
+sequences_p2, true_sources_p2 = protocol_2(
+                    π_minus_1, T_max, N_simulations)
+l_ratios_p2, _ = compute_likelihood_ratios(sequences_p2)
+
+# Find decision boundary where f(w) = g(w)
+root = brentq(lambda w: f(w) / g(w) - 1, 0.001, 0.999)
+
+# Compute theoretical tilde α_t and tilde β_t
+def α_integrand(w):
+    """Integrand for tilde α_t = P(l_t < 1 | f)"""
+    return f(w) if f(w) / g(w) < 1 else 0
+
+def β_integrand(w):
+    """Integrand for tilde β_t = P(l_t >= 1 | g)"""
+    return g(w) if f(w) / g(w) >= 1 else 0
+
+# Compute the integrals
+α_theory, _ = quad(α_integrand, 0, 1, limit=100)
+β_theory, _ = quad(β_integrand, 0, 1, limit=100)
+
+theory_error = 0.5 * (α_theory + β_theory)
+
+print(f"theoretical tilde α_t = {α_theory:.4f}")
+print(f"theoretical tilde β_t = {β_theory:.4f}")
+print(f"theoretical classification error probability = {theory_error:.4f}")
+```
+
+Since for each $t$, the decision boundary is the same, we can plot the distributions of $f$ and $g$ and the decision boundary
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+fig, ax = plt.subplots(figsize=(7, 6))
+
+w_range = np.linspace(0.001, 0.999, 1000)
+f_values = [f(w) for w in w_range]
+g_values = [g(w) for w in w_range]
+ratio_values = [f(w)/g(w) for w in w_range]
+
+ax.plot(w_range, f_values, 'b-', 
+        label=r'$f(w) \sim Beta(1,1)$', linewidth=2)
+ax.plot(w_range, g_values, 'r-', 
+        label=r'$g(w) \sim Beta(3,1.2)$', linewidth=2)
+
+type1_prob = 1 - beta_dist.cdf(root, F_a, F_b)
+type2_prob = beta_dist.cdf(root, G_a, G_b)
+
+w_type1 = w_range[w_range >= root]
+f_type1 = [f(w) for w in w_type1]
+ax.fill_between(w_type1, 0, f_type1, alpha=0.3, color='blue', 
+                label=fr'$\tilde \alpha_t = {type1_prob:.2f}$')
+
+w_type2 = w_range[w_range <= root]
+g_type2 = [g(w) for w in w_type2]
+ax.fill_between(w_type2, 0, g_type2, alpha=0.3, color='red', 
+                label=fr'$\tilde \beta_t = {type2_prob:.2f}$')
+
+ax.axvline(root, color='green', linestyle='--', alpha=0.7, 
+            label=f'decision boundary: $w=${root:.3f}')
+
+ax.set_xlabel('w')
+ax.set_ylabel('probability density')
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+To  the left of the  green vertical line  $f < g $,  so $l_t < 1$; therefore a  $w_t$ that falls to the left of the green line is classified as a type $g$ individual. 
+
+ * The shaded orange area equals $\beta$ -- the probability of classifying someone as a type $g$ individual when it is really a type $f$ individual.
+
+To  the right of the  green vertical line $g > f$, so $l_t >1 $; therefore  a  $w_t$ that falls to the right  of the green line is classified as a type $f$ individual. 
+
+ * The shaded blue area equals $\alpha$ -- the probability of classifying someone as a type $f$ when it is really a type $g$ individual.  
+
+
+
+Let's see the classification algorithm performs in  simulated data.
+
+```{code-cell} ipython3
+accuracy = np.empty(T_max)
+
+for t in range(T_max):
+    predictions = (l_ratios_p2[:, t] >= 1)
+    actual = true_sources_p2[:, t]
+    accuracy[t] = np.mean(predictions == actual)
+
+plt.figure(figsize=(10, 6))
+plt.plot(range(1, T_max + 1), accuracy, 
+                'b-', linewidth=2, label='empirical accuracy')
+plt.axhline(1 - theory_error, color='r', linestyle='--', 
+                label=f'theoretical accuracy = {1 - theory_error:.4f}')
+plt.xlabel('$t$')
+plt.ylabel('accuracy')
+plt.legend()
+plt.ylim(0.5, 1.0)
+plt.show()
+```
+
+Let's watch decisions made by  the two protocols as more and more observations accrue.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(7, 6))
+
+ax.plot(T_range, error_prob, linewidth=2, 
+        label='Protocol 1')
+ax.plot(T_range, 1-accuracy, linestyle='--', linewidth=2, 
+        label=f'Protocol 2')
+ax.set_ylabel('error probability')
+ax.legend()
+plt.show()
+```
+
+From the figure above, we can see:
+
+- For both protocols, the error probability starts at the same level, subject to a little randomness.
+
+- For protocol 1, the error probability decreases as the sample size increaes because we are just making **one** decision -- i.e., selecting whether $f$ or $g$ governs  **all** individuals.  More data provides better evidence.
+
+- For protocol 2, the error probability remains constant because we are making **many** decisions -- one classification decision for each observation.  
+
+**Remark:** Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem. 
+
 ## Sequels
 
-Likelihood processes play an important role in Bayesian learning, as described in {doc}`this lecture <likelihood_bayes>`
-and as applied in {doc}`this lecture <odu>`.
+Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes`
+and as applied in {doc}`odu`.
 
-Likelihood ratio processes appear again in [this lecture](https://python-advanced.quantecon.org/additive_functionals.html), which contains another illustration
+Likelihood ratio processes appear again in {doc}`advanced:additive_functionals`, which contains another illustration
 of the **peculiar property** of likelihood ratio processes described above.

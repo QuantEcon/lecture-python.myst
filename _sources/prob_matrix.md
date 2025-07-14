@@ -464,11 +464,11 @@ $$
 An associated conditional distribution is
 
 $$
-\textrm{Prob}\{Y=i\vert X=j\} = \frac{\rho_{ij}}{ \sum_{i}\rho_{ij}}
+\textrm{Prob}\{Y=i\vert X=j\} = \frac{\rho_{ij}}{ \sum_{j}\rho_{ij}}
 = \frac{\textrm{Prob}\{Y=j, X=i\}}{\textrm{Prob}\{ X=i\}}
 $$
 
-We can define a transition probability matrix
+We can define a transition probability matrix $P$ with $i,j$ component
 
 $$
 p_{ij}=\textrm{Prob}\{Y=j|X=i\}= \frac{\rho_{ij}}{ \sum_{j}\rho_{ij}}
@@ -490,7 +490,7 @@ The first row is the probability that $Y=j, j=0,1$ conditional on $X=0$.
 The second row is the probability that $Y=j, j=0,1$ conditional on $X=1$.
 
 Note that
-- $\sum_{j}\rho_{ij}= \frac{ \sum_{j}\rho_{ij}}{ \sum_{j}\rho_{ij}}=1$, so each row of $\rho$ is a probability distribution (not so for each column).
+- $\sum_{j}\rho_{ij}= \frac{ \sum_{j}\rho_{ij}}{ \sum_{j}\rho_{ij}}=1$, so each row of the transition matrix $P$ is a probability distribution (not so for each column).
 
 
 

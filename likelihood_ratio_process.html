@@ -174,7 +174,10 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-f">21.5. Nature Permanently Draws from Density f</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-test">21.6. Likelihood Ratio Test</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kullbackleibler-divergence">21.7. Kullback–Leibler Divergence</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequels">21.8. Sequels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-testing-and-classification">21.8. Hypothesis Testing and Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-selection-mistake-probability">21.9. Model Selection Mistake Probability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification">21.10. Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequels">21.11. Sequels</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -245,7 +248,10 @@
 <li><p><a class="reference internal" href="#nature-permanently-draws-from-density-f" id="id9">Nature Permanently Draws from Density f</a></p></li>
 <li><p><a class="reference internal" href="#likelihood-ratio-test" id="id10">Likelihood Ratio Test</a></p></li>
 <li><p><a class="reference internal" href="#kullbackleibler-divergence" id="id11">Kullback–Leibler Divergence</a></p></li>
-<li><p><a class="reference internal" href="#sequels" id="id12">Sequels</a></p></li>
+<li><p><a class="reference internal" href="#hypothesis-testing-and-classification" id="id12">Hypothesis Testing and Classification</a></p></li>
+<li><p><a class="reference internal" href="#model-selection-mistake-probability" id="id13">Model Selection Mistake Probability</a></p></li>
+<li><p><a class="reference internal" href="#classification" id="id14">Classification</a></p></li>
+<li><p><a class="reference internal" href="#sequels" id="id15">Sequels</a></p></li>
 </ul>
 </li>
 </ul>
@@ -253,13 +259,14 @@
 <section id="overview">
 <h2><a class="toc-backref" href="#id5"><span class="section-number">21.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes likelihood ratio processes and some of their uses.</p>
-<p>We’ll use a setting described in <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture</span></a>.</p>
+<p>We’ll study the same  setting that is also used in  <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture on exchangeability</span></a>.</p>
 <p>Among  things that we’ll learn  are</p>
 <ul class="simple">
-<li><p>A peculiar property of likelihood ratio processes</p></li>
 <li><p>How a likelihood ratio process is a key ingredient in frequentist hypothesis testing</p></li>
 <li><p>How a <strong>receiver operator characteristic curve</strong> summarizes information about a false alarm probability and power in frequentist hypothesis testing</p></li>
+<li><p>How a  statistician can combine frequentist probabilities of type I and type II errors to form posterior probabilities of erroneous model selection or missclassification of individuals</p></li>
 <li><p>How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged, a topic to be studied in  <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a></p></li>
+<li><p>A peculiar property of likelihood ratio processes</p></li>
 </ul>
 <p>Let’s start  by importing some Python tools.</p>
 <div class="cell docutils container">
@@ -270,6 +277,8 @@
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">jit</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">beta</span> <span class="k">as</span> <span class="n">beta_dist</span>
 </pre></div>
 </div>
 </div>
@@ -310,8 +319,7 @@ L\left(w^{t}\right)=\prod_{i=1}^{t} \ell (w_i),
 <p>where <span class="math notranslate nohighlight">\(w^t=\{ w_1,\dots,w_t\}\)</span> is a history of
 observations up to and including time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>Sometimes for shorthand we’ll write <span class="math notranslate nohighlight">\(L_t =  L(w^t)\)</span>.</p>
-<p>Notice that the likelihood process satisfies the <em>recursion</em> or
-<em>multiplicative decomposition</em></p>
+<p>Notice that the likelihood process satisfies the <em>recursion</em></p>
 <div class="math notranslate nohighlight">
 \[
 L(w^t) = \ell (w_t) L (w^{t-1}) .
@@ -322,7 +330,7 @@ Pearson <span id="id2">[<a class="reference internal" href="zreferences.html#id2
 <p>To help us appreciate how things work, the following Python code evaluates <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> as two different
 beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence <span class="math notranslate nohighlight">\(w^t\)</span> from one of the two
-probability distributionss, for example, a sequence of  IID draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
+probability distributions, for example, a sequence of  IID draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters in the two beta distributions.</span>
@@ -366,7 +374,7 @@ probability distributionss, for example, a sequence of  IID draws from <span cla
 </div>
 </section>
 <section id="nature-permanently-draws-from-density-g">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">21.3. </span>Nature Permanently Draws from Density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Permalink to this heading">#</a></h2>
+<span id="nature-likeli"></span><h2><a class="toc-backref" href="#id7"><span class="section-number">21.3. </span>Nature Permanently Draws from Density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Permalink to this heading">#</a></h2>
 <p>We first simulate the likelihood ratio process when nature permanently
 draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <div class="cell docutils container">
@@ -391,7 +399,7 @@ draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b87acce446e524fd0a9c79b13c74bc86a35698ca7fb198ef16fb2a79daf6dcb8.png" src="_images/b87acce446e524fd0a9c79b13c74bc86a35698ca7fb198ef16fb2a79daf6dcb8.png" />
+<img alt="_images/36ce9ed971bec07b512a33b62fb2ab498a55ab3e9c35861f064e58964847b62e.png" src="_images/36ce9ed971bec07b512a33b62fb2ab498a55ab3e9c35861f064e58964847b62e.png" />
 </div>
 </div>
 <p>Evidently, as sample length <span class="math notranslate nohighlight">\(T\)</span> grows, most probability mass
@@ -402,14 +410,12 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">l_seq_g</span> <span class="o">&lt;=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x74cf647f31a0&gt;]
-</pre></div>
-</div>
-<img alt="_images/3e077f6ee451e8dda742a3eae76f20bf8406cd8916f261b8d2be406e31d47678.png" src="_images/3e077f6ee451e8dda742a3eae76f20bf8406cd8916f261b8d2be406e31d47678.png" />
+<img alt="_images/9e084be5c5638f1464c27c3a2071544d73789a775994c1fdd666460e51ec4d5d.png" src="_images/9e084be5c5638f1464c27c3a2071544d73789a775994c1fdd666460e51ec4d5d.png" />
 </div>
 </div>
 <p>Despite the evident convergence of most probability mass to a
@@ -514,14 +520,12 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">l_arr_f</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">l_seq_f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x74cf6b9e4fb0&gt;]
-</pre></div>
-</div>
-<img alt="_images/68eab1a8e89fa398f985f70ef20e49cb197d69d6ae0bcde1b49c22cb824a598b.png" src="_images/68eab1a8e89fa398f985f70ef20e49cb197d69d6ae0bcde1b49c22cb824a598b.png" />
+<img alt="_images/5943124f4e59e0b7d1c319bb8f041722d1aea8199a503893c900197510ecae72.png" src="_images/5943124f4e59e0b7d1c319bb8f041722d1aea8199a503893c900197510ecae72.png" />
 </div>
 </div>
 <p>We also plot the probability that <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> falls into
@@ -530,14 +534,12 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">l_seq_f</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x74cf6b948410&gt;]
-</pre></div>
-</div>
-<img alt="_images/be991a0221be48d82f83b05b69a2cf2bacccace420e1e25881bc0f0e169dcc47.png" src="_images/be991a0221be48d82f83b05b69a2cf2bacccace420e1e25881bc0f0e169dcc47.png" />
+<img alt="_images/65d77cd5abb2be423045c42d1b06ced26e27ca2814cb310386afa845c29f9d10.png" src="_images/65d77cd5abb2be423045c42d1b06ced26e27ca2814cb310386afa845c29f9d10.png" />
 </div>
 </div>
 </section>
@@ -559,28 +561,45 @@ hypothesis test.</p>
 <p>Neyman and Pearson proved that the best way to test this hypothesis is to use a <strong>likelihood ratio test</strong> that takes the
 form:</p>
 <ul class="simple">
+<li><p>accept <span class="math notranslate nohighlight">\(H_0\)</span> if <span class="math notranslate nohighlight">\(L(W^t) &gt; c\)</span>,</p></li>
 <li><p>reject <span class="math notranslate nohighlight">\(H_0\)</span> if <span class="math notranslate nohighlight">\(L(W^t) &lt; c\)</span>,</p></li>
-<li><p>accept <span class="math notranslate nohighlight">\(H_0\)</span> otherwise.</p></li>
 </ul>
-<p>where <span class="math notranslate nohighlight">\(c\)</span> is a given  discrimination threshold, to be chosen in a way we’ll soon describe.</p>
-<p>This test is <em>best</em> in the sense that it is a <strong>uniformly most powerful</strong> test.</p>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> is a given  discrimination threshold.</p>
+<p>Setting <span class="math notranslate nohighlight">\(c =1\)</span> is a common choice.</p>
+<p>We’ll discuss consequences of other choices of <span class="math notranslate nohighlight">\(c\)</span> below.</p>
+<p>This test is <em>best</em> in the sense that it is  <strong>uniformly most powerful</strong>.</p>
 <p>To understand what this means, we have to define probabilities of two important events that
 allow us to characterize a test associated with a given
 threshold <span class="math notranslate nohighlight">\(c\)</span>.</p>
 <p>The two probabilities are:</p>
 <ul>
-<li><p>Probability of detection (= power = 1 minus probability
-of Type II error):</p>
+<li><p>Probability of a Type I error in which we reject <span class="math notranslate nohighlight">\(H_0\)</span> when it is true:</p>
 <div class="math notranslate nohighlight">
 \[
-  1-\beta \equiv \Pr\left\{ L\left(w^{t}\right)&lt;c\mid q=g\right\}
+  \alpha \equiv  \Pr\left\{ L\left(w^{t}\right)&lt;c\mid q=f\right\}
   \]</div>
 </li>
+<li><p>Probability of a Type II error in which we accept <span class="math notranslate nohighlight">\(H_0\)</span> when it is false:</p>
+<div class="math notranslate nohighlight">
+\[
+  \beta \equiv \Pr\left\{ L\left(w^{t}\right)&gt;c\mid q=g\right\}
+  \]</div>
+</li>
+</ul>
+<p>These two probabilities underly  the following two concepts:</p>
+<ul>
 <li><p>Probability of false alarm (= significance level = probability of
 Type I error):</p>
 <div class="math notranslate nohighlight">
 \[
   \alpha \equiv  \Pr\left\{ L\left(w^{t}\right)&lt;c\mid q=f\right\}
+  \]</div>
+</li>
+<li><p>Probability of detection (= power = 1 minus probability
+of Type II error):</p>
+<div class="math notranslate nohighlight">
+\[
+  1-\beta \equiv \Pr\left\{ L\left(w^{t}\right)&lt;c\mid q=g\right\}
   \]</div>
 </li>
 </ul>
@@ -591,7 +610,7 @@ maximizes the probability of detection for a given probability of false
 alarm.</p>
 <p>Another way to say the same thing is that  among all possible tests, a likelihood ratio test
 maximizes <strong>power</strong> for a given <strong>significance level</strong>.</p>
-<p>To have made a good inference, we want a small probability of
+<p>We want a small probability of
 false alarm and a large probability of detection.</p>
 <p>With sample size <span class="math notranslate nohighlight">\(t\)</span> fixed, we can change our two probabilities by
 adjusting <span class="math notranslate nohighlight">\(c\)</span>.</p>
@@ -625,12 +644,12 @@ moves toward <span class="math notranslate nohighlight">\(-\infty\)</span> when 
 process, ; while log<span class="math notranslate nohighlight">\((L(w^t))\)</span> goes to
 <span class="math notranslate nohighlight">\(\infty\)</span> when data are generated by <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <p>That disparate  behavior of log<span class="math notranslate nohighlight">\((L(w^t))\)</span> under <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(q\)</span>
-is what makes it possible to distinguish
+is what makes it possible eventually to distinguish
 <span class="math notranslate nohighlight">\(q=f\)</span> from <span class="math notranslate nohighlight">\(q=g\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;distribution of $log(L(w^t))$ under f or g&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;distribution of $log(L(w^t))$ under f or under g&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">21</span><span class="p">]):</span>
     <span class="n">nr</span> <span class="o">=</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">2</span>
@@ -656,9 +675,16 @@ is what makes it possible to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b37b10d0d6bd5409ce0b05e761be2a50d05324e91939e6ff108d11bef54d223f.png" src="_images/b37b10d0d6bd5409ce0b05e761be2a50d05324e91939e6ff108d11bef54d223f.png" />
+<img alt="_images/ea1a3efdd6772e9179894531a8a96f2508102572813baa57f1a0194129b68171.png" src="_images/ea1a3efdd6772e9179894531a8a96f2508102572813baa57f1a0194129b68171.png" />
 </div>
 </div>
+<p>In the above graphs,</p>
+<ul class="simple">
+<li><p>the blue areas are related to but not equal to probabilities <span class="math notranslate nohighlight">\(\alpha \)</span> of a type I error because
+they are integrals of <span class="math notranslate nohighlight">\(\log L_t\)</span>, not integrals of <span class="math notranslate nohighlight">\(L_t\)</span>, over  rejection region <span class="math notranslate nohighlight">\(L_t &lt; 1\)</span></p></li>
+<li><p>the orange areas are related to but not equal to probabilities <span class="math notranslate nohighlight">\(\beta \)</span> of a type II error because
+they are integrals of <span class="math notranslate nohighlight">\(\log L_t\)</span>, not integrals of <span class="math notranslate nohighlight">\(L_t\)</span>, over  acceptance region <span class="math notranslate nohighlight">\(L_t &gt; 1\)</span></p></li>
+</ul>
 <p>When we hold <span class="math notranslate nohighlight">\(c\)</span> fixed at <span class="math notranslate nohighlight">\(c=1\)</span>, the following graph shows  that</p>
 <ul class="simple">
 <li><p>the probability of detection monotonically increases with increases in
@@ -684,7 +710,7 @@ is what makes it possible to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a01bf924c19d3b55998de0b4cc95f08b035971b46dcadcd55c9babfb21a5660f.png" src="_images/a01bf924c19d3b55998de0b4cc95f08b035971b46dcadcd55c9babfb21a5660f.png" />
+<img alt="_images/92b1578bb119433876a873dd799f0ff74dd8552c4bb78144d7c575368f230050.png" src="_images/92b1578bb119433876a873dd799f0ff74dd8552c4bb78144d7c575368f230050.png" />
 </div>
 </div>
 <p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>,  the threshold <span class="math notranslate nohighlight">\(c\)</span> uniquely pins down  probabilities
@@ -719,7 +745,7 @@ sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/359fae017b21f9c8ce63503ccdef1da336cd60f890e484a9a3252734b6d5b2e7.png" src="_images/359fae017b21f9c8ce63503ccdef1da336cd60f890e484a9a3252734b6d5b2e7.png" />
+<img alt="_images/4715e408db7a633fe63cb07a859ac309e6c0aab7d240f26b2c2e4fb8a238e9cb.png" src="_images/4715e408db7a633fe63cb07a859ac309e6c0aab7d240f26b2c2e4fb8a238e9cb.png" />
 </div>
 </div>
 <p>Notice that as <span class="math notranslate nohighlight">\(t\)</span> increases, we are assured a larger probability
@@ -760,7 +786,7 @@ target probability of detection, for example, <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d8bd6b2618de95efed8e55cce8d8b37aa41dfb3922d60070f74f542f4ed0ae5c.png" src="_images/d8bd6b2618de95efed8e55cce8d8b37aa41dfb3922d60070f74f542f4ed0ae5c.png" />
+<img alt="_images/833109b723197ba68a4e10eb1c6191cb58f5267b739d61843b7d18461621e629.png" src="_images/833109b723197ba68a4e10eb1c6191cb58f5267b739d61843b7d18461621e629.png" />
 </div>
 </div>
 <p>The United States Navy evidently used a procedure like this to select a sample size <span class="math notranslate nohighlight">\(t\)</span> for doing quality
@@ -888,7 +914,7 @@ simulation.</p>
 </div>
 <p>The figure below plots over time the fraction of paths
 <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> that fall in the interval <span class="math notranslate nohighlight">\([0,0.01]\)</span>.</p>
-<p>Notice that it converges to 1 as expected when <span class="math notranslate nohighlight">\(g\)</span> is closer to
+<p>Notice that, as expected,  it converges to 1  when <span class="math notranslate nohighlight">\(g\)</span> is closer to
 <span class="math notranslate nohighlight">\(h\)</span> than <span class="math notranslate nohighlight">\(f\)</span> is.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -898,10 +924,10 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x74cf7c094a10&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7bd4b01cd910&gt;]
 </pre></div>
 </div>
-<img alt="_images/99c9a7215a92393c41e911c5fb4fa90344af54eba869e44bc83838768e95fc56.png" src="_images/99c9a7215a92393c41e911c5fb4fa90344af54eba869e44bc83838768e95fc56.png" />
+<img alt="_images/49fb1ec4061cee4863819a412a4124728b3c51fa727df34f4a810e9ced0513ae.png" src="_images/49fb1ec4061cee4863819a412a4124728b3c51fa727df34f4a810e9ced0513ae.png" />
 </div>
 </div>
 <p>We can also try an <span class="math notranslate nohighlight">\(h\)</span> that is closer to <span class="math notranslate nohighlight">\(f\)</span> than is
@@ -945,18 +971,384 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x74cf64638410&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7bd4b003d910&gt;]
 </pre></div>
 </div>
-<img alt="_images/4254448c7e09fe180da03aee5f1e234aee5b95aea3e1406d577dde63a7503854.png" src="_images/4254448c7e09fe180da03aee5f1e234aee5b95aea3e1406d577dde63a7503854.png" />
+<img alt="_images/38e04b57a8767d4a27953cd4f9ad2e80dcbe96764e7017675ed6b08c3f589815.png" src="_images/38e04b57a8767d4a27953cd4f9ad2e80dcbe96764e7017675ed6b08c3f589815.png" />
 </div>
 </div>
 </section>
+<section id="hypothesis-testing-and-classification">
+<h2><a class="toc-backref" href="#id12"><span class="section-number">21.8. </span>Hypothesis Testing and Classification</a><a class="headerlink" href="#hypothesis-testing-and-classification" title="Permalink to this heading">#</a></h2>
+<p>We now describe how a  statistician can combine frequentist probabilities of type I and type II errors in order to</p>
+<ul class="simple">
+<li><p>compute an anticipated frequency of  selecting a wrong model based on a sample length <span class="math notranslate nohighlight">\(T\)</span></p></li>
+<li><p>compute an anticipated error  rate in a classification problem</p></li>
+</ul>
+<p>We consider a situation in which  nature generates data by mixing known densities <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> with known mixing
+parameter <span class="math notranslate nohighlight">\(\pi_{-1} \in (0,1)\)</span> so that the random variable <span class="math notranslate nohighlight">\(w\)</span> is drawn from the density</p>
+<div class="math notranslate nohighlight">
+\[
+h (w) = \pi_{-1} f(w) + (1-\pi_{-1}) g(w) 
+\]</div>
+<p>We assume that the statistician knows the densities <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> and also the mixing parameter <span class="math notranslate nohighlight">\(\pi_{-1}\)</span>.</p>
+<p>Below, we’ll  set <span class="math notranslate nohighlight">\(\pi_{-1} = .5\)</span>, although much of the analysis would follow through with other settings of <span class="math notranslate nohighlight">\(\pi_{-1} \in (0,1)\)</span>.</p>
+<p>We assume that <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> both put positive probabilities on the same intervals of possible realizations of the random variable <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<p>In the simulations below, we specify that  <span class="math notranslate nohighlight">\(f\)</span> is a <span class="math notranslate nohighlight">\(\text{Beta}(1, 1)\)</span> distribution and that  <span class="math notranslate nohighlight">\(g\)</span> is <span class="math notranslate nohighlight">\(\text{Beta}(3, 1.2)\)</span> distribution,
+just as we did often earlier in this lecture.</p>
+<p>We consider two alternative timing protocols.</p>
+<ul class="simple">
+<li><p>Timing protocol 1 is for   the model selection problem</p></li>
+<li><p>Timing protocol 2 is for the individual classification problem</p></li>
+</ul>
+<p><strong>Protocol 1:</strong>  Nature flips a coin once at time <span class="math notranslate nohighlight">\(t=-1\)</span> and with probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span>  generates a sequence  <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span>
+of  IID  draws from  <span class="math notranslate nohighlight">\(f\)</span>  and with probability <span class="math notranslate nohighlight">\(1-\pi_{-1}\)</span> generates a sequence  <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span>
+of  IID  draws from  <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>Let’s write some Python code that implements timing protocol 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">protocol_1</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate Protocol 1: </span>
+<span class="sd">    Nature decides once at t=-1 which model to use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># On-off coin flip for the true model</span>
+    <span class="n">true_models_F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">π_minus_1</span>
+    
+    <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    
+    <span class="n">n_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">true_models_F</span><span class="p">)</span>
+    <span class="n">n_g</span> <span class="o">=</span> <span class="n">N</span> <span class="o">-</span> <span class="n">n_f</span>
+    <span class="k">if</span> <span class="n">n_f</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sequences</span><span class="p">[</span><span class="n">true_models_F</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="p">(</span><span class="n">n_f</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">n_g</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sequences</span><span class="p">[</span><span class="o">~</span><span class="n">true_models_F</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="p">(</span><span class="n">n_g</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">true_models_F</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Protocol 2.</strong> At each time <span class="math notranslate nohighlight">\(t \geq 0\)</span>, nature flips a coin and with probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> draws <span class="math notranslate nohighlight">\(w_t\)</span> from <span class="math notranslate nohighlight">\(f\)</span> and with probability <span class="math notranslate nohighlight">\(1-\pi_{-1}\)</span> draws <span class="math notranslate nohighlight">\(w_t\)</span> from <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>Here is  Python code that we’ll use to implement timing protocol 2.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">protocol_2</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate Protocol 2: </span>
+<span class="sd">    Nature decides at each time step which model to use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Coin flips for each time t upto T</span>
+    <span class="n">true_models_F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">π_minus_1</span>
+    
+    <span class="n">sequences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    
+    <span class="n">n_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">true_models_F</span><span class="p">)</span>
+    <span class="n">n_g</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">T</span> <span class="o">-</span> <span class="n">n_f</span>
+    <span class="k">if</span> <span class="n">n_f</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sequences</span><span class="p">[</span><span class="n">true_models_F</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="n">n_f</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_g</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sequences</span><span class="p">[</span><span class="o">~</span><span class="n">true_models_F</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="n">n_g</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">true_models_F</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Remark:</strong> Under protocol 2, the <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span> is a sequence of IID draws from <span class="math notranslate nohighlight">\(h(w)\)</span>. Under protocol 1, the the <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span> is
+not IID.  It is <strong>conditionally IID</strong> – meaning that with probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> it is a sequence of IID draws from <span class="math notranslate nohighlight">\(f(w)\)</span> and with probability <span class="math notranslate nohighlight">\(1-\pi_{-1}\)</span> it is a sequence of IID draws from <span class="math notranslate nohighlight">\(g(w)\)</span>. For more about this, see <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture about exchangeability</span></a>.</p>
+<p>We  again deploy a <strong>likelihood ratio process</strong> with time <span class="math notranslate nohighlight">\(t\)</span> component being the likelihood ratio</p>
+<div class="math notranslate nohighlight">
+\[
+\ell (w_t)=\frac{f\left(w_t\right)}{g\left(w_t\right)},\quad t\geq1.
+\]</div>
+<p>The <strong>likelihood ratio process</strong> for sequence <span class="math notranslate nohighlight">\(\left\{ w_{t}\right\} _{t=1}^{\infty}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+L\left(w^{t}\right)=\prod_{i=1}^{t} \ell (w_i),
+\]</div>
+<p>For shorthand we’ll write <span class="math notranslate nohighlight">\(L_t =  L(w^t)\)</span>.</p>
+<p>In the next cell, we write the likelihood ratio calculation that we have done <a class="reference internal" href="#nature-likeli"><span class="std std-ref">previously</span></a> into a function</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_likelihood_ratios</span><span class="p">(</span><span class="n">sequences</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute likelihood ratios for given sequences.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">l_ratios</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span> 
+    <span class="n">L_cumulative</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">l_ratios</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">l_ratios</span><span class="p">,</span> <span class="n">L_cumulative</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="model-selection-mistake-probability">
+<h2><a class="toc-backref" href="#id13"><span class="section-number">21.9. </span>Model Selection Mistake Probability</a><a class="headerlink" href="#model-selection-mistake-probability" title="Permalink to this heading">#</a></h2>
+<p>We first study  a problem that assumes  timing protocol 1.</p>
+<p>Consider a decision maker who wants to know whether model <span class="math notranslate nohighlight">\(f\)</span> or model <span class="math notranslate nohighlight">\(g\)</span> governs a data set of length <span class="math notranslate nohighlight">\(T\)</span> observations.</p>
+<p>The decision makers has observed a sequence <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span>.</p>
+<p>On the basis of that observed  sequence, a likelihood ratio test selects model <span class="math notranslate nohighlight">\(f\)</span> when
+<span class="math notranslate nohighlight">\(L_T \geq 1 \)</span> and model <span class="math notranslate nohighlight">\(g\)</span> when  <span class="math notranslate nohighlight">\(L_T &lt; 1\)</span>.</p>
+<p>When model <span class="math notranslate nohighlight">\(f\)</span> generates the data, the probability that the likelihood ratio test selects the wrong model is</p>
+<div class="math notranslate nohighlight">
+\[ 
+p_f = {\rm Prob}\left(L_T &lt; 1\Big| f\right) = \alpha_T .
+\]</div>
+<p>When model <span class="math notranslate nohighlight">\(g\)</span> generates the data, the probability that the likelihood ratio test selects the wrong model is</p>
+<div class="math notranslate nohighlight">
+\[ 
+p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T. 
+\]</div>
+<p>We can construct a probability that the likelihood ratio selects the wrong model by assigning a Bayesian prior probability of <span class="math notranslate nohighlight">\(\pi_{-1} = .5\)</span> that nature selects model <span class="math notranslate nohighlight">\(f\)</span> then  averaging <span class="math notranslate nohighlight">\(p_f\)</span> and <span class="math notranslate nohighlight">\(p_g\)</span> to form the Bayesian posterior probability of a detection error equal to</p>
+<div class="math notranslate nohighlight" id="equation-eq-detectionerrorprob">
+<span class="eqno">(21.1)<a class="headerlink" href="#equation-eq-detectionerrorprob" title="Permalink to this equation">#</a></span>\[ 
+p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
+\]</div>
+<p>Now let’s simulate the protocol 1 and compute the error probabilities</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set parameters</span>
+<span class="n">π_minus_1</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">T_max</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">N_simulations</span> <span class="o">=</span> <span class="mi">10_000</span>
+
+<span class="n">sequences_p1</span><span class="p">,</span> <span class="n">true_models_p1</span> <span class="o">=</span> <span class="n">protocol_1</span><span class="p">(</span>
+                            <span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">)</span>
+<span class="n">l_ratios_p1</span><span class="p">,</span> <span class="n">L_cumulative_p1</span> <span class="o">=</span> <span class="n">compute_likelihood_ratios</span><span class="p">(</span><span class="n">sequences_p1</span><span class="p">)</span>
+
+<span class="c1"># Compute error probabilities for different sample sizes</span>
+<span class="n">T_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Boolean masks for true models</span>
+<span class="n">mask_f</span> <span class="o">=</span> <span class="n">true_models_p1</span>
+<span class="n">mask_g</span> <span class="o">=</span> <span class="o">~</span><span class="n">true_models_p1</span>
+
+<span class="c1"># Select cumulative likelihoods for each model</span>
+<span class="n">L_f</span> <span class="o">=</span> <span class="n">L_cumulative_p1</span><span class="p">[</span><span class="n">mask_f</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">L_g</span> <span class="o">=</span> <span class="n">L_cumulative_p1</span><span class="p">[</span><span class="n">mask_g</span><span class="p">,</span> <span class="p">:]</span>
+
+<span class="n">α_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">L_f</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">β_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">L_g</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">error_prob</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">α_T</span> <span class="o">+</span> <span class="n">β_T</span><span class="p">)</span>
+
+<span class="c1"># Plot results</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_range</span><span class="p">,</span> <span class="n">α_T</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> 
+         <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\alpha_T$&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_range</span><span class="p">,</span> <span class="n">β_T</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> 
+         <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\beta_T$&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$T$&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;error probability&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_range</span><span class="p">,</span> <span class="n">error_prob</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> 
+         <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\frac</span><span class="si">{1}{2}</span><span class="s1">(\alpha_T+\beta_T)$&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$T$&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;error probability&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;At T=</span><span class="si">{</span><span class="n">T_max</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;α_</span><span class="si">{</span><span class="n">T_max</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">α_T</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;β_</span><span class="si">{</span><span class="n">T_max</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">β_T</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model selection error probability = </span><span class="si">{</span><span class="n">error_prob</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/1984fdbeae0047b73477fa6454839e28abee66948db5aba9ca732073bc3bca30.png" src="_images/1984fdbeae0047b73477fa6454839e28abee66948db5aba9ca732073bc3bca30.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>At T=30:
+α_30 = 0.0046
+β_30 = 0.0040
+Model selection error probability = 0.0043
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice how the model selection  error probability approaches zero as <span class="math notranslate nohighlight">\(T\)</span> grows.</p>
+</section>
+<section id="classification">
+<h2><a class="toc-backref" href="#id14"><span class="section-number">21.10. </span>Classification</a><a class="headerlink" href="#classification" title="Permalink to this heading">#</a></h2>
+<p>We now consider a problem that assumes timing protocol 2.</p>
+<p>A decision maker wants to classify components of an observed sequence <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span> as having been drawn from either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>The decision maker uses the following classification rule:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+w_t  &amp; \ {\rm is \ from \  f  \ if \ } l_t &gt; 1 \\
+w_t  &amp; \ {\rm is \ from \  g  \ if \ } l_t \leq 1 . 
+\end{aligned}
+\end{split}\]</div>
+<p>Under this rule, the expected misclassification rate is</p>
+<div class="math notranslate nohighlight" id="equation-eq-classerrorprob">
+<span class="eqno">(21.2)<a class="headerlink" href="#equation-eq-classerrorprob" title="Permalink to this equation">#</a></span>\[
+p(\textrm{misclassification}) = {1 \over 2} (\tilde \alpha_t + \tilde \beta_t) 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde \alpha_t = {\rm Prob}(l_t &lt; 1 \mid f)\)</span> and <span class="math notranslate nohighlight">\(\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)\)</span>.</p>
+<p>Now let’s simulate protocol 2 and compute the classification error probability.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequences_p2</span><span class="p">,</span> <span class="n">true_sources_p2</span> <span class="o">=</span> <span class="n">protocol_2</span><span class="p">(</span>
+                    <span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">)</span>
+<span class="n">l_ratios_p2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_likelihood_ratios</span><span class="p">(</span><span class="n">sequences_p2</span><span class="p">)</span>
+
+<span class="c1"># Find decision boundary where f(w) = g(w)</span>
+<span class="n">root</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">)</span>
+
+<span class="c1"># Compute theoretical tilde α_t and tilde β_t</span>
+<span class="k">def</span> <span class="nf">α_integrand</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integrand for tilde α_t = P(l_t &lt; 1 | f)&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">β_integrand</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integrand for tilde β_t = P(l_t &gt;= 1 | g)&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+
+<span class="c1"># Compute the integrals</span>
+<span class="n">α_theory</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">α_integrand</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">β_theory</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">β_integrand</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">theory_error</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">α_theory</span> <span class="o">+</span> <span class="n">β_theory</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;theoretical tilde α_t = </span><span class="si">{</span><span class="n">α_theory</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;theoretical tilde β_t = </span><span class="si">{</span><span class="n">β_theory</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;theoretical classification error probability = </span><span class="si">{</span><span class="n">theory_error</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>theoretical tilde α_t = 0.4752
+theoretical tilde β_t = 0.1836
+theoretical classification error probability = 0.3294
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since for each <span class="math notranslate nohighlight">\(t\)</span>, the decision boundary is the same, we can plot the distributions of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> and the decision boundary</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">w_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">f_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">w_range</span><span class="p">]</span>
+<span class="n">g_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">w_range</span><span class="p">]</span>
+<span class="n">ratio_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">/</span><span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">w_range</span><span class="p">]</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">f_values</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> 
+        <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$f(w) \sim Beta(1,1)$&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">g_values</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> 
+        <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$g(w) \sim Beta(3,1.2)$&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">type1_prob</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">beta_dist</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">)</span>
+<span class="n">type2_prob</span> <span class="o">=</span> <span class="n">beta_dist</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">)</span>
+
+<span class="n">w_type1</span> <span class="o">=</span> <span class="n">w_range</span><span class="p">[</span><span class="n">w_range</span> <span class="o">&gt;=</span> <span class="n">root</span><span class="p">]</span>
+<span class="n">f_type1</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">w_type1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">w_type1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f_type1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> 
+                <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;$\tilde \alpha_t = </span><span class="si">{</span><span class="n">type1_prob</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+
+<span class="n">w_type2</span> <span class="o">=</span> <span class="n">w_range</span><span class="p">[</span><span class="n">w_range</span> <span class="o">&lt;=</span> <span class="n">root</span><span class="p">]</span>
+<span class="n">g_type2</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">w_type2</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">w_type2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">g_type2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> 
+                <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;$\tilde \beta_t = </span><span class="si">{</span><span class="n">type2_prob</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> 
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;decision boundary: $w=$</span><span class="si">{</span><span class="n">root</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability density&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="_images/61121f6381dac15b6f7253b54df9e2ed1d323190e9d4c1ef4a9608ac1ce5871d.png" src="_images/61121f6381dac15b6f7253b54df9e2ed1d323190e9d4c1ef4a9608ac1ce5871d.png" />
+</div>
+</div>
+<p>To  the left of the  green vertical line  <span class="math notranslate nohighlight">\(f &lt; g \)</span>,  so <span class="math notranslate nohighlight">\(l_t &lt; 1\)</span>; therefore a  <span class="math notranslate nohighlight">\(w_t\)</span> that falls to the left of the green line is classified as a type <span class="math notranslate nohighlight">\(g\)</span> individual.</p>
+<ul class="simple">
+<li><p>The shaded orange area equals <span class="math notranslate nohighlight">\(\beta\)</span> – the probability of classifying someone as a type <span class="math notranslate nohighlight">\(g\)</span> individual when it is really a type <span class="math notranslate nohighlight">\(f\)</span> individual.</p></li>
+</ul>
+<p>To  the right of the  green vertical line <span class="math notranslate nohighlight">\(g &gt; f\)</span>, so <span class="math notranslate nohighlight">\(l_t &gt;1 \)</span>; therefore  a  <span class="math notranslate nohighlight">\(w_t\)</span> that falls to the right  of the green line is classified as a type <span class="math notranslate nohighlight">\(f\)</span> individual.</p>
+<ul class="simple">
+<li><p>The shaded blue area equals <span class="math notranslate nohighlight">\(\alpha\)</span> – the probability of classifying someone as a type <span class="math notranslate nohighlight">\(f\)</span> when it is really a type <span class="math notranslate nohighlight">\(g\)</span> individual.</p></li>
+</ul>
+<p>Let’s see the classification algorithm performs in  simulated data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T_max</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T_max</span><span class="p">):</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="p">(</span><span class="n">l_ratios_p2</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">actual</span> <span class="o">=</span> <span class="n">true_sources_p2</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span>
+    <span class="n">accuracy</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">predictions</span> <span class="o">==</span> <span class="n">actual</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">accuracy</span><span class="p">,</span> 
+                <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;empirical accuracy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">theory_error</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> 
+                <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;theoretical accuracy = </span><span class="si">{</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">theory_error</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/8bbbf60bc126ba7d76d8f206fd91fc9237c21dd37c7f17dd8044b2afe1dfcf95.png" src="_images/8bbbf60bc126ba7d76d8f206fd91fc9237c21dd37c7f17dd8044b2afe1dfcf95.png" />
+</div>
+</div>
+<p>Let’s watch decisions made by  the two protocols as more and more observations accrue.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_range</span><span class="p">,</span> <span class="n">error_prob</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Protocol 1&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_range</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Protocol 2&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;error probability&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/8180eacc416bcf6fb56ecc38553f84b5e940dfcec913c4a0a1abaae19e3cf771.png" src="_images/8180eacc416bcf6fb56ecc38553f84b5e940dfcec913c4a0a1abaae19e3cf771.png" />
+</div>
+</div>
+<p>From the figure above, we can see:</p>
+<ul class="simple">
+<li><p>For both protocols, the error probability starts at the same level, subject to a little randomness.</p></li>
+<li><p>For protocol 1, the error probability decreases as the sample size increaes because we are just making <strong>one</strong> decision – i.e., selecting whether <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> governs  <strong>all</strong> individuals.  More data provides better evidence.</p></li>
+<li><p>For protocol 2, the error probability remains constant because we are making <strong>many</strong> decisions – one classification decision for each observation.</p></li>
+</ul>
+<p><strong>Remark:</strong> Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem.</p>
+</section>
 <section id="sequels">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">21.8. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this heading">#</a></h2>
-<p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this lecture</span></a>
-and as applied in <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a>.</p>
-<p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html">this lecture</a>, which contains another illustration
+<h2><a class="toc-backref" href="#id15"><span class="section-number">21.11. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this heading">#</a></h2>
+<p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>
+and as applied in <a class="reference internal" href="odu.html"><span class="doc">Job Search VII: Search with Learning</span></a>.</p>
+<p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html" title="(in Python)"><span>Additive and Multiplicative Functionals</span></a>, which contains another illustration
 of the <strong>peculiar property</strong> of likelihood ratio processes described above.</p>
 </section>
 </section>
