@@ -933,10 +933,10 @@ A decision maker wants to classify components of an observed sequence $\{w_t\}_{
 The decision maker uses the following classification rule:
 
 $$
-\begin{align*}
+\begin{aligned}
 w_t  & \ {\rm is \ from \  f  \ if \ } l_t > 1 \\
 w_t  & \ {\rm is \ from \  g  \ if \ } l_t \leq 1 . 
-\end{align*}
+\end{aligned}
 $$
 
 Under this rule, the expected misclassification rate is
