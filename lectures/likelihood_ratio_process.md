@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -52,9 +52,8 @@ import numpy as np
 from numba import vectorize, jit
 from math import gamma
 from scipy.integrate import quad
-from scipy.optimize import brentq
+from scipy.optimize import brentq, minimize_scalar
 from scipy.stats import beta as beta_dist
-
 ```
 
 ## Likelihood Ratio Process
@@ -224,8 +223,8 @@ $\{w_t\}_{t=1}^t$ is an IID sequence, we have
 $$
 \begin{aligned}
 E\left[L\left(w^{t}\right)\bigm|q=g\right]  &=E\left[L\left(w^{t-1}\right)\ell \left(w_{t}\right)\bigm|q=g\right] \\
-    &=E\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g,w^{t-1}\right]\bigm|q=g\right] \\
-    &=E\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g\right]\bigm|q=g\right] \\
+         &=E\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g,w^{t-1}\right]\bigm|q=g\right] \\
+     &=E\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g\right]\bigm|q=g\right] \\
     &=E\left[L\left(w^{t-1}\right)\bigm|q=g\right] \\
 \end{aligned}
 $$
@@ -284,11 +283,11 @@ To see this, we compute
 $$
 \begin{aligned}
 E\left[\ell \left(w_{t}\right)\bigm|q=f\right]  &=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}f\left(w_{t}\right)dw_{t} \\
-    &=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}g\left(w_{t}\right)dw_{t} \\
-    &=\int \ell \left(w_{t}\right)^{2}g\left(w_{t}\right)dw_{t} \\
-    &=E\left[\ell \left(w_{t}\right)^{2}\mid q=g\right] \\
-    &=E\left[\ell \left(w_{t}\right)\mid q=g\right]^{2}+Var\left(\ell \left(w_{t}\right)\mid q=g\right) \\
-    &>E\left[\ell \left(w_{t}\right)\mid q=g\right]^{2} = 1 \\
+     &=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}g\left(w_{t}\right)dw_{t} \\
+     &=\int \ell \left(w_{t}\right)^{2}g\left(w_{t}\right)dw_{t} \\
+     &=E\left[\ell \left(w_{t}\right)^{2}\mid q=g\right] \\
+     &=E\left[\ell \left(w_{t}\right)\mid q=g\right]^{2}+Var\left(\ell \left(w_{t}\right)\mid q=g\right) \\
+     &>E\left[\ell \left(w_{t}\right)\mid q=g\right]^{2} = 1 \\
        \end{aligned}
 $$
 
@@ -758,7 +757,7 @@ We consider two alternative timing protocols.
 of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
 of  IID  draws from  $g$.
 
-Let's write some Python code that implements timing protocol 1. 
+Let's write some Python code that implements timing protocol 1.
 
 ```{code-cell} ipython3
 def protocol_1(π_minus_1, T, N=1000):
@@ -784,7 +783,7 @@ def protocol_1(π_minus_1, T, N=1000):
 
 **Protocol 2.** At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
 
-Here is  Python code that we'll use to implement timing protocol 2.  
+Here is  Python code that we'll use to implement timing protocol 2.
 
 ```{code-cell} ipython3
 def protocol_2(π_minus_1, T, N=1000):
@@ -920,7 +919,6 @@ print(f"α_{T_max} = {α_T[-1]:.4f}")
 print(f"β_{T_max} = {β_T[-1]:.4f}")
 print(f"Model selection error probability = {error_prob[-1]:.4f}")
 ```
-
 
 Notice how the model selection  error probability approaches zero as $T$ grows.  
 
@@ -1073,6 +1071,422 @@ From the figure above, we can see:
 - For protocol 2, the error probability remains constant because we are making **many** decisions -- one classification decision for each observation.  
 
 **Remark:** Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem. 
+
+## Extension: How far two distributions are?
+
+In the discussion above, we can guess that the "distance" between two distributions will influence the accuracy of our prediction.
+
+In this section we provide some extensions to our discussions on KL divergence. 
+
+Specifically, we dicuss two more types of measures of divergence (or "distance") between two distributions.
+
+We will see soon that they have some important and desirable properties.
+
+### Chernoff Entropy
+
+Chernoff entropy is another important divergence measure that appears in large deviation theory.
+
+For probability densities $f$ and $g$, the **Chernoff entropy** is defined as:
+
+$$
+C(f,g) = - \log \min_{\phi \in (0,1)} \int f^\phi(x) g^{1-\phi}(x) dx
+$$
+
+Let's implement the computation of Chernoff entropy using numerical optimization.
+
+```{code-cell} ipython3
+def chernoff_integrand(phi, f_func, g_func):
+    """
+    Compute the integrand for Chernoff entropy: f^phi * g^(1-phi)
+    """
+    def integrand(w):
+        return f_func(w)**phi * g_func(w)**(1-phi)
+    
+    result, _ = quad(integrand, 0.0001, 0.9999)
+    return result
+
+def compute_chernoff_entropy(f_func, g_func):
+    """
+    Compute Chernoff entropy 
+    C(f,g) = -log min_phi ∫ f^phi g^(1-phi) dx
+    """
+    def objective(phi):
+        return chernoff_integrand(phi, f_func, g_func)
+    
+    # Find the minimum over ϕ in (0,1)
+    result = minimize_scalar(objective, 
+                             bounds=(0.001, 0.999), 
+                             method='bounded')
+    min_value = result.fun
+    ϕ_optimal = result.x
+    
+    chernoff_entropy = -np.log(min_value)
+    return chernoff_entropy, ϕ_optimal
+
+C_fg, ϕ_optimal = compute_chernoff_entropy(f, g)
+print(f"Chernoff entropy C(f,g) = {C_fg:.4f}")
+print(f"Optimal ϕ = {ϕ_optimal:.4f}")
+```
+
+Now let's examine how $2^{-C(f,g)T}$ behaves as a function of $T$ and compare it to the model selection error probability.
+
+```{code-cell} ipython3
+# Plot 2^(-C(f,g)T) and model selection error probability
+T_range = np.arange(1, 31)
+chernoff_bound = 2**(-C_fg * T_range)
+
+# Plot comparison
+fig, ax = plt.subplots(figsize=(10, 6))
+
+ax.semilogy(T_range, chernoff_bound, 'r-', linewidth=2, 
+           label=f'$2^{{-C(f,g)T}}$')
+ax.semilogy(T_range, error_prob, 'b-', linewidth=2, 
+           label='Model selection error probability')
+
+ax.set_xlabel('T')
+ax.set_ylabel('error probability (log scale)')
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+## Jensen-Shannon divergence
+
+Jensen-Shannon divergence is another important divergence measure that is symmetric and bounded.
+
+(In fact, it is a proper metric.)
+
+We will see this again in our lecture on {doc}`wald_friedman`.
+
+For probability densities $f$ and $g$, the **Jensen-Shannon divergence** is defined as:
+
+$$
+D(f,g) = \frac{1}{2} \left( D(f||g) + D(g||f) \right)
+$$
+
+We can see how it helps us to fix the asymmetry of KL divergence.
+
+Now let's create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy and see how three measures correlates with each other
+
+```{code-cell} ipython3
+def jensen_shannon_divergence(f_func, g_func):
+    """
+    Compute Jensen-Shannon divergence between two probability densities
+    """
+    def m_func(w):
+        return 0.5 * (f_func(w) + g_func(w))
+    
+    def kl_div(p_func, q_func):
+        def integrand(w):
+            ratio = p_func(w) / q_func(w)
+            return p_func(w) * np.log(ratio)
+        result, _ = quad(integrand, 0.0001, 0.9999)
+        return result
+    
+    m = m_func
+    js_div = 0.5 * kl_div(f_func, m) + 0.5 * kl_div(g_func, m)
+    return js_div
+
+def kl_divergence(f_func, g_func):
+    """
+    Compute KL divergence D(f||g)
+    """
+    def integrand(w):
+        return f_func(w) * np.log(f_func(w) / g_func(w))
+    
+    result, _ = quad(integrand, 0.0001, 0.9999)
+    return result
+
+distribution_pairs = [
+    # (f_params, g_params)
+    ((1, 1), (1.1, 1.05)),
+    ((1, 1), (1.2, 1.1)),
+    ((1, 1), (1.5, 1.2)),
+    ((1, 1), (2, 1.5)),
+    ((1, 1), (2.5, 1.8)),
+    ((1, 1), (3, 1.2)),
+    ((1, 1), (4, 1)),
+    ((1, 1), (5, 1)), 
+    ((2, 2), (4, 2)), 
+    ((2, 2), (6, 2)), 
+    ((2, 2), (8, 2)),
+]
+
+# Create comparison table
+import pandas as pd
+
+results = []
+for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
+    # Define the density functions
+    f_func = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
+    g_func = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
+    
+    # Compute measures
+    kl_fg = kl_divergence(f_func, g_func)
+    kl_gf = kl_divergence(g_func, f_func)
+    js_div = jensen_shannon_divergence(f_func, g_func)
+    chernoff_ent, _ = compute_chernoff_entropy(f_func, g_func)
+    
+    results.append({
+        'Pair': f"f=Beta({f_a},{f_b}), g=Beta({g_a},{g_b})",
+        'KL(f||g)': f"{kl_fg:.4f}",
+        'KL(g||f)': f"{kl_gf:.4f}",
+        'JS distance': f"{js_div:.4f}",
+        'Chernoff entropy': f"{chernoff_ent:.4f}"
+    })
+
+df = pd.DataFrame(results)
+print(df.to_string(index=False))
+```
+
+Let's also visualize how these measures relate to each other:
+
+```{code-cell} ipython3
+kl_fg_values = [float(result['KL(f||g)']) for result in results]
+js_values = [float(result['JS distance']) for result in results]
+chernoff_values = [float(result['Chernoff entropy']) for result in results]
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# JS distance vs KL Divergence
+axes[0].scatter(kl_fg_values, js_values, alpha=0.7, s=60)
+axes[0].set_xlabel('KL divergence KL(f||g)')
+axes[0].set_ylabel('JS distance')
+axes[0].set_title('JS distance vs KL divergence')
+
+# Chernoff Entropy vs JS distance
+axes[1].scatter(js_values, chernoff_values, alpha=0.7, s=60)
+axes[1].set_xlabel('JS distance')
+axes[1].set_ylabel('Chernoff entropy')
+axes[1].set_title('Chernoff entropy vs JS distance')
+
+plt.tight_layout()
+plt.show()
+```
+
+Let's visually see how these measures capture the difference between two distributions
+
+Note how the numbers on the title changes with the area of the overlaps of two distributions
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+def visualize_distribution_differences():
+    """
+    Create enhanced visualizations showing how different divergence measures
+    capture distribution differences in the likelihood ratio process.
+    """
+    
+    # Define a grid of Beta distribution parameters for comprehensive analysis
+    param_grid = [
+        ((1, 1), (1, 1)),   
+        ((1, 1), (1.5, 1.2)),
+        ((1, 1), (2, 1.5)),  
+        ((1, 1), (3, 1.2)),  
+        ((1, 1), (5, 1)),    
+        ((2, 2), (8, 2)), 
+    ]
+    
+    fig, axes = plt.subplots(3, 2, figsize=(15, 12))
+    
+    divergence_data = []
+    
+    for i, ((f_a, f_b), (g_a, g_b)) in enumerate(param_grid):
+        row = i // 2
+        col = i % 2
+        
+        # Create density functions
+        f_func = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
+        g_func = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
+        
+        # Compute divergence measures
+        kl_fg = kl_divergence(
+            f_func, g_func) if f_a != g_a or f_b != g_b else 0
+        js_div = jensen_shannon_divergence(
+            f_func, g_func) if f_a != g_a or f_b != g_b else 0
+        chernoff_ent, _ = compute_chernoff_entropy(
+            f_func, g_func) if f_a != g_a or f_b != g_b else (0, 0.5)
+        
+        divergence_data.append({
+            'f_params': (f_a, f_b),
+            'g_params': (g_a, g_b),
+            'kl_fg': kl_fg,
+            'js_div': js_div,
+            'chernoff': chernoff_ent
+        })
+        
+        # Plot distributions
+        x_range = np.linspace(0, 1, 200)
+        f_vals = [f_func(x) for x in x_range]
+        g_vals = [g_func(x) for x in x_range]
+        
+        axes[row, col].plot(x_range, f_vals, 'b-', linewidth=2, 
+                           label=f'f ~ Beta({f_a},{f_b})')
+        axes[row, col].plot(x_range, g_vals, 'r-', linewidth=2, 
+                           label=f'g ~ Beta({g_a},{g_b})')
+        
+        # Fill overlap region
+        overlap = np.minimum(f_vals, g_vals)
+        axes[row, col].fill_between(x_range, 0, overlap, alpha=0.3, 
+                                   color='purple', label='overlap')
+        
+        # Add divergence information
+        axes[row, col].set_title(
+            f'KL(f||g)={kl_fg:.3f}, JS={js_div:.3f}, C={chernoff_ent:.3f}',
+            fontsize=10)
+        axes[row, col].legend(fontsize=8)
+    
+    plt.tight_layout()
+    plt.suptitle('Distribution Pairs with Divergence Measures', 
+                 fontsize=16, y=1.02)
+    plt.show()
+    
+    return divergence_data
+
+# Create the comprehensive visualization
+divergence_data = visualize_distribution_differences()
+```
+
+### Error Probability vs Divergence Measures
+
+Now let's go back to our intuition that the error probability at large sample sizes is related to the divergence between two distributions.
+
+We verify this by computing the correlation between the log of the error probability at $T=50$ and the divergence measures.
+
+```{code-cell} ipython3
+def analyze_error_divergence_correlation():
+    """
+    Analyze correlation between error probabilities and divergence measures
+    for various distribution pairs.
+    """
+        
+    # Parameters for simulation
+    T_large = 50  # Large sample size
+    N_sims = 5000  # Number of simulations per scenario
+    
+    # Storage for results
+    kl_fg_vals = []
+    kl_gf_vals = []
+    js_vals = []
+    chernoff_vals = []
+    error_probs = []
+    pair_names = []
+    
+    for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):        
+        # Create density functions
+        f_func = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
+        g_func = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
+        
+        # Compute divergence measures
+        if f_a == g_a and f_b == g_b:
+            kl_fg = 0.0
+            kl_gf = 0.0
+            js_div = 0.0
+            chernoff_ent = 0.0
+            error_prob = 0.5  # Random guessing
+        else:
+            kl_fg = kl_divergence(f_func, g_func)
+            kl_gf = kl_divergence(g_func, f_func)
+            js_div = jensen_shannon_divergence(f_func, g_func)
+            chernoff_ent, _ = compute_chernoff_entropy(f_func, g_func)
+            
+            # Simulate error probability using Protocol 1 with
+            # exactly equal number of samples from f and g
+            N_half = N_sims // 2
+            
+            # Sequences from f
+            sequences_f = np.random.beta(f_a, f_b, (N_half, T_large))
+            l_ratios_f = f_func(sequences_f) / g_func(sequences_f)
+            L_cumulative_f = np.cumprod(l_ratios_f, axis=1)[:, -1]  # Final L
+            
+            # Sequences from g  
+            sequences_g = np.random.beta(g_a, g_b, (N_half, T_large))
+            l_ratios_g = f_func(sequences_g) / g_func(sequences_g)
+            L_cumulative_g = np.cumprod(l_ratios_g, axis=1)[:, -1]  # Final L
+            
+            # Compute error probabilities
+            alpha_T = np.mean(L_cumulative_f < 1)  # P(reject H0 | H0 true, data from f)
+            beta_T = np.mean(L_cumulative_g >= 1)  # P(accept H0 | H0 false, data from g)
+            error_prob = 0.5 * (alpha_T + beta_T)
+        
+        # Store results
+        kl_fg_vals.append(kl_fg)
+        kl_gf_vals.append(kl_gf)
+        js_vals.append(js_div)
+        chernoff_vals.append(chernoff_ent)
+        error_probs.append(error_prob)
+        pair_names.append(f"Beta({f_a},{f_b}) vs Beta({g_a},{g_b})")
+    
+    return {
+        'kl_fg': np.array(kl_fg_vals),
+        'kl_gf': np.array(kl_gf_vals), 
+        'js': np.array(js_vals),
+        'chernoff': np.array(chernoff_vals),
+        'error_prob': np.array(error_probs),
+        'names': pair_names,
+        'T': T_large
+    }
+
+# Run the analysis
+correlation_data = analyze_error_divergence_correlation()
+```
+
+Now let's visualize the correlations:
+
+```{code-cell} ipython3
+def plot_error_divergence(data):
+    """
+    Plot log-scale correlations between error probability 
+    and divergence measures.
+    """
+    
+    # Examine log-scale relationship (excluding zero values)
+    nonzero_mask = data['error_prob'] > 1e-6
+    
+    if np.sum(nonzero_mask) > 1:
+        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+        
+        # Log-scale plot for KL divergence
+        log_error = np.log(data['error_prob'][nonzero_mask])
+        js_vals = data['js'][nonzero_mask]
+        
+        axes[0].scatter(js_vals, log_error, alpha=0.7, s=60, color='blue')
+        axes[0].set_xlabel('JS divergence')
+        axes[0].set_ylabel(f'log(Error probability) at T={data["T"]}')
+        
+        # Fit linear relationship in log space
+
+        corr_log = np.corrcoef(js_vals, log_error)[0, 1]
+        z = np.polyfit(js_vals, log_error, 1)
+        p = np.poly1d(z)
+        x_trend = np.linspace(js_vals.min(), js_vals.max(), 100)
+        axes[0].plot(x_trend, p(x_trend), "r--", alpha=0.8, linewidth=2)
+        axes[0].set_title(f'Log error probability vs JS divergence\nCorrelation = {corr_log:.3f}')
+
+        # Log-scale plot for Chernoff entropy
+        chernoff_vals = data['chernoff'][nonzero_mask]
+        
+        axes[1].scatter(chernoff_vals, log_error, alpha=0.7, s=60, color='purple')
+        axes[1].set_xlabel('Chernoff entropy')
+        axes[1].set_ylabel(f'log(Error probability) at T={data["T"]}')
+        
+        corr_log = np.corrcoef(chernoff_vals, log_error)[0, 1]
+        z = np.polyfit(chernoff_vals, log_error, 1)
+        p = np.poly1d(z)
+        x_trend = np.linspace(chernoff_vals.min(), chernoff_vals.max(), 100)
+        axes[1].plot(x_trend, p(x_trend), "r--", alpha=0.8, linewidth=2)
+        axes[1].set_title(f'Log error probability vs Chernoff entropy\nCorrelation = {corr_log:.3f}')
+
+        plt.tight_layout()
+        plt.show()
+
+
+plot_error_divergence(correlation_data)
+```
+
+This tells us that our previous guess is pretty accurate!
+
++++
 
 ## Sequels
 
