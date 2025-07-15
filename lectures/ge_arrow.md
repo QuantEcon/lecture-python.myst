@@ -964,7 +964,7 @@ class RecurCompetitive:
     def price_risk_free_bond(self):
         "Give Q, compute price of one-period risk free bond"
 
-        PRF = np.sum(self.Q, 0)
+        PRF = np.sum(self.Q, axis=1)
         self.PRF = PRF
 
         return PRF
@@ -972,7 +972,7 @@ class RecurCompetitive:
     def risk_free_rate(self):
         "Given Q, compute one-period gross risk-free interest rate R"
 
-        R = np.sum(self.Q, 0)
+        R = np.sum(self.Q, axis=1)
         R = np.reciprocal(R)
         self.R = R
 
