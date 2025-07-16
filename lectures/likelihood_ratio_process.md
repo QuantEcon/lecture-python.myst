@@ -753,7 +753,7 @@ We consider two alternative timing protocols.
  * Timing protocol 1 is for   the model selection problem
  * Timing protocol 2 is for the individual classification problem 
 
-**Protocol 1:**  Nature flips a coin once at time $t=-1$ and with probability $\pi_{-1}$  generates a sequence  $\{w_t\}_{t=1}^T$
+**Timing Protocol 1:**  Nature flips a coin once at time $t=-1$ and with probability $\pi_{-1}$  generates a sequence  $\{w_t\}_{t=1}^T$
 of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
 of  IID  draws from  $g$.
 
@@ -781,7 +781,7 @@ def protocol_1(π_minus_1, T, N=1000):
     return sequences, true_models_F
 ```
 
-**Protocol 2.** At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
+**Timing Protocol 2.** At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
 
 Here is  Python code that we'll use to implement timing protocol 2.
 
@@ -807,7 +807,7 @@ def protocol_2(π_minus_1, T, N=1000):
     return sequences, true_models_F
 ```
 
-**Remark:** Under protocol 2, the $\{w_t\}_{t=1}^T$ is a sequence of IID draws from $h(w)$. Under protocol 1, the the $\{w_t\}_{t=1}^T$ is 
+**Remark:** Under timing protocol 2, the $\{w_t\}_{t=1}^T$ is a sequence of IID draws from $h(w)$. Under timing protocol 1, the the $\{w_t\}_{t=1}^T$ is 
 not IID.  It is **conditionally IID** -- meaning that with probability $\pi_{-1}$ it is a sequence of IID draws from $f(w)$ and with probability $1-\pi_{-1}$ it is a sequence of IID draws from $g(w)$. For more about this, see {doc}`this lecture about exchangeability <exchangeable>`.
 
 We  again deploy a **likelihood ratio process** with time $t$ component being the likelihood ratio  
@@ -866,7 +866,7 @@ $$
 p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
 $$ (eq:detectionerrorprob)
 
-Now let's simulate the protocol 1 and compute the error probabilities
+Now let's simulate  timing protocol 1 and compute the error probabilities
 
 ```{code-cell} ipython3
 # Set parameters
@@ -945,7 +945,7 @@ $$ (eq:classerrorprob)
 
 where $\tilde \alpha_t = {\rm Prob}(l_t < 1 \mid f)$ and $\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)$.
 
-Now let's simulate protocol 2 and compute the classification error probability.
+Now let's simulate timing protocol 2 and compute the classification error probability.
 
 ```{code-cell} ipython3
 sequences_p2, true_sources_p2 = protocol_2(
@@ -1048,7 +1048,7 @@ plt.ylim(0.5, 1.0)
 plt.show()
 ```
 
-Let's watch decisions made by  the two protocols as more and more observations accrue.
+Let's watch decisions made by  the two timing protocols as more and more observations accrue.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(7, 6))
@@ -1064,27 +1064,31 @@ plt.show()
 
 From the figure above, we can see:
 
-- For both protocols, the error probability starts at the same level, subject to a little randomness.
+- For both timing protocols, the error probability starts at the same level, subject to a little randomness.
 
-- For protocol 1, the error probability decreases as the sample size increaes because we are just making **one** decision -- i.e., selecting whether $f$ or $g$ governs  **all** individuals.  More data provides better evidence.
+- For timing protocol 1, the error probability decreases as the sample size increases because we are  making just **one** decision -- i.e., selecting whether $f$ or $g$ governs  **all** individuals.  More data provides better evidence.
 
-- For protocol 2, the error probability remains constant because we are making **many** decisions -- one classification decision for each observation.  
+- For timing protocol 2, the error probability remains constant because we are making **many** decisions -- one classification decision for each observation.  
 
 **Remark:** Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem. 
 
-## Extension: measuring distance between distributions
+## Measuring discrepancies between distributions
 
-So far, we might have guessed that the ability to distinguish between distributions $f$ and $g$ depends on how "different" they are from each other. 
+A plausible guess is that  the ability of a likelihood ratio to distinguish  distributions $f$ and $g$ depends on how "different" they are.
+ 
+But how should we measure  discrepancies between distributions?
 
-This naturally leads us to ask: how can we quantify the distance between two distributions?
+We've already encountered one discrepancy measure -- the Kullback-Leibler (KL) divergence. 
 
-We've already encountered one measure -- the Kullback-Leibler (KL) divergence. 
-
-Let's explore two additional measures that offer different perspectives on distribution distances.
+We now briefly explore two alternative discrepancy  measures.
 
 ### Chernoff Entropy
 
-One particularly useful measure is the Chernoff entropy, which has deep connections to the theory of large deviations. 
+Chernoff entropy was motivated by an early application of  the theory of large deviations <https://en.wikipedia.org/wiki/Large_deviations_theory>.
+
+```{note}
+Large deviation theory provides refinements of the central limit theorem. 
+```
 
 The Chernoff entropy between probability densities $f$ and $g$ is defined as:
 
@@ -1092,9 +1096,15 @@ $$
 C(f,g) = - \log \min_{\phi \in (0,1)} \int f^\phi(x) g^{1-\phi}(x) dx
 $$
 
-A larger Chernoff entropy means we can distinguish the distributions more easily.
+An upper bound on model selection error probabilty is
 
-Let's compute this measure numerically
+$$
+2^{-C(f,g)T} .
+$$
+
+Thus,    Chernoff entropy is  an upper bound on  the exponential  rate at which  the selection error probability falls as sample size $T$ grows. 
+
+Let's compute Chernoff enropy numerically with some Python code
 
 ```{code-cell} ipython3
 def chernoff_integrand(ϕ, f_func, g_func):
@@ -1152,13 +1162,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-We can see that $2^{-C(f,g)T}$ is proportional to an upper bound on the error rate.
+Evidently,  $2^{-C(f,g)T}$ is  an upper bound on the error rate.
 
 ### Jensen-Shannon divergence
 
-The Jensen-Shannon divergence is another important divergence measure that is symmetric.
-
-(In fact, it is a proper metric.)
+The Jensen-Shannon divergence is another  divergence measure <https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence>.  
 
 For probability densities $f$ and $g$, the **Jensen-Shannon divergence** is defined as:
 
@@ -1168,10 +1176,13 @@ $$
 
 where $D(f||g)$ is the KL divergence of $f$ from $g$.
 
+ 
+
 ```{note}
 We studied KL divergence in the [section above](rel_entropy) with respect to a reference distribution $h$.
-
-Here we are comparing the KL divergence of $f$ from $g$ and the KL divergence of $g$ from $f$.
+Because in general $KL(f,g) \neq KL(g,f)$ the KL divergence is not a metric. But  the Jensen-Shannon divergence is.
+The Jensen-Shannon divergence simply averages  the KL divergence of $f$ from $g$ and the KL divergence of $g$ from $f$,
+so $D(f,g) = D(g,f)$.  
 ```
 
 Now let's create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy
@@ -1239,7 +1250,7 @@ for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
         'Pair': f"f=Beta({f_a},{f_b}), g=Beta({g_a},{g_b})",
         'KL(f||g)': f"{kl_fg:.4f}",
         'KL(g||f)': f"{kl_gf:.4f}",
-        'JS distance': f"{js_div:.4f}",
+        'JS discrepancy': f"{js_div:.4f}",
         'Chernoff entropy': f"{chernoff_ent:.4f}"
     })
 
@@ -1247,28 +1258,28 @@ df = pd.DataFrame(results)
 print(df.to_string(index=False))
 ```
 
-From the table above, we can see that the Jensen-Shannon divergence and Chernoff entropy are both related to the KL divergence.
+The above  table indicates how  Jensen-Shannon divergence,  and Chernoff entropy, and  KL divergence covary as we alter $f$ and $g$.
 
-Let's also visualize how these measures relate to each other
+Let's also visualize how these diverge measures covary
 
 ```{code-cell} ipython3
 kl_fg_values = [float(result['KL(f||g)']) for result in results]
-js_values = [float(result['JS distance']) for result in results]
+js_values = [float(result['JS discrepancy']) for result in results]
 chernoff_values = [float(result['Chernoff entropy']) for result in results]
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-# JS distance and KL Divergence
+# JS discrepancy and KL Divergence
 axes[0].scatter(kl_fg_values, js_values, alpha=0.7, s=60)
 axes[0].set_xlabel('KL divergence KL(f||g)')
-axes[0].set_ylabel('JS distance')
-axes[0].set_title('JS distance and KL divergence')
+axes[0].set_ylabel('JS discrepancy')
+axes[0].set_title('JS discrepancy and KL divergence')
 
-# Chernoff Entropy and JS distance
+# Chernoff Entropy and JS discrepancy
 axes[1].scatter(js_values, chernoff_values, alpha=0.7, s=60)
-axes[1].set_xlabel('JS distance')
+axes[1].set_xlabel('JS discrepancy')
 axes[1].set_ylabel('Chernoff entropy')
-axes[1].set_title('Chernoff entropy and JS distance')
+axes[1].set_title('Chernoff entropy and JS discrepancy')
 
 plt.tight_layout()
 plt.show()
@@ -1355,11 +1366,14 @@ divergence_data = plot_dist_diff()
 
 ### Error probability and divergence measures
 
-Now let's return to our guess that the error probability at large sample sizes is related to the divergence between two distributions.
+Now let's return to our guess that the error probability at large sample sizes is related to the Chernoff entropy  between two distributions.
 
-We verify this by computing the correlation between the log of the error probability at $T=50$ under Protocol 1 and the divergence measures.
+We verify this by computing the correlation between the log of the error probability at $T=50$ under Timing Protocol 1 and the divergence measures.
 
-Note that in the simulation below, nature draws exactly the same number of sequences from $f$ and $g$ ($N / 2$), rather than flipping a coin
+In the simulation below, nature draws $N / 2$ sequences from $g$ and $N/2$ sequences from $f$.
+ ```{note}
+Nature does this rather than flipping a fair coin to decide whether to draw from $g$ or $f$ once and for all before each simulation of length $T$.
+ ``` 
 
 ```{code-cell} ipython3
 def error_divergence_cor():
@@ -1460,13 +1474,13 @@ def plot_error_divergence(data):
 plot_error_divergence(cor_data)
 ```
 
-This tells us that our previous guess was pretty accurate!
+Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability as sample size $T$ grows.
 
-We'll see this idea appear again in {doc}`wald_friedman`.
+We'll see encounter related  ideas in {doc}`wald_friedman`.
 
 +++
 
-## Sequels
+## Related Lectures
 
 Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes`
 and as applied in {doc}`odu`.
