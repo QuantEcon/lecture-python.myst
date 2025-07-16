@@ -1363,7 +1363,7 @@ Note that in the simulation below, nature draws exactly the same number of sampl
 ```{code-cell} ipython3
 def error_divergence_cor():
     """
-    Analyze correlation between error probabilities and divergence measures.
+    compute correlation between error probabilities and divergence measures.
     """
         
     # Parameters for simulation
