@@ -47,7 +47,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numpy import exp
-from scipy.special import factorial
+from scipy.special import factorial, gammaln
 import pandas as pd
 from mpl_toolkits.mplot3d import Axes3D
 import statsmodels.api as sm
@@ -334,7 +334,7 @@ $$
         = &
         \sum_{i=1}^{n} y_i \log{\mu_i} -
         \sum_{i=1}^{n} \mu_i -
-        \sum_{i=1}^{n} \log y!
+        \sum_{i=1}^{n} \log y_i!
 \end{split}
 $$
 
@@ -344,7 +344,7 @@ $$
 \underset{\beta}{\max} \Big(
 \sum_{i=1}^{n} y_i \log{\mu_i} -
 \sum_{i=1}^{n} \mu_i -
-\sum_{i=1}^{n} \log y! \Big)
+\sum_{i=1}^{n} \log y_i! \Big)
 $$
 
 However, no analytical solution exists to the above problem -- to find the MLE
@@ -458,7 +458,7 @@ class PoissonRegression:
     def logL(self):
         y = self.y
         μ = self.μ()
-        return np.sum(y * np.log(μ) - μ - np.log(factorial(y)))
+        return np.sum(y * np.log(μ) - μ - gammaln(y + 1))
 
     def G(self):
         y = self.y
@@ -868,17 +868,20 @@ class ProbitRegression:
         return norm.pdf(self.X @ self.β.T)
 
     def logL(self):
+        y = self.y
         μ = self.μ()
-        return np.sum(y * np.log(μ) + (1 - y) * np.log(1 - μ))
+        return y @ np.log(μ) + (1 - y) @ np.log(1 - μ)
 
     def G(self):
+        X = self.X
+        y = self.y  
         μ = self.μ()
         ϕ = self.ϕ()
-        return np.sum((X.T * y * ϕ / μ - X.T * (1 - y) * ϕ / (1 - μ)),
-                     axis=1)
+        return X.T @ (y * ϕ / μ - (1 - y) * ϕ / (1 - μ))
 
     def H(self):
         X = self.X
+        y = self.y
         β = self.β
         μ = self.μ()
         ϕ = self.ϕ()
