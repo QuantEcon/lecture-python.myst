@@ -1274,8 +1274,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-To make the comparison more concrete, let's plot the distributions and the divergence measures for a few pairs of distributions
+To make the comparison more concrete, let's plot the distributions and the divergence measures for a few pairs of distributions.
 
+Note that the numbers on the title changes with the area of the overlaps of two distributions
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -1354,11 +1355,11 @@ divergence_data = plot_dist_diff()
 
 ### Error probability and divergence measures
 
-Now let's return to our intuition that the error probability at large sample sizes is related to the divergence between two distributions.
+Now let's return to our guess that the error probability at large sample sizes is related to the divergence between two distributions.
 
 We verify this by computing the correlation between the log of the error probability at $T=50$ under Protocol 1 and the divergence measures.
 
-Note that in the simulation below, nature draws exactly the same number of samples from $f$ and $g$, rather than flipping a coin
+Note that in the simulation below, nature draws exactly the same number of sequences from $f$ and $g$ ($N / 2$), rather than flipping a coin
 
 ```{code-cell} ipython3
 def error_divergence_cor():
@@ -1462,7 +1463,6 @@ plot_error_divergence(cor_data)
 This tells us that our previous guess was pretty accurate!
 
 We'll see this idea appear again in {doc}`wald_friedman`.
-
 
 +++
 
