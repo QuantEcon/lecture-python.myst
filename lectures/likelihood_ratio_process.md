@@ -54,6 +54,7 @@ from math import gamma
 from scipy.integrate import quad
 from scipy.optimize import brentq, minimize_scalar
 from scipy.stats import beta as beta_dist
+import pandas as pd
 ```
 
 ## Likelihood Ratio Process
@@ -1101,7 +1102,7 @@ $$
 An upper bound on model selection error probabilty is
 
 $$
-2^{-C(f,g)T} .
+e^{-C(f,g)T} .
 $$
 
 Thus,    Chernoff entropy is  an upper bound on  the exponential  rate at which  the selection error probability falls as sample size $T$ grows. 
@@ -1142,17 +1143,17 @@ print(f"Chernoff entropy C(f,g) = {C_fg:.4f}")
 print(f"Optimal ϕ = {ϕ_optimal:.4f}")
 ```
 
-Now let's examine how $2^{-C(f,g)T}$ behaves as a function of $T$ and compare it to the model selection error probability
+Now let's examine how $e^{-C(f,g)T}$ behaves as a function of $T$ and compare it to the model selection error probability
 
 ```{code-cell} ipython3
 T_range = np.arange(1, T_max+1)
-chernoff_bound = 2**(-C_fg * T_range)
+chernoff_bound = np.exp(-C_fg * T_range)
 
 # Plot comparison
 fig, ax = plt.subplots(figsize=(10, 6))
 
 ax.semilogy(T_range, chernoff_bound, 'r-', linewidth=2, 
-           label=f'$2^{{-C(f,g)T}}$')
+           label=f'$e^{{-C(f,g)T}}$')
 ax.semilogy(T_range, error_prob, 'b-', linewidth=2, 
            label='Model selection error probability')
 
@@ -1163,7 +1164,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Evidently,  $2^{-C(f,g)T}$ is  an upper bound on the error rate.
+Evidently, $e^{-C(f,g)T}$ is an upper bound on the error rate.
 
 ### Jensen-Shannon divergence
 
@@ -1173,7 +1174,7 @@ For probability densities $f$ and $g$, the **Jensen-Shannon divergence** is defi
 
 $$
 D(f,g) = \frac{1}{2} D(f||m) + \frac{1}{2} D(g||m)
-$$
+$$ (eq:js_divergence)
 
 where $m = \frac{1}{2}(f+g)$ is a mixture of $f$ and $g$.
  
@@ -1184,7 +1185,7 @@ Because in general $KL(f,g) \neq KL(g,f)$, KL divergence is not symmetric, but J
 
 (In fact, the square root of the Jensen-Shannon divergence is a metric referred to as the Jensen-Shannon distance.)
 
-The Jensen-Shannon divergence computes average of the KL divergence of $f$ and $g$ from a particular reference distribution $m$.
+As {eq}`eq:js_divergence` shows, the Jensen-Shannon divergence computes average of the KL divergence of $f$ and $g$ with respect to a particular reference distribution $m$ defined below the equation.
 ```
 
 Now let's create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy
@@ -1233,8 +1234,6 @@ distribution_pairs = [
 ]
 
 # Create comparison table
-import pandas as pd
-
 results = []
 for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
     # Define the density functions
@@ -1476,7 +1475,7 @@ def plot_error_divergence(data):
 plot_error_divergence(cor_data)
 ```
 
-Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability as sample size $T$ grows.
+Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability.
 
 We'll see encounter related  ideas in {doc}`wald_friedman`.
 
