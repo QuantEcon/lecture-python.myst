@@ -1096,6 +1096,8 @@ $$
 C(f,g) = - \log \min_{\phi \in (0,1)} \int f^\phi(x) g^{1-\phi}(x) dx
 $$
 
+(TO TOM: since we are using natural log here, should we plot using $e^{-C(f,g)T}$ instead of $2^{-C(f,g)T}$?)
+
 An upper bound on model selection error probabilty is
 
 $$
@@ -1107,22 +1109,22 @@ Thus,    Chernoff entropy is  an upper bound on  the exponential  rate at which 
 Let's compute Chernoff enropy numerically with some Python code
 
 ```{code-cell} ipython3
-def chernoff_integrand(ϕ, f_func, g_func):
+def chernoff_integrand(ϕ, f, g):
     """
     Compute the integrand for Chernoff entropy
     """
     def integrand(w):
-        return f_func(w)**ϕ * g_func(w)**(1-ϕ)
+        return f(w)**ϕ * g(w)**(1-ϕ)
 
     result, _ = quad(integrand, 0.0001, 0.9999)
     return result
 
-def compute_chernoff_entropy(f_func, g_func):
+def compute_chernoff_entropy(f, g):
     """
     Compute Chernoff entropy C(f,g)
     """
     def objective(ϕ):
-        return chernoff_integrand(ϕ, f_func, g_func)
+        return chernoff_integrand(ϕ, f, g)
     
     # Find the minimum over ϕ in (0,1)
     result = minimize_scalar(objective, 
@@ -1143,8 +1145,7 @@ print(f"Optimal ϕ = {ϕ_optimal:.4f}")
 Now let's examine how $2^{-C(f,g)T}$ behaves as a function of $T$ and compare it to the model selection error probability
 
 ```{code-cell} ipython3
-# Plot 2^(-C(f,g)T) and model selection error probability
-T_range = np.arange(1, 31)
+T_range = np.arange(1, T_max+1)
 chernoff_bound = 2**(-C_fg * T_range)
 
 # Plot comparison
@@ -1166,52 +1167,52 @@ Evidently,  $2^{-C(f,g)T}$ is  an upper bound on the error rate.
 
 ### Jensen-Shannon divergence
 
-The Jensen-Shannon divergence is another  divergence measure <https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence>.  
+The [Jensen-Shannon divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence) is another  divergence measure.  
 
 For probability densities $f$ and $g$, the **Jensen-Shannon divergence** is defined as:
 
 $$
-D(f,g) = \frac{1}{2} \left( D(f||g) + D(g||f) \right)
+D(f,g) = \frac{1}{2} D(f||m) + \frac{1}{2} D(g||m)
 $$
 
-where $D(f||g)$ is the KL divergence of $f$ from $g$.
-
+where $m = \frac{1}{2}(f+g)$ is a mixture of $f$ and $g$.
  
-
 ```{note}
 We studied KL divergence in the [section above](rel_entropy) with respect to a reference distribution $h$.
-Because in general $KL(f,g) \neq KL(g,f)$ the KL divergence is not a metric. But  the Jensen-Shannon divergence is.
-The Jensen-Shannon divergence simply averages  the KL divergence of $f$ from $g$ and the KL divergence of $g$ from $f$,
-so $D(f,g) = D(g,f)$.  
+
+Because in general $KL(f,g) \neq KL(g,f)$, KL divergence is not symmetric, but Jensen-Shannon divergence is symmetric.
+
+(In fact, the square root of the Jensen-Shannon divergence is a metric referred to as the Jensen-Shannon distance.)
+
+The Jensen-Shannon divergence computes average of the KL divergence of $f$ and $g$ from a particular reference distribution $m$.
 ```
 
 Now let's create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy
 
 ```{code-cell} ipython3
-def js_divergence(f_func, g_func):
+def js_divergence(f, g):
     """
     Compute Jensen-Shannon divergence between two probability densities
     """
-    def m_func(w):
-        return 0.5 * (f_func(w) + g_func(w))
+    def m(w):
+        return 0.5 * (f(w) + g(w))
     
-    def kl_div(p_func, q_func):
+    def kl_div(p, q):
         def integrand(w):
-            ratio = p_func(w) / q_func(w)
-            return p_func(w) * np.log(ratio)
+            ratio = p(w) / q(w)
+            return p(w) * np.log(ratio)
         result, _ = quad(integrand, 0.0001, 0.9999)
         return result
     
-    m = m_func
-    js_div = 0.5 * kl_div(f_func, m) + 0.5 * kl_div(g_func, m)
+    js_div = 0.5 * kl_div(f, m) + 0.5 * kl_div(g, m)
     return js_div
 
-def kl_divergence(f_func, g_func):
+def kl_divergence(f, g):
     """
     Compute KL divergence D(f||g)
     """
     def integrand(w):
-        return f_func(w) * np.log(f_func(w) / g_func(w))
+        return f(w) * np.log(f(w) / g(w))
     
     result, _ = quad(integrand, 0.0001, 0.9999)
     return result
@@ -1237,20 +1238,20 @@ import pandas as pd
 results = []
 for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
     # Define the density functions
-    f_func = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-    g_func = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
+    f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
+    g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
     
     # Compute measures
-    kl_fg = kl_divergence(f_func, g_func)
-    kl_gf = kl_divergence(g_func, f_func)
-    js_div = js_divergence(f_func, g_func)
-    chernoff_ent, _ = compute_chernoff_entropy(f_func, g_func)
+    kl_fg = kl_divergence(f, g)
+    kl_gf = kl_divergence(g, f)
+    js_div = js_divergence(f, g)
+    chernoff_ent, _ = compute_chernoff_entropy(f, g)
     
     results.append({
         'Pair': f"f=Beta({f_a},{f_b}), g=Beta({g_a},{g_b})",
         'KL(f||g)': f"{kl_fg:.4f}",
         'KL(g||f)': f"{kl_gf:.4f}",
-        'JS discrepancy': f"{js_div:.4f}",
+        'JS divergence': f"{js_div:.4f}",
         'Chernoff entropy': f"{chernoff_ent:.4f}"
     })
 
@@ -1264,22 +1265,22 @@ Let's also visualize how these diverge measures covary
 
 ```{code-cell} ipython3
 kl_fg_values = [float(result['KL(f||g)']) for result in results]
-js_values = [float(result['JS discrepancy']) for result in results]
+js_values = [float(result['JS divergence']) for result in results]
 chernoff_values = [float(result['Chernoff entropy']) for result in results]
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-# JS discrepancy and KL Divergence
+# JS divergence and KL divergence
 axes[0].scatter(kl_fg_values, js_values, alpha=0.7, s=60)
 axes[0].set_xlabel('KL divergence KL(f||g)')
-axes[0].set_ylabel('JS discrepancy')
-axes[0].set_title('JS discrepancy and KL divergence')
+axes[0].set_ylabel('JS divergence')
+axes[0].set_title('JS divergence and KL divergence')
 
-# Chernoff Entropy and JS discrepancy
+# Chernoff Entropy and JS divergence
 axes[1].scatter(js_values, chernoff_values, alpha=0.7, s=60)
-axes[1].set_xlabel('JS discrepancy')
+axes[1].set_xlabel('JS divergence')
 axes[1].set_ylabel('Chernoff entropy')
-axes[1].set_title('Chernoff entropy and JS discrepancy')
+axes[1].set_title('Chernoff entropy and JS divergence')
 
 plt.tight_layout()
 plt.show()
@@ -1316,16 +1317,13 @@ def plot_dist_diff():
         col = i % 2
         
         # Create density functions
-        f_func = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-        g_func = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
+        f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
+        g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
         
         # Compute divergence measures
-        kl_fg = kl_divergence(
-            f_func, g_func) if f_a != g_a or f_b != g_b else 0
-        js_div = js_divergence(
-            f_func, g_func) if f_a != g_a or f_b != g_b else 0
-        chernoff_ent, _ = compute_chernoff_entropy(
-            f_func, g_func) if f_a != g_a or f_b != g_b else (0, 0.5)
+        kl_fg = kl_divergence(f, g)
+        js_div = js_divergence(f, g) 
+        chernoff_ent, _ = compute_chernoff_entropy(f, g)
         
         divergence_data.append({
             'f_params': (f_a, f_b),
@@ -1337,8 +1335,8 @@ def plot_dist_diff():
         
         # Plot distributions
         x_range = np.linspace(0, 1, 200)
-        f_vals = [f_func(x) for x in x_range]
-        g_vals = [g_func(x) for x in x_range]
+        f_vals = [f(x) for x in x_range]
+        g_vals = [g(x) for x in x_range]
         
         axes[row, col].plot(x_range, f_vals, 'b-', linewidth=2, 
                            label=f'f ~ Beta({f_a},{f_b})')
@@ -1371,9 +1369,10 @@ Now let's return to our guess that the error probability at large sample sizes i
 We verify this by computing the correlation between the log of the error probability at $T=50$ under Timing Protocol 1 and the divergence measures.
 
 In the simulation below, nature draws $N / 2$ sequences from $g$ and $N/2$ sequences from $f$.
- ```{note}
+
+```{note}
 Nature does this rather than flipping a fair coin to decide whether to draw from $g$ or $f$ once and for all before each simulation of length $T$.
- ``` 
+``` 
 
 ```{code-cell} ipython3
 def error_divergence_cor():
@@ -1397,29 +1396,30 @@ def error_divergence_cor():
 
     for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
         # Create density functions
-        f_func = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-        g_func = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
+        f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
+        g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
 
         # Compute divergence measures
-        kl_fg_vals[i] = kl_divergence(f_func, g_func)
-        kl_gf_vals[i] = kl_divergence(g_func, f_func)
-        js_vals[i] = js_divergence(f_func, g_func)
-        chernoff_vals[i], _ = compute_chernoff_entropy(f_func, g_func)
+        kl_fg_vals[i] = kl_divergence(f, g)
+        kl_gf_vals[i] = kl_divergence(g, f)
+        js_vals[i] = js_divergence(f, g)
+        chernoff_vals[i], _ = compute_chernoff_entropy(f, g)
 
         # Generate samples
         sequences_f = np.random.beta(f_a, f_b, (N_half, T_large))
         sequences_g = np.random.beta(g_a, g_b, (N_half, T_large))
 
         # Compute likelihood ratios
-        l_ratios_f = f_func(sequences_f) / g_func(sequences_f)
-        l_ratios_g = f_func(sequences_g) / g_func(sequences_g)
+        l_ratios_f = f(sequences_f) / g(sequences_f)
+        l_ratios_g = f(sequences_g) / g(sequences_g)
 
         # Compute cumulative products
         L_cumulative_f = np.cumprod(l_ratios_f, axis=1)[:, -1]
         L_cumulative_g = np.cumprod(l_ratios_g, axis=1)[:, -1]
 
         # Calculate error probabilities
-        error_probs[i] = 0.5 * (np.mean(L_cumulative_f < 1) + np.mean(L_cumulative_g >= 1))
+        error_probs[i] = 0.5 * (np.mean(L_cumulative_f < 1) + 
+                                np.mean(L_cumulative_g >= 1))
         pair_names.append(f"Beta({f_a},{f_b}) and Beta({g_a},{g_b})")
 
     return {
@@ -1461,8 +1461,10 @@ def plot_error_divergence(data):
         corr = np.corrcoef(x_vals, log_error)[0, 1]
         z = np.polyfit(x_vals, log_error, 1)
         x_trend = np.linspace(x_vals.min(), x_vals.max(), 100)
-        ax.plot(x_trend, np.poly1d(z)(x_trend), "r--", alpha=0.8, linewidth=2)
-        ax.set_title(f'Log error probability and {x_label}\nCorrelation = {corr:.3f}')
+        ax.plot(x_trend, np.poly1d(z)(x_trend), 
+                "r--", alpha=0.8, linewidth=2)
+        ax.set_title(f'Log error probability and {x_label}\n'
+                     f'Correlation = {corr:.3f}')
     
     # Plot both correlations
     plot_correlation(ax1, js_vals, 'JS divergence', 'C0')
