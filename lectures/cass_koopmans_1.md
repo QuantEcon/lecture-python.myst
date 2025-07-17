@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.4
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -61,6 +61,13 @@ The lecture uses important ideas including
 - A **turnpike** property of  optimal paths for
   long but finite-horizon economies.
 - A **stable manifold** and a **phase plane**
+
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython
+:tags: [hide-output]
+!pip install quantecon
+```
 
 Let's start with some standard imports:
 
@@ -614,7 +621,7 @@ tolerance bounds), we stop.
 def bisection(pp, c0, k0, T=10, tol=1e-4, max_iter=500, k_ter=0, verbose=True):
 
     # initial boundaries for guess c0
-    c0_upper = pp.f(k0)
+    c0_upper = pp.f(k0) + (1 - pp.δ) * k0  
     c0_lower = 0
 
     i = 0
@@ -648,7 +655,7 @@ def plot_paths(pp, c0, k0, T_arr, k_ter=0, k_ss=None, axs=None):
 
     if axs is None:
         fix, axs = plt.subplots(1, 3, figsize=(16, 4))
-    ylabels = ['$c_t$', '$k_t$', '$\mu_t$']
+    ylabels = ['$c_t$', '$k_t$', r'$\mu_t$']
     titles = ['Consumption', 'Capital', 'Lagrange Multiplier']
 
     c_paths = []
@@ -800,6 +807,76 @@ A rule of thumb for the planner is
 
 The planner accomplishes this by adjusting the saving rate $\frac{f(K_t) - C_t}{f(K_t)}$
 over time.
+
+```{exercise}
+:label: ck1_ex1
+
+The turnpike property is independent of the initial condition 
+$K_0$ provided that $T$ is sufficiently large.
+
+Expand the `plot_paths` function so that it plots trajectories for multiple initial points using `k0s = [k_ss*2, k_ss*3, k_ss/3]`.
+```
+
+```{solution-start} ck1_ex1
+:class: dropdown
+```
+
+Here is one solution
+
+```{code-cell} ipython3
+def plot_multiple_paths(pp, c0, k0s, T_arr, k_ter=0, k_ss=None, axs=None):
+    if axs is None:
+        fig, axs = plt.subplots(1, 3, figsize=(16, 4))
+        
+    ylabels = ['$c_t$', '$k_t$', r'$\mu_t$']
+    titles = ['Consumption', 'Capital', 'Lagrange Multiplier']
+
+    colors = plt.cm.viridis(np.linspace(0, 1, len(k0s)))
+    
+    all_c_paths = []
+    all_k_paths = []
+    
+    for i, k0 in enumerate(k0s):
+        k0_c_paths = []
+        k0_k_paths = []
+        
+        for T in T_arr:
+            c_vec, k_vec = bisection(pp, c0, k0, T, k_ter=k_ter, verbose=False)
+            k0_c_paths.append(c_vec)
+            k0_k_paths.append(k_vec)
+
+            μ_vec = pp.u_prime(c_vec)
+            paths = [c_vec, k_vec, μ_vec]
+
+            for j in range(3):
+                axs[j].plot(paths[j], color=colors[i], 
+                           label=f'$k_0 = {k0:.2f}$' if j == 0 and T == T_arr[0] else "", alpha=0.7)
+                axs[j].set(xlabel='t', ylabel=ylabels[j], title=titles[j])
+
+            if k_ss is not None and i == 0 and T == T_arr[0]:
+                axs[1].axhline(k_ss, c='k', ls='--', lw=1)
+
+            axs[1].axvline(T+1, c='k', ls='--', lw=1)
+            axs[1].scatter(T+1, paths[1][-1], s=80, color=colors[i])
+        
+        all_c_paths.append(k0_c_paths)
+        all_k_paths.append(k0_k_paths)
+    
+    # Add legend if multiple initial points
+    if len(k0s) > 1:
+        axs[0].legend()
+
+    return all_c_paths, all_k_paths
+```
+
+```{code-cell} ipython3
+_ = plot_multiple_paths(pp, 0.3, [k_ss*2, k_ss*3, k_ss/3], [250, 150, 75, 50], k_ss=k_ss)
+```
+
+We see that the turnpike property holds for various initial values of $K_0$.
+
+```{solution-end}
+```
 
 Let's calculate and  plot the saving rate.
 
@@ -1075,7 +1152,7 @@ studied in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` is a f
 ### Exercise
 
 ```{exercise}
-:label: ck1_ex1
+:label: ck1_ex2
 
 - Plot the optimal consumption, capital, and saving paths when the
   initial capital level begins at 1.5 times the steady state level
@@ -1083,7 +1160,7 @@ studied in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` is a f
 - Why does the saving rate respond as it does?
 ```
 
-```{solution-start} ck1_ex1
+```{solution-start} ck1_ex2
 :class: dropdown
 ```
 
