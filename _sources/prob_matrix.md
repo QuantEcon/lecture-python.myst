@@ -35,7 +35,7 @@ Among concepts that we'll be studying include
 
 We'll use a matrix to represent a bivariate or multivariate probability distribution and a vector to represent a univariate probability distribution
 
-This {doc}`companion lecture <stats_examples>` describes some popular probability distributions and uses Python to sample from them. 
+This {doc}`companion lecture <stats_examples>` describes some popular probability distributions and describes how to  use Python to sample from them. 
 
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
@@ -430,10 +430,11 @@ $$
 
 $$
 \textrm{Prob}\{X=i|Y=j\}	=\frac{\textrm{Prob}\{X=i,Y=j\}}{\textrm{Prob}\{Y=j\}}=\frac{\textrm{Prob}\{Y=j|X=i\}\textrm{Prob}\{X=i\}}{\textrm{Prob}\{Y=j\}}
-$$
+$$ (eq:condprobbayes)
 
 ```{note}
-This can be interpreted as  a version of what a  Bayesian calls **Bayes' Law**.
+Formula {eq}`eq:condprobbayes` is also  what a  Bayesian calls **Bayes' Law**. A Bayesian statistician regards  marginal probability distribution $\textrm{Prob}({X=i}), i = 1,  \ldots, J$ as a **prior** distribution that describes his personal subjective beliefs about $X$.
+He  then interprets  formula {eq}`eq:condprobbayes` as a procedure for constructing a **posterior** distribution that describes how he would  revise his subjective beliefs after observing that $Y$ equals $j$.  
 ```
 
 
@@ -588,9 +589,15 @@ Marginal distributions are
 $$ \textrm{Prob}(X=i)=\sum_j{f_{ij}}=u_i  $$
 $$ \textrm{Prob}(Y=j)=\sum_i{f_{ij}}=v_j $$
 
-Below we draw some samples  confirm that the "sampling" distribution agrees well  with the "population" distribution.
 
-**Sample results:**
+**Sampling:**
+
+Let's write some Python code that let's us  draw some long samples and compute relative frequencies.
+
+The code will let us  check whether  the "sampling" distribution agrees   with the "population" distribution - confirming that
+the population distribution correctly tells us the relative frequencies that we should expect in a large sample. 
+
+
 
 ```{code-cell} ipython3
 # specify parameters
@@ -615,7 +622,9 @@ x[1, p < f_cum[0]] = ys[0]
 print(x)
 ```
 
-Here, we use exactly the inverse CDF technique to generate sample from the joint distribution $F$.
+```{note}
+To generate random draws from the joint distribution $F$, we use the inverse CDF technique described in {doc}`this companion lecture <stats_examples>`.
+```
 
 ```{code-cell} ipython3
 # marginal distribution
@@ -715,9 +724,10 @@ x=x_2 & \vdots & \frac{0.1}{0.5}=0.2 & \frac{0.4}{0.5}=0.8 \\
 \end{array}\right]
 $$
 
-These population objects closely resemble  sample counterparts  computed above.
+These population objects closely resemble the  sample counterparts  computed above.
 
-Let's wrap some of the functions we have used in  a Python class for a general discrete bivariate joint distribution.
+Let's wrap some of the functions we have used in  a Python class that will let us generate and sample from a
+discrete bivariate joint distribution.
 
 ```{code-cell} ipython3
 class discrete_bijoint:
@@ -951,7 +961,7 @@ ax.set_xticks([])
 plt.show()
 ```
 
-Next  we can simulate from  a built-in `numpy` function  and calculate a **sample** marginal distribution from the sample mean and variance.
+Next  we can use   a built-in `numpy` function to draw random samples, then calculate a **sample** marginal distribution from the sample mean and variance.
 
 ```{code-cell} ipython3
 μ= np.array([0, 5])
@@ -984,7 +994,7 @@ plt.show()
 
 **Conditional distribution**
 
-The population conditional distribution is
+For a bivariate normal population distribution, the conditional distributions are also normal:
 
 $$
 \begin{aligned} \\
@@ -992,6 +1002,10 @@ $$
 [Y|X &= x ]\sim \mathbb{N}\bigg[\mu_Y+\rho\sigma_Y\frac{x-\mu_X}{\sigma_X},\sigma_Y^2(1-\rho^2)\bigg]
 \end{aligned}
 $$
+
+```{note}
+Please see this {doc}`quantecon lecture <multivariate_normal>` for more details.
+```
 
 Let's approximate  the joint density by discretizing and mapping the approximating joint density into a  matrix.
 
@@ -1221,7 +1235,7 @@ But the joint distributions differ.
 Thus, multiple  joint distributions $[f_{ij}]$ can have  the same marginals.
 
 **Remark:**
-- Couplings  are important in optimal transport problems and in Markov processes.
+- Couplings  are important in optimal transport problems and in Markov processes. Please see this {doc}`lecture about optimal transport <opt_transport>`
 
 ## Copula Functions
 
