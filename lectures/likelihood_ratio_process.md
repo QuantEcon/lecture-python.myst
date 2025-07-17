@@ -1085,7 +1085,7 @@ We now briefly explore two alternative discrepancy  measures.
 
 ### Chernoff Entropy
 
-Chernoff entropy was motivated by an early application of  the theory of large deviations <https://en.wikipedia.org/wiki/Large_deviations_theory>.
+Chernoff entropy was motivated by an early application of  the [theory of large deviations](https://en.wikipedia.org/wiki/Large_deviations_theory).
 
 ```{note}
 Large deviation theory provides refinements of the central limit theorem. 
@@ -1173,7 +1173,7 @@ The [Jensen-Shannon divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Sha
 For probability densities $f$ and $g$, the **Jensen-Shannon divergence** is defined as:
 
 $$
-D(f,g) = \frac{1}{2} D(f||m) + \frac{1}{2} D(g||m)
+D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
 $$ (eq:js_divergence)
 
 where $m = \frac{1}{2}(f+g)$ is a mixture of $f$ and $g$.
@@ -1181,7 +1181,7 @@ where $m = \frac{1}{2}(f+g)$ is a mixture of $f$ and $g$.
 ```{note}
 We studied KL divergence in the [section above](rel_entropy) with respect to a reference distribution $h$.
 
-Because in general $KL(f,g) \neq KL(g,f)$, KL divergence is not symmetric, but Jensen-Shannon divergence is symmetric.
+Because in general $KL(f, g) \neq KL(g, f)$, KL divergence is not symmetric, but Jensen-Shannon divergence is symmetric.
 
 (In fact, the square root of the Jensen-Shannon divergence is a metric referred to as the Jensen-Shannon distance.)
 
@@ -1210,7 +1210,7 @@ def js_divergence(f, g):
 
 def kl_divergence(f, g):
     """
-    Compute KL divergence D(f||g)
+    Compute KL divergence D(f, g)
     """
     def integrand(w):
         return f(w) * np.log(f(w) / g(w))
@@ -1248,8 +1248,8 @@ for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
     
     results.append({
         'Pair': f"f=Beta({f_a},{f_b}), g=Beta({g_a},{g_b})",
-        'KL(f||g)': f"{kl_fg:.4f}",
-        'KL(g||f)': f"{kl_gf:.4f}",
+        'KL(f, g)': f"{kl_fg:.4f}",
+        'KL(g, f)': f"{kl_gf:.4f}",
         'JS divergence': f"{js_div:.4f}",
         'Chernoff entropy': f"{chernoff_ent:.4f}"
     })
@@ -1263,7 +1263,7 @@ The above  table indicates how  Jensen-Shannon divergence,  and Chernoff entropy
 Let's also visualize how these diverge measures covary
 
 ```{code-cell} ipython3
-kl_fg_values = [float(result['KL(f||g)']) for result in results]
+kl_fg_values = [float(result['KL(f, g)']) for result in results]
 js_values = [float(result['JS divergence']) for result in results]
 chernoff_values = [float(result['Chernoff entropy']) for result in results]
 
@@ -1271,7 +1271,7 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 # JS divergence and KL divergence
 axes[0].scatter(kl_fg_values, js_values, alpha=0.7, s=60)
-axes[0].set_xlabel('KL divergence KL(f||g)')
+axes[0].set_xlabel('KL divergence KL(f, g)')
 axes[0].set_ylabel('JS divergence')
 axes[0].set_title('JS divergence and KL divergence')
 
@@ -1349,7 +1349,7 @@ def plot_dist_diff():
         
         # Add divergence information
         axes[row, col].set_title(
-            f'KL(f||g)={kl_fg:.3f}, JS={js_div:.3f}, C={chernoff_ent:.3f}',
+            f'KL(f, g)={kl_fg:.3f}, JS={js_div:.3f}, C={chernoff_ent:.3f}',
             fontsize=12)
         axes[row, col].legend(fontsize=14)
     
@@ -1439,7 +1439,7 @@ Now let's visualize the correlations
 ```{code-cell} ipython3
 def plot_error_divergence(data):
     """
-    Plot log-scale correlations between error probability and divergence measures.
+    Plot correlations between error probability and divergence measures.
     """
     # Filter out near-zero error probabilities for log scale
     nonzero_mask = data['error_prob'] > 1e-6
