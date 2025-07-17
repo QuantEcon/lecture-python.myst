@@ -1144,7 +1144,7 @@ Let's start with marginal distributions
 $$
 \begin{aligned}
 \text{Prob} \{X=i\} &=  \sum_{j}f_{ij}=\mu_{i}, i=0, \cdots, I-1\\
-\text{Prob} \{Y=j\}&=  \sum_{j}f_{ij}=\nu_{j}, j=0, \cdots, J-1
+\text{Prob} \{Y=j\}&=  \sum_{i}f_{ij}=\nu_{j}, j=0, \cdots, J-1
 \end{aligned}
 $$
 
