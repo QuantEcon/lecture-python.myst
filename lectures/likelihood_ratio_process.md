@@ -1194,7 +1194,7 @@ Now let's create a comparison table showing KL divergence, Jensen-Shannon diverg
 ```{code-cell} ipython3
 def js_divergence(f, g):
     """
-    Compute Jensen-Shannon divergence between two probability densities
+    Compute Jensen-Shannon divergence
     """
     def m(w):
         return 0.5 * (f(w) + g(w))
