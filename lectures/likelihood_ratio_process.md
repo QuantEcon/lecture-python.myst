@@ -946,44 +946,20 @@ $$ (eq:classerrorprob)
 
 where $\tilde \alpha_t = {\rm Prob}(l_t < 1 \mid f)$ and $\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)$.
 
-Now let's simulate timing protocol 2 and compute the classification error probability.
+Since for each $t$, the decision boundary is the same, the decision boundary can be computed as
 
 ```{code-cell} ipython3
-sequences_p2, true_sources_p2 = protocol_2(
-                    π_minus_1, T_max, N_simulations)
-l_ratios_p2, _ = compute_likelihood_ratios(sequences_p2)
-
-# Find decision boundary where f(w) = g(w)
 root = brentq(lambda w: f(w) / g(w) - 1, 0.001, 0.999)
-
-# Compute theoretical tilde α_t and tilde β_t
-def α_integrand(w):
-    """Integrand for tilde α_t = P(l_t < 1 | f)"""
-    return f(w) if f(w) / g(w) < 1 else 0
-
-def β_integrand(w):
-    """Integrand for tilde β_t = P(l_t >= 1 | g)"""
-    return g(w) if f(w) / g(w) >= 1 else 0
-
-# Compute the integrals
-α_theory, _ = quad(α_integrand, 0, 1, limit=100)
-β_theory, _ = quad(β_integrand, 0, 1, limit=100)
-
-theory_error = 0.5 * (α_theory + β_theory)
-
-print(f"theoretical tilde α_t = {α_theory:.4f}")
-print(f"theoretical tilde β_t = {β_theory:.4f}")
-print(f"theoretical classification error probability = {theory_error:.4f}")
 ```
 
-Since for each $t$, the decision boundary is the same, we can plot the distributions of $f$ and $g$ and the decision boundary
+we can plot the distributions of $f$ and $g$ and the decision boundary
 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
 fig, ax = plt.subplots(figsize=(7, 6))
 
-w_range = np.linspace(0.001, 0.999, 1000)
+w_range = np.linspace(1e-5, 1-1e-5, 1000)
 f_values = [f(w) for w in w_range]
 g_values = [g(w) for w in w_range]
 ratio_values = [f(w)/g(w) for w in w_range]
@@ -1025,12 +1001,39 @@ To  the right of the  green vertical line $g > f$, so $l_t >1 $; therefore  a  $
 
  * The shaded blue area equals $\alpha$ -- the probability of classifying someone as a type $f$ when it is really a type $g$ individual.  
 
+This gives us clues about how to compute the theoretical classification error probability
 
+```{code-cell} ipython3
+# Compute theoretical tilde α_t and tilde β_t
+def α_integrand(w):
+    """Integrand for tilde α_t = P(l_t < 1 | f)"""
+    return f(w) if f(w) / g(w) < 1 else 0
 
-Let's see the classification algorithm performs in  simulated data.
+def β_integrand(w):
+    """Integrand for tilde β_t = P(l_t >= 1 | g)"""
+    return g(w) if f(w) / g(w) >= 1 else 0
+
+# Compute the integrals
+α_theory, _ = quad(α_integrand, 0, 1, limit=100)
+β_theory, _ = quad(β_integrand, 0, 1, limit=100)
+
+theory_error = 0.5 * (α_theory + β_theory)
+
+print(f"theoretical tilde α_t = {α_theory:.4f}")
+print(f"theoretical tilde β_t = {β_theory:.4f}")
+print(f"theoretical classification error probability = {theory_error:.4f}")
+```
+
+Now we simulate timing protocol 2 and compute the classification error probability.
+
+In the next cell, we also compare the theoretical classification accuracy to the empirical classification accuracy
 
 ```{code-cell} ipython3
 accuracy = np.empty(T_max)
+
+sequences_p2, true_sources_p2 = protocol_2(
+                    π_minus_1, T_max, N_simulations)
+l_ratios_p2, _ = compute_likelihood_ratios(sequences_p2)
 
 for t in range(T_max):
     predictions = (l_ratios_p2[:, t] >= 1)
@@ -1083,7 +1086,7 @@ We've already encountered one discrepancy measure -- the Kullback-Leibler (KL) d
 
 We now briefly explore two alternative discrepancy  measures.
 
-### Chernoff Entropy
+### Chernoff entropy
 
 Chernoff entropy was motivated by an early application of  the [theory of large deviations](https://en.wikipedia.org/wiki/Large_deviations_theory).
 
@@ -1097,8 +1100,6 @@ $$
 C(f,g) = - \log \min_{\phi \in (0,1)} \int f^\phi(x) g^{1-\phi}(x) dx
 $$
 
-(TO TOM: since we are using natural log here, should we plot using $e^{-C(f,g)T}$ instead of $2^{-C(f,g)T}$?)
-
 An upper bound on model selection error probabilty is
 
 $$
@@ -1107,7 +1108,7 @@ $$
 
 Thus,    Chernoff entropy is  an upper bound on  the exponential  rate at which  the selection error probability falls as sample size $T$ grows. 
 
-Let's compute Chernoff enropy numerically with some Python code
+Let's compute Chernoff entropy numerically with some Python code
 
 ```{code-cell} ipython3
 def chernoff_integrand(ϕ, f, g):
@@ -1117,7 +1118,7 @@ def chernoff_integrand(ϕ, f, g):
     def integrand(w):
         return f(w)**ϕ * g(w)**(1-ϕ)
 
-    result, _ = quad(integrand, 0.0001, 0.9999)
+    result, _ = quad(integrand, 1e-5, 1-1e-5)
     return result
 
 def compute_chernoff_entropy(f, g):
@@ -1130,7 +1131,7 @@ def compute_chernoff_entropy(f, g):
     # Find the minimum over ϕ in (0,1)
     result = minimize_scalar(objective, 
                              # For numerical stability
-                             bounds=(0.001, 0.999), 
+                             bounds=(1e-5, 1-1e-5), 
                              method='bounded')
     min_value = result.fun
     ϕ_optimal = result.x
@@ -1202,7 +1203,7 @@ def js_divergence(f, g):
         def integrand(w):
             ratio = p(w) / q(w)
             return p(w) * np.log(ratio)
-        result, _ = quad(integrand, 0.0001, 0.9999)
+        result, _ = quad(integrand, 1e-5, 1-1e-5)
         return result
     
     js_div = 0.5 * kl_div(f, m) + 0.5 * kl_div(g, m)
@@ -1210,12 +1211,12 @@ def js_divergence(f, g):
 
 def kl_divergence(f, g):
     """
-    Compute KL divergence D(f, g)
+    Compute KL divergence KL(f, g)
     """
     def integrand(w):
         return f(w) * np.log(f(w) / g(w))
     
-    result, _ = quad(integrand, 0.0001, 0.9999)
+    result, _ = quad(integrand, 1e-5, 1-1e-5)
     return result
 
 distribution_pairs = [
@@ -1384,7 +1385,7 @@ def error_divergence_cor():
     N_sims = 5000
     N_half = N_sims // 2
 
-    # Initialize arrays to store results
+    # Initialize arrays
     n_pairs = len(distribution_pairs)
     kl_fg_vals = np.zeros(n_pairs)
     kl_gf_vals = np.zeros(n_pairs) 
@@ -1437,6 +1438,8 @@ cor_data = error_divergence_cor()
 Now let's visualize the correlations
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def plot_error_divergence(data):
     """
     Plot correlations between error probability and divergence measures.
@@ -1477,7 +1480,7 @@ plot_error_divergence(cor_data)
 
 Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability.
 
-We'll see encounter related  ideas in {doc}`wald_friedman`.
+We'll encounter related  ideas in {doc}`wald_friedman`.
 
 +++
 
