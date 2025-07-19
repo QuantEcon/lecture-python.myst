@@ -282,18 +282,20 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 </section>
 <section id="geometric-distribution">
 <h2><span class="section-number">9.2. </span>Geometric distribution<a class="headerlink" href="#geometric-distribution" title="Permalink to this heading">#</a></h2>
+<p>A discrete geometric distribution has probability  mass function</p>
 <div class="math notranslate nohighlight">
 \[
-\textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots
+\textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots,  \quad p \in (0,1)
 \]</div>
-<p><span class="math notranslate nohighlight">\(\implies\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(k = 1, 2, \ldots\)</span> is the number of trials before the first success.</p>
+<p>The mean and variance of this one-parameter probability distribution are</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\mathbb{E}(X) &amp; =\frac{1}{p}\\\mathbb{D}(X) &amp; =\frac{1-p}{p^2}
+\mathbb{E}(X) &amp; =\frac{1}{p}\\\mathbb{Var}(X) &amp; =\frac{1-p}{p^2}
 \end{aligned}
 \end{split}\]</div>
-<p>We draw observations from the distribution and compare the sample mean and variance with the theoretical results.</p>
+<p>Let’s use Python  draw observations from the distribution and compare the sample mean and variance with the theoretical results.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># specify parameters</span>
@@ -315,8 +317,8 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.33055 
-The sample variance is:  7.745356697499999
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.336708 
+The sample variance is:  7.787275722736001
 
 The population mean is:  3.3333333333333335
 The population variance is:  7.777777777777778
@@ -329,7 +331,7 @@ The population variance is:  7.777777777777778
 <h2><span class="section-number">9.3. </span>Pascal (negative binomial) distribution<a class="headerlink" href="#pascal-negative-binomial-distribution" title="Permalink to this heading">#</a></h2>
 <p>Consider a sequence of independent Bernoulli trials.</p>
 <p>Let <span class="math notranslate nohighlight">\(p\)</span> be the probability of success.</p>
-<p>Let <span class="math notranslate nohighlight">\(X\)</span> be a random variable that represents the number of failures before we get <span class="math notranslate nohighlight">\(r\)</span> success.</p>
+<p>Let <span class="math notranslate nohighlight">\(X\)</span> be a random variable that represents the number of failures before we get <span class="math notranslate nohighlight">\(r\)</span> successes.</p>
 <p>Its distribution is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -366,8 +368,8 @@ X  &amp; \sim NB(r,p) \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.331376 
-The sample variance is:  77.586827946624
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.335794 
+The sample variance is:  77.71036638956404
 
 The population mean is:  23.333333333333336
 The population variance is:  77.77777777777779
@@ -474,8 +476,8 @@ X \sim N(\mu,\sigma^2)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  4.0319146108238116e-05
-The sample standard deviation is:  0.10000572840323617
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -0.00024918072398274804
+The sample standard deviation is:  0.10005873951034311
 </pre></div>
 </div>
 </div>
@@ -535,8 +537,8 @@ f(x)&amp; = \begin{cases} \frac{1}{b-a}, &amp; a \leq x \leq b \\ \quad0, &amp; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  15.000332262699676 
-The sample variance is:  8.34860275182521
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  15.002246080352284 
+The sample variance is:  8.33456181873862
 
 The population mean is:  15.0
 The population variance is:  8.333333333333334
@@ -579,8 +581,8 @@ f(x) = 0.0005
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.41128909246591 
-The sample variance is:  5830.102817647975
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.38223138233386 
+The sample variance is:  5825.609379719297
 </pre></div>
 </div>
 </div>
@@ -718,7 +720,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/bb61f3482645a564088a0e7ddec9d219196d350562eee9b6af667c30bcde6e73.png"><img alt="_images/bb61f3482645a564088a0e7ddec9d219196d350562eee9b6af667c30bcde6e73.png" src="_images/bb61f3482645a564088a0e7ddec9d219196d350562eee9b6af667c30bcde6e73.png" style="width: 559px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/cbcdb3014403202a04897b394d0ff1a8bfdeaacab0a18d1794ebe4d174ade236.png"><img alt="_images/cbcdb3014403202a04897b394d0ff1a8bfdeaacab0a18d1794ebe4d174ade236.png" src="_images/cbcdb3014403202a04897b394d0ff1a8bfdeaacab0a18d1794ebe4d174ade236.png" style="width: 556px; height: 413px;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -729,7 +731,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c3f5ff3eb39437f20749564d70768681b1979926588a74fe2456549a2556505a.png"><img alt="_images/c3f5ff3eb39437f20749564d70768681b1979926588a74fe2456549a2556505a.png" src="_images/c3f5ff3eb39437f20749564d70768681b1979926588a74fe2456549a2556505a.png" style="width: 556px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/f5ebfe85f8d707470189e7c80b7295992a664ef19d0f6cceb13a10d950fb6d5a.png"><img alt="_images/f5ebfe85f8d707470189e7c80b7295992a664ef19d0f6cceb13a10d950fb6d5a.png" src="_images/f5ebfe85f8d707470189e7c80b7295992a664ef19d0f6cceb13a10d950fb6d5a.png" style="width: 556px; height: 413px;" /></a>
 </div>
 </div>
 <p><strong>Geometric distribution</strong></p>
@@ -796,7 +798,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/be0fe37fa29b266bced82b49b10213f93869b929403711a619dd72515e7a8f9d.png"><img alt="_images/be0fe37fa29b266bced82b49b10213f93869b929403711a619dd72515e7a8f9d.png" src="_images/be0fe37fa29b266bced82b49b10213f93869b929403711a619dd72515e7a8f9d.png" style="width: 547px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/94666813c86386487a4439e1815463b5edb7e1197e054b21eee45f7f8e2a865d.png"><img alt="_images/94666813c86386487a4439e1815463b5edb7e1197e054b21eee45f7f8e2a865d.png" src="_images/94666813c86386487a4439e1815463b5edb7e1197e054b21eee45f7f8e2a865d.png" style="width: 547px; height: 413px;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -806,7 +808,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>60
 </pre></div>
 </div>
 </div>
@@ -831,7 +833,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/4bfc86bcd4bfc2c7104a7a300b06ddd9774b51c16a0bfd1e699806b4bc8d3a66.png"><img alt="_images/4bfc86bcd4bfc2c7104a7a300b06ddd9774b51c16a0bfd1e699806b4bc8d3a66.png" src="_images/4bfc86bcd4bfc2c7104a7a300b06ddd9774b51c16a0bfd1e699806b4bc8d3a66.png" style="width: 547px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/c719e502b9a258515fc10801e96974dca7bebbda6913e3955b867c55f817b0ff.png"><img alt="_images/c719e502b9a258515fc10801e96974dca7bebbda6913e3955b867c55f817b0ff.png" src="_images/c719e502b9a258515fc10801e96974dca7bebbda6913e3955b867c55f817b0ff.png" style="width: 556px; height: 413px;" /></a>
 </div>
 </div>
 </section>

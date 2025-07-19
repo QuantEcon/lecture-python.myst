@@ -177,7 +177,13 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-testing-and-classification">21.8. Hypothesis Testing and Classification</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-selection-mistake-probability">21.9. Model Selection Mistake Probability</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification">21.10. Classification</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequels">21.11. Sequels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-discrepancies-between-distributions">21.11. Measuring discrepancies between distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chernoff-entropy">21.11.1. Chernoff entropy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jensen-shannon-divergence">21.11.2. Jensen-Shannon divergence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-probability-and-divergence-measures">21.11.3. Error probability and divergence measures</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-lectures">21.12. Related Lectures</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -251,7 +257,8 @@
 <li><p><a class="reference internal" href="#hypothesis-testing-and-classification" id="id12">Hypothesis Testing and Classification</a></p></li>
 <li><p><a class="reference internal" href="#model-selection-mistake-probability" id="id13">Model Selection Mistake Probability</a></p></li>
 <li><p><a class="reference internal" href="#classification" id="id14">Classification</a></p></li>
-<li><p><a class="reference internal" href="#sequels" id="id15">Sequels</a></p></li>
+<li><p><a class="reference internal" href="#measuring-discrepancies-between-distributions" id="id15">Measuring discrepancies between distributions</a></p></li>
+<li><p><a class="reference internal" href="#related-lectures" id="id16">Related Lectures</a></p></li>
 </ul>
 </li>
 </ul>
@@ -277,8 +284,9 @@
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">jit</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span><span class="p">,</span> <span class="n">minimize_scalar</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">beta</span> <span class="k">as</span> <span class="n">beta_dist</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
@@ -399,7 +407,7 @@ draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/16800412f053e961a6a9f12d9b265b1add1236d3d598f797d9596500a2e025f7.png" src="_images/16800412f053e961a6a9f12d9b265b1add1236d3d598f797d9596500a2e025f7.png" />
+<img alt="_images/01c51471a97f070f7e8846ed29e6bf7cf5982f02f3e55142877df7a9c7b90347.png" src="_images/01c51471a97f070f7e8846ed29e6bf7cf5982f02f3e55142877df7a9c7b90347.png" />
 </div>
 </div>
 <p>Evidently, as sample length <span class="math notranslate nohighlight">\(T\)</span> grows, most probability mass
@@ -415,7 +423,7 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f26082eb91ade836814615f5d740139933683e187db0177db4ffc5e9b8497d8b.png" src="_images/f26082eb91ade836814615f5d740139933683e187db0177db4ffc5e9b8497d8b.png" />
+<img alt="_images/7a4e71c4d73ef7870dc111648c8bc8e2853426cf4170aff7499c620a4316033f.png" src="_images/7a4e71c4d73ef7870dc111648c8bc8e2853426cf4170aff7499c620a4316033f.png" />
 </div>
 </div>
 <p>Despite the evident convergence of most probability mass to a
@@ -447,8 +455,8 @@ E\left[L\left(w^{1}\right)\bigm|q=g\right]  &amp;=E\left[\ell \left(w_{1}\right)
 \[\begin{split}
 \begin{aligned}
 E\left[L\left(w^{t}\right)\bigm|q=g\right]  &amp;=E\left[L\left(w^{t-1}\right)\ell \left(w_{t}\right)\bigm|q=g\right] \\
-    &amp;=E\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g,w^{t-1}\right]\bigm|q=g\right] \\
-    &amp;=E\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g\right]\bigm|q=g\right] \\
+         &amp;=E\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g,w^{t-1}\right]\bigm|q=g\right] \\
+     &amp;=E\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g\right]\bigm|q=g\right] \\
     &amp;=E\left[L\left(w^{t-1}\right)\bigm|q=g\right] \\
 \end{aligned}
 \end{split}\]</div>
@@ -497,11 +505,11 @@ paths.</p>
 \[\begin{split}
 \begin{aligned}
 E\left[\ell \left(w_{t}\right)\bigm|q=f\right]  &amp;=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}f\left(w_{t}\right)dw_{t} \\
-    &amp;=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}g\left(w_{t}\right)dw_{t} \\
-    &amp;=\int \ell \left(w_{t}\right)^{2}g\left(w_{t}\right)dw_{t} \\
-    &amp;=E\left[\ell \left(w_{t}\right)^{2}\mid q=g\right] \\
-    &amp;=E\left[\ell \left(w_{t}\right)\mid q=g\right]^{2}+Var\left(\ell \left(w_{t}\right)\mid q=g\right) \\
-    &amp;&gt;E\left[\ell \left(w_{t}\right)\mid q=g\right]^{2} = 1 \\
+     &amp;=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}g\left(w_{t}\right)dw_{t} \\
+     &amp;=\int \ell \left(w_{t}\right)^{2}g\left(w_{t}\right)dw_{t} \\
+     &amp;=E\left[\ell \left(w_{t}\right)^{2}\mid q=g\right] \\
+     &amp;=E\left[\ell \left(w_{t}\right)\mid q=g\right]^{2}+Var\left(\ell \left(w_{t}\right)\mid q=g\right) \\
+     &amp;&gt;E\left[\ell \left(w_{t}\right)\mid q=g\right]^{2} = 1 \\
        \end{aligned}
 \end{split}\]</div>
 <p>This in turn implies that the unconditional mean of the likelihood ratio process <span class="math notranslate nohighlight">\(L(w^t)\)</span>
@@ -525,7 +533,7 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/358684ffe5e8e4c7977dd91758a24ec28a358283e48d3b624f92b9c1cd57c470.png" src="_images/358684ffe5e8e4c7977dd91758a24ec28a358283e48d3b624f92b9c1cd57c470.png" />
+<img alt="_images/1a72312d92a267956d06b378d6efaddd7b11bcf4768e2f2a26ea210ecfe72c07.png" src="_images/1a72312d92a267956d06b378d6efaddd7b11bcf4768e2f2a26ea210ecfe72c07.png" />
 </div>
 </div>
 <p>We also plot the probability that <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> falls into
@@ -539,7 +547,7 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/77f712580d80a45180f951f6412abc95460db1121ff67d7954272758f74f7df0.png" src="_images/77f712580d80a45180f951f6412abc95460db1121ff67d7954272758f74f7df0.png" />
+<img alt="_images/6cb9febc5f72f60fe92d4d5077636b51aa65d849a64f41fff5a92dc548a83ca5.png" src="_images/6cb9febc5f72f60fe92d4d5077636b51aa65d849a64f41fff5a92dc548a83ca5.png" />
 </div>
 </div>
 </section>
@@ -675,7 +683,7 @@ is what makes it possible eventually to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/300d7af10c01a90c6cc00e706ac6ea8d2809817d193992d1ec795008a040e7af.png" src="_images/300d7af10c01a90c6cc00e706ac6ea8d2809817d193992d1ec795008a040e7af.png" />
+<img alt="_images/d811d5c9ad65c7977ea6a1591993ffa54bc422ea481e8d3a381b66f8838ba783.png" src="_images/d811d5c9ad65c7977ea6a1591993ffa54bc422ea481e8d3a381b66f8838ba783.png" />
 </div>
 </div>
 <p>In the above graphs,</p>
@@ -710,7 +718,7 @@ they are integrals of <span class="math notranslate nohighlight">\(\log L_t\)</s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/69e512820b1f7fdd178515d14d6c892ba7669cb0760b172a69a63610249d19e0.png" src="_images/69e512820b1f7fdd178515d14d6c892ba7669cb0760b172a69a63610249d19e0.png" />
+<img alt="_images/f4fbfbd5cd6d6a5314f53d234ca9e40a13561fcee220e42ef5fd7a32457451b2.png" src="_images/f4fbfbd5cd6d6a5314f53d234ca9e40a13561fcee220e42ef5fd7a32457451b2.png" />
 </div>
 </div>
 <p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>,  the threshold <span class="math notranslate nohighlight">\(c\)</span> uniquely pins down  probabilities
@@ -745,7 +753,7 @@ sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/895ebc36a1863c13be9576e807cbf45817dd72a7deb2003077d7537dd013b70c.png" src="_images/895ebc36a1863c13be9576e807cbf45817dd72a7deb2003077d7537dd013b70c.png" />
+<img alt="_images/9a25ebf1c03d3b9dad6eb63015dfe72338c9f126ebb0eae7d179046a3fef6d32.png" src="_images/9a25ebf1c03d3b9dad6eb63015dfe72338c9f126ebb0eae7d179046a3fef6d32.png" />
 </div>
 </div>
 <p>Notice that as <span class="math notranslate nohighlight">\(t\)</span> increases, we are assured a larger probability
@@ -786,7 +794,7 @@ target probability of detection, for example, <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c2b6edbd2e860df357cc4eb1a14292e9f71005fd1ca115e487ffe117734d2cbd.png" src="_images/c2b6edbd2e860df357cc4eb1a14292e9f71005fd1ca115e487ffe117734d2cbd.png" />
+<img alt="_images/204027b46cae65aa59270242b1883eeb56585d7a28261084d64d4d082e505bfd.png" src="_images/204027b46cae65aa59270242b1883eeb56585d7a28261084d64d4d082e505bfd.png" />
 </div>
 </div>
 <p>The United States Navy evidently used a procedure like this to select a sample size <span class="math notranslate nohighlight">\(t\)</span> for doing quality
@@ -924,10 +932,10 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7c3c83fe9af0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7953e7e9b5c0&gt;]
 </pre></div>
 </div>
-<img alt="_images/827bb3fe7744d0f8f8cc40f0a4f3f20f455bd33d265a0b4fef1f06ea4efd32d3.png" src="_images/827bb3fe7744d0f8f8cc40f0a4f3f20f455bd33d265a0b4fef1f06ea4efd32d3.png" />
+<img alt="_images/aba6f60f0ebdc2d2aaa1aa493e17f2ee5415654c4602fb74fac1069a1aee8c3f.png" src="_images/aba6f60f0ebdc2d2aaa1aa493e17f2ee5415654c4602fb74fac1069a1aee8c3f.png" />
 </div>
 </div>
 <p>We can also try an <span class="math notranslate nohighlight">\(h\)</span> that is closer to <span class="math notranslate nohighlight">\(f\)</span> than is
@@ -971,10 +979,10 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7c3c83fd48f0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7953e7457fb0&gt;]
 </pre></div>
 </div>
-<img alt="_images/1c225e5c0f62679b6acc6b66cd74a80ea40272a83d62a1b3f527a65558ac7916.png" src="_images/1c225e5c0f62679b6acc6b66cd74a80ea40272a83d62a1b3f527a65558ac7916.png" />
+<img alt="_images/70c00cf491fdc665d9ae6a76fc8e87ec1120759be1fda4fbe0d833e0b6704444.png" src="_images/70c00cf491fdc665d9ae6a76fc8e87ec1120759be1fda4fbe0d833e0b6704444.png" />
 </div>
 </div>
 </section>
@@ -1001,7 +1009,7 @@ just as we did often earlier in this lecture.</p>
 <li><p>Timing protocol 1 is for   the model selection problem</p></li>
 <li><p>Timing protocol 2 is for the individual classification problem</p></li>
 </ul>
-<p><strong>Protocol 1:</strong>  Nature flips a coin once at time <span class="math notranslate nohighlight">\(t=-1\)</span> and with probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span>  generates a sequence  <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span>
+<p><strong>Timing Protocol 1:</strong>  Nature flips a coin once at time <span class="math notranslate nohighlight">\(t=-1\)</span> and with probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span>  generates a sequence  <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span>
 of  IID  draws from  <span class="math notranslate nohighlight">\(f\)</span>  and with probability <span class="math notranslate nohighlight">\(1-\pi_{-1}\)</span> generates a sequence  <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span>
 of  IID  draws from  <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>Let’s write some Python code that implements timing protocol 1.</p>
@@ -1030,7 +1038,7 @@ of  IID  draws from  <span class="math notranslate nohighlight">\(g\)</span>.</p
 </div>
 </div>
 </div>
-<p><strong>Protocol 2.</strong> At each time <span class="math notranslate nohighlight">\(t \geq 0\)</span>, nature flips a coin and with probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> draws <span class="math notranslate nohighlight">\(w_t\)</span> from <span class="math notranslate nohighlight">\(f\)</span> and with probability <span class="math notranslate nohighlight">\(1-\pi_{-1}\)</span> draws <span class="math notranslate nohighlight">\(w_t\)</span> from <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p><strong>Timing Protocol 2.</strong> At each time <span class="math notranslate nohighlight">\(t \geq 0\)</span>, nature flips a coin and with probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> draws <span class="math notranslate nohighlight">\(w_t\)</span> from <span class="math notranslate nohighlight">\(f\)</span> and with probability <span class="math notranslate nohighlight">\(1-\pi_{-1}\)</span> draws <span class="math notranslate nohighlight">\(w_t\)</span> from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>Here is  Python code that we’ll use to implement timing protocol 2.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1057,7 +1065,7 @@ of  IID  draws from  <span class="math notranslate nohighlight">\(g\)</span>.</p
 </div>
 </div>
 </div>
-<p><strong>Remark:</strong> Under protocol 2, the <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span> is a sequence of IID draws from <span class="math notranslate nohighlight">\(h(w)\)</span>. Under protocol 1, the the <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span> is
+<p><strong>Remark:</strong> Under timing protocol 2, the <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span> is a sequence of IID draws from <span class="math notranslate nohighlight">\(h(w)\)</span>. Under timing protocol 1, the the <span class="math notranslate nohighlight">\(\{w_t\}_{t=1}^T\)</span> is
 not IID.  It is <strong>conditionally IID</strong> – meaning that with probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> it is a sequence of IID draws from <span class="math notranslate nohighlight">\(f(w)\)</span> and with probability <span class="math notranslate nohighlight">\(1-\pi_{-1}\)</span> it is a sequence of IID draws from <span class="math notranslate nohighlight">\(g(w)\)</span>. For more about this, see <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture about exchangeability</span></a>.</p>
 <p>We  again deploy a <strong>likelihood ratio process</strong> with time <span class="math notranslate nohighlight">\(t\)</span> component being the likelihood ratio</p>
 <div class="math notranslate nohighlight">
@@ -1108,7 +1116,7 @@ p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T.
 <span class="eqno">(21.1)<a class="headerlink" href="#equation-eq-detectionerrorprob" title="Permalink to this equation">#</a></span>\[ 
 p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
 \]</div>
-<p>Now let’s simulate the protocol 1 and compute the error probabilities</p>
+<p>Now let’s simulate  timing protocol 1 and compute the error probabilities</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set parameters</span>
@@ -1164,11 +1172,11 @@ p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/436d511b34684a847fd025d2c2d94778606688b2e6919994047dcbc10acb918f.png" src="_images/436d511b34684a847fd025d2c2d94778606688b2e6919994047dcbc10acb918f.png" />
+<img alt="_images/124393793aaf198ec40b756b25b7260ac880dd47a770ce2d9a12619472c87ea6.png" src="_images/124393793aaf198ec40b756b25b7260ac880dd47a770ce2d9a12619472c87ea6.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>At T=30:
-α_30 = 0.0054
+α_30 = 0.0038
 β_30 = 0.0030
-Model selection error probability = 0.0042
+Model selection error probability = 0.0034
 </pre></div>
 </div>
 </div>
@@ -1193,46 +1201,15 @@ w_t  &amp; \ {\rm is \ from \  g  \ if \ } l_t \leq 1 .
 p(\textrm{misclassification}) = {1 \over 2} (\tilde \alpha_t + \tilde \beta_t) 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\tilde \alpha_t = {\rm Prob}(l_t &lt; 1 \mid f)\)</span> and <span class="math notranslate nohighlight">\(\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)\)</span>.</p>
-<p>Now let’s simulate protocol 2 and compute the classification error probability.</p>
+<p>Since for each <span class="math notranslate nohighlight">\(t\)</span>, the decision boundary is the same, the decision boundary can be computed as</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequences_p2</span><span class="p">,</span> <span class="n">true_sources_p2</span> <span class="o">=</span> <span class="n">protocol_2</span><span class="p">(</span>
-                    <span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">)</span>
-<span class="n">l_ratios_p2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_likelihood_ratios</span><span class="p">(</span><span class="n">sequences_p2</span><span class="p">)</span>
-
-<span class="c1"># Find decision boundary where f(w) = g(w)</span>
-<span class="n">root</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">)</span>
-
-<span class="c1"># Compute theoretical tilde α_t and tilde β_t</span>
-<span class="k">def</span> <span class="nf">α_integrand</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integrand for tilde α_t = P(l_t &lt; 1 | f)&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
-
-<span class="k">def</span> <span class="nf">β_integrand</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integrand for tilde β_t = P(l_t &gt;= 1 | g)&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
-
-<span class="c1"># Compute the integrals</span>
-<span class="n">α_theory</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">α_integrand</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">β_theory</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">β_integrand</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-
-<span class="n">theory_error</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">α_theory</span> <span class="o">+</span> <span class="n">β_theory</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;theoretical tilde α_t = </span><span class="si">{</span><span class="n">α_theory</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;theoretical tilde β_t = </span><span class="si">{</span><span class="n">β_theory</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;theoretical classification error probability = </span><span class="si">{</span><span class="n">theory_error</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>theoretical tilde α_t = 0.4752
-theoretical tilde β_t = 0.1836
-theoretical classification error probability = 0.3294
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">root</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Since for each <span class="math notranslate nohighlight">\(t\)</span>, the decision boundary is the same, we can plot the distributions of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> and the decision boundary</p>
+<p>we can plot the distributions of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> and the decision boundary</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1242,7 +1219,7 @@ theoretical classification error probability = 0.3294
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
-<span class="n">w_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">w_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">f_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">w_range</span><span class="p">]</span>
 <span class="n">g_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">w_range</span><span class="p">]</span>
 <span class="n">ratio_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">/</span><span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">w_range</span><span class="p">]</span>
@@ -1279,7 +1256,7 @@ theoretical classification error probability = 0.3294
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/61121f6381dac15b6f7253b54df9e2ed1d323190e9d4c1ef4a9608ac1ce5871d.png" src="_images/61121f6381dac15b6f7253b54df9e2ed1d323190e9d4c1ef4a9608ac1ce5871d.png" />
+<img alt="_images/3cebca0b6b96713a8be9bedcf3ce8b14f30e5617adb12979beeb75fef1a3467e.png" src="_images/3cebca0b6b96713a8be9bedcf3ce8b14f30e5617adb12979beeb75fef1a3467e.png" />
 </div>
 </div>
 <p>To  the left of the  green vertical line  <span class="math notranslate nohighlight">\(f &lt; g \)</span>,  so <span class="math notranslate nohighlight">\(l_t &lt; 1\)</span>; therefore a  <span class="math notranslate nohighlight">\(w_t\)</span> that falls to the left of the green line is classified as a type <span class="math notranslate nohighlight">\(g\)</span> individual.</p>
@@ -1290,10 +1267,47 @@ theoretical classification error probability = 0.3294
 <ul class="simple">
 <li><p>The shaded blue area equals <span class="math notranslate nohighlight">\(\alpha\)</span> – the probability of classifying someone as a type <span class="math notranslate nohighlight">\(f\)</span> when it is really a type <span class="math notranslate nohighlight">\(g\)</span> individual.</p></li>
 </ul>
-<p>Let’s see the classification algorithm performs in  simulated data.</p>
+<p>This gives us clues about how to compute the theoretical classification error probability</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute theoretical tilde α_t and tilde β_t</span>
+<span class="k">def</span> <span class="nf">α_integrand</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integrand for tilde α_t = P(l_t &lt; 1 | f)&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">β_integrand</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integrand for tilde β_t = P(l_t &gt;= 1 | g)&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+
+<span class="c1"># Compute the integrals</span>
+<span class="n">α_theory</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">α_integrand</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">β_theory</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">β_integrand</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">theory_error</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">α_theory</span> <span class="o">+</span> <span class="n">β_theory</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;theoretical tilde α_t = </span><span class="si">{</span><span class="n">α_theory</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;theoretical tilde β_t = </span><span class="si">{</span><span class="n">β_theory</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;theoretical classification error probability = </span><span class="si">{</span><span class="n">theory_error</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>theoretical tilde α_t = 0.4752
+theoretical tilde β_t = 0.1836
+theoretical classification error probability = 0.3294
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we simulate timing protocol 2 and compute the classification error probability.</p>
+<p>In the next cell, we also compare the theoretical classification accuracy to the empirical classification accuracy</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T_max</span><span class="p">)</span>
+
+<span class="n">sequences_p2</span><span class="p">,</span> <span class="n">true_sources_p2</span> <span class="o">=</span> <span class="n">protocol_2</span><span class="p">(</span>
+                    <span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">)</span>
+<span class="n">l_ratios_p2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_likelihood_ratios</span><span class="p">(</span><span class="n">sequences_p2</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T_max</span><span class="p">):</span>
     <span class="n">predictions</span> <span class="o">=</span> <span class="p">(</span><span class="n">l_ratios_p2</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
@@ -1314,10 +1328,10 @@ theoretical classification error probability = 0.3294
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e4f7ba0b8f287a7c502c62ff0ec99aee7bd0bdf1a87527e9082167008a230c56.png" src="_images/e4f7ba0b8f287a7c502c62ff0ec99aee7bd0bdf1a87527e9082167008a230c56.png" />
+<img alt="_images/e6c14e0f2699b1cbb857ccdebfb8b662c297a802422820219d5d2bd93aa15747.png" src="_images/e6c14e0f2699b1cbb857ccdebfb8b662c297a802422820219d5d2bd93aa15747.png" />
 </div>
 </div>
-<p>Let’s watch decisions made by  the two protocols as more and more observations accrue.</p>
+<p>Let’s watch decisions made by  the two timing protocols as more and more observations accrue.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -1333,19 +1347,464 @@ theoretical classification error probability = 0.3294
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ef74293602f866955f2160440d4795c50cf9383aaad292bebf948e585adc7505.png" src="_images/ef74293602f866955f2160440d4795c50cf9383aaad292bebf948e585adc7505.png" />
+<img alt="_images/5a2868db206259a38fb9db0595c6ce03d71bd721b22a9f8b8a6f7eaede50f1a0.png" src="_images/5a2868db206259a38fb9db0595c6ce03d71bd721b22a9f8b8a6f7eaede50f1a0.png" />
 </div>
 </div>
 <p>From the figure above, we can see:</p>
 <ul class="simple">
-<li><p>For both protocols, the error probability starts at the same level, subject to a little randomness.</p></li>
-<li><p>For protocol 1, the error probability decreases as the sample size increaes because we are just making <strong>one</strong> decision – i.e., selecting whether <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> governs  <strong>all</strong> individuals.  More data provides better evidence.</p></li>
-<li><p>For protocol 2, the error probability remains constant because we are making <strong>many</strong> decisions – one classification decision for each observation.</p></li>
+<li><p>For both timing protocols, the error probability starts at the same level, subject to a little randomness.</p></li>
+<li><p>For timing protocol 1, the error probability decreases as the sample size increases because we are  making just <strong>one</strong> decision – i.e., selecting whether <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> governs  <strong>all</strong> individuals.  More data provides better evidence.</p></li>
+<li><p>For timing protocol 2, the error probability remains constant because we are making <strong>many</strong> decisions – one classification decision for each observation.</p></li>
 </ul>
 <p><strong>Remark:</strong> Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem.</p>
 </section>
-<section id="sequels">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">21.11. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this heading">#</a></h2>
+<section id="measuring-discrepancies-between-distributions">
+<h2><a class="toc-backref" href="#id15"><span class="section-number">21.11. </span>Measuring discrepancies between distributions</a><a class="headerlink" href="#measuring-discrepancies-between-distributions" title="Permalink to this heading">#</a></h2>
+<p>A plausible guess is that  the ability of a likelihood ratio to distinguish  distributions <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> depends on how “different” they are.</p>
+<p>But how should we measure  discrepancies between distributions?</p>
+<p>We’ve already encountered one discrepancy measure – the Kullback-Leibler (KL) divergence.</p>
+<p>We now briefly explore two alternative discrepancy  measures.</p>
+<section id="chernoff-entropy">
+<h3><span class="section-number">21.11.1. </span>Chernoff entropy<a class="headerlink" href="#chernoff-entropy" title="Permalink to this heading">#</a></h3>
+<p>Chernoff entropy was motivated by an early application of  the <a class="reference external" href="https://en.wikipedia.org/wiki/Large_deviations_theory">theory of large deviations</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Large deviation theory provides refinements of the central limit theorem.</p>
+</div>
+<p>The Chernoff entropy between probability densities <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+C(f,g) = - \log \min_{\phi \in (0,1)} \int f^\phi(x) g^{1-\phi}(x) dx
+\]</div>
+<p>An upper bound on model selection error probabilty is</p>
+<div class="math notranslate nohighlight">
+\[
+e^{-C(f,g)T} .
+\]</div>
+<p>Thus,    Chernoff entropy is  an upper bound on  the exponential  rate at which  the selection error probability falls as sample size <span class="math notranslate nohighlight">\(T\)</span> grows.</p>
+<p>Let’s compute Chernoff entropy numerically with some Python code</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">chernoff_integrand</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the integrand for Chernoff entropy</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">integrand</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">**</span><span class="n">ϕ</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">ϕ</span><span class="p">)</span>
+
+    <span class="n">result</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="k">def</span> <span class="nf">compute_chernoff_entropy</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Chernoff entropy C(f,g)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">ϕ</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">chernoff_integrand</span><span class="p">(</span><span class="n">ϕ</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+    
+    <span class="c1"># Find the minimum over ϕ in (0,1)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> 
+                             <span class="c1"># For numerical stability</span>
+                             <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">),</span> 
+                             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bounded&#39;</span><span class="p">)</span>
+    <span class="n">min_value</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fun</span>
+    <span class="n">ϕ_optimal</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span>
+    
+    <span class="n">chernoff_entropy</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">min_value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">chernoff_entropy</span><span class="p">,</span> <span class="n">ϕ_optimal</span>
+
+<span class="n">C_fg</span><span class="p">,</span> <span class="n">ϕ_optimal</span> <span class="o">=</span> <span class="n">compute_chernoff_entropy</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chernoff entropy C(f,g) = </span><span class="si">{</span><span class="n">C_fg</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal ϕ = </span><span class="si">{</span><span class="n">ϕ_optimal</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chernoff entropy C(f,g) = 0.1212
+Optimal ϕ = 0.5969
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s examine how <span class="math notranslate nohighlight">\(e^{-C(f,g)T}\)</span> behaves as a function of <span class="math notranslate nohighlight">\(T\)</span> and compare it to the model selection error probability</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T_max</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">chernoff_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">C_fg</span> <span class="o">*</span> <span class="n">T_range</span><span class="p">)</span>
+
+<span class="c1"># Plot comparison</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">T_range</span><span class="p">,</span> <span class="n">chernoff_bound</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$e^</span><span class="se">{{</span><span class="s1">-C(f,g)T</span><span class="se">}}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">T_range</span><span class="p">,</span> <span class="n">error_prob</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+           <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model selection error probability&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;error probability (log scale)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/62ccd770686c4361fbcf5f9be383fb297471b5149e8e3aac2119ec9ae3469129.png" src="_images/62ccd770686c4361fbcf5f9be383fb297471b5149e8e3aac2119ec9ae3469129.png" />
+</div>
+</div>
+<p>Evidently, <span class="math notranslate nohighlight">\(e^{-C(f,g)T}\)</span> is an upper bound on the error rate.</p>
+</section>
+<section id="jensen-shannon-divergence">
+<h3><span class="section-number">21.11.2. </span>Jensen-Shannon divergence<a class="headerlink" href="#jensen-shannon-divergence" title="Permalink to this heading">#</a></h3>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence">Jensen-Shannon divergence</a> is another  divergence measure.</p>
+<p>For probability densities <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>, the <strong>Jensen-Shannon divergence</strong> is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-js-divergence">
+<span class="eqno">(21.3)<a class="headerlink" href="#equation-eq-js-divergence" title="Permalink to this equation">#</a></span>\[
+D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(m = \frac{1}{2}(f+g)\)</span> is a mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We studied KL divergence in the <a class="reference internal" href="#rel-entropy"><span class="std std-ref">section above</span></a> with respect to a reference distribution <span class="math notranslate nohighlight">\(h\)</span>.</p>
+<p>Because in general <span class="math notranslate nohighlight">\(KL(f, g) \neq KL(g, f)\)</span>, KL divergence is not symmetric, but Jensen-Shannon divergence is symmetric.</p>
+<p>(In fact, the square root of the Jensen-Shannon divergence is a metric referred to as the Jensen-Shannon distance.)</p>
+<p>As <a class="reference internal" href="#equation-eq-js-divergence">(21.3)</a> shows, the Jensen-Shannon divergence computes average of the KL divergence of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> with respect to a particular reference distribution <span class="math notranslate nohighlight">\(m\)</span> defined below the equation.</p>
+</div>
+<p>Now let’s create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">js_divergence</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Jensen-Shannon divergence</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">m</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">kl_div</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">integrand</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+            <span class="n">ratio</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">q</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    
+    <span class="n">js_div</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">kl_div</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">kl_div</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">js_div</span>
+
+<span class="k">def</span> <span class="nf">kl_divergence</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute KL divergence KL(f, g)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">integrand</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+    
+    <span class="n">result</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="n">distribution_pairs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># (f_params, g_params)</span>
+    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)),</span>
+    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)),</span>
+    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)),</span>
+    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)),</span>
+    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">)),</span>
+    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)),</span>
+    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> 
+    <span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> 
+    <span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> 
+    <span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+<span class="p">]</span>
+
+<span class="c1"># Create comparison table</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">((</span><span class="n">f_a</span><span class="p">,</span> <span class="n">f_b</span><span class="p">),</span> <span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">distribution_pairs</span><span class="p">):</span>
+    <span class="c1"># Define the density functions</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">f_a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">f_b</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">g_a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">g_b</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+    
+    <span class="c1"># Compute measures</span>
+    <span class="n">kl_fg</span> <span class="o">=</span> <span class="n">kl_divergence</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+    <span class="n">kl_gf</span> <span class="o">=</span> <span class="n">kl_divergence</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="n">js_div</span> <span class="o">=</span> <span class="n">js_divergence</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+    <span class="n">chernoff_ent</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_chernoff_entropy</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+    
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;Pair&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;f=Beta(</span><span class="si">{</span><span class="n">f_a</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">f_b</span><span class="si">}</span><span class="s2">), g=Beta(</span><span class="si">{</span><span class="n">g_a</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">g_b</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;KL(f, g)&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kl_fg</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;KL(g, f)&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kl_gf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;JS divergence&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">js_div</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;Chernoff entropy&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">chernoff_ent</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">})</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                         Pair KL(f, g) KL(g, f) JS divergence Chernoff entropy
+f=Beta(1,1), g=Beta(1.1,1.05)   0.0028   0.0026        0.0007           0.0007
+ f=Beta(1,1), g=Beta(1.2,1.1)   0.0105   0.0092        0.0024           0.0025
+ f=Beta(1,1), g=Beta(1.5,1.2)   0.0589   0.0437        0.0121           0.0126
+   f=Beta(1,1), g=Beta(2,1.5)   0.1781   0.1081        0.0309           0.0339
+ f=Beta(1,1), g=Beta(2.5,1.8)   0.3323   0.1731        0.0502           0.0577
+   f=Beta(1,1), g=Beta(3,1.2)   0.7590   0.3436        0.0984           0.1212
+     f=Beta(1,1), g=Beta(4,1)   1.6134   0.6362        0.1733           0.2341
+     f=Beta(1,1), g=Beta(5,1)   2.3901   0.8094        0.2162           0.3128
+     f=Beta(2,2), g=Beta(4,2)   0.4627   0.3040        0.0816           0.0921
+     f=Beta(2,2), g=Beta(6,2)   1.3874   0.7078        0.1826           0.2372
+     f=Beta(2,2), g=Beta(8,2)   2.5151   1.0682        0.2624           0.3823
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above  table indicates how  Jensen-Shannon divergence,  and Chernoff entropy, and  KL divergence covary as we alter <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>Let’s also visualize how these diverge measures covary</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kl_fg_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;KL(f, g)&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+<span class="n">js_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;JS divergence&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+<span class="n">chernoff_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;Chernoff entropy&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># JS divergence and KL divergence</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">kl_fg_values</span><span class="p">,</span> <span class="n">js_values</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;KL divergence KL(f, g)&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;JS divergence&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;JS divergence and KL divergence&#39;</span><span class="p">)</span>
+
+<span class="c1"># Chernoff Entropy and JS divergence</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">js_values</span><span class="p">,</span> <span class="n">chernoff_values</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;JS divergence&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Chernoff entropy&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Chernoff entropy and JS divergence&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/8470922fb80088698a7a05410dc6824f7d84ad0798c6467e6c49a13d3d5cf9a7.png" src="_images/8470922fb80088698a7a05410dc6824f7d84ad0798c6467e6c49a13d3d5cf9a7.png" />
+</div>
+</div>
+<p>To make the comparison more concrete, let’s plot the distributions and the divergence measures for a few pairs of distributions.</p>
+<p>Note that the numbers on the title changes with the area of the overlaps of two distributions</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_dist_diff</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot overlap of two distributions and divergence measures</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Chose a subset of Beta distribution parameters</span>
+    <span class="n">param_grid</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>   
+        <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)),</span>
+        <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)),</span>  
+        <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)),</span>  
+        <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>    
+        <span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> 
+    <span class="p">]</span>
+    
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    
+    <span class="n">divergence_data</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">((</span><span class="n">f_a</span><span class="p">,</span> <span class="n">f_b</span><span class="p">),</span> <span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">param_grid</span><span class="p">):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span>
+        
+        <span class="c1"># Create density functions</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">f_a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">f_b</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">g_a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">g_b</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+        
+        <span class="c1"># Compute divergence measures</span>
+        <span class="n">kl_fg</span> <span class="o">=</span> <span class="n">kl_divergence</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+        <span class="n">js_div</span> <span class="o">=</span> <span class="n">js_divergence</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span> 
+        <span class="n">chernoff_ent</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_chernoff_entropy</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+        
+        <span class="n">divergence_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">&#39;f_params&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">f_a</span><span class="p">,</span> <span class="n">f_b</span><span class="p">),</span>
+            <span class="s1">&#39;g_params&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">),</span>
+            <span class="s1">&#39;kl_fg&#39;</span><span class="p">:</span> <span class="n">kl_fg</span><span class="p">,</span>
+            <span class="s1">&#39;js_div&#39;</span><span class="p">:</span> <span class="n">js_div</span><span class="p">,</span>
+            <span class="s1">&#39;chernoff&#39;</span><span class="p">:</span> <span class="n">chernoff_ent</span>
+        <span class="p">})</span>
+        
+        <span class="c1"># Plot distributions</span>
+        <span class="n">x_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="n">f_vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_range</span><span class="p">]</span>
+        <span class="n">g_vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_range</span><span class="p">]</span>
+        
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">f_vals</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+                           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;f ~ Beta(</span><span class="si">{</span><span class="n">f_a</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">f_b</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">g_vals</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+                           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;g ~ Beta(</span><span class="si">{</span><span class="n">g_a</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">g_b</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Fill overlap region</span>
+        <span class="n">overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">f_vals</span><span class="p">,</span> <span class="n">g_vals</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">overlap</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> 
+                                   <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;overlap&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Add divergence information</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;KL(f, g)=</span><span class="si">{</span><span class="n">kl_fg</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">, JS=</span><span class="si">{</span><span class="n">js_div</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">, C=</span><span class="si">{</span><span class="n">chernoff_ent</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">divergence_data</span>
+
+<span class="n">divergence_data</span> <span class="o">=</span> <span class="n">plot_dist_diff</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="_images/20676c37446d6fedbc8b36562a6f3e5d46d540ae277988f28e625d4f59756faf.png" src="_images/20676c37446d6fedbc8b36562a6f3e5d46d540ae277988f28e625d4f59756faf.png" />
+</div>
+</div>
+</section>
+<section id="error-probability-and-divergence-measures">
+<h3><span class="section-number">21.11.3. </span>Error probability and divergence measures<a class="headerlink" href="#error-probability-and-divergence-measures" title="Permalink to this heading">#</a></h3>
+<p>Now let’s return to our guess that the error probability at large sample sizes is related to the Chernoff entropy  between two distributions.</p>
+<p>We verify this by computing the correlation between the log of the error probability at <span class="math notranslate nohighlight">\(T=50\)</span> under Timing Protocol 1 and the divergence measures.</p>
+<p>In the simulation below, nature draws <span class="math notranslate nohighlight">\(N / 2\)</span> sequences from <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(N/2\)</span> sequences from <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Nature does this rather than flipping a fair coin to decide whether to draw from <span class="math notranslate nohighlight">\(g\)</span> or <span class="math notranslate nohighlight">\(f\)</span> once and for all before each simulation of length <span class="math notranslate nohighlight">\(T\)</span>.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">error_divergence_cor</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    compute correlation between error probabilities and divergence measures.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        
+    <span class="c1"># Parameters for simulation</span>
+    <span class="n">T_large</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="n">N_sims</span> <span class="o">=</span> <span class="mi">5000</span>
+    <span class="n">N_half</span> <span class="o">=</span> <span class="n">N_sims</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="c1"># Initialize arrays</span>
+    <span class="n">n_pairs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">distribution_pairs</span><span class="p">)</span>
+    <span class="n">kl_fg_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_pairs</span><span class="p">)</span>
+    <span class="n">kl_gf_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_pairs</span><span class="p">)</span> 
+    <span class="n">js_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_pairs</span><span class="p">)</span>
+    <span class="n">chernoff_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_pairs</span><span class="p">)</span>
+    <span class="n">error_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_pairs</span><span class="p">)</span>
+    <span class="n">pair_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">((</span><span class="n">f_a</span><span class="p">,</span> <span class="n">f_b</span><span class="p">),</span> <span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">distribution_pairs</span><span class="p">):</span>
+        <span class="c1"># Create density functions</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">f_a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">f_b</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">g_a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">g_b</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+
+        <span class="c1"># Compute divergence measures</span>
+        <span class="n">kl_fg_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">kl_divergence</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+        <span class="n">kl_gf_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">kl_divergence</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="n">js_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">js_divergence</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+        <span class="n">chernoff_vals</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_chernoff_entropy</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+
+        <span class="c1"># Generate samples</span>
+        <span class="n">sequences_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">f_a</span><span class="p">,</span> <span class="n">f_b</span><span class="p">,</span> <span class="p">(</span><span class="n">N_half</span><span class="p">,</span> <span class="n">T_large</span><span class="p">))</span>
+        <span class="n">sequences_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="p">(</span><span class="n">N_half</span><span class="p">,</span> <span class="n">T_large</span><span class="p">))</span>
+
+        <span class="c1"># Compute likelihood ratios</span>
+        <span class="n">l_ratios_f</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">sequences_f</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">sequences_f</span><span class="p">)</span>
+        <span class="n">l_ratios_g</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">sequences_g</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">sequences_g</span><span class="p">)</span>
+
+        <span class="c1"># Compute cumulative products</span>
+        <span class="n">L_cumulative_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">l_ratios_f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">L_cumulative_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">l_ratios_g</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Calculate error probabilities</span>
+        <span class="n">error_probs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">L_cumulative_f</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> 
+                                <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">L_cumulative_g</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">pair_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Beta(</span><span class="si">{</span><span class="n">f_a</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">f_b</span><span class="si">}</span><span class="s2">) and Beta(</span><span class="si">{</span><span class="n">g_a</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">g_b</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;kl_fg&#39;</span><span class="p">:</span> <span class="n">kl_fg_vals</span><span class="p">,</span>
+        <span class="s1">&#39;kl_gf&#39;</span><span class="p">:</span> <span class="n">kl_gf_vals</span><span class="p">,</span>
+        <span class="s1">&#39;js&#39;</span><span class="p">:</span> <span class="n">js_vals</span><span class="p">,</span> 
+        <span class="s1">&#39;chernoff&#39;</span><span class="p">:</span> <span class="n">chernoff_vals</span><span class="p">,</span>
+        <span class="s1">&#39;error_prob&#39;</span><span class="p">:</span> <span class="n">error_probs</span><span class="p">,</span>
+        <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="n">pair_names</span><span class="p">,</span>
+        <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="n">T_large</span>
+    <span class="p">}</span>
+
+<span class="n">cor_data</span> <span class="o">=</span> <span class="n">error_divergence_cor</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s visualize the correlations</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_error_divergence</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot correlations between error probability and divergence measures.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Filter out near-zero error probabilities for log scale</span>
+    <span class="n">nonzero_mask</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error_prob&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-6</span>
+    <span class="n">log_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;error_prob&#39;</span><span class="p">][</span><span class="n">nonzero_mask</span><span class="p">])</span>
+    <span class="n">js_vals</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;js&#39;</span><span class="p">][</span><span class="n">nonzero_mask</span><span class="p">]</span>
+    <span class="n">chernoff_vals</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;chernoff&#39;</span><span class="p">][</span><span class="n">nonzero_mask</span><span class="p">]</span>
+
+    <span class="c1"># Create figure and axes</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    
+    <span class="c1"># Helper function for plotting correlation</span>
+    <span class="k">def</span> <span class="nf">plot_correlation</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x_vals</span><span class="p">,</span> <span class="n">x_label</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">log_error</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">x_label</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;log(Error probability) at T=</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Calculate correlation and trend line</span>
+        <span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">log_error</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">log_error</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">x_trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_vals</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x_vals</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_trend</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">poly1d</span><span class="p">(</span><span class="n">z</span><span class="p">)(</span><span class="n">x_trend</span><span class="p">),</span> 
+                <span class="s2">&quot;r--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Log error probability and </span><span class="si">{</span><span class="n">x_label</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                     <span class="sa">f</span><span class="s1">&#39;Correlation = </span><span class="si">{</span><span class="n">corr</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Plot both correlations</span>
+    <span class="n">plot_correlation</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">js_vals</span><span class="p">,</span> <span class="s1">&#39;JS divergence&#39;</span><span class="p">,</span> <span class="s1">&#39;C0&#39;</span><span class="p">)</span>
+    <span class="n">plot_correlation</span><span class="p">(</span><span class="n">ax2</span><span class="p">,</span> <span class="n">chernoff_vals</span><span class="p">,</span> <span class="s1">&#39;Chernoff entropy&#39;</span><span class="p">,</span> <span class="s1">&#39;C1&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plot_error_divergence</span><span class="p">(</span><span class="n">cor_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="_images/ed3eac4977c4f7b0d96cce3e26defa324fcd66f11c71623ad97ca98d2c7a1f5c.png" src="_images/ed3eac4977c4f7b0d96cce3e26defa324fcd66f11c71623ad97ca98d2c7a1f5c.png" />
+</div>
+</div>
+<p>Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability.</p>
+<p>We’ll encounter related  ideas in <a class="reference internal" href="wald_friedman.html"><span class="doc">A Problem that Stumped Milton Friedman</span></a>.</p>
+</section>
+</section>
+<section id="related-lectures">
+<h2><a class="toc-backref" href="#id16"><span class="section-number">21.12. </span>Related Lectures</a><a class="headerlink" href="#related-lectures" title="Permalink to this heading">#</a></h2>
 <p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>
 and as applied in <a class="reference internal" href="odu.html"><span class="doc">Job Search VII: Search with Learning</span></a>.</p>
 <p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html" title="(in Python)"><span>Additive and Multiplicative Functionals</span></a>, which contains another illustration

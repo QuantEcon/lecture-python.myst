@@ -55,19 +55,23 @@ We'll use our code to
 
 ## Geometric distribution
 
+A discrete geometric distribution has probability  mass function
+
 $$
-\textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots
+\textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots,  \quad p \in (0,1)
 $$
 
-$\implies$
+where $k = 1, 2, \ldots$ is the number of trials before the first success.
+
+The mean and variance of this one-parameter probability distribution are
 
 $$
 \begin{aligned}
-\mathbb{E}(X) & =\frac{1}{p}\\\mathbb{D}(X) & =\frac{1-p}{p^2}
+\mathbb{E}(X) & =\frac{1}{p}\\\mathbb{Var}(X) & =\frac{1-p}{p^2}
 \end{aligned}
 $$
 
-We draw observations from the distribution and compare the sample mean and variance with the theoretical results.
+Let's use Python  draw observations from the distribution and compare the sample mean and variance with the theoretical results.
 
 ```{code-cell} ipython3
 # specify parameters
@@ -94,7 +98,7 @@ Consider a sequence of independent Bernoulli trials.
 
 Let $p$ be the probability of success.
 
-Let $X$ be a random variable that represents the number of failures before we get $r$ success.
+Let $X$ be a random variable that represents the number of failures before we get $r$ successes.
 
 Its distribution is
 
