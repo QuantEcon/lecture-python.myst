@@ -1484,6 +1484,232 @@ We'll encounter related  ideas in {doc}`wald_friedman`.
 
 +++
 
+
+## Consumption  and Heterogeneous Beliefs
+
+A likelihood ratio process plays a big role in Lawrence  Blume and David Easley's answer to their question
+''If you're so smart, why aren't you rich?'' {cite}`blume2006if`.  
+
+Let's provide an example that indicates the basic components of their analysis. 
+
+Let the random variable $s_t \in (0,1)$ at time $t =0, 1, 2, \ldots$ be distributed according to the same  Beta distribution  with parameters 
+$\theta = [\theta_1, \theta_2]$.
+
+We'll denote this  probability density as
+
+$$
+\pi(s_t|\theta)
+$$
+
+Below, we'll just write $\pi(s_t)$ instead of $\pi(s_t|\theta)$ to save space.
+
+In this section, we'll let $s_t \equiv y_t^1$ be the endowment of a nonstorable consumption good  that a person we'll call "agent 1" receives at time $t$.
+
+Let a history $s^t = [s_t, s_{t-1}, \ldots, s_0]$ be a sequence of i.i.d. random variables with joint distribution
+
+$$
+\pi_t(s^t) = \pi(s_t) \pi(s_{t-1}) \cdots \pi(s_0)
+$$ 
+
+So in our example, $s^t$ is a comprehensive list of agent $1$'s endowments of the consumption good  from time $0$ up to time $t$.  
+
+If agent $1$ lives on an island by himself, agent $1$'s consumption $c^1(s_t)$  at time $t$ is 
+
+$$c^1(s_t) = y_t^1 = s_t. $$
+
+### Nature and beliefs
+
+Nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t(s^t)$.
+
+* so $\pi$ without a superscript is nature's model 
+* but in addition to nature, there are other entities inside our model -- artificial people that we call "agents"
+* each agent  has a sequence of probability distributions over $s^t$ for $t=0, \ldots$ 
+* agent $i$ thinks that nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t^i(s^t)$
+   * agent $i$ is mistaken unless $\pi_t^i(s^t) = \pi_t(s^t)$
+
+```{note}
+A **rational expectations** model would set $\pi_t^i(s^t) = \pi_t(s^t)$ for all agents $i$.
+```
+
+
+
+In our model, there are two agents named $i=1$ and $i=2$.
+
+At time $t$, agent $1$ receives an endowment
+
+$$
+y_t^1 = s_t 
+$$
+
+of a nonstorable consumption good, while agent $2$ receives an endowment of 
+
+
+$$
+y_t^2 = 1 - s_t 
+$$
+
+The aggregate endowment of the consumption good is
+
+$$
+y_t^1 + y_t^2 = 1
+$$
+
+at each date $t \geq 0$. 
+
+At date $t$ agent $i$ consumes $c_t^i(s^t)$ of the good.  
+
+A (non wasteful) feasible allocation of the aggregate endowment of  $1$ each period  satisfies
+
+$$
+c_t^1 + c_t^2 = 1 .
+$$
+
+### A social risk-sharing arrangement
+
+In order to share risks, a  benevolent social planner will dictate a  a history-dependent consumption allocation in the form of a sequence of functions 
+
+$$
+c_t^i = c_t^i(s^t)
+$$
+
+that satisfy
+
+$$
+c_t^1(s^t) + c_t^2(s^t) = 1  
+$$ (eq:feasibility)
+
+for all $s^t$ for all $t \geq 0$. 
+
+To design a socially optimal allocation, the social planner wants to know what agents $1$ believe about the endowment sequence and how they feel about bearing risks.  
+
+As for the endowment sequences, agent $i$ believes that nature draws i.i.d.  sequences from joint densities 
+
+$$
+\pi_t^i(s^t) = \pi(s_t)^i \pi^i(s_{t-1}) \cdots \pi^i(s_0)
+$$ 
+
+As for attitudes toward bearing risks, agent $i$ has a one-period utility function
+
+$$
+u(c_t^i) = u(c_t^i) = \ln (c_t^i)
+$$
+
+with marginal utility of consumption in period $i$
+
+$$
+u'(c_t^i) = \frac{1}{c_t^i}
+$$
+
+Putting its beliefs about its random  endowment sequence and its attitudes toward bearing risks together,  agent $i$ has intertemporal utility function 
+
+$$V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t) ,$$
+
+where $\delta \in (0,1)$ is an intertemporal discount factor,
+
+### The social planner's allocation problem
+
+The benevolent dictator has all the information it requires to choose a consumption allocation that maximizes the  social welfare criterion 
+
+$$
+W = \lambda V^1 + (1-\lambda) V^2
+$$ (eq:welfareW)
+
+where $\lambda \in [0,1]$ tells how much the planner prefers agent $1$ to agent $2$.  
+
+Setting $\lambda = .5$ expresses ''egalitarian'' social preferences. 
+
+First order conditions for maximizing welfare criterion {eq}`eq:welfareW` subject to the feasibility constraint {eq}`eq:feasibility` are 
+
+$$\frac{\pi_t^2(s^t)}{\pi_t^1(s^t)} \frac{(1/c_t^2(s^t))}{(1/c_t^1(s^t))} = \frac{\lambda}{1 -\lambda}$$
+
+which can be rearranged to become  
+
+
+
+
+$$
+\frac{c_t^1(s^t)}{c_t^2(s^t)} = \frac{\lambda}{1- \lambda} l_t(s^t)
+$$ (eq:allocationrule0)
+
+
+where
+
+$$ l_t(s^t) = \frac{\pi_t^1(s^t)}{\pi_t^2(s^t)} $$
+
+is the likelihood ratio of agent 1's joint density to agent 2's joint density. 
+
+Using 
+
+$$c_t^1(s^t) + c_t^2(s^t) = 1$$
+
+we can rewrite allocation rule {eq}`eq:allocationrule0` as 
+
+
+
+$$\frac{c_t^1(s^t)}{1 - c_t^1(s^t)} = \frac{\lambda}{1-\lambda} l_t(s^t)$$
+
+or 
+
+$$c_t^1(s^t) = \frac{\lambda}{1-\lambda} l_t(s^t)(1 - c_t^1(s^t))$$
+
+which  implies that the social planner's allocation rule is
+
+$$
+c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1-\lambda + \lambda l_t(s^t)}
+$$ (eq:allocationrule1)
+
+
+### If you're so smart, $\ldots$ 
+
+
+Let's compute some values   of limiting allocations {eq}`eq:allocationrule1` for some interesting possible limiting
+values of the likelihood ratio process $l_t(s^t)$:
+
+ $$l_\infty (s^\infty)= 1; \quad c_\infty^1 = \lambda$$
+ 
+  *  In the above case, both agents are equally smart (or equally not smart) and the consumption allocation stays put  at a $\lambda, 1 - \lambda $ split between the two agents. 
+
+$$l_\infty (s^\infty) = 0; \quad c_\infty^1 = 0$$
+
+*  In the above case, agent 2 is smarter than agent 1, and agent 1's share of the aggregate endowment converges to zero.  
+
+
+
+$$l_\infty (s^\infty)= \infty; \quad c_\infty^1 = 1$$
+
+*  In the above case, agent 1 is smarter than agent 2, and agent 1's share of the aggregate endowment converges to 1. 
+
+
+## Notes to Humphrey
+
+Let's do some fun simulations in which we let agent $1$ believe marginal density 
+
+$$\pi^1(s_t) = f(s_t) $$
+
+and agent $2$ believe marginal density 
+
+$$ \pi^2(s_t) = g(s_t) $$
+
+where $f$ and $g$ are alternative Beta distributions that we used in preceding sections of this lecture.
+
+Meanwhile, let nature believe marginal density
+
+$$
+\pi(s_t) = h(s_t) 
+$$
+
+where $h(s_t)$ is some other distribution -- e.g., a mixture or a ???? with support $[0,1]$. 
+
+"We" (meaning Humprhey) could do some simulations of likelihood ratios and associated $c_t^1(s^t)$ sequences for various cases.
+
+* examples with $f$ and $g$ close together -- and either $f$ or $g$ being equal to $h$. We could study how  rates of convergence of the likelihood ratio depend on the discrepancy.  
+
+*  examples with $f$ and $g$ close together -- and  $h$ not equal to either $f$ or $g$. We could illustrate how the agent whose marginal density is closer to nature's as measure by KL ends up consuming everything.
+
+**Note.** Our baby Blume-Easley  model is set up to let us recycle lots of the earlier code to create examples for this section. 
+
+
+
 ## Related Lectures
 
 Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes`
