@@ -70,7 +70,7 @@ that $q$ is either $f$ or $g$, permanently.
 
 Nature knows which density it permanently draws from, but we the observers do not.
 
-We know both $f$ and $g$ but we don’t know which density nature
+We know both $f$ and $g$ but we don't know which density nature
 chose.
 
 But we want to know.
@@ -419,7 +419,7 @@ Below we plot some informative figures that illustrate this.
 We also present a classical frequentist method for choosing a sample
 size $t$.
 
-Let’s start with a case in which we fix the threshold $c$ at
+Let's start with a case in which we fix the threshold $c$ at
 $1$.
 
 ```{code-cell} ipython3
@@ -584,12 +584,12 @@ presented to Milton Friedman, as we describe in  {doc}`this lecture <wald_friedm
 (rel_entropy)=
 ## Kullback–Leibler Divergence
 
-Now let’s consider a case in which neither $g$ nor $f$
+Now let's consider a case in which neither $g$ nor $f$
 generates the data.
 
 Instead, a third distribution $h$ does.
 
-Let’s watch how how the cumulated likelihood ratios $f/g$ behave
+Let's watch how how the cumulated likelihood ratios $f/g$ behave
 when $h$ governs the data.
 
 A key tool here is called **Kullback–Leibler divergence**.
@@ -606,34 +606,34 @@ and $K_g$ defined as
 
 $$
 \begin{aligned}
-K_{f}   &=E_{h}\left[\log\left(\frac{f\left(w\right)}{h\left(w\right)}\right)\frac{f\left(w\right)}{h\left(w\right)}\right] \\
-    &=\int\log\left(\frac{f\left(w\right)}{h\left(w\right)}\right)\frac{f\left(w\right)}{h\left(w\right)}h\left(w\right)dw \\
-    &=\int\log\left(\frac{f\left(w\right)}{h\left(w\right)}\right)f\left(w\right)dw
+K_{f} = D_{\mathrm{KL}}\bigl(h\|f\bigr) = KL(h, f)
+          &= E_{h}\left[\log\frac{h(w)}{f(w)}\right] \\
+          &= \int \log\left(\frac{h(w)}{f(w)}\right)h(w)dw .
 \end{aligned}
 $$
 
 $$
 \begin{aligned}
-K_{g}   &=E_{h}\left[\log\left(\frac{g\left(w\right)}{h\left(w\right)}\right)\frac{g\left(w\right)}{h\left(w\right)}\right] \\
-    &=\int\log\left(\frac{g\left(w\right)}{h\left(w\right)}\right)\frac{g\left(w\right)}{h\left(w\right)}h\left(w\right)dw \\
-    &=\int\log\left(\frac{g\left(w\right)}{h\left(w\right)}\right)g\left(w\right)dw
+K_{g} = D_{\mathrm{KL}}\bigl(h\|g\bigr) = KL(h, g)
+          &= E_{h}\left[\log\frac{h(w)}{g(w)}\right] \\
+          &= \int \log\left(\frac{h(w)}{g(w)}\right)h(w)dw .
 \end{aligned}
 $$
 
 When $K_g < K_f$, $g$ is closer to $h$ than $f$
 is.
 
-- In that case we’ll find that $L\left(w^t\right) \rightarrow 0$.
+- In that case we'll find that $L\left(w^t\right) \rightarrow 0$.
 
 When $K_g > K_f$, $f$ is closer to $h$ than $g$
 is.
 
-- In that case we’ll find that
+- In that case we'll find that
   $L\left(w^t\right) \rightarrow + \infty$
 
-We’ll now experiment with an $h$ is also a beta distribution
+We'll now experiment with an $h$ is also a beta distribution
 
-We’ll start by setting parameters $G_a$ and $G_b$ so that
+We'll start by setting parameters $G_a$ and $G_b$ so that
 $h$ is closer to $g$
 
 ```{code-cell} ipython3
@@ -652,19 +652,22 @@ plt.legend()
 plt.show()
 ```
 
-Let’s compute the Kullback–Leibler discrepancies by quadrature
+Let's compute the Kullback–Leibler discrepancies by quadrature
 integration.
 
 ```{code-cell} ipython3
 def KL_integrand(w, q, h):
 
-    m = q(w) / h(w)
+    m = h(w) / q(w)
 
-    return np.log(m) * q(w)
+    return np.log(m) * h(w)
 ```
 
 ```{code-cell} ipython3
 def compute_KL(h, f, g):
+    """
+    Compute KL divergence with reference distribution h
+    """
 
     Kf, _ = quad(KL_integrand, 0, 1, args=(f, h))
     Kg, _ = quad(KL_integrand, 0, 1, args=(g, h))
@@ -696,6 +699,7 @@ $h$ than $f$ is.
 ```{code-cell} ipython3
 N, T = l_arr_h.shape
 plt.plot(range(T), np.sum(l_seq_h <= 0.01, axis=0) / N)
+plt.show()
 ```
 
 We can also try an $h$ that is closer to $f$ than is
@@ -722,6 +726,7 @@ $10000$ diverges to $+\infty$.
 ```{code-cell} ipython3
 N, T = l_arr_h.shape
 plt.plot(range(T), np.sum(l_seq_h > 10000, axis=0) / N)
+plt.show()
 ```
 
 ## Hypothesis Testing and Classification 
@@ -1182,6 +1187,8 @@ where $m = \frac{1}{2}(f+g)$ is a mixture of $f$ and $g$.
 ```{note}
 We studied KL divergence in the [section above](rel_entropy) with respect to a reference distribution $h$.
 
+Recall that  KL divergence $KL(f, g)$ measures expected excess surprisal from using misspecified model $g$ instead $f$ when $f$ is the true model.
+
 Because in general $KL(f, g) \neq KL(g, f)$, KL divergence is not symmetric, but Jensen-Shannon divergence is symmetric.
 
 (In fact, the square root of the Jensen-Shannon divergence is a metric referred to as the Jensen-Shannon distance.)
@@ -1221,6 +1228,12 @@ def kl_divergence(f, g):
 
 distribution_pairs = [
     # (f_params, g_params)
+    ((1, 1), (0.1, 0.2)),
+    ((1, 1), (0.3, 0.3)),
+    ((1, 1), (0.3, 0.4)),
+    ((1, 1), (0.5, 0.5)),
+    ((1, 1), (0.7, 0.6)),
+    ((1, 1), (0.9, 0.8)),
     ((1, 1), (1.1, 1.05)),
     ((1, 1), (1.2, 1.1)),
     ((1, 1), (1.5, 1.2)),
@@ -1228,10 +1241,7 @@ distribution_pairs = [
     ((1, 1), (2.5, 1.8)),
     ((1, 1), (3, 1.2)),
     ((1, 1), (4, 1)),
-    ((1, 1), (5, 1)), 
-    ((2, 2), (4, 2)), 
-    ((2, 2), (6, 2)), 
-    ((2, 2), (8, 2)),
+    ((1, 1), (5, 1))
 ]
 
 # Create comparison table
@@ -1304,8 +1314,8 @@ def plot_dist_diff():
         ((1, 1), (1.5, 1.2)),
         ((1, 1), (2, 1.5)),  
         ((1, 1), (3, 1.2)),  
-        ((1, 1), (5, 1)),    
-        ((2, 2), (8, 2)), 
+        ((1, 1), (5, 1)),
+        ((1, 1), (0.3, 0.3))
     ]
     
     fig, axes = plt.subplots(3, 2, figsize=(15, 12))
@@ -1372,9 +1382,15 @@ In the simulation below, nature draws $N / 2$ sequences from $g$ and $N/2$ seque
 
 ```{note}
 Nature does this rather than flipping a fair coin to decide whether to draw from $g$ or $f$ once and for all before each simulation of length $T$.
-``` 
+```
 
 ```{code-cell} ipython3
+def compute_likelihood_ratio_stats(sequences, f, g):
+    """Compute likelihood ratios and cumulative products."""
+    l_ratios = f(sequences) / g(sequences)
+    L_cumulative = np.cumprod(l_ratios, axis=1)
+    return l_ratios, L_cumulative
+
 def error_divergence_cor():
     """
     compute correlation between error probabilities and divergence measures.
@@ -1409,13 +1425,15 @@ def error_divergence_cor():
         sequences_f = np.random.beta(f_a, f_b, (N_half, T_large))
         sequences_g = np.random.beta(g_a, g_b, (N_half, T_large))
 
-        # Compute likelihood ratios
-        l_ratios_f = f(sequences_f) / g(sequences_f)
-        l_ratios_g = f(sequences_g) / g(sequences_g)
 
-        # Compute cumulative products
-        L_cumulative_f = np.cumprod(l_ratios_f, axis=1)[:, -1]
-        L_cumulative_g = np.cumprod(l_ratios_g, axis=1)[:, -1]
+
+        # Compute likelihood ratios and cumulative products
+        _, L_cumulative_f = compute_likelihood_ratio_stats(sequences_f, f, g)
+        _, L_cumulative_g = compute_likelihood_ratio_stats(sequences_g, f, g)
+        
+        # Get final values
+        L_cumulative_f = L_cumulative_f[:, -1]
+        L_cumulative_g = L_cumulative_g[:, -1]
 
         # Calculate error probabilities
         error_probs[i] = 0.5 * (np.mean(L_cumulative_f < 1) + 
@@ -1461,7 +1479,7 @@ def plot_error_divergence(data):
         
         # Calculate correlation and trend line
         corr = np.corrcoef(x_vals, log_error)[0, 1]
-        z = np.polyfit(x_vals, log_error, 1)
+        z = np.polyfit(x_vals, log_error, 2)
         x_trend = np.linspace(x_vals.min(), x_vals.max(), 100)
         ax.plot(x_trend, np.poly1d(z)(x_trend), 
                 "r--", alpha=0.8, linewidth=2)
@@ -1483,7 +1501,6 @@ Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with 
 We'll encounter related  ideas in {doc}`wald_friedman`.
 
 +++
-
 
 ## Consumption  and Heterogeneous Beliefs
 
@@ -1708,7 +1725,422 @@ where $h(s_t)$ is some other distribution -- e.g., a mixture or a ???? with supp
 
 **Note.** Our baby Blume-Easley  model is set up to let us recycle lots of the earlier code to create examples for this section. 
 
+### Simulations for the Blume-Easley Model
 
+Now let's implement some simulations where agent $1$ believes marginal density 
+
+$$\pi^1(s_t) = f(s_t) $$
+
+and agent $2$ believes marginal density 
+
+$$ \pi^2(s_t) = g(s_t) $$
+
+where $f$ and $g$ are Beta distributions that we used in preceding sections of this lecture.
+
+Meanwhile, let nature believe marginal density
+
+$$
+\pi(s_t) = h(s_t) 
+$$
+
+where $h(s_t)$ is a mixture of $f$ and $g$.
+
+Without loss of generality, let's focus on agent 1's perspective. 
+
+We write a function that computes the consumption share of agent 1
+
+```{code-cell} ipython3
+def simulate_blume_easley(sequences, f_belief=f, g_belief=g, λ=0.5):
+    """Simulate Blume-Easley model consumption shares."""
+    l_ratios, l_cumulative = compute_likelihood_ratio_stats(sequences, f_belief, g_belief)
+    c1_share = λ * l_cumulative / (1 - λ + λ * l_cumulative)
+    return l_cumulative, c1_share
+```
+
+Here we set up our experiments by applying the function above to generate three sequences with nature choosing $f$, $g$, and using a coin flip to choose between $f$ and $g$ at every period
+
+```{code-cell} ipython3
+λ = 0.5
+T = 100
+N = 10000
+
+# Nature follows f, g, or mixture
+s_seq_f = np.random.beta(F_a, F_b, (N, T))
+s_seq_g = np.random.beta(G_a, G_b, (N, T))
+
+h = jit(lambda x: 0.5 * f(x) + 0.5 * g(x))
+model_choices = np.random.rand(N, T) < 0.5
+s_seq_h = np.empty((N, T))
+s_seq_h[model_choices] = np.random.beta(F_a, F_b, size=model_choices.sum())
+s_seq_h[~model_choices] = np.random.beta(G_a, G_b, size=(~model_choices).sum())
+
+l_cum_f, c1_f = simulate_blume_easley(s_seq_f)
+l_cum_g, c1_g = simulate_blume_easley(s_seq_g)
+l_cum_h, c1_h = simulate_blume_easley(s_seq_h)
+```
+
+Before looking at the figure below, guess which agent type will have a larger consumption share in the simulation.
+
+With that guess in mind, let's visualize the likelihood ratio processes generated by the three cases.
+
+```{code-cell} ipython3
+fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+
+titles = ["Nature = f", "Nature = g", "Nature = mixture"]
+data_pairs = [(l_cum_f, c1_f), (l_cum_g, c1_g), (l_cum_h, c1_h)]
+
+for i, ((l_cum, c1), title) in enumerate(zip(data_pairs, titles)):
+    # Likelihood ratios
+    ax = axes[0, i]
+    for j in range(min(50, l_cum.shape[0])):
+        ax.plot(l_cum[j, :], alpha=0.3, color='blue')
+    ax.set_yscale('log')
+    ax.set_xlabel('time')
+    ax.set_ylabel('Likelihood ratio $l_t$')
+    ax.set_title(title)
+    ax.axhline(y=1, color='red', linestyle='--', alpha=0.5)
+
+    # Consumption shares
+    ax = axes[1, i]
+    for j in range(min(50, c1.shape[0])):
+        ax.plot(c1[j, :], alpha=0.3, color='green')
+    ax.set_xlabel('time')
+    ax.set_ylabel("Agent 1's consumption share")
+    ax.set_ylim([0, 1])
+    ax.axhline(y=λ, color='red', linestyle='--', alpha=0.5, label=f'λ={λ}')
+    ax.legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+In the left panel, nature chooses $f$. Agent 1's consumption reaches $1$ very quickly.
+
+In the middle panel, nature chooses $g$. Agent 1's consumption ratio tends to move towards $0$ but not as fast as in the first case.
+
+In the right panel, nature flips coins each period. We see a very similar pattern to the processes in the left panel.
+
+The results might be surprising to you, but the KL divergence gives us some clues.
+
+We invite readers to revisit [this section](rel_entropy) that connects the likelihood ratio processes to KL divergence.
+
+Let's compute values of KL divergence
+
+```{code-cell} ipython3
+shares = [np.mean(c1_f[:, -1]), np.mean(c1_g[:, -1]), np.mean(c1_h[:, -1])]
+Kf_h, Kg_h = js_divergence(h, f), js_divergence(h, g)
+Kf_g, Kg_f = kl_divergence(f, g), kl_divergence(g, f)
+print(f"Final shares: f={shares[0]:.3f}, g={shares[1]:.3f}, mix={shares[2]:.3f}")
+print(f"KL divergences: \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
+print(f"KL(h,f)={Kf_h:.3f}, KL(h, g)={Kg_h:.3f}")
+```
+
+We find that $KL(f,g) > KL(g,f)$ and $KL(g,h) > KL(f,h)$.
+
+The first inequality tells us that the average "surprise" or "inefficiency" of using belief $g$ when nature chooses $f$ is greater than the "surprise" of using belief $f$ when nature chooses $g$.
+
+The second inequality tells us that agent 1's belief distribution $f$ is closer to nature's pick than agent 2's belief $g$.
+
++++
+
+To make this idea more concrete, let's compare two cases:
+
+- agent 1's belief distribution $f$ is close to agent 2's belief distribution $g$;
+- agent 1's belief distribution $f$ is far from agent 2's belief distribution $g$.
+
+
+We use the two distributions visualized below
+
+```{code-cell} ipython3
+def plot_distribution_overlap(ax, x_range, f_vals, g_vals, 
+                            f_label='f', g_label='g', 
+                            f_color='blue', g_color='red'):
+    """Plot two distributions with their overlap region."""
+    ax.plot(x_range, f_vals, color=f_color, linewidth=2, label=f_label)
+    ax.plot(x_range, g_vals, color=g_color, linewidth=2, label=g_label)
+    
+    overlap = np.minimum(f_vals, g_vals)
+    ax.fill_between(x_range, 0, overlap, alpha=0.3, color='purple', label='Overlap')
+    ax.set_xlabel('x')
+    ax.set_ylabel('Density')
+    ax.legend()
+    
+# Define close and far belief distributions
+f_close = jit(lambda x: p(x, 1, 1))
+g_close = jit(lambda x: p(x, 1.1, 1.05))
+
+f_far = jit(lambda x: p(x, 1, 1))
+g_far = jit(lambda x: p(x, 3, 1.2))
+
+js_close = js_divergence(f_close, g_close)
+js_far = js_divergence(f_far, g_far)
+
+# Visualize the belief distributions
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+
+x_range = np.linspace(0.001, 0.999, 200)
+
+# Close beliefs
+f_close_vals = [f_close(x) for x in x_range]
+g_close_vals = [g_close(x) for x in x_range]
+plot_distribution_overlap(ax1, x_range, f_close_vals, g_close_vals,
+                         f_label='f (Beta(1, 1))', g_label='g (Beta(1.1, 1.05))')
+ax1.set_title(f'Close Beliefs\nJS divergence={js_close:.4f}')
+
+# Far beliefs
+f_far_vals = [f_far(x) for x in x_range]
+g_far_vals = [g_far(x) for x in x_range]
+plot_distribution_overlap(ax2, x_range, f_far_vals, g_far_vals,
+                         f_label='f (Beta(1, 1))', g_label='g (Beta(3, 1.2))')
+ax2.set_title(f'Far Beliefs\nJS divergence={js_far:.4f}')
+
+plt.tight_layout()
+plt.show()
+```
+
+Let's draw the same consumption ratio plots as above for agent 1.
+
+We replace the simulation paths with median and percentiles to make the figure cleaner.
+
+Staring at the figure below, can we infer the relation between $KL(f,g)$ and $KL(g,f)$?
+
+From the right panel, can we infer the relation between $KL(h,g)$ and $KL(h,f)$?
+
+```{code-cell} ipython3
+fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+nature_params = {'close': [(1, 1), (1.1, 1.05), (2, 1.5)],
+                 'far':   [(1, 1), (3, 1.2),   (2, 1.5)]}
+nature_labels = ["Nature = f", "Nature = g", "Nature = h"]
+colors = {'close': 'blue', 'far': 'red'}
+
+threshold = 1e-5  # “close to zero” cutoff
+
+for row, (f_belief, g_belief, label) in enumerate([
+                        (f_close, g_close, 'close'),
+                        (f_far, g_far, 'far')]):
+    
+    for col, nature_label in enumerate(nature_labels):
+        params = nature_params[label][col]
+        s_seq = np.random.beta(params[0], params[1], (1000, 200))
+        _, c1 = simulate_blume_easley(s_seq, f_belief, g_belief, λ)
+        
+        median_c1 = np.median(c1, axis=0)
+        p10, p90 = np.percentile(c1, [10, 90], axis=0)
+        
+        ax = axes[row, col]
+        color = colors[label]
+        ax.plot(median_c1, color=color, linewidth=2, label='Median')
+        ax.fill_between(range(len(median_c1)), p10, p90, alpha=0.3, color=color, label='10–90%')
+        ax.set_xlabel('time')
+        ax.set_ylabel("Agent 1's share")
+        ax.set_ylim([0, 1])
+        ax.set_title(nature_label)
+        ax.axhline(y=λ, color='gray', linestyle='--', alpha=0.5)
+        below = np.where(median_c1 < threshold)[0]
+        above = np.where(median_c1 > 1-threshold)[0]
+        if below.size > 0: first_zero = (below[0], True)
+        elif above.size > 0: first_zero = (above[0], False)
+        else: first_zero = None
+        if first_zero is not None:
+            ax.axvline(x=first_zero[0], color='black', linestyle='--',
+                       alpha=0.7, 
+                       label=fr'Median $\leq$ {threshold}' if first_zero[1]
+                       else fr'Median $\geq$ 1-{threshold}')
+        ax.legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+Holding to our guesses, let's calculate the four values
+
+```{code-cell} ipython3
+# Close case
+Kf_h, Kg_h = kl_divergence(h, f_close), kl_divergence(h, g_close)
+Kf_g, Kg_f = kl_divergence(f_close, g_close), kl_divergence(g_close, f_close)
+print(f"KL divergences (close): \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
+print(f"KL(h,f)={Kf_h:.3f}, KL(h, g)={Kg_h:.3f}")
+
+# Far case
+Kf_h, Kg_h = kl_divergence(h, f_far), kl_divergence(h, g_far)
+Kf_g, Kg_f = kl_divergence(f_far, g_far), kl_divergence(g_far, f_far)
+print(f"KL divergences (far): \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
+print(f"KL(h,f)={Kf_h:.3f}, KL(h, g)={Kg_h:.3f}")
+```
+
+We find that in the first case, $KL(f,g) \approx KL(g,f)$ and both are relatively small, so although agent 1 or 2 will eventually consume everything, the first two panels on the top are moving relatively slowly.
+
+In the first two panels at the bottom, we can see that the results move faster because $KL(f, g) > KL(g, f)$ with relatively larger divergence. 
+
+We can see the first panel at the bottom with nature choosing $f$ moves faster than the second panel where nature chooses $g$.
+
+This matches our observations before.
+
++++
+
+Lastly, let's run experiments at a larger scale.
+
+We compute the consumption share of agent 1 at $T=50$ and measure the divergence between $f$ and $g$.
+
+We plot them against each other below
+
+```{code-cell} ipython3
+distribution_pairs.append([(1, 1), (1, 1)])
+T_corr, N_corr = 150, 2000
+
+nature_keys = ['f', 'g']
+time_points = ['10', '50']
+
+all_keys = (
+    ['js_divs', 'js_f_to_mix', 'js_g_to_mix', 'final_c1_mix']
+    + [f'final_c1_{n}_{t}' for n in nature_keys for t in time_points]
+    + [f'final_c1_{n}'     for n in nature_keys]
+)
+
+results = { key: [] for key in all_keys }
+
+for f_params, g_params in distribution_pairs:
+    f_temp = jit(lambda x, a=f_params[0], b=f_params[1]: p(x, a, b))
+    g_temp = jit(lambda x, a=g_params[0], b=g_params[1]: p(x, a, b))
+    h_mix = jit(lambda x: 0.5 * f_temp(x) + 0.5 * g_temp(x))
+    
+    results['js_divs'].append(js_divergence(f_temp, g_temp))
+    results['js_f_to_mix'].append(js_divergence(f_temp, h_mix))
+    results['js_g_to_mix'].append(js_divergence(g_temp, h_mix))
+    
+    for nature_key, params in [('f', f_params), ('g', g_params)]:
+        s_seq = np.random.beta(params[0], params[1], (N_corr, T_corr))
+        _, c1 = simulate_blume_easley(s_seq, f_temp, g_temp, λ)
+        results[f'final_c1_{nature_key}_10'].append(np.mean(c1[:, 10]))
+        results[f'final_c1_{nature_key}_50'].append(np.mean(c1[:, 50]))
+        results[f'final_c1_{nature_key}'].append(np.mean(c1[:, -1]))
+
+    
+    # Mixture case
+    model_choices = np.random.rand(N_corr, T_corr) < 0.5
+    s_mix = np.empty((N_corr, T_corr))
+    s_mix[model_choices] = np.random.beta(
+        f_params[0], f_params[1], size=model_choices.sum())
+    s_mix[~model_choices] = np.random.beta(
+        g_params[0], g_params[1], size=(~model_choices).sum())
+    _, c1_mix = simulate_blume_easley(s_mix, f_temp, g_temp, λ)
+    results['final_c1_mix'].append(np.mean(c1_mix[:, -1]))
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+
+for i, (title, data_key) in enumerate([
+    ("Nature = f", 'final_c1_f'),
+    ("Nature = g", 'final_c1_g'),
+]):
+    ax = axes[i]
+    
+    x = np.array(results['js_divs'])
+    y10 = np.array(results[f'{data_key}_10'])
+    y50 = np.array(results[f'{data_key}_50'])
+    y150 = np.array(results[data_key])
+    
+    order = np.argsort(x)
+    x_sorted = x[order]
+    y10_sorted = y10[order]
+    y50_sorted = y50[order]
+    y150_sorted = y150[order]
+    
+    ax.plot(x_sorted, y10_sorted,  alpha=0.7, label="$T=10$", lw=2)
+    ax.plot(x_sorted, y50_sorted,  alpha=0.7, label="$T=50$", lw=2)
+    ax.plot(x_sorted, y150_sorted, alpha=0.7, label="$T=150$", lw=2)
+    
+    ax.set_xlabel('JS divergence between beliefs')
+    ax.set_ylabel("Agent 1's share")
+    ax.set_title(title)
+    ax.axhline(y=λ, linestyle='--', alpha=0.5, label=f'λ={λ}')
+    ax.legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+We can see that the divergence between $g$ and $f$ dictates the speed at which the consumption moves to $1$ or $0$.
+
+Lastly, let's run the case where nature chooses mixture $h$.
+
+We fix $T=150$.
+
+The x-axis is the JS divergence between belief and mixture $h$.
+
+The y-axis is the final consumption share.
+
+We connect agent 1 and 2 in the same experiment by a line.
+
+To read the plot, notice that for two connected pairs, if the line is drawn from top left to bottom right, then the agent with the smaller JS divergence from $h$ will have a higher consumption ratio
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(7, 5))
+
+for i in range(len(results['js_f_to_mix'])):
+    
+    ax.scatter(results['js_f_to_mix'][i], results['final_c1_mix'][i], 
+              s=60, color='blue', marker='o')
+    ax.scatter(results['js_g_to_mix'][i], 1 - results['final_c1_mix'][i], 
+              s=60, color='red', marker='^')
+    ax.plot([results['js_f_to_mix'][i], results['js_g_to_mix'][i]], 
+            [results['final_c1_mix'][i], 1 - results['final_c1_mix'][i]], 
+            'C1' if results['js_f_to_mix'][i] > results['js_g_to_mix'][i] else 'C0')
+
+ax.scatter([], [], color='blue', marker='o', label="Agent 1", s=60)
+ax.scatter([], [], color='red', marker='^', label="Agent 2", s=60)
+ax.set_xlabel(r'JS divergence from belief to $h$')
+ax.set_ylabel("Agent's final share")
+ax.set_title('Nature = mixture')
+ax.axhline(y=λ, linestyle='--', alpha=0.5)
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+Indeed, all the lines are drawn from top left to bottom right.
+
+This confirms our previous guess.
+
+From the plot above, we can also see that if both belief distributions are close to $h$, then we have a relatively equal consumption ratio.
+
+(TO TOM: I think it might be a good idea to give the formula and derivation of
+
+$$
+\frac{1}{t} \mathbb{E}_{h}\!\bigl[\log L_t\bigr] = KL(h, g) - KL(h, f),
+\qquad
+L_t=\prod_{j=0}^{t}\frac{f(S_j)}{g(S_j)},
+$$
+
+after building up the intuition in the section above.
+
+Let $S\sim h$ be a draw. Because the $S_j$'s are i.i.d.,
+
+$$
+\mathbb{E}_{h}[\log \ell_t]
+=\sum_{j=0}^{t}\mathbb{E}_{h}\!\Bigl[\log \frac{f(S_j)}{g(S_j)}\Bigr]
+=(t+1)\,\underbrace{\mathbb{E}_{h}\!\bigl[\log f(S)-\log g(S)\bigr]}_{1}.
+$$
+
+Rewrite term $1$ using KL definitions:
+
+$$
+\begin{aligned}
+KL(h, f)
+&=\int h(s)\log\frac{h(s)}{f(s)}\,ds
+=\int h(s)\log h(s)\,ds-\int h(s)\log f(s)\,ds;\\[4pt]
+\int h(s)\log f(s)\,ds
+&=\int h(s)\log h(s)\,ds-KL(h, f).
+\end{aligned}
+$$
+
+Apply the same step for $g$ and take the difference:
+
+$$
+\mathbb{E}_{h}\!\bigl[\log f(S)-\log g(S)\bigr]
+= KL(h, g) - KL(h, f).
+$$
+)
 
 ## Related Lectures
 
