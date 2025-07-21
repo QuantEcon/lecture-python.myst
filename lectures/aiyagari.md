@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -26,10 +28,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -54,7 +55,7 @@ The Aiyagari model has been used to investigate many topics, including
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -208,7 +209,7 @@ when the parameters change.
 
 The class also includes a default set of parameters that we'll adopt unless otherwise specified.
 
-```{code-cell} python3
+```{code-cell} ipython3
 class Household:
     """
     This class takes the parameters that define a household asset accumulation
@@ -318,7 +319,7 @@ def asset_marginal(s_probs, a_size, z_size):
 
 As a first example of what we can do, let's compute and plot an optimal accumulation policy at fixed prices.
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Example prices
 r = 0.03
 w = 0.956
@@ -366,7 +367,7 @@ The following code draws aggregate supply and demand curves.
 
 The intersection gives equilibrium interest rates and capital.
 
-```{code-cell} python3
+```{code-cell} ipython3
 A = 1.0
 N = 1.0
 α = 0.33
@@ -410,7 +411,7 @@ def prices_to_capital_stock(am, r):
     # Extract the marginal distribution for assets
     asset_probs = asset_marginal(stationary_probs, am.a_size, am.z_size)
     # Return K
-    return np.sum(asset_probs * am.a_vals)
+    return asset_probs @ am.a_vals
 
 
 # Create an instance of Household
