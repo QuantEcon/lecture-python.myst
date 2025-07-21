@@ -197,7 +197,7 @@ states to actions.
 Given *any* $w$, we can read off the corresponding best choice (accept or
 reject) by picking the max on the right-hand side of {eq}`odu_pv`.
 
-Thus, we have a map from $\mathbb R$ to $\{0, 1\}$, with 1 meaning accept and 0 meaning reject.
+Thus, we have a map from $\mathbb W$ to $\{0, 1\}$, with 1 meaning accept and 0 meaning reject.
 
 We can write the policy as follows
 
@@ -404,7 +404,7 @@ class McCallModel:
         # Evaluate value for each state-action pair
         # Consider action = accept or reject the current offer
         accept = w[i] / (1 - β)
-        reject = c + β * np.sum(v * q)
+        reject = c + β * (v @ q)
 
         return np.array([accept, reject])
 ```
@@ -488,7 +488,7 @@ def compute_reservation_wage(mcm,
 
     # == Now compute the reservation wage == #
 
-    return (1 - β) * (c + β * np.sum(v * q))
+    return (1 - β) * (c + β * (v @ q))
 ```
 
 The next line computes the reservation wage at  default parameters
@@ -622,13 +622,13 @@ def compute_reservation_wage_two(mcm,
 
     # == First compute h == #
 
-    h = np.sum(w * q) / (1 - β)
+    h = (w @ q) / (1 - β)
     i = 0
     error = tol + 1
     while i < max_iter and error > tol:
 
         s = np.maximum(w / (1 - β), h)
-        h_next = c + β * np.sum(s * q)
+        h_next = c + β * (s @ q)
 
         error = np.abs(h_next - h)
         i += 1

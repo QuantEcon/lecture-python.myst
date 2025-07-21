@@ -1,44 +1,31 @@
-name: Link Checker [Anaconda, Linux]
+name: Link Checker (lychee)
 on:
-  pull_request:
-    types: [opened, reopened]
   schedule:
-    # UTC 12:00 is early morning in Australia
-    - cron:  '0 12 * * *'
+    # UTC 23:00 is early morning in Australia (9am)
+    - cron:  '0 23 * * *'
+  workflow_dispatch:
 jobs:
-  link-check-linux:
-    name: Link Checking (${{ matrix.python-version }}, ${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ["ubuntu-latest"]
-        python-version: ["3.12"]
+  link-checking:
+    name: Link Checking
+    runs-on: "ubuntu-latest"
+    permissions:
+      issues: write # required for peter-evans/create-issue-from-file
     steps:
+      # Checkout the live site (html)
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v2
         with:
-          auto-update-conda: true
-          auto-activate-base: true
-          miniconda-version: 'latest'
-          python-version: '3.12'
-          environment-file: environment.yml
-          activate-environment: quantecon
-      - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v10
-        with:
-          workflow: cache.yml
-          branch: main
-          name: build-cache
-          path: _build
+          ref: gh-pages
       - name: Link Checker
-        shell: bash -l {0}
-        run: jb build lectures --path-output=./ --builder=custom --custom-builder=linkcheck
-      - name: Upload Link Checker Reports
-        uses: actions/upload-artifact@v4
-        if: failure()
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
         with:
-          name: linkcheck-reports
-          path: _build/linkcheck
+          fail: false
+          args: --accept 403,503 *.html
+      - name: Create Issue From File
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: Link Checker Report
+          content-filepath: ./lychee/out.md
+          labels: report, automated issue, linkchecker
