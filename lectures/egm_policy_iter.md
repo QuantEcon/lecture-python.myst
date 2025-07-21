@@ -35,7 +35,7 @@ We found time iteration to be significantly more accurate and efficient.
 
 In this lecture, we'll look at a clever twist on time iteration called the **endogenous grid method** (EGM).
 
-EGM is a numerical method for implementing policy iteration invented by [Chris Carroll](http://www.econ2.jhu.edu/people/ccarroll/).
+EGM is a numerical method for implementing policy iteration invented by [Chris Carroll](https://econ.jhu.edu/directory/christopher-carroll/).
 
 The original reference is {cite}`Carroll2006`.
 
