@@ -11,10 +11,11 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       # Install build software
-      - name: Install Build Software & LaTeX (kalman_2)
+      - name: Install Build Software & LaTeX
         shell: bash -l {0}
         run: |
           pip install jupyter-book==1.0.3 quantecon-book-theme==0.8.2 sphinx-tojupyter==0.3.0 sphinxext-rediraffe==0.2.7 sphinxcontrib-youtube==1.3.0 sphinx-togglebutton==0.3.2 arviz sphinx-proof sphinx-exercise sphinx-reredirects
+          apt-get update
           apt-get install dvipng texlive texlive-latex-extra texlive-fonts-recommended cm-super    
       - name: Check nvidia drivers
         shell: bash -l {0}
