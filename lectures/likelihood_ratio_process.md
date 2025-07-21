@@ -1619,7 +1619,9 @@ $$
 
 Putting its beliefs about its random  endowment sequence and its attitudes toward bearing risks together,  agent $i$ has intertemporal utility function 
 
-$$V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t) ,$$
+$$
+V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t) ,
+$$ (eq:objectiveagenti)
 
 where $\delta \in (0,1)$ is an intertemporal discount factor,
 
@@ -1696,38 +1698,100 @@ $$l_\infty (s^\infty)= \infty; \quad c_\infty^1 = 1$$
 
 *  In the above case, agent 1 is smarter than agent 2, and agent 1's share of the aggregate endowment converges to 1. 
 
+Soon we'll do some simulations that will shed further light on possible outcomes.
 
-## Notes to Humphrey
+But before we do that, let's take a short detour and study some equilibrium "shadow prices". 
 
-Let's do some fun simulations in which we let agent $1$ believe marginal density 
 
-$$\pi^1(s_t) = f(s_t) $$
 
-and agent $2$ believe marginal density 
+### Competitive Equilibrium Prices 
 
-$$ \pi^2(s_t) = g(s_t) $$
+The two welfare theorems for general equilibrium models lead us to expect a connection between the allocation that solves the social planning problem we have been studying and the allocation in a  **competitive equilibrium**  with complete markets in history-contingent commodities.
 
-where $f$ and $g$ are alternative Beta distributions that we used in preceding sections of this lecture.
+Such a connection prevails for our model.  
 
-Meanwhile, let nature believe marginal density
+We'll sketch it now.
+
+In a competitive equilibrium, there is no social planner that dictatorially collects everybody's endowments and then reallocates them.
+
+Instead, there is a comprehensive centralized   market that meets at one point in time.
+
+There are **prices** at which price-taking agents can buy or sell whatever goods that they want.  
+
+Trade is multilateral in the sense that all that there is a "Walrasian auctioneer" who lives outside the model and whose job is to verify that
+each agent's budget constraint is satisfied.  
+
+That budget constraint involves the total value of the agent's endowment stream and the total value of its consumption stream.  
+
+Suppose that at time $-1$, before time $0$ starts, agent  $i$ can purchase one unit $c_t(s^t)$ of  consumption at time $t$ after history
+$s^t$ at price $p_t(s^t)$.  
+
+Notice that there is (very long) **vector** of prices.  
+
+We want to study how agents' diverse beliefs influence equilibrium prices.  
+
+Agent $i$ faces a **single** intertemporal budget constraint
 
 $$
-\pi(s_t) = h(s_t) 
+\sum_{t=0}\sum_{s^t} p_t(s^t) c_t^i (y_t(s^t)) \leq \sum_{t=0}\sum_{s^t} p_t(s^t) y_t^i (y_t(s^t))
+$$ (eq:budgetI)
+
+Agent $i$ puts a Lagrange multiplier $\mu^i$ on {eq}`eq:budgetI` and once-and-for-all chooses a consumption plan $\{c^i_t(s^t)\}_{t=0}^\infty$
+to maximize criterion {eq}`eq:objectiveagenti` subject to budget constraint {eq}`eq:budgetI`.
+
+```{note}
+For convenience, let's remind ourselves of criterion {eq}`eq:objectiveagenti`:  
+$
+V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t)$
+```
+
+First-order conditions for maximizing  with respect to $c_t^i(s^t)$ are 
+
 $$
+\delta^t u'(c^i(s^t)) \pi_t^i(s^t) = \mu_i p_t(s^t) ,
+$$ 
 
-where $h(s_t)$ is some other distribution -- e.g., a mixture or a ???? with support $[0,1]$. 
+which we can rearrange to obtain
 
-"We" (meaning Humprhey) could do some simulations of likelihood ratios and associated $c_t^1(s^t)$ sequences for various cases.
+$$
+p_t(s^t) = \frac{ \delta^t \pi_t^i(s^t)}{\mu^i c^i(s^t)}   
+$$ (eq:priceequation1)
 
-* examples with $f$ and $g$ close together -- and either $f$ or $g$ being equal to $h$. We could study how  rates of convergence of the likelihood ratio depend on the discrepancy.  
+for $i=1,2$.  
 
-*  examples with $f$ and $g$ close together -- and  $h$ not equal to either $f$ or $g$. We could illustrate how the agent whose marginal density is closer to nature's as measure by KL ends up consuming everything.
+If we divide equation {eq}`eq:priceequation1` for agent $1$ by the appropriate  version of equation {eq}`eq:priceequation1` for agent 2, use
+$c^2_t(s^t) = 1 - c^1_t(s^t)$, and do some algebra, we'll obtain
 
-**Note.** Our baby Blume-Easley  model is set up to let us recycle lots of the earlier code to create examples for this section. 
+$$
+c_t^1(s^t) = \frac{\mu_1 l_t(s^t)}{\mu_2 + \mu_1 l_t(s^t)} .
+$$ (eq:allocationce)
 
-### Simulations for the Blume-Easley Model
+We now engage in an extended "guess-and-verify" exercise that involves matching objects in our competitive equilibrium with objects in 
+our social planning problem.  
 
-Now let's implement some simulations where agent $1$ believes marginal density 
+* we'll match consumption allocations in the planning problem with equilibrium consumption allocations in the competitive equilibrium
+* we'll match "shadow" prices in the planning problem with competitive equilibrium prices. 
+
+Notice that if we set $\mu_1 = \lambda$ and $\mu_2 = 1 -\lambda$, then  formula {eq}`eq:allocationce` agrees with formula
+{eq}`eq:allocationrule1`.  
+
+  * doing this amounts to choosing a **numeraire** or normalization for the price system $\{p_t(s^t)\}_{t=0}^\infty$
+
+If we substitute formula  {eq}`eq:allocationce` for $c_t^1(s^t)$ into formula {eq}`eq:priceequation1` and rearrange, we obtain
+
+$$
+p_t(s^t) = \frac{\delta^t \pi_t^2(s^t)}{1 - \lambda + \lambda l_t(s^t)}
+$$ (eq:pformulafinal)
+
+According to formula {eq}`eq:pformulafinal`, we have the following possible limiting cases:
+
+* when $l_\infty = 0$, $c_\infty^2 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ 
+* when $l_\infty = 1$, $c_\infty^1 = 0 $ and tails competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^2(s^t)$ 
+* for small $t$'s, competitive equilbrium prices reflect both agents' probability models.  
+
+### Simulations 
+
+Now let's implement some simulations when agent $1$ believes marginal density 
 
 $$\pi^1(s_t) = f(s_t) $$
 
@@ -1735,19 +1799,17 @@ and agent $2$ believes marginal density
 
 $$ \pi^2(s_t) = g(s_t) $$
 
-where $f$ and $g$ are Beta distributions that we used in preceding sections of this lecture.
+where $f$ and $g$ are Beta distributions like ones that  we used in earlier  sections of this lecture.
 
-Meanwhile, let nature believe marginal density
+Meanwhile, we'll assume that  nature believes a  marginal density
 
 $$
 \pi(s_t) = h(s_t) 
 $$
 
-where $h(s_t)$ is a mixture of $f$ and $g$.
+where $h(s_t)$ is perhaps a  mixture of $f$ and $g$.
 
-Without loss of generality, let's focus on agent 1's perspective. 
-
-We write a function that computes the consumption share of agent 1
+Let's  write a Python function that computes agent 1's  consumption share
 
 ```{code-cell} ipython3
 def simulate_blume_easley(sequences, f_belief=f, g_belief=g, λ=0.5):
@@ -1757,7 +1819,11 @@ def simulate_blume_easley(sequences, f_belief=f, g_belief=g, λ=0.5):
     return l_cumulative, c1_share
 ```
 
-Here we set up our experiments by applying the function above to generate three sequences with nature choosing $f$, $g$, and using a coin flip to choose between $f$ and $g$ at every period
+Now let's use this  function to generate sequences in which  
+
+*  nature draws from  $f$ each period, or 
+*  nature draws from  $g$ each period, or
+*  or nature flips a fair coin each period  to decide whether  to drawa from  $f$ or $g$ 
 
 ```{code-cell} ipython3
 λ = 0.5
@@ -1779,9 +1845,9 @@ l_cum_g, c1_g = simulate_blume_easley(s_seq_g)
 l_cum_h, c1_h = simulate_blume_easley(s_seq_h)
 ```
 
-Before looking at the figure below, guess which agent type will have a larger consumption share in the simulation.
+Before looking at the figure below, have some fun by guessing whether agent 1 or agent 2 will have a larger and larger consumption share as time passes in our three cases. 
 
-With that guess in mind, let's visualize the likelihood ratio processes generated by the three cases.
+To make better guesses,  let's visualize instances of the likelihood ratio processes in  the three cases.
 
 ```{code-cell} ipython3
 fig, axes = plt.subplots(2, 3, figsize=(15, 10))
@@ -1968,17 +2034,17 @@ print(f"KL divergences (far): \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
 print(f"KL(h,f)={Kf_h:.3f}, KL(h, g)={Kg_h:.3f}")
 ```
 
-We find that in the first case, $KL(f,g) \approx KL(g,f)$ and both are relatively small, so although agent 1 or 2 will eventually consume everything, the first two panels on the top are moving relatively slowly.
+We find that in the first case, $KL(f,g) \approx KL(g,f)$ and both are relatively small, so although either agent 1 or agent  2 will eventually consume everything, convergence displaying in  first two panels on the top is pretty  slowly.
 
-In the first two panels at the bottom, we can see that the results move faster because $KL(f, g) > KL(g, f)$ with relatively larger divergence. 
+In the first two panels at the bottom, we see convergence occurring  faster because the divergence gap $KL(f, g) > KL(g, f)$ is  larger. 
 
-We can see the first panel at the bottom with nature choosing $f$ moves faster than the second panel where nature chooses $g$.
+We  see faster convergence in  the first panel at the bottom when  nature chooses $f$  than in the second panel where nature chooses $g$.
 
-This matches our observations before.
+This matches our earlier findings.
 
 +++
 
-Lastly, let's run experiments at a larger scale.
+Now let's run experiments at a larger scale.
 
 We compute the consumption share of agent 1 at $T=50$ and measure the divergence between $f$ and $g$.
 
@@ -1989,7 +2055,7 @@ distribution_pairs.append([(1, 1), (1, 1)])
 T_corr, N_corr = 150, 2000
 
 nature_keys = ['f', 'g']
-time_points = ['10', '50']
+time_points = ['10', '50']eq:allocationrule1
 
 all_keys = (
     ['js_divs', 'js_f_to_mix', 'js_g_to_mix', 'final_c1_mix']
@@ -2059,9 +2125,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-We can see that the divergence between $g$ and $f$ dictates the speed at which the consumption moves to $1$ or $0$.
+We can see that the divergence between $g$ and $f$ dictates the speed at which the consumption allocation tilts more  to agent $1$ or agent $2$.
 
-Lastly, let's run the case where nature chooses mixture $h$.
+Lastly, let's run a case where nature chooses mixture $h$.
 
 We fix $T=150$.
 
@@ -2100,11 +2166,13 @@ plt.show()
 
 Indeed, all the lines are drawn from top left to bottom right.
 
-This confirms our previous guess.
+This confirms our earlier  guesses.
 
 From the plot above, we can also see that if both belief distributions are close to $h$, then we have a relatively equal consumption ratio.
 
-(TO TOM: I think it might be a good idea to give the formula and derivation of
+### A helpful formula
+
+The following formula is useful. 
 
 $$
 \frac{1}{t} \mathbb{E}_{h}\!\bigl[\log L_t\bigr] = KL(h, g) - KL(h, f),
@@ -2112,7 +2180,7 @@ $$
 L_t=\prod_{j=0}^{t}\frac{f(S_j)}{g(S_j)},
 $$
 
-after building up the intuition in the section above.
+Let's provide an explanation of what it means by sketching a proof. 
 
 Let $S\sim h$ be a draw. Because the $S_j$'s are i.i.d.,
 
@@ -2134,13 +2202,14 @@ KL(h, f)
 \end{aligned}
 $$
 
-Apply the same step for $g$ and take the difference:
+Apply the same step for $g$ and take the difference to conclude that 
 
 $$
 \mathbb{E}_{h}\!\bigl[\log f(S)-\log g(S)\bigr]
 = KL(h, g) - KL(h, f).
 $$
-)
+
+
 
 ## Related Lectures
 
