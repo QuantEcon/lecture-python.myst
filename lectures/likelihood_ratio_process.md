@@ -659,94 +659,89 @@ where $L_t=\prod_{j=1}^{t}\frac{f(w_j)}{g(w_j)}$ is the likelihood ratio process
 
 (For the proof, see [this note](https://nowak.ece.wisc.edu/ece830/ece830_fall11_lecture7.pdf).)
 
-{eq}`eq:kl_likelihood_link` also tells us that:
+{eq}`eq:kl_likelihood_link` tells us that:
 - When $K_g < K_f$ (i.e., $g$ is closer to $h$ than $f$ is), the expected log likelihood ratio is negative, so $L\left(w^t\right) \rightarrow 0$.
 - When $K_g > K_f$ (i.e., $f$ is closer to $h$ than $g$ is), the expected log likelihood ratio is positive, so $L\left(w^t\right) \rightarrow + \infty$.
 
-Let's verify this mathematical relationship with a simulation.
+Let's verify this using simulation.
 
 In the simulation, we generate multiple paths using Beta distributions $f$, $g$, and $h$, and compute the paths of $\log(L(w^t))$.
 
 We consider three cases: (1) $h$ is closer to $f$, (2) $f$ and $g$ are approximately equidistant from $h$, and (3) $h$ is closer to $g$.
 
 ```{code-cell} ipython3
-def visualize_kl_effect():
-    """
-    Visualize how KL divergence differences affect likelihood ratio paths.
-    """
-    # Define test scenarios
-    scenarios = [
-        {
-            "name": "KL(h,g) > KL(h,f)",
-            "h_params": (1.2, 1.1),
-            "expected": r"$L_t \to \infty$"
-        },
-        {
-            "name": "KL(h,g) ≈ KL(h,f)",
-            "h_params": (2, 1.35),
-            "expected": "$L_t$ fluctuates"
-        },
-        {
-            "name": "KL(h,g) < KL(h,f)", 
-            "h_params": (3.5, 1.5),
-            "expected": r"$L_t \to 0$"
-        }
-    ]
-    
-    fig, axes = plt.subplots(2, 3, figsize=(15, 10))
-    
-    for i, scenario in enumerate(scenarios):
-        # Define distributions
-        h = lambda x: p(x, scenario["h_params"][0], scenario["h_params"][1])
-        
-        # Compute KL divergences
-        Kf, Kg = compute_KL(h, f, g)
-        kl_diff = Kg - Kf
-        
-        # Simulate paths
-        N_paths = 100
-        T = 150
-        h_data = np.random.beta(scenario["h_params"][0], scenario["h_params"][1], (N_paths, T))
-        l_ratios = f(h_data) / g(h_data)
-        l_cumulative = np.cumprod(l_ratios, axis=1)
-        log_l_cumulative = np.log(l_cumulative)
-        
-        # Plot distributions
-        ax = axes[0, i]
-        x_range = np.linspace(0.001, 0.999, 200)
-        ax.plot(x_range, [f(x) for x in x_range], 'b-', label='f', linewidth=2)
-        ax.plot(x_range, [g(x) for x in x_range], 'r-', label='g', linewidth=2)
-        ax.plot(x_range, [h(x) for x in x_range], 'g--', label='h (data)', linewidth=2)
-        ax.set_xlabel('w')
-        ax.set_ylabel('Density')
-        ax.set_title(scenario["name"])
-        ax.legend()
-        
-        # Plot log likelihood ratio paths
-        ax = axes[1, i]
-        for j in range(min(20, N_paths)):
-            ax.plot(log_l_cumulative[j, :], alpha=0.3, color='purple')
-        
-        # Plot theoretical expectation
-        theory_line = kl_diff * np.arange(1, T+1)
-        ax.plot(theory_line, 'k--', linewidth=2, label=f'Theory: {kl_diff:.3f}×t')
-        
-        ax.set_xlabel('t')
-        ax.set_ylabel('log L_t')
-        ax.set_title(f'KL(h,f)={Kf:.3f}, KL(h,g)={Kg:.3f}\n{scenario["expected"]}')
-        ax.legend()
-    
-    plt.tight_layout()
-    plt.show()
+# Define test scenarios
+scenarios = [
+    {
+        "name": "KL(h,g) > KL(h,f)",
+        "h_params": (1.2, 1.1),
+        "expected": r"$L_t \to \infty$"
+    },
+    {
+        "name": "KL(h,g) ≈ KL(h,f)",
+        "h_params": (2, 1.35),
+        "expected": "$L_t$ fluctuates"
+    },
+    {
+        "name": "KL(h,g) < KL(h,f)", 
+        "h_params": (3.5, 1.5),
+        "expected": r"$L_t \to 0$"
+    }
+]
 
-visualize_kl_effect()
+fig, axes = plt.subplots(2, 3, figsize=(15, 12))
+
+for i, scenario in enumerate(scenarios):
+    # Define distributions
+    h = lambda x: p(x, scenario["h_params"][0], scenario["h_params"][1])
+    
+    # Compute KL divergences
+    Kf, Kg = compute_KL(h, f, g)
+    kl_diff = Kg - Kf
+    
+    # Simulate paths
+    N_paths = 100
+    T = 150
+    h_data = np.random.beta(scenario["h_params"][0], scenario["h_params"][1], (N_paths, T))
+    l_ratios = f(h_data) / g(h_data)
+    l_cumulative = np.cumprod(l_ratios, axis=1)
+    log_l_cumulative = np.log(l_cumulative)
+    
+    # Plot distributions
+    ax = axes[0, i]
+    x_range = np.linspace(0.001, 0.999, 200)
+    ax.plot(x_range, [f(x) for x in x_range], 'b-', label='f', linewidth=2)
+    ax.plot(x_range, [g(x) for x in x_range], 'r-', label='g', linewidth=2)
+    ax.plot(x_range, [h(x) for x in x_range], 'g--', label='h (data)', linewidth=2)
+    ax.set_xlabel('w')
+    ax.set_ylabel('density')
+    ax.set_title(scenario["name"], fontsize=16)
+    ax.legend()
+    
+    # Plot log likelihood ratio paths
+    ax = axes[1, i]
+    for j in range(min(20, N_paths)):
+        ax.plot(log_l_cumulative[j, :], alpha=0.3, color='purple')
+    
+    # Plot theoretical expectation
+    theory_line = kl_diff * np.arange(1, T+1)
+    ax.plot(theory_line, 'k--', linewidth=2, label=f'Theory: {kl_diff:.3f}×t')
+    
+    ax.set_xlabel('t')
+    ax.set_ylabel('$log L_t$')
+    ax.set_title(f'KL(h,f)={Kf:.3f}, KL(h,g)={Kg:.3f}\n{scenario["expected"]}', 
+                fontsize=16)
+    ax.legend(fontsize=16)
+
+plt.tight_layout()
+plt.show()
 ```
 
 Note that
 
-- In the first figure, $\log(L(w^t))$ diverges to $\infty$ because $K_g > K_f$.
+- In the first figure, $\log L(w^t)$ diverges to $\infty$ because $K_g > K_f$.
 - In the second figure, we still have $K_g > K_f$, but the difference is smaller, so $L(w^t)$ diverges to infinity at a slower pace.
-- In the last figure, $\log(L(w^t))$ diverges to $-\infty$ because $K_g < K_f$.
+- In the last figure, $\log L(w^t)$ diverges to $-\infty$ because $K_g < K_f$.
 - The black dotted line, $t \cdot \left(KL(h,g) - KL(h, f)\right)$, closely fits the paths verifying {eq}`eq:kl_likelihood_link`.
 
 These observations align with the theory.
@@ -1912,7 +1907,7 @@ In the middle panel, nature chooses $g$. Agent 1's consumption ratio tends to mo
 
 In the right panel, nature flips coins each period. We see a very similar pattern to the processes in the left panel.
 
-The figures in the top panel reminds us the discussion in [this section](rel_entropy).
+The figures in the top panel remind us of the discussion in [this section](rel_entropy).
 
 We invite readers to revisit [that section](rel_entropy) and try to infer the relationships among $KL(f, g)$, $KL(g, f)$, $KL(h, f)$, and $KL(h,g)$.
 
@@ -2070,7 +2065,7 @@ In the first two panels at the bottom, we see convergence occurring faster becau
 
 We  see faster convergence in  the first panel at the bottom when  nature chooses $f$  than in the second panel where nature chooses $g$.
 
-This ties nicely to {eq}`eq:kl_likelihood_link`.
+This ties in nicely with {eq}`eq:kl_likelihood_link`.
 
 
 +++
