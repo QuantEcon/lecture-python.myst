@@ -687,7 +687,7 @@ def visualize_kl_effect():
             "expected": "$L_t$ fluctuates"
         },
         {
-            "name": "KL(h,g) < KL(h,f), 
+            "name": "KL(h,g) < KL(h,f)", 
             "h_params": (3.5, 1.5),
             "expected": r"$L_t \to 0$"
         }
