@@ -121,12 +121,12 @@ inferences using a classic frequentist approach due to Neyman and
 Pearson {cite}`Neyman_Pearson`.
 
 To help us appreciate how things work, the following Python code evaluates $f$ and $g$ as two different
-beta distributions, then computes and simulates an associated likelihood
+Beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence $w^t$ from one of the two
 probability distributions, for example, a sequence of  IID draws from $g$.
 
 ```{code-cell} ipython3
-# Parameters in the two beta distributions.
+# Parameters in the two Beta distributions.
 F_a, F_b = 1, 1
 G_a, G_b = 3, 1.2
 
@@ -508,7 +508,7 @@ If for a fixed $t$ we now free up and move $c$, we will sweep out the probabilit
 of detection as a function of the probability of false alarm.
 
 This produces  a [receiver operating characteristic
-curve](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).
+curve (ROC curve)](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).
 
 Below, we plot receiver operating characteristic curves for different
 sample sizes $t$.
@@ -679,6 +679,8 @@ In the simulation, we generate multiple paths using Beta distributions $f$, $g$,
 We consider three cases: (1) $h$ is closer to $f$, (2) $f$ and $g$ are approximately equidistant from $h$, and (3) $h$ is closer to $g$.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 # Define test scenarios
 scenarios = [
     {
@@ -701,8 +703,9 @@ scenarios = [
 fig, axes = plt.subplots(2, 3, figsize=(15, 12))
 
 for i, scenario in enumerate(scenarios):
-    # Define distributions
-    h = lambda x: p(x, scenario["h_params"][0], scenario["h_params"][1])
+    # Define h
+    h = lambda x: p(x, scenario["h_params"][0], 
+                    scenario["h_params"][1])
     
     # Compute KL divergences
     Kf, Kg = compute_KL(h, f, g)
@@ -711,7 +714,10 @@ for i, scenario in enumerate(scenarios):
     # Simulate paths
     N_paths = 100
     T = 150
-    h_data = np.random.beta(scenario["h_params"][0], scenario["h_params"][1], (N_paths, T))
+
+    # Generate data from h
+    h_data = np.random.beta(scenario["h_params"][0], 
+                scenario["h_params"][1], (N_paths, T))
     l_ratios = f(h_data) / g(h_data)
     l_cumulative = np.cumprod(l_ratios, axis=1)
     log_l_cumulative = np.log(l_cumulative)
@@ -719,9 +725,12 @@ for i, scenario in enumerate(scenarios):
     # Plot distributions
     ax = axes[0, i]
     x_range = np.linspace(0.001, 0.999, 200)
-    ax.plot(x_range, [f(x) for x in x_range], 'b-', label='f', linewidth=2)
-    ax.plot(x_range, [g(x) for x in x_range], 'r-', label='g', linewidth=2)
-    ax.plot(x_range, [h(x) for x in x_range], 'g--', label='h (data)', linewidth=2)
+    ax.plot(x_range, [f(x) for x in x_range], 
+        'b-', label='f', linewidth=2)
+    ax.plot(x_range, [g(x) for x in x_range], 
+        'r-', label='g', linewidth=2)
+    ax.plot(x_range, [h(x) for x in x_range], 
+        'g--', label='h (data)', linewidth=2)
     ax.set_xlabel('w')
     ax.set_ylabel('density')
     ax.set_title(scenario["name"], fontsize=16)
@@ -734,7 +743,7 @@ for i, scenario in enumerate(scenarios):
     
     # Plot theoretical expectation
     theory_line = kl_diff * np.arange(1, T+1)
-    ax.plot(theory_line, 'k--', linewidth=2, label=f'Theory: {kl_diff:.3f}×t')
+    ax.plot(theory_line, 'k--', linewidth=2, label=r'$t \times (K_g - K_f)$')
     
     ax.set_xlabel('t')
     ax.set_ylabel('$log L_t$')
@@ -751,7 +760,7 @@ Note that
 - In the first figure, $\log L(w^t)$ diverges to $\infty$ because $K_g > K_f$.
 - In the second figure, we still have $K_g > K_f$, but the difference is smaller, so $L(w^t)$ diverges to infinity at a slower pace.
 - In the last figure, $\log L(w^t)$ diverges to $-\infty$ because $K_g < K_f$.
-- The black dotted line, $t \cdot \left(KL(h,g) - KL(h, f)\right)$, closely fits the paths verifying {eq}`eq:kl_likelihood_link`.
+- The black dotted line, $t \left(KL(h,g) - KL(h, f)\right)$, closely fits the paths verifying {eq}`eq:kl_likelihood_link`.
 
 These observations align with the theory.
 
@@ -781,8 +790,7 @@ We assume that $f$ and $g$ both put positive probabilities on the same intervals
 
   
 
-In the simulations below, we specify that  $f$ is a $\text{Beta}(1, 1)$ distribution and that  $g$ is $\text{Beta}(3, 1.2)$ distribution,
-just as we did often earlier in this lecture.
+In the simulations below, we specify that  $f$ is a $\text{Beta}(1, 1)$ distribution and that  $g$ is $\text{Beta}(3, 1.2)$ distribution.
 
 We consider two alternative timing protocols. 
 
@@ -1028,7 +1036,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-To  the left of the  green vertical line  $f < g $,  so $l_t < 1$; therefore a  $w_t$ that falls to the left of the green line is classified as a type $g$ individual. 
+To  the left of the  green vertical line  $g < f$,  so $l_t < 1$; therefore a  $w_t$ that falls to the left of the green line is classified as a type $g$ individual. 
 
  * The shaded orange area equals $\beta$ -- the probability of classifying someone as a type $g$ individual when it is really a type $f$ individual.
 
@@ -1226,7 +1234,7 @@ Because in general $KL(f, g) \neq KL(g, f)$, KL divergence is not symmetric, but
 As {eq}`eq:js_divergence` shows, the Jensen-Shannon divergence computes average of the KL divergence of $f$ and $g$ with respect to a particular reference distribution $m$ defined below the equation.
 ```
 
-Now let's create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy
+Now let's create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy for a set of pairs of Beta distributions.
 
 ```{code-cell} ipython3
 def js_divergence(f, g):
@@ -1973,7 +1981,7 @@ print(f"KL divergences: \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
 print(f"KL(h,f)={Kf_h:.3f}, KL(h,g)={Kg_h:.3f}")
 ```
 
-We find that $KL(f,g) > KL(g,f)$ and $KL(g,h) > KL(f,h)$.
+We find that $KL(f,g) > KL(g,f)$ and $KL(h,g) > KL(h,f)$.
 
 The first inequality tells us that the average "surprise" or "inefficiency" of using belief $g$ when nature chooses $f$ is greater than the "surprise" of using belief $f$ when nature chooses $g$.
 
@@ -2110,9 +2118,9 @@ print(f"KL(h,f)={Kf_h:.3f}, KL(h,g)={Kg_h:.3f}")
 
 We find that in the first case, $KL(f,g) \approx KL(g,f)$ and both are relatively small, so although either agent 1 or agent  2 will eventually consume everything, convergence displaying in  first two panels on the top is pretty  slowly.
 
-In the first two panels at the bottom, we see convergence occurring faster because the divergence gap $KL(f, g) > KL(g, f)$ is  larger (as indicated by the black dashed line).
+In the first two panels at the bottom, we see convergence occurring faster (as indicated by the black dashed line) because the divergence gaps $KL(f, g)$ and $KL(g, f)$ are larger.
 
-We  see faster convergence in  the first panel at the bottom when  nature chooses $f$  than in the second panel where nature chooses $g$.
+Since $KL(f,g) > KL(g,f)$, we  see faster convergence in  the first panel at the bottom when  nature chooses $f$  than in the second panel where nature chooses $g$.
 
 This ties in nicely with {eq}`eq:kl_likelihood_link`.
 
