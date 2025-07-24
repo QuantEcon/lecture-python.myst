@@ -667,9 +667,11 @@ X
 Sure enough, we have the same solution and the same cost
 
 ```{code-cell} ipython3
-total_cost = np.sum(X * C)
+total_cost = np.vdot(X, C)
 total_cost
 ```
+
+Here we use [np.vdot](https://numpy.org/doc/stable/reference/generated/numpy.vdot.html) for the trace inner product of X and C
 
 ### A Larger Application
 
