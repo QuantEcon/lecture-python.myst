@@ -369,15 +369,27 @@ We are going to use Numba to accelerate our code.
 
 * See, in particular, the discussion of `@jitclass` in [our lecture on Numba](https://python-programming.quantecon.org/numba.html).
 
-The following helps Numba by providing some type
+The following helps Numba by providing some type specifications.
 
 ```{code-cell} python3
 mccall_data = [
     ('c', float64),      # unemployment compensation
     ('β', float64),      # discount factor
-    ('w', float64[:]),   # array of wage values, w[i] = wage at state i
-    ('q', float64[:])    # array of probabilities
+    ('w', float64[::1]), # array of wage values, w[i] = wage at state i
+    ('q', float64[::1])  # array of probabilities
 ]
+```
+
+```{note}
+Note the use of `[::1]` in the array type declarations above. 
+
+This notation specifies that the arrays should be C-contiguous.
+
+This is important for performance, especially when using the `@` operator for matrix multiplication (e.g., `v @ q`). 
+
+Without this specification, Numba might need to handle non-contiguous arrays, which can significantly slow down these operations.
+
+Try to replace `[::1]` with `[:]` and see what happens.
 ```
 
 Here's a class that stores the data and computes the values of state-action pairs,
