@@ -286,10 +286,10 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading prettytable-3.16.0-py3-none-any.whl.metadata (33 kB)
-Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from prettytable) (0.2.5)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading prettytable-3.16.0-py3-none-any.whl (33 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from prettytable) (0.2.5)
+Downloading prettytable-3.16.0-py3-none-any.whl (33 kB)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: prettytable
@@ -787,8 +787,8 @@ the population distribution correctly tells us the relative frequencies that we 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.  1.  0. ...  1.  0.  0.]
- [20. 20. 10. ... 20. 20. 10.]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.  1.  0. ...  0.  0.  1.]
+ [10. 20. 10. ... 20. 10. 10.]]
 </pre></div>
 </div>
 </div>
@@ -822,20 +822,20 @@ the population distribution correctly tells us the relative frequencies that we 
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>marginal distribution for x
-+---------+----------+
-| x_value |  x_prob  |
-+---------+----------+
-|    0    | 0.499492 |
-|    1    | 0.500508 |
-+---------+----------+
++---------+---------------------+
+| x_value |        x_prob       |
++---------+---------------------+
+|    0    |       0.501141      |
+|    1    | 0.49885900000000005 |
++---------+---------------------+
 
 marginal distribution for y
-+---------+--------------------+
-| y_value |       y_prob       |
-+---------+--------------------+
-|    10   |      0.399738      |
-|    20   | 0.6002620000000001 |
-+---------+--------------------+
++---------+----------+
+| y_value |  y_prob  |
++---------+----------+
+|    10   | 0.401342 |
+|    20   | 0.598658 |
++---------+----------+
 </pre></div>
 </div>
 </div>
@@ -872,20 +872,20 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
-+---------+--------------------+---------------------+
-| y_value |     prob(x=0)      |      prob(x=1)      |
-+---------+--------------------+---------------------+
-|    10   | 0.7499086901920758 | 0.25009130980792416 |
-|    20   | 0.3327297080274947 |  0.6672702919725053 |
-+---------+--------------------+---------------------+
++---------+---------------------+---------------------+
+| y_value |      prob(x=0)      |      prob(x=1)      |
++---------+---------------------+---------------------+
+|    10   |  0.7504597076807311 | 0.24954029231926889 |
+|    20   | 0.33399704004623676 |  0.6660029599537632 |
++---------+---------------------+---------------------+
 
 conditional distribution for y
-+---------+--------------------+---------------------+
-| x_value |     prob(y=10)     |      prob(y=20)     |
-+---------+--------------------+---------------------+
-|    0    | 0.6001437460459828 | 0.39985625395401725 |
-|    1    | 0.1997390651098484 |  0.8002609348901516 |
-+---------+--------------------+---------------------+
++---------+--------------------+--------------------+
+| x_value |     prob(y=10)     |     prob(y=20)     |
++---------+--------------------+--------------------+
+|    0    | 0.601010494052572  | 0.398989505947428  |
+|    1    | 0.2007601346272193 | 0.7992398653727807 |
++---------+--------------------+--------------------+
 </pre></div>
 </div>
 </div>
@@ -1090,19 +1090,19 @@ discrete bivariate joint distribution.</p>
  +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    0    | 0.499602 |
-|    1    | 0.500398 |
+|    0    | 0.499409 |
+|    1    | 0.500591 |
 |   sum   |   1.0    |
 +---------+----------+
 
 marginal distribution for y
- +---------+----------+
-| y_value |  y_prob  |
-+---------+----------+
-|    10   | 0.399416 |
-|    20   | 0.600584 |
-|   sum   |   1.0    |
-+---------+----------+
+ +---------+--------+
+| y_value | y_prob |
++---------+--------+
+|    10   | 0.3993 |
+|    20   | 0.6007 |
+|   sum   |  1.0   |
++---------+--------+
 </pre></div>
 </div>
 </div>
@@ -1116,20 +1116,20 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
- +---------+---------------------+--------------------+-----+
-| x_value |          0          |         1          | sum |
-+---------+---------------------+--------------------+-----+
-|    10   |  0.7498297514370982 | 0.2501702485629018 | 1.0 |
-|    20   | 0.33318902934477107 | 0.6668109706552289 | 1.0 |
-+---------+---------------------+--------------------+-----+
+ +---------+--------------------+--------------------+-----+
+| x_value |         0          |         1          | sum |
++---------+--------------------+--------------------+-----+
+|    10   | 0.7504282494365139 | 0.2495717505634861 | 1.0 |
+|    20   | 0.3325503579157649 | 0.6674496420842351 | 1.0 |
++---------+--------------------+--------------------+-----+
 
 conditional distribution for y
- +---------+--------------------+---------------------+-----+
-| y_value |         10         |          20         | sum |
-+---------+--------------------+---------------------+-----+
-|    0    | 0.5994651742787259 | 0.40053482572127413 | 1.0 |
-|    1    | 0.1996850506996431 |  0.800314949300357  | 1.0 |
-+---------+--------------------+---------------------+-----+
+ +---------+---------------------+--------------------+-----+
+| y_value |          10         |         20         | sum |
++---------+---------------------+--------------------+-----+
+|    0    |  0.6000012014200785 | 0.3999987985799215 | 1.0 |
+|    1    | 0.19907269607324143 | 0.8009273039267586 | 1.0 |
++---------+---------------------+--------------------+-----+
 </pre></div>
 </div>
 </div>
@@ -1171,9 +1171,9 @@ conditional distribution for y
  +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    10   | 0.300059 |
-|    20   | 0.400312 |
-|    30   | 0.299629 |
+|    10   | 0.299262 |
+|    20   | 0.400665 |
+|    30   | 0.300073 |
 |   sum   |   1.0    |
 +---------+----------+
 
@@ -1181,8 +1181,8 @@ marginal distribution for y
  +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    1    | 0.450329 |
-|    2    | 0.549671 |
+|    1    | 0.450303 |
+|    2    | 0.549697 |
 |   sum   |   1.0    |
 +---------+----------+
 </pre></div>
@@ -1197,21 +1197,21 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
- +---------+---------------------+---------------------+---------------------+-----+
-| x_value |          10         |          20         |          30         | sum |
-+---------+---------------------+---------------------+---------------------+-----+
-|    1    | 0.44515676316648495 | 0.22306802360052316 | 0.33177521323299186 | 1.0 |
-|    2    |  0.1811847450565884 |  0.5455226853881685 | 0.27329256955524306 | 1.0 |
-+---------+---------------------+---------------------+---------------------+-----+
+ +---------+---------------------+--------------------+---------------------+-----+
+| x_value |          10         |         20         |          30         | sum |
++---------+---------------------+--------------------+---------------------+-----+
+|    1    | 0.44411207564684224 | 0.2228366233402842 | 0.33305130101287356 | 1.0 |
+|    2    | 0.18060313227105115 | 0.5463391650309171 |  0.2730577026980318 | 1.0 |
++---------+---------------------+--------------------+---------------------+-----+
 
 conditional distribution for y
- +---------+---------------------+---------------------+-----+
-| y_value |          1          |          2          | sum |
-+---------+---------------------+---------------------+-----+
-|    10   |  0.6680919419180894 | 0.33190805808191054 | 1.0 |
-|    20   |  0.2509392673714503 |  0.7490607326285498 | 1.0 |
-|    30   | 0.49864332224183905 |  0.501356677758161  | 1.0 |
-+---------+---------------------+---------------------+-----+
+ +---------+---------------------+--------------------+-----+
+| y_value |          1          |         2          | sum |
++---------+---------------------+--------------------+-----+
+|    10   |  0.6682605877124392 | 0.3317394122875607 | 1.0 |
+|    20   | 0.25044363745273485 | 0.7495563625472652 | 1.0 |
+|    30   |  0.4997917173487785 | 0.5002082826512215 | 1.0 |
++---------+---------------------+--------------------+-----+
 </pre></div>
 </div>
 </div>
@@ -1336,10 +1336,10 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.0013021410575543568 2.236202364201117
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.004847502309928312 2.235139364933375
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/6b148756979fe0a8b54fdbc8f76f4adfb7e83f56025f3d1eba3e0a8aec1ecaab.png"><img alt="_images/6b148756979fe0a8b54fdbc8f76f4adfb7e83f56025f3d1eba3e0a8aec1ecaab.png" src="_images/6b148756979fe0a8b54fdbc8f76f4adfb7e83f56025f3d1eba3e0a8aec1ecaab.png" style="width: 560px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/e07a46b8ec0136aac8d0c7eea2baaac8239f6948375bfdf8cab1669899424b26.png"><img alt="_images/e07a46b8ec0136aac8d0c7eea2baaac8239f6948375bfdf8cab1669899424b26.png" src="_images/e07a46b8ec0136aac8d0c7eea2baaac8239f6948375bfdf8cab1669899424b26.png" style="width: 560px; height: 413px;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1354,10 +1354,10 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.999549717607252 0.9987490105646801
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.999327188080876 1.0010145457915907
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/00c2c17e83312fbc2a8ffa1248e25e2f888e16693634bab04206da6e86850138.png"><img alt="_images/00c2c17e83312fbc2a8ffa1248e25e2f888e16693634bab04206da6e86850138.png" src="_images/00c2c17e83312fbc2a8ffa1248e25e2f888e16693634bab04206da6e86850138.png" style="width: 556px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/893a05151ea021e406c95f826570b5f7d77f384250b1d354dbeafd66a7a25f33.png"><img alt="_images/893a05151ea021e406c95f826570b5f7d77f384250b1d354dbeafd66a7a25f33.png" src="_images/893a05151ea021e406c95f826570b5f7d77f384250b1d354dbeafd66a7a25f33.png" style="width: 556px; height: 413px;" /></a>
 </div>
 </div>
 <p><strong>Conditional distribution</strong></p>
@@ -1419,7 +1419,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/601415796c5934378bd13090079f605643e8452674460dedb53e849e6553b65d.png"><img alt="_images/601415796c5934378bd13090079f605643e8452674460dedb53e849e6553b65d.png" src="_images/601415796c5934378bd13090079f605643e8452674460dedb53e849e6553b65d.png" style="width: 565px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/b3de44ea4c0c781f7dbfb6721c489f4ec7326f76b443489a4cf8337060c9a70a.png"><img alt="_images/b3de44ea4c0c781f7dbfb6721c489f4ec7326f76b443489a4cf8337060c9a70a.png" src="_images/b3de44ea4c0c781f7dbfb6721c489f4ec7326f76b443489a4cf8337060c9a70a.png" style="width: 565px; height: 413px;" /></a>
 </div>
 </div>
 <p>Fix <span class="math notranslate nohighlight">\(x=1\)</span>.</p>
@@ -1450,7 +1450,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/193a2877b106f7bc619c4045fb8e90df63bdb5c61da09bb0dd085ae031e08eef.png"><img alt="_images/193a2877b106f7bc619c4045fb8e90df63bdb5c61da09bb0dd085ae031e08eef.png" src="_images/193a2877b106f7bc619c4045fb8e90df63bdb5c61da09bb0dd085ae031e08eef.png" style="width: 557px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/76d135cf5954415bd99744ab35d17ea967870689875cd96c3729e68d7fd51403.png"><img alt="_images/76d135cf5954415bd99744ab35d17ea967870689875cd96c3729e68d7fd51403.png" src="_images/76d135cf5954415bd99744ab35d17ea967870689875cd96c3729e68d7fd51403.png" style="width: 556px; height: 413px;" /></a>
 </div>
 </div>
 <p>We compare  with the analytically computed parameters and note that they are close.</p>
@@ -1691,19 +1691,19 @@ C(u_1,u_2,\dots,u_n) = H[F^{-1}_1(u_1),F^{-1}_2(u_2),\dots,F^{-1}_N(u_N)]
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distribution for x
-+---------+---------+
-| x_value |  x_prob |
-+---------+---------+
-|    0    | 0.60041 |
-|    1    | 0.39959 |
-+---------+---------+
++---------+----------+
+| x_value |  x_prob  |
++---------+----------+
+|    0    | 0.599792 |
+|    1    | 0.400208 |
++---------+----------+
 distribution for y
-+---------+----------+
-| y_value |  y_prob  |
-+---------+----------+
-|    0    | 0.299976 |
-|    1    | 0.700024 |
-+---------+----------+
++---------+---------------------+
+| y_value |        y_prob       |
++---------+---------------------+
+|    0    | 0.29979599999999995 |
+|    1    |       0.700204      |
++---------+---------------------+
 </pre></div>
 </div>
 </div>
@@ -1778,10 +1778,10 @@ distribution for y
 +------------+------------+----------+
 | c1_x_value | c1_y_value | c1_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.179831 |
-|     0      |     1      | 0.419877 |
-|     1      |     0      | 0.119638 |
-|     1      |     1      | 0.280654 |
+|     0      |     0      | 0.180277 |
+|     0      |     1      | 0.419371 |
+|     1      |     0      | 0.119458 |
+|     1      |     1      | 0.280894 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -1815,15 +1815,15 @@ distribution for y
 +------------+-----------+
 | c1_x_value | c1_x_prob |
 +------------+-----------+
-|     0      |  0.599708 |
-|     1      |  0.400292 |
+|     0      |  0.599648 |
+|     1      |  0.400352 |
 +------------+-----------+
 marginal distribution for y
 +------------+-----------+
 | c1_y_value | c1_y_prob |
 +------------+-----------+
-|     0      |  0.299469 |
-|     1      |  0.700531 |
+|     0      |  0.299735 |
+|     1      |  0.700265 |
 +------------+-----------+
 </pre></div>
 </div>
@@ -1892,10 +1892,10 @@ marginal distribution for y
 +------------+------------+----------+
 | c2_x_value | c2_y_value | c2_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.300178 |
-|     0      |     1      | 0.301152 |
+|     0      |     0      | 0.299744 |
+|     0      |     1      | 0.299865 |
 |     1      |     0      |   0.0    |
-|     1      |     1      | 0.39867  |
+|     1      |     1      | 0.400391 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -1929,16 +1929,16 @@ marginal distribution for y
 +------------+--------------------+
 | c2_x_value |     c2_x_prob      |
 +------------+--------------------+
-|     0      | 0.6013299999999999 |
-|     1      |      0.39867       |
+|     0      | 0.5996090000000001 |
+|     1      |      0.400391      |
 +------------+--------------------+
 marginal distribution for y
-+------------+---------------------+
-| c2_y_value |      c2_y_prob      |
-+------------+---------------------+
-|     0      | 0.30017799999999994 |
-|     1      |       0.699822      |
-+------------+---------------------+
++------------+-----------+
+| c2_y_value | c2_y_prob |
++------------+-----------+
+|     0      |  0.299744 |
+|     1      |  0.700256 |
++------------+-----------+
 </pre></div>
 </div>
 </div>

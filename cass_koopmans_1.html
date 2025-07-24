@@ -249,8 +249,8 @@
 <h1><span class="section-number">47. </span>Cass-Koopmans Model<a class="headerlink" href="#cass-koopmans-model" title="Permalink to this heading">#</a></h1>
 <section id="overview">
 <h2><span class="section-number">47.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>This lecture and <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> describe a model that Tjalling Koopmans <span id="id1">[<a class="reference internal" href="zreferences.html#id92" title="Tjalling C. Koopmans. On the concept of optimal economic growth. In Tjalling C. Koopmans, editor, The Economic Approach to Development Planning, pages 225-287. Chicago, 1965.">Koopmans, 1965</a>]</span>
-and David Cass <span id="id2">[<a class="reference internal" href="zreferences.html#id93" title="David Cass. Optimum growth in an aggregative model of capital accumulation. Review of Economic Studies, 32(3):233-240, 1965.">Cass, 1965</a>]</span> used to analyze optimal growth.</p>
+<p>This lecture and <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> describe a model that Tjalling Koopmans <span id="id1">[<a class="reference internal" href="zreferences.html#id95" title="Tjalling C. Koopmans. On the concept of optimal economic growth. In Tjalling C. Koopmans, editor, The Economic Approach to Development Planning, pages 225-287. Chicago, 1965.">Koopmans, 1965</a>]</span>
+and David Cass <span id="id2">[<a class="reference internal" href="zreferences.html#id96" title="David Cass. Optimum growth in an aggregative model of capital accumulation. Review of Economic Studies, 32(3):233-240, 1965.">Cass, 1965</a>]</span> used to analyze optimal growth.</p>
 <p>The model extends  the model of Robert Solow
 described in <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html">an earlier lecture</a>.</p>
 <p>It does so by making  saving rate be a  decision, instead of a hard-wired constant.</p>
@@ -280,6 +280,36 @@ to initial and terminal conditions.</p></li>
 long but finite-horizon economies.</p></li>
 <li><p>A <strong>stable manifold</strong> and a <strong>phase plane</strong></p></li>
 </ul>
+<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
+</pre></div>
+</div>
+</div>
+<details class="admonition hide below-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
+Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
+Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
+Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
+Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.14.0)
+Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.43.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
+</pre></div>
+</div>
+</div>
+</details>
+</div>
 <p>Let’s start with some standard imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -732,7 +762,7 @@ tolerance bounds), we stop.</p>
 <span class="k">def</span> <span class="nf">bisection</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
     <span class="c1"># initial boundaries for guess c0</span>
-    <span class="n">c0_upper</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">k0</span><span class="p">)</span>
+    <span class="n">c0_upper</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">k0</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pp</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span> <span class="o">*</span> <span class="n">k0</span>  
     <span class="n">c0_lower</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -769,7 +799,7 @@ tolerance bounds), we stop.</p>
 
     <span class="k">if</span> <span class="n">axs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">fix</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-    <span class="n">ylabels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$c_t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$k_t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$\mu_t$&#39;</span><span class="p">]</span>
+    <span class="n">ylabels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$c_t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$k_t$&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\mu_t$&#39;</span><span class="p">]</span>
     <span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Consumption&#39;</span><span class="p">,</span> <span class="s1">&#39;Capital&#39;</span><span class="p">,</span> <span class="s1">&#39;Lagrange Multiplier&#39;</span><span class="p">]</span>
 
     <span class="n">c_paths</span> <span class="o">=</span> <span class="p">[]</span>
@@ -797,14 +827,6 @@ tolerance bounds), we stop.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:5: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-&lt;&gt;:5: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-/tmp/ipykernel_5901/1114278410.py:5: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-  ylabels = [&#39;$c_t$&#39;, &#39;$k_t$&#39;, &#39;$\mu_t$&#39;]
-</pre></div>
-</div>
-</div>
 </div>
 <p>Now we can solve the model and plot the paths of consumption, capital, and Lagrange multiplier.</p>
 <div class="cell docutils container">
@@ -814,7 +836,7 @@ tolerance bounds), we stop.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cddc3f1aa0ba1a8ef0ea677f561818ef921c93a13f6d92709ef81ac6c70fcde6.png" src="_images/cddc3f1aa0ba1a8ef0ea677f561818ef921c93a13f6d92709ef81ac6c70fcde6.png" />
+<img alt="_images/a2c74a96ae84a1dcce83454e9c843be7c5bf5c848d23f471f56104d9c2115bbb.png" src="_images/a2c74a96ae84a1dcce83454e9c843be7c5bf5c848d23f471f56104d9c2115bbb.png" />
 </div>
 </div>
 </section>
@@ -887,7 +909,7 @@ we get</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7653fcf29617498f1339edff887edabc999756a0e27e1fa487cf10ff23d2cad1.png" src="_images/7653fcf29617498f1339edff887edabc999756a0e27e1fa487cf10ff23d2cad1.png" />
+<img alt="_images/d25ade3e3e9413f35cb09bf2bec4f737fad4421486ba15984005c4cefb4cfb98.png" src="_images/d25ade3e3e9413f35cb09bf2bec4f737fad4421486ba15984005c4cefb4cfb98.png" />
 </div>
 </div>
 <p>Evidently,  with a large value of
@@ -901,7 +923,7 @@ we get</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b5b57c86b6ff83f498c1a1c2b640ac8ddc9b1e085405861fab489c5fdb2abb13.png" src="_images/b5b57c86b6ff83f498c1a1c2b640ac8ddc9b1e085405861fab489c5fdb2abb13.png" />
+<img alt="_images/da8defb5d09b607c4a39bce126fd6ee2e6511b8b93a106f63e7c073077598f53.png" src="_images/da8defb5d09b607c4a39bce126fd6ee2e6511b8b93a106f63e7c073077598f53.png" />
 </div>
 </div>
 <p>Notice how the planner pushes capital toward the steady state, stays
@@ -915,7 +937,7 @@ value <span class="math notranslate nohighlight">\(K_{T+1} =0\)</span> when <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/65689c0dc976c2ac21261331507a95711b43bcb7eff3e53edcd19d8be0e06282.png" src="_images/65689c0dc976c2ac21261331507a95711b43bcb7eff3e53edcd19d8be0e06282.png" />
+<img alt="_images/897d6f9779120c366dcdc9c0a14df1b67f4c1d2a4fecbf3b62432d57e763d2e8.png" src="_images/897d6f9779120c366dcdc9c0a14df1b67f4c1d2a4fecbf3b62432d57e763d2e8.png" />
 </div>
 </div>
 </section>
@@ -931,7 +953,7 @@ its steady state value most of the time.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5e0beda3ad11d2249de806659996b43431ca42b76d51e8c4109237f99253e49a.png" src="_images/5e0beda3ad11d2249de806659996b43431ca42b76d51e8c4109237f99253e49a.png" />
+<img alt="_images/87d3eb0dc3b0e75d1721c2fd9eea50069d5a27b793466db00c4594f7878cbc87.png" src="_images/87d3eb0dc3b0e75d1721c2fd9eea50069d5a27b793466db00c4594f7878cbc87.png" />
 </div>
 </div>
 <p>In the above graphs, different colors  are associated with
@@ -946,6 +968,82 @@ the steady state and stay close to the steady state until time approaches <span 
 </ul>
 <p>The planner accomplishes this by adjusting the saving rate <span class="math notranslate nohighlight">\(\frac{f(K_t) - C_t}{f(K_t)}\)</span>
 over time.</p>
+<div class="exercise admonition" id="ck1_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 47.1 </span></p>
+<section id="exercise-content">
+<p>The turnpike property is independent of the initial condition
+<span class="math notranslate nohighlight">\(K_0\)</span> provided that <span class="math notranslate nohighlight">\(T\)</span> is sufficiently large.</p>
+<p>Expand the <code class="docutils literal notranslate"><span class="pre">plot_paths</span></code> function so that it plots trajectories for multiple initial points using <code class="docutils literal notranslate"><span class="pre">k0s</span> <span class="pre">=</span> <span class="pre">[k_ss*2,</span> <span class="pre">k_ss*3,</span> <span class="pre">k_ss/3]</span></code>.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="cass_koopmans_1-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#ck1_ex1"> Exercise 47.1</a></p>
+<section id="solution-content">
+<p>Here is one solution</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_multiple_paths</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0s</span><span class="p">,</span> <span class="n">T_arr</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">axs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+        
+    <span class="n">ylabels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$c_t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$k_t$&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\mu_t$&#39;</span><span class="p">]</span>
+    <span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Consumption&#39;</span><span class="p">,</span> <span class="s1">&#39;Capital&#39;</span><span class="p">,</span> <span class="s1">&#39;Lagrange Multiplier&#39;</span><span class="p">]</span>
+
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">k0s</span><span class="p">)))</span>
+    
+    <span class="n">all_c_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">all_k_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">k0s</span><span class="p">):</span>
+        <span class="n">k0_c_paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">k0_k_paths</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">T_arr</span><span class="p">:</span>
+            <span class="n">c_vec</span><span class="p">,</span> <span class="n">k_vec</span> <span class="o">=</span> <span class="n">bisection</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="n">k_ter</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">k0_c_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_vec</span><span class="p">)</span>
+            <span class="n">k0_k_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k_vec</span><span class="p">)</span>
+
+            <span class="n">μ_vec</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">u_prime</span><span class="p">(</span><span class="n">c_vec</span><span class="p">)</span>
+            <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">c_vec</span><span class="p">,</span> <span class="n">k_vec</span><span class="p">,</span> <span class="n">μ_vec</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">axs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> 
+                           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$k_0 = </span><span class="si">{</span><span class="n">k0</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">$&#39;</span> <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">T</span> <span class="o">==</span> <span class="n">T_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+                <span class="n">axs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabels</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="n">titles</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">k_ss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">T</span> <span class="o">==</span> <span class="n">T_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">paths</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        
+        <span class="n">all_c_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k0_c_paths</span><span class="p">)</span>
+        <span class="n">all_k_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k0_k_paths</span><span class="p">)</span>
+    
+    <span class="c1"># Add legend if multiple initial points</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">k0s</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">all_c_paths</span><span class="p">,</span> <span class="n">all_k_paths</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">plot_multiple_paths</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="p">[</span><span class="n">k_ss</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">/</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="n">k_ss</span><span class="o">=</span><span class="n">k_ss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/23a27fba675b6c1ba99ebafb3fdfe5a9fc43191486d88fb037ca0e9b144e9f8a.png" src="_images/23a27fba675b6c1ba99ebafb3fdfe5a9fc43191486d88fb037ca0e9b144e9f8a.png" />
+</div>
+</div>
+<p>We see that the turnpike property holds for various initial values of <span class="math notranslate nohighlight">\(K_0\)</span>.</p>
+</section>
+</div>
 <p>Let’s calculate and  plot the saving rate.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -986,7 +1084,7 @@ over time.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0a09435f39e42677b2b0d61a27277eebc523256b6bac7c903585754cdfda3f40.png" src="_images/0a09435f39e42677b2b0d61a27277eebc523256b6bac7c903585754cdfda3f40.png" />
+<img alt="_images/3119fcc18d98a535163e48c47c263d746f70dc0bde210b4e8a089e7d75e5fe65.png" src="_images/3119fcc18d98a535163e48c47c263d746f70dc0bde210b4e8a089e7d75e5fe65.png" />
 </div>
 </div>
 </section>
@@ -1027,7 +1125,7 @@ state.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3ad7b4ba04c522789dcbe3111ba48c9d1f9125a625bc2ac3a05227b688b5821a.png" src="_images/3ad7b4ba04c522789dcbe3111ba48c9d1f9125a625bc2ac3a05227b688b5821a.png" />
+<img alt="_images/60e320700e05982742b2a64aeed91f2c72c19f3eeb31b2e6440a79b54ec871b5.png" src="_images/60e320700e05982742b2a64aeed91f2c72c19f3eeb31b2e6440a79b54ec871b5.png" />
 </div>
 </div>
 <p>Since <span class="math notranslate nohighlight">\(K_0&lt;\bar K\)</span>, <span class="math notranslate nohighlight">\(f'(K_0)&gt;\rho +\delta\)</span>.</p>
@@ -1137,12 +1235,12 @@ K = \tilde K(C)
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged successfully on iteration  46
-Converged successfully on iteration  52
+Converged successfully on iteration  51
 </pre></div>
 </div>
 </div>
 </div>
-<p>The following code generates Figure <a class="reference internal" href="#stable-manifold"><span class="std std-numref">Fig. 47.1</span></a>, which is patterned on a graph that appears  on  page 411 of <span id="id3">[<a class="reference internal" href="zreferences.html#id4" title="Michael D Intriligator. Mathematical optimization and economic theory. SIAM, 2002.">Intriligator, 2002</a>]</span>.</p>
+<p>The following code generates Figure <a class="reference internal" href="#stable-manifold"><span class="std std-numref">Fig. 47.1</span></a>, which is patterned on a graph that appears  on  page 411 of <span id="id3">[<a class="reference internal" href="zreferences.html#id7" title="Michael D Intriligator. Mathematical optimization and economic theory. SIAM, 2002.">Intriligator, 2002</a>]</span>.</p>
 <p>Figure <a class="reference internal" href="#stable-manifold"><span class="std std-numref">Fig. 47.1</span></a> is a classic “phase plane” with  “state” variable <span class="math notranslate nohighlight">\(K\)</span> on the ordinate axis and “co-state” variable <span class="math notranslate nohighlight">\(C\)</span> on the coordinate axis.</p>
 <p>Figure <a class="reference internal" href="#stable-manifold"><span class="std std-numref">Fig. 47.1</span></a> plots   three curves:</p>
 <ul class="simple">
@@ -1239,9 +1337,9 @@ by a representative household and a representative firm.</p>
 studied in <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> is a foundational topic in general equilibrium theory and welfare economics.</p>
 <section id="exercise">
 <h3><span class="section-number">47.9.1. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h3>
-<div class="exercise admonition" id="ck1_ex1">
+<div class="exercise admonition" id="ck1_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 47.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 47.2 </span></p>
 <section id="exercise-content">
 <ul class="simple">
 <li><p>Plot the optimal consumption, capital, and saving paths when the
@@ -1251,9 +1349,9 @@ as we shoot towards the steady state at <span class="math notranslate nohighligh
 </ul>
 </section>
 </div>
-<div class="solution dropdown admonition" id="cass_koopmans_1-solution-1">
+<div class="solution dropdown admonition" id="cass_koopmans_1-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ck1_ex1"> Exercise 47.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ck1_ex2"> Exercise 47.2</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1262,7 +1360,7 @@ as we shoot towards the steady state at <span class="math notranslate nohighligh
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4bfb31b3efc433f6cf1a1b0a6d132ab50c224448a354bb9a9da1fcde47141e3c.png" src="_images/4bfb31b3efc433f6cf1a1b0a6d132ab50c224448a354bb9a9da1fcde47141e3c.png" />
+<img alt="_images/13a5cdc987229711448d7c797f78cd101f8ef7e90f4dd34993fad1c69e056f85.png" src="_images/13a5cdc987229711448d7c797f78cd101f8ef7e90f4dd34993fad1c69e056f85.png" />
 </div>
 </div>
 </section>

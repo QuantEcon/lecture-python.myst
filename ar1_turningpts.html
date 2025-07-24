@@ -306,7 +306,7 @@ Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/
 <li><p>sample path properties that are defined as non-linear functions of future values <span class="math notranslate nohighlight">\(\{y_{t+j}\}_{j \geq 1}\)</span> at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
 </ul>
 <p><strong>Sample path properties</strong> are things like “time to next turning point” or “time to next recession”.</p>
-<p>To investigate sample path properties we’ll use a simulation procedure recommended by Wecker <span id="id1">[<a class="reference internal" href="zreferences.html#id9" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span>.</p>
+<p>To investigate sample path properties we’ll use a simulation procedure recommended by Wecker <span id="id1">[<a class="reference internal" href="zreferences.html#id12" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span>.</p>
 <p>To acknowledge uncertainty about parameters, we’ll deploy <code class="docutils literal notranslate"><span class="pre">pymc</span></code> to construct a Bayesian joint posterior distribution for unknown parameters.</p>
 <p>Let’s start with some imports.</p>
 <div class="cell docutils container">
@@ -366,7 +366,7 @@ f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^
 <li><p>“severe recession”, and</p></li>
 <li><p>the time until the next turning point (positive or negative).</p></li>
 </ul>
-<p>To accomplish that for situations in which we are uncertain about parameter values, we shall extend Wecker’s <span id="id2">[<a class="reference internal" href="zreferences.html#id9" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span> approach in the following way.</p>
+<p>To accomplish that for situations in which we are uncertain about parameter values, we shall extend Wecker’s <span id="id2">[<a class="reference internal" href="zreferences.html#id12" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span> approach in the following way.</p>
 <ul class="simple">
 <li><p>first simulate an initial path of length <span class="math notranslate nohighlight">\(T_0\)</span>;</p></li>
 <li><p>for a given prior, draw a sample of size <span class="math notranslate nohighlight">\(N\)</span> from the posterior joint distribution of parameters <span class="math notranslate nohighlight">\(\left(\rho,\sigma\right)\)</span> after observing the initial path;</p></li>
@@ -451,7 +451,7 @@ we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span 
 </section>
 <section id="predictive-distributions-of-path-properties">
 <h2><span class="section-number">20.3. </span>Predictive Distributions of Path Properties<a class="headerlink" href="#predictive-distributions-of-path-properties" title="Permalink to this heading">#</a></h2>
-<p>Wecker <span id="id3">[<a class="reference internal" href="zreferences.html#id9" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span> proposed using simulation techniques to characterize  predictive distribution of some statistics that are  non-linear functions of <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>Wecker <span id="id3">[<a class="reference internal" href="zreferences.html#id12" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span> proposed using simulation techniques to characterize  predictive distribution of some statistics that are  non-linear functions of <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>He called these functions “path properties” to contrast them with properties of single data points.</p>
 <p>He studied two special  prospective path properties of a given series <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
 <p>The first was <strong>time until the next turning point</strong>.</p>
@@ -479,7 +479,7 @@ Z_t(Y(\omega)) :=
 \[
 W_t(\omega):= \inf \{ k\geq 1 \mid Z_{t+k}(\omega) = 1\}
 \]</div>
-<p>Wecker  <span id="id4">[<a class="reference internal" href="zreferences.html#id9" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span> also studied <strong>the minimum value of <span class="math notranslate nohighlight">\(Y\)</span> over the next 8 quarters</strong>
+<p>Wecker  <span id="id4">[<a class="reference internal" href="zreferences.html#id12" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span> also studied <strong>the minimum value of <span class="math notranslate nohighlight">\(Y\)</span> over the next 8 quarters</strong>
 which can be defined as the random variable.</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -525,7 +525,7 @@ P_t(\omega) :=
 <ul class="simple">
 <li><p>``after one or two decrease(s), <span class="math notranslate nohighlight">\(Y\)</span> will grow for two consecutive quarters’’</p></li>
 </ul>
-<p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id9" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span>, we can use simulations to calculate  probabilities of <span class="math notranslate nohighlight">\(P_t\)</span> and <span class="math notranslate nohighlight">\(N_t\)</span> for each period <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id12" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span>, we can use simulations to calculate  probabilities of <span class="math notranslate nohighlight">\(P_t\)</span> and <span class="math notranslate nohighlight">\(N_t\)</span> for each period <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </section>
 <section id="a-wecker-like-algorithm">
 <h2><span class="section-number">20.4. </span>A Wecker-Like Algorithm<a class="headerlink" href="#a-wecker-like-algorithm" title="Permalink to this heading">#</a></h2>

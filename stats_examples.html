@@ -317,8 +317,8 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.336708 
-The sample variance is:  7.787275722736001
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.3293 
+The sample variance is:  7.7753035100000005
 
 The population mean is:  3.3333333333333335
 The population variance is:  7.777777777777778
@@ -368,8 +368,8 @@ X  &amp; \sim NB(r,p) \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.335794 
-The sample variance is:  77.71036638956404
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.335418 
+The sample variance is:  77.75304076527603
 
 The population mean is:  23.333333333333336
 The population variance is:  77.77777777777779
@@ -406,13 +406,13 @@ the leading digit is more likely to be small than large.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Benford_pmf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
-<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <span class="c1"># mean</span>
-<span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Benford_pmf</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="n">k</span> <span class="o">@</span> <span class="n">Benford_pmf</span>
 
 <span class="c1"># variance</span>
-<span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([(</span><span class="n">k</span><span class="o">-</span><span class="n">mean</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">Benford_pmf</span><span class="p">])</span>
+<span class="n">var</span> <span class="o">=</span> <span class="p">((</span><span class="n">k</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">@</span> <span class="n">Benford_pmf</span>
 
 <span class="c1"># verify sum to 1</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Benford_pmf</span><span class="p">))</span>
@@ -423,8 +423,8 @@ the leading digit is more likely to be small than large.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
-3.4402369671232065
-6.056512631375665
+3.440236967123207
+6.056512631375667
 </pre></div>
 </div>
 </div>
@@ -476,8 +476,8 @@ X \sim N(\mu,\sigma^2)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -0.00024918072398274804
-The sample standard deviation is:  0.10005873951034311
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -0.0001865683110966545
+The sample standard deviation is:  0.09998016118003647
 </pre></div>
 </div>
 </div>
@@ -537,8 +537,8 @@ f(x)&amp; = \begin{cases} \frac{1}{b-a}, &amp; a \leq x \leq b \\ \quad0, &amp; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  15.002246080352284 
-The sample variance is:  8.33456181873862
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  15.000060853232977 
+The sample variance is:  8.327832491637295
 
 The population mean is:  15.0
 The population variance is:  8.333333333333334
@@ -581,8 +581,8 @@ f(x) = 0.0005
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.38223138233386 
-The sample variance is:  5825.609379719297
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.47338392798573 
+The sample variance is:  5851.931879053882
 </pre></div>
 </div>
 </div>
@@ -720,7 +720,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/cbcdb3014403202a04897b394d0ff1a8bfdeaacab0a18d1794ebe4d174ade236.png"><img alt="_images/cbcdb3014403202a04897b394d0ff1a8bfdeaacab0a18d1794ebe4d174ade236.png" src="_images/cbcdb3014403202a04897b394d0ff1a8bfdeaacab0a18d1794ebe4d174ade236.png" style="width: 556px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/3c477577ad48da0abf8e144b6f275ce4b60d3d3614ab149b04082382aeb7ba0e.png"><img alt="_images/3c477577ad48da0abf8e144b6f275ce4b60d3d3614ab149b04082382aeb7ba0e.png" src="_images/3c477577ad48da0abf8e144b6f275ce4b60d3d3614ab149b04082382aeb7ba0e.png" style="width: 556px; height: 413px;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -731,7 +731,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/f5ebfe85f8d707470189e7c80b7295992a664ef19d0f6cceb13a10d950fb6d5a.png"><img alt="_images/f5ebfe85f8d707470189e7c80b7295992a664ef19d0f6cceb13a10d950fb6d5a.png" src="_images/f5ebfe85f8d707470189e7c80b7295992a664ef19d0f6cceb13a10d950fb6d5a.png" style="width: 556px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/82d22c5b23c7c0ae00845f07dfc7880423a406ad6ef8ef6334d68dbd7dc303fe.png"><img alt="_images/82d22c5b23c7c0ae00845f07dfc7880423a406ad6ef8ef6334d68dbd7dc303fe.png" src="_images/82d22c5b23c7c0ae00845f07dfc7880423a406ad6ef8ef6334d68dbd7dc303fe.png" style="width: 556px; height: 413px;" /></a>
 </div>
 </div>
 <p><strong>Geometric distribution</strong></p>
@@ -798,7 +798,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/94666813c86386487a4439e1815463b5edb7e1197e054b21eee45f7f8e2a865d.png"><img alt="_images/94666813c86386487a4439e1815463b5edb7e1197e054b21eee45f7f8e2a865d.png" src="_images/94666813c86386487a4439e1815463b5edb7e1197e054b21eee45f7f8e2a865d.png" style="width: 547px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/7fca1aca53a96d6071f9a1de7ef44a946af235c4d7b2ef3357333e33077550cf.png"><img alt="_images/7fca1aca53a96d6071f9a1de7ef44a946af235c4d7b2ef3357333e33077550cf.png" src="_images/7fca1aca53a96d6071f9a1de7ef44a946af235c4d7b2ef3357333e33077550cf.png" style="width: 556px; height: 413px;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -808,7 +808,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>60
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>59
 </pre></div>
 </div>
 </div>
@@ -833,7 +833,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c719e502b9a258515fc10801e96974dca7bebbda6913e3955b867c55f817b0ff.png"><img alt="_images/c719e502b9a258515fc10801e96974dca7bebbda6913e3955b867c55f817b0ff.png" src="_images/c719e502b9a258515fc10801e96974dca7bebbda6913e3955b867c55f817b0ff.png" style="width: 556px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/63cb92eec285ee394093eb98ab01a6310f2295ee274b0753fa996042bb1fe402.png"><img alt="_images/63cb92eec285ee394093eb98ab01a6310f2295ee274b0753fa996042bb1fe402.png" src="_images/63cb92eec285ee394093eb98ab01a6310f2295ee274b0753fa996042bb1fe402.png" style="width: 547px; height: 413px;" /></a>
 </div>
 </div>
 </section>

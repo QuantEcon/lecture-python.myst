@@ -149,8 +149,8 @@ Then we'll plot various iterates on the Bellman operator.
 mccall_data = [
     ('c', float64),      # unemployment compensation
     ('β', float64),      # discount factor
-    ('w', float64[:]),   # array of wage values, w[i] = wage at state i
-    ('q', float64[:]),    # array of probabilities
+    ('w', float64[::1]),  # array of wage values, w[i] = wage at state i
+    ('q', float64[::1])   # array of probabilities
 ]
 
 
@@ -171,7 +171,7 @@ class McCallModel:
         # Evaluate value for each state-action pair
         # Consider action = accept or reject the current offer
         accept = w[i] / (1 - β)
-        reject = c + β * np.sum(v * q)
+        reject = c + β * (v @ q)
 
         return np.array([accept, reject])
 

@@ -292,7 +292,7 @@
 </section>
 <section id="the-setting">
 <h2><span class="section-number">73.2. </span>The setting<a class="headerlink" href="#the-setting" title="Permalink to this heading">#</a></h2>
-<p>In effect, this lecture implements a Python version of  the model presented in section 9.3.3 of Ljungqvist and Sargent <span id="id1">[<a class="reference internal" href="zreferences.html#id187" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>.</p>
+<p>In effect, this lecture implements a Python version of  the model presented in section 9.3.3 of Ljungqvist and Sargent <span id="id1">[<a class="reference internal" href="zreferences.html#id190" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>.</p>
 <section id="preferences-and-endowments">
 <h3><span class="section-number">73.2.1. </span>Preferences and endowments<a class="headerlink" href="#preferences-and-endowments" title="Permalink to this heading">#</a></h3>
 <p>In each period <span class="math notranslate nohighlight">\(t\geq 0\)</span>,  a stochastic
@@ -357,7 +357,7 @@ that  consumers share   probabilities <span class="math notranslate nohighlight"
 </section>
 <section id="recursive-formulation">
 <h2><span class="section-number">73.3. </span>Recursive Formulation<a class="headerlink" href="#recursive-formulation" title="Permalink to this heading">#</a></h2>
-<p>Following descriptions in section 9.3.3 of Ljungqvist and Sargent <span id="id2">[<a class="reference internal" href="zreferences.html#id187" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span> chapter 9, we  set up  a competitive equilibrium of a pure exchange economy with complete markets in one-period Arrow securities.</p>
+<p>Following descriptions in section 9.3.3 of Ljungqvist and Sargent <span id="id2">[<a class="reference internal" href="zreferences.html#id190" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span> chapter 9, we  set up  a competitive equilibrium of a pure exchange economy with complete markets in one-period Arrow securities.</p>
 <p>When  endowments <span class="math notranslate nohighlight">\(y^k(s)\)</span> are all functions of a common Markov state <span class="math notranslate nohighlight">\(s\)</span>,
 the pricing kernel takes the form <span class="math notranslate nohighlight">\(Q(s'|s)\)</span>, where <span class="math notranslate nohighlight">\(Q(s'| s)\)</span> is the price of one unit of consumption
 in state <span class="math notranslate nohighlight">\(s'\)</span> at date <span class="math notranslate nohighlight">\(t+1\)</span> when the Markov state at date <span class="math notranslate nohighlight">\(t\)</span> is <span class="math notranslate nohighlight">\(s\)</span>.</p>
@@ -430,7 +430,7 @@ are  zero net aggregate claims.</p>
 </section>
 <section id="state-variable-degeneracy">
 <h2><span class="section-number">73.4. </span>State Variable Degeneracy<a class="headerlink" href="#state-variable-degeneracy" title="Permalink to this heading">#</a></h2>
-<p>Please see Ljungqvist and Sargent <span id="id3">[<a class="reference internal" href="zreferences.html#id187" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span> for a description of
+<p>Please see Ljungqvist and Sargent <span id="id3">[<a class="reference internal" href="zreferences.html#id190" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span> for a description of
 timing protocol for trades  consistent with an  Arrow-Debreu vision in which</p>
 <ul class="simple">
 <li><p>at time <span class="math notranslate nohighlight">\(0\)</span> there are complete markets in a complete menu of history <span class="math notranslate nohighlight">\(s^t\)</span>-contingent claims on consumption at all dates that all trades occur at time zero</p></li>
@@ -1027,7 +1027,7 @@ with sequential trading of one-period Arrow securities.</p>
     <span class="k">def</span> <span class="nf">price_risk_free_bond</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Give Q, compute price of one-period risk free bond&quot;</span>
 
-        <span class="n">PRF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">PRF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">PRF</span> <span class="o">=</span> <span class="n">PRF</span>
 
         <span class="k">return</span> <span class="n">PRF</span>
@@ -1035,7 +1035,7 @@ with sequential trading of one-period Arrow securities.</p>
     <span class="k">def</span> <span class="nf">risk_free_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Given Q, compute one-period gross risk-free interest rate R&quot;</span>
 
-        <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">R</span>
 
@@ -1259,7 +1259,7 @@ J =
 Q = 
  [[0.49       0.41412558]
  [0.57977582 0.49      ]]
-R =  [0.93477529 1.10604104]
+R =  [1.10604104 0.93477529]
 </pre></div>
 </div>
 </div>
@@ -1312,7 +1312,7 @@ R =  [0.93477529 1.10604104]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.93477529, 1.10604104])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1.10604104, 0.93477529])
 </pre></div>
 </div>
 </div>
@@ -1422,7 +1422,7 @@ J =
  [0. 1.]]
 Q =  [[0.098 0.882]
  [0.    0.98 ]]
-R =  [10.20408163  0.53705693]
+R =  [1.02040816 1.02040816]
 </pre></div>
 </div>
 </div>
@@ -1609,7 +1609,7 @@ Q =
  [[0.098      1.08022498 0.        ]
  [0.36007499 0.882      0.69728222]
  [0.24038317 0.29440805 0.049     ]]
-R =  [1.43172499 0.44313807 1.33997564]
+R =  [0.84873434 0.51563476 1.71294115]
 A = 
  [[-1.4141307  -0.45854174]
  [-1.4122483  -1.54005386]

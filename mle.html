@@ -275,7 +275,7 @@ economic factors such as market size and tax rate predict.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span>
-<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">factorial</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">factorial</span><span class="p">,</span> <span class="n">gammaln</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 <span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
@@ -311,7 +311,7 @@ indexed by its mean <span class="math notranslate nohighlight">\(\mu \in (-\inft
 </section>
 <section id="counting-billionaires">
 <h3><span class="section-number">77.2.2. </span>Counting Billionaires<a class="headerlink" href="#counting-billionaires" title="Permalink to this heading">#</a></h3>
-<p>Treisman <span id="id1">[<a class="reference internal" href="zreferences.html#id96" title="Daniel Treisman. Russia's billionaires. The American Economic Review, 106(5):236–241, 2016.">Treisman, 2016</a>]</span> is interested in estimating the number of billionaires in different countries.</p>
+<p>Treisman <span id="id1">[<a class="reference internal" href="zreferences.html#id99" title="Daniel Treisman. Russia's billionaires. The American Economic Review, 106(5):236–241, 2016.">Treisman, 2016</a>]</span> is interested in estimating the number of billionaires in different countries.</p>
 <p>The number of billionaires is integer-valued.</p>
 <p>Hence we consider distributions that take values only in the nonnegative integers.</p>
 <p>(This is one reason least squares regression is not the best tool for the present problem, since the dependent variable in linear regression is not restricted
@@ -663,7 +663,7 @@ differentiating <span class="math notranslate nohighlight">\(f(x) = x \exp(x)\)<
         = &amp;
         \sum_{i=1}^{n} y_i \log{\mu_i} -
         \sum_{i=1}^{n} \mu_i -
-        \sum_{i=1}^{n} \log y!
+        \sum_{i=1}^{n} \log y_i!
 \end{split}
 \end{split}\]</div>
 <p>The MLE of the Poisson to the Poisson  for <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> can be obtained by solving</p>
@@ -672,7 +672,7 @@ differentiating <span class="math notranslate nohighlight">\(f(x) = x \exp(x)\)<
 \underset{\beta}{\max} \Big(
 \sum_{i=1}^{n} y_i \log{\mu_i} -
 \sum_{i=1}^{n} \mu_i -
-\sum_{i=1}^{n} \log y! \Big)
+\sum_{i=1}^{n} \log y_i! \Big)
 \]</div>
 <p>However, no analytical solution exists to the above problem – to find the MLE
 we need to use numerical methods.</p>
@@ -782,7 +782,7 @@ for every iteration</p>
     <span class="k">def</span> <span class="nf">logL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
         <span class="n">μ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">μ</span><span class="p">)</span> <span class="o">-</span> <span class="n">μ</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">factorial</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">μ</span><span class="p">)</span> <span class="o">-</span> <span class="n">μ</span> <span class="o">-</span> <span class="n">gammaln</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
@@ -989,8 +989,8 @@ to confirm we obtain the same coefficients and log-likelihood value.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 16 Jun 2025   Pseudo R-squ.:                  0.2546
-Time:                        05:11:22   Log-Likelihood:                -3.3784
+Date:                Thu, 24 Jul 2025   Pseudo R-squ.:                  0.2546
+Time:                        06:49:52   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
@@ -1056,8 +1056,8 @@ model.</p>
 Dep. Variable:                numbil0   No. Observations:                  197
 Model:                        Poisson   Df Residuals:                      193
 Method:                           MLE   Df Model:                            3
-Date:                Mon, 16 Jun 2025   Pseudo R-squ.:                  0.8574
-Time:                        05:11:22   Log-Likelihood:                -438.54
+Date:                Thu, 24 Jul 2025   Pseudo R-squ.:                  0.8574
+Time:                        06:49:52   Log-Likelihood:                -438.54
 converged:                       True   LL-Null:                       -3074.7
 Covariance Type:                  HC0   LLR p-value:                     0.000
 ==============================================================================
@@ -1285,17 +1285,20 @@ follows</p>
         <span class="k">return</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">logL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
         <span class="n">μ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">μ</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">μ</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">y</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">μ</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">μ</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>  
         <span class="n">μ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">()</span>
         <span class="n">ϕ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ϕ</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">ϕ</span> <span class="o">/</span> <span class="n">μ</span> <span class="o">-</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">ϕ</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">μ</span><span class="p">)),</span>
-                     <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">ϕ</span> <span class="o">/</span> <span class="n">μ</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">ϕ</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">μ</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
         <span class="n">β</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span>
         <span class="n">μ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">()</span>
         <span class="n">ϕ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ϕ</span><span class="p">()</span>
@@ -1408,15 +1411,17 @@ Number of iterations: 4
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
-         Current function value: 0.473746
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         Current function value: 0.473746
          Iterations 6
                           Probit Regression Results                           
 ==============================================================================
 Dep. Variable:                      y   No. Observations:                    5
 Model:                         Probit   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 16 Jun 2025   Pseudo R-squ.:                  0.2961
-Time:                        05:11:22   Log-Likelihood:                -2.3687
+Date:                Thu, 24 Jul 2025   Pseudo R-squ.:                  0.2961
+Time:                        06:49:53   Log-Likelihood:                -2.3687
 converged:                       True   LL-Null:                       -3.3651
 Covariance Type:            nonrobust   LLR p-value:                    0.3692
 ==============================================================================
