@@ -33,19 +33,19 @@ This lecture describes likelihood ratio processes and some of their uses.
 
 We'll study the same  setting that is also used in  {doc}`this lecture on exchangeability <exchangeable>`.
 
-Among  things that we'll learn  are
+Among the things that we'll learn are
 
 * How a likelihood ratio process is a key ingredient in frequentist hypothesis testing
 * How a **receiver operator characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
-* How a  statistician can combine frequentist probabilities of type I and type II errors to form posterior probabilities of mistakes in a  model selection or a  classification problem
-* How likelihood ratios helped Lawrence Blume and David Easley formulate an answer to  the question ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`
-* How to use a Kullback-Leibler divergence to  quantify the difference between two probability distributions with the same support 
+* How a statistician can combine frequentist probabilities of type I and type II errors to form posterior probabilities of mistakes in a model selection or a classification problem
+* How likelihood ratios helped Lawrence Blume and David Easley formulate an answer to the question ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`
+* How to use a Kullback-Leibler divergence to quantify the difference between two probability distributions with the same support 
 * How during World War II the United States Navy devised a decision rule for doing quality control on lots of ammunition, a topic that sets the stage for {doc}`this lecture <wald_friedman>`
 * A peculiar property of likelihood ratio processes
 
 
 
-Let's start  by importing some Python tools.
+Let's start by importing some Python tools.
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
@@ -86,7 +86,7 @@ We want to use these observations to infer whether nature chose $f$ or $g$.
 
 A **likelihood ratio process** is a useful tool for this task.
 
-To begin, we define key component of a likelihood ratio process, namely, the time $t$ likelihood ratio  as the random variable
+To begin, we define a key component of a likelihood ratio process, namely, the time $t$ likelihood ratio as the random variable
 
 $$
 \ell (w_t)=\frac{f\left(w_t\right)}{g\left(w_t\right)},\quad t\geq1.
@@ -95,9 +95,9 @@ $$
 We assume that $f$ and $g$ both put positive probabilities on the
 same intervals of possible realizations of the random variable $W$.
 
-That means that under the $g$ density,  $\ell (w_t)=
+That means that under the $g$ density, $\ell (w_t)=
 \frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}$
-is a nonnegative  random variable with mean $1$.
+is a nonnegative random variable with mean $1$.
 
 A **likelihood ratio process** for sequence
 $\left\{ w_{t}\right\} _{t=1}^{\infty}$ is defined as
@@ -109,7 +109,7 @@ $$
 where $w^t=\{ w_1,\dots,w_t\}$ is a history of
 observations up to and including time $t$.
 
-Sometimes for shorthand we'll write $L_t =  L(w^t)$.
+Sometimes for shorthand we'll write $L_t = L(w^t)$.
 
 Notice that the likelihood process satisfies the *recursion* 
 
@@ -124,7 +124,7 @@ Pearson {cite}`Neyman_Pearson`.
 To help us appreciate how things work, the following Python code evaluates $f$ and $g$ as two different
 Beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence $w^t$ from one of the two
-probability distributions, for example, a sequence of  IID draws from $g$.
+probability distributions, for example, a sequence of IID draws from $g$.
 
 ```{code-cell} ipython3
 # Parameters in the two Beta distributions.
@@ -186,7 +186,7 @@ plt.title("$L(w^{t})$ paths");
 Evidently, as sample length $T$ grows, most probability mass
 shifts toward zero
 
-To see it this more clearly clearly, we plot over time the fraction of
+To see this more clearly, we plot over time the fraction of
 paths $L\left(w^{t}\right)$ that fall in the interval
 $\left[0, 0.01\right]$.
 
@@ -196,7 +196,7 @@ plt.show()
 ```
 
 Despite the evident convergence of most probability mass to a
-very small interval near $0$,  the unconditional mean of
+very small interval near $0$, the unconditional mean of
 $L\left(w^t\right)$ under probability density $g$ is
 identically $1$ for all $t$.
 
@@ -241,13 +241,13 @@ $t \geq 1$.
 
 ## Peculiar Property
 
-How can $E\left[L\left(w^{t}\right)\bigm|q=g\right]=1$ possibly be true when most  probability mass of the likelihood
+How can $E\left[L\left(w^{t}\right)\bigm|q=g\right]=1$ possibly be true when most probability mass of the likelihood
 ratio process is piling up near $0$ as
 $t \rightarrow + \infty$?
 
 The answer is that as $t \rightarrow + \infty$, the
 distribution of $L_t$ becomes more and more fat-tailed:
-enough  mass shifts to larger and larger values of $L_t$ to make
+enough mass shifts to larger and larger values of $L_t$ to make
 the mean of $L_t$ continue to be one despite most of the probability mass piling up
 near $0$.
 
@@ -260,19 +260,19 @@ l_arr_g = simulate(G_a, G_b, N=50000)
 l_seq_g = np.cumprod(l_arr_g, axis=1)
 ```
 
-It would be useful to use simulations to verify that  unconditional means
+It would be useful to use simulations to verify that unconditional means
 $E\left[L\left(w^{t}\right)\right]$ equal unity by averaging across sample
 paths.
 
-But it would be too computer-time-consuming for us to that  here simply by applying a standard Monte Carlo simulation approach.
+But it would be too computer-time-consuming for us to do that here simply by applying a standard Monte Carlo simulation approach.
 
-The reason is that the distribution of $L\left(w^{t}\right)$ is extremely skewed for large values of  $t$.
+The reason is that the distribution of $L\left(w^{t}\right)$ is extremely skewed for large values of $t$.
 
-Because the probability density in the right tail is close to $0$,  it just takes too much computer time to sample enough points from the right tail.
+Because the probability density in the right tail is close to $0$, it just takes too much computer time to sample enough points from the right tail.
 
-We explain the problem in more detail  in {doc}`this lecture <imp_sample>`.
+We explain the problem in more detail in {doc}`this lecture <imp_sample>`.
 
-There we describe a way to an alternative way to compute the mean of a likelihood ratio by computing the mean of a _different_ random variable by sampling from  a _different_ probability distribution.
+There we describe an alternative way to compute the mean of a likelihood ratio by computing the mean of a _different_ random variable by sampling from a _different_ probability distribution.
 
 
 ## Nature Permanently Draws from Density f
@@ -315,7 +315,7 @@ plt.show()
 
 We also plot the probability that $L\left(w^t\right)$ falls into
 the interval $[10000, \infty)$ as a function of time and watch how
-fast probability mass diverges  to $+\infty$.
+fast probability mass diverges to $+\infty$.
 
 ```{code-cell} ipython3
 plt.plot(range(T), np.sum(l_seq_f > 10000, axis=0) / N)
@@ -325,14 +325,14 @@ plt.show()
 ## Likelihood Ratio Test
 
 We now describe how to employ the machinery
-of Neyman and Pearson {cite}`Neyman_Pearson` to test the hypothesis that  history $w^t$ is generated by repeated
+of Neyman and Pearson {cite}`Neyman_Pearson` to test the hypothesis that history $w^t$ is generated by repeated
 IID draws from density $f$.
 
 Denote $q$ as the data generating process, so that
 $q=f \text{ or } g$.
 
 Upon observing a sample $\{W_i\}_{i=1}^t$, we want to decide
-whether nature is drawing from $g$ or from $f$ by performing  a (frequentist)
+whether nature is drawing from $g$ or from $f$ by performing a (frequentist)
 hypothesis test.
 
 We specify
@@ -347,13 +347,13 @@ form:
 - reject $H_0$ if $L(W^t) < c$,
 
 
-where $c$ is a given  discrimination threshold.
+where $c$ is a given discrimination threshold.
 
 Setting $c =1$ is a common choice.
 
 We'll discuss consequences of other choices of $c$ below.  
 
-This test is *best* in the sense that it is  **uniformly most powerful**.
+This test is *best* in the sense that it is **uniformly most powerful**.
 
 To understand what this means, we have to define probabilities of two important events that
 allow us to characterize a test associated with a given
@@ -374,7 +374,7 @@ The two probabilities are:
   \beta \equiv \Pr\left\{ L\left(w^{t}\right)>c\mid q=g\right\}
   $$
 
-These two probabilities underly  the following two concepts: 
+These two probabilities underlie the following two concepts: 
 
 
 - Probability of false alarm (= significance level = probability of
@@ -399,7 +399,7 @@ states that among all possible tests, a likelihood ratio test
 maximizes the probability of detection for a given probability of false
 alarm.
 
-Another way to say the same thing is that  among all possible tests, a likelihood ratio test
+Another way to say the same thing is that among all possible tests, a likelihood ratio test
 maximizes **power** for a given **significance level**.
 
 We want a small probability of
@@ -408,11 +408,11 @@ false alarm and a large probability of detection.
 With sample size $t$ fixed, we can change our two probabilities by
 adjusting $c$.
 
-A troublesome "that's life" fact is that these two probabilities  move in the same direction as we vary the critical value
+A troublesome "that's life" fact is that these two probabilities move in the same direction as we vary the critical value
 $c$.
 
 Without specifying quantitative losses from making Type I and Type II errors, there is little that we can say
-about how we *should*  trade off probabilities of the two types of mistakes.
+about how we *should* trade off probabilities of the two types of mistakes.
 
 We do know that increasing sample size $t$ improves
 statistical inference.
@@ -434,17 +434,17 @@ likelihood ratios simulated above, which are generated by either
 $f$ or $g$.
 
 Taking logarithms has no effect on calculating the probabilities because
-the log  is a monotonic transformation.
+the log is a monotonic transformation.
 
 As $t$ increases, the probabilities of making Type I and Type II
 errors both decrease, which is good.
 
 This is because most of the probability mass of log$(L(w^t))$
 moves toward $-\infty$ when $g$ is the data generating
-process,  while log$(L(w^t))$ goes to
+process, while log$(L(w^t))$ goes to
 $\infty$ when data are generated by $f$.
 
-That disparate  behavior of log$(L(w^t))$ under $f$ and $q$
+That disparate behavior of log$(L(w^t))$ under $f$ and $q$
 is what makes it possible eventually to distinguish
 $q=f$ from $q=g$.
 
@@ -476,15 +476,15 @@ plt.show()
 
 In the above graphs, 
   * the blue areas are related to but not equal to probabilities $\alpha $ of a type I error because 
-they are integrals of $\log L_t$, not integrals of $L_t$, over  rejection region $L_t < 1$  
+they are integrals of $\log L_t$, not integrals of $L_t$, over rejection region $L_t < 1$  
 * the orange areas are related to but not equal to probabilities $\beta $ of a type II error because 
-they are integrals of $\log L_t$, not integrals of $L_t$, over  acceptance region $L_t > 1$
+they are integrals of $\log L_t$, not integrals of $L_t$, over acceptance region $L_t > 1$
 
 
-When we hold $c$ fixed at $c=1$, the following graph shows  that 
-  *  the probability of detection monotonically increases with increases in
+When we hold $c$ fixed at $c=1$, the following graph shows that 
+  * the probability of detection monotonically increases with increases in
 $t$ 
-  *  the probability of a false alarm monotonically decreases with increases in $t$.
+  * the probability of a false alarm monotonically decreases with increases in $t$.
 
 ```{code-cell} ipython3
 PD = np.empty(T)
@@ -502,13 +502,13 @@ plt.legend()
 plt.show()
 ```
 
-For a given sample size $t$,  the threshold $c$ uniquely pins down  probabilities
+For a given sample size $t$, the threshold $c$ uniquely pins down probabilities
 of both types of error.
 
 If for a fixed $t$ we now free up and move $c$, we will sweep out the probability
 of detection as a function of the probability of false alarm.
 
-This produces  a [receiver operating characteristic
+This produces a [receiver operating characteristic
 curve (ROC curve)](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).
 
 Below, we plot receiver operating characteristic curves for different
@@ -539,7 +539,7 @@ Notice that as $t$ increases, we are assured a larger probability
 of detection and a smaller probability of false alarm associated with
 a given discrimination threshold $c$.
 
-For a given sample size $t$, both $\alpha$ and $\beta$ change as we  vary $c$.
+For a given sample size $t$, both $\alpha$ and $\beta$ change as we vary $c$.
 
 As we increase $c$
 
@@ -589,7 +589,7 @@ The United States Navy evidently used a procedure like this to select a sample s
 control tests during World War II.
 
 A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
-presented to Milton Friedman, as we describe in  {doc}`this lecture <wald_friedman>`.
+presented to Milton Friedman, as we describe in {doc}`this lecture <wald_friedman>`.
 
 
 (rel_entropy)=
@@ -600,7 +600,7 @@ generates the data.
 
 Instead, a third distribution $h$ does.
 
-Let's study  how accumulated likelihood ratios $L$  behave
+Let's study how accumulated likelihood ratios $L$ behave
 when $h$ governs the data.
 
 A key tool here is called **Kullback–Leibler divergence**.
@@ -818,13 +818,13 @@ $$
 \pi_t(s^t) = \pi(s_t) \pi(s_{t-1}) \cdots \pi(s_0)
 $$ 
 
-So in our example, the history $s^t$ is a comprehensive record of agent $1$'s endowments of the consumption good  from time $0$ up to time $t$.  
+So in our example, the history $s^t$ is a comprehensive record of agent $1$'s endowments of the consumption good from time $0$ up to time $t$.  
 
-If agent $1$ were to lives on an island by himself, agent $1$'s consumption $c^1(s_t)$  at time $t$ is 
+If agent $1$ were to live on an island by himself, agent $1$'s consumption $c^1(s_t)$ at time $t$ is 
 
 $$c^1(s_t) = y_t^1 = s_t. $$
 
-But in our model, agent 1 is not alone.  
+But in our model, agent 1 is not alone.
 
 ### Nature and beliefs
 
@@ -832,7 +832,7 @@ Nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t(s^t)$.
 
 * so $\pi$ without a superscript is nature's model 
 * but in addition to nature, there are other entities inside our model -- artificial people that we call "agents"
-* each agent  has a sequence of probability distributions over $s^t$ for $t=0, \ldots$ 
+* each agent has a sequence of probability distributions over $s^t$ for $t=0, \ldots$ 
 * agent $i$ thinks that nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t^i(s^t)$
    * agent $i$ is mistaken unless $\pi_t^i(s^t) = \pi_t(s^t)$
 
@@ -850,7 +850,6 @@ $$
 
 of a nonstorable consumption good, while agent $2$ receives an endowment of 
 
-
 $$
 y_t^2 = 1 - s_t 
 $$
@@ -863,9 +862,9 @@ $$
 
 at each date $t \geq 0$. 
 
-At date $t$ agent $i$ consumes $c_t^i(s^t)$ of the good.  
+At date $t$ agent $i$ consumes $c_t^i(s^t)$ of the good.
 
-A (non wasteful) feasible allocation of the aggregate endowment of  $1$ each period  satisfies
+A (non wasteful) feasible allocation of the aggregate endowment of $1$ each period satisfies
 
 $$
 c_t^1 + c_t^2 = 1 .
@@ -873,7 +872,7 @@ $$
 
 ### A social risk-sharing arrangement
 
-In order to share risks, a  benevolent social planner will dictate a  a history-dependent consumption allocation in the form of a sequence of functions 
+In order to share risks, a benevolent social planner will dictate a history-dependent consumption allocation in the form of a sequence of functions 
 
 $$
 c_t^i = c_t^i(s^t)
@@ -887,9 +886,9 @@ $$ (eq:feasibility)
 
 for all $s^t$ for all $t \geq 0$. 
 
-To design a socially optimal allocation, the social planner wants to know what agents $1$ believe about the endowment sequence and how they feel about bearing risks.  
+To design a socially optimal allocation, the social planner wants to know what agent $1$ believes about the endowment sequence and how they feel about bearing risks.
 
-As for the endowment sequences, agent $i$ believes that nature draws i.i.d.  sequences from joint densities 
+As for the endowment sequences, agent $i$ believes that nature draws i.i.d. sequences from joint densities 
 
 $$
 \pi_t^i(s^t) = \pi(s_t)^i \pi^i(s_{t-1}) \cdots \pi^i(s_0)
@@ -907,7 +906,7 @@ $$
 u'(c_t^i) = \frac{1}{c_t^i}
 $$
 
-Putting its beliefs about its random  endowment sequence and its attitudes toward bearing risks together,  agent $i$ has intertemporal utility function 
+Putting its beliefs about its random endowment sequence and its attitudes toward bearing risks together, agent $i$ has intertemporal utility function 
 
 $$
 V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u(c_t^i(s^t)) \pi_t^i(s^t) ,
@@ -918,31 +917,31 @@ where $\delta \in (0,1)$ is an intertemporal discount factor, and $u(\cdot)$ is 
 
 ### The social planner's allocation problem
 
-The benevolent dictator has all the information it requires to choose a consumption allocation that maximizes the  social welfare criterion 
+The benevolent dictator has all the information it requires to choose a consumption allocation that maximizes the social welfare criterion 
 
 $$
 W = \lambda V^1 + (1-\lambda) V^2
 $$ (eq:welfareW)
 
-where $\lambda \in [0,1]$ is a Pareto weight  tells how much the planner likes  agent $1$ and $1 - \lambda$ is a Pareto weight that tells how much the socical planner likes  agent $2$.  
+where $\lambda \in [0,1]$ is a Pareto weight tells how much the planner likes agent $1$ and $1 - \lambda$ is a Pareto weight that tells how much the social planner likes agent $2$.  
 
 Setting $\lambda = .5$ expresses ''egalitarian'' social preferences. 
 
-Notice how social welfare criterion {eq}`eq:welfareW` takes into account both agent's preferences as represented by formula {eq}`eq:objectiveagenti`.
+Notice how social welfare criterion {eq}`eq:welfareW` takes into account both agents' preferences as represented by formula {eq}`eq:objectiveagenti`.
 
 This means that the social planner knows and respects
 
 * the one period utility function $u(\cdot) = \ln(\cdot)$
 * each agent $i$'s probability model $\{\pi_t^i(s^t)\}_{t=0}^\infty$
 
-Consequently, we anticipate that   these objects will appear in the social planner's rule for allocating the aggregate endowment each period. 
+Consequently, we anticipate that these objects will appear in the social planner's rule for allocating the aggregate endowment each period. 
 
 
 First-order necessary conditions for maximizing welfare criterion {eq}`eq:welfareW` subject to the feasibility constraint {eq}`eq:feasibility` are 
 
 $$\frac{\pi_t^2(s^t)}{\pi_t^1(s^t)} \frac{(1/c_t^2(s^t))}{(1/c_t^1(s^t))} = \frac{\lambda}{1 -\lambda}$$
 
-which can be rearranged to become  
+which can be rearranged to become
 
 
 
@@ -972,13 +971,13 @@ or
 
 $$c_t^1(s^t) = \frac{\lambda}{1-\lambda} l_t(s^t)(1 - c_t^1(s^t))$$
 
-which  implies that the social planner's allocation rule is
+which implies that the social planner's allocation rule is
 
 $$
 c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1-\lambda + \lambda l_t(s^t)}
 $$ (eq:allocationrule1)
 
-If we define a temporary or **continuation Pareto weight**  process as 
+If we define a temporary or **continuation Pareto weight** process as 
 
 $$
 \lambda_t(s^t) = \frac{\lambda l_t(s^t)}{1-\lambda + \lambda l_t(s^t)},
@@ -1001,17 +1000,17 @@ values of the likelihood ratio process $l_t(s^t)$:
 
  $$l_\infty (s^\infty)= 1; \quad c_\infty^1 = \lambda$$
  
-  *  In the above case, both agents are equally smart (or equally not smart) and the consumption allocation stays put  at a $\lambda, 1 - \lambda $ split between the two agents. 
+  * In the above case, both agents are equally smart (or equally not smart) and the consumption allocation stays put at a $\lambda, 1 - \lambda $ split between the two agents. 
 
 $$l_\infty (s^\infty) = 0; \quad c_\infty^1 = 0$$
 
-*  In the above case, agent 2 is smarter than agent 1, and agent 1's share of the aggregate endowment converges to zero.  
+* In the above case, agent 2 is smarter than agent 1, and agent 1's share of the aggregate endowment converges to zero.  
 
 
 
 $$l_\infty (s^\infty)= \infty; \quad c_\infty^1 = 1$$
 
-*  In the above case, agent 1 is smarter than agent 2, and agent 1's share of the aggregate endowment converges to 1. 
+* In the above case, agent 1 is smarter than agent 2, and agent 1's share of the aggregate endowment converges to 1. 
 
 
 Soon we'll do some simulations that will shed further light on possible outcomes.
@@ -1305,7 +1304,7 @@ nature_params = {'close': [(1, 1), (1.1, 1.05), (2, 1.5)],
 nature_labels = ["Nature = f", "Nature = g", "Nature = h"]
 colors = {'close': 'blue', 'far': 'red'}
 
-threshold = 1e-5  # “close to zero” cutoff
+threshold = 1e-5  # "close to zero" cutoff
 
 for row, (f_belief, g_belief, label) in enumerate([
                         (f_close, g_close, 'close'),
