@@ -57,6 +57,7 @@ from scipy.integrate import quad
 from scipy.optimize import brentq, minimize_scalar
 from scipy.stats import beta as beta_dist
 import pandas as pd
+from IPython.display import display, Math
 ```
 
 ## Likelihood Ratio Process
@@ -590,6 +591,7 @@ control tests during World War II.
 A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in  {doc}`this lecture <wald_friedman>`.
 
+
 (rel_entropy)=
 ## Kullback–Leibler Divergence
 
@@ -640,20 +642,33 @@ def KL_integrand(w, q, h):
     m = h(w) / q(w)
 
     return np.log(m) * h(w)
+
+def compute_KL(f, g):
+    """
+    Compute KL divergence KL(f, g)
+    """
+    def integrand(w):
+        return f(w) * np.log(f(w) / g(w))
+    
+    result, _ = quad(integrand, 1e-5, 1-1e-5)
+    return result
 ```
 
+Next we create a helper function to compute KL divergence with respect to a reference distribution $h$
+
 ```{code-cell} ipython3
-def compute_KL(h, f, g):
+def compute_KL_h(h, f, g):
     """
     Compute KL divergence with reference distribution h
     """
 
-    Kf, _ = quad(KL_integrand, 0, 1, args=(f, h))
-    Kg, _ = quad(KL_integrand, 0, 1, args=(g, h))
+    Kf = compute_KL(h, f)
+    Kg = compute_KL(h, g)
 
     return Kf, Kg
 ```
 
+(KL_link)=
 ### A helpful formula
 
 There is a mathematical relationship between likelihood ratios and KL divergence. 
@@ -675,6 +690,16 @@ where $L_t=\prod_{j=1}^{t}\frac{f(w_j)}{g(w_j)}$ is the likelihood ratio process
 Let's verify this using simulation.
 
 In the simulation, we generate multiple paths using Beta distributions $f$, $g$, and $h$, and compute the paths of $\log(L(w^t))$.
+
+First, we write a function to compute the likelihood ratio process
+
+```{code-cell} ipython3
+def compute_likelihood_ratios(sequences, f, g):
+    """Compute likelihood ratios and cumulative products."""
+    l_ratios = f(sequences) / g(sequences)
+    L_cumulative = np.cumprod(l_ratios, axis=1)
+    return l_ratios, L_cumulative
+```
 
 We consider three cases: (1) $h$ is closer to $f$, (2) $f$ and $g$ are approximately equidistant from $h$, and (3) $h$ is closer to $g$.
 
@@ -708,7 +733,7 @@ for i, scenario in enumerate(scenarios):
                     scenario["h_params"][1])
     
     # Compute KL divergences
-    Kf, Kg = compute_KL(h, f, g)
+    Kf, Kg = compute_KL_h(h, f, g)
     kl_diff = Kg - Kf
     
     # Simulate paths
@@ -718,8 +743,7 @@ for i, scenario in enumerate(scenarios):
     # Generate data from h
     h_data = np.random.beta(scenario["h_params"][0], 
                 scenario["h_params"][1], (N_paths, T))
-    l_ratios = f(h_data) / g(h_data)
-    l_cumulative = np.cumprod(l_ratios, axis=1)
+    l_ratios, l_cumulative = compute_likelihood_ratios(h_data, f, g)
     log_l_cumulative = np.log(l_cumulative)
     
     # Plot distributions
@@ -748,7 +772,7 @@ for i, scenario in enumerate(scenarios):
     ax.set_xlabel('t')
     ax.set_ylabel('$log L_t$')
     ax.set_title(f'KL(h,f)={Kf:.3f}, KL(h,g)={Kg:.3f}\n{scenario["expected"]}', 
-                fontsize=16)
+                 fontsize=16)
     ax.legend(fontsize=16)
 
 plt.tight_layout()
@@ -764,784 +788,11 @@ Note that
 
 These observations align with the theory.
 
-In a [later section](hetero_agent), we will see an application of these ideas.
+In the [next section](hetero_agent), we will see an application of these ideas.
 
-+++
-
-## Hypothesis Testing and Classification 
-
-We now describe how a  statistician can combine frequentist probabilities of type I and type II errors in order to 
-
-* compute an anticipated frequency of  selecting a wrong model based on a sample length $T$
-* compute an anticipated error  rate in a classification problem 
-
-We consider a situation in which  nature generates data by mixing known densities $f$ and $g$ with known mixing
-parameter $\pi_{-1} \in (0,1)$ so that the random variable $w$ is drawn from the density
-
-$$
-h (w) = \pi_{-1} f(w) + (1-\pi_{-1}) g(w) 
-$$
-
-We assume that the statistician knows the densities $f$ and $g$ and also the mixing parameter $\pi_{-1}$.
-
-Below, we'll  set $\pi_{-1} = .5$, although much of the analysis would follow through with other settings of $\pi_{-1} \in (0,1)$.  
-
-We assume that $f$ and $g$ both put positive probabilities on the same intervals of possible realizations of the random variable $W$.
-
-  
-
-In the simulations below, we specify that  $f$ is a $\text{Beta}(1, 1)$ distribution and that  $g$ is $\text{Beta}(3, 1.2)$ distribution.
-
-We consider two alternative timing protocols. 
-
- * Timing protocol 1 is for   the model selection problem
- * Timing protocol 2 is for the individual classification problem 
-
-**Timing Protocol 1:**  Nature flips a coin once at time $t=-1$ and with probability $\pi_{-1}$  generates a sequence  $\{w_t\}_{t=1}^T$
-of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
-of  IID  draws from  $g$.
-
-Let's write some Python code that implements timing protocol 1.
-
-```{code-cell} ipython3
-def protocol_1(π_minus_1, T, N=1000):
-    """
-    Simulate Protocol 1: 
-    Nature decides once at t=-1 which model to use.
-    """
-    
-    # On-off coin flip for the true model
-    true_models_F = np.random.rand(N) < π_minus_1
-    
-    sequences = np.empty((N, T))
-    
-    n_f = np.sum(true_models_F)
-    n_g = N - n_f
-    if n_f > 0:
-        sequences[true_models_F, :] = np.random.beta(F_a, F_b, (n_f, T))
-    if n_g > 0:
-        sequences[~true_models_F, :] = np.random.beta(G_a, G_b, (n_g, T))
-    
-    return sequences, true_models_F
-```
-
-**Timing Protocol 2.** At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
-
-Here is  Python code that we'll use to implement timing protocol 2.
-
-```{code-cell} ipython3
-def protocol_2(π_minus_1, T, N=1000):
-    """
-    Simulate Protocol 2: 
-    Nature decides at each time step which model to use.
-    """
-    
-    # Coin flips for each time t upto T
-    true_models_F = np.random.rand(N, T) < π_minus_1
-    
-    sequences = np.empty((N, T))
-    
-    n_f = np.sum(true_models_F)
-    n_g = N * T - n_f
-    if n_f > 0:
-        sequences[true_models_F] = np.random.beta(F_a, F_b, n_f)
-    if n_g > 0:
-        sequences[~true_models_F] = np.random.beta(G_a, G_b, n_g)
-    
-    return sequences, true_models_F
-```
-
-**Remark:** Under timing protocol 2, the $\{w_t\}_{t=1}^T$ is a sequence of IID draws from $h(w)$. Under timing protocol 1, the the $\{w_t\}_{t=1}^T$ is 
-not IID.  It is **conditionally IID** -- meaning that with probability $\pi_{-1}$ it is a sequence of IID draws from $f(w)$ and with probability $1-\pi_{-1}$ it is a sequence of IID draws from $g(w)$. For more about this, see {doc}`this lecture about exchangeability <exchangeable>`.
-
-We  again deploy a **likelihood ratio process** with time $t$ component being the likelihood ratio  
-
-$$
-\ell (w_t)=\frac{f\left(w_t\right)}{g\left(w_t\right)},\quad t\geq1.
-$$
-
-The **likelihood ratio process** for sequence $\left\{ w_{t}\right\} _{t=1}^{\infty}$ is 
-
-$$
-L\left(w^{t}\right)=\prod_{i=1}^{t} \ell (w_i),
-$$
-
-For shorthand we'll write $L_t =  L(w^t)$.
-
-In the next cell, we write the likelihood ratio calculation that we have done [previously](nature_likeli) into a function
-
-```{code-cell} ipython3
-def compute_likelihood_ratios(sequences):
-    """
-    Compute likelihood ratios for given sequences.
-    """
-    
-    l_ratios = f(sequences) / g(sequences) 
-    L_cumulative = np.cumprod(l_ratios, axis=1)
-    return l_ratios, L_cumulative
-```
-
-## Model Selection Mistake Probability 
-
-We first study  a problem that assumes  timing protocol 1.  
-
-Consider a decision maker who wants to know whether model $f$ or model $g$ governs a data set of length $T$ observations.
-
-The decision makers has observed a sequence $\{w_t\}_{t=1}^T$.
-
-On the basis of that observed  sequence, a likelihood ratio test selects model $f$ when
- $L_T \geq 1 $ and model $g$ when  $L_T < 1$.  
- 
-When model $f$ generates the data, the probability that the likelihood ratio test selects the wrong model is 
-
-$$ 
-p_f = {\rm Prob}\left(L_T < 1\Big| f\right) = \alpha_T .
-$$
-
-When model $g$ generates the data, the probability that the likelihood ratio test selects the wrong model is 
-
-$$ 
-p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T. 
-$$
-
-We can construct a probability that the likelihood ratio selects the wrong model by assigning a Bayesian prior probability of $\pi_{-1} = .5$ that nature selects model $f$ then  averaging $p_f$ and $p_g$ to form the Bayesian posterior probability of a detection error equal to
-
-$$ 
-p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
-$$ (eq:detectionerrorprob)
-
-Now let's simulate  timing protocol 1 and compute the error probabilities
-
-```{code-cell} ipython3
-# Set parameters
-π_minus_1 = 0.5
-T_max = 30
-N_simulations = 10_000
-
-sequences_p1, true_models_p1 = protocol_1(
-                            π_minus_1, T_max, N_simulations)
-l_ratios_p1, L_cumulative_p1 = compute_likelihood_ratios(sequences_p1)
-
-# Compute error probabilities for different sample sizes
-T_range = np.arange(1, T_max + 1)
-
-# Boolean masks for true models
-mask_f = true_models_p1
-mask_g = ~true_models_p1
-
-# Select cumulative likelihoods for each model
-L_f = L_cumulative_p1[mask_f, :]
-L_g = L_cumulative_p1[mask_g, :]
-
-α_T = np.mean(L_f < 1, axis=0)
-β_T = np.mean(L_g >= 1, axis=0)
-
-error_prob = 0.5 * (α_T + β_T)
-
-# Plot results
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-
-ax1.plot(T_range, α_T, 'b-', 
-         label=r'$\alpha_T$', linewidth=2)
-ax1.plot(T_range, β_T, 'r-', 
-         label=r'$\beta_T$', linewidth=2)
-ax1.set_xlabel('$T$')
-ax1.set_ylabel('error probability')
-ax1.legend()
-
-ax2.plot(T_range, error_prob, 'g-', 
-         label=r'$\frac{1}{2}(\alpha_T+\beta_T)$', linewidth=2)
-ax2.set_xlabel('$T$')
-ax2.set_ylabel('error probability')
-ax2.legend()
-
-plt.tight_layout()
-plt.show()
-
-print(f"At T={T_max}:")
-print(f"α_{T_max} = {α_T[-1]:.4f}")
-print(f"β_{T_max} = {β_T[-1]:.4f}")
-print(f"Model selection error probability = {error_prob[-1]:.4f}")
-```
-
-Notice how the model selection  error probability approaches zero as $T$ grows.  
-
-## Classification
-
-We now consider a problem that assumes timing protocol 2.
-
-A decision maker wants to classify components of an observed sequence $\{w_t\}_{t=1}^T$ as having been drawn from either $f$ or $g$.
-
-The decision maker uses the following classification rule:
-
-$$
-\begin{aligned}
-w_t  & \ {\rm is \ from \  f  \ if \ } l_t > 1 \\
-w_t  & \ {\rm is \ from \  g  \ if \ } l_t \leq 1 . 
-\end{aligned}
-$$
-
-Under this rule, the expected misclassification rate is
-
-$$
-p(\textrm{misclassification}) = {1 \over 2} (\tilde \alpha_t + \tilde \beta_t) 
-$$ (eq:classerrorprob)
-
-where $\tilde \alpha_t = {\rm Prob}(l_t < 1 \mid f)$ and $\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)$.
-
-Since for each $t$, the decision boundary is the same, the decision boundary can be computed as
-
-```{code-cell} ipython3
-root = brentq(lambda w: f(w) / g(w) - 1, 0.001, 0.999)
-```
-
-we can plot the distributions of $f$ and $g$ and the decision boundary
-
-```{code-cell} ipython3
-:tags: [hide-input]
-
-fig, ax = plt.subplots(figsize=(7, 6))
-
-w_range = np.linspace(1e-5, 1-1e-5, 1000)
-f_values = [f(w) for w in w_range]
-g_values = [g(w) for w in w_range]
-ratio_values = [f(w)/g(w) for w in w_range]
-
-ax.plot(w_range, f_values, 'b-', 
-        label=r'$f(w) \sim Beta(1,1)$', linewidth=2)
-ax.plot(w_range, g_values, 'r-', 
-        label=r'$g(w) \sim Beta(3,1.2)$', linewidth=2)
-
-type1_prob = 1 - beta_dist.cdf(root, F_a, F_b)
-type2_prob = beta_dist.cdf(root, G_a, G_b)
-
-w_type1 = w_range[w_range >= root]
-f_type1 = [f(w) for w in w_type1]
-ax.fill_between(w_type1, 0, f_type1, alpha=0.3, color='blue', 
-                label=fr'$\tilde \alpha_t = {type1_prob:.2f}$')
-
-w_type2 = w_range[w_range <= root]
-g_type2 = [g(w) for w in w_type2]
-ax.fill_between(w_type2, 0, g_type2, alpha=0.3, color='red', 
-                label=fr'$\tilde \beta_t = {type2_prob:.2f}$')
-
-ax.axvline(root, color='green', linestyle='--', alpha=0.7, 
-            label=f'decision boundary: $w=${root:.3f}')
-
-ax.set_xlabel('w')
-ax.set_ylabel('probability density')
-ax.legend()
-
-plt.tight_layout()
-plt.show()
-```
-
-To  the left of the  green vertical line  $g < f$,  so $l_t < 1$; therefore a  $w_t$ that falls to the left of the green line is classified as a type $g$ individual. 
-
- * The shaded orange area equals $\beta$ -- the probability of classifying someone as a type $g$ individual when it is really a type $f$ individual.
-
-To  the right of the  green vertical line $g > f$, so $l_t >1 $; therefore  a  $w_t$ that falls to the right  of the green line is classified as a type $f$ individual. 
-
- * The shaded blue area equals $\alpha$ -- the probability of classifying someone as a type $f$ when it is really a type $g$ individual.  
-
-This gives us clues about how to compute the theoretical classification error probability
-
-```{code-cell} ipython3
-# Compute theoretical tilde α_t and tilde β_t
-def α_integrand(w):
-    """Integrand for tilde α_t = P(l_t < 1 | f)"""
-    return f(w) if f(w) / g(w) < 1 else 0
-
-def β_integrand(w):
-    """Integrand for tilde β_t = P(l_t >= 1 | g)"""
-    return g(w) if f(w) / g(w) >= 1 else 0
-
-# Compute the integrals
-α_theory, _ = quad(α_integrand, 0, 1, limit=100)
-β_theory, _ = quad(β_integrand, 0, 1, limit=100)
-
-theory_error = 0.5 * (α_theory + β_theory)
-
-print(f"theoretical tilde α_t = {α_theory:.4f}")
-print(f"theoretical tilde β_t = {β_theory:.4f}")
-print(f"theoretical classification error probability = {theory_error:.4f}")
-```
-
-Now we simulate timing protocol 2 and compute the classification error probability.
-
-In the next cell, we also compare the theoretical classification accuracy to the empirical classification accuracy
-
-```{code-cell} ipython3
-accuracy = np.empty(T_max)
-
-sequences_p2, true_sources_p2 = protocol_2(
-                    π_minus_1, T_max, N_simulations)
-l_ratios_p2, _ = compute_likelihood_ratios(sequences_p2)
-
-for t in range(T_max):
-    predictions = (l_ratios_p2[:, t] >= 1)
-    actual = true_sources_p2[:, t]
-    accuracy[t] = np.mean(predictions == actual)
-
-plt.figure(figsize=(10, 6))
-plt.plot(range(1, T_max + 1), accuracy, 
-                'b-', linewidth=2, label='empirical accuracy')
-plt.axhline(1 - theory_error, color='r', linestyle='--', 
-                label=f'theoretical accuracy = {1 - theory_error:.4f}')
-plt.xlabel('$t$')
-plt.ylabel('accuracy')
-plt.legend()
-plt.ylim(0.5, 1.0)
-plt.show()
-```
-
-Let's watch decisions made by  the two timing protocols as more and more observations accrue.
-
-```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(7, 6))
-
-ax.plot(T_range, error_prob, linewidth=2, 
-        label='Protocol 1')
-ax.plot(T_range, 1-accuracy, linestyle='--', linewidth=2, 
-        label=f'Protocol 2')
-ax.set_ylabel('error probability')
-ax.legend()
-plt.show()
-```
-
-From the figure above, we can see:
-
-- For both timing protocols, the error probability starts at the same level, subject to a little randomness.
-
-- For timing protocol 1, the error probability decreases as the sample size increases because we are  making just **one** decision -- i.e., selecting whether $f$ or $g$ governs  **all** individuals.  More data provides better evidence.
-
-- For timing protocol 2, the error probability remains constant because we are making **many** decisions -- one classification decision for each observation.  
-
-**Remark:** Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem. 
-
-## Measuring discrepancies between distributions
-
-A plausible guess is that  the ability of a likelihood ratio to distinguish  distributions $f$ and $g$ depends on how "different" they are.
- 
-But how should we measure  discrepancies between distributions?
-
-We've already encountered one discrepancy measure -- the Kullback-Leibler (KL) divergence. 
-
-We now briefly explore two alternative discrepancy  measures.
-
-### Chernoff entropy
-
-Chernoff entropy was motivated by an early application of  the [theory of large deviations](https://en.wikipedia.org/wiki/Large_deviations_theory).
-
-```{note}
-Large deviation theory provides refinements of the central limit theorem. 
-```
-
-The Chernoff entropy between probability densities $f$ and $g$ is defined as:
-
-$$
-C(f,g) = - \log \min_{\phi \in (0,1)} \int f^\phi(x) g^{1-\phi}(x) dx
-$$
-
-An upper bound on model selection error probabilty is
-
-$$
-e^{-C(f,g)T} .
-$$
-
-Thus,    Chernoff entropy is  an upper bound on  the exponential  rate at which  the selection error probability falls as sample size $T$ grows. 
-
-Let's compute Chernoff entropy numerically with some Python code
-
-```{code-cell} ipython3
-def chernoff_integrand(ϕ, f, g):
-    """
-    Compute the integrand for Chernoff entropy
-    """
-    def integrand(w):
-        return f(w)**ϕ * g(w)**(1-ϕ)
-
-    result, _ = quad(integrand, 1e-5, 1-1e-5)
-    return result
-
-def compute_chernoff_entropy(f, g):
-    """
-    Compute Chernoff entropy C(f,g)
-    """
-    def objective(ϕ):
-        return chernoff_integrand(ϕ, f, g)
-    
-    # Find the minimum over ϕ in (0,1)
-    result = minimize_scalar(objective, 
-                             # For numerical stability
-                             bounds=(1e-5, 1-1e-5), 
-                             method='bounded')
-    min_value = result.fun
-    ϕ_optimal = result.x
-    
-    chernoff_entropy = -np.log(min_value)
-    return chernoff_entropy, ϕ_optimal
-
-C_fg, ϕ_optimal = compute_chernoff_entropy(f, g)
-print(f"Chernoff entropy C(f,g) = {C_fg:.4f}")
-print(f"Optimal ϕ = {ϕ_optimal:.4f}")
-```
-
-Now let's examine how $e^{-C(f,g)T}$ behaves as a function of $T$ and compare it to the model selection error probability
-
-```{code-cell} ipython3
-T_range = np.arange(1, T_max+1)
-chernoff_bound = np.exp(-C_fg * T_range)
-
-# Plot comparison
-fig, ax = plt.subplots(figsize=(10, 6))
-
-ax.semilogy(T_range, chernoff_bound, 'r-', linewidth=2, 
-           label=f'$e^{{-C(f,g)T}}$')
-ax.semilogy(T_range, error_prob, 'b-', linewidth=2, 
-           label='Model selection error probability')
-
-ax.set_xlabel('T')
-ax.set_ylabel('error probability (log scale)')
-ax.legend()
-plt.tight_layout()
-plt.show()
-```
-
-Evidently, $e^{-C(f,g)T}$ is an upper bound on the error rate.
-
-### Jensen-Shannon divergence
-
-The [Jensen-Shannon divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence) is another  divergence measure.  
-
-For probability densities $f$ and $g$, the **Jensen-Shannon divergence** is defined as:
-
-$$
-D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
-$$ (eq:js_divergence)
-
-where $m = \frac{1}{2}(f+g)$ is a mixture of $f$ and $g$.
- 
-```{note}
-We studied KL divergence in the [section above](rel_entropy) with respect to a reference distribution $h$.
-
-Recall that  KL divergence $KL(f, g)$ measures expected excess surprisal from using misspecified model $g$ instead $f$ when $f$ is the true model.
-
-Because in general $KL(f, g) \neq KL(g, f)$, KL divergence is not symmetric, but Jensen-Shannon divergence is symmetric.
-
-(In fact, the square root of the Jensen-Shannon divergence is a metric referred to as the Jensen-Shannon distance.)
-
-As {eq}`eq:js_divergence` shows, the Jensen-Shannon divergence computes average of the KL divergence of $f$ and $g$ with respect to a particular reference distribution $m$ defined below the equation.
-```
-
-Now let's create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy for a set of pairs of Beta distributions.
-
-```{code-cell} ipython3
-def js_divergence(f, g):
-    """
-    Compute Jensen-Shannon divergence
-    """
-    def m(w):
-        return 0.5 * (f(w) + g(w))
-    
-    def kl_div(p, q):
-        def integrand(w):
-            ratio = p(w) / q(w)
-            return p(w) * np.log(ratio)
-        result, _ = quad(integrand, 1e-5, 1-1e-5)
-        return result
-    
-    js_div = 0.5 * kl_div(f, m) + 0.5 * kl_div(g, m)
-    return js_div
-
-def kl_divergence(f, g):
-    """
-    Compute KL divergence KL(f, g)
-    """
-    def integrand(w):
-        return f(w) * np.log(f(w) / g(w))
-    
-    result, _ = quad(integrand, 1e-5, 1-1e-5)
-    return result
-
-distribution_pairs = [
-    # (f_params, g_params)
-    ((1, 1), (0.1, 0.2)),
-    ((1, 1), (0.3, 0.3)),
-    ((1, 1), (0.3, 0.4)),
-    ((1, 1), (0.5, 0.5)),
-    ((1, 1), (0.7, 0.6)),
-    ((1, 1), (0.9, 0.8)),
-    ((1, 1), (1.1, 1.05)),
-    ((1, 1), (1.2, 1.1)),
-    ((1, 1), (1.5, 1.2)),
-    ((1, 1), (2, 1.5)),
-    ((1, 1), (2.5, 1.8)),
-    ((1, 1), (3, 1.2)),
-    ((1, 1), (4, 1)),
-    ((1, 1), (5, 1))
-]
-
-# Create comparison table
-results = []
-for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
-    # Define the density functions
-    f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-    g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
-    
-    # Compute measures
-    kl_fg = kl_divergence(f, g)
-    kl_gf = kl_divergence(g, f)
-    js_div = js_divergence(f, g)
-    chernoff_ent, _ = compute_chernoff_entropy(f, g)
-    
-    results.append({
-        'Pair': f"f=Beta({f_a},{f_b}), g=Beta({g_a},{g_b})",
-        'KL(f, g)': f"{kl_fg:.4f}",
-        'KL(g, f)': f"{kl_gf:.4f}",
-        'JS divergence': f"{js_div:.4f}",
-        'Chernoff entropy': f"{chernoff_ent:.4f}"
-    })
-
-df = pd.DataFrame(results)
-print(df.to_string(index=False))
-```
-
-The above  table indicates how  Jensen-Shannon divergence,  and Chernoff entropy, and  KL divergence covary as we alter $f$ and $g$.
-
-Let's also visualize how these diverge measures covary
-
-```{code-cell} ipython3
-kl_fg_values = [float(result['KL(f, g)']) for result in results]
-js_values = [float(result['JS divergence']) for result in results]
-chernoff_values = [float(result['Chernoff entropy']) for result in results]
-
-fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-
-# JS divergence and KL divergence
-axes[0].scatter(kl_fg_values, js_values, alpha=0.7, s=60)
-axes[0].set_xlabel('KL divergence KL(f, g)')
-axes[0].set_ylabel('JS divergence')
-axes[0].set_title('JS divergence and KL divergence')
-
-# Chernoff Entropy and JS divergence
-axes[1].scatter(js_values, chernoff_values, alpha=0.7, s=60)
-axes[1].set_xlabel('JS divergence')
-axes[1].set_ylabel('Chernoff entropy')
-axes[1].set_title('Chernoff entropy and JS divergence')
-
-plt.tight_layout()
-plt.show()
-```
-
-To make the comparison more concrete, let's plot the distributions and the divergence measures for a few pairs of distributions.
-
-Note that the numbers on the title changes with the area of the overlaps of two distributions
-
-```{code-cell} ipython3
-:tags: [hide-input]
-
-def plot_dist_diff():
-    """
-    Plot overlap of two distributions and divergence measures
-    """
-    
-    # Chose a subset of Beta distribution parameters
-    param_grid = [
-        ((1, 1), (1, 1)),   
-        ((1, 1), (1.5, 1.2)),
-        ((1, 1), (2, 1.5)),  
-        ((1, 1), (3, 1.2)),  
-        ((1, 1), (5, 1)),
-        ((1, 1), (0.3, 0.3))
-    ]
-    
-    fig, axes = plt.subplots(3, 2, figsize=(15, 12))
-    
-    divergence_data = []
-    
-    for i, ((f_a, f_b), (g_a, g_b)) in enumerate(param_grid):
-        row = i // 2
-        col = i % 2
-        
-        # Create density functions
-        f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-        g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
-        
-        # Compute divergence measures
-        kl_fg = kl_divergence(f, g)
-        js_div = js_divergence(f, g) 
-        chernoff_ent, _ = compute_chernoff_entropy(f, g)
-        
-        divergence_data.append({
-            'f_params': (f_a, f_b),
-            'g_params': (g_a, g_b),
-            'kl_fg': kl_fg,
-            'js_div': js_div,
-            'chernoff': chernoff_ent
-        })
-        
-        # Plot distributions
-        x_range = np.linspace(0, 1, 200)
-        f_vals = [f(x) for x in x_range]
-        g_vals = [g(x) for x in x_range]
-        
-        axes[row, col].plot(x_range, f_vals, 'b-', linewidth=2, 
-                           label=f'f ~ Beta({f_a},{f_b})')
-        axes[row, col].plot(x_range, g_vals, 'r-', linewidth=2, 
-                           label=f'g ~ Beta({g_a},{g_b})')
-        
-        # Fill overlap region
-        overlap = np.minimum(f_vals, g_vals)
-        axes[row, col].fill_between(x_range, 0, overlap, alpha=0.3, 
-                                   color='purple', label='overlap')
-        
-        # Add divergence information
-        axes[row, col].set_title(
-            f'KL(f, g)={kl_fg:.3f}, JS={js_div:.3f}, C={chernoff_ent:.3f}',
-            fontsize=12)
-        axes[row, col].legend(fontsize=14)
-    
-    plt.tight_layout()
-    plt.show()
-    
-    return divergence_data
-
-divergence_data = plot_dist_diff()
-```
-
-### Error probability and divergence measures
-
-Now let's return to our guess that the error probability at large sample sizes is related to the Chernoff entropy  between two distributions.
-
-We verify this by computing the correlation between the log of the error probability at $T=50$ under Timing Protocol 1 and the divergence measures.
-
-In the simulation below, nature draws $N / 2$ sequences from $g$ and $N/2$ sequences from $f$.
-
-```{note}
-Nature does this rather than flipping a fair coin to decide whether to draw from $g$ or $f$ once and for all before each simulation of length $T$.
-```
-
-```{code-cell} ipython3
-def compute_likelihood_ratio_stats(sequences, f, g):
-    """Compute likelihood ratios and cumulative products."""
-    l_ratios = f(sequences) / g(sequences)
-    L_cumulative = np.cumprod(l_ratios, axis=1)
-    return l_ratios, L_cumulative
-
-def error_divergence_cor():
-    """
-    compute correlation between error probabilities and divergence measures.
-    """
-        
-    # Parameters for simulation
-    T_large = 50
-    N_sims = 5000
-    N_half = N_sims // 2
-
-    # Initialize arrays
-    n_pairs = len(distribution_pairs)
-    kl_fg_vals = np.zeros(n_pairs)
-    kl_gf_vals = np.zeros(n_pairs) 
-    js_vals = np.zeros(n_pairs)
-    chernoff_vals = np.zeros(n_pairs)
-    error_probs = np.zeros(n_pairs)
-    pair_names = []
-
-    for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
-        # Create density functions
-        f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-        g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
-
-        # Compute divergence measures
-        kl_fg_vals[i] = kl_divergence(f, g)
-        kl_gf_vals[i] = kl_divergence(g, f)
-        js_vals[i] = js_divergence(f, g)
-        chernoff_vals[i], _ = compute_chernoff_entropy(f, g)
-
-        # Generate samples
-        sequences_f = np.random.beta(f_a, f_b, (N_half, T_large))
-        sequences_g = np.random.beta(g_a, g_b, (N_half, T_large))
-
-
-
-        # Compute likelihood ratios and cumulative products
-        _, L_cumulative_f = compute_likelihood_ratio_stats(sequences_f, f, g)
-        _, L_cumulative_g = compute_likelihood_ratio_stats(sequences_g, f, g)
-        
-        # Get final values
-        L_cumulative_f = L_cumulative_f[:, -1]
-        L_cumulative_g = L_cumulative_g[:, -1]
-
-        # Calculate error probabilities
-        error_probs[i] = 0.5 * (np.mean(L_cumulative_f < 1) + 
-                                np.mean(L_cumulative_g >= 1))
-        pair_names.append(f"Beta({f_a},{f_b}) and Beta({g_a},{g_b})")
-
-    return {
-        'kl_fg': kl_fg_vals,
-        'kl_gf': kl_gf_vals,
-        'js': js_vals, 
-        'chernoff': chernoff_vals,
-        'error_prob': error_probs,
-        'names': pair_names,
-        'T': T_large
-    }
-
-cor_data = error_divergence_cor()
-```
-
-Now let's visualize the correlations
-
-```{code-cell} ipython3
-:tags: [hide-input]
-
-def plot_error_divergence(data):
-    """
-    Plot correlations between error probability and divergence measures.
-    """
-    # Filter out near-zero error probabilities for log scale
-    nonzero_mask = data['error_prob'] > 1e-6
-    log_error = np.log(data['error_prob'][nonzero_mask])
-    js_vals = data['js'][nonzero_mask]
-    chernoff_vals = data['chernoff'][nonzero_mask]
-
-    # Create figure and axes
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
-    
-    # function for plotting correlation
-    def plot_correlation(ax, x_vals, x_label, color):
-        ax.scatter(x_vals, log_error, alpha=0.7, s=60, color=color)
-        ax.set_xlabel(x_label)
-        ax.set_ylabel(f'log(Error probability) at T={data["T"]}')
-        
-        # Calculate correlation and trend line
-        corr = np.corrcoef(x_vals, log_error)[0, 1]
-        z = np.polyfit(x_vals, log_error, 2)
-        x_trend = np.linspace(x_vals.min(), x_vals.max(), 100)
-        ax.plot(x_trend, np.poly1d(z)(x_trend), 
-                "r--", alpha=0.8, linewidth=2)
-        ax.set_title(f'Log error probability and {x_label}\n'
-                     f'Correlation = {corr:.3f}')
-    
-    # Plot both correlations
-    plot_correlation(ax1, js_vals, 'JS divergence', 'C0')
-    plot_correlation(ax2, chernoff_vals, 'Chernoff entropy', 'C1')
-
-    plt.tight_layout()
-    plt.show()
-
-plot_error_divergence(cor_data)
-```
-
-Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability.
-
-We'll encounter related  ideas in {doc}`wald_friedman`.
-
-+++
 
 (hetero_agent)=
-## Consumption and Heterogeneous Beliefs
+## Application: Consumption and Heterogeneous Beliefs
 
 A likelihood ratio process lies behind  Lawrence  Blume and David Easley's answer to their question
 ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`.  
@@ -1588,8 +839,6 @@ Nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t(s^t)$.
 ```{note}
 A **rational expectations** model would set $\pi_t^i(s^t) = \pi_t(s^t)$ for all agents $i$.
 ```
-
-
 
 There are two agents named $i=1$ and $i=2$.
 
@@ -1893,7 +1142,7 @@ Let's  write a Python function that computes agent 1's  consumption share
 ```{code-cell} ipython3
 def simulate_blume_easley(sequences, f_belief=f, g_belief=g, λ=0.5):
     """Simulate Blume-Easley model consumption shares."""
-    l_ratios, l_cumulative = compute_likelihood_ratio_stats(sequences, f_belief, g_belief)
+    l_ratios, l_cumulative = compute_likelihood_ratios(sequences, f_belief, g_belief)
     c1_share = λ * l_cumulative / (1 - λ + λ * l_cumulative)
     return l_cumulative, c1_share
 ```
@@ -1964,7 +1213,7 @@ In the middle panel, nature chooses $g$. Agent 1's consumption ratio tends to mo
 
 In the right panel, nature flips coins each period. We see a very similar pattern to the processes in the left panel.
 
-The figures in the top panel remind us of the discussion in [this section](rel_entropy).
+The figures in the top panel remind us of the discussion in [this section](KL_link).
 
 We invite readers to revisit [that section](rel_entropy) and try to infer the relationships among $KL(f, g)$, $KL(g, f)$, $KL(h, f)$, and $KL(h,g)$.
 
@@ -1973,8 +1222,8 @@ Let's compute values of KL divergence
 
 ```{code-cell} ipython3
 shares = [np.mean(c1_f[:, -1]), np.mean(c1_g[:, -1]), np.mean(c1_h[:, -1])]
-Kf_g, Kg_f = kl_divergence(f, g), kl_divergence(g, f)
-Kf_h, Kg_h = compute_KL(h, f, g)
+Kf_g, Kg_f = compute_KL(f, g), compute_KL(g, f)
+Kf_h, Kg_h = compute_KL_h(h, f, g)
 
 print(f"Final shares: f={shares[0]:.3f}, g={shares[1]:.3f}, mix={shares[2]:.3f}")
 print(f"KL divergences: \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
@@ -2018,9 +1267,6 @@ g_close = jit(lambda x: p(x, 1.1, 1.05))
 f_far = jit(lambda x: p(x, 1, 1))
 g_far = jit(lambda x: p(x, 3, 1.2))
 
-js_close = js_divergence(f_close, g_close)
-js_far = js_divergence(f_far, g_far)
-
 # Visualize the belief distributions
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
@@ -2031,14 +1277,14 @@ f_close_vals = [f_close(x) for x in x_range]
 g_close_vals = [g_close(x) for x in x_range]
 plot_distribution_overlap(ax1, x_range, f_close_vals, g_close_vals,
                          f_label='f (Beta(1, 1))', g_label='g (Beta(1.1, 1.05))')
-ax1.set_title(f'Close Beliefs\nJS divergence={js_close:.4f}')
+ax1.set_title(f'Close Beliefs')
 
 # Far beliefs
 f_far_vals = [f_far(x) for x in x_range]
 g_far_vals = [g_far(x) for x in x_range]
 plot_distribution_overlap(ax2, x_range, f_far_vals, g_far_vals,
                          f_label='f (Beta(1, 1))', g_label='g (Beta(3, 1.2))')
-ax2.set_title(f'Far Beliefs\nJS divergence={js_far:.4f}')
+ax2.set_title(f'Far Beliefs')
 
 plt.tight_layout()
 plt.show()
@@ -2102,15 +1348,15 @@ Holding to our guesses, let's calculate the four values
 
 ```{code-cell} ipython3
 # Close case
-Kf_g, Kg_f = kl_divergence(f_close, g_close), kl_divergence(g_close, f_close)
-Kf_h, Kg_h = compute_KL(h, f_close, g_close)
+Kf_g, Kg_f = compute_KL(f_close, g_close), compute_KL(g_close, f_close)
+Kf_h, Kg_h = compute_KL_h(h, f_close, g_close)
 
 print(f"KL divergences (close): \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
 print(f"KL(h,f)={Kf_h:.3f}, KL(h,g)={Kg_h:.3f}")
 
 # Far case
-Kf_g, Kg_f = kl_divergence(f_far, g_far), kl_divergence(g_far, f_far)
-Kf_h, Kg_h = compute_KL(h, f_far, g_far)
+Kf_g, Kg_f = compute_KL(f_far, g_far), compute_KL(g_far, f_far)
+Kf_h, Kg_h = compute_KL_h(h, f_far, g_far)
 
 print(f"KL divergences (far): \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
 print(f"KL(h,f)={Kf_h:.3f}, KL(h,g)={Kg_h:.3f}")
@@ -2124,8 +1370,754 @@ Since $KL(f,g) > KL(g,f)$, we  see faster convergence in  the first panel at the
 
 This ties in nicely with {eq}`eq:kl_likelihood_link`.
 
+## Hypothesis Testing and Classification 
 
-+++
+We now describe how a statistician can combine frequentist probabilities of type I and type II errors in order to 
+
+* compute an anticipated frequency of  selecting a wrong model based on a sample length $T$
+* compute an anticipated error  rate in a classification problem 
+
+We consider a situation in which  nature generates data by mixing known densities $f$ and $g$ with known mixing
+parameter $\pi_{-1} \in (0,1)$ so that the random variable $w$ is drawn from the density
+
+$$
+h (w) = \pi_{-1} f(w) + (1-\pi_{-1}) g(w) 
+$$
+
+We assume that the statistician knows the densities $f$ and $g$ and also the mixing parameter $\pi_{-1}$.
+
+Below, we'll  set $\pi_{-1} = .5$, although much of the analysis would follow through with other settings of $\pi_{-1} \in (0,1)$.  
+
+We assume that $f$ and $g$ both put positive probabilities on the same intervals of possible realizations of the random variable $W$.
+
+  
+
+In the simulations below, we specify that  $f$ is a $\text{Beta}(1, 1)$ distribution and that  $g$ is $\text{Beta}(3, 1.2)$ distribution.
+
+We consider two alternative timing protocols. 
+
+ * Timing protocol 1 is for   the model selection problem
+ * Timing protocol 2 is for the individual classification problem 
+
+**Timing Protocol 1:**  Nature flips a coin once at time $t=-1$ and with probability $\pi_{-1}$  generates a sequence  $\{w_t\}_{t=1}^T$
+of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
+of  IID  draws from  $g$.
+
+Let's write some Python code that implements timing protocol 1.
+
+```{code-cell} ipython3
+def protocol_1(π_minus_1, T, N=1000):
+    """
+    Simulate Protocol 1: 
+    Nature decides once at t=-1 which model to use.
+    """
+    
+    # On-off coin flip for the true model
+    true_models_F = np.random.rand(N) < π_minus_1
+    
+    sequences = np.empty((N, T))
+    
+    n_f = np.sum(true_models_F)
+    n_g = N - n_f
+    if n_f > 0:
+        sequences[true_models_F, :] = np.random.beta(F_a, F_b, (n_f, T))
+    if n_g > 0:
+        sequences[~true_models_F, :] = np.random.beta(G_a, G_b, (n_g, T))
+    
+    return sequences, true_models_F
+```
+
+**Timing Protocol 2.** At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
+
+Here is  Python code that we'll use to implement timing protocol 2.
+
+```{code-cell} ipython3
+def protocol_2(π_minus_1, T, N=1000):
+    """
+    Simulate Protocol 2: 
+    Nature decides at each time step which model to use.
+    """
+    
+    # Coin flips for each time t upto T
+    true_models_F = np.random.rand(N, T) < π_minus_1
+    
+    sequences = np.empty((N, T))
+    
+    n_f = np.sum(true_models_F)
+    n_g = N * T - n_f
+    if n_f > 0:
+        sequences[true_models_F] = np.random.beta(F_a, F_b, n_f)
+    if n_g > 0:
+        sequences[~true_models_F] = np.random.beta(G_a, G_b, n_g)
+    
+    return sequences, true_models_F
+```
+
+**Remark:** Under timing protocol 2, the $\{w_t\}_{t=1}^T$ is a sequence of IID draws from $h(w)$. Under timing protocol 1, the the $\{w_t\}_{t=1}^T$ is 
+not IID.  It is **conditionally IID** -- meaning that with probability $\pi_{-1}$ it is a sequence of IID draws from $f(w)$ and with probability $1-\pi_{-1}$ it is a sequence of IID draws from $g(w)$. For more about this, see {doc}`this lecture about exchangeability <exchangeable>`.
+
+We  again deploy a **likelihood ratio process** with time $t$ component being the likelihood ratio  
+
+$$
+\ell (w_t)=\frac{f\left(w_t\right)}{g\left(w_t\right)},\quad t\geq1.
+$$
+
+The **likelihood ratio process** for sequence $\left\{ w_{t}\right\} _{t=1}^{\infty}$ is 
+
+$$
+L\left(w^{t}\right)=\prod_{i=1}^{t} \ell (w_i),
+$$
+
+For shorthand we'll write $L_t =  L(w^t)$.
+
+### Model Selection Mistake Probability 
+
+We first study  a problem that assumes  timing protocol 1.  
+
+Consider a decision maker who wants to know whether model $f$ or model $g$ governs a data set of length $T$ observations.
+
+The decision makers has observed a sequence $\{w_t\}_{t=1}^T$.
+
+On the basis of that observed  sequence, a likelihood ratio test selects model $f$ when
+ $L_T \geq 1 $ and model $g$ when  $L_T < 1$.  
+ 
+When model $f$ generates the data, the probability that the likelihood ratio test selects the wrong model is 
+
+$$ 
+p_f = {\rm Prob}\left(L_T < 1\Big| f\right) = \alpha_T .
+$$
+
+When model $g$ generates the data, the probability that the likelihood ratio test selects the wrong model is 
+
+$$ 
+p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T. 
+$$
+
+We can construct a probability that the likelihood ratio selects the wrong model by assigning a Bayesian prior probability of $\pi_{-1} = .5$ that nature selects model $f$ then  averaging $p_f$ and $p_g$ to form the Bayesian posterior probability of a detection error equal to
+
+$$ 
+p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
+$$ (eq:detectionerrorprob)
+
+Now let's simulate  timing protocol 1 and compute the error probabilities
+
+```{code-cell} ipython3
+# Set parameters
+π_minus_1 = 0.5
+T_max = 30
+N_simulations = 10_000
+
+sequences_p1, true_models_p1 = protocol_1(
+                            π_minus_1, T_max, N_simulations)
+l_ratios_p1, L_cumulative_p1 = compute_likelihood_ratios(sequences_p1, f, g)
+
+# Compute error probabilities for different sample sizes
+T_range = np.arange(1, T_max + 1)
+
+# Boolean masks for true models
+mask_f = true_models_p1
+mask_g = ~true_models_p1
+
+# Select cumulative likelihoods for each model
+L_f = L_cumulative_p1[mask_f, :]
+L_g = L_cumulative_p1[mask_g, :]
+
+α_T = np.mean(L_f < 1, axis=0)
+β_T = np.mean(L_g >= 1, axis=0)
+
+error_prob = 0.5 * (α_T + β_T)
+
+# Plot results
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+
+ax1.plot(T_range, α_T, 'b-', 
+         label=r'$\alpha_T$', linewidth=2)
+ax1.plot(T_range, β_T, 'r-', 
+         label=r'$\beta_T$', linewidth=2)
+ax1.set_xlabel('$T$')
+ax1.set_ylabel('error probability')
+ax1.legend()
+
+ax2.plot(T_range, error_prob, 'g-', 
+         label=r'$\frac{1}{2}(\alpha_T+\beta_T)$', linewidth=2)
+ax2.set_xlabel('$T$')
+ax2.set_ylabel('error probability')
+ax2.legend()
+
+plt.tight_layout()
+plt.show()
+
+print(f"At T={T_max}:")
+print(f"α_{T_max} = {α_T[-1]:.4f}")
+print(f"β_{T_max} = {β_T[-1]:.4f}")
+print(f"Model selection error probability = {error_prob[-1]:.4f}")
+```
+
+Notice how the model selection  error probability approaches zero as $T$ grows.  
+
+### Classification
+
+We now consider a problem that assumes timing protocol 2.
+
+A decision maker wants to classify components of an observed sequence $\{w_t\}_{t=1}^T$ as having been drawn from either $f$ or $g$.
+
+The decision maker uses the following classification rule:
+
+$$
+\begin{aligned}
+w_t  & \ {\rm is \ from \  f  \ if \ } l_t > 1 \\
+w_t  & \ {\rm is \ from \  g  \ if \ } l_t \leq 1 . 
+\end{aligned}
+$$
+
+Under this rule, the expected misclassification rate is
+
+$$
+p(\textrm{misclassification}) = {1 \over 2} (\tilde \alpha_t + \tilde \beta_t) 
+$$ (eq:classerrorprob)
+
+where $\tilde \alpha_t = {\rm Prob}(l_t < 1 \mid f)$ and $\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)$.
+
+Since for each $t$, the decision boundary is the same, the decision boundary can be computed as
+
+```{code-cell} ipython3
+root = brentq(lambda w: f(w) / g(w) - 1, 0.001, 0.999)
+```
+
+we can plot the distributions of $f$ and $g$ and the decision boundary
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+fig, ax = plt.subplots(figsize=(7, 6))
+
+w_range = np.linspace(1e-5, 1-1e-5, 1000)
+f_values = [f(w) for w in w_range]
+g_values = [g(w) for w in w_range]
+ratio_values = [f(w)/g(w) for w in w_range]
+
+ax.plot(w_range, f_values, 'b-', 
+        label=r'$f(w) \sim Beta(1,1)$', linewidth=2)
+ax.plot(w_range, g_values, 'r-', 
+        label=r'$g(w) \sim Beta(3,1.2)$', linewidth=2)
+
+type1_prob = 1 - beta_dist.cdf(root, F_a, F_b)
+type2_prob = beta_dist.cdf(root, G_a, G_b)
+
+w_type1 = w_range[w_range >= root]
+f_type1 = [f(w) for w in w_type1]
+ax.fill_between(w_type1, 0, f_type1, alpha=0.3, color='blue', 
+                label=fr'$\tilde \alpha_t = {type1_prob:.2f}$')
+
+w_type2 = w_range[w_range <= root]
+g_type2 = [g(w) for w in w_type2]
+ax.fill_between(w_type2, 0, g_type2, alpha=0.3, color='red', 
+                label=fr'$\tilde \beta_t = {type2_prob:.2f}$')
+
+ax.axvline(root, color='green', linestyle='--', alpha=0.7, 
+            label=f'decision boundary: $w=${root:.3f}')
+
+ax.set_xlabel('w')
+ax.set_ylabel('probability density')
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+To  the left of the  green vertical line  $g < f$,  so $l_t < 1$; therefore a  $w_t$ that falls to the left of the green line is classified as a type $g$ individual. 
+
+ * The shaded orange area equals $\beta$ -- the probability of classifying someone as a type $g$ individual when it is really a type $f$ individual.
+
+To  the right of the  green vertical line $g > f$, so $l_t >1 $; therefore  a  $w_t$ that falls to the right  of the green line is classified as a type $f$ individual. 
+
+ * The shaded blue area equals $\alpha$ -- the probability of classifying someone as a type $f$ when it is really a type $g$ individual.  
+
+This gives us clues about how to compute the theoretical classification error probability
+
+```{code-cell} ipython3
+# Compute theoretical tilde α_t and tilde β_t
+def α_integrand(w):
+    """Integrand for tilde α_t = P(l_t < 1 | f)"""
+    return f(w) if f(w) / g(w) < 1 else 0
+
+def β_integrand(w):
+    """Integrand for tilde β_t = P(l_t >= 1 | g)"""
+    return g(w) if f(w) / g(w) >= 1 else 0
+
+# Compute the integrals
+α_theory, _ = quad(α_integrand, 0, 1, limit=100)
+β_theory, _ = quad(β_integrand, 0, 1, limit=100)
+
+theory_error = 0.5 * (α_theory + β_theory)
+
+print(f"theoretical tilde α_t = {α_theory:.4f}")
+print(f"theoretical tilde β_t = {β_theory:.4f}")
+print(f"theoretical classification error probability = {theory_error:.4f}")
+```
+
+Now we simulate timing protocol 2 and compute the classification error probability.
+
+In the next cell, we also compare the theoretical classification accuracy to the empirical classification accuracy
+
+```{code-cell} ipython3
+accuracy = np.empty(T_max)
+
+sequences_p2, true_sources_p2 = protocol_2(
+                    π_minus_1, T_max, N_simulations)
+l_ratios_p2, _ = compute_likelihood_ratios(sequences_p2, f, g)
+
+for t in range(T_max):
+    predictions = (l_ratios_p2[:, t] >= 1)
+    actual = true_sources_p2[:, t]
+    accuracy[t] = np.mean(predictions == actual)
+
+plt.figure(figsize=(10, 6))
+plt.plot(range(1, T_max + 1), accuracy, 
+                'b-', linewidth=2, label='empirical accuracy')
+plt.axhline(1 - theory_error, color='r', linestyle='--', 
+                label=f'theoretical accuracy = {1 - theory_error:.4f}')
+plt.xlabel('$t$')
+plt.ylabel('accuracy')
+plt.legend()
+plt.ylim(0.5, 1.0)
+plt.show()
+```
+
+Let's watch decisions made by  the two timing protocols as more and more observations accrue.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(7, 6))
+
+ax.plot(T_range, error_prob, linewidth=2, 
+        label='Protocol 1')
+ax.plot(T_range, 1-accuracy, linestyle='--', linewidth=2, 
+        label=f'Protocol 2')
+ax.set_ylabel('error probability')
+ax.legend()
+plt.show()
+```
+
+From the figure above, we can see:
+
+- For both timing protocols, the error probability starts at the same level, subject to a little randomness.
+
+- For timing protocol 1, the error probability decreases as the sample size increases because we are  making just **one** decision -- i.e., selecting whether $f$ or $g$ governs  **all** individuals.  More data provides better evidence.
+
+- For timing protocol 2, the error probability remains constant because we are making **many** decisions -- one classification decision for each observation.  
+
+**Remark:** Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem. 
+
+## Measuring discrepancies between distributions
+
+A plausible guess is that  the ability of a likelihood ratio to distinguish  distributions $f$ and $g$ depends on how "different" they are.
+ 
+But how should we measure  discrepancies between distributions?
+
+We've already encountered one discrepancy measure -- the Kullback-Leibler (KL) divergence. 
+
+We now briefly explore two alternative discrepancy  measures.
+
+### Chernoff entropy
+
+Chernoff entropy was motivated by an early application of  the [theory of large deviations](https://en.wikipedia.org/wiki/Large_deviations_theory).
+
+```{note}
+Large deviation theory provides refinements of the central limit theorem. 
+```
+
+The Chernoff entropy between probability densities $f$ and $g$ is defined as:
+
+$$
+C(f,g) = - \log \min_{\phi \in (0,1)} \int f^\phi(x) g^{1-\phi}(x) dx
+$$
+
+An upper bound on model selection error probabilty is
+
+$$
+e^{-C(f,g)T} .
+$$
+
+Thus,    Chernoff entropy is  an upper bound on  the exponential  rate at which  the selection error probability falls as sample size $T$ grows. 
+
+Let's compute Chernoff entropy numerically with some Python code
+
+```{code-cell} ipython3
+def chernoff_integrand(ϕ, f, g):
+    """
+    Compute the integrand for Chernoff entropy
+    """
+    def integrand(w):
+        return f(w)**ϕ * g(w)**(1-ϕ)
+
+    result, _ = quad(integrand, 1e-5, 1-1e-5)
+    return result
+
+def compute_chernoff_entropy(f, g):
+    """
+    Compute Chernoff entropy C(f,g)
+    """
+    def objective(ϕ):
+        return chernoff_integrand(ϕ, f, g)
+    
+    # Find the minimum over ϕ in (0,1)
+    result = minimize_scalar(objective, 
+                             # For numerical stability
+                             bounds=(1e-5, 1-1e-5), 
+                             method='bounded')
+    min_value = result.fun
+    ϕ_optimal = result.x
+    
+    chernoff_entropy = -np.log(min_value)
+    return chernoff_entropy, ϕ_optimal
+
+C_fg, ϕ_optimal = compute_chernoff_entropy(f, g)
+print(f"Chernoff entropy C(f,g) = {C_fg:.4f}")
+print(f"Optimal ϕ = {ϕ_optimal:.4f}")
+```
+
+Now let's examine how $e^{-C(f,g)T}$ behaves as a function of $T$ and compare it to the model selection error probability
+
+```{code-cell} ipython3
+T_range = np.arange(1, T_max+1)
+chernoff_bound = np.exp(-C_fg * T_range)
+
+# Plot comparison
+fig, ax = plt.subplots(figsize=(10, 6))
+
+ax.semilogy(T_range, chernoff_bound, 'r-', linewidth=2, 
+           label=f'$e^{{-C(f,g)T}}$')
+ax.semilogy(T_range, error_prob, 'b-', linewidth=2, 
+           label='Model selection error probability')
+
+ax.set_xlabel('T')
+ax.set_ylabel('error probability (log scale)')
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+Evidently, $e^{-C(f,g)T}$ is an upper bound on the error rate.
+
+### Jensen-Shannon divergence
+
+The [Jensen-Shannon divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence) is another  divergence measure.  
+
+For probability densities $f$ and $g$, the **Jensen-Shannon divergence** is defined as:
+
+$$
+D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
+$$ (eq:compute_JS)
+
+where $m = \frac{1}{2}(f+g)$ is a mixture of $f$ and $g$.
+
+Below we compute Jensen-Shannon divergence numerically with some Python code
+
+```{code-cell} ipython3
+def compute_JS(f, g):
+    """
+    Compute Jensen-Shannon divergence
+    """
+    def m(w):
+        return 0.5 * (f(w) + g(w))
+    
+    js_div = 0.5 * compute_KL(f, m) + 0.5 * compute_KL(g, m)
+    return js_div
+```
+ 
+```{note}
+We studied KL divergence in the [section above](rel_entropy) with respect to a reference distribution $h$.
+
+Recall that  KL divergence $KL(f, g)$ measures expected excess surprisal from using misspecified model $g$ instead $f$ when $f$ is the true model.
+
+Because in general $KL(f, g) \neq KL(g, f)$, KL divergence is not symmetric, but Jensen-Shannon divergence is symmetric.
+
+(In fact, the square root of the Jensen-Shannon divergence is a metric referred to as the Jensen-Shannon distance.)
+
+As {eq}`eq:compute_JS` shows, the Jensen-Shannon divergence computes average of the KL divergence of $f$ and $g$ with respect to a particular reference distribution $m$ defined below the equation.
+```
+
+Now let's create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy for a set of pairs of Beta distributions.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+distribution_pairs = [
+    # (f_params, g_params)
+    ((1, 1), (0.1, 0.2)),
+    ((1, 1), (0.3, 0.3)),
+    ((1, 1), (0.3, 0.4)),
+    ((1, 1), (0.5, 0.5)),
+    ((1, 1), (0.7, 0.6)),
+    ((1, 1), (0.9, 0.8)),
+    ((1, 1), (1.1, 1.05)),
+    ((1, 1), (1.2, 1.1)),
+    ((1, 1), (1.5, 1.2)),
+    ((1, 1), (2, 1.5)),
+    ((1, 1), (2.5, 1.8)),
+    ((1, 1), (3, 1.2)),
+    ((1, 1), (4, 1)),
+    ((1, 1), (5, 1))
+]
+
+# Create comparison table
+results = []
+for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
+    # Define the density functions
+    f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
+    g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
+    
+    # Compute measures
+    kl_fg = compute_KL(f, g)
+    kl_gf = compute_KL(g, f)
+    js_div = compute_JS(f, g)
+    chernoff_ent, _ = compute_chernoff_entropy(f, g)
+    
+    results.append({
+        'Pair (f, g)': f"\\text{{Beta}}({f_a},{f_b}), \\text{{Beta}}({g_a},{g_b})",
+        'KL(f, g)': f"{kl_fg:.4f}",
+        'KL(g, f)': f"{kl_gf:.4f}",
+        'JS': f"{js_div:.4f}",
+        'C': f"{chernoff_ent:.4f}"
+    })
+
+df = pd.DataFrame(results)
+
+# Sort by JS divergence
+df['JS_numeric'] = df['JS'].astype(float)
+df = df.sort_values('JS_numeric').drop('JS_numeric', axis=1)
+
+# Generate LaTeX table manually
+columns = ' & '.join([f'\\text{{{col}}}' for col in df.columns])
+rows = ' \\\\\n'.join(
+    [' & '.join([f'{val}' for val in row]) 
+     for row in df.values])
+
+latex_code = rf"""
+\begin{{array}}{{lcccc}}
+{columns} \\
+\hline
+{rows}
+\end{{array}}
+"""
+
+display(Math(latex_code))
+```
+
+The above  table indicates how  Jensen-Shannon divergence,  and Chernoff entropy, and  KL divergence covary as we alter $f$ and $g$.
+
+Let's also visualize how these diverge measures covary
+
+```{code-cell} ipython3
+kl_fg_values = [float(result['KL(f, g)']) for result in results]
+js_values = [float(result['JS']) for result in results]
+chernoff_values = [float(result['C']) for result in results]
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# JS divergence and KL divergence
+axes[0].scatter(kl_fg_values, js_values, alpha=0.7, s=60)
+axes[0].set_xlabel('KL divergence KL(f, g)')
+axes[0].set_ylabel('JS divergence')
+axes[0].set_title('JS divergence and KL divergence')
+
+# Chernoff Entropy and JS divergence
+axes[1].scatter(js_values, chernoff_values, alpha=0.7, s=60)
+axes[1].set_xlabel('JS divergence')
+axes[1].set_ylabel('Chernoff entropy')
+axes[1].set_title('Chernoff entropy and JS divergence')
+
+plt.tight_layout()
+plt.show()
+```
+
+To make the comparison more concrete, let's plot the distributions and the divergence measures for a few pairs of distributions.
+
+Note that the numbers on the title changes with the area of the overlaps of two distributions
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+def plot_dist_diff():
+    """
+    Plot overlap of two distributions and divergence measures
+    """
+    
+    # Chose a subset of Beta distribution parameters
+    param_grid = [
+        ((1, 1), (1, 1)),   
+        ((1, 1), (1.5, 1.2)),
+        ((1, 1), (2, 1.5)),  
+        ((1, 1), (3, 1.2)),  
+        ((1, 1), (5, 1)),
+        ((1, 1), (0.3, 0.3))
+    ]
+    
+    fig, axes = plt.subplots(3, 2, figsize=(15, 12))
+    
+    divergence_data = []
+    
+    for i, ((f_a, f_b), (g_a, g_b)) in enumerate(param_grid):
+        row = i // 2
+        col = i % 2
+        
+        # Create density functions
+        f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
+        g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
+        
+        # Compute divergence measures
+        kl_fg = compute_KL(f, g)
+        js_div = compute_JS(f, g) 
+        chernoff_ent, _ = compute_chernoff_entropy(f, g)
+        
+        divergence_data.append({
+            'f_params': (f_a, f_b),
+            'g_params': (g_a, g_b),
+            'kl_fg': kl_fg,
+            'js_div': js_div,
+            'chernoff': chernoff_ent
+        })
+        
+        # Plot distributions
+        x_range = np.linspace(0, 1, 200)
+        f_vals = [f(x) for x in x_range]
+        g_vals = [g(x) for x in x_range]
+        
+        axes[row, col].plot(x_range, f_vals, 'b-', linewidth=2, 
+                           label=f'f ~ Beta({f_a},{f_b})')
+        axes[row, col].plot(x_range, g_vals, 'r-', linewidth=2, 
+                           label=f'g ~ Beta({g_a},{g_b})')
+        
+        # Fill overlap region
+        overlap = np.minimum(f_vals, g_vals)
+        axes[row, col].fill_between(x_range, 0, overlap, alpha=0.3, 
+                                   color='purple', label='overlap')
+        
+        # Add divergence information
+        axes[row, col].set_title(
+            f'KL(f, g)={kl_fg:.3f}, JS={js_div:.3f}, C={chernoff_ent:.3f}',
+            fontsize=12)
+        axes[row, col].legend(fontsize=14)
+    
+    plt.tight_layout()
+    plt.show()
+    
+    return divergence_data
+
+divergence_data = plot_dist_diff()
+```
+
+### Error probability and divergence measures
+
+Now let's return to our guess that the error probability at large sample sizes is related to the Chernoff entropy  between two distributions.
+
+We verify this by computing the correlation between the log of the error probability at $T=50$ under Timing Protocol 1 and the divergence measures.
+
+In the simulation below, nature draws $N / 2$ sequences from $g$ and $N/2$ sequences from $f$.
+
+```{note}
+Nature does this rather than flipping a fair coin to decide whether to draw from $g$ or $f$ once and for all before each simulation of length $T$.
+```
+
+```{code-cell} ipython3
+# Parameters for simulation
+T_large = 50
+N_sims = 5000
+N_half = N_sims // 2
+
+# Initialize arrays
+n_pairs = len(distribution_pairs)
+kl_fg_vals = np.zeros(n_pairs)
+kl_gf_vals = np.zeros(n_pairs) 
+js_vals = np.zeros(n_pairs)
+chernoff_vals = np.zeros(n_pairs)
+error_probs = np.zeros(n_pairs)
+pair_names = []
+
+for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
+    # Create density functions
+    f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
+    g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
+
+    # Compute divergence measures
+    kl_fg_vals[i] = compute_KL(f, g)
+    kl_gf_vals[i] = compute_KL(g, f)
+    js_vals[i] = compute_JS(f, g)
+    chernoff_vals[i], _ = compute_chernoff_entropy(f, g)
+
+    # Generate samples
+    sequences_f = np.random.beta(f_a, f_b, (N_half, T_large))
+    sequences_g = np.random.beta(g_a, g_b, (N_half, T_large))
+
+    # Compute likelihood ratios and cumulative products
+    _, L_cumulative_f = compute_likelihood_ratios(sequences_f, f, g)
+    _, L_cumulative_g = compute_likelihood_ratios(sequences_g, f, g)
+    
+    # Get final values
+    L_cumulative_f = L_cumulative_f[:, -1]
+    L_cumulative_g = L_cumulative_g[:, -1]
+
+    # Calculate error probabilities
+    error_probs[i] = 0.5 * (np.mean(L_cumulative_f < 1) + 
+                            np.mean(L_cumulative_g >= 1))
+    pair_names.append(f"Beta({f_a},{f_b}) and Beta({g_a},{g_b})")
+
+cor_data =  {
+    'kl_fg': kl_fg_vals,
+    'kl_gf': kl_gf_vals,
+    'js': js_vals, 
+    'chernoff': chernoff_vals,
+    'error_prob': error_probs,
+    'names': pair_names,
+    'T': T_large}
+```
+
+Now let's visualize the correlations
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+def plot_error_divergence(data):
+    """
+    Plot correlations between error probability and divergence measures.
+    """
+    # Filter out near-zero error probabilities for log scale
+    nonzero_mask = data['error_prob'] > 1e-6
+    log_error = np.log(data['error_prob'][nonzero_mask])
+    js_vals = data['js'][nonzero_mask]
+    chernoff_vals = data['chernoff'][nonzero_mask]
+
+    # Create figure and axes
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+    
+    # function for plotting correlation
+    def plot_correlation(ax, x_vals, x_label, color):
+        ax.scatter(x_vals, log_error, alpha=0.7, s=60, color=color)
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(f'log(Error probability) at T={data["T"]}')
+        
+        # Calculate correlation and trend line
+        corr = np.corrcoef(x_vals, log_error)[0, 1]
+        z = np.polyfit(x_vals, log_error, 2)
+        x_trend = np.linspace(x_vals.min(), x_vals.max(), 100)
+        ax.plot(x_trend, np.poly1d(z)(x_trend), 
+                "r--", alpha=0.8, linewidth=2)
+        ax.set_title(f'Log error probability and {x_label}\n'
+                     f'Correlation = {corr:.3f}')
+    
+    # Plot both correlations
+    plot_correlation(ax1, js_vals, 'JS divergence', 'C0')
+    plot_correlation(ax2, chernoff_vals, 'Chernoff entropy', 'C1')
+
+    plt.tight_layout()
+    plt.show()
+
+plot_error_divergence(cor_data)
+```
+
+Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability.
+
+We'll encounter related  ideas in {doc}`wald_friedman`.
 
 
 ## Related Lectures
