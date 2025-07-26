@@ -447,13 +447,13 @@ fig, axs = plt.subplots(1, 2, figsize=(14, 5))
 
 axs[0].plot(π_star_arr, t_optimal_arr)
 axs[0].set_xlabel(r'$\pi^*$')
-axs[0].set_title('optimal sample size given $\pi^*$')
+axs[0].set_title(r'optimal sample size given $\pi^*$')
 
-axs[1].plot(π_star_arr, PFA_optimal_arr, label='$PFA^*(\pi^*)$')
-axs[1].plot(π_star_arr, PD_optimal_arr, label='$PD^*(\pi^*)$')
+axs[1].plot(π_star_arr, PFA_optimal_arr, label=r'$PFA^*(\pi^*)$')
+axs[1].plot(π_star_arr, PD_optimal_arr, label=r'$PD^*(\pi^*)$')
 axs[1].set_xlabel(r'$\pi^*$')
 axs[1].legend()
-axs[1].set_title('optimal PFA and PD given $\pi^*$')
+axs[1].set_title(r'optimal PFA and PD given $\pi^*$')
 
 plt.show()
 ```
@@ -689,7 +689,7 @@ plt.text(β+0.01, wf.L0/2, 'β')
 plt.vlines(α, 0, wf.L0, linestyle='--')
 plt.text(α+0.01, wf.L0/2, 'α')
 plt.xlabel(r'$\pi$')
-plt.title('Objective value function $V(\pi)$')
+plt.title(r'Objective value function $V(\pi)$')
 plt.legend()
 plt.show()
 ```
@@ -732,7 +732,7 @@ for i, π_star in enumerate(π_star_arr):
     axs[row_i, col_i].hlines(V_baye_bar, 0, 1, linestyle='--')
     axs[row_i, col_i].vlines(π_optimal, V_baye_bar, V_baye.max(), linestyle='--')
     axs[row_i, col_i].text(π_optimal+0.05, (V_baye_bar + V_baye.max()) / 2,
-                        '${\pi_0^*}=$'+f'{π_optimal:0.2f}')
+                        r'${\pi_0^*}=$'+f'{π_optimal:0.2f}')
     axs[row_i, col_i].set_xlabel(r'$\pi$')
     axs[row_i, col_i].set_ylabel(r'$\overline{V}_{baye}(\pi)$')
     axs[row_i, col_i].set_title(r'$\pi^*=$' + f'{π_star}')
@@ -770,7 +770,7 @@ axs[1].plot([π_star_arr.min(), π_star_arr.max()],
             [π_star_arr.min(), π_star_arr.max()],
             c='k', linestyle='--', label='45 degree line')
 axs[1].set_xlabel(r'$\pi^*$')
-axs[1].set_title('optimal prior given $\pi^*$')
+axs[1].set_title(r'optimal prior given $\pi^*$')
 axs[1].legend()
 
 plt.show()
@@ -942,14 +942,14 @@ fig, axs = plt.subplots(1, 2, figsize=(14, 4))
 axs[0].plot(np.arange(1, π0_arr.shape[1]+1), np.mean(π0_arr, 0), label='f0 generates')
 axs[0].plot(np.arange(1, π1_arr.shape[1]+1), 1 - np.mean(π1_arr, 0), label='f1 generates')
 axs[0].set_xlabel('t')
-axs[0].set_ylabel('$E(\pi_t)$ or ($1 - E(\pi_t)$)')
+axs[0].set_ylabel(r'$E(\pi_t)$ or ($1 - E(\pi_t)$)')
 axs[0].set_title('Expectation of beliefs after drawing t observations')
 axs[0].legend()
 
 axs[1].plot(np.arange(1, π0_arr.shape[1]+1), np.var(π0_arr, 0), label='f0 generates')
 axs[1].plot(np.arange(1, π1_arr.shape[1]+1), np.var(π1_arr, 0), label='f1 generates')
 axs[1].set_xlabel('t')
-axs[1].set_ylabel('var($\pi_t$)')
+axs[1].set_ylabel(r'var($\pi_t$)')
 axs[1].set_title('Variance of beliefs after drawing t observations')
 axs[1].legend()
 

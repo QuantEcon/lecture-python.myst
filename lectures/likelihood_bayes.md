@@ -316,7 +316,7 @@ fig, ax1 = plt.subplots()
 for i in range(2):
     ax1.plot(range(T+1), π_seq_f[i, :], label=fr"$\pi_0$={π_seq_f[i, 0]}")
 
-ax1.set_ylabel("$\pi_t$")
+ax1.set_ylabel(r"$\pi_t$")
 ax1.set_xlabel("t")
 ax1.legend()
 ax1.set_title("when f governs data")
@@ -350,7 +350,7 @@ fig, ax1 = plt.subplots()
 for i in range(2):
     ax1.plot(range(T+1), π_seq_g[i, :], label=fr"$\pi_0$={π_seq_g[i, 0]}")
 
-ax1.set_ylabel("$\pi_t$")
+ax1.set_ylabel(r"$\pi_t$")
 ax1.set_xlabel("t")
 ax1.legend()
 ax1.set_title("when g governs data")

@@ -459,7 +459,7 @@ def plot_π_seq(α, π1=0.2, π2=0.8, T=200):
         ax1.plot(range(T+1), π_seq_mixed[i, :], label=rf"$\pi_0$={π_seq_mixed[i, 0]}")
 
     ax1.plot(np.nan, np.nan,  '--', color='b', label='Log likelihood ratio process')
-    ax1.set_ylabel("$\pi_t$")
+    ax1.set_ylabel(r"$\pi_t$")
     ax1.set_xlabel("t")
     ax1.legend()
     ax1.set_title("when $\\alpha G + (1-\\alpha)$ F governs data")
