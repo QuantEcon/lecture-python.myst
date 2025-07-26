@@ -37,8 +37,8 @@ Among the things that we'll learn are
 
 * How a likelihood ratio process is a key ingredient in frequentist hypothesis testing
 * How a **receiver operator characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
-* How a statistician can combine frequentist probabilities of type I and type II errors to form posterior probabilities of mistakes in a model selection or a classification problem
-* How likelihood ratios helped Lawrence Blume and David Easley formulate an answer to the question ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`
+* How a statistician can combine frequentist probabilities of type I and type II errors to form posterior probabilities of mistakes in a model selection or in an individual-classification problem
+* How likelihood ratios helped Lawrence Blume and David Easley formulate an answer to  ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`
 * How to use a Kullback-Leibler divergence to quantify the difference between two probability distributions with the same support 
 * How during World War II the United States Navy devised a decision rule for doing quality control on lots of ammunition, a topic that sets the stage for {doc}`this lecture <wald_friedman>`
 * A peculiar property of likelihood ratio processes
@@ -673,7 +673,7 @@ where $L_t=\prod_{j=1}^{t}\frac{f(w_j)}{g(w_j)}$ is the likelihood ratio process
 
 (For the proof, see [this note](https://nowak.ece.wisc.edu/ece830/ece830_fall11_lecture7.pdf).)
 
-{eq}`eq:kl_likelihood_link` tells us that:
+Equation {eq}`eq:kl_likelihood_link` tells us that:
 - When $K_g < K_f$ (i.e., $g$ is closer to $h$ than $f$ is), the expected log likelihood ratio is negative, so $L\left(w^t\right) \rightarrow 0$.
 - When $K_g > K_f$ (i.e., $f$ is closer to $h$ than $g$ is), the expected log likelihood ratio is positive, so $L\left(w^t\right) \rightarrow + \infty$.
 
@@ -782,12 +782,31 @@ In the [next section](hetero_agent), we will see an application of these ideas.
 
 
 (hetero_agent)=
-## Consumption and Heterogeneous Beliefs
+## Heterogeneous Beliefs and Financial Markets
 
 A likelihood ratio process lies behind  Lawrence  Blume and David Easley's answer to their question
 ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`.  
 
-Here we'll  provide an example that illustrates  basic components of their analysis. 
+Blume and Easley constructed  formal models to study how differences of opinions about probabilities governing risky income processes would influence outcomes and be reflected in prices of stocks, bonds, and insurance policies that individuals use to share and hedge risks.
+
+```{note}
+{cite}`alchian1950uncertainty` and {cite}`friedman1953essays` can conjectured that, by rewarding traders with more realistic probability models,  competitive markets in financial securities put wealth in the hands of better informed traders and help 
+make prices of risky assets  reflect realistic probability assessments. 
+```
+
+
+Here we'll  provide an example that illustrates  basic components of Blume and Easley's analysis. 
+
+We'll focus only on their analysis of an environment with complete markets in which trades in all conceivable risky securities are possible. 
+
+We'll study two alternative arrangements:
+
+* perfect socialism in which individuals surrender their endowments of consumption goods each period to a central planner who then dictatorially allocates those goods
+* a decentralized system of competitive markets in which selfish price-taking individuals voluntarily trade with each other in competitive markets 
+
+The fundamental theorems of welfare economics will apply and assure us that these two arrangements end up producing exactly the same allocation of consumption goods to individuals **provided** that the social planner assigns  an appropriate set of **Pareto weights**.
+
+
 
 Let the random variable $s_t \in (0,1)$ at time $t =0, 1, 2, \ldots$ be distributed according to the same  Beta distribution  with parameters 
 $\theta = \{\theta_1, \theta_2\}$.
@@ -816,7 +835,7 @@ $$c^1(s_t) = y_t^1 = s_t. $$
 
 But in our model, agent 1 is not alone.
 
-### Nature and beliefs
+### Nature and agents' beliefs
 
 Nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t(s^t)$.
 
@@ -921,7 +940,7 @@ Notice how social welfare criterion {eq}`eq:welfareW` takes into account both ag
 
 This means that the social planner knows and respects
 
-* the one period utility function $u(\cdot) = \ln(\cdot)$
+* each agent's  one period utility function $u(\cdot) = \ln(\cdot)$
 * each agent $i$'s probability model $\{\pi_t^i(s^t)\}_{t=0}^\infty$
 
 Consequently, we anticipate that these objects will appear in the social planner's rule for allocating the aggregate endowment each period. 
@@ -1221,7 +1240,7 @@ print(f"KL(h,f)={Kf_h:.3f}, KL(h,g)={Kg_h:.3f}")
 
 We find that $KL(f,g) > KL(g,f)$ and $KL(h,g) > KL(h,f)$.
 
-The first inequality tells us that the average "surprise" or "inefficiency" of using belief $g$ when nature chooses $f$ is greater than the "surprise" of using belief $f$ when nature chooses $g$.
+The first inequality tells us that the average "surprise" from having belief $g$ when nature chooses $f$ is greater than the "surprise" from having  belief $f$ when nature chooses $g$.
 
 This explains the difference between the first two panels we noted above.
 
@@ -1392,7 +1411,7 @@ We consider two alternative timing protocols.
  * Timing protocol 1 is for   the model selection problem
  * Timing protocol 2 is for the individual classification problem 
 
-**Timing Protocol 1:**  Nature flips a coin once at time $t=-1$ and with probability $\pi_{-1}$  generates a sequence  $\{w_t\}_{t=1}^T$
+**Timing Protocol 1:**  Nature flips a coin only **once** at time $t=-1$ and with probability $\pi_{-1}$  generates a sequence  $\{w_t\}_{t=1}^T$
 of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
 of  IID  draws from  $g$.
 
@@ -1420,7 +1439,7 @@ def protocol_1(π_minus_1, T, N=1000):
     return sequences, true_models_F
 ```
 
-**Timing Protocol 2.** At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
+**Timing Protocol 2.** Nature flips a coin **often**.  At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
 
 Here is  Python code that we'll use to implement timing protocol 2.
 
