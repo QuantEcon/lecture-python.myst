@@ -2118,7 +2118,7 @@ plot_error_divergence(cor_data)
 
 Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability.
 
-We'll encounter related  ideas in {doc}`wald_friedman`.
+We'll encounter related ideas in {doc}`wald_friedman` very soon.
 
 
 ## Related Lectures
