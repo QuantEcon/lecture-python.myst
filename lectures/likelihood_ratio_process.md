@@ -635,21 +635,13 @@ Let's compute the Kullback–Leibler discrepancies by quadrature
 integration.
 
 ```{code-cell} ipython3
-def KL_integrand(w, q, h):
-
-    m = h(w) / q(w)
-
-    return np.log(m) * h(w)
-
 def compute_KL(f, g):
     """
     Compute KL divergence KL(f, g)
     """
-    def integrand(w):
-        return f(w) * np.log(f(w) / g(w))
-    
-    result, _ = quad(integrand, 1e-5, 1-1e-5)
-    return result
+    integrand = lambda w: f(w) * np.log(f(w) / g(w))
+    val, _ = quad(integrand, 1e-5, 1-1e-5)
+    return val
 ```
 
 Next we create a helper function to compute KL divergence with respect to a reference distribution $h$
