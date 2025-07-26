@@ -147,13 +147,11 @@ def simulate(a, b, T=50, N=500):
     '''
     Generate N sets of T observations of the likelihood ratio,
     return as N x T matrix.
-
     '''
 
     l_arr = np.empty((N, T))
 
     for i in range(N):
-
         for j in range(T):
             w = np.random.beta(a, b)
             l_arr[i, j] = f(w) / g(w)
@@ -792,7 +790,7 @@ In the [next section](hetero_agent), we will see an application of these ideas.
 
 
 (hetero_agent)=
-## Application: Consumption and Heterogeneous Beliefs
+## Consumption and Heterogeneous Beliefs
 
 A likelihood ratio process lies behind  Lawrence  Blume and David Easley's answer to their question
 ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`.  
@@ -800,7 +798,7 @@ A likelihood ratio process lies behind  Lawrence  Blume and David Easley's answe
 Here we'll  provide an example that illustrates  basic components of their analysis. 
 
 Let the random variable $s_t \in (0,1)$ at time $t =0, 1, 2, \ldots$ be distributed according to the same  Beta distribution  with parameters 
-$\theta = [\theta_1, \theta_2]$.
+$\theta = \{\theta_1, \theta_2\}$.
 
 We'll denote this  probability density as
 
@@ -1233,6 +1231,8 @@ We find that $KL(f,g) > KL(g,f)$ and $KL(h,g) > KL(h,f)$.
 
 The first inequality tells us that the average "surprise" or "inefficiency" of using belief $g$ when nature chooses $f$ is greater than the "surprise" of using belief $f$ when nature chooses $g$.
 
+This explains the difference between the first two panels we noted above.
+
 The second inequality tells us that agent 1's belief distribution $f$ is closer to nature's pick than agent 2's belief $g$.
 
 +++
@@ -1371,7 +1371,9 @@ This ties in nicely with {eq}`eq:kl_likelihood_link`.
 
 ## Hypothesis Testing and Classification 
 
-We now describe how a statistician can combine frequentist probabilities of type I and type II errors in order to 
+This section discusses another application of likelihood ratio processes.
+
+We describe how a statistician can combine frequentist probabilities of type I and type II errors in order to 
 
 * compute an anticipated frequency of  selecting a wrong model based on a sample length $T$
 * compute an anticipated error  rate in a classification problem 
