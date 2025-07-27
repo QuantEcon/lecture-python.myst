@@ -185,21 +185,40 @@ l_seq_f = np.cumprod(l_arr_f, axis=1)
 
 ## Likelihood Ratio Process and Bayes’ Law
 
-Let $\pi_t$ be a Bayesian posterior defined as
+Let $\pi_{t+1}$ be a Bayesian posterior probability defined as
 
 $$
-\pi_t = {\rm Prob}(q=f|w^t)
+\pi_{t+1} = {\rm Prob}(q=f|w^{t+1})
 $$
 
 The likelihood ratio process is a principal actor in the formula that governs the evolution
 of the posterior probability $\pi_t$, an instance of **Bayes' Law**.
 
-Bayes’ law implies that $\{\pi_t\}$ obeys the recursion
+Bayes' law is just the following application of the standardformula for conditional probability:
+
+$$
+{\rm Prob}(q=f|w^{t+1}) = \frac { {\rm Prob}(q=f|w^{t} ) f(w_{t+1})}{ {\rm Prob}(q=f|w^{t} ) f(w_{t+1}) + (1 - {\rm Prob}(q=f|w^{t} )) g(w_{t+1})}
+$$
+
+or
+
+$$
+\pi_{t+1} = \frac { \pi_t f(w_{t+1})}{ \pi_t f(w_{t+1}) + (1 - \pi_t) g(w_{t+1})}
+$$ (eq:bayes150)
+
+Evidently,  the above equation asserts that
+
+$$
+{\rm Prob}(q=f|w^{t+1}) = \frac{{\rm Prob}(q=f|w^{t}) f(w_{t+1} )} {{\rm Prob}(w_{t+1})}
+$$
+
+
+Dividing both  the numerator and the denominator on the right side of the  equation {eq}`eq:bayes150` by $g(w_{t+1})$ implies the recursion
 
 ```{math}
 :label: eq_recur1
 
-\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
+\pi_{t+1}=\frac{\pi_{t} l_t(w_{t+1})}{\pi_{t} l_t(w_t)+1-\pi_{t}}
 ```
 
 with $\pi_{0}$ being a Bayesian prior probability that $q = f$,
@@ -276,6 +295,16 @@ and the initial prior $\pi_{0}$
 ```
 
 Formula {eq}`eq_Bayeslaw103` generalizes formula {eq}`eq_recur1`.
+
+```{note}
+Fomula {eq}`eq_Bayeslaw103` can also be derived by starting from the formula for  conditional probability
+
+$$
+\pi_{t+1} \equiv {\rm Prob}(q=f|w^{t+1}) = \frac { \pi_0 f(w^{t+1})}{ \pi_0 f(w^{t+1}) + (1 - \pi_0) g(w^{t+1})}
+$$
+
+and then dividing the numerator and the denominator on the right side by $g(w^{t+1})$.
+```
 
 Formula {eq}`eq_Bayeslaw103`  can be regarded as a one step  revision of prior probability $\pi_0$ after seeing
 the batch of data $\left\{ w_{i}\right\} _{i=1}^{t+1}$.
@@ -378,8 +407,33 @@ np.abs(π_seq - π_seq_f).max() < 1e-10
 ```
 
 We thus conclude that  the likelihood ratio process is a key ingredient of the formula {eq}`eq_Bayeslaw103` for
-a Bayesian's posteior probabilty that nature has drawn history $w^t$ as repeated draws from density
-$g$.
+a Bayesian's posterior probabilty that nature has drawn history $w^t$ as repeated draws from density
+$f$.
+
+
+## Another timing protocol
+
+Let's study how the posterior probability $\pi_t = {\rm Prob}(q=f|w^{t}) $ behaves when nature generates the
+history $w^t = w_1, w_2, \ldots, w_t$ under a different timing protocol.
+
+Above we assumed that before time $1$ nature somehow chose to draw $w^t$ as an iid sequence from **either** $f$ **or** $g$.  
+
+Nature's decision about whether to draw from $f$ or $g$ was thus **permanent**.
+
+We now assume another timing protocol in which before **each period** $t =1, 2, \ldots$ nature flips an unfair coin and with probability
+$x \in (0,1)$  draws from $f$ in period $t$ and with probability $1 - x $ draws from $g$.
+
+Under this timing protocol, it is appropriate to interpret the  Bayesian prior $\pi_0$ is the statistician's opinion about nature's $x$.
+
+Let's write some Python code to study how $\pi_t$ behaves for various values of nature's mixing probability $x$.
+
+**Note to Humphrey**: please write code to do this and give three example simulations. In these simulations, set $x=.5$ and set $\pi_0$ at three values -- .25, .5, and .75.  It should be fun to watch $\pi_t$ converge to $x$!
+
+
+
+
+
+
 
 
 
@@ -811,7 +865,7 @@ Notice how the conditional variance approaches $0$ for $\pi_{t-1}$ near  either 
 
 The conditional variance is nearly zero only when the agent  is almost sure that $w_t$ is drawn from $F$,  or is almost sure it is drawn from $G$.
 
-## Sequels
+## Related Lectures
 
 This lecture has been devoted to building some useful infrastructure that will help us understand inferences that are the foundations of
 results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
