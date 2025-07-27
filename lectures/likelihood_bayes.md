@@ -117,7 +117,14 @@ $$
 where $w^t=\{ w_1,\dots,w_t\}$ is a history of
 observations up to and including time $t$.
 
-Sometimes for shorthand we'll write $L_t =  L(w^t)$.
+Sometimes for shorthand we'll write 
+
+$$
+L_t =  L(w^t) = \frac{f(w^t)}{g(w^t)}
+$$ 
+
+where we use the conventions 
+that $f(w^t) = f(w_1) f(w_2) \ldots f(w_t)$ and $g(w^t) = g(w_1) g(w_2) \ldots g(w_t)$.
 
 Notice that the likelihood process satisfies the *recursion* or
 *multiplicative decomposition*
