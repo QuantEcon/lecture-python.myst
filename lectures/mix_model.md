@@ -1,10 +1,10 @@
 ---
 jupytext:
   text_representation:
-    extension: .myst
+    extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.13.8
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -17,7 +17,7 @@ kernelspec:
 ```{include} _admonition/gpu.md
 ```
 
-```{code-cell} ipython
+```{code-cell} ipython3
 :tags: [hide-output]
 
 !pip install numpyro jax
