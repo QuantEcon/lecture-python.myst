@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -478,7 +478,7 @@ It's instructive to see what happens if we incorrectly apply our original model 
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
-T_plot = 20
+T_plot = 100
 
 for i, mean0 in enumerate(prior_means):
     π_wrong = np.empty(T_plot + 1)
@@ -541,7 +541,7 @@ def compute_div_m(f, g):
 
 KL_f, KL_g = compute_div_m(f, g)
 
-print(f'KL(m, f) = {KL_f}\nKL(m, g) = {KL_g}')
+print(f'KL(m, f) = {KL_f:3f}\nKL(m, g) = {KL_g:3f}')
 ```
 
 Since $KL(m, f) < KL(m, g)$, $f$ is "closer" to the mixture distribution $m$.
@@ -635,7 +635,7 @@ fig, ax = plt.subplots(figsize=(10, 6))
 
 for i, (x_means, mean0) in enumerate(zip(x_posterior_means, prior_means)):
     ax.plot(range(T_mix + 1), x_means, 
-            label=fr'Prior mean = ${mean0:.2f}', 
+            label=fr'Prior mean = ${mean0:.2f}$', 
             color=colors[i], linewidth=2)
 
 ax.axhline(y=x_true, color='black', linestyle='--', 

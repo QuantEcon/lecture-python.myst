@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -1835,6 +1835,7 @@ def compute_JS(f, g):
     js_div = 0.5 * compute_KL(f, m) + 0.5 * compute_KL(g, m)
     return js_div
 ```
+
  
 ```{note}
 We studied KL divergence in the [section above](rel_entropy) with respect to a reference distribution $h$.
