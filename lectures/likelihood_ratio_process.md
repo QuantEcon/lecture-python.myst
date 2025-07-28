@@ -49,7 +49,6 @@ Let's start by importing some Python tools.
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numba import vectorize, jit
 from math import gamma
