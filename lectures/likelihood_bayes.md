@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.6
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -350,7 +350,7 @@ for t in range(T):
         π_seq_f[i, t+1] = update(π_seq_f[i, t], l_arr_f[0, t])
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax1 = plt.subplots()
 
 for i in range(2):
@@ -468,7 +468,7 @@ prior_params = [(1, 3), (1, 1), (3, 1)]
 prior_means = [a/(a+b) for a, b in prior_params]
 
 # Generate one path of observations from the mixture
-np.random.seed(42)
+set_seed()
 w_mix = simulate_mixture_path(x_true, T_mix)
 ```
 
@@ -490,7 +490,7 @@ for i, mean0 in enumerate(prior_means):
         π_wrong[t + 1] = update(π_wrong[t], l_t)
     
     ax.plot(range(T_plot + 1), π_wrong, 
-            label=f'$\pi_0 = ${mean0:.2f}', 
+            label=fr'$\pi_0 = ${mean0:.2f}', 
             color=colors[i], linewidth=2)
 
 ax.axhline(y=x_true, color='black', linestyle='--', 
@@ -545,7 +545,25 @@ print(f'KL(m, f) = {KL_f}\nKL(m, g) = {KL_g}')
 ```
 
 Since $KL(m, f) < KL(m, g)$, $f$ is "closer" to the mixture distribution $m$.
-This explains why the likelihood ratio process concludes that $f$ is the data generating process.
+
+Hence by our discussion on KL divergence and likelihood ratio process in 
+{doc}`likelihood_ratio_process`, $log(L_t) \to \infty$ as $t \to \infty$.
+
+Now looking back to the key equation {eq}`eq_Bayeslaw103`. 
+
+Consider the function 
+
+$$
+h(z) = \frac{\pi_0 z}{\pi_0 z + 1 - \pi_0}.
+$$
+
+The limit $\lim_{z \to \infty} h(z)$ is 1.
+
+Hence $\pi_t \to 1$ as $t \to \infty$ for any $\pi_0 \in (0,1)$.
+
+This explains what we observed in the plot above.
+
+But how can we learn the true mixing parameter $x$?
 
 (bayes_mixing)=
 ### Bayesian Learning of the mixing parameter
@@ -574,45 +592,40 @@ Let's implement this Bayesian learning approach for $x$.
 
 ```{code-cell} ipython3
 @jit
-def learn_x_bayesian(observations, alpha0, beta0, grid_size=2000):
+def learn_x_bayesian(observations, α0, β0, grid_size=2000):
     """
-    Bayesian learning of mixing probability x using grid approximation.
+    Sequential Bayesian learning of the mixing probability x
+    using a grid approximation.
     """
+    w = np.asarray(observations)
+    T = w.size
 
-    T = len(observations)
-    grid = np.linspace(0.001, 0.999, grid_size)
-    
-    # Log prior for numerical stability
-    log_prior = (alpha0 - 1) * np.log(grid) + (beta0 - 1) * np.log(1 - grid)
-    
-    # Initialize
-    means = np.empty(T + 1)
+    x_grid = np.linspace(1e-3, 1 - 1e-3, grid_size)
 
-    # Prior mean
-    means[0] = alpha0 / (alpha0 + beta0)
-    
+    # Log prior (Beta)
+    log_prior = (α0 - 1) * np.log(x_grid) + (β0 - 1) * np.log1p(-x_grid)
+
+    μ_path = np.empty(T + 1)
+    μ_path[0] = α0 / (α0 + β0)
+
     log_post = log_prior.copy()
-    
-    for t in range(T):
-        w = observations[t]
-        # Likelihood: P(w|x) = x*f(w) + (1-x)*g(w)
-        likelihood = grid * f(w) + (1 - grid) * g(w)
-        log_post += np.log(likelihood)
-        
-        # Normalize posterior at each grid point
-        log_post_shifted = log_post - np.max(log_post)
-        post = np.exp(log_post_shifted)
-        post /= np.sum(post)
-        
-        # Posterior mean
-        means[t + 1] = np.sum(grid * post)
-    
-    return means
 
-x_posterior_means = []
-for (alpha0, beta0), mean0 in zip(prior_params, prior_means):
-    x_means = learn_x_bayesian(w_mix, alpha0, beta0)
-    x_posterior_means.append(x_means)
+    for t in range(T):
+        wt = w[t]
+        # P(w_t | x) = x f(w_t) + (1 - x) g(w_t)
+        like = x_grid * f(wt) + (1 - x_grid) * g(wt)
+        log_post += np.log(like)
+
+        # normalize
+        log_post -= log_post.max()
+        post = np.exp(log_post)
+        post /= post.sum()
+
+        μ_path[t + 1] = np.sum(x_grid * post)
+
+    return μ_path
+
+x_posterior_means = [learn_x_bayesian(w_mix, α0, β0) for α0, β0 in prior_params]
 ```
 
 First, let's visualize how the posterior mean of $x$ evolves over time, starting from three different prior beliefs.
@@ -628,7 +641,7 @@ for i, (x_means, mean0) in enumerate(zip(x_posterior_means, prior_means)):
 ax.axhline(y=x_true, color='black', linestyle='--', 
            label=f'True x = {x_true}', linewidth=2)
 ax.set_xlabel('$t$')
-ax.set_ylabel('Posterior mean of x')
+ax.set_ylabel('Posterior mean of $x$')
 ax.legend()
 plt.show()
 ```
@@ -638,7 +651,7 @@ The plot shows that regardless of the initial prior belief, all three posterior 
 Next, let's look at multiple simulations with a longer time horizon, all starting from a uniform prior.
 
 ```{code-cell} ipython3
-np.random.seed(42)
+set_seed()
 n_paths = 20
 T_long = 10_000
 
@@ -651,7 +664,7 @@ for j in range(n_paths):
 
 ax.axhline(y=x_true, color='red', linestyle='--', 
             label=f'True x = {x_true}', linewidth=2)
-ax.set_ylabel('Posterior mean of x')
+ax.set_ylabel('Posterior mean of $x$')
 ax.set_xlabel('$t$')
 ax.legend()
 plt.tight_layout()
@@ -1085,86 +1098,152 @@ results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_fri
 
 In the section {ref}`bayes_mixing`, we implemented a Bayesian learning algorithm to estimate the mixing parameter $x$ in a mixture model using a grid approximation method.
 
-In this exercise, we will compute the posterior distribution of the mixing parameter $x$ using NumPyro, which we studied in {doc}`bayes_nonconj`.
+In this exercise, we will explore sequential Bayesian updating using NumPyro. 
 
-In this exercise, please follow these steps:
+Please follow these steps:
 
-1. Use the same dataset `w_mix` that was generated in the {ref}`bayes_mixing` section.
-2. Apply the same prior distribution for $x$, which is a Beta distribution with parameters specified in the {ref}`bayes_mixing` section.
-3. Implement the model using NumPyro and obtain the posterior distribution of $x$.
-4. Visualize the posterior distribution of $x$ using a histogram.
+1. Generate a dataset from a mixture model with known mixing parameter $x_{true} = 0.5$.
+2. Process the data in chunks of 100 observations, updating the posterior sequentially.
+3. For each chunk, use the posterior from the previous chunk as the prior for the next chunk (using moment matching to fit a Beta distribution).
+4. Create a visualization showing how the posterior distribution evolves, using gradually darker shades to represent later time periods.
+
+In the exercise, set $\alpha_0 = 1$ and $\beta_0 = 2$.
 ```
 
 ```{solution-start} cen_ex2
 :class: dropdown
 ```
 
-As in {doc}`bayes_nonconj`, we need the following packages:
+First, let's import the necessary packages:
 
 ```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install numpyro jax
-```
-
-We will use the following imports:
-
-```{code-cell} ipython3
+import numpy as np
+import matplotlib.pyplot as plt
 import jax
 import jax.numpy as jnp
 import numpyro
 import numpyro.distributions as dist
-from numpyro.infer import MCMC, NUTS
+from numpyro.infer import NUTS, MCMC
+import seaborn as sns
 ```
 
-Now we can define the model in NumPyro:
+Define the mixture model and helper functions that helps us 
+to fit a Beta distribution to the posterior and obtain the parameter for the next chunk
 
 ```{code-cell} ipython3
-# Define the model in NumPyro
-def mixture_model(w, alpha0=1.0, beta0=1.0):
-    # Prior for the mixing probability
-    x = numpyro.sample("x", dist.Beta(alpha0, beta0))
-    
-    # Define the two mixture components as Beta distributions
+def mixture_model(w, α0=1.0, β0=1.0):
+    x = numpyro.sample("x", dist.Beta(α0, β0))
     f_dist = dist.Beta(F_a, F_b)
     g_dist = dist.Beta(G_a, G_b)
-    
-    # Define the mixture distribution
-    mixture_dist = dist.Mixture(dist.Categorical(probs=jnp.array([x, 1-x])), [f_dist, g_dist])
-    
-    with numpyro.plate("data", len(w)):
-        numpyro.sample("obs", mixture_dist, obs=w)
+    mix = dist.Mixture(
+        dist.Categorical(probs=jnp.array([x, 1 - x])),
+        [f_dist, g_dist]
+    )
+    with numpyro.plate("data", w.shape[0]):
+        numpyro.sample("w", mix, obs=w)
 
-Next we run the MCMC simulation:
-
-```{code-cell} ipython3
-kernel = NUTS(mixture_model)
-mcmc = MCMC(kernel, num_warmup=1000, num_samples=5000)
-rng_key = jax.random.PRNGKey(42)
-mcmc.run(rng_key, w_mix)
-
-posterior_samples = mcmc.get_samples()
-x_samples = posterior_samples['x']
-
-mcmc.print_summary()
+def β_moment_match(samples, eps=1e-12):
+    m = float(samples.mean())
+    v = float(samples.var())
+    v = max(v, eps)
+    t = m * (1 - m) / v - 1.0
+    α = max(m * t, eps)
+    β = max((1 - m) * t, eps)
+    return α, β
 ```
 
-Let's visualize the posterior distribution of $x$ from the MCMC samples. 
+Now we implement sequential Bayesian updating
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 6))
+def sequential_update(w_all, α0=1.0, β0=1.0, 
+                     chunk_size=100, 
+                     num_warmup=1000, 
+                     num_samples=2000, 
+                     seed=0):
+    n = len(w_all)
 
-ax.hist(x_samples, bins=75, density=True, 
-            label='Posterior distribution of x', alpha=0.7)
-ax.axvline(x_true, color='black', linestyle='--', label=f'True x = {x_true}')
-ax.set_xlabel('x')
-ax.set_ylabel('Density')
-ax.legend()
+    # Create chunks
+    chunks = [slice(i, min(i + chunk_size, n)) 
+                    for i in range(0, n, chunk_size)]
+    α, β = α0, β0
+    
+    keys = jax.random.split(
+        jax.random.PRNGKey(seed), len(chunks))
+    means = [α / (α + β)]
+    posts = []
+    
+    # Run MCMC for each chunk
+    for i, sl in enumerate(chunks):
+        kernel = NUTS(mixture_model)
+        mcmc = MCMC(kernel, 
+                    num_warmup=num_warmup, 
+                    num_samples=num_samples)
+        mcmc.run(keys[i], w_all[sl], α, β)
+        xs = mcmc.get_samples()["x"]
+        
+        posts.append(xs)
+
+        # Posterior becomes prior for next chunk
+        α, β = β_moment_match(xs)
+        means.append(xs.mean())
+    
+    return np.array(means), posts, chunks
+```
+
+Generate data and run sequential updates:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+x_true = 0.5
+T_total = 2000
+
+set_seed()
+w_mix = simulate_mixture_path(x_true, T_total)
+
+means, posts, chunks = sequential_update(
+    w_mix, α0=1.0, β0=2.0, chunk_size=200,
+    num_warmup=2000, num_samples=1000, seed=123)
+```
+
+Create visualization with gradually darker lines:
+
+```{code-cell} ipython3
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
+
+# Plot posterior means over time
+n_seen = np.cumsum([0] + [c.stop - c.start for c in chunks])
+
+# Posterior mean trajectory
+ax1.plot(n_seen, means, 'o-', 
+    color='darkblue', label='Posterior mean of $x$')
+ax1.axhline(x_true, ls="--", 
+    color="red", alpha=0.7, label=f'True $x$ = {x_true}')
+ax1.set_xlabel('$t$')
+ax1.set_ylabel('Posterior mean of $x$')
+ax1.legend()    
+
+# Posterior densities at each chunk
+n_chunks = len(posts)
+colors = plt.cm.Blues(np.linspace(0.01, 0.99, n_chunks))
+
+for i, (xs, color) in enumerate(zip(posts, colors)):
+    sns.kdeplot(xs, color=color, ax=ax2,
+                alpha=0.7, label=f'n={chunks[i].stop}')
+
+ax2.axvline(x_true, ls="--", color="red", 
+            alpha=0.7, label=f'True $x$ = {x_true}')
+ax2.set_xlabel('$x$')
+ax2.set_ylabel('density')
+ax2.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+
+plt.tight_layout()
 plt.show()
 ```
 
-The histogram shows where the belief about $x$ is concentrated after observing the data
-as we observed in the previous section.
+The left panel shows how the posterior mean converges to the true value as more data is observed.
+
+The right panel shows that the distribution of $x$ becomes more concentrated around the true value with more observations.
 
 ```{solution-end}
 ```
