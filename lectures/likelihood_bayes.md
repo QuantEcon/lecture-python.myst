@@ -1114,11 +1114,15 @@ In the exercise, set $\alpha_0 = 1$ and $\beta_0 = 2$.
 :class: dropdown
 ```
 
-First, let's import the necessary packages:
+First, let's install and import the necessary packages:
 
 ```{code-cell} ipython3
-import numpy as np
-import matplotlib.pyplot as plt
+:tags: [hide-output]
+
+!pip install numpyro jax
+```
+
+```{code-cell} ipython3
 import jax
 import jax.numpy as jnp
 import numpyro
