@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.6
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -55,6 +57,8 @@ import numpy as np
 from numba import vectorize, jit, prange
 from math import gamma
 import pandas as pd
+from scipy.integrate import quad
+
 
 import seaborn as sns
 colors = sns.color_palette()
@@ -143,7 +147,7 @@ beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence $w^t$ from *some*
 probability distribution, for example, a sequence of  IID draws from $g$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Parameters in the two beta distributions.
 F_a, F_b = 1, 1
 G_a, G_b = 3, 1.2
@@ -158,7 +162,7 @@ f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit
 def simulate(a, b, T=50, N=500):
     '''
@@ -180,12 +184,12 @@ def simulate(a, b, T=50, N=500):
 
 We'll also use the following Python code to prepare some informative simulations
 
-```{code-cell} python3
+```{code-cell} ipython3
 l_arr_g = simulate(G_a, G_b, N=50000)
 l_seq_g = np.cumprod(l_arr_g, axis=1)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 l_arr_f = simulate(F_a, F_b, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
@@ -234,7 +238,7 @@ i.e., a personal or subjective belief about $q$ based on our having seen no data
 Below we define a Python function that updates belief $\pi$ using
 likelihood ratio $\ell$ according to  recursion {eq}`eq_recur1`
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit
 def update(π, l):
     "Update π using likelihood l"
@@ -329,14 +333,14 @@ $\pi_t$ that are associated with the *same* realization of the likelihood ratio 
 
 First, we tell Python two values of $\pi_0$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 π1, π2 = 0.2, 0.8
 ```
 
 Next we generate paths of the likelihood ratio process $L_t$ and the posterior $\pi_t$ for a
 history of IID draws from density $f$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 T = l_arr_f.shape[1]
 π_seq_f = np.empty((2, T+1))
 π_seq_f[:, 0] = π1, π2
@@ -370,7 +374,7 @@ Please note that there are two different scales on the $y$ axis.
 
 Now let's study what happens when the history consists of IID draws from density $g$
 
-```{code-cell} python3
+```{code-cell} ipython3
 T = l_arr_g.shape[1]
 π_seq_g = np.empty((2, T+1))
 π_seq_g[:, 0] = π1, π2
@@ -380,7 +384,7 @@ for t in range(T):
         π_seq_g[i, t+1] = update(π_seq_g[i, t], l_arr_g[0, t])
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax1 = plt.subplots()
 
 for i in range(2):
@@ -400,7 +404,7 @@ plt.show()
 
 Below we offer Python code that verifies that nature chose permanently to draw from density $f$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 π_seq = np.empty((2, T+1))
 π_seq[:, 0] = π1, π2
 
@@ -409,7 +413,7 @@ for i in range(2):
     π_seq[i, 1:] = πL / (πL + 1 - π_seq[i, 0])
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 np.abs(π_seq - π_seq_f).max() < 1e-10
 ```
 
@@ -434,19 +438,229 @@ Under this timing protocol, it is appropriate to interpret the  Bayesian prior $
 
 Let's write some Python code to study how $\pi_t$ behaves for various values of nature's mixing probability $x$.
 
-**Note to Humphrey**: please write code to do this and give three example simulations. In these simulations, set $x=.5$ and set $\pi_0$ at three values -- .25, .5, and .75.  It should be fun to watch $\pi_t$ converge to $x$!
+First, let's create a function to simulate data under the mixture timing protocol:
+
+```{code-cell} ipython3
+@jit
+def simulate_mixture_path(x_true, T):
+    """
+    Simulate T observations under mixture timing protocol.
+    """
+    w = np.empty(T)
+    for t in range(T):
+        if np.random.rand() < x_true:
+            w[t] = np.random.beta(F_a, F_b)
+        else:
+            w[t] = np.random.beta(G_a, G_b)
+    return w
+```
+
+Let's generate a sequence of observations from this mixture model with a true mixing probability of $x=0.5$.
+
+We will use this sequence to test two approaches: a naive one that misapplies the original likelihood ratio updating, and a correct one based on Bayesian learning of the parameter $x$
+
+```{code-cell} ipython3
+x_true = 0.5
+T_mix = 200
+
+# Three different priors with means 0.25, 0.5, 0.75
+prior_params = [(1, 3), (1, 1), (3, 1)]
+prior_means = [a/(a+b) for a, b in prior_params]
+
+# Generate one path of observations from the mixture
+np.random.seed(42)
+w_mix = simulate_mixture_path(x_true, T_mix)
+```
+
+### Naive approach
+
+It's instructive to see what happens if we incorrectly apply our original model (where nature permanently chooses either $f$ or $g$) to data that actually comes from the mixture protocol.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(10, 6))
+T_plot = 20
+
+for i, mean0 in enumerate(prior_means):
+    π_wrong = np.empty(T_plot + 1)
+    π_wrong[0] = mean0
+    
+    # Compute likelihood ratios for the mixture data
+    for t in range(T_plot):
+        l_t = f(w_mix[t]) / g(w_mix[t])
+        π_wrong[t + 1] = update(π_wrong[t], l_t)
+    
+    ax.plot(range(T_plot + 1), π_wrong, 
+            label=f'$\pi_0 = ${mean0:.2f}', 
+            color=colors[i], linewidth=2)
+
+ax.axhline(y=x_true, color='black', linestyle='--', 
+           label=f'True x = {x_true}', linewidth=2)
+ax.set_xlabel('t')
+ax.set_ylabel(r'$\pi_t$')
+ax.legend()
+plt.show()
+```
+
+When we apply the wrong model, $\pi_t$ doesn't converge to the true mixing probability $x = 0.5$. 
+
+Instead, it goes to 1. 
+
+This indicates that the model concludes that the data is generated by $f$.
+
+Why does this happen? 
+
+Given $x = 0.5$, the data generating process is a mixture of $f$ and $g$: $m(w) = \frac{1}{2}f(w) + \frac{1}{2}g(w)$.
+
+The naive likelihood ratio process essentially tries to determine whether $f$ or $g$ is a better fit for the data. 
+
+A good measure of "closeness" between two distributions is the Kullback-Leibler (KL) divergence.
+
+The model will favor the distribution that is "closer" to the true data generating process in terms of KL divergence. 
+
+Let's check the KL divergence of the mixture distribution $m$ from both $f$ and $g$.
+
+```{code-cell} ipython3
+def compute_KL(f, g):
+    """
+    Compute KL divergence KL(f, g)
+    """
+    integrand = lambda w: f(w) * np.log(f(w) / g(w))
+    val, _ = quad(integrand, 1e-5, 1-1e-5)
+    return val
 
 
+def compute_div_m(f, g):
+    """
+    Compute Jensen-Shannon divergence
+    """
+    def m(w):
+        return 0.5 * (f(w) + g(w))
+    
+    return compute_KL(m, f), compute_KL(m, g)
 
 
+KL_f, KL_g = compute_div_m(f, g)
 
+print(f'KL(m, f) = {KL_f}\nKL(m, g) = {KL_g}')
+```
 
+Since $KL(m, f) < KL(m, g)$, $f$ is "closer" to the mixture distribution $m$.
+This explains why the likelihood ratio process concludes that $f$ is the data generating process.
 
+(bayes_mixing)=
+### Bayesian Learning of the mixing parameter
 
+The naive approach fails because the model is misspecified. 
 
+The true data generating process is a mixture, and the parameter to be learned is the mixing proportion $x$, but not a binary choice between $f$ and $g$.
+
+A correct Bayesian approach should directly model the uncertainty about $x$ and update beliefs about it as new data arrives. 
+
+Here is the algorithm:
+
+First we specify a prior distribution for $x$ given by $x \sim \text{Beta}(\alpha_0, \beta_0)$. 
+
+The likelihood for a single observation $w_t$ is $p(w_t|x) = x f(w_t) + (1-x) g(w_t)$. 
+
+For a sequence $w^t = (w_1, \dots, w_t)$, the likelihood is $p(w^t|x) = \prod_{i=1}^t p(w_i|x)$. 
+
+The posterior distribution is updated using $p(x|w^t) \propto p(w^t|x) p(x)$. 
+
+Recursively, the posterior after $w_t$ is $p(x|w^t) \propto p(w_t|x) p(x|w^{t-1})$. 
+
+Without a conjugate prior, we approximate the posterior by discretizing $x$ into a grid. 
+
+Let's implement this Bayesian learning approach for $x$.
+
+```{code-cell} ipython3
+@jit
+def learn_x_bayesian(observations, alpha0, beta0, grid_size=2000):
+    """
+    Bayesian learning of mixing probability x using grid approximation.
+    """
+
+    T = len(observations)
+    grid = np.linspace(0.001, 0.999, grid_size)
+    
+    # Log prior for numerical stability
+    log_prior = (alpha0 - 1) * np.log(grid) + (beta0 - 1) * np.log(1 - grid)
+    
+    # Initialize
+    means = np.empty(T + 1)
+
+    # Prior mean
+    means[0] = alpha0 / (alpha0 + beta0)
+    
+    log_post = log_prior.copy()
+    
+    for t in range(T):
+        w = observations[t]
+        # Likelihood: P(w|x) = x*f(w) + (1-x)*g(w)
+        likelihood = grid * f(w) + (1 - grid) * g(w)
+        log_post += np.log(likelihood)
+        
+        # Normalize posterior at each grid point
+        log_post_shifted = log_post - np.max(log_post)
+        post = np.exp(log_post_shifted)
+        post /= np.sum(post)
+        
+        # Posterior mean
+        means[t + 1] = np.sum(grid * post)
+    
+    return means
+
+x_posterior_means = []
+for (alpha0, beta0), mean0 in zip(prior_params, prior_means):
+    x_means = learn_x_bayesian(w_mix, alpha0, beta0)
+    x_posterior_means.append(x_means)
+```
+
+First, let's visualize how the posterior mean of $x$ evolves over time, starting from three different prior beliefs.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(10, 6))
+
+for i, (x_means, mean0) in enumerate(zip(x_posterior_means, prior_means)):
+    ax.plot(range(T_mix + 1), x_means, 
+            label=fr'Prior mean = ${mean0:.2f}', 
+            color=colors[i], linewidth=2)
+
+ax.axhline(y=x_true, color='black', linestyle='--', 
+           label=f'True x = {x_true}', linewidth=2)
+ax.set_xlabel('$t$')
+ax.set_ylabel('Posterior mean of x')
+ax.legend()
+plt.show()
+```
+
+The plot shows that regardless of the initial prior belief, all three posterior means eventually converge towards the true value of $x=0.5$.
+
+Next, let's look at multiple simulations with a longer time horizon, all starting from a uniform prior.
+
+```{code-cell} ipython3
+np.random.seed(42)
+n_paths = 20
+T_long = 10_000
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+for j in range(n_paths):
+    w_path = simulate_mixture_path(x_true, T_long)
+    x_means = learn_x_bayesian(w_path, 1, 1)  # Uniform prior
+    ax.plot(range(T_long + 1), x_means, alpha=0.5, linewidth=1)
+
+ax.axhline(y=x_true, color='red', linestyle='--', 
+            label=f'True x = {x_true}', linewidth=2)
+ax.set_ylabel('Posterior mean of x')
+ax.set_xlabel('$t$')
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+We can see that the posterior mean of $x$ converges to the true value $x=0.5$.
 
 ## Behavior of  posterior probability $\{\pi_t\}$  under the subjective probability distribution
-
 
 We'll end this lecture by briefly studying what our Baysian learner expects to learn under the
 subjective beliefs $\pi_t$ cranked out by Bayes' law.
@@ -690,16 +904,12 @@ def create_table(π0s, N=10000, T=500, decimals=2):
     table.index = π0s
     return table
 
-
-
 # simulate
 T = 200
 π0 = .5
 
 π_path, w_path = martingale_simulate(π0=π0, T=T, N=10000)
 ```
-
-
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -710,8 +920,6 @@ ax.set_xlabel('$t$')
 ax.set_ylabel(r'$\pi_t$')
 plt.show()
 ```
-
-
 
 The above graph indicates that
 
@@ -724,8 +932,6 @@ The above graph indicates that
 * none of the paths converge to a limit point not equal to $0$ or $1$
 
 Convergence actually occurs pretty fast, as the following graph of the cross-ensemble distribution of $\pi_t$ for various small $t$'s indicates.
-
-
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -771,9 +977,6 @@ ax.legend(loc='upper right')
 plt.show()
 ```
 
-
-
-
 For the preceding ensemble that assumed $\pi_0 = .5$, the following graph shows two  paths of
 $w_t$'s and the $\pi_t$ sequences that gave rise to them.
 
@@ -781,8 +984,6 @@ Notice that one of the paths involves systematically higher $w_t$'s, outcomes th
 
 The luck of the draw early in a simulation push the subjective distribution to draw from
 $F$ more frequently along a sample path, and this pushes $\pi_t$ toward $0$.
-
-
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -818,6 +1019,7 @@ The third column reports the fraction of $N = 10000$ simulations for which $\pi_
 table = create_table(list(np.linspace(0,1,11)), N=10000, T=500)
 table
 ```
+
 The fraction of simulations for which $\pi_{t}$  had converged to $1$ is indeed always  close  to $\pi_{-1}$, as anticipated.
 
 
@@ -876,3 +1078,93 @@ The conditional variance is nearly zero only when the agent  is almost sure that
 
 This lecture has been devoted to building some useful infrastructure that will help us understand inferences that are the foundations of
 results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
+
+
+```{exercise}
+:label: likelihood_bayes_ex1
+
+In the section {ref}`bayes_mixing`, we implemented a Bayesian learning algorithm to estimate the mixing parameter $x$ in a mixture model using a grid approximation method.
+
+In this exercise, we will compute the posterior distribution of the mixing parameter $x$ using NumPyro, which we studied in {doc}`bayes_nonconj`.
+
+In this exercise, please follow these steps:
+
+1. Use the same dataset `w_mix` that was generated in the {ref}`bayes_mixing` section.
+2. Apply the same prior distribution for $x$, which is a Beta distribution with parameters specified in the {ref}`bayes_mixing` section.
+3. Implement the model using NumPyro and obtain the posterior distribution of $x$.
+4. Visualize the posterior distribution of $x$ using a histogram.
+```
+
+```{solution-start} cen_ex2
+:class: dropdown
+```
+
+As in {doc}`bayes_nonconj`, we need the following packages:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install numpyro jax
+```
+
+We will use the following imports:
+
+```{code-cell} ipython3
+import jax
+import jax.numpy as jnp
+import numpyro
+import numpyro.distributions as dist
+from numpyro.infer import MCMC, NUTS
+```
+
+Now we can define the model in NumPyro:
+
+```{code-cell} ipython3
+# Define the model in NumPyro
+def mixture_model(w, alpha0=1.0, beta0=1.0):
+    # Prior for the mixing probability
+    x = numpyro.sample("x", dist.Beta(alpha0, beta0))
+    
+    # Define the two mixture components as Beta distributions
+    f_dist = dist.Beta(F_a, F_b)
+    g_dist = dist.Beta(G_a, G_b)
+    
+    # Define the mixture distribution
+    mixture_dist = dist.Mixture(dist.Categorical(probs=jnp.array([x, 1-x])), [f_dist, g_dist])
+    
+    with numpyro.plate("data", len(w)):
+        numpyro.sample("obs", mixture_dist, obs=w)
+
+Next we run the MCMC simulation:
+
+```{code-cell} ipython3
+kernel = NUTS(mixture_model)
+mcmc = MCMC(kernel, num_warmup=1000, num_samples=5000)
+rng_key = jax.random.PRNGKey(42)
+mcmc.run(rng_key, w_mix)
+
+posterior_samples = mcmc.get_samples()
+x_samples = posterior_samples['x']
+
+mcmc.print_summary()
+```
+
+Let's visualize the posterior distribution of $x$ from the MCMC samples. 
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(10, 6))
+
+ax.hist(x_samples, bins=75, density=True, 
+            label='Posterior distribution of x', alpha=0.7)
+ax.axvline(x_true, color='black', linestyle='--', label=f'True x = {x_true}')
+ax.set_xlabel('x')
+ax.set_ylabel('Density')
+ax.legend()
+plt.show()
+```
+
+The histogram shows where the belief about $x$ is concentrated after observing the data
+as we observed in the previous section.
+
+```{solution-end}
+```
