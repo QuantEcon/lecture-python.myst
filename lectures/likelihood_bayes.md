@@ -478,7 +478,7 @@ It's instructive to see what happens if we incorrectly apply our original model 
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
-T_plot = 100
+T_plot = 200
 
 for i, mean0 in enumerate(prior_means):
     π_wrong = np.empty(T_plot + 1)
@@ -541,7 +541,7 @@ def compute_div_m(f, g):
 
 KL_f, KL_g = compute_div_m(f, g)
 
-print(f'KL(m, f) = {KL_f:3f}\nKL(m, g) = {KL_g:3f}')
+print(f'KL(m, f) = {KL_f:.3f}\nKL(m, g) = {KL_g:.3f}')
 ```
 
 Since $KL(m, f) < KL(m, g)$, $f$ is "closer" to the mixture distribution $m$.
@@ -563,10 +563,14 @@ Hence $\pi_t \to 1$ as $t \to \infty$ for any $\pi_0 \in (0,1)$.
 
 This explains what we observed in the plot above.
 
-But how can we learn the true mixing parameter $x$?
+This tells us that the timing protocol and the model we use to learn from the data must match.
 
-(bayes_mixing)=
-### Bayesian Learning of the mixing parameter
+But how can we learn the true mixing parameter $x$? 
+
+We answer this question in the exercise below.
+
+```{exercise}
+:label: likelihood_bayes_ex1
 
 The naive approach fails because the model is misspecified. 
 
@@ -576,7 +580,7 @@ A correct Bayesian approach should directly model the uncertainty about $x$ and 
 
 Here is the algorithm:
 
-First we specify a prior distribution for $x$ given by $x \sim \text{Beta}(\alpha_0, \beta_0)$. 
+First we specify a prior distribution for $x$ given by $x \sim \text{Beta}(\alpha_0, \beta_0)$ with sexpectation $\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}$.
 
 The likelihood for a single observation $w_t$ is $p(w_t|x) = x f(w_t) + (1-x) g(w_t)$. 
 
@@ -586,9 +590,19 @@ The posterior distribution is updated using $p(x|w^t) \propto p(w^t|x) p(x)$.
 
 Recursively, the posterior after $w_t$ is $p(x|w^t) \propto p(w_t|x) p(x|w^{t-1})$. 
 
-Without a conjugate prior, we approximate the posterior by discretizing $x$ into a grid. 
+Without a conjugate prior, we can approximate the posterior by discretizing $x$ into a grid. 
 
-Let's implement this Bayesian learning approach for $x$.
+Your task is to implement this algorithm in Python. 
+
+You can verify your implementation by checking that the posterior mean converges to the true value of $x$
+as $t$ increases.
+```
+
+```{solution-start} likelihood_bayes_ex1
+:class: dropdown
+```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 @jit
@@ -602,7 +616,7 @@ def learn_x_bayesian(observations, α0, β0, grid_size=2000):
 
     x_grid = np.linspace(1e-3, 1 - 1e-3, grid_size)
 
-    # Log prior (Beta)
+    # Log prior
     log_prior = (α0 - 1) * np.log(x_grid) + (β0 - 1) * np.log1p(-x_grid)
 
     μ_path = np.empty(T + 1)
@@ -628,7 +642,7 @@ def learn_x_bayesian(observations, α0, β0, grid_size=2000):
 x_posterior_means = [learn_x_bayesian(w_mix, α0, β0) for α0, β0 in prior_params]
 ```
 
-First, let's visualize how the posterior mean of $x$ evolves over time, starting from three different prior beliefs.
+Let's visualize how the posterior mean of $x$ evolves over time, starting from three different prior beliefs.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
@@ -672,6 +686,9 @@ plt.show()
 ```
 
 We can see that the posterior mean of $x$ converges to the true value $x=0.5$.
+
+```{solution-end}
+```
 
 ## Behavior of  posterior probability $\{\pi_t\}$  under the subjective probability distribution
 
@@ -1092,13 +1109,12 @@ The conditional variance is nearly zero only when the agent  is almost sure that
 This lecture has been devoted to building some useful infrastructure that will help us understand inferences that are the foundations of
 results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
 
-
 ```{exercise}
-:label: likelihood_bayes_ex1
+:label: likelihood_bayes_ex2
 
-In the section {ref}`bayes_mixing`, we implemented a Bayesian learning algorithm to estimate the mixing parameter $x$ in a mixture model using a grid approximation method.
+In the [first exercise](likelihood_bayes_ex1), we implemented a Bayesian learning algorithm to estimate the mixing parameter $x$ in a mixture model using a grid approximation method.
 
-In this exercise, we will explore sequential Bayesian updating using NumPyro. 
+In this exercise, we will explore sequential Bayesian updating using NumPyro.
 
 Please follow these steps:
 
@@ -1110,7 +1126,7 @@ Please follow these steps:
 In the exercise, set $\alpha_0 = 1$ and $\beta_0 = 2$.
 ```
 
-```{solution-start} cen_ex2
+```{solution-start} likelihood_bayes_ex2
 :class: dropdown
 ```
 
