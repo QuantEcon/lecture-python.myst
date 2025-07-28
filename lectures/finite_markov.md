@@ -1077,7 +1077,7 @@ for x0, col in ((0, 'blue'), (1, 'green')):
     X_bar = (X == 0).cumsum() / (1 + np.arange(N, dtype=float))
     # Plot
     ax.fill_between(range(N), np.zeros(N), X_bar - p, color=col, alpha=0.1)
-    ax.plot(X_bar - p, color=col, label=f'$X_0 = \, {x0} $')
+    ax.plot(X_bar - p, color=col, label=fr'$X_0 = \, {x0} $')
     # Overlay in black--make lines clearer
     ax.plot(X_bar - p, 'k-', alpha=0.6)
 
@@ -1280,7 +1280,7 @@ Q = np.zeros((n, n), dtype=int)
 with open(infile) as f:
     edges = f.readlines()
 for edge in edges:
-    from_node, to_node = re.findall('\w', edge)
+    from_node, to_node = re.findall(r'\w', edge)
     i, j = alphabet.index(from_node), alphabet.index(to_node)
     Q[i, j] = 1
 # Create the corresponding Markov matrix P
