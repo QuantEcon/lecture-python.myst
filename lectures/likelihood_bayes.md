@@ -205,7 +205,7 @@ $$ (eq:defbayesposterior)
 The likelihood ratio process is a principal actor in the formula that governs the evolution
 of the posterior probability $\pi_t$, an instance of **Bayes' Law**.
 
-Bayes' law is just the following application of the standardformula for conditional probability:
+Bayes' law is just the following application of the standard formula for conditional probability:
 
 $$
 {\rm Prob}(q=f|w^{t+1}) = \frac { {\rm Prob}(q=f|w^{t} ) f(w_{t+1})}{ {\rm Prob}(q=f|w^{t} ) f(w_{t+1}) + (1 - {\rm Prob}(q=f|w^{t} )) g(w_{t+1})}
