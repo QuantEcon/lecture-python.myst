@@ -140,7 +140,7 @@ or its [AER page](https://www.aeaweb.org/articles?id=10.1257/aer.p20161068).
 pd.options.display.max_columns = 10
 
 # Load in data and view
-df = pd.read_stata('https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/mle/fp.dta?raw=true')
+df = pd.read_stata('df = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/mle/fp.dta')')
 df.head()
 ```
 
