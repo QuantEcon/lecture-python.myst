@@ -194,6 +194,8 @@ l_arr_f = simulate(F_a, F_b, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
 
+
+
 ## Likelihood Ratio Process and Bayes’ Law
 
 Let $\pi_{t+1}$ be a Bayesian posterior probability defined as
@@ -205,7 +207,54 @@ $$ (eq:defbayesposterior)
 The likelihood ratio process is a principal actor in the formula that governs the evolution
 of the posterior probability $\pi_t$, an instance of **Bayes' Law**.
 
-Bayes' law is just the following application of the standardformula for conditional probability:
+Let's derive a couple of formulas for $\pi_{t+1}$, one in terms of likelihood ratio $l(w_t)$, the other in terms of
+$L(w^t)$.
+
+To begin, define 
+
+Let  
+
+* $f(w^{t+1}) \equiv f(w_1) f(w_2) \cdots f(w_{t+1})$
+* $g(w^{t+1}) \equiv g(w_1) g(w_2) \cdots g(w_{t+1})$
+* $\pi_0 ={\rm Prob}(q=f |{\rm no \ data})$
+* $\pi_t = {\rm Prob}(q=f |w^t)$
+
+Then 
+
+
+$$
+{\rm Prob}(w^{t+1} |{\rm no \ data}) = \pi_o f(w^{t+1})+ (1 -  \pi_0) 
+$$
+
+Probability laws connecting joint and conditional distributions imply that
+
+$$
+{\rm Prob}(q=f |w^{t+1})  {\rm Prob}(w^{t+1}  |{\rm no \ data}) = {\rm Prob}(w^{t+1} |q=f) {\rm Prob}(q=f  | {\rm no \ data})
+$$
+
+or 
+
+$$
+\pi_{t+1} [\pi_0 f(w^{t+1}) + (1- \pi_0) g(w^{t+1})] = f(w^{t+1}) \pi_0 
+$$
+
+or
+
+$$
+\pi_{t+1}  = \frac{ f(w^{t+1}) \pi_0 }{\pi_0 f(w^{t+1}) + (1- \pi_0) g(w^{t+1})}
+$$
+
+Dividing both  the numerator and the denominator on the right side of the above  equation  by $g(w^{t+1})$ implies 
+
+```{math}
+:label: eq_Bayeslaw1033
+
+\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} .
+```
+
+We can use a similar  line of argument to get a recursive version of formula {eq}`eq_Bayeslaw1033`.
+
+The laws of probability imply 
 
 $$
 {\rm Prob}(q=f|w^{t+1}) = \frac { {\rm Prob}(q=f|w^{t} ) f(w_{t+1})}{ {\rm Prob}(q=f|w^{t} ) f(w_{t+1}) + (1 - {\rm Prob}(q=f|w^{t} )) g(w_{t+1})}
@@ -249,81 +298,17 @@ def update(π, l):
     return π
 ```
 
-Formula {eq}`eq_recur1` can be generalized  by iterating on it and thereby deriving an
-expression for  the time $t$ posterior $\pi_{t+1}$ as a function
-of the time $0$ prior $\pi_0$ and the likelihood ratio process
-$L(w^{t+1})$ at time $t$.
 
-To begin, notice that the updating rule
+Formula {eq}`eq_Bayeslaw1033` generalizes formula {eq}`eq_recur1`.
 
-$$
-\pi_{t+1}
-=\frac{\pi_{t}\ell \left(w_{t+1}\right)}
-{\pi_{t}\ell \left(w_{t+1}\right)+\left(1-\pi_{t}\right)}
-$$
 
-implies
-
-$$
-\begin{aligned}
-\frac{1}{\pi_{t+1}}
-    &=\frac{\pi_{t}\ell \left(w_{t+1}\right)
-        +\left(1-\pi_{t}\right)}{\pi_{t}\ell \left(w_{t+1}\right)} \\
-    &=1-\frac{1}{\ell \left(w_{t+1}\right)}
-        +\frac{1}{\ell \left(w_{t+1}\right)}\frac{1}{\pi_{t}}.
-\end{aligned}
-$$
-
-$$
-\Rightarrow
-\frac{1}{\pi_{t+1}}-1
-=\frac{1}{\ell \left(w_{t+1}\right)}\left(\frac{1}{\pi_{t}}-1\right).
-$$
-
-Therefore
-
-$$
-\begin{aligned}
-    \frac{1}{\pi_{t+1}}-1
-    =\frac{1}{\prod_{i=1}^{t+1}\ell \left(w_{i}\right)}
-        \left(\frac{1}{\pi_{0}}-1\right)
-    =\frac{1}{L\left(w^{t+1}\right)}\left(\frac{1}{\pi_{0}}-1\right).
-\end{aligned}
-$$
-
-Since $\pi_{0}\in\left(0,1\right)$ and
-$L\left(w^{t+1}\right)>0$, we can verify that
-$\pi_{t+1}\in\left(0,1\right)$.
-
-After rearranging the preceding equation, we can express $\pi_{t+1}$ as a
-function of  $L\left(w^{t+1}\right)$, the  likelihood ratio process at $t+1$,
-and the initial prior $\pi_{0}$
-
-```{math}
-:label: eq_Bayeslaw103
-
-\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} .
-```
-
-Formula {eq}`eq_Bayeslaw103` generalizes formula {eq}`eq_recur1`.
-
-```{note}
-Fomula {eq}`eq_Bayeslaw103` can also be derived by starting from the formula for  conditional probability
-
-$$
-\pi_{t+1} \equiv {\rm Prob}(q=f|w^{t+1}) = \frac { \pi_0 f(w^{t+1})}{ \pi_0 f(w^{t+1}) + (1 - \pi_0) g(w^{t+1})}
-$$
-
-and then dividing the numerator and the denominator on the right side by $g(w^{t+1})$.
-```
-
-Formula {eq}`eq_Bayeslaw103`  can be regarded as a one step  revision of prior probability $\pi_0$ after seeing
+Formula {eq}`eq_Bayeslaw1033`  can be regarded as a one step  revision of prior probability $\pi_0$ after seeing
 the batch of data $\left\{ w_{i}\right\} _{i=1}^{t+1}$.
 
-Formula {eq}`eq_Bayeslaw103` shows the key role that the likelihood ratio process  $L\left(w^{t+1}\right)$ plays in determining
+Formula {eq}`eq_Bayeslaw1033` shows the key role that the likelihood ratio process  $L\left(w^{t+1}\right)$ plays in determining
 the posterior probability $\pi_{t+1}$.
 
-Formula {eq}`eq_Bayeslaw103` is the foundation for the insight that, because of how the likelihood ratio process behaves
+Formula {eq}`eq_Bayeslaw1033` is the foundation for the insight that, because of how the likelihood ratio process behaves
 as $t \rightarrow + \infty$, the likelihood ratio process dominates the initial prior $\pi_0$ in determining the
 limiting behavior of $\pi_t$.
 
@@ -417,7 +402,7 @@ for i in range(2):
 np.abs(π_seq - π_seq_f).max() < 1e-10
 ```
 
-We thus conclude that  the likelihood ratio process is a key ingredient of the formula {eq}`eq_Bayeslaw103` for
+We thus conclude that  the likelihood ratio process is a key ingredient of the formula {eq}`eq_Bayeslaw1033` for
 a Bayesian's posterior probabilty that nature has drawn history $w^t$ as repeated draws from density
 $f$.
 
@@ -442,7 +427,7 @@ $x \in (0,1)$
 
 
 
-Thus, the  Bayesian prior $\pi_0$ and the sequence of posterior probabilities described by equation {eq}`eq_Bayeslaw103` should **not** be interpreted as the statistician's opinion about the mixing parameter  $x$ under the alternative timing protocol in which nature draws from an $x$-mixture of $f$ and $g$.  
+Thus, the  Bayesian prior $\pi_0$ and the sequence of posterior probabilities described by equation {eq}`eq_Bayeslaw1033` should **not** be interpreted as the statistician's opinion about the mixing parameter  $x$ under the alternative timing protocol in which nature draws from an $x$-mixture of $f$ and $g$.  
 
 This is clear when we remember  the definition of $\pi_t$ in equation {eq}`eq:defbayesposterior`, which for convenience we repeat here:
 
@@ -574,7 +559,7 @@ Since $KL(m, f) < KL(m, g)$, $f$ is "closer" to the mixture distribution $m$.
 Hence by our discussion on KL divergence and likelihood ratio process in 
 {doc}`likelihood_ratio_process`, $log(L_t) \to \infty$ as $t \to \infty$.
 
-Now looking back to the key equation {eq}`eq_Bayeslaw103`. 
+Now looking back to the key equation {eq}`eq_Bayeslaw1033`. 
 
 Consider the function 
 
@@ -716,7 +701,7 @@ We can see that the posterior mean of $x$ converges to the true value $x=0.5$.
 ```{solution-end}
 ```
 
-## Behavior of  posterior probability $\{\pi_t\}$  under the subjective probability distribution
+## Behavior of  Posterior Probability $\{\pi_t\}$  Under  Subjective Probability Distribution
 
 We'll end this lecture by briefly studying what our Baysian learner expects to learn under the
 subjective beliefs $\pi_t$ cranked out by Bayes' law.
