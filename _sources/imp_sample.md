@@ -90,7 +90,7 @@ w_range = np.linspace(1e-2, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range), label='g')
 plt.plot(w_range, f(w_range), label='f')
-plt.xlabel('$\omega$')
+plt.xlabel(r'$\omega$')
 plt.legend()
 plt.title('density functions $f$ and $g$')
 plt.show()
@@ -104,8 +104,8 @@ l = jit(lambda w: f(w) / g(w))
 
 ```{code-cell} ipython3
 plt.plot(w_range, l(w_range))
-plt.title('$\ell(\omega)$')
-plt.xlabel('$\omega$')
+plt.title(r'$\ell(\omega)$')
+plt.xlabel(r'$\omega$')
 plt.show()
 ```
 
@@ -314,7 +314,7 @@ for i, t in enumerate([1, 5, 10, 20]):
     for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p, σ_hat_p],
                                   [n_q, bins_q, μ_hat_q, σ_hat_q]]:
         idx = np.argmax(n)
-        axs[row, col].text(bins[idx], n[idx], '$\hat{μ}$='+f'{μ_hat:.4g}'+', $\hat{σ}=$'+f'{σ_hat:.4g}')
+        axs[row, col].text(bins[idx], n[idx], r'$\hat{μ}$='+f'{μ_hat:.4g}'+r', $\hat{σ}=$'+f'{σ_hat:.4g}')
 
 plt.show()
 ```
@@ -418,7 +418,7 @@ for i, t in enumerate([1, 20]):
     for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p, σ_hat_p],
                                   [n_q, bins_q, μ_hat_q, σ_hat_q]]:
         idx = np.argmax(n)
-        axs[i].text(bins[idx], n[idx], '$\hat{μ}$='+f'{μ_hat:.4g}'+', $\hat{σ}=$'+f'{σ_hat:.4g}')
+        axs[i].text(bins[idx], n[idx], r'$\hat{μ}$='+f'{μ_hat:.4g}'+r', $\hat{σ}=$'+f'{σ_hat:.4g}')
 
 plt.show()
 ```
@@ -452,7 +452,7 @@ for i, t in enumerate([1, 20]):
     for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p, σ_hat_p],
                                   [n_q, bins_q, μ_hat_q, σ_hat_q]]:
         idx = np.argmax(n)
-        axs[i].text(bins[idx], n[idx], '$\hat{μ}$='+f'{μ_hat:.4g}'+', $\hat{σ}=$'+f'{σ_hat:.4g}')
+        axs[i].text(bins[idx], n[idx], r'$\hat{μ}$='+f'{μ_hat:.4g}'+r', $\hat{σ}=$'+f'{σ_hat:.4g}')
 
 plt.show()
 ```

@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -55,6 +57,8 @@ import numpy as np
 from numba import vectorize, jit, prange
 from math import gamma
 import pandas as pd
+from scipy.integrate import quad
+
 
 import seaborn as sns
 colors = sns.color_palette()
@@ -117,7 +121,14 @@ $$
 where $w^t=\{ w_1,\dots,w_t\}$ is a history of
 observations up to and including time $t$.
 
-Sometimes for shorthand we'll write $L_t =  L(w^t)$.
+Sometimes for shorthand we'll write 
+
+$$
+L_t =  L(w^t) = \frac{f(w^t)}{g(w^t)}
+$$ 
+
+where we use the conventions 
+that $f(w^t) = f(w_1) f(w_2) \ldots f(w_t)$ and $g(w^t) = g(w_1) g(w_2) \ldots g(w_t)$.
 
 Notice that the likelihood process satisfies the *recursion* or
 *multiplicative decomposition*
@@ -136,7 +147,7 @@ beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence $w^t$ from *some*
 probability distribution, for example, a sequence of  IID draws from $g$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Parameters in the two beta distributions.
 F_a, F_b = 1, 1
 G_a, G_b = 3, 1.2
@@ -151,7 +162,7 @@ f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit
 def simulate(a, b, T=50, N=500):
     '''
@@ -173,33 +184,52 @@ def simulate(a, b, T=50, N=500):
 
 We'll also use the following Python code to prepare some informative simulations
 
-```{code-cell} python3
+```{code-cell} ipython3
 l_arr_g = simulate(G_a, G_b, N=50000)
 l_seq_g = np.cumprod(l_arr_g, axis=1)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 l_arr_f = simulate(F_a, F_b, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
 
 ## Likelihood Ratio Process and Bayes’ Law
 
-Let $\pi_t$ be a Bayesian posterior defined as
+Let $\pi_{t+1}$ be a Bayesian posterior probability defined as
 
 $$
-\pi_t = {\rm Prob}(q=f|w^t)
-$$
+\pi_{t+1} = {\rm Prob}(q=f|w^{t+1})
+$$ (eq:defbayesposterior)
 
 The likelihood ratio process is a principal actor in the formula that governs the evolution
 of the posterior probability $\pi_t$, an instance of **Bayes' Law**.
 
-Bayes’ law implies that $\{\pi_t\}$ obeys the recursion
+Bayes' law is just the following application of the standardformula for conditional probability:
+
+$$
+{\rm Prob}(q=f|w^{t+1}) = \frac { {\rm Prob}(q=f|w^{t} ) f(w_{t+1})}{ {\rm Prob}(q=f|w^{t} ) f(w_{t+1}) + (1 - {\rm Prob}(q=f|w^{t} )) g(w_{t+1})}
+$$
+
+or
+
+$$
+\pi_{t+1} = \frac { \pi_t f(w_{t+1})}{ \pi_t f(w_{t+1}) + (1 - \pi_t) g(w_{t+1})}
+$$ (eq:bayes150)
+
+Evidently,  the above equation asserts that
+
+$$
+{\rm Prob}(q=f|w^{t+1}) = \frac{{\rm Prob}(q=f|w^{t}) f(w_{t+1} )} {{\rm Prob}(w_{t+1})}
+$$
+
+
+Dividing both  the numerator and the denominator on the right side of the  equation {eq}`eq:bayes150` by $g(w_{t+1})$ implies the recursion
 
 ```{math}
 :label: eq_recur1
 
-\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
+\pi_{t+1}=\frac{\pi_{t} l_t(w_{t+1})}{\pi_{t} l_t(w_t)+1-\pi_{t}}
 ```
 
 with $\pi_{0}$ being a Bayesian prior probability that $q = f$,
@@ -208,7 +238,7 @@ i.e., a personal or subjective belief about $q$ based on our having seen no data
 Below we define a Python function that updates belief $\pi$ using
 likelihood ratio $\ell$ according to  recursion {eq}`eq_recur1`
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit
 def update(π, l):
     "Update π using likelihood l"
@@ -277,6 +307,16 @@ and the initial prior $\pi_{0}$
 
 Formula {eq}`eq_Bayeslaw103` generalizes formula {eq}`eq_recur1`.
 
+```{note}
+Fomula {eq}`eq_Bayeslaw103` can also be derived by starting from the formula for  conditional probability
+
+$$
+\pi_{t+1} \equiv {\rm Prob}(q=f|w^{t+1}) = \frac { \pi_0 f(w^{t+1})}{ \pi_0 f(w^{t+1}) + (1 - \pi_0) g(w^{t+1})}
+$$
+
+and then dividing the numerator and the denominator on the right side by $g(w^{t+1})$.
+```
+
 Formula {eq}`eq_Bayeslaw103`  can be regarded as a one step  revision of prior probability $\pi_0$ after seeing
 the batch of data $\left\{ w_{i}\right\} _{i=1}^{t+1}$.
 
@@ -293,14 +333,14 @@ $\pi_t$ that are associated with the *same* realization of the likelihood ratio 
 
 First, we tell Python two values of $\pi_0$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 π1, π2 = 0.2, 0.8
 ```
 
 Next we generate paths of the likelihood ratio process $L_t$ and the posterior $\pi_t$ for a
 history of IID draws from density $f$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 T = l_arr_f.shape[1]
 π_seq_f = np.empty((2, T+1))
 π_seq_f[:, 0] = π1, π2
@@ -310,13 +350,13 @@ for t in range(T):
         π_seq_f[i, t+1] = update(π_seq_f[i, t], l_arr_f[0, t])
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax1 = plt.subplots()
 
 for i in range(2):
     ax1.plot(range(T+1), π_seq_f[i, :], label=fr"$\pi_0$={π_seq_f[i, 0]}")
 
-ax1.set_ylabel("$\pi_t$")
+ax1.set_ylabel(r"$\pi_t$")
 ax1.set_xlabel("t")
 ax1.legend()
 ax1.set_title("when f governs data")
@@ -334,7 +374,7 @@ Please note that there are two different scales on the $y$ axis.
 
 Now let's study what happens when the history consists of IID draws from density $g$
 
-```{code-cell} python3
+```{code-cell} ipython3
 T = l_arr_g.shape[1]
 π_seq_g = np.empty((2, T+1))
 π_seq_g[:, 0] = π1, π2
@@ -344,13 +384,13 @@ for t in range(T):
         π_seq_g[i, t+1] = update(π_seq_g[i, t], l_arr_g[0, t])
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax1 = plt.subplots()
 
 for i in range(2):
     ax1.plot(range(T+1), π_seq_g[i, :], label=fr"$\pi_0$={π_seq_g[i, 0]}")
 
-ax1.set_ylabel("$\pi_t$")
+ax1.set_ylabel(r"$\pi_t$")
 ax1.set_xlabel("t")
 ax1.legend()
 ax1.set_title("when g governs data")
@@ -364,7 +404,7 @@ plt.show()
 
 Below we offer Python code that verifies that nature chose permanently to draw from density $f$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 π_seq = np.empty((2, T+1))
 π_seq[:, 0] = π1, π2
 
@@ -373,19 +413,310 @@ for i in range(2):
     π_seq[i, 1:] = πL / (πL + 1 - π_seq[i, 0])
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 np.abs(π_seq - π_seq_f).max() < 1e-10
 ```
 
 We thus conclude that  the likelihood ratio process is a key ingredient of the formula {eq}`eq_Bayeslaw103` for
-a Bayesian's posteior probabilty that nature has drawn history $w^t$ as repeated draws from density
-$g$.
+a Bayesian's posterior probabilty that nature has drawn history $w^t$ as repeated draws from density
+$f$.
+
+
+## Another timing protocol
+
+Let's study how the posterior probability $\pi_t = {\rm Prob}(q=f|w^{t}) $ behaves when nature generates the
+history $w^t = w_1, w_2, \ldots, w_t$ under a different timing protocol.
+
+Until now we assumed that before time $1$ nature somehow chose to draw $w^t$ as an iid sequence from **either** $f$ **or** $g$.  
+
+Nature's decision about whether to draw from $f$ or $g$ was thus **permanent**. 
+
+We now assume a different timing protocol in which before **each period** $t =1, 2, \ldots$ nature flips an $x$-weighted coin and with probability
+$x \in (0,1)$  draws from $f$ in period $t$ and with probability $1 - x $ draws from $g$.
+
+Under this timing protocol, nature  draws permanently from **neither** $f$ **nor** $g$, so a statistician who thinks that nature is drawing
+i.i.d. draws **permanently** from one of them is mistaken. 
+
+* in truth, nature actually draws **permanently** from an $x$-mixture of $f$ and $g$ -- a distribution that is neither $f$ nor $g$ when
+$x \in (0,1)$
 
 
 
+Thus, the  Bayesian prior $\pi_0$ and the sequence of posterior probabilities described by equation {eq}`eq_Bayeslaw103` should **not** be interpreted as the statistician's opinion about the mixing parameter  $x$ under the alternative timing protocol in which nature draws from an $x$-mixture of $f$ and $g$.  
+
+This is clear when we remember  the definition of $\pi_t$ in equation {eq}`eq:defbayesposterior`, which for convenience we repeat here:
+
+$$
+\pi_{t+1} = {\rm Prob}(q=f|w^{t+1})
+$$ 
+
+
+
+Let's write some Python code to study how $\pi_t$ behaves when nature actually generates data as i.i.d. draws from  neither $f$ nor from $g$
+but instead as i.i.d. draws from an $x$-mixture of two beta distributions.  
+
+```{note}
+This is a situation in which the statistician's model is misspecified, so we should anticipate that a Kullback-Liebler divergence with respect to an $x$-mixture distribution will shape outcomes.
+``` 
+
+We can study how $\pi_t$ would behave for various values of nature's mixing probability $x$.
+
+
+
+First, let's create a function to simulate data under the mixture timing protocol:
+
+```{code-cell} ipython3
+@jit
+def simulate_mixture_path(x_true, T):
+    """
+    Simulate T observations under mixture timing protocol.
+    """
+    w = np.empty(T)
+    for t in range(T):
+        if np.random.rand() < x_true:
+            w[t] = np.random.beta(F_a, F_b)
+        else:
+            w[t] = np.random.beta(G_a, G_b)
+    return w
+```
+
+Let's generate a sequence of observations from this mixture model with a true mixing probability of $x=0.5$.
+
+We will first use this sequence to study how $\pi_t$ behaves.
+
+```{note}
+Later, we can use it to study how a statistician who knows that an $x$-mixture of $f$ and $g$ could construct  maximum likelihood or Bayesian estimators of $x$ along with the free parameters of $f$ and $g$.
+``` 
+
+```{code-cell} ipython3
+x_true = 0.5
+T_mix = 200
+
+# Three different priors with means 0.25, 0.5, 0.75
+prior_params = [(1, 3), (1, 1), (3, 1)]
+prior_means = [a/(a+b) for a, b in prior_params]
+
+# Generate one path of observations from the mixture
+set_seed()
+w_mix = simulate_mixture_path(x_true, T_mix)
+```
+
+### Behavior of $\pi_t$ under wrong model
+
+Let's study how the posterior probability  $\pi_t$ that nature permanently draws from $f$  behaves when data are actually generated by
+an $x$-mixture of $f$ and $g$.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(10, 6))
+T_plot = 200
+
+for i, mean0 in enumerate(prior_means):
+    π_wrong = np.empty(T_plot + 1)
+    π_wrong[0] = mean0
+    
+    # Compute likelihood ratios for the mixture data
+    for t in range(T_plot):
+        l_t = f(w_mix[t]) / g(w_mix[t])
+        π_wrong[t + 1] = update(π_wrong[t], l_t)
+    
+    ax.plot(range(T_plot + 1), π_wrong, 
+            label=fr'$\pi_0 = ${mean0:.2f}', 
+            color=colors[i], linewidth=2)
+
+ax.axhline(y=x_true, color='black', linestyle='--', 
+           label=f'True x = {x_true}', linewidth=2)
+ax.set_xlabel('t')
+ax.set_ylabel(r'$\pi_t$')
+ax.legend()
+plt.show()
+```
+
+Evidently,  $\pi_t$ converges  to 1. 
+
+This indicates that the model concludes that the data is generated by $f$.
+
+Why does this happen? 
+
+Given $x = 0.5$, the data generating process is a mixture of $f$ and $g$: $m(w) = \frac{1}{2}f(w) + \frac{1}{2}g(w)$.
+
+A widely used  measure of "closeness" between two distributions is the Kullback-Leibler (KL) divergence.
+
+
+Let's check the KL divergence of the mixture distribution $m$ from both $f$ and $g$.
+
+```{code-cell} ipython3
+def compute_KL(f, g):
+    """
+    Compute KL divergence KL(f, g)
+    """
+    integrand = lambda w: f(w) * np.log(f(w) / g(w))
+    val, _ = quad(integrand, 1e-5, 1-1e-5)
+    return val
+
+
+def compute_div_m(f, g):
+    """
+    Compute Jensen-Shannon divergence
+    """
+    def m(w):
+        return 0.5 * (f(w) + g(w))
+    
+    return compute_KL(m, f), compute_KL(m, g)
+
+
+KL_f, KL_g = compute_div_m(f, g)
+
+print(f'KL(m, f) = {KL_f:.3f}\nKL(m, g) = {KL_g:.3f}')
+```
+
+Since $KL(m, f) < KL(m, g)$, $f$ is "closer" to the mixture distribution $m$.
+
+Hence by our discussion on KL divergence and likelihood ratio process in 
+{doc}`likelihood_ratio_process`, $log(L_t) \to \infty$ as $t \to \infty$.
+
+Now looking back to the key equation {eq}`eq_Bayeslaw103`. 
+
+Consider the function 
+
+$$
+h(z) = \frac{\pi_0 z}{\pi_0 z + 1 - \pi_0}.
+$$
+
+The limit $\lim_{z \to \infty} h(z)$ is 1.
+
+Hence $\pi_t \to 1$ as $t \to \infty$ for any $\pi_0 \in (0,1)$.
+
+This explains what we observed in the plot above.
+
+
+
+But how can we learn the true mixing parameter $x$? 
+
+This topic is taken up in {doc}`this lecture <mix_model>`.
+
+We also explore this topic in the exrecise below.
+
+```{exercise}
+:label: likelihood_bayes_ex1
+
+
+The true data generating process is a mixture, and one of the  parameters to be learned is the mixing proportion $x$.
+
+A correct Bayesian approach should directly model the uncertainty about $x$ and update beliefs about it as new data arrives. 
+
+Here is the algorithm:
+
+First we specify a prior distribution for $x$ given by $x \sim \text{Beta}(\alpha_0, \beta_0)$ with sexpectation $\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}$.
+
+The likelihood for a single observation $w_t$ is $p(w_t|x) = x f(w_t) + (1-x) g(w_t)$. 
+
+For a sequence $w^t = (w_1, \dots, w_t)$, the likelihood is $p(w^t|x) = \prod_{i=1}^t p(w_i|x)$. 
+
+The posterior distribution is updated using $p(x|w^t) \propto p(w^t|x) p(x)$. 
+
+Recursively, the posterior after $w_t$ is $p(x|w^t) \propto p(w_t|x) p(x|w^{t-1})$. 
+
+Without a conjugate prior, we can approximate the posterior by discretizing $x$ into a grid. 
+
+Your task is to implement this algorithm in Python. 
+
+You can verify your implementation by checking that the posterior mean converges to the true value of $x$
+as $t$ increases.
+```
+
+```{solution-start} likelihood_bayes_ex1
+:class: dropdown
+```
+
+Here is one solution:
+
+```{code-cell} ipython3
+@jit
+def learn_x_bayesian(observations, α0, β0, grid_size=2000):
+    """
+    Sequential Bayesian learning of the mixing probability x
+    using a grid approximation.
+    """
+    w = np.asarray(observations)
+    T = w.size
+
+    x_grid = np.linspace(1e-3, 1 - 1e-3, grid_size)
+
+    # Log prior
+    log_prior = (α0 - 1) * np.log(x_grid) + (β0 - 1) * np.log1p(-x_grid)
+
+    μ_path = np.empty(T + 1)
+    μ_path[0] = α0 / (α0 + β0)
+
+    log_post = log_prior.copy()
+
+    for t in range(T):
+        wt = w[t]
+        # P(w_t | x) = x f(w_t) + (1 - x) g(w_t)
+        like = x_grid * f(wt) + (1 - x_grid) * g(wt)
+        log_post += np.log(like)
+
+        # normalize
+        log_post -= log_post.max()
+        post = np.exp(log_post)
+        post /= post.sum()
+
+        μ_path[t + 1] = np.sum(x_grid * post)
+
+    return μ_path
+
+x_posterior_means = [learn_x_bayesian(w_mix, α0, β0) for α0, β0 in prior_params]
+```
+
+Let's visualize how the posterior mean of $x$ evolves over time, starting from three different prior beliefs.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(10, 6))
+
+for i, (x_means, mean0) in enumerate(zip(x_posterior_means, prior_means)):
+    ax.plot(range(T_mix + 1), x_means, 
+            label=fr'Prior mean = ${mean0:.2f}$', 
+            color=colors[i], linewidth=2)
+
+ax.axhline(y=x_true, color='black', linestyle='--', 
+           label=f'True x = {x_true}', linewidth=2)
+ax.set_xlabel('$t$')
+ax.set_ylabel('Posterior mean of $x$')
+ax.legend()
+plt.show()
+```
+
+The plot shows that regardless of the initial prior belief, all three posterior means eventually converge towards the true value of $x=0.5$.
+
+Next, let's look at multiple simulations with a longer time horizon, all starting from a uniform prior.
+
+```{code-cell} ipython3
+set_seed()
+n_paths = 20
+T_long = 10_000
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+for j in range(n_paths):
+    w_path = simulate_mixture_path(x_true, T_long)
+    x_means = learn_x_bayesian(w_path, 1, 1)  # Uniform prior
+    ax.plot(range(T_long + 1), x_means, alpha=0.5, linewidth=1)
+
+ax.axhline(y=x_true, color='red', linestyle='--', 
+            label=f'True x = {x_true}', linewidth=2)
+ax.set_ylabel('Posterior mean of $x$')
+ax.set_xlabel('$t$')
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+We can see that the posterior mean of $x$ converges to the true value $x=0.5$.
+
+```{solution-end}
+```
 
 ## Behavior of  posterior probability $\{\pi_t\}$  under the subjective probability distribution
-
 
 We'll end this lecture by briefly studying what our Baysian learner expects to learn under the
 subjective beliefs $\pi_t$ cranked out by Bayes' law.
@@ -431,7 +762,7 @@ $$
 Let $a \in \{ f, g\} $ be an index that indicates whether  nature chose permanently to draw from distribution $f$ or from distribution $g$.
 
 After drawing $w_0$, the worker uses Bayes' law to deduce that
-the posterior  probability $\pi_0 = {\rm Prob}{a = f | w_0} $
+the posterior  probability $\pi_0 = {\rm Prob} ({a = f | w_0}) $
 that the density is $f(w)$ is
 
 $$
@@ -629,16 +960,12 @@ def create_table(π0s, N=10000, T=500, decimals=2):
     table.index = π0s
     return table
 
-
-
 # simulate
 T = 200
 π0 = .5
 
 π_path, w_path = martingale_simulate(π0=π0, T=T, N=10000)
 ```
-
-
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -649,8 +976,6 @@ ax.set_xlabel('$t$')
 ax.set_ylabel(r'$\pi_t$')
 plt.show()
 ```
-
-
 
 The above graph indicates that
 
@@ -663,8 +988,6 @@ The above graph indicates that
 * none of the paths converge to a limit point not equal to $0$ or $1$
 
 Convergence actually occurs pretty fast, as the following graph of the cross-ensemble distribution of $\pi_t$ for various small $t$'s indicates.
-
-
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -710,9 +1033,6 @@ ax.legend(loc='upper right')
 plt.show()
 ```
 
-
-
-
 For the preceding ensemble that assumed $\pi_0 = .5$, the following graph shows two  paths of
 $w_t$'s and the $\pi_t$ sequences that gave rise to them.
 
@@ -720,8 +1040,6 @@ Notice that one of the paths involves systematically higher $w_t$'s, outcomes th
 
 The luck of the draw early in a simulation push the subjective distribution to draw from
 $F$ more frequently along a sample path, and this pushes $\pi_t$ toward $0$.
-
-
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -757,6 +1075,7 @@ The third column reports the fraction of $N = 10000$ simulations for which $\pi_
 table = create_table(list(np.linspace(0,1,11)), N=10000, T=500)
 table
 ```
+
 The fraction of simulations for which $\pi_{t}$  had converged to $1$ is indeed always  close  to $\pi_{-1}$, as anticipated.
 
 
@@ -811,7 +1130,166 @@ Notice how the conditional variance approaches $0$ for $\pi_{t-1}$ near  either 
 
 The conditional variance is nearly zero only when the agent  is almost sure that $w_t$ is drawn from $F$,  or is almost sure it is drawn from $G$.
 
-## Sequels
+## Related Lectures
 
 This lecture has been devoted to building some useful infrastructure that will help us understand inferences that are the foundations of
 results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
+
+```{exercise}
+:label: likelihood_bayes_ex2
+
+In the [first exercise](likelihood_bayes_ex1), we implemented a Bayesian learning algorithm to estimate the mixing parameter $x$ in a mixture model using a grid approximation method.
+
+In this exercise, we will explore sequential Bayesian updating using NumPyro.
+
+Please follow these steps:
+
+1. Generate a dataset from a mixture model with known mixing parameter $x_{true} = 0.5$.
+2. Process the data in chunks of 100 observations, updating the posterior sequentially.
+3. For each chunk, use the posterior from the previous chunk as the prior for the next chunk (using moment matching to fit a Beta distribution).
+4. Create a visualization showing how the posterior distribution evolves, using gradually darker shades to represent later time periods.
+
+In the exercise, set $\alpha_0 = 1$ and $\beta_0 = 2$.
+```
+
+```{solution-start} likelihood_bayes_ex2
+:class: dropdown
+```
+
+First, let's install and import the necessary packages:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install numpyro jax
+```
+
+```{code-cell} ipython3
+import jax
+import jax.numpy as jnp
+import numpyro
+import numpyro.distributions as dist
+from numpyro.infer import NUTS, MCMC
+import seaborn as sns
+```
+
+Define the mixture model and helper functions that helps us 
+to fit a Beta distribution to the posterior and obtain the parameter for the next chunk
+
+```{code-cell} ipython3
+def mixture_model(w, α0=1.0, β0=1.0):
+    x = numpyro.sample("x", dist.Beta(α0, β0))
+    f_dist = dist.Beta(F_a, F_b)
+    g_dist = dist.Beta(G_a, G_b)
+    mix = dist.Mixture(
+        dist.Categorical(probs=jnp.array([x, 1 - x])),
+        [f_dist, g_dist]
+    )
+    with numpyro.plate("data", w.shape[0]):
+        numpyro.sample("w", mix, obs=w)
+
+def β_moment_match(samples, eps=1e-12):
+    m = float(samples.mean())
+    v = float(samples.var())
+    v = max(v, eps)
+    t = m * (1 - m) / v - 1.0
+    α = max(m * t, eps)
+    β = max((1 - m) * t, eps)
+    return α, β
+```
+
+Now we implement sequential Bayesian updating
+
+```{code-cell} ipython3
+def sequential_update(w_all, α0=1.0, β0=1.0, 
+                     chunk_size=100, 
+                     num_warmup=1000, 
+                     num_samples=2000, 
+                     seed=0):
+    n = len(w_all)
+
+    # Create chunks
+    chunks = [slice(i, min(i + chunk_size, n)) 
+                    for i in range(0, n, chunk_size)]
+    α, β = α0, β0
+    
+    keys = jax.random.split(
+        jax.random.PRNGKey(seed), len(chunks))
+    means = [α / (α + β)]
+    posts = []
+    
+    # Run MCMC for each chunk
+    for i, sl in enumerate(chunks):
+        kernel = NUTS(mixture_model)
+        mcmc = MCMC(kernel, 
+                    num_warmup=num_warmup, 
+                    num_samples=num_samples)
+        mcmc.run(keys[i], w_all[sl], α, β)
+        xs = mcmc.get_samples()["x"]
+        
+        posts.append(xs)
+
+        # Posterior becomes prior for next chunk
+        α, β = β_moment_match(xs)
+        means.append(xs.mean())
+    
+    return np.array(means), posts, chunks
+```
+
+Generate data and run sequential updates:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+x_true = 0.5
+T_total = 2000
+
+set_seed()
+w_mix = simulate_mixture_path(x_true, T_total)
+
+means, posts, chunks = sequential_update(
+    w_mix, α0=1.0, β0=2.0, chunk_size=200,
+    num_warmup=2000, num_samples=1000, seed=123)
+```
+
+Create visualization with gradually darker lines:
+
+```{code-cell} ipython3
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
+
+# Plot posterior means over time
+n_seen = np.cumsum([0] + [c.stop - c.start for c in chunks])
+
+# Posterior mean trajectory
+ax1.plot(n_seen, means, 'o-', 
+    color='darkblue', label='Posterior mean of $x$')
+ax1.axhline(x_true, ls="--", 
+    color="red", alpha=0.7, label=f'True $x$ = {x_true}')
+ax1.set_xlabel('$t$')
+ax1.set_ylabel('Posterior mean of $x$')
+ax1.legend()    
+
+# Posterior densities at each chunk
+n_chunks = len(posts)
+colors = plt.cm.Blues(np.linspace(0.01, 0.99, n_chunks))
+
+for i, (xs, color) in enumerate(zip(posts, colors)):
+    sns.kdeplot(xs, color=color, ax=ax2,
+                alpha=0.7, label=f'n={chunks[i].stop}')
+
+ax2.axvline(x_true, ls="--", color="red", 
+            alpha=0.7, label=f'True $x$ = {x_true}')
+ax2.set_xlabel('$x$')
+ax2.set_ylabel('density')
+ax2.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+
+plt.tight_layout()
+plt.show()
+```
+
+The left panel shows how the posterior mean converges to the true value as more data is observed.
+
+The right panel shows that the distribution of $x$ becomes more concentrated around the true value with more observations.
+
+```{solution-end}
+```

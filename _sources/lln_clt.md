@@ -262,7 +262,7 @@ for ax in axes:
 
     # Plot
     ax.plot(list(range(n)), data, 'o', color='grey', alpha=0.5)
-    axlabel = '$\\bar{X}_n$ for $X_i \sim$' + name
+    axlabel = r'$\bar{X}_n$ for $X_i \sim$' + name
     ax.plot(list(range(n)), sample_mean, 'g-', lw=3, alpha=0.6, label=axlabel)
     m = distribution.mean()
     ax.plot(list(range(n)), [m] * n, 'k--', lw=1.5, label=r'$\mu$')
@@ -699,7 +699,7 @@ xmax = -xmin
 ax.set_xlim(xmin, xmax)
 ax.hist(error_obs, bins=60, alpha=0.5, density=True)
 xgrid = np.linspace(xmin, xmax, 200)
-lb = "$N(0, g'(\mu)^2  \sigma^2)$"
+lb = r"$N(0, g'(\mu)^2  \sigma^2)$"
 ax.plot(xgrid, norm.pdf(xgrid, scale=asymptotic_sd), 'k-', lw=2, label=lb)
 ax.legend()
 plt.show()
