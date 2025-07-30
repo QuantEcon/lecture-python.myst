@@ -259,14 +259,13 @@
 Friedman and W. Allen Wallis during World War II when they were analysts at the U.S. Government’s  Statistical Research Group at Columbia University.</p>
 <p>This problem led Abraham Wald <span id="id1">[<a class="reference internal" href="zreferences.html#id116" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span> to formulate <strong>sequential analysis</strong>,
 an approach to statistical decision problems that is  intimately related to dynamic programming.</p>
-<p>In the spirit of <a class="reference internal" href="prob_meaning.html"><span class="doc">this earlier lecture</span></a>, the present lecture and its <a class="reference internal" href="wald_friedman_2.html"><span class="doc">sequel</span></a> approach the problem from two distinct points of view.</p>
+<p>In the spirit of <a class="reference internal" href="prob_meaning.html"><span class="doc">this earlier lecture</span></a>, the present lecture and its <a class="reference internal" href="wald_friedman_2.html"><span class="doc">sequel</span></a> approach the problem from two distinct points of view, one frequentist, the other Bayesian.</p>
 <p>In this lecture, we describe  Wald’s formulation of the problem from the perspective of a  statistician
 working within the Neyman-Pearson tradition of a frequentist statistician who thinks about testing  hypotheses and consequently  use  laws of large numbers to  investigate limiting properties of particular statistics under a given  <strong>hypothesis</strong>, i.e., a vector of <strong>parameters</strong> that pins down a  particular member of a manifold of statistical models that interest the statistician.</p>
 <ul class="simple">
 <li><p>From <a class="reference internal" href="prob_meaning.html"><span class="doc">this earlier lecture on frequentist and bayesian statistics</span></a>, please remember that a  frequentist statistician routinely calculates functions of sequences of random variables, conditioning on a vector of parameters.</p></li>
 </ul>
-<p>In <a class="reference internal" href="wald_friedman_2.html"><span class="doc">this sequel</span></a> we’ll discuss another formulation that adopts   the perspective of a <strong>Bayesian statistician</strong> who views
-parameter vectors as vectors of random variables that are jointly distributed with  observable variables that he is concerned about.</p>
+<p>In <a class="reference internal" href="wald_friedman_2.html"><span class="doc">this sequel</span></a> we’ll discuss another formulation that adopts   the perspective of a <strong>Bayesian statistician</strong> who views parameters as vectors of random variables that are jointly distributed with  observable variables that he is concerned about.</p>
 <p>Because we are taking a frequentist perspective that is concerned about relative frequencies conditioned on alternative parameter values, i.e.,
 alternative <strong>hypotheses</strong>, key ideas in this lecture</p>
 <ul class="simple">
@@ -276,12 +275,12 @@ alternative <strong>hypotheses</strong>, key ideas in this lecture</p>
 <li><p>a type II error occures when you accept a null hypothesis that is false</p></li>
 </ul>
 </li>
-<li><p>Abraham Wald’s <strong>sequential probability ratio test</strong></p></li>
 <li><p>The <strong>power</strong> of a frequentist statistical test</p></li>
 <li><p>The <strong>size</strong> of a frequentist statistical test</p></li>
 <li><p>The <strong>critical region</strong> of a statistical test</p></li>
 <li><p>A <strong>uniformly most powerful test</strong></p></li>
 <li><p>The role of a Law of Large Numbers (LLN) in interpreting <strong>power</strong> and <strong>size</strong> of a frequentist statistical test</p></li>
+<li><p>Abraham Wald’s <strong>sequential probability ratio test</strong></p></li>
 </ul>
 <p>We’ll begin with some imports:</p>
 <div class="cell docutils container">
@@ -343,7 +342,7 @@ because it is obviously superior beyond what was hoped for
 <span class="math notranslate nohighlight">\(\ldots\)</span>.</p>
 </div></blockquote>
 <p>Friedman and Wallis worked on  the problem but, after realizing that
-they were not able to solve it,  they described the problem to  Abraham Wald.</p>
+they were not able to solve it,  they told Abraham Wald about the problem.</p>
 <p>That started Wald on the path that led him  to <em>Sequential Analysis</em> <span id="id5">[<a class="reference internal" href="zreferences.html#id116" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span>.</p>
 </section>
 <section id="neyman-pearson-formulation">
@@ -451,7 +450,7 @@ region.</p>
 <div><p>one critical region <span class="math notranslate nohighlight">\(W\)</span> is more desirable than another if it
 has smaller values of <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>. Although
 either <span class="math notranslate nohighlight">\(\alpha\)</span> or <span class="math notranslate nohighlight">\(\beta\)</span> can be made arbitrarily small
-by a proper choice of the critical region <span class="math notranslate nohighlight">\(W\)</span>, it is possible
+by a proper choice of the critical region <span class="math notranslate nohighlight">\(W\)</span>, it is impossible
 to make both <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> arbitrarily small for a
 fixed value of <span class="math notranslate nohighlight">\(n\)</span>, i.e., a fixed sample size.</p>
 </div></blockquote>
@@ -542,9 +541,8 @@ random variables is independently and identically distributed (IID).</p>
 <p>Conditional on knowing that successive observations are drawn from distribution <span class="math notranslate nohighlight">\(f_1\)</span>, the sequence of
 random variables is also independently and identically distributed (IID).</p>
 <p>But the observer does not know which of the two distributions generated the sequence.</p>
-<p>For reasons explained in  <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a>, this means that the sequence is not
-IID.</p>
-<p>The observer has something to learn, namely, whether the observations are drawn from  <span class="math notranslate nohighlight">\(f_0\)</span> or from <span class="math notranslate nohighlight">\(f_1\)</span>.</p>
+<p>For reasons explained in  <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a>, this means that the observer thinks that  sequence is not IID.</p>
+<p>Consequently, the observer has something to learn, namely, whether the observations are drawn from  <span class="math notranslate nohighlight">\(f_0\)</span> or from <span class="math notranslate nohighlight">\(f_1\)</span>.</p>
 <p>The decision maker   wants  to decide which of the  two distributions is generating outcomes.</p>
 <section id="type-i-and-type-ii-errors">
 <h3><span class="section-number">23.4.1. </span>Type I and Type II Errors<a class="headerlink" href="#type-i-and-type-ii-errors" title="Permalink to this heading">#</a></h3>
@@ -562,19 +560,19 @@ then</p>
 </section>
 <section id="choices">
 <h3><span class="section-number">23.4.2. </span>Choices<a class="headerlink" href="#choices" title="Permalink to this heading">#</a></h3>
-<p>After observing <span class="math notranslate nohighlight">\(z_k, z_{k-1}, \ldots, z_0\)</span>, the decision-maker
+<p>After observing <span class="math notranslate nohighlight">\(z_k, z_{k-1}, \ldots, z_1\)</span>, the decision-maker
 chooses among three distinct actions:</p>
 <ul class="simple">
 <li><p>He decides that <span class="math notranslate nohighlight">\(f = f_0\)</span> and draws no more <span class="math notranslate nohighlight">\(z\)</span>’s</p></li>
 <li><p>He decides that <span class="math notranslate nohighlight">\(f = f_1\)</span> and draws no more <span class="math notranslate nohighlight">\(z\)</span>’s</p></li>
-<li><p>He postpones deciding now and instead chooses to draw a
+<li><p>He postpones deciding  and instead chooses to draw
 <span class="math notranslate nohighlight">\(z_{k+1}\)</span></p></li>
 </ul>
 <p>Wald proceeds as follows.</p>
 <p>He defines</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(p_{0m} = f_0(z_0) \cdots f_0(z_m)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(p_{1m} = f_1(z_0) \cdots f_1(z_m)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_{0m} = f_0(z_1) \cdots f_0(z_m)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_{1m} = f_1(z_1) \cdots f_1(z_m)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(L_{m} = \frac{p_{1m}}{p_{0m}}\)</span></p></li>
 </ul>
 <p>Here <span class="math notranslate nohighlight">\(\{L_m\}_{m=0}^\infty\)</span> is a <strong>likelihood ratio process</strong>.</p>
@@ -675,11 +673,11 @@ for each distribution, compute the empirical type I error <span class="math notr
 </ol>
 <div class="math notranslate nohighlight">
 \[
-\hat{\alpha} = \frac{\text{\# of times reject } H_0 \text{ when } f_0 \text{ is true}}{\text{\# of replications with } f_0 \text{ true}}
+\hat{\alpha} = \frac{\text{$\#$ of times reject } H_0 \text{ when } f_0 \text{ is true}}{\text{$\#$ of replications with } f_0 \text{ true}}
 \]</div>
 <div class="math notranslate nohighlight">
 \[
-\hat{\beta} = \frac{\text{\# of times accept } H_0 \text{ when } f_1 \text{ is true}}{\text{\# of replications with } f_1 \text{ true}}
+\hat{\beta} = \frac{\text{$\#$ of times accept } H_0 \text{ when } f_1 \text{ is true}}{\text{$\#$ of replications with } f_1 \text{ true}}
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1395,7 +1393,7 @@ measured by Jensen-Shannon distance.</p>
 <li><p>The concept of <strong>exchangeability</strong>, which underlies much of statistical learning, is explored in depth in our <a class="reference internal" href="exchangeable.html"><span class="doc">lecture on exchangeable random variables</span></a>.</p></li>
 <li><p>For a deeper understanding of likelihood ratio processes and their role in frequentist and Bayesian statistical theories, see <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>.</p></li>
 <li><p>Building on that foundation, <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a> examines the role of likelihood ratio processes in <strong>Bayesian learning</strong>.</p></li>
-<li><p>Finally, <a class="reference internal" href="navy_captain.html"><span class="doc">this later lecture</span></a> revisits the subject discussed here and examines whether the frequentist decision rule that the Navy ordered the captain to use would perform better or worse than the sequential decision rule we’ve developed.</p></li>
+<li><p>Finally, <a class="reference internal" href="navy_captain.html"><span class="doc">this later lecture</span></a> revisits the subject discussed here and examines whether the frequentist decision rule that the Navy ordered the captain to use would perform better or worse than Abraham Wald’s sequential decision rule.</p></li>
 </ul>
 </section>
 </section>

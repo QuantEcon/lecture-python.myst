@@ -169,12 +169,15 @@
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">26.1. Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-setting">26.2. The Setting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-process-and-bayes-law">26.3. Likelihood Ratio Process and Bayes’ Law</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-process-and-bayes-law">26.3. Likelihood Ratio Process and Bayes’ Law</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-recursive-formula">26.3.1. A recursive formula</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-timing-protocol">26.4. Another timing protocol</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#behavior-of-pi-t-under-wrong-model">26.4.1. Behavior of <span class="math notranslate nohighlight">\(\pi_t\)</span> under wrong model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#behavior-of-posterior-probability-pi-t-under-the-subjective-probability-distribution">26.5. Behavior of  posterior probability <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>  under the subjective probability distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#behavior-of-posterior-probability-pi-t-under-subjective-probability-distribution">26.5. Behavior of  Posterior Probability <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>  Under  Subjective Probability Distribution</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mechanical-details-again">26.5.1. Mechanical details again</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-simulations">26.5.2. Some simulations</a></li>
 </ul>
@@ -403,14 +406,57 @@ probability distribution, for example, a sequence of  IID draws from <span class
 \]</div>
 <p>The likelihood ratio process is a principal actor in the formula that governs the evolution
 of the posterior probability <span class="math notranslate nohighlight">\(\pi_t\)</span>, an instance of <strong>Bayes’ Law</strong>.</p>
-<p>Bayes’ law is just the following application of the standardformula for conditional probability:</p>
+<p>Let’s derive a couple of formulas for <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span>, one in terms of likelihood ratio <span class="math notranslate nohighlight">\(l(w_t)\)</span>, the other in terms of
+<span class="math notranslate nohighlight">\(L(w^t)\)</span>.</p>
+<p>To begin, we use the notational conventions</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(f(w^{t+1}) \equiv f(w_1) f(w_2) \cdots f(w_{t+1})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(g(w^{t+1}) \equiv g(w_1) g(w_2) \cdots g(w_{t+1})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\pi_0 ={\rm Prob}(q=f |\emptyset)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\pi_t = {\rm Prob}(q=f |w^t)\)</span></p></li>
+</ul>
+<p>Here the symbol <span class="math notranslate nohighlight">\(\emptyset\)</span> means “empty set” or “no data”.</p>
+<p>With no data in hand, our Bayesian statistician thinks that the probability density of the sequence <span class="math notranslate nohighlight">\(w^{t+1}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+{\rm Prob}(w^{t+1} |\emptyset) = \pi_0 f(w^{t+1})+ (1 -  \pi_0)
+\]</div>
+<p>Probability laws connecting joint probability distributions  and conditional probability distributions imply that</p>
+<div class="math notranslate nohighlight">
+\[
+{\rm Prob}(q=f |w^{t+1})  {\rm Prob}(w^{t+1}  |\emptyset) = {\rm Prob}(w^{t+1} |q=f) {\rm Prob}(q=f  | \emptyset)
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{t+1} \left[\pi_0 f(w^{t+1}) + (1- \pi_0) g(w^{t+1})\right] = f(w^{t+1}) \pi_0 
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{t+1}  = \frac{ f(w^{t+1}) \pi_0 }{\pi_0 f(w^{t+1}) + (1- \pi_0) g(w^{t+1})}
+\]</div>
+<p>Dividing both  the numerator and the denominator on the right side of the above  equation  by <span class="math notranslate nohighlight">\(g(w^{t+1})\)</span> implies</p>
+<div class="math notranslate nohighlight" id="equation-eq-bayeslaw1033">
+<span class="eqno">(26.2)<a class="headerlink" href="#equation-eq-bayeslaw1033" title="Permalink to this equation">#</a></span>\[\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} .\]</div>
+<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\(\pi_0\)</span> after seeing
+the batch of data <span class="math notranslate nohighlight">\(\left\{ w_{i}\right\} _{i=1}^{t+1}\)</span>.</p>
+<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a> shows the key role that the likelihood ratio process  <span class="math notranslate nohighlight">\(L\left(w^{t+1}\right)\)</span> plays in determining
+the posterior probability <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span>.</p>
+<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a> is the foundation for the insight that, because of how the likelihood ratio process behaves
+as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>, the likelihood ratio process dominates the initial prior <span class="math notranslate nohighlight">\(\pi_0\)</span> in determining the
+limiting behavior of <span class="math notranslate nohighlight">\(\pi_t\)</span>.</p>
+<section id="a-recursive-formula">
+<h3><span class="section-number">26.3.1. </span>A recursive formula<a class="headerlink" href="#a-recursive-formula" title="Permalink to this heading">#</a></h3>
+<p>We can use a similar  line of argument to get a recursive version of formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a>.</p>
+<p>The laws of probability imply</p>
 <div class="math notranslate nohighlight">
 \[
 {\rm Prob}(q=f|w^{t+1}) = \frac { {\rm Prob}(q=f|w^{t} ) f(w_{t+1})}{ {\rm Prob}(q=f|w^{t} ) f(w_{t+1}) + (1 - {\rm Prob}(q=f|w^{t} )) g(w_{t+1})}
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-bayes150">
-<span class="eqno">(26.2)<a class="headerlink" href="#equation-eq-bayes150" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(26.3)<a class="headerlink" href="#equation-eq-bayes150" title="Permalink to this equation">#</a></span>\[
 \pi_{t+1} = \frac { \pi_t f(w_{t+1})}{ \pi_t f(w_{t+1}) + (1 - \pi_t) g(w_{t+1})}
 \]</div>
 <p>Evidently,  the above equation asserts that</p>
@@ -418,13 +464,14 @@ of the posterior probability <span class="math notranslate nohighlight">\(\pi_t\
 \[
 {\rm Prob}(q=f|w^{t+1}) = \frac{{\rm Prob}(q=f|w^{t}) f(w_{t+1} )} {{\rm Prob}(w_{t+1})}
 \]</div>
-<p>Dividing both  the numerator and the denominator on the right side of the  equation <a class="reference internal" href="#equation-eq-bayes150">(26.2)</a> by <span class="math notranslate nohighlight">\(g(w_{t+1})\)</span> implies the recursion</p>
+<p>Dividing both  the numerator and the denominator on the right side of the  equation <a class="reference internal" href="#equation-eq-bayes150">(26.3)</a> by <span class="math notranslate nohighlight">\(g(w_{t+1})\)</span> implies the recursion</p>
 <div class="math notranslate nohighlight" id="equation-eq-recur1">
-<span class="eqno">(26.3)<a class="headerlink" href="#equation-eq-recur1" title="Permalink to this equation">#</a></span>\[\pi_{t+1}=\frac{\pi_{t} l_t(w_{t+1})}{\pi_{t} l_t(w_t)+1-\pi_{t}}\]</div>
+<span class="eqno">(26.4)<a class="headerlink" href="#equation-eq-recur1" title="Permalink to this equation">#</a></span>\[\pi_{t+1}=\frac{\pi_{t} l_t(w_{t+1})}{\pi_{t} l_t(w_t)+1-\pi_{t}}\]</div>
 <p>with <span class="math notranslate nohighlight">\(\pi_{0}\)</span> being a Bayesian prior probability that <span class="math notranslate nohighlight">\(q = f\)</span>,
 i.e., a personal or subjective belief about <span class="math notranslate nohighlight">\(q\)</span> based on our having seen no data.</p>
+<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a>  can be deduced by iterating on equation <a class="reference internal" href="#equation-eq-recur1">(26.4)</a>.</p>
 <p>Below we define a Python function that updates belief <span class="math notranslate nohighlight">\(\pi\)</span> using
-likelihood ratio <span class="math notranslate nohighlight">\(\ell\)</span> according to  recursion <a class="reference internal" href="#equation-eq-recur1">(26.3)</a></p>
+likelihood ratio <span class="math notranslate nohighlight">\(\ell\)</span> according to  recursion <a class="reference internal" href="#equation-eq-recur1">(26.4)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
@@ -439,68 +486,8 @@ likelihood ratio <span class="math notranslate nohighlight">\(\ell\)</span> acco
 </div>
 </div>
 </div>
-<p>Formula <a class="reference internal" href="#equation-eq-recur1">(26.3)</a> can be generalized  by iterating on it and thereby deriving an
-expression for  the time <span class="math notranslate nohighlight">\(t\)</span> posterior <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> as a function
-of the time <span class="math notranslate nohighlight">\(0\)</span> prior <span class="math notranslate nohighlight">\(\pi_0\)</span> and the likelihood ratio process
-<span class="math notranslate nohighlight">\(L(w^{t+1})\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>To begin, notice that the updating rule</p>
-<div class="math notranslate nohighlight">
-\[
-\pi_{t+1}
-=\frac{\pi_{t}\ell \left(w_{t+1}\right)}
-{\pi_{t}\ell \left(w_{t+1}\right)+\left(1-\pi_{t}\right)}
-\]</div>
-<p>implies</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-\frac{1}{\pi_{t+1}}
-    &amp;=\frac{\pi_{t}\ell \left(w_{t+1}\right)
-        +\left(1-\pi_{t}\right)}{\pi_{t}\ell \left(w_{t+1}\right)} \\
-    &amp;=1-\frac{1}{\ell \left(w_{t+1}\right)}
-        +\frac{1}{\ell \left(w_{t+1}\right)}\frac{1}{\pi_{t}}.
-\end{aligned}
-\end{split}\]</div>
-<div class="math notranslate nohighlight">
-\[
-\Rightarrow
-\frac{1}{\pi_{t+1}}-1
-=\frac{1}{\ell \left(w_{t+1}\right)}\left(\frac{1}{\pi_{t}}-1\right).
-\]</div>
-<p>Therefore</p>
-<div class="math notranslate nohighlight">
-\[
-\begin{aligned}
-    \frac{1}{\pi_{t+1}}-1
-    =\frac{1}{\prod_{i=1}^{t+1}\ell \left(w_{i}\right)}
-        \left(\frac{1}{\pi_{0}}-1\right)
-    =\frac{1}{L\left(w^{t+1}\right)}\left(\frac{1}{\pi_{0}}-1\right).
-\end{aligned}
-\]</div>
-<p>Since <span class="math notranslate nohighlight">\(\pi_{0}\in\left(0,1\right)\)</span> and
-<span class="math notranslate nohighlight">\(L\left(w^{t+1}\right)&gt;0\)</span>, we can verify that
-<span class="math notranslate nohighlight">\(\pi_{t+1}\in\left(0,1\right)\)</span>.</p>
-<p>After rearranging the preceding equation, we can express <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> as a
-function of  <span class="math notranslate nohighlight">\(L\left(w^{t+1}\right)\)</span>, the  likelihood ratio process at <span class="math notranslate nohighlight">\(t+1\)</span>,
-and the initial prior <span class="math notranslate nohighlight">\(\pi_{0}\)</span></p>
-<div class="math notranslate nohighlight" id="equation-eq-bayeslaw103">
-<span class="eqno">(26.4)<a class="headerlink" href="#equation-eq-bayeslaw103" title="Permalink to this equation">#</a></span>\[\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} .\]</div>
-<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw103">(26.4)</a> generalizes formula <a class="reference internal" href="#equation-eq-recur1">(26.3)</a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Fomula <a class="reference internal" href="#equation-eq-bayeslaw103">(26.4)</a> can also be derived by starting from the formula for  conditional probability</p>
-<div class="math notranslate nohighlight">
-\[
-\pi_{t+1} \equiv {\rm Prob}(q=f|w^{t+1}) = \frac { \pi_0 f(w^{t+1})}{ \pi_0 f(w^{t+1}) + (1 - \pi_0) g(w^{t+1})}
-\]</div>
-<p>and then dividing the numerator and the denominator on the right side by <span class="math notranslate nohighlight">\(g(w^{t+1})\)</span>.</p>
-</div>
-<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw103">(26.4)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\(\pi_0\)</span> after seeing
-the batch of data <span class="math notranslate nohighlight">\(\left\{ w_{i}\right\} _{i=1}^{t+1}\)</span>.</p>
-<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw103">(26.4)</a> shows the key role that the likelihood ratio process  <span class="math notranslate nohighlight">\(L\left(w^{t+1}\right)\)</span> plays in determining
-the posterior probability <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span>.</p>
-<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw103">(26.4)</a> is the foundation for the insight that, because of how the likelihood ratio process behaves
-as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>, the likelihood ratio process dominates the initial prior <span class="math notranslate nohighlight">\(\pi_0\)</span> in determining the
+<p>As mentioned above, formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a> shows the key role that the likelihood ratio process  <span class="math notranslate nohighlight">\(L\left(w^{t+1}\right)\)</span> plays in determining the posterior probability <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span>.</p>
+<p>As <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>, the likelihood ratio process dominates the initial prior <span class="math notranslate nohighlight">\(\pi_0\)</span> in determining the
 limiting behavior of <span class="math notranslate nohighlight">\(\pi_t\)</span>.</p>
 <p>To illustrate this insight, below we will plot  graphs showing <strong>one</strong> simulated
 path of the  likelihood ratio process <span class="math notranslate nohighlight">\(L_t\)</span> along with two paths of
@@ -617,14 +604,15 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 </div>
 </div>
 </div>
-<p>We thus conclude that  the likelihood ratio process is a key ingredient of the formula <a class="reference internal" href="#equation-eq-bayeslaw103">(26.4)</a> for
+<p>We thus conclude that  the likelihood ratio process is a key ingredient of the formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a> for
 a Bayesian’s posterior probabilty that nature has drawn history <span class="math notranslate nohighlight">\(w^t\)</span> as repeated draws from density
 <span class="math notranslate nohighlight">\(f\)</span>.</p>
+</section>
 </section>
 <section id="another-timing-protocol">
 <h2><span class="section-number">26.4. </span>Another timing protocol<a class="headerlink" href="#another-timing-protocol" title="Permalink to this heading">#</a></h2>
 <p>Let’s study how the posterior probability <span class="math notranslate nohighlight">\(\pi_t = {\rm Prob}(q=f|w^{t}) \)</span> behaves when nature generates the
-history <span class="math notranslate nohighlight">\(w^t = w_1, w_2, \ldots, w_t\)</span> under a different timing protocol.</p>
+history <span class="math notranslate nohighlight">\(w^t = \{w_1, w_2, \dots, w_t\}\)</span> under a different timing protocol.</p>
 <p>Until now we assumed that before time <span class="math notranslate nohighlight">\(1\)</span> nature somehow chose to draw <span class="math notranslate nohighlight">\(w^t\)</span> as an iid sequence from <strong>either</strong> <span class="math notranslate nohighlight">\(f\)</span> <strong>or</strong> <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>Nature’s decision about whether to draw from <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> was thus <strong>permanent</strong>.</p>
 <p>We now assume a different timing protocol in which before <strong>each period</strong> <span class="math notranslate nohighlight">\(t =1, 2, \ldots\)</span> nature flips an <span class="math notranslate nohighlight">\(x\)</span>-weighted coin and with probability
@@ -635,7 +623,7 @@ i.i.d. draws <strong>permanently</strong> from one of them is mistaken.</p>
 <li><p>in truth, nature actually draws <strong>permanently</strong> from an <span class="math notranslate nohighlight">\(x\)</span>-mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> – a distribution that is neither <span class="math notranslate nohighlight">\(f\)</span> nor <span class="math notranslate nohighlight">\(g\)</span> when
 <span class="math notranslate nohighlight">\(x \in (0,1)\)</span></p></li>
 </ul>
-<p>Thus, the  Bayesian prior <span class="math notranslate nohighlight">\(\pi_0\)</span> and the sequence of posterior probabilities described by equation <a class="reference internal" href="#equation-eq-bayeslaw103">(26.4)</a> should <strong>not</strong> be interpreted as the statistician’s opinion about the mixing parameter  <span class="math notranslate nohighlight">\(x\)</span> under the alternative timing protocol in which nature draws from an <span class="math notranslate nohighlight">\(x\)</span>-mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>Thus, the  Bayesian prior <span class="math notranslate nohighlight">\(\pi_0\)</span> and the sequence of posterior probabilities described by equation <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a> should <strong>not</strong> be interpreted as the statistician’s opinion about the mixing parameter  <span class="math notranslate nohighlight">\(x\)</span> under the alternative timing protocol in which nature draws from an <span class="math notranslate nohighlight">\(x\)</span>-mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>This is clear when we remember  the definition of <span class="math notranslate nohighlight">\(\pi_t\)</span> in equation <a class="reference internal" href="#equation-eq-defbayesposterior">(26.1)</a>, which for convenience we repeat here:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -728,8 +716,7 @@ an <span class="math notranslate nohighlight">\(x\)</span>-mixture of <span clas
 <p>This indicates that the model concludes that the data is generated by <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <p>Why does this happen?</p>
 <p>Given <span class="math notranslate nohighlight">\(x = 0.5\)</span>, the data generating process is a mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>: <span class="math notranslate nohighlight">\(m(w) = \frac{1}{2}f(w) + \frac{1}{2}g(w)\)</span>.</p>
-<p>A widely used  measure of “closeness” between two distributions is the Kullback-Leibler (KL) divergence.</p>
-<p>Let’s check the KL divergence of the mixture distribution <span class="math notranslate nohighlight">\(m\)</span> from both <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>Let’s check the <a class="reference internal" href="likelihood_ratio_process.html#rel-entropy"><span class="std std-ref">KL divergence</span></a> of the mixture distribution <span class="math notranslate nohighlight">\(m\)</span> from both <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_KL</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
@@ -767,7 +754,7 @@ KL(m, g) = 0.281
 <p>Since <span class="math notranslate nohighlight">\(KL(m, f) &lt; KL(m, g)\)</span>, <span class="math notranslate nohighlight">\(f\)</span> is “closer” to the mixture distribution <span class="math notranslate nohighlight">\(m\)</span>.</p>
 <p>Hence by our discussion on KL divergence and likelihood ratio process in
 <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>, <span class="math notranslate nohighlight">\(log(L_t) \to \infty\)</span> as <span class="math notranslate nohighlight">\(t \to \infty\)</span>.</p>
-<p>Now looking back to the key equation <a class="reference internal" href="#equation-eq-bayeslaw103">(26.4)</a>.</p>
+<p>Now looking back to the key equation <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a>.</p>
 <p>Consider the function</p>
 <div class="math notranslate nohighlight">
 \[
@@ -777,132 +764,14 @@ h(z) = \frac{\pi_0 z}{\pi_0 z + 1 - \pi_0}.
 <p>Hence <span class="math notranslate nohighlight">\(\pi_t \to 1\)</span> as <span class="math notranslate nohighlight">\(t \to \infty\)</span> for any <span class="math notranslate nohighlight">\(\pi_0 \in (0,1)\)</span>.</p>
 <p>This explains what we observed in the plot above.</p>
 <p>But how can we learn the true mixing parameter <span class="math notranslate nohighlight">\(x\)</span>?</p>
-<p>This topic is taken up in <a class="reference internal" href="mix_model.html"><span class="doc">this lecture</span></a>.</p>
-<p>We also explore this topic in the exrecise below.</p>
-<div class="exercise admonition" id="likelihood_bayes_ex1">
-
-<p class="admonition-title"><span class="caption-number">Exercise 26.1 </span></p>
-<section id="exercise-content">
-<p>The true data generating process is a mixture, and one of the  parameters to be learned is the mixing proportion <span class="math notranslate nohighlight">\(x\)</span>.</p>
-<p>A correct Bayesian approach should directly model the uncertainty about <span class="math notranslate nohighlight">\(x\)</span> and update beliefs about it as new data arrives.</p>
-<p>Here is the algorithm:</p>
-<p>First we specify a prior distribution for <span class="math notranslate nohighlight">\(x\)</span> given by <span class="math notranslate nohighlight">\(x \sim \text{Beta}(\alpha_0, \beta_0)\)</span> with sexpectation <span class="math notranslate nohighlight">\(\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}\)</span>.</p>
-<p>The likelihood for a single observation <span class="math notranslate nohighlight">\(w_t\)</span> is <span class="math notranslate nohighlight">\(p(w_t|x) = x f(w_t) + (1-x) g(w_t)\)</span>.</p>
-<p>For a sequence <span class="math notranslate nohighlight">\(w^t = (w_1, \dots, w_t)\)</span>, the likelihood is <span class="math notranslate nohighlight">\(p(w^t|x) = \prod_{i=1}^t p(w_i|x)\)</span>.</p>
-<p>The posterior distribution is updated using <span class="math notranslate nohighlight">\(p(x|w^t) \propto p(w^t|x) p(x)\)</span>.</p>
-<p>Recursively, the posterior after <span class="math notranslate nohighlight">\(w_t\)</span> is <span class="math notranslate nohighlight">\(p(x|w^t) \propto p(w_t|x) p(x|w^{t-1})\)</span>.</p>
-<p>Without a conjugate prior, we can approximate the posterior by discretizing <span class="math notranslate nohighlight">\(x\)</span> into a grid.</p>
-<p>Your task is to implement this algorithm in Python.</p>
-<p>You can verify your implementation by checking that the posterior mean converges to the true value of <span class="math notranslate nohighlight">\(x\)</span>
-as <span class="math notranslate nohighlight">\(t\)</span> increases.</p>
-</section>
-</div>
-<div class="solution dropdown admonition" id="likelihood_bayes-solution-1">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#likelihood_bayes_ex1"> Exercise 26.1</a></p>
-<section id="solution-content">
-<p>Here is one solution:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">learn_x_bayesian</span><span class="p">(</span><span class="n">observations</span><span class="p">,</span> <span class="n">α0</span><span class="p">,</span> <span class="n">β0</span><span class="p">,</span> <span class="n">grid_size</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Sequential Bayesian learning of the mixing probability x</span>
-<span class="sd">    using a grid approximation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">observations</span><span class="p">)</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">size</span>
-
-    <span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
-
-    <span class="c1"># Log prior</span>
-    <span class="n">log_prior</span> <span class="o">=</span> <span class="p">(</span><span class="n">α0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x_grid</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">β0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="o">-</span><span class="n">x_grid</span><span class="p">)</span>
-
-    <span class="n">μ_path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">μ_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">α0</span> <span class="o">/</span> <span class="p">(</span><span class="n">α0</span> <span class="o">+</span> <span class="n">β0</span><span class="p">)</span>
-
-    <span class="n">log_post</span> <span class="o">=</span> <span class="n">log_prior</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-        <span class="n">wt</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
-        <span class="c1"># P(w_t | x) = x f(w_t) + (1 - x) g(w_t)</span>
-        <span class="n">like</span> <span class="o">=</span> <span class="n">x_grid</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">wt</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x_grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">wt</span><span class="p">)</span>
-        <span class="n">log_post</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">like</span><span class="p">)</span>
-
-        <span class="c1"># normalize</span>
-        <span class="n">log_post</span> <span class="o">-=</span> <span class="n">log_post</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-        <span class="n">post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_post</span><span class="p">)</span>
-        <span class="n">post</span> <span class="o">/=</span> <span class="n">post</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-        <span class="n">μ_path</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_grid</span> <span class="o">*</span> <span class="n">post</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">μ_path</span>
-
-<span class="n">x_posterior_means</span> <span class="o">=</span> <span class="p">[</span><span class="n">learn_x_bayesian</span><span class="p">(</span><span class="n">w_mix</span><span class="p">,</span> <span class="n">α0</span><span class="p">,</span> <span class="n">β0</span><span class="p">)</span> <span class="k">for</span> <span class="n">α0</span><span class="p">,</span> <span class="n">β0</span> <span class="ow">in</span> <span class="n">prior_params</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s visualize how the posterior mean of <span class="math notranslate nohighlight">\(x\)</span> evolves over time, starting from three different prior beliefs.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">x_means</span><span class="p">,</span> <span class="n">mean0</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x_posterior_means</span><span class="p">,</span> <span class="n">prior_means</span><span class="p">)):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T_mix</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">x_means</span><span class="p">,</span> 
-            <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;Prior mean = $</span><span class="si">{</span><span class="n">mean0</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">,</span> 
-            <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">x_true</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> 
-           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;True x = </span><span class="si">{</span><span class="n">x_true</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Posterior mean of $x$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/f8b71327361cfc2f324e55259863eb809d049b96e1590c90e51be0115e8706d5.png" src="_images/f8b71327361cfc2f324e55259863eb809d049b96e1590c90e51be0115e8706d5.png" />
-</div>
-</div>
-<p>The plot shows that regardless of the initial prior belief, all three posterior means eventually converge towards the true value of <span class="math notranslate nohighlight">\(x=0.5\)</span>.</p>
-<p>Next, let’s look at multiple simulations with a longer time horizon, all starting from a uniform prior.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set_seed</span><span class="p">()</span>
-<span class="n">n_paths</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="n">T_long</span> <span class="o">=</span> <span class="mi">10_000</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_paths</span><span class="p">):</span>
-    <span class="n">w_path</span> <span class="o">=</span> <span class="n">simulate_mixture_path</span><span class="p">(</span><span class="n">x_true</span><span class="p">,</span> <span class="n">T_long</span><span class="p">)</span>
-    <span class="n">x_means</span> <span class="o">=</span> <span class="n">learn_x_bayesian</span><span class="p">(</span><span class="n">w_path</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Uniform prior</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T_long</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">x_means</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">x_true</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> 
-            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;True x = </span><span class="si">{</span><span class="n">x_true</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Posterior mean of $x$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/c7047065a104d97689d22aeda4f8c2aa2c23d0d1ba744e529ff85da12cb7aa60.png" src="_images/c7047065a104d97689d22aeda4f8c2aa2c23d0d1ba744e529ff85da12cb7aa60.png" />
-</div>
-</div>
-<p>We can see that the posterior mean of <span class="math notranslate nohighlight">\(x\)</span> converges to the true value <span class="math notranslate nohighlight">\(x=0.5\)</span>.</p>
-</section>
-</div>
+<p>This topic is taken up in <a class="reference internal" href="mix_model.html"><span class="doc">Incorrect Models</span></a>.</p>
+<p>We explore how to learn the true mixing parameter <span class="math notranslate nohighlight">\(x\)</span> in the exercise
+of <a class="reference internal" href="mix_model.html"><span class="doc">Incorrect Models</span></a>.</p>
 </section>
 </section>
-<section id="behavior-of-posterior-probability-pi-t-under-the-subjective-probability-distribution">
-<h2><span class="section-number">26.5. </span>Behavior of  posterior probability <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>  under the subjective probability distribution<a class="headerlink" href="#behavior-of-posterior-probability-pi-t-under-the-subjective-probability-distribution" title="Permalink to this heading">#</a></h2>
-<p>We’ll end this lecture by briefly studying what our Baysian learner expects to learn under the
+<section id="behavior-of-posterior-probability-pi-t-under-subjective-probability-distribution">
+<h2><span class="section-number">26.5. </span>Behavior of  Posterior Probability <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>  Under  Subjective Probability Distribution<a class="headerlink" href="#behavior-of-posterior-probability-pi-t-under-subjective-probability-distribution" title="Permalink to this heading">#</a></h2>
+<p>We’ll end this lecture by briefly studying what our Bayesian learner expects to learn under the
 subjective beliefs <span class="math notranslate nohighlight">\(\pi_t\)</span> cranked out by Bayes’ law.</p>
 <p>This will provide us with some perspective  on our application of  Bayes’s law as a theory of learning.</p>
 <p>As we shall see, at each time <span class="math notranslate nohighlight">\(t\)</span>, the Bayesian learner knows that he will be surprised.</p>
@@ -979,7 +848,7 @@ term in brackets.</p>
 <p>We can think of nature as drawing an <span class="math notranslate nohighlight">\(\omega \in \Omega\)</span> from a probability distribution
 <span class="math notranslate nohighlight">\({\textrm{Prob}} \Omega\)</span> and then generating a single realization (or <em>simulation</em>) <span class="math notranslate nohighlight">\(\{\pi_t(\omega)\}_{t=0}^\infty\)</span> of the process.</p>
 <p>The limit points of  <span class="math notranslate nohighlight">\(\{\pi_t(\omega)\}_{t=0}^\infty\)</span> as <span class="math notranslate nohighlight">\(t \rightarrow +\infty\)</span> are realizations of a random variable that  is swept out as we sample <span class="math notranslate nohighlight">\(\omega\)</span> from <span class="math notranslate nohighlight">\(\Omega\)</span> and construct repeated draws of <span class="math notranslate nohighlight">\(\{\pi_t(\omega)\}_{t=0}^\infty\)</span>.</p>
-<p>By staring at law of motion <a class="reference internal" href="#equation-eq-recur1">(26.3)</a> or <a class="reference internal" href="#equation-eq-like44">(26.5)</a> , we can figure out some things about the probability distribution of the limit points</p>
+<p>By staring at law of motion <a class="reference internal" href="#equation-eq-recur1">(26.4)</a> or <a class="reference internal" href="#equation-eq-like44">(26.5)</a> , we can figure out some things about the probability distribution of the limit points</p>
 <div class="math notranslate nohighlight">
 \[
 \pi_\infty(\omega) = \lim_{t \rightarrow + \infty} \pi_t(\omega).
@@ -1103,7 +972,7 @@ converge pointwise to <span class="math notranslate nohighlight">\(0\)</span>.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/be222723dbeacd26c5c60d21f54ac0b0873226cbe8da179a3430bcf2b1f0c7e7.png" src="_images/be222723dbeacd26c5c60d21f54ac0b0873226cbe8da179a3430bcf2b1f0c7e7.png" />
+<img alt="_images/8d19c3ec7f55cf6e5c49e77686d983c62f8a1a1caa3c9ee5088f96e2f8bdb551.png" src="_images/8d19c3ec7f55cf6e5c49e77686d983c62f8a1a1caa3c9ee5088f96e2f8bdb551.png" />
 </div>
 </div>
 <p>The above graph indicates that</p>
@@ -1128,7 +997,7 @@ converge pointwise to <span class="math notranslate nohighlight">\(0\)</span>.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fdec754c7d576e14d5af9c9f35eba35805c650598327115a1109b613a0b29986.png" src="_images/fdec754c7d576e14d5af9c9f35eba35805c650598327115a1109b613a0b29986.png" />
+<img alt="_images/58c9d16972d84e5b5e621c3f1db6c49abb7ede5f30eaaf2d1a8dd85763694603.png" src="_images/58c9d16972d84e5b5e621c3f1db6c49abb7ede5f30eaaf2d1a8dd85763694603.png" />
 </div>
 </div>
 <p>Evidently, by <span class="math notranslate nohighlight">\(t = 199\)</span>, <span class="math notranslate nohighlight">\(\pi_t\)</span> has converged to either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>.</p>
@@ -1164,7 +1033,7 @@ in the ensemble.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/915325ae88b5047e266a923ba96a6ec184cc4edd62258e5c6e4762c058e9db18.png" src="_images/915325ae88b5047e266a923ba96a6ec184cc4edd62258e5c6e4762c058e9db18.png" />
+<img alt="_images/cbc20d6a0cd592701ee875ef3222dd03650a9da3158f493d783e0deca8ec1de5.png" src="_images/cbc20d6a0cd592701ee875ef3222dd03650a9da3158f493d783e0deca8ec1de5.png" />
 </div>
 </div>
 <p>For the preceding ensemble that assumed <span class="math notranslate nohighlight">\(\pi_0 = .5\)</span>, the following graph shows two  paths of
@@ -1189,7 +1058,7 @@ in the ensemble.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e3a75fc58917bba87bf46eb67cfce3c2549f2fcbd671920e2048d0f6a0f35482.png" src="_images/e3a75fc58917bba87bf46eb67cfce3c2549f2fcbd671920e2048d0f6a0f35482.png" />
+<img alt="_images/8983e816ce07052c9521e7f208bddfeb6b5a4b22abc133ed304b01d4b9ed23f3.png" src="_images/8983e816ce07052c9521e7f208bddfeb6b5a4b22abc133ed304b01d4b9ed23f3.png" />
 </div>
 </div>
 </section>
@@ -1241,48 +1110,48 @@ probability distribution of the pointwise limits <span class="math notranslate n
     </tr>
     <tr>
       <th>0.1</th>
-      <td>0.9040</td>
-      <td>0.0960</td>
+      <td>0.8984</td>
+      <td>0.1016</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.7992</td>
-      <td>0.2008</td>
+      <td>0.8000</td>
+      <td>0.2000</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.6964</td>
-      <td>0.3036</td>
+      <td>0.6981</td>
+      <td>0.3019</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.6012</td>
-      <td>0.3988</td>
+      <td>0.6004</td>
+      <td>0.3996</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.5015</td>
-      <td>0.4985</td>
+      <td>0.4968</td>
+      <td>0.5032</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.4015</td>
-      <td>0.5985</td>
+      <td>0.3995</td>
+      <td>0.6005</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.2988</td>
-      <td>0.7012</td>
+      <td>0.3007</td>
+      <td>0.6993</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.2025</td>
-      <td>0.7975</td>
+      <td>0.2074</td>
+      <td>0.7926</td>
     </tr>
     <tr>
       <th>0.9</th>
-      <td>0.0998</td>
-      <td>0.9002</td>
+      <td>0.0964</td>
+      <td>0.9036</td>
     </tr>
     <tr>
       <th>1.0</th>
@@ -1338,7 +1207,7 @@ probability distribution of the pointwise limits <span class="math notranslate n
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c15d190592ce14d17521e3ef0998cb6e1fa83b95045b771efd35cd12abf475e2.png" src="_images/c15d190592ce14d17521e3ef0998cb6e1fa83b95045b771efd35cd12abf475e2.png" />
+<img alt="_images/b64ac2ba0abcca70cec574e83c2240915bae6f19a9ce1c894336ce575f0fb0f0.png" src="_images/b64ac2ba0abcca70cec574e83c2240915bae6f19a9ce1c894336ce575f0fb0f0.png" />
 </div>
 </div>
 <p>The shape of the the conditional variance as a function of <span class="math notranslate nohighlight">\(\pi_{t-1}\)</span> is informative about the behavior of sample paths of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>.</p>
@@ -1349,193 +1218,6 @@ probability distribution of the pointwise limits <span class="math notranslate n
 <h2><span class="section-number">26.8. </span>Related Lectures<a class="headerlink" href="#related-lectures" title="Permalink to this heading">#</a></h2>
 <p>This lecture has been devoted to building some useful infrastructure that will help us understand inferences that are the foundations of
 results described  in <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a> and <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a> and <a class="reference internal" href="navy_captain.html"><span class="doc">this lecture</span></a>.</p>
-<div class="exercise admonition" id="likelihood_bayes_ex2">
-
-<p class="admonition-title"><span class="caption-number">Exercise 26.2 </span></p>
-<section id="exercise-content">
-<p>In the <a class="reference internal" href="#likelihood_bayes_ex1"><span class="std std-ref">first exercise</span></a>, we implemented a Bayesian learning algorithm to estimate the mixing parameter <span class="math notranslate nohighlight">\(x\)</span> in a mixture model using a grid approximation method.</p>
-<p>In this exercise, we will explore sequential Bayesian updating using NumPyro.</p>
-<p>Please follow these steps:</p>
-<ol class="arabic simple">
-<li><p>Generate a dataset from a mixture model with known mixing parameter <span class="math notranslate nohighlight">\(x_{true} = 0.5\)</span>.</p></li>
-<li><p>Process the data in chunks of 100 observations, updating the posterior sequentially.</p></li>
-<li><p>For each chunk, use the posterior from the previous chunk as the prior for the next chunk (using moment matching to fit a Beta distribution).</p></li>
-<li><p>Create a visualization showing how the posterior distribution evolves, using gradually darker shades to represent later time periods.</p></li>
-</ol>
-<p>In the exercise, set <span class="math notranslate nohighlight">\(\alpha_0 = 1\)</span> and <span class="math notranslate nohighlight">\(\beta_0 = 2\)</span>.</p>
-</section>
-</div>
-<div class="solution dropdown admonition" id="likelihood_bayes-solution-3">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#likelihood_bayes_ex2"> Exercise 26.2</a></p>
-<section id="solution-content">
-<p>First, let’s install and import the necessary packages:</p>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>numpyro<span class="w"> </span>jax
-</pre></div>
-</div>
-</div>
-<details class="admonition hide below-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell output</p>
-<p class="expanded admonition-title">Hide code cell output</p>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.18.0)
-Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.6.2)
-Requirement already satisfied: jaxlib&gt;=0.4.25 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.2)
-Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
-Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (1.26.4)
-Requirement already satisfied: tqdm in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (4.66.5)
-Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.1)
-Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (3.4.0)
-Requirement already satisfied: scipy&gt;=1.12 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (1.13.1)
-Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">import</span> <span class="nn">numpyro</span>
-<span class="kn">import</span> <span class="nn">numpyro.distributions</span> <span class="k">as</span> <span class="nn">dist</span>
-<span class="kn">from</span> <span class="nn">numpyro.infer</span> <span class="kn">import</span> <span class="n">NUTS</span><span class="p">,</span> <span class="n">MCMC</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Define the mixture model and helper functions that helps us
-to fit a Beta distribution to the posterior and obtain the parameter for the next chunk</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mixture_model</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">α0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">β0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="n">α0</span><span class="p">,</span> <span class="n">β0</span><span class="p">))</span>
-    <span class="n">f_dist</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">)</span>
-    <span class="n">g_dist</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">)</span>
-    <span class="n">mix</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">Mixture</span><span class="p">(</span>
-        <span class="n">dist</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">probs</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">])),</span>
-        <span class="p">[</span><span class="n">f_dist</span><span class="p">,</span> <span class="n">g_dist</span><span class="p">]</span>
-    <span class="p">)</span>
-    <span class="k">with</span> <span class="n">numpyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">mix</span><span class="p">,</span> <span class="n">obs</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">β_moment_match</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">):</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">var</span><span class="p">())</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">/</span> <span class="n">v</span> <span class="o">-</span> <span class="mf">1.0</span>
-    <span class="n">α</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
-    <span class="n">β</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now we implement sequential Bayesian updating</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sequential_update</span><span class="p">(</span><span class="n">w_all</span><span class="p">,</span> <span class="n">α0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">β0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> 
-                     <span class="n">chunk_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> 
-                     <span class="n">num_warmup</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> 
-                     <span class="n">num_samples</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> 
-                     <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">w_all</span><span class="p">)</span>
-
-    <span class="c1"># Create chunks</span>
-    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> 
-                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)]</span>
-    <span class="n">α</span><span class="p">,</span> <span class="n">β</span> <span class="o">=</span> <span class="n">α0</span><span class="p">,</span> <span class="n">β0</span>
-    
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
-        <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">))</span>
-    <span class="n">means</span> <span class="o">=</span> <span class="p">[</span><span class="n">α</span> <span class="o">/</span> <span class="p">(</span><span class="n">α</span> <span class="o">+</span> <span class="n">β</span><span class="p">)]</span>
-    <span class="n">posts</span> <span class="o">=</span> <span class="p">[]</span>
-    
-    <span class="c1"># Run MCMC for each chunk</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chunks</span><span class="p">):</span>
-        <span class="n">kernel</span> <span class="o">=</span> <span class="n">NUTS</span><span class="p">(</span><span class="n">mixture_model</span><span class="p">)</span>
-        <span class="n">mcmc</span> <span class="o">=</span> <span class="n">MCMC</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> 
-                    <span class="n">num_warmup</span><span class="o">=</span><span class="n">num_warmup</span><span class="p">,</span> 
-                    <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)</span>
-        <span class="n">mcmc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">w_all</span><span class="p">[</span><span class="n">sl</span><span class="p">],</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">)</span>
-        <span class="n">xs</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">get_samples</span><span class="p">()[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
-        
-        <span class="n">posts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
-
-        <span class="c1"># Posterior becomes prior for next chunk</span>
-        <span class="n">α</span><span class="p">,</span> <span class="n">β</span> <span class="o">=</span> <span class="n">β_moment_match</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
-        <span class="n">means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xs</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-    
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">means</span><span class="p">),</span> <span class="n">posts</span><span class="p">,</span> <span class="n">chunks</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Generate data and run sequential updates:</p>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_true</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="n">T_total</span> <span class="o">=</span> <span class="mi">2000</span>
-
-<span class="n">set_seed</span><span class="p">()</span>
-<span class="n">w_mix</span> <span class="o">=</span> <span class="n">simulate_mixture_path</span><span class="p">(</span><span class="n">x_true</span><span class="p">,</span> <span class="n">T_total</span><span class="p">)</span>
-
-<span class="n">means</span><span class="p">,</span> <span class="n">posts</span><span class="p">,</span> <span class="n">chunks</span> <span class="o">=</span> <span class="n">sequential_update</span><span class="p">(</span>
-    <span class="n">w_mix</span><span class="p">,</span> <span class="n">α0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">β0</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-    <span class="n">num_warmup</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Create visualization with gradually darker lines:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-
-<span class="c1"># Plot posterior means over time</span>
-<span class="n">n_seen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">stop</span> <span class="o">-</span> <span class="n">c</span><span class="o">.</span><span class="n">start</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">])</span>
-
-<span class="c1"># Posterior mean trajectory</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_seen</span><span class="p">,</span> <span class="n">means</span><span class="p">,</span> <span class="s1">&#39;o-&#39;</span><span class="p">,</span> 
-    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkblue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Posterior mean of $x$&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">x_true</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> 
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;True $x$ = </span><span class="si">{</span><span class="n">x_true</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Posterior mean of $x$&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>    
-
-<span class="c1"># Posterior densities at each chunk</span>
-<span class="n">n_chunks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">posts</span><span class="p">)</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="n">n_chunks</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">posts</span><span class="p">,</span> <span class="n">colors</span><span class="p">)):</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span>
-                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;n=</span><span class="si">{</span><span class="n">chunks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">stop</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-<span class="n">ax2</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x_true</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> 
-            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;True $x$ = </span><span class="si">{</span><span class="n">x_true</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;density&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/6c27c484d27df8d7eb10aa5611cb63a93c9cb07aacc86e46d625057b33144326.png" src="_images/6c27c484d27df8d7eb10aa5611cb63a93c9cb07aacc86e46d625057b33144326.png" />
-</div>
-</div>
-<p>The left panel shows how the posterior mean converges to the true value as more data is observed.</p>
-<p>The right panel shows that the distribution of <span class="math notranslate nohighlight">\(x\)</span> becomes more concentrated around the true value with more observations.</p>
-</section>
-</div>
 </section>
 </section>
 

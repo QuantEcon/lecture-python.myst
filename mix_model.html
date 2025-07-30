@@ -174,6 +174,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kullback-leibler-divergence-governs-limit-of-pi-t">27.5. Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-2-agent">27.6. Type 2 Agent</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">27.7. Concluding Remarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">27.8. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -238,12 +239,17 @@
 <p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
 <p>To run this lecture on your own machine, you need to install the software listed following this notice.</p>
 </div>
-<div class="cell tag_no-execute docutils container">
-<div class="cell_input docutils container">
+<div class="cell tag_no-execute tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>numpyro<span class="w"> </span>jax
 </pre></div>
 </div>
 </div>
+<details class="admonition hide below-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
+</summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.18.0)
 Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.6.2)
@@ -251,13 +257,14 @@ Requirement already satisfied: jaxlib&gt;=0.4.25 in /home/runner/miniconda3/envs
 Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
 Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (1.26.4)
 Requirement already satisfied: tqdm in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (4.66.5)
-Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.1)
+Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.3)
 Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (3.4.0)
 Requirement already satisfied: scipy&gt;=1.12 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (1.13.1)
 Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <section id="overview">
 <h2><span class="section-number">27.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
@@ -286,7 +293,7 @@ random sequence <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^\inft
 <p>Thus, we change the <a class="reference internal" href="likelihood_bayes.html"><span class="doc">quantecon lecture</span></a> specification in the following way.</p>
 <p>Now, <strong>each period</strong> <span class="math notranslate nohighlight">\(t \geq 0\)</span>, nature flips a possibly unfair coin that comes up <span class="math notranslate nohighlight">\(f\)</span> with probability <span class="math notranslate nohighlight">\(\alpha\)</span>
 and <span class="math notranslate nohighlight">\(g\)</span> with probability <span class="math notranslate nohighlight">\(1 -\alpha\)</span>.</p>
-<p>Thus, naturally perpetually draws from the <strong>mixture distribution</strong> with c.d.f.</p>
+<p>Thus, nature perpetually draws from the <strong>mixture distribution</strong> with c.d.f.</p>
 <div class="math notranslate nohighlight">
 \[
 H(w ) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
@@ -462,7 +469,6 @@ from our target mixture distribution.</p>
             <span class="n">draws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">draws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
-
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">draws</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">draw_lottery_MC</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
@@ -503,23 +509,6 @@ from our target mixture distribution.</p>
 <img alt="_images/d9ac8c704bd88ff9896d871f8d7127c50e994841a8532b0e039c071998f99162.png" src="_images/d9ac8c704bd88ff9896d871f8d7127c50e994841a8532b0e039c071998f99162.png" />
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %%timeit    # compare speed</span>
-<span class="c1"># sample1 = draw_lottery(α, N=int(1e6))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %%timeit</span>
-<span class="c1"># sample2 = draw_lottery_MC(α, N=int(1e6))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p><strong>Note:</strong> With numba acceleration the first method is actually only slightly slower than the second when we generated 1,000,000 samples.</p>
 </section>
 <section id="type-1-agent">
 <h2><span class="section-number">27.3. </span>Type 1 Agent<a class="headerlink" href="#type-1-agent" title="Permalink to this heading">#</a></h2>
@@ -657,7 +646,7 @@ what fundamental force determines the limiting value of <span class="math notran
     <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\pi_t$&quot;</span><span class="p">)</span>
     <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
     <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;when $</span><span class="se">\\</span><span class="s2">alpha G + (1-</span><span class="se">\\</span><span class="s2">alpha)$ F governs data&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;when $</span><span class="se">\\</span><span class="s2">alpha F + (1-</span><span class="se">\\</span><span class="s2">alpha)G$ governs data&quot;</span><span class="p">)</span>
 
     <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
     <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">l_seq_mixed</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
@@ -675,7 +664,7 @@ what fundamental force determines the limiting value of <span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1189ee4c128a53ced00b59b6929ff01abaae73a699a5950c8ee55af03ae84b72.png" src="_images/1189ee4c128a53ced00b59b6929ff01abaae73a699a5950c8ee55af03ae84b72.png" />
+<img alt="_images/a5a7616c2d6d5e74b8c23716e317bae7f95ebea0f6e618954e412628ea353946.png" src="_images/a5a7616c2d6d5e74b8c23716e317bae7f95ebea0f6e618954e412628ea353946.png" />
 </div>
 </div>
 <p>The above graph shows a sample path of the log likelihood ratio process as the blue dotted line, together with
@@ -688,7 +677,7 @@ sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> that
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/84d43ed958767f8c4f74f1f185c980adbee0a85829a00d6a8f1345707a269480.png" src="_images/84d43ed958767f8c4f74f1f185c980adbee0a85829a00d6a8f1345707a269480.png" />
+<img alt="_images/5e4647fcd6d6a29a3f0ce48cda1d9a3d4d20228f31799207fda53592834a88f6.png" src="_images/5e4647fcd6d6a29a3f0ce48cda1d9a3d4d20228f31799207fda53592834a88f6.png" />
 </div>
 </div>
 <p>Evidently, <span class="math notranslate nohighlight">\(\alpha\)</span> is having a big effect on the destination of <span class="math notranslate nohighlight">\(\pi_t\)</span> as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span></p>
@@ -701,12 +690,12 @@ sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> that
 <p>we shall compute the following two Kullback-Leibler divergences</p>
 <div class="math notranslate nohighlight">
 \[
-KL_g (\alpha) = \int \log\left(\frac{g(w)}{h(w)}\right) h(w) d w
+KL_g (\alpha) = \int \log\left(\frac{h(w)}{g(w)}\right) h(w) d w
 \]</div>
 <p>and</p>
 <div class="math notranslate nohighlight">
 \[
-KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w
+KL_f (\alpha) = \int \log\left(\frac{h(w)}{f(w)}\right) h(w) d w
 \]</div>
 <p>We shall plot both of these functions against <span class="math notranslate nohighlight">\(\alpha\)</span> as we use <span class="math notranslate nohighlight">\(\alpha\)</span> to vary
 <span class="math notranslate nohighlight">\(h(w) = h(w|\alpha)\)</span>.</p>
@@ -714,38 +703,38 @@ KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w
 <div class="math notranslate nohighlight">
 \[ \min_{f,g} \{KL_g, KL_f\} \]</div>
 <p>The only possible limits are <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(1\)</span>.</p>
-<p>As <span class="math notranslate nohighlight">\(\rightarrow +\infty\)</span>, <span class="math notranslate nohighlight">\(\pi_t\)</span> goes to one if and only if  <span class="math notranslate nohighlight">\(KL_f &lt; KL_g\)</span></p>
+<p>As <span class="math notranslate nohighlight">\(t \rightarrow +\infty\)</span>, <span class="math notranslate nohighlight">\(\pi_t\)</span> goes to one if and only if  <span class="math notranslate nohighlight">\(KL_f &lt; KL_g\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@vectorize</span>
 <span class="k">def</span> <span class="nf">KL_g</span><span class="p">(</span><span class="n">α</span><span class="p">):</span>
-    <span class="s2">&quot;Compute the KL divergence between g and h.&quot;</span>
+    <span class="s2">&quot;Compute the KL divergence KL(h, g).&quot;</span>
     <span class="n">err</span> <span class="o">=</span> <span class="mf">1e-8</span>                          <span class="c1"># to avoid 0 at end points</span>
     <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">err</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
     <span class="n">gs</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">ws</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
     <span class="n">hs</span> <span class="o">=</span> <span class="n">α</span><span class="o">*</span><span class="n">fs</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)</span><span class="o">*</span><span class="n">gs</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">gs</span><span class="o">/</span><span class="n">hs</span><span class="p">)</span><span class="o">*</span><span class="n">hs</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">hs</span><span class="o">/</span><span class="n">gs</span><span class="p">)</span><span class="o">*</span><span class="n">hs</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span>
 
 <span class="nd">@vectorize</span>
 <span class="k">def</span> <span class="nf">KL_f</span><span class="p">(</span><span class="n">α</span><span class="p">):</span>
-    <span class="s2">&quot;Compute the KL divergence between f and h.&quot;</span>
+    <span class="s2">&quot;Compute the KL divergence KL(h, f).&quot;</span>
     <span class="n">err</span> <span class="o">=</span> <span class="mf">1e-8</span>                          <span class="c1"># to avoid 0 at end points</span>
     <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">err</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
     <span class="n">gs</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">ws</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
     <span class="n">hs</span> <span class="o">=</span> <span class="n">α</span><span class="o">*</span><span class="n">fs</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)</span><span class="o">*</span><span class="n">gs</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">fs</span><span class="o">/</span><span class="n">hs</span><span class="p">)</span><span class="o">*</span><span class="n">hs</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">hs</span><span class="o">/</span><span class="n">fs</span><span class="p">)</span><span class="o">*</span><span class="n">hs</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span>
 
 
 <span class="c1"># compute KL using quad in Scipy</span>
 <span class="k">def</span> <span class="nf">KL_g_quad</span><span class="p">(</span><span class="n">α</span><span class="p">):</span>
-    <span class="s2">&quot;Compute the KL divergence between g and h using scipy.integrate.&quot;</span>
+    <span class="s2">&quot;Compute the KL divergence KL(h, g) using scipy.integrate.&quot;</span>
     <span class="n">h</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">α</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)</span><span class="o">*</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">*</span><span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">KL_f_quad</span><span class="p">(</span><span class="n">α</span><span class="p">):</span>
-    <span class="s2">&quot;Compute the KL divergence between f and h using scipy.integrate.&quot;</span>
+    <span class="s2">&quot;Compute the KL divergence KL(h, f) using scipy.integrate.&quot;</span>
     <span class="n">h</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">α</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)</span><span class="o">*</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">*</span><span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># vectorize</span>
 <span class="n">KL_g_quad_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">KL_g_quad</span><span class="p">)</span>
@@ -777,9 +766,9 @@ KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_g_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(g, h)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_f_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(f, h)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;K-L divergence&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_g_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(h, g)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_f_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(h, f)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;KL divergence&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\alpha$&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
@@ -788,39 +777,14 @@ KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/012d18cfa66dd7f9a34b316f02fa57c8584286d794c2dd7ffec7f8338eda6270.png" src="_images/012d18cfa66dd7f9a34b316f02fa57c8584286d794c2dd7ffec7f8338eda6270.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # using Scipy to compute KL divergence</span>
-
-<span class="c1"># α_arr = np.linspace(0, 1, 100)</span>
-<span class="c1"># KL_g_arr = KL_g_quad_v(α_arr)</span>
-<span class="c1"># KL_f_arr = KL_f_quad_v(α_arr)</span>
-
-<span class="c1"># fig, ax = plt.subplots(1, figsize=[10, 6])</span>
-
-<span class="c1"># ax.plot(α_arr, KL_g_arr, label=&#39;KL(g, h)&#39;)</span>
-<span class="c1"># ax.plot(α_arr, KL_f_arr, label=&#39;KL(f, h)&#39;)</span>
-<span class="c1"># ax.set_ylabel(&#39;K-L divergence&#39;)</span>
-
-<span class="c1"># ax.legend(loc=&#39;upper right&#39;)</span>
-<span class="c1"># plt.show()</span>
-</pre></div>
-</div>
+<img alt="_images/148aa04a5fca6c72b16029875920c2e9a746ab0c1cc3a624915ca7962644c7f2.png" src="_images/148aa04a5fca6c72b16029875920c2e9a746ab0c1cc3a624915ca7962644c7f2.png" />
 </div>
 </div>
 <p>Let’s compute an <span class="math notranslate nohighlight">\(\alpha\)</span> for which  the KL divergence  between <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(g\)</span> is the same as that between <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># where KL_f = KL_g</span>
-<span class="n">α_arr</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">KL_g_arr</span><span class="o">-</span><span class="n">KL_f_arr</span><span class="p">))]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.31313131313131315
+<span class="n">discretion</span> <span class="o">=</span> <span class="n">α_arr</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">KL_g_arr</span><span class="o">-</span><span class="n">KL_f_arr</span><span class="p">))]</span>
 </pre></div>
 </div>
 </div>
@@ -831,21 +795,24 @@ recorded on the <span class="math notranslate nohighlight">\(x\)</span> axis.</p
 <p>Thus, the graph below confirms how a minimum  KL divergence governs what our type 1 agent eventually learns.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α_arr_x</span> <span class="o">=</span> <span class="n">α_arr</span><span class="p">[(</span><span class="n">α_arr</span><span class="o">&lt;</span><span class="mf">0.28</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">α_arr</span><span class="o">&gt;</span><span class="mf">0.38</span><span class="p">)]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α_arr_x</span> <span class="o">=</span> <span class="n">α_arr</span><span class="p">[(</span><span class="n">α_arr</span><span class="o">&lt;</span><span class="n">discretion</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">α_arr</span><span class="o">&gt;</span><span class="n">discretion</span><span class="p">)]</span>
 <span class="n">π_lim_arr</span> <span class="o">=</span> <span class="n">π_lim_v</span><span class="p">(</span><span class="n">α_arr_x</span><span class="p">)</span>
 
 <span class="c1"># plot</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_g_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(g, h)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_f_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(f, h)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;K-L divergence&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_g_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(h, g)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_f_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(h, f)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;KL divergence&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\alpha$&#39;</span><span class="p">)</span>
 
 <span class="c1"># plot KL</span>
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
 <span class="c1"># plot limit point</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">α_arr_x</span><span class="p">,</span> <span class="n">π_lim_arr</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\pi$ lim&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">α_arr_x</span><span class="p">,</span> <span class="n">π_lim_arr</span><span class="p">,</span> 
+            <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> 
+            <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> 
+            <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\pi$ lim&#39;</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;π lim&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="p">[</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
@@ -855,16 +822,20 @@ recorded on the <span class="math notranslate nohighlight">\(x\)</span> axis.</p
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/67092918cef7234c45d1c9a51af0d1ee09fdaa77f8e1a25c2febb16a11b4e4f0.png" src="_images/67092918cef7234c45d1c9a51af0d1ee09fdaa77f8e1a25c2febb16a11b4e4f0.png" />
+<img alt="_images/aa4c7e6ea0304fa75d26fca3bfa2544faf64b20039ee70984ccd4d0bf263c058.png" src="_images/aa4c7e6ea0304fa75d26fca3bfa2544faf64b20039ee70984ccd4d0bf263c058.png" />
 </div>
 </div>
 <p>Evidently, our type 1 learner who applies Bayes’ law to his misspecified set of statistical models eventually learns an approximating model that is as close as possible to the true model, as measured by its
-Kullback-Leibler divergence.</p>
+Kullback-Leibler divergence:</p>
+<ul class="simple">
+<li><p>When <span class="math notranslate nohighlight">\(\alpha\)</span> is small, the <span class="math notranslate nohighlight">\(KL_g &lt; KL_f\)</span> meaning the divergence of <span class="math notranslate nohighlight">\(g\)</span> from <span class="math notranslate nohighlight">\(h\)</span> is smaller than that of <span class="math notranslate nohighlight">\(f\)</span> and so the limit point of <span class="math notranslate nohighlight">\(\pi_t\)</span> is close to <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(\alpha\)</span> is large, the <span class="math notranslate nohighlight">\(KL_f &lt; KL_g\)</span> meaning the divergence of <span class="math notranslate nohighlight">\(f\)</span> from <span class="math notranslate nohighlight">\(h\)</span> is smaller than that of <span class="math notranslate nohighlight">\(g\)</span> and so the limit point of <span class="math notranslate nohighlight">\(\pi_t\)</span> is close to <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+</ul>
 </section>
 <section id="type-2-agent">
 <h2><span class="section-number">27.6. </span>Type 2 Agent<a class="headerlink" href="#type-2-agent" title="Permalink to this heading">#</a></h2>
 <p>We now describe how our type 2 agent formulates his learning problem and what he eventually learns.</p>
-<p>Our type 2 agent understands the correct statistical  model but acknowledges does not know <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<p>Our type 2 agent understands the correct statistical model but does not know <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <p>We apply Bayes law to deduce an algorithm for  learning <span class="math notranslate nohighlight">\(\alpha\)</span> under the assumption
 that the agent knows that</p>
 <div class="math notranslate nohighlight">
@@ -905,8 +876,8 @@ h(w) = h(w| \alpha)
 <span class="k">def</span> <span class="nf">MCMC_run</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
     <span class="s2">&quot;Compute posterior using MCMC with observed ws&quot;</span>
 
-    <span class="n">kernal</span> <span class="o">=</span> <span class="n">NUTS</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-    <span class="n">mcmc</span> <span class="o">=</span> <span class="n">MCMC</span><span class="p">(</span><span class="n">kernal</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">num_warmup</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">NUTS</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">mcmc</span> <span class="o">=</span> <span class="n">MCMC</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">num_warmup</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="n">mcmc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">rng_key</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">142857</span><span class="p">),</span> <span class="n">w</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ws</span><span class="p">))</span>
     <span class="n">sample</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">get_samples</span><span class="p">()</span>
@@ -934,7 +905,7 @@ h(w) = h(w| \alpha)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/99e00d090799c6a29bb05a8187ea1099537f3103b2b70e97d666ba718b943a87.png" src="_images/99e00d090799c6a29bb05a8187ea1099537f3103b2b70e97d666ba718b943a87.png" />
+<img alt="_images/67576cda69cb2a22be85430cc2ca564dddb0df66395b34fe8cc1867abb911a46.png" src="_images/67576cda69cb2a22be85430cc2ca564dddb0df66395b34fe8cc1867abb911a46.png" />
 </div>
 </div>
 <p>Evidently,  the Bayesian posterior  narrows in on the true value  <span class="math notranslate nohighlight">\(\alpha = .8\)</span> of the mixing parameter as the length of a history of observations grows.</p>
@@ -958,6 +929,146 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <span class="math notranslate nohighlight">\(s(x | \theta)\)</span> to infer <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(x\)</span>.</p>
 <p>But the scientist’s model is misspecified, being only an approximation to an unknown  model <span class="math notranslate nohighlight">\(h\)</span> that nature uses to generate <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>If the scientist uses Bayes’ law or a related  likelihood-based  method to infer <span class="math notranslate nohighlight">\(\theta\)</span>, it occurs quite generally that for large sample sizes the inverse problem infers a  <span class="math notranslate nohighlight">\(\theta\)</span> that minimizes  the KL divergence of the scientist’s model <span class="math notranslate nohighlight">\(s\)</span> relative to nature’s   model <span class="math notranslate nohighlight">\(h\)</span>.</p>
+</section>
+<section id="exercises">
+<h2><span class="section-number">27.8. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<div class="exercise admonition" id="mix_model_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 27.1 </span></p>
+<section id="exercise-content">
+<p>In <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>, we studied the consequence of applying likelihood ratio
+and Bayes’ law to a misspecified statistical model.</p>
+<p>In that lecture, we used a model selection algorithm to study the case where the true data generating process is a mixture.</p>
+<p>In this lecture, we studied how to correctly “learn” a model generated by a mixing process using a Bayesian approach.</p>
+<p>To fix the algorithm we used in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>. A correct Bayesian approach should directly model the uncertainty about <span class="math notranslate nohighlight">\(x\)</span> and update beliefs about it as new data arrives.</p>
+<p>Here is the algorithm:</p>
+<p>First we specify a prior distribution for <span class="math notranslate nohighlight">\(x\)</span> given by <span class="math notranslate nohighlight">\(x \sim \text{Beta}(\alpha_0, \beta_0)\)</span> with expectation <span class="math notranslate nohighlight">\(\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}\)</span>.</p>
+<p>The likelihood for a single observation <span class="math notranslate nohighlight">\(w_t\)</span> is <span class="math notranslate nohighlight">\(p(w_t|x) = x f(w_t) + (1-x) g(w_t)\)</span>.</p>
+<p>For a sequence <span class="math notranslate nohighlight">\(w^t = (w_1, \dots, w_t)\)</span>, the likelihood is <span class="math notranslate nohighlight">\(p(w^t|x) = \prod_{i=1}^t p(w_i|x)\)</span>.</p>
+<p>The posterior distribution is updated using <span class="math notranslate nohighlight">\(p(x|w^t) \propto p(w^t|x) p(x)\)</span>.</p>
+<p>Recursively, the posterior after <span class="math notranslate nohighlight">\(w_t\)</span> is <span class="math notranslate nohighlight">\(p(x|w^t) \propto p(w_t|x) p(x|w^{t-1})\)</span>.</p>
+<p>Without a conjugate prior, we can approximate the posterior by discretizing <span class="math notranslate nohighlight">\(x\)</span> into a grid.</p>
+<p>Your task is to implement this algorithm in Python.</p>
+<p>You can verify your implementation by checking that the posterior mean converges to the true value of <span class="math notranslate nohighlight">\(x\)</span> as <span class="math notranslate nohighlight">\(t\)</span> increases in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="mix_model-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#mix_model_ex1"> Exercise 27.1</a></p>
+<section id="solution-content">
+<p>Here is one solution:</p>
+<p>First we define the mixture probability
+and parameters of prior distributions</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_true</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">T_mix</span> <span class="o">=</span> <span class="mi">200</span>
+
+<span class="c1"># Three different priors with means 0.25, 0.5, 0.75</span>
+<span class="n">prior_params</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">prior_means</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">prior_params</span><span class="p">]</span>
+
+<span class="n">w_mix</span> <span class="o">=</span> <span class="n">draw_lottery</span><span class="p">(</span><span class="n">x_true</span><span class="p">,</span> <span class="n">T_mix</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">learn_x_bayesian</span><span class="p">(</span><span class="n">observations</span><span class="p">,</span> <span class="n">α0</span><span class="p">,</span> <span class="n">β0</span><span class="p">,</span> <span class="n">grid_size</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sequential Bayesian learning of the mixing probability x</span>
+<span class="sd">    using a grid approximation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">observations</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
+
+    <span class="c1"># Log prior</span>
+    <span class="n">log_prior</span> <span class="o">=</span> <span class="p">(</span><span class="n">α0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x_grid</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">β0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="o">-</span><span class="n">x_grid</span><span class="p">)</span>
+
+    <span class="n">μ_path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">μ_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">α0</span> <span class="o">/</span> <span class="p">(</span><span class="n">α0</span> <span class="o">+</span> <span class="n">β0</span><span class="p">)</span>
+
+    <span class="n">log_post</span> <span class="o">=</span> <span class="n">log_prior</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">wt</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+        <span class="c1"># P(w_t | x) = x f(w_t) + (1 - x) g(w_t)</span>
+        <span class="n">like</span> <span class="o">=</span> <span class="n">x_grid</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">wt</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x_grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">wt</span><span class="p">)</span>
+        <span class="n">log_post</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">like</span><span class="p">)</span>
+
+        <span class="c1"># normalize</span>
+        <span class="n">log_post</span> <span class="o">-=</span> <span class="n">log_post</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_post</span><span class="p">)</span>
+        <span class="n">post</span> <span class="o">/=</span> <span class="n">post</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="n">μ_path</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_grid</span> <span class="o">*</span> <span class="n">post</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">μ_path</span>
+
+<span class="n">x_posterior_means</span> <span class="o">=</span> <span class="p">[</span><span class="n">learn_x_bayesian</span><span class="p">(</span><span class="n">w_mix</span><span class="p">,</span> <span class="n">α0</span><span class="p">,</span> <span class="n">β0</span><span class="p">)</span> <span class="k">for</span> <span class="n">α0</span><span class="p">,</span> <span class="n">β0</span> <span class="ow">in</span> <span class="n">prior_params</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s visualize how the posterior mean of <span class="math notranslate nohighlight">\(x\)</span> evolves over time, starting from three different prior beliefs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">x_means</span><span class="p">,</span> <span class="n">mean0</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x_posterior_means</span><span class="p">,</span> <span class="n">prior_means</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T_mix</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">x_means</span><span class="p">,</span> 
+            <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;Prior mean = $</span><span class="si">{</span><span class="n">mean0</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">,</span> 
+            <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">x_true</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> 
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;True x = </span><span class="si">{</span><span class="n">x_true</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Posterior mean of $x$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6260133cd297f0ce553e9fbcbf503c8b4dca020fbfea7a7968bbfc65db613dcc.png" src="_images/6260133cd297f0ce553e9fbcbf503c8b4dca020fbfea7a7968bbfc65db613dcc.png" />
+</div>
+</div>
+<p>The plot shows that regardless of the initial prior belief, all three posterior means eventually converge towards the true value of <span class="math notranslate nohighlight">\(x=0.5\)</span>.</p>
+<p>Next, let’s look at multiple simulations with a longer time horizon, all starting from a uniform prior.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set_seed</span><span class="p">()</span>
+<span class="n">n_paths</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">T_long</span> <span class="o">=</span> <span class="mi">10_000</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_paths</span><span class="p">):</span>
+    <span class="n">w_path</span> <span class="o">=</span> <span class="n">draw_lottery</span><span class="p">(</span><span class="n">x_true</span><span class="p">,</span> <span class="n">T_long</span><span class="p">)</span> 
+    <span class="n">x_means</span> <span class="o">=</span> <span class="n">learn_x_bayesian</span><span class="p">(</span><span class="n">w_path</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Uniform prior</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T_long</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">x_means</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">x_true</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> 
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;True x = </span><span class="si">{</span><span class="n">x_true</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Posterior mean of $x$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c7047065a104d97689d22aeda4f8c2aa2c23d0d1ba744e529ff85da12cb7aa60.png" src="_images/c7047065a104d97689d22aeda4f8c2aa2c23d0d1ba744e529ff85da12cb7aa60.png" />
+</div>
+</div>
+<p>We can see that the posterior mean of <span class="math notranslate nohighlight">\(x\)</span> converges to the true value <span class="math notranslate nohighlight">\(x=0.5\)</span>.</p>
+</section>
+</div>
 </section>
 </section>
 

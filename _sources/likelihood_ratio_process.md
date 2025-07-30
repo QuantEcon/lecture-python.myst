@@ -1464,7 +1464,7 @@ def protocol_2(π_minus_1, T, N=1000):
     return sequences, true_models_F
 ```
 
-**Remark:** Under timing protocol 2, the $\{w_t\}_{t=1}^T$ is a sequence of IID draws from $h(w)$. Under timing protocol 1, the the $\{w_t\}_{t=1}^T$ is 
+**Remark:** Under timing protocol 2, the $\{w_t\}_{t=1}^T$ is a sequence of IID draws from $h(w)$. Under timing protocol 1, the $\{w_t\}_{t=1}^T$ is 
 not IID.  It is **conditionally IID** -- meaning that with probability $\pi_{-1}$ it is a sequence of IID draws from $f(w)$ and with probability $1-\pi_{-1}$ it is a sequence of IID draws from $g(w)$. For more about this, see {doc}`this lecture about exchangeability <exchangeable>`.
 
 We  again deploy a **likelihood ratio process** with time $t$ component being the likelihood ratio  
@@ -2139,3 +2139,136 @@ and as applied in {doc}`odu`.
 
 Likelihood ratio processes appear again in {doc}`advanced:additive_functionals`, which contains another illustration
 of the **peculiar property** of likelihood ratio processes described above.
+
+
+## Exercises
+
+```{exercise}
+:label: lr_ex1
+
+Consider the setting where nature generates data from a third density $h$. 
+
+Let $\{w_t\}_{t=1}^T$ be IID draws from $h$, and let $L_t = L(w^t)$ be the likelihood ratio process defined as in the lecture.
+
+Show that:
+
+$$
+\frac{1}{t} E_h[\log L_t] = K_g - K_f
+$$
+
+with finite $K_g, K_f < \infty$, $E_h |\log f(W)| < \infty$ and $E_h |\log g(W)| < \infty$.
+
+*Hint:* Start by expressing $\log L_t$ as a sum of $\log \ell(w_i)$ terms and compare with the definition of $K_f$ and $K_g$.
+```
+
+```{solution-start} lr_ex1
+:class: dropdown
+```
+
+Since $w_1, \ldots, w_t$ are IID draws from $h$, we can write
+
+$$
+\log L_t = \log \prod_{i=1}^t \ell(w_i) = \sum_{i=1}^t \log \ell(w_i) = \sum_{i=1}^t \log \frac{f(w_i)}{g(w_i)}
+$$
+
+Taking the expectation under $h$
+
+$$
+E_h[\log L_t] 
+= E_h\left[\sum_{i=1}^t \log \frac{f(w_i)}{g(w_i)}\right] 
+= \sum_{i=1}^t E_h\left[\log \frac{f(w_i)}{g(w_i)}\right]
+$$
+
+Since the $w_i$ are identically distributed
+
+$$
+E_h[\log L_t] = t \cdot E_h\left[\log \frac{f(w)}{g(w)}\right]
+$$
+
+where $w \sim h$.
+
+Therefore
+
+$$
+\frac{1}{t} E_h[\log L_t] = E_h\left[\log \frac{f(w)}{g(w)}\right] = E_h[\log f(w)] - E_h[\log g(w)]
+$$
+
+Now, from the definition of Kullback-Leibler divergence
+
+$$
+K_f = KL(h, f) = \int h(w) \log \frac{h(w)}{f(w)} dw = E_h[\log h(w)] - E_h[\log f(w)]
+$$
+
+This gives us
+
+$$
+E_h[\log f(w)] = E_h[\log h(w)] - K_f
+$$
+
+Similarly
+
+$$
+E_h[\log g(w)] = E_h[\log h(w)] - K_g
+$$
+
+Substituting back
+
+$$
+\begin{aligned}
+\frac{1}{t} E_h[\log L_t] &= E_h[\log f(w)] - E_h[\log g(w)] \\
+&= [E_h[\log h(w)] - K_f] - [E_h[\log h(w)] - K_g] \\
+&= K_g - K_f
+\end{aligned}
+$$
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex2
+
+Building on {ref}`lr_ex1`, use the result to explain what happens to $L_t$ as $t \to \infty$ in the following cases:
+
+1. When $K_g > K_f$ (i.e., $f$ is "closer" to $h$ than $g$ is)
+2. When $K_g < K_f$ (i.e., $g$ is "closer" to $h$ than $f$ is)
+
+Relate your answer to the simulation results shown in the {ref}`Kullback-Leibler Divergence <rel_entropy>` section.
+```
+
+```{solution-start} lr_ex2
+:class: dropdown
+```
+
+From {ref}`lr_ex1`, we know that:
+
+$$
+\frac{1}{t} E_h[\log L_t] = K_g - K_f
+$$
+
+**Case 1:** When $K_g > K_f$ 
+
+Here, $f$ is "closer" to $h$ than $g$ is. Since $K_g - K_f > 0$
+
+$$
+E_h[\log L_t] = t \cdot (K_g - K_f) \to +\infty \text{ as } t \to \infty
+$$
+
+By the Law of Large Numbers, $\frac{1}{t} \log L_t \to K_g - K_f > 0$ almost surely.
+
+Therefore $L_t \to +\infty$ almost surely.
+
+**Case 2:** When $K_g < K_f$
+
+Here, $g$ is "closer" to $h$ than $f$ is. Since $K_g - K_f < 0$
+
+$$
+E_h[\log L_t] = t \cdot (K_g - K_f) \to -\infty \text{ as } t \to \infty
+$$
+
+Therefore by similar reasoning $L_t \to 0$ almost surely.
+
+```{solution-end}
+```
+
+
+

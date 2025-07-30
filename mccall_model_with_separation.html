@@ -278,7 +278,7 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
@@ -311,10 +311,10 @@ worker preferences slightly more sophisticated.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">float64</span>
-<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
 <span class="kn">from</span> <span class="nn">quantecon.distributions</span> <span class="kn">import</span> <span class="n">BetaBinomial</span>
 </pre></div>
 </div>
@@ -491,7 +491,7 @@ objects associated with a given model.</p>
 <p>The default utility function is a CRRA utility function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">σ</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">σ</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">σ</span><span class="p">)</span>
 </pre></div>
@@ -503,10 +503,10 @@ distribution:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">60</span>                                  <span class="c1"># n possible outcomes for w</span>
-<span class="n">w_default</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>      <span class="c1"># wages between 10 and 20</span>
+<span class="n">w_default</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>     <span class="c1"># wages between 10 and 20</span>
 <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">400</span>                         <span class="c1"># shape parameters</span>
-<span class="n">dist</span> <span class="o">=</span> <span class="n">BetaBinomial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-<span class="n">q_default</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">pdf</span><span class="p">()</span>
+<span class="n">dist</span> <span class="o">=</span> <span class="n">BetaBinomial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>          <span class="c1"># distribution</span>
+<span class="n">q_default</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">pdf</span><span class="p">())</span>       <span class="c1"># probabilities as a JAX array</span>
 </pre></div>
 </div>
 </div>
@@ -514,37 +514,12 @@ distribution:</p>
 <p>Here’s our jitted class for the McCall model with separation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mccall_data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s1">&#39;α&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>      <span class="c1"># job separation rate</span>
-    <span class="p">(</span><span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>      <span class="c1"># discount factor</span>
-    <span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>      <span class="c1"># unemployment compensation</span>
-    <span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>   <span class="c1"># list of wage values</span>
-    <span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:])</span>    <span class="c1"># pmf of random variable w</span>
-<span class="p">]</span>
-
-<span class="nd">@jitclass</span><span class="p">(</span><span class="n">mccall_data</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">McCallModel</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Stores the parameters and functions associated with a given model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w_default</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">q_default</span><span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span>
-
-
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-
-        <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
-
-        <span class="n">v_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)):</span>
-            <span class="n">v_new</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">α</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
-
-        <span class="n">d_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">v_new</span><span class="p">,</span> <span class="n">d_new</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+  <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span>              <span class="c1"># job separation rate</span>
+  <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.98</span>             <span class="c1"># discount factor</span>
+  <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">6.0</span>              <span class="c1"># unemployment compensation</span>
+  <span class="n">w</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">w_default</span>  <span class="c1"># wage outcome space</span>
+  <span class="n">q</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">q_default</span>  <span class="c1"># probabilities over wage offers</span>
 </pre></div>
 </div>
 </div>
@@ -553,29 +528,41 @@ distribution:</p>
 <p>We then return the current iterate as an approximate solution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">mcm</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Iterates to convergence on the Bellman equations</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="s2">&quot; One update on the Bellman equations. &quot;</span>
+    <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">q</span>
+    <span class="n">v_new</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span> <span class="o">+</span> <span class="n">α</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">d_new</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">v_new</span><span class="p">,</span> <span class="n">d_new</span>
 
-<span class="sd">    * mcm is an instance of McCallModel</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>    <span class="c1"># Initial guess of v</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="mi">1</span>                      <span class="c1"># Initial guess of d</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
-
-    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
-        <span class="n">v_new</span><span class="p">,</span> <span class="n">d_new</span> <span class="o">=</span> <span class="n">mcm</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-        <span class="n">error_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_new</span> <span class="o">-</span> <span class="n">v</span><span class="p">))</span>
-        <span class="n">error_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">d_new</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">error_1</span><span class="p">,</span> <span class="n">error_2</span><span class="p">)</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="n">v_new</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">d_new</span>
-        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-
-    <span class="k">return</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span>
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="s2">&quot; Iterates to convergence on the Bellman equations. &quot;</span>
+    
+    <span class="k">def</span> <span class="nf">cond_fun</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">,</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">body_fun</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="n">v_new</span><span class="p">,</span> <span class="n">d_new</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">error_1</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_new</span> <span class="o">-</span> <span class="n">v</span><span class="p">))</span>
+        <span class="n">error_2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">d_new</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">error_new</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">error_1</span><span class="p">,</span> <span class="n">error_2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v_new</span><span class="p">,</span> <span class="n">d_new</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">error_new</span>
+    
+    <span class="c1"># Initial state: (v, d, i, error)</span>
+    <span class="n">v_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">d_init</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">i_init</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error_init</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="n">init_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">d_init</span><span class="p">,</span> <span class="n">i_init</span><span class="p">,</span> <span class="n">error_init</span><span class="p">)</span>
+    <span class="n">final_state</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">cond_fun</span><span class="p">,</span> <span class="n">body_fun</span><span class="p">,</span> <span class="n">init_state</span><span class="p">)</span>
+    <span class="n">v_final</span><span class="p">,</span> <span class="n">d_final</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">final_state</span>
+    
+    <span class="k">return</span> <span class="n">v_final</span><span class="p">,</span> <span class="n">d_final</span>
 </pre></div>
 </div>
 </div>
@@ -590,49 +577,44 @@ value.</p>
 <p>We’ll use the default parameterizations found in the code above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mcm</span> <span class="o">=</span> <span class="n">McCallModel</span><span class="p">()</span>
-<span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">mcm</span><span class="p">)</span>
-<span class="n">h</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">mcm</span><span class="o">.</span><span class="n">β</span> <span class="o">*</span> <span class="n">d</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
+<span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span> <span class="o">*</span> <span class="n">d</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$v$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">w</span><span class="p">),</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$v$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">),</span>
         <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$h$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">w</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">w</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/14eb123400b737d7fc6c1647169cce3da8374fd568f53cf10ad4b8c4c0098bbb.png" src="_images/14eb123400b737d7fc6c1647169cce3da8374fd568f53cf10ad4b8c4c0098bbb.png" />
+<img alt="_images/10ad526cd756ed353e3b5a6193ea2eeddd36de312867b15a6633b2a0596604f2.png" src="_images/10ad526cd756ed353e3b5a6193ea2eeddd36de312867b15a6633b2a0596604f2.png" />
 </div>
 </div>
 <p>The value <span class="math notranslate nohighlight">\(v\)</span> is increasing because higher <span class="math notranslate nohighlight">\(w\)</span> generates a higher wage flow conditional on staying employed.</p>
 </section>
 <section id="the-reservation-wage-computation">
 <h3><span class="section-number">40.4.2. </span>The Reservation Wage: Computation<a class="headerlink" href="#the-reservation-wage-computation" title="Permalink to this heading">#</a></h3>
-<p>Here’s a function <code class="docutils literal notranslate"><span class="pre">compute_reservation_wage</span></code> that takes an instance of <code class="docutils literal notranslate"><span class="pre">McCallModel</span></code>
+<p>Here’s a function <code class="docutils literal notranslate"><span class="pre">compute_reservation_wage</span></code> that takes an instance of <code class="docutils literal notranslate"><span class="pre">Model</span></code>
 and returns the associated reservation wage.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">compute_reservation_wage</span><span class="p">(</span><span class="n">mcm</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">compute_reservation_wage</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the reservation wage of an instance of the McCall model</span>
-<span class="sd">    by finding the smallest w such that v(w) &gt;= h.</span>
-
-<span class="sd">    If no such w exists, then w_bar is set to np.inf.</span>
+<span class="sd">    by finding the smallest w such that v(w) &gt;= h. If no such w exists, then</span>
+<span class="sd">    w_bar is set to np.inf.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">mcm</span><span class="p">)</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">mcm</span><span class="o">.</span><span class="n">β</span> <span class="o">*</span> <span class="n">d</span>
-
-    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
-    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">mcm</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-
+    
+    <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span> <span class="o">*</span> <span class="n">d</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">w_bar</span>
 </pre></div>
 </div>
@@ -647,7 +629,7 @@ and returns the associated reservation wage.</p>
 <section id="the-reservation-wage-and-unemployment-compensation">
 <h3><span class="section-number">40.5.1. </span>The Reservation Wage and Unemployment Compensation<a class="headerlink" href="#the-reservation-wage-and-unemployment-compensation" title="Permalink to this heading">#</a></h3>
 <p>First, let’s look at how <span class="math notranslate nohighlight">\(\bar w\)</span> varies with unemployment compensation.</p>
-<p>In the figure below, we use the default parameters in the <code class="docutils literal notranslate"><span class="pre">McCallModel</span></code> class, apart from
+<p>In the figure below, we use the default parameters in the <code class="docutils literal notranslate"><span class="pre">Model</span></code> class, apart from
 c (which takes the values given on the horizontal axis)</p>
 <figure class="align-default">
 <img alt="_images/mccall_resw_c.png" src="_images/mccall_resw_c.png" />
@@ -688,9 +670,9 @@ c (which takes the values given on the horizontal axis)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_size</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">c_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>         <span class="c1"># unemployment compensation</span>
-<span class="n">beta_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>  <span class="c1"># discount factors</span>
-<span class="n">alpha_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span> <span class="c1"># separation rate</span>
+<span class="n">c_vals</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>         <span class="c1"># unemployment compensation</span>
+<span class="n">β_vals</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>     <span class="c1"># discount factors</span>
+<span class="n">α_vals</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>     <span class="c1"># separation rate</span>
 </pre></div>
 </div>
 </div>
@@ -704,72 +686,67 @@ c (which takes the values given on the horizontal axis)</p>
 <p>Here’s the first figure.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mcm</span> <span class="o">=</span> <span class="n">McCallModel</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_res_wage_given_c</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">compute_reservation_wage</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w_bar</span>
 
-<span class="n">w_bar_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">c_vals</span><span class="p">)</span>
+<span class="n">w_bar_vals</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_res_wage_given_c</span><span class="p">)(</span><span class="n">c_vals</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">c_vals</span><span class="p">):</span>
-    <span class="n">mcm</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">c</span>
-    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">compute_reservation_wage</span><span class="p">(</span><span class="n">mcm</span><span class="p">)</span>
-    <span class="n">w_bar_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">w_bar</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;unemployment compensation&#39;</span><span class="p">,</span>
-       <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;reservation wage&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;unemployment compensation&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;reservation wage&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c_vals</span><span class="p">,</span> <span class="n">w_bar_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\bar w$ as a function of $c$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3b0a952dacfc3b7be5eb31a8180d3ff57c3c9c3291a8818a2904d7a6568a485e.png" src="_images/3b0a952dacfc3b7be5eb31a8180d3ff57c3c9c3291a8818a2904d7a6568a485e.png" />
+<img alt="_images/846c9b8bb45c2f00b73612d1447a7a7d36f4599dcb1181c65984639024e3b8cf.png" src="_images/846c9b8bb45c2f00b73612d1447a7a7d36f4599dcb1181c65984639024e3b8cf.png" />
 </div>
 </div>
 <p>Here’s the second one.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_res_wage_given_beta</span><span class="p">(</span><span class="n">β</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">)</span>
+    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">compute_reservation_wage</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w_bar</span>
 
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">β</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">beta_vals</span><span class="p">):</span>
-    <span class="n">mcm</span><span class="o">.</span><span class="n">β</span> <span class="o">=</span> <span class="n">β</span>
-    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">compute_reservation_wage</span><span class="p">(</span><span class="n">mcm</span><span class="p">)</span>
-    <span class="n">w_bar_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">w_bar</span>
+<span class="n">w_bar_vals</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_res_wage_given_beta</span><span class="p">)(</span><span class="n">β_vals</span><span class="p">)</span>
 
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;discount factor&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;reservation wage&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">beta_vals</span><span class="p">,</span> <span class="n">w_bar_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\bar w$ as a function of $\beta$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">β_vals</span><span class="p">,</span> <span class="n">w_bar_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\bar w$ as a function of $\beta$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5ec5dce84ba9b294b236ecc3b0a56160b22fa1a314cd40d67a061eae40083298.png" src="_images/5ec5dce84ba9b294b236ecc3b0a56160b22fa1a314cd40d67a061eae40083298.png" />
+<img alt="_images/02166676f0503a08179cc1c8272909fdd65c61ae29f5121c19f21bc2bde575bc.png" src="_images/02166676f0503a08179cc1c8272909fdd65c61ae29f5121c19f21bc2bde575bc.png" />
 </div>
 </div>
 <p>Here’s the third.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_res_wage_given_alpha</span><span class="p">(</span><span class="n">α</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">)</span>
+    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">compute_reservation_wage</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w_bar</span>
 
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">α</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">alpha_vals</span><span class="p">):</span>
-    <span class="n">mcm</span><span class="o">.</span><span class="n">α</span> <span class="o">=</span> <span class="n">α</span>
-    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">compute_reservation_wage</span><span class="p">(</span><span class="n">mcm</span><span class="p">)</span>
-    <span class="n">w_bar_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">w_bar</span>
+<span class="n">w_bar_vals</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_res_wage_given_alpha</span><span class="p">)(</span><span class="n">α_vals</span><span class="p">)</span>
 
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;separation rate&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;reservation wage&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha_vals</span><span class="p">,</span> <span class="n">w_bar_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\bar w$ as a function of $\alpha$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_vals</span><span class="p">,</span> <span class="n">w_bar_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\bar w$ as a function of $\alpha$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e8f37ee7b53ab4d327a06405c0fef258e36df1de2b53d5de66b00979b5919834.png" src="_images/e8f37ee7b53ab4d327a06405c0fef258e36df1de2b53d5de66b00979b5919834.png" />
+<img alt="_images/69ccaca180abfb9c32904476e5b5e8c9b0ec7c120cefd0b37b6903879c7eb607.png" src="_images/69ccaca180abfb9c32904476e5b5e8c9b0ec7c120cefd0b37b6903879c7eb607.png" />
 </div>
 </div>
 </section>
