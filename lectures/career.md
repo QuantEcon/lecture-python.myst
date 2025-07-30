@@ -370,7 +370,8 @@ when the worker follows the optimal policy.
 
 In particular, modulo randomness, reproduce the following figure (where the horizontal axis represents time)
 
-```{figure} /_static/lecture_specific/career/career_solutions_ex1_py.png
+```{image} /_static/lecture_specific/career/career_solutions_ex1_py.png
+:align: center
 ```
 
 ```{hint}

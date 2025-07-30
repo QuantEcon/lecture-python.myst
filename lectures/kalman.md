@@ -565,7 +565,8 @@ In the simulation, take $\theta = 10$, $\hat x_0 = 8$ and $\Sigma_0 = 1$.
 
 Your figure should -- modulo randomness -- look something like this
 
-```{figure} /_static/lecture_specific/kalman/kl_ex1_fig.png
+```{image} /_static/lecture_specific/kalman/kl_ex1_fig.png
+:align: center
 ```
 
 ```{exercise-end}
@@ -629,7 +630,8 @@ Plot $z_t$ against $T$, setting $\epsilon = 0.1$ and $T = 600$.
 
 Your figure should show error erratically declining something like this
 
-```{figure} /_static/lecture_specific/kalman/kl_ex2_fig.png
+```{image} /_static/lecture_specific/kalman/kl_ex2_fig.png
+:align: center
 ```
 
 ```{exercise-end}
@@ -732,7 +734,8 @@ Finally, set $x_0 = (0, 0)$.
 
 You should end up with a figure similar to the following (modulo randomness)
 
-```{figure} /_static/lecture_specific/kalman/kalman_ex3.png
+```{image} /_static/lecture_specific/kalman/kalman_ex3.png
+:align: center
 ```
 
 Observe how, after an initial learning period, the Kalman filter performs quite well, even relative to the competitor who predicts optimally with knowledge of the latent state.

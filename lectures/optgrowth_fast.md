@@ -344,7 +344,8 @@ $$
 The next figure shows a simulation of 100 elements of this sequence for three
 different discount factors (and hence three different policies).
 
-```{figure} /_static/lecture_specific/optgrowth/solution_og_ex2.png
+```{image} /_static/lecture_specific/optgrowth/solution_og_ex2.png
+:align: center
 ```
 
 In each sequence, the initial condition is $y_0 = 0.1$.

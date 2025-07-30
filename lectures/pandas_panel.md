@@ -502,7 +502,7 @@ in Europe by age and sex from [Eurostat](https://ec.europa.eu/eurostat/data/data
 The dataset can be accessed with the following link:
 
 ```{code-cell} ipython3
-url3 = 'https://raw.githubusercontent.com/QuantEcon/lecture-python/master/source/_static/lecture_specific/pandas_panel/employ.csv'
+url3 = 'https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/pandas_panel/employ.csv'
 ```
 
 Reading in the CSV file returns a panel dataset in long format. Use `.pivot_table()` to construct
