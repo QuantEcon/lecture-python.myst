@@ -210,23 +210,25 @@ of the posterior probability $\pi_t$, an instance of **Bayes' Law**.
 Let's derive a couple of formulas for $\pi_{t+1}$, one in terms of likelihood ratio $l(w_t)$, the other in terms of
 $L(w^t)$.
 
-To begin, define 
+To begin, we use the notational conventions  
 
-Let  
+
 
 * $f(w^{t+1}) \equiv f(w_1) f(w_2) \cdots f(w_{t+1})$
 * $g(w^{t+1}) \equiv g(w_1) g(w_2) \cdots g(w_{t+1})$
 * $\pi_0 ={\rm Prob}(q=f |\emptyset)$
 * $\pi_t = {\rm Prob}(q=f |w^t)$
 
-Then 
+Here the symbol $\emptyset$ means "empty set" or "no data".  
+
+With no data in hand, our Bayesian statistician thinks that the probability density of the sequence $w^{t+1}$ is
 
 
 $$
 {\rm Prob}(w^{t+1} |\emptyset) = \pi_0 f(w^{t+1})+ (1 -  \pi_0)
 $$
 
-Probability laws connecting joint and conditional distributions imply that
+Probability laws connecting joint probability distributions  and conditional probability distributions imply that
 
 $$
 {\rm Prob}(q=f |w^{t+1})  {\rm Prob}(w^{t+1}  |\emptyset) = {\rm Prob}(w^{t+1} |q=f) {\rm Prob}(q=f  | \emptyset)
@@ -235,7 +237,7 @@ $$
 or 
 
 $$
-\pi_{t+1} [\pi_0 f(w^{t+1}) + (1- \pi_0) g(w^{t+1})] = f(w^{t+1}) \pi_0 
+\pi_{t+1} \left[\pi_0 f(w^{t+1}) + (1- \pi_0) g(w^{t+1})\right] = f(w^{t+1}) \pi_0 
 $$
 
 or
@@ -251,6 +253,19 @@ Dividing both  the numerator and the denominator on the right side of the above 
 
 \pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} .
 ```
+
+
+Formula {eq}`eq_Bayeslaw1033`  can be regarded as a one step  revision of prior probability $\pi_0$ after seeing
+the batch of data $\left\{ w_{i}\right\} _{i=1}^{t+1}$.
+
+Formula {eq}`eq_Bayeslaw1033` shows the key role that the likelihood ratio process  $L\left(w^{t+1}\right)$ plays in determining
+the posterior probability $\pi_{t+1}$.
+
+Formula {eq}`eq_Bayeslaw1033` is the foundation for the insight that, because of how the likelihood ratio process behaves
+as $t \rightarrow + \infty$, the likelihood ratio process dominates the initial prior $\pi_0$ in determining the
+limiting behavior of $\pi_t$.
+
+### A recursive formula
 
 We can use a similar  line of argument to get a recursive version of formula {eq}`eq_Bayeslaw1033`.
 
@@ -284,6 +299,8 @@ Dividing both  the numerator and the denominator on the right side of the  equat
 with $\pi_{0}$ being a Bayesian prior probability that $q = f$,
 i.e., a personal or subjective belief about $q$ based on our having seen no data.
 
+Formula {eq}`eq_Bayeslaw1033`  can be deduced by iterating on equation {eq}`eq_recur1`. 
+
 Below we define a Python function that updates belief $\pi$ using
 likelihood ratio $\ell$ according to  recursion {eq}`eq_recur1`
 
@@ -298,19 +315,11 @@ def update(π, l):
     return π
 ```
 
+As mentioned above, formula {eq}`eq_Bayeslaw1033` shows the key role that the likelihood ratio process  $L\left(w^{t+1}\right)$ plays in determining the posterior probability $\pi_{t+1}$.
 
-Formula {eq}`eq_Bayeslaw1033` generalizes formula {eq}`eq_recur1`.
-
-
-Formula {eq}`eq_Bayeslaw1033`  can be regarded as a one step  revision of prior probability $\pi_0$ after seeing
-the batch of data $\left\{ w_{i}\right\} _{i=1}^{t+1}$.
-
-Formula {eq}`eq_Bayeslaw1033` shows the key role that the likelihood ratio process  $L\left(w^{t+1}\right)$ plays in determining
-the posterior probability $\pi_{t+1}$.
-
-Formula {eq}`eq_Bayeslaw1033` is the foundation for the insight that, because of how the likelihood ratio process behaves
-as $t \rightarrow + \infty$, the likelihood ratio process dominates the initial prior $\pi_0$ in determining the
+As $t \rightarrow + \infty$, the likelihood ratio process dominates the initial prior $\pi_0$ in determining the
 limiting behavior of $\pi_t$.
+
 
 To illustrate this insight, below we will plot  graphs showing **one** simulated
 path of the  likelihood ratio process $L_t$ along with two paths of
