@@ -606,7 +606,7 @@ A correct Bayesian approach should directly model the uncertainty about $x$ and 
 
 Here is the algorithm:
 
-First we specify a prior distribution for $x$ given by $x \sim \text{Beta}(\alpha_0, \beta_0)$ with sexpectation $\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}$.
+First we specify a prior distribution for $x$ given by $x \sim \text{Beta}(\alpha_0, \beta_0)$ with expectation $\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}$.
 
 The likelihood for a single observation $w_t$ is $p(w_t|x) = x f(w_t) + (1-x) g(w_t)$. 
 
