@@ -39,15 +39,14 @@ Friedman and W. Allen Wallis during World War II when they were analysts at the 
 This problem led Abraham Wald {cite}`Wald47` to formulate **sequential analysis**,
 an approach to statistical decision problems that is  intimately related to dynamic programming.
 
-In the spirit of {doc}`this earlier lecture <prob_meaning>`, the present lecture and its {doc}`sequel <wald_friedman_2>` approach the problem from two distinct points of view.
+In the spirit of {doc}`this earlier lecture <prob_meaning>`, the present lecture and its {doc}`sequel <wald_friedman_2>` approach the problem from two distinct points of view, one frequentist, the other Bayesian. 
 
 In this lecture, we describe  Wald's formulation of the problem from the perspective of a  statistician
 working within the Neyman-Pearson tradition of a frequentist statistician who thinks about testing  hypotheses and consequently  use  laws of large numbers to  investigate limiting properties of particular statistics under a given  **hypothesis**, i.e., a vector of **parameters** that pins down a  particular member of a manifold of statistical models that interest the statistician.   
 
   * From {doc}`this earlier lecture on frequentist and bayesian statistics<prob_meaning>`, please remember that a  frequentist statistician routinely calculates functions of sequences of random variables, conditioning on a vector of parameters.
 
-In {doc}`this sequel <wald_friedman_2>` we'll discuss another formulation that adopts   the perspective of a **Bayesian statistician** who views 
-parameter vectors as vectors of random variables that are jointly distributed with  observable variables that he is concerned about.
+In {doc}`this sequel <wald_friedman_2>` we'll discuss another formulation that adopts   the perspective of a **Bayesian statistician** who views parameters as vectors of random variables that are jointly distributed with  observable variables that he is concerned about.
 
 Because we are taking a frequentist perspective that is concerned about relative frequencies conditioned on alternative parameter values, i.e., 
 alternative **hypotheses**, key ideas in this lecture
@@ -55,12 +54,12 @@ alternative **hypotheses**, key ideas in this lecture
 - Type I and type II statistical errors
     - a type I error occurs when you reject a null hypothesis that is true
     - a type II error occures when you accept a null hypothesis that is false
-- Abraham Wald's **sequential probability ratio test**
 - The **power** of a frequentist statistical test
 - The **size** of a frequentist statistical test 
 - The **critical region** of a statistical test
 - A **uniformly most powerful test**
 - The role of a Law of Large Numbers (LLN) in interpreting **power** and **size** of a frequentist statistical test
+- Abraham Wald's **sequential probability ratio test**
 
 We'll begin with some imports:
 
@@ -119,7 +118,7 @@ Let's listen to Milton Friedman tell us what happened
 > $\ldots$.
 
 Friedman and Wallis worked on  the problem but, after realizing that
-they were not able to solve it,  they described the problem to  Abraham Wald.
+they were not able to solve it,  they told Abraham Wald about the problem.
 
 That started Wald on the path that led him  to *Sequential Analysis* {cite}`Wald47`.
 
@@ -236,7 +235,7 @@ Wald notes that
 > one critical region $W$ is more desirable than another if it
 > has smaller values of $\alpha$ and $\beta$. Although
 > either $\alpha$ or $\beta$ can be made arbitrarily small
-> by a proper choice of the critical region $W$, it is possible
+> by a proper choice of the critical region $W$, it is impossible
 > to make both $\alpha$ and $\beta$ arbitrarily small for a
 > fixed value of $n$, i.e., a fixed sample size.
 
@@ -333,10 +332,9 @@ random variables is also independently and identically distributed (IID).
 
 But the observer does not know which of the two distributions generated the sequence.
 
-For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the sequence is not
-IID.
+For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the observer thinks that  sequence is not IID.
 
-The observer has something to learn, namely, whether the observations are drawn from  $f_0$ or from $f_1$.
+Consequently, the observer has something to learn, namely, whether the observations are drawn from  $f_0$ or from $f_1$.
 
 The decision maker   wants  to decide which of the  two distributions is generating outcomes.
 
@@ -356,12 +354,12 @@ To repeat ourselves
 
 ### Choices
 
-After observing $z_k, z_{k-1}, \ldots, z_0$, the decision-maker
+After observing $z_k, z_{k-1}, \ldots, z_1$, the decision-maker
 chooses among three distinct actions:
 
 - He decides that $f = f_0$ and draws no more $z$'s
 - He decides that $f = f_1$ and draws no more $z$'s
-- He postpones deciding now and instead chooses to draw a
+- He postpones deciding  and instead chooses to draw 
   $z_{k+1}$
 
 
@@ -369,8 +367,8 @@ Wald proceeds as follows.
 
 He defines
 
-- $p_{0m} = f_0(z_0) \cdots f_0(z_m)$
-- $p_{1m} = f_1(z_0) \cdots f_1(z_m)$
+- $p_{0m} = f_0(z_1) \cdots f_0(z_m)$
+- $p_{1m} = f_1(z_1) \cdots f_1(z_m)$
 - $L_{m} = \frac{p_{1m}}{p_{0m}}$
 
 Here $\{L_m\}_{m=0}^\infty$ is a **likelihood ratio process**.
@@ -477,11 +475,11 @@ Below is the algorithm for the simulation.
    for each distribution, compute the empirical type I error $\hat{\alpha}$ and type II error $\hat{\beta}$ with
 
 $$
-\hat{\alpha} = \frac{\text{\# of times reject } H_0 \text{ when } f_0 \text{ is true}}{\text{\# of replications with } f_0 \text{ true}}
+\hat{\alpha} = \frac{\text{$\#$ of times reject } H_0 \text{ when } f_0 \text{ is true}}{\text{$\#$ of replications with } f_0 \text{ true}}
 $$
 
 $$
-\hat{\beta} = \frac{\text{\# of times accept } H_0 \text{ when } f_1 \text{ is true}}{\text{\# of replications with } f_1 \text{ true}}
+\hat{\beta} = \frac{\text{$\#$ of times accept } H_0 \text{ when } f_1 \text{ is true}}{\text{$\#$ of replications with } f_1 \text{ true}}
 $$
 
 ```{code-cell} ipython3
@@ -1079,4 +1077,4 @@ We'll dig deeper into some of the ideas used here in the following earlier and l
 * The concept of **exchangeability**, which underlies much of statistical learning, is explored in depth in our {doc}`lecture on exchangeable random variables <exchangeable>`.
 * For a deeper understanding of likelihood ratio processes and their role in frequentist and Bayesian statistical theories, see {doc}`likelihood_ratio_process`.
 * Building on that foundation, {doc}`likelihood_bayes` examines the role of likelihood ratio processes in **Bayesian learning**.
-* Finally, {doc}`this later lecture <navy_captain>` revisits the subject discussed here and examines whether the frequentist decision rule that the Navy ordered the captain to use would perform better or worse than the sequential decision rule we've developed.
+* Finally, {doc}`this later lecture <navy_captain>` revisits the subject discussed here and examines whether the frequentist decision rule that the Navy ordered the captain to use would perform better or worse than Abraham Wald's sequential decision rule.
