@@ -65,7 +65,7 @@ Thus, we change the {doc}`quantecon lecture <likelihood_bayes>` specification in
 Now, **each period** $t \geq 0$, nature flips a possibly unfair coin that comes up $f$ with probability $\alpha$
 and $g$ with probability $1 -\alpha$.
 
-Thus, naturally perpetually draws from the **mixture distribution** with c.d.f.
+Thus, nature perpetually draws from the **mixture distribution** with c.d.f.
 
 $$
 H(w ) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
@@ -261,7 +261,6 @@ def draw_lottery(p, N):
             draws.append(np.random.beta(F_a, F_b))
         else:
             draws.append(np.random.beta(G_a, G_b))
-
     return np.array(draws)
 
 def draw_lottery_MC(p, N):
@@ -293,18 +292,6 @@ plt.plot(xs, α*f(xs)+(1-α)*g(xs), color='red', label='density')
 plt.legend()
 plt.show()
 ```
-
-```{code-cell} ipython3
-# %%timeit    # compare speed
-# sample1 = draw_lottery(α, N=int(1e6))
-```
-
-```{code-cell} ipython3
-# %%timeit
-# sample2 = draw_lottery_MC(α, N=int(1e6))
-```
-
-**Note:** With numba acceleration the first method is actually only slightly slower than the second when we generated 1,000,000 samples.
 
 ## Type 1 Agent
 
@@ -462,7 +449,7 @@ def plot_π_seq(α, π1=0.2, π2=0.8, T=200):
     ax1.set_ylabel(r"$\pi_t$")
     ax1.set_xlabel("t")
     ax1.legend()
-    ax1.set_title("when $\\alpha G + (1-\\alpha)$ F governs data")
+    ax1.set_title("when $\\alpha F + (1-\\alpha)G$ F governs data")
 
     ax2 = ax1.twinx()
     ax2.plot(range(1, T+1), np.log(l_seq_mixed[0, :]), '--', color='b')
@@ -496,13 +483,13 @@ $$ h(w) \equiv h(w | \alpha) = \alpha f(w) + (1-\alpha) g(w) $$
 we shall compute the following two Kullback-Leibler divergences
 
 $$
-KL_g (\alpha) = \int \log\left(\frac{g(w)}{h(w)}\right) h(w) d w
+KL_g (\alpha) = \int \log\left(\frac{h(w)}{g(w)}\right) h(w) d w
 $$
 
 and
 
 $$
-KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w
+KL_f (\alpha) = \int \log\left(\frac{h(w)}{f(w)}\right) h(w) d w
 $$
 
 We shall plot both of these functions against $\alpha$ as we use $\alpha$ to vary
@@ -514,38 +501,38 @@ $$ \min_{f,g} \{KL_g, KL_f\} $$
 
 The only possible limits are $0$ and $1$.
 
-As $\rightarrow +\infty$, $\pi_t$ goes to one if and only if  $KL_f < KL_g$
+As $t \rightarrow +\infty$, $\pi_t$ goes to one if and only if  $KL_f < KL_g$
 
 ```{code-cell} ipython3
 @vectorize
 def KL_g(α):
-    "Compute the KL divergence between g and h."
+    "Compute the KL divergence KL(h, g)."
     err = 1e-8                          # to avoid 0 at end points
     ws = np.linspace(err, 1-err, 10000)
     gs, fs = g(ws), f(ws)
     hs = α*fs + (1-α)*gs
-    return np.sum(np.log(gs/hs)*hs)/10000
+    return np.sum(np.log(hs/gs)*hs)/10000
 
 @vectorize
 def KL_f(α):
-    "Compute the KL divergence between f and h."
+    "Compute the KL divergence KL(h, f)."
     err = 1e-8                          # to avoid 0 at end points
     ws = np.linspace(err, 1-err, 10000)
     gs, fs = g(ws), f(ws)
     hs = α*fs + (1-α)*gs
-    return np.sum(np.log(fs/hs)*hs)/10000
+    return np.sum(np.log(hs/fs)*hs)/10000
 
 
 # compute KL using quad in Scipy
 def KL_g_quad(α):
-    "Compute the KL divergence between g and h using scipy.integrate."
+    "Compute the KL divergence KL(h, g) using scipy.integrate."
     h = lambda x: α*f(x) + (1-α)*g(x)
-    return quad(lambda x: np.log(g(x)/h(x))*h(x), 0, 1)[0]
+    return quad(lambda x: h(x) * np.log(h(x)/g(x)), 0, 1)[0]
 
 def KL_f_quad(α):
-    "Compute the KL divergence between f and h using scipy.integrate."
+    "Compute the KL divergence KL(h, f) using scipy.integrate."
     h = lambda x: α*f(x) + (1-α)*g(x)
-    return quad(lambda x: np.log(f(x)/h(x))*h(x), 0, 1)[0]
+    return quad(lambda x: h(x) * np.log(h(x)/f(x)), 0, 1)[0]
 
 # vectorize
 KL_g_quad_v = np.vectorize(KL_g_quad)
@@ -575,37 +562,20 @@ KL_f_arr = KL_f(α_arr)
 
 fig, ax = plt.subplots(1, figsize=[10, 6])
 
-ax.plot(α_arr, KL_g_arr, label='KL(g, h)')
-ax.plot(α_arr, KL_f_arr, label='KL(f, h)')
-ax.set_ylabel('K-L divergence')
+ax.plot(α_arr, KL_g_arr, label='KL(h, g)')
+ax.plot(α_arr, KL_f_arr, label='KL(h, f)')
+ax.set_ylabel('KL divergence')
 ax.set_xlabel(r'$\alpha$')
 
 ax.legend(loc='upper right')
 plt.show()
 ```
 
-```{code-cell} ipython3
-# # using Scipy to compute KL divergence
-
-# α_arr = np.linspace(0, 1, 100)
-# KL_g_arr = KL_g_quad_v(α_arr)
-# KL_f_arr = KL_f_quad_v(α_arr)
-
-# fig, ax = plt.subplots(1, figsize=[10, 6])
-
-# ax.plot(α_arr, KL_g_arr, label='KL(g, h)')
-# ax.plot(α_arr, KL_f_arr, label='KL(f, h)')
-# ax.set_ylabel('K-L divergence')
-
-# ax.legend(loc='upper right')
-# plt.show()
-```
-
 Let's compute an $\alpha$ for which  the KL divergence  between $h$ and $g$ is the same as that between $h$ and $f$.
 
 ```{code-cell} ipython3
 # where KL_f = KL_g
-α_arr[np.argmin(np.abs(KL_g_arr-KL_f_arr))]
+discretion = α_arr[np.argmin(np.abs(KL_g_arr-KL_f_arr))]
 ```
 
 We can compute and plot the convergence point $\pi_{\infty}$ for each $\alpha$ to verify that the convergence is indeed governed by the KL divergence.
@@ -617,15 +587,15 @@ Thus, the graph below confirms how a minimum  KL divergence governs what our typ
 
 
 ```{code-cell} ipython3
-α_arr_x = α_arr[(α_arr<0.28)|(α_arr>0.38)]
+α_arr_x = α_arr[(α_arr<discretion)|(α_arr>discretion)]
 π_lim_arr = π_lim_v(α_arr_x)
 
 # plot
 fig, ax = plt.subplots(1, figsize=[10, 6])
 
-ax.plot(α_arr, KL_g_arr, label='KL(g, h)')
-ax.plot(α_arr, KL_f_arr, label='KL(f, h)')
-ax.set_ylabel('K-L divergence')
+ax.plot(α_arr, KL_g_arr, label='KL(h, g)')
+ax.plot(α_arr, KL_f_arr, label='KL(h, f)')
+ax.set_ylabel('KL divergence')
 ax.set_xlabel(r'$\alpha$')
 
 # plot KL
@@ -640,13 +610,17 @@ plt.show()
 ```
 
 Evidently, our type 1 learner who applies Bayes' law to his misspecified set of statistical models eventually learns an approximating model that is as close as possible to the true model, as measured by its
-Kullback-Leibler divergence.
+Kullback-Leibler divergence:
+
+- When $\alpha$ is small, the $KL_g < KL_f$ meaning the divergence of $g$ from $h$ is smaller than that of $f$ and so the limit point of $\pi_t$ is close to $0$.
+
+- When $\alpha$ is large, the $KL_f < KL_g$ meaning the divergence of $f$ from $h$ is smaller than that of $g$ and so the limit point of $\pi_t$ is close to $1$.
 
 ## Type 2 Agent
 
 We now describe how our type 2 agent formulates his learning problem and what he eventually learns.
 
-Our type 2 agent understands the correct statistical  model but acknowledges does not know $\alpha$.
+Our type 2 agent understands the correct statistical model but does not know $\alpha$.
 
 We apply Bayes law to deduce an algorithm for  learning $\alpha$ under the assumption
 that the agent knows that
@@ -699,8 +673,8 @@ def model(w):
 def MCMC_run(ws):
     "Compute posterior using MCMC with observed ws"
 
-    kernal = NUTS(model)
-    mcmc = MCMC(kernal, num_samples=5000, num_warmup=1000, progress_bar=False)
+    kernel = NUTS(model)
+    mcmc = MCMC(kernel, num_samples=5000, num_warmup=1000, progress_bar=False)
 
     mcmc.run(rng_key=random.PRNGKey(142857), w=jnp.array(ws))
     sample = mcmc.get_samples()
@@ -759,3 +733,143 @@ $s(x | \theta)$ to infer $\theta$ from $x$.
 But the scientist's model is misspecified, being only an approximation to an unknown  model $h$ that nature uses to generate $X$.
 
 If the scientist uses Bayes' law or a related  likelihood-based  method to infer $\theta$, it occurs quite generally that for large sample sizes the inverse problem infers a  $\theta$ that minimizes  the KL divergence of the scientist's model $s$ relative to nature's   model $h$.
+
+
+## Exercises
+
+```{exercise}
+:label: mix_model_ex1
+
+In {doc}`likelihood_bayes`, we studied the consequence of applying likelihood ratio 
+and Bayes' law to a misspecified statistical model.
+
+In that lecture, we used a model selection algorithm to study the case where the true data generating process is a mixture.
+
+In this lecture, we studied how to correctly "learn" a model generated by a mixing process using a Bayesian approach.
+
+To fix the algorithm we used in {doc}`likelihood_bayes`. A correct Bayesian approach should directly model the uncertainty about $x$ and update beliefs about it as new data arrives. 
+
+Here is the algorithm:
+
+First we specify a prior distribution for $x$ given by $x \sim \text{Beta}(\alpha_0, \beta_0)$ with expectation $\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}$.
+
+The likelihood for a single observation $w_t$ is $p(w_t|x) = x f(w_t) + (1-x) g(w_t)$. 
+
+For a sequence $w^t = (w_1, \dots, w_t)$, the likelihood is $p(w^t|x) = \prod_{i=1}^t p(w_i|x)$. 
+
+The posterior distribution is updated using $p(x|w^t) \propto p(w^t|x) p(x)$. 
+
+Recursively, the posterior after $w_t$ is $p(x|w^t) \propto p(w_t|x) p(x|w^{t-1})$. 
+
+Without a conjugate prior, we can approximate the posterior by discretizing $x$ into a grid. 
+
+Your task is to implement this algorithm in Python. 
+
+You can verify your implementation by checking that the posterior mean converges to the true value of $x$ as $t$ increases in {doc}`likelihood_bayes`.
+```
+
+```{solution-start} mix_model_ex1
+:class: dropdown
+```
+
+Here is one solution:
+
+First we define the mixture probability 
+and parameters of prior distributions
+
+```{code-cell} ipython3
+x_true = 0.5
+T_mix = 200
+
+# Three different priors with means 0.25, 0.5, 0.75
+prior_params = [(1, 3), (1, 1), (3, 1)]
+prior_means = [a/(a+b) for a, b in prior_params]
+
+w_mix = draw_lottery(x_true, T_mix)
+```
+
+```{code-cell} ipython3
+@jit
+def learn_x_bayesian(observations, α0, β0, grid_size=2000):
+    """
+    Sequential Bayesian learning of the mixing probability x
+    using a grid approximation.
+    """
+    w = np.asarray(observations)
+    T = w.size
+
+    x_grid = np.linspace(1e-3, 1 - 1e-3, grid_size)
+
+    # Log prior
+    log_prior = (α0 - 1) * np.log(x_grid) + (β0 - 1) * np.log1p(-x_grid)
+
+    μ_path = np.empty(T + 1)
+    μ_path[0] = α0 / (α0 + β0)
+
+    log_post = log_prior.copy()
+
+    for t in range(T):
+        wt = w[t]
+        # P(w_t | x) = x f(w_t) + (1 - x) g(w_t)
+        like = x_grid * f(wt) + (1 - x_grid) * g(wt)
+        log_post += np.log(like)
+
+        # normalize
+        log_post -= log_post.max()
+        post = np.exp(log_post)
+        post /= post.sum()
+
+        μ_path[t + 1] = np.sum(x_grid * post)
+
+    return μ_path
+
+x_posterior_means = [learn_x_bayesian(w_mix, α0, β0) for α0, β0 in prior_params]
+```
+
+Let's visualize how the posterior mean of $x$ evolves over time, starting from three different prior beliefs.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(10, 6))
+
+for i, (x_means, mean0) in enumerate(zip(x_posterior_means, prior_means)):
+    ax.plot(range(T_mix + 1), x_means, 
+            label=fr'Prior mean = ${mean0:.2f}$', 
+            color=colors[i], linewidth=2)
+
+ax.axhline(y=x_true, color='black', linestyle='--', 
+           label=f'True x = {x_true}', linewidth=2)
+ax.set_xlabel('$t$')
+ax.set_ylabel('Posterior mean of $x$')
+ax.legend()
+plt.show()
+```
+
+The plot shows that regardless of the initial prior belief, all three posterior means eventually converge towards the true value of $x=0.5$.
+
+Next, let's look at multiple simulations with a longer time horizon, all starting from a uniform prior.
+
+```{code-cell} ipython3
+set_seed()
+n_paths = 20
+T_long = 10_000
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+for j in range(n_paths):
+    w_path = draw_lottery(x_true, T_long) 
+    x_means = learn_x_bayesian(w_path, 1, 1)  # Uniform prior
+    ax.plot(range(T_long + 1), x_means, alpha=0.5, linewidth=1)
+
+ax.axhline(y=x_true, color='red', linestyle='--', 
+            label=f'True x = {x_true}', linewidth=2)
+ax.set_ylabel('Posterior mean of $x$')
+ax.set_xlabel('$t$')
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+We can see that the posterior mean of $x$ converges to the true value $x=0.5$.
+
+```{solution-end}
+```
