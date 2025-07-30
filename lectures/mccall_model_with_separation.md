@@ -4,11 +4,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 (mccall_with_sep)=
@@ -31,7 +31,7 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 :tags: [hide-output]
 
 !pip install quantecon
@@ -55,7 +55,7 @@ worker preferences slightly more sophisticated.
 
 We'll need the following imports
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
 import jax
@@ -307,7 +307,7 @@ This helps to tidy up the code and provides an object that's easy to pass to fun
 
 The default utility function is a CRRA utility function
 
-```{code-cell} ipython
+```{code-cell} ipython3
 @jax.jit
 def u(c, σ=2.0):
     return (c**(1 - σ) - 1) / (1 - σ)
@@ -316,7 +316,7 @@ def u(c, σ=2.0):
 Also, here's a default wage distribution, based around the BetaBinomial
 distribution:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 n = 60                                  # n possible outcomes for w
 w_default = jnp.linspace(10, 20, n)     # wages between 10 and 20
 a, b = 600, 400                         # shape parameters
@@ -326,21 +326,20 @@ q_default = jnp.array(dist.pdf())       # probabilities as a JAX array
 
 Here's our jitted class for the McCall model with separation.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 class Model(NamedTuple):
   α: float = 0.2              # job separation rate
   β: float = 0.98             # discount factor
   c: float = 6.0              # unemployment compensation
   w: jnp.ndarray = w_default  # wage outcome space
   q: jnp.ndarray = q_default  # probabilities over wage offers
-
 ```
 
 Now we iterate until successive realizations are closer together than some small tolerance level.
 
 We then return the current iterate as an approximate solution.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 @jax.jit
 def update(model, v, d):
     " One update on the Bellman equations. "
@@ -390,7 +389,7 @@ Let's compare $v$ and $h$ to see what they look like.
 
 We'll use the default parameterizations found in the code above.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 model = Model()
 v, d = solve_model(model)
 h = u(model.c) + model.β * d
@@ -411,19 +410,19 @@ The value $v$ is increasing because higher $w$ generates a higher wage flow cond
 Here's a function `compute_reservation_wage` that takes an instance of `Model`
 and returns the associated reservation wage.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 @jax.jit
 def compute_reservation_wage(model):
     """
     Computes the reservation wage of an instance of the McCall model
     by finding the smallest w such that v(w) >= h. If no such w exists, then
     w_bar is set to np.inf.
-
     """
+    
     v, d = solve_model(model)
     h = u(model.c) + model.β * d
-    i = jnp.searchsorted(v, h, side='right')
-    w_bar = model.w[i]
+    i = jnp.searchsorted(v, h, side='left')
+    w_bar = jnp.where(i >= len(model.w), jnp.inf, model.w[i])
     return w_bar
 ```
 
@@ -487,11 +486,11 @@ Reproduce all the reservation wage figures shown above.
 
 Regarding the values on the horizontal axis, use
 
-```{code-cell} ipython
+```{code-cell} ipython3
 grid_size = 25
 c_vals = jnp.linspace(2, 12, grid_size)         # unemployment compensation
-beta_vals = jnp.linspace(0.8, 0.99, grid_size)  # discount factors
-alpha_vals = jnp.linspace(0.05, 0.5, grid_size) # separation rate
+β_vals = jnp.linspace(0.8, 0.99, grid_size)     # discount factors
+α_vals = jnp.linspace(0.05, 0.5, grid_size)     # separation rate
 ```
 
 ```{exercise-end}
@@ -503,8 +502,7 @@ alpha_vals = jnp.linspace(0.05, 0.5, grid_size) # separation rate
 
 Here's the first figure.
 
-```{code-cell} ipython
-
+```{code-cell} ipython3
 def compute_res_wage_given_c(c):
     model = Model(c=c)
     w_bar = compute_reservation_wage(model)
@@ -521,35 +519,34 @@ plt.show()
 
 Here's the second one.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def compute_res_wage_given_beta(β):
     model = Model(β=β)
     w_bar = compute_reservation_wage(model)
     return w_bar
 
-w_bar_vals = jax.vmap(compute_res_wage_given_beta)(beta_vals)
+w_bar_vals = jax.vmap(compute_res_wage_given_beta)(β_vals)
 
 fig, ax = plt.subplots()
 ax.set(xlabel='discount factor', ylabel='reservation wage')
-ax.plot(beta_vals, w_bar_vals, label=r'$\bar w$ as a function of $\beta$')
+ax.plot(β_vals, w_bar_vals, label=r'$\bar w$ as a function of $\beta$')
 ax.legend()
 plt.show()
 ```
 
 Here's the third.
 
-```{code-cell} ipython
-
+```{code-cell} ipython3
 def compute_res_wage_given_alpha(α):
     model = Model(α=α)
     w_bar = compute_reservation_wage(model)
     return w_bar
 
-w_bar_vals = jax.vmap(compute_res_wage_given_alpha)(alpha_vals)
+w_bar_vals = jax.vmap(compute_res_wage_given_alpha)(α_vals)
 
 fig, ax = plt.subplots()
 ax.set(xlabel='separation rate', ylabel='reservation wage')
-ax.plot(alpha_vals, w_bar_vals, label=r'$\bar w$ as a function of $\alpha$')
+ax.plot(α_vals, w_bar_vals, label=r'$\bar w$ as a function of $\alpha$')
 ax.legend()
 plt.show()
 ```
