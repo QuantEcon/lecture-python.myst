@@ -449,7 +449,7 @@ def plot_π_seq(α, π1=0.2, π2=0.8, T=200):
     ax1.set_ylabel(r"$\pi_t$")
     ax1.set_xlabel("t")
     ax1.legend()
-    ax1.set_title("when $\\alpha F + (1-\\alpha)G$ F governs data")
+    ax1.set_title("when $\\alpha F + (1-\\alpha)G$ governs data")
 
     ax2 = ax1.twinx()
     ax2.plot(range(1, T+1), np.log(l_seq_mixed[0, :]), '--', color='b')
@@ -601,7 +601,10 @@ ax.set_xlabel(r'$\alpha$')
 # plot KL
 ax2 = ax.twinx()
 # plot limit point
-ax2.scatter(α_arr_x, π_lim_arr, facecolors='none', edgecolors='tab:blue', label=r'$\pi$ lim')
+ax2.scatter(α_arr_x, π_lim_arr, 
+            facecolors='none', 
+            edgecolors='tab:blue', 
+            label=r'$\pi$ lim')
 ax2.set_ylabel('π lim')
 
 ax.legend(loc=[0.85, 0.8])
