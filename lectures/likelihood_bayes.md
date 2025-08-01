@@ -196,7 +196,13 @@ l_seq_f = np.cumprod(l_arr_f, axis=1)
 
 
 
-## Likelihood Ratio Process and Bayes’ Law
+## Likelihood Ratio Processes and Bayes’ Law
+
+Let $\pi_0 \in [0,1]$ be a Bayesian statistician's prior probability that nature generates $w^t$ as a sequence of i.i.d. draws from
+distributon $f$.
+
+* here "probability" is to be interpreted as a a way to summarize or express a  subjective opinion
+* it does **not** mean an anticipated relative frequency as sample size grows without limit 
 
 Let $\pi_{t+1}$ be a Bayesian posterior probability defined as
 
@@ -225,11 +231,26 @@ With no data in hand, our Bayesian statistician thinks that the probability dens
 
 
 $$
-{\rm Prob}(w^{t+1} |\emptyset) = \pi_0 f(w^{t+1})+ (1 -  \pi_0)
+{\rm Prob}(w^{t+1} |\emptyset) = \pi_0 f(w^{t+1})+ (1 -  \pi_0) g(w^{t+1}) 
 $$
 
-Probability laws connecting joint probability distributions  and conditional probability distributions imply that
+Laws of probability say that the  joint distribution ${\rm Prob}(AB)$ of  events $A$ and $B$ are connected to the conditional distributions
+${\rm Prob}(A |B)$  and ${\rm Prob}(B |A)$  by
 
+$$
+{\rm Prob}(AB) = {\rm Prob}(A |B) {\rm Prob}(B) = {\rm Prob}(B |A) {\rm Prob}(A) . 
+$$ (eq:problawAB)
+
+We are interested in events 
+
+$$
+A = \{q=f\},  \quad B = \{w^{t+1}\}, \quad
+$$
+
+where  braces $\{\cdot\}$ are our shorthand for "event". 
+
+So in our setting, probability laws {eq}`eq:problawAB` imply that
+ 
 $$
 {\rm Prob}(q=f |w^{t+1})  {\rm Prob}(w^{t+1}  |\emptyset) = {\rm Prob}(w^{t+1} |q=f) {\rm Prob}(q=f  | \emptyset)
 $$
@@ -425,8 +446,11 @@ Until now we assumed that before time $1$ nature somehow chose to draw $w^t$ as 
 
 Nature's decision about whether to draw from $f$ or $g$ was thus **permanent**. 
 
-We now assume a different timing protocol in which before **each period** $t =1, 2, \ldots$ nature flips an $x$-weighted coin and with probability
-$x \in (0,1)$  draws from $f$ in period $t$ and with probability $1 - x $ draws from $g$.
+We now assume a different timing protocol in which before **each period** $t =1, 2, \ldots$ nature
+
+*  flips an $x$-weighted coin,  then   
+*  draws from $f$ if it has drawn a "head"
+*  draws from $g$ if it has drawn a "tail".
 
 Under this timing protocol, nature  draws permanently from **neither** $f$ **nor** $g$, so a statistician who thinks that nature is drawing
 i.i.d. draws **permanently** from one of them is mistaken. 

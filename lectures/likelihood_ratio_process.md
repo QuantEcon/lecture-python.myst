@@ -841,7 +841,7 @@ Nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t(s^t)$.
 * so $\pi$ without a superscript is nature's model 
 * but in addition to nature, there are other entities inside our model -- artificial people that we call "agents"
 * each agent has a sequence of probability distributions over $s^t$ for $t=0, \ldots$ 
-* agent $i$ thinks that nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t^i(s^t)$
+* agent $i$ thinks that nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\{\pi_t^i(s^t)\}_{t=0}^\infty$
    * agent $i$ is mistaken unless $\pi_t^i(s^t) = \pi_t(s^t)$
 
 ```{note}
@@ -905,7 +905,7 @@ $$
 As for attitudes toward bearing risks, agent $i$ has a one-period utility function
 
 $$
-u(c_t^i) = u(c_t^i) = \ln (c_t^i)
+u(c_t^i) = \ln (c_t^i)
 $$
 
 with marginal utility of consumption in period $i$
@@ -1032,7 +1032,7 @@ Doing this will allow us to connect our analysis with an argument  of {cite}`alc
 
 ### Competitive Equilibrium Prices 
 
-The two fundamental welfare theorems for general equilibrium models lead us to anticipate that there is  a connection between the allocation that solves the social planning problem we have been studying and the allocation in a  **competitive equilibrium**  with complete markets in history-contingent commodities.
+Two fundamental welfare theorems for general equilibrium models lead us to anticipate that there is  a connection between the allocation that solves the social planning problem we have been studying and the allocation in a  **competitive equilibrium**  with complete markets in history-contingent commodities.
 
 ```{note}
 For the two welfare theorems and their history, see   <https://en.wikipedia.org/wiki/Fundamental_theorems_of_welfare_economics>.
@@ -1048,26 +1048,33 @@ Instead, there is a comprehensive centralized   market that meets at one point i
 
 There are **prices** at which price-taking agents can buy or sell whatever goods that they want.  
 
-Trade is multilateral in the sense that all that there is a "Walrasian auctioneer" who lives outside the model and whose job is to verify that
+Trade is multilateral in the sense that that there is a "Walrasian auctioneer" who lives outside the model and whose job is to verify that
 each agent's budget constraint is satisfied.  
 
 That budget constraint involves the total value of the agent's endowment stream and the total value of its consumption stream.  
+
+These values are computed at price vectors that the agents take as given -- they are "price-takers" who assume that they can buy or sell
+whatever quantities that they want at those prices.  
 
 Suppose that at time $-1$, before time $0$ starts, agent  $i$ can purchase one unit $c_t(s^t)$ of  consumption at time $t$ after history
 $s^t$ at price $p_t(s^t)$.  
 
 Notice that there is (very long) **vector** of prices.  
 
-We want to study how agents' diverse beliefs influence equilibrium prices.  
+ * there is one price $p_t(s^t)$ for each history $s^t$ and every date $t = 0, 1, \ldots, $. 
+
+We want to study how agents'  beliefs influence equilibrium prices.  
 
 Agent $i$ faces a **single** intertemporal budget constraint
 
 $$
-\sum_{t=0}\sum_{s^t} p_t(s^t) c_t^i (y_t(s^t)) \leq \sum_{t=0}\sum_{s^t} p_t(s^t) y_t^i (y_t(s^t))
+\sum_{t=0}^\infty\sum_{s^t} p_t(s^t) c_t^i (s^t) \leq \sum_{t=0}^\infty\sum_{s^t} p_t(s^t) y_t^i (s^t)
 $$ (eq:budgetI)
 
-Agent $i$ puts a Lagrange multiplier $\mu^i$ on {eq}`eq:budgetI` and once-and-for-all chooses a consumption plan $\{c^i_t(s^t)\}_{t=0}^\infty$
+Agent $i$ puts a Lagrange multiplier $\mu_i$ on {eq}`eq:budgetI` and once-and-for-all chooses a consumption plan $\{c^i_t(s^t)\}_{t=0}^\infty$
 to maximize criterion {eq}`eq:objectiveagenti` subject to budget constraint {eq}`eq:budgetI`.
+
+This means that the agent $i$  chooses many objects, namely, $c_t^i(s^t)$ for all $s^t$ for $t = 0, 1, 2, \ldots$.
 
 ```{note}
 For convenience, let's remind ourselves of criterion {eq}`eq:objectiveagenti`:  
@@ -1075,16 +1082,16 @@ $
 V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t)$
 ```
 
-First-order conditions for maximizing  with respect to $c_t^i(s^t)$ are 
+First-order necessary conditions for maximizing objective {eq}`eq:objectiveagenti` with respect to $c_t^i(s^t)$ are 
 
 $$
-\delta^t u'(c^i(s^t)) \pi_t^i(s^t) = \mu_i p_t(s^t) ,
+\delta^t u'(c^i_t(s^t)) \pi_t^i(s^t) = \mu_i p_t(s^t) ,
 $$ 
 
 which we can rearrange to obtain
 
 $$
-p_t(s^t) = \frac{ \delta^t \pi_t^i(s^t)}{\mu^i c^i(s^t)}   
+p_t(s^t) = \frac{ \delta^t \pi_t^i(s^t)}{\mu_i c^i_t(s^t)}   
 $$ (eq:priceequation1)
 
 for $i=1,2$.  
@@ -1115,13 +1122,13 @@ relative prices,   see <https://en.wikipedia.org/wiki/Num%C3%A9raire>.
 If we substitute formula  {eq}`eq:allocationce` for $c_t^1(s^t)$ into formula {eq}`eq:priceequation1` and rearrange, we obtain
 
 $$
-p_t(s^t) = \frac{\delta^t \pi_t^2(s^t)}{1 - \lambda + \lambda l_t(s^t)}
+p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr]
 $$ (eq:pformulafinal)
 
 According to formula {eq}`eq:pformulafinal`, we have the following possible limiting cases:
 
-* when $l_\infty = 0$, $c_\infty^2 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ 
-* when $l_\infty = 1$, $c_\infty^1 = 0 $ and tails competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^2(s^t)$ 
+* when $l_\infty = 0$, $c_\infty^1 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ 
+* when $l_\infty = \infty$, $c_\infty^1 = 1 $ and tails competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^1(s^t)$ 
 * for small $t$'s, competitive equilbrium prices reflect both agents' probability models.  
 
 ### Simulations 
@@ -2266,6 +2273,97 @@ E_h[\log L_t] = t \cdot (K_g - K_f) \to -\infty \text{ as } t \to \infty
 $$
 
 Therefore by similar reasoning $L_t \to 0$ almost surely.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex3
+
+Starting from {eq}`eq:priceequation1`, show that the competitive equilibrium prices can be expressed as
+
+$$
+p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr]
+$$
+
+```
+
+```{solution-start} lr_ex3
+:class: dropdown
+```
+
+Starting from
+
+$$
+p_t(s^t) = \frac{\delta^t \pi_t^i(s^t)}{\mu_i c_t^i(s^t)}, \qquad i=1,2.
+$$
+
+Since both expressions equal the same price, we can equate them
+
+$$
+\frac{\pi_t^1(s^t)}{\mu_1 c_t^1(s^t)} = \frac{\pi_t^2(s^t)}{\mu_2 c_t^2(s^t)}
+$$
+
+Rearranging gives
+
+$$
+\frac{c_t^1(s^t)}{c_t^2(s^t)} = \frac{\mu_2}{\mu_1} l_t(s^t)
+$$
+
+where $l_t(s^t) \equiv \pi_t^1(s^t)/\pi_t^2(s^t)$ is the likelihood ratio process.
+
+Using $c_t^2(s^t) = 1 - c_t^1(s^t)$:
+
+$$
+\frac{c_t^1(s^t)}{1 - c_t^1(s^t)} = \frac{\mu_2}{\mu_1} l_t(s^t)
+$$
+
+Solving for $c_t^1(s^t)$
+
+$$
+c_t^1(s^t) = \frac{\mu_2 l_t(s^t)}{\mu_1 + \mu_2 l_t(s^t)}
+$$
+
+
+The planner's solution gives
+
+$$
+c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1 - \lambda + \lambda l_t(s^t)}
+$$
+
+To match them, we need the following equality to hold
+
+$$
+\frac{\mu_2}{\mu_1} = \frac{\lambda}{1 - \lambda}
+$$
+
+Hence we have
+
+$$
+\mu_1 = 1 - \lambda, \qquad \mu_2 = \lambda
+$$
+
+
+With $\mu_1 = 1-\lambda$ and $c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1-\lambda+\lambda l_t(s^t)}$,
+we have
+
+$$
+\begin{aligned}
+p_t(s^t) &= \frac{\delta^t \pi_t^1(s^t)}{(1-\lambda) c_t^1(s^t)} \\
+&= \frac{\delta^t \pi_t^1(s^t)}{(1-\lambda)} \cdot \frac{1 - \lambda + \lambda l_t(s^t)}{\lambda l_t(s^t)} \\
+&= \frac{\delta^t \pi_t^1(s^t)}{(1-\lambda)\lambda l_t(s^t)} \bigl[1 - \lambda + \lambda l_t(s^t)\bigr].
+\end{aligned}
+$$
+
+Since $\pi_t^1(s^t) = l_t(s^t) \pi_t^2(s^t)$, we have
+
+$$
+\begin{aligned}
+p_t(s^t) &= \frac{\delta^t l_t(s^t) \pi_t^2(s^t)}{(1-\lambda)\lambda l_t(s^t)} \bigl[1 - \lambda + \lambda l_t(s^t)\bigr] \\
+&= \frac{\delta^t \pi_t^2(s^t)}{(1-\lambda)\lambda} \bigl[1 - \lambda + \lambda l_t(s^t)\bigr] \\
+&= \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr].
+\end{aligned}
+$$
 
 ```{solution-end}
 ```
