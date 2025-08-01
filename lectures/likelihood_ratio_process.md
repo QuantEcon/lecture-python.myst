@@ -905,7 +905,7 @@ $$
 As for attitudes toward bearing risks, agent $i$ has a one-period utility function
 
 $$
-u(c_t^i) = u(c_t^i) = \ln (c_t^i)
+u(c_t^i) = \ln (c_t^i)
 $$
 
 with marginal utility of consumption in period $i$
@@ -1071,7 +1071,7 @@ $$
 \sum_{t=0}^\infty\sum_{s^t} p_t(s^t) c_t^i (s^t) \leq \sum_{t=0}^\infty\sum_{s^t} p_t(s^t) y_t^i (s^t)
 $$ (eq:budgetI)
 
-Agent $i$ puts a Lagrange multiplier $\mu^i$ on {eq}`eq:budgetI` and once-and-for-all chooses a consumption plan $\{c^i_t(s^t)\}_{t=0}^\infty$
+Agent $i$ puts a Lagrange multiplier $\mu_i$ on {eq}`eq:budgetI` and once-and-for-all chooses a consumption plan $\{c^i_t(s^t)\}_{t=0}^\infty$
 to maximize criterion {eq}`eq:objectiveagenti` subject to budget constraint {eq}`eq:budgetI`.
 
 This means that the agent $i$  chooses many objects, namely, $c_t^i(s^t)$ for all $s^t$ for $t = 0, 1, 2, \ldots$.
@@ -1091,7 +1091,7 @@ $$
 which we can rearrange to obtain
 
 $$
-p_t(s^t) = \frac{ \delta^t \pi_t^i(s^t)}{\mu^i c^i_t(s^t)}   
+p_t(s^t) = \frac{ \delta^t \pi_t^i(s^t)}{\mu_i c^i_t(s^t)}   
 $$ (eq:priceequation1)
 
 for $i=1,2$.  
@@ -1122,20 +1122,16 @@ relative prices,   see <https://en.wikipedia.org/wiki/Num%C3%A9raire>.
 If we substitute formula  {eq}`eq:allocationce` for $c_t^1(s^t)$ into formula {eq}`eq:priceequation1` and rearrange, we obtain
 
 $$
-p_t(s^t) = \frac{\delta^t \pi_t^2(s^t)}{1 - \lambda + \lambda l_t(s^t)}
+p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr]
 $$ (eq:pformulafinal)
 
 or
 
-$$
-p_t(s^t) = \frac{\delta^t} {\lambda^2} \left[ {1 - \lambda + \lambda l_t(s^t)} \right] 
-$$ (eq:pformulafinal2)
 
-
-According to formula {eq}`eq:pformulafinal2`, we have the following possible limiting cases:
+According to formula {eq}`eq:pformulafinal`, we have the following possible limiting cases:
 
 * when $l_\infty = 0$, $c_\infty^1 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ 
-* when $l_\infty = \infty$, $c_\infty^1 = 1 $ and tails competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^2(s^t)$ 
+* when $l_\infty = \infty$, $c_\infty^1 = 1 $ and tails competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^1(s^t)$ 
 * for small $t$'s, competitive equilbrium prices reflect both agents' probability models.  
 
 ### Simulations 
@@ -2280,6 +2276,97 @@ E_h[\log L_t] = t \cdot (K_g - K_f) \to -\infty \text{ as } t \to \infty
 $$
 
 Therefore by similar reasoning $L_t \to 0$ almost surely.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex3
+
+Starting from {eq}`eq:priceequation1`, show that the competitive equilibrium prices can be expressed as
+
+$$
+p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr]
+$$
+
+```
+
+```{solution-start} lr_ex3
+:class: dropdown
+```
+
+Starting from
+
+$$
+p_t(s^t) = \frac{\delta^t \pi_t^i(s^t)}{\mu_i c_t^i(s^t)}, \qquad i=1,2.
+$$
+
+Since both expressions equal the same price, we can equate them
+
+$$
+\frac{\pi_t^1(s^t)}{\mu_1 c_t^1(s^t)} = \frac{\pi_t^2(s^t)}{\mu_2 c_t^2(s^t)}
+$$
+
+Rearranging gives
+
+$$
+\frac{c_t^1(s^t)}{c_t^2(s^t)} = \frac{\mu_2}{\mu_1} l_t(s^t)
+$$
+
+where $l_t(s^t) \equiv \pi_t^1(s^t)/\pi_t^2(s^t)$ is the likelihood ratio process.
+
+Using $c_t^2(s^t) = 1 - c_t^1(s^t)$:
+
+$$
+\frac{c_t^1(s^t)}{1 - c_t^1(s^t)} = \frac{\mu_2}{\mu_1} l_t(s^t)
+$$
+
+Solving for $c_t^1(s^t)$
+
+$$
+c_t^1(s^t) = \frac{\mu_2 l_t(s^t)}{\mu_1 + \mu_2 l_t(s^t)}
+$$
+
+
+The planner's solution gives
+
+$$
+c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1 - \lambda + \lambda l_t(s^t)}
+$$
+
+To match them, we need the following equality to hold
+
+$$
+\frac{\mu_2}{\mu_1} = \frac{\lambda}{1 - \lambda}
+$$
+
+Hence we have
+
+$$
+\mu_1 = 1 - \lambda, \qquad \mu_2 = \lambda
+$$
+
+
+With $\mu_1 = 1-\lambda$ and $c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1-\lambda+\lambda l_t(s^t)}$,
+we have
+
+$$
+\begin{aligned}
+p_t(s^t) &= \frac{\delta^t \pi_t^1(s^t)}{(1-\lambda) c_t^1(s^t)} \\
+&= \frac{\delta^t \pi_t^1(s^t)}{(1-\lambda)} \cdot \frac{1 - \lambda + \lambda l_t(s^t)}{\lambda l_t(s^t)} \\
+&= \frac{\delta^t \pi_t^1(s^t)}{(1-\lambda)\lambda l_t(s^t)} \bigl[1 - \lambda + \lambda l_t(s^t)\bigr].
+\end{aligned}
+$$
+
+Since $\pi_t^1(s^t) = l_t(s^t) \pi_t^2(s^t)$, we have
+
+$$
+\begin{aligned}
+p_t(s^t) &= \frac{\delta^t l_t(s^t) \pi_t^2(s^t)}{(1-\lambda)\lambda l_t(s^t)} \bigl[1 - \lambda + \lambda l_t(s^t)\bigr] \\
+&= \frac{\delta^t \pi_t^2(s^t)}{(1-\lambda)\lambda} \bigl[1 - \lambda + \lambda l_t(s^t)\bigr] \\
+&= \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr].
+\end{aligned}
+$$
 
 ```{solution-end}
 ```
