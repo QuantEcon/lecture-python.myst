@@ -1125,9 +1125,6 @@ $$
 p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr]
 $$ (eq:pformulafinal)
 
-or
-
-
 According to formula {eq}`eq:pformulafinal`, we have the following possible limiting cases:
 
 * when $l_\infty = 0$, $c_\infty^1 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ 
