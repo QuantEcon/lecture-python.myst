@@ -805,7 +805,11 @@ We'll study two alternative arrangements:
 
 The fundamental theorems of welfare economics will apply and assure us that these two arrangements end up producing exactly the same allocation of consumption goods to individuals **provided** that the social planner assigns  an appropriate set of **Pareto weights**.
 
+```{note}
+You can learn about how the  two welfare theorems are applied in modern macroeconomic models in  {doc}`this lecture on a planning problem <cass_koopmans_1>`  and {doc}`this lecture on a related competitive equilibrium <cass_koopmans_2>`. 
+```
 
+### The setting
 
 Let the random variable $s_t \in (0,1)$ at time $t =0, 1, 2, \ldots$ be distributed according to the same  Beta distribution  with parameters 
 $\theta = \{\theta_1, \theta_2\}$.
@@ -1012,13 +1016,22 @@ values of the likelihood ratio process $l_t(s^t)$:
 
 $$l_\infty (s^\infty) = 0; \quad c_\infty^1 = 0$$
 
-* In the above case, agent 2 is smarter than agent 1, and agent 1's share of the aggregate endowment converges to zero.  
+* In the above case, agent 2 is ''smarter'' than agent 1, and agent 1's share of the aggregate endowment converges to zero.
+
 
 
 
 $$l_\infty (s^\infty)= \infty; \quad c_\infty^1 = 1$$
 
 * In the above case, agent 1 is smarter than agent 2, and agent 1's share of the aggregate endowment converges to 1. 
+
+```{note}
+These three cases are somehow telling us about how  relative  **wealths** of the agents evolve as time passes.
+* when the two agents are equally smart and $\lambda \in (0,1)$, agent 1's wealth share stays at $\lambda$  perptually.
+* when agent 1 is smarter and  $\lambda \in (0,1)$, agent 1 eventually "owns" the continuation entire continuation endowment and agent 2 eventually "owns" nothing.
+* when agent 2 is smarter and  $\lambda \in (0,1)$, agent 2 eventually "owns" the continuation entire continuation endowment and agent 1 eventually "owns" nothing.
+Continuation wealths can be defined precisely after we introduce a competitive equilibrium **price** system below.
+```
 
 
 Soon we'll do some simulations that will shed further light on possible outcomes.
@@ -1036,6 +1049,7 @@ Two fundamental welfare theorems for general equilibrium models lead us to antic
 
 ```{note}
 For the two welfare theorems and their history, see   <https://en.wikipedia.org/wiki/Fundamental_theorems_of_welfare_economics>.
+Again, for applications to a classic  macroeconomic growth  model, see {doc}`this lecture on a planning problem <cass_koopmans_1>`  and {doc}`this lecture on a related competitive equilibrium <cass_koopmans_2>` 
 ```
 
 Such a connection prevails for our model.  
@@ -1061,7 +1075,20 @@ $s^t$ at price $p_t(s^t)$.
 
 Notice that there is (very long) **vector** of prices.  
 
- * there is one price $p_t(s^t)$ for each history $s^t$ and every date $t = 0, 1, \ldots, $. 
+ * there is one price $p_t(s^t)$ for each history $s^t$ at every date $t = 0, 1, \ldots, $. 
+ * so there are as many prices as there are histories and dates.
+
+These prices determined at time $-1$ before the economy starts.
+
+The market meets once at time $-1$.
+
+At times $t =0, 1, 2, \ldots$ trades made at time $-1$ are executed.
+
+ 
+
+* in the background, there is an "enforcement" procedure that forces agents to carry out the exchanges or "deliveries"  that they agreed to at time $-1$.
+
+
 
 We want to study how agents'  beliefs influence equilibrium prices.  
 
@@ -1071,18 +1098,23 @@ $$
 \sum_{t=0}^\infty\sum_{s^t} p_t(s^t) c_t^i (s^t) \leq \sum_{t=0}^\infty\sum_{s^t} p_t(s^t) y_t^i (s^t)
 $$ (eq:budgetI)
 
+According to budget constraint {eq}`eq:budgetI`,  trade is **multilateral** in the following  sense
+
+* we can imagine  that  agent $i$ first sells his random endowment stream $\{y_t^i (s^t)\}$ and then uses the proceeds (i.e., his "wealth") to purchase a random consumption stream $\{c_t^i (s^t)\}$. 
+
 Agent $i$ puts a Lagrange multiplier $\mu_i$ on {eq}`eq:budgetI` and once-and-for-all chooses a consumption plan $\{c^i_t(s^t)\}_{t=0}^\infty$
 to maximize criterion {eq}`eq:objectiveagenti` subject to budget constraint {eq}`eq:budgetI`.
 
 This means that the agent $i$  chooses many objects, namely, $c_t^i(s^t)$ for all $s^t$ for $t = 0, 1, 2, \ldots$.
 
-```{note}
-For convenience, let's remind ourselves of criterion {eq}`eq:objectiveagenti`:  
-$
-V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t)$
-```
 
-First-order necessary conditions for maximizing objective {eq}`eq:objectiveagenti` with respect to $c_t^i(s^t)$ are 
+For convenience, let's remind ourselves of criterion $V^i$ defined in {eq}`eq:objectiveagenti`:  
+
+$$
+V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t)$
+$$
+
+First-order necessary conditions for maximizing objective $V^i$ defined in `{eq}`eq:objectiveagenti` with respect to $c_t^i(s^t)$ are 
 
 $$
 \delta^t u'(c^i_t(s^t)) \pi_t^i(s^t) = \mu_i p_t(s^t) ,
@@ -1123,12 +1155,18 @@ If we substitute formula  {eq}`eq:allocationce` for $c_t^1(s^t)$ into formula {e
 
 $$
 p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr]
+$$ 
+
+or
+
+$$
+p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)}  \bigl[(1 - \lambda) \pi_t^2(s^t) + \lambda \pi_t^1(s^t)\bigr]
 $$ (eq:pformulafinal)
 
 According to formula {eq}`eq:pformulafinal`, we have the following possible limiting cases:
 
-* when $l_\infty = 0$, $c_\infty^1 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ 
-* when $l_\infty = \infty$, $c_\infty^1 = 1 $ and tails competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^1(s^t)$ 
+* when $l_\infty = 0$, $c_\infty^1 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ according to $p_t(s^t) \propto \delta^t \pi_t^2(s^t) $
+* when $l_\infty = \infty$, $c_\infty^1 = 1 $ and tails of competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^1(s^t)$ according to $p_t(s^t) \propto \delta^t \pi_t^1(s^t) $
 * for small $t$'s, competitive equilbrium prices reflect both agents' probability models.  
 
 ### Simulations 
