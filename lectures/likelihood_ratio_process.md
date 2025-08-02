@@ -1012,7 +1012,7 @@ values of the likelihood ratio process $l_t(s^t)$:
 
  $$l_\infty (s^\infty)= 1; \quad c_\infty^1 = \lambda$$
  
-  * In the above case, both agents are equally smart (or equally not smart) and the consumption allocation stays put at a $\lambda, 1 - \lambda $ split between the two agents. 
+  * In the above case, both agents are equally smart (or equally not smart) and the consumption allocation stays put at a $\lambda, 1 - \lambda$ split between the two agents. 
 
 $$l_\infty (s^\infty) = 0; \quad c_\infty^1 = 0$$
 
@@ -1027,7 +1027,7 @@ $$l_\infty (s^\infty)= \infty; \quad c_\infty^1 = 1$$
 
 ```{note}
 These three cases are somehow telling us about how  relative  **wealths** of the agents evolve as time passes.
-* when the two agents are equally smart and $\lambda \in (0,1)$, agent 1's wealth share stays at $\lambda$  perptually.
+* when the two agents are equally smart and $\lambda \in (0,1)$, agent 1's wealth share stays at $\lambda$  perpetually.
 * when agent 1 is smarter and  $\lambda \in (0,1)$, agent 1 eventually "owns" the continuation entire continuation endowment and agent 2 eventually "owns" nothing.
 * when agent 2 is smarter and  $\lambda \in (0,1)$, agent 2 eventually "owns" the continuation entire continuation endowment and agent 1 eventually "owns" nothing.
 Continuation wealths can be defined precisely after we introduce a competitive equilibrium **price** system below.
@@ -1111,7 +1111,7 @@ This means that the agent $i$  chooses many objects, namely, $c_t^i(s^t)$ for al
 For convenience, let's remind ourselves of criterion $V^i$ defined in {eq}`eq:objectiveagenti`:  
 
 $$
-V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t)$
+V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t)
 $$
 
 First-order necessary conditions for maximizing objective $V^i$ defined in `{eq}`eq:objectiveagenti` with respect to $c_t^i(s^t)$ are 
@@ -1167,7 +1167,7 @@ According to formula {eq}`eq:pformulafinal`, we have the following possible limi
 
 * when $l_\infty = 0$, $c_\infty^1 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ according to $p_t(s^t) \propto \delta^t \pi_t^2(s^t) $
 * when $l_\infty = \infty$, $c_\infty^1 = 1 $ and tails of competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^1(s^t)$ according to $p_t(s^t) \propto \delta^t \pi_t^1(s^t) $
-* for small $t$'s, competitive equilbrium prices reflect both agents' probability models.  
+* for small $t$'s, competitive equilibrium prices reflect both agents' probability models.  
 
 ### Simulations 
 
