@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -57,6 +57,7 @@ from scipy.optimize import brentq, minimize_scalar
 from scipy.stats import beta as beta_dist
 import pandas as pd
 from IPython.display import display, Math
+import quantecon as qe
 ```
 
 ## Likelihood Ratio Process
@@ -1764,6 +1765,270 @@ From the figure above, we can see:
 
 **Remark:** Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem. 
 
+## Special case: Markov chain models
+
+Consider two $n$-state irreducible and aperiodic Markov chain models on the same state space $\{1, 2, \ldots, n\}$ with positive transition matrices $P^{(f)}$, $P^{(g)}$ and initial distributions $\pi_0^{(f)}$, $\pi_0^{(g)}$.
+
+In this section, we assume nature chooses $f$.
+
+For a sample path $(x_0, x_1, \ldots, x_T)$, let $N$ be the transition count matrix where $N_{ij} = n_{ij}$ counts transitions from state $i$ to $j$.
+
+The likelihood under model $m \in \{f, g\}$ is:
+
+$$
+L_T^{(m)} = \pi_{0,x_0}^{(m)} \prod_{i=1}^n \prod_{j=1}^n \left(P_{ij}^{(m)}\right)^{n_{ij}}
+$$
+
+Hence, $\log L_T^{(m)} =\log\pi_{0,x_0}^{(m)} +\sum_{i,j}n_{ij}\log P_{ij}^{(m)}$.
+
+In matrix form, we have 
+
+$$
+\log L_T^{(m)} = \log \pi_{0,x_0}^{(m)} + \text{tr}(N^T \log P^{(m)})
+$$
+
+where $\log P^{(m)}$ denotes element-wise logarithm and $\text{tr}(\cdot)$ is the trace operator.
+
+Subtracting two log-likelihoods gives the log-likelihood ratio
+
+$$
+\log \frac{L_T^{(f)}}{L_T^{(g)}} = \log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} + \text{tr}\left(N^T \log \frac{P^{(f)}}{P^{(g)}}\right)
+$$
+
+where the division is element-wise.
+
+For an irreducible, aperiodic finite chain, the ergodic theorem ensures that as $T\to\infty$
+
+$$
+\frac{n_{ij}}{T} \xrightarrow{a.s.} \pi_i^{(f)}P_{ij}^{(f)},
+$$
+
+where $\boldsymbol{\pi}^{(f)}$ is the stationary distribution satisfying $\boldsymbol{\pi}^{(f)} = \boldsymbol{\pi}^{(f)} P^{(f)}$.
+
+### KL divergence rate
+
+From the log-likelihood ratio formula, taking expectations under model $f$:
+
+$$
+E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = E_f\left[\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}}\right] + \sum_{i,j} E_f[n_{ij}] \log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
+$$
+
+By the ergodic theorem, $E_f[n_{ij}] = T\pi_i^{(f)}P_{ij}^{(f)} + o(T)$, hence:
+
+$$
+E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = T\sum_{i,j} \pi_i^{(f)}P_{ij}^{(f)} \log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}} + O(1)
+$$
+
+Define the **row-wise KL divergence** between the $i$-th rows of the transition matrices
+
+$$
+D_{KL}(P_{i,\cdot}^{(f)}, P_{i,\cdot}^{(g)}) := \sum_{j=1}^n P_{ij}^{(f)} \log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
+$$
+
+The leading term is the **KL divergence rate**
+
+$$
+h_{KL}(f, g) = \sum_{i=1}^n \pi_i^{(f)} D_{KL}(P_{i,\cdot}^{(f)}, P_{i,\cdot}^{(g)})
+$$
+
+Therefore:
+
+$$
+E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = T \cdot h_{KL}(f, g) + E_f\left[\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}}\right]
+$$
+
+The initial distribution term is $O(1)$. Thus:
+
+$$
+\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] \to h_{KL}(f, g) \quad \text{as } T \to \infty
+$$
+
+We'll confirm this in the simulation below.
+
+### Simulations
+
+Let's implement simulations to illustrate these concepts with a three-state Markov chain.
+
+We start the simulation from the stationary distribution
+
+```{code-cell} ipython3
+def compute_stationary_dist(P):
+    """
+    Compute stationary distribution of transition matrix P
+    """
+
+    eigenvalues, eigenvectors = np.linalg.eig(P.T)
+    idx = np.argmax(np.abs(eigenvalues))
+    stationary = np.real(eigenvectors[:, idx])
+    return stationary / stationary.sum()
+
+def markov_kl_divergence(P_f, P_g, pi_f):
+    """
+    Compute KL divergence rate between two Markov chains
+    """
+    kl_rate = 0.0
+    for i in range(len(P_f)):
+        for j in range(len(P_f)):
+            if P_f[i, j] > 0 and P_g[i, j] > 0:
+                    kl_rate += pi_f[i] * P_f[i, j] * np.log(P_f[i, j] / P_g[i, j])
+            else:
+                return np.inf
+    
+    return kl_rate
+
+def simulate_markov_chain(P, pi_0, T, N_paths=1000):
+    """
+    Simulate N_paths sample paths from a Markov chain 
+    """    
+    mc = qe.MarkovChain(P, state_values=None)
+    
+    initial_states = np.random.choice(len(P), size=N_paths, p=pi_0)
+    
+    paths = np.zeros((N_paths, T+1), dtype=int)
+    
+    for i in range(N_paths):
+        path = mc.simulate(T+1, init=initial_states[i])
+        paths[i, :] = path
+    
+    return paths
+    
+
+def compute_likelihood_ratio_markov(paths, P_f, P_g, π_0_f, π_0_g):
+    """
+    Compute likelihood ratio process for Markov chain paths
+    """
+    N_paths, T_plus_1 = paths.shape
+    T = T_plus_1 - 1
+    L_ratios = np.ones((N_paths, T+1))
+    
+    L_ratios[:, 0] = π_0_f[paths[:, 0]] / π_0_g[paths[:, 0]]
+    
+    for t in range(1, T+1):
+        prev_states = paths[:, t-1]
+        curr_states = paths[:, t]
+        
+        transition_ratios = P_f[prev_states, curr_states] / P_g[prev_states, curr_states]
+        L_ratios[:, t] = L_ratios[:, t-1] * transition_ratios
+    
+    return L_ratios
+```
+
+Now let's create an example with two different 3-state Markov chains:
+
+```{code-cell} ipython3
+P_f = np.array([[0.7, 0.2, 0.1],
+                [0.3, 0.5, 0.2],
+                [0.1, 0.3, 0.6]])
+
+P_g = np.array([[0.5, 0.3, 0.2],
+                [0.2, 0.6, 0.2],
+                [0.2, 0.2, 0.6]])
+
+# Initial distributions
+π_0_f = np.array([0.33, 0.33, 0.34])
+π_0_g = np.array([0.33, 0.33, 0.34])
+
+# Compute stationary distributions
+pi_f = compute_stationary_dist(P_f)
+pi_g = compute_stationary_dist(P_g)
+
+print(f"Stationary distribution (f): {pi_f}")
+print(f"Stationary distribution (g): {pi_g}")
+
+# Compute KL divergence rate
+kl_rate_fg = markov_kl_divergence(P_f, P_g, pi_f)
+kl_rate_gf = markov_kl_divergence(P_g, P_f, pi_g)
+
+print(f"\nKL divergence rate h(f, g): {kl_rate_fg:.4f}")
+print(f"KL divergence rate h(g, f): {kl_rate_gf:.4f}")
+```
+
+Let's simulate paths and visualize how likelihood ratios evolve.
+
+We'll verify $\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = h_{KL}(f, g)$ starting from the stationary distribution by plotting both the empirical average and the theoretical expectation
+
+```{code-cell} ipython3
+# Simulate paths from model f
+T = 100
+N_paths = 1000
+paths_from_f = simulate_markov_chain(P_f, π_0_f, T, N_paths)
+
+L_ratios_f = compute_likelihood_ratio_markov(paths_from_f, 
+                                             P_f, P_g, 
+                                             π_0_f, π_0_g)
+
+plt.figure(figsize=(10, 6))
+
+# Plot individual paths
+n_show = 50
+for i in range(n_show):
+    plt.plot(np.log(L_ratios_f[i, :]), 
+             alpha=0.3, color='blue', lw=0.8)
+
+# Compute theoretical expectation
+theory_line = kl_rate_fg * np.arange(T+1)
+plt.plot(theory_line, 'k--', linewidth=2.5, 
+         label=r'$T \times h_{KL}(f,g)$')
+
+# Compute empirical mean
+avg_log_L = np.mean(np.log(L_ratios_f), axis=0)
+plt.plot(avg_log_L, 'r-', linewidth=2.5, 
+         label='empirical average', alpha=0.8)
+
+plt.axhline(y=0, color='gray', 
+            linestyle='--', alpha=0.5)
+plt.xlabel(r'$T$')
+plt.ylabel(r'$\log L_T$')
+plt.title('nature $= f$')
+plt.legend()
+plt.show()
+```
+
+Let's examine how the model selection error probability depends on sample size using the same simulation strategy in the previous section
+
+```{code-cell} ipython3
+def compute_selection_error(T_values, P_f, P_g, π_0_f, π_0_g, N_sim=1000):
+    """
+    Compute model selection error probability for different sample sizes
+    """
+    errors = []
+    
+    for T in T_values:
+        # Simulate from both models
+        paths_f = simulate_markov_chain(P_f, π_0_f, T, N_sim//2)
+        paths_g = simulate_markov_chain(P_g, π_0_g, T, N_sim//2)
+        
+        # Compute likelihood ratios
+        L_f = compute_likelihood_ratio_markov(paths_f, 
+                                              P_f, P_g, 
+                                              π_0_f, π_0_g)
+        L_g = compute_likelihood_ratio_markov(paths_g, 
+                                              P_f, P_g, 
+                                              π_0_f, π_0_g)
+        
+        # Decision rule: choose f if L_T >= 1
+        error_f = np.mean(L_f[:, -1] < 1)   # Type I error
+        error_g = np.mean(L_g[:, -1] >= 1)  # Type II error
+        
+        total_error = 0.5 * (error_f + error_g)
+        errors.append(total_error)
+    
+    return np.array(errors)
+
+# Compute error probabilities
+T_values = np.arange(10, 201, 10)
+errors = compute_selection_error(T_values, 
+                                 P_f, P_g, 
+                                 π_0_f, π_0_g)
+
+# Plot results
+plt.figure(figsize=(10, 6))
+plt.plot(T_values, errors, linewidth=2)
+plt.xlabel('$T$')
+plt.ylabel('model selection error probability')
+plt.show()
+```
+
 ## Measuring discrepancies between distributions
 
 A plausible guess is that the ability of a likelihood ratio to distinguish distributions $f$ and $g$ depends on how "different" they are.
@@ -2405,6 +2670,3 @@ $$
 
 ```{solution-end}
 ```
-
-
-
