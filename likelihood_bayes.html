@@ -169,7 +169,7 @@
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">26.1. Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-setting">26.2. The Setting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-process-and-bayes-law">26.3. Likelihood Ratio Process and Bayes’ Law</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-processes-and-bayes-law">26.3. Likelihood Ratio Processes and Bayes’ Law</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-recursive-formula">26.3.1. A recursive formula</a></li>
 </ul>
 </li>
@@ -397,8 +397,14 @@ probability distribution, for example, a sequence of  IID draws from <span class
 </div>
 </div>
 </section>
-<section id="likelihood-ratio-process-and-bayes-law">
-<h2><span class="section-number">26.3. </span>Likelihood Ratio Process and Bayes’ Law<a class="headerlink" href="#likelihood-ratio-process-and-bayes-law" title="Permalink to this heading">#</a></h2>
+<section id="likelihood-ratio-processes-and-bayes-law">
+<h2><span class="section-number">26.3. </span>Likelihood Ratio Processes and Bayes’ Law<a class="headerlink" href="#likelihood-ratio-processes-and-bayes-law" title="Permalink to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\pi_0 \in [0,1]\)</span> be a Bayesian statistician’s prior probability that nature generates <span class="math notranslate nohighlight">\(w^t\)</span> as a sequence of i.i.d. draws from
+distribution <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<ul class="simple">
+<li><p>here “probability” is to be interpreted as a way to summarize or express a  subjective opinion</p></li>
+<li><p>it does <strong>not</strong> mean an anticipated relative frequency as sample size grows without limit</p></li>
+</ul>
 <p>Let <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> be a Bayesian posterior probability defined as</p>
 <div class="math notranslate nohighlight" id="equation-eq-defbayesposterior">
 <span class="eqno">(26.1)<a class="headerlink" href="#equation-eq-defbayesposterior" title="Permalink to this equation">#</a></span>\[
@@ -419,9 +425,21 @@ of the posterior probability <span class="math notranslate nohighlight">\(\pi_t\
 <p>With no data in hand, our Bayesian statistician thinks that the probability density of the sequence <span class="math notranslate nohighlight">\(w^{t+1}\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-{\rm Prob}(w^{t+1} |\emptyset) = \pi_0 f(w^{t+1})+ (1 -  \pi_0)
+{\rm Prob}(w^{t+1} |\emptyset) = \pi_0 f(w^{t+1})+ (1 -  \pi_0) g(w^{t+1}) 
 \]</div>
-<p>Probability laws connecting joint probability distributions  and conditional probability distributions imply that</p>
+<p>Laws of probability say that the  joint distribution <span class="math notranslate nohighlight">\({\rm Prob}(AB)\)</span> of  events <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are connected to the conditional distributions
+<span class="math notranslate nohighlight">\({\rm Prob}(A |B)\)</span>  and <span class="math notranslate nohighlight">\({\rm Prob}(B |A)\)</span>  by</p>
+<div class="math notranslate nohighlight" id="equation-eq-problawab">
+<span class="eqno">(26.2)<a class="headerlink" href="#equation-eq-problawab" title="Permalink to this equation">#</a></span>\[
+{\rm Prob}(AB) = {\rm Prob}(A |B) {\rm Prob}(B) = {\rm Prob}(B |A) {\rm Prob}(A) . 
+\]</div>
+<p>We are interested in events</p>
+<div class="math notranslate nohighlight">
+\[
+A = \{q=f\},  \quad B = \{w^{t+1}\}, \quad
+\]</div>
+<p>where  braces <span class="math notranslate nohighlight">\(\{\cdot\}\)</span> are our shorthand for “event”.</p>
+<p>So in our setting, probability laws <a class="reference internal" href="#equation-eq-problawab">(26.2)</a> imply that</p>
 <div class="math notranslate nohighlight">
 \[
 {\rm Prob}(q=f |w^{t+1})  {\rm Prob}(w^{t+1}  |\emptyset) = {\rm Prob}(w^{t+1} |q=f) {\rm Prob}(q=f  | \emptyset)
@@ -438,17 +456,17 @@ of the posterior probability <span class="math notranslate nohighlight">\(\pi_t\
 \]</div>
 <p>Dividing both  the numerator and the denominator on the right side of the above  equation  by <span class="math notranslate nohighlight">\(g(w^{t+1})\)</span> implies</p>
 <div class="math notranslate nohighlight" id="equation-eq-bayeslaw1033">
-<span class="eqno">(26.2)<a class="headerlink" href="#equation-eq-bayeslaw1033" title="Permalink to this equation">#</a></span>\[\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} .\]</div>
-<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\(\pi_0\)</span> after seeing
+<span class="eqno">(26.3)<a class="headerlink" href="#equation-eq-bayeslaw1033" title="Permalink to this equation">#</a></span>\[\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} .\]</div>
+<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.3)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\(\pi_0\)</span> after seeing
 the batch of data <span class="math notranslate nohighlight">\(\left\{ w_{i}\right\} _{i=1}^{t+1}\)</span>.</p>
-<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a> shows the key role that the likelihood ratio process  <span class="math notranslate nohighlight">\(L\left(w^{t+1}\right)\)</span> plays in determining
+<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.3)</a> shows the key role that the likelihood ratio process  <span class="math notranslate nohighlight">\(L\left(w^{t+1}\right)\)</span> plays in determining
 the posterior probability <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span>.</p>
-<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a> is the foundation for the insight that, because of how the likelihood ratio process behaves
+<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.3)</a> is the foundation for the insight that, because of how the likelihood ratio process behaves
 as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>, the likelihood ratio process dominates the initial prior <span class="math notranslate nohighlight">\(\pi_0\)</span> in determining the
 limiting behavior of <span class="math notranslate nohighlight">\(\pi_t\)</span>.</p>
 <section id="a-recursive-formula">
 <h3><span class="section-number">26.3.1. </span>A recursive formula<a class="headerlink" href="#a-recursive-formula" title="Permalink to this heading">#</a></h3>
-<p>We can use a similar  line of argument to get a recursive version of formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a>.</p>
+<p>We can use a similar  line of argument to get a recursive version of formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.3)</a>.</p>
 <p>The laws of probability imply</p>
 <div class="math notranslate nohighlight">
 \[
@@ -456,7 +474,7 @@ limiting behavior of <span class="math notranslate nohighlight">\(\pi_t\)</span>
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-bayes150">
-<span class="eqno">(26.3)<a class="headerlink" href="#equation-eq-bayes150" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(26.4)<a class="headerlink" href="#equation-eq-bayes150" title="Permalink to this equation">#</a></span>\[
 \pi_{t+1} = \frac { \pi_t f(w_{t+1})}{ \pi_t f(w_{t+1}) + (1 - \pi_t) g(w_{t+1})}
 \]</div>
 <p>Evidently,  the above equation asserts that</p>
@@ -464,14 +482,14 @@ limiting behavior of <span class="math notranslate nohighlight">\(\pi_t\)</span>
 \[
 {\rm Prob}(q=f|w^{t+1}) = \frac{{\rm Prob}(q=f|w^{t}) f(w_{t+1} )} {{\rm Prob}(w_{t+1})}
 \]</div>
-<p>Dividing both  the numerator and the denominator on the right side of the  equation <a class="reference internal" href="#equation-eq-bayes150">(26.3)</a> by <span class="math notranslate nohighlight">\(g(w_{t+1})\)</span> implies the recursion</p>
+<p>Dividing both  the numerator and the denominator on the right side of the  equation <a class="reference internal" href="#equation-eq-bayes150">(26.4)</a> by <span class="math notranslate nohighlight">\(g(w_{t+1})\)</span> implies the recursion</p>
 <div class="math notranslate nohighlight" id="equation-eq-recur1">
-<span class="eqno">(26.4)<a class="headerlink" href="#equation-eq-recur1" title="Permalink to this equation">#</a></span>\[\pi_{t+1}=\frac{\pi_{t} l_t(w_{t+1})}{\pi_{t} l_t(w_t)+1-\pi_{t}}\]</div>
+<span class="eqno">(26.5)<a class="headerlink" href="#equation-eq-recur1" title="Permalink to this equation">#</a></span>\[\pi_{t+1}=\frac{\pi_{t} l_t(w_{t+1})}{\pi_{t} l_t(w_{t+1})+1-\pi_{t}}\]</div>
 <p>with <span class="math notranslate nohighlight">\(\pi_{0}\)</span> being a Bayesian prior probability that <span class="math notranslate nohighlight">\(q = f\)</span>,
 i.e., a personal or subjective belief about <span class="math notranslate nohighlight">\(q\)</span> based on our having seen no data.</p>
-<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a>  can be deduced by iterating on equation <a class="reference internal" href="#equation-eq-recur1">(26.4)</a>.</p>
+<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.3)</a>  can be deduced by iterating on equation <a class="reference internal" href="#equation-eq-recur1">(26.5)</a>.</p>
 <p>Below we define a Python function that updates belief <span class="math notranslate nohighlight">\(\pi\)</span> using
-likelihood ratio <span class="math notranslate nohighlight">\(\ell\)</span> according to  recursion <a class="reference internal" href="#equation-eq-recur1">(26.4)</a></p>
+likelihood ratio <span class="math notranslate nohighlight">\(\ell\)</span> according to  recursion <a class="reference internal" href="#equation-eq-recur1">(26.5)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
@@ -486,7 +504,7 @@ likelihood ratio <span class="math notranslate nohighlight">\(\ell\)</span> acco
 </div>
 </div>
 </div>
-<p>As mentioned above, formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a> shows the key role that the likelihood ratio process  <span class="math notranslate nohighlight">\(L\left(w^{t+1}\right)\)</span> plays in determining the posterior probability <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span>.</p>
+<p>As mentioned above, formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.3)</a> shows the key role that the likelihood ratio process  <span class="math notranslate nohighlight">\(L\left(w^{t+1}\right)\)</span> plays in determining the posterior probability <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span>.</p>
 <p>As <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>, the likelihood ratio process dominates the initial prior <span class="math notranslate nohighlight">\(\pi_0\)</span> in determining the
 limiting behavior of <span class="math notranslate nohighlight">\(\pi_t\)</span>.</p>
 <p>To illustrate this insight, below we will plot  graphs showing <strong>one</strong> simulated
@@ -604,8 +622,8 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 </div>
 </div>
 </div>
-<p>We thus conclude that  the likelihood ratio process is a key ingredient of the formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a> for
-a Bayesian’s posterior probabilty that nature has drawn history <span class="math notranslate nohighlight">\(w^t\)</span> as repeated draws from density
+<p>We thus conclude that  the likelihood ratio process is a key ingredient of the formula <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.3)</a> for
+a Bayesian’s posterior probability that nature has drawn history <span class="math notranslate nohighlight">\(w^t\)</span> as repeated draws from density
 <span class="math notranslate nohighlight">\(f\)</span>.</p>
 </section>
 </section>
@@ -615,15 +633,19 @@ a Bayesian’s posterior probabilty that nature has drawn history <span class="m
 history <span class="math notranslate nohighlight">\(w^t = \{w_1, w_2, \dots, w_t\}\)</span> under a different timing protocol.</p>
 <p>Until now we assumed that before time <span class="math notranslate nohighlight">\(1\)</span> nature somehow chose to draw <span class="math notranslate nohighlight">\(w^t\)</span> as an iid sequence from <strong>either</strong> <span class="math notranslate nohighlight">\(f\)</span> <strong>or</strong> <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>Nature’s decision about whether to draw from <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> was thus <strong>permanent</strong>.</p>
-<p>We now assume a different timing protocol in which before <strong>each period</strong> <span class="math notranslate nohighlight">\(t =1, 2, \ldots\)</span> nature flips an <span class="math notranslate nohighlight">\(x\)</span>-weighted coin and with probability
-<span class="math notranslate nohighlight">\(x \in (0,1)\)</span>  draws from <span class="math notranslate nohighlight">\(f\)</span> in period <span class="math notranslate nohighlight">\(t\)</span> and with probability <span class="math notranslate nohighlight">\(1 - x \)</span> draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>We now assume a different timing protocol in which before <strong>each period</strong> <span class="math notranslate nohighlight">\(t =1, 2, \ldots\)</span> nature</p>
+<ul class="simple">
+<li><p>flips an <span class="math notranslate nohighlight">\(x\)</span>-weighted coin,  then</p></li>
+<li><p>draws from <span class="math notranslate nohighlight">\(f\)</span> if it has drawn a “head”</p></li>
+<li><p>draws from <span class="math notranslate nohighlight">\(g\)</span> if it has drawn a “tail”.</p></li>
+</ul>
 <p>Under this timing protocol, nature  draws permanently from <strong>neither</strong> <span class="math notranslate nohighlight">\(f\)</span> <strong>nor</strong> <span class="math notranslate nohighlight">\(g\)</span>, so a statistician who thinks that nature is drawing
 i.i.d. draws <strong>permanently</strong> from one of them is mistaken.</p>
 <ul class="simple">
 <li><p>in truth, nature actually draws <strong>permanently</strong> from an <span class="math notranslate nohighlight">\(x\)</span>-mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> – a distribution that is neither <span class="math notranslate nohighlight">\(f\)</span> nor <span class="math notranslate nohighlight">\(g\)</span> when
 <span class="math notranslate nohighlight">\(x \in (0,1)\)</span></p></li>
 </ul>
-<p>Thus, the  Bayesian prior <span class="math notranslate nohighlight">\(\pi_0\)</span> and the sequence of posterior probabilities described by equation <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a> should <strong>not</strong> be interpreted as the statistician’s opinion about the mixing parameter  <span class="math notranslate nohighlight">\(x\)</span> under the alternative timing protocol in which nature draws from an <span class="math notranslate nohighlight">\(x\)</span>-mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>Thus, the  Bayesian prior <span class="math notranslate nohighlight">\(\pi_0\)</span> and the sequence of posterior probabilities described by equation <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.3)</a> should <strong>not</strong> be interpreted as the statistician’s opinion about the mixing parameter  <span class="math notranslate nohighlight">\(x\)</span> under the alternative timing protocol in which nature draws from an <span class="math notranslate nohighlight">\(x\)</span>-mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>This is clear when we remember  the definition of <span class="math notranslate nohighlight">\(\pi_t\)</span> in equation <a class="reference internal" href="#equation-eq-defbayesposterior">(26.1)</a>, which for convenience we repeat here:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -659,7 +681,7 @@ but instead as i.i.d. draws from an <span class="math notranslate nohighlight">\
 <p>We will first use this sequence to study how <span class="math notranslate nohighlight">\(\pi_t\)</span> behaves.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Later, we can use it to study how a statistician who knows that an <span class="math notranslate nohighlight">\(x\)</span>-mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> could construct  maximum likelihood or Bayesian estimators of <span class="math notranslate nohighlight">\(x\)</span> along with the free parameters of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>Later, we can use it to study how a statistician who knows that nature generates data from an <span class="math notranslate nohighlight">\(x\)</span>-mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> could construct  maximum likelihood or Bayesian estimators of <span class="math notranslate nohighlight">\(x\)</span> along with the free parameters of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -753,8 +775,8 @@ KL(m, g) = 0.281
 </div>
 <p>Since <span class="math notranslate nohighlight">\(KL(m, f) &lt; KL(m, g)\)</span>, <span class="math notranslate nohighlight">\(f\)</span> is “closer” to the mixture distribution <span class="math notranslate nohighlight">\(m\)</span>.</p>
 <p>Hence by our discussion on KL divergence and likelihood ratio process in
-<a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>, <span class="math notranslate nohighlight">\(log(L_t) \to \infty\)</span> as <span class="math notranslate nohighlight">\(t \to \infty\)</span>.</p>
-<p>Now looking back to the key equation <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.2)</a>.</p>
+<a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>, <span class="math notranslate nohighlight">\(\log(L_t) \to \infty\)</span> as <span class="math notranslate nohighlight">\(t \to \infty\)</span>.</p>
+<p>Now looking back to the key equation <a class="reference internal" href="#equation-eq-bayeslaw1033">(26.3)</a>.</p>
 <p>Consider the function</p>
 <div class="math notranslate nohighlight">
 \[
@@ -785,7 +807,7 @@ nature has drawn once-and-for-all before time <span class="math notranslate nohi
 over a potentially infinite sequence of draws <span class="math notranslate nohighlight">\(w_0, w_1, \ldots \)</span>.</p>
 <p>Bayes’ law is simply an application of  laws of
 probability to compute the conditional distribution of the <span class="math notranslate nohighlight">\(t\)</span>th draw <span class="math notranslate nohighlight">\(w_t\)</span> conditional on <span class="math notranslate nohighlight">\([w_0, \ldots, w_{t-1}]\)</span>.</p>
-<p>After our worker puts a subjective probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> on nature having selected distribution <span class="math notranslate nohighlight">\(F\)</span>, we have in effect assumes from the start that the   decision maker <strong>knows</strong> the joint distribution  for the process <span class="math notranslate nohighlight">\(\{w_t\}_{t=0}\)</span>.</p>
+<p>After our worker puts a subjective probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> on nature having selected distribution <span class="math notranslate nohighlight">\(F\)</span>, we have in effect assumed from the start that the   decision maker <strong>knows</strong> the joint distribution  for the process <span class="math notranslate nohighlight">\(\{w_t\}_{t=0}\)</span>.</p>
 <p>We assume that the worker also knows the laws of probability theory.</p>
 <p>A respectable view is that Bayes’ law is less a theory of learning than a statement  about the consequences of information inflows for a decision maker who thinks he knows the truth (i.e., a joint probability distribution) from the beginning.</p>
 <section id="mechanical-details-again">
@@ -799,7 +821,7 @@ h(w_0;\pi_{-1}) = \pi_{-1} f(w_0) + (1-\pi_{-1}) g(w_0).
 \]</div>
 <p>Let <span class="math notranslate nohighlight">\(a \in \{ f, g\} \)</span> be an index that indicates whether  nature chose permanently to draw from distribution <span class="math notranslate nohighlight">\(f\)</span> or from distribution <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>After drawing <span class="math notranslate nohighlight">\(w_0\)</span>, the worker uses Bayes’ law to deduce that
-the posterior  probability <span class="math notranslate nohighlight">\(\pi_0 = {\rm Prob} ({a = f | w_0}) \)</span>
+the posterior  probability <span class="math notranslate nohighlight">\(\pi_0 = {\rm Prob}({a = f | w_0}) \)</span>
 that the density is <span class="math notranslate nohighlight">\(f(w)\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -808,7 +830,7 @@ that the density is <span class="math notranslate nohighlight">\(f(w)\)</span> i
 <p>More generally,  after making the <span class="math notranslate nohighlight">\(t\)</span>th draw and having   observed   <span class="math notranslate nohighlight">\(w_t, w_{t-1}, \ldots, w_0\)</span>, the worker believes that
 the probability that <span class="math notranslate nohighlight">\(w_{t+1}\)</span> is  being drawn from  distribution  <span class="math notranslate nohighlight">\(F\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-like44">
-<span class="eqno">(26.5)<a class="headerlink" href="#equation-eq-like44" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(26.6)<a class="headerlink" href="#equation-eq-like44" title="Permalink to this equation">#</a></span>\[
 \pi_t = \pi_t(w_t | \pi_{t-1}) \equiv { \pi_{t-1} f(w_t)/g(w_t) \over \pi_{t-1} f(w_t)/g(w_t) + (1-\pi_{t-1})}
 \]</div>
 <p>or</p>
@@ -842,19 +864,19 @@ term in brackets.</p>
 <p>Because <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span> is a bounded martingale sequence, it follows from the <strong>martingale convergence theorem</strong> that <span class="math notranslate nohighlight">\(\pi_t\)</span> converges almost surely to a random variable in <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
 <p>Practically, this means that  probability one is  attached to   sample paths
 <span class="math notranslate nohighlight">\(\{\pi_t\}_{t=0}^\infty\)</span> that  converge.</p>
-<p>According to the theorem,  it  different sample  paths  can converge to different limiting values.</p>
+<p>According to the theorem,  different sample  paths  can converge to different limiting values.</p>
 <p>Thus, let <span class="math notranslate nohighlight">\(\{\pi_t(\omega)\}_{t=0}^\infty\)</span> denote a particular sample path indexed by a particular <span class="math notranslate nohighlight">\(\omega
 \in \Omega\)</span>.</p>
 <p>We can think of nature as drawing an <span class="math notranslate nohighlight">\(\omega \in \Omega\)</span> from a probability distribution
 <span class="math notranslate nohighlight">\({\textrm{Prob}} \Omega\)</span> and then generating a single realization (or <em>simulation</em>) <span class="math notranslate nohighlight">\(\{\pi_t(\omega)\}_{t=0}^\infty\)</span> of the process.</p>
 <p>The limit points of  <span class="math notranslate nohighlight">\(\{\pi_t(\omega)\}_{t=0}^\infty\)</span> as <span class="math notranslate nohighlight">\(t \rightarrow +\infty\)</span> are realizations of a random variable that  is swept out as we sample <span class="math notranslate nohighlight">\(\omega\)</span> from <span class="math notranslate nohighlight">\(\Omega\)</span> and construct repeated draws of <span class="math notranslate nohighlight">\(\{\pi_t(\omega)\}_{t=0}^\infty\)</span>.</p>
-<p>By staring at law of motion <a class="reference internal" href="#equation-eq-recur1">(26.4)</a> or <a class="reference internal" href="#equation-eq-like44">(26.5)</a> , we can figure out some things about the probability distribution of the limit points</p>
+<p>By staring at law of motion <a class="reference internal" href="#equation-eq-recur1">(26.5)</a> or <a class="reference internal" href="#equation-eq-like44">(26.6)</a> , we can figure out some things about the probability distribution of the limit points</p>
 <div class="math notranslate nohighlight">
 \[
 \pi_\infty(\omega) = \lim_{t \rightarrow + \infty} \pi_t(\omega).
 \]</div>
 <p>Evidently, since the likelihood ratio <span class="math notranslate nohighlight">\(\ell(w_t) \)</span> differs from <span class="math notranslate nohighlight">\(1\)</span> when <span class="math notranslate nohighlight">\(f \neq g\)</span>,
-as we have assumed, the only possible fixed points of <a class="reference internal" href="#equation-eq-like44">(26.5)</a> are</p>
+as we have assumed, the only possible fixed points of <a class="reference internal" href="#equation-eq-like44">(26.6)</a> are</p>
 <div class="math notranslate nohighlight">
 \[
 \pi_\infty(\omega) =1
@@ -1039,7 +1061,7 @@ in the ensemble.</p>
 <p>For the preceding ensemble that assumed <span class="math notranslate nohighlight">\(\pi_0 = .5\)</span>, the following graph shows two  paths of
 <span class="math notranslate nohighlight">\(w_t\)</span>’s and the <span class="math notranslate nohighlight">\(\pi_t\)</span> sequences that gave rise to them.</p>
 <p>Notice that one of the paths involves systematically higher <span class="math notranslate nohighlight">\(w_t\)</span>’s, outcomes that push <span class="math notranslate nohighlight">\(\pi_t\)</span> upward.</p>
-<p>The luck of the draw early in a simulation push the subjective distribution to draw from
+<p>The luck of the draw early in a simulation pushes the subjective distribution to draw from
 <span class="math notranslate nohighlight">\(F\)</span> more frequently along a sample path, and this pushes <span class="math notranslate nohighlight">\(\pi_t\)</span> toward <span class="math notranslate nohighlight">\(0\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1070,7 +1092,7 @@ probability distribution of the pointwise limits <span class="math notranslate n
 <p>We’ll use our simulations to generate a histogram of this distribution.</p>
 <p>In the following table, the left column in bold face reports an assumed value of <span class="math notranslate nohighlight">\(\pi_{-1}\)</span>.</p>
 <p>The second column reports the fraction of <span class="math notranslate nohighlight">\(N = 10000\)</span> simulations for which <span class="math notranslate nohighlight">\(\pi_{t}\)</span>  had converged to <span class="math notranslate nohighlight">\(0\)</span>  at the terminal date <span class="math notranslate nohighlight">\(T=500\)</span> for each simulation.</p>
-<p>The third column reports the fraction of <span class="math notranslate nohighlight">\(N = 10000\)</span> simulations for which <span class="math notranslate nohighlight">\(\pi_{t}\)</span>  had converged to <span class="math notranslate nohighlight">\(1\)</span> as the terminal date <span class="math notranslate nohighlight">\(T=500\)</span> for each simulation.</p>
+<p>The third column reports the fraction of <span class="math notranslate nohighlight">\(N = 10000\)</span> simulations for which <span class="math notranslate nohighlight">\(\pi_{t}\)</span>  had converged to <span class="math notranslate nohighlight">\(1\)</span> at the terminal date <span class="math notranslate nohighlight">\(T=500\)</span> for each simulation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create table</span>
@@ -1210,7 +1232,7 @@ probability distribution of the pointwise limits <span class="math notranslate n
 <img alt="_images/b64ac2ba0abcca70cec574e83c2240915bae6f19a9ce1c894336ce575f0fb0f0.png" src="_images/b64ac2ba0abcca70cec574e83c2240915bae6f19a9ce1c894336ce575f0fb0f0.png" />
 </div>
 </div>
-<p>The shape of the the conditional variance as a function of <span class="math notranslate nohighlight">\(\pi_{t-1}\)</span> is informative about the behavior of sample paths of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>.</p>
+<p>The shape of the conditional variance as a function of <span class="math notranslate nohighlight">\(\pi_{t-1}\)</span> is informative about the behavior of sample paths of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>.</p>
 <p>Notice how the conditional variance approaches <span class="math notranslate nohighlight">\(0\)</span> for <span class="math notranslate nohighlight">\(\pi_{t-1}\)</span> near  either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <p>The conditional variance is nearly zero only when the agent  is almost sure that <span class="math notranslate nohighlight">\(w_t\)</span> is drawn from <span class="math notranslate nohighlight">\(F\)</span>,  or is almost sure it is drawn from <span class="math notranslate nohighlight">\(G\)</span>.</p>
 </section>

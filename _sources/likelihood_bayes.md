@@ -196,7 +196,13 @@ l_seq_f = np.cumprod(l_arr_f, axis=1)
 
 
 
-## Likelihood Ratio Process and Bayes’ Law
+## Likelihood Ratio Processes and Bayes’ Law
+
+Let $\pi_0 \in [0,1]$ be a Bayesian statistician's prior probability that nature generates $w^t$ as a sequence of i.i.d. draws from
+distribution $f$.
+
+* here "probability" is to be interpreted as a way to summarize or express a  subjective opinion
+* it does **not** mean an anticipated relative frequency as sample size grows without limit 
 
 Let $\pi_{t+1}$ be a Bayesian posterior probability defined as
 
@@ -225,11 +231,26 @@ With no data in hand, our Bayesian statistician thinks that the probability dens
 
 
 $$
-{\rm Prob}(w^{t+1} |\emptyset) = \pi_0 f(w^{t+1})+ (1 -  \pi_0)
+{\rm Prob}(w^{t+1} |\emptyset) = \pi_0 f(w^{t+1})+ (1 -  \pi_0) g(w^{t+1}) 
 $$
 
-Probability laws connecting joint probability distributions  and conditional probability distributions imply that
+Laws of probability say that the  joint distribution ${\rm Prob}(AB)$ of  events $A$ and $B$ are connected to the conditional distributions
+${\rm Prob}(A |B)$  and ${\rm Prob}(B |A)$  by
 
+$$
+{\rm Prob}(AB) = {\rm Prob}(A |B) {\rm Prob}(B) = {\rm Prob}(B |A) {\rm Prob}(A) . 
+$$ (eq:problawAB)
+
+We are interested in events 
+
+$$
+A = \{q=f\},  \quad B = \{w^{t+1}\}, \quad
+$$
+
+where  braces $\{\cdot\}$ are our shorthand for "event". 
+
+So in our setting, probability laws {eq}`eq:problawAB` imply that
+ 
 $$
 {\rm Prob}(q=f |w^{t+1})  {\rm Prob}(w^{t+1}  |\emptyset) = {\rm Prob}(w^{t+1} |q=f) {\rm Prob}(q=f  | \emptyset)
 $$
@@ -293,7 +314,7 @@ Dividing both  the numerator and the denominator on the right side of the  equat
 ```{math}
 :label: eq_recur1
 
-\pi_{t+1}=\frac{\pi_{t} l_t(w_{t+1})}{\pi_{t} l_t(w_t)+1-\pi_{t}}
+\pi_{t+1}=\frac{\pi_{t} l_t(w_{t+1})}{\pi_{t} l_t(w_{t+1})+1-\pi_{t}}
 ```
 
 with $\pi_{0}$ being a Bayesian prior probability that $q = f$,
@@ -412,7 +433,7 @@ np.abs(π_seq - π_seq_f).max() < 1e-10
 ```
 
 We thus conclude that  the likelihood ratio process is a key ingredient of the formula {eq}`eq_Bayeslaw1033` for
-a Bayesian's posterior probabilty that nature has drawn history $w^t$ as repeated draws from density
+a Bayesian's posterior probability that nature has drawn history $w^t$ as repeated draws from density
 $f$.
 
 
@@ -425,8 +446,11 @@ Until now we assumed that before time $1$ nature somehow chose to draw $w^t$ as 
 
 Nature's decision about whether to draw from $f$ or $g$ was thus **permanent**. 
 
-We now assume a different timing protocol in which before **each period** $t =1, 2, \ldots$ nature flips an $x$-weighted coin and with probability
-$x \in (0,1)$  draws from $f$ in period $t$ and with probability $1 - x $ draws from $g$.
+We now assume a different timing protocol in which before **each period** $t =1, 2, \ldots$ nature
+
+*  flips an $x$-weighted coin,  then   
+*  draws from $f$ if it has drawn a "head"
+*  draws from $g$ if it has drawn a "tail".
 
 Under this timing protocol, nature  draws permanently from **neither** $f$ **nor** $g$, so a statistician who thinks that nature is drawing
 i.i.d. draws **permanently** from one of them is mistaken. 
@@ -479,7 +503,7 @@ Let's generate a sequence of observations from this mixture model with a true mi
 We will first use this sequence to study how $\pi_t$ behaves.
 
 ```{note}
-Later, we can use it to study how a statistician who knows that an $x$-mixture of $f$ and $g$ could construct  maximum likelihood or Bayesian estimators of $x$ along with the free parameters of $f$ and $g$.
+Later, we can use it to study how a statistician who knows that nature generates data from an $x$-mixture of $f$ and $g$ could construct  maximum likelihood or Bayesian estimators of $x$ along with the free parameters of $f$ and $g$.
 ``` 
 
 ```{code-cell} ipython3
@@ -563,7 +587,7 @@ print(f'KL(m, f) = {KL_f:.3f}\nKL(m, g) = {KL_g:.3f}')
 Since $KL(m, f) < KL(m, g)$, $f$ is "closer" to the mixture distribution $m$.
 
 Hence by our discussion on KL divergence and likelihood ratio process in 
-{doc}`likelihood_ratio_process`, $log(L_t) \to \infty$ as $t \to \infty$.
+{doc}`likelihood_ratio_process`, $\log(L_t) \to \infty$ as $t \to \infty$.
 
 Now looking back to the key equation {eq}`eq_Bayeslaw1033`. 
 
@@ -611,7 +635,7 @@ The worker's initial beliefs induce a joint probability distribution
 Bayes' law is simply an application of  laws of
  probability to compute the conditional distribution of the $t$th draw $w_t$ conditional on $[w_0, \ldots, w_{t-1}]$.
 
-After our worker puts a subjective probability $\pi_{-1}$ on nature having selected distribution $F$, we have in effect assumes from the start that the   decision maker **knows** the joint distribution  for the process $\{w_t\}_{t=0}$.
+After our worker puts a subjective probability $\pi_{-1}$ on nature having selected distribution $F$, we have in effect assumed from the start that the   decision maker **knows** the joint distribution  for the process $\{w_t\}_{t=0}$.
 
 We assume that the worker also knows the laws of probability theory.
 
@@ -632,7 +656,7 @@ $$
 Let $a \in \{ f, g\} $ be an index that indicates whether  nature chose permanently to draw from distribution $f$ or from distribution $g$.
 
 After drawing $w_0$, the worker uses Bayes' law to deduce that
-the posterior  probability $\pi_0 = {\rm Prob} ({a = f | w_0}) $
+the posterior  probability $\pi_0 = {\rm Prob}({a = f | w_0}) $
 that the density is $f(w)$ is
 
 $$
@@ -691,7 +715,7 @@ Because $\{\pi_t\}$ is a bounded martingale sequence, it follows from the **mart
 Practically, this means that  probability one is  attached to   sample paths
  $\{\pi_t\}_{t=0}^\infty$ that  converge.
 
-According to the theorem,  it  different sample  paths  can converge to different limiting values.
+According to the theorem,  different sample  paths  can converge to different limiting values.
 
 Thus, let $\{\pi_t(\omega)\}_{t=0}^\infty$ denote a particular sample path indexed by a particular $\omega
 \in \Omega$.
@@ -908,7 +932,7 @@ $w_t$'s and the $\pi_t$ sequences that gave rise to them.
 
 Notice that one of the paths involves systematically higher $w_t$'s, outcomes that push $\pi_t$ upward.
 
-The luck of the draw early in a simulation push the subjective distribution to draw from
+The luck of the draw early in a simulation pushes the subjective distribution to draw from
 $F$ more frequently along a sample path, and this pushes $\pi_t$ toward $0$.
 
 ```{code-cell} ipython3
@@ -938,7 +962,7 @@ In the following table, the left column in bold face reports an assumed value of
 
 The second column reports the fraction of $N = 10000$ simulations for which $\pi_{t}$  had converged to $0$  at the terminal date $T=500$ for each simulation.
 
-The third column reports the fraction of $N = 10000$ simulations for which $\pi_{t}$  had converged to $1$ as the terminal date $T=500$ for each simulation.
+The third column reports the fraction of $N = 10000$ simulations for which $\pi_{t}$  had converged to $1$ at the terminal date $T=500$ for each simulation.
 
 ```{code-cell} ipython3
 # create table
@@ -994,7 +1018,7 @@ ax.set_ylabel(r'$\sigma^{2}(\pi_{t}\vert \pi_{t-1})$')
 plt.show()
 ```
 
-The shape of the the conditional variance as a function of $\pi_{t-1}$ is informative about the behavior of sample paths of $\{\pi_t\}$.
+The shape of the conditional variance as a function of $\pi_{t-1}$ is informative about the behavior of sample paths of $\{\pi_t\}$.
 
 Notice how the conditional variance approaches $0$ for $\pi_{t-1}$ near  either $0$ or $1$.
 

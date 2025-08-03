@@ -260,7 +260,9 @@ Requirement already satisfied: tqdm in /home/runner/miniconda3/envs/quantecon/li
 Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.3)
 Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (3.4.0)
 Requirement already satisfied: scipy&gt;=1.12 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (1.13.1)
-Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
 </pre></div>
 </div>
 </div>
@@ -268,13 +270,13 @@ Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib
 </div>
 <section id="overview">
 <h2><span class="section-number">27.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>This  is a sequel to <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this  quantecon lecture</span></a>.</p>
-<p>We discuss  two ways to create compound lottery and their consequences.</p>
+<p>This is a sequel to <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this quantecon lecture</span></a>.</p>
+<p>We discuss two ways to create a compound lottery and their consequences.</p>
 <p>A compound lottery can be said to create a <em>mixture distribution</em>.</p>
 <p>Our two ways of constructing a compound lottery will differ in their <strong>timing</strong>.</p>
 <ul class="simple">
 <li><p>in one, mixing between two possible probability distributions  will occur once and all at the beginning of time</p></li>
-<li><p>in the other, mixing between the same two possible possible probability distributions will occur each period</p></li>
+<li><p>in the other, mixing between the same two possible probability distributions will occur each period</p></li>
 </ul>
 <p>The statistical setting is close but not identical to the problem studied in that quantecon lecture.</p>
 <p>In that lecture, there were two  i.i.d. processes that could possibly govern successive draws of a non-negative random variable <span class="math notranslate nohighlight">\(W\)</span>.</p>
@@ -283,7 +285,7 @@ Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib
 <p>The agent represented that ignorance  by assuming that nature had chosen  <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> by  flipping an unfair coin that put probability  <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> on probability distribution <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <p>That assumption allowed the agent to construct a subjective joint probability distribution over the
 random sequence <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^\infty\)</span>.</p>
-<p>We studied how the agent would then use the laws of conditional probability and an observed   history <span class="math notranslate nohighlight">\(w^t =\{w_s\}_{t=0}^t\)</span>   to form</p>
+<p>We studied how the agent would then use the laws of conditional probability and an observed history <span class="math notranslate nohighlight">\(w^t =\{w_s\}_{s=0}^t\)</span> to form</p>
 <div class="math notranslate nohighlight">
 \[
 \pi_t = E [ \textrm{nature chose distribution}  f | w^t] , \quad  t = 0, 1, 2, \ldots
@@ -296,7 +298,7 @@ and <span class="math notranslate nohighlight">\(g\)</span> with probability <sp
 <p>Thus, nature perpetually draws from the <strong>mixture distribution</strong> with c.d.f.</p>
 <div class="math notranslate nohighlight">
 \[
-H(w ) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
+H(w) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
 \]</div>
 <p>We’ll study two agents  who try to learn about the wage process, but who use different  statistical models.</p>
 <p>Both types of agent know <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> but neither knows <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
@@ -313,7 +315,7 @@ generating process.</p>
 generates the data is neither <span class="math notranslate nohighlight">\(f\)</span> nor <span class="math notranslate nohighlight">\(g\)</span> and so is beyond the support of the models that the agent thinks are
 possible.</p>
 <p>Nevertheless, we’ll see that our first type of agent muddles through and eventually learns something  interesting and useful, even though it is not <em>true</em>.</p>
-<p>Instead, it turn out that our type 1 agent who is armed with a wrong statistical model ends up learning  whichever probability distribution, <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>,
+<p>Instead, it turns out that our type 1 agent who is armed with a wrong statistical model ends up learning whichever probability distribution, <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>,
 is in a special sense <em>closest</em> to the <span class="math notranslate nohighlight">\(h\)</span> that actually generates the data.</p>
 <p>We’ll tell the sense in which it is closest.</p>
 <p>Our second type of agent understands that nature mixes between <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> each period with a fixed mixing
@@ -446,7 +448,7 @@ and <span class="math notranslate nohighlight">\(G\)</span> with prob <span clas
 </ul>
 <p>Our second method uses a uniform distribution and the following fact that we also described and used in the quantecon lecture <a class="reference external" href="https://python.quantecon.org/prob_matrix.html">https://python.quantecon.org/prob_matrix.html</a>:</p>
 <ul class="simple">
-<li><p>If a random variable <span class="math notranslate nohighlight">\(X\)</span> has c.d.f. <span class="math notranslate nohighlight">\(F(X)\)</span>, then a random variable <span class="math notranslate nohighlight">\(F^{-1}(U)\)</span> also has c.d.f. <span class="math notranslate nohighlight">\(F(x)\)</span>, where <span class="math notranslate nohighlight">\(U\)</span> is a uniform random variable on <span class="math notranslate nohighlight">\([0,1]\)</span>.</p></li>
+<li><p>If a random variable <span class="math notranslate nohighlight">\(X\)</span> has c.d.f. <span class="math notranslate nohighlight">\(F\)</span>, then a random variable <span class="math notranslate nohighlight">\(F^{-1}(U)\)</span> also has c.d.f. <span class="math notranslate nohighlight">\(F\)</span>, where <span class="math notranslate nohighlight">\(U\)</span> is a uniform random variable on <span class="math notranslate nohighlight">\([0,1]\)</span>.</p></li>
 </ul>
 <p>In other words, if <span class="math notranslate nohighlight">\(X \sim F(x)\)</span> we can generate a random sample from <span class="math notranslate nohighlight">\(F\)</span> by drawing a random sample from
 a uniform distribution on <span class="math notranslate nohighlight">\([0,1]\)</span> and computing <span class="math notranslate nohighlight">\(F^{-1}(U)\)</span>.</p>
@@ -524,14 +526,14 @@ from our target mixture distribution.</p>
 <p>The likelihood ratio process plays a principal role  in the formula that governs the evolution
 of the posterior probability <span class="math notranslate nohighlight">\( \pi_t \)</span>, an instance of <strong>Bayes’ Law</strong>.</p>
 <p>Bayes’ law implies that <span class="math notranslate nohighlight">\( \{\pi_t\} \)</span> obeys the recursion</p>
-<div class="math notranslate nohighlight" id="equation-equation-eq-recur1">
-<span class="eqno">(27.1)<a class="headerlink" href="#equation-equation-eq-recur1" title="Permalink to this equation">#</a></span>\[
+<div class="math notranslate nohighlight" id="equation-eq-recur1">
+<span class="eqno">(27.1)<a class="headerlink" href="#equation-eq-recur1" title="Permalink to this equation">#</a></span>\[
 \pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
 \]</div>
 <p>with <span class="math notranslate nohighlight">\( \pi_{0} \)</span> being a Bayesian prior probability that <span class="math notranslate nohighlight">\( q = f \)</span>,
 i.e., a personal or subjective belief about <span class="math notranslate nohighlight">\( q \)</span> based on our having seen no data.</p>
 <p>Below we define a Python function that updates belief <span class="math notranslate nohighlight">\( \pi \)</span> using
-likelihood ratio <span class="math notranslate nohighlight">\( \ell \)</span> according to  recursion <a class="reference internal" href="#equation-equation-eq-recur1">(27.1)</a></p>
+likelihood ratio <span class="math notranslate nohighlight">\( \ell \)</span> according to recursion <a class="reference internal" href="#equation-eq-recur1">(27.1)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
@@ -546,7 +548,7 @@ likelihood ratio <span class="math notranslate nohighlight">\( \ell \)</span> ac
 </div>
 </div>
 </div>
-<p>Formula <a class="reference internal" href="#equation-equation-eq-recur1">(27.1)</a> can be generalized  by iterating on it and thereby deriving an
+<p>Formula <a class="reference internal" href="#equation-eq-recur1">(27.1)</a> can be generalized  by iterating on it and thereby deriving an
 expression for  the time <span class="math notranslate nohighlight">\( t \)</span> posterior <span class="math notranslate nohighlight">\( \pi_{t+1} \)</span> as a function
 of the time <span class="math notranslate nohighlight">\( 0 \)</span> prior <span class="math notranslate nohighlight">\( \pi_0 \)</span> and the likelihood ratio process
 <span class="math notranslate nohighlight">\( L(w^{t+1}) \)</span> at time <span class="math notranslate nohighlight">\( t \)</span>.</p>
@@ -590,19 +592,18 @@ of the time <span class="math notranslate nohighlight">\( 0 \)</span> prior <spa
 <p>After rearranging the preceding equation, we can express <span class="math notranslate nohighlight">\( \pi_{t+1} \)</span> as a
 function of  <span class="math notranslate nohighlight">\( L\left(w^{t+1}\right) \)</span>, the  likelihood ratio process at <span class="math notranslate nohighlight">\( t+1 \)</span>,
 and the initial prior <span class="math notranslate nohighlight">\( \pi_{0} \)</span></p>
-<div class="math notranslate nohighlight" id="equation-equation-eq-bayeslaw103">
-<span class="eqno">(27.2)<a class="headerlink" href="#equation-equation-eq-bayeslaw103" title="Permalink to this equation">#</a></span>\[
+<div class="math notranslate nohighlight" id="equation-eq-bayeslaw103">
+<span class="eqno">(27.2)<a class="headerlink" href="#equation-eq-bayeslaw103" title="Permalink to this equation">#</a></span>\[
 \pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}}.
 \]</div>
-<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(27.2)</a> generalizes formula <a class="reference internal" href="#equation-equation-eq-recur1">(27.1)</a>.</p>
-<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(27.2)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\( \pi_0 \)</span> after seeing
+<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw103">(27.2)</a> generalizes formula <a class="reference internal" href="#equation-eq-recur1">(27.1)</a>.</p>
+<p>Formula <a class="reference internal" href="#equation-eq-bayeslaw103">(27.2)</a> can be regarded as a one step revision of prior probability <span class="math notranslate nohighlight">\( \pi_0 \)</span> after seeing
 the batch of data <span class="math notranslate nohighlight">\( \left\{ w_{i}\right\} _{i=1}^{t+1} \)</span>.</p>
 </section>
 <section id="what-a-type-1-agent-learns-when-mixture-h-generates-data">
 <h2><span class="section-number">27.4. </span>What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data<a class="headerlink" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data" title="Permalink to this heading">#</a></h2>
-<p>We now study what happens when the mixture distribution <span class="math notranslate nohighlight">\(h;\alpha\)</span>  truly generated the data each period.</p>
-<p>A submartingale or supermartingale continues to describe <span class="math notranslate nohighlight">\(\pi_t\)</span></p>
-<p>It raises its ugly head and causes <span class="math notranslate nohighlight">\(\pi_t\)</span> to converge either to <span class="math notranslate nohighlight">\(0\)</span> or to <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>We now study what happens when the mixture distribution <span class="math notranslate nohighlight">\(h;\alpha\)</span> truly generated the data each period.</p>
+<p>The sequence <span class="math notranslate nohighlight">\(\pi_t\)</span> continues to converge, despite the agent’s misspecified model, and the limit is either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <p>This is true even though in truth nature always mixes between <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>After verifying that claim about possible limit points of <span class="math notranslate nohighlight">\(\pi_t\)</span> sequences, we’ll drill down and study
 what fundamental force determines the limiting value of <span class="math notranslate nohighlight">\(\pi_t\)</span>.</p>
@@ -828,8 +829,8 @@ recorded on the <span class="math notranslate nohighlight">\(x\)</span> axis.</p
 <p>Evidently, our type 1 learner who applies Bayes’ law to his misspecified set of statistical models eventually learns an approximating model that is as close as possible to the true model, as measured by its
 Kullback-Leibler divergence:</p>
 <ul class="simple">
-<li><p>When <span class="math notranslate nohighlight">\(\alpha\)</span> is small, the <span class="math notranslate nohighlight">\(KL_g &lt; KL_f\)</span> meaning the divergence of <span class="math notranslate nohighlight">\(g\)</span> from <span class="math notranslate nohighlight">\(h\)</span> is smaller than that of <span class="math notranslate nohighlight">\(f\)</span> and so the limit point of <span class="math notranslate nohighlight">\(\pi_t\)</span> is close to <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
-<li><p>When <span class="math notranslate nohighlight">\(\alpha\)</span> is large, the <span class="math notranslate nohighlight">\(KL_f &lt; KL_g\)</span> meaning the divergence of <span class="math notranslate nohighlight">\(f\)</span> from <span class="math notranslate nohighlight">\(h\)</span> is smaller than that of <span class="math notranslate nohighlight">\(g\)</span> and so the limit point of <span class="math notranslate nohighlight">\(\pi_t\)</span> is close to <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(\alpha\)</span> is small, <span class="math notranslate nohighlight">\(KL_g &lt; KL_f\)</span> meaning the divergence of <span class="math notranslate nohighlight">\(g\)</span> from <span class="math notranslate nohighlight">\(h\)</span> is smaller than that of <span class="math notranslate nohighlight">\(f\)</span> and so the limit point of <span class="math notranslate nohighlight">\(\pi_t\)</span> is close to <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(\alpha\)</span> is large, <span class="math notranslate nohighlight">\(KL_f &lt; KL_g\)</span> meaning the divergence of <span class="math notranslate nohighlight">\(f\)</span> from <span class="math notranslate nohighlight">\(h\)</span> is smaller than that of <span class="math notranslate nohighlight">\(g\)</span> and so the limit point of <span class="math notranslate nohighlight">\(\pi_t\)</span> is close to <span class="math notranslate nohighlight">\(1\)</span>.</p></li>
 </ul>
 </section>
 <section id="type-2-agent">
@@ -843,7 +844,7 @@ that the agent knows that</p>
 h(w) = h(w| \alpha)
 \]</div>
 <p>but does not know <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
-<p>We’ll assume that the person starts out with a prior probabilty <span class="math notranslate nohighlight">\(\pi_0(\alpha)\)</span> on
+<p>We’ll assume that the person starts out with a prior probability <span class="math notranslate nohighlight">\(\pi_0(\alpha)\)</span> on
 <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span> where the prior has one of the forms that we deployed in <a class="reference internal" href="bayes_nonconj.html"><span class="doc">this quantecon lecture</span></a>.</p>
 <p>We’ll fire up <code class="docutils literal notranslate"><span class="pre">numpyro</span></code> and  apply it  to the present situation.</p>
 <p>Bayes’ law now takes the form</p>
@@ -858,7 +859,7 @@ h(w) = h(w| \alpha)
 <p>We anticipate that a posterior  distribution will collapse around  the true <span class="math notranslate nohighlight">\(\alpha\)</span> as
 <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.</p>
 <p>Let us try a uniform prior first.</p>
-<p>We use the <code class="docutils literal notranslate"><span class="pre">Mixture</span></code> class in Numpyro to construct the likelihood function.</p>
+<p>We use the <code class="docutils literal notranslate"><span class="pre">Mixture</span></code> class in numpyro to construct the likelihood function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α</span> <span class="o">=</span> <span class="mf">0.8</span>
@@ -925,7 +926,7 @@ that either <span class="math notranslate nohighlight">\(f\)</span> or <span cla
 <p>Thus, the  following situation prevails quite generally in empirical work.</p>
 <p>A scientist approaches the data with a manifold <span class="math notranslate nohighlight">\(S\)</span> of statistical models <span class="math notranslate nohighlight">\( s (X | \theta)\)</span> , where <span class="math notranslate nohighlight">\(s\)</span> is a probability distribution over a random vector <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(\theta \in \Theta\)</span>
 is a vector of parameters, and <span class="math notranslate nohighlight">\(\Theta\)</span> indexes the manifold of models.</p>
-<p>The scientist with observations that he interprests as realizations <span class="math notranslate nohighlight">\(x\)</span> of the random vector <span class="math notranslate nohighlight">\(X\)</span> wants to solve an <strong>inverse problem</strong> of somehow <em>inverting</em>
+<p>The scientist with observations that he interprets as realizations <span class="math notranslate nohighlight">\(x\)</span> of the random vector <span class="math notranslate nohighlight">\(X\)</span> wants to solve an <strong>inverse problem</strong> of somehow <em>inverting</em>
 <span class="math notranslate nohighlight">\(s(x | \theta)\)</span> to infer <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(x\)</span>.</p>
 <p>But the scientist’s model is misspecified, being only an approximation to an unknown  model <span class="math notranslate nohighlight">\(h\)</span> that nature uses to generate <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>If the scientist uses Bayes’ law or a related  likelihood-based  method to infer <span class="math notranslate nohighlight">\(\theta\)</span>, it occurs quite generally that for large sample sizes the inverse problem infers a  <span class="math notranslate nohighlight">\(\theta\)</span> that minimizes  the KL divergence of the scientist’s model <span class="math notranslate nohighlight">\(s\)</span> relative to nature’s   model <span class="math notranslate nohighlight">\(h\)</span>.</p>
@@ -940,7 +941,7 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 and Bayes’ law to a misspecified statistical model.</p>
 <p>In that lecture, we used a model selection algorithm to study the case where the true data generating process is a mixture.</p>
 <p>In this lecture, we studied how to correctly “learn” a model generated by a mixing process using a Bayesian approach.</p>
-<p>To fix the algorithm we used in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>. A correct Bayesian approach should directly model the uncertainty about <span class="math notranslate nohighlight">\(x\)</span> and update beliefs about it as new data arrives.</p>
+<p>To fix the algorithm we used in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>, a correct Bayesian approach should directly model the uncertainty about <span class="math notranslate nohighlight">\(x\)</span> and update beliefs about it as new data arrives.</p>
 <p>Here is the algorithm:</p>
 <p>First we specify a prior distribution for <span class="math notranslate nohighlight">\(x\)</span> given by <span class="math notranslate nohighlight">\(x \sim \text{Beta}(\alpha_0, \beta_0)\)</span> with expectation <span class="math notranslate nohighlight">\(\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}\)</span>.</p>
 <p>The likelihood for a single observation <span class="math notranslate nohighlight">\(w_t\)</span> is <span class="math notranslate nohighlight">\(p(w_t|x) = x f(w_t) + (1-x) g(w_t)\)</span>.</p>
