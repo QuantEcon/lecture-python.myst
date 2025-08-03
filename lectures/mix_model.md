@@ -316,13 +316,13 @@ Bayes’ law implies that $ \{\pi_t\} $ obeys the recursion
 
 $$
 \pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
-$$ (eq-recur1)
+$$ (eq:recur1)
 
 with $ \pi_{0} $ being a Bayesian prior probability that $ q = f $,
 i.e., a personal or subjective belief about $ q $ based on our having seen no data.
 
 Below we define a Python function that updates belief $ \pi $ using
-likelihood ratio $ \ell $ according to recursion {eq}`eq-recur1`
+likelihood ratio $ \ell $ according to recursion {eq}`eq:recur1`
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -337,7 +337,7 @@ def update(π, l):
     return π
 ```
 
-Formula {eq}`equation-eq-recur1` can be generalized  by iterating on it and thereby deriving an
+Formula {eq}`eq:recur1` can be generalized  by iterating on it and thereby deriving an
 expression for  the time $ t $ posterior $ \pi_{t+1} $ as a function
 of the time $ 0 $ prior $ \pi_0 $ and the likelihood ratio process
 $ L(w^{t+1}) $ at time $ t $.
@@ -389,11 +389,11 @@ and the initial prior $ \pi_{0} $
 
 $$
 \pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}}.
-$$ (eq-bayeslaw103)
+$$ (eq:bayeslaw103)
 
-Formula {eq}`eq-bayeslaw103` generalizes formula {eq}`eq-recur1`.
+Formula {eq}`eq:bayeslaw103` generalizes formula {eq}`eq:recur1`.
 
-Formula {eq}`eq-bayeslaw103` can be regarded as a one step revision of prior probability $ \pi_0 $ after seeing
+Formula {eq}`eq:bayeslaw103` can be regarded as a one step revision of prior probability $ \pi_0 $ after seeing
 the batch of data $ \left\{ w_{i}\right\} _{i=1}^{t+1} $.
 
 ## What a type 1 Agent Learns when Mixture $H$ Generates Data
