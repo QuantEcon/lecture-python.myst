@@ -49,20 +49,22 @@ That known probability distribution is his 'hypothesis'.
 
 A frequentist statistician studies the distribution of that statistic under that known probability distribution
 
-* when the distribution is a member of a set of parameterized probability distribution, his hypothesis takes the form of a particular parameter vector.
+* when the distribution is a member of a set of parameterized probability distributions, his hypothesis takes the form of a particular parameter vector.
 * this is what we mean when we say that the frequentist statistician 'conditions on the parameters' 
-* he regards the parameters that are fixed numbers, known to nature, but not to him.
-* the statistician copes with his ignorance of those parameters by constructing the type I and type II errors associated with frequentist hypothesis testing.
+* he regards the parameters as fixed numbers that are known to nature, but not to him.
+* the statistician copes with his ignorance of thoe parameters by constructing type I and type II errors associated with frequentist hypothesis testing.
 
-In this lecture, we reformulate Friedman and Wald's  problem  by transforming our point of view from the 'objective' frequentist perspective of {doc}`the lecture on Wald's sequential analysis<wald_friedman>` to an explicitly 'subjective' perspective taken by a Bayesian decision maker who regards parameters not as fixed numbers but as (hidden) random variables that are jointly distributed with the random variables that can be observed by sampling from that joint distribution.
+In this lecture, we reformulate Friedman and Wald's  problem  by transforming our point of view from the 'objective' frequentist perspective of {doc}`the lecture on Wald's sequential analysis<wald_friedman>` to an explicitly 'subjective' perspective taken by a Bayesian decision maker who regards parameters not as fixed numbers but as (hidden) random variables that are jointly distributed with the random variables that he can observe by  sampling from that joint distribution.
 
 To form that joint distribution, the Bayesian statistician supplements the conditional distributions used by the frequentist statistician with 
 a prior probability distribution over the parameters that representive his personal, subjective opinion about those them. 
 
+That lets the Bayesian statistician calculate the joint distribution that he requires to calculate the conditional distributions that he wants. 
+
 To proceed in the way, we endow our decision maker with 
 
 - an initial prior subjective probability $\pi_{-1} \in (0,1)$  that nature uses to  generate  $\{z_k\}$ as a sequence of i.i.d. draws from $f_1$ rather than $f_0$.
-- faith in Bayes' law as a way to revise his subjective beliefs as observations on $\{z_k\}$ sequence arrive each period. 
+- faith in Bayes' law as a way to revise his subjective beliefs as observations on $\{z_k\}$ sequence arrive. 
 - a loss function that tells how the decision maker values type I and type II errors.  
 
 In our {doc}`previous frequentist version <wald_friedman>`, key ideas in play were:
