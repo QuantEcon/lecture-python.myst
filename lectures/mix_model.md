@@ -25,9 +25,9 @@ kernelspec:
 
 ## Overview
 
-This  is a sequel to {doc}`this  quantecon lecture <likelihood_bayes>`.
+This is a sequel to {doc}`this quantecon lecture <likelihood_bayes>`.
 
-We discuss  two ways to create compound lottery and their consequences.
+We discuss two ways to create a compound lottery and their consequences.
 
 A compound lottery can be said to create a _mixture distribution_.
 
@@ -35,7 +35,7 @@ Our two ways of constructing a compound lottery will differ in their **timing**.
 
 * in one, mixing between two possible probability distributions  will occur once and all at the beginning of time
 
-* in the other, mixing between the same two possible possible probability distributions will occur each period
+* in the other, mixing between the same two possible probability distributions will occur each period
 
 The statistical setting is close but not identical to the problem studied in that quantecon lecture.
 
@@ -50,7 +50,7 @@ The agent represented that ignorance  by assuming that nature had chosen  $f$ or
 That assumption allowed the agent to construct a subjective joint probability distribution over the
 random sequence $\{W_t\}_{t=0}^\infty$.
 
-We studied how the agent would then use the laws of conditional probability and an observed   history $w^t =\{w_s\}_{t=0}^t$   to form
+We studied how the agent would then use the laws of conditional probability and an observed history $w^t =\{w_s\}_{s=0}^t$ to form
 
 $$
 \pi_t = E [ \textrm{nature chose distribution}  f | w^t] , \quad  t = 0, 1, 2, \ldots
@@ -68,7 +68,7 @@ and $g$ with probability $1 -\alpha$.
 Thus, nature perpetually draws from the **mixture distribution** with c.d.f.
 
 $$
-H(w ) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
+H(w) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
 $$
 
 We'll study two agents  who try to learn about the wage process, but who use different  statistical models.
@@ -95,7 +95,7 @@ possible.
 
 Nevertheless, we'll see that our first type of agent muddles through and eventually learns something  interesting and useful, even though it is not *true*.
 
-Instead, it turn out that our type 1 agent who is armed with a wrong statistical model ends up learning  whichever probability distribution, $f$ or $g$,
+Instead, it turns out that our type 1 agent who is armed with a wrong statistical model ends up learning whichever probability distribution, $f$ or $g$,
 is in a special sense *closest* to the $h$ that actually generates the data.
 
 We'll tell the sense in which it is closest.
@@ -232,7 +232,7 @@ Here is pseudo code for a direct "method 1" for drawing from our compound lotter
 
 Our second method uses a uniform distribution and the following fact that we also described and used in the quantecon lecture <https://python.quantecon.org/prob_matrix.html>:
 
- * If a random variable $X$ has c.d.f. $F(X)$, then a random variable $F^{-1}(U)$ also has c.d.f. $F(x)$, where $U$ is a uniform random variable on $[0,1]$.
+ * If a random variable $X$ has c.d.f. $F$, then a random variable $F^{-1}(U)$ also has c.d.f. $F$, where $U$ is a uniform random variable on $[0,1]$.
 
 In other words, if $X \sim F(x)$ we can generate a random sample from $F$ by drawing a random sample from
 a uniform distribution on $[0,1]$ and computing $F^{-1}(U)$.
@@ -316,13 +316,13 @@ Bayes’ law implies that $ \{\pi_t\} $ obeys the recursion
 
 $$
 \pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
-$$ (equation-eq-recur1)
+$$ (eq-recur1)
 
 with $ \pi_{0} $ being a Bayesian prior probability that $ q = f $,
 i.e., a personal or subjective belief about $ q $ based on our having seen no data.
 
 Below we define a Python function that updates belief $ \pi $ using
-likelihood ratio $ \ell $ according to  recursion {eq}`equation-eq-recur1`
+likelihood ratio $ \ell $ according to recursion {eq}`eq-recur1`
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -389,20 +389,18 @@ and the initial prior $ \pi_{0} $
 
 $$
 \pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}}.
-$$ (equation-eq-bayeslaw103)
+$$ (eq-bayeslaw103)
 
-Formula {eq}`equation-eq-bayeslaw103` generalizes formula {eq}`equation-eq-recur1`.
+Formula {eq}`eq-bayeslaw103` generalizes formula {eq}`eq-recur1`.
 
-Formula {eq}`equation-eq-bayeslaw103`  can be regarded as a one step  revision of prior probability $ \pi_0 $ after seeing
+Formula {eq}`eq-bayeslaw103` can be regarded as a one step revision of prior probability $ \pi_0 $ after seeing
 the batch of data $ \left\{ w_{i}\right\} _{i=1}^{t+1} $.
 
 ## What a type 1 Agent Learns when Mixture $H$ Generates Data
 
-We now study what happens when the mixture distribution $h;\alpha$  truly generated the data each period.
+We now study what happens when the mixture distribution $h;\alpha$ truly generated the data each period.
 
-A submartingale or supermartingale continues to describe $\pi_t$
-
-It raises its ugly head and causes $\pi_t$ to converge either to $0$ or to $1$.
+The sequence $\pi_t$ continues to converge, despite the agent's misspecified model, and the limit is either $0$ or $1$.
 
 This is true even though in truth nature always mixes between $f$ and $g$.
 
@@ -615,9 +613,9 @@ plt.show()
 Evidently, our type 1 learner who applies Bayes' law to his misspecified set of statistical models eventually learns an approximating model that is as close as possible to the true model, as measured by its
 Kullback-Leibler divergence:
 
-- When $\alpha$ is small, the $KL_g < KL_f$ meaning the divergence of $g$ from $h$ is smaller than that of $f$ and so the limit point of $\pi_t$ is close to $0$.
+- When $\alpha$ is small, $KL_g < KL_f$ meaning the divergence of $g$ from $h$ is smaller than that of $f$ and so the limit point of $\pi_t$ is close to $0$.
 
-- When $\alpha$ is large, the $KL_f < KL_g$ meaning the divergence of $f$ from $h$ is smaller than that of $g$ and so the limit point of $\pi_t$ is close to $1$.
+- When $\alpha$ is large, $KL_f < KL_g$ meaning the divergence of $f$ from $h$ is smaller than that of $g$ and so the limit point of $\pi_t$ is close to $1$.
 
 ## Type 2 Agent
 
@@ -634,7 +632,7 @@ $$
 
 but does not know $\alpha$.
 
-We'll assume that the person starts out with a prior probabilty $\pi_0(\alpha)$ on
+We'll assume that the person starts out with a prior probability $\pi_0(\alpha)$ on
 $\alpha \in (0,1)$ where the prior has one of the forms that we deployed in {doc}`this quantecon lecture <bayes_nonconj>`.
 
 
@@ -658,7 +656,7 @@ $t \rightarrow + \infty$.
 
 Let us try a uniform prior first.
 
-We use the `Mixture` class in Numpyro to construct the likelihood function.
+We use the `Mixture` class in numpyro to construct the likelihood function.
 
 ```{code-cell} ipython3
 α = 0.8
@@ -730,7 +728,7 @@ Thus, the  following situation prevails quite generally in empirical work.
 A scientist approaches the data with a manifold $S$ of statistical models $ s (X | \theta)$ , where $s$ is a probability distribution over a random vector $X$, $\theta \in \Theta$
 is a vector of parameters, and $\Theta$ indexes the manifold of models.
 
-The scientist with observations that he interprests as realizations $x$ of the random vector $X$ wants to solve an **inverse problem** of somehow _inverting_
+The scientist with observations that he interprets as realizations $x$ of the random vector $X$ wants to solve an **inverse problem** of somehow _inverting_
 $s(x | \theta)$ to infer $\theta$ from $x$.
 
 But the scientist's model is misspecified, being only an approximation to an unknown  model $h$ that nature uses to generate $X$.
@@ -750,7 +748,7 @@ In that lecture, we used a model selection algorithm to study the case where the
 
 In this lecture, we studied how to correctly "learn" a model generated by a mixing process using a Bayesian approach.
 
-To fix the algorithm we used in {doc}`likelihood_bayes`. A correct Bayesian approach should directly model the uncertainty about $x$ and update beliefs about it as new data arrives. 
+To fix the algorithm we used in {doc}`likelihood_bayes`, a correct Bayesian approach should directly model the uncertainty about $x$ and update beliefs about it as new data arrives. 
 
 Here is the algorithm:
 
