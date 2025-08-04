@@ -532,8 +532,8 @@ def xbar(ϕ):
 
 ϕ_grid = np.linspace(0, 1, 100)
 fig, ax = plt.subplots(figsize=(9, 7))
-ax.set(xlabel='$\phi$')
-ax.plot(ϕ_grid, [xbar(ϕ) * (1 - ϕ) for ϕ in ϕ_grid], label='$w^*(\phi)$')
+ax.set(xlabel=r'$\phi$')
+ax.plot(ϕ_grid, [xbar(ϕ) * (1 - ϕ) for ϕ in ϕ_grid], label=r'$w^*(\phi)$')
 ax.legend()
 
 plt.show()

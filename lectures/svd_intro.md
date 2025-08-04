@@ -974,7 +974,7 @@ def compare_pca_svd(da):
     axs[0].set_title('ε')
     axs[0].set_xlabel('n')
     axs[1].plot(da.VT[:da.r, :].T * np.sqrt(da.λ))
-    axs[1].set_title('$V^\top *\sqrt{\lambda}$')
+    axs[1].set_title(r'$V^\top *\sqrt{\lambda}$')
     axs[1].set_xlabel('n')
     plt.show()
 ```

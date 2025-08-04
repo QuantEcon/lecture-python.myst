@@ -257,7 +257,7 @@ class LakeModel:
 
 
     def rate_steady_state(self, tol=1e-6):
-        """
+        r"""
         Finds the steady state of the system :math:`x_{t+1} = \hat A x_{t}`
 
         Returns
@@ -1005,7 +1005,7 @@ class LakeModelModified:
 
 
     def rate_steady_state(self, tol=1e-6):
-        """
+        r"""
         Finds the steady state of the system :math:`x_{t+1} = \hat A x_{t}`
 
         Returns
