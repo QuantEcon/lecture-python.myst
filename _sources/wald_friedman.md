@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -44,16 +44,16 @@ In the spirit of {doc}`this earlier lecture <prob_meaning>`, the present lecture
 In this lecture, we describe  Wald's formulation of the problem from the perspective of a  statistician
 working within the Neyman-Pearson tradition of a frequentist statistician who thinks about testing  hypotheses and consequently  use  laws of large numbers to  investigate limiting properties of particular statistics under a given  **hypothesis**, i.e., a vector of **parameters** that pins down a  particular member of a manifold of statistical models that interest the statistician.   
 
-  * From {doc}`this earlier lecture on frequentist and bayesian statistics<prob_meaning>`, please remember that a  frequentist statistician routinely calculates functions of sequences of random variables, conditioning on a vector of parameters.
+  * From {doc}`this lecture on frequentist and bayesian statistics<prob_meaning>`, please remember that a  frequentist statistician routinely calculates functions of sequences of random variables, conditioning on a vector of parameters.
 
-In {doc}`this sequel <wald_friedman_2>` we'll discuss another formulation that adopts   the perspective of a **Bayesian statistician** who views parameters as vectors of random variables that are jointly distributed with  observable variables that he is concerned about.
+In {doc}`this related lecture <wald_friedman_2>` we'll discuss another formulation that adopts   the perspective of a **Bayesian statistician** who views parameters as random variables that are jointly distributed with  observable variables that he is concerned about.
 
 Because we are taking a frequentist perspective that is concerned about relative frequencies conditioned on alternative parameter values, i.e., 
 alternative **hypotheses**, key ideas in this lecture
 
 - Type I and type II statistical errors
     - a type I error occurs when you reject a null hypothesis that is true
-    - a type II error occures when you accept a null hypothesis that is false
+    - a type II error occurs when you accept a null hypothesis that is false
 - The **power** of a frequentist statistical test
 - The **size** of a frequentist statistical test 
 - The **critical region** of a statistical test
@@ -85,7 +85,7 @@ during World War II, when they worked at the US Government's
 Statistical Research Group at Columbia University.
 
 ```{note}
-See pages 25 and 26  of Allen Wallis's 1980 article {cite}`wallis1980statistical`  about the Statistical Research Group at Columbia University during World War II for his account of the episode and  for important contributions  that Harold Hotelling made to formulating the problem.   Also see  chapter 5 of Jennifer Burns book about
+See pages 25 and 26  of Allen Wallis's 1980 article {cite}`wallis1980statistical`  about the Statistical Research Group at Columbia University during World War II for his account of the episode and  for important contributions  that Harold Hotelling made to formulating the problem.   Also see  chapter 5 of Jennifer Burns' book about
 Milton Friedman {cite}`Burns_2023`.
 ```
 
@@ -109,24 +109,26 @@ Let's listen to Milton Friedman tell us what happened
 > can be so regarded.
 
 > When Allen Wallis was discussing such a problem with (Navy) Captain
-> Garret L. Schyler, the captain objected that such a test, to quote from
+> Garret L. Schuyler, the captain objected that such a test, to quote from
 > Allen's account, may prove wasteful. If a wise and seasoned ordnance
-> officer like Schyler were on the premises, he would see after the first
+> officer like Schuyler were on the premises, he would see after the first
 > few thousand or even few hundred [rounds] that the experiment need not
 > be completed either because the new method is obviously inferior or
 > because it is obviously superior beyond what was hoped for
 > $\ldots$.
 
-Friedman and Wallis worked on  the problem but, after realizing that
-they were not able to solve it,  they told Abraham Wald about the problem.
+Friedman and Wallis worked on  the problem for a while but didn't completely solve it.
 
-That started Wald on the path that led him  to *Sequential Analysis* {cite}`Wald47`.
+Realizing that, they told Abraham Wald about the problem.
+
+That set  Wald on a path that led him  to create  *Sequential Analysis* {cite}`Wald47`.
 
 ##  Neyman-Pearson Formulation
 
 It is useful to begin by describing the theory underlying the test
-that Navy Captain G. S. Schuyler had been told to use and that led him
-to approach Milton Friedman and Allan Wallis to convey his conjecture
+that the U.S. Navy told  Captain G. S. Schuyler to use.
+
+Captain Schuyler's doubts  motivated  him to tell  Milton Friedman and Allen Wallis his conjecture
 that superior practical procedures existed.
 
 Evidently, the Navy had told Captain Schuyler to use what was then  a state-of-the-art
@@ -254,13 +256,13 @@ Wald summarizes Neyman and Pearson's setup as follows:
 > will have the required size $\alpha$.
 
 Wald goes on to discuss Neyman and Pearson's concept of *uniformly most
-powerful* test.
+powerful* test. 
 
 Here is how Wald introduces the notion of a sequential test
 
 > A rule is given for making one of the following three decisions at any stage of
-> the experiment (at the m th trial for each integral value of m ): (1) to
-> accept the hypothesis H , (2) to reject the hypothesis H , (3) to
+> the experiment (at the $m$ th trial for each integral value of $m$): (1) to
+> accept the hypothesis $H$, (2) to reject the hypothesis $H$, (3) to
 > continue the experiment by making an additional observation. Thus, such
 > a test procedure is carried out sequentially. On the basis of the first
 > observation, one of the aforementioned decision is made. If the first or
@@ -269,13 +271,13 @@ Here is how Wald introduces the notion of a sequential test
 > the first two observations, one of the three decision is made. If the
 > third decision is made, a third trial is performed, and so on. The
 > process is continued until either the first or the second decisions is
-> made. The number n of observations required by such a test procedure is
-> a random variable, since the value of n depends on the outcome of the
+> made. The number $n$ of observations required by such a test procedure is
+> a random variable, since the value of $n$ depends on the outcome of the
 > observations.
 
 ## Wald's Sequential Formulation 
 
-In contradistinction to Neyman and Pearson's formulation of the problem, in Wald's formulation
+By way of contrast to Neyman and Pearson's formulation of the problem, in Wald's formulation
 
 
 - The sample size $n$ is not fixed but rather  a random variable.
@@ -296,7 +298,7 @@ The density of a Beta probability distribution with parameters $a$ and $b$ is
 $$
 f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 \quad \text{where} \quad
-\Gamma(t) := \int_{0}^{\infty} x^{t-1} e^{-x} dx
+\Gamma(p) := \int_{0}^{\infty} x^{p-1} e^{-x} dx
 $$
 
 The next figure shows two beta distributions.
@@ -332,7 +334,7 @@ random variables is also independently and identically distributed (IID).
 
 But the observer does not know which of the two distributions generated the sequence.
 
-For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the observer thinks that  sequence is not IID.
+For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the observer thinks that the sequence is not IID.
 
 Consequently, the observer has something to learn, namely, whether the observations are drawn from  $f_0$ or from $f_1$.
 
@@ -363,9 +365,7 @@ chooses among three distinct actions:
   $z_{k+1}$
 
 
-Wald proceeds as follows.
-
-He defines
+Wald  defines
 
 - $p_{0m} = f_0(z_1) \cdots f_0(z_m)$
 - $p_{1m} = f_1(z_1) \cdots f_1(z_m)$
@@ -373,9 +373,9 @@ He defines
 
 Here $\{L_m\}_{m=0}^\infty$ is a **likelihood ratio process**.
 
-One of Wald's sequential  decision rule is parameterized by two real numbers $B < A$.
+Wald's sequential  decision rule is parameterized by  real numbers $B < A$.
 
-For a given pair $A, B$ the decision rule is 
+For a given pair $A, B$, the decision rule is 
 
 $$
 \begin{aligned}
@@ -414,7 +414,7 @@ B \approx b(\alpha,\beta)  & \equiv \frac{\beta}{1-\alpha}
 \end{aligned} 
 $$ (eq:Waldrule)
 
-For small values of $\alpha $ and $\beta$, Wald shows that approximation  {eq}`eq:Waldrule` provides a  good way to set $A$ and $B$. 
+For small values of $\alpha$ and $\beta$, Wald shows that approximation  {eq}`eq:Waldrule` provides a  good way to set $A$ and $B$. 
 
 In particular, Wald constructs a mathematical argument that leads him to conclude that the use of approximation
  {eq}`eq:Waldrule` rather than the true functions $A (\alpha, \beta), B(\alpha,\beta)$ for setting $A$ and $B$
@@ -429,12 +429,14 @@ In particular, Wald constructs a mathematical argument that leads him to conclud
  > the  number of observations required by the test. 
 
 
+We'll write some Python code to help us illustrate Wald's claims about how $\alpha$ and $\beta$ are related to the parameters $A$ and $B$
+that characterize his sequential probability ratio test.
 
 ## Simulations
 
-In this section, we experiment with different distributions $f_0$ and $f_1$ to examine how Wald's test performs under various conditions.
+We experiment with different distributions $f_0$ and $f_1$ to examine how Wald's test performs under various conditions.
 
-The goal of these simulations is to understand  trade-offs between decision speed and accuracy associated with Wald's  **sequential probability ratio test**.
+Our goal in conducting these simulations is to understand  trade-offs between decision speed and accuracy associated with Wald's  **sequential probability ratio test**.
 
 Specifically, we will watch  how:
 
@@ -457,9 +459,9 @@ SPRTParams = namedtuple('SPRTParams',
 
 Now we can run the simulation following Wald's recommendation. 
 
-We use the log-likelihood ratio and compare it to the logarithms of the thresholds $\log(A)$ and $\log(B)$.
+We'll compare the log-likelihood ratio  to logarithms of the thresholds $\log(A)$ and $\log(B)$.
 
-Below is the algorithm for the simulation.
+The following algorithm underlies our simulations.
 
 1. Compute thresholds $A = \frac{1-\beta}{\alpha}$, $B = \frac{\beta}{1-\alpha}$ and work with $\log A$, $\log B$.
 
@@ -513,12 +515,12 @@ def sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed):
             return n, True   # Accept H0
 
 @njit(parallel=True)
-def run_sprt_simulation(a0, b0, a1, b1, alpha, βs, N, seed):
+def run_sprt_simulation(a0, b0, a1, b1, α, β, N, seed):
     """SPRT simulation described by the algorithm."""
     
     # Calculate thresholds
-    A = (1 - βs) / alpha
-    B = βs / (1 - alpha)
+    A = (1 - β) / α
+    B = β / (1 - α)
     logA = np.log(A)
     logB = np.log(B)
     
@@ -589,8 +591,8 @@ print(f"Empirical type II error: {results['type_II']:.3f}   (target = {params.β
 
 As anticipated in the passage above in which Wald discussed the quality of 
 $a(\alpha, \beta), b(\alpha, \beta)$ given in approximation {eq}`eq:Waldrule`, 
-we find that the algorithm "overshoots" the error rates by giving us a 
-lower type I and type II error rates than the target values.
+we find that the algorithm actually gives 
+**lower** type I and type II error rates than the target values.
 
 ```{note}
 For recent work on the quality of approximation {eq}`eq:Waldrule`, see, e.g., {cite}`fischer2024improving`.
@@ -624,11 +626,11 @@ axes[1].set_ylabel("frequency")
 plt.show()
 ```
 
-In this simple case, the stopping time stays below 10.
+In this example, the stopping time stays below 10.
 
-We can also examine a $2 \times 2$  "confusion matrix" whose  diagonal elements 
-show the number of times when Wald's rule results in correct acceptance and 
-rejection of the null hypothesis.
+We  can construct a $2 \times 2$  "confusion matrix" whose  diagonal elements 
+count the number of times that Wald's  decision rule  correctly  accepts and 
+rejects the null hypothesis.
 
 ```{code-cell} ipython3
 # Accept H0 when H0 is true (correct)
@@ -688,9 +690,7 @@ results_3 = run_sprt(params_3)
 ```
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
+:tags: [hide-input]
 
 def plot_sprt_results(results, params, title=""):
     """Plot SPRT simulation results."""
@@ -769,26 +769,29 @@ plot_sprt_results(results_2, params_2)
 plot_sprt_results(results_3, params_3)
 ```
 
-We can see a clear pattern in the stopping times and how close "separated" the two distributions are.
+Notice that  the stopping times are less when the  two  distributions are farther apart.
 
-We can link this to the discussion of [Kullback–Leibler divergence](rel_entropy) in {doc}`likelihood_ratio_process`.
+This makes sense.
 
-Intuitively, KL divergence is large when the distribution from one distribution to another is 
-large. 
+When two distributions are "far apart", it should not take too long to decide which one is generating the data.
 
-When two distributions are "far apart", it should not take long to decide which one is generating the data.
+When two distributions are "close", it should  takes longer to decide which one is generating the data.
 
-When two distributions are "close" to each other, it takes longer to decide which one is generating the data.
+It is tempting to link this pattern to our discussion of [Kullback–Leibler divergence](rel_entropy) in {doc}`likelihood_ratio_process`.
 
-However, KL divergence is not symmetric, meaning that the divergence from one distribution to another is not necessarily the same as the reverse.
+While, KL divergence is larger when two distributions differ more, KL divergence is not symmetric, meaning that the KL divergence of distribution $f$ from distribution $g$  is not necessarily equal to the KL
+divergence of $g$ from $f$.  
 
-To measure the discrepancy between two distributions, we use a metric 
-called [Jensen-Shannon distance](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html) and plot it against the average stopping times.
+If we want a symmetric measure of divergence that actually a metric, we can instead use  [Jensen-Shannon distance](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html).
+
+That is what we shall do now. 
+
+We shall compute Jensen-Shannon distance  and plot it against the average stopping times.
 
 ```{code-cell} ipython3
 def kl_div(h, f):
     """KL divergence"""
-    integrand = lambda w: f(w) * np.log(f(w) / h(w))
+    integrand = lambda w: h(w) * np.log(h(w) / f(w))
     val, _ = quad(integrand, 0, 1)
     return val
 
@@ -843,7 +846,7 @@ plt.show()
 
 The plot demonstrates a clear negative correlation between relative entropy and mean stopping time. 
 
-As the KL divergence increases (distributions become more separated), the mean stopping time decreases exponentially.
+As  Jensen-Shannon divergence increases (distributions become more separated), the mean stopping time decreases exponentially.
 
 Below are sampled examples from the experiments we have above
 
@@ -891,7 +894,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Again, we find that the stopping time is shorter when the distributions are more separated
+Again, we find that the stopping time is shorter when the distributions are more separated, as
 measured by Jensen-Shannon distance.
 
 Let's visualize individual likelihood ratio processes to see how they evolve toward the decision boundaries.
@@ -972,16 +975,16 @@ plot_likelihood_paths(params_3, n_highlight=10, n_background=100)
 
 Next, let's adjust the decision thresholds $A$ and $B$ and examine how the mean stopping time and the type I and type II error rates change.
 
-In the code below, we break Wald's rule by adjusting the thresholds $A$ and $B$ using factors $A_f$ and $B_f$.
+In the code below, we adjust  Wald's rule by adjusting the thresholds $A$ and $B$ using factors $A_f$ and $B_f$.
 
 ```{code-cell} ipython3
 @njit(parallel=True)  
-def run_adjusted_thresholds(a0, b0, a1, b1, alpha, βs, N, seed, A_f, B_f):
+def run_adjusted_thresholds(a0, b0, a1, b1, α, β, N, seed, A_f, B_f):
     """SPRT simulation with adjusted thresholds."""
     
     # Calculate original thresholds  
-    A_original = (1 - βs) / alpha
-    B_original = βs / (1 - alpha)
+    A_original = (1 - β) / α
+    B_original = β / (1 - α)
     
     # Apply adjustment factors
     A_adj = A_original * A_f

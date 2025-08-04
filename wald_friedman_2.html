@@ -267,18 +267,19 @@ the U.S. Government’s  Statistical Research Group at Columbia University.</p>
 <p>That known probability distribution is his ‘hypothesis’.</p>
 <p>A frequentist statistician studies the distribution of that statistic under that known probability distribution</p>
 <ul class="simple">
-<li><p>when the distribution is a member of a set of parameterized probability distribution, his hypothesis takes the form of a particular parameter vector.</p></li>
+<li><p>when the distribution is a member of a set of parameterized probability distributions, his hypothesis takes the form of a particular parameter vector.</p></li>
 <li><p>this is what we mean when we say that the frequentist statistician ‘conditions on the parameters’</p></li>
-<li><p>he regards the parameters that are fixed numbers, known to nature, but not to him.</p></li>
-<li><p>the statistician copes with his ignorance of those parameters by constructing the type I and type II errors associated with frequentist hypothesis testing.</p></li>
+<li><p>he regards the parameters as fixed numbers that are known to nature, but not to him.</p></li>
+<li><p>the statistician copes with his ignorance of those parameters by constructing type I and type II errors associated with frequentist hypothesis testing.</p></li>
 </ul>
-<p>In this lecture, we reformulate Friedman and Wald’s  problem  by transforming our point of view from the ‘objective’ frequentist perspective of <a class="reference internal" href="wald_friedman.html"><span class="doc">the lecture on Wald’s sequential analysis</span></a> to an explicitly ‘subjective’ perspective taken by a Bayesian decision maker who regards parameters not as fixed numbers but as (hidden) random variables that are jointly distributed with the random variables that can be observed by sampling from that joint distribution.</p>
+<p>In this lecture, we reformulate Friedman and Wald’s  problem  by transforming our point of view from the ‘objective’ frequentist perspective of <a class="reference internal" href="wald_friedman.html"><span class="doc">the lecture on Wald’s sequential analysis</span></a> to an explicitly ‘subjective’ perspective taken by a Bayesian decision maker who regards parameters not as fixed numbers but as (hidden) random variables that are jointly distributed with the random variables that he can observe by  sampling from that joint distribution.</p>
 <p>To form that joint distribution, the Bayesian statistician supplements the conditional distributions used by the frequentist statistician with
-a prior probability distribution over the parameters that representive his personal, subjective opinion about those them.</p>
-<p>To proceed in the way, we endow our decision maker with</p>
+a prior probability distribution over the parameters that represents his personal, subjective opinion about them.</p>
+<p>That lets the Bayesian statistician calculate the joint distribution that he requires to calculate the conditional distributions that he wants.</p>
+<p>To proceed in this way, we endow our decision maker with</p>
 <ul class="simple">
 <li><p>an initial prior subjective probability <span class="math notranslate nohighlight">\(\pi_{-1} \in (0,1)\)</span>  that nature uses to  generate  <span class="math notranslate nohighlight">\(\{z_k\}\)</span> as a sequence of i.i.d. draws from <span class="math notranslate nohighlight">\(f_1\)</span> rather than <span class="math notranslate nohighlight">\(f_0\)</span>.</p></li>
-<li><p>faith in Bayes’ law as a way to revise his subjective beliefs as observations on <span class="math notranslate nohighlight">\(\{z_k\}\)</span> sequence arrive each period.</p></li>
+<li><p>faith in Bayes’ law as a way to revise his subjective beliefs as observations on <span class="math notranslate nohighlight">\(\{z_k\}\)</span> sequence arrive.</p></li>
 <li><p>a loss function that tells how the decision maker values type I and type II errors.</p></li>
 </ul>
 <p>In our <a class="reference internal" href="wald_friedman.html"><span class="doc">previous frequentist version</span></a>, key ideas in play were:</p>
@@ -318,7 +319,7 @@ a prior probability distribution over the parameters that representive his perso
 <section id="a-dynamic-programming-approach">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">24.2. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Permalink to this heading">#</a></h2>
 <p>The following presentation of the problem closely follows Dmitri
-Berskekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id2">[<a class="reference internal" href="zreferences.html#id115" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">Bertsekas, 1975</a>]</span>.</p>
+Bertsekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id2">[<a class="reference internal" href="zreferences.html#id115" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">Bertsekas, 1975</a>]</span>.</p>
 <p>A decision-maker can observe a sequence of draws of a random variable <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>He (or she) wants to know which of two probability distributions <span class="math notranslate nohighlight">\(f_0\)</span> or <span class="math notranslate nohighlight">\(f_1\)</span> governs <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>Conditional on knowing that successive observations are drawn from distribution <span class="math notranslate nohighlight">\(f_0\)</span>, the sequence of
@@ -392,7 +393,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Mixtures&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">π</span> <span class="ow">in</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">:</span>
     <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">f0</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">+</span> <span class="n">π</span> <span class="o">*</span> <span class="n">f1</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s2">&quot;$\pi_k$ = </span><span class="si">{</span><span class="n">π</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s2">&quot;$\pi_k$ = </span><span class="si">{</span><span class="n">π</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -404,7 +405,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bed4bfc187ed0724e2cee059a7a7e3c7d4c5c19de5ff526a98480a8a5c07f2de.png" src="_images/bed4bfc187ed0724e2cee059a7a7e3c7d4c5c19de5ff526a98480a8a5c07f2de.png" />
+<img alt="_images/6d7dcf8864ebe7c7ba24810e6d841f7af7b8d82d772368cb7e6e8370072582ea.png" src="_images/6d7dcf8864ebe7c7ba24810e6d841f7af7b8d82d772368cb7e6e8370072582ea.png" />
 </div>
 </div>
 <section id="losses-and-costs">
@@ -797,7 +798,7 @@ and plot these on our cost function plot</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3ef899f4bfb74a9f40340e71e76da9d2a16ec96f50c2f518a9bc7b9af867b82e.png" src="_images/3ef899f4bfb74a9f40340e71e76da9d2a16ec96f50c2f518a9bc7b9af867b82e.png" />
+<img alt="_images/facee0c56c0bc6a5a405db9dc6179efe553b43befa572d31c12d6e315649d736.png" src="_images/facee0c56c0bc6a5a405db9dc6179efe553b43befa572d31c12d6e315649d736.png" />
 </div>
 </div>
 <p>The cost function <span class="math notranslate nohighlight">\(J\)</span> equals <span class="math notranslate nohighlight">\(\pi L_0\)</span> for <span class="math notranslate nohighlight">\(\pi \leq B\)</span>, and <span class="math notranslate nohighlight">\((1-\pi) L_1\)</span> for <span class="math notranslate nohighlight">\(\pi
@@ -910,7 +911,7 @@ model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e8db975a6570dd26e58840d9beccf40907dbad5b8ce510081f5da3730e525352.png" src="_images/e8db975a6570dd26e58840d9beccf40907dbad5b8ce510081f5da3730e525352.png" />
+<img alt="_images/f96d3fd6fb7d28ce34271a4232f215903f4e8a9b210b20958b9221ec390676b8.png" src="_images/f96d3fd6fb7d28ce34271a4232f215903f4e8a9b210b20958b9221ec390676b8.png" />
 </div>
 </div>
 </section>
@@ -931,7 +932,7 @@ model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f33ced5ab6d3fa0093519eb57a220d07da0ddb2fc7a858d28c7e5140842e95fc.png" src="_images/f33ced5ab6d3fa0093519eb57a220d07da0ddb2fc7a858d28c7e5140842e95fc.png" />
+<img alt="_images/9651cb728278ba3979865db274ef067e98598adf6ee28c5c3d14c8a5937c12e7.png" src="_images/9651cb728278ba3979865db274ef067e98598adf6ee28c5c3d14c8a5937c12e7.png" />
 </div>
 </div>
 <p>Increased cost per draw has induced the decision-maker to take fewer draws before deciding.</p>
@@ -944,7 +945,7 @@ and investigate</p>
 as we increase the number of grid points in the piecewise linear  approximation.</p></li>
 <li><p>effects of different settings for the cost parameters <span class="math notranslate nohighlight">\(L_0, L_1, c\)</span>, the
 parameters of two beta distributions <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span>, and the number
-of points and linear functions <span class="math notranslate nohighlight">\(m\)</span> to use in the piece-wise continuous approximation to the value function.</p></li>
+of points and linear functions <span class="math notranslate nohighlight">\(m\)</span> to use in the piecewise continuous approximation to the value function.</p></li>
 <li><p>various simulations from <span class="math notranslate nohighlight">\(f_0\)</span> and associated distributions of waiting times to making a decision.</p></li>
 <li><p>associated histograms of correct and incorrect decisions.</p></li>
 </ul>
@@ -952,8 +953,8 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <dl class="footnote brackets">
 <dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id4">1</a></span></dt>
 <dd><p>The decision maker acts as if he believes that the sequence of random variables
-<span class="math notranslate nohighlight">\([z_{0}, z_{1}, \ldots]\)</span> is <em>exchangeable</em>.  See <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a> and
-<span id="id5">[<a class="reference internal" href="zreferences.html#id114" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kreps, 1988</a>]</span> chapter 11, for  discussions of exchangeability.</p>
+<span class="math notranslate nohighlight">\([z_{0}, z_{1}, \ldots]\)</span> is <em>exchangeable</em>. See <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a> and
+<span id="id5">[<a class="reference internal" href="zreferences.html#id114" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kreps, 1988</a>]</span> chapter 11, for discussions of exchangeability.</p>
 </dd>
 </dl>
 </section>

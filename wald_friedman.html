@@ -263,16 +263,16 @@ an approach to statistical decision problems that is  intimately related to dyna
 <p>In this lecture, we describe  Wald’s formulation of the problem from the perspective of a  statistician
 working within the Neyman-Pearson tradition of a frequentist statistician who thinks about testing  hypotheses and consequently  use  laws of large numbers to  investigate limiting properties of particular statistics under a given  <strong>hypothesis</strong>, i.e., a vector of <strong>parameters</strong> that pins down a  particular member of a manifold of statistical models that interest the statistician.</p>
 <ul class="simple">
-<li><p>From <a class="reference internal" href="prob_meaning.html"><span class="doc">this earlier lecture on frequentist and bayesian statistics</span></a>, please remember that a  frequentist statistician routinely calculates functions of sequences of random variables, conditioning on a vector of parameters.</p></li>
+<li><p>From <a class="reference internal" href="prob_meaning.html"><span class="doc">this lecture on frequentist and bayesian statistics</span></a>, please remember that a  frequentist statistician routinely calculates functions of sequences of random variables, conditioning on a vector of parameters.</p></li>
 </ul>
-<p>In <a class="reference internal" href="wald_friedman_2.html"><span class="doc">this sequel</span></a> we’ll discuss another formulation that adopts   the perspective of a <strong>Bayesian statistician</strong> who views parameters as vectors of random variables that are jointly distributed with  observable variables that he is concerned about.</p>
+<p>In <a class="reference internal" href="wald_friedman_2.html"><span class="doc">this related lecture</span></a> we’ll discuss another formulation that adopts   the perspective of a <strong>Bayesian statistician</strong> who views parameters as random variables that are jointly distributed with  observable variables that he is concerned about.</p>
 <p>Because we are taking a frequentist perspective that is concerned about relative frequencies conditioned on alternative parameter values, i.e.,
 alternative <strong>hypotheses</strong>, key ideas in this lecture</p>
 <ul class="simple">
 <li><p>Type I and type II statistical errors</p>
 <ul>
 <li><p>a type I error occurs when you reject a null hypothesis that is true</p></li>
-<li><p>a type II error occures when you accept a null hypothesis that is false</p></li>
+<li><p>a type II error occurs when you accept a null hypothesis that is false</p></li>
 </ul>
 </li>
 <li><p>The <strong>power</strong> of a frequentist statistical test</p></li>
@@ -308,7 +308,7 @@ during World War II, when they worked at the US Government’s
 Statistical Research Group at Columbia University.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>See pages 25 and 26  of Allen Wallis’s 1980 article <span id="id3">[<a class="reference internal" href="zreferences.html#id8" title="W Allen Wallis. The statistical research group, 1942–1945. Journal of the American Statistical Association, 75(370):320–330, 1980.">Wallis, 1980</a>]</span>  about the Statistical Research Group at Columbia University during World War II for his account of the episode and  for important contributions  that Harold Hotelling made to formulating the problem.   Also see  chapter 5 of Jennifer Burns book about
+<p>See pages 25 and 26  of Allen Wallis’s 1980 article <span id="id3">[<a class="reference internal" href="zreferences.html#id8" title="W Allen Wallis. The statistical research group, 1942–1945. Journal of the American Statistical Association, 75(370):320–330, 1980.">Wallis, 1980</a>]</span>  about the Statistical Research Group at Columbia University during World War II for his account of the episode and  for important contributions  that Harold Hotelling made to formulating the problem.   Also see  chapter 5 of Jennifer Burns’ book about
 Milton Friedman <span id="id4">[<a class="reference internal" href="zreferences.html#id9" title="Jennifer Burns. Milton Friedman: The Last Conservative. Farrar, Straus, and Giroux, New York, 2023.">Burns, 2023</a>]</span>.</p>
 </div>
 <p>Let’s listen to Milton Friedman tell us what happened</p>
@@ -333,23 +333,23 @@ can be so regarded.</p>
 </div></blockquote>
 <blockquote>
 <div><p>When Allen Wallis was discussing such a problem with (Navy) Captain
-Garret L. Schyler, the captain objected that such a test, to quote from
+Garret L. Schuyler, the captain objected that such a test, to quote from
 Allen’s account, may prove wasteful. If a wise and seasoned ordnance
-officer like Schyler were on the premises, he would see after the first
+officer like Schuyler were on the premises, he would see after the first
 few thousand or even few hundred [rounds] that the experiment need not
 be completed either because the new method is obviously inferior or
 because it is obviously superior beyond what was hoped for
 <span class="math notranslate nohighlight">\(\ldots\)</span>.</p>
 </div></blockquote>
-<p>Friedman and Wallis worked on  the problem but, after realizing that
-they were not able to solve it,  they told Abraham Wald about the problem.</p>
-<p>That started Wald on the path that led him  to <em>Sequential Analysis</em> <span id="id5">[<a class="reference internal" href="zreferences.html#id116" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span>.</p>
+<p>Friedman and Wallis worked on  the problem for a while but didn’t completely solve it.</p>
+<p>Realizing that, they told Abraham Wald about the problem.</p>
+<p>That set  Wald on a path that led him  to create  <em>Sequential Analysis</em> <span id="id5">[<a class="reference internal" href="zreferences.html#id116" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wald, 1947</a>]</span>.</p>
 </section>
 <section id="neyman-pearson-formulation">
 <h2><a class="toc-backref" href="#id13"><span class="section-number">23.3. </span>Neyman-Pearson Formulation</a><a class="headerlink" href="#neyman-pearson-formulation" title="Permalink to this heading">#</a></h2>
 <p>It is useful to begin by describing the theory underlying the test
-that Navy Captain G. S. Schuyler had been told to use and that led him
-to approach Milton Friedman and Allan Wallis to convey his conjecture
+that the U.S. Navy told  Captain G. S. Schuyler to use.</p>
+<p>Captain Schuyler’s doubts  motivated  him to tell  Milton Friedman and Allen Wallis his conjecture
 that superior practical procedures existed.</p>
 <p>Evidently, the Navy had told Captain Schuyler to use what was then  a state-of-the-art
 Neyman-Pearson  hypothesis test.</p>
@@ -472,8 +472,8 @@ powerful</em> test.</p>
 <p>Here is how Wald introduces the notion of a sequential test</p>
 <blockquote>
 <div><p>A rule is given for making one of the following three decisions at any stage of
-the experiment (at the m th trial for each integral value of m ): (1) to
-accept the hypothesis H , (2) to reject the hypothesis H , (3) to
+the experiment (at the <span class="math notranslate nohighlight">\(m\)</span> th trial for each integral value of <span class="math notranslate nohighlight">\(m\)</span>): (1) to
+accept the hypothesis <span class="math notranslate nohighlight">\(H\)</span>, (2) to reject the hypothesis <span class="math notranslate nohighlight">\(H\)</span>, (3) to
 continue the experiment by making an additional observation. Thus, such
 a test procedure is carried out sequentially. On the basis of the first
 observation, one of the aforementioned decision is made. If the first or
@@ -482,14 +482,14 @@ decision is made, a second trial is performed. Again, on the basis of
 the first two observations, one of the three decision is made. If the
 third decision is made, a third trial is performed, and so on. The
 process is continued until either the first or the second decisions is
-made. The number n of observations required by such a test procedure is
-a random variable, since the value of n depends on the outcome of the
+made. The number <span class="math notranslate nohighlight">\(n\)</span> of observations required by such a test procedure is
+a random variable, since the value of <span class="math notranslate nohighlight">\(n\)</span> depends on the outcome of the
 observations.</p>
 </div></blockquote>
 </section>
 <section id="walds-sequential-formulation">
 <h2><a class="toc-backref" href="#id14"><span class="section-number">23.4. </span>Wald’s Sequential Formulation</a><a class="headerlink" href="#walds-sequential-formulation" title="Permalink to this heading">#</a></h2>
-<p>In contradistinction to Neyman and Pearson’s formulation of the problem, in Wald’s formulation</p>
+<p>By way of contrast to Neyman and Pearson’s formulation of the problem, in Wald’s formulation</p>
 <ul class="simple">
 <li><p>The sample size <span class="math notranslate nohighlight">\(n\)</span> is not fixed but rather  a random variable.</p></li>
 <li><p>Two  parameters <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> that are related to but distinct from Neyman and Pearson’s  <span class="math notranslate nohighlight">\(\alpha\)</span> and  <span class="math notranslate nohighlight">\(\beta\)</span>;
@@ -504,7 +504,7 @@ observations.</p>
 \[
 f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 \quad \text{where} \quad
-\Gamma(t) := \int_{0}^{\infty} x^{t-1} e^{-x} dx
+\Gamma(p) := \int_{0}^{\infty} x^{p-1} e^{-x} dx
 \]</div>
 <p>The next figure shows two beta distributions.</p>
 <div class="cell docutils container">
@@ -541,7 +541,7 @@ random variables is independently and identically distributed (IID).</p>
 <p>Conditional on knowing that successive observations are drawn from distribution <span class="math notranslate nohighlight">\(f_1\)</span>, the sequence of
 random variables is also independently and identically distributed (IID).</p>
 <p>But the observer does not know which of the two distributions generated the sequence.</p>
-<p>For reasons explained in  <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a>, this means that the observer thinks that  sequence is not IID.</p>
+<p>For reasons explained in  <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a>, this means that the observer thinks that the sequence is not IID.</p>
 <p>Consequently, the observer has something to learn, namely, whether the observations are drawn from  <span class="math notranslate nohighlight">\(f_0\)</span> or from <span class="math notranslate nohighlight">\(f_1\)</span>.</p>
 <p>The decision maker   wants  to decide which of the  two distributions is generating outcomes.</p>
 <section id="type-i-and-type-ii-errors">
@@ -568,16 +568,15 @@ chooses among three distinct actions:</p>
 <li><p>He postpones deciding  and instead chooses to draw
 <span class="math notranslate nohighlight">\(z_{k+1}\)</span></p></li>
 </ul>
-<p>Wald proceeds as follows.</p>
-<p>He defines</p>
+<p>Wald  defines</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(p_{0m} = f_0(z_1) \cdots f_0(z_m)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(p_{1m} = f_1(z_1) \cdots f_1(z_m)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(L_{m} = \frac{p_{1m}}{p_{0m}}\)</span></p></li>
 </ul>
 <p>Here <span class="math notranslate nohighlight">\(\{L_m\}_{m=0}^\infty\)</span> is a <strong>likelihood ratio process</strong>.</p>
-<p>One of Wald’s sequential  decision rule is parameterized by two real numbers <span class="math notranslate nohighlight">\(B &lt; A\)</span>.</p>
-<p>For a given pair <span class="math notranslate nohighlight">\(A, B\)</span> the decision rule is</p>
+<p>Wald’s sequential  decision rule is parameterized by  real numbers <span class="math notranslate nohighlight">\(B &lt; A\)</span>.</p>
+<p>For a given pair <span class="math notranslate nohighlight">\(A, B\)</span>, the decision rule is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -612,7 +611,7 @@ A \approx a(\alpha,\beta) &amp; \equiv \frac{1-\beta}{\alpha} \\
 B \approx b(\alpha,\beta)  &amp; \equiv \frac{\beta}{1-\alpha} 
 \end{aligned} 
 \end{split}\]</div>
-<p>For small values of <span class="math notranslate nohighlight">\(\alpha \)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>, Wald shows that approximation  <a class="reference internal" href="#equation-eq-waldrule">(23.1)</a> provides a  good way to set <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p>For small values of <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>, Wald shows that approximation  <a class="reference internal" href="#equation-eq-waldrule">(23.1)</a> provides a  good way to set <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <p>In particular, Wald constructs a mathematical argument that leads him to conclude that the use of approximation
 <a class="reference internal" href="#equation-eq-waldrule">(23.1)</a> rather than the true functions <span class="math notranslate nohighlight">\(A (\alpha, \beta), B(\alpha,\beta)\)</span> for setting <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span></p>
 <blockquote>
@@ -626,11 +625,13 @@ least the same protection against wrong decisions as the test corresponding to <
 <span class="math notranslate nohighlight">\( A(\alpha, \beta),  B(\alpha,\beta)\)</span>, respectively, is that it may result in an appreciable increase in
 the  number of observations required by the test.</p>
 </div></blockquote>
+<p>We’ll write some Python code to help us illustrate Wald’s claims about how <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are related to the parameters <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>
+that characterize his sequential probability ratio test.</p>
 </section>
 <section id="simulations">
 <h2><a class="toc-backref" href="#id16"><span class="section-number">23.6. </span>Simulations</a><a class="headerlink" href="#simulations" title="Permalink to this heading">#</a></h2>
-<p>In this section, we experiment with different distributions <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span> to examine how Wald’s test performs under various conditions.</p>
-<p>The goal of these simulations is to understand  trade-offs between decision speed and accuracy associated with Wald’s  <strong>sequential probability ratio test</strong>.</p>
+<p>We experiment with different distributions <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span> to examine how Wald’s test performs under various conditions.</p>
+<p>Our goal in conducting these simulations is to understand  trade-offs between decision speed and accuracy associated with Wald’s  <strong>sequential probability ratio test</strong>.</p>
 <p>Specifically, we will watch  how:</p>
 <ul class="simple">
 <li><p>The decision thresholds <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> (or equivalently the target error rates <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>) affect the average stopping time</p></li>
@@ -651,8 +652,8 @@ the  number of observations required by the test.</p>
 </div>
 </div>
 <p>Now we can run the simulation following Wald’s recommendation.</p>
-<p>We use the log-likelihood ratio and compare it to the logarithms of the thresholds <span class="math notranslate nohighlight">\(\log(A)\)</span> and <span class="math notranslate nohighlight">\(\log(B)\)</span>.</p>
-<p>Below is the algorithm for the simulation.</p>
+<p>We’ll compare the log-likelihood ratio  to logarithms of the thresholds <span class="math notranslate nohighlight">\(\log(A)\)</span> and <span class="math notranslate nohighlight">\(\log(B)\)</span>.</p>
+<p>The following algorithm underlies our simulations.</p>
 <ol class="arabic simple">
 <li><p>Compute thresholds <span class="math notranslate nohighlight">\(A = \frac{1-\beta}{\alpha}\)</span>, <span class="math notranslate nohighlight">\(B = \frac{\beta}{1-\alpha}\)</span> and work with <span class="math notranslate nohighlight">\(\log A\)</span>, <span class="math notranslate nohighlight">\(\log B\)</span>.</p></li>
 <li><p>Given true distribution (either <span class="math notranslate nohighlight">\(f_0\)</span> or <span class="math notranslate nohighlight">\(f_1\)</span>):</p>
@@ -711,12 +712,12 @@ for each distribution, compute the empirical type I error <span class="math notr
             <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="kc">True</span>   <span class="c1"># Accept H0</span>
 
 <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">run_sprt_simulation</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">βs</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">run_sprt_simulation</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;SPRT simulation described by the algorithm.&quot;&quot;&quot;</span>
     
     <span class="c1"># Calculate thresholds</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">βs</span><span class="p">)</span> <span class="o">/</span> <span class="n">alpha</span>
-    <span class="n">B</span> <span class="o">=</span> <span class="n">βs</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span> <span class="o">/</span> <span class="n">α</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">β</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span>
     <span class="n">logA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">logB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
     
@@ -796,8 +797,8 @@ Empirical type II error: 0.022   (target = 0.1)
 </div>
 <p>As anticipated in the passage above in which Wald discussed the quality of
 <span class="math notranslate nohighlight">\(a(\alpha, \beta), b(\alpha, \beta)\)</span> given in approximation <a class="reference internal" href="#equation-eq-waldrule">(23.1)</a>,
-we find that the algorithm “overshoots” the error rates by giving us a
-lower type I and type II error rates than the target values.</p>
+we find that the algorithm actually gives
+<strong>lower</strong> type I and type II error rates than the target values.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For recent work on the quality of approximation <a class="reference internal" href="#equation-eq-waldrule">(23.1)</a>, see, e.g., <span id="id9">[<a class="reference internal" href="zreferences.html#id266" title="Lasse Fischer and Aaditya Ramdas. Improving the (approximate) sequential probability ratio test by avoiding overshoot. arXiv preprint arXiv:2410.16076, 2024.">Fischer and Ramdas, 2024</a>]</span>.</p>
@@ -835,10 +836,10 @@ lower type I and type II error rates than the target values.</p>
 <img alt="_images/3796604a3b7a6dfc27b1a9950c1bdc5b8ecf2c71b4d162106984a388352f16bd.png" src="_images/3796604a3b7a6dfc27b1a9950c1bdc5b8ecf2c71b4d162106984a388352f16bd.png" />
 </div>
 </div>
-<p>In this simple case, the stopping time stays below 10.</p>
-<p>We can also examine a <span class="math notranslate nohighlight">\(2 \times 2\)</span>  “confusion matrix” whose  diagonal elements
-show the number of times when Wald’s rule results in correct acceptance and
-rejection of the null hypothesis.</p>
+<p>In this example, the stopping time stays below 10.</p>
+<p>We  can construct a <span class="math notranslate nohighlight">\(2 \times 2\)</span>  “confusion matrix” whose  diagonal elements
+count the number of times that Wald’s  decision rule  correctly  accepts and
+rejects the null hypothesis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Accept H0 when H0 is true (correct)</span>
@@ -1013,20 +1014,21 @@ rejection of the null hypothesis.</p>
 <img alt="_images/16a2c08697f642f63d90d76ee67e949e6bc571b9eb055038df7bb541daa01d69.png" src="_images/16a2c08697f642f63d90d76ee67e949e6bc571b9eb055038df7bb541daa01d69.png" />
 </div>
 </div>
-<p>We can see a clear pattern in the stopping times and how close “separated” the two distributions are.</p>
-<p>We can link this to the discussion of <a class="reference internal" href="likelihood_ratio_process.html#rel-entropy"><span class="std std-ref">Kullback–Leibler divergence</span></a> in <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>.</p>
-<p>Intuitively, KL divergence is large when the distribution from one distribution to another is
-large.</p>
-<p>When two distributions are “far apart”, it should not take long to decide which one is generating the data.</p>
-<p>When two distributions are “close” to each other, it takes longer to decide which one is generating the data.</p>
-<p>However, KL divergence is not symmetric, meaning that the divergence from one distribution to another is not necessarily the same as the reverse.</p>
-<p>To measure the discrepancy between two distributions, we use a metric
-called <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html">Jensen-Shannon distance</a> and plot it against the average stopping times.</p>
+<p>Notice that  the stopping times are less when the  two  distributions are farther apart.</p>
+<p>This makes sense.</p>
+<p>When two distributions are “far apart”, it should not take too long to decide which one is generating the data.</p>
+<p>When two distributions are “close”, it should  takes longer to decide which one is generating the data.</p>
+<p>It is tempting to link this pattern to our discussion of <a class="reference internal" href="likelihood_ratio_process.html#rel-entropy"><span class="std std-ref">Kullback–Leibler divergence</span></a> in <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>.</p>
+<p>While, KL divergence is larger when two distributions differ more, KL divergence is not symmetric, meaning that the KL divergence of distribution <span class="math notranslate nohighlight">\(f\)</span> from distribution <span class="math notranslate nohighlight">\(g\)</span>  is not necessarily equal to the KL
+divergence of <span class="math notranslate nohighlight">\(g\)</span> from <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>If we want a symmetric measure of divergence that actually a metric, we can instead use  <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html">Jensen-Shannon distance</a>.</p>
+<p>That is what we shall do now.</p>
+<p>We shall compute Jensen-Shannon distance  and plot it against the average stopping times.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">kl_div</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;KL divergence&quot;&quot;&quot;</span>
-    <span class="n">integrand</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">h</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+    <span class="n">integrand</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">h</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
     <span class="n">val</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">val</span>
 
@@ -1081,11 +1083,11 @@ called <a class="reference external" href="https://docs.scipy.org/doc/scipy/refe
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a9e50b52b6bca0af9f614c3202840e0e5653f5a218495ff9f808999a26bd8ea3.png" src="_images/a9e50b52b6bca0af9f614c3202840e0e5653f5a218495ff9f808999a26bd8ea3.png" />
+<img alt="_images/e692ef598b17c687d8b7a0b649cea239cac899380d412edf3cabd54d09f51589.png" src="_images/e692ef598b17c687d8b7a0b649cea239cac899380d412edf3cabd54d09f51589.png" />
 </div>
 </div>
 <p>The plot demonstrates a clear negative correlation between relative entropy and mean stopping time.</p>
-<p>As the KL divergence increases (distributions become more separated), the mean stopping time decreases exponentially.</p>
+<p>As  Jensen-Shannon divergence increases (distributions become more separated), the mean stopping time decreases exponentially.</p>
 <p>Below are sampled examples from the experiments we have above</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1134,10 +1136,10 @@ called <a class="reference external" href="https://docs.scipy.org/doc/scipy/refe
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fe9532051128e4a356a84a17f05a9daa9d012ce55da461a9e09b59d4fdf4e86c.png" src="_images/fe9532051128e4a356a84a17f05a9daa9d012ce55da461a9e09b59d4fdf4e86c.png" />
+<img alt="_images/1ee1acd37c22efe97f5ba96b1fee2184bb67c587cab419a050946b4b32622abb.png" src="_images/1ee1acd37c22efe97f5ba96b1fee2184bb67c587cab419a050946b4b32622abb.png" />
 </div>
 </div>
-<p>Again, we find that the stopping time is shorter when the distributions are more separated
+<p>Again, we find that the stopping time is shorter when the distributions are more separated, as
 measured by Jensen-Shannon distance.</p>
 <p>Let’s visualize individual likelihood ratio processes to see how they evolve toward the decision boundaries.</p>
 <div class="cell docutils container">
@@ -1221,16 +1223,16 @@ measured by Jensen-Shannon distance.</p>
 </div>
 </div>
 <p>Next, let’s adjust the decision thresholds <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> and examine how the mean stopping time and the type I and type II error rates change.</p>
-<p>In the code below, we break Wald’s rule by adjusting the thresholds <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> using factors <span class="math notranslate nohighlight">\(A_f\)</span> and <span class="math notranslate nohighlight">\(B_f\)</span>.</p>
+<p>In the code below, we adjust  Wald’s rule by adjusting the thresholds <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> using factors <span class="math notranslate nohighlight">\(A_f\)</span> and <span class="math notranslate nohighlight">\(B_f\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  
-<span class="k">def</span> <span class="nf">run_adjusted_thresholds</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">βs</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">A_f</span><span class="p">,</span> <span class="n">B_f</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">run_adjusted_thresholds</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">A_f</span><span class="p">,</span> <span class="n">B_f</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;SPRT simulation with adjusted thresholds.&quot;&quot;&quot;</span>
     
     <span class="c1"># Calculate original thresholds  </span>
-    <span class="n">A_original</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">βs</span><span class="p">)</span> <span class="o">/</span> <span class="n">alpha</span>
-    <span class="n">B_original</span> <span class="o">=</span> <span class="n">βs</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span>
+    <span class="n">A_original</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span> <span class="o">/</span> <span class="n">α</span>
+    <span class="n">B_original</span> <span class="o">=</span> <span class="n">β</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span>
     
     <span class="c1"># Apply adjustment factors</span>
     <span class="n">A_adj</span> <span class="o">=</span> <span class="n">A_original</span> <span class="o">*</span> <span class="n">A_f</span>

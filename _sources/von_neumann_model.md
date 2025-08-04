@@ -921,7 +921,7 @@ fig.suptitle(r'The function $V(M(\gamma))$', fontsize=16)
 for ax, grid, N, i in zip(axes, (value_ex1_grid, value_ex2_grid),
                           (n1, n2), (1, 2)):
     ax.plot(γ_grid, grid)
-    ax.set(title=f'Example {i}', xlabel='$\gamma$')
+    ax.set(title=f'Example {i}', xlabel=r'$\gamma$')
     ax.axhline(0, c='k', lw=1)
     ax.axvline(N.bounds()[0], c='r', ls='--', label='lower bound')
     ax.axvline(N.bounds()[1], c='g', ls='--', label='upper bound')
