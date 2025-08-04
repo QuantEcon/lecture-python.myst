@@ -1820,7 +1820,7 @@ $$
 where $KL(P_{i\cdot}^{(f)}, P_{i\cdot}^{(g)})$ is the row-wise KL divergence.
 
  
-By the strong law of large numbers for Markov chains, we have
+By the ergodic theorem, we have
 
 $$
 \frac{1}{T}\log \frac{L_T^{(f)}}{L_T^{(g)}} \xrightarrow{a.s.} h_{KL}(f, g) \quad \text{as } T \to \infty
