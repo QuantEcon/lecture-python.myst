@@ -1771,68 +1771,62 @@ Consider two $n$-state irreducible and aperiodic Markov chain models on the same
 
 In this section, we assume nature chooses $f$.
 
-For a sample path $(x_0, x_1, \ldots, x_T)$, let $N$ be the transition count matrix where $N_{ij} = n_{ij}$ counts transitions from state $i$ to $j$.
+For a sample path $(x_0, x_1, \ldots, x_T)$, let $N_{ij}$ count transitions from state $i$ to $j$.
 
-The likelihood under model $m \in \{f, g\}$ is:
+The likelihood under model $m \in \{f, g\}$ is
 
 $$
-L_T^{(m)} = \pi_{0,x_0}^{(m)} \prod_{i=1}^n \prod_{j=1}^n \left(P_{ij}^{(m)}\right)^{n_{ij}}
+L_T^{(m)} = \pi_{0,x_0}^{(m)} \prod_{i=1}^n \prod_{j=1}^n \left(P_{ij}^{(m)}\right)^{N_{ij}}
 $$
 
 Hence, 
 
 $$
-\log L_T^{(m)} =\log\pi_{0,x_0}^{(m)} +\sum_{i,j}n_{ij}\log P_{ij}^{(m)}
+\log L_T^{(m)} =\log\pi_{0,x_0}^{(m)} +\sum_{i,j}N_{ij}\log P_{ij}^{(m)}
 $$
 
-
-Subtracting two log-likelihoods gives the log-likelihood ratio
+The log-likelihood ratio is
 
 $$
-\log \frac{L_T^{(f)}}{L_T^{(g)}} = \log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} + \sum_{i,j}n_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
+\log \frac{L_T^{(f)}}{L_T^{(g)}} = \log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} + \sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
 $$ (eq:llr_markov)
- 
-For an irreducible, aperiodic finite chain, the ergodic theorem ensures that as $T\to\infty$
+
+### KL divergence rate
+
+By the ergodic theorem for irreducible, aperiodic Markov chains, we have
 
 $$
-\frac{n_{ij}}{T} \xrightarrow{a.s.} \pi_i^{(f)}P_{ij}^{(f)},
+\frac{N_{ij}}{T} \xrightarrow{a.s.} \pi_i^{(f)}P_{ij}^{(f)} \quad \text{as } T \to \infty
 $$
 
 where $\boldsymbol{\pi}^{(f)}$ is the stationary distribution satisfying $\boldsymbol{\pi}^{(f)} = \boldsymbol{\pi}^{(f)} P^{(f)}$.
 
-### KL divergence rate
-
-From {eq}`eq:llr_markov`, taking expectations under model $f$:
-
-$$
-E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = E_f\left[\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}}\right] + \sum_{i,j} E_f[n_{ij}] \log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}} 
-$$
-
-By the ergodic theorem, $E_f[n_{ij}] = T\pi_i^{(f)}P_{ij}^{(f)} + o(T)$, hence:
-
-$$
-E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = T\sum_{i,j} \pi_i^{(f)}P_{ij}^{(f)} \log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}} + o(T)
-$$
-
-Define the **row-wise KL divergence** between the $i$-th rows of the transition matrices
-
-$$
-KL(P_{i,\cdot}^{(f)}, P_{i,\cdot}^{(g)}) := \sum_{j=1}^n P_{ij}^{(f)} \log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
-$$
-
-Weighed by the stationary distribution, we obtain the **KL divergence rate** 
-
-$$
-h_{KL}(f, g) = \sum_{i=1}^n \pi_i^{(f)} KL(P_{i,\cdot}^{(f)}, P_{i,\cdot}^{(g)})
-$$
-
 Therefore,
 
 $$
-E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = T \cdot h_{KL}(f, g) + o(T)
+\frac{1}{T}\log \frac{L_T^{(f)}}{L_T^{(g)}} = \frac{1}{T}\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} + \frac{1}{T}\sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
 $$
 
-Thus,
+Taking the limit as $T \to \infty$, we have
+- The first term: $\frac{1}{T}\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} \to 0$
+- The second term: $\frac{1}{T}\sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}} \xrightarrow{a.s.} \sum_{i,j}\pi_i^{(f)}P_{ij}^{(f)}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}$
+
+Define the **KL divergence rate** as
+
+$$
+h_{KL}(f, g) = \sum_{i=1}^n \pi_i^{(f)} \underbrace{\sum_{j=1}^n P_{ij}^{(f)} \log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}}_{=: KL(P_{i\cdot}^{(f)}, P_{i\cdot}^{(g)})}
+$$
+
+where $KL(P_{i\cdot}^{(f)}, P_{i\cdot}^{(g)})$ is the row-wise KL divergence.
+
+ 
+By the strong law of large numbers for Markov chains, we have
+
+$$
+\frac{1}{T}\log \frac{L_T^{(f)}}{L_T^{(g)}} \xrightarrow{a.s.} h_{KL}(f, g) \quad \text{as } T \to \infty
+$$
+
+Taking expectations and using the dominated convergence theorem, we can get
 
 $$
 \frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] \to h_{KL}(f, g) \quad \text{as } T \to \infty
