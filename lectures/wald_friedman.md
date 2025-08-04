@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -53,7 +53,7 @@ alternative **hypotheses**, key ideas in this lecture
 
 - Type I and type II statistical errors
     - a type I error occurs when you reject a null hypothesis that is true
-    - a type II error occures when you accept a null hypothesis that is false
+    - a type II error occurs when you accept a null hypothesis that is false
 - The **power** of a frequentist statistical test
 - The **size** of a frequentist statistical test 
 - The **critical region** of a statistical test
@@ -109,9 +109,9 @@ Let's listen to Milton Friedman tell us what happened
 > can be so regarded.
 
 > When Allen Wallis was discussing such a problem with (Navy) Captain
-> Garret L. Schyler, the captain objected that such a test, to quote from
+> Garret L. Schuyler, the captain objected that such a test, to quote from
 > Allen's account, may prove wasteful. If a wise and seasoned ordnance
-> officer like Schyler were on the premises, he would see after the first
+> officer like Schuyler were on the premises, he would see after the first
 > few thousand or even few hundred [rounds] that the experiment need not
 > be completed either because the new method is obviously inferior or
 > because it is obviously superior beyond what was hoped for
@@ -128,7 +128,7 @@ That set  Wald on a path that led him  to create  *Sequential Analysis* {cite}`W
 It is useful to begin by describing the theory underlying the test
 that the U.S. Navy told  Captain G. S. Schuyler to use.
 
-Captain Schulyer's doubts  motivated  him to tell  Milton Friedman and Allan Wallis his conjecture
+Captain Schuyler's doubts  motivated  him to tell  Milton Friedman and Allen Wallis his conjecture
 that superior practical procedures existed.
 
 Evidently, the Navy had told Captain Schuyler to use what was then  a state-of-the-art
@@ -256,13 +256,13 @@ Wald summarizes Neyman and Pearson's setup as follows:
 > will have the required size $\alpha$.
 
 Wald goes on to discuss Neyman and Pearson's concept of *uniformly most
-powerful* test.
+powerful* test. 
 
 Here is how Wald introduces the notion of a sequential test
 
 > A rule is given for making one of the following three decisions at any stage of
-> the experiment (at the m th trial for each integral value of m ): (1) to
-> accept the hypothesis H , (2) to reject the hypothesis H , (3) to
+> the experiment (at the $m$ th trial for each integral value of $m$): (1) to
+> accept the hypothesis $H$, (2) to reject the hypothesis $H$, (3) to
 > continue the experiment by making an additional observation. Thus, such
 > a test procedure is carried out sequentially. On the basis of the first
 > observation, one of the aforementioned decision is made. If the first or
@@ -271,8 +271,8 @@ Here is how Wald introduces the notion of a sequential test
 > the first two observations, one of the three decision is made. If the
 > third decision is made, a third trial is performed, and so on. The
 > process is continued until either the first or the second decisions is
-> made. The number n of observations required by such a test procedure is
-> a random variable, since the value of n depends on the outcome of the
+> made. The number $n$ of observations required by such a test procedure is
+> a random variable, since the value of $n$ depends on the outcome of the
 > observations.
 
 ## Wald's Sequential Formulation 
@@ -334,7 +334,7 @@ random variables is also independently and identically distributed (IID).
 
 But the observer does not know which of the two distributions generated the sequence.
 
-For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the observer thinks that  sequence is not IID.
+For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the observer thinks that the sequence is not IID.
 
 Consequently, the observer has something to learn, namely, whether the observations are drawn from  $f_0$ or from $f_1$.
 
@@ -414,7 +414,7 @@ B \approx b(\alpha,\beta)  & \equiv \frac{\beta}{1-\alpha}
 \end{aligned} 
 $$ (eq:Waldrule)
 
-For small values of $\alpha $ and $\beta$, Wald shows that approximation  {eq}`eq:Waldrule` provides a  good way to set $A$ and $B$. 
+For small values of $\alpha$ and $\beta$, Wald shows that approximation  {eq}`eq:Waldrule` provides a  good way to set $A$ and $B$. 
 
 In particular, Wald constructs a mathematical argument that leads him to conclude that the use of approximation
  {eq}`eq:Waldrule` rather than the true functions $A (\alpha, \beta), B(\alpha,\beta)$ for setting $A$ and $B$
@@ -515,12 +515,12 @@ def sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed):
             return n, True   # Accept H0
 
 @njit(parallel=True)
-def run_sprt_simulation(a0, b0, a1, b1, alpha, βs, N, seed):
+def run_sprt_simulation(a0, b0, a1, b1, α, β, N, seed):
     """SPRT simulation described by the algorithm."""
     
     # Calculate thresholds
-    A = (1 - βs) / alpha
-    B = βs / (1 - alpha)
+    A = (1 - β) / α
+    B = β / (1 - α)
     logA = np.log(A)
     logB = np.log(B)
     
@@ -690,9 +690,7 @@ results_3 = run_sprt(params_3)
 ```
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
+:tags: [hide-input]
 
 def plot_sprt_results(results, params, title=""):
     """Plot SPRT simulation results."""
@@ -781,7 +779,7 @@ When two distributions are "close", it should  takes longer to decide which one 
 
 It is tempting to link this pattern to our discussion of [Kullback–Leibler divergence](rel_entropy) in {doc}`likelihood_ratio_process`.
 
-While, KL divergence is larger when two distribution differ more, KL divergence is not symmetric, meaning that the KL divergence of distribution $f$ from distribution $g$  is not necessarily equal to the KL
+While, KL divergence is larger when two distributions differ more, KL divergence is not symmetric, meaning that the KL divergence of distribution $f$ from distribution $g$  is not necessarily equal to the KL
 divergence of $g$ from $f$.  
 
 If we want a symmetric measure of divergence that actually a metric, we can instead use  [Jensen-Shannon distance](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html).
@@ -793,7 +791,7 @@ We shall compute Jensen-Shannon distance  and plot it against the average stoppi
 ```{code-cell} ipython3
 def kl_div(h, f):
     """KL divergence"""
-    integrand = lambda w: f(w) * np.log(f(w) / h(w))
+    integrand = lambda w: h(w) * np.log(h(w) / f(w))
     val, _ = quad(integrand, 0, 1)
     return val
 
@@ -896,7 +894,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Again, we find that the stopping time is shorter when the distributions are more separated
+Again, we find that the stopping time is shorter when the distributions are more separated, as
 measured by Jensen-Shannon distance.
 
 Let's visualize individual likelihood ratio processes to see how they evolve toward the decision boundaries.
@@ -981,12 +979,12 @@ In the code below, we adjust  Wald's rule by adjusting the thresholds $A$ and $B
 
 ```{code-cell} ipython3
 @njit(parallel=True)  
-def run_adjusted_thresholds(a0, b0, a1, b1, alpha, βs, N, seed, A_f, B_f):
+def run_adjusted_thresholds(a0, b0, a1, b1, α, β, N, seed, A_f, B_f):
     """SPRT simulation with adjusted thresholds."""
     
     # Calculate original thresholds  
-    A_original = (1 - βs) / alpha
-    B_original = βs / (1 - alpha)
+    A_original = (1 - β) / α
+    B_original = β / (1 - α)
     
     # Apply adjustment factors
     A_adj = A_original * A_f

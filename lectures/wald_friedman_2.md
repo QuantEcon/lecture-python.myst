@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -52,16 +52,16 @@ A frequentist statistician studies the distribution of that statistic under that
 * when the distribution is a member of a set of parameterized probability distributions, his hypothesis takes the form of a particular parameter vector.
 * this is what we mean when we say that the frequentist statistician 'conditions on the parameters' 
 * he regards the parameters as fixed numbers that are known to nature, but not to him.
-* the statistician copes with his ignorance of thoe parameters by constructing type I and type II errors associated with frequentist hypothesis testing.
+* the statistician copes with his ignorance of those parameters by constructing type I and type II errors associated with frequentist hypothesis testing.
 
 In this lecture, we reformulate Friedman and Wald's  problem  by transforming our point of view from the 'objective' frequentist perspective of {doc}`the lecture on Wald's sequential analysis<wald_friedman>` to an explicitly 'subjective' perspective taken by a Bayesian decision maker who regards parameters not as fixed numbers but as (hidden) random variables that are jointly distributed with the random variables that he can observe by  sampling from that joint distribution.
 
 To form that joint distribution, the Bayesian statistician supplements the conditional distributions used by the frequentist statistician with 
-a prior probability distribution over the parameters that representive his personal, subjective opinion about those them. 
+a prior probability distribution over the parameters that represents his personal, subjective opinion about them. 
 
 That lets the Bayesian statistician calculate the joint distribution that he requires to calculate the conditional distributions that he wants. 
 
-To proceed in the way, we endow our decision maker with 
+To proceed in this way, we endow our decision maker with 
 
 - an initial prior subjective probability $\pi_{-1} \in (0,1)$  that nature uses to  generate  $\{z_k\}$ as a sequence of i.i.d. draws from $f_1$ rather than $f_0$.
 - faith in Bayes' law as a way to revise his subjective beliefs as observations on $\{z_k\}$ sequence arrive. 
@@ -97,12 +97,10 @@ from numba.experimental import jitclass
 from math import gamma
 ```
 
-
-
 ## A Dynamic Programming Approach
 
 The following presentation of the problem closely follows Dmitri
-Berskekas's treatment in **Dynamic Programming and Stochastic Control** {cite}`Bertekas75`. 
+Bertsekas's treatment in **Dynamic Programming and Stochastic Control** {cite}`Bertsekas75`. 
 
 A decision-maker can observe a sequence of draws of a random variable $z$.
 
@@ -134,7 +132,7 @@ $$
 $$
 
 ```{note}
-In {cite:t}`Bertekas75`, the belief is associated with the distribution $f_0$, but here
+In {cite:t}`Bertsekas75`, the belief is associated with the distribution $f_0$, but here
 we associate the belief with the distribution $f_1$ to match the discussions in {doc}`the lecture on Wald's sequential analysis<wald_friedman>`.
 ```
 
@@ -194,7 +192,7 @@ axes[0].plot(grid, f1(grid), lw=2, label="$f_1$")
 axes[1].set_title("Mixtures")
 for π in 0.25, 0.5, 0.75:
     y = (1 - π) * f0(grid) + π * f1(grid)
-    axes[1].plot(y, lw=2, label=fr"$\pi_k$ = {π}")
+    axes[1].plot(grid, y, lw=2, label=fr"$\pi_k$ = {π}")
 
 for ax in axes:
     ax.legend()
@@ -756,11 +754,11 @@ and investigate
   as we increase the number of grid points in the piecewise linear  approximation.
 * effects of different settings for the cost parameters $L_0, L_1, c$, the
   parameters of two beta distributions $f_0$ and $f_1$, and the number
-  of points and linear functions $m$ to use in the piece-wise continuous approximation to the value function.
+  of points and linear functions $m$ to use in the piecewise continuous approximation to the value function.
 * various simulations from $f_0$ and associated distributions of waiting times to making a decision.
 * associated histograms of correct and incorrect decisions.
 
 
 [^f1]: The decision maker acts as if he believes that the sequence of random variables
-$[z_{0}, z_{1}, \ldots]$ is *exchangeable*.  See [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html) and
-{cite}`Kreps88` chapter 11, for  discussions of exchangeability.
+$[z_{0}, z_{1}, \ldots]$ is *exchangeable*. See [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html) and
+{cite}`Kreps88` chapter 11, for discussions of exchangeability.
