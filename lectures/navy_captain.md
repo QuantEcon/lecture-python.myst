@@ -39,6 +39,7 @@ from scipy.optimize import minimize
 This lecture follows up on ideas presented in the following lectures:
 
 * {doc}`A Problem that Stumped Milton Friedman <wald_friedman>`
+* {doc}`A Bayesian Formulation of Friedman and Wald's Problem <wald_friedman_2>`
 * {doc}`Exchangeability and Bayesian Updating <exchangeable>`
 * {doc}`Likelihood Ratio Processes <likelihood_ratio_process>`
 
@@ -60,9 +61,9 @@ this lecture {doc}`Exchangeability and Bayesian Updating <exchangeable>` and in 
 {doc}`Likelihood Ratio Processes <likelihood_ratio_process>`, which describes the link between Bayesian
 updating and likelihood ratio processes.
 
-The present lecture uses Python to generate simulations that evaluate expected losses under **frequentist** and **Bayesian** decision rules for an instance of the Navy Captain's decision problem.
+The present lecture uses Python to generate simulations that evaluate expected losses under  the Neyman-Pearson **frequentist** procedure that the Navy captain questioned  and  the **Bayesian** decision rule described in  {doc}`A Bayesian Formulation of Friedman and Wald's Problem <wald_friedman_2>`.
 
-The simulations confirm the Navy Captain's hunch that there is a better rule than the one the Navy had ordered him to use.
+The simulations confirm the Navy Captain's hunch that there is a better rule than the Neyman-Pearson likelihood ratio test that the Navy had told him to use.
 
 ## Setup
 
@@ -94,9 +95,9 @@ The decision maker pays  a cost $c$ for drawing
 another  $z$.
 
 We mainly borrow parameters from the quantecon lecture
-{doc}`A Problem that Stumped Milton Friedman <wald_friedman>` except that we increase both $\bar L_{0}$
+ {doc}`A Bayesian Formulation of Friedman and Wald's Problem <wald_friedman_2>` except that we increase both $\bar L_{0}$
 and $\bar L_{1}$ from $25$ to $100$ to encourage the
-frequentist Navy Captain to take more draws before deciding.
+Bayesian decision rule to take more draws before deciding.
 
 We set the cost $c$ of taking one more draw  at $1.25$.
 
@@ -206,11 +207,7 @@ $f_1$
 
 ## Frequentist Decision Rule
 
-The Navy told the Captain to use a  frequentist decision rule.
-
-In particular, it gave him a decision rule that the Navy had designed  by using
-frequentist statistical theory to minimize an
-expected loss function.
+The Navy told the Captain to use a Neyman-Pearson likelihood ratio  decision rule.
 
 That decision rule is characterized by 
 
@@ -228,7 +225,10 @@ The decision rule associated with a sample size $t$ is:
   is greater than $d$
 - decide that $f_1$ is the distribution if the likelihood ratio is less than $d$
 
-To understand how that rule was engineered, let null and alternative
+For our purposes here, we want to compute an   expected loss from using this rule, where we borrow  
+loss parameters $\bar L_1$ and $\bar L_2$ from  {doc}`A Bayesian Formulation of Friedman and Wald's Problem <wald_friedman_2>`.
+
+Let null and alternative
 hypotheses be
 
 - null: $H_{0}$: $f=f_{0}$,
@@ -268,6 +268,8 @@ lecture {doc}`Likelihood Ratio Processes <likelihood_ratio_process>`.
 To solve for $\bar{V}_{fre}\left(t,d\right)$ numerically, we first
 simulate sequences of $z$ when either $f_0$ or $f_1$
 generates data.
+
+Let's plot empirical distributions, i.e., histograms, associated with $f_0$ and $f_1$.
 
 ```{code-cell} python3
 N = 10000
@@ -325,7 +327,7 @@ plt.title("Receiver Operating Characteristic Curve")
 plt.show()
 ```
 
-Our frequentist minimizes the expected total loss presented in equation
+We can  minimizes the expected total loss presented in equation
 {eq}`val1` by choosing $\left(t,d\right)$.
 
 Doing that delivers an expected loss
@@ -404,10 +406,8 @@ plt.show()
 t_optimal = np.argmin(V_fre_arr) + 1
 ```
 
-```{code-cell} python3
-msg = f"The above graph indicates that minimizing over t tells the frequentist to draw {t_optimal} observations and then decide."
-print(msg)
-```
+
+The above graph illustrates how  minimizing over $t$ tells the frequentist to draw $t_{\rm optimal}$ observations and then decide.
 
 Let’s now change the value of $\pi^{*}$ and watch how the decision
 rule changes.
@@ -461,17 +461,17 @@ plt.show()
 ## Bayesian Decision Rule
 
 In  {doc}`A Problem that Stumped Milton Friedman <wald_friedman>`,
-we learned how Abraham Wald confirmed the Navy
-Captain’s hunch that there is a better decision rule.
+we learned how Abraham Wald confirmed the Navy Captain’s hunch that there is a better decision rule.
 
-We presented a Bayesian procedure that instructed the Captain to makes
-decisions by comparing his current Bayesian posterior probability
-$\pi$ with two cutoff probabilities called $\alpha$ and
-$\beta$.
+In {doc}`A Bayesian Formulation of Friedman and Wald's Problem <wald_friedman_2>`
+we presented a Bayesian procedure that  makes
+decisions by comparing a Bayesian posterior probability
+$\pi$ with cutoff probabilities called $A$ and
+$B$.
 
 To proceed, we borrow some Python code from the quantecon
-lecture {doc}`A Problem that Stumped Milton Friedman <wald_friedman>`
-that computes $\alpha$ and $\beta$.
+lecture {doc}`A Bayesian Formulation of Friedman and Wald's Problem <wald_friedman_2>`
+that computes optimal values of $A$ and $B$.
 
 ```{code-cell} python3
 @jit(parallel=True)
@@ -579,8 +579,8 @@ ax.plot(wf.π_grid,
         np.amin(np.column_stack([h_star, cost_L0, cost_L1]),axis=1),
         lw=15, alpha=0.1, color='b', label='minimum cost')
 
-ax.annotate(r"$\beta$", xy=(β + 0.01, 0.5), fontsize=14)
-ax.annotate(r"$\alpha$", xy=(α + 0.01, 0.5), fontsize=14)
+ax.annotate(r"$B$", xy=(β + 0.01, 0.5), fontsize=14)
+ax.annotate(r"$A$", xy=(α + 0.01, 0.5), fontsize=14)
 
 plt.vlines(β, 0, β * wf.L0, linestyle="--")
 plt.vlines(α, 0, (1 - α) * wf.L1, linestyle="--")
@@ -595,14 +595,14 @@ plt.show()
 The above figure portrays the value function plotted against the decision
 maker’s Bayesian posterior.
 
-It also shows the probabilities $\alpha$ and $\beta$.
+It also shows the cutoff probabilities $A$ and $B$.
 
 The Bayesian decision rule is:
 
-- accept $H_0$ if $\pi \geq \alpha$
-- accept $H_1$ if $\pi \leq \beta$
+- accept $H_0$ if $\pi \geq A$
+- accept $H_1$ if $\pi \leq B$
 - delay deciding and draw another $z$ if
-  $\beta \leq \pi \leq \alpha$
+  $ B \leq \pi \leq A$
 
 We can calculate two “objective” loss functions under this situation
 conditioning on knowing for sure that nature has selected $f_{0}$,
@@ -612,9 +612,9 @@ in the first case, or $f_{1}$, in the second case.
 
    $$
    V^{0}\left(\pi\right)=\begin{cases}
-   0 & \text{if }\alpha\leq\pi,\\
-   c+EV^{0}\left(\pi^{\prime}\right) & \text{if }\beta\leq\pi<\alpha,\\
-   \bar L_{1} & \text{if }\pi<\beta.
+   0 & \text{if} A \leq\pi,\\
+   c+EV^{0}\left(\pi^{\prime}\right) & \text{if }B\leq\pi< A,\\
+   \bar L_{1} & \text{if }\pi<B.
    \end{cases}
    $$
 
@@ -622,9 +622,9 @@ in the first case, or $f_{1}$, in the second case.
 
    $$
    V^{1}\left(\pi\right)=\begin{cases}
-   \bar L_{0} & \text{if }\alpha\leq\pi,\\
-   c+EV^{1}\left(\pi^{\prime}\right) & \text{if }\beta\leq\pi<\alpha,\\
-   0 & \text{if }\pi<\beta.
+   \bar L_{0} & \text{if }A \leq\pi,\\
+   c+EV^{1}\left(\pi^{\prime}\right) & \text{if }B \leq\pi<A,\\
+   0 & \text{if }\pi< B.
    \end{cases}
    $$
 
@@ -649,21 +649,21 @@ def V_q(wf, flag):
     V = np.zeros(wf.π_grid_size)
     if flag == 0:
         z_arr = wf.z0
-        V[wf.π_grid < β] = wf.L1
+        V[wf.π_grid < B] = wf.L1
     else:
         z_arr = wf.z1
-        V[wf.π_grid >= α] = wf.L0
+        V[wf.π_grid >= A] = wf.L0
 
     V_old = np.empty_like(V)
 
     while True:
         V_old[:] = V[:]
-        V[(β <= wf.π_grid) & (wf.π_grid < α)] = 0
+        V[(B <= wf.π_grid) & (wf.π_grid < A)] = 0
 
         for i in prange(len(wf.π_grid)):
             π = wf.π_grid[i]
 
-            if π >= α or π < β:
+            if π >= A or π < B:
                 continue
 
             for j in prange(len(z_arr)):
@@ -684,10 +684,10 @@ V1 = V_q(wf, 1)
 
 plt.plot(wf.π_grid, V0, label='$V^0$')
 plt.plot(wf.π_grid, V1, label='$V^1$')
-plt.vlines(β, 0, wf.L0, linestyle='--')
-plt.text(β+0.01, wf.L0/2, 'β')
-plt.vlines(α, 0, wf.L0, linestyle='--')
-plt.text(α+0.01, wf.L0/2, 'α')
+plt.vlines(B, 0, wf.L0, linestyle='--')
+plt.text(B+0.01, wf.L0/2, 'B')
+plt.vlines(A, 0, wf.L0, linestyle='--')
+plt.text(A+0.01, wf.L0/2, 'A')
 plt.xlabel(r'$\pi$')
 plt.title(r'Objective value function $V(\pi)$')
 plt.legend()
@@ -778,8 +778,8 @@ plt.show()
 
 ## Was the Navy Captain’s Hunch Correct?
 
-We now compare average (i.e., frequentist) losses obtained by the
-frequentist and Bayesian decision rules.
+We now compare average  losses obtained by our frequentist Neyman-Pearson 
+ and Bayesian decision rules.
 
 As a starting point, let’s compare average loss functions when
 $\pi^{*}=0.5$.
@@ -806,7 +806,7 @@ plt.legend()
 plt.show()
 ```
 
-Evidently, there is no sample size $t$ at which the frequentist
+Evidently, there is no sample size $t$ at which the Neyman-Pearson
 decision rule attains a lower loss function than does the Bayesian rule.
 
 Furthermore, the following graph indicates that the Bayesian decision
@@ -841,7 +841,7 @@ $\pi^{*}=0.5=\pi_{0}$.
 π_star = 0.5
 ```
 
-Recall that when $\pi^*=0.5$, the frequentist decision rule sets a
+Recall that when $\pi^*=0.5$, the frequentist Neyman-Pearson decision rule sets a
 sample size `t_optimal` **ex ante**.
 
 For our parameter settings, we can compute its value:
@@ -923,11 +923,11 @@ plt.show()
 ```
 
 Later we’ll figure out how these distributions ultimately affect
-objective expected values under the two decision rules.
+objective expected values under the Neyman-Pearson and  Bayesian decision rules.
 
 To begin, let’s look at simulations of the Bayesian’s beliefs over time.
 
-We can easily compute the updated beliefs at any time $t$ using
+We can compute  updated beliefs at any time $t$ using
 the one-to-one mapping from $L_{t}$ to $\pi_{t}$ given
 $\pi_0$ described in this lecture {doc}`Likelihood Ratio Processes <likelihood_ratio_process>`.
 
@@ -994,10 +994,10 @@ plt.show()
 
 ## Probability of Making Correct Decision
 
-Now we use simulations to compute the fraction of samples in which the
-Bayesian and the frequentist decision rules decide correctly.
+Now we use simulations to compute the fractions of samples in which the
+Bayesian and the frequentist Neyman-Pearson  decision rules decide correctly.
 
-For the frequentist rule, the probability of making the correct decision
+For the frequentist Neyman-Pearson rule, the probability of making the correct decision
 under $f_{1}$ is the optimal probability of detection given
 $t$ that we defined earlier, and similarly it equals $1$
 minus the optimal probability of a false alarm under $f_{0}$.
@@ -1051,13 +1051,13 @@ plt.title('Uncond. probability of making correct decisions before t')
 plt.show()
 ```
 
-## Distribution of Likelihood Ratios at Frequentist’s $t$
+## Distribution of Likelihood Ratios at Neyman-Pearson's $t$
 
 Next we use simulations to construct distributions of likelihood ratios
 after $t$ draws.
 
 To serve as useful reference points, we also show likelihood ratios that
-correspond to the Bayesian cutoffs $\alpha$ and $\beta$.
+correspond to the Bayesian cutoffs $A$ and $B$.
 
 In order to exhibit the distribution more clearly, we report logarithms
 of likelihood ratios.
