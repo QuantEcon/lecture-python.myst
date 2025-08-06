@@ -1085,7 +1085,7 @@ In this exercise, first implement a general SPRT framework that can work with an
 Then, use the function to test between two specifications of binomial distributions with $n=10$ trials:
 
 - $H_0$: Binomial distribution with $p=0.3$
-- $H_1$: Binomial distribution with $p=0.5$
+- $H_1$: Binomial distribution with $p=0.35$
 
 ```{exercise-end}
 ```
@@ -1174,10 +1174,10 @@ def plot_sprt_results(dist_plot_fn, stopping_times):
     dist_plot_fn(axes[0])
     
     # Stopping times histogram
-    axes[1].hist(stopping_times, bins=30, color='steelblue', 
+    axes[1].hist(stopping_times, bins=40, 
                  alpha=0.8, edgecolor='black')
-    axes[1].set_xlabel('Stopping time')
-    axes[1].set_ylabel('Frequency')
+    axes[1].set_xlabel('stopping time')
+    axes[1].set_ylabel('frequency')
     axes[1].set_title(f'Stopping times (mean={stopping_times.mean():.1f})')
     
     plt.tight_layout()
@@ -1208,7 +1208,7 @@ Now let's implement the log-likelihood ratio function and the sampling function.
 ```{code-cell} ipython3
 n_trials = 10
 p0 = 0.3
-p1 = 0.5  # Changed from 0.35 to 0.5 as per exercise requirements
+p1 = 0.35
 
 @njit
 def binomial_log_lr(observation, p1, p0):
@@ -1356,8 +1356,7 @@ Let's also create an interactive comparison showing the log-likelihood ratio evo
 
 ```{code-cell} ipython3
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
-
-p1_examples = [0.35, 0.5, 0.7]
+p1_examples = [0.35, 0.4, 0.5]
 
 @njit
 def generate_llr_path_param(true_h0, p0_param, p1_param, max_steps, seed):
@@ -1395,7 +1394,7 @@ for idx, p1_current in enumerate(p1_examples):
     ax.axhline(y=0, color='black', linestyle='-', alpha=0.3)
     
     ax.set_xlabel(r'$t$', fontsize=11)
-    ax.set_ylabel(r'$L_t$', fontsize=11)
+    ax.set_ylabel(r'$\log L_t$', fontsize=11)
     ax.set_title(f'$p_1 - p_0 = {p1_current - p0_fixed:.2f}$\n(p0={p0_fixed}, p1={p1_current})', 
                  fontsize=12)
     ax.legend(fontsize=9)
@@ -1448,7 +1447,7 @@ def triangular_sample(mode, seed):
 Here we create distribution-specific functions
 
 ```{code-cell} ipython3
-mode = 0.7  # Changed from 0.99 to match exercise requirements
+mode = 0.7
 
 @njit  
 def uniform_triangular_log_lr(observation):
@@ -1501,9 +1500,9 @@ def plot_uniform_triangular(ax):
     ax.plot(x, triangular_y, 'r-', lw=2, 
             label=f'$H_1$: Triangular (mode={mode})')
     ax.fill_between(x, 0, np.minimum(uniform_y, triangular_y), 
-                     alpha=0.3, color='purple', label='Overlap region')
+                     alpha=0.3, color='purple', label='overlap region')
     ax.set_xlabel('x')
-    ax.set_ylabel('Density')
+    ax.set_ylabel('density')
     ax.legend()
 
 plot_sprt_results(plot_uniform_triangular, stopping_times)
