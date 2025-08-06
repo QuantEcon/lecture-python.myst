@@ -613,7 +613,7 @@ axes[0].fill_between(z_grid, 0,
                                 results['f1'].pdf(z_grid)), 
                      alpha=0.3, color='purple', label='overlap region')
 axes[0].set_xlabel('z')
-axes[0].set_ylabel('density')
+axes[0].set_ylabel("probability of $z_k$")
 axes[0].legend()
 
 axes[1].hist(results['stopping_times'], 
@@ -779,7 +779,8 @@ When two distributions are "close", it should  takes longer to decide which one 
 
 It is tempting to link this pattern to our discussion of [Kullback–Leibler divergence](rel_entropy) in {doc}`likelihood_ratio_process`.
 
-While, KL divergence is larger when two distributions differ more, KL divergence is not symmetric, meaning that the KL divergence of distribution $f$ from distribution $g$  is not necessarily equal to the KL
+While, KL divergence is larger when two distributions differ more, KL divergence is not symmetric, meaning that the KL
+divergence of distribution $f$ from distribution $g$  is not necessarily equal to the KL
 divergence of $g$ from $f$.  
 
 If we want a symmetric measure of divergence that actually a metric, we can instead use  [Jensen-Shannon distance](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html).
@@ -1071,6 +1072,445 @@ When we multiply $B$ by a factor greater than 1 (making $B$ larger), we are maki
 This increases the probability of Type II errors.
 
 The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases.
+
+## Exercises
+
+Let's explore how Wald's sequential probability ratio test performs with different types of distributions. 
+
+```{exercise-start}
+:label: wald_ex1
+```
+In this exercise, first implement a general SPRT framework that can work with any distribution type.
+
+Then, use the function to test between two specifications of binomial distributions with $n=10$ trials:
+
+- $H_0$: Binomial distribution with $p=0.3$
+- $H_1$: Binomial distribution with $p=0.5$
+
+```{exercise-end}
+```
+
+```{solution-start} wald_ex1
+:class: dropdown
+```
+
+Here is one solution.
+
+First, let's implement the general SPRT framework by allowing the user to specify the distribution type and the log-likelihood ratio function:
+
+```{code-cell} ipython3
+@njit
+def sprt_generic_single(log_likelihood_ratio_fn, sample_fn, logA, logB, 
+                        true_h0, seed, lr_args, sample_args, max_iter=50000):
+    """
+    Generic single SPRT run that works with any distribution.
+    """
+    log_L = 0.0
+    n = 0
+    np.random.seed(seed)
+    
+    while n < max_iter:
+        # Generate observation from true distribution
+        if len(sample_args) > 0:
+            observation = sample_fn(true_h0, seed + n, *sample_args)
+        else:
+            observation = sample_fn(true_h0, seed + n)
+        n += 1
+        
+        # Update log-likelihood ratio
+        if len(lr_args) > 0:
+            log_L += log_likelihood_ratio_fn(observation, *lr_args)
+        else:
+            log_L += log_likelihood_ratio_fn(observation)
+        
+        # Check stopping conditions
+        if log_L >= logA:
+            return n, False  # Reject H0
+        elif log_L <= logB:
+            return n, True   # Accept H0
+    
+    # Fallback if max iterations reached
+    return n, log_L < 0
+
+@njit(parallel=True)
+def run_generic_sprt(log_likelihood_ratio_fn, sample_fn, lr_args, sample_args, 
+                     α, β, N, seed):
+    """
+    Run generic SPRT simulation for any distribution type.
+    """
+    A = (1 - β) / α
+    B = β / (1 - α)
+    logA = np.log(A)
+    logB = np.log(B)
+    
+    stopping_times = np.zeros(N, dtype=np.int64)
+    decisions_h0 = np.zeros(N, dtype=np.bool_)
+    truth_h0 = np.zeros(N, dtype=np.bool_)
+    
+    for i in prange(N):
+        true_h0 = (i % 2 == 0)
+        truth_h0[i] = true_h0
+        
+        n, accept_h0 = sprt_generic_single(
+            log_likelihood_ratio_fn, sample_fn, 
+            logA, logB, true_h0, seed + i, lr_args, sample_args
+        )
+        
+        stopping_times[i] = n
+        decisions_h0[i] = accept_h0
+    
+    return stopping_times, decisions_h0, truth_h0
+
+def compute_error_rates(decisions_h0, truth_h0):
+    """Compute type I and type II error rates."""
+    type_I = np.sum(truth_h0 & ~decisions_h0) / np.sum(truth_h0)
+    type_II = np.sum(~truth_h0 & decisions_h0) / np.sum(~truth_h0)
+    return type_I, type_II
+
+def plot_sprt_results(dist_plot_fn, stopping_times):
+    """Standard visualization for SPRT results."""
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+    
+    dist_plot_fn(axes[0])
+    
+    # Stopping times histogram
+    axes[1].hist(stopping_times, bins=30, color='steelblue', 
+                 alpha=0.8, edgecolor='black')
+    axes[1].set_xlabel('Stopping time')
+    axes[1].set_ylabel('Frequency')
+    axes[1].set_title(f'Stopping times (mean={stopping_times.mean():.1f})')
+    
+    plt.tight_layout()
+    plt.show()
+```
+
+Now let's implement SPRT for binomial distributions.
+
+First, we need to implement the binomial PMF function.
+
+```{code-cell} ipython3
+@njit
+def binomial_pmf(k, n, p):
+    """Compute binomial PMF P(X=k) for X ~ Binomial(n,p)"""
+    if k < 0 or k > n or p <= 0 or p >= 1:
+        return 1e-10  # Small positive value to avoid log(0)
+    
+    # Compute binomial coefficient
+    coeff = 1.0
+    for i in range(min(k, n-k)):
+        coeff *= (n - i) / (i + 1)
+    
+    return coeff * p**k * (1-p)**(n-k)
+```
+
+Now let's implement the log-likelihood ratio function and the sampling function.
+
+```{code-cell} ipython3
+n_trials = 10
+p0 = 0.3
+p1 = 0.5  # Changed from 0.35 to 0.5 as per exercise requirements
+
+@njit
+def binomial_log_lr(observation, p1, p0):
+    """Log-likelihood ratio for binomial observation."""
+    k = observation
+    return np.log(binomial_pmf(k, n_trials, p1) 
+                / binomial_pmf(k, n_trials, p0))    
+
+@njit
+def binomial_sample_with_params(true_h0, seed, p0, p1):
+    """Sample from binomial distribution with parameters."""
+    np.random.seed(seed)
+    p = p0 if true_h0 else p1
+    return np.sum(np.random.random(n_trials) < p)
+
+# Create a wrapper for the default case
+@njit
+def binomial_sample(true_h0, seed):
+    """Sample from binomial distribution with default p0=0.3, p1=0.5."""
+    return binomial_sample_with_params(true_h0, seed, 0.3, 0.5)
+```
+
+We are all set to run the SPRT simulation.
+
+```{code-cell} ipython3
+α, β = 0.05, 0.10
+N = 5000
+ 
+stopping_times, decisions_h0, truth_h0 = run_generic_sprt(
+    binomial_log_lr, binomial_sample, 
+    (p1, p0), (),  # lr_args, sample_args (empty for default wrapper)
+    α, β, N, seed=42
+)
+
+type_I, type_II = compute_error_rates(decisions_h0, truth_h0)
+
+print(f"\nResults:")
+print(f"Average stopping time: {stopping_times.mean():.2f}")
+print(f"Empirical type I error: {type_I:.3f} (target = {α})")
+print(f"Empirical type II error: {type_II:.3f} (target = {β})")
+```
+
+Lastly, let's visualize the distributions and results.
+
+```{code-cell} ipython3
+# Visualization function for binomial
+def plot_binomial_dists(ax):
+    k_values = np.arange(0, n_trials + 1)
+    pmf0 = [binomial_pmf(k, n_trials, p0) for k in k_values]
+    pmf1 = [binomial_pmf(k, n_trials, p1) for k in k_values]
+    
+    ax.bar(k_values, pmf0, width=0.4, 
+           label=f'$H_0$: p={p0}', alpha=0.7)
+    ax.bar(k_values, pmf1, width=0.4, 
+           label=f'$H_1$: p={p1}', alpha=0.7)
+    ax.set_xlabel('Number of defects (out of 10)')
+    ax.set_ylabel('Probability')
+    ax.set_title('Binomial PMFs')
+    ax.legend()
+
+plot_sprt_results(plot_binomial_dists, stopping_times)
+```
+
+```{solution-end}
+```
+
+
+```{exercise-start}
+:label: wald_ex2
+```
+
+Fix $p_0 = 0.3$ and the number of trials $n=10$.
+
+In particular, set `p1_values = np.linspace(0.35, 0.8, 10)`.
+
+Explore how the stopping time and the type I and type II error rates change as $p_1$ moves away from $p_0$.
+
+Plot the stopping time and the type I and type II error rates as a function of $p_1$.
+
+```{exercise-end}
+```
+
+```{solution-start} wald_ex2
+:class: dropdown
+```
+
+First, let's create the functions for the log-likelihood ratio and the sampling function.
+
+```{code-cell} ipython3
+# Fixed parameters
+n_trials = 10
+α, β = 0.05, 0.10
+N = 2000
+seed = 42
+
+# Keep p0 fixed and vary p1
+p0_fixed = 0.3
+p1_values = np.linspace(0.35, 0.8, 10)
+
+# Storage for results
+avg_stopping_times = []
+type_I_errors = []
+type_II_errors = []
+separations = []
+
+for p1_val in p1_values:
+    # Use the generic SPRT framework with parameterized sample function
+    stopping_times, decisions_h0, truth_h0 = run_generic_sprt(
+        binomial_log_lr, binomial_sample_with_params,
+        (p1_val, p0_fixed), (p0_fixed, p1_val),  # lr_args, sample_args
+        α, β, N, seed
+    )
+    
+    # Compute metrics
+    type_I, type_II = compute_error_rates(decisions_h0, truth_h0)
+    
+    # Store results
+    separations.append(p1_val - p0_fixed)
+    avg_stopping_times.append(stopping_times.mean())
+    type_I_errors.append(type_I)
+    type_II_errors.append(type_II)
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+axes[0].plot(separations, avg_stopping_times, 'o-', color='steelblue', 
+                linewidth=2, markersize=8)
+axes[0].set_xlabel('$p_1 - p_0$', fontsize=12)
+axes[0].set_ylabel('average stopping time', fontsize=12)
+
+axes[1].plot(separations, type_I_errors, 'o-', 
+                label=f'Type I (target={α})', linewidth=2, markersize=8)
+axes[1].plot(separations, type_II_errors, 's-',
+                label=f'Type II (target={β})', linewidth=2, markersize=8)
+axes[1].axhline(y=α, linestyle='--', alpha=0.5)
+axes[1].axhline(y=β, linestyle='--', alpha=0.5, color='C1')
+axes[1].set_xlabel('$p_1 - p_0$', fontsize=12)
+axes[1].set_ylabel('error rate', fontsize=12)
+axes[1].legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+Let's also create an interactive comparison showing the log-likelihood ratio evolution for different separations:
+
+```{code-cell} ipython3
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+p1_examples = [0.35, 0.5, 0.7]
+
+@njit
+def generate_llr_path_param(true_h0, p0_param, p1_param, max_steps, seed):
+    """Generate a log-likelihood ratio path with parameters."""
+    log_L_path = np.zeros(max_steps + 1)
+    np.random.seed(seed)
+    
+    for i in range(max_steps):
+        p = p0_param if true_h0 else p1_param
+        k = np.sum(np.random.random(n_trials) < p)
+        
+        # Calculate log-likelihood ratio increment
+        log_lr = np.log(binomial_pmf(k, n_trials, p1_param) / 
+                       binomial_pmf(k, n_trials, p0_param))
+        log_L_path[i + 1] = log_L_path[i] + log_lr
+    
+    return log_L_path
+
+for idx, p1_current in enumerate(p1_examples):
+    path_h0 = generate_llr_path_param(True, p0_fixed, p1_current, 50, 42)
+    path_h1 = generate_llr_path_param(False, p0_fixed, p1_current, 50, 142)
+    
+    A = (1 - β) / α
+    B = β / (1 - α)
+    logA = np.log(A)
+    logB = np.log(B)
+    
+    ax = axes[idx]
+    ax.plot(path_h0, label='True: H0', linewidth=2)
+    ax.plot(path_h1, label='True: H1', linewidth=2)
+    ax.axhline(y=logA, color='red', linestyle='--', alpha=0.7, 
+               label=f'Reject H0 (log A={logA:.2f})')
+    ax.axhline(y=logB, color='green', linestyle='--', alpha=0.7, 
+               label=f'Accept H0 (log B={logB:.2f})')
+    ax.axhline(y=0, color='black', linestyle='-', alpha=0.3)
+    
+    ax.set_xlabel(r'$t$', fontsize=11)
+    ax.set_ylabel(r'$L_t$', fontsize=11)
+    ax.set_title(f'$p_1 - p_0 = {p1_current - p0_fixed:.2f}$\n(p0={p0_fixed}, p1={p1_current})', 
+                 fontsize=12)
+    ax.legend(fontsize=9)
+
+plt.tight_layout()
+plt.show()
+```
+
+```{exercise-start}
+:label: wald_ex3
+```
+
+Now let's test between distributions from different families but with the same support. 
+
+We'll test between:
+- $H_0$: Data comes from a Uniform[0,1] distribution  
+- $H_1$: Data comes from a Triangular[0,1] distribution with mode at 0.7
+
+```{exercise-end}
+```
+
+```{solution-start} wald_ex3
+:class: dropdown
+```
+
+Let's implement the triangular distribution.
+
+```{code-cell} ipython3
+@njit
+def triangular_pdf(x, mode=0.5):
+    """Triangular distribution PDF on [0,1] with given mode"""
+    if x < 0 or x > 1:
+        return 1e-10
+    elif x <= mode:
+        return 2 * x / mode if mode > 0 else 1e-10
+    else:
+        return 2 * (1 - x) / (1 - mode) if mode < 1 else 1e-10
+
+@njit
+def triangular_sample(mode, seed):
+    """Sample from triangular distribution using inverse transform."""
+    np.random.seed(seed)
+    u = np.random.random()
+    if u < mode:
+        return np.sqrt(u * mode)
+    else:
+        return 1 - np.sqrt((1 - u) * (1 - mode))
+```
+
+Here we create distribution-specific functions
+
+```{code-cell} ipython3
+mode = 0.7  # Changed from 0.99 to match exercise requirements
+
+@njit  
+def uniform_triangular_log_lr(observation):
+    """Log-likelihood ratio for uniform vs triangular."""
+    x = observation
+    f0 = 1.0  # Uniform PDF on [0,1]
+    f1 = triangular_pdf(x, mode)
+    return np.log(f1 / f0)
+
+@njit
+def uniform_triangular_sample(true_h0, seed):
+    """Sample from uniform or triangular distribution."""
+    np.random.seed(seed)
+    if true_h0:
+        return np.random.random()  # Uniform
+    else:
+        return triangular_sample(mode, seed)  # Triangular
+```
+
+Now let's run the SPRT simulation.
+
+```{code-cell} ipython3
+α, β = 0.05, 0.10
+N = 5000
+
+# Both functions take no extra args, so pass empty tuples
+stopping_times, decisions_h0, truth_h0 = run_generic_sprt(
+    uniform_triangular_log_lr, uniform_triangular_sample, 
+    (), (),  # lr_args, sample_args
+    α, β, N, seed=42
+)
+
+type_I, type_II = compute_error_rates(decisions_h0, truth_h0)
+
+print(f"\nResults:")
+print(f"Average stopping time: {stopping_times.mean():.2f}")
+print(f"Empirical type I error: {type_I:.3f} (target = {α})")
+print(f"Empirical type II error: {type_II:.3f} (target = {β})")
+```
+
+Let's visualize the distributions and results
+
+```{code-cell} ipython3
+def plot_uniform_triangular(ax):
+    x = np.linspace(0, 1, 200)
+    uniform_y = np.ones_like(x)
+    triangular_y = np.array([triangular_pdf(xi, mode) for xi in x])
+    
+    ax.plot(x, uniform_y, 'b-', lw=2, label='$H_0$: Uniform')
+    ax.plot(x, triangular_y, 'r-', lw=2, 
+            label=f'$H_1$: Triangular (mode={mode})')
+    ax.fill_between(x, 0, np.minimum(uniform_y, triangular_y), 
+                     alpha=0.3, color='purple', label='Overlap region')
+    ax.set_xlabel('x')
+    ax.set_ylabel('Density')
+    ax.legend()
+
+plot_sprt_results(plot_uniform_triangular, stopping_times)
+```
+
+```{solution-end}
+```
 
 ## Related Lectures
 
