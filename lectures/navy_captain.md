@@ -327,7 +327,7 @@ plt.title("Receiver Operating Characteristic Curve")
 plt.show()
 ```
 
-We can  minimizes the expected total loss presented in equation
+We can  minimize the expected total loss presented in equation
 {eq}`val1` by choosing $\left(t,d\right)$.
 
 Doing that delivers an expected loss
@@ -355,7 +355,7 @@ def V_fre_d_t(d, t, L0_arr, L1_arr, π_star, wf):
     PFA = np.sum(L0_arr[:, t-1] < d) / N
     PD = np.sum(L1_arr[:, t-1] < d) / N
 
-    V = π_star * PFA *wf. L1 + (1 - π_star) * (1 - PD) * wf.L0
+    V = π_star * PFA * wf.L1 + (1 - π_star) * (1 - PD) * wf.L0
 
     return V
 ```
@@ -555,18 +555,18 @@ def find_cutoff_rule(wf, h):
 
     # The cutoff points can be found by differencing these costs with
     # The Bellman equation (J is always less than or equal to p_c_i)
-    β = π_grid[np.searchsorted(
+    B = π_grid[np.searchsorted(
                               payoff_f1 - np.minimum(h, payoff_f0),
                               1e-10)
                - 1]
-    α = π_grid[np.searchsorted(
+    A = π_grid[np.searchsorted(
                               np.minimum(h, payoff_f1) - payoff_f0,
                               1e-10)
                - 1]
 
-    return (β, α)
+    return (B, A)
 
-β, α = find_cutoff_rule(wf, h_star)
+B, A = find_cutoff_rule(wf, h_star)
 cost_L0 = (1 - wf.π_grid) * wf.L0
 cost_L1 = wf.π_grid * wf.L1
 
@@ -579,11 +579,11 @@ ax.plot(wf.π_grid,
         np.amin(np.column_stack([h_star, cost_L0, cost_L1]),axis=1),
         lw=15, alpha=0.1, color='b', label='minimum cost')
 
-ax.annotate(r"$B$", xy=(β + 0.01, 0.5), fontsize=14)
-ax.annotate(r"$A$", xy=(α + 0.01, 0.5), fontsize=14)
+ax.annotate(r"$B$", xy=(B + 0.01, 0.5), fontsize=14)
+ax.annotate(r"$A$", xy=(A + 0.01, 0.5), fontsize=14)
 
-plt.vlines(β, 0, β * wf.L0, linestyle="--")
-plt.vlines(α, 0, (1 - α) * wf.L1, linestyle="--")
+plt.vlines(B, 0, B * wf.L0, linestyle="--")
+plt.vlines(A, 0, (1 - A) * wf.L1, linestyle="--")
 
 ax.set(xlim=(0, 1), ylim=(0, 0.5 * max(wf.L0, wf.L1)), ylabel="cost",
        xlabel=r"$\pi$", title="Value function")
@@ -793,7 +793,7 @@ $\pi^{*}=0.5$.
 V_fre_arr, PFA_arr, PD_arr = compute_V_fre(L0_arr, L1_arr, π_star, wf)
 
 # bayesian
-V_baye = π_star * V0 + π_star * V1
+V_baye = π_star * V0 + (1 - π_star) * V1
 V_baye_bar = V_baye.min()
 ```
 
@@ -877,7 +877,7 @@ rule when $q= f_0$ and **later** when $q = f_1$.
 
 ```{code-cell} python3
 @jit(parallel=True)
-def check_results(L_arr, α, β, flag, π0):
+def check_results(L_arr, A, B, flag, π0):
 
     N, T = L_arr.shape
 
@@ -888,17 +888,17 @@ def check_results(L_arr, α, β, flag, π0):
 
     for i in prange(N):
         for t in range(T):
-            if (π_arr[i, t] < β) or (π_arr[i, t] > α):
+            if (π_arr[i, t] < B) or (π_arr[i, t] > A):
                 time_arr[i] = t + 1
-                correctness[i] = (flag == 0 and π_arr[i, t] > α) or (flag == 1 and π_arr[i, t] < β)
+                correctness[i] = (flag == 0 and π_arr[i, t] > A) or (flag == 1 and π_arr[i, t] < B)
                 break
 
     return time_arr, correctness
 ```
 
 ```{code-cell} python3
-time_arr0, correctness0 = check_results(L0_arr, α, β, 0, π_star)
-time_arr1, correctness1 = check_results(L1_arr, α, β, 1, π_star)
+time_arr0, correctness0 = check_results(L0_arr, A, B, 0, π_star)
+time_arr1, correctness1 = check_results(L1_arr, A, B, 1, π_star)
 
 # unconditional distribution
 time_arr_u = np.concatenate((time_arr0, time_arr1))
@@ -963,7 +963,7 @@ The left graph compares $E\left(\pi_{t}\right)$ under
 $f_{0}$ to $1-E\left(\pi_{t}\right)$ under $f_{1}$:
 they lie on top of each other.
 
-However, as the right hand size graph shows, there is significant
+However, as the right hand side graph shows, there is significant
 difference in variances when $t$ is small: the variance is lower
 under $f_{1}$.
 
@@ -1067,8 +1067,8 @@ $f_0$ generating the data, the other conditional on $f_1$
 generating the data.
 
 ```{code-cell} python3
-Lα = (1 - π_star) *  α / (π_star - π_star * α)
-Lβ = (1 - π_star) *  β / (π_star - π_star * β)
+LA = (1 - π_star) *  A / (π_star - π_star * A)
+LB = (1 - π_star) *  B / (π_star - π_star * B)
 ```
 
 ```{code-cell} python3
@@ -1078,8 +1078,8 @@ bin_range = np.linspace(np.log(L_min), np.log(L_max), 50)
 n0 = plt.hist(np.log(L0_arr[:, t_idx]), bins=bin_range, alpha=0.4, label='f0 generates')[0]
 n1 = plt.hist(np.log(L1_arr[:, t_idx]), bins=bin_range, alpha=0.4, label='f1 generates')[0]
 
-plt.vlines(np.log(Lβ), 0, max(n0.max(), n1.max()), linestyle='--', color='r', label='log($L_β$)')
-plt.vlines(np.log(Lα), 0, max(n0.max(), n1.max()), linestyle='--', color='b', label='log($L_α$)')
+plt.vlines(np.log(LB), 0, max(n0.max(), n1.max()), linestyle='--', color='r', label='log($L_B$)')
+plt.vlines(np.log(LA), 0, max(n0.max(), n1.max()), linestyle='--', color='b', label='log($L_A$)')
 plt.legend()
 
 plt.xlabel('log(L)')
@@ -1096,8 +1096,8 @@ distributions.
 ```{code-cell} python3
 plt.hist(np.log(np.concatenate([L0_arr[:, t_idx], L1_arr[:, t_idx]])),
         bins=50, alpha=0.4, label='unconditional dist. of log(L)')
-plt.vlines(np.log(Lβ), 0, max(n0.max(), n1.max()), linestyle='--', color='r', label='log($L_β$)')
-plt.vlines(np.log(Lα), 0, max(n0.max(), n1.max()), linestyle='--', color='b', label='log($L_α$)')
+plt.vlines(np.log(LB), 0, max(n0.max(), n1.max()), linestyle='--', color='r', label='log($L_B$)')
+plt.vlines(np.log(LA), 0, max(n0.max(), n1.max()), linestyle='--', color='b', label='log($L_A$)')
 plt.legend()
 
 plt.xlabel('log(L)')
