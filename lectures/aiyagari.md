@@ -71,7 +71,7 @@ A textbook treatment is available in chapter 18 of {cite}`Ljungqvist2012`.
 
 A continuous time version of the model by SeHyoun Ahn and Benjamin Moll can be found [here](https://nbviewer.org/github/QuantEcon/QuantEcon.notebooks/blob/master/aiyagari_continuous_time.ipynb).
 
-## The Economy
+## The economy
 
 ### Households
 

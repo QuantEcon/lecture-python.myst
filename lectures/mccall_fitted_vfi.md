@@ -55,7 +55,7 @@ from numba import jit, float64
 from numba.experimental import jitclass
 ```
 
-## The Algorithm
+## The algorithm
 
 The model is the same as the McCall model with job separation we {doc}`studied before <mccall_model_with_separation>`, except that the wage offer distribution is continuous.
 
@@ -91,7 +91,7 @@ The function $q$ in {eq}`bell1mcmc` is the density of the wage offer distributio
 
 Its support is taken as equal to $\mathbb R_+$.
 
-### Value Function Iteration
+### Value function iteration
 
 In theory, we should now proceed as follows:
 
@@ -111,7 +111,7 @@ is to record its value $v'(w)$ for every $w \in \mathbb R_+$.
 
 Clearly, this is impossible.
 
-### Fitted Value Function Iteration
+### Fitted value function iteration
 
 What we will do instead is use **fitted value function iteration**.
 

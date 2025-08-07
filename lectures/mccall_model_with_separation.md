@@ -64,7 +64,7 @@ from typing import NamedTuple
 from quantecon.distributions import BetaBinomial
 ```
 
-## The Model
+## The model
 
 The model is similar to the {doc}`baseline McCall job search model <mccall_model>`.
 
@@ -89,7 +89,7 @@ introducing a utility function $u$.
 
 It satisfies $u'> 0$ and $u'' < 0$.
 
-### The Wage Process
+### The wage process
 
 For now we will drop the separation of state process and wage process that we
 maintained for the {doc}`baseline model <mccall_model>`.
@@ -102,7 +102,7 @@ The set of possible wage values is denoted by $\mathbb W$.
 driving random outcomes, since this formulation is usually convenient in more sophisticated
 models.)
 
-### Timing and Decisions
+### Timing and decisions
 
 At the start of each period, the agent can be either
 
@@ -128,7 +128,7 @@ The process then repeats.
 We do not allow for job search while employed---this topic is taken up in a {doc}`later lecture <jv>`.
 ```
 
-## Solving the Model
+## Solving the model
 
 We drop time subscripts in what follows and primes denote next period values.
 
@@ -142,7 +142,7 @@ Here *value* means the value of the objective function {eq}`objective` when the 
 
 Our first aim is to obtain these functions.
 
-### The Bellman Equations
+### The Bellman equations
 
 Suppose for now that the worker can calculate the functions $v$ and $h$ and use them in his decision making.
 
@@ -183,7 +183,7 @@ Equations {eq}`bell1_mccall` and {eq}`bell2_mccall` are the Bellman equations fo
 They provide enough information to solve for both $v$ and $h$.
 
 (ast_mcm)=
-### A Simplifying Transformation
+### A simplifying transformation
 
 Rather than jumping straight into solving these equations, let's see if we can
 simplify them somewhat.
@@ -236,7 +236,7 @@ v(w) = u(w) + \beta
 In the last expression, we wrote $w_e$ as $w$ to make the notation
 simpler.
 
-### The Reservation Wage
+### The reservation wage
 
 Suppose we can use {eq}`bell02_mccall` and {eq}`bell01_mccall` to solve for
 $d$ and $v$.
@@ -260,7 +260,7 @@ w \geq \bar w
 \bar w \text{ solves } v(\bar w) =  u(c) + \beta d
 $$
 
-### Solving the Bellman Equations
+### Solving the Bellman equations
 
 We'll use the same iterative approach to solving the Bellman equations that we
 adopted in the {doc}`first job search lecture <mccall_model>`.
@@ -377,7 +377,7 @@ def solve_model(model, tol=1e-5, max_iter=2000):
     return v_final, d_final
 ```
 
-### The Reservation Wage: First Pass
+### The reservation wage: first pass
 
 The optimal choice of the agent is summarized by the reservation wage.
 
@@ -405,7 +405,7 @@ plt.show()
 
 The value $v$ is increasing because higher $w$ generates a higher wage flow conditional on staying employed.
 
-### The Reservation Wage: Computation
+### The reservation wage: computation
 
 Here's a function `compute_reservation_wage` that takes an instance of `Model`
 and returns the associated reservation wage.
@@ -428,11 +428,11 @@ def compute_reservation_wage(model):
 
 Next we will investigate how the reservation wage varies with parameters.
 
-## Impact of Parameters
+## Impact of parameters
 
 In each instance below, we'll show you a figure and then ask you to reproduce it in the exercises.
 
-### The Reservation Wage and Unemployment Compensation
+### The reservation wage and unemployment compensation
 
 First, let's look at how $\bar w$ varies with unemployment compensation.
 
@@ -447,7 +447,7 @@ As expected, higher unemployment compensation causes the worker to hold out for 
 
 In effect, the cost of continuing job search is reduced.
 
-### The Reservation Wage and Discounting
+### The reservation wage and discounting
 
 Next, let's investigate how $\bar w$ varies with the discount factor.
 
@@ -460,7 +460,7 @@ $\beta$
 
 Again, the results are intuitive: More patient workers will hold out for higher wages.
 
-### The Reservation Wage and Job Destruction
+### The reservation wage and job destruction
 
 Finally, let's look at how $\bar w$ varies with the job separation rate $\alpha$.
 

@@ -71,7 +71,7 @@ register_matplotlib_converters()
 Additional technical background related to this lecture can be found in the
 monograph of {cite}`buraczewski2016stochastic`.
 
-## Kesten Processes
+## Kesten processes
 
 ```{index} single: Kesten processes; heavy tails
 ```
@@ -97,7 +97,7 @@ In particular, we will assume that
 * $\{a_t\}_{t \geq 1}$ is a nonnegative IID stochastic process and
 * $\{\eta_t\}_{t \geq 1}$ is another nonnegative IID stochastic process, independent of the first.
 
-### Example: GARCH Volatility
+### Example: garch volatility
 
 The GARCH model is common in financial applications, where time series such as asset returns exhibit time varying volatility.
 
@@ -150,7 +150,7 @@ where $\{\zeta_t\}$ is again IID and independent of $\{\xi_t\}$.
 
 The volatility sequence $\{\sigma_t^2 \}$, which drives the dynamics of returns, is a Kesten process.
 
-### Example: Wealth Dynamics
+### Example: wealth dynamics
 
 Suppose that a given household saves a fixed fraction $s$ of its current wealth in every period.
 
@@ -203,7 +203,7 @@ current state is drawn from $F^*$.
 
 The equality in {eq}`kp_stationary` states that this distribution is unchanged.
 
-### Cross-Sectional Interpretation
+### Cross-sectional interpretation
 
 There is an important cross-sectional interpretation of stationary distributions, discussed previously but worth repeating here.
 
@@ -241,7 +241,7 @@ next period as it is this period.
 
 Since $y$ was chosen arbitrarily, the distribution is unchanged.
 
-### Conditions for Stationarity
+### Conditions for stationarity
 
 The Kesten process $X_{t+1} = a_{t+1} X_t + \eta_{t+1}$ does not always
 have a stationary distribution.
@@ -270,7 +270,7 @@ As one application of this result, we see that the wealth process
 {eq}`wealth_dynam` will have a unique stationary distribution whenever
 labor income has finite mean and $\mathbb E \ln R_t  + \ln s < 0$.
 
-## Heavy Tails
+## Heavy tails
 
 Under certain conditions, the stationary distribution of a Kesten process has
 a Pareto tail.
@@ -279,7 +279,7 @@ a Pareto tail.
 
 This fact is significant for economics because of the prevalence of Pareto-tailed distributions.
 
-### The Kesten--Goldie Theorem
+### The kesten--goldie theorem
 
 To state the conditions under which the stationary distribution of a Kesten process has a Pareto tail, we first recall that a random variable is called **nonarithmetic** if its distribution is not concentrated on $\{\dots, -2t, -t, 0, t, 2t, \ldots \}$ for any $t \geq 0$.
 
@@ -359,13 +359,13 @@ ax.set(xlabel='time', ylabel='$X_t$')
 plt.show()
 ```
 
-## Application: Firm Dynamics
+## Application: firm dynamics
 
 As noted in our {doc}`lecture on heavy tails <intro:heavy_tails>`, for common measures of firm size such as revenue or employment, the US firm size distribution exhibits a Pareto tail (see, e.g., {cite}`axtell2001zipf`, {cite}`gabaix2016power`).
 
 Let us try to explain this rather striking fact using the Kesten--Goldie Theorem.
 
-### Gibrat's Law
+### Gibrat's law
 
 It was postulated many years ago by Robert Gibrat {cite}`gibrat1931inegalites` that firm size evolves according to a simple rule whereby size next period is proportional to current size.
 
@@ -412,7 +412,7 @@ In the exercises you are asked to show that {eq}`firm_dynam` is more
 consistent with the empirical findings presented above than Gibrat's law in
 {eq}`firm_dynam_gb`.
 
-### Heavy Tails
+### Heavy tails
 
 So what has this to do with Pareto tails?
 

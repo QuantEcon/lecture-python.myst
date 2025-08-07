@@ -36,7 +36,7 @@ import matplotlib.pyplot as plt
 from math import gamma
 ```
 
-## Mathematical Expectation of Likelihood Ratio
+## Mathematical expectation of likelihood ratio
 
 In {doc}`this lecture <likelihood_ratio_process>`, we studied a likelihood ratio $\ell \left(\omega_t\right)$
 
@@ -156,7 +156,7 @@ $$
 E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\omega = \int_\Omega \ell(\omega) \frac{g(\omega)}{h(\omega)} h(\omega) d\omega = E^h\left[\ell\left(\omega\right) \frac{g(\omega)}{h(\omega)}\right]
 $$
 
-## Selecting a Sampling Distribution
+## Selecting a sampling distribution
 
 Since we must use an $h$ that has larger mass in parts of the distribution to which  $g$ puts low mass, we use $h=Beta(0.5, 0.5)$ as our importance distribution.
 
@@ -178,7 +178,7 @@ plt.ylim([0., 3.])
 plt.show()
 ```
 
-## Approximating a Cumulative Likelihood Ratio
+## Approximating a cumulative likelihood ratio
 
 We now study how to use importance sampling to approximate
 ${E} \left[L(\omega^t)\right] = \left[\prod_{i=1}^T \ell \left(\omega_i\right)\right]$.
@@ -248,7 +248,7 @@ estimate(g_a, g_b, g_a, g_b, T=10, N=10000)
 estimate(g_a, g_b, h_a, h_b, T=10, N=10000)
 ```
 
-## Distribution of  Sample Mean
+## Distribution of sample mean
 
 We next study the bias and efficiency of the Monte Carlo and importance sampling approaches.
 
@@ -323,7 +323,7 @@ The simulation exercises above show that the importance sampling estimates are u
 
 Evidently, the bias increases with increases in $T$.
 
-## Choosing a  Sampling Distribution
+## Choosing a sampling distribution
 
 +++
 

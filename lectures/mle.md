@@ -60,11 +60,11 @@ from statsmodels.iolib.summary2 import summary_col
 
 We assume familiarity with basic probability and multivariate calculus.
 
-## Set Up and Assumptions
+## Set up and assumptions
 
 Let's consider the steps we need to go through in maximum likelihood estimation and how they pertain to this study.
 
-### Flow of Ideas
+### Flow of ideas
 
 The first step with maximum likelihood estimation is to choose the probability distribution believed to be generating the data.
 
@@ -81,7 +81,7 @@ We'll let the data pick out a particular element of the class by pinning down th
 
 The parameter estimates so produced will be called **maximum likelihood estimates**.
 
-### Counting Billionaires
+### Counting billionaires
 
 Treisman {cite}`Treisman2016` is interested in estimating the number of billionaires in different countries.
 
@@ -163,7 +163,7 @@ plt.show()
 
 From the histogram, it appears that the Poisson assumption is not unreasonable (albeit with a very low $\mu$ and some outliers).
 
-## Conditional Distributions
+## Conditional distributions
 
 In Treisman's paper, the dependent variable --- the number of billionaires $y_i$ in country $i$ --- is modeled as a function of GDP per capita, population size, and years membership in GATT and WTO.
 
@@ -227,7 +227,7 @@ plt.show()
 We can see that the distribution of $y_i$ is conditional on
 $\mathbf{x}_i$ ($\mu_i$ is no longer constant).
 
-## Maximum Likelihood Estimation
+## Maximum likelihood estimation
 
 In our model for number of billionaires, the conditional distribution
 contains 4 ($k = 4$) parameters that we need to estimate.
@@ -350,7 +350,7 @@ $$
 However, no analytical solution exists to the above problem -- to find the MLE
 we need to use numerical methods.
 
-## MLE with Numerical Methods
+## MLE with numerical methods
 
 Many distributions do not have nice, analytical solutions and therefore require
 numerical methods to solve for parameter estimates.
@@ -607,7 +607,7 @@ Note that our implementation of the Newton-Raphson algorithm is rather
 basic --- for more robust implementations see,
 for example, [scipy.optimize](https://docs.scipy.org/doc/scipy/reference/optimize.html).
 
-## Maximum Likelihood Estimation with `statsmodels`
+## Maximum likelihood estimation with `statsmodels`
 
 Now that we know what's going on under the hood, we can apply MLE to an interesting application.
 

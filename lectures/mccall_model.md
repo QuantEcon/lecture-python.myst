@@ -69,7 +69,7 @@ import quantecon as qe
 from quantecon.distributions import BetaBinomial
 ```
 
-## The McCall Model
+## The mccall model
 
 ```{index} single: Models; McCall
 ```
@@ -106,7 +106,7 @@ The variable  $y_t$ is income, equal to
 * unemployment compensation $c$ when unemployed
 
 
-### A Trade-Off
+### A trade-off
 
 The worker faces a trade-off:
 
@@ -122,7 +122,7 @@ Dynamic programming can be thought of as a two-step procedure that
 
 We'll go through these steps in turn.
 
-### The Value Function
+### The value function
 
 In order to optimally trade-off current and future rewards, we need to think about two things:
 
@@ -182,7 +182,7 @@ If we optimize and pick the best of these two options, we obtain maximal lifetim
 But this is precisely $v^*(w)$, which is the left-hand side of {eq}`odu_pv`.
 
 
-### The Optimal Policy
+### The optimal policy
 
 Suppose for now that we are able to solve {eq}`odu_pv` for the unknown function $v^*$.
 
@@ -233,7 +233,7 @@ The agent should accept if and only if the current wage offer exceeds the reserv
 In view of {eq}`reswage`, we can compute this reservation wage if we can compute the value function.
 
 
-## Computing the Optimal Policy: Take 1
+## Computing the optimal policy: take 1
 
 To put the above ideas into action, we need to compute the value function at
 each possible state $w \in \mathbb W$.
@@ -265,7 +265,7 @@ v^*(i)
 
 
 
-### The Algorithm
+### The algorithm
 
 To compute this vector, we use successive approximations:
 
@@ -295,7 +295,7 @@ For a small tolerance, the returned function $v$ is a close approximation to the
 
 The theory below elaborates on this point.
 
-### Fixed Point Theory
+### Fixed point theory
 
 What's the mathematics behind these ideas?
 
@@ -509,7 +509,7 @@ The next line computes the reservation wage at  default parameters
 compute_reservation_wage(mcm)
 ```
 
-### Comparative Statics
+### Comparative statics
 
 Now that we know how to compute the reservation wage, let's see how it varies with
 parameters.
@@ -553,7 +553,7 @@ As expected, the reservation wage increases both with patience and with
 unemployment compensation.
 
 (mm_op2)=
-## Computing an Optimal Policy: Take 2
+## Computing an optimal policy: take 2
 
 The approach to dynamic programming just described is standard and
 broadly applicable.

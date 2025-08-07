@@ -35,7 +35,7 @@ In the lecture we'll learn about
 * using a Monte Carlo simulation of a multivariate normal distribution to evaluate the quality of a normal approximation
 * the administrator's problem and why the multivariate hypergeometric distribution is the right tool
 
-## The Administrator's Problem
+## The administrator's problem
 
 An administrator in charge of allocating research grants is in the following situation.
 
@@ -62,7 +62,7 @@ The $n$ balls drawn represent  successful proposals and are  awarded research fu
 
 The remaining $N-n$ balls receive no research funds.
 
-### Details of the Awards Procedure Under Study
+### Details of the awards procedure under study
 
 Let $k_i$ be the number of balls of color $i$ that are drawn.
 
@@ -106,7 +106,7 @@ the population of $N$ balls.
 
 The right tool for the administrator's job is the **multivariate hypergeometric distribution**.
 
-### Multivariate Hypergeometric Distribution
+### Multivariate hypergeometric distribution
 
 Let's start with some imports.
 
@@ -304,7 +304,7 @@ n = 6
 Σ
 ```
 
-### Back to The Administrator's Problem
+### Back to the administrator's problem
 
 Now let's turn to the grant administrator's problem.
 
@@ -368,7 +368,7 @@ np.cov(sample.T)
 
 Evidently, the sample means and covariances approximate their population counterparts well.
 
-### Quality of Normal Approximation
+### Quality of normal approximation
 
 To judge the quality of a multivariate normal approximation to the multivariate hypergeometric distribution, we draw a large sample from a multivariate normal distribution with the mean vector  and covariance matrix for the corresponding multivariate hypergeometric distribution and compare the simulated distribution with the population multivariate hypergeometric distribution.
 

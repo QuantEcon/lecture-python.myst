@@ -77,7 +77,7 @@ import pandas as pd
 
 This lecture uses ideas studied in {doc}`the lecture on likelihood ratio processes<likelihood_ratio_process>` and  {doc}`the lecture on Bayesian learning<likelihood_bayes>`.
 
-## Source of the Problem
+## Source of the problem
 
 On pages 137-139 of his 1998 book *Two Lucky People* with Rose Friedman {cite}`Friedman98`,
 Milton Friedman described a problem presented to him and Allen Wallis
@@ -123,7 +123,7 @@ Realizing that, they told Abraham Wald about the problem.
 
 That set  Wald on a path that led him  to create  *Sequential Analysis* {cite}`Wald47`.
 
-##  Neyman-Pearson Formulation
+## Neyman-pearson formulation
 
 It is useful to begin by describing the theory underlying the test
 that the U.S. Navy told  Captain G. S. Schuyler to use.
@@ -275,7 +275,7 @@ Here is how Wald introduces the notion of a sequential test
 > a random variable, since the value of $n$ depends on the outcome of the
 > observations.
 
-## Wald's Sequential Formulation 
+## Wald's sequential formulation
 
 By way of contrast to Neyman and Pearson's formulation of the problem, in Wald's formulation
 
@@ -341,7 +341,7 @@ Consequently, the observer has something to learn, namely, whether the observati
 The decision maker   wants  to decide which of the  two distributions is generating outcomes.
 
 
-### Type I and Type II Errors
+### Type I and type II errors
 
 If we regard  $f=f_0$ as a null hypothesis and $f=f_1$ as an alternative hypothesis,
 then 
@@ -392,7 +392,7 @@ The following figure illustrates aspects of Wald's procedure.
 
 ```
 
-## Links Between $A,B$ and $\alpha, \beta$
+## Links between $a,b$ and $\alpha, \beta$
 
 In chapter 3 of **Sequential Analysis** {cite}`Wald47`  Wald establishes the inequalities
 
@@ -1072,7 +1072,7 @@ This increases the probability of Type II errors.
 
 The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases.
 
-## Related Lectures
+## Related lectures
 
 We'll dig deeper into some of the ideas used here in the following earlier and later lectures:
 

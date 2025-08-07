@@ -57,7 +57,7 @@ Additional detail will be added to our `DataFrame` using pandas'
 `merge` function, and data will be summarized with the `groupby`
 function.
 
-## Slicing and Reshaping Data
+## Slicing and reshaping data
 
 We will read in a dataset from the OECD of real minimum wages in 32
 countries and assign it to `realwage`.
@@ -172,7 +172,7 @@ realwage_f = realwage.xs(('Hourly', 'In 2015 constant prices at 2015 USD exchang
 realwage_f.head()
 ```
 
-## Merging Dataframes and Filling NaNs
+## Merging dataframes and filling nans
 
 Similar to relational databases like SQL, pandas has built in methods to
 merge datasets together.
@@ -341,7 +341,7 @@ merged = merged.transpose()
 merged.head()
 ```
 
-## Grouping and Summarizing Data
+## Grouping and summarizing data
 
 Grouping and summarizing data can be particularly useful for
 understanding large panel datasets.
@@ -481,7 +481,7 @@ plt.legend()
 plt.show()
 ```
 
-## Final Remarks
+## Final remarks
 
 This lecture has provided an introduction to some of pandas' more
 advanced features, including multiindices, merging, grouping and

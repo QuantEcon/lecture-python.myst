@@ -49,7 +49,7 @@ In 1994, the multiple rounds, ascending bid auction was actually used by Stanfor
 
 We begin with  overviews of the two mechanisms.
 
-## Ascending Bids Auction for Multiple Goods
+## Ascending bids auction for multiple goods
 
 An auction is administered by an **auctioneer**
 
@@ -84,7 +84,7 @@ In this auction,  person $j$ never tells anyone else his/her private values $v_{
 
 
 
-## A Benevolent Planner
+## A benevolent planner
 
 This mechanism is designed so that all prospective buyers voluntarily choose to reveal their private values to a **social planner** who uses them to construct a socially optimal allocation.
 
@@ -99,7 +99,7 @@ After the planner receives everyone's vector of private values, the planner depl
 
 
 
-## Equivalence of Allocations
+## Equivalence of allocations
 
 Remarkably, these two mechanisms can produce virtually identical allocations.
 
@@ -111,10 +111,10 @@ We also work out some examples by hand or almost by hand.
 Next, let's dive down into the details.
 
 
-## Ascending Bid Auction
+## Ascending bid auction
 
 
-### Basic Setting
+### Basic setting
 
 
 We start with  a more detailed description of the setting.
@@ -238,7 +238,7 @@ np.random.seed(100)
 np.set_printoptions(precision=3, suppress=True)
 ```
 
-## An Example
+## An example
 
 +++
 
@@ -348,7 +348,7 @@ def check_kick_off_condition(v, r, ϵ):
 check_kick_off_condition(v, r, ϵ)
 ```
 
-### round 1
+### Round 1
 
 +++
 
@@ -491,7 +491,7 @@ winner_list
 loser_list
 ```
 
-### round 2
+### Round 2
 
 
 +++
@@ -574,7 +574,7 @@ allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v)
 present_dict(allocation)
 ```
 
-### round 3
+### Round 3
 
 ```{code-cell} ipython3
 p,bid_info = submit_bid(loser_list, p, ϵ, v, bid_info)
@@ -596,7 +596,7 @@ allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v)
 present_dict(allocation)
 ```
 
-### round 4
+### Round 4
 
 ```{code-cell} ipython3
 p,bid_info = submit_bid(loser_list, p, ϵ, v, bid_info)
@@ -620,7 +620,7 @@ allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v)
 present_dict(allocation)
 ```
 
-### round 5
+### Round 5
 
 ```{code-cell} ipython3
 p,bid_info = submit_bid(loser_list, p, ϵ, v, bid_info)
@@ -656,7 +656,7 @@ total_revenue = p[list(allocation.keys())].sum()
 total_revenue
 ```
 
-## A Python Class
+## A Python class
 
 +++
 
@@ -957,7 +957,7 @@ auction_1.S
 auction_1.Q
 ```
 
-## Robustness Checks
+## Robustness checks
 
 Let's do some stress testing of our code by applying it to  auctions characterized by different matrices of private values.
 
@@ -1017,7 +1017,7 @@ auction_6.start_auction()
 
 +++
 
-## A Groves-Clarke Mechanism
+## A groves-clarke mechanism
 
 +++
 
@@ -1061,7 +1061,7 @@ Our mechanims works like this.
 
 +++
 
-## An Example Solved by Hand
+## An example solved by hand
 
 +++
 
@@ -1206,7 +1206,7 @@ S = V_orig*Q - np.diag(p)@Q
 p, Q, V, S
 ```
 
-##  Another Python Class
+## Another Python class
 
 It is efficient to assemble our calculations in a single Python Class.
 
@@ -1346,7 +1346,7 @@ We want to compute $\check t_j$ for $j = 1, \ldots, m$ and compare with $p_j$ fr
 
 +++
 
-###  Social Cost
+### Social cost
 
 Using the GC_Mechanism class, we can  calculate the social cost of each buyer.
 

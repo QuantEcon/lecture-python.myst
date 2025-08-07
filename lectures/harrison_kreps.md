@@ -72,7 +72,7 @@ The Harrison-Kreps model illustrates the following notion of a bubble that attra
 
 > *A component of an asset price can be interpreted as a bubble when all investors agree that the current price of the asset exceeds what they believe the asset's underlying dividend stream justifies*.
 
-## Structure of the Model
+## Structure of the model
 
 The model simplifies things  by ignoring alterations in the distribution of wealth
 among investors who have hard-wired different beliefs about the fundamentals that determine
@@ -149,7 +149,7 @@ The stationary distribution of $P_b$ is approximately $\pi_b = \begin{bmatrix} .
 
 Thus, a type $a$ investor is more pessimistic on average.
 
-### Ownership Rights
+### Ownership rights
 
 An owner of the asset at the end of time $t$ is entitled to the dividend at time $t+1$ and also has the right to sell the asset at time $t+1$.
 
@@ -166,7 +166,7 @@ Case 1 is the case studied in Harrison and Kreps.
 
 In case 2, both types of investors always hold at least some of the asset.
 
-### Short Sales Prohibited
+### Short sales prohibited
 
 No short sales are allowed.
 
@@ -175,7 +175,7 @@ This matters because it limits how  pessimists can express their opinions.
 * They **can** express themselves by selling their shares.
 * They **cannot** express themsevles  more loudly by artificially "manufacturing shares" -- that is, they cannot borrow shares from more optimistic investors and then immediately sell them.
 
-### Optimism and Pessimism
+### Optimism and pessimism
 
 The above specifications of the perceived transition matrices $P_a$ and $P_b$, taken directly from Harrison and Kreps, build in stochastically alternating temporary optimism and pessimism.
 
@@ -194,7 +194,7 @@ This price function is endogenous and to be determined below.
 
 When investors choose whether to purchase or sell the asset at $t$, they also know $s_t$.
 
-## Solving the Model
+## Solving the model
 
 Now let's turn to solving the model.
 
@@ -207,7 +207,7 @@ assumptions about beliefs:
 1. There are two types of agents differentiated only by their beliefs. Each type of agent has sufficient resources to purchase all of the asset (Harrison and Kreps's setting).
 1. There are two types of agents with different beliefs, but because of limited wealth and/or limited leverage, both types of investors hold the asset each period.
 
-### Summary Table
+### Summary table
 
 The following table gives a summary of the findings obtained in the remainder of the lecture
 (in an exercise you will be asked to recreate  the  table and also reinterpret parts of it).
@@ -241,7 +241,7 @@ The row corresponding to $p_p$ would apply if neither type of investor has enoug
 
 The row corresponding to $p_p$ would also  apply if both types have enough resources to buy the entire stock of the asset but  short sales are also  possible so that   temporarily pessimistic   investors price the asset.
 
-### Single Belief Prices
+### Single belief prices
 
 We’ll start by pricing the asset under homogeneous beliefs.
 
@@ -284,7 +284,7 @@ def price_single_beliefs(transition, dividend_payoff, β=.75):
     return prices
 ```
 
-#### Single Belief Prices as Benchmarks
+#### Single belief prices as benchmarks
 
 These equilibrium prices under homogeneous beliefs are important benchmarks for the subsequent analysis.
 
@@ -293,7 +293,7 @@ These equilibrium prices under homogeneous beliefs are important benchmarks for 
 
 We will compare these fundamental values of the asset with equilibrium values when traders have different beliefs.
 
-### Pricing under Heterogeneous Beliefs
+### Pricing under heterogeneous beliefs
 
 There are several cases to consider.
 
@@ -430,7 +430,7 @@ def price_optimistic_beliefs(transitions, dividend_payoff, β=.75,
     return p_new, phat_a, phat_b
 ```
 
-### Insufficient Funds
+### Insufficient funds
 
 Outcomes differ when the more optimistic type of investor has insufficient wealth --- or insufficient ability to borrow enough --- to hold the entire stock of the asset.
 
@@ -491,7 +491,7 @@ def price_pessimistic_beliefs(transitions, dividend_payoff, β=.75,
     return p_new
 ```
 
-### Further Interpretation
+### Further interpretation
 
 Jose Scheinkman {cite}`Scheinkman2014` interprets the Harrison-Kreps model as a model of a bubble --- a situation in which an asset price exceeds what every investor thinks is merited by his or her beliefs about the value of the asset's underlying dividend stream.
 

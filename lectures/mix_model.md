@@ -207,7 +207,7 @@ l_arr_f = simulate(F_a, F_b, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
 
-## Sampling from  Compound Lottery $H$
+## Sampling from compound lottery $h$
 
 We implement two methods  to draw samples from
 our mixture model $\alpha F + (1-\alpha) G$.
@@ -293,7 +293,7 @@ plt.legend()
 plt.show()
 ```
 
-## Type 1 Agent
+## Type 1 agent
 
 We'll now study what our type 1 agent learns
 
@@ -396,7 +396,7 @@ Formula {eq}`eq:bayeslaw103` generalizes formula {eq}`eq:recur1`.
 Formula {eq}`eq:bayeslaw103` can be regarded as a one step revision of prior probability $ \pi_0 $ after seeing
 the batch of data $ \left\{ w_{i}\right\} _{i=1}^{t+1} $.
 
-## What a type 1 Agent Learns when Mixture $H$ Generates Data
+## What a type 1 agent learns when mixture $h$ generates data
 
 We now study what happens when the mixture distribution $h;\alpha$ truly generated the data each period.
 
@@ -472,7 +472,7 @@ plot_π_seq(α = 0.2)
 
 Evidently, $\alpha$ is having a big effect on the destination of $\pi_t$ as $t \rightarrow + \infty$
 
-## Kullback-Leibler Divergence Governs Limit of $\pi_t$
+## Kullback-leibler divergence governs limit of $\pi_t$
 
 To understand what determines whether the limit point of  $\pi_t$ is  $0$ or $1$  and how the answer depends on the true value of the mixing probability  $\alpha \in (0,1) $ that generates
 
@@ -617,7 +617,7 @@ Kullback-Leibler divergence:
 
 - When $\alpha$ is large, $KL_f < KL_g$ meaning the divergence of $f$ from $h$ is smaller than that of $g$ and so the limit point of $\pi_t$ is close to $1$.
 
-## Type 2 Agent
+## Type 2 agent
 
 We now describe how our type 2 agent formulates his learning problem and what he eventually learns.
 
@@ -702,7 +702,7 @@ plt.show()
 
 Evidently,  the Bayesian posterior  narrows in on the true value  $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.
 
-## Concluding Remarks
+## Concluding remarks
 
 Our type 1 person  deploys an incorrect statistical  model.
 

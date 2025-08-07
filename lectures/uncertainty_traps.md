@@ -56,7 +56,7 @@ plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 ```
 
-## The Model
+## The model
 
 The original model described in {cite}`fun` has many interesting moving parts.
 
@@ -100,7 +100,7 @@ The higher is the precision, the more informative $x_m$ is about the fundamental
 
 Output shocks are independent across time and firms.
 
-### Information and Beliefs
+### Information and beliefs
 
 All entrepreneurs start with identical beliefs about $\theta_0$.
 

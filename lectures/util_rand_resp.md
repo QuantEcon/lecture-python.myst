@@ -34,7 +34,7 @@ proposed, for example, by {cite}`lanke1975choice`, {cite}`lanke1976degree`, {cit
 
 
 
-## Privacy Measures
+## Privacy measures
 
 We consider randomized response models with only  two possible answers, "yes" and "no."
 
@@ -55,11 +55,11 @@ $$
 $$ (eq:util-rand-one)
 
 
-## Zoo of Concepts
+## Zoo of concepts
 
 At this point we describe some concepts proposed by various researchers
 
-###  Leysieffer and Warner(1976)
+### Leysieffer and warner(1976)
 
 The response $r$ is regarded as jeopardizing with respect to $A$ or $A^{'}$ if
 
@@ -173,9 +173,9 @@ $$ (eq:util-rand-eight-b)
 
 This measure is just the first term in {eq}`eq:util-rand-seven-a`, i.e., the probability that an individual answers "yes" and is perceived to belong to $A$.
 
-##  Respondent's Expected Utility
+## Respondent's expected utility
 
-### Truth Border
+### Truth border
 
 Key  assumptions  that underlie a randomized response technique for estimating the  fraction of a population that belongs to  $A$ are:
 
@@ -263,7 +263,7 @@ The source of the positive relationship is:
 
 - Suppose now that $\text{Pr}(A|\text{yes})$ increases. That reduces the utility of telling the truth. To preserve indifference between a truthful answer and a lie, $\text{Pr}(A|\text{no})$ must increase to reduce the utility of lying.
 
-###  Drawing a  Truth Border
+### Drawing a truth border
 
 We can deduce two things about the truth border:
 
@@ -335,9 +335,9 @@ plt.title('Figure 1.2')
 plt.show()
 ```
 
-## Utilitarian View of Survey Design
+## Utilitarian view of survey design
 
-### Iso-variance Curves
+### Iso-variance curves
 
 A statistician's objective is
 
@@ -372,7 +372,7 @@ From expression {eq}`eq:util-rand-thirteen`, {eq}`eq:util-rand-fourteen-a` and {
 
 - Iso-variance curves are always upward-sloping and concave.
 
-### Drawing  Iso-variance Curves
+### Drawing iso-variance curves
 
 We use Python code to draw iso-variance curves.
 
@@ -440,7 +440,7 @@ var = Iso_Variance(pi=0.3, n=100)
 var.plotting_iso_variance_curve()
 ```
 
-### Optimal Survey
+### Optimal survey
 
 A point on an iso-variance curves can be attained with the unrelated question design.
 
@@ -470,13 +470,13 @@ Here are some comments about the model design:
 
 - A more general design problem would be to minimize some weighted sum of the estimator's variance and bias. It would be optimal to accept some lies from the most "reluctant" respondents.
 
-## Criticisms of Proposed Privacy Measures
+## Criticisms of proposed privacy measures
 
 We can use a utilitarian approach to analyze some  privacy measures.
 
 We'll enlist Python Code to help us.
 
-###  Analysis of Method of Lanke's (1976)
+### Analysis of method of lanke's (1976)
 
 Lanke (1976) recommends a privacy  protection criterion that minimizes:
 
@@ -543,7 +543,7 @@ $$
 
 This is  not an optimal  choice under a utilitarian approach.
 
-### Analysis on the Method of Chaudhuri and Mukerjee's (1988)
+### Analysis on the method of Chaudhuri and mukerjee's (1988)
 
 {cite}`Chadhuri_Mukerjee_88`
 
@@ -670,7 +670,7 @@ If the individuals are willing to volunteer this information, it seems that the 
 
 It ignores the fact that respondents retain the option of lying until they have seen the question to be answered.
 
-## Concluding Remarks
+## Concluding remarks
 
 
 The justifications for a randomized response procedure are that

@@ -47,7 +47,7 @@ import numpy as np
 from numba import jit
 ```
 
-## Key Idea
+## Key idea
 
 Let's start by reminding ourselves of the theory and then see how the numerics fit in.
 
@@ -77,7 +77,7 @@ u'(c)
 = \beta \int (u' \circ \sigma) (f(y - c) z ) f'(y - c) z \phi(dz)
 ```
 
-### Exogenous Grid
+### Exogenous grid
 
 As discussed in {doc}`the lecture on time iteration <coleman_policy_iter>`, to implement the method on a computer, we need a numerical approximation.
 
@@ -97,7 +97,7 @@ Thus, with the points $\{y_i, c_i\}$ in hand, we can reconstruct $K \sigma$ via 
 
 Iteration then continues...
 
-### Endogenous Grid
+### Endogenous grid
 
 The method discussed above requires a root-finding routine to find the
 $c_i$ corresponding to a given income value $y_i$.
@@ -156,7 +156,7 @@ We reuse the `OptimalGrowthModel` class
 :load: _static/lecture_specific/optgrowth_fast/ogm.py
 ```
 
-### The Operator
+### The operator
 
 Here's an implementation of $K$ using EGM as described above.
 

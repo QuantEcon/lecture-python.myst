@@ -42,7 +42,7 @@ import scipy.stats as stats
 from numba import jit, prange
 ```
 
-### Model Features
+### Model features
 
 ```{index} single: On-the-Job Search; Model Features
 ```
@@ -127,7 +127,7 @@ with default parameter values
 The $\text{Beta}(2,2)$ distribution is supported on $(0,1)$ - it has a unimodal, symmetric density peaked at 0.5.
 
 (jvboecalc)=
-### Back-of-the-Envelope Calculations
+### Back-of-the-envelope calculations
 
 Before we solve the model, let's make some quick calculations that
 provide intuition on what the solution should look like.
@@ -356,7 +356,7 @@ def solve_model(jv,
     return v_new
 ```
 
-## Solving for Policies
+## Solving for policies
 
 ```{index} single: On-the-Job Search; Solving for Policies
 ```

@@ -30,7 +30,7 @@ For a linear-quadratic dynamic programming problem, the idea involves these step
 
 +++
 
-## Undiscounted Dynamic Programming Problem
+## Undiscounted dynamic programming problem
 
 Here is a nonstochastic undiscounted LQ dynamic programming with cross products between
 states and controls in the objective function.
@@ -89,7 +89,7 @@ F & = F^* + Q^{-1} H.
 
 +++
 
-## Kalman Filter
+## Kalman filter
 
 The **duality** that prevails  between a linear-quadratic optimal control and a Kalman filtering problem means that there is an analogous transformation that allows us to transform a Kalman filtering problem
 with non-zero covariance matrix  between between shocks to states and shocks to measurements to an equivalent Kalman filtering problem with zero covariance between shocks to states and measurments.

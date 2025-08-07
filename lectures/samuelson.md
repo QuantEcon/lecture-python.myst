@@ -63,7 +63,7 @@ from sympy import Symbol, init_printing
 from cmath import sqrt
 ```
 
-### Samuelson's Model
+### Samuelson's model
 
 Samuelson used a *second-order linear difference equation* to
 represent a model of national output based on three components:
@@ -201,7 +201,7 @@ no random shocks hit aggregate demand --- has only transient fluctuations.
 We can convert the model to one that has persistent irregular
 fluctuations by adding a random shock to aggregate demand.
 
-### Stochastic Version of the Model
+### Stochastic version of the model
 
 We create a **random** or **stochastic** version of the model by adding
 a random process of **shocks** or **disturbances**
@@ -215,7 +215,7 @@ equation**:
 Y_t = G_t + a (1-b) Y_{t-1} - a b Y_{t-2} + \sigma \epsilon_{t}
 ```
 
-### Mathematical Analysis of the Model
+### Mathematical analysis of the model
 
 To get started, let's set $G_t \equiv 0$, $\sigma = 0$, and
 $\gamma = 0$.
@@ -354,7 +354,7 @@ absolute values strictly less than one, the absolute value of the larger
 one governs the rate of convergence to the steady state of the non
 stochastic version of the model.
 
-### Things This Lecture Does
+### Things this lecture does
 
 We write a function to generate simulations of a $\{Y_t\}$ sequence as a function of time.
 
@@ -495,7 +495,7 @@ difference equation parameter pairs in the Samuelson model are such that:
 Later we'll present the graph with a red mark showing the particular
 point implied by the setting of $(a,b)$.
 
-### Function to Describe Implications of Characteristic Polynomial
+### Function to describe implications of characteristic polynomial
 
 ```{code-cell} python3
 def categorize_solution(ρ1, ρ2):
@@ -523,7 +523,7 @@ therefore get smooth convergence to a steady state')
 categorize_solution(1.3, -.4)
 ```
 
-### Function for Plotting Paths
+### Function for plotting paths
 
 A useful function for our work below is
 
@@ -540,7 +540,7 @@ def plot_y(function=None):
     plt.show()
 ```
 
-### Manual or "by hand" Root Calculations
+### Manual or "by hand" root calculations
 
 The following function calculates roots of the characteristic polynomial
 using high school algebra.
@@ -604,7 +604,7 @@ def y_nonstochastic(y_0=100, y_1=80, α=.92, β=.5, γ=10, n=80):
 plot_y(y_nonstochastic())
 ```
 
-### Reverse-Engineering Parameters to Generate Damped Cycles
+### Reverse-engineering parameters to generate damped cycles
 
 The next cell writes code that takes as inputs the modulus $r$ and
 phase $\phi$ of a conjugate pair of complex numbers in polar form
@@ -619,8 +619,8 @@ $$
   pairs that would generate those roots
 
 ```{code-cell} python3
-### code to reverse-engineer a cycle
-### y_t = r^t (c_1 cos(ϕ t) + c2 sin(ϕ t))
+### Code to reverse-engineer a cycle
+### Y_t = r^t (c_1 cos(ϕ t) + c2 sin(ϕ t))
 ###
 
 def f(r, ϕ):
@@ -664,7 +664,7 @@ print(f"ρ1, ρ2 = {ρ1}, {ρ2}")
 ρ1, ρ2
 ```
 
-### Root Finding Using Numpy
+### Root finding using numpy
 
 Here we'll use numpy to compute the roots of the characteristic
 polynomial
@@ -731,7 +731,7 @@ def y_nonstochastic(y_0=100, y_1=80, α=.9, β=.8, γ=10, n=80):
 plot_y(y_nonstochastic())
 ```
 
-### Reverse-Engineered Complex Roots: Example
+### Reverse-engineered complex roots: example
 
 The next cell studies the implications of reverse-engineered complex
 roots.
@@ -758,7 +758,7 @@ ytemp = y_nonstochastic(α=a, β=b, y_0=20, y_1=30)
 plot_y(ytemp)
 ```
 
-### Digression: Using Sympy to Find Roots
+### Digression: using sympy to find roots
 
 We can also use sympy to compute analytic formulas for the roots
 
@@ -781,7 +781,7 @@ r2 = -b
 sympy.solve(z**2 - r1*z - r2, z)
 ```
 
-## Stochastic Shocks
+## Stochastic shocks
 
 Now we'll construct some code to simulate the stochastic version of the
 model that emerges when we add a random shock process to aggregate
@@ -845,7 +845,7 @@ r = .97
 period = 10   #  Length of cycle in units of time
 ϕ = 2 * math.pi/period
 
-### Apply the  reverse-engineering function f
+### Apply the reverse-engineering function f
 
 ρ1, ρ2, a, b = f(r, ϕ)
 
@@ -857,7 +857,7 @@ print(f"a, b = {a}, {b}")
 plot_y(y_stochastic(y_0=40, y_1 = 42, α=a, β=b, σ=2, n=100))
 ```
 
-## Government Spending
+## Government spending
 
 This function computes a response to either a permanent or one-off increase
 in government expenditures
@@ -958,7 +958,7 @@ We can also see the response to a one time jump in government expenditures
 plot_y(y_stochastic_g(g=500, g_t=50, duration='one-off'))
 ```
 
-## Wrapping Everything Into a Class
+## Wrapping everything into a class
 
 Up to now, we have written functions to do the work.
 
@@ -1158,7 +1158,7 @@ class Samuelson():
         return fig
 ```
 
-### Illustration of Samuelson Class
+### Illustration of Samuelson class
 
 Now we'll put our Samuelson class to work on an example
 
@@ -1172,7 +1172,7 @@ sam.plot()
 plt.show()
 ```
 
-### Using the Graph
+### Using the graph
 
 We'll use our graph to show where the roots lie and how their location
 is consistent with the behavior of the path just graphed.
@@ -1184,7 +1184,7 @@ sam.param_plot()
 plt.show()
 ```
 
-## Using the LinearStateSpace Class
+## Using the linearstatespace class
 
 It turns out that we can use the [QuantEcon.py](http://quantecon.org/quantecon-py)
 [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class to do
@@ -1235,7 +1235,7 @@ axes[-1].set_xlabel('Iteration')
 plt.show()
 ```
 
-### Other Methods in the `LinearStateSpace` Class
+### Other methods in the `linearstatespace` class
 
 Let's plot **impulse response functions** for the instance of the
 Samuelson model using a method in the `LinearStateSpace` class
@@ -1257,7 +1257,7 @@ w, v = np.linalg.eig(A)
 print(w)
 ```
 
-### Inheriting Methods from `LinearStateSpace`
+### Inheriting methods from `linearstatespace`
 
 We could also create a subclass of `LinearStateSpace` (inheriting all its
 methods and attributes) to add more functions to use
@@ -1394,7 +1394,7 @@ plt.show()
 samlss.multipliers()
 ```
 
-## Pure Multiplier Model
+## Pure multiplier model
 
 Let's shut down the accelerator by setting $b=0$ to get a pure
 multiplier model

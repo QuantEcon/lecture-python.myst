@@ -358,7 +358,7 @@ $a_{\cdot j}$ and $a_{i\cdot}$
 denote the $j$ th column and $i$ th row of $A$,
 respectively.
 
-## Model Ingredients and Assumptions
+## Model ingredients and assumptions
 
 A pair $(A,B)$ of $m\times n$ non-negative matrices defines
 an economy.
@@ -461,7 +461,7 @@ n2 = Neumann(A2, B2)
 n2
 ```
 
-## Dynamic Interpretation
+## Dynamic interpretation
 
 Attach a time index $t$ to the preceding objects, regard an economy
 as a dynamic system, and study sequences
@@ -498,7 +498,7 @@ yesterday.
 Accordingly, $Ap_t$ tells the costs of production in period
 $t$ and $Bp_t$ tells revenues in period $t+1$.
 
-### Balanced Growth
+### Balanced growth
 
 We follow John von Neumann in studying “balanced growth”.
 
@@ -662,7 +662,7 @@ They show that
 this extra condition does not affect the existence result, while it
 significantly reduces the number of (relevant) solutions.
 
-## Interpretation as Two-player Zero-sum Game
+## Interpretation as two-player zero-sum game
 
 To compute the equilibrium $(\gamma^{*}, x_0, p_0)$, we follow the
 algorithm proposed by Hamburger, Thompson and Weil (1967), building on
@@ -711,7 +711,7 @@ $$
 V(C) = \max_x \min_p \hspace{2mm} x^T C p = \min_p \max_x \hspace{2mm} x^T C p = (x^*)^T C p^*
 $$
 
-### Connection with Linear Programming (LP)
+### Connection with linear programming (lp)
 
 Nash equilibria of a finite two-player zero-sum game solve  a linear programming problem.
 
@@ -956,7 +956,7 @@ case of an irreducible $(A,B)$ (like in Example 1), the maximal
 and minimal roots of $V(M(\gamma))$ necessarily coincide implying
 a ‘‘full duality’’ result, i.e. $\alpha_0 = \beta_0 = \gamma^*$ so that the expansion (and interest) rate $\gamma^*$ is unique.
 
-### Uniqueness and Irreducibility
+### Uniqueness and irreducibility
 
 As an illustration, compute first the maximal and minimal roots of
 $V(M(\cdot))$ for our Example 2 that has a reducible
@@ -998,7 +998,7 @@ $(\gamma^*, x_0, p_0)$.
 **Theorem II:** Adopt the conditions of Theorem 1. If the economy
 $(A,B)$ is irreducible, then $\gamma^*=\alpha_0=\beta_0$.
 
-### A Special Case
+### A special case
 
 There is a special $(A,B)$ that allows us to simplify the solution
 method significantly by invoking the powerful Perron-Frobenius theorem

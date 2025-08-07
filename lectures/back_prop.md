@@ -24,7 +24,7 @@ kernelspec:
 
 ```{code-cell} ipython3
 import jax
-## to check that gpu is activated in environment
+## To check that gpu is activated in environment
 print(f"JAX backend: {jax.devices()[0].platform}")
 ```
 
@@ -64,7 +64,7 @@ We'll describe the following concepts that are brick and mortar for neural netwo
  * back-propagation and its relationship  to the chain rule of differential calculus
  
 
-## A Deep (but not Wide) Artificial Neural Network
+## A deep (but not wide) artificial neural network
 
 We describe a  "deep" neural network of "width" one.  
 
@@ -145,7 +145,7 @@ starting from $x_1 = \tilde x$.
 The value of $x_{N+1}$ that emerges from this iterative scheme
 equals $\hat f(\tilde x)$.
 
-## Calibrating  Parameters
+## Calibrating parameters
 
 
 We now consider a  neural network like the one describe above  with width 1, depth $N$,  and activation functions $h_{i}$ for $1\leqslant i\leqslant N$ that map $\mathbb{R}$ into itself.
@@ -203,7 +203,7 @@ To implement one step of this parameter update rule, we want  the vector of deri
 
 In the neural network literature, this step is accomplished by what is known as **back propagation**.
 
-## Back Propagation and the Chain Rule
+## Back propagation and the chain rule
 
 Thanks to  properties of
 
@@ -304,7 +304,7 @@ We can then solve the above problem by applying our update for $p$ multiple time
 
 
 
-## Training Set
+## Training set
 
 Choosing a  training set amounts to a choice of measure $\mu$ in the above  formulation of our  function approximation problem as a minimization problem.
 
@@ -530,7 +530,7 @@ Image(fig.to_image(format="png"))
 # notebook locally
 ```
 
-## How Deep? 
+## How deep?
 
 It  is  fun to think about how deepening the neural net for the above example affects the quality of  approximation 
 

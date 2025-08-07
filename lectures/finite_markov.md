@@ -64,7 +64,7 @@ from mpl_toolkits.mplot3d import Axes3D
 The following concepts are fundamental.
 
 (finite_dp_stoch_mat)=
-### {index}`Stochastic Matrices <single: Stochastic Matrices>`
+### {index}`stochastic matrices <single: stochastic matrices>`
 
 ```{index} single: Finite Markov Chains; Stochastic Matrices
 ```
@@ -79,7 +79,7 @@ Each row of $P$ can be regarded as a probability mass function over $n$ possible
 
 It is too not difficult to check [^pm] that if $P$ is a stochastic matrix, then so is the $k$-th power $P^k$ for all $k \in \mathbb N$.
 
-### {index}`Markov Chains <single: Markov Chains>`
+### {index}`markov chains <single: Markov chains>`
 
 ```{index} single: Finite Markov Chains
 ```
@@ -221,7 +221,7 @@ However, it's also a good exercise to roll our own routines --- let's do that fi
 
 In these exercises, we'll take the state space to be $S = 0,\ldots, n-1$.
 
-### Rolling Our Own
+### Rolling our own
 
 To simulate a Markov chain, we need its stochastic matrix $P$ and a marginal probability distribution $\psi$  from which to  draw a realization of $X_0$.
 
@@ -293,7 +293,7 @@ np.mean(X == 0)
 You can try changing the initial distribution to confirm that the output is
 always close to 0.25, at least for the `P` matrix above.
 
-### Using QuantEcon's Routines
+### Using quantecon's routines
 
 As discussed above, [QuantEcon.py](http://quantecon.org/quantecon-py) has routines for handling Markov chains, including simulation.
 
@@ -317,7 +317,7 @@ The [QuantEcon.py](http://quantecon.org/quantecon-py) routine is [JIT compiled](
 %time mc.simulate(ts_length=1_000_000) # qe code version
 ```
 
-#### Adding State Values and Initial Conditions
+#### Adding state values and initial conditions
 
 If we wish to, we can provide a specification of state values to `MarkovChain`.
 
@@ -345,7 +345,7 @@ mc.simulate_indices(ts_length=4)
 ```
 
 (mc_md)=
-## {index}`Marginal Distributions <single: Marginal Distributions>`
+## {index}`marginal distributions <single: marginal distributions>`
 
 ```{index} single: Markov Chains; Marginal Distributions
 ```
@@ -417,7 +417,7 @@ X_t \sim \psi_t \quad \implies \quad X_{t+m} \sim \psi_t P^m
 ```
 
 (finite_mc_mstp)=
-### Multiple Step Transition Probabilities
+### Multiple step transition probabilities
 
 We know that the probability of transitioning from $x$ to $y$ in
 one step is $P(x,y)$.
@@ -438,7 +438,7 @@ $$
 \mathbb P \{X_{t+m} = y \,|\, X_t = x \} = P^m(x, y) = (x, y) \text{-th element of } P^m
 $$
 
-### Example: Probability of Recession
+### Example: probability of recession
 
 ```{index} single: Markov Chains; Future Probabilities
 ```
@@ -464,7 +464,7 @@ $$
 $$
 
 (mc_eg1-1)=
-### Example 2: Cross-Sectional Distributions
+### Example 2: cross-sectional distributions
 
 ```{index} single: Markov Chains; Cross-Sectional Distributions
 ```
@@ -501,7 +501,7 @@ each state.
 
 This is exactly the cross-sectional distribution.
 
-## {index}`Irreducibility and Aperiodicity <single: Irreducibility and Aperiodicity>`
+## {index}`irreducibility and aperiodicity <single: irreducibility and aperiodicity>`
 
 ```{index} single: Markov Chains; Irreducibility, Aperiodicity
 ```
@@ -653,7 +653,7 @@ mc.period
 mc.is_aperiodic
 ```
 
-## {index}`Stationary Distributions <single: Stationary Distributions>`
+## {index}`stationary distributions <single: stationary distributions>`
 
 ```{index} single: Markov Chains; Stationary Distributions
 ```
@@ -740,7 +740,7 @@ This is, in some sense, a steady state probability of unemployment --- more abou
 
 Not surprisingly it tends to zero as $\beta \to 0$, and to one as $\alpha \to 0$.
 
-### Calculating Stationary Distributions
+### Calculating stationary distributions
 
 ```{index} single: Markov Chains; Calculating Stationary Distributions
 ```
@@ -788,7 +788,7 @@ mc = qe.MarkovChain(P)
 mc.stationary_distributions  # Show all stationary distributions
 ```
 
-### Convergence to Stationarity
+### Convergence to stationarity
 
 ```{index} single: Markov Chains; Convergence to Stationarity
 ```
@@ -842,7 +842,7 @@ Here
 You might like to try experimenting with different initial conditions.
 
 (ergodicity)=
-## {index}`Ergodicity <single: Ergodicity>`
+## {index}`ergodicity <single: ergodicity>`
 
 ```{index} single: Markov Chains; Ergodicity
 ```
@@ -891,7 +891,7 @@ Thus, in the long-run, cross-sectional averages for a population and time-series
 This is one aspect of the concept  of ergodicity.
 
 (finite_mc_expec)=
-## Computing Expectations
+## Computing expectations
 
 ```{index} single: Markov Chains; Forecasting Future Values
 ```
@@ -963,7 +963,7 @@ We already know that this is $P^k(x, \cdot)$, so
 
 The vector $P^k h$ stores the conditional expectation $\mathbb E [ h(X_{t + k})  \mid X_t = x]$ over all $x$.
 
-### Iterated Expectations
+### Iterated expectations
 
 The **law of iterated expectations** states that
 
@@ -982,7 +982,7 @@ $$
 
 and note $\psi_t P^k h = \psi_{t+k} h = \mathbb E [  h(X_{t + k}) ] $.
 
-### Expectations of Geometric Sums
+### Expectations of geometric sums
 
 Sometimes we want to compute the mathematical expectation of a geometric sum, such as
 $\sum_t \beta^t h(X_t)$.

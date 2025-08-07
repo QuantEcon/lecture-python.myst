@@ -76,7 +76,7 @@ This lecture assumes you are familiar with basic econometrics.
 For an introductory text covering these topics, see, for example,
 {cite}`Wooldridge2015`.
 
-## Simple Linear Regression
+## Simple linear regression
 
 {cite}`Acemoglu2001` wish to determine whether or not differences in institutions can help to explain observed economic outcomes.
 
@@ -302,7 +302,7 @@ ax.set_ylabel('logpgp95')
 plt.show()
 ```
 
-## Extending the Linear Regression Model
+## Extending the linear regression model
 
 So far we have only accounted for institutions affecting economic
 performance - almost certainly there are numerous other factors

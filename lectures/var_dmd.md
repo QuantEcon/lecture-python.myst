@@ -20,7 +20,7 @@ This lecture applies computational methods  that we learned about in this lectur
 * dynamic mode decompositions (DMDs)
 * connections between DMDs and first-order VARs 
 
-## First-Order Vector Autoregressions 
+## First-order vector autoregressions
 
 
 We want to fit a **first-order vector autoregression**
@@ -258,7 +258,7 @@ $$ (eq:AhatSVDformula)
 
 
 
-## Dynamic Mode Decomposition (DMD)
+## Dynamic mode decomposition (DMD)
 
 
 
@@ -638,7 +638,7 @@ This concludes the proof.
 Also see {cite}`DDSE_book` (p. 238)
 
 
-### Decoder of  $\check b$ as a linear projection
+### Decoder of $\check b$ as a linear projection
 
 
 
@@ -716,7 +716,7 @@ Rearranging  the orthogonality conditions {eq}`eq:orthls` gives $X^\top  \Phi = 
 
 
 
-### An Approximation
+### An approximation
 
 
 
@@ -817,7 +817,7 @@ We can then use  a decoded $\check X_{t+j}$ or $\hat X_{t+j}$ to forecast $X_{t+
 
 
 
-### Using Fewer Modes
+### Using fewer modes
 
 In applications, we'll actually  use only  a few modes, often  three or less.  
 
@@ -832,7 +832,7 @@ Counterparts of all of the salient formulas above then apply.
 
 
 
-## Source for Some Python Code
+## Source for some Python code
 
 You can find a Python implementation of DMD here:
 

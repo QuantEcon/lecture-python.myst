@@ -81,7 +81,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from scipy.linalg import inv, solve, det, eig
 ```
 
-## {index}`Vectors <single: Vectors>`
+## {index}`vectors <single: vectors>`
 
 ```{index} single: Linear Algebra; Vectors
 ```
@@ -122,7 +122,7 @@ for v in vecs:
 plt.show()
 ```
 
-### Vector Operations
+### Vector operations
 
 ```{index} single: Vectors; Operations
 ```
@@ -218,7 +218,7 @@ x + y
 4 * x
 ```
 
-### Inner Product and Norm
+### Inner product and norm
 
 ```{index} single: Vectors; Inner Product
 ```
@@ -379,7 +379,7 @@ If $y = (y_1, y_2, y_3)$ is any linear combination of these vectors, then $y_3 =
 Hence $A_0$ fails to span all of $\mathbb R ^3$.
 
 (la_li)=
-### Linear Independence
+### Linear independence
 
 ```{index} single: Vectors; Linear Independence
 ```
@@ -414,7 +414,7 @@ The following statements are equivalent to linear independence of $A := \{a_1, \
 (The zero in the first expression is the origin of $\mathbb R ^n$)
 
 (la_unique_reps)=
-### Unique Representations
+### Unique representations
 
 Another nice thing about sets of linearly independent vectors is that each element in the span has a unique representation as a linear combination of these vectors.
 
@@ -474,7 +474,7 @@ $A$ is called *diagonal* if the only nonzero entries are on the principal diagon
 
 If, in addition to being diagonal, each element along the principal diagonal is equal to 1, then $A$ is called the *identity matrix* and denoted by $I$.
 
-### Matrix Operations
+### Matrix operations
 
 ```{index} single: Matrix; Operations
 ```
@@ -625,7 +625,7 @@ In particular, `A @ B` is matrix multiplication, whereas `A * B` is element-by-e
 See [here](https://python-programming.quantecon.org/numpy.html#matrix-multiplication) for more discussion.
 
 (la_linear_map)=
-### Matrices as Maps
+### Matrices as maps
 
 ```{index} single: Matrix; Maps
 ```
@@ -644,7 +644,7 @@ You can check that this holds for the function $f(x) = A x + b$ when $b$ is the 
 
 In fact, it's [known](https://en.wikipedia.org/wiki/Linear_map#Matrices) that $f$ is linear if and *only if* there exists a matrix $A$ such that $f(x) = Ax$ for all $x$.
 
-## Solving Systems of Equations
+## Solving systems of equations
 
 ```{index} single: Matrix; Solving Systems of Equations
 ```
@@ -743,7 +743,7 @@ A happy fact is that linear independence of the columns of $A$ also gives us uni
 
 Indeed, it follows from our {ref}`earlier discussion <la_unique_reps>` that if $\{a_1, \ldots, a_k\}$ are linearly independent and $y = Ax = x_1 a_1 + \cdots + x_k a_k$, then no $z \not= x$ satisfies $y = Az$.
 
-### The Square Matrix Case
+### The square matrix case
 
 Let's discuss some more details, starting with the case where $A$ is $n \times n$.
 
@@ -766,7 +766,7 @@ In particular, the following are equivalent
 
 The property of having linearly independent columns is sometimes expressed as having *full column rank*.
 
-#### Inverse Matrices
+#### Inverse matrices
 
 ```{index} single: Matrix; Inverse
 ```
@@ -802,7 +802,7 @@ Perhaps the most important fact about determinants is that $A$ is nonsingular if
 This gives us a useful one-number summary of whether or not a square matrix can be
 inverted.
 
-### More Rows than Columns
+### More rows than columns
 
 This is the $n \times k$ case with $n > k$.
 
@@ -837,7 +837,7 @@ projections.
 
 The solution is known to be $\hat x = (A'A)^{-1}A'y$ --- see for example chapter 3 of [these notes](https://python.quantecon.org/_static/lecture_specific/linear_algebra/course_notes.pdf).
 
-### More Columns than Rows
+### More columns than rows
 
 This is the $n \times k$ case with $n < k$, so there are fewer
 equations than unknowns.
@@ -867,7 +867,7 @@ $$
 
 In other words, uniqueness fails.
 
-### Linear Equations with SciPy
+### Linear equations with scipy
 
 ```{index} single: Linear Algebra; SciPy
 ```
@@ -904,7 +904,7 @@ The latter method uses a different algorithm (LU decomposition) that is numerica
 To obtain the least-squares solution $\hat x = (A'A)^{-1}A'y$, use `scipy.linalg.lstsq(A, y)`.
 
 (la_eigen)=
-## {index}`Eigenvalues <single: Eigenvalues>` and {index}`Eigenvectors <single: Eigenvectors>`
+## {index}`eigenvalues <single: eigenvalues>` and {index}`eigenvectors <single: eigenvectors>`
 
 ```{index} single: Linear Algebra; Eigenvalues
 ```
@@ -1023,7 +1023,7 @@ Since any scalar multiple of an eigenvector is an eigenvector with the same
 eigenvalue (check it), the eig routine normalizes the length of each eigenvector
 to one.
 
-### Generalized Eigenvalues
+### Generalized eigenvalues
 
 It is sometimes useful to consider the *generalized eigenvalue problem*, which, for given
 matrices $A$ and $B$, seeks generalized eigenvalues
@@ -1039,12 +1039,12 @@ Of course, if $B$ is square and invertible, then we can treat the
 generalized eigenvalue problem as an ordinary eigenvalue problem $B^{-1}
 A v = \lambda v$, but this is not always the case.
 
-## Further Topics
+## Further topics
 
 We round out our discussion by briefly mentioning several other important
 topics.
 
-### Series Expansions
+### Series expansions
 
 ```{index} single: Linear Algebra; Series Expansions
 ```
@@ -1055,7 +1055,7 @@ that if $|a| < 1$, then $\sum_{k=0}^{\infty} a^k = (1 - a)^{-1}$.
 A generalization of this idea exists in the matrix setting.
 
 (la_mn)=
-#### Matrix Norms
+#### Matrix norms
 
 ```{index} single: Linear Algebra; Matrix Norms
 ```
@@ -1073,7 +1073,7 @@ the left-hand side is a *matrix norm* --- in this case, the so-called
 For example, for a square matrix $S$, the condition $\| S \| < 1$ means that $S$ is *contractive*, in the sense that it pulls all vectors towards the origin [^cfn].
 
 (la_neumann)=
-#### {index}`Neumann's Theorem <single: Neumann's Theorem>`
+#### {index}`neumann's theorem <single: neumann's theorem>`
 
 ```{index} single: Linear Algebra; Neumann's Theorem
 ```
@@ -1092,7 +1092,7 @@ $k \in \mathbb{N}$, then $I - A$ is invertible, and
 ```
 
 (la_neumann_remarks)=
-#### {index}`Spectral Radius <single: Spectral Radius>`
+#### {index}`spectral radius <single: spectral radius>`
 
 ```{index} single: Linear Algebra; Spectral Radius
 ```
@@ -1110,7 +1110,7 @@ there exists a $k$ with $\| A^k \| < 1$.
 
 In which case {eq}`la_neumann` is valid.
 
-### {index}`Positive Definite Matrices <single: Positive Definite Matrices>`
+### {index}`positive definite matrices <single: positive definite matrices>`
 
 ```{index} single: Linear Algebra; Positive Definite Matrices
 ```
@@ -1129,7 +1129,7 @@ are strictly positive, and hence $A$ is invertible (with positive
 definite inverse).
 
 (la_mcalc)=
-### Differentiating Linear and Quadratic Forms
+### Differentiating linear and quadratic forms
 
 ```{index} single: Linear Algebra; Differentiating Linear and Quadratic Forms
 ```
@@ -1150,7 +1150,7 @@ Then
 
 {ref}`la_ex1` below asks you to apply these formulas.
 
-### Further Reading
+### Further reading
 
 The documentation of the `scipy.linalg` submodule can be found [here](https://docs.scipy.org/doc/scipy/reference/linalg.html).
 

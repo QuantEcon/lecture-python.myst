@@ -79,7 +79,7 @@ import quantecon as qe
 from numpy.linalg import eigvals, solve
 ```
 
-## {index}`Pricing Models <single: Pricing Models>`
+## {index}`pricing models <single: pricing models>`
 
 ```{index} single: Models; Pricing
 ```
@@ -92,7 +92,7 @@ Let $\{d_t\}_{t \geq 0}$ be a stream of dividends
 Let's look at some equations that we expect to hold for prices of assets under ex-dividend contracts
 (we will consider cum-dividend pricing in the exercises).
 
-### Risk-Neutral Pricing
+### Risk-neutral pricing
 
 ```{index} single: Pricing Models; Risk-Neutral
 ```
@@ -117,7 +117,7 @@ Here ${\mathbb E}_t [y]$ denotes the best forecast of $y$, conditioned on inform
 
 More precisely, ${\mathbb E}_t [y]$ is the mathematical expectation of $y$ conditional on information available at time $t$.
 
-### Pricing with Random Discount Factor
+### Pricing with random discount factor
 
 ```{index} single: Pricing Models; Risk Aversion
 ```
@@ -146,7 +146,7 @@ This is because such assets pay well when funds are more urgently wanted.
 
 We give examples of how the stochastic discount factor has been modeled below.
 
-### Asset Pricing and Covariances
+### Asset pricing and covariances
 
 Recall that, from the definition of a conditional covariance ${\rm cov}_t (x_{t+1}, y_{t+1})$, we have
 
@@ -175,7 +175,7 @@ Equation {eq}`lteeqs102` asserts that the covariance of the stochastic discount 
 
 We give examples of some models of stochastic discount factors that have been proposed later in this lecture and also in a [later lecture](https://python-advanced.quantecon.org/lucas_model.html).
 
-### The Price-Dividend Ratio
+### The price-dividend ratio
 
 Aside from prices, another quantity of interest is the **price-dividend ratio** $v_t := p_t / d_t$.
 
@@ -191,7 +191,7 @@ v_t = {\mathbb E}_t \left[ m_{t+1} \frac{d_{t+1}}{d_t} (1 + v_{t+1}) \right]
 
 Below we'll discuss the implication of this equation.
 
-## Prices in the Risk-Neutral Case
+## Prices in the risk-neutral case
 
 What can we say about price dynamics on the basis of the models described above?
 
@@ -204,7 +204,7 @@ For now we'll study  the risk-neutral case in which  the stochastic discount fac
 
 We'll  focus on how an asset  price depends on a dividend process.
 
-### Example 1: Constant Dividends
+### Example 1: constant dividends
 
 The simplest case is risk-neutral price of a constant, non-random dividend stream $d_t = d > 0$.
 
@@ -235,7 +235,7 @@ This is the equilibrium price in the constant dividend case.
 Indeed, simple algebra shows that setting $p_t = \bar p$ for all $t$
 satisfies the difference equation $p_t = \beta (d + p_{t+1})$.
 
-### Example 2: Dividends with Deterministic Growth Paths
+### Example 2: dividends with deterministic growth paths
 
 Consider a growing, non-random dividend process $d_{t+1} = g d_t$
 where $0 < g \beta < 1$.
@@ -268,7 +268,7 @@ $$
 This is called the *Gordon formula*.
 
 (mass_mg)=
-### Example 3: Markov Growth, Risk-Neutral Pricing
+### Example 3: Markov growth, risk-neutral pricing
 
 Next, we consider a dividend process
 
@@ -331,7 +331,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-#### Pricing Formula
+#### Pricing formula
 
 To obtain asset prices in this setting, let's adapt our analysis from the case of deterministic growth.
 
@@ -431,7 +431,7 @@ Moreover, dividend growth is increasing in the state.
 
 The anticipation of high future dividend growth leads to a high price-dividend ratio.
 
-## Risk Aversion and Asset Prices
+## Risk aversion and asset prices
 
 Now let's turn to the case where agents are risk averse.
 
@@ -441,7 +441,7 @@ We'll price several distinct assets, including
 * A consol (a type of bond issued by the UK government in the 19th century)
 * Call options on a consol
 
-### Pricing a Lucas Tree
+### Pricing a lucas tree
 
 ```{index} single: Finite Markov Asset Pricing; Lucas Tree
 ```
@@ -641,7 +641,7 @@ This is because, with a positively correlated state process, higher states indic
 With the stochastic discount factor {eq}`lucsdf2`, higher growth decreases the
 discount factor, lowering the weight placed on future dividends.
 
-#### Special Cases
+#### Special cases
 
 In the special case $\gamma =1$, we have $J = P$.
 
@@ -660,7 +660,7 @@ risk-neutral solution {eq}`rned`.
 
 This is as expected, since $\gamma = 0$ implies $u(c) = c$ (and hence agents are risk-neutral).
 
-### A Risk-Free Consol
+### A risk-free consol
 
 Consider the same pure exchange representative agent economy.
 
@@ -741,13 +741,13 @@ def consol_price(ap, ζ):
     return p
 ```
 
-### Pricing an Option to Purchase the Consol
+### Pricing an option to purchase the consol
 
 Let's now price options of various maturities.
 
 We'll study an option that  gives the owner the  right to purchase a consol at a price $p_S$.
 
-#### An Infinite Horizon Call Option
+#### An infinite horizon call option
 
 We want to price an *infinite horizon*  option to purchase a consol at a price $p_S$.
 
@@ -885,11 +885,11 @@ where the consol prices are high --- will be visited recurrently.
 
 The reason for low valuations in high Markov growth states is that $\beta=0.9$, so  future payoffs are  discounted substantially.
 
-### Risk-Free Rates
+### Risk-free rates
 
 Let's look at risk-free interest rates over different periods.
 
-#### The One-period Risk-free Interest Rate
+#### The one-period risk-free interest rate
 
 As before, the stochastic discount factor is $m_{t+1} = \beta g_{t+1}^{-\gamma}$.
 
@@ -907,7 +907,7 @@ $$
 
 where the $i$-th  element of $m_1$ is the reciprocal of the one-period gross risk-free interest rate in state $x_i$.
 
-#### Other Terms
+#### Other terms
 
 Let $m_j$ be an $n \times 1$ vector whose $i$ th component is the reciprocal of the $j$ -period gross risk-free interest rate in state $x_i$.
 

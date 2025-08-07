@@ -67,7 +67,7 @@ import scipy.optimize as op
 from scipy.stats import cumfreq, beta
 ```
 
-### Model Features
+### Model features
 
 - Infinite horizon dynamic programming with two states and one binary
   control.
@@ -79,7 +79,7 @@ Let’s first review the basic McCall model
 {cite}`McCall1970` and then add the variation we
 want to consider.
 
-### The Basic McCall Model
+### The basic mccall model
 
 Recall that, {doc}`in the baseline model <mccall_model>`, an
 unemployed worker is presented in each period with a permanent job offer
@@ -113,7 +113,7 @@ v(w)
 The optimal policy has the form $\mathbf{1}\{w \geq \bar w\}$, where
 $\bar w$ is a constant called the *reservation wage*.
 
-### Offer Distribution Unknown
+### Offer distribution unknown
 
 Now let’s extend the model by considering the variation presented in
 {cite}`Ljungqvist2012`, section 6.6.
@@ -239,7 +239,7 @@ plt.show()
 ```
 
 (looking-forward)=
-### Looking Forward
+### Looking forward
 
 What kind of optimal policy might result from
 {eq}`odu_mvf` and the parameterization specified above?
@@ -266,7 +266,7 @@ $\mathbb 1{w\geq \bar w(\pi) }$ for some
 decreasing function $\bar w$.
 
 (take-1-solution-by-vfi)=
-## Take 1: Solution by VFI
+## Take 1: solution by VFI
 
 Let’s set about solving the model and see how our results match with our
 intuition.
@@ -481,7 +481,7 @@ forward](looking-forward).
   $\bar w(\pi)$ introduced there.
 - It is decreasing as expected.
 
-## Take 2: A More Efficient Method
+## Take 2: a more efficient method
 
 Let’s consider another method to solve for the optimal policy.
 
@@ -496,7 +496,7 @@ As a consequence, the algorithm is orders of magnitude faster than VFI.
 This section illustrates the point that when it comes to programming, a
 bit of mathematical analysis goes a long way.
 
-## Another Functional Equation
+## Another functional equation
 
 To begin, note that when $w = \bar w(\pi)$, the worker is indifferent
 between accepting and rejecting.
@@ -548,7 +548,7 @@ Equation {eq}`odu_mvf4` can be understood as a functional equation, where $\bar 
 * Let's call it the *reservation wage functional equation* (RWFE).
 * The solution $\bar w$ to the RWFE is the object that we wish to compute.
 
-## Solving the RWFE
+## Solving the rwfe
 
 To solve the RWFE, we will first show that its solution is the
 fixed point of a [contraction mapping](https://en.wikipedia.org/wiki/Contraction_mapping).
@@ -766,7 +766,7 @@ plt.show()
 ```{solution-end}
 ```
 
-## Appendix A
+## Appendix a
 
 The next piece of code generates a fun simulation to see what the effect
 of a change in the underlying distribution on the unemployment rate is.
@@ -852,7 +852,7 @@ ax.legend()
 plt.show()
 ```
 
-## Appendix B
+## Appendix b
 
 In this appendix we provide more details about how Bayes' Law contributes to the workings of the model.
 
@@ -1061,7 +1061,7 @@ We now provide some examples that provide insights about how the model works.
 
 ## Examples
 
-### Example 1 (Baseline)
+### Example 1 (baseline)
 
 $F$ ~ Beta(1, 1), $G$ ~ Beta(3, 1.2), $c$=0.3.
 

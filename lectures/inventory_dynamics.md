@@ -54,7 +54,7 @@ from numba import jit, float64, prange
 from numba.experimental import jitclass
 ```
 
-## Sample Paths
+## Sample paths
 
 Consider a firm with inventory $X_t$.
 
@@ -167,7 +167,7 @@ for i in range(400):
 plt.show()
 ```
 
-## Marginal Distributions
+## Marginal distributions
 
 Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some
 fixed $T$.

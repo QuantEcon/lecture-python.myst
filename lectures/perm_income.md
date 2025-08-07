@@ -54,7 +54,7 @@ import random
 from numba import jit
 ```
 
-## The Savings Problem
+## The savings problem
 
 ```{index} single: Permanent Income Model; Savings Problem
 ```
@@ -105,7 +105,7 @@ $$
 
 Not every martingale arises as a random walk (see, for example, [Wald's martingale](https://en.wikipedia.org/wiki/Wald%27s_martingale)).
 
-### The Decision Problem
+### The decision problem
 
 A consumer has preferences over consumption streams that are ordered by the utility functional
 
@@ -184,7 +184,7 @@ Finally, we impose the *no Ponzi scheme* condition
 
 This condition rules out an always-borrow scheme that would allow the consumer to enjoy bliss consumption forever.
 
-### First-Order Conditions
+### First-order conditions
 
 First-order conditions for maximizing {eq}`sprob1` subject to {eq}`sprob2` are
 
@@ -215,7 +215,7 @@ One way to interpret {eq}`sprob5` is that consumption will change only when
 These ideas will be clarified below.
 
 (odr_pi)=
-### The Optimal Decision Rule
+### The optimal decision rule
 
 Now let's deduce the optimal decision rule [^fod].
 
@@ -272,7 +272,7 @@ These last two equations assert that consumption equals *economic income*
     * a constant marginal propensity to consume  times the sum of non-financial wealth and financial wealth
     * the amount the consumer can consume while leaving its wealth intact
 
-#### Responding to the State
+#### Responding to the state
 
 The *state* vector confronting the consumer at $t$ is $\begin{bmatrix} b_t & z_t \end{bmatrix}$.
 
@@ -329,7 +329,7 @@ A key is to use the fact that $(1 + r) \beta = 1$ and $(I - \beta A)^{-1} = \sum
 
 We've now successfully written $c_t$ and $b_{t+1}$ as functions of $b_t$ and $z_t$.
 
-#### A State-Space Representation
+#### A state-space representation
 
 We can summarize our dynamics in the form of a linear state-space system governing consumption, debt and income:
 
@@ -419,7 +419,7 @@ We can then compute the mean and covariance of $\tilde y_t$ from
 \end{aligned}
 ```
 
-#### A Simple Example with IID Income
+#### A simple example with iid income
 
 To gain some preliminary intuition on the implications of {eq}`pi_ssr`, let's look at a highly stylized example where income is just IID.
 
@@ -523,12 +523,12 @@ ax.set(xlabel='Time', ylabel='Consumption')
 plt.show()
 ```
 
-## Alternative Representations
+## Alternative representations
 
 In this section, we shed more light on the evolution of savings, debt and
 consumption by representing their dynamics in several different ways.
 
-### Hall's Representation
+### Hall's representation
 
 ```{index} single: Permanent Income Model; Hall's Representation
 ```
@@ -633,7 +633,7 @@ Equation {eq}`pi_spr` can be rearranged to take the form
 
 Equation {eq}`sprob77`  asserts that the *cointegrating residual*  on the left side equals the conditional expectation of the geometric sum of future incomes on the right [^f8].
 
-### Cross-Sectional Implications
+### Cross-sectional implications
 
 Consider again {eq}`sprob16abcd`, this time in light of our discussion of
 distribution dynamics in the {doc}`lecture on linear systems <linear_models>`.
@@ -681,7 +681,7 @@ Equation {eq}`pi_vt` tells us that the variance of $c_t$ increases over time at 
 A number of different studies have investigated this prediction and found some support for it
 (see, e.g., {cite}`DeatonPaxton1994`, {cite}`STY2004`).
 
-### Impulse Response Functions
+### Impulse response functions
 
 Impulse response functions measure responses  to various  impulses (i.e., temporary shocks).
 
@@ -689,7 +689,7 @@ The impulse response function of $\{c_t\}$ to the innovation $\{w_t\}$ is a box.
 
 In particular, the response of $c_{t+j}$ to a unit increase in the innovation $w_{t+1}$ is $(1-\beta) U (I -\beta A)^{-1} C$ for all $j \geq 1$.
 
-### Moving Average Representation
+### Moving average representation
 
 It's useful to express the innovation to the expected present value of the endowment process in terms of a moving average representation for income $y_t$.
 
@@ -731,7 +731,7 @@ c_{t+1} - c_t = (1-\beta) d(\beta) w_{t+1}
 The object $d(\beta)$ is the **present value of the moving average coefficients** in the representation for the endowment process $y_t$.
 
 (sub_classic_consumption)=
-## Two Classic Examples
+## Two classic examples
 
 We illustrate some of the preceding ideas with two examples.
 
@@ -943,7 +943,7 @@ b_{t+1} - b_t = (K-1) a_t
 
 This indicates how the fraction $K$ of the innovation to $y_t$ that is regarded as permanent influences the fraction of the innovation that is saved.
 
-## Further Reading
+## Further reading
 
 The model described above significantly changed how economists think about
 consumption.
@@ -955,7 +955,7 @@ For example, liquidity constraints and precautionary savings appear to be presen
 Further discussion can be found in, e.g., {cite}`HallMishkin1982`, {cite}`Parker1999`, {cite}`Deaton1991`, {cite}`Carroll2001`.
 
 (perm_income_appendix)=
-## Appendix: The Euler Equation
+## Appendix: the Euler equation
 
 Where does the first-order condition {eq}`sprob4` come from?
 

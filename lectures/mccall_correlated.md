@@ -54,7 +54,7 @@ from numba import jit, prange, float64
 from numba.experimental import jitclass
 ```
 
-## The Model
+## The model
 
 Wages at each point in time are given by
 
@@ -93,7 +93,7 @@ In this express, $u$ is a utility function and $\mathbb E_z$ is expectation of n
 
 The variable $z$ enters as a state in the Bellman equation because its current value helps predict future wages.
 
-### A Simplification
+### A simplification
 
 There is a way that we can reduce dimensionality in this problem, which greatly accelerates computation.
 
@@ -334,7 +334,7 @@ plt.show()
 As expected, higher unemployment compensation shifts the reservation wage up
 at all state values.
 
-## Unemployment Duration
+## Unemployment duration
 
 Next we study how mean unemployment duration varies with unemployment compensation.
 

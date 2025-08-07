@@ -42,7 +42,7 @@ import numpy as np
 from scipy.optimize import minimize_scalar, bisect
 ```
 
-## Reviewing the Model
+## Reviewing the model
 
 You might like to {doc}`review the details <cake_eating_problem>` before we start.
 
@@ -66,7 +66,7 @@ to be as follows.
 
 Our first aim is to obtain these analytical solutions numerically.
 
-## Value Function Iteration
+## Value function iteration
 
 The first approach we will take is **value function iteration**.
 
@@ -86,7 +86,7 @@ The basic idea is:
 
 Let's write this a bit more mathematically.
 
-### The Bellman Operator
+### The Bellman operator
 
 We introduce the **Bellman operator** $T$ that takes a function v as an
 argument and returns a new function $Tv$ defined by
@@ -105,7 +105,7 @@ As we discuss in more detail in later lectures, one can use Banach's
 contraction mapping theorem to prove that the sequence of functions $T^n
 v$ converges to the solution to the Bellman equation.
 
-### Fitted Value Function Iteration
+### Fitted value function iteration
 
 Both consumption $c$ and the state variable $x$ are continuous.
 
@@ -338,7 +338,7 @@ less so near the lower boundary.
 The reason is that the utility function and hence value function is very
 steep near the lower boundary, and hence hard to approximate.
 
-### Policy Function
+### Policy function
 
 Let's see how this plays out in terms of computing the optimal policy.
 
@@ -419,7 +419,7 @@ possibility of faster compute time and, at the same time, more accuracy.
 
 We explore this next.
 
-## Time Iteration
+## Time iteration
 
 Now let's look at a different strategy to compute the optimal policy.
 

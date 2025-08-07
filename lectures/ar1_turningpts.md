@@ -57,7 +57,7 @@ logger = logging.getLogger('pymc')
 logger.setLevel(logging.CRITICAL)
 ```
 
-## A Univariate First-Order Autoregressive Process
+## A univariate first-order autoregressive process
 
 Consider the univariate AR(1) model: 
 
@@ -185,7 +185,7 @@ As functions of forecast horizon, the coverage intervals have shapes like those 
 https://python.quantecon.org/perm_income_cons.html
 
 
-## Predictive Distributions of Path Properties
+## Predictive distributions of path properties
 
 Wecker {cite}`wecker1979predicting` proposed using simulation techniques to characterize  predictive distribution of some statistics that are  non-linear functions of $y$. 
 
@@ -280,7 +280,7 @@ This is designed to express the event
 
 Following {cite}`wecker1979predicting`, we can use simulations to calculate  probabilities of $P_t$ and $N_t$ for each period $t$. 
 
-## A Wecker-Like Algorithm
+## A wecker-like algorithm
 
 The procedure consists of the following steps: 
 
@@ -297,7 +297,7 @@ $$
 * consider the sets $\{W_t(\omega_i)\}^{T}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{T}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{T}_{i=1}$ as samples from the predictive distributions $f(W_{t+1} \mid \mathcal y_t, \dots)$, $f(W_{t+2} \mid y_t, y_{t-1}, \dots)$, $\dots$, $f(W_{t+N} \mid y_t, y_{t-1}, \dots)$.
 
 
-## Using Simulations to Approximate a Posterior Distribution
+## Using simulations to approximate a posterior distribution
 
 The next code cells use `pymc` to compute the time $t$ posterior distribution of $\rho, \sigma$.
 
@@ -345,7 +345,7 @@ post_samples = draw_from_posterior(initial_path)
 
 The graphs on the left portray posterior marginal distributions.
 
-## Calculating Sample Path Statistics
+## Calculating sample path statistics
 
 Our next step is to prepare Python code to compute our sample path statistics.
 
@@ -404,7 +404,7 @@ def next_turning_point(omega):
     return up_turn, down_turn
 ```
 
-## Original Wecker Method
+## Original Wecker method
 
 Now we  apply Wecker's original  method by simulating future paths and compute predictive distributions, conditioning
 on the true  parameters associated with the data-generating model.
@@ -470,7 +470,7 @@ plot_Wecker(initial_path, 1000, ax)
 plt.show()
 ```
 
-## Extended Wecker Method
+## Extended Wecker method
 
 Now we apply we apply our  "extended" Wecker method based on  predictive densities of $y$ defined by
 {eq}`ar1-tp-eq4` that acknowledge posterior uncertainty in the parameters $\rho, \sigma$.

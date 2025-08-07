@@ -173,7 +173,7 @@ $$
 
 
 
-## Activities in Factor Markets
+## Activities in factor markets
 
 **Old people:**  At each  $t \geq 0$, a representative  old person 
 
@@ -196,7 +196,7 @@ If a lump-sum tax is negative, it means that the government pays the person a su
 ``` 
 
 
-## Representative firm's problem 
+## Representative firm's problem
 
 The representative firm hires labor services from  young people  at competitive wage  rate $W_t$  and hires  capital from old  people at competitive rental rate
 $r_t$. 
@@ -319,7 +319,7 @@ $$ (eq:optsavingsplan)
 
 
 (sec-equilibrium)=
-## Equilbrium 
+## Equilbrium
 
 **Definition:** An equilibrium is an allocation,  a government policy, and a price system with the properties that
 * given the price system and the government policy, the allocation solves
@@ -687,7 +687,7 @@ closed = ClosedFormTrans(α, β)
 ```
 
 (exp-tax-cut)=
-### Experiment 1: Tax cut
+### Experiment 1: tax cut
 
 To illustrate the power of `ClosedFormTrans`, let's first experiment with the following fiscal policy change:
 
@@ -788,7 +788,7 @@ for i, name in enumerate(['τ', 'D', 'G']):
 The economy with lower tax cut rate at $t=0$ has the same transitional pattern, but is less distorted, and it converges to a new steady state with higher physical capital stock.
 
 (exp-expen-cut)=
-### Experiment 2: Government asset accumulation
+### Experiment 2: government asset accumulation
 
 Assume that the economy is initially in the same steady state.
 
@@ -832,7 +832,7 @@ Although the consumptions in the new steady state are strictly higher, it is at 
 ``` 
 
 
-### Experiment 3: Temporary expenditure cut
+### Experiment 3: temporary expenditure cut
 
 Let's now investigate a   scenario in which  the government also cuts its spending by  half and accumulates the asset.
 
@@ -1207,7 +1207,7 @@ for i, name in enumerate(['τ', 'D', 'G']):
 Comparing to {ref}`exp-tax-cut`, the government raises lump-sum taxes to finance the increasing debt interest payment, which is less distortionary comparing to raising the capital income tax rate.
 
 
-### Experiment 4: Unfunded Social Security System
+### Experiment 4: unfunded social security system
 
 In this experiment,  lump-sum taxes are of equal magnitudes for old and the young, but of opposite signs.
 

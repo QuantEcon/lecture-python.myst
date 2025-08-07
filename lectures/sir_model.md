@@ -66,7 +66,7 @@ from scipy.integrate import odeint
 
 This routine calls into compiled code from the FORTRAN library odepack.
 
-## The SIR Model
+## The SIR model
 
 In the version of the SIR model we will analyze there are four states.
 
@@ -80,7 +80,7 @@ Comments:
 * Those who have recovered are assumed to have acquired immunity.
 * Those in the exposed group are not yet infectious.
 
-### Time Path
+### Time path
 
 The flow across states follows the path $S \to E \to I \to R$.
 
@@ -234,7 +234,7 @@ grid_size = 1000
 t_vec = np.linspace(0, t_length, grid_size)
 ```
 
-### Experiment 1: Constant R0 Case
+### Experiment 1: constant r0 case
 
 Let's start with the case where `R0` is constant.
 
@@ -282,7 +282,7 @@ Here are cumulative cases, as a fraction of population:
 plot_paths(c_paths, labels)
 ```
 
-### Experiment 2: Changing Mitigation
+### Experiment 2: changing mitigation
 
 Let's look at a scenario where mitigation (e.g., social distancing) is
 successively imposed.
@@ -345,7 +345,7 @@ Here are cumulative cases, as a fraction of population:
 plot_paths(c_paths, labels)
 ```
 
-## Ending Lockdown
+## Ending lockdown
 
 The following replicates [additional results](https://drive.google.com/file/d/1uS7n-7zq5gfSgrL3S0HByExmpq4Bn3oh/view) by Andrew Atkeson on the timing of lifting lockdown.
 

@@ -74,7 +74,7 @@ from scipy.stats import norm
 import random
 ```
 
-## The Linear State Space Model
+## The linear state space model
 
 ```{index} single: Models; Linear State Space
 ```
@@ -116,7 +116,7 @@ Even without these draws, the primitives 1--3 pin down the *probability distribu
 
 Later we'll see how to compute these distributions and their moments.
 
-#### Martingale Difference Shocks
+#### Martingale difference shocks
 
 ```{index} single: Linear State Space Models; Martingale Difference Shocks
 ```
@@ -144,7 +144,7 @@ The following examples help to highlight this point.
 They also illustrate the wise dictum *finding the state is an art*.
 
 (lss_sode)=
-#### Second-order Difference Equation
+#### Second-order difference equation
 
 Let $\{y_t\}$ be a deterministic sequence that satisfies
 
@@ -221,7 +221,7 @@ plot_lss(A, C, G)
 
 Later you'll be asked to recreate this figure.
 
-#### Univariate Autoregressive Processes
+#### Univariate autoregressive processes
 
 ```{index} single: Linear State Space Models; Univariate Autoregressive Processes
 ```
@@ -290,7 +290,7 @@ G_1 = [1, 0, 0, 0]
 plot_lss(A_1, C_1, G_1, n=4, ts_length=200)
 ```
 
-#### Vector Autoregressions
+#### Vector autoregressions
 
 ```{index} single: Linear State Space Models; Vector Autoregressions
 ```
@@ -371,7 +371,7 @@ Such an $x_t$ process can be used to model deterministic seasonals in quarterly 
 
 The *indeterministic* seasonal produces recurrent, but aperiodic, seasonal fluctuations.
 
-#### Time Trends
+#### Time trends
 
 ```{index} single: Linear State Space Models; Time Trends
 ```
@@ -443,7 +443,7 @@ $$
 
 Then $x_t^\prime = \begin{bmatrix} t(t-1)/2 &t & 1 \end{bmatrix}$. You can now confirm that $y_t = G x_t$ has the correct form.
 
-### Moving Average Representations
+### Moving average representations
 
 ```{index} single: Linear State Space Models; Moving Average Representations
 ```
@@ -505,7 +505,7 @@ The second term is a translated linear function of time.
 
 For this reason, $x_{1t}$ is called a *martingale with drift*.
 
-## Distributions and Moments
+## Distributions and moments
 
 ```{index} single: Linear State Space Models; Distributions
 ```
@@ -513,7 +513,7 @@ For this reason, $x_{1t}$ is called a *martingale with drift*.
 ```{index} single: Linear State Space Models; Moments
 ```
 
-### Unconditional Moments
+### Unconditional moments
 
 Using {eq}`st_space_rep`, it's easy to obtain expressions for the
 (unconditional) means of $x_t$ and $y_t$.
@@ -557,7 +557,7 @@ information, to be defined below.
 However, you should be aware that these "unconditional" moments do depend on
 the initial distribution $N(\mu_0, \Sigma_0)$.
 
-#### Moments of the Observables
+#### Moments of the observables
 
 Using linearity of expectations again we have
 
@@ -635,7 +635,7 @@ By similar reasoning combined with {eq}`lss_umy` and {eq}`lss_uvy`,
 y_t \sim N(G \mu_t, G \Sigma_t G')
 ```
 
-### Ensemble Interpretations
+### Ensemble interpretations
 
 How should we interpret the distributions defined by {eq}`lss_mgs_x`--{eq}`lss_mgs_y`?
 
@@ -755,7 +755,7 @@ The histogram and population distribution are close, as expected.
 By looking at the figures and experimenting with parameters, you will gain a
 feel for how the population distribution depends on the model primitives {ref}`listed above <lss_pgs>`, as intermediated by the distribution's parameters.
 
-#### Ensemble Means
+#### Ensemble means
 
 In the preceding figure, we approximated the population distribution of $y_T$ by
 
@@ -831,7 +831,7 @@ $$
 \qquad (I \to \infty)
 $$
 
-### Joint Distributions
+### Joint distributions
 
 In the preceding discussion, we looked at the distributions of $x_t$ and
 $y_t$ in isolation.
@@ -868,7 +868,7 @@ $$
 p(x_{t+1} \,|\, x_t) = N(Ax_t, C C')
 $$
 
-#### Autocovariance Functions
+#### Autocovariance functions
 
 An important object related to the joint distribution is the *autocovariance function*
 
@@ -888,7 +888,7 @@ Elementary calculations show that
 
 Notice that $\Sigma_{t+j,t}$ in general depends on both $j$, the gap between the two dates, and $t$, the earlier date.
 
-## Stationarity and Ergodicity
+## Stationarity and ergodicity
 
 ```{index} single: Linear State Space Models; Stationarity
 ```
@@ -900,7 +900,7 @@ Stationarity and ergodicity are two properties  that, when they hold,  greatly a
 
 Let's start with the intuition.
 
-### Visualizing Stability
+### Visualizing stability
 
 Let's look at some more time series from the same model that we analyzed above.
 
@@ -960,7 +960,7 @@ distribution as $t \to \infty$.
 
 When such a distribution exists it is called a *stationary distribution*.
 
-### Stationary Distributions
+### Stationary distributions
 
 In our setting, a distribution $\psi_{\infty}$ is said to be *stationary* for $x_t$ if
 
@@ -986,7 +986,7 @@ $$
 
 where $\mu_{\infty}$ and $\Sigma_{\infty}$ are fixed points of {eq}`lss_mut_linear_models` and {eq}`eqsigmalaw_linear_models` respectively.
 
-### Covariance Stationary Processes
+### Covariance stationary processes
 
 Let's see what happens to the preceding figure if we start $x_0$ at the stationary distribution.
 
@@ -1023,9 +1023,9 @@ A  process $\{x_t\}$ is said to be *covariance stationary* if
 
 In our setting, $\{x_t\}$ will be covariance stationary if $\mu_0, \Sigma_0, A, C$  assume values that  imply that none of $\mu_t, \Sigma_t, \Sigma_{t+j,t}$ depends on $t$.
 
-### Conditions for Stationarity
+### Conditions for stationarity
 
-#### The Globally Stable Case
+#### The globally stable case
 
 The difference equation $\mu_{t+1} = A \mu_t$ is known to have *unique*
 fixed point $\mu_{\infty} = 0$ if all eigenvalues of $A$ have moduli strictly less than unity.
@@ -1055,7 +1055,7 @@ Because of the constant first component in the state vector, we will never have 
 
 How can we find stationary solutions that respect a constant state component?
 
-#### Processes with a Constant State Component
+#### Processes with a constant state component
 
 To investigate such a process, suppose that $A$ and $C$ take the
 form
@@ -1142,7 +1142,7 @@ Let's suppose that we're working with a covariance stationary process.
 
 In this case, we know that the ensemble mean will converge to $\mu_{\infty}$ as the sample size $I$ approaches infinity.
 
-#### Averages over Time
+#### Averages over time
 
 Ensemble averages across simulations are interesting theoretically, but in real life, we usually observe only a *single* realization $\{x_t, y_t\}_{t=0}^T$.
 
@@ -1171,7 +1171,7 @@ In particular,
 
 In our linear Gaussian setting, any covariance stationary process is also ergodic.
 
-## Noisy Observations
+## Noisy observations
 
 In some settings, the observation equation $y_t = Gx_t$ is modified to
 include an error term.
@@ -1233,7 +1233,7 @@ The theory of prediction for linear state space systems is elegant and
 simple.
 
 (ff_cm)=
-### Forecasting Formulas -- Conditional Means
+### Forecasting formulas -- conditional means
 
 The natural way to predict variables is to use conditional distributions.
 
@@ -1287,7 +1287,7 @@ $$
 = G A^j x_t
 $$
 
-### Covariance of Prediction Errors
+### Covariance of prediction errors
 
 It is useful to obtain the covariance matrix of the vector of  $j$-step-ahead prediction errors
 

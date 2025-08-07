@@ -26,7 +26,7 @@ This lecture describes the QR decomposition and how it relates to
 
 We'll write some Python code to help consolidate our understandings.
 
-## Matrix Factorization
+## Matrix factorization
 
 The QR decomposition (also called the QR factorization) of a matrix is a decomposition of a matrix into the product of  an orthogonal matrix and a triangular matrix.
 
@@ -48,7 +48,7 @@ We'll use a **Gram-Schmidt process** to compute a  QR decomposition
 
 Because doing so is so educational, we'll  write our own Python code to do the job
 
-## Gram-Schmidt process
+## Gram-schmidt process
 
 We'll start with a **square** matrix $A$.
 
@@ -58,7 +58,7 @@ We'll deal with a rectangular matrix $A$ later.
 
 Actually, our algorithm will work with a rectangular $A$ that is not square.
 
-### Gram-Schmidt process for square $A$
+### Gram-schmidt process for square $a$
 
 Here we apply a Gram-Schmidt  process to the  **columns**  of matrix $A$.
 
@@ -137,7 +137,7 @@ R = \left[ \begin{matrix} a_1·e_1 & a_2·e_1 & \cdots & a_n·e_1\\ 0 & a_2·e_2
 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & a_n·e_n \end{matrix} \right]
 $$
 
-### $A$ not square 
+### $a$ not square
 
 Now suppose that $A$ is an $n \times m$ matrix where $m > n$.  
 
@@ -162,7 +162,7 @@ a_{n+1} & = (a_{n+1}\cdot e_1) e_1 + (a_{n+1}\cdot e_2) e_2 + \cdots + (a_{n+1}\
 a_m & = (a_m\cdot e_1) e_1 + (a_m\cdot e_2) e_2 + \cdots + (a_m \cdot e_n) e_n  \cr
 \end{align*}
 
-## Some Code
+## Some code
 
 Now let's write some homemade Python code to implement a QR decomposition by deploying the  Gram-Schmidt process described above.
 
@@ -296,7 +296,7 @@ Q_scipy, R_scipy = adjust_sign(*qr(A))
 Q_scipy, R_scipy
 ```
 
-## Using QR Decomposition to Compute Eigenvalues
+## Using QR decomposition to compute eigenvalues
 
 Now for a useful  fact about the QR algorithm.  
 
@@ -367,7 +367,7 @@ Compare with the `scipy` package.
 sorted(np.linalg.eigvals(A))
 ```
 
-## $QR$ and PCA
+## $QR$ and pca
 
 There are interesting connections between the $QR$ decomposition and principal components analysis (PCA).
 

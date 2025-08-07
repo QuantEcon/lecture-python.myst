@@ -79,7 +79,7 @@ import numpy as np
 from quantecon.optimize import brentq
 ```
 
-## The Model
+## The model
 
 Time is discrete and takes values $t = 0, 1 , \ldots, T$ where $T$ is  finite.
 
@@ -99,7 +99,7 @@ Let $K_t$ be the stock of physical capital at time $t$.
 Let $\vec{C}$ = $\{C_0,\dots, C_T\}$ and
 $\vec{K}$ = $\{K_0,\dots,K_{T+1}\}$.
 
-### Digression: Aggregation Theory
+### Digression: aggregation theory
 
 We use a concept of a representative consumer to be thought of as follows.
 
@@ -151,7 +151,7 @@ It appears often in aggregate economics.
 We shall use this aggregation theory here and also  in  this lecture  {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
 
 
-#### An  Economy
+#### An economy
 
 
 A representative household is endowed with one unit of labor at each
@@ -213,7 +213,7 @@ C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t \quad \text{for all } t \in \{0, 
 
 where $\delta \in (0,1)$ is a depreciation rate of capital.
 
-## Planning Problem
+## Planning problem
 
 A planner chooses an allocation $\{\vec{C},\vec{K}\}$ to
 maximize {eq}`utility-functional` subject to {eq}`allocation`.
@@ -247,7 +247,7 @@ and  pose the following min-max problem:
 
 Before computing first-order conditions, we present some handy formulas.
 
-### Useful Properties of Linearly Homogeneous Production Function
+### Useful properties of linearly homogeneous production function
 
 The following technicalities will help us.
 
@@ -474,7 +474,7 @@ We can construct an economy with the Python code:
 pp = PlanningProblem()
 ```
 
-## Shooting Algorithm
+## Shooting algorithm
 
 We use  **shooting** to compute an optimal allocation
 $\vec{C}, \vec{K}$ and an associated Lagrange multiplier sequence
@@ -688,7 +688,7 @@ Now we can solve the model and plot the paths of consumption, capital, and Lagra
 plot_paths(pp, 0.3, 0.3, [10]);
 ```
 
-## Setting Initial Capital to Steady State Capital
+## Setting initial capital to steady state capital
 
 When  $T \rightarrow +\infty$, the optimal allocation converges to
 steady state values of $C_t$ and $K_t$.
@@ -782,7 +782,7 @@ The following graphs compare optimal outcomes as we vary $T$.
 plot_paths(pp, 0.3, k_ss/3, [150, 75, 50, 25], k_ss=k_ss);
 ```
 
-## A Turnpike Property
+## A turnpike property
 
 The following calculation indicates that when  $T$ is very large,
 the optimal capital stock stays close to
@@ -910,7 +910,7 @@ def plot_saving_rate(pp, c0, k0, T_arr, k_ter=0, k_ss=None, s_ss=None):
 plot_saving_rate(pp, 0.3, k_ss/3, [250, 150, 75, 50], k_ss=k_ss)
 ```
 
-## A Limiting Infinite Horizon Economy
+## A limiting infinite horizon economy
 
 We want to set $T = +\infty$.
 
@@ -964,7 +964,7 @@ The planner slowly lowers the saving rate until reaching a steady
 state in which $f'(K)=\rho +\delta$.
 
 
-## Stable Manifold and Phase Diagram 
+## Stable manifold and phase diagram
 
 We now describe a classic diagram that describes an optimal $(K_{t+1}, C_t)$ path.
 
@@ -1132,7 +1132,7 @@ ax.set_ylabel('$C$')
 plt.show()
 ```
 
-## Concluding Remarks
+## Concluding remarks
 
 In {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`,  we study a decentralized version of an economy with exactly the same
 technology and preference structure as deployed here.
