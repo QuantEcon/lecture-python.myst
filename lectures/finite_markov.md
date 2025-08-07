@@ -64,7 +64,7 @@ from mpl_toolkits.mplot3d import Axes3D
 The following concepts are fundamental.
 
 (finite_dp_stoch_mat)=
-### {index}`Stochastic matrices <single: Stochastic matrices>`
+### {index}`stochastic matrices <single: stochastic matrices>`
 
 ```{index} single: Finite Markov Chains; Stochastic Matrices
 ```
@@ -79,7 +79,7 @@ Each row of $P$ can be regarded as a probability mass function over $n$ possible
 
 It is too not difficult to check [^pm] that if $P$ is a stochastic matrix, then so is the $k$-th power $P^k$ for all $k \in \mathbb N$.
 
-### {index}`markov chains <single: Markov chains>`
+### {index}`Markov chains <single: Markov chains>`
 
 ```{index} single: Finite Markov Chains
 ```

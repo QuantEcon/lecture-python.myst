@@ -1073,7 +1073,7 @@ the left-hand side is a *matrix norm* --- in this case, the so-called
 For example, for a square matrix $S$, the condition $\| S \| < 1$ means that $S$ is *contractive*, in the sense that it pulls all vectors towards the origin [^cfn].
 
 (la_neumann)=
-#### {index}`neumann's theorem <single: neumann's theorem>`
+#### {index}`Neumann's theorem <single: Neumann's theorem>`
 
 ```{index} single: Linear Algebra; Neumann's Theorem
 ```
