@@ -216,7 +216,7 @@ We'll start by generating samples of size 25000 of three independent  log normal
 Then we'll plot  histograms and compare them with convolutions of appropriate discretized log normal distributions.
 
 ```{code-cell} python3
-## Create sums of two and three log normal random variates ssum2 = s1 + s2 and ssum3 = s1 + s2 + s3
+## create sums of two and three log normal random variates ssum2 = s1 + s2 and ssum3 = s1 + s2 + s3
 
 
 mu1, sigma1 = 5., 1. # mean and standard deviation
@@ -292,10 +292,10 @@ m = .1 # increment size
 
 ```{code-cell} python3
 ## Cell to check -- note what happens when don't normalize!
-## Things match up without adjustment. compare with above
+## things match up without adjustment. Compare with above
 
 p1,p1_norm,x = pdf_seq(mu1,sigma1,I,m)
-## Compute number of points to evaluate the probability mass function
+## compute number of points to evaluate the probability mass function
 NT = x.size
 
 plt.figure(figsize = (8,8))

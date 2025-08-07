@@ -24,7 +24,7 @@ kernelspec:
 
 ```{code-cell} ipython3
 import jax
-## To check that gpu is activated in environment
+## to check that gpu is activated in environment
 print(f"JAX backend: {jax.devices()[0].platform}")
 ```
 

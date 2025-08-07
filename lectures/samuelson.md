@@ -619,8 +619,8 @@ $$
   pairs that would generate those roots
 
 ```{code-cell} python3
-### Code to reverse-engineer a cycle
-### Y_t = r^t (c_1 cos(ϕ t) + c2 sin(ϕ t))
+### code to reverse-engineer a cycle
+### y_t = r^t (c_1 cos(ϕ t) + c2 sin(ϕ t))
 ###
 
 def f(r, ϕ):
