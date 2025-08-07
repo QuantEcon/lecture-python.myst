@@ -42,7 +42,7 @@ python scripts/test-jax-install.py
 ```bash
 # HTML build (primary build target) - takes 45-60 minutes
 jb build lectures --path-output ./ -W --keep-going
-# NEVER CANCEL: Set timeout to 90+ minutes. Executes 83 notebooks sequentially.
+# NEVER CANCEL: Set timeout to 90+ minutes. Executes 80+ notebooks sequentially.
 
 # PDF build via LaTeX - takes 30-45 minutes  
 jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
@@ -82,7 +82,7 @@ jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n 
 
 ### Key Directories
 ```
-lectures/               # MyST markdown lecture files (83 files)
+lectures/               # MyST markdown lecture files (80+ files)
 ├── _config.yml        # Jupyter Book configuration
 ├── _toc.yml          # Table of contents structure  
 ├── _static/          # Static assets (images, CSS, etc.)
@@ -102,7 +102,7 @@ scripts/              # Utility scripts
 ```
 
 ### Content Structure
-- **83 lecture files** covering intermediate quantitative economics
+- **80+ lecture files** covering intermediate quantitative economics
 - **MyST markdown format** with embedded Python code blocks
 - **Executable notebooks** - code is run during build process
 - **Multiple output formats**: HTML website, PDF via LaTeX, downloadable notebooks
