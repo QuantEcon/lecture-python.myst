@@ -64,7 +64,7 @@ from mpl_toolkits.mplot3d import Axes3D
 The following concepts are fundamental.
 
 (finite_dp_stoch_mat)=
-### {index}`stochastic matrices <single: stochastic matrices>`
+### {index}`Stochastic matrices <single: Stochastic matrices>`
 
 ```{index} single: Finite Markov Chains; Stochastic Matrices
 ```
