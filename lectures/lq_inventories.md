@@ -415,7 +415,7 @@ These two concepts correspond to these distinct altered firm problems.
 
 We use these two alternative production concepts in order to shed light on the baseline model.
 
-## Inventories Not Useful
+## Inventories not useful
 
 Let’s turn first to the setting in which inventories aren’t needed.
 
@@ -446,7 +446,7 @@ $$
 Q_{t}^{ni}=\frac{a_{0}+\nu_{t}-c_{1}}{c_{2}+a_{1}}.
 $$
 
-## Inventories Useful but are Hardwired to be Zero Always
+## Inventories useful but are hardwired to be zero always
 
 Next, we turn to a distinct problem in which inventories are useful –
 meaning that there are costs of $d_2 (I_t - S_t)^2$ associated

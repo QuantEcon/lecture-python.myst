@@ -66,7 +66,7 @@ from quantecon.optimize import brentq
 from numba import jit
 ```
 
-## The Euler Equation
+## The Euler equation
 
 Our first step is to derive the Euler equation, which is a generalization of
 the Euler equation we obtained in the {doc}`lecture on cake eating <cake_eating_problem>`.
@@ -157,7 +157,7 @@ over interior consumption policies $\sigma$, one solution of which is the optima
 
 Our aim is to solve the functional equation {eq}`cpi_euler_func` and hence obtain $\sigma^*$.
 
-### The Coleman-Reffett Operator
+### The coleman-reffett operator
 
 Recall the Bellman operator
 
@@ -211,7 +211,7 @@ $$
 
 In view of the Euler equation, this is exactly $\sigma^*(y)$.
 
-### Is the Coleman-Reffett Operator Well Defined?
+### Is the coleman-reffett operator well defined?
 
 In particular, is there always a unique $c \in (0, y)$ that solves
 {eq}`cpi_coledef`?
@@ -233,7 +233,7 @@ Sketching these curves and using the information above will convince you that th
 With a bit more analysis, one can show in addition that $K \sigma \in \mathscr P$
 whenever $\sigma \in \mathscr P$.
 
-### Comparison with VFI (Theory)
+### Comparison with VFI (theory)
 
 It is possible to prove that there is a tight relationship between iterates of
 $K$ and iterates of the Bellman operator.

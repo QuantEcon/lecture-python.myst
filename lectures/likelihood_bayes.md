@@ -69,7 +69,7 @@ def set_seed():
 set_seed()
 ```
 
-## The Setting
+## The setting
 
 We begin by reviewing the setting in {doc}`this lecture <likelihood_ratio_process>`, which we adopt here too.
 
@@ -196,7 +196,7 @@ l_seq_f = np.cumprod(l_arr_f, axis=1)
 
 
 
-## Likelihood Ratio Processes and Bayes’ Law
+## Likelihood ratio processes and Bayes’ law
 
 Let $\pi_0 \in [0,1]$ be a Bayesian statistician's prior probability that nature generates $w^t$ as a sequence of i.i.d. draws from
 distribution $f$.
@@ -610,7 +610,7 @@ This topic is taken up in {doc}`mix_model`.
 We explore how to learn the true mixing parameter $x$ in the exercise 
 of {doc}`mix_model`.
 
-## Behavior of  Posterior Probability $\{\pi_t\}$  Under  Subjective Probability Distribution
+## Behavior of posterior probability $\{\pi_t\}$ under subjective probability distribution
 
 We'll end this lecture by briefly studying what our Bayesian learner expects to learn under the
 subjective beliefs $\pi_t$ cranked out by Bayes' law.
@@ -949,7 +949,7 @@ ax2.set_ylabel("$w_t$")
 plt.show()
 ```
 
-##  Initial Prior is Verified by Paths Drawn from Subjective Conditional Densities
+## Initial prior is verified by paths drawn from subjective conditional densities
 
 
 
@@ -973,7 +973,7 @@ table
 The fraction of simulations for which $\pi_{t}$  had converged to $1$ is indeed always  close  to $\pi_{-1}$, as anticipated.
 
 
-## Drilling Down a Little Bit
+## Drilling down a little bit
 
 To understand how the local dynamics of $\pi_t$ behaves, it is enlightening to consult the  variance of $\pi_{t}$ conditional on $\pi_{t-1}$.
 
@@ -1024,7 +1024,7 @@ Notice how the conditional variance approaches $0$ for $\pi_{t-1}$ near  either 
 
 The conditional variance is nearly zero only when the agent  is almost sure that $w_t$ is drawn from $F$,  or is almost sure it is drawn from $G$.
 
-## Related Lectures
+## Related lectures
 
 This lecture has been devoted to building some useful infrastructure that will help us understand inferences that are the foundations of
 results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.

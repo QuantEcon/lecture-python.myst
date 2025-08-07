@@ -61,7 +61,7 @@ mpl.rcParams['text.usetex'] = True
 mpl.rcParams['text.latex.preamble'] = r'\usepackage{{amsmath}}'
 ```
 
-## A worker's output 
+## A worker's output
 
 A representative worker is permanently employed at a firm.
 
@@ -208,7 +208,7 @@ we  use the Kalman filter described in this quantecon lecture {doc}`A First Look
 
 In particular, we want to compute all of the objects in an "innovation representation".
 
-## An Innovations Representation
+## An innovations representation
 
 We have all the objects in hand required to form an innovations representation for the output
 process $\{y_t\}_{t=0}^T$ for a worker.
@@ -273,7 +273,7 @@ fig.tight_layout()
 plt.show()
 ```
 
-## Some Computational Experiments
+## Some computational experiments
 
 Let's look at  $\Sigma_0$ and $\Sigma_T$ in order to see how much the firm learns about the hidden state during the horizon we have set.
 
@@ -585,7 +585,7 @@ ax.legend(bbox_to_anchor=(1, 0.5))
 plt.show()
 ```
 
-## Future Extensions
+## Future extensions
 
 We can do lots of enlightening experiments by creating new types of workers and letting the firm 
 learn about their hidden (to the firm) states by observing just their output histories.

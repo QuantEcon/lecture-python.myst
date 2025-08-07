@@ -39,7 +39,7 @@ import matplotlib.pyplot as plt
 np.set_printoptions(precision=3, suppress=True)
 ```
 
-## Constructing a Circulant Matrix
+## Constructing a circulant matrix
 
 To construct an $N \times N$ circulant matrix, we  need only the first row, say,
 
@@ -86,7 +86,7 @@ def construct_cirlulant(row):
 construct_cirlulant(np.array([1., 2., 3.]))
 ```
 
-### Some Properties of Circulant Matrices
+### Some properties of circulant matrices
 
 Here are some useful properties:
 
@@ -126,7 +126,7 @@ where $C^T$ is the transpose of the circulant matrix  defined in equation {eq}`e
 
 
 
-## Connection to Permutation Matrix
+## Connection to permutation matrix
 
 A good way to construct a circulant matrix is to use a **permutation matrix**.
 
@@ -346,7 +346,7 @@ for j in range(8):
 diff_arr
 ```
 
-## Associated Permutation Matrix
+## Associated permutation matrix
 
 
 Next, we execute calculations to verify that the circulant matrix $C$ defined  in equation {eq}`eqn:circulant` can be written as
@@ -426,7 +426,7 @@ for j in range(8):
     print(diff)
 ```
 
-## Discrete Fourier Transform
+## Discrete fourier transform
 
 The **Discrete Fourier Transform** (DFT) allows us to  represent a  discrete time sequence as a weighted sum of complex sinusoids.
 

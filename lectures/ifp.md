@@ -74,14 +74,14 @@ Other references include {cite}`Deaton1991`, {cite}`DenHaan2010`,
 {cite}`Kuhn2013`, {cite}`Rabault2002`,  {cite}`Reiter2009`  and
 {cite}`SchechtmanEscudero1977`.
 
-## The Optimal Savings Problem
+## The optimal savings problem
 
 ```{index} single: Optimal Savings; Problem
 ```
 
 Let's write down the model and then discuss how to solve it.
 
-### Set-Up
+### Set-up
 
 Consider a household that chooses a state-contingent consumption plan $\{c_t\}_{t \geq 0}$ to maximize
 
@@ -147,7 +147,7 @@ be contingent only on the current state.
 
 Optimality is defined below.
 
-### Value Function and Euler Equation
+### Value function and Euler equation
 
 The *value function* $V \colon \mathsf S \to \mathbb{R}$ is defined by
 
@@ -204,7 +204,7 @@ u' (c_t)
 \right\}
 ```
 
-### Optimality Results
+### Optimality results
 
 As shown in {cite}`ma2020income`,
 
@@ -251,7 +251,7 @@ model suggests that time iteration will be faster and more accurate.
 
 This is the approach that we apply below.
 
-### Time Iteration
+### Time iteration
 
 We can rewrite {eq}`eqeul0` to make it a statement about functions rather than
 random variables.
@@ -321,7 +321,7 @@ It is shown in {cite}`ma2020income` that the unique optimal policy can be
 computed by picking any $\sigma \in \mathscr{C}$ and iterating with the
 operator $K$ defined in {eq}`eqsifc`.
 
-### Some Technical Details
+### Some technical details
 
 The proof of the last statement is somewhat technical but here is a quick
 summary:
@@ -503,7 +503,7 @@ plt.show()
 
 The following exercises walk you through several applications where policy functions are computed.
 
-### A Sanity Check
+### A sanity check
 
 One way to check our results is to
 

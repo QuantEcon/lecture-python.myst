@@ -57,7 +57,7 @@ from scipy.stats import betabinom
 import networkx as nx
 ```
 
-## The Optimal Transport Problem
+## The optimal transport problem
 
 Suppose that $m$ factories produce goods that must be sent to $n$ locations.
 
@@ -128,13 +128,13 @@ More about this later.
 
 
 
-## The Linear Programming Approach
+## The linear programming approach
 
 In this section we discuss using using standard linear programming solvers to
 tackle the optimal transport problem.
 
 
-### Vectorizing a Matrix of Decision Variables
+### Vectorizing a matrix of decision variables
 
 A *matrix* of decision variables $x_{ij}$ appears in problem {eq}`plannerproblem`.
 
@@ -255,7 +255,7 @@ $$
 $$
 
 
-### An Application
+### An application
 
 
 We now provide an example that takes the form {eq}`decisionvars` that we'll
@@ -476,7 +476,7 @@ The vector $z$ evidently equals $\operatorname{vec}(X)$.
 The minimized cost from the optimal transport plan is given by the $fun$ variable.
 
 
-### Using a Just-in-Time Compiler
+### Using a just-in-time compiler
 
 We can also solve optimal transportation problems using a powerful tool from
 QuantEcon, namely, `quantecon.optimize.linprog_simplex`.
@@ -542,7 +542,7 @@ As you can see, the `quantecon.optimize.linprog_simplex` is much faster.
 QuantEcon version, having been tested more extensively over a longer period of
 time.)
 
-## The Dual Problem
+## The dual problem
 
 Let $u, v$ denotes vectors of dual decision variables with entries $(u_i), (v_j)$.
 
@@ -642,7 +642,7 @@ This equality is assured by   **complementary slackness** conditions that state 
 
 
 
-## The Python Optimal Transport Package
+## The Python optimal transport package
 
 There is an excellent [Python package](https://pythonot.github.io/) for
 optimal transport that simplifies some of the steps we took above.
@@ -654,7 +654,7 @@ passing the data out to a linear programming routine.
 since we want to understand what happens under the hood.)
 
 
-### Replicating Previous Results
+### Replicating previous results
 
 The following line of code solves the example application discussed above
 using linear programming.
@@ -673,7 +673,7 @@ total_cost
 
 Here we use [np.vdot](https://numpy.org/doc/stable/reference/generated/numpy.vdot.html) for the trace inner product of X and C
 
-### A Larger Application
+### A larger application
 
 Now let's try using the same package on a slightly larger application.
 

@@ -82,7 +82,7 @@ import matplotlib.pyplot as plt
 np.random.seed(123)
 ```
 
-## Review of McCall Model
+## Review of mccall model
 
 We begin by reviewing the McCall model described in {doc}`this quantecon lecture <mccall_model>`.
 
@@ -239,7 +239,7 @@ We'll use this value function as a benchmark later after we have done some Q-lea
 print(valfunc_VFI)
 ```
 
-## Implied Quality Function  $Q$
+## Implied quality function $q$
 
 
 A **quality function** $Q$ map  state-action pairs into optimal values.
@@ -313,7 +313,7 @@ $$
 
 +++
 
-## From Probabilities  to Samples
+## From probabilities to samples
 
 We noted  above that  the optimal Q function for our McCall worker satisfies the Bellman equations
 
@@ -370,7 +370,7 @@ to  objects in equation system {eq}`eq:old105`.
 
 This informal argument takes us to the threshold of Q-learning.
 
-## Q-Learning
+## Q-learning
 
 Let's first describe  a $Q$-learning algorithm precisely.
 
@@ -704,7 +704,7 @@ The above graphs indicates that
 
 * the quality of approximation to the "true" value function computed by value function iteration improves for longer epochs
 
-## Employed Worker Can't Quit
+## Employed worker can't quit
 
 
 The preceding version of temporal difference Q-learning described in  equation system  {eq}`eq:old4` lets an employed  worker quit, i.e., reject her wage as an incumbent and instead receive unemployment compensation this period
@@ -744,7 +744,7 @@ We illustrate these possibilities with the following code and graph.
 plot_epochs(epochs_to_plot=[100, 1000, 10000, 100000, 200000], quit_allowed=0)
 ```
 
-## Possible Extensions
+## Possible extensions
 
 To extend the algorthm to handle problems with continuous state spaces,
 a typical approach is to restrict Q-functions and policy functions to take particular

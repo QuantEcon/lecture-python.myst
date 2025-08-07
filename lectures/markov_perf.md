@@ -88,7 +88,7 @@ Well known examples include
 
 Let's examine a model of the first type.
 
-### Example: A Duopoly Model
+### Example: a duopoly model
 
 Two firms are the only producers of a good, the demand for which is governed by a linear inverse demand function
 
@@ -170,7 +170,7 @@ These iterations can be challenging to implement computationally.
 
 However, they simplify for the case in which  one-period payoff functions are quadratic and  transition laws are linear --- which takes us to our next topic.
 
-## Linear Markov Perfect Equilibria
+## Linear Markov perfect equilibria
 
 ```{index} single: Linear Markov Perfect Equilibria
 ```
@@ -181,7 +181,7 @@ In linear-quadratic dynamic games, these "stacked Bellman equations" become "sta
 
 We'll lay out that structure in a general setup and then apply it to some simple problems.
 
-### Coupled Linear Regulator Problems
+### Coupled linear regulator problems
 
 We consider a general linear-quadratic regulator game with two players.
 
@@ -222,7 +222,7 @@ Here
 * $A$ is $n \times n$
 * $B_i$ is $n \times k_i$
 
-### Computing Equilibrium
+### Computing equilibrium
 
 We formulate a linear Markov perfect equilibrium as follows.
 
@@ -319,13 +319,13 @@ Moreover, since
 
 we need to solve these $k_1 + k_2$ equations simultaneously.
 
-#### Key Insight
+#### Key insight
 
 A key insight is that  equations  {eq}`orig-3` and {eq}`orig-5` are linear in $F_{1t}$ and $F_{2t}$.
 
 After these equations have been solved, we can take  $F_{it}$ and solve for $P_{it}$ in {eq}`orig-4` and {eq}`orig-6`.
 
-#### Infinite Horizon
+#### Infinite horizon
 
 We often want to compute the solutions of such games for infinite horizons, in the hope that the decision rules $F_{it}$ settle down to be time-invariant as $t_1 \rightarrow +\infty$.
 
@@ -344,7 +344,7 @@ We use the function [nnash](https://github.com/QuantEcon/QuantEcon.py/blob/maste
 
 Let's use these procedures to treat some applications, starting with the duopoly model.
 
-### A Duopoly Model
+### A duopoly model
 
 To map the duopoly model into  coupled linear-quadratic dynamic programming problems, define the state
 and controls as
@@ -420,7 +420,7 @@ The optimal decision rule of firm $i$ will take the form $u_{it} = - F_i x_t$, i
 x_{t+1} = (A - B_1 F_1 -B_1 F_2 ) x_t
 ```
 
-### Parameters and Solution
+### Parameters and solution
 
 Consider the previously presented duopoly model with parameter values of:
 

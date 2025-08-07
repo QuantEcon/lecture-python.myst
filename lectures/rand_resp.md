@@ -35,7 +35,7 @@ Related ideas underlie  modern **differential privacy** systems.
 (See https://en.wikipedia.org/wiki/Differential_privacy)
 
 
-## Warner's Strategy
+## Warner's strategy
 
 As usual, let's bring in the Python modules we'll be using.
 
@@ -148,7 +148,7 @@ From expressions {eq}`eq:five` and {eq}`eq:seven` we can deduce that:
 - The MSE of $\hat{\pi}$  decreases as $p$ increases.
 
 
-## Comparing Two Survey Designs 
+## Comparing two survey designs
 
 Let's compare the preceding randomized-response method with a stylized non-randomized response method.
 
@@ -315,7 +315,7 @@ df3_mc
 
 Evidently, as $n$ increases, the randomized response method does  better performance in more situations.
 
-## Concluding Remarks
+## Concluding remarks
 
 {doc}`This QuantEcon lecture <util_rand_resp>`  describes some alternative randomized response surveys.
 

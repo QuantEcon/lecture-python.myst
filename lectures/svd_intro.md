@@ -28,7 +28,7 @@ Like principal components analysis (PCA), DMD can be thought of as a data-reduct
 
 In a sequel to this lecture about  {doc}`Dynamic Mode Decompositions <var_dmd>`, we'll describe how SVD's provide ways rapidly to compute reduced-order approximations to first-order Vector Autoregressions (VARs).
 
-##  The Setting
+## The setting
 
 Let $X$ be an $m \times n$ matrix of rank $p$.
 
@@ -58,7 +58,7 @@ In the $m > > n$  case in which there are many more attributes $m$ than individu
 
 We'll again use a **singular value decomposition**,  but now to construct a **dynamic mode decomposition** (DMD)
 
-## Singular Value Decomposition
+## Singular value decomposition
 
 A **singular value decomposition** of an $m \times n$ matrix $X$ of rank $p \leq \min(m,n)$ is
 
@@ -124,7 +124,7 @@ Later we'll also describe an **economy** or **reduced** SVD.
 
 Before we study a **reduced** SVD we'll say a little more about properties of a **full** SVD.
 
-## Four Fundamental Subspaces
+## Four fundamental subspaces
 
 Let  ${\mathcal C}$ denote a column space, ${\mathcal N}$ denote a null space, and ${\mathcal R}$ denote a row space.
 
@@ -319,7 +319,7 @@ print("Row space:\n", row_space.T)
 print("Right null space:\n", null_space.T)
 ```
 
-## Eckart-Young Theorem
+## Eckart-young theorem
 
 Suppose that we want to construct  the best rank $r$ approximation of an $m \times n$ matrix $X$.
 
@@ -354,7 +354,7 @@ You can read about the Eckart-Young theorem and some of its uses [here](https://
 
 We'll make use of this theorem when we discuss principal components analysis (PCA) and also dynamic mode decomposition (DMD).
 
-## Full and Reduced SVD's
+## Full and reduced svd's
 
 Up to now we have described properties of a **full** SVD in which shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively.
 
@@ -504,7 +504,7 @@ SShat=np.diag(Shat)
 np.allclose(X, Uhat@SShat@Vhat)
 ```
 
-## Polar Decomposition
+## Polar decomposition
 
 A **reduced** singular value decomposition (SVD) of $X$ is related to a **polar decomposition** of $X$
 
@@ -532,7 +532,7 @@ and in our reduced SVD
 * $\Sigma$ is a $p \times p$ diagonal matrix
 * $V$ is an $n \times p$ orthonormal
 
-## Application: Principal Components Analysis (PCA)
+## Application: principal components analysis (pca)
 
 Let's begin with a case in which $n >> m$, so that we have many  more individuals $n$ than attributes $m$.
 
@@ -628,7 +628,7 @@ T&= BV \cr
 $$
 
 
-## Relationship of PCA to SVD
+## Relationship of pca to SVD
 
 To relate an SVD to a PCA of data set $X$, first construct the SVD of the data matrix $X$:
 
@@ -667,7 +667,7 @@ is a vector of **loadings** of variables $X_i$ on the $k$th principal component,
 
 * $\sigma_k $ for each $k=1, \ldots, p$ is the strength of $k$th **principal component**, where strength means contribution to the overall covariance of $X$.
 
-## PCA with Eigenvalues and Eigenvectors
+## Pca with eigenvalues and eigenvectors
 
 We now  use an eigen decomposition of a sample covariance matrix to do PCA.
 

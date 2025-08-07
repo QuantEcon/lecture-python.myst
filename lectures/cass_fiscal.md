@@ -36,7 +36,7 @@ We present two ways to approximate an equilibrium:
 
 
 (cs_fs_model)=
-## The Economy
+## The economy
 
 
 ### Technology
@@ -109,7 +109,7 @@ In the [experiment section](cf:experiments), we shall see how variations in gove
 the transition path and equilibrium.
 
 
-### Representative Household
+### Representative household
 
 A representative household has preferences over nonnegative streams of a single consumption good $c_t$ and leisure $1-n_t$ that are ordered by:
 
@@ -135,7 +135,7 @@ Here we have assumed that the government gives a depreciation allowance $\delta 
 from the gross rentals on capital $\eta_t k_t$ and so collects taxes $\tau_{kt} (\eta_t - \delta) k_t$
 on rentals from capital.
 
-### Government 
+### Government
 
 Government plans $\{ g_t \}_{t=0}^\infty$ for government purchases and taxes $\{\tau_{ct}, \tau_{kt}, \tau_{nt}, \tau_{ht}\}_{t=0}^\infty$ must respect the budget constraint
 
@@ -166,7 +166,7 @@ A **competitive equilibrium with distorting taxes** is a **budget-feasible gover
 policy, the allocation solves the household's problem and the firm's problem.
 ```
 
-## No-arbitrage Condition
+## No-arbitrage condition
 
 A no-arbitrage argument implies a restriction on prices and tax rates across time.
 
@@ -229,7 +229,7 @@ $$
 \eta_t = F_{kt}, \quad w_t = F_{nt}.
 $$(eq:no_arb_firms)
 
-## Household's First Order Condition
+## Household's first order condition
 
 Household maximize {eq}`eq:utility` under {eq}`eq:house_budget`.
 
@@ -272,7 +272,7 @@ $$
 -\lim_{T \to \infty} \beta^T \frac{U_{1T}}{(1 + \tau_{cT})} k_{T+1} = 0.
 $$ (eq:terminal_final)
 
-## Computing Equilibria
+## Computing equilibria
 
 To compute an equilibrium,  we seek a  price system $\{q_t, \eta_t, w_t\}$, a budget feasible government policy $\{g_t, \tau_t\} \equiv \{g_t, \tau_{ct}, \tau_{nt}, \tau_{kt}, \tau_{ht}\}$, and an allocation $\{c_t, n_t, k_{t+1}\}$ that solve a system of nonlinear difference equations consisting of 
 
@@ -280,7 +280,7 @@ To compute an equilibrium,  we seek a  price system $\{q_t, \eta_t, w_t\}$, a bu
 - an initial condition $k_0$ and a terminal condition {eq}`eq:terminal_final`.
 
 (cass_fiscal_shooting)=
-## Python Code
+## Python code
 
 We require the following imports
 
@@ -328,7 +328,7 @@ model = create_model()
 S = 100
 ```
 
-### Inelastic Labor Supply
+### Inelastic labor supply
 
 In this lecture, we consider the special case where $U(c, 1-n) = u(c)$ and $f(k) := F(k, 1)$.
 
@@ -595,7 +595,7 @@ We describe  two ways to compute an equilibrium:
  * a shooting algorithm
  * a residual-minimization method that focuses on imposing  Euler equation {eq}`eq:diff_second` and the  feasibility condition {eq}`eq:feasi_capital`.
 
-### Shooting Algorithm
+### Shooting algorithm
 
 This algorithm deploys the following steps.
 
@@ -1205,7 +1205,7 @@ The figure indicates how:
 
 +++
 
-### Method 2: Residual Minimization 
+### Method 2: residual minimization
 
 The second method involves minimizing residuals (i.e., deviations from equalities) of the following equations:
 
@@ -1522,7 +1522,7 @@ def compute_A_path(A0, shocks, S=100):
     return A_path
 ```
 
-### Inelastic Labor Supply
+### Inelastic labor supply
 
 By linear homogeneity, the production function can be expressed as
 
@@ -1580,7 +1580,7 @@ $$
 c_{t+1} = c_t \left[ \beta \bar{R}_{t+1} \right]^{\frac{1}{\gamma}}\mu_{t+1}^{-1}
 $$ (eq:consume_r_mod)
 
-### Steady State
+### Steady state
 
 In a steady state, $c_{t+1} = c_t$. Then {eq}`eq:diff_mod` becomes
 
@@ -1609,7 +1609,7 @@ $$
 Since the algorithm and plotting routines are the same as before, we include the steady-state calculations and 
 shooting routine in the section {ref}`cass_fiscal_shooting`.
 
-### Shooting Algorithm
+### Shooting algorithm
 
 Now we can apply the shooting algorithm to compute equilibrium. We augment the vector of shock variables by including $\mu_t$, then proceed as before.
 
@@ -1622,7 +1622,7 @@ Let's run some experiments:
 
 +++
 
-#### Experiment 1: A foreseen increase in $\mu$ from 1.02 to 1.025 at t=10
+#### Experiment 1: a foreseen increase in $\mu$ from 1.02 to 1.025 at t=10
 
 The figures below show the effects of a permanent increase in productivity growth $\mu$ from 1.02 to 1.025 at t=10. 
 
@@ -1679,7 +1679,7 @@ $\bar R$.
 - Perfect foresight makes the effects of the increase in the growth of capital
 precede it, with the effect visible at $t=0$.
 
-#### Experiment 2: An unforeseen increase in $\mu$ from 1.02 to 1.025 at t=0
+#### Experiment 2: an unforeseen increase in $\mu$ from 1.02 to 1.025 at t=0
 
 The figures below show the effects of an immediate jump in $\mu$ to 1.025 at t=0.
 

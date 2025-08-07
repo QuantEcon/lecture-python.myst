@@ -83,7 +83,7 @@ from numpyro.infer import Trace_ELBO as nTrace_ELBO
 from numpyro.optim import Adam as nAdam
 ```
 
-## Unleashing MCMC on a  Binomial Likelihood
+## Unleashing MCMC on a binomial likelihood
 
 This lecture begins with the binomial example in the {doc}`quantecon lecture <prob_meaning>`.
 
@@ -103,7 +103,7 @@ We use several alternative prior distributions
 We  compare computed posteriors  with ones associated with a conjugate prior as described in  {doc}`the quantecon lecture <prob_meaning>`
 
 
-### Analytical Posterior
+### Analytical posterior
 
 Assume that the random variable $X\sim Binom\left(n,\theta\right)$.
 
@@ -183,7 +183,7 @@ def analytical_beta_posterior(data, alpha0, beta0):
     return st.beta(alpha0 + up_num, beta0 + down_num)
 ```
 
-### Two Ways to Approximate Posteriors
+### Two ways to approximate posteriors
 
 Suppose that we don't have a conjugate prior.
 
@@ -215,7 +215,7 @@ a Kullback-Leibler (KL) divergence between true posterior and the putatitive pos
 
   - minimizing the KL divergence is  equivalent with  maximizing a criterion called  the **Evidence Lower Bound** (ELBO), as we shall verify soon.
 
-## Prior Distributions
+## Prior distributions
 
 In order to be able to apply MCMC sampling or VI, `Pyro` and `Numpyro` require  that a prior distribution satisfy special properties:
 
@@ -323,7 +323,7 @@ class TruncatedvonMises(dist.Rejector):
         return constraints.interval(self.low, self.upp)
 ```
 
-### Variational Inference
+### Variational inference
 
 Instead of directly sampling from the posterior,  the **variational inference**  methodw approximates an unknown posterior distribution with  a family of tractable distributions/densities.
 
@@ -683,7 +683,7 @@ class BayesianInference:
         return params, losses
 ```
 
-## Alternative Prior Distributions
+## Alternative prior distributions
 
 Let's see how well our sampling algorithm does in approximating
 
@@ -731,7 +731,7 @@ exampleLP.show_prior(size=100000,bins=40)
 
 Having assured ourselves that our sampler seems to do a good job, let's put it to work in using MCMC to compute posterior probabilities.
 
-## Posteriors Via MCMC and VI
+## Posteriors via MCMC and VI
 
 We construct a class  `BayesianInferencePlot` to implement MCMC or VI algorithms and plot multiple posteriors for different updating data sizes and different  possible prior.
 
@@ -884,7 +884,7 @@ SVI_num_steps = 5000
 true_theta = 0.8
 ```
 
-### Beta Prior and Posteriors:
+### Beta prior and posteriors:
 
 Let's compare outcomes when we use a Beta prior.
 
@@ -953,7 +953,7 @@ will be  more accurate, as we shall see next.
 BayesianInferencePlot(true_theta, num_list, BETA_numpyro).SVI_plot(guide_dist='beta', n_steps=100000)
 ```
 
-## Non-conjugate Prior Distributions
+## Non-conjugate prior distributions
 
 Having assured ourselves that our MCMC and VI methods can work well when we have  conjugate prior and so can also compute analytically, we
 next proceed to situations in which our  prior  is not a beta distribution, so we don't have a conjugate prior.
@@ -1040,7 +1040,7 @@ To get more accuracy we will now increase the number of steps for Variational In
 SVI_num_steps = 50000
 ```
 
-#### VI with a  Truncated Normal Guide
+#### VI with a truncated normal guide
 
 ```{code-cell} ipython3
 # Uniform
@@ -1071,7 +1071,7 @@ print(f'=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {exam
 BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(guide_dist='normal', n_steps=SVI_num_steps)
 ```
 
-#### Variational Inference with a  Beta Guide Distribution
+#### Variational inference with a Beta guide distribution
 
 ```{code-cell} ipython3
 # Uniform

@@ -59,7 +59,7 @@ set_matplotlib_formats('retina')
 ```
 
 
-## Sketch of Basic Concepts
+## Sketch of basic concepts
 
 We'll briefly define what we mean by a **probability space**, a **probability measure**, and a **random variable**.
 
@@ -104,7 +104,7 @@ applied statisticians often proceed simply by specifying a form for an induced d
 That is how we'll proceed in this lecture and in many subsequent lectures. 
 
 
-## What Does Probability Mean?
+## What does probability mean?
 
 Before diving in, we'll say a few words about what probability theory means and how it connects to statistics.
 
@@ -194,7 +194,7 @@ Key concepts that connect probability theory with statistics are laws of large n
      * we say "partly" because a Bayesian also pays attention to relative frequencies 
 
 
-## Representing  Probability Distributions
+## Representing probability distributions
 
 A  probability distribution $\textrm{Prob} (X \in A)$ can  be described by its **cumulative distribution function (CDF)**
 
@@ -231,7 +231,7 @@ Doing this enables us to confine our tool set basically to linear algebra.
 Later we'll briefly discuss how to approximate a continuous random variable with a discrete random variable.
 
 
-## Univariate Probability Distributions
+## Univariate probability distributions
 
 We'll devote most of this lecture to discrete-valued random variables, but we'll say a few things
 about continuous-valued random variables.
@@ -323,7 +323,7 @@ $$
 \textrm{Prob}\{X\in \tilde{X}\} =1
 $$
 
-## Bivariate Probability Distributions
+## Bivariate probability distributions
 
 We'll now discuss a bivariate **joint distribution**.
 
@@ -357,7 +357,7 @@ $$
 \sum_{i}\sum_{j}f_{ij}=1
 $$
 
-## Marginal Probability Distributions
+## Marginal probability distributions
 
 The joint distribution induce marginal distributions
 
@@ -400,7 +400,7 @@ f(y)& = \int_{\mathbb{R}} f(x,y) dx
 \end{aligned}
 $$
 
-## Conditional Probability  Distributions
+## Conditional probability distributions
 
 Conditional probabilities are defined according to
 
@@ -446,7 +446,7 @@ $$
 $$
 
 
-## Transition Probability Matrix
+## Transition probability matrix
 
 Consider the following joint probability distribution of  two random variables.
 
@@ -495,7 +495,7 @@ Note that
 
 
 
-## Application: Forecasting a Time Series
+## Application: forecasting a time series
 
 Suppose that there are two time periods.
 
@@ -523,7 +523,7 @@ $$\text{Prob} \{X(1)=j|X(0)=i\}= \frac{f_{ij}}{ \sum_{j}f_{ij}}$$
 - This formula is a workhorse for applied economic forecasters.
 
 
-## Statistical Independence
+## Statistical independence
 
 Random variables X and Y are statistically **independent** if
 
@@ -550,7 +550,7 @@ $$
 $$
 
 
-## Means and Variances
+## Means and variances
 
 The  mean and variance of a discrete random variable $X$  are
 
@@ -571,7 +571,7 @@ $$
 \end{aligned}
 $$
 
-## Matrix Representations of Some Bivariate Distributions
+## Matrix representations of some bivariate distributions
 
 Let's use matrices to represent a joint distribution, conditional distribution, marginal distribution, and the mean and variance of a  bivariate random variable.
 
@@ -882,7 +882,7 @@ d_new.marg_dist()
 d_new.cond_dist()
 ```
 
-## A Continuous Bivariate Random Vector
+## A continuous bivariate random vector
 
 
 A two-dimensional Gaussian distribution has  joint density
@@ -1079,7 +1079,7 @@ print(μy, σy)
 print(μ2 + ρ * σ2 * (1 - μ1) / σ1, np.sqrt(σ2**2 * (1 - ρ**2)))
 ```
 
-## Sum of Two Independently Distributed Random Variables
+## Sum of two independently distributed random variables
 
 Let $X, Y$ be two independent discrete random variables that take values in $\bar{X}, \bar{Y}$, respectively.
 
@@ -1237,7 +1237,7 @@ Thus, multiple  joint distributions $[f_{ij}]$ can have  the same marginals.
 **Remark:**
 - Couplings  are important in optimal transport problems and in Markov processes. Please see this {doc}`lecture about optimal transport <opt_transport>`
 
-## Copula Functions
+## Copula functions
 
 Suppose that $X_1, X_2, \dots, X_n$ are $N$ random variables  and that
 

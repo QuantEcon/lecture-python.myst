@@ -51,7 +51,7 @@ Much of our  Python code below is based on his.
 
 +++
 
-##  First-Price Sealed-Bid Auction (FPSB)
+## First-price sealed-bid auction (FPSB)
 
 +++
 
@@ -94,7 +94,7 @@ To complete the specification of the situation, we'll  assume that  prospective 
 
 Bidder optimally chooses to bid less than $v_i$.
 
-### Characterization of FPSB Auction
+### Characterization of FPSB auction
 
 A FPSB auction has a unique symmetric Bayesian Nash Equilibrium.
 
@@ -116,13 +116,13 @@ A proof for this assertion is available  at the [Wikepedia page](https://en.wiki
 
 +++
 
-## Second-Price Sealed-Bid Auction (SPSB)
+## Second-price sealed-bid auction (SPSB)
 
 +++
 
 **Protocols:** In a  second-price sealed-bid (SPSB) auction,  the winner pays the second-highest bid.
 
-## Characterization of SPSB Auction
+## Characterization of SPSB auction
 
 In a  SPSB auction  bidders optimally choose to bid their  values.
 
@@ -133,7 +133,7 @@ A proof is provided at [the Wikepedia
 
 +++
 
-## Uniform Distribution of Private Values
+## Uniform distribution of private values
 
 +++
 
@@ -184,13 +184,13 @@ $$
 \end{aligned}
 $$
 
-## Second Price Sealed Bid Auction
+## Second price sealed bid auction
 
 In a  **SPSB**, it is optimal for bidder $i$ to bid $v_i$.
 
 +++
 
-## Python Code
+## Python code
 
 ```{code-cell} ipython3
 import numpy as np
@@ -268,7 +268,7 @@ ax.set_ylabel('Bid, $b_i$')
 sns.despine()
 ```
 
-## Revenue Equivalence Theorem
+## Revenue equivalence theorem
 
 +++
 
@@ -355,7 +355,7 @@ It follows that an optimal bidding strategy in a FPSB auction is $b(v_{i}) = \ma
 
 +++
 
-##  Calculation of  Bid Price in FPSB
+## Calculation of bid price in FPSB
 
 +++
 
@@ -429,7 +429,7 @@ ax.set_title('Solution for FPSB')
 sns.despine()
 ```
 
-##  $\chi^2$ Distribution
+## $\chi^2$ distribution
 
 Let's try an example in which the distribution of private values is a $\chi^2$ distribution.
 
@@ -518,7 +518,7 @@ ax.set_ylabel('Density')
 sns.despine()
 ```
 
-## 5 Code Summary
+## 5 code summary
 
 +++
 

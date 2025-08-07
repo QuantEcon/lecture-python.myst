@@ -67,7 +67,7 @@ The techniques in this lecture will prove useful when we study Stackelberg and R
 
 
   
-## Undiscounted LQ DP Problem
+## Undiscounted LQ dp problem
 
 
 The problem is to choose a sequence of controls  $\{u_t\}_{t=0}^\infty$ to maximize the criterion
@@ -233,7 +233,7 @@ $$ (Mdefn)
 
 +++
 
-## State-Costate Dynamics
+## State-costate dynamics
 
 
 We seek to solve the difference equation system  {eq}`eq4orig` for a sequence $\{x_t\}_{t=0}^\infty$
@@ -255,7 +255,7 @@ which requires that $x_t' R x_t$ converge to zero as $t \rightarrow + \infty$.
 
 +++
 
-## Reciprocal Pairs Property
+## Reciprocal pairs property
 
 To proceed, we study properties of the $(2n \times 2n)$ matrix $M$ defined in {eq}`Mdefn`. 
 
@@ -666,7 +666,7 @@ lq.stationary_values()
 ```
 
 
-## Other Applications
+## Other applications
 
 The preceding approach to imposing stability on a system  of potentially unstable linear difference equations is not limited to  linear quadratic dynamic optimization problems. 
 
@@ -693,13 +693,13 @@ W, V, P = stable_solution(H)
 P
 ```
 
-## Discounted Problems 
+## Discounted problems
 
 +++
 
 
 
-### Transforming States and Controls to Eliminate Discounting
+### Transforming states and controls to eliminate discounting
 
 A pair of useful transformations allows us to convert a discounted problem into an undiscounted one.
 
@@ -777,7 +777,7 @@ lq.stationary_values()
 ```
 
 
-### Lagrangian for Discounted Problem
+### Lagrangian for discounted problem
 
 For several purposes, it is useful  explicitly briefly to describe
 a Lagrangian for a discounted problem. 

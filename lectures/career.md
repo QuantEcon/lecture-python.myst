@@ -58,7 +58,7 @@ from mpl_toolkits.mplot3d.axes3d import Axes3D
 from matplotlib import cm
 ```
 
-### Model Features
+### Model features
 
 * Career and job within career both chosen to maximize expected discounted wage flow.
 * Infinite horizon dynamic programming with two state variables.

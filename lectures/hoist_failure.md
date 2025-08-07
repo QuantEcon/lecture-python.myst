@@ -129,7 +129,7 @@ This observation sets the stage for challenge that confronts us in this lecture,
 
 To compute the probability distribution of the sum of two log normal distributions, we can use the following convolution property of a probability distribution that is a sum of independent random variables.
 
-## The Convolution Property
+## The convolution property
 
 Let $x$ be a random variable with probability density $f(x)$, where $x \in {\bf R}$.
 
@@ -206,7 +206,7 @@ They provide the same answers but `scipy.signal.ftconvolve` is much faster.
 That's why we rely on it later in this lecture.
 
 
-## Approximating Distributions
+## Approximating distributions
 
 We'll construct an example to verify that  discretized distributions can do a good job of approximating  samples drawn from underlying
 continuous distributions.
@@ -316,7 +316,7 @@ mean, meantheory
 ```
 
 
-## Convolving Probability Mass Functions
+## Convolving probability mass functions
 
 Now let's use the convolution theorem to compute the probability distribution of a sum of the two log normal random variables we have parameterized above.
 
@@ -450,7 +450,7 @@ mean, 3*meantheory
 ```
 
 <!-- #region -->
-## Failure Tree Analysis
+## Failure tree analysis
 
 We shall soon apply the convolution theorem to compute the probability of a **top event** in a failure tree analysis.
 
@@ -508,7 +508,7 @@ $$ (eq:probtop)
 Probabilities for each event are recorded as failure rates per year.
 
 
-## Failure Rates Unknown
+## Failure rates unknown
 
 Now we come to the problem that really interests us, following  {cite}`Ardron_2018` and Greenfield and Sargent
  {cite}`Greenfield_Sargent_1993`  in the spirit of Apostolakis  {cite}`apostolakis1990`.
@@ -551,7 +551,7 @@ The analyst calculates the probability mass function for the **top event** $F$, 
 
 <!-- #endregion -->
 
-## Waste Hoist Failure Rate
+## Waste hoist failure rate
 
 We'll take close to a real world example by assuming that $n = 14$.
 

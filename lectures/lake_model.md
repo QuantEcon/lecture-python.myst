@@ -85,7 +85,7 @@ Before working through what follows, we recommend you read the
 
 You will also need some basic {doc}`linear algebra <linear_algebra>` and probability.
 
-## The Model
+## The model
 
 The economy is inhabited by a very large number of ex-ante identical workers.
 
@@ -100,7 +100,7 @@ Their rates of  transition between employment and unemployment are  governed by 
 
 The growth rate of the labor force evidently equals $g=b-d$.
 
-### Aggregate Variables
+### Aggregate variables
 
 We want to derive the dynamics of the following aggregates
 
@@ -115,7 +115,7 @@ We also want to know the values of the following objects
 
 (Here and below, capital letters represent aggregates and lowercase letters represent rates)
 
-### Laws of Motion for Stock Variables
+### Laws of motion for stock variables
 
 We begin by constructing laws of motion for the aggregate variables $E_t,U_t, N_t$.
 
@@ -163,7 +163,7 @@ $$
 
 This law tells us how total employment and unemployment evolve over time.
 
-### Laws of Motion for Rates
+### Laws of motion for rates
 
 Now let's derive the law of motion for rates.
 
@@ -330,7 +330,7 @@ lm = LakeModel(α = 0.03)
 lm.A
 ```
 
-### Aggregate Dynamics
+### Aggregate dynamics
 
 Let's run a simulation under the default parameters (see above) starting from $X_0 = (12, 138)$
 
@@ -411,7 +411,7 @@ plt.show()
 ```
 
 (dynamics_workers)=
-## Dynamics of an Individual Worker
+## Dynamics of an individual worker
 
 An individual worker's employment dynamics are governed by a {doc}`finite state Markov process <finite_markov>`.
 
@@ -492,7 +492,7 @@ Inspection tells us that $P$ is exactly the transpose of $\hat A$ under the assu
 
 Thus, the percentages of time that an  infinitely lived worker  spends employed and unemployed equal the fractions of workers employed and unemployed in the steady state distribution.
 
-### Convergence Rate
+### Convergence rate
 
 How long does it take for time series sample averages to converge to cross-sectional averages?
 
@@ -538,7 +538,7 @@ In this case it takes much of the sample for these two objects to converge.
 
 This is largely due to the high persistence in the Markov chain.
 
-## Endogenous Job Finding Rate
+## Endogenous job finding rate
 
 We now make the hiring rate endogenous.
 
@@ -546,7 +546,7 @@ The transition rate from unemployment to employment will be determined by the Mc
 
 All details relevant to the following discussion can be found in {doc}`our treatment <mccall_model>` of that model.
 
-### Reservation Wage
+### Reservation wage
 
 The most important thing to remember about the model is that optimal decisions
 are characterized by a reservation wage $\bar w$
@@ -561,7 +561,7 @@ As we saw in {doc}`our discussion of the model <mccall_model>`, the reservation 
 * $\gamma$, the offer arrival rate
 * $c$, unemployment compensation
 
-### Linking the McCall Search Model to the Lake Model
+### Linking the mccall search model to the lake model
 
 Suppose that  all workers inside a lake model behave according to the McCall search model.
 
@@ -579,7 +579,7 @@ This is now
 = \gamma \sum_{w' \geq \bar w} p(w')
 ```
 
-### Fiscal Policy
+### Fiscal policy
 
 We can use the McCall search version of the Lake Model  to find an optimal level of unemployment insurance.
 
@@ -636,7 +636,7 @@ Following {cite}`davis2006flow`, we set $\alpha$, the hazard rate of leaving emp
 
 * $\alpha = 0.013$
 
-### Fiscal Policy Code
+### Fiscal policy code
 
 We will make use of techniques from the {doc}`McCall model lecture <mccall_model>`
 

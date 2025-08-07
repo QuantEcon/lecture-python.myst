@@ -94,7 +94,7 @@ import autograd.numpy as np
 plt.rcParams["figure.figsize"] = (10, 5.7)
 ```
 
-## Fixed Point Computation Using Newton's Method
+## Fixed point computation using newton's method
 
 In this section we solve the fixed point of the law of motion for capital in
 the setting of the [Solow growth
@@ -104,7 +104,7 @@ We will inspect the fixed point visually, solve it by successive
 approximation, and then apply Newton's method to achieve faster convergence.
 
 (solow)=
-### The Solow Model
+### The solow model
 
 In the Solow growth model, assuming Cobb-Douglas production technology and
 zero population growth, the law of motion for capital is
@@ -214,7 +214,7 @@ plt.show()
 We see that $k^*$ is indeed the unique positive fixed point.
 
 
-#### Successive Approximation
+#### Successive approximation
 
 First let's compute the fixed point using successive approximation.
 
@@ -263,7 +263,7 @@ This is close to the true value.
 k_star
 ```
 
-#### Newton's Method 
+#### Newton's method
 
 In general, when applying Newton's fixed point method to some function $g$, 
 we start with a guess $x_0$ of the fixed
@@ -363,7 +363,7 @@ plot_trajectories(params)
 We can see that Newton's method converges faster than successive approximation.
 
 
-## Root-Finding in One Dimension
+## Root-finding in one dimension
 
 In the previous section we computed fixed points.
 
@@ -375,7 +375,7 @@ the problem of finding fixed points.
 
 
 
-### Newton's Method for Zeros
+### Newton's method for zeros
 
 Let's suppose we want to find an $x$ such that $f(x)=0$ for some smooth
 function $f$ mapping real numbers to real numbers.
@@ -438,7 +438,7 @@ automatic differentiation or GPU acceleration, it will be helpful to know how
 to implement Newton's method ourselves.)
 
 
-### Application to Finding Fixed Points
+### Application to finding fixed points
 
 Now consider again the Solow fixed-point calculation, where we solve for $k$
 satisfying $g(k) = k$.
@@ -464,7 +464,7 @@ The result confirms the descent we saw in the graphs above: a very accurate resu
 
 
 
-## Multivariate Newton’s Method
+## Multivariate newton’s method
 
 In this section, we introduce a two-good problem, present a
 visualization of the problem, and solve for the equilibrium of the two-good market
@@ -477,7 +477,7 @@ We will see a significant performance gain when using Netwon's method.
 
 
 (two_goods_market)=
-### A Two Goods Market Equilibrium
+### A two goods market equilibrium
 
 Let's start by computing the market equilibrium of a two-good problem.
 
@@ -531,7 +531,7 @@ $$
 
 for this particular question.
 
-#### A Graphical Exploration
+#### A graphical exploration
 
 Since our problem is only two-dimensional, we can use graphical analysis to visualize and help understand the problem.
 
@@ -648,7 +648,7 @@ plt.show()
 It seems there is an equilibrium close to $p = (1.6, 1.5)$.
 
 
-#### Using a Multidimensional Root Finder
+#### Using a multidimensional root finder
 
 To solve for $p^*$ more precisely, we use a zero-finding algorithm from `scipy.optimize`.
 
@@ -681,7 +681,7 @@ np.max(np.abs(e(p, A, b, c)))
 This is indeed a very small error.
 
 
-#### Adding Gradient Information
+#### Adding gradient information
 
 In many cases, for zero-finding algorithms applied to smooth functions, supplying the [Jacobian](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant) of the function leads to better convergence properties.
 
@@ -724,7 +724,7 @@ p = solution.x
 np.max(np.abs(e(p, A, b, c)))
 ```
 
-#### Using Newton's Method
+#### Using newton's method
 
 Now let's use Newton's method to compute the equilibrium price using the multivariate version of Newton's method
 
@@ -785,7 +785,7 @@ The result is very accurate.
 With the larger overhead, the speed is not better than the optimized `scipy` function.
 
 
-### A High-Dimensional Problem
+### A high-dimensional problem
 
 Our next step is to investigate a large market with 3,000 goods.
 

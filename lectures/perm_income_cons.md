@@ -134,7 +134,7 @@ The dynamics of $\{y_t\}$ again follow the linear state space model
 
 The restrictions on the shock process and parameters are the same as in our {doc}`previous lecture <perm_income>`.
 
-### Digression on a Useful Isomorphism
+### Digression on a useful isomorphism
 
 The LQ permanent income model of consumption is mathematically isomorphic with a version of
 Barro's {cite}`Barro1979` model of tax smoothing.
@@ -162,7 +162,7 @@ All characterizations of a $\{c_t, y_t, b_t\}$ in the LQ permanent income model 
 
 See [consumption and tax smoothing models](https://python-advanced.quantecon.org/smoothing.html) for further exploitation of an isomorphism between consumption and tax smoothing models.
 
-### A Specification of the Nonfinancial Income Process
+### A specification of the nonfinancial income process
 
 For the purposes of this lecture, let's assume $\{y_t\}$ is a second-order univariate autoregressive process:
 
@@ -198,7 +198,7 @@ C= \begin{bmatrix}
 U = \begin{bmatrix} 0 & 1 & 0 \end{bmatrix}
 $$
 
-## The LQ Approach
+## The LQ approach
 
 {ref}`Previously <odr_pi>` we solved the permanent income model  by solving a system of linear expectational difference equations subject to two boundary conditions.
 
@@ -218,7 +218,7 @@ On the other hand, formulating the model in terms of an LQ dynamic programming p
 - finding the state (of a dynamic programming problem) is an art, and
 - iterations on a Bellman equation  implicitly jointly solve both a  forecasting problem and a control problem
 
-### The LQ Problem
+### The LQ problem
 
 Recall from our {doc}`lecture on LQ theory <lqcontrol>` that the optimal linear regulator problem is to choose
 a decision rule for $u_t$ to minimize
@@ -250,7 +250,7 @@ The optimal policy is $u_t = -Fx_t$, where $F := \beta (Q+\beta \tilde B'P \tild
 
 Under an optimal decision rule $F$, the state vector $x_t$ evolves according to $x_{t+1} = (\tilde A-\tilde BF) x_t + \tilde C w_{t+1}$.
 
-### Mapping into the LQ Framework
+### Mapping into the LQ framework
 
 To map into the LQ framework, we'll use
 
@@ -325,7 +325,7 @@ The reason is that it drops out of the Euler equation for consumption.
 
 In what follows we set it equal to unity.
 
-### The Exogenous Nonfinancial Income Process
+### The exogenous nonfinancial income process
 
 First, we create the objects for the optimal linear regulator
 
@@ -404,7 +404,7 @@ P, F, d = lqpi.stationary_values()  # Compute value function and decision rule
 ABF = ALQ - BLQ @ F  #  Form closed loop system
 ```
 
-### Comparison with the Difference Equation Approach
+### Comparison with the difference equation approach
 
 In our {doc}`first lecture <perm_income>` on the infinite horizon permanent
 income problem we used a different solution method.
@@ -469,7 +469,7 @@ Now let's create instances of the [LinearStateSpace](https://github.com/QuantEco
 
 To do this, we'll use the outcomes from our second method.
 
-## Two Example Economies
+## Two example economies
 
 In the spirit of Bewley models {cite}`Bewley86`, we'll generate panels of consumers.
 
@@ -491,7 +491,7 @@ Those transient effects will not be present in the second example.
 
 We use methods affiliated with the [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class to simulate the model.
 
-### First Set of Initial Conditions
+### First set of initial conditions
 
 We generate  25 paths of the exogenous non-financial income process and the associated optimal consumption and debt paths.
 
@@ -505,7 +505,7 @@ Comparing sample paths with population distributions at each date $t$ is a usefu
 lss = qe.LinearStateSpace(A_LSS, C_LSS, G_LSS, mu_0=μ_0, Sigma_0=Σ_0)
 ```
 
-### Population and Sample Panels
+### Population and sample panels
 
 In the code below, we use the [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class to
 
@@ -673,7 +673,7 @@ All of them accumulate debt in anticipation of rising nonfinancial income.
 
 They expect their nonfinancial income to rise toward the invariant distribution of income, a consequence of our having started them at $y_{-1} = y_{-2} = 0$.
 
-#### Cointegration Residual
+#### Cointegration residual
 
 The following figure plots realizations of the left side of {eq}`old12`, which,
 {ref}`as discussed in our last lecture <coint_pi>`, is called the **cointegrating residual**.
@@ -718,7 +718,7 @@ cointegration_figure(bsim0, csim0)
 plt.show()
 ```
 
-### A "Borrowers and Lenders" Closed Economy
+### A "borrowers and lenders" closed economy
 
 When we set $y_{-1} = y_{-2} = 0$ and $b_0 =0$ in the
 preceding exercise, we make debt "head north" early in the sample.

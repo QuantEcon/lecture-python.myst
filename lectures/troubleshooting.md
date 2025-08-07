@@ -26,7 +26,7 @@ kernelspec:
 
 This page is for readers experiencing errors when running the code from the lectures.
 
-## Fixing Your Local Environment
+## Fixing your local environment
 
 The basic assumption of the lectures is that code in a lecture should execute whenever
 
@@ -62,7 +62,7 @@ Second, you can report an issue, so we can try to fix your local set up.
 We like getting feedback on the lectures so please don't hesitate to get in
 touch.
 
-## Reporting an Issue
+## Reporting an issue
 
 One way to give feedback is to raise an issue through our [issue tracker](https://github.com/QuantEcon/lecture-python/issues).
 

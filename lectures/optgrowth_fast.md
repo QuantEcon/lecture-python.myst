@@ -69,7 +69,7 @@ The function `brent_max` is also designed for embedding in JIT-compiled code.
 
 These are alternatives to similar functions in SciPy (which, unfortunately, are not JIT-aware).
 
-## The Model
+## The model
 
 ```{index} single: Optimal Growth; Model
 ```
@@ -124,7 +124,7 @@ This is where we sacrifice flexibility in order to gain more speed.
 The class includes some methods such as `u_prime` that we do not need now
 but will use in later lectures.
 
-### The Bellman Operator
+### The Bellman operator
 
 We will use JIT compilation to accelerate the Bellman operator.
 

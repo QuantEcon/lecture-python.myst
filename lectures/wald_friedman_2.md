@@ -97,7 +97,7 @@ from numba.experimental import jitclass
 from math import gamma
 ```
 
-## A Dynamic Programming Approach
+## A dynamic programming approach
 
 The following presentation of the problem closely follows Dmitri
 Bertsekas's treatment in **Dynamic Programming and Stochastic Control** {cite}`Bertsekas75`. 
@@ -202,7 +202,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-### Losses and Costs
+### Losses and costs
 
 After observing $z_k, z_{k-1}, \ldots, z_0$, the decision-maker
 chooses among three distinct actions:
@@ -222,7 +222,7 @@ kinds of losses:
 - A cost $c$ if he postpones deciding and chooses instead to draw
   another $z$
 
-### Digression on Type I and Type II Errors
+### Digression on type I and type II errors
 
 If we regard  $f=f_0$ as a null hypothesis and $f=f_1$ as an alternative hypothesis,
 then $L_1$ and $L_0$ are losses associated with two types of statistical errors
@@ -262,7 +262,7 @@ Our problem is to determine threshold values $A, B$ that somehow depend on the p
 You might like to pause at this point and try to predict the impact of a
 parameter such as $c$ or $L_0$ on $A$ or $B$.
 
-### A Bellman Equation
+### A Bellman equation
 
 Let $J(\pi)$ be the total loss for a decision-maker with current belief $\pi$ who chooses optimally.
 
@@ -537,7 +537,7 @@ ax.legend()
 plt.show()
 ```
 
-### Cost Function
+### Cost function
 
 To solve the model, we will call our `solve_model` function
 
@@ -725,7 +725,7 @@ def simulation_plot(wf):
 simulation_plot(wf)
 ```
 
-### Comparative Statics
+### Comparative statics
 
 Now let's consider the following exercise.
 

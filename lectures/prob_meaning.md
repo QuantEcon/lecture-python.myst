@@ -69,7 +69,7 @@ import scipy.stats as st
 
 Empowered with these Python tools, we'll now  explore the two meanings described above.
 
-## Frequentist Interpretation
+## Frequentist interpretation
 
 Consider the following classic example.
 
@@ -337,7 +337,7 @@ $$
 as $I$ goes to infinity.
 
 
-## Bayesian Interpretation
+## Bayesian interpretation
 
 We again use a binomial distribution.
 
@@ -694,7 +694,7 @@ As shown in the figure above, as the number of observations grows, the Bayesian 
 However, if you take a closer look, you will find that the centers of  the BCIs are not exactly $0.4$, due to the persistent influence of the prior distribution and the randomness of the simulation path.
 
 
-## Role of a Conjugate Prior
+## Role of a conjugate prior
 
 We have made  assumptions that link functional forms of  our likelihood function and our prior in a way that has eased our calculations considerably.
 

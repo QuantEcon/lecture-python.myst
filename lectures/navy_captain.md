@@ -204,7 +204,7 @@ plt.show()
 Above, we plot the two possible probability densities $f_0$ and
 $f_1$
 
-## Frequentist Decision Rule
+## Frequentist decision rule
 
 The Navy told the Captain to use a  frequentist decision rule.
 
@@ -458,7 +458,7 @@ axs[1].set_title(r'optimal PFA and PD given $\pi^*$')
 plt.show()
 ```
 
-## Bayesian Decision Rule
+## Bayesian decision rule
 
 In  {doc}`A Problem that Stumped Milton Friedman <wald_friedman>`,
 we learned how Abraham Wald confirmed the Navy
@@ -776,7 +776,7 @@ axs[1].legend()
 plt.show()
 ```
 
-## Was the Navy Captain’s Hunch Correct?
+## Was the navy captain’s hunch correct?
 
 We now compare average (i.e., frequentist) losses obtained by the
 frequentist and Bayesian decision rules.
@@ -832,7 +832,7 @@ $\bar{V}_{fre}-\bar{V}_{Bayes}$.
 
 It is always positive.
 
-## More Details
+## More details
 
 We can provide more insights by focusing on the case in which
 $\pi^{*}=0.5=\pi_{0}$.
@@ -857,7 +857,7 @@ corresponding to `t_optimal` sample size.
 t_idx = t_optimal - 1
 ```
 
-## Distribution of Bayesian Decision Rule’s Time to Decide
+## Distribution of Bayesian decision rule’s time to decide
 
 We use  simulations to  compute the frequency distribution of the  time to
 decide for the Bayesian decision rule and compare that time to the
@@ -992,7 +992,7 @@ plt.title('Unconditional distribution of times')
 plt.show()
 ```
 
-## Probability of Making Correct Decision
+## Probability of making correct decision
 
 Now we use simulations to compute the fraction of samples in which the
 Bayesian and the frequentist decision rules decide correctly.
@@ -1051,7 +1051,7 @@ plt.title('Uncond. probability of making correct decisions before t')
 plt.show()
 ```
 
-## Distribution of Likelihood Ratios at Frequentist’s $t$
+## Distribution of likelihood ratios at frequentist’s $t$
 
 Next we use simulations to construct distributions of likelihood ratios
 after $t$ draws.

@@ -42,7 +42,7 @@ set_matplotlib_formats('retina')
 ```
 
 
-## Some Discrete Probability Distributions
+## Some discrete probability distributions
 
 
 Let's write some Python code to compute   means and variances of some  univariate random variables.
@@ -138,7 +138,7 @@ print("The population variance is: ", r*(1-p)/p**2)
 ```
 
 
-## Newcomb–Benford distribution
+## Newcomb–benford distribution
 
 The **Newcomb–Benford law** fits  many data sets, e.g., reports of incomes to tax authorities, in which
 the leading digit is more likely to be small than large.
@@ -233,7 +233,7 @@ print(μ-μ_hat < 1e-3)
 print(σ-σ_hat < 1e-3)
 ```
 
-## Uniform Distribution
+## Uniform distribution
 
 $$
 \begin{aligned}
@@ -270,7 +270,7 @@ print("\nThe population mean is: ", (a+b)/2)
 print("The population variance is: ", (b-a)**2/12)
 ```
 
-##  A Mixed Discrete-Continuous Distribution
+## A mixed discrete-continuous distribution
 
 We'll motivate this example with  a little story.
 
@@ -333,7 +333,7 @@ print("variance: ", var)
 ```
 
 
-## Drawing a  Random Number from a Particular Distribution
+## Drawing a random number from a particular distribution
 
 Suppose we have at our disposal a pseudo random number that draws a uniform random variable, i.e., one with probability distribution
 

@@ -67,7 +67,7 @@ from scipy.interpolate import interp1d
 from scipy.optimize import minimize_scalar
 ```
 
-## The Model
+## The model
 
 ```{index} single: Optimal Growth; Model
 ```
@@ -100,7 +100,7 @@ k_{t+1} + c_t \leq y_t
 
 and all variables are required to be nonnegative.
 
-### Assumptions and Comments
+### Assumptions and comments
 
 In what follows,
 
@@ -156,7 +156,7 @@ In the present context
 * $y_t$ is called the *state* variable --- it summarizes the "state of the world" at the start of each period.
 * $c_t$ is called the *control* variable --- a value chosen by the agent each period after observing the state.
 
-### The Policy Function Approach
+### The policy function approach
 
 ```{index} single: Optimal Growth; Policy Function Approach
 ```
@@ -258,7 +258,7 @@ The value function gives the maximal value that can be obtained from state $y$, 
 
 A policy $\sigma \in \Sigma$ is called **optimal** if it attains the supremum in {eq}`vfcsdp0` for all $y \in \mathbb R_+$.
 
-### The Bellman Equation
+### The Bellman equation
 
 With our assumptions on utility and production functions, the value function as defined in {eq}`vfcsdp0` also satisfies a **Bellman equation**.
 
@@ -297,7 +297,7 @@ The Bellman equation is important because it gives us more information about the
 
 It also suggests a way of computing the value function, which we discuss below.
 
-### Greedy Policies
+### Greedy policies
 
 The primary importance of the value function is that we can use it to compute optimal policies.
 
@@ -336,7 +336,7 @@ Hence, once we have a good approximation to $v^*$, we can compute the
 The advantage is that we are now solving a much lower dimensional optimization
 problem.
 
-### The Bellman Operator
+### The Bellman operator
 
 How, then, should we compute the value function?
 
@@ -377,7 +377,7 @@ which says precisely that $v$ is a solution to the Bellman equation.
 
 It follows that $v^*$ is a fixed point of $T$.
 
-### Review of Theoretical Results
+### Review of theoretical results
 
 ```{index} single: Dynamic Programming; Theory
 ```
@@ -410,7 +410,7 @@ Hence, at least one optimal policy exists.
 
 Our problem now is how to compute it.
 
-### {index}`Unbounded Utility <single: Unbounded Utility>`
+### {index}`unbounded utility <single: unbounded utility>`
 
 ```{index} single: Dynamic Programming; Unbounded Utility
 ```
@@ -461,7 +461,7 @@ The algorithm will be
 1. Unless some stopping condition is satisfied, set
    $\{ v_1, \ldots, v_I \} = \{ T \hat v(y_1), \ldots, T \hat v(y_I) \}$ and go to step 2.
 
-### Scalar Maximization
+### Scalar maximization
 
 To maximize the right hand side of the Bellman equation {eq}`fpb30`, we are going to use
 the `minimize_scalar` routine from SciPy.
@@ -491,7 +491,7 @@ def maximize(g, a, b, args):
     return maximizer, maximum
 ```
 
-### Optimal Growth Model
+### Optimal growth model
 
 We will assume for now that $\phi$ is the distribution of $\xi := \exp(\mu + s \zeta)$ where
 
@@ -555,7 +555,7 @@ but it does have some theoretical advantages in the present setting.
 
 (For example, it preserves the contraction mapping property of the Bellman operator --- see, e.g., {cite}`pal2013`.)
 
-### The Bellman Operator
+### The Bellman operator
 
 The next function implements the Bellman operator.
 
@@ -588,7 +588,7 @@ def T(v, og):
 ```
 
 (benchmark_growth_mod)=
-### An Example
+### An example
 
 Let's suppose now that
 
@@ -695,7 +695,7 @@ The sequence of iterates converges towards $v^*$.
 
 We are clearly getting closer.
 
-### Iterating to Convergence
+### Iterating to convergence
 
 We can write a function that iterates until the difference is below a particular
 tolerance level.
@@ -728,7 +728,7 @@ plt.show()
 
 The figure shows that we are pretty much on the money.
 
-### The Policy Function
+### The policy function
 
 ```{index} single: Optimal Growth; Policy Function
 ```

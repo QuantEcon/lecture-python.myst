@@ -73,7 +73,7 @@ from numba.experimental import jitclass
 import numpy as np
 ```
 
-## Review of Cass-Koopmans Model
+## Review of cass-koopmans model
 
 The physical setting is identical with that in {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>`.
 
@@ -125,14 +125,14 @@ $$
 
 where $\delta \in (0,1)$ is a depreciation rate of capital.
 
-### Planning Problem
+### Planning problem
 
 In this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>`, we studied a problem in which a planner chooses an allocation $\{\vec{C},\vec{K}\}$ to
 maximize {eq}`utility-functional` subject to {eq}`allocation`.
 
 The allocation that solves the planning problem reappears in a competitive equilibrium, as we shall see below.
 
-## Competitive Equilibrium
+## Competitive equilibrium
 
 We now study a decentralized version of the  economy.
 
@@ -178,7 +178,7 @@ Again, we can think of there being  unit measures of identical representative co
 identical representative firms.
 ```
 
-## Market Structure
+## Market structure
 
 The representative household and the representative firm are both price takers.
 
@@ -219,7 +219,7 @@ $$
 
 In this case, we would be taking the time $0$ consumption good to be the **numeraire**.
 
-## Firm Problem
+## Firm problem
 
 At time $t$ a representative firm hires labor
 $\tilde n_t$ and capital $\tilde k_t$.
@@ -239,7 +239,7 @@ $$
 F(\tilde k_t, \tilde n_t) = A \tilde k_t^\alpha \tilde n_t^{1-\alpha}
 $$
 
-### Zero Profit Conditions
+### Zero profit conditions
 
 Zero-profits conditions for capital and labor are
 
@@ -316,7 +316,7 @@ the firm would want to set  $\tilde k_t$ to zero, which is not feasible.
 It is convenient to define
 $\vec{w} =\{w_0, \dots,w_T\}$ and $\vec{\eta}= \{\eta_0, \dots, \eta_T\}$.
 
-## Household Problem
+## Household problem
 
 A representative household lives at $t=0,1,\dots, T$.
 
@@ -402,7 +402,7 @@ The vision here is that an equilibrium price system and allocation are determine
 
 In effect, we imagine that all trades occur just before time $0$.
 
-## Computing a Competitive Equilibrium
+## Computing a competitive equilibrium
 
 We compute a competitive equilibrium by using a **guess and
 verify** approach.
@@ -412,7 +412,7 @@ verify** approach.
 - We then **verify** that at those prices, the household and
   the firm choose the same allocation.
 
-### Guess for Price System
+### Guess for price system
 
 In this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>`, we  computed an allocation $\{\vec{C}, \vec{K}, \vec{N}\}$
 that solves a planning problem.
@@ -500,7 +500,7 @@ the planning problem:
 k^*_t = \tilde k^*_t=K_t, \tilde n_t=1, c^*_t=C_t
 ```
 
-### Verification Procedure
+### Verification procedure
 
 Our approach is firsts to stare at first-order necessary conditions for 
 optimization problems of the household and the firm.
@@ -625,7 +625,7 @@ Thus, at our guess of the equilibrium price system, the allocation
 that solves the planning problem also solves the problem faced by a
 representative household living in a competitive equilibrium.
 
-### Representative Firm's Problem
+### Representative firm's problem
 
 We now turn to  the problem faced by a firm in a competitive
 equilibrium:
@@ -880,7 +880,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-#### Varying Curvature
+#### Varying curvature
 
 Now we see how our results change if we keep $T$ constant, but allow
 the curvature parameter, $\gamma$ to vary, starting
@@ -926,7 +926,7 @@ resulting in slower convergence to a  steady state allocation.
 Lower $\gamma$ means individuals prefer to smooth less,
 resulting in faster convergence  to a steady state allocation.
 
-## Yield Curves and Hicks-Arrow Prices
+## Yield curves and hicks-arrow prices
 
 We return to  Hicks-Arrow prices and  calculate how they are related to  **yields**  on loans of alternative maturities.
 

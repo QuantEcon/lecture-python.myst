@@ -41,7 +41,7 @@ mp.dps = 40
 mp.pretty = True
 ```
 
-## A Two-Country Cass-Koopmans Model
+## A two-country cass-koopmans model
 
 This section describes a two-country version of the basic model of {ref}`cs_fs_model`.
 
@@ -76,7 +76,7 @@ Later, we will use this constraint as a global feasibility constraint in our com
 
 To connect the two countries, we need to specify how capital flows across borders and how taxes are levied in different jurisdictions.
 
-### Capital Mobility and Taxation
+### Capital mobility and taxation
 
 A consumer in country one can hold capital in either country but pays taxes on rentals from foreign holdings of capital at the rate set by the foreign country. 
 
@@ -430,7 +430,7 @@ def compute_η_path(k_path, model, S=100, A_path=None):
     return η_path
 ```
 
-#### Experiment 1: A foreseen increase in $g$ from 0.2 to 0.4 at t=10
+#### Experiment 1: a foreseen increase in $g$ from 0.2 to 0.4 at t=10
 
 The figure below presents transition dynamics after an increase in $g$ in the domestic economy from 0.2 to 0.4 that is announced ten periods in advance.
 
@@ -494,7 +494,7 @@ The domestic economy, in turn, starts running current-account deficits partially
 This means that foreign households begin repaying part of their external debt by reducing their capital stock.
 
 
-#### Experiment 2: A foreseen increase in $g$ from 0.2 to 0.4 at t=10
+#### Experiment 2: a foreseen increase in $g$ from 0.2 to 0.4 at t=10
 
 We now explore the impact of an increase in capital taxation in the domestic economy $10$ periods after its announcement at $t = 1$.
 

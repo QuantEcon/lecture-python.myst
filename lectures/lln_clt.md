@@ -80,7 +80,7 @@ We begin with the law of large numbers, which tells us when sample averages
 will converge to their population means.
 
 (lln_ksl)=
-### The Classical LLN
+### The classical LLN
 
 The classical law of large numbers concerns independent and
 identically distributed (IID) random variables.
@@ -281,7 +281,7 @@ The three distributions are chosen at random from a selection stored in the dict
 
 Next, we turn to the central limit theorem, which tells us about the distribution of the deviation between sample averages and population means.
 
-### Statement of the Theorem
+### Statement of the theorem
 
 The central limit theorem is one of the most remarkable results in all of mathematics.
 
@@ -514,7 +514,7 @@ window that you can rotate with your mouse, giving different views on the
 density sequence.
 
 (multivariate_clt)=
-### The Multivariate Case
+### The multivariate case
 
 ```{index} single: Law of Large Numbers; Multivariate Case
 ```

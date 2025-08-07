@@ -79,7 +79,7 @@ from scipy.integrate import quad
 import numpy as np
 ```
 
-## Independently and Identically Distributed
+## Independently and identically distributed
 
 We begin by looking at the notion of an  **independently and identically  distributed sequence** of random variables.
 
@@ -108,7 +108,7 @@ $$
 
 so that the joint density is the product of a sequence of identical marginal densities.
 
-### IID Means Past Observations Don't Tell Us Anything About Future Observations
+### Iid means past observations don't tell us anything about future observations
 
 If a sequence is random variables is IID, past information provides no information about future realizations.
 
@@ -154,7 +154,7 @@ We turn next to an instance of the general case in which the sequence is not IID
 
 Please watch for what can be  learned from the past and when.
 
-## A Setting in Which Past Observations Are Informative
+## A setting in which past observations are informative
 
 Let $\{W_t\}_{t=0}^\infty$ be a sequence of nonnegative
 scalar random variables with a joint probability distribution
@@ -201,7 +201,7 @@ To proceed, we want to know the decision maker's belief about the joint distribu
 
 We'll discuss that next and in the process describe the concept of **exchangeability**.
 
-## Relationship Between IID and Exchangeable
+## Relationship between iid and exchangeable
 
 Conditional on nature selecting $F$, the joint density of the
 sequence $W_0, W_1, \ldots$ is
@@ -288,7 +288,7 @@ sequences of IID Bernoulli random variables with parameter $\theta \in (0,1)$ an
 Bernoulli parameter $\theta$.
 ```
 
-## Bayes' Law
+## Bayes' law
 
 We noted above that in our example model there is something to learn about about the future from past data drawn
 from our particular instance of a process that is exchangeable but not IID.
@@ -357,7 +357,7 @@ $$
 \mathbb{P}\{W = w\} = \sum_{a \in \{f, g\}} \mathbb{P}\{W = w \,|\, q = a \} \mathbb{P}\{q = a \}
 $$
 
-## More Details about Bayesian Updating
+## More details about Bayesian updating
 
 Let's stare at and rearrange Bayes' Law as represented in equation {eq}`eq_Bayes102` with the aim of understanding
 how the **posterior** probability $\pi_{t+1}$ is influenced by the **prior** probability $\pi_t$ and the **likelihood ratio**
@@ -540,7 +540,7 @@ Notice how the likelihood ratio, the middle graph, and the arrows compare with t
 
 ## Appendix
 
-### Sample Paths of $\pi_t$
+### Sample paths of $\pi_t$
 
 Now we'll have some fun by plotting multiple realizations of sample paths of $\pi_t$ under two possible
 assumptions about nature's choice of distribution, namely
@@ -657,7 +657,7 @@ plt.title("convergence");
 
 From the above graph, rates of convergence appear not to depend on whether $F$ or $G$ generates the data.
 
-### Graph of Ensemble Dynamics of $\pi_t$
+### Graph of ensemble dynamics of $\pi_t$
 
 More insights about the dynamics of $\{\pi_t\}$ can be gleaned by computing
 conditional expectations of $\frac{\pi_{t+1}}{\pi_{t}}$ as functions of $\pi_t$ via integration with respect

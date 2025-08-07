@@ -62,11 +62,11 @@ from numba.experimental import jitclass
 from quantecon import MarkovChain
 ```
 
-## The Savings Problem
+## The savings problem
 
 In this section we review the household problem and optimality results.
 
-### Set Up
+### Set up
 
 A household chooses a consumption-asset path $\{(c_t, a_t)\}$ to
 maximize
@@ -189,12 +189,12 @@ We again solve the Euler equation using time iteration, iterating with a
 Coleman--Reffett operator $K$ defined to match the Euler equation
 {eq}`ifpa_euler`.
 
-## Solution Algorithm
+## Solution algorithm
 
 ```{index} single: Optimal Savings; Computation
 ```
 
-### A Time Iteration Operator
+### A time iteration operator
 
 Our definition of the candidate class $\sigma \in \mathscr C$ of consumption
 policies is the same as in our {doc}`earlier lecture <ifp>` on the income
@@ -223,7 +223,7 @@ if and only if $K\sigma(a, z) = \sigma(a, z)$ for all $(a, z) \in
 This means that fixed points of $K$ in $\mathscr C$ and optimal
 consumption policies exactly coincide (see {cite}`ma2020income` for more details).
 
-### Convergence Properties
+### Convergence properties
 
 As before, we pair $\mathscr C$ with the distance
 
@@ -248,7 +248,7 @@ We now have a clear path to successfully approximating the optimal policy:
 choose some $\sigma \in \mathscr C$ and then iterate with $K$ until
 convergence (as measured by the distance $\rho$).
 
-### Using an Endogenous Grid
+### Using an endogenous grid
 
 In the study of that model we found that it was possible to further
 accelerate time iteration via the {doc}`endogenous grid method <egm_policy_iter>`.
@@ -262,7 +262,7 @@ interior.
 In particular, optimal consumption can be equal to assets when the level of
 assets is low.
 
-#### Finding Optimal Consumption
+#### Finding optimal consumption
 
 The endogenous grid method (EGM) calls for us to take a grid of *savings*
 values $s_i$, where each such $s$ is interpreted as $s = a -
@@ -310,7 +310,7 @@ obtained by interpolating $\{a_i, c_i\}$ at each $z$.
 
 In what follows, we use linear interpolation.
 
-### Testing the Assumptions
+### Testing the assumptions
 
 Convergence of time iteration is dependent on the condition $\beta G_R < 1$ being satisfied.
 
@@ -540,7 +540,7 @@ This is because we anticipate income $Y_{t+1}$ tomorrow, which makes the need to
 Can you explain why consuming all assets ends earlier (for lower values of
 assets) when $z=0$?
 
-### Law of Motion
+### Law of motion
 
 Let's try to get some idea of what will happen to assets over the long run
 under this consumption policy.
