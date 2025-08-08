@@ -192,14 +192,19 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classification">21.9.2. Classification</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-discrepancies-between-distributions">21.10. Measuring discrepancies between distributions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chernoff-entropy">21.10.1. Chernoff entropy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jensen-shannon-divergence">21.10.2. Jensen-Shannon divergence</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-probability-and-divergence-measures">21.10.3. Error probability and divergence measures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-case-markov-chain-models">21.10. Special case: Markov chain models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kl-divergence-rate">21.10.1. KL divergence rate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">21.10.2. Simulations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-lectures">21.11. Related Lectures</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">21.12. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-discrepancies-between-distributions">21.11. Measuring discrepancies between distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chernoff-entropy">21.11.1. Chernoff entropy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jensen-shannon-divergence">21.11.2. Jensen-Shannon divergence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-probability-and-divergence-measures">21.11.3. Error probability and divergence measures</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-lectures">21.12. Related Lectures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">21.13. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -257,30 +262,31 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="likelihood-ratio-processes">
-<h1><a class="toc-backref" href="#id10"><span class="section-number">21. </span>Likelihood Ratio Processes</a><a class="headerlink" href="#likelihood-ratio-processes" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id11"><span class="section-number">21. </span>Likelihood Ratio Processes</a><a class="headerlink" href="#likelihood-ratio-processes" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#likelihood-ratio-processes" id="id10">Likelihood Ratio Processes</a></p>
+<li><p><a class="reference internal" href="#likelihood-ratio-processes" id="id11">Likelihood Ratio Processes</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id11">Overview</a></p></li>
-<li><p><a class="reference internal" href="#id2" id="id12">Likelihood Ratio Process</a></p></li>
-<li><p><a class="reference internal" href="#nature-permanently-draws-from-density-g" id="id13">Nature Permanently Draws from Density g</a></p></li>
-<li><p><a class="reference internal" href="#peculiar-property" id="id14">Peculiar Property</a></p></li>
-<li><p><a class="reference internal" href="#nature-permanently-draws-from-density-f" id="id15">Nature Permanently Draws from Density f</a></p></li>
-<li><p><a class="reference internal" href="#likelihood-ratio-test" id="id16">Likelihood Ratio Test</a></p></li>
-<li><p><a class="reference internal" href="#kullbackleibler-divergence" id="id17">Kullback–Leibler Divergence</a></p></li>
-<li><p><a class="reference internal" href="#heterogeneous-beliefs-and-financial-markets" id="id18">Heterogeneous Beliefs and Financial Markets</a></p></li>
-<li><p><a class="reference internal" href="#hypothesis-testing-and-classification" id="id19">Hypothesis Testing and Classification</a></p></li>
-<li><p><a class="reference internal" href="#measuring-discrepancies-between-distributions" id="id20">Measuring discrepancies between distributions</a></p></li>
-<li><p><a class="reference internal" href="#related-lectures" id="id21">Related Lectures</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id22">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id12">Overview</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id13">Likelihood Ratio Process</a></p></li>
+<li><p><a class="reference internal" href="#nature-permanently-draws-from-density-g" id="id14">Nature Permanently Draws from Density g</a></p></li>
+<li><p><a class="reference internal" href="#peculiar-property" id="id15">Peculiar Property</a></p></li>
+<li><p><a class="reference internal" href="#nature-permanently-draws-from-density-f" id="id16">Nature Permanently Draws from Density f</a></p></li>
+<li><p><a class="reference internal" href="#likelihood-ratio-test" id="id17">Likelihood Ratio Test</a></p></li>
+<li><p><a class="reference internal" href="#kullbackleibler-divergence" id="id18">Kullback–Leibler Divergence</a></p></li>
+<li><p><a class="reference internal" href="#heterogeneous-beliefs-and-financial-markets" id="id19">Heterogeneous Beliefs and Financial Markets</a></p></li>
+<li><p><a class="reference internal" href="#hypothesis-testing-and-classification" id="id20">Hypothesis Testing and Classification</a></p></li>
+<li><p><a class="reference internal" href="#special-case-markov-chain-models" id="id21">Special case: Markov chain models</a></p></li>
+<li><p><a class="reference internal" href="#measuring-discrepancies-between-distributions" id="id22">Measuring discrepancies between distributions</a></p></li>
+<li><p><a class="reference internal" href="#related-lectures" id="id23">Related Lectures</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id24">Exercises</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">21.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">21.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes likelihood ratio processes and some of their uses.</p>
 <p>We’ll study the same setting that is also used in <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture on exchangeability</span></a>.</p>
 <p>Among the things that we’ll learn are</p>
@@ -305,13 +311,14 @@
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">beta</span> <span class="k">as</span> <span class="n">beta_dist</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Math</span>
+<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="id2">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">21.2. </span>Likelihood Ratio Process</a><a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">21.2. </span>Likelihood Ratio Process</a><a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
 <p>A nonnegative random variable <span class="math notranslate nohighlight">\(W\)</span> has one of two probability density functions, either
 <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>Before the beginning of time, nature once and for all decides whether she will draw a sequence of IID draws from either
@@ -398,7 +405,7 @@ probability distributions, for example, a sequence of IID draws from <span class
 </div>
 </section>
 <section id="nature-permanently-draws-from-density-g">
-<span id="nature-likeli"></span><h2><a class="toc-backref" href="#id13"><span class="section-number">21.3. </span>Nature Permanently Draws from Density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Permalink to this heading">#</a></h2>
+<span id="nature-likeli"></span><h2><a class="toc-backref" href="#id14"><span class="section-number">21.3. </span>Nature Permanently Draws from Density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Permalink to this heading">#</a></h2>
 <p>We first simulate the likelihood ratio process when nature permanently
 draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <div class="cell docutils container">
@@ -423,7 +430,7 @@ draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/88bd74ca23c27ca1a0eee2c3e41b993271b94e9202ba8297e5031765bbdf9b17.png" src="_images/88bd74ca23c27ca1a0eee2c3e41b993271b94e9202ba8297e5031765bbdf9b17.png" />
+<img alt="_images/49dde53a51326411aeb437e1fdd412ac89ae903b473e88cda99c9f2d7e655740.png" src="_images/49dde53a51326411aeb437e1fdd412ac89ae903b473e88cda99c9f2d7e655740.png" />
 </div>
 </div>
 <p>Evidently, as sample length <span class="math notranslate nohighlight">\(T\)</span> grows, most probability mass
@@ -439,7 +446,7 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4301be4af1e4d862189f6cfe655a4780ed7f4c7b7a6ba29f365a8133d74bf2b1.png" src="_images/4301be4af1e4d862189f6cfe655a4780ed7f4c7b7a6ba29f365a8133d74bf2b1.png" />
+<img alt="_images/5baad3280db939e3ac998a1f37c9210095f8c9d58ee0c488cfb12e29e61151bf.png" src="_images/5baad3280db939e3ac998a1f37c9210095f8c9d58ee0c488cfb12e29e61151bf.png" />
 </div>
 </div>
 <p>Despite the evident convergence of most probability mass to a
@@ -482,7 +489,7 @@ E\left[L\left(w^{t}\right)\bigm|q=g\right]  &amp;=E\left[L\left(w^{t-1}\right)\e
 <span class="math notranslate nohighlight">\(t \geq 1\)</span>.</p>
 </section>
 <section id="peculiar-property">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">21.4. </span>Peculiar Property</a><a class="headerlink" href="#peculiar-property" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">21.4. </span>Peculiar Property</a><a class="headerlink" href="#peculiar-property" title="Permalink to this heading">#</a></h2>
 <p>How can <span class="math notranslate nohighlight">\(E\left[L\left(w^{t}\right)\bigm|q=g\right]=1\)</span> possibly be true when most probability mass of the likelihood
 ratio process is piling up near <span class="math notranslate nohighlight">\(0\)</span> as
 <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>?</p>
@@ -512,7 +519,7 @@ paths.</p>
 <p>There we describe an alternative way to compute the mean of a likelihood ratio by computing the mean of a <em>different</em> random variable by sampling from a <em>different</em> probability distribution.</p>
 </section>
 <section id="nature-permanently-draws-from-density-f">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">21.5. </span>Nature Permanently Draws from Density f</a><a class="headerlink" href="#nature-permanently-draws-from-density-f" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">21.5. </span>Nature Permanently Draws from Density f</a><a class="headerlink" href="#nature-permanently-draws-from-density-f" title="Permalink to this heading">#</a></h2>
 <p>Now suppose that before time <span class="math notranslate nohighlight">\(0\)</span> nature permanently decided to draw repeatedly from density <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <p>While the mean of the likelihood ratio <span class="math notranslate nohighlight">\(\ell \left(w_{t}\right)\)</span> under density
 <span class="math notranslate nohighlight">\(g\)</span> is <span class="math notranslate nohighlight">\(1\)</span>, its mean under the density <span class="math notranslate nohighlight">\(f\)</span> exceeds one.</p>
@@ -549,7 +556,7 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2548a46953b490cc72dffb487371564b0f02ef7af011abb2839119ab4784cd2c.png" src="_images/2548a46953b490cc72dffb487371564b0f02ef7af011abb2839119ab4784cd2c.png" />
+<img alt="_images/84ce719ad19fd6aefb12f6f6fda9de5480ad24f70778fa5e9c3b3bed6b46f464.png" src="_images/84ce719ad19fd6aefb12f6f6fda9de5480ad24f70778fa5e9c3b3bed6b46f464.png" />
 </div>
 </div>
 <p>We also plot the probability that <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> falls into
@@ -563,12 +570,12 @@ fast probability mass diverges to <span class="math notranslate nohighlight">\(+
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7db1032a5bf605f16dc267b8aa0054628bcb2f912ea944dd1cee383af391fd82.png" src="_images/7db1032a5bf605f16dc267b8aa0054628bcb2f912ea944dd1cee383af391fd82.png" />
+<img alt="_images/14a63fb04d8940724ad71afc1a0d3a4085d90e8c67ff68d9eb2c16425be46ff6.png" src="_images/14a63fb04d8940724ad71afc1a0d3a4085d90e8c67ff68d9eb2c16425be46ff6.png" />
 </div>
 </div>
 </section>
 <section id="likelihood-ratio-test">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">21.6. </span>Likelihood Ratio Test</a><a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">21.6. </span>Likelihood Ratio Test</a><a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this heading">#</a></h2>
 <p>We now describe how to employ the machinery
 of Neyman and Pearson <span id="id4">[<a class="reference internal" href="zreferences.html#id259" title="J. Neyman and E. S Pearson. On the problem of the most efficient tests of statistical hypotheses. Phil. Trans. R. Soc. Lond. A. 231 (694–706), pages 289–337, 1933.">Neyman and Pearson, 1933</a>]</span> to test the hypothesis that history <span class="math notranslate nohighlight">\(w^t\)</span> is generated by repeated
 IID draws from density <span class="math notranslate nohighlight">\(f\)</span>.</p>
@@ -699,7 +706,7 @@ is what makes it possible eventually to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bbf37702b9d0e040de2a637bec7c883713d09fa220a353d63bd91f86d33908e8.png" src="_images/bbf37702b9d0e040de2a637bec7c883713d09fa220a353d63bd91f86d33908e8.png" />
+<img alt="_images/7c53459f9962b0ec91cb55f9bca43ba0da4767081d3cc385b36b67826290c12b.png" src="_images/7c53459f9962b0ec91cb55f9bca43ba0da4767081d3cc385b36b67826290c12b.png" />
 </div>
 </div>
 <p>In the above graphs,</p>
@@ -734,7 +741,7 @@ they are integrals of <span class="math notranslate nohighlight">\(\log L_t\)</s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5a549b6a3a7f7580c32ad265d23fef24636f16fa2aa63847159167f5eb52454e.png" src="_images/5a549b6a3a7f7580c32ad265d23fef24636f16fa2aa63847159167f5eb52454e.png" />
+<img alt="_images/65f3372b90d13246e06efd74af5f13e609eead82c6fe73b6ca0e54f3fb3e22b7.png" src="_images/65f3372b90d13246e06efd74af5f13e609eead82c6fe73b6ca0e54f3fb3e22b7.png" />
 </div>
 </div>
 <p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>, the threshold <span class="math notranslate nohighlight">\(c\)</span> uniquely pins down probabilities
@@ -769,7 +776,7 @@ sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d375b83707793a9fa5333a1889db75ce42c2a709d44461c4acca21f4f07bf8b8.png" src="_images/d375b83707793a9fa5333a1889db75ce42c2a709d44461c4acca21f4f07bf8b8.png" />
+<img alt="_images/caf4cc989f1cf43ec01b3d0127499823202d541e5463f8a04fd39549d21d88dc.png" src="_images/caf4cc989f1cf43ec01b3d0127499823202d541e5463f8a04fd39549d21d88dc.png" />
 </div>
 </div>
 <p>Notice that as <span class="math notranslate nohighlight">\(t\)</span> increases, we are assured a larger probability
@@ -816,7 +823,7 @@ target probability of detection, for example, <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6ce9c9937d37426e51602b633de2f2da801141cfe4825ad7f897c05eeaccd6fd.png" src="_images/6ce9c9937d37426e51602b633de2f2da801141cfe4825ad7f897c05eeaccd6fd.png" />
+<img alt="_images/490a72d97e44a0120e9cde9aa3444d031d13f730b35525a9142e44979cb96c11.png" src="_images/490a72d97e44a0120e9cde9aa3444d031d13f730b35525a9142e44979cb96c11.png" />
 </div>
 </div>
 <p>The United States Navy evidently used a procedure like this to select a sample size <span class="math notranslate nohighlight">\(t\)</span> for doing quality
@@ -825,7 +832,7 @@ control tests during World War II.</p>
 presented to Milton Friedman, as we describe in <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a>.</p>
 </section>
 <section id="kullbackleibler-divergence">
-<span id="rel-entropy"></span><h2><a class="toc-backref" href="#id17"><span class="section-number">21.7. </span>Kullback–Leibler Divergence</a><a class="headerlink" href="#kullbackleibler-divergence" title="Permalink to this heading">#</a></h2>
+<span id="rel-entropy"></span><h2><a class="toc-backref" href="#id18"><span class="section-number">21.7. </span>Kullback–Leibler Divergence</a><a class="headerlink" href="#kullbackleibler-divergence" title="Permalink to this heading">#</a></h2>
 <p>Now let’s consider a case in which neither <span class="math notranslate nohighlight">\(g\)</span> nor <span class="math notranslate nohighlight">\(f\)</span>
 generates the data.</p>
 <p>Instead, a third distribution <span class="math notranslate nohighlight">\(h\)</span> does.</p>
@@ -998,7 +1005,7 @@ integration.</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/344a3adbd705a586c5037a12ad9d12108bce0765d07ac532e3ab9cc42f42853e.png" src="_images/344a3adbd705a586c5037a12ad9d12108bce0765d07ac532e3ab9cc42f42853e.png" />
+<img alt="_images/3b91f06292f84cac1ce7b9d2a553d9499b80c904c8fb11aa7849a617e9030ed3.png" src="_images/3b91f06292f84cac1ce7b9d2a553d9499b80c904c8fb11aa7849a617e9030ed3.png" />
 </div>
 </div>
 <p>Note that</p>
@@ -1013,7 +1020,7 @@ integration.</p>
 </section>
 </section>
 <section id="heterogeneous-beliefs-and-financial-markets">
-<span id="hetero-agent"></span><h2><a class="toc-backref" href="#id18"><span class="section-number">21.8. </span>Heterogeneous Beliefs and Financial Markets</a><a class="headerlink" href="#heterogeneous-beliefs-and-financial-markets" title="Permalink to this heading">#</a></h2>
+<span id="hetero-agent"></span><h2><a class="toc-backref" href="#id19"><span class="section-number">21.8. </span>Heterogeneous Beliefs and Financial Markets</a><a class="headerlink" href="#heterogeneous-beliefs-and-financial-markets" title="Permalink to this heading">#</a></h2>
 <p>A likelihood ratio process lies behind Lawrence Blume and David Easley’s answer to their question
 ‘‘If you’re so smart, why aren’t you rich?’’ <span id="id5">[<a class="reference internal" href="zreferences.html#id5" title="Lawrence Blume and David Easley. If you're so smart, why aren't you rich? belief selection in complete and incomplete markets. Econometrica, 74(4):929–966, 2006.">Blume and Easley, 2006</a>]</span>.</p>
 <p>Blume and Easley constructed formal models to study how differences of opinions about probabilities governing risky income processes would influence outcomes and be reflected in prices of stocks, bonds, and insurance policies that individuals use to share and hedge risks.</p>
@@ -1410,7 +1417,7 @@ p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)}  \bigl[(1 - \lambda) \pi_t^2(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3b7a56cec60b344cb78ee27afb4651f7d8097658d716b97847de86fea8f5b8ae.png" src="_images/3b7a56cec60b344cb78ee27afb4651f7d8097658d716b97847de86fea8f5b8ae.png" />
+<img alt="_images/8cb2377365f639c64c655009e4ccd47f39c4d18739a72f5a6314179dbe5a9789.png" src="_images/8cb2377365f639c64c655009e4ccd47f39c4d18739a72f5a6314179dbe5a9789.png" />
 </div>
 </div>
 <p>In the left panel, nature chooses <span class="math notranslate nohighlight">\(f\)</span>. Agent 1’s consumption reaches <span class="math notranslate nohighlight">\(1\)</span> very quickly.</p>
@@ -1432,7 +1439,7 @@ p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)}  \bigl[(1 - \lambda) \pi_t^2(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final shares: f=1.000, g=0.000, mix=0.925
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final shares: f=1.000, g=0.000, mix=0.926
 KL divergences: 
 KL(f,g)=0.759, KL(g,f)=0.344
 KL(h,f)=0.073, KL(h,g)=0.281
@@ -1553,7 +1560,7 @@ KL(h,f)=0.073, KL(h,g)=0.281
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ceff5df0d581799dbec67683188377aa5c11baab6a19f7b9dbf1e6fb8c5b3be5.png" src="_images/ceff5df0d581799dbec67683188377aa5c11baab6a19f7b9dbf1e6fb8c5b3be5.png" />
+<img alt="_images/ba11f300a55964dd0483fe84def8e3457df6c603233336d3300b7cf8ad14bf60.png" src="_images/ba11f300a55964dd0483fe84def8e3457df6c603233336d3300b7cf8ad14bf60.png" />
 </div>
 </div>
 <p>Holding to our guesses, let’s calculate the four values</p>
@@ -1593,7 +1600,7 @@ KL(h,f)=0.073, KL(h,g)=0.281
 </section>
 </section>
 <section id="hypothesis-testing-and-classification">
-<h2><a class="toc-backref" href="#id19"><span class="section-number">21.9. </span>Hypothesis Testing and Classification</a><a class="headerlink" href="#hypothesis-testing-and-classification" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id20"><span class="section-number">21.9. </span>Hypothesis Testing and Classification</a><a class="headerlink" href="#hypothesis-testing-and-classification" title="Permalink to this heading">#</a></h2>
 <p>This section discusses another application of likelihood ratio processes.</p>
 <p>We describe how a statistician can combine frequentist probabilities of type I and type II errors in order to</p>
 <ul class="simple">
@@ -1762,11 +1769,11 @@ p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/85b6ff304b24a9f196923eadbf180138d38a142f10f2690d06e9e3debd9f7803.png" src="_images/85b6ff304b24a9f196923eadbf180138d38a142f10f2690d06e9e3debd9f7803.png" />
+<img alt="_images/21718742ee46185af942b23b77dec378223d3c358c0bca49e4bb9eb027acdfd6.png" src="_images/21718742ee46185af942b23b77dec378223d3c358c0bca49e4bb9eb027acdfd6.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>At T=30:
-α_30 = 0.0051
-β_30 = 0.0020
-Model selection error probability = 0.0036
+α_30 = 0.0041
+β_30 = 0.0027
+Model selection error probability = 0.0034
 </pre></div>
 </div>
 </div>
@@ -1918,7 +1925,7 @@ theoretical classification error probability = 0.3294
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0fca6c54e4dc69ba90a422eb60043efb52d7a84edb6e8a6a9f35ce1b714919a8.png" src="_images/0fca6c54e4dc69ba90a422eb60043efb52d7a84edb6e8a6a9f35ce1b714919a8.png" />
+<img alt="_images/5e4f43746be7980311f4f001c6f116cd1761646c1908c018e64fb5c96c349647.png" src="_images/5e4f43746be7980311f4f001c6f116cd1761646c1908c018e64fb5c96c349647.png" />
 </div>
 </div>
 <p>Let’s watch decisions made by  the two timing protocols as more and more observations accrue.</p>
@@ -1937,7 +1944,7 @@ theoretical classification error probability = 0.3294
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3405dc7a6bb8d6ff218107fea754a1d67882c860cbefa1eb1575549980f0133a.png" src="_images/3405dc7a6bb8d6ff218107fea754a1d67882c860cbefa1eb1575549980f0133a.png" />
+<img alt="_images/0d9b498f87671716c64d424089237f5a91b9f2251adebfb3afb944f7dc2f19e3.png" src="_images/0d9b498f87671716c64d424089237f5a91b9f2251adebfb3afb944f7dc2f19e3.png" />
 </div>
 </div>
 <p>From the figure above, we can see:</p>
@@ -1949,14 +1956,277 @@ theoretical classification error probability = 0.3294
 <p><strong>Remark:</strong> Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem.</p>
 </section>
 </section>
+<section id="special-case-markov-chain-models">
+<h2><a class="toc-backref" href="#id21"><span class="section-number">21.10. </span>Special case: Markov chain models</a><a class="headerlink" href="#special-case-markov-chain-models" title="Permalink to this heading">#</a></h2>
+<p>Consider two <span class="math notranslate nohighlight">\(n\)</span>-state irreducible and aperiodic Markov chain models on the same state space <span class="math notranslate nohighlight">\(\{1, 2, \ldots, n\}\)</span> with positive transition matrices <span class="math notranslate nohighlight">\(P^{(f)}\)</span>, <span class="math notranslate nohighlight">\(P^{(g)}\)</span> and initial distributions <span class="math notranslate nohighlight">\(\pi_0^{(f)}\)</span>, <span class="math notranslate nohighlight">\(\pi_0^{(g)}\)</span>.</p>
+<p>In this section, we assume nature chooses <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>For a sample path <span class="math notranslate nohighlight">\((x_0, x_1, \ldots, x_T)\)</span>, let <span class="math notranslate nohighlight">\(N_{ij}\)</span> count transitions from state <span class="math notranslate nohighlight">\(i\)</span> to <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>The likelihood under model <span class="math notranslate nohighlight">\(m \in \{f, g\}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+L_T^{(m)} = \pi_{0,x_0}^{(m)} \prod_{i=1}^n \prod_{j=1}^n \left(P_{ij}^{(m)}\right)^{N_{ij}}
+\]</div>
+<p>Hence,</p>
+<div class="math notranslate nohighlight">
+\[
+\log L_T^{(m)} =\log\pi_{0,x_0}^{(m)} +\sum_{i,j}N_{ij}\log P_{ij}^{(m)}
+\]</div>
+<p>The log-likelihood ratio is</p>
+<div class="math notranslate nohighlight" id="equation-eq-llr-markov">
+<span class="eqno">(21.13)<a class="headerlink" href="#equation-eq-llr-markov" title="Permalink to this equation">#</a></span>\[
+\log \frac{L_T^{(f)}}{L_T^{(g)}} = \log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} + \sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
+\]</div>
+<section id="kl-divergence-rate">
+<h3><span class="section-number">21.10.1. </span>KL divergence rate<a class="headerlink" href="#kl-divergence-rate" title="Permalink to this heading">#</a></h3>
+<p>By the ergodic theorem for irreducible, aperiodic Markov chains, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{N_{ij}}{T} \xrightarrow{a.s.} \pi_i^{(f)}P_{ij}^{(f)} \quad \text{as } T \to \infty
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\pi}^{(f)}\)</span> is the stationary distribution satisfying <span class="math notranslate nohighlight">\(\boldsymbol{\pi}^{(f)} = \boldsymbol{\pi}^{(f)} P^{(f)}\)</span>.</p>
+<p>Therefore,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{T}\log \frac{L_T^{(f)}}{L_T^{(g)}} = \frac{1}{T}\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} + \frac{1}{T}\sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
+\]</div>
+<p>Taking the limit as <span class="math notranslate nohighlight">\(T \to \infty\)</span>, we have</p>
+<ul class="simple">
+<li><p>The first term: <span class="math notranslate nohighlight">\(\frac{1}{T}\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} \to 0\)</span></p></li>
+<li><p>The second term: <span class="math notranslate nohighlight">\(\frac{1}{T}\sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}} \xrightarrow{a.s.} \sum_{i,j}\pi_i^{(f)}P_{ij}^{(f)}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}\)</span></p></li>
+</ul>
+<p>Define the <strong>KL divergence rate</strong> as</p>
+<div class="math notranslate nohighlight">
+\[
+h_{KL}(f, g) = \sum_{i=1}^n \pi_i^{(f)} \underbrace{\sum_{j=1}^n P_{ij}^{(f)} \log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}}_{=: KL(P_{i\cdot}^{(f)}, P_{i\cdot}^{(g)})}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(KL(P_{i\cdot}^{(f)}, P_{i\cdot}^{(g)})\)</span> is the row-wise KL divergence.</p>
+<p>By the ergodic theorem, we have</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{T}\log \frac{L_T^{(f)}}{L_T^{(g)}} \xrightarrow{a.s.} h_{KL}(f, g) \quad \text{as } T \to \infty
+\]</div>
+<p>Taking expectations and using the dominated convergence theorem, we can get</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] \to h_{KL}(f, g) \quad \text{as } T \to \infty
+\]</div>
+<p>Here we invite readers to pause and compare this result with <a class="reference internal" href="#equation-eq-kl-likelihood-link">(21.1)</a>.</p>
+<p>Let’s confirm this in the simulation below.</p>
+</section>
+<section id="id10">
+<h3><span class="section-number">21.10.2. </span>Simulations<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
+<p>Let’s implement simulations to illustrate these concepts with a three-state Markov chain.</p>
+<p>We start with writing out functions to compute the stationary distribution and the KL divergence rate for Markov chain models</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_stationary_dist</span><span class="p">(</span><span class="n">P</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute stationary distribution of transition matrix P</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">))</span>
+    <span class="n">stationary</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">stationary</span> <span class="o">/</span> <span class="n">stationary</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">markov_kl_divergence</span><span class="p">(</span><span class="n">P_f</span><span class="p">,</span> <span class="n">P_g</span><span class="p">,</span> <span class="n">pi_f</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute KL divergence rate between two Markov chains</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">((</span><span class="n">P_f</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">P_g</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    
+    <span class="n">valid_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">P_f</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">P_g</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">log_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">P_f</span><span class="p">)</span>
+    <span class="n">log_ratios</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">P_f</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">]</span> <span class="o">/</span> <span class="n">P_g</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">])</span>
+    
+    <span class="c1"># Weight by stationary probabilities and sum</span>
+    <span class="n">kl_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pi_f</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">P_f</span> <span class="o">*</span> <span class="n">log_ratios</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">kl_rate</span>
+
+<span class="k">def</span> <span class="nf">simulate_markov_chain</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">pi_0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_paths</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate N_paths sample paths from a Markov chain </span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">MarkovChain</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">state_values</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    
+    <span class="n">initial_states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">P</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="n">N_paths</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">pi_0</span><span class="p">)</span>
+    
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_paths</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_paths</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">initial_states</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">path</span>
+    
+    <span class="k">return</span> <span class="n">paths</span>
+    
+
+<span class="k">def</span> <span class="nf">compute_likelihood_ratio_markov</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">P_f</span><span class="p">,</span> <span class="n">P_g</span><span class="p">,</span> <span class="n">π_0_f</span><span class="p">,</span> <span class="n">π_0_g</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute likelihood ratio process for Markov chain paths</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N_paths</span><span class="p">,</span> <span class="n">T_plus_1</span> <span class="o">=</span> <span class="n">paths</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">T_plus_1</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">L_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">N_paths</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    
+    <span class="n">L_ratios</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_0_f</span><span class="p">[</span><span class="n">paths</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">/</span> <span class="n">π_0_g</span><span class="p">[</span><span class="n">paths</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span>
+    
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">prev_states</span> <span class="o">=</span> <span class="n">paths</span><span class="p">[:,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">curr_states</span> <span class="o">=</span> <span class="n">paths</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span>
+        
+        <span class="n">transition_ratios</span> <span class="o">=</span> <span class="n">P_f</span><span class="p">[</span><span class="n">prev_states</span><span class="p">,</span> <span class="n">curr_states</span><span class="p">]</span> \
+                            <span class="o">/</span> <span class="n">P_g</span><span class="p">[</span><span class="n">prev_states</span><span class="p">,</span> <span class="n">curr_states</span><span class="p">]</span>
+        <span class="n">L_ratios</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">L_ratios</span><span class="p">[:,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">transition_ratios</span>
+    
+    <span class="k">return</span> <span class="n">L_ratios</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s create an example with two different 3-state Markov chains</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]])</span>
+
+<span class="n">P_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]])</span>
+
+<span class="c1"># Compute stationary distributions</span>
+<span class="n">π_f</span> <span class="o">=</span> <span class="n">compute_stationary_dist</span><span class="p">(</span><span class="n">P_f</span><span class="p">)</span>
+<span class="n">π_g</span> <span class="o">=</span> <span class="n">compute_stationary_dist</span><span class="p">(</span><span class="n">P_g</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stationary distribution (f): </span><span class="si">{</span><span class="n">π_f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stationary distribution (g): </span><span class="si">{</span><span class="n">π_g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Compute KL divergence rate</span>
+<span class="n">kl_rate_fg</span> <span class="o">=</span> <span class="n">markov_kl_divergence</span><span class="p">(</span><span class="n">P_f</span><span class="p">,</span> <span class="n">P_g</span><span class="p">,</span> <span class="n">π_f</span><span class="p">)</span>
+<span class="n">kl_rate_gf</span> <span class="o">=</span> <span class="n">markov_kl_divergence</span><span class="p">(</span><span class="n">P_g</span><span class="p">,</span> <span class="n">P_f</span><span class="p">,</span> <span class="n">π_g</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">KL divergence rate h(f, g): </span><span class="si">{</span><span class="n">kl_rate_fg</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;KL divergence rate h(g, f): </span><span class="si">{</span><span class="n">kl_rate_gf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stationary distribution (f): [0.41176471 0.32352941 0.26470588]
+Stationary distribution (g): [0.28571429 0.38095238 0.33333333]
+
+KL divergence rate h(f, g): 0.0588
+KL divergence rate h(g, f): 0.0563
+</pre></div>
+</div>
+</div>
+</div>
+<p>We are now ready to simulate paths and visualize how likelihood ratios evolve.</p>
+<p>We’ll verify <span class="math notranslate nohighlight">\(\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = h_{KL}(f, g)\)</span> starting from the stationary distribution by plotting both the empirical average and the line predicted by the theory</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">N_paths</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">paths_from_f</span> <span class="o">=</span> <span class="n">simulate_markov_chain</span><span class="p">(</span><span class="n">P_f</span><span class="p">,</span> <span class="n">π_f</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)</span>
+
+<span class="n">L_ratios_f</span> <span class="o">=</span> <span class="n">compute_likelihood_ratio_markov</span><span class="p">(</span><span class="n">paths_from_f</span><span class="p">,</span> 
+                                             <span class="n">P_f</span><span class="p">,</span> <span class="n">P_g</span><span class="p">,</span> 
+                                             <span class="n">π_f</span><span class="p">,</span> <span class="n">π_g</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Plot individual paths</span>
+<span class="n">n_show</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_show</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">L_ratios_f</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]),</span> 
+             <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="c1"># Compute theoretical expectation</span>
+<span class="n">theory_line</span> <span class="o">=</span> <span class="n">kl_rate_fg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theory_line</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> 
+         <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$T \times h_</span><span class="si">{KL}</span><span class="s1">(f,g)$&#39;</span><span class="p">)</span>
+
+<span class="c1"># Compute empirical mean</span>
+<span class="n">avg_log_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">L_ratios_f</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">avg_log_L</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> 
+         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;empirical average&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> 
+            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$T$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log L_T$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;nature = $f$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/30f152c8d7320b658ef191e276bd605f720085ef6582042cbf973bf6dd568d73.png" src="_images/30f152c8d7320b658ef191e276bd605f720085ef6582042cbf973bf6dd568d73.png" />
+</div>
+</div>
+<p>Let’s examine how the model selection error probability depends on sample size using the same simulation strategy in the previous section</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_selection_error</span><span class="p">(</span><span class="n">T_values</span><span class="p">,</span> <span class="n">P_f</span><span class="p">,</span> <span class="n">P_g</span><span class="p">,</span> <span class="n">π_0_f</span><span class="p">,</span> <span class="n">π_0_g</span><span class="p">,</span> <span class="n">N_sim</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute model selection error probability for different sample sizes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">T_values</span><span class="p">:</span>
+        <span class="c1"># Simulate from both models</span>
+        <span class="n">paths_f</span> <span class="o">=</span> <span class="n">simulate_markov_chain</span><span class="p">(</span><span class="n">P_f</span><span class="p">,</span> <span class="n">π_0_f</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_sim</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">paths_g</span> <span class="o">=</span> <span class="n">simulate_markov_chain</span><span class="p">(</span><span class="n">P_g</span><span class="p">,</span> <span class="n">π_0_g</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_sim</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+        
+        <span class="c1"># Compute likelihood ratios</span>
+        <span class="n">L_f</span> <span class="o">=</span> <span class="n">compute_likelihood_ratio_markov</span><span class="p">(</span><span class="n">paths_f</span><span class="p">,</span> 
+                                              <span class="n">P_f</span><span class="p">,</span> <span class="n">P_g</span><span class="p">,</span> 
+                                              <span class="n">π_0_f</span><span class="p">,</span> <span class="n">π_0_g</span><span class="p">)</span>
+        <span class="n">L_g</span> <span class="o">=</span> <span class="n">compute_likelihood_ratio_markov</span><span class="p">(</span><span class="n">paths_g</span><span class="p">,</span> 
+                                              <span class="n">P_f</span><span class="p">,</span> <span class="n">P_g</span><span class="p">,</span> 
+                                              <span class="n">π_0_f</span><span class="p">,</span> <span class="n">π_0_g</span><span class="p">)</span>
+        
+        <span class="c1"># Decision rule: choose f if L_T &gt;= 1</span>
+        <span class="n">error_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">L_f</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># Type I error</span>
+        <span class="n">error_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">L_g</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Type II error</span>
+        
+        <span class="n">total_error</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">error_f</span> <span class="o">+</span> <span class="n">error_g</span><span class="p">)</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">total_error</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+
+<span class="c1"># Compute error probabilities</span>
+<span class="n">T_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">201</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">errors</span> <span class="o">=</span> <span class="n">compute_selection_error</span><span class="p">(</span><span class="n">T_values</span><span class="p">,</span> 
+                                 <span class="n">P_f</span><span class="p">,</span> <span class="n">P_g</span><span class="p">,</span> 
+                                 <span class="n">π_f</span><span class="p">,</span> <span class="n">π_g</span><span class="p">)</span>
+
+<span class="c1"># Plot results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_values</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$T$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;error probability&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/d2a5b95ec3ce60a0d568bcfe1f8c558c9dc107bb233cf07e7b4759a65873d6f5.png" src="_images/d2a5b95ec3ce60a0d568bcfe1f8c558c9dc107bb233cf07e7b4759a65873d6f5.png" />
+</div>
+</div>
+</section>
+</section>
 <section id="measuring-discrepancies-between-distributions">
-<h2><a class="toc-backref" href="#id20"><span class="section-number">21.10. </span>Measuring discrepancies between distributions</a><a class="headerlink" href="#measuring-discrepancies-between-distributions" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id22"><span class="section-number">21.11. </span>Measuring discrepancies between distributions</a><a class="headerlink" href="#measuring-discrepancies-between-distributions" title="Permalink to this heading">#</a></h2>
 <p>A plausible guess is that the ability of a likelihood ratio to distinguish distributions <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> depends on how “different” they are.</p>
 <p>But how should we measure discrepancies between distributions?</p>
 <p>We’ve already encountered one discrepancy measure – the Kullback-Leibler (KL) divergence.</p>
 <p>We now briefly explore two alternative discrepancy  measures.</p>
 <section id="chernoff-entropy">
-<h3><span class="section-number">21.10.1. </span>Chernoff entropy<a class="headerlink" href="#chernoff-entropy" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">21.11.1. </span>Chernoff entropy<a class="headerlink" href="#chernoff-entropy" title="Permalink to this heading">#</a></h3>
 <p>Chernoff entropy was motivated by an early application of  the <a class="reference external" href="https://en.wikipedia.org/wiki/Large_deviations_theory">theory of large deviations</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -2040,17 +2310,17 @@ Optimal ϕ = 0.5969
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8ef568997f83732b401ac98691fa92f580c6201aa843503839aba717bb25fc9d.png" src="_images/8ef568997f83732b401ac98691fa92f580c6201aa843503839aba717bb25fc9d.png" />
+<img alt="_images/b82d87d40f45194cf0680941a889802a82c3efb138e8a4ed211aa1b5cef3fac3.png" src="_images/b82d87d40f45194cf0680941a889802a82c3efb138e8a4ed211aa1b5cef3fac3.png" />
 </div>
 </div>
 <p>Evidently, <span class="math notranslate nohighlight">\(e^{-C(f,g)T}\)</span> is an upper bound on the error rate.</p>
 </section>
 <section id="jensen-shannon-divergence">
-<h3><span class="section-number">21.10.2. </span>Jensen-Shannon divergence<a class="headerlink" href="#jensen-shannon-divergence" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">21.11.2. </span>Jensen-Shannon divergence<a class="headerlink" href="#jensen-shannon-divergence" title="Permalink to this heading">#</a></h3>
 <p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence">Jensen-Shannon divergence</a> is another  divergence measure.</p>
 <p>For probability densities <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>, the <strong>Jensen-Shannon divergence</strong> is defined as:</p>
 <div class="math notranslate nohighlight" id="equation-eq-compute-js">
-<span class="eqno">(21.13)<a class="headerlink" href="#equation-eq-compute-js" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(21.14)<a class="headerlink" href="#equation-eq-compute-js" title="Permalink to this equation">#</a></span>\[
 D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(m = \frac{1}{2}(f+g)\)</span> is a mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
@@ -2076,7 +2346,7 @@ D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
 <p>Recall that  KL divergence <span class="math notranslate nohighlight">\(KL(f, g)\)</span> measures expected excess surprisal from using misspecified model <span class="math notranslate nohighlight">\(g\)</span> instead <span class="math notranslate nohighlight">\(f\)</span> when <span class="math notranslate nohighlight">\(f\)</span> is the true model.</p>
 <p>Because in general <span class="math notranslate nohighlight">\(KL(f, g) \neq KL(g, f)\)</span>, KL divergence is not symmetric, but Jensen-Shannon divergence is symmetric.</p>
 <p>(In fact, the square root of the Jensen-Shannon divergence is a metric referred to as the Jensen-Shannon distance.)</p>
-<p>As <a class="reference internal" href="#equation-eq-compute-js">(21.13)</a> shows, the Jensen-Shannon divergence computes average of the KL divergence of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> with respect to a particular reference distribution <span class="math notranslate nohighlight">\(m\)</span> defined below the equation.</p>
+<p>As <a class="reference internal" href="#equation-eq-compute-js">(21.14)</a> shows, the Jensen-Shannon divergence computes average of the KL divergence of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> with respect to a particular reference distribution <span class="math notranslate nohighlight">\(m\)</span> defined below the equation.</p>
 </div>
 <p>Now let’s create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy for a set of pairs of Beta distributions.</p>
 <div class="cell tag_hide-input docutils container">
@@ -2291,7 +2561,7 @@ D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
 </div>
 </section>
 <section id="error-probability-and-divergence-measures">
-<h3><span class="section-number">21.10.3. </span>Error probability and divergence measures<a class="headerlink" href="#error-probability-and-divergence-measures" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">21.11.3. </span>Error probability and divergence measures<a class="headerlink" href="#error-probability-and-divergence-measures" title="Permalink to this heading">#</a></h3>
 <p>Now let’s return to our guess that the error probability at large sample sizes is related to the Chernoff entropy  between two distributions.</p>
 <p>We verify this by computing the correlation between the log of the error probability at <span class="math notranslate nohighlight">\(T=50\)</span> under Timing Protocol 1 and the divergence measures.</p>
 <p>In the simulation below, nature draws <span class="math notranslate nohighlight">\(N / 2\)</span> sequences from <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(N/2\)</span> sequences from <span class="math notranslate nohighlight">\(f\)</span>.</p>
@@ -2404,7 +2674,7 @@ D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/453143262ee1723d2a09a758b4d10504cd90ab61d924b2393efccda287960a6b.png" src="_images/453143262ee1723d2a09a758b4d10504cd90ab61d924b2393efccda287960a6b.png" />
+<img alt="_images/8d93c453e2689820c2296d2d997ab00ec309e0d79987c9991d517875a79fd3b4.png" src="_images/8d93c453e2689820c2296d2d997ab00ec309e0d79987c9991d517875a79fd3b4.png" />
 </div>
 </div>
 <p>Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability.</p>
@@ -2412,14 +2682,14 @@ D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
 </section>
 </section>
 <section id="related-lectures">
-<h2><a class="toc-backref" href="#id21"><span class="section-number">21.11. </span>Related Lectures</a><a class="headerlink" href="#related-lectures" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id23"><span class="section-number">21.12. </span>Related Lectures</a><a class="headerlink" href="#related-lectures" title="Permalink to this heading">#</a></h2>
 <p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>
 and as applied in <a class="reference internal" href="odu.html"><span class="doc">Job Search VII: Search with Learning</span></a>.</p>
 <p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html" title="(in Python)"><span>Additive and Multiplicative Functionals</span></a>, which contains another illustration
 of the <strong>peculiar property</strong> of likelihood ratio processes described above.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id22"><span class="section-number">21.12. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id24"><span class="section-number">21.13. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="lr_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 21.1 </span></p>

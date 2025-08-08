@@ -175,7 +175,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-details">28.6. More Details</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-bayesian-decision-rules-time-to-decide">28.7. Distribution of Bayesian Decision Rule’s Time to Decide</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-of-making-correct-decision">28.8. Probability of Making Correct Decision</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-likelihood-ratios-at-frequentists-t">28.9. Distribution of Likelihood Ratios at Frequentist’s <span class="math notranslate nohighlight">\(t\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-likelihood-ratios-at-neyman-pearsons-t">28.9. Distribution of Likelihood Ratios at Neyman-Pearson’s <span class="math notranslate nohighlight">\(t\)</span></a></li>
 </ul>
                             <p class="logo">
                                 
@@ -247,7 +247,7 @@
 <li><p><a class="reference internal" href="#more-details" id="id7">More Details</a></p></li>
 <li><p><a class="reference internal" href="#distribution-of-bayesian-decision-rules-time-to-decide" id="id8">Distribution of Bayesian Decision Rule’s Time to Decide</a></p></li>
 <li><p><a class="reference internal" href="#probability-of-making-correct-decision" id="id9">Probability of Making Correct Decision</a></p></li>
-<li><p><a class="reference internal" href="#distribution-of-likelihood-ratios-at-frequentists-t" id="id10">Distribution of Likelihood Ratios at Frequentist’s <span class="math notranslate nohighlight">\(t\)</span></a></p></li>
+<li><p><a class="reference internal" href="#distribution-of-likelihood-ratios-at-neyman-pearsons-t" id="id10">Distribution of Likelihood Ratios at Neyman-Pearson’s <span class="math notranslate nohighlight">\(t\)</span></a></p></li>
 </ul>
 </li>
 </ul>
@@ -269,6 +269,7 @@
 <p>This lecture follows up on ideas presented in the following lectures:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="wald_friedman.html"><span class="doc">A Problem that Stumped Milton Friedman</span></a></p></li>
+<li><p><a class="reference internal" href="wald_friedman_2.html"><span class="doc">A Bayesian Formulation of Friedman and Wald’s Problem</span></a></p></li>
 <li><p><a class="reference internal" href="exchangeable.html"><span class="doc">Exchangeability and Bayesian Updating</span></a></p></li>
 <li><p><a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a></p></li>
 </ul>
@@ -283,8 +284,8 @@ that a Navy Captain presented to Milton Friedman during World War II.</p>
 this lecture <a class="reference internal" href="exchangeable.html"><span class="doc">Exchangeability and Bayesian Updating</span></a> and in this lecture
 <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>, which describes the link between Bayesian
 updating and likelihood ratio processes.</p>
-<p>The present lecture uses Python to generate simulations that evaluate expected losses under <strong>frequentist</strong> and <strong>Bayesian</strong> decision rules for an instance of the Navy Captain’s decision problem.</p>
-<p>The simulations confirm the Navy Captain’s hunch that there is a better rule than the one the Navy had ordered him to use.</p>
+<p>The present lecture uses Python to generate simulations that evaluate expected losses under  the Neyman-Pearson <strong>frequentist</strong> procedure that the Navy captain questioned  and  the <strong>Bayesian</strong> decision rule described in  <a class="reference internal" href="wald_friedman_2.html"><span class="doc">A Bayesian Formulation of Friedman and Wald’s Problem</span></a>.</p>
+<p>The simulations confirm the Navy Captain’s hunch that there is a better rule than the Neyman-Pearson likelihood ratio test that the Navy had told him to use.</p>
 </section>
 <section id="setup">
 <h2><a class="toc-backref" href="#id3"><span class="section-number">28.2. </span>Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
@@ -314,9 +315,9 @@ impose on him.</p>
 <p>The decision maker pays  a cost <span class="math notranslate nohighlight">\(c\)</span> for drawing
 another  <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>We mainly borrow parameters from the quantecon lecture
-<a class="reference internal" href="wald_friedman.html"><span class="doc">A Problem that Stumped Milton Friedman</span></a> except that we increase both <span class="math notranslate nohighlight">\(\bar L_{0}\)</span>
+<a class="reference internal" href="wald_friedman_2.html"><span class="doc">A Bayesian Formulation of Friedman and Wald’s Problem</span></a> except that we increase both <span class="math notranslate nohighlight">\(\bar L_{0}\)</span>
 and <span class="math notranslate nohighlight">\(\bar L_{1}\)</span> from <span class="math notranslate nohighlight">\(25\)</span> to <span class="math notranslate nohighlight">\(100\)</span> to encourage the
-frequentist Navy Captain to take more draws before deciding.</p>
+Bayesian decision rule to take more draws before deciding.</p>
 <p>We set the cost <span class="math notranslate nohighlight">\(c\)</span> of taking one more draw  at <span class="math notranslate nohighlight">\(1.25\)</span>.</p>
 <p>We set the probability distributions <span class="math notranslate nohighlight">\(f_{0}\)</span> and <span class="math notranslate nohighlight">\(f_{1}\)</span> to
 be beta distributions with <span class="math notranslate nohighlight">\(a_{0}=b_{0}=1\)</span>, <span class="math notranslate nohighlight">\(a_{1}=3\)</span>, and
@@ -436,10 +437,7 @@ frequentist Navy Captains.</p>
 </section>
 <section id="frequentist-decision-rule">
 <h2><a class="toc-backref" href="#id4"><span class="section-number">28.3. </span>Frequentist Decision Rule</a><a class="headerlink" href="#frequentist-decision-rule" title="Permalink to this heading">#</a></h2>
-<p>The Navy told the Captain to use a  frequentist decision rule.</p>
-<p>In particular, it gave him a decision rule that the Navy had designed  by using
-frequentist statistical theory to minimize an
-expected loss function.</p>
+<p>The Navy told the Captain to use a Neyman-Pearson likelihood ratio  decision rule.</p>
 <p>That decision rule is characterized by</p>
 <ul class="simple">
 <li><p>a sample size <span class="math notranslate nohighlight">\(t\)</span>, and</p></li>
@@ -455,7 +453,9 @@ be the likelihood ratio associated with observing the sequence
 is greater than <span class="math notranslate nohighlight">\(d\)</span></p></li>
 <li><p>decide that <span class="math notranslate nohighlight">\(f_1\)</span> is the distribution if the likelihood ratio is less than <span class="math notranslate nohighlight">\(d\)</span></p></li>
 </ul>
-<p>To understand how that rule was engineered, let null and alternative
+<p>For our purposes here, we want to compute an   expected loss from using this rule, where we borrow<br />
+loss parameters <span class="math notranslate nohighlight">\(\bar L_1\)</span> and <span class="math notranslate nohighlight">\(\bar L_2\)</span> from  <a class="reference internal" href="wald_friedman_2.html"><span class="doc">A Bayesian Formulation of Friedman and Wald’s Problem</span></a>.</p>
+<p>Let null and alternative
 hypotheses be</p>
 <ul class="simple">
 <li><p>null: <span class="math notranslate nohighlight">\(H_{0}\)</span>: <span class="math notranslate nohighlight">\(f=f_{0}\)</span>,</p></li>
@@ -490,6 +490,7 @@ lecture <a class="reference internal" href="likelihood_ratio_process.html"><span
 <p>To solve for <span class="math notranslate nohighlight">\(\bar{V}_{fre}\left(t,d\right)\)</span> numerically, we first
 simulate sequences of <span class="math notranslate nohighlight">\(z\)</span> when either <span class="math notranslate nohighlight">\(f_0\)</span> or <span class="math notranslate nohighlight">\(f_1\)</span>
 generates data.</p>
+<p>Let’s plot empirical distributions, i.e., histograms, associated with <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span>
@@ -516,7 +517,7 @@ generates data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9976256e01250cd96d6a1c904b9089a1898e76aaddb06ac27128d73e85fe4986.png" src="_images/9976256e01250cd96d6a1c904b9089a1898e76aaddb06ac27128d73e85fe4986.png" />
+<img alt="_images/b5b1d2e701bdbf2a881bb01569aafae04ede9212a3f21c4d90c6ccec536512ae.png" src="_images/b5b1d2e701bdbf2a881bb01569aafae04ede9212a3f21c4d90c6ccec536512ae.png" />
 </div>
 </div>
 <p>We can compute sequences of likelihood ratios using simulated samples.</p>
@@ -565,10 +566,10 @@ generates data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f909d3f4088c0b34b50a2a361dbb8751f59cc34e369c499f544b93163df5e751.png" src="_images/f909d3f4088c0b34b50a2a361dbb8751f59cc34e369c499f544b93163df5e751.png" />
+<img alt="_images/a3af81e64f1a9cd3707eed9a4fd7e6f87fbf5d56507d4246e7c60f9c0e504420.png" src="_images/a3af81e64f1a9cd3707eed9a4fd7e6f87fbf5d56507d4246e7c60f9c0e504420.png" />
 </div>
 </div>
-<p>Our frequentist minimizes the expected total loss presented in equation
+<p>We can  minimize the expected total loss presented in equation
 <a class="reference internal" href="#equation-val1">(28.1)</a> by choosing <span class="math notranslate nohighlight">\(\left(t,d\right)\)</span>.</p>
 <p>Doing that delivers an expected loss</p>
 <div class="math notranslate nohighlight">
@@ -591,7 +592,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
     <span class="n">PFA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">[:,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
     <span class="n">PD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L1_arr</span><span class="p">[:,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
 
-    <span class="n">V</span> <span class="o">=</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">PFA</span> <span class="o">*</span><span class="n">wf</span><span class="o">.</span> <span class="n">L1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">PD</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">PFA</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">PD</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span>
 
     <span class="k">return</span> <span class="n">V</span>
 </pre></div>
@@ -649,7 +650,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/70a11b70fd16ea1162975d2149f86b31152cb1861489f99bdc736f0277a0b6ad.png" src="_images/70a11b70fd16ea1162975d2149f86b31152cb1861489f99bdc736f0277a0b6ad.png" />
+<img alt="_images/7d003f0be931820120026d2f7f7ed2b0dd2b8b1b3c4c76651d8af01326aa3df6.png" src="_images/7d003f0be931820120026d2f7f7ed2b0dd2b8b1b3c4c76651d8af01326aa3df6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -659,19 +660,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;The above graph indicates that minimizing over t tells the frequentist to draw </span><span class="si">{</span><span class="n">t_optimal</span><span class="si">}</span><span class="s2"> observations and then decide.&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The above graph indicates that minimizing over t tells the frequentist to draw 9 observations and then decide.
-</pre></div>
-</div>
-</div>
-</div>
+<p>The above graph illustrates how  minimizing over <span class="math notranslate nohighlight">\(t\)</span> tells the frequentist to draw <span class="math notranslate nohighlight">\(t_{\rm optimal}\)</span> observations and then decide.</p>
 <p>Let’s now change the value of <span class="math notranslate nohighlight">\(\pi^{*}\)</span> and watch how the decision
 rule changes.</p>
 <div class="cell docutils container">
@@ -707,7 +696,7 @@ rule changes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/23d20753bb423b2105d0d3e78f6ac57958258b50213279c928a2e2da11733a84.png" src="_images/23d20753bb423b2105d0d3e78f6ac57958258b50213279c928a2e2da11733a84.png" />
+<img alt="_images/f00ae0ad9e08a7c2f74b8eb5205d5475db40e7452ab3c5e3c7f878fd8dc329c6.png" src="_images/f00ae0ad9e08a7c2f74b8eb5205d5475db40e7452ab3c5e3c7f878fd8dc329c6.png" />
 </div>
 </div>
 <p>The following shows how optimal sample size <span class="math notranslate nohighlight">\(t\)</span> and targeted
@@ -731,22 +720,22 @@ rule changes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/34d0a3409b331ec99f10ad1a134ffc395adb8cd380725670558607c0903711de.png" src="_images/34d0a3409b331ec99f10ad1a134ffc395adb8cd380725670558607c0903711de.png" />
+<img alt="_images/182661fc6d2b01ab97f3443af24a35f33537eb501fce767a3f720519e7194cce.png" src="_images/182661fc6d2b01ab97f3443af24a35f33537eb501fce767a3f720519e7194cce.png" />
 </div>
 </div>
 </section>
 <section id="bayesian-decision-rule">
 <h2><a class="toc-backref" href="#id5"><span class="section-number">28.4. </span>Bayesian Decision Rule</a><a class="headerlink" href="#bayesian-decision-rule" title="Permalink to this heading">#</a></h2>
 <p>In  <a class="reference internal" href="wald_friedman.html"><span class="doc">A Problem that Stumped Milton Friedman</span></a>,
-we learned how Abraham Wald confirmed the Navy
-Captain’s hunch that there is a better decision rule.</p>
-<p>We presented a Bayesian procedure that instructed the Captain to makes
-decisions by comparing his current Bayesian posterior probability
-<span class="math notranslate nohighlight">\(\pi\)</span> with two cutoff probabilities called <span class="math notranslate nohighlight">\(\alpha\)</span> and
-<span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+we learned how Abraham Wald confirmed the Navy Captain’s hunch that there is a better decision rule.</p>
+<p>In <a class="reference internal" href="wald_friedman_2.html"><span class="doc">A Bayesian Formulation of Friedman and Wald’s Problem</span></a>
+we presented a Bayesian procedure that  makes
+decisions by comparing a Bayesian posterior probability
+<span class="math notranslate nohighlight">\(\pi\)</span> with cutoff probabilities called <span class="math notranslate nohighlight">\(A\)</span> and
+<span class="math notranslate nohighlight">\(B\)</span>.</p>
 <p>To proceed, we borrow some Python code from the quantecon
-lecture <a class="reference internal" href="wald_friedman.html"><span class="doc">A Problem that Stumped Milton Friedman</span></a>
-that computes <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+lecture <a class="reference internal" href="wald_friedman_2.html"><span class="doc">A Bayesian Formulation of Friedman and Wald’s Problem</span></a>
+that computes optimal values of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -839,18 +828,18 @@ that computes <span class="math notranslate nohighlight">\(\alpha\)</span> and <
 
     <span class="c1"># The cutoff points can be found by differencing these costs with</span>
     <span class="c1"># The Bellman equation (J is always less than or equal to p_c_i)</span>
-    <span class="n">β</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
                               <span class="n">payoff_f1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">payoff_f0</span><span class="p">),</span>
                               <span class="mf">1e-10</span><span class="p">)</span>
                <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="n">α</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
                               <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">payoff_f1</span><span class="p">)</span> <span class="o">-</span> <span class="n">payoff_f0</span><span class="p">,</span>
                               <span class="mf">1e-10</span><span class="p">)</span>
                <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
 
-<span class="n">β</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h_star</span><span class="p">)</span>
+<span class="n">B</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="n">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h_star</span><span class="p">)</span>
 <span class="n">cost_L0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span>
 <span class="n">cost_L1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
 
@@ -863,11 +852,11 @@ that computes <span class="math notranslate nohighlight">\(\alpha\)</span> and <
         <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">h_star</span><span class="p">,</span> <span class="n">cost_L0</span><span class="p">,</span> <span class="n">cost_L1</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
         <span class="n">lw</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;minimum cost&#39;</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\beta$&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">β</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\alpha$&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">α</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$B$&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">B</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$A$&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">β</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">B</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">A</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span><span class="p">)),</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span>
        <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\pi$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Value function&quot;</span><span class="p">)</span>
@@ -878,18 +867,18 @@ that computes <span class="math notranslate nohighlight">\(\alpha\)</span> and <
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e7de7e9676ac0282ae45733773f6c64c0d167584aa0b2605ed41e09b326313f0.png" src="_images/e7de7e9676ac0282ae45733773f6c64c0d167584aa0b2605ed41e09b326313f0.png" />
+<img alt="_images/3c244b6c9da5abe0158fddc3b14b0104adb96e0e6997e8a23ebe23e9ed22a7e5.png" src="_images/3c244b6c9da5abe0158fddc3b14b0104adb96e0e6997e8a23ebe23e9ed22a7e5.png" />
 </div>
 </div>
 <p>The above figure portrays the value function plotted against the decision
 maker’s Bayesian posterior.</p>
-<p>It also shows the probabilities <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+<p>It also shows the cutoff probabilities <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <p>The Bayesian decision rule is:</p>
 <ul class="simple">
-<li><p>accept <span class="math notranslate nohighlight">\(H_0\)</span> if <span class="math notranslate nohighlight">\(\pi \geq \alpha\)</span></p></li>
-<li><p>accept <span class="math notranslate nohighlight">\(H_1\)</span> if <span class="math notranslate nohighlight">\(\pi \leq \beta\)</span></p></li>
+<li><p>accept <span class="math notranslate nohighlight">\(H_0\)</span> if <span class="math notranslate nohighlight">\(\pi \geq A\)</span></p></li>
+<li><p>accept <span class="math notranslate nohighlight">\(H_1\)</span> if <span class="math notranslate nohighlight">\(\pi \leq B\)</span></p></li>
 <li><p>delay deciding and draw another <span class="math notranslate nohighlight">\(z\)</span> if
-<span class="math notranslate nohighlight">\(\beta \leq \pi \leq \alpha\)</span></p></li>
+<span class="math notranslate nohighlight">\( B \leq \pi \leq A\)</span></p></li>
 </ul>
 <p>We can calculate two “objective” loss functions under this situation
 conditioning on knowing for sure that nature has selected <span class="math notranslate nohighlight">\(f_{0}\)</span>,
@@ -899,9 +888,9 @@ in the first case, or <span class="math notranslate nohighlight">\(f_{1}\)</span
 <div class="math notranslate nohighlight">
 \[\begin{split}
    V^{0}\left(\pi\right)=\begin{cases}
-   0 &amp; \text{if }\alpha\leq\pi,\\
-   c+EV^{0}\left(\pi^{\prime}\right) &amp; \text{if }\beta\leq\pi&lt;\alpha,\\
-   \bar L_{1} &amp; \text{if }\pi&lt;\beta.
+   0 &amp; \text{if} A \leq\pi,\\
+   c+EV^{0}\left(\pi^{\prime}\right) &amp; \text{if }B\leq\pi&lt; A,\\
+   \bar L_{1} &amp; \text{if }\pi&lt;B.
    \end{cases}
    \end{split}\]</div>
 </li>
@@ -909,9 +898,9 @@ in the first case, or <span class="math notranslate nohighlight">\(f_{1}\)</span
 <div class="math notranslate nohighlight">
 \[\begin{split}
    V^{1}\left(\pi\right)=\begin{cases}
-   \bar L_{0} &amp; \text{if }\alpha\leq\pi,\\
-   c+EV^{1}\left(\pi^{\prime}\right) &amp; \text{if }\beta\leq\pi&lt;\alpha,\\
-   0 &amp; \text{if }\pi&lt;\beta.
+   \bar L_{0} &amp; \text{if }A \leq\pi,\\
+   c+EV^{1}\left(\pi^{\prime}\right) &amp; \text{if }B \leq\pi&lt;A,\\
+   0 &amp; \text{if }\pi&lt; B.
    \end{cases}
    \end{split}\]</div>
 </li>
@@ -934,21 +923,21 @@ numerically.</p>
     <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid_size</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">flag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">z_arr</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">z0</span>
-        <span class="n">V</span><span class="p">[</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">&lt;</span> <span class="n">β</span><span class="p">]</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
+        <span class="n">V</span><span class="p">[</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">&lt;</span> <span class="n">B</span><span class="p">]</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">z_arr</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">z1</span>
-        <span class="n">V</span><span class="p">[</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">&gt;=</span> <span class="n">α</span><span class="p">]</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span>
+        <span class="n">V</span><span class="p">[</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">&gt;=</span> <span class="n">A</span><span class="p">]</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span>
 
     <span class="n">V_old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">V_old</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">V</span><span class="p">[:]</span>
-        <span class="n">V</span><span class="p">[(</span><span class="n">β</span> <span class="o">&lt;=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">&lt;</span> <span class="n">α</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">V</span><span class="p">[(</span><span class="n">B</span> <span class="o">&lt;=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">&lt;</span> <span class="n">A</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)):</span>
             <span class="n">π</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">π</span> <span class="o">&gt;=</span> <span class="n">α</span> <span class="ow">or</span> <span class="n">π</span> <span class="o">&lt;</span> <span class="n">β</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">π</span> <span class="o">&gt;=</span> <span class="n">A</span> <span class="ow">or</span> <span class="n">π</span> <span class="o">&lt;</span> <span class="n">B</span><span class="p">:</span>
                 <span class="k">continue</span>
 
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_arr</span><span class="p">)):</span>
@@ -972,10 +961,10 @@ numerically.</p>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">V0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$V^0$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">V1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$V^1$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">β</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;β&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">α</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;α&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">B</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">A</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Objective value function $V(\pi)$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -984,7 +973,7 @@ numerically.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3847fed21a14b4ebf6f4d44e06b783518de3ee4b19197b2a3dbb03ee3ed89f1a.png" src="_images/3847fed21a14b4ebf6f4d44e06b783518de3ee4b19197b2a3dbb03ee3ed89f1a.png" />
+<img alt="_images/c36de1fcf1cecbc2b2fe53201889e9ff094c8ea56ab0fb92296b38dd6084da7d.png" src="_images/c36de1fcf1cecbc2b2fe53201889e9ff094c8ea56ab0fb92296b38dd6084da7d.png" />
 </div>
 </div>
 <p>Given an assumed value for
@@ -1036,7 +1025,7 @@ minimizes this objective concept of expected loss.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/82e837bb1e49178cf1feea40fd1121b90442e516eac3d471bdbd729ff341da57.png" src="_images/82e837bb1e49178cf1feea40fd1121b90442e516eac3d471bdbd729ff341da57.png" />
+<img alt="_images/c4f30ffd5c88a39992a661929ada8c011145cf0ebfb459fc25e6c17b934bb24b.png" src="_images/c4f30ffd5c88a39992a661929ada8c011145cf0ebfb459fc25e6c17b934bb24b.png" />
 </div>
 </div>
 <p>This pattern of outcomes holds more generally.</p>
@@ -1075,14 +1064,14 @@ for all <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d2dc405a437888e66fe8fe5f9de69dd427817007264f0ad534cbfea84514464e.png" src="_images/d2dc405a437888e66fe8fe5f9de69dd427817007264f0ad534cbfea84514464e.png" />
+<img alt="_images/968fe837b976418961b2c6993a2fb6a6a8ad7e94e228fac17a1a3cec686a1b9d.png" src="_images/968fe837b976418961b2c6993a2fb6a6a8ad7e94e228fac17a1a3cec686a1b9d.png" />
 </div>
 </div>
 </section>
 <section id="was-the-navy-captains-hunch-correct">
 <h2><a class="toc-backref" href="#id6"><span class="section-number">28.5. </span>Was the Navy Captain’s Hunch Correct?</a><a class="headerlink" href="#was-the-navy-captains-hunch-correct" title="Permalink to this heading">#</a></h2>
-<p>We now compare average (i.e., frequentist) losses obtained by the
-frequentist and Bayesian decision rules.</p>
+<p>We now compare average  losses obtained by our frequentist Neyman-Pearson
+and Bayesian decision rules.</p>
 <p>As a starting point, let’s compare average loss functions when
 <span class="math notranslate nohighlight">\(\pi^{*}=0.5\)</span>.</p>
 <div class="cell docutils container">
@@ -1098,7 +1087,7 @@ frequentist and Bayesian decision rules.</p>
 <span class="n">V_fre_arr</span><span class="p">,</span> <span class="n">PFA_arr</span><span class="p">,</span> <span class="n">PD_arr</span> <span class="o">=</span> <span class="n">compute_V_fre</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">)</span>
 
 <span class="c1"># bayesian</span>
-<span class="n">V_baye</span> <span class="o">=</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">V0</span> <span class="o">+</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">V1</span>
+<span class="n">V_baye</span> <span class="o">=</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">V0</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span> <span class="n">V1</span>
 <span class="n">V_baye_bar</span> <span class="o">=</span> <span class="n">V_baye</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1116,10 +1105,10 @@ frequentist and Bayesian decision rules.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eb36aeb4eda3a2ee928cb1ad0cc0da376286b3aef0f6a55d9a55ebc1b01d624d.png" src="_images/eb36aeb4eda3a2ee928cb1ad0cc0da376286b3aef0f6a55d9a55ebc1b01d624d.png" />
+<img alt="_images/1060a7c19e1aabc63d44902760e6e94e61506ce07e721b7e4fb3a3a3867321e2.png" src="_images/1060a7c19e1aabc63d44902760e6e94e61506ce07e721b7e4fb3a3a3867321e2.png" />
 </div>
 </div>
-<p>Evidently, there is no sample size <span class="math notranslate nohighlight">\(t\)</span> at which the frequentist
+<p>Evidently, there is no sample size <span class="math notranslate nohighlight">\(t\)</span> at which the Neyman-Pearson
 decision rule attains a lower loss function than does the Bayesian rule.</p>
 <p>Furthermore, the following graph indicates that the Bayesian decision
 rule does better on average for all values of <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p>
@@ -1141,7 +1130,7 @@ rule does better on average for all values of <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/479fe7e0c99354fa1f622b705b00fde431f485c80700f6e063e512a5ff8b243b.png" src="_images/479fe7e0c99354fa1f622b705b00fde431f485c80700f6e063e512a5ff8b243b.png" />
+<img alt="_images/d41492154396a94a9aed9fe58f198a786ba882df1c61b673bcc03ebaa225ecf5.png" src="_images/d41492154396a94a9aed9fe58f198a786ba882df1c61b673bcc03ebaa225ecf5.png" />
 </div>
 </div>
 <p>The right panel of the above graph plots the difference
@@ -1159,7 +1148,7 @@ rule does better on average for all values of <span class="math notranslate nohi
 </div>
 </div>
 </div>
-<p>Recall that when <span class="math notranslate nohighlight">\(\pi^*=0.5\)</span>, the frequentist decision rule sets a
+<p>Recall that when <span class="math notranslate nohighlight">\(\pi^*=0.5\)</span>, the frequentist Neyman-Pearson decision rule sets a
 sample size <code class="docutils literal notranslate"><span class="pre">t_optimal</span></code> <strong>ex ante</strong>.</p>
 <p>For our parameter settings, we can compute its value:</p>
 <div class="cell docutils container">
@@ -1201,7 +1190,7 @@ rule when <span class="math notranslate nohighlight">\(q= f_0\)</span> and <stro
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">check_results</span><span class="p">(</span><span class="n">L_arr</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">π0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">check_results</span><span class="p">(</span><span class="n">L_arr</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">π0</span><span class="p">):</span>
 
     <span class="n">N</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">L_arr</span><span class="o">.</span><span class="n">shape</span>
 
@@ -1212,9 +1201,9 @@ rule when <span class="math notranslate nohighlight">\(q= f_0\)</span> and <stro
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">β</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">α</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">B</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">A</span><span class="p">):</span>
                 <span class="n">time_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span>
-                <span class="n">correctness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">α</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">β</span><span class="p">)</span>
+                <span class="n">correctness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">A</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">B</span><span class="p">)</span>
                 <span class="k">break</span>
 
     <span class="k">return</span> <span class="n">time_arr</span><span class="p">,</span> <span class="n">correctness</span>
@@ -1224,8 +1213,8 @@ rule when <span class="math notranslate nohighlight">\(q= f_0\)</span> and <stro
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_arr0</span><span class="p">,</span> <span class="n">correctness0</span> <span class="o">=</span> <span class="n">check_results</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">π_star</span><span class="p">)</span>
-<span class="n">time_arr1</span><span class="p">,</span> <span class="n">correctness1</span> <span class="o">=</span> <span class="n">check_results</span><span class="p">(</span><span class="n">L1_arr</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">π_star</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_arr0</span><span class="p">,</span> <span class="n">correctness0</span> <span class="o">=</span> <span class="n">check_results</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">π_star</span><span class="p">)</span>
+<span class="n">time_arr1</span><span class="p">,</span> <span class="n">correctness1</span> <span class="o">=</span> <span class="n">check_results</span><span class="p">(</span><span class="n">L1_arr</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">π_star</span><span class="p">)</span>
 
 <span class="c1"># unconditional distribution</span>
 <span class="n">time_arr_u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">time_arr0</span><span class="p">,</span> <span class="n">time_arr1</span><span class="p">))</span>
@@ -1254,13 +1243,13 @@ rule when <span class="math notranslate nohighlight">\(q= f_0\)</span> and <stro
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e9fd53a8d881afd83725121d2c416058a1bd5be127286f987f5426d00511b8e4.png" src="_images/e9fd53a8d881afd83725121d2c416058a1bd5be127286f987f5426d00511b8e4.png" />
+<img alt="_images/51820bb32a868e7073de657c8a82f45ae0f0dfc2a93c4da0f0c2903a0722dc3f.png" src="_images/51820bb32a868e7073de657c8a82f45ae0f0dfc2a93c4da0f0c2903a0722dc3f.png" />
 </div>
 </div>
 <p>Later we’ll figure out how these distributions ultimately affect
-objective expected values under the two decision rules.</p>
+objective expected values under the Neyman-Pearson and  Bayesian decision rules.</p>
 <p>To begin, let’s look at simulations of the Bayesian’s beliefs over time.</p>
-<p>We can easily compute the updated beliefs at any time <span class="math notranslate nohighlight">\(t\)</span> using
+<p>We can compute  updated beliefs at any time <span class="math notranslate nohighlight">\(t\)</span> using
 the one-to-one mapping from <span class="math notranslate nohighlight">\(L_{t}\)</span> to <span class="math notranslate nohighlight">\(\pi_{t}\)</span> given
 <span class="math notranslate nohighlight">\(\pi_0\)</span> described in this lecture <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>.</p>
 <div class="cell docutils container">
@@ -1294,7 +1283,7 @@ the one-to-one mapping from <span class="math notranslate nohighlight">\(L_{t}\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7718c0c2ec11c9419f2595fad8a7199ce089bd974c1844acc46145b73493bcfd.png" src="_images/7718c0c2ec11c9419f2595fad8a7199ce089bd974c1844acc46145b73493bcfd.png" />
+<img alt="_images/ce5d9e0d11cb411d92ad69e173ed32c75d721a55f53a7f8478ad9ec262bb0f70.png" src="_images/ce5d9e0d11cb411d92ad69e173ed32c75d721a55f53a7f8478ad9ec262bb0f70.png" />
 </div>
 </div>
 <p>The above figures compare averages and variances of updated Bayesian
@@ -1302,7 +1291,7 @@ posteriors after <span class="math notranslate nohighlight">\(t\)</span> draws.<
 <p>The left graph compares <span class="math notranslate nohighlight">\(E\left(\pi_{t}\right)\)</span> under
 <span class="math notranslate nohighlight">\(f_{0}\)</span> to <span class="math notranslate nohighlight">\(1-E\left(\pi_{t}\right)\)</span> under <span class="math notranslate nohighlight">\(f_{1}\)</span>:
 they lie on top of each other.</p>
-<p>However, as the right hand size graph shows, there is significant
+<p>However, as the right hand side graph shows, there is significant
 difference in variances when <span class="math notranslate nohighlight">\(t\)</span> is small: the variance is lower
 under <span class="math notranslate nohighlight">\(f_{1}\)</span>.</p>
 <p>The difference in variances is the reason that the Bayesian decision
@@ -1330,15 +1319,15 @@ confirm the Navy Captain’s hunch.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9b0e515f22acac19748c39261ad63f1df30b9443648c513ffebe7e419ffe1f9d.png" src="_images/9b0e515f22acac19748c39261ad63f1df30b9443648c513ffebe7e419ffe1f9d.png" />
+<img alt="_images/955405d3ccb65c2dc097985853e753be0fdfec2550a50c78ad1a724556d0194d.png" src="_images/955405d3ccb65c2dc097985853e753be0fdfec2550a50c78ad1a724556d0194d.png" />
 </div>
 </div>
 </section>
 <section id="probability-of-making-correct-decision">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">28.8. </span>Probability of Making Correct Decision</a><a class="headerlink" href="#probability-of-making-correct-decision" title="Permalink to this heading">#</a></h2>
-<p>Now we use simulations to compute the fraction of samples in which the
-Bayesian and the frequentist decision rules decide correctly.</p>
-<p>For the frequentist rule, the probability of making the correct decision
+<p>Now we use simulations to compute the fractions of samples in which the
+Bayesian and the frequentist Neyman-Pearson  decision rules decide correctly.</p>
+<p>For the frequentist Neyman-Pearson rule, the probability of making the correct decision
 under <span class="math notranslate nohighlight">\(f_{1}\)</span> is the optimal probability of detection given
 <span class="math notranslate nohighlight">\(t\)</span> that we defined earlier, and similarly it equals <span class="math notranslate nohighlight">\(1\)</span>
 minus the optimal probability of a false alarm under <span class="math notranslate nohighlight">\(f_{0}\)</span>.</p>
@@ -1376,7 +1365,7 @@ with the conditional probabilities that the Bayesian rule decides before
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/29c8318eab4a3870a16f230c17ddf8b8bb2b31436e934c231b7d7c21af62c5af.png" src="_images/29c8318eab4a3870a16f230c17ddf8b8bb2b31436e934c231b7d7c21af62c5af.png" />
+<img alt="_images/00a3f8d56f71e7458ef92f8595b58541cd5fe81043bccf909dc1ebecde8d3c50.png" src="_images/00a3f8d56f71e7458ef92f8595b58541cd5fe81043bccf909dc1ebecde8d3c50.png" />
 </div>
 </div>
 <p>By averaging using <span class="math notranslate nohighlight">\(\pi^{*}\)</span>, we also plot the unconditional
@@ -1401,16 +1390,16 @@ distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6b177f21a56a00936ed9ba047a0dcf771e7b133ad3602a8e9f930db6157b65b5.png" src="_images/6b177f21a56a00936ed9ba047a0dcf771e7b133ad3602a8e9f930db6157b65b5.png" />
+<img alt="_images/8be7e83c5175043e6f3652620531ff53f607ce647a7247c44b752f293bf7269a.png" src="_images/8be7e83c5175043e6f3652620531ff53f607ce647a7247c44b752f293bf7269a.png" />
 </div>
 </div>
 </section>
-<section id="distribution-of-likelihood-ratios-at-frequentists-t">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">28.9. </span>Distribution of Likelihood Ratios at Frequentist’s <span class="math notranslate nohighlight">\(t\)</span></a><a class="headerlink" href="#distribution-of-likelihood-ratios-at-frequentists-t" title="Permalink to this heading">#</a></h2>
+<section id="distribution-of-likelihood-ratios-at-neyman-pearsons-t">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">28.9. </span>Distribution of Likelihood Ratios at Neyman-Pearson’s <span class="math notranslate nohighlight">\(t\)</span></a><a class="headerlink" href="#distribution-of-likelihood-ratios-at-neyman-pearsons-t" title="Permalink to this heading">#</a></h2>
 <p>Next we use simulations to construct distributions of likelihood ratios
 after <span class="math notranslate nohighlight">\(t\)</span> draws.</p>
 <p>To serve as useful reference points, we also show likelihood ratios that
-correspond to the Bayesian cutoffs <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+correspond to the Bayesian cutoffs <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <p>In order to exhibit the distribution more clearly, we report logarithms
 of likelihood ratios.</p>
 <p>The graphs below reports two distributions, one conditional on
@@ -1418,8 +1407,8 @@ of likelihood ratios.</p>
 generating the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Lα</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span>  <span class="n">α</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_star</span> <span class="o">-</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">α</span><span class="p">)</span>
-<span class="n">Lβ</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span>  <span class="n">β</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_star</span> <span class="o">-</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">β</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LA</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span>  <span class="n">A</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_star</span> <span class="o">-</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">A</span><span class="p">)</span>
+<span class="n">LB</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span>  <span class="n">B</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_star</span> <span class="o">-</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">B</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1432,8 +1421,8 @@ generating the data.</p>
 <span class="n">n0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">]),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_range</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f0 generates&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">n1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">L1_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">]),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_range</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f1 generates&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Lβ</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_β$)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Lα</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_α$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LB</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_B$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LA</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_A$)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;log(L)&#39;</span><span class="p">)</span>
@@ -1445,7 +1434,7 @@ generating the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4e7bdfc13d865be705f790c51cc262558a8e66af67eb55cc214f54f54e7adaa2.png" src="_images/4e7bdfc13d865be705f790c51cc262558a8e66af67eb55cc214f54f54e7adaa2.png" />
+<img alt="_images/fe181d4ae4f9dee3806ff4c34a8d541bf3105b05df395e1159dc763444409187.png" src="_images/fe181d4ae4f9dee3806ff4c34a8d541bf3105b05df395e1159dc763444409187.png" />
 </div>
 </div>
 <p>The next graph plots the unconditional distribution of Bayesian times to
@@ -1455,8 +1444,8 @@ distributions.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">L0_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">],</span> <span class="n">L1_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">]])),</span>
         <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;unconditional dist. of log(L)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Lβ</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_β$)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Lα</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_α$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LB</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_B$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">LA</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_A$)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;log(L)&#39;</span><span class="p">)</span>
@@ -1468,7 +1457,7 @@ distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/da971c272df5c08f78062cb5ef6436f19356a74384ebac6e26724489f8d598d0.png" src="_images/da971c272df5c08f78062cb5ef6436f19356a74384ebac6e26724489f8d598d0.png" />
+<img alt="_images/cb4d7196c39d12acaef2ddded7dbdb02bd58fcc825672e408369faf8431381d1.png" src="_images/cb4d7196c39d12acaef2ddded7dbdb02bd58fcc825672e408369faf8431381d1.png" />
 </div>
 </div>
 </section>
