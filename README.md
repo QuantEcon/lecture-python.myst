@@ -1,5 +1,7 @@
 # Intermediate Quantitative Economics with Python
 
+## DEMO: MAKING A SMALL CHANGE
+
 This website presents a set of lectures on quantitative economic modeling.
 
 ## Jupyter notebooks
