@@ -78,6 +78,8 @@ jobs:
           html-path: './_build/html'
           warnings: 'SyntaxWarning,DeprecationWarning,FutureWarning'
           fail-on-warning: 'true'
+          create-issue: 'true'
+          issue-title: 'Python Warnings Found in Code Output'
       - name: Upload Execution Reports (HTML)
         uses: actions/upload-artifact@v4
         if: failure()
