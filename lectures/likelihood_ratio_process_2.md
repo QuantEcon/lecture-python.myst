@@ -35,7 +35,7 @@ A likelihood ratio process lies behind Lawrence Blume and David Easley's answer 
 Blume and Easley constructed formal models to study how differences of opinions about probabilities governing risky income processes would influence outcomes and be reflected in prices of stocks, bonds, and insurance policies that individuals use to share and hedge risks.
 
 ```{note}
-{cite}`alchian1950uncertainty` and {cite}`friedman1953essays` can conjectured that, by rewarding traders with more realistic probability models, competitive markets in financial securities put wealth in the hands of better informed traders and help 
+{cite}`alchian1950uncertainty` and {cite}`friedman1953essays` conjectured that, by rewarding traders with more realistic probability models, competitive markets in financial securities put wealth in the hands of better informed traders and help 
 make prices of risky assets reflect realistic probability assessments. 
 ```
 
@@ -67,7 +67,6 @@ from numba import vectorize, jit
 from math import gamma
 from scipy.integrate import quad
 from scipy.optimize import brentq, minimize_scalar
-from scipy.stats import beta as beta_dist
 import pandas as pd
 from IPython.display import display, Math
 import quantecon as qe
@@ -173,8 +172,6 @@ def simulate(a, b, T=50, N=500):
 
     return l_arr
 ```
-
-
 
 ## Blume and Easley's Setting
 
@@ -302,7 +299,7 @@ $$
 W = \lambda V^1 + (1-\lambda) V^2
 $$ (eq:welfareW)
 
-where $\lambda \in [0,1]$ is a Pareto weight tells how much the planner likes agent $1$ and $1 - \lambda$ is a Pareto weight that tells how much the social planner likes agent $2$.  
+where $\lambda \in [0,1]$ is a Pareto weight that tells how much the planner likes agent $1$ and $1 - \lambda$ is a Pareto weight that tells how much the social planner likes agent $2$.  
 
 Setting $\lambda = .5$ expresses ''egalitarian'' social preferences. 
 
@@ -318,7 +315,7 @@ Consequently, we anticipate that these objects will appear in the social planner
 
 First-order necessary conditions for maximizing welfare criterion {eq}`eq:welfareW` subject to the feasibility constraint {eq}`eq:feasibility` are 
 
-$$\frac{\pi_t^2(s^t)}{\pi_t^1(s^t)} \frac{(1/c_t^2(s^t))}{(1/c_t^1(s^t))} = \frac{\lambda}{1 -\lambda}$$
+$$\frac{\pi_t^2(s^t)}{\pi_t^1(s^t)} \frac{(1/c_t^2(s^t))}{(1/c_t^1(s^t))} = \frac{\lambda}{1-\lambda}$$
 
 which can be rearranged to become
 
@@ -326,7 +323,7 @@ which can be rearranged to become
 
 
 $$
-\frac{c_t^1(s^t)}{c_t^2(s^t)} = \frac{\lambda}{1- \lambda} l_t(s^t)
+\frac{c_t^1(s^t)}{c_t^2(s^t)} = \frac{\lambda}{1-\lambda} l_t(s^t)
 $$ (eq:allocationrule0)
 
 
@@ -395,8 +392,8 @@ $$l_\infty (s^\infty)= \infty; \quad c_\infty^1 = 1$$
 ```{note}
 These three cases are somehow telling us about how relative **wealths** of the agents evolve as time passes.
 * when the two agents are equally smart and $\lambda \in (0,1)$, agent 1's wealth share stays at $\lambda$ perpetually.
-* when agent 1 is smarter and $\lambda \in (0,1)$, agent 1 eventually "owns" the continuation entire continuation endowment and agent 2 eventually "owns" nothing.
-* when agent 2 is smarter and $\lambda \in (0,1)$, agent 2 eventually "owns" the continuation entire continuation endowment and agent 1 eventually "owns" nothing.
+* when agent 1 is smarter and $\lambda \in (0,1)$, agent 1 eventually "owns" the entire continuation endowment and agent 2 eventually "owns" nothing.
+* when agent 2 is smarter and $\lambda \in (0,1)$, agent 2 eventually "owns" the entire continuation endowment and agent 1 eventually "owns" nothing.
 Continuation wealths can be defined precisely after we introduce a competitive equilibrium **price** system below.
 ```
 
@@ -437,7 +434,7 @@ That budget constraint involves the total value of the agent's endowment stream 
 These values are computed at price vectors that the agents take as given -- they are "price-takers" who assume that they can buy or sell
 whatever quantities that they want at those prices.  
 
-Suppose that at time $-1$, before time $0$ starts, agent  $i$ can purchase one unit $c_t(s^t)$ of  consumption at time $t$ after history
+Suppose that at time $-1$, before time $0$ starts, agent $i$ can purchase one unit $c_t(s^t)$ of consumption at time $t$ after history
 $s^t$ at price $p_t(s^t)$.  
 
 Notice that there is (very long) **vector** of prices.  
@@ -478,7 +475,7 @@ This means that the agent $i$  chooses many objects, namely, $c_t^i(s^t)$ for al
 For convenience, let's remind ourselves of criterion $V^i$ defined in {eq}`eq:objectiveagenti`:  
 
 $$
-V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t)
+V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u(c_t^i(s^t)) \pi_t^i(s^t)
 $$
 
 First-order necessary conditions for maximizing objective $V^i$ defined in {eq}`eq:objectiveagenti` with respect to $c_t^i(s^t)$ are 
@@ -508,7 +505,7 @@ our social planning problem.
 * we'll match consumption allocations in the planning problem with equilibrium consumption allocations in the competitive equilibrium
 * we'll match "shadow" prices in the planning problem with competitive equilibrium prices. 
 
-Notice that if we set $\mu_1 = \lambda$ and $\mu_2 = 1 -\lambda$, then  formula {eq}`eq:allocationce` agrees with formula
+Notice that if we set $\mu_1 = 1-\lambda$ and $\mu_2 = \lambda$, then  formula {eq}`eq:allocationce` agrees with formula
 {eq}`eq:allocationrule1`.  
 
   * doing this amounts to choosing a **numeraire** or normalization for the price system $\{p_t(s^t)\}_{t=0}^\infty$
@@ -567,7 +564,6 @@ def compute_likelihood_ratios(sequences, f, g):
     return l_ratios, L_cumulative
 ```
 
-
 Let's compute the Kullback–Leibler discrepancies by quadrature
 integration.
 
@@ -605,11 +601,11 @@ def simulate_blume_easley(sequences, f_belief=f, g_belief=g, λ=0.5):
     return l_cumulative, c1_share
 ```
 
-Now let's use this  function to generate sequences in which  
+Now let's use this function to generate sequences in which  
 
-*  nature draws from  $f$ each period, or 
-*  nature draws from  $g$ each period, or
-*  or nature flips a fair coin each period  to decide whether  to draw from  $f$ or $g$
+* nature draws from $f$ each period, or 
+* nature draws from $g$ each period, or
+* nature flips a fair coin each period to decide whether to draw from $f$ or $g$
 
 ```{code-cell} ipython3
 λ = 0.5
@@ -822,11 +818,11 @@ print(f"KL divergences (far): \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
 print(f"KL(h,f)={Kf_h:.3f}, KL(h,g)={Kg_h:.3f}")
 ```
 
-We find that in the first case, $KL(f,g) \approx KL(g,f)$ and both are relatively small, so although either agent 1 or agent  2 will eventually consume everything, convergence displaying in  first two panels on the top is pretty  slowly.
+We find that in the first case, $KL(f,g) \approx KL(g,f)$ and both are relatively small, so although either agent 1 or agent 2 will eventually consume everything, convergence displayed in the first two panels on the top is pretty slow.
 
 In the first two panels at the bottom, we see convergence occurring faster (as indicated by the black dashed line) because the divergence gaps $KL(f, g)$ and $KL(g, f)$ are larger.
 
-Since $KL(f,g) > KL(g,f)$, we  see faster convergence in  the first panel at the bottom when  nature chooses $f$  than in the second panel where nature chooses $g$.
+Since $KL(f,g) > KL(g,f)$, we see faster convergence in the first panel at the bottom when nature chooses $f$ than in the second panel where nature chooses $g$.
 
 This ties in nicely with {eq}`eq:kl_likelihood_link`.
 

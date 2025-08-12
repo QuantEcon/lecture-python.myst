@@ -777,9 +777,7 @@ Note that
 
 These observations align with the theory.
 
-In the [next section](hetero_agent), we will see an application of these ideas.
-
-
+In {doc}`likelihood_ratio_process_2`, we will see an application of these ideas.
 
 ## Hypothesis Testing and Classification 
 
@@ -903,7 +901,7 @@ $$
 When model $g$ generates the data, the probability that the likelihood ratio test selects the wrong model is 
 
 $$ 
-p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T. 
+p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T.
 $$
 
 We can construct a probability that the likelihood ratio selects the wrong model by assigning a Bayesian prior probability of $\pi_{-1} = .5$ that nature selects model $f$ then  averaging $p_f$ and $p_g$ to form the Bayesian posterior probability of a detection error equal to
@@ -1793,14 +1791,12 @@ plt.ylabel('error probability')
 plt.show()
 ```
 
-
 ## Related Lectures
 
 Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes`
 and as applied in {doc}`odu`.
 
-Likelihood ratio processes are central to  Lawrence Blume and David Easley  answer to their question ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`, the subject of this quantecon lecture
-{doc}`likelihood_ratio_process_2`.
+Likelihood ratio processes are central to  Lawrence Blume and David Easley's answer to their question ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`, the subject of the lecture{doc}`likelihood_ratio_process_2`.
 
 Likelihood ratio processes also appear  in {doc}`advanced:additive_functionals`, which contains another illustration of the **peculiar property** of likelihood ratio processes described above.
 
@@ -1933,4 +1929,3 @@ Therefore by similar reasoning $L_t \to 0$ almost surely.
 
 ```{solution-end}
 ```
-
