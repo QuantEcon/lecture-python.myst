@@ -72,6 +72,12 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
+      - name: Check for Python warnings
+        uses: QuantEcon/meta/.github/actions/check-warnings@copilot/fix-175
+        with:
+          html-path: './_build/html'
+          warnings: 'SyntaxWarning,DeprecationWarning,FutureWarning'
+          fail-on-warning: 'true'
       - name: Upload Execution Reports (HTML)
         uses: actions/upload-artifact@v4
         if: failure()
