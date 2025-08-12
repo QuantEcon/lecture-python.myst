@@ -6,7 +6,9 @@ jobs:
   preview:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
     permissions:
-      issues: write          # Required for creating GitHub issues
+      contents: read         # For checking out the repository
+      issues: write          # For creating GitHub issues (if create-issue is enabled)
+      actions: read          # For creating workflow artifacts (if create-artifact is enabled)
     steps:
       - uses: actions/checkout@v4
         with:
