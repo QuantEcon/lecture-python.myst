@@ -155,10 +155,10 @@ $$
 X_{t+1} = A X_t
 \quad \text{where} \quad
 A :=
-\begin{pmatrix}
+\begin{bmatrix}
     (1-d)(1-\lambda) + b & (1-d)\alpha + b  \\
     (1-d)\lambda & (1-d)(1-\alpha)
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 This law tells us how total employment and unemployment evolve over time.
@@ -170,16 +170,16 @@ Now let's derive the law of motion for rates.
 To get these we can divide both sides of $X_{t+1} = A X_t$ by  $N_{t+1}$ to get
 
 $$
-\begin{pmatrix}
+\begin{bmatrix}
     U_{t+1}/N_{t+1} \\
     E_{t+1}/N_{t+1}
-\end{pmatrix} =
+\end{bmatrix} =
 \frac1{1+g} A
-\begin{pmatrix}
+\begin{bmatrix}
     U_{t}/N_{t}
     \\
     E_{t}/N_{t}
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 Letting
