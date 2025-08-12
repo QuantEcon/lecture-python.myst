@@ -496,7 +496,7 @@ Thus, the percentages of time that an  infinitely lived worker  spends employed 
 
 How long does it take for time series sample averages to converge to cross-sectional averages?
 
-We can use [QuantEcon.py's](http://quantecon.org/quantecon-py)
+We can use [QuantEcon.py's](https://quantecon.org/quantecon-py)
 MarkovChain class to investigate this.
 
 Let's plot the path of the sample averages over 5,000 periods

@@ -535,7 +535,7 @@ Image(fig.to_image(format="png"))
 It  is  fun to think about how deepening the neural net for the above example affects the quality of  approximation 
 
 
-* If the network is too deep, you'll run into the [vanishing gradient problem](http://neuralnetworksanddeeplearning.com/chap5.html)
+* If the network is too deep, you'll run into the [vanishing gradient problem](https://neuralnetworksanddeeplearning.com/chap5.html)
 * Other parameters such as the step size and the number of epochs can be as  important or more important than the number of layers in the situation considered in this lecture.
 * Indeed, since $f$ is a linear function of $x$, a one-layer network with the identity map as an activation would probably work best. 
   

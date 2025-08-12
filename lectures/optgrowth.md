@@ -34,7 +34,7 @@ model studied in
 
 * {cite}`StokeyLucas1989`, chapter 2
 * {cite}`Ljungqvist2012`, section 3.1
-* [EDTC](http://johnstachurski.net/edtc.html), chapter 1
+* [EDTC](https://johnstachurski.net/edtc.html), chapter 1
 * {cite}`Sundaram1996`, chapter 12
 
 It is an extension of the simple {doc}`cake eating problem <cake_eating_problem>` we looked at earlier.
@@ -282,7 +282,7 @@ The term $\int v(f(y - c) z) \phi(dz)$ can be understood as the expected next pe
 * the state is $y$
 * consumption is set to $c$
 
-As shown in [EDTC](http://johnstachurski.net/edtc.html), theorem 10.1.11 and a range of other texts
+As shown in [EDTC](https://johnstachurski.net/edtc.html), theorem 10.1.11 and a range of other texts
 
 > *The value function* $v^*$ *satisfies the Bellman equation*
 
@@ -328,7 +328,7 @@ In our setting, we have the following key result
 The intuition is similar to the intuition for the Bellman equation, which was
 provided after {eq}`fpb30`.
 
-See, for example, theorem 10.1.11 of [EDTC](http://johnstachurski.net/edtc.html).
+See, for example, theorem 10.1.11 of [EDTC](https://johnstachurski.net/edtc.html).
 
 Hence, once we have a good approximation to $v^*$, we can compute the
 (approximately) optimal policy by computing the corresponding greedy policy.
@@ -389,7 +389,7 @@ $$
 \rho(g, h) = \sup_{y \geq 0} |g(y) - h(y)|
 $$
 
-See  [EDTC](http://johnstachurski.net/edtc.html), lemma 10.1.18.
+See  [EDTC](https://johnstachurski.net/edtc.html), lemma 10.1.18.
 
 Hence, it has exactly one fixed point in this set, which we know is equal to the value function.
 
@@ -404,7 +404,7 @@ This iterative method is called **value function iteration**.
 We also know that a feasible policy is optimal if and only if it is $v^*$-greedy.
 
 It's not too hard to show that a $v^*$-greedy policy exists
-(see  [EDTC](http://johnstachurski.net/edtc.html), theorem 10.1.11 if you get stuck).
+(see  [EDTC](https://johnstachurski.net/edtc.html), theorem 10.1.11 if you get stuck).
 
 Hence, at least one optimal policy exists.
 
@@ -426,7 +426,7 @@ Unfortunately, they tend to be case-specific, as opposed to valid for a large ra
 Nevertheless, their main conclusions are usually in line with those stated for
 the bounded case just above (as long as we drop the word "bounded").
 
-Consult,  for example, section 12.2 of [EDTC](http://johnstachurski.net/edtc.html), {cite}`Kamihigashi2012` or {cite}`MV2010`.
+Consult,  for example, section 12.2 of [EDTC](https://johnstachurski.net/edtc.html), {cite}`Kamihigashi2012` or {cite}`MV2010`.
 
 ## Computation
 
