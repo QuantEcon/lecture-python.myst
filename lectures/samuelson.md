@@ -3,10 +3,12 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 ```{raw} jupyter
@@ -25,10 +27,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -46,7 +47,7 @@ Our objectives are to
 
 Let's start with some standard imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -54,7 +55,7 @@ import numpy as np
 
 We'll also use the following for various tasks described below:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 from quantecon import LinearStateSpace
 import cmath
 import math
@@ -63,7 +64,7 @@ from sympy import Symbol, init_printing
 from cmath import sqrt
 ```
 
-### Samuelson's Model
+### Samuelson's model
 
 Samuelson used a *second-order linear difference equation* to
 represent a model of national output based on three components:
@@ -201,7 +202,7 @@ no random shocks hit aggregate demand --- has only transient fluctuations.
 We can convert the model to one that has persistent irregular
 fluctuations by adding a random shock to aggregate demand.
 
-### Stochastic Version of the Model
+### Stochastic version of the model
 
 We create a **random** or **stochastic** version of the model by adding
 a random process of **shocks** or **disturbances**
@@ -212,10 +213,10 @@ equation**:
 ```{math}
 :label: second_stochastic
 
-Y_t = G_t + a (1-b) Y_{t-1} - a b Y_{t-2} + \sigma \epsilon_{t}
+Y_t = (a+b)Y_{t-1} - b Y_{t-2} + (\gamma + G_t) + \sigma \epsilon_{t}
 ```
 
-### Mathematical Analysis of the Model
+### Mathematical analysis of the model
 
 To get started, let's set $G_t \equiv 0$, $\sigma = 0$, and
 $\gamma = 0$.
@@ -354,7 +355,7 @@ absolute values strictly less than one, the absolute value of the larger
 one governs the rate of convergence to the steady state of the non
 stochastic version of the model.
 
-### Things This Lecture Does
+### Things this lecture does
 
 We write a function to generate simulations of a $\{Y_t\}$ sequence as a function of time.
 
@@ -402,10 +403,9 @@ $$
 
 We'll start by drawing an informative graph from page 189 of {cite}`Sargent1987`
 
-```{code-cell} python3
----
-tags: [output_scroll]
----
+```{code-cell} ipython3
+:tags: [output_scroll]
+
 def param_plot():
 
     """This function creates the graph on page 189 of
@@ -495,9 +495,9 @@ difference equation parameter pairs in the Samuelson model are such that:
 Later we'll present the graph with a red mark showing the particular
 point implied by the setting of $(a,b)$.
 
-### Function to Describe Implications of Characteristic Polynomial
+### Function to describe implications of characteristic polynomial
 
-```{code-cell} python3
+```{code-cell} ipython3
 def categorize_solution(ρ1, ρ2):
 
     """This function takes values of ρ1 and ρ2 and uses them
@@ -517,17 +517,17 @@ therefore damped oscillations')
 therefore get smooth convergence to a steady state')
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 ### Test the categorize_solution function
 
 categorize_solution(1.3, -.4)
 ```
 
-### Function for Plotting Paths
+### Function for plotting paths
 
 A useful function for our work below is
 
-```{code-cell} python3
+```{code-cell} ipython3
 def plot_y(function=None):
 
     """Function plots path of Y_t"""
@@ -540,7 +540,7 @@ def plot_y(function=None):
     plt.show()
 ```
 
-### Manual or "by hand" Root Calculations
+### Manual or "by hand" root calculations
 
 The following function calculates roots of the characteristic polynomial
 using high school algebra.
@@ -550,7 +550,7 @@ using high school algebra.
 The function also plots a $Y_t$ starting from initial conditions
 that we set
 
-```{code-cell} python3
+```{code-cell} ipython3
 # This is a 'manual' method
 
 def y_nonstochastic(y_0=100, y_1=80, α=.92, β=.5, γ=10, n=80):
@@ -604,7 +604,7 @@ def y_nonstochastic(y_0=100, y_1=80, α=.92, β=.5, γ=10, n=80):
 plot_y(y_nonstochastic())
 ```
 
-### Reverse-Engineering Parameters to Generate Damped Cycles
+### Reverse-engineering parameters to generate damped cycles
 
 The next cell writes code that takes as inputs the modulus $r$ and
 phase $\phi$ of a conjugate pair of complex numbers in polar form
@@ -618,7 +618,7 @@ $$
 - It then reverse-engineers $(a,b)$ and $(\rho_1, \rho_2)$,
   pairs that would generate those roots
 
-```{code-cell} python3
+```{code-cell} ipython3
 ### code to reverse-engineer a cycle
 ### y_t = r^t (c_1 cos(ϕ t) + c2 sin(ϕ t))
 ###
@@ -655,7 +655,7 @@ print(f"a, b = {a}, {b}")
 print(f"ρ1, ρ2 = {ρ1}, {ρ2}")
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 ## Print the real components of ρ1 and ρ2
 
 ρ1 = ρ1.real
@@ -664,12 +664,12 @@ print(f"ρ1, ρ2 = {ρ1}, {ρ2}")
 ρ1, ρ2
 ```
 
-### Root Finding Using Numpy
+### Root finding using numpy
 
 Here we'll use numpy to compute the roots of the characteristic
 polynomial
 
-```{code-cell} python3
+```{code-cell} ipython3
 r1, r2 = np.roots([1, -ρ1, -ρ2])
 
 p1 = cmath.polar(r1)
@@ -683,7 +683,7 @@ print(f"a, b = {a}, {b}")
 print(f"ρ1, ρ2 = {ρ1}, {ρ2}")
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 ##=== This method uses numpy to calculate roots ===#
 
 
@@ -731,14 +731,14 @@ def y_nonstochastic(y_0=100, y_1=80, α=.9, β=.8, γ=10, n=80):
 plot_y(y_nonstochastic())
 ```
 
-### Reverse-Engineered Complex Roots: Example
+### Reverse-engineered complex roots: Example
 
 The next cell studies the implications of reverse-engineered complex
 roots.
 
 We'll generate an **undamped** cycle of period 10
 
-```{code-cell} python3
+```{code-cell} ipython3
 r = 1   # Generates undamped, nonexplosive cycles
 
 period = 10   # Length of cycle in units of time
@@ -758,11 +758,11 @@ ytemp = y_nonstochastic(α=a, β=b, y_0=20, y_1=30)
 plot_y(ytemp)
 ```
 
-### Digression: Using Sympy to Find Roots
+### Digression: Using Sympy to find roots
 
 We can also use sympy to compute analytic formulas for the roots
 
-```{code-cell} python3
+```{code-cell} ipython3
 init_printing()
 
 r1 = Symbol("ρ_1")
@@ -772,7 +772,7 @@ z = Symbol("z")
 sympy.solve(z**2 - r1*z - r2, z)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 a = Symbol("α")
 b = Symbol("β")
 r1 = a + b
@@ -781,13 +781,13 @@ r2 = -b
 sympy.solve(z**2 - r1*z - r2, z)
 ```
 
-## Stochastic Shocks
+## Stochastic shocks
 
 Now we'll construct some code to simulate the stochastic version of the
 model that emerges when we add a random shock process to aggregate
 demand
 
-```{code-cell} python3
+```{code-cell} ipython3
 def y_stochastic(y_0=0, y_1=0, α=0.8, β=0.2, γ=10, n=100, σ=5):
 
     """This function takes parameters of a stochastic version of
@@ -839,7 +839,7 @@ plot_y(y_stochastic())
 
 Let's do a simulation in which there are shocks and the characteristic polynomial has complex roots
 
-```{code-cell} python3
+```{code-cell} ipython3
 r = .97
 
 period = 10   #  Length of cycle in units of time
@@ -857,12 +857,12 @@ print(f"a, b = {a}, {b}")
 plot_y(y_stochastic(y_0=40, y_1 = 42, α=a, β=b, σ=2, n=100))
 ```
 
-## Government Spending
+## Government spending
 
 This function computes a response to either a permanent or one-off increase
 in government expenditures
 
-```{code-cell} python3
+```{code-cell} ipython3
 def y_stochastic_g(y_0=20,
                    y_1=20,
                    α=0.8,
@@ -948,24 +948,24 @@ def y_stochastic_g(y_0=20,
 
 A permanent government spending shock can be simulated as follows
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_y(y_stochastic_g(g=10, g_t=20, duration='permanent'))
 ```
 
 We can also see the response to a one time jump in government expenditures
 
-```{code-cell} python3
+```{code-cell} ipython3
 plot_y(y_stochastic_g(g=500, g_t=50, duration='one-off'))
 ```
 
-## Wrapping Everything Into a Class
+## Wrapping everything into a class
 
 Up to now, we have written functions to do the work.
 
 Now we'll roll up our sleeves and write a Python class called `Samuelson`
 for the Samuelson model
 
-```{code-cell} python3
+```{code-cell} ipython3
 class Samuelson():
 
     """This class represents the Samuelson model, otherwise known as the
@@ -976,7 +976,7 @@ class Samuelson():
 
     .. math::
 
-        Y_t =  + \alpha (1 + \beta) Y_{t-1} - \alpha \beta Y_{t-2}
+        Y_t =  a (1 + \beta) Y_{t-1} - a \beta Y_{t-2}
 
     Parameters
     ----------
@@ -1158,33 +1158,33 @@ class Samuelson():
         return fig
 ```
 
-### Illustration of Samuelson Class
+### Illustration of Samuelson class
 
 Now we'll put our Samuelson class to work on an example
 
-```{code-cell} python3
+```{code-cell} ipython3
 sam = Samuelson(α=0.8, β=0.5, σ=2, g=10, g_t=20, duration='permanent')
 sam.summary()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 sam.plot()
 plt.show()
 ```
 
-### Using the Graph
+### Using the graph
 
 We'll use our graph to show where the roots lie and how their location
 is consistent with the behavior of the path just graphed.
 
 The red $+$ sign shows the location of the roots
 
-```{code-cell} python3
+```{code-cell} ipython3
 sam.param_plot()
 plt.show()
 ```
 
-## Using the LinearStateSpace Class
+## Using the LinearStateSpace class
 
 It turns out that we can use the [QuantEcon.py](https://quantecon.org/quantecon-py)
 [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class to do
@@ -1193,7 +1193,7 @@ much of the work that we have done from scratch above.
 Here is how we map the Samuelson model into an instance of a
 `LinearStateSpace` class
 
-```{code-cell} python3
+```{code-cell} ipython3
 """This script maps the Samuelson model in the the
 ``LinearStateSpace`` class
 """
@@ -1235,12 +1235,12 @@ axes[-1].set_xlabel('Iteration')
 plt.show()
 ```
 
-### Other Methods in the `LinearStateSpace` Class
+### Other methods in the `LinearStateSpace` class
 
 Let's plot **impulse response functions** for the instance of the
 Samuelson model using a method in the `LinearStateSpace` class
 
-```{code-cell} python3
+```{code-cell} ipython3
 imres = sam_t.impulse_response()
 imres = np.asarray(imres)
 y1 = imres[:, :, 0]
@@ -1251,18 +1251,18 @@ y1.shape
 Now let's compute the zeros of the characteristic polynomial by simply
 calculating the eigenvalues of $A$
 
-```{code-cell} python3
+```{code-cell} ipython3
 A = np.asarray(A)
 w, v = np.linalg.eig(A)
 print(w)
 ```
 
-### Inheriting Methods from `LinearStateSpace`
+### Inheriting methods from `LinearStateSpace`
 
 We could also create a subclass of `LinearStateSpace` (inheriting all its
 methods and attributes) to add more functions to use
 
-```{code-cell} python3
+```{code-cell} ipython3
 class SamuelsonLSS(LinearStateSpace):
 
     """
@@ -1371,30 +1371,30 @@ class SamuelsonLSS(LinearStateSpace):
 
 Let's show how we can use the `SamuelsonLSS`
 
-```{code-cell} python3
+```{code-cell} ipython3
 samlss = SamuelsonLSS()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 samlss.plot_simulation(100, stationary=False)
 plt.show()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 samlss.plot_simulation(100, stationary=True)
 plt.show()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 samlss.plot_irf(100)
 plt.show()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 samlss.multipliers()
 ```
 
-## Pure Multiplier Model
+## Pure multiplier model
 
 Let's shut down the accelerator by setting $b=0$ to get a pure
 multiplier model
@@ -1402,23 +1402,23 @@ multiplier model
 - the absence of cycles gives an idea about why Samuelson included the
   accelerator
 
-```{code-cell} python3
+```{code-cell} ipython3
 pure_multiplier = SamuelsonLSS(α=0.95, β=0)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 pure_multiplier.plot_simulation()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 pure_multiplier = SamuelsonLSS(α=0.8, β=0)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 pure_multiplier.plot_simulation()
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 pure_multiplier.plot_irf(100)
 ```
 
