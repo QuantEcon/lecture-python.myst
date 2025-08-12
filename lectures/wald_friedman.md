@@ -567,8 +567,8 @@ def run_sprt(params):
                     & decisions_h0_bool) / np.sum(~truth_h0_bool)
     
     # Create scipy distributions for compatibility
-    f0 = beta(params.a0, params.b0)
-    f1 = beta(params.a1, params.b1)
+    f0 = lambda x: p(x, params.a0, params.b0)
+    f1 = lambda x: p(x, params.a1, params.b1)
     
     return {
         'stopping_times': stopping_times,
@@ -604,13 +604,13 @@ The following code constructs a graph that lets us  visualize two distributions 
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 z_grid = np.linspace(0, 1, 200)
-axes[0].plot(z_grid, results['f0'].pdf(z_grid), 'b-', 
+axes[0].plot(z_grid, results['f0'](z_grid), 'b-', 
              lw=2, label=f'$f_0 = \\text{{Beta}}({params.a0},{params.b0})$')
-axes[0].plot(z_grid, results['f1'].pdf(z_grid), 'r-', 
+axes[0].plot(z_grid, results['f1'](z_grid), 'r-', 
              lw=2, label=f'$f_1 = \\text{{Beta}}({params.a1},{params.b1})$')
 axes[0].fill_between(z_grid, 0, 
-                     np.minimum(results['f0'].pdf(z_grid), 
-                                results['f1'].pdf(z_grid)), 
+                     np.minimum(results['f0'](z_grid), 
+                                results['f1'](z_grid)), 
                      alpha=0.3, color='purple', label='overlap region')
 axes[0].set_xlabel('z')
 axes[0].set_ylabel('density')
@@ -698,12 +698,12 @@ def plot_sprt_results(results, params, title=""):
     
     # Distribution plots
     z_grid = np.linspace(0, 1, 200)
-    axes[0].plot(z_grid, results['f0'].pdf(z_grid), 'b-', lw=2, 
+    axes[0].plot(z_grid, results['f0'](z_grid), 'b-', lw=2, 
                      label=f'$f_0 = \\text{{Beta}}({params.a0},{params.b0})$')
-    axes[0].plot(z_grid, results['f1'].pdf(z_grid), 'r-', lw=2, 
+    axes[0].plot(z_grid, results['f1'](z_grid), 'r-', lw=2, 
                      label=f'$f_1 = \\text{{Beta}}({params.a1},{params.b1})$')
     axes[0].fill_between(z_grid, 0, 
-                np.minimum(results['f0'].pdf(z_grid), results['f1'].pdf(z_grid)), 
+                np.minimum(results['f0'](z_grid), results['f1'](z_grid)), 
                 alpha=0.3, color='purple', label='overlap')
     if title:
         axes[0].set_title(title, fontsize=25)
@@ -834,8 +834,7 @@ for a0, b0, a1, b1 in param_comb:
 fig, ax = plt.subplots(figsize=(6, 6))
 
 scatter = ax.scatter(js_dists, mean_stopping_times, 
-                    s=80, alpha=0.7, c=range(len(js_dists)),
-                    linewidth=0.5)
+                    s=80, alpha=0.7, linewidth=0.5)
 
 ax.set_xlabel('Jensen–Shannon distance', fontsize=14)
 ax.set_ylabel('mean stopping time', fontsize=14)
@@ -870,16 +869,16 @@ for i, idx in enumerate(selected_indices):
     
     # Plot the distributions
     z_grid = np.linspace(0, 1, 200)
-    f0_dist = beta(a0, b0)
-    f1_dist = beta(a1, b1)
+    f0 = lambda x: p(x, a0, b0)
+    f1 = lambda x: p(x, a1, b1)
     
-    axes[row, col].plot(z_grid, f0_dist.pdf(z_grid), 'b-', 
+    axes[row, col].plot(z_grid, f0(z_grid), 'b-', 
                         lw=2, label='$f_0$')
-    axes[row, col].plot(z_grid, f1_dist.pdf(z_grid), 'r-', 
+    axes[row, col].plot(z_grid, f1(z_grid), 'r-', 
                         lw=2, label='$f_1$')
     axes[row, col].fill_between(z_grid, 0, 
-                        np.minimum(f0_dist.pdf(z_grid), 
-                        f1_dist.pdf(z_grid)), 
+                        np.minimum(f0(z_grid), 
+                        f1(z_grid)), 
                         alpha=0.3, color='purple')
     
     axes[row, col].set_title(f'JS dist: {js_dist:.3f}'
@@ -907,8 +906,8 @@ def plot_likelihood_paths(params, n_highlight=10, n_background=200):
     B = params.β / (1 - params.α)
     logA, logB = np.log(A), np.log(B)
     
-    f0 = beta(params.a0, params.b0)
-    f1 = beta(params.a1, params.b1)
+    f0 = lambda x: p(x, params.a0, params.b0)
+    f1 = lambda x: p(x, params.a1, params.b1)
     
     fig, axes = plt.subplots(1, 2, figsize=(14, 7))
     
@@ -926,9 +925,10 @@ def plot_likelihood_paths(params, n_highlight=10, n_background=200):
             n = 0
             
             while True:
-                z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
+                z = rng.beta(params.a0, params.b0) if true_f0 \
+                        else rng.beta(params.a1, params.b1)
                 n += 1
-                log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
+                log_L += np.log(f1(z)) - np.log(f0(z))
                 log_L_path.append(log_L)
                 
                 # Check stopping conditions
