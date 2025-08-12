@@ -553,7 +553,7 @@ that we set
 ```{code-cell} ipython3
 # This is a 'manual' method
 
-def y_nonstochastic(y_0=100, y_1=80, α=.92, β=.5, γ=10, n=80):
+def y_nonstochastic(y_0=100, y_1=80, a=.92, b=.5, γ=10, n=80):
 
     """Takes values of parameters and computes the roots of characteristic
     polynomial. It tells whether they are real or complex and whether they
@@ -564,8 +564,8 @@ def y_nonstochastic(y_0=100, y_1=80, α=.92, β=.5, γ=10, n=80):
 
     roots = []
 
-    ρ1 = α + β
-    ρ2 = -β
+    ρ1 = a + b
+    ρ2 = -b
 
     print(f'ρ_1 is {ρ1}')
     print(f'ρ_2 is {ρ2}')
@@ -687,7 +687,7 @@ print(f"ρ1, ρ2 = {ρ1}, {ρ2}")
 ##=== This method uses numpy to calculate roots ===#
 
 
-def y_nonstochastic(y_0=100, y_1=80, α=.9, β=.8, γ=10, n=80):
+def y_nonstochastic(y_0=100, y_1=80, a=.9, b=.8, γ=10, n=80):
 
     """ Rather than computing the roots of the characteristic
     polynomial by hand as we did earlier, this function
@@ -695,8 +695,8 @@ def y_nonstochastic(y_0=100, y_1=80, α=.9, β=.8, γ=10, n=80):
     """
 
     # Useful constants
-    ρ1 = α + β
-    ρ2 = -β
+    ρ1 = a + b
+    ρ2 = -b
 
     categorize_solution(ρ1, ρ2)
 
@@ -754,7 +754,7 @@ b = b.real
 
 print(f"a, b = {a}, {b}")
 
-ytemp = y_nonstochastic(α=a, β=b, y_0=20, y_1=30)
+ytemp = y_nonstochastic(a=a, b=b, y_0=20, y_1=30)
 plot_y(ytemp)
 ```
 
@@ -773,8 +773,8 @@ sympy.solve(z**2 - r1*z - r2, z)
 ```
 
 ```{code-cell} ipython3
-a = Symbol("α")
-b = Symbol("β")
+a = Symbol("a")
+b = Symbol("b")
 r1 = a + b
 r2 = -b
 
@@ -788,7 +788,7 @@ model that emerges when we add a random shock process to aggregate
 demand
 
 ```{code-cell} ipython3
-def y_stochastic(y_0=0, y_1=0, α=0.8, β=0.2, γ=10, n=100, σ=5):
+def y_stochastic(y_0=0, y_1=0, a=0.8, b=0.2, γ=10, n=100, σ=5):
 
     """This function takes parameters of a stochastic version of
     the model and proceeds to analyze the roots of the characteristic
@@ -796,8 +796,8 @@ def y_stochastic(y_0=0, y_1=0, α=0.8, β=0.2, γ=10, n=100, σ=5):
     """
 
     # Useful constants
-    ρ1 = α + β
-    ρ2 = -β
+    ρ1 = a + b
+    ρ2 = -b
 
     # Categorize solution
     categorize_solution(ρ1, ρ2)
@@ -854,7 +854,7 @@ a = a.real
 b = b.real
 
 print(f"a, b = {a}, {b}")
-plot_y(y_stochastic(y_0=40, y_1 = 42, α=a, β=b, σ=2, n=100))
+plot_y(y_stochastic(y_0=40, y_1 = 42, a=a, b=b, σ=2, n=100))
 ```
 
 ## Government spending
@@ -865,8 +865,8 @@ in government expenditures
 ```{code-cell} ipython3
 def y_stochastic_g(y_0=20,
                    y_1=20,
-                   α=0.8,
-                   β=0.2,
+                   a=0.8,
+                   b=0.2,
                    γ=10,
                    n=100,
                    σ=2,
@@ -879,8 +879,8 @@ def y_stochastic_g(y_0=20,
     """
 
     # Useful constants
-    ρ1 = α + β
-    ρ2 = -β
+    ρ1 = a + b
+    ρ2 = -b
 
     # Categorize solution
     categorize_solution(ρ1, ρ2)
@@ -984,9 +984,9 @@ class Samuelson():
         Initial condition for Y_0
     y_1 : scalar
         Initial condition for Y_1
-    α : scalar
+    a : scalar
         Marginal propensity to consume
-    β : scalar
+    b : scalar
         Accelerator coefficient
     n : int
         Number of iterations
@@ -1007,8 +1007,8 @@ class Samuelson():
     def __init__(self,
                  y_0=100,
                  y_1=50,
-                 α=1.3,
-                 β=0.2,
+                 a=1.3,
+                 b=0.2,
                  γ=10,
                  n=100,
                  σ=0,
@@ -1016,11 +1016,11 @@ class Samuelson():
                  g_t=0,
                  duration=None):
 
-        self.y_0, self.y_1, self.α, self.β = y_0, y_1, α, β
+        self.y_0, self.y_1, self.a, self.b = y_0, y_1, a, b
         self.n, self.g, self.g_t, self.duration = n, g, g_t, duration
         self.γ, self.σ = γ, σ
-        self.ρ1 = α + β
-        self.ρ2 = -β
+        self.ρ1 = a + b
+        self.ρ2 = -b
         self.roots = np.roots([1, -self.ρ1, -self.ρ2])
 
     def root_type(self):
@@ -1122,7 +1122,7 @@ class Samuelson():
         ax.grid()
 
         # Add parameter values to plot
-        paramstr = f'$\\alpha={self.α:.2f}$ \n $\\beta={self.β:.2f}$ \n \
+        paramstr = f'$a={self.a:.2f}$ \n $b={self.b:.2f}$ \n \
         $\\gamma={self.γ:.2f}$ \n $\\sigma={self.σ:.2f}$ \n \
         $\\rho_1={self.ρ1:.2f}$ \n $\\rho_2={self.ρ2:.2f}$'
         props = dict(fc='white', pad=10, alpha=0.5)
@@ -1163,7 +1163,7 @@ class Samuelson():
 Now we'll put our Samuelson class to work on an example
 
 ```{code-cell} ipython3
-sam = Samuelson(α=0.8, β=0.5, σ=2, g=10, g_t=20, duration='permanent')
+sam = Samuelson(a=0.8, b=0.5, σ=2, g=10, g_t=20, duration='permanent')
 sam.summary()
 ```
 
@@ -1197,10 +1197,10 @@ Here is how we map the Samuelson model into an instance of a
 """This script maps the Samuelson model in the the
 ``LinearStateSpace`` class
 """
-α = 0.8
-β = 0.9
-ρ1 = α + β
-ρ2 = -β
+a = 0.8
+b = 0.9
+ρ1 = a + b
+ρ2 = -b
 γ = 10
 σ = 1
 g = 10
@@ -1211,8 +1211,8 @@ A = [[1,        0,      0],
      [0,        1,      0]]
 
 G = [[γ + g, ρ1,   ρ2],         # this is Y_{t+1}
-     [γ,      α,    0],         # this is C_{t+1}
-     [0,      β,   -β]]         # this is I_{t+1}
+     [γ,      a,    0],         # this is C_{t+1}
+     [0,      b,   -b]]         # this is I_{t+1}
 
 μ_0 = [1, 100, 50]
 C = np.zeros((3,1))
@@ -1272,21 +1272,21 @@ class SamuelsonLSS(LinearStateSpace):
     def __init__(self,
                  y_0=100,
                  y_1=50,
-                 α=0.8,
-                 β=0.9,
+                 a=0.8,
+                 b=0.9,
                  γ=10,
                  σ=1,
                  g=10):
 
-        self.α, self.β = α, β
+        self.a, self.b = a, b
         self.y_0, self.y_1, self.g = y_0, y_1, g
         self.γ, self.σ = γ, σ
 
         # Define intial conditions
         self.μ_0 = [1, y_0, y_1]
 
-        self.ρ1 = α + β
-        self.ρ2 = -β
+        self.ρ1 = a + b
+        self.ρ2 = -b
 
         # Define transition matrix
         self.A = [[1,                 0,         0],
@@ -1295,8 +1295,8 @@ class SamuelsonLSS(LinearStateSpace):
 
         # Define output matrix
         self.G = [[γ + g, self.ρ1, self.ρ2],         # this is Y_{t+1}
-                  [γ,           α,       0],         # this is C_{t+1}
-                  [0,           β,      -β]]         # this is I_{t+1}
+                  [γ,           a,       0],         # this is C_{t+1}
+                  [0,           b,      -b]]         # this is I_{t+1}
 
         self.C = np.zeros((3, 1))
         self.C[1] = σ  # stochastic
@@ -1403,7 +1403,7 @@ multiplier model
   accelerator
 
 ```{code-cell} ipython3
-pure_multiplier = SamuelsonLSS(α=0.95, β=0)
+pure_multiplier = SamuelsonLSS(a=0.95, b=0)
 ```
 
 ```{code-cell} ipython3
@@ -1411,7 +1411,7 @@ pure_multiplier.plot_simulation()
 ```
 
 ```{code-cell} ipython3
-pure_multiplier = SamuelsonLSS(α=0.8, β=0)
+pure_multiplier = SamuelsonLSS(a=0.8, b=0)
 ```
 
 ```{code-cell} ipython3
