@@ -5,6 +5,8 @@ on:
 jobs:
   preview:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
+    permissions:
+      issues: write          # Required for creating GitHub issues
     steps:
       - uses: actions/checkout@v4
         with:
