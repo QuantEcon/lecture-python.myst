@@ -80,6 +80,8 @@ jobs:
           fail-on-warning: 'true'
           create-issue: 'true'
           issue-title: 'Python Warnings Found in Code Output'
+          create-artifact: 'true'
+          artifact-name: 'python-warning-report'
       - name: Upload Execution Reports (HTML)
         uses: actions/upload-artifact@v4
         if: failure()
