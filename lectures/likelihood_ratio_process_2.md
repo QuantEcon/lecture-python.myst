@@ -669,7 +669,7 @@ In the right panel, nature flips coins each period. We see a very similar patter
 
 The figures in the top panel remind us of the discussion in [this section](KL_link).
 
-We invite readers to revisit [that section](rel_entropy) and try to infer the relationships among $KL(f, g)$, $KL(g, f)$, $KL(h, f)$, and $KL(h,g)$.
+We invite readers to revisit [that section](llr_h) and try to infer the relationships among $KL(f, g)$, $KL(g, f)$, $KL(h, f)$, and $KL(h,g)$.
 
 
 Let's compute values of KL divergence

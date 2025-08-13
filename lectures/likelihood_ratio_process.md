@@ -588,9 +588,8 @@ control tests during World War II.
 A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in {doc}`this lecture <wald_friedman>`.
 
-
-(rel_entropy)=
-## Kullback–Leibler Divergence
+(llr_h)=
+### A third distribution $h$
 
 Now let's consider a case in which neither $g$ nor $f$
 generates the data.
@@ -600,11 +599,7 @@ Instead, a third distribution $h$ does.
 Let's study how accumulated likelihood ratios $L$ behave
 when $h$ governs the data.
 
-A key tool here is called **Kullback–Leibler divergence**.
-
-It is also called **relative entropy**.
-
-It measures how one probability distribution differs from another.
+A key tool here is called **Kullback–Leibler divergence** we studied in {doc}`divergence_measures`.
 
 In our application, we want to measure how much $f$ or $g$
 diverges from $h$
@@ -628,10 +623,7 @@ K_{g} = D_{KL}\bigl(h\|g\bigr) = KL(h,g)
 \end{aligned}
 $$
 
-+++
-
-Let's compute the Kullback–Leibler discrepancies by quadrature
-integration.
+Let's compute the Kullback–Leibler discrepancies using the same code in {doc}`divergence_measures`.
 
 ```{code-cell} ipython3
 def compute_KL(f, g):
@@ -1119,26 +1111,15 @@ From the figure above, we can see:
 
 **Remark:** Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem. 
 
-
-## Measuring discrepancies between distributions
+### Error probability and divergence measures
 
 A plausible guess is that the ability of a likelihood ratio to distinguish distributions $f$ and $g$ depends on how "different" they are.
  
-But how should we measure discrepancies between distributions?
+We have learnt some measures of "difference" between distributions in {doc}`divergence_measures`.
 
-We've already encountered one discrepancy measure -- the Kullback-Leibler (KL) divergence. 
+Let's now study two more measures of "difference" between distributions that are useful in the context of model selection and classification.
 
-We now briefly explore two alternative discrepancy  measures.
-
-### Chernoff entropy
-
-Chernoff entropy was motivated by an early application of  the [theory of large deviations](https://en.wikipedia.org/wiki/Large_deviations_theory).
-
-```{note}
-Large deviation theory provides refinements of the central limit theorem. 
-```
-
-The Chernoff entropy between probability densities $f$ and $g$ is defined as:
+Recall that Chernoff entropy between probability densities $f$ and $g$ is defined as:
 
 $$
 C(f,g) = - \log \min_{\phi \in (0,1)} \int f^\phi(x) g^{1-\phi}(x) dx
@@ -1149,8 +1130,6 @@ An upper bound on model selection error probability is
 $$
 e^{-C(f,g)T} .
 $$
-
-Thus, Chernoff entropy is an upper bound on the exponential rate at which the selection error probability falls as sample size $T$ grows. 
 
 Let's compute Chernoff entropy numerically with some Python code
 
@@ -1211,19 +1190,13 @@ plt.show()
 
 Evidently, $e^{-C(f,g)T}$ is an upper bound on the error rate.
 
-### Jensen-Shannon divergence
+In `{doc}`divergence_measures`, we also studied **Jensen-Shannon divergence** as 
+a symmetric measure of distance between distributions.
 
-The [Jensen-Shannon divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence) is another  divergence measure.  
+We can use Jensen-Shannon divergence to measure the distance between distributions $f$ and $g$ and 
+compute how it covaries with the model selection error probability.
 
-For probability densities $f$ and $g$, the **Jensen-Shannon divergence** is defined as:
-
-$$
-D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
-$$ (eq:compute_JS)
-
-where $m = \frac{1}{2}(f+g)$ is a mixture of $f$ and $g$.
-
-Below we compute Jensen-Shannon divergence numerically with some Python code
+We also compute Jensen-Shannon divergence numerically with some Python code
 
 ```{code-cell} ipython3
 def compute_JS(f, g):
@@ -1236,191 +1209,6 @@ def compute_JS(f, g):
     js_div = 0.5 * compute_KL(f, m) + 0.5 * compute_KL(g, m)
     return js_div
 ```
-
- 
-```{note}
-We studied KL divergence in the [section above](rel_entropy) with respect to a reference distribution $h$.
-
-Recall that  KL divergence $KL(f, g)$ measures expected excess surprisal from using misspecified model $g$ instead $f$ when $f$ is the true model.
-
-Because in general $KL(f, g) \neq KL(g, f)$, KL divergence is not symmetric, but Jensen-Shannon divergence is symmetric.
-
-(In fact, the square root of the Jensen-Shannon divergence is a metric referred to as the Jensen-Shannon distance.)
-
-As {eq}`eq:compute_JS` shows, the Jensen-Shannon divergence computes average of the KL divergence of $f$ and $g$ with respect to a particular reference distribution $m$ defined below the equation.
-```
-
-Now let's create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy for a set of pairs of Beta distributions.
-
-```{code-cell} ipython3
-:tags: [hide-input]
-
-distribution_pairs = [
-    # (f_params, g_params)
-    ((1, 1), (0.1, 0.2)),
-    ((1, 1), (0.3, 0.3)),
-    ((1, 1), (0.3, 0.4)),
-    ((1, 1), (0.5, 0.5)),
-    ((1, 1), (0.7, 0.6)),
-    ((1, 1), (0.9, 0.8)),
-    ((1, 1), (1.1, 1.05)),
-    ((1, 1), (1.2, 1.1)),
-    ((1, 1), (1.5, 1.2)),
-    ((1, 1), (2, 1.5)),
-    ((1, 1), (2.5, 1.8)),
-    ((1, 1), (3, 1.2)),
-    ((1, 1), (4, 1)),
-    ((1, 1), (5, 1))
-]
-
-# Create comparison table
-results = []
-for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
-    # Define the density functions
-    f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-    g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
-    
-    # Compute measures
-    kl_fg = compute_KL(f, g)
-    kl_gf = compute_KL(g, f)
-    js_div = compute_JS(f, g)
-    chernoff_ent, _ = compute_chernoff_entropy(f, g)
-    
-    results.append({
-        'Pair (f, g)': f"\\text{{Beta}}({f_a},{f_b}), \\text{{Beta}}({g_a},{g_b})",
-        'KL(f, g)': f"{kl_fg:.4f}",
-        'KL(g, f)': f"{kl_gf:.4f}",
-        'JS': f"{js_div:.4f}",
-        'C': f"{chernoff_ent:.4f}"
-    })
-
-df = pd.DataFrame(results)
-
-# Sort by JS divergence
-df['JS_numeric'] = df['JS'].astype(float)
-df = df.sort_values('JS_numeric').drop('JS_numeric', axis=1)
-
-# Generate LaTeX table manually
-columns = ' & '.join([f'\\text{{{col}}}' for col in df.columns])
-rows = ' \\\\\n'.join(
-    [' & '.join([f'{val}' for val in row]) 
-     for row in df.values])
-
-latex_code = rf"""
-\begin{{array}}{{lcccc}}
-{columns} \\
-\hline
-{rows}
-\end{{array}}
-"""
-
-display(Math(latex_code))
-```
-
-The above table indicates how Jensen-Shannon divergence, and Chernoff entropy, and KL divergence covary as we alter $f$ and $g$.
-
-Let's also visualize how these diverge measures covary
-
-```{code-cell} ipython3
-kl_fg_values = [float(result['KL(f, g)']) for result in results]
-js_values = [float(result['JS']) for result in results]
-chernoff_values = [float(result['C']) for result in results]
-
-fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-
-# JS divergence and KL divergence
-axes[0].scatter(kl_fg_values, js_values, alpha=0.7, s=60)
-axes[0].set_xlabel('KL divergence KL(f, g)')
-axes[0].set_ylabel('JS divergence')
-axes[0].set_title('JS divergence and KL divergence')
-
-# Chernoff Entropy and JS divergence
-axes[1].scatter(js_values, chernoff_values, alpha=0.7, s=60)
-axes[1].set_xlabel('JS divergence')
-axes[1].set_ylabel('Chernoff entropy')
-axes[1].set_title('Chernoff entropy and JS divergence')
-
-plt.tight_layout()
-plt.show()
-```
-
-To make the comparison more concrete, let's plot the distributions and the divergence measures for a few pairs of distributions.
-
-Note that the numbers on the title changes with the area of the overlaps of two distributions
-
-```{code-cell} ipython3
-:tags: [hide-input]
-
-def plot_dist_diff():
-    """
-    Plot overlap of two distributions and divergence measures
-    """
-    
-    # Chose a subset of Beta distribution parameters
-    param_grid = [
-        ((1, 1), (1, 1)),   
-        ((1, 1), (1.5, 1.2)),
-        ((1, 1), (2, 1.5)),  
-        ((1, 1), (3, 1.2)),  
-        ((1, 1), (5, 1)),
-        ((1, 1), (0.3, 0.3))
-    ]
-    
-    fig, axes = plt.subplots(3, 2, figsize=(15, 12))
-    
-    divergence_data = []
-    
-    for i, ((f_a, f_b), (g_a, g_b)) in enumerate(param_grid):
-        row = i // 2
-        col = i % 2
-        
-        # Create density functions
-        f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-        g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
-        
-        # Compute divergence measures
-        kl_fg = compute_KL(f, g)
-        js_div = compute_JS(f, g) 
-        chernoff_ent, _ = compute_chernoff_entropy(f, g)
-        
-        divergence_data.append({
-            'f_params': (f_a, f_b),
-            'g_params': (g_a, g_b),
-            'kl_fg': kl_fg,
-            'js_div': js_div,
-            'chernoff': chernoff_ent
-        })
-        
-        # Plot distributions
-        x_range = np.linspace(0, 1, 200)
-        f_vals = [f(x) for x in x_range]
-        g_vals = [g(x) for x in x_range]
-        
-        axes[row, col].plot(x_range, f_vals, 'b-', linewidth=2, 
-                           label=f'f ~ Beta({f_a},{f_b})')
-        axes[row, col].plot(x_range, g_vals, 'r-', linewidth=2, 
-                           label=f'g ~ Beta({g_a},{g_b})')
-        
-        # Fill overlap region
-        overlap = np.minimum(f_vals, g_vals)
-        axes[row, col].fill_between(x_range, 0, overlap, alpha=0.3, 
-                                   color='purple', label='overlap')
-        
-        # Add divergence information
-        axes[row, col].set_title(
-            f'KL(f, g)={kl_fg:.3f}, JS={js_div:.3f}, C={chernoff_ent:.3f}',
-            fontsize=12)
-        axes[row, col].legend(fontsize=14)
-    
-    plt.tight_layout()
-    plt.show()
-    
-    return divergence_data
-
-divergence_data = plot_dist_diff()
-```
-
-### Error probability and divergence measures
 
 Now let's return to our guess that the error probability at large sample sizes is related to the Chernoff entropy  between two distributions.
 
@@ -1892,7 +1680,7 @@ Building on {ref}`lr_ex1`, use the result to explain what happens to $L_t$ as $t
 1. When $K_g > K_f$ (i.e., $f$ is "closer" to $h$ than $g$ is)
 2. When $K_g < K_f$ (i.e., $g$ is "closer" to $h$ than $f$ is)
 
-Relate your answer to the simulation results shown in the {ref}`Kullback-Leibler Divergence <rel_entropy>` section.
+Relate your answer to the simulation results shown in {ref}`this section <llr_h>`.
 ```
 
 ```{solution-start} lr_ex2
