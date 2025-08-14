@@ -105,7 +105,7 @@ Its distribution is
 $$
 \begin{aligned}
 X  & \sim NB(r,p) \\
-\textrm{Prob}(X=k;r,p) & = \begin{pmatrix}k+r-1 \\ r-1 \end{pmatrix}p^r(1-p)^{k}
+\textrm{Prob}(X=k;r,p) & = \begin{bmatrix}k+r-1 \\ r-1 \end{bmatrix}p^r(1-p)^{k}
 \end{aligned}
 $$
 
