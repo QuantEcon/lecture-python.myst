@@ -699,7 +699,7 @@ def _update_bellman(α, β, γ, c, σ, w_vec, p_vec, V, V_new, U):
         V_new[w_idx] = u(w, σ) + β * ((1 - α) * V[w_idx] + α * U)
 
     U_new = u(c, σ) + β * (1 - γ) * U + \
-                    β * γ * np.sum(np.maximum(U, V) * p_vec)
+                    β * γ * (np.maximum(U, V) @ p_vec)
 
     return U_new
 
@@ -836,8 +836,8 @@ def compute_steady_state_quantities(c, τ):
     u, e = x
 
     # Compute steady state welfare
-    w = np.sum(V * p_vec * (w_vec - τ > w_bar)) / np.sum(p_vec * (w_vec -
-            τ > w_bar))
+    mask = (w_vec - τ > w_bar)
+    w = (V * p_vec * mask) @ np.ones_like(p_vec) / (p_vec * mask) @ np.ones_like(p_vec)
     welfare = e * w + u * U
 
     return e, u, welfare
