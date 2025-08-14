@@ -19,14 +19,6 @@ kernelspec:
         </a>
 </div>
 
-<style>
-/* Only expand code cells on this page */
-div.cell div.highlight,
-div.cell div.output_scroll {
-    max-height: none !important;
-    overflow-y: visible !important;
-}
-</style>
 ```
 
 ```{index} single: python
@@ -93,9 +85,9 @@ class Neumann:
         Ap - the cost of each activity
 
     Both A and B have non-negative entries. Moreover, we assume that
-    (1) Assumption 1 (every good which is consumed is also produced):
+    (1) Assumption I (every good which is consumed is also produced):
         for all j, b_{.,j} > 0, i.e. at least one entry is strictly positive
-    (2) Assumption 2 (no free lunch):
+    (2) Assumption II (no free lunch):
         for all i, a_{i,.} > 0, i.e. at least one entry is strictly positive
 
     Parameters
@@ -139,9 +131,9 @@ class Neumann:
           - number of goods          : {n}
           - number of activities     : {m}
 
-        Assumptions:// TODO:change {AI} variable into A1?
-          - A1:  every column of B has a positive entry    : {AI} 
-          - A2: every row of A has a positive entry       : {AII}
+        Assumptions://
+          - AI:  every column of B has a positive entry    : {AI} 
+          - AII: every row of A has a positive entry       : {AII}
 
         """
         # Irreducible                                       : {irr}
@@ -382,7 +374,7 @@ an economy.
 
 Two key assumptions restrict economy $(A,B)$:
 
-````{prf:assumption} every good that is consumed is also produced)
+````{prf:assumption} every good that is consumed is also produced
 :label: assumption1
 
 ```{math}
