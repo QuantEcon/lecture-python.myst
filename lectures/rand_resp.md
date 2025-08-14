@@ -235,14 +235,16 @@ class Comparison:
             rd_answer = sample * spinner + (1 - sample) * (1 - spinner)
             n1 = rd_answer.sum(axis=1)
             pi_hat = (p - 1) / (2 * p - 1) + n1 / n / (2 * p - 1)
-            mse_rd[p] = np.sum((pi_hat - A)**2)
+            diff_rd = pi_hat - A
+            mse_rd[p] = diff_rd @ diff_rd
         for inum, irow in df.iterrows():
             truth_a = np.random.rand(size, self.n) <= irow.T_a
             truth_b = np.random.rand(size, self.n) <= irow.T_b
             trad_answer = sample * truth_a + (1 - sample) * (1 - truth_b)
             pi_trad = trad_answer.sum(axis=1) / n
             df.loc[inum, 'Bias'] = pi_trad.mean() - A
-            mse_trad = np.sum((pi_trad - A)**2)
+            diff_trad = pi_trad - A
+            mse_trad = diff_trad @ diff_trad
             for p in self.p_arr:
                 df.loc[inum, p] = (mse_rd[p] / mse_trad).round(2)
         df = df.set_index(["T_a", "T_b", "Bias"]).rename(columns=self.p_map)
