@@ -1220,6 +1220,30 @@ In the simulation below, nature draws $N / 2$ sequences from $g$ and $N/2$ seque
 Nature does this rather than flipping a fair coin to decide whether to draw from $g$ or $f$ once and for all before each simulation of length $T$.
 ```
 
+We use the following pairs of Beta distributions for $f$ and $g$ as test cases
+
+```{code-cell} ipython3
+distribution_pairs = [
+    # (f_params, g_params)
+    ((1, 1), (0.1, 0.2)),
+    ((1, 1), (0.3, 0.3)),
+    ((1, 1), (0.3, 0.4)),
+    ((1, 1), (0.5, 0.5)),
+    ((1, 1), (0.7, 0.6)),
+    ((1, 1), (0.9, 0.8)),
+    ((1, 1), (1.1, 1.05)),
+    ((1, 1), (1.2, 1.1)),
+    ((1, 1), (1.5, 1.2)),
+    ((1, 1), (2, 1.5)),
+    ((1, 1), (2.5, 1.8)),
+    ((1, 1), (3, 1.2)),
+    ((1, 1), (4, 1)),
+    ((1, 1), (5, 1))
+]
+```
+
+Now let's run the simmulation
+
 ```{code-cell} ipython3
 # Parameters for simulation
 T_large = 50

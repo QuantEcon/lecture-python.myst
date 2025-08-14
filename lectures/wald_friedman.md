@@ -291,15 +291,7 @@ A decision-maker can observe a sequence of draws of a random variable $z$.
 He (or she) wants to know which of two probability distributions $f_0$ or $f_1$ governs $z$.
 
 
-To  illustrate, let's inspect some beta distributions.
-
-The density of a Beta probability distribution with parameters $a$ and $b$ is
-
-$$
-f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
-\quad \text{where} \quad
-\Gamma(p) := \int_{0}^{\infty} x^{p-1} e^{-x} dx
-$$
+We use beta distributions as examples.
 
 The next figure shows two beta distributions.
 
