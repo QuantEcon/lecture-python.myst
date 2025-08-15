@@ -175,7 +175,6 @@ Properties:
 - Its square root $\sqrt{JS}$ is a metric (Jensen–Shannon distance) on the space of probability distributions.
 - JS divergence equals the mutual information between a binary random variable $Z \sim \text{Bernoulli}(1/2)$ indicating the source and a sample $X$ drawn from $f$ if $Z=0$ or from $g$ if $Z=1$.
 
-
 ```{code-cell} ipython3
 def compute_JS(f, g):
     """Compute Jensen-Shannon divergence."""

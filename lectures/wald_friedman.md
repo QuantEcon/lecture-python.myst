@@ -1064,6 +1064,556 @@ This increases the probability of Type II errors.
 
 The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases.
 
+## Exercises
+
+```{exercise}
+:label: wald_friedman_ex1
+
+Sequential Testing for VAR Models
+
+Consider distinguishing between two 3-state Markov chain models using Wald's sequential probability ratio test. 
+
+You have competing hypotheses about the transition probabilities:
+
+- $H_0$: The chain follows transition matrix $P^{(0)}$
+- $H_1$: The chain follows transition matrix $P^{(1)}$
+
+Given transition matrices:
+$$P^{(0)} = \begin{bmatrix}
+0.7 & 0.2 & 0.1 \\
+0.3 & 0.5 & 0.2 \\
+0.1 & 0.3 & 0.6
+\end{bmatrix}, \quad
+P^{(1)} = \begin{bmatrix}
+0.5 & 0.3 & 0.2 \\
+0.2 & 0.6 & 0.2 \\
+0.2 & 0.2 & 0.6
+\end{bmatrix}$$
+
+For a sequence of observations $(x_0, x_1, \ldots, x_t)$, the likelihood ratio is:
+$$\Lambda_t = \frac{\pi_{x_0}^{(1)}}{\pi_{x_0}^{(0)}} \prod_{s=1}^t \frac{P_{x_{s-1},x_s}^{(1)}}{P_{x_{s-1},x_s}^{(0)}}$$
+
+where $\pi^{(i)}$ is the stationary distribution under hypothesis $i$.
+
+Tasks:
+1. Implement the likelihood ratio computation for Markov chains
+2. Implement Wald's sequential test with Type I error $\alpha = 0.05$ and Type II error $\beta = 0.10$
+3. Run 1000 simulations under each hypothesis and compute empirical error rates
+4. Analyze the distribution of stopping times
+
+The test stops when:
+- $\Lambda_t \geq A = \frac{1-\beta}{\alpha} = 18$: Reject $H_0$
+- $\Lambda_t \leq B = \frac{\beta}{1-\alpha} = 0.105$: Accept $H_0$
+```
+
+
+```{solution-start} wald_friedman_ex1
+:class: dropdown
+```
+
+```{code-cell} ipython3
+# Define parameters structure similar to the lecture
+MarkovSPRTParams = namedtuple('MarkovSPRTParams', 
+                ['α', 'β',      # Target type I and type II errors
+                 'P_0', 'P_1',   # Transition matrices
+                 'N',            # Number of simulations
+                 'seed'])
+
+def compute_stationary_distribution(P):
+    """
+    Compute stationary distribution of transition matrix P
+    """
+    eigenvalues, eigenvectors = np.linalg.eig(P.T)
+    # Find eigenvector corresponding to eigenvalue 1
+    idx = np.argmin(np.abs(eigenvalues - 1))
+    pi = np.real(eigenvectors[:, idx])
+    pi = pi / pi.sum()  # Normalize
+    return pi
+
+@njit
+def simulate_markov_chain(P, pi_0, T, seed):
+    """
+    Simulate a Markov chain path
+    """
+    np.random.seed(seed)
+    n_states = len(P)
+    path = np.zeros(T, dtype=np.int32)
+    
+    # Initial state from stationary distribution
+    cumsum_pi = np.cumsum(pi_0)
+    u = np.random.uniform()
+    path[0] = np.searchsorted(cumsum_pi, u)
+    
+    # Generate path
+    for t in range(1, T):
+        cumsum_row = np.cumsum(P[path[t-1]])
+        u = np.random.uniform()
+        path[t] = np.searchsorted(cumsum_row, u)
+    
+    return path
+
+@njit
+def markov_sprt_single_run(P_0, P_1, pi_0, pi_1, logA, logB, true_P, true_pi, seed):
+    """Run a single SPRT for Markov chains until a decision is reached."""
+    log_L = 0.0
+    n = 0
+    max_n = 10000  # Maximum number of observations
+    
+    # Generate a path from the true distribution
+    path = simulate_markov_chain(true_P, true_pi, max_n, seed)
+    
+    # Initial state contribution
+    log_L = np.log(pi_1[path[0]] / pi_0[path[0]])
+    n = 1
+    
+    # Check if we can already make a decision
+    if log_L >= logA:
+        return n, False  # Reject H0
+    elif log_L <= logB:
+        return n, True   # Accept H0
+    
+    # Continue with transitions
+    for t in range(1, max_n):
+        n += 1
+        
+        # Update log-likelihood ratio with transition probability
+        prev_state = path[t-1]
+        curr_state = path[t]
+        
+        p_1 = P_1[prev_state, curr_state]
+        p_0 = P_0[prev_state, curr_state]
+        
+        if p_0 == 0:
+            if p_1 > 0:
+                log_L = np.inf
+            # If both are 0, skip this update
+        else:
+            log_L += np.log(p_1 / p_0)
+        
+        # Check stopping conditions
+        if log_L >= logA:
+            return n, False  # Reject H0
+        elif log_L <= logB:
+            return n, True   # Accept H0
+    
+    # If max_n reached, make decision based on current log_L
+    return n, log_L < 0
+
+@njit(parallel=True)
+def run_markov_sprt_simulation(P_0, P_1, pi_0, pi_1, α, β, N, seed):
+    """SPRT simulation for Markov chains."""
+    
+    # Calculate thresholds (following Wald's approximation from the lecture)
+    A = (1 - β) / α
+    B = β / (1 - α)
+    logA = np.log(A)
+    logB = np.log(B)
+    
+    # Pre-allocate arrays
+    stopping_times = np.zeros(N, dtype=np.int64)
+    decisions_h0 = np.zeros(N, dtype=np.bool_)
+    truth_h0 = np.zeros(N, dtype=np.bool_)
+    
+    # Run simulations in parallel
+    for i in prange(N):
+        # Alternate between true distributions
+        if i % 2 == 0:
+            true_P = P_0
+            true_pi = pi_0
+            truth_h0[i] = True
+        else:
+            true_P = P_1
+            true_pi = pi_1
+            truth_h0[i] = False
+        
+        n, accept_h0 = markov_sprt_single_run(
+            P_0, P_1, pi_0, pi_1, logA, logB, 
+            true_P, true_pi, seed + i
+        )
+        
+        stopping_times[i] = n
+        decisions_h0[i] = accept_h0
+    
+    return stopping_times, decisions_h0, truth_h0
+
+def run_markov_sprt(params):
+    """Run SPRT simulations for Markov chains."""
+    
+    # Compute stationary distributions
+    pi_0 = compute_stationary_distribution(params.P_0)
+    pi_1 = compute_stationary_distribution(params.P_1)
+    
+    stopping_times, decisions_h0, truth_h0 = run_markov_sprt_simulation(
+        params.P_0, params.P_1, pi_0, pi_1,
+        params.α, params.β, params.N, params.seed
+    )
+    
+    # Calculate error rates
+    truth_h0_bool = truth_h0.astype(bool)
+    decisions_h0_bool = decisions_h0.astype(bool)
+    
+    # Type I error: P(reject H0 | H0 is true)
+    type_I = np.sum(truth_h0_bool & ~decisions_h0_bool) / np.sum(truth_h0_bool)
+    
+    # Type II error: P(accept H0 | H0 is false)
+    type_II = np.sum(~truth_h0_bool & decisions_h0_bool) / np.sum(~truth_h0_bool)
+    
+    return {
+        'stopping_times': stopping_times,
+        'decisions_h0': decisions_h0_bool,
+        'truth_h0': truth_h0_bool,
+        'type_I': type_I,
+        'type_II': type_II,
+        'pi_0': pi_0,
+        'pi_1': pi_1
+    }
+
+# Setup and run the Markov chain test
+P_0 = np.array([[0.7, 0.2, 0.1],
+                [0.3, 0.5, 0.2],
+                [0.1, 0.3, 0.6]])
+
+P_1 = np.array([[0.5, 0.3, 0.2],
+                [0.2, 0.6, 0.2],
+                [0.2, 0.2, 0.6]])
+
+params_markov = MarkovSPRTParams(α=0.05, β=0.10, P_0=P_0, P_1=P_1, N=1000, seed=42)
+results_markov = run_markov_sprt(params_markov)
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+
+ax = axes[0]
+max_time = min(results_markov['stopping_times'].max(), 200)
+bins = np.arange(1, max_time + 1)
+ax.hist(results_markov['stopping_times'], bins=bins, 
+        color="steelblue", alpha=0.8, edgecolor="black")
+ax.set_title("Distribution of Stopping Times")
+ax.set_xlabel("n")
+ax.set_ylabel("Frequency")
+ax.set_xlim(0, 100)
+
+ax = axes[1]
+f0_correct = np.sum(results_markov['truth_h0'] & results_markov['decisions_h0'])
+f0_incorrect = np.sum(results_markov['truth_h0'] & (~results_markov['decisions_h0']))
+f1_correct = np.sum((~results_markov['truth_h0']) & (~results_markov['decisions_h0']))
+f1_incorrect = np.sum((~results_markov['truth_h0']) & results_markov['decisions_h0'])
+
+confusion_data = np.array([[f0_correct, f0_incorrect],
+                          [f1_incorrect, f1_correct]])
+row_totals = confusion_data.sum(axis=1, keepdims=True)
+
+im = ax.imshow(confusion_data, cmap='Blues', aspect='equal')
+ax.set_title('Confusion Matrix')
+ax.set_xticks([0, 1])
+ax.set_xticklabels(['Accept $H_0$', 'Reject $H_0$'])
+ax.set_yticks([0, 1])
+ax.set_yticklabels(['True $P^{(0)}$', 'True $P^{(1)}$'])
+
+for i in range(2):
+    for j in range(2):
+        percent = confusion_data[i, j] / row_totals[i, 0] if row_totals[i, 0] > 0 else 0
+        color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 else 'black'
+        ax.text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
+                ha="center", va="center", color=color, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
+```
+
+```{solution-end}
+```
+
+
+```{exercise}
+:label: wald_friedman_ex2
+
+Apply Wald's sequential test to distinguish between two VAR(1) models with different dynamics and noise structures.
+
+Given VAR models under each hypothesis:
+- $H_0$: $x_{t+1} = A^{(0)} x_t + C^{(0)} w_{t+1}$
+- $H_1$: $x_{t+1} = A^{(1)} x_t + C^{(1)} w_{t+1}$
+
+where $w_t \sim \mathcal{N}(0, I)$ and:
+
+$$
+A^{(0)} = \begin{bmatrix} 0.8 & 0.1 \\ 0.2 & 0.7 \end{bmatrix}, \quad
+C^{(0)} = \begin{bmatrix} 0.3 & 0.1 \\ 0.1 & 0.3 \end{bmatrix}
+$$
+
+$$
+A^{(1)} = \begin{bmatrix} 0.6 & 0.2 \\ 0.3 & 0.5 \end{bmatrix}, \quad
+C^{(1)} = \begin{bmatrix} 0.4 & 0 \\ 0 & 0.4 \end{bmatrix}
+$$
+
+Tasks:
+1. Implement the VAR likelihood ratio using the functions from the VAR lecture
+2. Implement Wald's sequential test with $\alpha = 0.05$ and $\beta = 0.10$
+3. Analyze performance under both hypotheses and with model misspecification
+4. Compare with the Markov chain case in terms of stopping times and accuracy
+
+```
+
+```{solution-start} wald_friedman_ex2
+:class: dropdown
+```
+
+```{code-cell} ipython3
+import scipy as sc
+VARModel = namedtuple('VARModel', ['A', 'C', 'μ_0', 'Σ_0',
+                                    'CC', 'CC_inv', 'log_det_CC',
+                                    'Σ_0_inv', 'log_det_Σ_0'])
+
+VARSPRTParams = namedtuple('VARSPRTParams',
+                           ['α', 'β',
+                            'A_0', 'C_0',  # Model 0 parameters
+                            'A_1', 'C_1',  # Model 1 parameters
+                            'N', 'seed'])
+
+def compute_stationary_var(A, C):
+    """Compute stationary distribution for VAR (from the lecture)"""
+    n = A.shape[0]
+    eigenvalues = np.linalg.eigvals(A)
+    if np.max(np.abs(eigenvalues)) >= 1:
+        raise ValueError("VAR is not stationary")
+    
+    μ_0 = np.zeros(n)
+    CC = C @ C.T
+    Σ_0 = sc.linalg.solve_discrete_lyapunov(A, CC)
+    return μ_0, Σ_0
+
+def create_var_model_matrices(A, C, μ_0, Σ_0):
+    """Create VAR model with precomputed matrices (from the lecture)"""
+    CC = C @ C.T
+    
+    det_CC = np.linalg.det(CC)
+    if np.abs(det_CC) < 1e-10:
+        CC_inv = np.linalg.pinv(CC)
+        CC_reg = CC + 1e-10 * np.eye(CC.shape[0])
+        log_det_CC = np.log(np.linalg.det(CC_reg))
+    else:
+        CC_inv = np.linalg.inv(CC)
+        log_det_CC = np.log(det_CC)
+    
+    det_Σ_0 = np.linalg.det(Σ_0)
+    if np.abs(det_Σ_0) < 1e-10:
+        Σ_0_inv = np.linalg.pinv(Σ_0)
+        Σ_0_reg = Σ_0 + 1e-10 * np.eye(Σ_0.shape[0])
+        log_det_Σ_0 = np.log(np.linalg.det(Σ_0_reg))
+    else:
+        Σ_0_inv = np.linalg.inv(Σ_0)
+        log_det_Σ_0 = np.log(det_Σ_0)
+    
+    return VARModel(A=A, C=C, μ_0=μ_0, Σ_0=Σ_0,
+                    CC=CC, CC_inv=CC_inv, log_det_CC=log_det_CC,
+                    Σ_0_inv=Σ_0_inv, log_det_Σ_0=log_det_Σ_0)
+
+def log_likelihood_initial(x_0, model):
+    """Log likelihood of initial state (from the lecture)"""
+    x_0 = np.atleast_1d(x_0)
+    n = len(x_0)
+    diff = x_0 - model.μ_0
+    return -0.5 * (n * np.log(2 * np.pi) + model.log_det_Σ_0 + 
+                  diff @ model.Σ_0_inv @ diff)
+
+def log_likelihood_transition(x_next, x_curr, model):
+    """Log likelihood of transition (from the lecture)"""
+    x_next = np.atleast_1d(x_next)
+    x_curr = np.atleast_1d(x_curr)
+    n = len(x_next)
+    diff = x_next - model.A @ x_curr
+    return -0.5 * (n * np.log(2 * np.pi) + model.log_det_CC + 
+                  diff @ model.CC_inv @ diff)
+
+@njit
+def simulate_var_path(A, C, mu_0, Sigma_0_chol, T, seed):
+    """Simulate a single VAR path"""
+    np.random.seed(seed)
+    n = A.shape[0]
+    m = C.shape[1]
+    path = np.zeros((T+1, n))
+    
+    # Initial state from stationary distribution
+    z = np.random.randn(n)
+    path[0] = mu_0 + Sigma_0_chol @ z
+    
+    # Simulate forward
+    x = path[0].copy()
+    for t in range(T):
+        w = np.random.randn(m)
+        x = A @ x + C @ w
+        path[t+1] = x
+    
+    return path
+
+def var_sprt_single_run(model_0, model_1, model_true, logA, logB, max_T, seed):
+    """Run a single SPRT for VAR models"""
+    # Generate path from true model
+    Sigma_0_chol = np.linalg.cholesky(model_true.Σ_0)
+    path = simulate_var_path(model_true.A, model_true.C, 
+                            model_true.μ_0, Sigma_0_chol, max_T, seed)
+    
+    # Initial log likelihood ratio
+    log_L_0 = log_likelihood_initial(path[0], model_0)
+    log_L_1 = log_likelihood_initial(path[0], model_1)
+    log_L = log_L_1 - log_L_0
+    
+    # Check initial decision
+    if log_L >= logA:
+        return 1, False  # Reject H0
+    elif log_L <= logB:
+        return 1, True   # Accept H0
+    
+    # Sequential testing
+    for t in range(1, max_T):
+        log_L_0_t = log_likelihood_transition(path[t], path[t-1], model_0)
+        log_L_1_t = log_likelihood_transition(path[t], path[t-1], model_1)
+        log_L += (log_L_1_t - log_L_0_t)
+        
+        if log_L >= logA:
+            return t+1, False  # Reject H0
+        elif log_L <= logB:
+            return t+1, True   # Accept H0
+    
+    return max_T, log_L < 0
+
+def run_var_sprt_simulation(model_0, model_1, α, β, N, seed):
+    """SPRT simulation for VAR models"""
+    # Calculate thresholds
+    A = (1 - β) / α
+    B = β / (1 - α)
+    logA = np.log(A)
+    logB = np.log(B)
+    
+    max_T = 500
+    
+    stopping_times = np.zeros(N, dtype=np.int64)
+    decisions_h0 = np.zeros(N, dtype=bool)
+    truth_h0 = np.zeros(N, dtype=bool)
+    
+    for i in range(N):
+        # Alternate between true models
+        if i % 2 == 0:
+            model_true = model_0
+            truth_h0[i] = True
+        else:
+            model_true = model_1
+            truth_h0[i] = False
+        
+        n, accept_h0 = var_sprt_single_run(
+            model_0, model_1, model_true, 
+            logA, logB, max_T, seed + i
+        )
+        
+        stopping_times[i] = n
+        decisions_h0[i] = accept_h0
+    
+    return stopping_times, decisions_h0, truth_h0
+
+def run_var_sprt(params):
+    """Run SPRT simulations for VAR models"""
+    # Create VAR models with stationary initial conditions
+    μ_0_0, Σ_0_0 = compute_stationary_var(params.A_0, params.C_0)
+    model_0 = create_var_model_matrices(params.A_0, params.C_0, μ_0_0, Σ_0_0)
+    
+    μ_0_1, Σ_0_1 = compute_stationary_var(params.A_1, params.C_1)
+    model_1 = create_var_model_matrices(params.A_1, params.C_1, μ_0_1, Σ_0_1)
+    
+    stopping_times, decisions_h0, truth_h0 = run_var_sprt_simulation(
+        model_0, model_1, params.α, params.β, params.N, params.seed
+    )
+    
+    # Calculate error rates
+    type_I = np.sum(truth_h0 & ~decisions_h0) / np.sum(truth_h0)
+    type_II = np.sum(~truth_h0 & decisions_h0) / np.sum(~truth_h0)
+    
+    return {
+        'stopping_times': stopping_times,
+        'decisions_h0': decisions_h0,
+        'truth_h0': truth_h0,
+        'type_I': type_I,
+        'type_II': type_II,
+        'model_0': model_0,
+        'model_1': model_1
+    }
+
+# Setup and run VAR test
+A_0 = np.array([[0.8, 0.1],
+                [0.2, 0.7]])
+C_0 = np.array([[0.3, 0.1],
+                [0.1, 0.3]])
+
+A_1 = np.array([[0.6, 0.2],
+                [0.3, 0.5]])
+C_1 = np.array([[0.4, 0.0],
+                [0.0, 0.4]])
+
+params_var = VARSPRTParams(α=0.05, β=0.10, 
+                           A_0=A_0, C_0=C_0,
+                           A_1=A_1, C_1=C_1,
+                           N=1000, seed=42)
+
+results_var = run_var_sprt(params_var)
+
+A_mid = 0.5 * (A_0 + A_1)
+C_mid = 0.5 * (C_0 + C_1)
+μ_0_mid, Σ_0_mid = compute_stationary_var(A_mid, C_mid)
+model_mid = create_var_model_matrices(A_mid, C_mid, μ_0_mid, Σ_0_mid)
+
+logA = np.log((1 - params_var.β) / params_var.α)
+logB = np.log(params_var.β / (1 - params_var.α))
+
+decisions_mid = []
+stopping_times_mid = []
+for i in range(500):
+    n, accept_h0 = var_sprt_single_run(
+        results_var['model_0'], results_var['model_1'], 
+        model_mid, logA, logB, 500, params_var.seed + 1000 + i
+    )
+    decisions_mid.append(accept_h0)
+    stopping_times_mid.append(n)
+
+fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+
+ax = axes[0]
+positions = [1, 2]
+data = [results_markov['stopping_times'], results_var['stopping_times']]
+bp = ax.boxplot(data, positions=positions, widths=0.6)
+ax.set_xticks(positions)
+ax.set_xticklabels(['Markov Chain', 'VAR(1)'])
+ax.set_ylabel('Stopping Time')
+ax.set_title('Stopping Time Comparison')
+
+# Add mean values
+for i, d in enumerate(data, 1):
+    ax.text(i, np.mean(d), f'μ={np.mean(d):.1f}', 
+           ha='center', va='bottom', fontweight='bold')
+
+# Plot 2: Error rates comparison
+ax = axes[1]
+x = np.arange(2)
+width = 0.35
+type_I_vals = [results_markov['type_I'], results_var['type_I']]
+type_II_vals = [results_markov['type_II'], results_var['type_II']]
+
+ax.bar(x - width/2, type_I_vals, width, label='Type I', color='blue', alpha=0.7)
+ax.bar(x + width/2, type_II_vals, width, label='Type II', color='red', alpha=0.7)
+ax.axhline(y=params_var.α, color='blue', linestyle='--', alpha=0.5)
+ax.axhline(y=params_var.β, color='red', linestyle='--', alpha=0.5)
+
+ax.set_xlabel('Model Type')
+ax.set_ylabel('Error Rate')
+ax.set_title('Error Rates Comparison')
+ax.set_xticks(x)
+ax.set_xticklabels(['Markov Chain', 'VAR(1)'])
+ax.legend()
+```
+
+```{solution-end}
+```
+
+
+
+
 ## Related Lectures
 
 We'll dig deeper into some of the ideas used here in the following earlier and later lectures:
