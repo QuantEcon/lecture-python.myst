@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# Measuring Distance Between Distributions
+# Statistical Divergence Measures
 
 ```{contents} Contents
 :depth: 2
@@ -28,15 +28,22 @@ kernelspec:
 
 ## Overview
 
-Divergence measures quantify the "distance" or dissimilarity between probability distributions.
+A statistical divergence is a function that quantifies discrepancies between two distinct 
+ probability distributions that can be   challenging to distinguish for the following reason:
+ 
+  * every event that is has positive probability  under one of the distributions also has positive probability under the other distribution
 
-It plays a fundamental role in statistics, information theory, and machine learning. 
+  * thus, there is no "smoking gun" event whose occurrence  tells  a statistician that one of the probability distribution surely governs the data  
 
-This lecture explores three fundamental divergence measures and their connections to later lectures:
+Statistical divergence functions  play important roles in statistics, information theory, and what many people now call "machine learning". 
+
+This lecture describes  three divergence measures:
 
 * **Kullback–Leibler (KL) divergence** 
 * **Jensen–Shannon (JS) divergence** 
 * **Chernoff entropy** 
+
+These will appear in several quantecon lectures. 
 
 Let's start by importing the necessary Python tools.
 
@@ -103,7 +110,7 @@ plt.show()
 (rel_entropy)=
 ## Kullback–Leibler divergence
 
-The first measure is the **Kullback–Leibler (KL) divergence**. 
+Our  first divergence function is the **Kullback–Leibler (KL) divergence**. 
 
 For probability densities (or pmfs) $f$ and $g$ it is defined by
 
