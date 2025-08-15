@@ -50,7 +50,6 @@ As usual, we begin by importing some Python code.
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from scipy.stats import binom
 import scipy.stats as st
 
 import jax.numpy as jnp
