@@ -56,7 +56,7 @@ from typing import NamedTuple, Optional, Tuple
 from collections import namedtuple
 ```
 
-## VAR Model Setup
+## VAR model setup
 
 Consider a VAR model of the form:
 
@@ -128,18 +128,21 @@ def compute_stationary_var(A, C):
     Σ_0 = linalg.solve_discrete_lyapunov(A, CC)
     
     return μ_0, Σ_0
-```
 
-## Likelihood Functions for VAR
-
-Now let's implement the likelihood functions using our NamedTuple structures:
-
-```{code-cell} ipython3
-def create_var_model_matrices(A, C, μ_0, Σ_0) -> VARModel:
+def create_var_model(A, C, μ_0=None, Σ_0=None, stationary=True):
     """
-    Create VAR model with precomputed matrices for likelihood calculations
+    Create a VAR model with parameters and precomputed matrices
     """
+    A = np.asarray(A)
+    C = np.asarray(C)
+    n = A.shape[0]
     CC = C @ C.T
+    
+    if stationary:
+        μ_0_comp, Σ_0_comp = compute_stationary_var(A, C)
+    else:
+        μ_0_comp = μ_0 if μ_0 is not None else np.zeros(n)
+        Σ_0_comp = Σ_0 if Σ_0 is not None else np.eye(n)
     
     # Check if CC is singular (determinant close to zero)
     det_CC = np.linalg.det(CC)
@@ -153,20 +156,24 @@ def create_var_model_matrices(A, C, μ_0, Σ_0) -> VARModel:
         log_det_CC = np.log(det_CC)
     
     # Same check for Σ_0
-    det_Σ_0 = np.linalg.det(Σ_0)
+    det_Σ_0 = np.linalg.det(Σ_0_comp)
     if np.abs(det_Σ_0) < 1e-10:
-        Σ_0_inv = np.linalg.pinv(Σ_0)
-        Σ_0_reg = Σ_0 + 1e-10 * np.eye(Σ_0.shape[0])
+        Σ_0_inv = np.linalg.pinv(Σ_0_comp)
+        Σ_0_reg = Σ_0_comp + 1e-10 * np.eye(Σ_0_comp.shape[0])
         log_det_Σ_0 = np.log(np.linalg.det(Σ_0_reg))
     else:
-        Σ_0_inv = np.linalg.inv(Σ_0)
+        Σ_0_inv = np.linalg.inv(Σ_0_comp)
         log_det_Σ_0 = np.log(det_Σ_0)
     
-    return VARModel(A=A, C=C, μ_0=μ_0, Σ_0=Σ_0,
+    return VARModel(A=A, C=C, μ_0=μ_0_comp, Σ_0=Σ_0_comp,
                     CC=CC, CC_inv=CC_inv, log_det_CC=log_det_CC,
                     Σ_0_inv=Σ_0_inv, log_det_Σ_0=log_det_Σ_0)
+```
 
-def log_likelihood_initial(x_0, model: VARModel):
+Now let's implement the likelihood functions using our `NamedTuple` structures:
+
+```{code-cell} ipython3
+def log_likelihood_initial(x_0, model):
     """
     Compute log likelihood of initial state
     """
@@ -176,7 +183,7 @@ def log_likelihood_initial(x_0, model: VARModel):
     return -0.5 * (n * np.log(2 * np.pi) + model.log_det_Σ_0 + 
                   diff @ model.Σ_0_inv @ diff)
 
-def log_likelihood_transition(x_next, x_curr, model: VARModel):
+def log_likelihood_transition(x_next, x_curr, model):
     """
     Compute log likelihood of transition from x_curr to x_next
     """
@@ -223,24 +230,6 @@ def simulate_var(model: VARModel, T: int, N_paths: int = 1):
             paths[i, t+1] = x
             
     return paths if N_paths > 1 else paths[0]
-
-def create_var_model(A, C, μ_0=None, Σ_0=None, stationary=True):
-    """
-    Create a VAR model with parameters and precomputed matrices
-    """
-    A = np.asarray(A)
-    C = np.asarray(C)
-    n = A.shape[0]
-    
-    if stationary:
-        μ_0_comp, Σ_0_comp = compute_stationary_var(A, C)
-    else:
-        μ_0_comp = μ_0 if μ_0 is not None else np.zeros(n)
-        Σ_0_comp = Σ_0 if Σ_0 is not None else np.eye(n)
-    
-    model = create_var_model_matrices(A, C, μ_0_comp, Σ_0_comp)
-    
-    return model
 ```
 
 ## Likelihood Ratio Process
@@ -257,7 +246,7 @@ def compute_likelihood_ratio_var(paths, model_f: VARModel, model_g: VARModel):
     
     N_paths, T_plus_1, n = paths.shape
     T = T_plus_1 - 1
-    L_ratios = np.ones((N_paths, T+1))
+    log_L_ratios = np.ones((N_paths, T+1))
     
     for i in range(N_paths):
         X = paths[i]
@@ -265,7 +254,7 @@ def compute_likelihood_ratio_var(paths, model_f: VARModel, model_g: VARModel):
         # Initial likelihood ratio
         log_L_f_0 = log_likelihood_initial(X[0], model_f)
         log_L_g_0 = log_likelihood_initial(X[0], model_g)
-        L_ratios[i, 0] = np.exp(log_L_f_0 - log_L_g_0)
+        log_L_ratios[i, 0] = log_L_f_0 - log_L_g_0
         
         # Recursive computation with numerical stability clips
         for t in range(1, T+1):
@@ -275,11 +264,11 @@ def compute_likelihood_ratio_var(paths, model_f: VARModel, model_g: VARModel):
             # Compute in log space for stability
             log_diff = log_L_f_t - log_L_g_t
             
-            log_L_prev = np.log(np.clip(L_ratios[i, t-1], 1e-15, 1e50))
+            log_L_prev = log_L_ratios[i, t-1]
             log_L_new = log_L_prev + log_diff
-            L_ratios[i, t] = np.minimum(np.exp(log_L_new), 1e50)
+            log_L_ratios[i, t] = log_L_new
 
-    return L_ratios if N_paths > 1 else L_ratios[0]
+    return log_L_ratios if N_paths > 1 else log_L_ratios[0]
 ```
 
 ## Example 1: Two AR(1) Processes
@@ -304,14 +293,12 @@ T = 200
 N_paths = 100
 paths_from_f = simulate_var(model_f, T, N_paths)
 
-# Compute likelihood ratios
 L_ratios_f = compute_likelihood_ratio_var(paths_from_f, model_f, model_g)
 
-# Plot results
 fig, ax = plt.subplots()
 
 for i in range(min(20, N_paths)):
-    ax.plot(np.log(L_ratios_f[i]), alpha=0.3, color='blue', lw=0.8)
+    ax.plot(L_ratios_f[i], alpha=0.3, color='blue', lw=0.8)
 
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_ylabel(r'$\log L_t$')
@@ -366,27 +353,28 @@ L_ratios_gf = compute_likelihood_ratio_var(paths_from_g, model2_f, model2_g)
 # Visualize the results
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-# Top left: Paths from model f
 ax = axes[0]
 for i in range(min(10, N_paths)):
-    ax.plot(np.log(np.maximum(L_ratios_ff[i], 1e-200)), alpha=0.5, color='blue', lw=0.8)
+    ax.plot(L_ratios_ff[i], alpha=0.5, color='blue', lw=0.8)
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_title(r'$\log L_t$ (nature = f)')
 ax.set_ylabel(r'$\log L_t$')
 
-# Top right: Paths from model g
 ax = axes[1]
 for i in range(N_paths):
-    ax.plot(np.log(np.maximum(L_ratios_gf[i], 1e-200)), alpha=0.5, color='red', lw=0.8)
+    ax.plot(L_ratios_gf[i], alpha=0.5, color='red', lw=0.8)
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_title(r'$\log L_t$ (nature = g)')
+plt.tight_layout()
+plt.show()
 ```
 
-Let's check how accurate the model selection is
+Let's check how accurate the model selection is using the same 
+decision rule in {doc}`likelihood_ratio_process` that selects model $f$ when $L_T \geq 1 $ and model $g$ when  $L_T < 1$
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-T_values = np.arange(10, T+1)
+T_values = np.arange(0, T+1)
 accuracy_f = np.zeros(len(T_values))
 accuracy_g = np.zeros(len(T_values))
 
@@ -399,7 +387,7 @@ for i, t in enumerate(T_values):
 ax.plot(T_values, accuracy_f, 'b-', linewidth=2, label='accuracy (nature = f)')
 ax.plot(T_values, accuracy_g, 'r-', linewidth=2, label='accuracy (nature = g)')
 ax.axhline(y=0.5, color='gray', linestyle='--', alpha=0.5)
-ax.set_xlabel('t')
+ax.set_xlabel('T')
 ax.set_ylabel('accuracy')
 ax.legend()
 
@@ -407,17 +395,17 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Model Selection Performance
+We can see that it moves towards 1 as $T$ increases very quickly.
 
-Let's analyze how well likelihood ratios perform in model selection as sample size increases:
+Let's analyze how well likelihood ratios perform in model selection as sample size increases
 
 ```{code-cell} ipython3
-def model_selection_analysis(T_values, model_f: VARModel, model_g: VARModel, N_sim=500):
+def model_selection_analysis(T_values, model_f, model_g, N_sim=500):
     """
     Analyze model selection performance for different sample sizes
     """
-    errors_f = []  # Type I errors (reject f when f is true)
-    errors_g = []  # Type II errors (accept f when g is true)
+    errors_f = []  # Type I errors
+    errors_g = []  # Type II errors
     
     for T in T_values:
         # Simulate from model f
@@ -429,19 +417,14 @@ def model_selection_analysis(T_values, model_f: VARModel, model_g: VARModel, N_s
         L_ratios_g = compute_likelihood_ratio_var(paths_g, model_f, model_g)
         
         # Decision rule: choose f if L_T >= 1
-        error_f = np.mean(L_ratios_f[:, -1] < 1)  # Incorrectly reject f
-        error_g = np.mean(L_ratios_g[:, -1] >= 1)  # Incorrectly accept f
-        
-        errors_f.append(error_f)
-        errors_g.append(error_g)
+        errors_f.append(np.mean(L_ratios_f[:, -1] < 1))
+        errors_g.append(np.mean(L_ratios_g[:, -1] >= 1))
     
     return np.array(errors_f), np.array(errors_g)
 
-# Analyze model selection
 T_values = np.arange(1, 50, 1)
 errors_f, errors_g = model_selection_analysis(T_values, model2_f, model2_g, N_sim=400)
 
-# Plot results
 fig, ax = plt.subplots()
 
 ax.plot(T_values, errors_f, 'b-', linewidth=2, label='Type I error')
@@ -450,6 +433,8 @@ ax.plot(T_values, 0.5 * (errors_f + errors_g), 'g--', linewidth=2, label='Averag
 ax.set_xlabel('$T$')
 ax.set_ylabel('error probability')
 ax.set_title('Model selection errors')
+plt.tight_layout()
+plt.plot()
 ```
 
 ## Application: Samuelson multiplier-accelerator
@@ -558,7 +543,7 @@ def samuelson_to_var(α, β, γ, G, σ):
                   [0]])
     
     # Observation matrix (extracts Y_t, C_t, I_t)
-    G_obs = np.array([[γ + G,  ρ_1,  ρ_2],  # Y_t
+    G_obs = np.array([[γ + G,  ρ_1,  ρ_2],   # Y_t
                       [γ,      α,    0],     # C_t
                       [0,      β,   -β]])    # I_t
     
@@ -580,14 +565,11 @@ def get_samuelson_initial_conditions(α, β, γ, G, y_0=None, y_m1=None,
     # Initial mean
     μ_0 = np.array([1.0, y_0, y_m1])
     
-    # Initial covariance (singular because first element is constant)
     if stationary_init:
-        # Small variance around steady state
         Σ_0 = np.array([[0,  0,    0],
                         [0,  1,    0.5],
                         [0,  0.5,  1]])
     else:
-        # Larger variance for non-stationary start
         Σ_0 = np.array([[0,  0,    0],
                         [0,  25,   15],
                         [0,  15,   25]])
@@ -600,7 +582,7 @@ def check_samuelson_stability(α, β):
     """
     ρ_1 = α + β
     ρ_2 = -β
-    # Characteristic polynomial: λ² - ρ_1*λ - ρ_2 = 0
+
     roots = np.roots([1, -ρ_1, -ρ_2])
     max_abs_root = np.max(np.abs(roots))
     is_stable = max_abs_root < 1
@@ -627,21 +609,15 @@ def create_samuelson_var_model(α, β, γ, G, σ, stationary_init=False,
     """
     Create a VAR model from Samuelson parameters
     """
-    # Get state space matrices
     A, C, G_obs = samuelson_to_var(α, β, γ, G, σ)
     
-    # Get initial conditions
     μ_0, Σ_0 = get_samuelson_initial_conditions(
         α, β, γ, G, y_0, y_m1, stationary_init
     )
     
-    # Create VAR model (handles singular covariance automatically)
-    model = create_var_model_matrices(A, C, μ_0, Σ_0)
-    
-    # Check stability and dynamics
+    # Create VAR model
+    model = create_var_model(A, C, μ_0, Σ_0, stationary=False)
     is_stable, roots, max_root, dynamics = check_samuelson_stability(α, β)
-    
-    # Store model information
     info = {
         'α': α, 'β': β, 'γ': γ, 'G': G, 'σ': σ,
         'ρ_1': α + β, 'ρ_2': -β,
@@ -673,6 +649,8 @@ def simulate_samuelson(model, G_obs, T, N_paths=1):
     
     return states, observables
 ```
+
+Now let's reward ourselves with a simulation of two Samuelson models with different accelerator coefficients
 
 ```{code-cell} ipython3
 # Model f: Higher accelerator coefficient
@@ -729,6 +707,8 @@ ax.set_title('Sample Output Paths')
 ax.set_xlabel('Time')
 ax.set_ylabel('$Y_t$')
 ax.legend(['Model f', 'Model g'], loc='upper left')
+plt.tight_layout()
+plt.show()
 ```
 
 ```{code-cell} ipython3
@@ -740,19 +720,19 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 ax = axes[0]
 for i in range(N_paths):
-    ax.plot(np.log(np.maximum(L_ratios_ff[i], 1e-200)), alpha=0.5, color='blue', lw=0.8)
+    ax.plot(L_ratios_ff[i], alpha=0.5, color='blue', lw=0.8)
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_title(r'$\log L_t$ (nature = f)')
 ax.set_ylabel(r'$\log L_t$')
 
 ax = axes[1]
 for i in range(min(10, N_paths)):
-    ax.plot(np.log(np.maximum(L_ratios_gf[i], 1e-200)), alpha=0.5, color='red', lw=0.8)
+    ax.plot(L_ratios_gf[i], alpha=0.5, color='red', lw=0.8)
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_title(r'$\log L_t$ (nature = g)')
 plt.show()
 ```
 
-In the first figure when data is generated by $f$, the likelihood ratio goes up to infinity
+In the first figure when data is generated by $f$, the likelihood ratio goes up to infinity, and in the second figure when data is generated by $g$, the likelihood ratio goes down to negative infinity.
 
 We can see that the likelihood ratio processes lead us to the correct conclusions.
