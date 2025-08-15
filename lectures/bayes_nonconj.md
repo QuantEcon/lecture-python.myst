@@ -22,7 +22,7 @@ kernelspec:
 !pip install numpyro jax
 ```
 
-This lecture is a sequel to the {doc}`Two Meanings of Probability lecture <prob_meaning>`.
+This lecture is a sequel to the {doc}`prob_meaning`.
 
 That lecture offers a Bayesian interpretation of probability in a setting in which the likelihood function and the prior distribution
 over parameters just happened to form a **conjugate** pair in which
@@ -67,7 +67,7 @@ from numpyro.optim import Adam as nAdam
 
 ## Unleashing MCMC on a  Binomial Likelihood
 
-This lecture begins with the binomial example in the {doc}`Probability Meanings lecture <prob_meaning>`.
+This lecture begins with the binomial example in the {doc}`prob_meaning`.
 
 That lecture computed a posterior
 
@@ -82,7 +82,7 @@ We use `numpyro` with assistance from `jax` to approximate a posterior distribut
 
 We use several alternative prior distributions.
 
-We compare computed posteriors with ones associated with a conjugate prior as described in {doc}`Probability Meanings lecture <prob_meaning>`.
+We compare computed posteriors with ones associated with a conjugate prior as described in {doc}`prob_meaning`.
 
 ### Analytical Posterior
 
@@ -743,7 +743,7 @@ For the same Beta prior, we shall
 * compute posteriors using MCMC using `numpyro`.
 * compute posteriors using VI using `numpyro`.
 
-Let's start with the analytical method that we described in this {doc}`Probability Meanings lecture <prob_meaning>`
+Let's start with the analytical method that we described in this {doc}`prob_meaning`
 
 ```{code-cell} ipython3
 # First examine Beta prior
