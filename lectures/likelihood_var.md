@@ -101,10 +101,10 @@ $$
 \log f(x_0) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(\Sigma_0) - \frac{1}{2} (x_0 - \mu_0)' \Sigma_0^{-1} (x_0 - \mu_0)
 $$
 
-Let's define data structures and implement functions to compute these stationary distributions:
+Let's define data structures and implement the likelihood functions:
 
 ```{code-cell} ipython3
-# Define a combined NamedTuple for VAR model
+# VAR model structure with precomputed matrices
 VARModel = namedtuple('VARModel', ['A', 'C', 'μ_0', 'Σ_0',        
                                     'CC', 'CC_inv', 'log_det_CC', 
                                     'Σ_0_inv', 'log_det_Σ_0'])
@@ -218,9 +218,7 @@ def simulate_var(model: VARModel, T: int, N_paths: int = 1):
     for i in range(N_paths):
         # Draw initial state
         x = mvn.rvs(mean=model.μ_0, cov=model.Σ_0)
-        # Ensure x is always an array
-        if np.isscalar(x):
-            x = np.array([x])
+        x = np.atleast_1d(x)
         paths[i, 0] = x
         
         # Simulate forward
@@ -246,22 +244,22 @@ def compute_likelihood_ratio_var(paths, model_f: VARModel, model_g: VARModel):
     
     N_paths, T_plus_1, n = paths.shape
     T = T_plus_1 - 1
-    log_L_ratios = np.ones((N_paths, T+1))
+    log_L_ratios = np.zeros((N_paths, T+1))
     
     for i in range(N_paths):
         X = paths[i]
         
-        # Initial likelihood ratio
+        # Initial log likelihood ratio
         log_L_f_0 = log_likelihood_initial(X[0], model_f)
         log_L_g_0 = log_likelihood_initial(X[0], model_g)
         log_L_ratios[i, 0] = log_L_f_0 - log_L_g_0
         
-        # Recursive computation with numerical stability clips
+        # Recursive computation
         for t in range(1, T+1):
             log_L_f_t = log_likelihood_transition(X[t], X[t-1], model_f)
             log_L_g_t = log_likelihood_transition(X[t], X[t-1], model_g)
             
-            # Compute in log space for stability
+            # Update log likelihood ratio
             log_diff = log_L_f_t - log_L_g_t
             
             log_L_prev = log_L_ratios[i, t-1]
@@ -298,7 +296,7 @@ L_ratios_f = compute_likelihood_ratio_var(paths_from_f, model_f, model_g)
 fig, ax = plt.subplots()
 
 for i in range(min(20, N_paths)):
-    ax.plot(L_ratios_f[i], alpha=0.3, color='blue', lw=0.8)
+    ax.plot(L_ratios_f[i], alpha=0.3, color='C0', lw=0.8)
 
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_ylabel(r'$\log L_t$')
@@ -355,22 +353,22 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 ax = axes[0]
 for i in range(min(10, N_paths)):
-    ax.plot(L_ratios_ff[i], alpha=0.5, color='blue', lw=0.8)
-ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
+    ax.plot(L_ratios_ff[i], alpha=0.5, color='C0', lw=0.8)
+ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5, lw=2)
 ax.set_title(r'$\log L_t$ (nature = f)')
 ax.set_ylabel(r'$\log L_t$')
 
 ax = axes[1]
 for i in range(N_paths):
-    ax.plot(L_ratios_gf[i], alpha=0.5, color='red', lw=0.8)
-ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
+    ax.plot(L_ratios_gf[i], alpha=0.5, color='C1', lw=0.8)
+ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5, lw=2)
 ax.set_title(r'$\log L_t$ (nature = g)')
 plt.tight_layout()
 plt.show()
 ```
 
 Let's check how accurate the model selection is using the same 
-decision rule in {doc}`likelihood_ratio_process` that selects model $f$ when $L_T \geq 1 $ and model $g$ when  $L_T < 1$
+decision rule in {doc}`likelihood_ratio_process` that selects model $f$ when $\log L_T \geq 0$ and model $g$ when $\log L_T < 0$
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -380,9 +378,9 @@ accuracy_g = np.zeros(len(T_values))
 
 for i, t in enumerate(T_values):
     # Correct selection when data from f
-    accuracy_f[i] = np.mean(L_ratios_ff[:, t] > 1)
+    accuracy_f[i] = np.mean(L_ratios_ff[:, t] > 0)
     # Correct selection when data from g
-    accuracy_g[i] = np.mean(L_ratios_gf[:, t] < 1)
+    accuracy_g[i] = np.mean(L_ratios_gf[:, t] < 0)
 
 ax.plot(T_values, accuracy_f, 'b-', linewidth=2, label='accuracy (nature = f)')
 ax.plot(T_values, accuracy_g, 'r-', linewidth=2, label='accuracy (nature = g)')
@@ -416,9 +414,9 @@ def model_selection_analysis(T_values, model_f, model_g, N_sim=500):
         paths_g = simulate_var(model_g, T, N_sim//2)
         L_ratios_g = compute_likelihood_ratio_var(paths_g, model_f, model_g)
         
-        # Decision rule: choose f if L_T >= 1
-        errors_f.append(np.mean(L_ratios_f[:, -1] < 1))
-        errors_g.append(np.mean(L_ratios_g[:, -1] >= 1))
+        # Decision rule: choose f if log L_T >= 0
+        errors_f.append(np.mean(L_ratios_f[:, -1] < 0))
+        errors_g.append(np.mean(L_ratios_g[:, -1] >= 0))
     
     return np.array(errors_f), np.array(errors_g)
 
@@ -434,7 +432,7 @@ ax.set_xlabel('$T$')
 ax.set_ylabel('error probability')
 ax.set_title('Model selection errors')
 plt.tight_layout()
-plt.plot()
+plt.show()
 ```
 
 ## Application: Samuelson multiplier-accelerator
@@ -650,7 +648,7 @@ def simulate_samuelson(model, G_obs, T, N_paths=1):
     return states, observables
 ```
 
-Now let's reward ourselves with a simulation of two Samuelson models with different accelerator coefficients
+Now let's simulate two Samuelson models with different accelerator coefficients and plot their sample paths
 
 ```{code-cell} ipython3
 # Model f: Higher accelerator coefficient
@@ -678,7 +676,6 @@ T = 50
 N_paths = 50
 
 # Get both states and observables
-
 states_f, obs_f = simulate_samuelson(model_sam_f, G_obs_f, T, N_paths)
 states_g, obs_g = simulate_samuelson(model_sam_g, G_obs_g, T, N_paths)
 
@@ -692,19 +689,18 @@ print(f"  Roots: {info_f['roots']}")
 print(f"  Dynamics: {info_f['dynamics']}")
 
 print("\nModel g:")
-print(f"  ρ_1 = α + β = {info_f['ρ_1']:.2f}")
-print(f"  ρ_2 = -β = {info_f['ρ_2']:.2f}")
-print(f"  Roots: {info_f['roots']}")
-print(f"  Dynamics: {info_f['dynamics']}")
+print(f"  ρ_1 = α + β = {info_g['ρ_1']:.2f}")
+print(f"  ρ_2 = -β = {info_g['ρ_2']:.2f}")
+print(f"  Roots: {info_g['roots']}")
+print(f"  Dynamics: {info_g['dynamics']}")
 
 
 fig, ax = plt.subplots(1, 1)
 
 for i in range(N_paths):
-    ax.plot(output_paths_f[i], alpha=0.6, color='blue', linewidth=0.8)
-    ax.plot(output_paths_g[i], alpha=0.6, color='red', linewidth=0.8)
-ax.set_title('Sample Output Paths')
-ax.set_xlabel('Time')
+    ax.plot(output_paths_f[i], alpha=0.6, color='C0', linewidth=0.8)
+    ax.plot(output_paths_g[i], alpha=0.6, color='C1', linewidth=0.8)
+ax.set_xlabel('$t$')
 ax.set_ylabel('$Y_t$')
 ax.legend(['Model f', 'Model g'], loc='upper left')
 plt.tight_layout()
@@ -720,14 +716,14 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 ax = axes[0]
 for i in range(N_paths):
-    ax.plot(L_ratios_ff[i], alpha=0.5, color='blue', lw=0.8)
+    ax.plot(L_ratios_ff[i], alpha=0.5, color='C0', lw=0.8)
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_title(r'$\log L_t$ (nature = f)')
 ax.set_ylabel(r'$\log L_t$')
 
 ax = axes[1]
 for i in range(min(10, N_paths)):
-    ax.plot(L_ratios_gf[i], alpha=0.5, color='red', lw=0.8)
+    ax.plot(L_ratios_gf[i], alpha=0.5, color='C1', lw=0.8)
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_title(r'$\log L_t$ (nature = g)')
 plt.show()

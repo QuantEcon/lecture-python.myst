@@ -126,36 +126,71 @@ ratio process by generating a sequence $w^t$ from one of the two
 probability distributions, for example, a sequence of IID draws from $g$.
 
 ```{code-cell} ipython3
-# Parameters in the two Beta distributions.
+# Parameters for the two Beta distributions
 F_a, F_b = 1, 1
 G_a, G_b = 3, 1.2
 
 @vectorize
 def p(x, a, b):
+    """Beta distribution density function."""
     r = gamma(a + b) / (gamma(a) * gamma(b))
     return r * x** (a-1) * (1 - x) ** (b-1)
 
-# The two density functions.
 f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
-```
 
-```{code-cell} ipython3
+def create_beta_density(a, b):
+    """Create a beta density function with specified parameters."""
+    return jit(lambda x: p(x, a, b))
+
+def likelihood_ratio(w, f_func, g_func):
+    """Compute likelihood ratio for observation(s) w."""
+    return f_func(w) / g_func(w)
+
 @jit
-def simulate(a, b, T=50, N=500):
-    '''
-    Generate N sets of T observations of the likelihood ratio,
-    return as N x T matrix.
-    '''
-
+def simulate_likelihood_ratios(a, b, f_func, g_func, T=50, N=500):
+    """
+    Generate N sets of T observations of the likelihood ratio.
+    """
     l_arr = np.empty((N, T))
-
     for i in range(N):
         for j in range(T):
             w = np.random.beta(a, b)
-            l_arr[i, j] = f(w) / g(w)
-
+            l_arr[i, j] = f_func(w) / g_func(w)
     return l_arr
+
+def simulate_sequences(distribution, f_func, g_func, 
+        F_params=(1, 1), G_params=(3, 1.2), T=50, N=500):
+    """
+    Generate N sequences of T observations from specified distribution.
+    """
+    if distribution == 'f':
+        a, b = F_params
+    elif distribution == 'g':
+        a, b = G_params
+    else:
+        raise ValueError("distribution must be 'f' or 'g'")
+    
+    l_arr = simulate_likelihood_ratios(a, b, f_func, g_func, T, N)
+    l_seq = np.cumprod(l_arr, axis=1)
+    return l_arr, l_seq
+
+def plot_likelihood_paths(l_seq, title="Likelihood ratio paths", 
+                        ylim=None, n_paths=None):
+    """Plot likelihood ratio paths."""
+    N, T = l_seq.shape
+    n_show = n_paths or min(N, 100)
+    
+    plt.figure(figsize=(10, 6))
+    for i in range(n_show):
+        plt.plot(range(T), l_seq[i, :], color='b', lw=0.8, alpha=0.5)
+    
+    if ylim:
+        plt.ylim(ylim)
+    plt.title(title)
+    plt.xlabel('t')
+    plt.ylabel('$L(w^t)$')
+    plt.show()
 ```
 
 (nature_likeli)=
@@ -165,19 +200,11 @@ We first simulate the likelihood ratio process when nature permanently
 draws from $g$.
 
 ```{code-cell} ipython3
-l_arr_g = simulate(G_a, G_b)
-l_seq_g = np.cumprod(l_arr_g, axis=1)
-```
-
-```{code-cell} ipython3
-N, T = l_arr_g.shape
-
-for i in range(N):
-
-    plt.plot(range(T), l_seq_g[i, :], color='b', lw=0.8, alpha=0.5)
-
-plt.ylim([0, 3])
-plt.title("$L(w^{t})$ paths");
+# Simulate when nature draws from g
+l_arr_g, l_seq_g = simulate_sequences('g', f, g, (F_a, F_b), (G_a, G_b))
+plot_likelihood_paths(l_seq_g, 
+                     title="$L(w^{t})$ paths when nature draws from g",
+                     ylim=[0, 3])
 ```
 
 Evidently, as sample length $T$ grows, most probability mass
@@ -188,6 +215,7 @@ paths $L\left(w^{t}\right)$ that fall in the interval
 $\left[0, 0.01\right]$.
 
 ```{code-cell} ipython3
+N, T = l_arr_g.shape
 plt.plot(range(T), np.sum(l_seq_g <= 0.01, axis=0) / N)
 plt.show()
 ```
@@ -253,8 +281,8 @@ calculate the unconditional mean of $L\left(w^t\right)$ by
 averaging across these many paths at each $t$.
 
 ```{code-cell} ipython3
-l_arr_g = simulate(G_a, G_b, N=50000)
-l_seq_g = np.cumprod(l_arr_g, axis=1)
+l_arr_g, l_seq_g = simulate_sequences('g', 
+                f, g, (F_a, F_b), (G_a, G_b), N=50000)
 ```
 
 It would be useful to use simulations to verify that unconditional means
@@ -300,8 +328,9 @@ Simulations below confirm this conclusion.
 Please note the scale of the $y$ axis.
 
 ```{code-cell} ipython3
-l_arr_f = simulate(F_a, F_b, N=50000)
-l_seq_f = np.cumprod(l_arr_f, axis=1)
+# Simulate when nature draws from f
+l_arr_f, l_seq_f = simulate_sequences('f', f, g, 
+                        (F_a, F_b), (G_a, G_b), N=50000)
 ```
 
 ```{code-cell} ipython3
@@ -446,29 +475,33 @@ is what makes it possible eventually to distinguish
 $q=f$ from $q=g$.
 
 ```{code-cell} ipython3
-fig, axs = plt.subplots(2, 2, figsize=(12, 8))
-fig.suptitle('distribution of $log(L(w^t))$ under f or under g', fontsize=15)
+def plot_log_histograms(l_seq_f, l_seq_g, c=1, time_points=[1, 7, 14, 21]):
+    """Plot log likelihood ratio histograms."""
+    fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+    
+    for i, t in enumerate(time_points):
+        nr, nc = i // 2, i % 2
+        
+        axs[nr, nc].axvline(np.log(c), color="k", ls="--")
+        
+        hist_f, x_f = np.histogram(np.log(l_seq_f[:, t]), 200, density=True)
+        hist_g, x_g = np.histogram(np.log(l_seq_g[:, t]), 200, density=True)
+        
+        axs[nr, nc].plot(x_f[1:], hist_f, label="dist under f")
+        axs[nr, nc].plot(x_g[1:], hist_g, label="dist under g")
+        
+        # Fill error regions
+        for j, (x, hist, label) in enumerate(zip([x_f, x_g], [hist_f, hist_g], 
+                                                ["Type I error", "Type II error"])):
+            ind = x[1:] <= np.log(c) if j == 0 else x[1:] > np.log(c)
+            axs[nr, nc].fill_between(x[1:][ind], hist[ind], alpha=0.5, label=label)
+        
+        axs[nr, nc].legend()
+        axs[nr, nc].set_title(f"t={t}")
+    
+    plt.show()
 
-for i, t in enumerate([1, 7, 14, 21]):
-    nr = i // 2
-    nc = i % 2
-
-    axs[nr, nc].axvline(np.log(c), color="k", ls="--")
-
-    hist_f, x_f = np.histogram(np.log(l_seq_f[:, t]), 200, density=True)
-    hist_g, x_g = np.histogram(np.log(l_seq_g[:, t]), 200, density=True)
-
-    axs[nr, nc].plot(x_f[1:], hist_f, label="dist under f")
-    axs[nr, nc].plot(x_g[1:], hist_g, label="dist under g")
-
-    for i, (x, hist, label) in enumerate(zip([x_f, x_g], [hist_f, hist_g], ["Type I error", "Type II error"])):
-        ind = x[1:] <= np.log(c) if i == 0 else x[1:] > np.log(c)
-        axs[nr, nc].fill_between(x[1:][ind], hist[ind], alpha=0.5, label=label)
-
-    axs[nr, nc].legend()
-    axs[nr, nc].set_title(f"t={t}")
-
-plt.show()
+plot_log_histograms(l_seq_f, l_seq_g, c=c)
 ```
 
 In the above graphs, 
@@ -484,19 +517,43 @@ $t$
   * the probability of a false alarm monotonically decreases with increases in $t$.
 
 ```{code-cell} ipython3
-PD = np.empty(T)
-PFA = np.empty(T)
 
-for t in range(T):
-    PD[t] = np.sum(l_seq_g[:, t] < c) / N
-    PFA[t] = np.sum(l_seq_f[:, t] < c) / N
+def compute_error_probabilities(l_seq_f, l_seq_g, c=1):
+    """
+    Compute Type I and Type II error probabilities.
+    """
+    N, T = l_seq_f.shape
+    
+    # Type I error (false alarm) - reject H0 when true
+    PFA = np.array([np.sum(l_seq_f[:, t] < c) / N for t in range(T)])
+    
+    # Type II error - accept H0 when false
+    beta = np.array([np.sum(l_seq_g[:, t] >= c) / N for t in range(T)])
+    
+    # Probability of detection (power)
+    PD = np.array([np.sum(l_seq_g[:, t] < c) / N for t in range(T)])
+    
+    return {
+        'alpha': PFA,
+        'beta': beta, 
+        'PD': PD,
+        'PFA': PFA
+    }
 
-plt.plot(range(T), PD, label="Probability of detection")
-plt.plot(range(T), PFA, label="Probability of false alarm")
-plt.xlabel("t")
-plt.title("$c=1$")
-plt.legend()
-plt.show()
+def plot_error_probabilities(error_dict, T, c=1, title_suffix=""):
+    """Plot error probabilities over time."""
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(T), error_dict['PD'], label="Probability of detection")
+    plt.plot(range(T), error_dict['PFA'], label="Probability of false alarm")
+    plt.xlabel("t")
+    plt.ylabel("Probability")
+    plt.title(f"Error Probabilities (c={c}){title_suffix}")
+    plt.legend()
+    plt.show()
+
+error_probs = compute_error_probabilities(l_seq_f, l_seq_g, c=c)
+N, T = l_seq_f.shape
+plot_error_probabilities(error_probs, T, c)
 ```
 
 For a given sample size $t$, the threshold $c$ uniquely pins down probabilities
@@ -512,24 +569,32 @@ Below, we plot receiver operating characteristic curves for different
 sample sizes $t$.
 
 ```{code-cell} ipython3
-PFA = np.arange(0, 100, 1)
+def plot_roc_curves(l_seq_f, l_seq_g, t_values=[1, 5, 9, 13], N=None):
+    """Plot ROC curves for different sample sizes."""
+    if N is None:
+        N = l_seq_f.shape[0]
+    
+    PFA = np.arange(0, 100, 1)
+    
+    plt.figure(figsize=(10, 6))
+    for t in t_values:
+        percentile = np.percentile(l_seq_f[:, t], PFA)
+        PD = [np.sum(l_seq_g[:, t] < p) / N for p in percentile]
+        plt.plot(PFA / 100, PD, label=f"t={t}")
+    
+    plt.scatter(0, 1, label="perfect detection")
+    plt.plot([0, 1], [0, 1], color='k', ls='--', label="random detection")
+    
+    plt.arrow(0.5, 0.5, -0.15, 0.15, head_width=0.03)
+    plt.text(0.35, 0.7, "better")
+    plt.xlabel("Probability of false alarm")
+    plt.ylabel("Probability of detection")
+    plt.legend()
+    plt.title("ROC Curve")
+    plt.show()
 
-for t in range(1, 15, 4):
-    percentile = np.percentile(l_seq_f[:, t], PFA)
-    PD = [np.sum(l_seq_g[:, t] < p) / N for p in percentile]
 
-    plt.plot(PFA / 100, PD, label=f"t={t}")
-
-plt.scatter(0, 1, label="perfect detection")
-plt.plot([0, 1], [0, 1], color='k', ls='--', label="random detection")
-
-plt.arrow(0.5, 0.5, -0.15, 0.15, head_width=0.03)
-plt.text(0.35, 0.7, "better")
-plt.xlabel("Probability of false alarm")
-plt.ylabel("Probability of detection")
-plt.legend()
-plt.title("Receiver Operating Characteristic Curve")
-plt.show()
+plot_roc_curves(l_seq_f, l_seq_g, t_values=range(1, 15, 4), N=N)
 ```
 
 Notice that as $t$ increases, we are assured a larger probability
@@ -633,19 +698,13 @@ def compute_KL(f, g):
     integrand = lambda w: f(w) * np.log(f(w) / g(w))
     val, _ = quad(integrand, 1e-5, 1-1e-5)
     return val
-```
 
-Next we create a helper function to compute KL divergence with respect to a reference distribution $h$
-
-```{code-cell} ipython3
 def compute_KL_h(h, f, g):
     """
-    Compute KL divergence with reference distribution h
+    Compute KL divergences with respect to reference distribution h
     """
-
     Kf = compute_KL(h, f)
     Kg = compute_KL(h, g)
-
     return Kf, Kg
 ```
 
@@ -771,7 +830,7 @@ These observations align with the theory.
 
 In {doc}`likelihood_ratio_process_2`, we will see an application of these ideas.
 
-## Hypothesis Testing and Classification 
+## Hypothesis testing and classification 
 
 This section discusses another application of likelihood ratio processes.
 
@@ -806,48 +865,46 @@ We consider two alternative timing protocols.
 of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
 of  IID  draws from  $g$.
 
-Let's write some Python code that implements timing protocol 1.
+**Timing Protocol 2.** Nature flips a coin **often**.  At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
+
+Here is  Python code that we'll use to implement timing protocol 1 and 2.
 
 ```{code-cell} ipython3
-def protocol_1(π_minus_1, T, N=1000):
+def protocol_1(π_minus_1, T, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
     """
-    Simulate Protocol 1: 
-    Nature decides once at t=-1 which model to use.
+    Simulate Protocol 1: Nature decides once at t=-1 which model to use.
     """
+    F_a, F_b = F_params
+    G_a, G_b = G_params
     
-    # On-off coin flip for the true model
+    # Single coin flip for the true model
     true_models_F = np.random.rand(N) < π_minus_1
-    
     sequences = np.empty((N, T))
     
     n_f = np.sum(true_models_F)
     n_g = N - n_f
+    
     if n_f > 0:
         sequences[true_models_F, :] = np.random.beta(F_a, F_b, (n_f, T))
     if n_g > 0:
         sequences[~true_models_F, :] = np.random.beta(G_a, G_b, (n_g, T))
     
     return sequences, true_models_F
-```
 
-**Timing Protocol 2.** Nature flips a coin **often**.  At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
-
-Here is  Python code that we'll use to implement timing protocol 2.
-
-```{code-cell} ipython3
-def protocol_2(π_minus_1, T, N=1000):
+def protocol_2(π_minus_1, T, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
     """
-    Simulate Protocol 2: 
-    Nature decides at each time step which model to use.
+    Simulate Protocol 2: Nature decides at each time step which model to use.
     """
+    F_a, F_b = F_params
+    G_a, G_b = G_params
     
-    # Coin flips for each time t upto T
+    # Coin flips for each time step
     true_models_F = np.random.rand(N, T) < π_minus_1
-    
     sequences = np.empty((N, T))
     
     n_f = np.sum(true_models_F)
     n_g = N * T - n_f
+    
     if n_f > 0:
         sequences[true_models_F] = np.random.beta(F_a, F_b, n_f)
     if n_g > 0:
@@ -873,7 +930,7 @@ $$
 
 For shorthand we'll write $L_t =  L(w^t)$.
 
-### Model Selection Mistake Probability 
+### Model selection mistake probability 
 
 We first study  a problem that assumes  timing protocol 1.  
 
@@ -905,55 +962,140 @@ $$ (eq:detectionerrorprob)
 Now let's simulate  timing protocol 1 and compute the error probabilities
 
 ```{code-cell} ipython3
-# Set parameters
+
+def compute_protocol_1_errors(π_minus_1, T_max, N_simulations, f_func, g_func, 
+                              F_params=(1, 1), G_params=(3, 1.2)):
+    """
+    Compute error probabilities for Protocol 1.
+    """
+    sequences, true_models = protocol_1(
+        π_minus_1, T_max, N_simulations, F_params, G_params)
+    l_ratios, L_cumulative = compute_likelihood_ratios(sequences, f_func, g_func)
+    
+    T_range = np.arange(1, T_max + 1)
+    
+    mask_f = true_models
+    mask_g = ~true_models
+    
+    L_f = L_cumulative[mask_f, :]
+    L_g = L_cumulative[mask_g, :]
+    
+    α_T = np.mean(L_f < 1, axis=0)
+    β_T = np.mean(L_g >= 1, axis=0)
+    error_prob = 0.5 * (α_T + β_T)
+    
+    return {
+        'T_range': T_range,
+        'alpha': α_T,
+        'beta': β_T, 
+        'error_prob': error_prob,
+        'L_cumulative': L_cumulative,
+        'true_models': true_models
+    }
+
+def compute_protocol_2_errors(π_minus_1, T_max, N_simulations, f_func, g_func,
+                              F_params=(1, 1), G_params=(3, 1.2)):
+    """
+    Compute error probabilities for Protocol 2.
+    """
+    sequences, true_models = protocol_2(π_minus_1, 
+                        T_max, N_simulations, F_params, G_params)
+    l_ratios, _ = compute_likelihood_ratios(sequences, f_func, g_func)
+    
+    T_range = np.arange(1, T_max + 1)
+    
+    accuracy = np.empty(T_max)
+    for t in range(T_max):
+        predictions = (l_ratios[:, t] >= 1)
+        actual = true_models[:, t]
+        accuracy[t] = np.mean(predictions == actual)
+    
+    return {
+        'T_range': T_range,
+        'accuracy': accuracy,
+        'l_ratios': l_ratios,
+        'true_models': true_models
+    }
+
+def analyze_protocol_1(π_minus_1, T_max, N_simulations, f_func, g_func, 
+                      F_params=(1, 1), G_params=(3, 1.2)):
+    """Analyze Protocol 1"""
+    result = compute_protocol_1_errors(π_minus_1, T_max, N_simulations, 
+                                      f_func, g_func, F_params, G_params)
+    
+    # Plot results
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    
+    ax1.plot(result['T_range'], result['alpha'], 'b-', 
+             label=r'$\alpha_T$', linewidth=2)
+    ax1.plot(result['T_range'], result['beta'], 'r-', 
+             label=r'$\beta_T$', linewidth=2)
+    ax1.set_xlabel('$T$')
+    ax1.set_ylabel('error probability')
+    ax1.legend()
+    
+    ax2.plot(result['T_range'], result['error_prob'], 'g-', 
+             label=r'$\frac{1}{2}(\alpha_T+\beta_T)$', linewidth=2)
+    ax2.set_xlabel('$T$')
+    ax2.set_ylabel('error probability')
+    ax2.legend()
+    
+    plt.tight_layout()
+    plt.show()
+    
+    # Print summary
+    print(f"At T={T_max}:")
+    print(f"α_{T_max} = {result['alpha'][-1]:.4f}")
+    print(f"β_{T_max} = {result['beta'][-1]:.4f}")
+    print(f"Model selection error probability = {result['error_prob'][-1]:.4f}")
+    
+    return result
+
+def analyze_protocol_2(π_minus_1, T_max, N_simulations, f_func, g_func, 
+                      theory_error=None, F_params=(1, 1), G_params=(3, 1.2)):
+    """Analyze Protocol 2."""
+    result = compute_protocol_2_errors(π_minus_1, T_max, N_simulations, 
+                                      f_func, g_func, F_params, G_params)
+    
+    # Plot results
+    plt.figure(figsize=(10, 6))
+    plt.plot(result['T_range'], result['accuracy'], 
+            'b-', linewidth=2, label='empirical accuracy')
+    
+    if theory_error is not None:
+        plt.axhline(1 - theory_error, color='r', linestyle='--', 
+                   label=f'theoretical accuracy = {1 - theory_error:.4f}')
+    
+    plt.xlabel('$t$')
+    plt.ylabel('accuracy')
+    plt.legend()
+    plt.ylim(0.5, 1.0)
+    plt.show()
+    
+    return result
+
+def compare_protocols(result1, result2):
+    """Compare results from both protocols."""
+    plt.figure(figsize=(10, 6))
+    
+    plt.plot(result1['T_range'], result1['error_prob'], linewidth=2, 
+            label='Protocol 1 (Model Selection)')
+    plt.plot(result2['T_range'], 1 - result2['accuracy'], 
+            linestyle='--', linewidth=2, 
+            label='Protocol 2 (classification)')
+    
+    plt.xlabel('$T$')
+    plt.ylabel('error probability')
+    plt.legend()
+    plt.show()
+
+# Analyze Protocol 1
 π_minus_1 = 0.5
 T_max = 30
 N_simulations = 10_000
 
-sequences_p1, true_models_p1 = protocol_1(
-                            π_minus_1, T_max, N_simulations)
-l_ratios_p1, L_cumulative_p1 = compute_likelihood_ratios(sequences_p1, f, g)
-
-# Compute error probabilities for different sample sizes
-T_range = np.arange(1, T_max + 1)
-
-# Boolean masks for true models
-mask_f = true_models_p1
-mask_g = ~true_models_p1
-
-# Select cumulative likelihoods for each model
-L_f = L_cumulative_p1[mask_f, :]
-L_g = L_cumulative_p1[mask_g, :]
-
-α_T = np.mean(L_f < 1, axis=0)
-β_T = np.mean(L_g >= 1, axis=0)
-
-error_prob = 0.5 * (α_T + β_T)
-
-# Plot results
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-
-ax1.plot(T_range, α_T, 'b-', 
-         label=r'$\alpha_T$', linewidth=2)
-ax1.plot(T_range, β_T, 'r-', 
-         label=r'$\beta_T$', linewidth=2)
-ax1.set_xlabel('$T$')
-ax1.set_ylabel('error probability')
-ax1.legend()
-
-ax2.plot(T_range, error_prob, 'g-', 
-         label=r'$\frac{1}{2}(\alpha_T+\beta_T)$', linewidth=2)
-ax2.set_xlabel('$T$')
-ax2.set_ylabel('error probability')
-ax2.legend()
-
-plt.tight_layout()
-plt.show()
-
-print(f"At T={T_max}:")
-print(f"α_{T_max} = {α_T[-1]:.4f}")
-print(f"β_{T_max} = {β_T[-1]:.4f}")
-print(f"Model selection error probability = {error_prob[-1]:.4f}")
+result_p1 = analyze_protocol_1(π_minus_1, T_max, N_simulations, 
+                                f, g, (F_a, F_b), (G_a, G_b))
 ```
 
 Notice how the model selection  error probability approaches zero as $T$ grows.  
@@ -1064,41 +1206,16 @@ Now we simulate timing protocol 2 and compute the classification error probabili
 In the next cell, we also compare the theoretical classification accuracy to the empirical classification accuracy
 
 ```{code-cell} ipython3
-accuracy = np.empty(T_max)
-
-sequences_p2, true_sources_p2 = protocol_2(
-                    π_minus_1, T_max, N_simulations)
-l_ratios_p2, _ = compute_likelihood_ratios(sequences_p2, f, g)
-
-for t in range(T_max):
-    predictions = (l_ratios_p2[:, t] >= 1)
-    actual = true_sources_p2[:, t]
-    accuracy[t] = np.mean(predictions == actual)
-
-plt.figure(figsize=(10, 6))
-plt.plot(range(1, T_max + 1), accuracy, 
-                'b-', linewidth=2, label='empirical accuracy')
-plt.axhline(1 - theory_error, color='r', linestyle='--', 
-                label=f'theoretical accuracy = {1 - theory_error:.4f}')
-plt.xlabel('$t$')
-plt.ylabel('accuracy')
-plt.legend()
-plt.ylim(0.5, 1.0)
-plt.show()
+# Analyze Protocol 2
+result_p2 = analyze_protocol_2(π_minus_1, T_max, N_simulations, f, g, 
+                              theory_error, (F_a, F_b), (G_a, G_b))
 ```
 
 Let's watch decisions made by  the two timing protocols as more and more observations accrue.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(7, 6))
-
-ax.plot(T_range, error_prob, linewidth=2, 
-        label='Protocol 1')
-ax.plot(T_range, 1-accuracy, linestyle='--', linewidth=2, 
-        label=f'Protocol 2')
-ax.set_ylabel('error probability')
-ax.legend()
-plt.show()
+# Compare both protocols
+compare_protocols(result_p1, result_p2)
 ```
 
 From the figure above, we can see:
@@ -1140,7 +1257,7 @@ def chernoff_integrand(ϕ, f, g):
     """
     def integrand(w):
         return f(w)**ϕ * g(w)**(1-ϕ)
-
+    
     result, _ = quad(integrand, 1e-5, 1-1e-5)
     return result
 
@@ -1153,7 +1270,6 @@ def compute_chernoff_entropy(f, g):
     
     # Find the minimum over ϕ in (0,1)
     result = minimize_scalar(objective, 
-                             # For numerical stability
                              bounds=(1e-5, 1-1e-5), 
                              method='bounded')
     min_value = result.fun
@@ -1161,7 +1277,6 @@ def compute_chernoff_entropy(f, g):
     
     chernoff_entropy = -np.log(min_value)
     return chernoff_entropy, ϕ_optimal
-
 C_fg, ϕ_optimal = compute_chernoff_entropy(f, g)
 print(f"Chernoff entropy C(f,g) = {C_fg:.4f}")
 print(f"Optimal ϕ = {ϕ_optimal:.4f}")
@@ -1178,7 +1293,7 @@ fig, ax = plt.subplots(figsize=(10, 6))
 
 ax.semilogy(T_range, chernoff_bound, 'r-', linewidth=2, 
            label=f'$e^{{-C(f,g)T}}$')
-ax.semilogy(T_range, error_prob, 'b-', linewidth=2, 
+ax.semilogy(T_range, result_p1['error_prob'], 'b-', linewidth=2, 
            label='Model selection error probability')
 
 ax.set_xlabel('T')
@@ -1427,11 +1542,12 @@ Let's implement simulations to illustrate these concepts with a three-state Mark
 We start with writing out functions to compute the stationary distribution and the KL divergence rate for Markov chain models
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def compute_stationary_dist(P):
     """
     Compute stationary distribution of transition matrix P
     """
-
     eigenvalues, eigenvectors = np.linalg.eig(P.T)
     idx = np.argmax(np.abs(eigenvalues))
     stationary = np.real(eigenvectors[:, idx])
@@ -1445,23 +1561,19 @@ def markov_kl_divergence(P_f, P_g, pi_f):
         return np.inf
     
     valid_mask = (P_f > 0) & (P_g > 0)
-    
     log_ratios = np.zeros_like(P_f)
     log_ratios[valid_mask] = np.log(P_f[valid_mask] / P_g[valid_mask])
     
     # Weight by stationary probabilities and sum
     kl_rate = np.sum(pi_f[:, np.newaxis] * P_f * log_ratios)
-    
     return kl_rate
 
 def simulate_markov_chain(P, pi_0, T, N_paths=1000):
     """
-    Simulate N_paths sample paths from a Markov chain 
-    """    
+    Simulate N_paths sample paths from a Markov chain
+    """
     mc = qe.MarkovChain(P, state_values=None)
-    
     initial_states = np.random.choice(len(P), size=N_paths, p=pi_0)
-    
     paths = np.zeros((N_paths, T+1), dtype=int)
     
     for i in range(N_paths):
@@ -1469,7 +1581,6 @@ def simulate_markov_chain(P, pi_0, T, N_paths=1000):
         paths[i, :] = path
     
     return paths
-    
 
 def compute_likelihood_ratio_markov(paths, P_f, P_g, π_0_f, π_0_g):
     """
@@ -1479,91 +1590,78 @@ def compute_likelihood_ratio_markov(paths, P_f, P_g, π_0_f, π_0_g):
     T = T_plus_1 - 1
     L_ratios = np.ones((N_paths, T+1))
     
+    # Initial likelihood ratio
     L_ratios[:, 0] = π_0_f[paths[:, 0]] / π_0_g[paths[:, 0]]
     
+    # Compute sequential likelihood ratios
     for t in range(1, T+1):
         prev_states = paths[:, t-1]
         curr_states = paths[:, t]
         
-        transition_ratios = P_f[prev_states, curr_states] \
-                            / P_g[prev_states, curr_states]
+        transition_ratios = (P_f[prev_states, curr_states] / 
+                           P_g[prev_states, curr_states])
         L_ratios[:, t] = L_ratios[:, t-1] * transition_ratios
     
     return L_ratios
-```
 
-Now let's create an example with two different 3-state Markov chains
-
-```{code-cell} ipython3
-P_f = np.array([[0.7, 0.2, 0.1],
-                [0.3, 0.5, 0.2],
-                [0.1, 0.3, 0.6]])
-
-P_g = np.array([[0.5, 0.3, 0.2],
-                [0.2, 0.6, 0.2],
-                [0.2, 0.2, 0.6]])
-
-# Compute stationary distributions
-π_f = compute_stationary_dist(P_f)
-π_g = compute_stationary_dist(P_g)
-
-print(f"Stationary distribution (f): {π_f}")
-print(f"Stationary distribution (g): {π_g}")
-
-# Compute KL divergence rate
-kl_rate_fg = markov_kl_divergence(P_f, P_g, π_f)
-kl_rate_gf = markov_kl_divergence(P_g, P_f, π_g)
-
-print(f"\nKL divergence rate h(f, g): {kl_rate_fg:.4f}")
-print(f"KL divergence rate h(g, f): {kl_rate_gf:.4f}")
-```
-
-We are now ready to simulate paths and visualize how likelihood ratios evolve.
-
-We'll verify $\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = h_{KL}(f, g)$ starting from the stationary distribution by plotting both the empirical average and the line predicted by the theory
-
-```{code-cell} ipython3
-T = 500
-N_paths = 1000
-paths_from_f = simulate_markov_chain(P_f, π_f, T, N_paths)
-
-L_ratios_f = compute_likelihood_ratio_markov(paths_from_f, 
-                                             P_f, P_g, 
-                                             π_f, π_g)
-
-plt.figure(figsize=(10, 6))
-
-# Plot individual paths
-n_show = 50
-for i in range(n_show):
-    plt.plot(np.log(L_ratios_f[i, :]), 
-             alpha=0.3, color='blue', lw=0.8)
-
-# Compute theoretical expectation
-theory_line = kl_rate_fg * np.arange(T+1)
-plt.plot(theory_line, 'k--', linewidth=2.5, 
-         label=r'$T \times h_{KL}(f,g)$')
-
-# Compute empirical mean
-avg_log_L = np.mean(np.log(L_ratios_f), axis=0)
-plt.plot(avg_log_L, 'r-', linewidth=2.5, 
-         label='empirical average', alpha=0.5)
-
-plt.axhline(y=0, color='gray', 
-            linestyle='--', alpha=0.5)
-plt.xlabel(r'$T$')
-plt.ylabel(r'$\log L_T$')
-plt.title('nature = $f$')
-plt.legend()
-plt.show()
-```
-
-Let's examine how the model selection error probability depends on sample size using the same simulation strategy in the previous section
-
-```{code-cell} ipython3
-def compute_selection_error(T_values, P_f, P_g, π_0_f, π_0_g, N_sim=1000):
+def analyze_markov_chains(P_f, P_g, 
+                T=500, N_paths=1000, plot_paths=True, n_show=50):
     """
-    Compute model selection error probability for different sample sizes
+    Complete analysis of two Markov chains
+    """
+    # Compute stationary distributions
+    π_f = compute_stationary_dist(P_f)
+    π_g = compute_stationary_dist(P_g)
+    
+    print(f"Stationary distribution (f): {π_f}")
+    print(f"Stationary distribution (g): {π_g}")
+    
+    # Compute KL divergence rates
+    kl_rate_fg = markov_kl_divergence(P_f, P_g, π_f)
+    kl_rate_gf = markov_kl_divergence(P_g, P_f, π_g)
+    
+    print(f"\nKL divergence rate h(f, g): {kl_rate_fg:.4f}")
+    print(f"KL divergence rate h(g, f): {kl_rate_gf:.4f}")
+    
+    if plot_paths:
+        # Simulate and plot paths
+        paths_from_f = simulate_markov_chain(P_f, π_f, T, N_paths)
+        L_ratios_f = compute_likelihood_ratio_markov(
+            paths_from_f, P_f, P_g, π_f, π_g)
+        
+        plt.figure(figsize=(10, 6))
+        
+        # Plot individual paths
+        for i in range(min(n_show, N_paths)):
+            plt.plot(np.log(L_ratios_f[i, :]), alpha=0.3, color='blue', lw=0.8)
+        
+        # Plot theoretical expectation
+        theory_line = kl_rate_fg * np.arange(T+1)
+        plt.plot(theory_line, 'k--', linewidth=2.5, 
+                label=r'$T \times h_{KL}(f,g)$')
+        
+        # Plot empirical mean
+        avg_log_L = np.mean(np.log(L_ratios_f), axis=0)
+        plt.plot(avg_log_L, 'r-', linewidth=2.5, 
+                label='empirical average', alpha=0.7)
+        
+        plt.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
+        plt.xlabel(r'$T$')
+        plt.ylabel(r'$\log L_T$')
+        plt.title('Markov chain likelihood ratios (nature = f)')
+        plt.legend()
+        plt.show()
+    
+    return {
+        'stationary_f': π_f,
+        'stationary_g': π_g,
+        'kl_rate_fg': kl_rate_fg,
+        'kl_rate_gf': kl_rate_gf
+    }
+
+def compute_markov_selection_error(T_values, P_f, P_g, π_0_f, π_0_g, N_sim=1000):
+    """
+    Compute model selection error probability for Markov chains
     """
     errors = []
     
@@ -1573,12 +1671,8 @@ def compute_selection_error(T_values, P_f, P_g, π_0_f, π_0_g, N_sim=1000):
         paths_g = simulate_markov_chain(P_g, π_0_g, T, N_sim//2)
         
         # Compute likelihood ratios
-        L_f = compute_likelihood_ratio_markov(paths_f, 
-                                              P_f, P_g, 
-                                              π_0_f, π_0_g)
-        L_g = compute_likelihood_ratio_markov(paths_g, 
-                                              P_f, P_g, 
-                                              π_0_f, π_0_g)
+        L_f = compute_likelihood_ratio_markov(paths_f, P_f, P_g, π_0_f, π_0_g)
+        L_g = compute_likelihood_ratio_markov(paths_g, P_f, P_g, π_0_f, π_0_g)
         
         # Decision rule: choose f if L_T >= 1
         error_f = np.mean(L_f[:, -1] < 1)   # Type I error
@@ -1588,19 +1682,25 @@ def compute_selection_error(T_values, P_f, P_g, π_0_f, π_0_g, N_sim=1000):
         errors.append(total_error)
     
     return np.array(errors)
+```
 
-# Compute error probabilities
-T_values = np.arange(10, 201, 10)
-errors = compute_selection_error(T_values, 
-                                 P_f, P_g, 
-                                 π_f, π_g)
+Now let's create an example with two different 3-state Markov chains.
 
-# Plot results
-plt.figure(figsize=(10, 6))
-plt.plot(T_values, errors, linewidth=2)
-plt.xlabel('$T$')
-plt.ylabel('error probability')
-plt.show()
+We are now ready to simulate paths and visualize how likelihood ratios evolve.
+
+We verify $\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = h_{KL}(f, g)$ starting from the stationary distribution by plotting both the empirical average and the line predicted by the theory
+
+```{code-cell} ipython3
+# Define example Markov chain transition matrices
+P_f = np.array([[0.7, 0.2, 0.1],
+                [0.3, 0.5, 0.2],
+                [0.1, 0.3, 0.6]])
+
+P_g = np.array([[0.5, 0.3, 0.2],
+                [0.2, 0.6, 0.2],
+                [0.2, 0.2, 0.6]])
+
+markov_results = analyze_markov_chains(P_f, P_g)
 ```
 
 ## Related Lectures
