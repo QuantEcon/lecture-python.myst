@@ -475,7 +475,7 @@ class BayesianInference:
 
     def beta_guide(self, data):
         """
-        Defines the candidate parametrized variational distribution that we train to approximate posterior with Pyro/Numpyro
+        Defines the candidate parametrized variational distribution that we train to approximate posterior with numpyro
         Here we use parameterized beta
         """
         alpha_q = numpyro.param("alpha_q", 10, constraint=nconstraints.positive)
@@ -485,7 +485,7 @@ class BayesianInference:
 
     def truncnormal_guide(self, data):
         """
-        Defines the candidate parametrized variational distribution that we train to approximate posterior with Pyro/Numpyro
+        Defines the candidate parametrized variational distribution that we train to approximate posterior with numpyro
         Here we use truncated normal on [0,1]
         """
         loc = numpyro.param("loc", 0.5, constraint=nconstraints.interval(0.0, 1.0))
@@ -495,7 +495,6 @@ class BayesianInference:
     def SVI_init(self, guide_dist, lr=0.0005):
         """
         Initiate SVI training mode with Adam optimizer
-        NOTE: truncnormal_guide can only be used with numpyro solver
         """
         adam_params = {"lr": lr}
 
@@ -653,7 +652,7 @@ class BayesianInferencePlot:
                 color=self.colorlist[id - 1],
                 label=f"Posterior with $n={n}$",
             )
-        ax.legend()
+        ax.legend(loc="upper left")
         ax.set_title("MCMC Sampling density of Posterior Distributions", fontsize=15)
         plt.xlim(0, 1)
         plt.show()
@@ -709,7 +708,7 @@ class BayesianInferencePlot:
                 color=self.colorlist[id - 1],
                 label=f"Posterior with $n={n}$",
             )
-        ax.legend()
+        ax.legend(loc="upper left")
         ax.set_title(
             f"SVI density of Posterior Distributions with {guide_dist} guide",
             fontsize=15,
@@ -772,7 +771,7 @@ for id, n in enumerate(N_list):
         color=colorlist[id - 1],
         label=f"Analytical Beta Posterior with $n={n}$",
     )
-ax.legend()
+ax.legend(loc="upper left")
 ax.set_title("Analytical Beta Prior and Posterior", fontsize=15)
 plt.xlim(0, 1)
 plt.show()
