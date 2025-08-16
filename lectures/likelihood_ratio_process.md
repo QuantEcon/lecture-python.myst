@@ -1462,7 +1462,7 @@ Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with 
 
 We'll encounter related ideas in {doc}`wald_friedman` very soon.
 
-
+(lrp_markov)=
 ## Markov chains 
 
 Let's now look at a likelihood ratio process for a sequence of random variables that is not independently and identically distributed.
