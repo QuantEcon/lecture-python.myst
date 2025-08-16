@@ -28,12 +28,14 @@ kernelspec:
 
 ## Overview
 
-A statistical divergence is a function that quantifies discrepancies between two distinct 
+A statistical divergence quantifies discrepancies between two distinct 
  probability distributions that can be   challenging to distinguish for the following reason:
  
   * every event that has positive probability  under one of the distributions also has positive probability under the other distribution
 
-  * thus, there is no "smoking gun" event whose occurrence  tells  a statistician that one of the probability distribution surely governs the data  
+  * this means that  there is no "smoking gun" event whose occurrence  tells  a statistician that one of the probability distribution surely governs the data  
+
+A statistical divergence is a **function** that maps two distinction probability distributions into a nonnegative real number.
 
 Statistical divergence functions  play important roles in statistics, information theory, and what many people now call "machine learning". 
 
@@ -123,7 +125,7 @@ We can interpret $KL(f, g)$ as the expected excess log loss (expected excess sur
 It has several important properties:
 
 - Non-negativity (Gibbs' inequality): $KL(f, g) \ge 0$ with equality if and only if $f=g$ almost everywhere.
-- Asymmetry: $KL(f, g) \neq KL(g, f)$ in general (hence not a metric)
+- Asymmetry: $KL(f, g) \neq KL(g, f)$ in general (hence it is not a metric)
 - Information decomposition:
   $KL(f, g) = H(f,g) - H(f)$, where $H(f,g)$ is the cross entropy and $H(f)$ is the Shannon entropy of $f$.
 - Chain rule: For joint distributions $f(x, y)$ and $g(x, y)$, 
@@ -414,10 +416,8 @@ divergence_data = plot_dist_diff()
 
 ## Related Lectures
 
-This lecture serves as a foundation for understanding tools we use to capture the information content of statistical models that underpin many of our lectures:
+This lecture has introduced tools  that we'll encounter elsewhere.
 
-- For a more detailed illustration of the relationship between divergence measures and statistical inference, see {doc}`likelihood_ratio_process`, {doc}`wald_friedman`, and {doc}`mix_model`.
+- Other quantecon lectures  that apply  connections between divergence measures and statistical inference include  {doc}`likelihood_ratio_process`, {doc}`wald_friedman`, and {doc}`mix_model`.
 
-- These measures play a crucial role in capturing the heterogeneity in the beliefs of agents in a model. 
-For an application of this idea, see {doc}`likelihood_ratio_process_2` where we discuss the role of divergence measures 
-in Lawrence Blume and David Easley's model on heterogeneous beliefs and financial markets.
+- Statistical divergence functions also take center stage in  {doc}`likelihood_ratio_process_2` that studies Lawrence Blume and David Easley's model of  heterogeneous beliefs and financial markets.
