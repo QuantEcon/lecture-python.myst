@@ -264,7 +264,7 @@ np.sqrt(x @ x)         # Norm of x, take two (preferred)
 ```
 
 ```{code-cell} python3
-np.linalg.norm(x)      # Norm of x, take two
+np.linalg.norm(x)      # Norm of x, take three
 ```
 
 ### Span
