@@ -3,10 +3,12 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 (von_neumann_model)=
@@ -16,6 +18,7 @@ kernelspec:
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div>
+
 ```
 
 ```{index} single: python
@@ -46,7 +49,7 @@ following important tools:
 
 We'll begin with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve, linprog
@@ -57,11 +60,10 @@ np.set_printoptions(precision=2)
 
 The code below provides the `Neumann` class
 
-```{code-cell} python3
----
-tags: [collapse-20]
----
-class Neumann(object):
+```{code-cell} ipython3
+:tags: [collapse-20]
+
+class Neumann:
 
     """
     This class describes the Generalized von Neumann growth model as it was
@@ -107,13 +109,13 @@ class Neumann(object):
         assert (self.A >= 0).all() and (self.B >= 0).all(), 'The input and \
               output matrices must have only non-negative entries!'
 
-        # (1) Check whether Assumption I is satisfied:
+        # (1) Check whether Assumption 1 is satisfied:
         if (np.sum(B, 0) <= 0).any():
             self.AI = False
         else:
             self.AI = True
 
-        # (2) Check whether Assumption II is satisfied:
+        # (2) Check whether Assumption 2 is satisfied:
         if (np.sum(A, 1) <= 0).any():
             self.AII = False
         else:
@@ -130,7 +132,7 @@ class Neumann(object):
           - number of activities     : {m}
 
         Assumptions:
-          - AI:  every column of B has a positive entry    : {AI}
+          - AI:  every column of B has a positive entry    : {AI} 
           - AII: every row of A has a positive entry       : {AII}
 
         """
@@ -372,18 +374,20 @@ an economy.
 
 Two key assumptions restrict economy $(A,B)$:
 
-- **Assumption I:** (every good that is consumed is also produced)
+````{prf:assumption} every good that is consumed is also produced
+:label: assumption1
 
-  $$
+```{math}
   b_{.,j} > \mathbf{0}\hspace{5mm}\forall j=1,2,\dots,n
-  $$
+```
+````
 
-- **Assumption II:** (no free lunch)
-
-  $$
+````{prf:assumption} no free lunch
+:label: assumption2
+```{math}
   a_{i,.} > \mathbf{0}\hspace{5mm}\forall i=1,2,\dots,m
-  $$
-
+```
+````
 
 A semi-positive  *intensity* $m$-vector  $x$ denotes  levels at which
 activities are operated.
@@ -410,7 +414,8 @@ Satisfaction or a property of an input-output pair $(A,B)$ called *irreducibilit
 (or indecomposability) determines whether an economy can be decomposed
 into multiple     "sub-economies".
 
-**Definition:** For an economy $(A,B)$, the set of goods
+```{prf:definition}
+For an economy $(A,B)$, the set of goods
 $S\subset \{1,2,\dots,n\}$ is called an *independent subset* if
 it is possible to produce every good in $S$ without consuming
 goods from outside $S$. Formally, the set $S$ is independent if
@@ -419,10 +424,11 @@ that $a_{i,j}=0$ $\forall i\in T$ and $j\in S^c$ and
 for all $j\in S$, $\exists i\in T$ for which  $b_{i,j}>0$.
 The economy is **irreducible** if there are no proper independent
 subsets.
+```
 
 We study two examples, both in  Chapter 9.6 of Gale {cite}`gale1989theory`
 
-```{code-cell} python3
+```{code-cell} ipython3
 # (1) Irreducible (A, B) example: α_0 = β_0
 A1 = np.array([[0, 1, 0, 0],
                [1, 0, 0, 1],
@@ -449,14 +455,14 @@ B2 = np.array([[1, 0, 0, 1, 0, 0],
 The following code sets up our first Neumann economy or `Neumann`
 instance
 
-```{code-cell} python3
+```{code-cell} ipython3
 n1 = Neumann(A1, B1)
 n1
 ```
 
 Here is a second instance of a Neumann economy
 
-```{code-cell} python3
+```{code-cell} ipython3
 n2 = Neumann(A2, B2)
 n2
 ```
@@ -546,9 +552,11 @@ Two problems are connected by a remarkable dual
 relationship between  technological and valuation characteristics of
 the economy:
 
-**Definition:** The *technological expansion problem* (TEP) for the economy
+```{prf:definition}
+The *technological expansion problem* (TEP) for the economy
 $(A,B)$ is to find a semi-positive $m$-vector $x>0$
 and a number $\alpha\in\mathbb{R}$ that satisfy
+```
 
 $$
 \begin{aligned}
@@ -557,7 +565,7 @@ $$
     \end{aligned}
 $$
 
-Theorem 9.3 of David Gale’s book {cite}`gale1989theory` asserts that if Assumptions I and II are
+Theorem 9.3 of David Gale’s book {cite}`gale1989theory` asserts that if {prf:ref}`assumption1` and {prf:ref}`assumption2` are
 both satisfied, then a maximum value of $\alpha$ exists and that it is
 positive.
 
@@ -565,7 +573,8 @@ The maximal value is called the *technological expansion rate* and is denoted
 by $\alpha_0$. The associated intensity vector $x_0$ is the
 *optimal intensity vector*.
 
-**Definition:** The economic expansion problem (EEP) for
+```{prf:definition}
+The economic expansion problem (EEP) for
 $(A,B)$ is to find a semi-positive $n$-vector $p>0$
 and a number $\beta\in\mathbb{R}$ that satisfy
 
@@ -573,10 +582,11 @@ $$
 \begin{aligned}
     &\min_{\beta} \hspace{2mm} \beta\\
     &\text{s.t. }\hspace{2mm}Bp \leq \beta Ap
-    \end{aligned}
+\end{aligned}
 $$
+```
 
-Assumptions I and II imply existence of a minimum value
+{prf:ref}`assumption1` and {prf:ref}`assumption2` imply existence of a minimum value
 $\beta_0>0$ called the *economic expansion rate*.
 
 The corresponding price vector $p_0$ is the *optimal price vector*.
@@ -590,16 +600,19 @@ For convenience (and to emphasize a close connection to zero-sum games),  we nor
 $x_0$ and $p_0$ to have unit length.
 
 A standard duality argument (see Lemma 9.4. in (Gale, 1960) {cite}`gale1989theory`) implies
-that under Assumptions I and II, $\beta_0\leq \alpha_0$.
+that under {prf:ref}`assumption1` and {prf:ref}`assumption2`, $\beta_0\leq \alpha_0$.
 
 But to deduce that $\beta_0\geq \alpha_0$,
-Assumptions I and II are not sufficient.
+{prf:ref}`assumption1` and {prf:ref}`assumption2` are not sufficient.
 
 Therefore, von Neumann {cite}`von1937uber`  went on to prove the following remarkable
 “duality” result that connects TEP and EEP.
 
-**Theorem 1 (von Neumann):** If the economy $(A,B)$ satisfies
-Assumptions I and II, then there exist
+```{prf:theorem} von Neumann
+:label: theorem1
+
+If the economy $(A,B)$ satisfies
+{prf:ref}`assumption1` and {prf:ref}`assumption2`, then there exist
 $\left(\gamma^{*}, x_0, p_0\right)$, where
 $\gamma^{*}\in[\beta_0, \alpha_0]\subset\mathbb{R}$, $x_0>0$
 is an $m$-vector, $p_0>0$ is an $n$-vector, and the
@@ -612,9 +625,10 @@ Bp_0 &\leq \gamma^{* } Ap_0 \\
 x_0^T\left(B-\gamma^{* } A\right)p_0 &= 0
 \end{aligned}
 $$
+```
 
-```{note}
-*Proof (Sketch):* Assumption I and II imply that there exist $(\alpha_0,
+```{prf:proof} (Sketch)
+{prf:ref}`assumption1` and {prf:ref}`assumption2` imply that there exist $(\alpha_0,
 x_0)$ and $(\beta_0, p_0)$ that solve the TEP and EEP, respectively. If
 $\gamma^*>\alpha_0$, then by definition of $\alpha_0$, there cannot
 exist a semi-positive $x$ that satisfies $x^T B \geq \gamma^{* }
@@ -639,13 +653,13 @@ $\gamma^{*}$ (i.e., if it is *oversupplied*), then its price
 must be zero; and that if any activity provides negative profit, it must
 be unused.
 
-Therefore, the conditions stated in Theorem I ex encode all equilibrium conditions.
+Therefore, the conditions stated in {prf:ref}`theorem1` ex encode all equilibrium conditions.
 
-So  Theorem I essentially states that under Assumptions I and II there
+So  {prf:ref}`theorem1` essentially states that under {prf:ref}`assumption1` and {prf:ref}`assumption2` there
 always exists an equilibrium $\left(\gamma^{*}, x_0, p_0\right)$
 with balanced growth.
 
-Note that Theorem I is silent about uniqueness of the equilibrium. In
+Note that {prf:ref}`theorem1` is silent about uniqueness of the equilibrium. In
 fact, it does not rule out (trivial) cases with $x_0^TBp_0 = 0$ so
 that nothing of value is produced.
 
@@ -678,7 +692,8 @@ use mixed strategies. Thus,
 * the  row player chooses the $m$-vector $x > \mathbf{0}$ subject to $\iota_m^T x = 1$
 * the column player chooses the $n$-vector $p > \mathbf{0}$ subject to $\iota_n^T p = 1$.
 
-**Definition:** The $m\times n$ matrix game $C$ has the
+```{prf:definition}
+The $m\times n$ matrix game $C$ has the
 *solution* $(x^*, p^*, V(C))$ in mixed strategies if
 
 $$
@@ -689,6 +704,7 @@ $$
 $$
 
 The number $V(C)$ is called the *value* of the game.
+```
 
 From the above definition, it is clear that the value $V(C)$ has
 two alternative interpretations:
@@ -748,27 +764,26 @@ $$
 Hamburger, Thompson and Weil {cite}`hamburger1967computation` view the input-output pair of the
 economy as payoff matrices of two-player zero-sum games.
 
-Using this interpretation, they restate Assumption I and II as follows
+Using this interpretation, they restate {prf:ref}`assumption1` and {prf:ref}`assumption2` as follows
 
 $$
 V(-A) < 0\quad\quad \text{and}\quad\quad V(B)>0
 $$
 
-```{note}
-*Proof (Sketch)*:
+```{prf:proof} (Sketch)
 * $\Rightarrow$ $V(B)>0$ implies
 $x_0^T B \gg \mathbf{0}$, where $x_0$ is a maximizing
 vector. Since $B$ is non-negative, this requires that each
 column of $B$ has at least one positive entry, which is
-Assumption I.
-* $\Leftarrow$ From Assumption I and the fact
+{prf:ref}`assumption1`.
+* $\Leftarrow$ From {prf:ref}`assumption1` and the fact
 that $p>\mathbf{0}$, it follows that $Bp > \mathbf{0}$.
 This implies that the maximizing player can always choose $x$
 so that $x^TBp>0$ so that it must be the case
 that $V(B)>0$.
 ```
 
-In order to (re)state Theorem I in terms of a particular two-player
+In order to (re)state {prf:ref}`theorem1` in terms of a particular two-player
 zero-sum game, we define a matrix for $\gamma\in\mathbb{R}$
 
 $$
@@ -785,7 +800,7 @@ calculating the solution of the game implies
 - If $\gamma < \beta_0$, then for all $p>0$, there
   $\exists i\in\{1, \dots, m\}$, s.t.
   $[M(\gamma)p]_i > 0$ implying that $V(M(\gamma)) > 0$.
-- If $\gamma \in \{\beta_0, \alpha_0\}$, then (by Theorem I) the
+- If $\gamma \in \{\beta_0, \alpha_0\}$, then (by {prf:ref}`theorem1`) the
   optimal intensity and price vectors $x_0$ and $p_0$
   satisfy
 
@@ -808,8 +823,10 @@ $p''$ is optimal for the minimizing player in $M(\gamma'')$
 where $\gamma''\in(\beta_0, \gamma')$, then $(x', p'', 0)$
 is a solution for $M(\gamma)$ $\forall \gamma\in (\gamma'', \gamma')$.
 
-*Proof (Sketch):* If $x'$ is optimal for a maximizing player in
+```{prf:proof} (Sketch)
+If $x'$ is optimal for a maximizing player in
 game $M(\gamma')$, then $(x')^T M(\gamma')\geq \mathbf{0}^T$ and so for all $\gamma<\gamma'$.
+```
 
 $$
 (x')^T M(\gamma) = (x')^T M(\gamma') + (x')^T(\gamma' - \gamma)A \geq \mathbf{0}^T
@@ -864,7 +881,7 @@ solves $\min_j\{[\iota^T_m(B-\beta^{*} A)]_j\}=0$.
 
 The *bounds* method calculates these trivial bounds for us
 
-```{code-cell} python3
+```{code-cell} ipython3
 n1.bounds()
 ```
 
@@ -895,7 +912,7 @@ Compute $\alpha_0$ and $\beta_0$
 The *zerosum* method calculates the value and optimal strategies
 associated with a given $\gamma$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 γ = 2
 
 print(f'Value of the game with γ = {γ}')
@@ -906,7 +923,7 @@ print('Price vector (from the dual)')
 print(n1.zerosum(γ=γ, dual=True)[1])
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 numb_grid = 100
 γ_grid = np.linspace(0.4, 2.1, numb_grid)
 
@@ -932,7 +949,7 @@ plt.show()
 The *expansion* method implements the bisection algorithm for
 $\alpha_0$ (and uses the primal LP problem for $x_0$)
 
-```{code-cell} python3
+```{code-cell} ipython3
 α_0, x, p = n1.expansion()
 print(f'α_0 = {α_0}')
 print(f'x_0 = {x}')
@@ -942,7 +959,7 @@ print(f'The corresponding p from the dual = {p}')
 The *interest* method implements the bisection algorithm for
 $\beta_0$ (and uses the dual LP problem for $p_0$)
 
-```{code-cell} python3
+```{code-cell} ipython3
 β_0, x, p = n1.interest()
 print(f'β_0 = {β_0}')
 print(f'p_0 = {p}')
@@ -962,14 +979,14 @@ As an illustration, compute first the maximal and minimal roots of
 $V(M(\cdot))$ for our Example 2 that has a reducible
 input-output pair $(A, B)$
 
-```{code-cell} python3
+```{code-cell} ipython3
 α_0, x, p = n2.expansion()
 print(f'α_0 = {α_0}')
 print(f'x_0 = {x}')
 print(f'The corresponding p from the dual = {p}')
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 β_0, x, p = n2.interest()
 print(f'β_0 = {β_0}')
 print(f'p_0 = {p}')
@@ -982,7 +999,7 @@ $\gamma^*$ that make the value of the game
 with $M(\gamma^*)$ zero. (see the figure above).
 
 Indeed, although the von Neumann theorem assures existence of the
-equilibrium, Assumptions I and II are not sufficient for uniqueness.
+equilibrium, {prf:ref}`assumption1` and {prf:ref}`assumption2` are not sufficient for uniqueness.
 Nonetheless, Kemeny et al. (1967) show that there are at most finitely
 many economic solutions, meaning that there are only finitely many
 $\gamma^*$ that satisfy $V(M(\gamma^*)) = 0$ and
@@ -995,8 +1012,12 @@ The following theorem (see Theorem 9.10. in Gale {cite}`gale1989theory`) asserts
 imposing irreducibility is sufficient for uniqueness of
 $(\gamma^*, x_0, p_0)$.
 
-**Theorem II:** Adopt the conditions of Theorem 1. If the economy
+```{prf:theorem}
+:label: theorem2
+
+Adopt the conditions of {prf:ref}`theorem1`. If the economy
 $(A,B)$ is irreducible, then $\gamma^*=\alpha_0=\beta_0$.
+```
 
 ### A Special Case
 
@@ -1004,11 +1025,13 @@ There is a special $(A,B)$ that allows us to simplify the solution
 method significantly by invoking the powerful Perron-Frobenius theorem
 for non-negative matrices.
 
-**Definition:** We call an economy *simple* if it satisfies
+```{prf:definition}
+We call an economy *simple* if it satisfies
 
 * $n=m$
 * Each activity produces exactly one good
 * Each good is produced by one and only one activity.
+```
 
 These assumptions imply that $B=I_n$, i.e., that $B$ can be
 written as an identity matrix (possibly after reshuffling its rows and
