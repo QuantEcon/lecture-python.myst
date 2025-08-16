@@ -837,7 +837,7 @@ def compute_steady_state_quantities(c, τ):
 
     # Compute steady state welfare
     mask = (w_vec - τ > w_bar)
-    w = (V * p_vec * mask) @ np.ones_like(p_vec) / (p_vec * mask) @ np.ones_like(p_vec)
+    w = ((V * p_vec * mask) @ np.ones_like(p_vec)) / ((p_vec * mask) @ np.ones_like(p_vec))
     welfare = e * w + u * U
 
     return e, u, welfare
