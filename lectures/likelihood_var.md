@@ -104,7 +104,6 @@ $$
 Let's define data structures and implement the likelihood functions:
 
 ```{code-cell} ipython3
-# VAR model structure with precomputed matrices
 VARModel = namedtuple('VARModel', ['A', 'C', 'μ_0', 'Σ_0',        
                                     'CC', 'CC_inv', 'log_det_CC', 
                                     'Σ_0_inv', 'log_det_Σ_0'])
@@ -117,9 +116,8 @@ def compute_stationary_var(A, C):
     # Check stability
     eigenvalues = np.linalg.eigvals(A)
     if np.max(np.abs(eigenvalues)) >= 1:
-        raise ValueError("VAR is not stationary (eigenvalues >= 1)")
+        raise ValueError("VAR is not stationary")
     
-    # Stationary mean (zero for mean-zero process)
     μ_0 = np.zeros(n)
     
     # Stationary covariance: solve discrete Lyapunov equation
@@ -144,7 +142,7 @@ def create_var_model(A, C, μ_0=None, Σ_0=None, stationary=True):
         μ_0_comp = μ_0 if μ_0 is not None else np.zeros(n)
         Σ_0_comp = Σ_0 if Σ_0 is not None else np.eye(n)
     
-    # Check if CC is singular (determinant close to zero)
+    # Check if CC is singular
     det_CC = np.linalg.det(CC)
     if np.abs(det_CC) < 1e-10:
         # Use pseudo-inverse for singular case
@@ -207,7 +205,7 @@ def log_likelihood_path(X, model):
         
     return log_L
 
-def simulate_var(model: VARModel, T: int, N_paths: int = 1):
+def simulate_var(model, T, N_paths=1):
     """
     Simulate paths from the VAR model
     """
@@ -235,7 +233,7 @@ def simulate_var(model: VARModel, T: int, N_paths: int = 1):
 Now let's compute likelihood ratio processes for comparing two VAR models:
 
 ```{code-cell} ipython3
-def compute_likelihood_ratio_var(paths, model_f: VARModel, model_g: VARModel):
+def compute_likelihood_ratio_var(paths, model_f, model_g):
     """
     Compute likelihood ratio process for VAR models
     """
@@ -654,7 +652,7 @@ Now let's simulate two Samuelson models with different accelerator coefficients 
 γ_f, G_f, σ_f = 10, 10, 0.5
 
 # Model g: Lower accelerator coefficient  
-α_g, β_g = 0.98, 0.7
+α_g, β_g = 0.98, 0.85
 γ_g, G_g, σ_g = 10, 10, 0.5
 
 
