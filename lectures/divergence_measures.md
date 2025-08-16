@@ -31,7 +31,7 @@ kernelspec:
 A statistical divergence is a function that quantifies discrepancies between two distinct 
  probability distributions that can be   challenging to distinguish for the following reason:
  
-  * every event that is has positive probability  under one of the distributions also has positive probability under the other distribution
+  * every event that has positive probability  under one of the distributions also has positive probability under the other distribution
 
   * thus, there is no "smoking gun" event whose occurrence  tells  a statistician that one of the probability distribution surely governs the data  
 
@@ -58,9 +58,9 @@ import pandas as pd
 from IPython.display import display, Math
 ```
 
-## Setup: Beta distributions
+## Setup: Beta distribution
 
-We'll use Beta distributions extensively in this chapter to illustrate concepts concretely. 
+We'll use Beta distribution extensively in this chapter to illustrate concepts concretely. 
 
 The Beta distribution is particularly convenient as it's defined on $[0,1]$ and exhibits diverse shapes through its two parameters.
 
@@ -122,7 +122,7 @@ We can interpret $KL(f, g)$ as the expected excess log loss (expected excess sur
 
 It has several important properties:
 
-- Non-negativity (Gibbs' inequality): $KL(f, g) \ge 0$ with equality if and only if $f=g$ almost everywhere (Gibbs' inequality).
+- Non-negativity (Gibbs' inequality): $KL(f, g) \ge 0$ with equality if and only if $f=g$ almost everywhere.
 - Asymmetry: $KL(f, g) \neq KL(g, f)$ in general (hence not a metric)
 - Information decomposition:
   $KL(f, g) = H(f,g) - H(f)$, where $H(f,g)$ is the cross entropy and $H(f)$ is the Shannon entropy of $f$.
@@ -166,33 +166,13 @@ Sometimes we want a symmetric measure of divergence that captures the difference
 
 This often arises in applications like clustering, where we want to compare distributions without assuming one is the true model.
 
-Another important application is in generative models since this measure is 
-bounded and smooth and provides stable gradients for optimization.
-
 The **Jensen-Shannon (JS) divergence** symmetrizes KL divergence by comparing both distributions to their mixture:
 
 $$
 JS(f,g) = \frac{1}{2} D_{KL}(f\|m) + \frac{1}{2} D_{KL}(g\|m), \quad m = \frac{1}{2}(f+g).
 $$
 
-Properties:
-
-- Symmetry: $JS(f,g)=JS(g,f)$.
-- Boundedness: $0 \le JS(f,g) \le \log 2$.
-- Its square root $\sqrt{JS}$ is a metric (Jensen–Shannon distance) on the space of probability distributions.
-- JS divergence equals the mutual information between a binary random variable $Z \sim \text{Bernoulli}(1/2)$ indicating the source and a sample $X$ drawn from $f$ if $Z=0$ or from $g$ if $Z=1$.
-
-```{code-cell} ipython3
-def compute_JS(f, g):
-    """Compute Jensen-Shannon divergence."""
-    def m(w):
-        return 0.5 * (f(w) + g(w))
-    js_div = 0.5 * compute_KL(f, m) + 0.5 * compute_KL(g, m)
-    return js_div
-
-js_div = compute_JS(f, g)
-print(f"Jensen-Shannon divergence JS(f,g) = {js_div:.4f}")
-```
+where $m$ is a mixture distribution that averages $f$ and $g$
 
 Let's also visualize the mixture distribution $m$:
 
@@ -211,6 +191,31 @@ plt.xlabel('x')
 plt.ylabel('density')
 plt.legend()
 plt.show()
+```
+
+The JS divergence has several useful properties:
+
+- Symmetry: $JS(f,g)=JS(g,f)$.
+- Boundedness: $0 \le JS(f,g) \le \log 2$.
+- Its square root $\sqrt{JS}$ is a metric (Jensen–Shannon distance) on the space of probability distributions.
+- JS divergence equals the mutual information between a binary random variable $Z \sim \text{Bernoulli}(1/2)$ indicating the source and a sample $X$ drawn from $f$ if $Z=0$ or from $g$ if $Z=1$.
+
+The Jensen–Shannon divergence plays a key role in the optimization of certain 
+generative models, as it is bounded, symmetric, and smoother than KL divergence, 
+often providing more stable gradients for training.
+
+Let's compute the JS divergence between our example distributions $f$ and $g$
+
+```{code-cell} ipython3
+def compute_JS(f, g):
+    """Compute Jensen-Shannon divergence."""
+    def m(w):
+        return 0.5 * (f(w) + g(w))
+    js_div = 0.5 * compute_KL(f, m) + 0.5 * compute_KL(g, m)
+    return js_div
+
+js_div = compute_JS(f, g)
+print(f"Jensen-Shannon divergence JS(f,g) = {js_div:.4f}")
 ```
 
 We can easily generalize with more than two distributions with generalized Jensen-Shannon divergence with weights $\alpha = (\alpha_i)_{i=1}^{n}$:
@@ -241,6 +246,11 @@ Remarks:
 - At $\phi=1/2$ it becomes the **Bhattacharyya coefficient** $\int \sqrt{f g}$. 
 - In binary hypothesis testing with $T$ iid observations, the optimal error probability decays as $e^{-C(f,g) T}$.
 
+We will see and example of the third point in the lecture {doc}`likelihood_ratio_process`, 
+where we study the Chernoff entropy in the context of model selection.
+
+Let's compute the Chernoff entropy between our example distributions $f$ and $g$.
+
 ```{code-cell} ipython3
 def chernoff_integrand(ϕ, f, g):
     """Integral entering Chernoff entropy for a given ϕ."""
@@ -266,9 +276,11 @@ print(f"Optimal ϕ = {ϕ_optimal:.4f}")
 
 ## Comparing divergence measures
 
-We now compare these measures across several pairs of Beta distributions.
+We now compare these measures across several pairs of Beta distributions
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 distribution_pairs = [
     # (f_params, g_params)
     ((1, 1), (0.1, 0.2)),
@@ -382,12 +394,16 @@ def plot_dist_diff():
         x_range = np.linspace(0, 1, 200)
         f_vals = [f(x) for x in x_range]
         g_vals = [g(x) for x in x_range]
-        axes[row, col].plot(x_range, f_vals, 'b-', linewidth=2, label=f'f ~ Beta({f_a},{f_b})')
-        axes[row, col].plot(x_range, g_vals, 'r-', linewidth=2, label=f'g ~ Beta({g_a},{g_b})')
+        axes[row, col].plot(x_range, f_vals, 'b-', 
+                        linewidth=2, label=f'f ~ Beta({f_a},{f_b})')
+        axes[row, col].plot(x_range, g_vals, 'r-', 
+                        linewidth=2, label=f'g ~ Beta({g_a},{g_b})')
         overlap = np.minimum(f_vals, g_vals)
-        axes[row, col].fill_between(x_range, 0, overlap, alpha=0.3, color='purple', label='overlap')
+        axes[row, col].fill_between(x_range, 0, 
+                        overlap, alpha=0.3, color='purple', label='overlap')
         axes[row, col].set_title(
-            f'KL(f,g)={kl_fg:.3f}, JS={js_div:.3f}, C={chernoff_ent:.3f}', fontsize=12)
+            f'KL(f,g)={kl_fg:.3f}, JS={js_div:.3f}, C={chernoff_ent:.3f}', 
+            fontsize=12)
         axes[row, col].legend(fontsize=12)
     plt.tight_layout()
     plt.show()
@@ -403,4 +419,5 @@ This lecture serves as a foundation for understanding tools we use to capture th
 - For a more detailed illustration of the relationship between divergence measures and statistical inference, see {doc}`likelihood_ratio_process`, {doc}`wald_friedman`, and {doc}`mix_model`.
 
 - These measures play a crucial role in capturing the heterogeneity in the beliefs of agents in a model. 
-For an application of this idea, see {doc}`likelihood_ratio_process_2` where we study how agents with different beliefs interact in a dynamic setting where we discuss the role of divergence measures in Lawrence Blume and David Easley's model on heterogeneous beliefs and financial markets.
+For an application of this idea, see {doc}`likelihood_ratio_process_2` where we discuss the role of divergence measures 
+in Lawrence Blume and David Easley's model on heterogeneous beliefs and financial markets.

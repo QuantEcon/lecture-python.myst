@@ -73,7 +73,7 @@ where:
 - $A$ is an $n \times n$ transition matrix
 - $C$ is an $n \times m$ volatility matrix
 
-### Joint Distribution
+### Joint distribution
 
 The joint probability distribution $f(x_T, x_{T-1}, \ldots, x_0)$ can be factored as:
 
@@ -83,7 +83,7 @@ $$
 
 Since the VAR is Markovian, $f(x_{t+1} | x_t, \ldots, x_0) = f(x_{t+1} | x_t)$.
 
-### Conditional Densities
+### Conditional densities
 
 Given the Gaussian structure, the conditional distribution $f(x_{t+1} | x_t)$ is Gaussian with:
 - Mean: $A x_t$
@@ -230,7 +230,7 @@ def simulate_var(model: VARModel, T: int, N_paths: int = 1):
     return paths if N_paths > 1 else paths[0]
 ```
 
-## Likelihood Ratio Process
+## Likelihood ratio process
 
 Now let's compute likelihood ratio processes for comparing two VAR models:
 
@@ -269,7 +269,7 @@ def compute_likelihood_ratio_var(paths, model_f: VARModel, model_g: VARModel):
     return log_L_ratios if N_paths > 1 else log_L_ratios[0]
 ```
 
-## Example 1: Two AR(1) Processes
+## Example 1: Two AR(1) processes
 
 Let's start with a simple example comparing two univariate AR(1) processes:
 
@@ -306,19 +306,17 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Example 2: Bivariate VAR Models
+## Example 2: Bivariate VAR models
 
 Now let's consider a more complex example with bivariate VAR models:
 
 ```{code-cell} ipython3
-# Model f: Bivariate VAR with cross-equation restrictions
 A_f = np.array([[0.7, 0.2],
                  [0.1, 0.6]])
 
 C_f = np.array([[0.3, 0.1],
                  [0.1, 0.3]])
 
-# Model g: Unrestricted bivariate VAR
 A_g = np.array([[0.5, 0.3],
                  [0.2, 0.5]])
 
@@ -638,7 +636,7 @@ def simulate_samuelson(model, G_obs, T, N_paths=1):
     # Extract observables using G matrix
     if N_paths == 1:
         # Single path: states is (T+1, 3)
-        observables = (G_obs @ states.T).T  # (T+1, 3)
+        observables = (G_obs @ states.T).T
     else:
         # Multiple paths: states is (N_paths, T+1, 3)
         observables = np.zeros((N_paths, T+1, 3))
