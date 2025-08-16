@@ -34,14 +34,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-```{code-cell} ipython3
-import warnings
-warnings.warn(
-        "This function will be deprecated in a future version. ",
-        FutureWarning
-    )
-```
-
 ## Overview
 
 In this lecture, we describe the structure of a class of models that build on work by Truman Bewley {cite}`Bewley1977`.
