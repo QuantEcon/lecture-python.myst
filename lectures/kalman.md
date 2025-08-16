@@ -783,8 +783,10 @@ e2 = np.empty(T-1)
 
 for t in range(1, T):
     kn.update(y[:,t])
-    e1[t-1] = np.sum((x[:, t] - kn.x_hat.flatten())**2)
-    e2[t-1] = np.sum((x[:, t] - A @ x[:, t-1])**2)
+    diff1 = x[:, t] - kn.x_hat.flatten()
+    diff2 = x[:, t] - A @ x[:, t-1]
+    e1[t-1] = diff1 @ diff1
+    e2[t-1] = diff2 @ diff2
 
 fig, ax = plt.subplots(figsize=(9,6))
 ax.plot(range(1, T), e1, 'k-', lw=2, alpha=0.6,
