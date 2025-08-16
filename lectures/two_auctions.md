@@ -403,6 +403,11 @@ def evaluate_largest(v_hat, array, order=1):
     array_conditional=array_residual[:,index].copy()
 
     array_conditional=np.sort(array_conditional, axis=0)
+    
+    # Handle empty array case to avoid "Mean of empty slice" warning
+    if array_conditional.shape[1] == 0:
+        return np.nan
+    
     return array_conditional[-order,:].mean()
 ```
 
@@ -560,6 +565,10 @@ class bid_price_solution:
         array_conditional=array_residual[:,index].copy()
 
         array_conditional=np.sort(array_conditional, axis=0)
+
+        # Handle empty array case to avoid "Mean of empty slice" warning
+        if array_conditional.shape[1] == 0:
+            return np.nan
 
         return array_conditional[-order,:].mean()
 
