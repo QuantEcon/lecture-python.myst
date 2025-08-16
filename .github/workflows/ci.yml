@@ -76,10 +76,9 @@ jobs:
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
       - name: Check for Python warnings
-        uses: QuantEcon/meta/.github/actions/check-warnings@main
+        uses: QuantEcon/meta/.github/actions/check-warnings@copilot/fix-201
         with:
           html-path: './_build/html'
-          warnings: 'SyntaxWarning,DeprecationWarning,FutureWarning'
           fail-on-warning: 'false'
           create-issue: 'true'
           issue-title: 'Python warnings found in code output'
