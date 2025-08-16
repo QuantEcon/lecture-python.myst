@@ -131,7 +131,7 @@ class Neumann:
           - number of goods          : {n}
           - number of activities     : {m}
 
-        Assumptions://
+        Assumptions:
           - AI:  every column of B has a positive entry    : {AI} 
           - AII: every row of A has a positive entry       : {AII}
 
