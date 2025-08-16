@@ -32,9 +32,11 @@ In addition to what's included in base Anaconda, we need to install the followin
 
 ```{code-cell} ipython3
 :tags: [hide-output]
-
-!pip install kaleido
-!conda install -y -c plotly plotly plotly-orca retrying
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", message=".*os.fork.*")
+    !pip install kaleido
+    !conda install -y -c plotly plotly plotly-orca retrying
 ```
 
 ```{note}

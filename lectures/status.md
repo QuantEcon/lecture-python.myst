@@ -23,14 +23,20 @@ These lectures are built on `linux` instances through `github actions`.
 These lectures are using the following python version
 
 ```{code-cell} ipython
-!python --version
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", message=".*os.fork.*")
+    !python --version
 ```
 
 and the following package versions
 
 ```{code-cell} ipython
 :tags: [hide-output]
-!conda list
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", message=".*os.fork.*")
+    !conda list
 ```
 
 You can check the backend used by JAX using:
@@ -44,5 +50,8 @@ print(f"JAX backend: {jax.devices()[0].platform}")
 and this lecture series also has access to the following GPU
 
 ```{code-cell} ipython
-!nvidia-smi
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", message=".*os.fork.*")
+    !nvidia-smi
 ```
