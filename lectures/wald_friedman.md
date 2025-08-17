@@ -1091,13 +1091,13 @@ def simulate_markov_chain(P, pi_0, T, seed):
     return path
 
 @njit
-def markov_sprt_single_run(P_0, P_1, pi_0, pi_1, 
-                logA, logB, true_P, true_pi, seed):
+def markov_sprt_single_run(P_0, P_1, π_0, π_1, 
+                logA, logB, true_P, true_π, seed):
     """Run single SPRT for Markov chains."""
     max_n = 10000
-    path = simulate_markov_chain(true_P, true_pi, max_n, seed)
+    path = simulate_markov_chain(true_P, true_π, max_n, seed)
     
-    log_L = np.log(pi_1[path[0]] / pi_0[path[0]])
+    log_L = np.log(π_1[path[0]] / π_0[path[0]])
     if log_L >= logA: return 1, False
     if log_L <= logB: return 1, True
     
@@ -1117,8 +1117,8 @@ def markov_sprt_single_run(P_0, P_1, pi_0, pi_1,
 
 def run_markov_sprt(params):
     """Run SPRT for Markov chains."""
-    pi_0 = compute_stationary_distribution(params.P_0)
-    pi_1 = compute_stationary_distribution(params.P_1)
+    π_0 = compute_stationary_distribution(params.P_0)
+    π_1 = compute_stationary_distribution(params.P_1)
     A, B, logA, logB = compute_wald_thresholds(params.α, params.β)
     
     stopping_times = np.zeros(params.N, dtype=np.int64)
@@ -1126,12 +1126,12 @@ def run_markov_sprt(params):
     truth_h0 = np.zeros(params.N, dtype=bool)
     
     for i in range(params.N):
-        true_P, true_pi = (params.P_0, pi_0) if i % 2 == 0 else (params.P_1, pi_1)
+        true_P, true_π = (params.P_0, π_0) if i % 2 == 0 else (params.P_1, π_1)
         truth_h0[i] = i % 2 == 0
         
         n, accept_h0 = markov_sprt_single_run(
-            params.P_0, params.P_1, pi_0, pi_1, logA, logB, 
-            true_P, true_pi, params.seed + i)
+            params.P_0, params.P_1, π_0, π_1, logA, logB, 
+            true_P, true_π, params.seed + i)
         
         stopping_times[i] = n
         decisions_h0[i] = accept_h0
