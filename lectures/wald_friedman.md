@@ -1367,7 +1367,9 @@ ax2.bar(x + 0.2, [results_markov['type_II'], results_var['type_II']],
 ax2.axhline(y=0.05, linestyle='--', alpha=0.5, color='C0')
 ax2.axhline(y=0.10, linestyle='--', alpha=0.5, color='C1')
 ax2.set_xticks(x), ax2.set_xticklabels(['Markov', 'VAR'])
-ax2.legend(), plt.tight_layout(), plt.show()
+ax2.legend() 
+plt.tight_layout() 
+plt.show()
 ```
 
 ```{solution-end}
