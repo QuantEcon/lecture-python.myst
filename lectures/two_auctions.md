@@ -48,7 +48,7 @@ Much of our  Python code below is based on his.
 
 +++
 
-##  First-Price Sealed-Bid Auction (FPSB)
+##  First-price sealed-bid auction (FPSB)
 
 +++
 
@@ -74,7 +74,7 @@ Evidently,
 
 - If $i$ bids exactly $v_i$, she pays what she thinks it is worth and gathers no surplus value.
 - Buyer $i$ will never want to bid more than $v_i$.
-- If buyer $i$ bids $b < v_i$ and wins the auction, then she gathers surplus value $b - v_i > 0$.
+- If buyer $i$ bids $b < v_i$ and wins the auction, then she gathers surplus value $v_i - b > 0$.
 - If buyer $i$ bids $b < v_i$ and someone else bids more than $b$, buyer $i$ loses the auction and gets no surplus value.
 - To proceed, buyer $i$ wants to know the probability that she wins the auction as a function of her bid $v_i$
    - this requires that she know a probability distribution of bids $v_j$ made by  prospective buyers $j \neq i$
@@ -91,7 +91,7 @@ To complete the specification of the situation, we'll  assume that  prospective 
 
 Bidder optimally chooses to bid less than $v_i$.
 
-### Characterization of FPSB Auction
+### Characterization of FPSB auction
 
 A FPSB auction has a unique symmetric Bayesian Nash Equilibrium.
 
@@ -109,28 +109,28 @@ $$ (eq:optbid2)
 
 
 
-A proof for this assertion is available  at the [Wikepedia page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vickrey auctions
+A proof for this assertion is available  at the [Wikipedia page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vickrey auctions
 
 +++
 
-## Second-Price Sealed-Bid Auction (SPSB)
+## Second-price sealed-bid auction (SPSB)
 
 +++
 
 **Protocols:** In a  second-price sealed-bid (SPSB) auction,  the winner pays the second-highest bid.
 
-## Characterization of SPSB Auction
+## Characterization of SPSB auction
 
 In a  SPSB auction  bidders optimally choose to bid their  values.
 
 Formally, a dominant strategy profile in a SPSB auction with a single, indivisible item has each bidder  bidding its  value.
 
-A proof is provided at [the Wikepedia
+A proof is provided at [the Wikipedia
         page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vickrey auctions
 
 +++
 
-## Uniform Distribution of Private Values
+## Uniform distribution of private values
 
 +++
 
@@ -181,13 +181,13 @@ $$
 \end{aligned}
 $$
 
-## Second Price Sealed Bid Auction
+## Second price sealed bid auction
 
 In a  **SPSB**, it is optimal for bidder $i$ to bid $v_i$.
 
 +++
 
-## Python Code
+## Python code
 
 ```{code-cell} ipython3
 import numpy as np
@@ -200,7 +200,7 @@ import scipy.interpolate as interp
 plt.rcParams.update({"text.usetex": True, 'font.size': 14})
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
-# ensure the notebook generate the same randomess
+# ensure the notebook generate the same randomness
 np.random.seed(1337)
 ```
 
@@ -272,7 +272,7 @@ ax.set_ylabel('Bid, $b_i$')
 sns.despine()
 ```
 
-## Revenue Equivalence Theorem
+## Revenue equivalence theorem
 
 +++
 
@@ -344,7 +344,7 @@ sns.despine()
 
 **Detour: Computing a Bayesian Nash Equibrium for  FPSB**
 
-The Revenue Equivalence Theorem lets us an optimal bidding strategy for  a  FPSB auction  from outcomes of a SPSB auction.
+The Revenue Equivalence Theorem lets us find an optimal bidding strategy for  a  FPSB auction  from outcomes of a SPSB auction.
 
 Let  $b(v_{i})$ be the optimal bid in a FPSB auction.
 
@@ -360,11 +360,11 @@ It follows that an optimal bidding strategy in a FPSB auction is $b(v_{i}) = \ma
 
 +++
 
-##  Calculation of  Bid Price in FPSB
+##  Calculation of  bid price in FPSB
 
 +++
 
-In equations {eq}`eq:optbid1` and {eq}`eq:optbid1`, we displayed formulas for
+In equations {eq}`eq:optbid1` and {eq}`eq:optbid2`, we displayed formulas for
 optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.
 
 $$
@@ -539,7 +539,7 @@ ax.set_ylabel('Density')
 sns.despine()
 ```
 
-## 5 Code Summary
+## Code summary
 
 +++
 
