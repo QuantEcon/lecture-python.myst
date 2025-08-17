@@ -109,6 +109,117 @@ plt.legend()
 plt.show()
 ```
 
+
+
+
+## Primer on Entropy, Cross-Entropy, KL Divergence
+
+Before diving in, we'll introduce some useful concepts in a simple setting.
+
+We'll temporarily assume that $f$ and $g$ are two probability mass functions for discrete random variables 
+on state space $I = \{1, 2, \ldots, n\}$  that satisfy $f_i \geq 0, \sum_{i} f_i =1, g_i \geq 0, \sum_{i} g_i =1$.
+
+Some statisticians define the **surprise** or **surprisal** provided by observing a single draw $x = i$ from distribution $f$  as
+
+$$
+\log\left(\frac{1}{f_i}\right)
+$$
+
+They then define the **information** that they can anticipate  to gather from observing a single realization
+as the expected surprisal or **entropy** defined as
+
+$$
+H(f) = \sum_{f_i} \log\left(\frac{1}{f_i}\right).  
+$$
+
+Kullback and Leibler XXXX define the amount of information that a single draw of $x$ provides for distinguishing $f$ from $g$  as the log
+ likelihood ratio 
+
+$$
+\log \frac{f(x)}{g(x)}
+$$
+
+
+
+
+
+In statistics and probability theory, the following three concepts are widely used to define  **information**: 
+
+**Entropy**
+\begin{equation}
+H(f) = \sum_{i} f_i \log \left(\frac{1}{f_i}\right) = -\sum_{i} f_i \log f_i
+\end{equation}
+
+**Cross-Entropy**
+
+\begin{equation}
+H(f,g) = -\sum_{i} f_i \log g_i
+\end{equation}
+
+
+
+**KL Divergence** 
+\begin{equation}
+D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
+\end{equation}
+
+These three concepts are related by the following equality.
+
+\begin{equation}
+{KL}(f \parallel g) = H(f,g) - H(f)
+\end{equation}
+
+To prove the preceding equality, note that
+
+
+\begin{align}
+D_{KL}(f \parallel g) &= \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right] \\
+&= \sum_{i} f_i \left[\log f_i - \log g_i\right] \\
+&= \sum_{i} f_i \log f_i - \sum_{i} f_i \log g_i \\
+&= -H(f) + H(f,g) \\
+&= H(f,g) - H(f)
+\end{align}
+
+
+
+
+
+Given a sample of $n$ observations $X = \{x_1, x_2, \ldots, x_n\}$, the **empirical distribution** is 
+
+$$p_e(x) = \frac{1}{n} \sum_{i=1}^n \delta(x - x_i)$$
+
+where $\delta(x - x_i)$ is the Dirac delta function centered at $x_i$.
+
+
+- **Discrete probability measure**: Assigns probability $\frac{1}{n}$ to each observed data point
+- **Empirical expectation**: $\langle X \rangle_{p_e} = \frac{1}{n} \sum_{i=1}^n x_i = \bar{\mu}$
+- **Support**: Only on the observed data points $\{x_1, x_2, \ldots, x_n\}$
+
+
+The KL divergence from the empirical distribution $p_e$ to a parametric model $p_\theta(x)$ is:
+
+$$\text{KL}(p_e \parallel p_\theta) = \int p_e(x) \log \frac{p_e(x)}{p_\theta(x)} dx$$
+
+It follows that 
+
+$$\text{KL}(p_e \parallel p_\theta) = \sum_{i=1}^n \frac{1}{n} \log \frac{\frac{1}{n}}{p_\theta(x_i)}$$
+
+$$= \frac{1}{n} \sum_{i=1}^n \log \frac{1}{n} - \frac{1}{n} \sum_{i=1}^n \log p_\theta(x_i)$$
+
+$$= \log \frac{1}{n} - \frac{1}{n} \sum_{i=1}^n \log p_\theta(x_i)$$
+
+Since the log-likelihood function for parameter $\theta$ is:
+$$\ell(\theta; X) = \sum_{i=1}^n \log p_\theta(x_i)$$
+
+it follows that maximum likelihood parameter estimation minimizes 
+
+$$ KL(p_e \parallel p_\theta) $$
+
+
+Thus, MLE is equivalent to minimizing the KL divergence from the empirical distribution to the parametric model.
+
+
+
 (rel_entropy)=
 ## Kullback–Leibler divergence
 
