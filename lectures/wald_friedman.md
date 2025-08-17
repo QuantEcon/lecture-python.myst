@@ -1026,7 +1026,9 @@ You have competing hypotheses about the transition probabilities:
 - $H_1$: The chain follows transition matrix $P^{(1)}$
 
 Given transition matrices:
-$$P^{(0)} = \begin{bmatrix}
+
+$$
+P^{(0)} = \begin{bmatrix}
 0.7 & 0.2 & 0.1 \\
 0.3 & 0.5 & 0.2 \\
 0.1 & 0.3 & 0.6
@@ -1035,10 +1037,14 @@ P^{(1)} = \begin{bmatrix}
 0.5 & 0.3 & 0.2 \\
 0.2 & 0.6 & 0.2 \\
 0.2 & 0.2 & 0.6
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 For a sequence of observations $(x_0, x_1, \ldots, x_t)$, the likelihood ratio is:
-$$\Lambda_t = \frac{\pi_{x_0}^{(1)}}{\pi_{x_0}^{(0)}} \prod_{s=1}^t \frac{P_{x_{s-1},x_s}^{(1)}}{P_{x_{s-1},x_s}^{(0)}}$$
+
+$$
+\Lambda_t = \frac{\pi_{x_0}^{(1)}}{\pi_{x_0}^{(0)}} \prod_{s=1}^t \frac{P_{x_{s-1},x_s}^{(1)}}{P_{x_{s-1},x_s}^{(0)}}
+$$
 
 where $\pi^{(i)}$ is the stationary distribution under hypothesis $i$.
 

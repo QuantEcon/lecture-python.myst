@@ -35,7 +35,7 @@ A statistical divergence quantifies discrepancies between two distinct
 
   * this means that  there is no "smoking gun" event whose occurrence  tells  a statistician that one of the probability distribution surely governs the data  
 
-A statistical divergence is a **function** that maps two distinction probability distributions into a nonnegative real number.
+A statistical divergence is a **function** that maps two  probability distributions into a nonnegative real number.
 
 Statistical divergence functions  play important roles in statistics, information theory, and what many people now call "machine learning". 
 
@@ -60,11 +60,100 @@ import pandas as pd
 from IPython.display import display, Math
 ```
 
-## Setup: Beta distribution
 
-We'll use Beta distribution extensively in this chapter to illustrate concepts concretely. 
 
-The Beta distribution is particularly convenient as it's defined on $[0,1]$ and exhibits diverse shapes through its two parameters.
+
+
+## Primer on Entropy, Cross-Entropy, KL Divergence
+
+Before diving in, we'll introduce some useful concepts in a simple setting.
+
+We'll temporarily assume that $f$ and $g$ are two probability mass functions for discrete random variables 
+on state space $I = \{1, 2, \ldots, n\}$  that satisfy $f_i \geq 0, \sum_{i} f_i =1, g_i \geq 0, \sum_{i} g_i =1$.
+
+We follow some  statisticians and information theorists who  define the **surprise** or **surprisal** 
+associated with having  observed a single draw $x = i$ from distribution $f$  as
+
+$$
+\log\left(\frac{1}{f_i}\right)
+$$
+
+They then define the **information** that you can   anticipate  to gather from observing a single realization
+as the expected surprisal 
+
+$$
+H(f) = \sum_i f_i \log\left(\frac{1}{f_i}\right).  
+$$
+
+Claude Shannon {cite}`shannon1948mathematical` called $H(f)$ the **entropy** of distribution $f$.
+
+
+```{note}
+By maximizing $H(f)$ with respect to $\{f_1, f_2, \ldots, f_n\}$ subject to $\sum_{f_i} = 1$, we can verify that the distribution
+that maximizes entropy is the uniform distribution
+$
+f_i = \frac{1}{n} .
+$
+Entropy $H(f)$ for the uniform distribution evidently equals $- \log(n)$.  
+```
+
+
+
+Kullback and Leibler {cite}`kullback1951information` define the amount of information that a single draw of $x$ provides for distinguishing $f$ from $g$  as the log likelihood ratio 
+
+$$
+\log \frac{f(x)}{g(x)}
+$$
+
+
+
+
+
+The following two  concepts are widely used to compare two distributions $f$ and $g$. 
+
+
+
+**Cross-Entropy:**
+
+\begin{equation}
+H(f,g) = -\sum_{i} f_i \log g_i
+\end{equation}
+
+
+
+**Kullback-Leibler (KL) Divergence:** 
+\begin{equation}
+D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
+\end{equation}
+
+These concepts are related by the following equality.
+
+$$
+{KL}(f \parallel g) = H(f,g) - H(f)
+$$ (eq:KLcross)
+
+To prove {eq}`eq:KLcross`, note that
+
+
+\begin{align}
+D_{KL}(f \parallel g) &= \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right] \\
+&= \sum_{i} f_i \left[\log f_i - \log g_i\right] \\
+&= \sum_{i} f_i \log f_i - \sum_{i} f_i \log g_i \\
+&= -H(f) + H(f,g) \\
+&= H(f,g) - H(f)
+\end{align}
+
+Remember that $H(f)$ is the anticipated surprisal from drawing $x$ from $f$. 
+
+Then the above equation tells us that  the KL divergence is an anticipated "excess surprise" that comes from anticipating that $x$ is drawn from $f$ when it is
+actually drawn from $g$.  
+
+
+## Two Beta Distributions: Running Example
+
+We'll use Beta distributions extensively to illustrate concepts. 
+
+The Beta distribution is particularly convenient as it's defined on $[0,1]$ and exhibits diverse shapes by appropriately choosing its  two parameters.
 
 The density of a Beta distribution with parameters $a$ and $b$ is given by
 
@@ -108,115 +197,6 @@ plt.ylabel('density')
 plt.legend()
 plt.show()
 ```
-
-
-
-
-## Primer on Entropy, Cross-Entropy, KL Divergence
-
-Before diving in, we'll introduce some useful concepts in a simple setting.
-
-We'll temporarily assume that $f$ and $g$ are two probability mass functions for discrete random variables 
-on state space $I = \{1, 2, \ldots, n\}$  that satisfy $f_i \geq 0, \sum_{i} f_i =1, g_i \geq 0, \sum_{i} g_i =1$.
-
-Some statisticians define the **surprise** or **surprisal** provided by observing a single draw $x = i$ from distribution $f$  as
-
-$$
-\log\left(\frac{1}{f_i}\right)
-$$
-
-They then define the **information** that they can anticipate  to gather from observing a single realization
-as the expected surprisal or **entropy** defined as
-
-$$
-H(f) = \sum_{f_i} \log\left(\frac{1}{f_i}\right).  
-$$
-
-Kullback and Leibler XXXX define the amount of information that a single draw of $x$ provides for distinguishing $f$ from $g$  as the log
- likelihood ratio 
-
-$$
-\log \frac{f(x)}{g(x)}
-$$
-
-
-
-
-
-In statistics and probability theory, the following three concepts are widely used to define  **information**: 
-
-**Entropy**
-\begin{equation}
-H(f) = \sum_{i} f_i \log \left(\frac{1}{f_i}\right) = -\sum_{i} f_i \log f_i
-\end{equation}
-
-**Cross-Entropy**
-
-\begin{equation}
-H(f,g) = -\sum_{i} f_i \log g_i
-\end{equation}
-
-
-
-**KL Divergence** 
-\begin{equation}
-D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
-\end{equation}
-
-These three concepts are related by the following equality.
-
-\begin{equation}
-{KL}(f \parallel g) = H(f,g) - H(f)
-\end{equation}
-
-To prove the preceding equality, note that
-
-
-\begin{align}
-D_{KL}(f \parallel g) &= \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right] \\
-&= \sum_{i} f_i \left[\log f_i - \log g_i\right] \\
-&= \sum_{i} f_i \log f_i - \sum_{i} f_i \log g_i \\
-&= -H(f) + H(f,g) \\
-&= H(f,g) - H(f)
-\end{align}
-
-
-
-
-
-Given a sample of $n$ observations $X = \{x_1, x_2, \ldots, x_n\}$, the **empirical distribution** is 
-
-$$p_e(x) = \frac{1}{n} \sum_{i=1}^n \delta(x - x_i)$$
-
-where $\delta(x - x_i)$ is the Dirac delta function centered at $x_i$.
-
-
-- **Discrete probability measure**: Assigns probability $\frac{1}{n}$ to each observed data point
-- **Empirical expectation**: $\langle X \rangle_{p_e} = \frac{1}{n} \sum_{i=1}^n x_i = \bar{\mu}$
-- **Support**: Only on the observed data points $\{x_1, x_2, \ldots, x_n\}$
-
-
-The KL divergence from the empirical distribution $p_e$ to a parametric model $p_\theta(x)$ is:
-
-$$\text{KL}(p_e \parallel p_\theta) = \int p_e(x) \log \frac{p_e(x)}{p_\theta(x)} dx$$
-
-It follows that 
-
-$$\text{KL}(p_e \parallel p_\theta) = \sum_{i=1}^n \frac{1}{n} \log \frac{\frac{1}{n}}{p_\theta(x_i)}$$
-
-$$= \frac{1}{n} \sum_{i=1}^n \log \frac{1}{n} - \frac{1}{n} \sum_{i=1}^n \log p_\theta(x_i)$$
-
-$$= \log \frac{1}{n} - \frac{1}{n} \sum_{i=1}^n \log p_\theta(x_i)$$
-
-Since the log-likelihood function for parameter $\theta$ is:
-$$\ell(\theta; X) = \sum_{i=1}^n \log p_\theta(x_i)$$
-
-it follows that maximum likelihood parameter estimation minimizes 
-
-$$ KL(p_e \parallel p_\theta) $$
-
-
-Thus, MLE is equivalent to minimizing the KL divergence from the empirical distribution to the parametric model.
 
 
 
@@ -524,6 +504,54 @@ def plot_dist_diff():
 
 divergence_data = plot_dist_diff()
 ```
+
+
+
+## KL Divergence and Maximum-Likelihood Estimation
+
+
+Given a sample of $n$ observations $X = \{x_1, x_2, \ldots, x_n\}$, the **empirical distribution** is 
+
+$$p_e(x) = \frac{1}{n} \sum_{i=1}^n \delta(x - x_i)$$
+
+where $\delta(x - x_i)$ is the Dirac delta function centered at $x_i$:
+
+$$
+\delta(x - x_i) = \begin{cases}
++\infty & \text{if } x = x_i \\
+0 & \text{if } x \neq x_i
+\end{cases}
+$$
+
+- **Discrete probability measure**: Assigns probability $\frac{1}{n}$ to each observed data point
+- **Empirical expectation**: $\langle X \rangle_{p_e} = \frac{1}{n} \sum_{i=1}^n x_i = \bar{\mu}$
+- **Support**: Only on the observed data points $\{x_1, x_2, \ldots, x_n\}$
+
+
+The KL divergence from the empirical distribution $p_e$ to a parametric model $p_\theta(x)$ is:
+
+$$\text{KL}(p_e \parallel p_\theta) = \int p_e(x) \log \frac{p_e(x)}{p_\theta(x)} dx$$
+
+Using the mathematics of the Dirac delta function, it follows that 
+
+$$\text{KL}(p_e \parallel p_\theta) = \sum_{i=1}^n \frac{1}{n} \log \frac{\left(\frac{1}{n}\right)}{p_\theta(x_i)}$$
+
+$$= \frac{1}{n} \sum_{i=1}^n \log \frac{1}{n} - \frac{1}{n} \sum_{i=1}^n \log p_\theta(x_i)$$
+
+$$= -\log {n} - \frac{1}{n} \sum_{i=1}^n \log p_\theta(x_i)$$
+
+Since the log-likelihood function for parameter $\theta$ is:
+
+$$
+\ell(\theta; X) = \sum_{i=1}^n \log p_\theta(x_i) ,
+$$
+
+it follows that maximum likelihood chooses parameters to minimize
+
+$$ KL(p_e \parallel p_\theta) $$
+
+
+Thus, MLE is equivalent to minimizing the KL divergence from the empirical distribution to statistical  model $p_\theta$.
 
 ## Related Lectures
 
