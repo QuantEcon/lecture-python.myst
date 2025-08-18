@@ -768,9 +768,20 @@ Now let's use MCMC while still using a beta prior.
 We'll do this for both MCMC and VI.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      MCMC sampling density of posterior distributions
+    name: mcmc
+---
+
 BayesianInferencePlot(true_theta, num_list, BETA).MCMC_plot(
     num_samples=MCMC_num_samples
 )
+```
+
+```{code-cell} ipython3
 BayesianInferencePlot(true_theta, num_list, BETA).SVI_plot(
     guide_dist="beta", n_steps=SVI_num_steps
 )
