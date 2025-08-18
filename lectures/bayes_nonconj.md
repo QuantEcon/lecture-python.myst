@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -65,7 +65,7 @@ from numpyro.infer import Trace_ELBO as nTrace_ELBO
 from numpyro.optim import Adam as nAdam
 ```
 
-## Unleashing MCMC on a  Binomial Likelihood
+## Unleashing MCMC on a binomial likelihood
 
 This lecture begins with the binomial example in the {doc}`prob_meaning`.
 
@@ -84,7 +84,7 @@ We use several alternative prior distributions.
 
 We compare computed posteriors with ones associated with a conjugate prior as described in {doc}`prob_meaning`.
 
-### Analytical Posterior
+### Analytical posterior
 
 Assume that the random variable $X\sim Binom\left(n,\theta\right)$.
 
@@ -131,9 +131,7 @@ The analytical posterior for a given conjugate beta prior is coded in the follow
 
 ```{code-cell} ipython3
 def simulate_draw(theta, n):
-    """
-    Draws a Bernoulli sample of size n with probability P(Y=1) = theta
-    """
+    """Draws a Bernoulli sample of size n with probability P(Y=1) = theta"""
     rand_draw = np.random.rand(n)
     draw = (rand_draw < theta).astype(int)
     return draw
@@ -161,7 +159,7 @@ def analytical_beta_posterior(data, alpha0, beta0):
     return st.beta(alpha0 + up_num, beta0 + down_num)
 ```
 
-### Two Ways to Approximate Posteriors
+### Two ways to approximate posteriors
 
 Suppose that we don't have a conjugate prior.
 
@@ -193,7 +191,7 @@ a Kullback-Leibler (KL) divergence between true posterior and the putative poste
 
 - minimizing the KL divergence is equivalent to maximizing a criterion called the **Evidence Lower Bound** (ELBO), as we shall verify soon.
 
-## Prior Distributions
+## Prior distributions
 
 In order to be able to apply MCMC sampling or VI, `numpyro` requires that a prior distribution satisfy special properties:
 
@@ -230,14 +228,12 @@ def TruncatedLogNormal_trans(loc, scale):
     """
     base_dist = ndist.TruncatedNormal(
         low=jnp.log(0), high=jnp.log(1), loc=loc, scale=scale
-    )
+    ) #TODO:is it fine to use log(0)?
     return ndist.TransformedDistribution(base_dist, ndist.transforms.ExpTransform())
 
 
 def ShiftedVonMises(kappa):
-    """
-    Obtains the shifted von Mises distribution using AffineTransform
-    """
+    """Obtains the shifted von Mises distribution using AffineTransform"""
     base_dist = ndist.VonMises(0, kappa)
     return ndist.TransformedDistribution(
         base_dist, ndist.transforms.AffineTransform(loc=0.5, scale=1 / (2 * jnp.pi))
@@ -245,14 +241,12 @@ def ShiftedVonMises(kappa):
 
 
 def TruncatedLaplace(loc, scale):
-    """
-    Obtains the truncated Laplace distribution on [0,1]
-    """
+    """Obtains the truncated Laplace distribution on [0,1]"""
     base_dist = ndist.Laplace(loc, scale)
     return ndist.TruncatedDistribution(base_dist, low=0.0, high=1.0)
 ```
 
-### Variational Inference
+### Variational inference
 
 Instead of directly sampling from the posterior, the **variational inference** method approximates an unknown posterior distribution with a family of tractable distributions/densities.
 
@@ -275,7 +269,7 @@ $$
 where
 
 $$
-p\left(Y\right)=\int d\theta p\left(Y\mid\theta\right)p\left(Y\right).
+p\left(Y\right)=\int p\left(Y\mid\theta\right)p\left(Y\right) d\theta.
 $$ (eq:intchallenge)
 
 The integral on the right side of {eq}`eq:intchallenge` is typically difficult to compute.
@@ -298,19 +292,19 @@ Note that
 
 $$
 \begin{aligned}D_{KL}(q(\theta;\phi)\;\|\;p(\theta\mid Y)) & =-\int d\theta q(\theta;\phi)\log\frac{P(\theta\mid Y)}{q(\theta;\phi)}\\
- & =-\int d\theta q(\theta)\log\frac{\frac{p(\theta,Y)}{p(Y)}}{q(\theta)}\\
- & =-\int d\theta q(\theta)\log\frac{p(\theta,Y)}{p(\theta)q(Y)}\\
- & =-\int d\theta q(\theta)\left[\log\frac{p(\theta,Y)}{q(\theta)}-\log p(Y)\right]\\
- & =-\int d\theta q(\theta)\log\frac{p(\theta,Y)}{q(\theta)}+\int d\theta q(\theta)\log p(Y)\\
- & =-\int d\theta q(\theta)\log\frac{p(\theta,Y)}{q(\theta)}+\log p(Y)\\
-\log p(Y)&=D_{KL}(q(\theta;\phi)\;\|\;p(\theta\mid Y))+\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}
+ & =-\int q(\theta)\log\frac{\frac{p(\theta,Y)}{p(Y)}}{q(\theta)} d\theta\\
+ & =-\int q(\theta)\log\frac{p(\theta,Y)}{p(\theta)q(Y)} d\theta\\
+ & =-\int q(\theta)\left[\log\frac{p(\theta,Y)}{q(\theta)}-\log p(Y)\right] d\theta\\
+ & =-\int q(\theta)\log\frac{p(\theta,Y)}{q(\theta)}+\int d\theta q(\theta)\log p(Y) d\theta\\
+ & =-\int q(\theta)\log\frac{p(\theta,Y)}{q(\theta)}+\log p(Y) d\theta\\
+\log p(Y)&=D_{KL}(q(\theta;\phi)\;\|\;p(\theta\mid Y))+\int q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)} d\theta
 \end{aligned}
 $$
 
 For observed data $Y$, $p(\theta,Y)$ is a constant, so minimizing KL divergence is equivalent to maximizing
 
 $$
-ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=\mathbb{E}_{q_{\phi}(\theta)}\left[\log p(\theta,Y)-\log q_{\phi}(\theta)\right]
+ELBO\equiv\int q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)} d\theta=\mathbb{E}_{q_{\phi}(\theta)}\left[\log p(\theta,Y)-\log q_{\phi}(\theta)\right]
 $$ (eq:ELBO)
 
 Formula {eq}`eq:ELBO` is called the evidence lower bound (ELBO).
@@ -338,16 +332,16 @@ We have constructed a Python class `BayesianInference` that requires the followi
 - `name_dist`: a string that specifies distribution names
 
 The (`param`, `name_dist`) pair includes:
-- ('beta', alpha, beta)
+- (alpha, beta, 'beta')
 
-- ('uniform', lower_bound, upper_bound)
+- (lower_bound, upper_bound, 'uniform')
 
-- ('lognormal', loc, scale)
+- (loc, scale, 'lognormal')
    - Note: This is the truncated log normal.
 
-- ('vonMises', kappa), where kappa denotes concentration parameter, and center location is set to $0.5$. Using `numpyro`, this is the **shifted** distribution.
+- (kappa, 'vonMises'), where kappa denotes concentration parameter, and center location is set to $0.5$. Using `numpyro`, this is the **shifted** distribution.
 
-- ('laplace', loc, scale)
+- (loc, scale, 'laplace')
    - Note: This is the truncated Laplace
 
 The class `BayesianInference` has several key methods :
@@ -384,9 +378,7 @@ class BayesianInference:
         self.rng_key = jax_random.PRNGKey(0)
 
     def sample_prior(self):
-        """
-        Define the prior distribution to sample from in numpyro models.
-        """
+        """Define the prior distribution to sample from in numpyro models."""
         if self.name_dist == "beta":
             # unpack parameters
             alpha0, beta0 = self.param
@@ -493,9 +485,7 @@ class BayesianInference:
         numpyro.sample("theta", ndist.TruncatedNormal(loc, scale, low=0.0, high=1.0))
 
     def SVI_init(self, guide_dist, lr=0.0005):
-        """
-        Initiate SVI training mode with Adam optimizer
-        """
+        """Initiate SVI training mode with Adam optimizer"""
         adam_params = {"lr": lr}
 
         if guide_dist == "beta":
@@ -533,7 +523,7 @@ class BayesianInference:
         return params, losses
 ```
 
-## Alternative Prior Distributions
+## Alternative prior distributions
 
 Let's see how well our sampling algorithm does in approximating
 
@@ -574,7 +564,7 @@ exampleLP.show_prior(size=100000, bins=40)
 
 Having assured ourselves that our sampler seems to do a good job, let's put it to work in using MCMC to compute posterior probabilities.
 
-## Posteriors Via MCMC and VI
+## Posteriors via MCMC and VI
 
 We construct a class `BayesianInferencePlot` to implement MCMC or VI algorithms and plot multiple posteriors for different updating data sizes and different possible priors.
 
@@ -604,9 +594,7 @@ class BayesianInferencePlot:
     """
 
     def __init__(self, theta, N_list, BayesianInferenceClass, binwidth=0.02):
-        """
-        Enter Parameters for data generation and plotting
-        """
+        """Enter Parameters for data generation and plotting"""
         self.theta = theta
         self.N_list = N_list
         self.BayesianInferenceClass = BayesianInferenceClass
@@ -634,7 +622,7 @@ class BayesianInferencePlot:
             linewidth=self.linewidth,
             alpha=0.1,
             ax=ax,
-            label="Prior Distribution",
+            label="Prior distribution",
         )
 
         # plot posteriors
@@ -653,7 +641,7 @@ class BayesianInferencePlot:
                 label=f"Posterior with $n={n}$",
             )
         ax.legend(loc="upper left")
-        ax.set_title("MCMC Sampling density of Posterior Distributions", fontsize=15)
+        ax.set_title("MCMC sampling density of posterior distributions", fontsize=15)
         plt.xlim(0, 1)
         plt.show()
 
@@ -667,7 +655,6 @@ class BayesianInferencePlot:
             y = st.beta.pdf(xaxis, a=params["alpha_q"], b=params["beta_q"])
 
         elif guide_dist == "normal":
-
             # rescale upper/lower bound. See Scipy's truncnorm doc
             lower, upper = (0, 1)
             loc, scale = params["loc"], params["scale"]
@@ -692,7 +679,7 @@ class BayesianInferencePlot:
             linewidth=self.linewidth,
             alpha=0.1,
             ax=ax,
-            label="Prior Distribution",
+            label="Prior distribution",
         )
 
         # plot posteriors
@@ -710,7 +697,7 @@ class BayesianInferencePlot:
             )
         ax.legend(loc="upper left")
         ax.set_title(
-            f"SVI density of Posterior Distributions with {guide_dist} guide",
+            f"SVI density of posterior distributions with {guide_dist} guide",
             fontsize=15,
         )
         plt.xlim(0, 1)
@@ -732,7 +719,7 @@ SVI_num_steps = 5000
 true_theta = 0.8
 ```
 
-### Beta Prior and Posteriors:
+### Beta prior and posteriors:
 
 Let's compare outcomes when we use a Beta prior.
 
@@ -745,11 +732,10 @@ For the same Beta prior, we shall
 Let's start with the analytical method that we described in this {doc}`prob_meaning`
 
 ```{code-cell} ipython3
-# First examine Beta prior
+# first examine Beta prior
 BETA = BayesianInference(param=(5, 5), name_dist="beta")
 
 BETA_plot = BayesianInferencePlot(true_theta, num_list, BETA)
-
 
 # plot analytical Beta prior and posteriors
 xaxis = np.linspace(0, 1, 1000)
@@ -757,7 +743,7 @@ y_prior = st.beta.pdf(xaxis, 5, 5)
 
 fig, ax = plt.subplots(figsize=(10, 6))
 # plot analytical beta prior
-ax.plot(xaxis, y_prior, label="Analytical Beta Prior", color="#4C4E52")
+ax.plot(xaxis, y_prior, label="Analytical Beta prior", color="#4C4E52")
 
 data, colorlist, N_list = BETA_plot.data, BETA_plot.colorlist, BETA_plot.N_list
 
@@ -769,10 +755,10 @@ for id, n in enumerate(N_list):
         xaxis,
         y_posterior,
         color=colorlist[id - 1],
-        label=f"Analytical Beta Posterior with $n={n}$",
+        label=f"Analytical Beta posterior with $n={n}$",
     )
 ax.legend(loc="upper left")
-ax.set_title("Analytical Beta Prior and Posterior", fontsize=15)
+ax.set_title("Analytical Beta prior and posterior", fontsize=15)
 plt.xlim(0, 1)
 plt.show()
 ```
@@ -809,7 +795,7 @@ BayesianInferencePlot(true_theta, num_list, BETA).SVI_plot(
 )
 ```
 
-## Non-conjugate Prior Distributions
+## Non-conjugate prior distributions
 
 Having assured ourselves that our MCMC and VI methods can work well when we have a conjugate prior and so can also compute analytically, we
 next proceed to situations in which our prior is not a beta distribution, so we don't have a conjugate prior.
@@ -903,7 +889,7 @@ To get more accuracy we will now increase the number of steps for Variational In
 SVI_num_steps = 50000
 ```
 
-#### VI with a Truncated Normal Guide
+#### VI with a truncated Normal guide
 
 ```{code-cell} ipython3
 # Uniform
@@ -938,7 +924,7 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 )
 ```
 
-#### Variational Inference with a Beta Guide Distribution
+#### Variational inference with a Beta guide distribution
 
 ```{code-cell} ipython3
 # Uniform
@@ -952,7 +938,7 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 ```
 
 ```{code-cell} ipython3
-# Log Normal
+# log Normal
 example_CLASS = LOGNORMAL
 print(
     f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
