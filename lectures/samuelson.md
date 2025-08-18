@@ -213,7 +213,7 @@ equation**:
 ```{math}
 :label: second_stochastic
 
-Y_t = (a+b)Y_{t-1} - b Y_{t-2} + (\gamma + G_t) + \sigma \epsilon_{t}
+Y_t = (a+b) Y_{t-1} - b Y_{t-2} + (\gamma + G_t) + \sigma \epsilon_t
 ```
 
 ### Mathematical analysis of the model
