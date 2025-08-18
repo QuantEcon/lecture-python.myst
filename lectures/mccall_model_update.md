@@ -3,10 +3,12 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 (mccall)=
@@ -34,10 +36,9 @@ and the pros and cons as they themselves see them." -- Robert E. Lucas, Jr.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -59,13 +60,22 @@ As we'll see, McCall's model is not only interesting in its own right but also a
 
 Let's start with some imports:
 
-```{code-cell} ipython
-import matplotlib.pyplot as plt
+```{code-cell} ipython3
+# import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+# import numpy as np
+# from numba import jit, float64
+# from numba.experimental import jitclass
+# import quantecon as qe
+# from quantecon.distributions import BetaBinomial
+```
+
+```{code-cell} ipython3
+import matplotlib.pyplot as plt
 import numpy as np
-from numba import jit, float64
-from numba.experimental import jitclass
-import quantecon as qe
+import jax
+import jax.numpy as jnp
+from typing import NamedTuple
 from quantecon.distributions import BetaBinomial
 ```
 
@@ -342,21 +352,22 @@ $v$.
 Our default for $q$, the distribution of the state process, will be
 [Beta-binomial](https://en.wikipedia.org/wiki/Beta-binomial_distribution).
 
-```{code-cell} python3
-n, a, b = 50, 200, 100                        # default parameters
-q_default = BetaBinomial(n, a, b).pdf()       # default choice of q
+```{code-cell} ipython3
+n, a, b = 50, 200, 100              # default parameters
+dist = BetaBinomial(n, a, b)        # distribution
+q_default = jnp.array(dist.pdf())     # default choice of q as a JAX array
 ```
 
 Our default set of values for wages will be
 
-```{code-cell} python3
+```{code-cell} ipython3
 w_min, w_max = 10, 60
-w_default = np.linspace(w_min, w_max, n+1)
+w_default = jnp.linspace(w_min, w_max, n+1)
 ```
 
 Here's a plot of the probabilities of different wage outcomes:
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(w_default, q_default, '-o', label='$q(w(i))$')
 ax.set_xlabel('wages')
@@ -371,13 +382,21 @@ We are going to use Numba to accelerate our code.
 
 The following helps Numba by providing some type specifications.
 
-```{code-cell} python3
-mccall_data = [
-    ('c', float64),      # unemployment compensation
-    ('β', float64),      # discount factor
-    ('w', float64[::1]), # array of wage values, w[i] = wage at state i
-    ('q', float64[::1])  # array of probabilities
-]
+```{code-cell} ipython3
+class Model(NamedTuple):
+    β: float = 0.99             # discount factor
+    c: float = 25.0              # unemployment compensation
+    w: jnp.ndarray = w_default  # wage outcome space
+    q: jnp.ndarray = q_default  # probabilities over wage offers
+```
+
+```{code-cell} ipython3
+# mccall_data = [
+#     ('c', float64),      # unemployment compensation
+#     ('β', float64),      # discount factor
+#     ('w', float64[::1]), # array of wage values, w[i] = wage at state i
+#     ('q', float64[::1])  # array of probabilities
+# ]
 ```
 
 ```{note}
@@ -398,27 +417,40 @@ given the current state and an arbitrary feasible action.
 
 Default parameter values are embedded in the class.
 
-```{code-cell} python3
-@jitclass(mccall_data)
-class McCallModel:
+```{code-cell} ipython3
+@jax.jit
+def update_state_action_values(model, i, v):
+    " One update on the Bellman equations. "
+    β, c, w, q = model.β, model.c, model.w, model.q
 
-    def __init__(self, c=25, β=0.99, w=w_default, q=q_default):
+    # Evaluate value for each state-action pair
+    # Consider action = accept or reject the current offer
+    accept = w.at[i].get() / (1 - β)
+    reject = c + β * (v @ q)
+    return jnp.array([accept, reject])
+```
 
-        self.c, self.β = c, β
-        self.w, self.q = w_default, q_default
+```{code-cell} ipython3
+# @jitclass(mccall_data)
+# class McCallModel:
 
-    def state_action_values(self, i, v):
-        """
-        The values of state-action pairs.
-        """
-        # Simplify names
-        c, β, w, q = self.c, self.β, self.w, self.q
-        # Evaluate value for each state-action pair
-        # Consider action = accept or reject the current offer
-        accept = w[i] / (1 - β)
-        reject = c + β * (v @ q)
+#     def __init__(self, c=25, β=0.99, w=w_default, q=q_default):
 
-        return np.array([accept, reject])
+#         self.c, self.β = c, β
+#         self.w, self.q = w_default, q_default
+
+#     def state_action_values(self, i, v):
+#         """
+#         The values of state-action pairs.
+#         """
+#         # Simplify names
+#         c, β, w, q = self.c, self.β, self.w, self.q
+#         # Evaluate value for each state-action pair
+#         # Consider action = accept or reject the current offer
+#         accept = w[i] / (1 - β)
+#         reject = c + β * (v @ q)
+
+#         return np.array([accept, reject])
 ```
 
 Based on these defaults, let's try plotting the first few approximate value functions
@@ -428,38 +460,64 @@ We will start from guess $v$ given by $v(i) = w(i) / (1 - β)$, which is the val
 
 Here's a function to implement this:
 
-```{code-cell} python3
-def plot_value_function_seq(mcm, ax, num_plots=6):
+```{code-cell} ipython3
+def plot_value_function_seq_jax(model, ax, num_plots=6):
     """
     Plot a sequence of value functions.
 
-        * mcm is an instance of McCallModel
+        * model is an instance of McCallModel
         * ax is an axes object that implements a plot method.
 
     """
 
-    n = len(mcm.w)
-    v = mcm.w / (1 - mcm.β)
-    v_next = np.empty_like(v)
+    n = len(model.w)
+    v = model.w / (1 - model.β)
+    v_next = jnp.empty_like(v)
+    
+    # TODO01 convert this using jax.lax.fori_loop
     for i in range(num_plots):
-        ax.plot(mcm.w, v, '-', alpha=0.4, label=f"iterate {i}")
+        ax.plot(model.w, v, '-', alpha=0.4, label=f"iterate {i}")
         # Update guess
         for j in range(n):
-            v_next[j] = np.max(mcm.state_action_values(j, v))
-        v[:] = v_next  # copy contents into v
+            # print(jnp.max(update_state_action_values(model, j, v)))
+            v_next = v_next.at[j].set(jnp.max(update_state_action_values(model, j, v)))
+        v = v_next  # copy contents into v
 
     ax.legend(loc='lower right')
 ```
 
+```{code-cell} ipython3
+# def plot_value_function_seq(mcm, ax, num_plots=6):
+#     """
+#     Plot a sequence of value functions.
+
+#         * mcm is an instance of McCallModel
+#         * ax is an axes object that implements a plot method.
+
+#     """
+
+#     n = len(mcm.w)
+#     v = mcm.w / (1 - mcm.β)
+#     v_next = np.empty_like(v)
+#     for i in range(num_plots):
+#         ax.plot(mcm.w, v, '-', alpha=0.4, label=f"iterate {i}")
+#         # Update guess
+#         for j in range(n):
+#             v_next[j] = np.max(mcm.state_action_values(j, v))
+#         v[:] = v_next  # copy contents into v
+
+#     ax.legend(loc='lower right')
+```
+
 Now let's create an instance of `McCallModel` and watch iterations  $T^k v$ converge from below:
 
-```{code-cell} python3
-mcm = McCallModel()
+```{code-cell} ipython3
+model = Model()
 
 fig, ax = plt.subplots()
 ax.set_xlabel('wage')
 ax.set_ylabel('value')
-plot_value_function_seq(mcm, ax)
+plot_value_function_seq_jax(model, ax)
 plt.show()
 ```
 
@@ -472,41 +530,96 @@ the reservation wage.
 
 We'll be using JIT compilation via Numba to turbocharge our loops.
 
-```{code-cell} python3
-@jit
-def compute_reservation_wage(mcm,
+```{code-cell} ipython3
+vmap_update = jax.vmap(update_state_action_values, in_axes=(None, 0, None))
+```
+
+```{code-cell} ipython3
+@jax.jit
+def compute_reservation_wage_jax(model,
                              max_iter=500,
                              tol=1e-6):
 
     # Simplify names
-    c, β, w, q = mcm.c, mcm.β, mcm.w, mcm.q
+    β, c, w, q = model.β, model.c, model.w, model.q
 
     # == First compute the value function == #
+    # TODO 02 rewrite this using jax.lax.while_loop
 
     n = len(w)
+
+    
+    
+    def cond_fun(state):
+        v, j, error = state
+        return jnp.logical_and(error > tol, j < max_iter)
+
+    def body_fun(state):
+        v, j, i, error = state
+        for j in range(n):
+            v_new = v.at[j].set(jnp.max(vmap(model, j, v)))
+            
+        error = jnp.max(jnp.abs(v_new - v))
+        return v_new, j + 1, i + 1, error_new
+
     v = w / (1 - β)          # initial guess
-    v_next = np.empty_like(v)
+    v_next = jnp.empty_like(v)
     j = 0
     error = tol + 1
-    while j < max_iter and error > tol:
+    
+    init_state = ()
+    v, error, j = jax.lax.while(cond_fun, body_fun
+    
+    # while j < max_iter and error > tol:
 
-        for j in range(n):
-            v_next[j] = np.max(mcm.state_action_values(j, v))
+    #     for j in range(n):
+    #         v_next = v_next.at[j].set(jnp.max(update_state_action_values(model, j, v)))
 
-        error = np.max(np.abs(v_next - v))
-        j += 1
+    #     error = jnp.max(jnp.abs(v_next - v))
+    #     j += 1
 
-        v[:] = v_next  # copy contents into v
+    #     v = v_next  # copy contents into v
 
     # == Now compute the reservation wage == #
 
     return (1 - β) * (c + β * (v @ q))
 ```
 
+```{code-cell} ipython3
+# @jit
+# def compute_reservation_wage(mcm,
+#                              max_iter=500,
+#                              tol=1e-6):
+
+#     # Simplify names
+#     c, β, w, q = mcm.c, mcm.β, mcm.w, mcm.q
+
+#     # == First compute the value function == #
+
+#     n = len(w)
+#     v = w / (1 - β)          # initial guess
+#     v_next = np.empty_like(v)
+#     j = 0
+#     error = tol + 1
+#     while j < max_iter and error > tol:
+
+#         for j in range(n):
+#             v_next[j] = np.max(mcm.state_action_values(j, v))
+
+#         error = np.max(np.abs(v_next - v))
+#         j += 1
+
+#         v[:] = v_next  # copy contents into v
+
+#     # == Now compute the reservation wage == #
+
+#     return (1 - β) * (c + β * (v @ q))
+```
+
 The next line computes the reservation wage at  default parameters
 
-```{code-cell} python3
-compute_reservation_wage(mcm)
+```{code-cell} ipython3
+compute_reservation_wage_jax(model)
 ```
 
 ### Comparative Statics
@@ -517,20 +630,21 @@ parameters.
 In particular, let's look at what happens when we change $\beta$ and
 $c$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 grid_size = 25
 R = np.empty((grid_size, grid_size))
 
 c_vals = np.linspace(10.0, 30.0, grid_size)
 β_vals = np.linspace(0.9, 0.99, grid_size)
 
+# TODO 03 rewrite the following using fori_loop?
 for i, c in enumerate(c_vals):
     for j, β in enumerate(β_vals):
         mcm = McCallModel(c=c, β=β)
         R[i, j] = compute_reservation_wage(mcm)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 
 cs1 = ax.contourf(c_vals, β_vals, R.T, alpha=0.75)
@@ -623,7 +737,7 @@ The big difference here, however, is that we're iterating on a scalar $h$, rathe
 
 Here's an implementation:
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit
 def compute_reservation_wage_two(mcm,
                                  max_iter=500,
@@ -633,6 +747,7 @@ def compute_reservation_wage_two(mcm,
     c, β, w, q = mcm.c, mcm.β, mcm.w, mcm.q
 
     # == First compute h == #
+    # TODO 04 rewrite the following using while_loop
 
     h = (w @ q) / (1 - β)
     i = 0
@@ -678,9 +793,10 @@ Plot mean unemployment duration as a function of $c$ in `c_vals`.
 
 Here's one solution
 
-```{code-cell} python3
+```{code-cell} ipython3
 cdf = np.cumsum(q_default)
 
+# TODO 05 replace the while loop with while_loop & use jax.jit
 @jit
 def compute_stopping_time(w_bar, seed=1234):
 
@@ -697,6 +813,7 @@ def compute_stopping_time(w_bar, seed=1234):
             t += 1
     return stopping_time
 
+# TODO 06 replace the for loop with fori_loop & use jax.jit
 @jit
 def compute_mean_stopping_time(w_bar, num_reps=100000):
     obs = np.empty(num_reps)
@@ -704,6 +821,7 @@ def compute_mean_stopping_time(w_bar, num_reps=100000):
         obs[i] = compute_stopping_time(w_bar, seed=i)
     return obs.mean()
 
+# TODO 07 replace the for loop with fori_loop (decide on whether to make this decision after timing)
 c_vals = np.linspace(10, 40, 25)
 stop_times = np.empty_like(c_vals)
 for i, c in enumerate(c_vals):
@@ -789,7 +907,8 @@ Once your code is working, investigate how the reservation wage changes with $c$
 
 Here is one solution:
 
-```{code-cell} python3
+```{code-cell} ipython3
+# TODO 08 replace the jitclass w/ namedtuple
 mccall_data_continuous = [
     ('c', float64),          # unemployment compensation
     ('β', float64),          # discount factor
@@ -810,7 +929,7 @@ class McCallModelContinuous:
         s = np.random.randn(mc_size)
         self.w_draws = np.exp(μ+ σ * s)
 
-
+# TODO 09 replace the while loop w/ while_loop & jit w/ jax.jit
 @jit
 def compute_reservation_wage_continuous(mcmc, max_iter=500, tol=1e-5):
 
@@ -839,20 +958,21 @@ $\beta$.
 
 We will do this using a contour plot.
 
-```{code-cell} python3
+```{code-cell} ipython3
 grid_size = 25
 R = np.empty((grid_size, grid_size))
 
 c_vals = np.linspace(10.0, 30.0, grid_size)
 β_vals = np.linspace(0.9, 0.99, grid_size)
 
+# TODO 10 replace the for loop with fori_loop (decide on whether to make this decision after timing)
 for i, c in enumerate(c_vals):
     for j, β in enumerate(β_vals):
         mcmc = McCallModelContinuous(c=c, β=β)
         R[i, j] = compute_reservation_wage_continuous(mcmc)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 
 cs1 = ax.contourf(c_vals, β_vals, R.T, alpha=0.75)
