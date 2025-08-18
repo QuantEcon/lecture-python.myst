@@ -1070,6 +1070,8 @@ In the lecture, we write the code more verbosely to illustrate the concepts clea
 
 In the code below, we simplified some of the code structure for a shorter presentation.
 
+First we define the parameters for the Markov chain SPRT
+
 ```{code-cell} ipython3
 MarkovSPRTParams = namedtuple('MarkovSPRTParams', 
             ['α', 'β', 'P_0', 'P_1', 'N', 'seed'])
@@ -1095,7 +1097,11 @@ def simulate_markov_chain(P, pi_0, T, seed):
         path[t] = np.searchsorted(cumsum_row, np.random.uniform())
     
     return path
+```
 
+Here we define the function that runs SPRT for Markov chains
+
+```{code-cell} ipython3
 @njit
 def markov_sprt_single_run(P_0, P_1, π_0, π_1, 
                 logA, logB, true_P, true_π, seed):
@@ -1149,7 +1155,11 @@ def run_markov_sprt(params):
         'stopping_times': stopping_times, 'decisions_h0': decisions_h0,
         'truth_h0': truth_h0, 'type_I': type_I, 'type_II': type_II
     }
+```
 
+Now we can run the SPRT for the Markov chain models and visualize the results
+
+```{code-cell} ipython3
 # Run Markov chain SPRT
 P_0 = np.array([[0.7, 0.2, 0.1], 
                 [0.3, 0.5, 0.2], 
@@ -1163,7 +1173,7 @@ params_markov = MarkovSPRTParams(α=0.05, β=0.10,
                         P_0=P_0, P_1=P_1, N=1000, seed=42)
 results_markov = run_markov_sprt(params_markov)
 
-plot_confusion_matrix = lambda results, ax: None 
+
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
 
 ax1.hist(results_markov['stopping_times'], 
@@ -1172,31 +1182,7 @@ ax1.set_title("stopping times")
 ax1.set_xlabel("n")
 ax1.set_ylabel("frequency")
 
-# Confusion matrix (reusing pattern from lecture)
-f0_c = np.sum(results_markov['truth_h0'] & results_markov['decisions_h0'])
-f0_i = np.sum(results_markov['truth_h0'] & ~results_markov['decisions_h0'])
-f1_c = np.sum(~results_markov['truth_h0'] & ~results_markov['decisions_h0'])
-f1_i = np.sum(~results_markov['truth_h0'] & results_markov['decisions_h0'])
-
-confusion_data = np.array([[f0_c, f0_i], [f1_i, f1_c]])
-ax2.imshow(confusion_data, cmap='Blues')
-ax2.set_title('confusion matrix')
-ax2.set_xticks([0, 1])
-ax2.set_xticklabels(['Accept $H_0$', 'Reject $H_0$'])
-ax2.set_yticks([0, 1])
-ax2.set_yticklabels(['True $P^{(0)}$', 'True $P^{(1)}$'])
-
-row_totals = confusion_data.sum(axis=1, keepdims=True)
-
-for i in range(2):
-    for j in range(2):
-        percent = confusion_data[i, j] / row_totals[i, 0] \
-                    if row_totals[i, 0] > 0 else 0
-        color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 \
-                else 'black'
-        ax2.text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
-                ha="center", va="center", color=color, fontweight='bold', 
-                fontsize=14)
+plot_confusion_matrix(results_markov, ax2)
 
 plt.tight_layout()
 plt.show()
@@ -1241,7 +1227,9 @@ Tasks:
 :class: dropdown
 ```
 
-Below is one solution to the exercise
+Below is one solution to the exercise.
+
+First we define the parameters for the VAR models and simulator
 
 ```{code-cell} ipython3
 VARSPRTParams = namedtuple('VARSPRTParams', 
@@ -1264,7 +1252,12 @@ def create_var_model(A, C):
         'log_det_Σ_0': np.log(
             np.linalg.det(Σ_0 + 1e-10 * np.eye(Σ_0.shape[0])))
     }
+```
 
+Now we define the likelihood ratio for the VAR models and the SPRT function similar to the 
+Markov chain case
+
+```{code-cell} ipython3
 def var_log_likelihood(x_curr, x_prev, model, initial=False):
     """Compute VAR log-likelihood."""
     n = len(x_curr)
@@ -1336,7 +1329,11 @@ def run_var_sprt(params):
             'decisions_h0': decisions_h0,
             'truth_h0': truth_h0, 
             'type_I': type_I, 'type_II': type_II}
+```
 
+Let's run SPRT and visualize the results
+
+```{code-cell} ipython3
 # Run VAR SPRT
 A_0 = np.array([[0.8, 0.1], 
                 [0.2, 0.7]])

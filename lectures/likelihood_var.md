@@ -73,35 +73,7 @@ where:
 - $A$ is an $n \times n$ transition matrix
 - $C$ is an $n \times m$ volatility matrix
 
-### Joint distribution
-
-The joint probability distribution $f(x_T, x_{T-1}, \ldots, x_0)$ can be factored as:
-
-$$
-f(x_T, \ldots, x_0) = f(x_T | x_{T-1}) f(x_{T-1} | x_{T-2}) \cdots f(x_1 | x_0) f(x_0)
-$$
-
-Since the VAR is Markovian, $f(x_{t+1} | x_t, \ldots, x_0) = f(x_{t+1} | x_t)$.
-
-### Conditional densities
-
-Given the Gaussian structure, the conditional distribution $f(x_{t+1} | x_t)$ is Gaussian with:
-- Mean: $A x_t$
-- Covariance: $CC'$
-
-The log conditional density is:
-
-$$
-\log f(x_{t+1} | x_t) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(CC') - \frac{1}{2} (x_{t+1} - A x_t)' (CC')^{-1} (x_{t+1} - A x_t)
-$$
-
-The log density of the initial state is:
-
-$$
-\log f(x_0) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(\Sigma_0) - \frac{1}{2} (x_0 - \mu_0)' \Sigma_0^{-1} (x_0 - \mu_0)
-$$
-
-Let's define data structures and implement the likelihood functions:
+Let's define the necessary data structures for the VAR model
 
 ```{code-cell} ipython3
 VARModel = namedtuple('VARModel', ['A', 'C', 'μ_0', 'Σ_0',        
@@ -168,7 +140,46 @@ def create_var_model(A, C, μ_0=None, Σ_0=None, stationary=True):
                     Σ_0_inv=Σ_0_inv, log_det_Σ_0=log_det_Σ_0)
 ```
 
-Now let's implement the likelihood functions using our `NamedTuple` structures:
+### Joint distribution
+
+The joint probability distribution $f(x_T, x_{T-1}, \ldots, x_0)$ can be factored as:
+
+$$
+f(x_T, \ldots, x_0) = f(x_T | x_{T-1}) f(x_{T-1} | x_{T-2}) \cdots f(x_1 | x_0) f(x_0)
+$$
+
+Since the VAR is Markovian, $f(x_{t+1} | x_t, \ldots, x_0) = f(x_{t+1} | x_t)$.
+
+### Conditional densities
+
+Given the Gaussian structure, the conditional distribution $f(x_{t+1} | x_t)$ is Gaussian with:
+- Mean: $A x_t$
+- Covariance: $CC'$
+
+The log conditional density is:
+
+$$
+\log f(x_{t+1} | x_t) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(CC') - \frac{1}{2} (x_{t+1} - A x_t)' (CC')^{-1} (x_{t+1} - A x_t)
+$$
+
+```{code-cell} ipython3
+def log_likelihood_transition(x_next, x_curr, model):
+    """
+    Compute log likelihood of transition from x_curr to x_next
+    """
+    x_next = np.atleast_1d(x_next)
+    x_curr = np.atleast_1d(x_curr)
+    n = len(x_next)
+    diff = x_next - model.A @ x_curr
+    return -0.5 * (n * np.log(2 * np.pi) + model.log_det_CC + 
+                  diff @ model.CC_inv @ diff)
+```
+
+The log density of the initial state is:
+
+$$
+\log f(x_0) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(\Sigma_0) - \frac{1}{2} (x_0 - \mu_0)' \Sigma_0^{-1} (x_0 - \mu_0)
+$$
 
 ```{code-cell} ipython3
 def log_likelihood_initial(x_0, model):
@@ -180,18 +191,11 @@ def log_likelihood_initial(x_0, model):
     diff = x_0 - model.μ_0
     return -0.5 * (n * np.log(2 * np.pi) + model.log_det_Σ_0 + 
                   diff @ model.Σ_0_inv @ diff)
+```
 
-def log_likelihood_transition(x_next, x_curr, model):
-    """
-    Compute log likelihood of transition from x_curr to x_next
-    """
-    x_next = np.atleast_1d(x_next)
-    x_curr = np.atleast_1d(x_curr)
-    n = len(x_next)
-    diff = x_next - model.A @ x_curr
-    return -0.5 * (n * np.log(2 * np.pi) + model.log_det_CC + 
-                  diff @ model.CC_inv @ diff)
+Now let's group the likelihood computations into a single function that computes the log likelihood of an entire path
 
+```{code-cell} ipython3
 def log_likelihood_path(X, model):
     """
     Compute log likelihood of entire path
@@ -230,7 +234,7 @@ def simulate_var(model, T, N_paths=1):
 
 ## Likelihood ratio process
 
-Now let's compute likelihood ratio processes for comparing two VAR models:
+Now let's compute likelihood ratio processes for comparing two VAR models
 
 ```{code-cell} ipython3
 def compute_likelihood_ratio_var(paths, model_f, model_g):
@@ -269,7 +273,7 @@ def compute_likelihood_ratio_var(paths, model_f, model_g):
 
 ## Example 1: Two AR(1) processes
 
-Let's start with a simple example comparing two univariate AR(1) processes:
+Let's start with a simple example comparing two univariate AR(1) processes with $A_f = 0.8$, $A_g = 0.5$, and $C_f = 0.3$, $C_g = 0.4$
 
 ```{code-cell} ipython3
 # Model f: AR(1) with persistence ρ = 0.8
@@ -283,7 +287,11 @@ C_g = np.array([[0.4]])
 # Create VAR models
 model_f = create_var_model(A_f, C_f)
 model_g = create_var_model(A_g, C_g)
+```
 
+Let's generate 100 paths of length 200 from model $f$ and compute the likelihood ratio processes
+
+```{code-cell} ipython3
 # Simulate from model f
 T = 200
 N_paths = 100
@@ -294,7 +302,7 @@ L_ratios_f = compute_likelihood_ratio_var(paths_from_f, model_f, model_g)
 fig, ax = plt.subplots()
 
 for i in range(min(20, N_paths)):
-    ax.plot(L_ratios_f[i], alpha=0.3, color='C0', lw=0.8)
+    ax.plot(L_ratios_f[i], alpha=0.3, color='C0', lw=2)
 
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_ylabel(r'$\log L_t$')
@@ -304,9 +312,21 @@ plt.tight_layout()
 plt.show()
 ```
 
+As we expected, the likelihood ratio processes goes to $+\infty$ as $T$ increases, indicating that model $f$ is chosen correctly by our algorithm.
+
 ## Example 2: Bivariate VAR models
 
-Now let's consider an example with bivariate VAR models:
+Now let's consider an example with bivariate VAR models with 
+
+$$
+A_f & = \begin{bmatrix} 0.7 & 0.2 \\ 0.1 & 0.6 \end{bmatrix}, \quad C_f = \begin{bmatrix} 0.3 & 0.1 \\ 0.1 & 0.3 \end{bmatrix} 
+$$
+
+and 
+
+$$
+A_g & = \begin{bmatrix} 0.5 & 0.3 \\ 0.2 & 0.5 \end{bmatrix}, \quad C_g = \begin{bmatrix} 0.4 & 0.0 \\ 0.0 & 0.4 \end{bmatrix}
+$$
 
 ```{code-cell} ipython3
 A_f = np.array([[0.7, 0.2],
@@ -326,9 +346,11 @@ model2_f = create_var_model(A_f, C_f)
 model2_g = create_var_model(A_g, C_g)
 
 # Check stationarity
-print("Model f eigenvalues:", np.linalg.eigvals(A_f))
-print("Model g eigenvalues:", np.linalg.eigvals(A_g))
+print("model f eigenvalues:", np.linalg.eigvals(A_f))
+print("model g eigenvalues:", np.linalg.eigvals(A_g))
 ```
+
+Let's generate 50 paths of length 50 from both models and compute the likelihood ratio processes
 
 ```{code-cell} ipython3
 # Simulate from both models
@@ -343,28 +365,29 @@ L_ratios_ff = compute_likelihood_ratio_var(paths_from_f, model2_f, model2_g)
 L_ratios_gf = compute_likelihood_ratio_var(paths_from_g, model2_f, model2_g)
 ```
 
+We can see that for paths generated from model $f$, the likelihood ratio processes tend to go to $+\infty$, while for paths from model $g$, they tend to go to $-\infty$.
+
 ```{code-cell} ipython3
 # Visualize the results
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 ax = axes[0]
-for i in range(min(10, N_paths)):
-    ax.plot(L_ratios_ff[i], alpha=0.5, color='C0', lw=0.8)
+for i in range(min(20, N_paths)):
+    ax.plot(L_ratios_ff[i], alpha=0.5, color='C0', lw=2)
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5, lw=2)
 ax.set_title(r'$\log L_t$ (nature = f)')
 ax.set_ylabel(r'$\log L_t$')
 
 ax = axes[1]
-for i in range(N_paths):
-    ax.plot(L_ratios_gf[i], alpha=0.5, color='C1', lw=0.8)
+for i in range(min(20, N_paths)):
+    ax.plot(L_ratios_gf[i], alpha=0.5, color='C1', lw=2)
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5, lw=2)
 ax.set_title(r'$\log L_t$ (nature = g)')
 plt.tight_layout()
 plt.show()
 ```
 
-Let's apply a  Neyman-Pearson frequentist  
-decision rule described   in {doc}`likelihood_ratio_process` that selects model $f$ when $\log L_T \geq 0$ and model $g$ when $\log L_T < 0$
+Let's apply a  Neyman-Pearson frequentist  decision rule described   in {doc}`likelihood_ratio_process` that selects model $f$ when $\log L_T \geq 0$ and model $g$ when $\log L_T < 0$
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -378,8 +401,8 @@ for i, t in enumerate(T_values):
     # Correct selection when data from g
     accuracy_g[i] = np.mean(L_ratios_gf[:, t] < 0)
 
-ax.plot(T_values, accuracy_f, 'b-', linewidth=2, label='accuracy (nature = f)')
-ax.plot(T_values, accuracy_g, 'r-', linewidth=2, label='accuracy (nature = g)')
+ax.plot(T_values, accuracy_f, 'C0', linewidth=2, label='accuracy (nature = f)')
+ax.plot(T_values, accuracy_g, 'C1', linewidth=2, label='accuracy (nature = g)')
 ax.axhline(y=0.5, color='gray', linestyle='--', alpha=0.5)
 ax.set_xlabel('T')
 ax.set_ylabel('accuracy')
@@ -389,9 +412,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-Evidently, the likely ratio approaches $1$ as $T$ increases, and it does so  very quickly.
+Evidently, the accuracy approaches $1$ as $T$ increases, and it does so very quickly.
 
-Let's analyze how well the likelihood ratio model selection test  performs   as sample size increases.
+Let's also check the type I and type II errors as functions of $T$
 
 ```{code-cell} ipython3
 def model_selection_analysis(T_values, model_f, model_g, N_sim=500):
@@ -421,12 +444,13 @@ errors_f, errors_g = model_selection_analysis(T_values, model2_f, model2_g, N_si
 
 fig, ax = plt.subplots()
 
-ax.plot(T_values, errors_f, 'b-', linewidth=2, label='Type I error')
-ax.plot(T_values, errors_g, 'r-', linewidth=2, label='Type II error')
-ax.plot(T_values, 0.5 * (errors_f + errors_g), 'g--', linewidth=2, label='Average error')
+ax.plot(T_values, errors_f, 'C0', linewidth=2, label='type I error')
+ax.plot(T_values, errors_g, 'C1', linewidth=2, label='type II error')
+ax.plot(T_values, 0.5 * (errors_f + errors_g), 'g--', 
+linewidth=2, label='average error')
 ax.set_xlabel('$T$')
 ax.set_ylabel('error probability')
-ax.set_title('Model selection errors')
+ax.set_title('model selection errors')
 plt.tight_layout()
 plt.show()
 ```
@@ -437,8 +461,8 @@ Now let's connect to the Samuelson multiplier-accelerator model.
 
 The model consists of:
 
-- Consumption: $C_t = \gamma + \alpha Y_{t-1}$ where $\alpha \in (0,1)$ is the marginal propensity to consume
-- Investment: $I_t = \beta(Y_{t-1} - Y_{t-2})$ where $\beta > 0$ is the accelerator coefficient  
+- Consumption: $C_t = \gamma + a Y_{t-1}$ where $a \in (0,1)$ is the marginal propensity to consume
+- Investment: $I_t = b(Y_{t-1} - Y_{t-2})$ where $b > 0$ is the accelerator coefficient  
 - Government spending: $G_t = G$ (constant)
 
 We have the national income identity
@@ -450,10 +474,10 @@ $$
 Equations yields the second-order difference equation:
 
 $$
-Y_t = (\gamma + G) + (\alpha + \beta)Y_{t-1} - \beta Y_{t-2} + \sigma \epsilon_t
+Y_t = (\gamma + G) + (a + b)Y_{t-1} - b Y_{t-2} + \sigma \epsilon_t
 $$
 
-With $\rho_1 = \alpha + \beta$ and $\rho_2 = -\beta$, we have:
+With $\rho_1 = a + b$ and $\rho_2 = -b$, we have:
 
 $$
 Y_t = (\gamma + G) + \rho_1 Y_{t-1} + \rho_2 Y_{t-2} + \sigma \epsilon_t
@@ -492,8 +516,8 @@ C_t \\
 I_t 
 \end{bmatrix} = \begin{bmatrix} 
 \gamma + G & \rho_1 & \rho_2 \\
-\gamma & \alpha & 0 \\
-0 & \beta & -\beta 
+\gamma & a & 0 \\
+0 & b & -b 
 \end{bmatrix} \begin{bmatrix} 
 1 \\ 
 Y_t \\ 
@@ -504,27 +528,25 @@ $$
 This gives us:
 
 - $Y_t = (\gamma + G) \cdot 1 + \rho_1 Y_{t-1} + \rho_2 Y_{t-2}$ (total output)
-- $C_t = \gamma \cdot 1 + \alpha Y_{t-1}$ (consumption)
-- $I_t = \beta(Y_{t-1} - Y_{t-2})$ (investment)
-
-Let's implement it and inspect the likelihood ratio processes induced by two Samuelson models with different parameters.
+- $C_t = \gamma \cdot 1 + a Y_{t-1}$ (consumption)
+- $I_t = b(Y_{t-1} - Y_{t-2})$ (investment)
 
 ```{code-cell} ipython3
-def samuelson_to_var(α, β, γ, G, σ):
+def samuelson_to_var(a, b, γ, G, σ):
     """
     Convert Samuelson model parameters to VAR form with augmented state
     
     Samuelson model:
     - Y_t = C_t + I_t + G
-    - C_t = γ + α*Y_{t-1}
-    - I_t = β*(Y_{t-1} - Y_{t-2})
+    - C_t = γ + a*Y_{t-1}
+    - I_t = b*(Y_{t-1} - Y_{t-2})
     
-    Reduced form: Y_t = (γ+G) + (α+β)*Y_{t-1} - β*Y_{t-2} + σ*ε_t
+    Reduced form: Y_t = (γ+G) + (a+b)*Y_{t-1} - b*Y_{t-2} + σ*ε_t
     
     State vector is [1, Y_t, Y_{t-1}]'
     """
-    ρ_1 = α + β
-    ρ_2 = -β
+    ρ_1 = a + b
+    ρ_2 = -b
     
     # State transition matrix for augmented state
     A = np.array([[1,      0,     0],
@@ -538,18 +560,24 @@ def samuelson_to_var(α, β, γ, G, σ):
     
     # Observation matrix (extracts Y_t, C_t, I_t)
     G_obs = np.array([[γ + G,  ρ_1,  ρ_2],   # Y_t
-                      [γ,      α,    0],     # C_t
-                      [0,      β,   -β]])    # I_t
+                      [γ,      a,    0],     # C_t
+                      [0,      b,   -b]])    # I_t
     
     return A, C, G_obs
+```
 
-def get_samuelson_initial_conditions(α, β, γ, G, y_0=None, y_m1=None, 
+We define functions in the code cell below to get the initial conditions and check stability 
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+def get_samuelson_initial_conditions(a, b, γ, G, y_0=None, y_m1=None, 
                                     stationary_init=False):
     """
     Get initial conditions for Samuelson model
     """
     # Calculate steady state
-    y_ss = (γ + G) / (1 - α - β)
+    y_ss = (γ + G) / (1 - a - b)
     
     if y_0 is None:
         y_0 = y_ss
@@ -570,12 +598,12 @@ def get_samuelson_initial_conditions(α, β, γ, G, y_0=None, y_m1=None,
     
     return μ_0, Σ_0
 
-def check_samuelson_stability(α, β):
+def check_samuelson_stability(a, b):
     """
     Check stability of Samuelson model and return characteristic roots
     """
-    ρ_1 = α + β
-    ρ_2 = -β
+    ρ_1 = a + b
+    ρ_2 = -b
 
     roots = np.roots([1, -ρ_1, -ρ_2])
     max_abs_root = np.max(np.abs(roots))
@@ -597,25 +625,29 @@ def check_samuelson_stability(α, β):
                 dynamics = "Explosive oscillations (real roots)"
     
     return is_stable, roots, max_abs_root, dynamics
+```
 
-def create_samuelson_var_model(α, β, γ, G, σ, stationary_init=False,
+Let's implement it and inspect the likelihood ratio processes induced by two Samuelson models with different parameters.
+
+```{code-cell} ipython3
+def create_samuelson_var_model(a, b, γ, G, σ, stationary_init=False,
                                y_0=None, y_m1=None):
     """
     Create a VAR model from Samuelson parameters
     """
-    A, C, G_obs = samuelson_to_var(α, β, γ, G, σ)
+    A, C, G_obs = samuelson_to_var(a, b, γ, G, σ)
     
     μ_0, Σ_0 = get_samuelson_initial_conditions(
-        α, β, γ, G, y_0, y_m1, stationary_init
+        a, b, γ, G, y_0, y_m1, stationary_init
     )
     
     # Create VAR model
     model = create_var_model(A, C, μ_0, Σ_0, stationary=False)
-    is_stable, roots, max_root, dynamics = check_samuelson_stability(α, β)
+    is_stable, roots, max_root, dynamics = check_samuelson_stability(a, b)
     info = {
-        'α': α, 'β': β, 'γ': γ, 'G': G, 'σ': σ,
-        'ρ_1': α + β, 'ρ_2': -β,
-        'steady_state': (γ + G) / (1 - α - β),
+        'a': a, 'b': b, 'γ': γ, 'G': G, 'σ': σ,
+        'ρ_1': a + b, 'ρ_2': -b,
+        'steady_state': (γ + G) / (1 - a - b),
         'is_stable': is_stable,
         'roots': roots,
         'max_abs_root': max_root,
@@ -638,7 +670,7 @@ def simulate_samuelson(model, G_obs, T, N_paths=1):
     else:
         # Multiple paths: states is (N_paths, T+1, 3)
         observables = np.zeros((N_paths, T+1, 3))
-        for i in range(N_paths):
+        for i in range(min(20, N_paths)):
             observables[i] = (G_obs @ states[i].T).T
     
     return states, observables
@@ -648,22 +680,22 @@ Now let's simulate two Samuelson models with different accelerator coefficients 
 
 ```{code-cell} ipython3
 # Model f: Higher accelerator coefficient
-α_f, β_f = 0.98, 0.9
+a_f, b_f = 0.98, 0.9
 γ_f, G_f, σ_f = 10, 10, 0.5
 
 # Model g: Lower accelerator coefficient  
-α_g, β_g = 0.98, 0.85
+a_g, b_g = 0.98, 0.85
 γ_g, G_g, σ_g = 10, 10, 0.5
 
 
 model_sam_f, G_obs_f, info_f = create_samuelson_var_model(
-    α_f, β_f, γ_f, G_f, σ_f, 
+    a_f, b_f, γ_f, G_f, σ_f, 
     stationary_init=False, 
     y_0=100, y_m1=95
 )
 
 model_sam_g, G_obs_g, info_g = create_samuelson_var_model(
-    α_g, β_g, γ_g, G_g, σ_g,
+    a_g, b_g, γ_g, G_g, σ_g,
     stationary_init=False,
     y_0=100, y_m1=95
 )
@@ -678,27 +710,27 @@ states_g, obs_g = simulate_samuelson(model_sam_g, G_obs_g, T, N_paths)
 output_paths_f = obs_f[:, :, 0] 
 output_paths_g = obs_g[:, :, 0]
     
-print("Model f:")
-print(f"  ρ_1 = α + β = {info_f['ρ_1']:.2f}")
-print(f"  ρ_2 = -β = {info_f['ρ_2']:.2f}")
-print(f"  Roots: {info_f['roots']}")
-print(f"  Dynamics: {info_f['dynamics']}")
+print("model f:")
+print(f"  ρ_1 = a + b = {info_f['ρ_1']:.2f}")
+print(f"  ρ_2 = -b = {info_f['ρ_2']:.2f}")
+print(f"  roots: {info_f['roots']}")
+print(f"  dynamics: {info_f['dynamics']}")
 
-print("\nModel g:")
-print(f"  ρ_1 = α + β = {info_g['ρ_1']:.2f}")
-print(f"  ρ_2 = -β = {info_g['ρ_2']:.2f}")
-print(f"  Roots: {info_g['roots']}")
-print(f"  Dynamics: {info_g['dynamics']}")
+print("\nmodel g:")
+print(f"  ρ_1 = a + b = {info_g['ρ_1']:.2f}")
+print(f"  ρ_2 = -b = {info_g['ρ_2']:.2f}")
+print(f"  roots: {info_g['roots']}")
+print(f"  dynamics: {info_g['dynamics']}")
 
 
 fig, ax = plt.subplots(1, 1)
 
-for i in range(N_paths):
+for i in range(min(20, N_paths)):
     ax.plot(output_paths_f[i], alpha=0.6, color='C0', linewidth=0.8)
     ax.plot(output_paths_g[i], alpha=0.6, color='C1', linewidth=0.8)
 ax.set_xlabel('$t$')
 ax.set_ylabel('$Y_t$')
-ax.legend(['Model f', 'Model g'], loc='upper left')
+ax.legend(['model f', 'model g'], loc='upper left')
 plt.tight_layout()
 plt.show()
 ```
@@ -711,22 +743,24 @@ L_ratios_gf = compute_likelihood_ratio_var(states_g, model_sam_f, model_sam_g)
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 ax = axes[0]
-for i in range(N_paths):
+for i in range(min(20, N_paths)):
     ax.plot(L_ratios_ff[i], alpha=0.5, color='C0', lw=0.8)
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_title(r'$\log L_t$ (nature = f)')
 ax.set_ylabel(r'$\log L_t$')
 
 ax = axes[1]
-for i in range(min(10, N_paths)):
+for i in range(min(20, N_paths)):
     ax.plot(L_ratios_gf[i], alpha=0.5, color='C1', lw=0.8)
 ax.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
 ax.set_title(r'$\log L_t$ (nature = g)')
 plt.show()
 ```
 
-In the  figure on the left  data are generated by $f$ and  the likelihood ratio diverges to plus infinity.
+In the figure on the left, data are generated by $f$ and the likelihood ratio diverges to plus infinity.
 
-In  figure on the right  data are generated by $g$ amd  the likelihood ratio diverges  to negative infinity.
+In the figure on the right, data are generated by $g$ and the likelihood ratio diverges to negative infinity.
 
-In both cases,  the   likelihood ratio processes eventually  lead us to select the correct model.
+In both cases, we applied a lower and upper threshold for the log likelihood ratio process for numerical stability since they grow unbounded very quickly.
+
+In both cases, the likelihood ratio processes eventually lead us to select the correct model.
