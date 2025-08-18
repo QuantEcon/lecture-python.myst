@@ -200,7 +200,7 @@ import scipy.interpolate as interp
 plt.rcParams.update({"text.usetex": True, 'font.size': 14})
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
-# ensure the notebook generate the same randomness
+# ensure the notebook generates the same randomness
 np.random.seed(1337)
 ```
 
