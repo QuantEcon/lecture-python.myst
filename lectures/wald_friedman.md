@@ -226,7 +226,7 @@ interpret $\alpha$ and $\beta$:
 > Thus, we can say that in the long run [ here Wald applies law of
 > large numbers by driving $M \rightarrow \infty$ (our comment,
 > not Wald's) ] the proportion of wrong statements will be
-> $\alpha$ if $H_0$is true and $\beta$ if
+> $\alpha$ if $H_0$ is true and $\beta$ if
 > $H_1$ is true.
 
 The quantity $\alpha$ is called the *size* of the critical region,
@@ -628,7 +628,7 @@ def plot_sprt_results(results, params, title=""):
     bins = np.arange(1, max_n) - 0.5
     axes[1].hist(results['stopping_times'], bins=bins, 
                  color="steelblue", alpha=0.8, edgecolor="black")
-    axes[1].set_title(f'Stopping times (μ={results["stopping_times"].mean():.1f})', 
+    axes[1].set_title(f'stopping times (μ={results["stopping_times"].mean():.1f})', 
                       fontsize=16)
     axes[1].set_xlabel('n', fontsize=16)
     axes[1].set_ylabel('frequency', fontsize=16)
@@ -652,7 +652,7 @@ def plot_confusion_matrix(results, ax):
     row_totals = confusion_data.sum(axis=1, keepdims=True)
     
     im = ax.imshow(confusion_data, cmap='Blues', aspect='equal')
-    ax.set_title(f'Errors: I={results["type_I"]:.3f} II={results["type_II"]:.3f}', 
+    ax.set_title(f'errors: I={results["type_I"]:.3f} II={results["type_II"]:.3f}', 
                  fontsize=16)
     ax.set_xticks([0, 1])
     ax.set_xticklabels(['accept $H_0$', 'reject $H_0$'], fontsize=14)
@@ -835,7 +835,7 @@ Let's visualize individual likelihood ratio processes to see how they evolve tow
 
 ```{code-cell} ipython3
 def plot_likelihood_paths(params, n_highlight=10, n_background=200):
-    """visualize ikelihood ratio paths."""
+    """visualize likelihood ratio paths."""
     A, B, logA, logB = compute_wald_thresholds(params.α, params.β)
     f0, f1 = map(lambda ab: create_beta_density(*ab),
              [(params.a0, params.b0), 
@@ -885,7 +885,7 @@ def plot_likelihood_paths(params, n_highlight=10, n_background=200):
         ax.axhline(y=0, color='black', linestyle='-', alpha=0.5, linewidth=1)
         
         ax.set_xlabel(r'$n$') 
-        ax.set_ylabel(r'$log(L_n)$')
+        ax.set_ylabel(r'$\log(L_n)$')
         ax.set_title(title, fontsize=20)
         ax.legend(fontsize=18, loc='center right')
         
@@ -1168,9 +1168,9 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
 
 ax1.hist(results_markov['stopping_times'], 
             bins=50, color="steelblue", alpha=0.8)
-ax1.set_title("Stopping Times")
+ax1.set_title("stopping times")
 ax1.set_xlabel("n")
-ax1.set_ylabel("Frequency")
+ax1.set_ylabel("frequency")
 
 # Confusion matrix (reusing pattern from lecture)
 f0_c = np.sum(results_markov['truth_h0'] & results_markov['decisions_h0'])
@@ -1180,7 +1180,7 @@ f1_i = np.sum(~results_markov['truth_h0'] & results_markov['decisions_h0'])
 
 confusion_data = np.array([[f0_c, f0_i], [f1_i, f1_c]])
 ax2.imshow(confusion_data, cmap='Blues')
-ax2.set_title('Confusion Matrix')
+ax2.set_title('confusion matrix')
 ax2.set_xticks([0, 1])
 ax2.set_xticklabels(['Accept $H_0$', 'Reject $H_0$'])
 ax2.set_yticks([0, 1])
@@ -1357,7 +1357,7 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 ax1.boxplot([results_markov['stopping_times'], 
              results_var['stopping_times']], 
            tick_labels=['Markov Chain', 'VAR(1)'])
-ax1.set_ylabel('Stopping Time')
+ax1.set_ylabel('stopping time')
 
 x = np.arange(2)
 ax2.bar(x - 0.2, [results_markov['type_I'], results_var['type_I']], 

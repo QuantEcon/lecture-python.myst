@@ -89,7 +89,7 @@ Claude Shannon {cite}`shannon1948mathematical` called $H(f)$ the **entropy** of 
 
 
 ```{note}
-By maximizing $H(f)$ with respect to $\{f_1, f_2, \ldots, f_n\}$ subject to $\sum_{f_i} = 1$, we can verify that the distribution
+By maximizing $H(f)$ with respect to $\{f_1, f_2, \ldots, f_n\}$ subject to $\sum_i f_i = 1$, we can verify that the distribution
 that maximizes entropy is the uniform distribution
 $
 f_i = \frac{1}{n} .
@@ -339,7 +339,7 @@ Remarks:
 - At $\phi=1/2$ it becomes the **Bhattacharyya coefficient** $\int \sqrt{f g}$. 
 - In binary hypothesis testing with $T$ iid observations, the optimal error probability decays as $e^{-C(f,g) T}$.
 
-We will see and example of the third point in the lecture {doc}`likelihood_ratio_process`, 
+We will see an example of the third point in the lecture {doc}`likelihood_ratio_process`, 
 where we study the Chernoff entropy in the context of model selection.
 
 Let's compute the Chernoff entropy between our example distributions $f$ and $g$.
