@@ -66,13 +66,14 @@ We'll begin with some imports:
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-from numba import njit, prange
+from numba import njit, prange, vectorize, jit
 from numba.experimental import jitclass
 from math import gamma
 from scipy.integrate import quad
 from scipy.stats import beta
 from collections import namedtuple
 import pandas as pd
+import scipy as sp
 ```
 
 This lecture uses ideas studied in {doc}`the lecture on likelihood ratio processes<likelihood_ratio_process>` and  {doc}`the lecture on Bayesian learning<likelihood_bayes>`.
@@ -123,7 +124,7 @@ Realizing that, they told Abraham Wald about the problem.
 
 That set  Wald on a path that led him  to create  *Sequential Analysis* {cite}`Wald47`.
 
-##  Neyman-Pearson Formulation
+##  Neyman-Pearson formulation
 
 It is useful to begin by describing the theory underlying the test
 that the U.S. Navy told  Captain G. S. Schuyler to use.
@@ -225,7 +226,7 @@ interpret $\alpha$ and $\beta$:
 > Thus, we can say that in the long run [ here Wald applies law of
 > large numbers by driving $M \rightarrow \infty$ (our comment,
 > not Wald's) ] the proportion of wrong statements will be
-> $\alpha$ if $H_0$is true and $\beta$ if
+> $\alpha$ if $H_0$ is true and $\beta$ if
 > $H_1$ is true.
 
 The quantity $\alpha$ is called the *size* of the critical region,
@@ -275,7 +276,7 @@ Here is how Wald introduces the notion of a sequential test
 > a random variable, since the value of $n$ depends on the outcome of the
 > observations.
 
-## Wald's Sequential Formulation 
+## Wald's sequential formulation 
 
 By way of contrast to Neyman and Pearson's formulation of the problem, in Wald's formulation
 
@@ -290,38 +291,48 @@ A decision-maker can observe a sequence of draws of a random variable $z$.
 
 He (or she) wants to know which of two probability distributions $f_0$ or $f_1$ governs $z$.
 
+We use beta distributions as examples.
 
-To  illustrate, let's inspect some beta distributions.
-
-The density of a Beta probability distribution with parameters $a$ and $b$ is
-
-$$
-f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
-\quad \text{where} \quad
-\Gamma(p) := \int_{0}^{\infty} x^{p-1} e^{-x} dx
-$$
-
-The next figure shows two beta distributions.
+We will also work with Jensen-Shannon divergence introduced in {doc}`divergence_measures`.
 
 ```{code-cell} ipython3
-@njit
+@vectorize
 def p(x, a, b):
+    """Beta distribution density function."""
     r = gamma(a + b) / (gamma(a) * gamma(b))
-    return r * x**(a-1) * (1 - x)**(b-1)
+    return r * x** (a-1) * (1 - x) ** (b-1)
 
-f0 = lambda x: p(x, 1, 1)
-f1 = lambda x: p(x, 9, 9)
+def create_beta_density(a, b):
+    """Create a beta density function with specified parameters."""
+    return jit(lambda x: p(x, a, b))
+
+def compute_KL(f, g):
+    """Compute KL divergence KL(f, g)"""
+    integrand = lambda w: f(w) * np.log(f(w) / g(w))
+    val, _ = quad(integrand, 1e-5, 1-1e-5)
+    return val
+
+def compute_JS(f, g):
+    """Compute Jensen-Shannon divergence"""
+    def m(w):
+        return 0.5 * (f(w) + g(w))
+    
+    js_div = 0.5 * compute_KL(f, m) + 0.5 * compute_KL(g, m)
+    return js_div
+```
+
+The next figure shows two beta distributions
+
+```{code-cell} ipython3
+f0 = create_beta_density(1, 1)
+f1 = create_beta_density(9, 9)
 grid = np.linspace(0, 1, 50)
 
-fig, ax = plt.subplots(figsize=(10, 8))
-
-ax.set_title("Original Distributions")
+fig, ax = plt.subplots()
 ax.plot(grid, f0(grid), lw=2, label="$f_0$")
 ax.plot(grid, f1(grid), lw=2, label="$f_1$")
-
 ax.legend()
 ax.set(xlabel="$z$ values", ylabel="probability of $z_k$")
-
 plt.tight_layout()
 plt.show()
 ```
@@ -341,7 +352,7 @@ Consequently, the observer has something to learn, namely, whether the observati
 The decision maker   wants  to decide which of the  two distributions is generating outcomes.
 
 
-### Type I and Type II Errors
+### Type I and type II errors
 
 If we regard  $f=f_0$ as a null hypothesis and $f=f_1$ as an alternative hypothesis,
 then 
@@ -392,7 +403,7 @@ The following figure illustrates aspects of Wald's procedure.
 
 ```
 
-## Links Between $A,B$ and $\alpha, \beta$
+## Links between $A,B$ and $\alpha, \beta$
 
 In chapter 3 of **Sequential Analysis** {cite}`Wald47`  Wald establishes the inequalities
 
@@ -448,6 +459,8 @@ We will focus on the case where $f_0$ and $f_1$ are beta distributions since it 
 
 First, we define a namedtuple to store all the parameters we need for our simulation studies.
 
+We also compute Wald's recommended thresholds $A$ and $B$ based on the target type I and type II errors $\alpha$ and $\beta$
+
 ```{code-cell} ipython3
 SPRTParams = namedtuple('SPRTParams', 
                 ['α', 'β',  # Target type I and type II errors
@@ -455,6 +468,13 @@ SPRTParams = namedtuple('SPRTParams',
                 'a1', 'b1', # Shape parameters for f_1
                 'N',        # Number of simulations
                 'seed'])
+
+@njit
+def compute_wald_thresholds(α, β):
+    """Compute Wald's recommended thresholds."""
+    A = (1 - β) / α
+    B = β / (1 - α)
+    return A, B, np.log(A), np.log(B)
 ```
 
 Now we can run the simulation following Wald's recommendation. 
@@ -490,23 +510,14 @@ def sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed):
     """Run a single SPRT until a decision is reached."""
     log_L = 0.0
     n = 0
-    
-    # Set seed for this run
     np.random.seed(seed)
     
     while True:
-        # Draw a random variable from the appropriate distribution
-        if true_f0:
-            z = np.random.beta(a0, b0)
-        else:
-            z = np.random.beta(a1, b1)
-        
+        z = np.random.beta(a0, b0) if true_f0 else np.random.beta(a1, b1)
         n += 1
         
-        # Update the log-likelihood ratio
-        log_f1_z = np.log(p(z, a1, b1))
-        log_f0_z = np.log(p(z, a0, b0))
-        log_L += log_f1_z - log_f0_z
+        # Update log-likelihood ratio
+        log_L += np.log(p(z, a1, b1)) - np.log(p(z, a0, b0))
         
         # Check stopping conditions
         if log_L >= logA:
@@ -516,31 +527,21 @@ def sprt_single_run(a0, b0, a1, b1, logA, logB, true_f0, seed):
 
 @njit(parallel=True)
 def run_sprt_simulation(a0, b0, a1, b1, α, β, N, seed):
-    """SPRT simulation described by the algorithm."""
+    """SPRT simulation."""
+    A, B, logA, logB = compute_wald_thresholds(α, β)
     
-    # Calculate thresholds
-    A = (1 - β) / α
-    B = β / (1 - α)
-    logA = np.log(A)
-    logB = np.log(B)
-    
-    # Pre-allocate arrays
     stopping_times = np.zeros(N, dtype=np.int64)
-
-    # Store decision and ground truth as boolean arrays
     decisions_h0 = np.zeros(N, dtype=np.bool_)
     truth_h0 = np.zeros(N, dtype=np.bool_)
     
-    # Run simulations in parallel
     for i in prange(N):
         true_f0 = (i % 2 == 0)
         truth_h0[i] = true_f0
         
         n, accept_f0 = sprt_single_run(
-                            a0, b0, a1, b1, 
-                            logA, logB, 
-                            true_f0, seed + i)
-
+                        a0, b0, a1, b1, 
+                        logA, logB, 
+                        true_f0, seed + i)
         stopping_times[i] = n
         decisions_h0[i] = accept_f0
     
@@ -548,7 +549,6 @@ def run_sprt_simulation(a0, b0, a1, b1, α, β, N, seed):
 
 def run_sprt(params):
     """Run SPRT simulations with given parameters."""
-    
     stopping_times, decisions_h0, truth_h0 = run_sprt_simulation(
         params.a0, params.b0, params.a1, params.b1, 
         params.α, params.β, params.N, params.seed
@@ -557,36 +557,27 @@ def run_sprt(params):
     # Calculate error rates
     truth_h0_bool = truth_h0.astype(bool)
     decisions_h0_bool = decisions_h0.astype(bool)
-
-    # For type I error: P(reject H0 | H0 is true)
-    type_I = np.sum(truth_h0_bool 
-                    & ~decisions_h0_bool) / np.sum(truth_h0_bool)
     
-    # For type II error: P(accept H0 | H0 is false)  
-    type_II = np.sum(~truth_h0_bool 
-                    & decisions_h0_bool) / np.sum(~truth_h0_bool)
-    
-    # Create scipy distributions for compatibility
-    f0 = beta(params.a0, params.b0)
-    f1 = beta(params.a1, params.b1)
+    type_I = np.sum(truth_h0_bool & ~decisions_h0_bool) \
+            / np.sum(truth_h0_bool)
+    type_II = np.sum(~truth_h0_bool & decisions_h0_bool) \
+            / np.sum(~truth_h0_bool)
     
     return {
         'stopping_times': stopping_times,
         'decisions_h0': decisions_h0_bool,
         'truth_h0': truth_h0_bool,
         'type_I': type_I,
-        'type_II': type_II,
-        'f0': f0,
-        'f1': f1
+        'type_II': type_II
     }
-    
+
 # Run simulation
 params = SPRTParams(α=0.05, β=0.10, a0=2, b0=5, a1=5, b1=2, N=20000, seed=1)
 results = run_sprt(params)
 
 print(f"Average stopping time: {results['stopping_times'].mean():.2f}")
-print(f"Empirical type I  error: {results['type_I']:.3f}   (target = {params.α})")
-print(f"Empirical type II error: {results['type_II']:.3f}   (target = {params.β})")
+print(f"Empirical type I  error: {results['type_I']:.3f} (target = {params.α})")
+print(f"Empirical type II error: {results['type_II']:.3f} (target = {params.β})")
 ```
 
 As anticipated in the passage above in which Wald discussed the quality of 
@@ -598,32 +589,91 @@ we find that the algorithm actually gives
 For recent work on the quality of approximation {eq}`eq:Waldrule`, see, e.g., {cite}`fischer2024improving`.
 ```
 
-The following code constructs a graph that lets us  visualize two distributions and the distribution of times to reach a decision.
+The following code creates a few graphs that illustrate the results of our simulation.
 
 ```{code-cell} ipython3
-fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+:tags: [hide-input]
 
-z_grid = np.linspace(0, 1, 200)
-axes[0].plot(z_grid, results['f0'].pdf(z_grid), 'b-', 
-             lw=2, label=f'$f_0 = \\text{{Beta}}({params.a0},{params.b0})$')
-axes[0].plot(z_grid, results['f1'].pdf(z_grid), 'r-', 
-             lw=2, label=f'$f_1 = \\text{{Beta}}({params.a1},{params.b1})$')
-axes[0].fill_between(z_grid, 0, 
-                     np.minimum(results['f0'].pdf(z_grid), 
-                                results['f1'].pdf(z_grid)), 
-                     alpha=0.3, color='purple', label='overlap region')
-axes[0].set_xlabel('z')
-axes[0].set_ylabel('density')
-axes[0].legend()
+@njit
+def compute_wald_thresholds(α, β):
+    """Compute Wald's recommended thresholds."""
+    A = (1 - β) / α
+    B = β / (1 - α)
+    return A, B, np.log(A), np.log(B)
 
-axes[1].hist(results['stopping_times'], 
-             bins=np.arange(1, results['stopping_times'].max() + 1.5) - 0.5,
-            color="steelblue", alpha=0.8, edgecolor="black")
-axes[1].set_title("distribution of stopping times $n$")
-axes[1].set_xlabel("$n$")
-axes[1].set_ylabel("frequency")
+def plot_sprt_results(results, params, title=""):
+    """Plot SPRT results."""
+    fig, axes = plt.subplots(1, 3, figsize=(20, 6))
+    
+    # Distribution plots
+    z_grid = np.linspace(0, 1, 200)
+    f0 = create_beta_density(params.a0, params.b0)
+    f1 = create_beta_density(params.a1, params.b1)
+    
+    axes[0].plot(z_grid, f0(z_grid), 'b-', lw=2, 
+                 label=f'$f_0 = \\text{{Beta}}({params.a0},{params.b0})$')
+    axes[0].plot(z_grid, f1(z_grid), 'r-', lw=2, 
+                 label=f'$f_1 = \\text{{Beta}}({params.a1},{params.b1})$')
+    axes[0].fill_between(z_grid, 0, 
+                        np.minimum(f0(z_grid), f1(z_grid)), 
+                        alpha=0.3, color='purple', label='overlap')
+    if title:
+        axes[0].set_title(title, fontsize=20)
+    axes[0].set_xlabel('z', fontsize=16)
+    axes[0].set_ylabel('density', fontsize=16)
+    axes[0].legend(fontsize=14)
+    
+    # Stopping times
+    max_n = min(results['stopping_times'].max(), 101)
+    bins = np.arange(1, max_n) - 0.5
+    axes[1].hist(results['stopping_times'], bins=bins, 
+                 color="steelblue", alpha=0.8, edgecolor="black")
+    axes[1].set_title(f'stopping times (μ={results["stopping_times"].mean():.1f})', 
+                      fontsize=16)
+    axes[1].set_xlabel('n', fontsize=16)
+    axes[1].set_ylabel('frequency', fontsize=16)
+    axes[1].set_xlim(0, 100)
+    
+    # Confusion matrix
+    plot_confusion_matrix(results, axes[2])
+    
+    plt.tight_layout()
+    plt.show()
 
-plt.show()
+def plot_confusion_matrix(results, ax):
+    """Plot confusion matrix for SPRT results."""
+    f0_correct = np.sum(results['truth_h0'] & results['decisions_h0'])
+    f0_incorrect = np.sum(results['truth_h0'] & (~results['decisions_h0']))
+    f1_correct = np.sum((~results['truth_h0']) & (~results['decisions_h0']))
+    f1_incorrect = np.sum((~results['truth_h0']) & results['decisions_h0'])
+    
+    confusion_data = np.array([[f0_correct, f0_incorrect], 
+                              [f1_incorrect, f1_correct]])
+    row_totals = confusion_data.sum(axis=1, keepdims=True)
+    
+    im = ax.imshow(confusion_data, cmap='Blues', aspect='equal')
+    ax.set_title(f'errors: I={results["type_I"]:.3f} II={results["type_II"]:.3f}', 
+                 fontsize=16)
+    ax.set_xticks([0, 1])
+    ax.set_xticklabels(['accept $H_0$', 'reject $H_0$'], fontsize=14)
+    ax.set_yticks([0, 1])
+    ax.set_yticklabels(['true $f_0$', 'true $f_1$'], fontsize=14)
+    
+    for i in range(2):
+        for j in range(2):
+            percent = confusion_data[i, j] / row_totals[i, 0] \
+                        if row_totals[i, 0] > 0 else 0
+            color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 \
+                    else 'black'
+            ax.text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
+                   ha="center", va="center", color=color, fontweight='bold', 
+                   fontsize=14)
+```
+
+Let's plot the results of our simulation
+
+```{code-cell} ipython3
+plot_sprt_results(results, params)
 ```
 
 In this example, the stopping time stays below 10.
@@ -633,44 +683,9 @@ count the number of times that Wald's  decision rule  correctly  accepts and
 rejects the null hypothesis.
 
 ```{code-cell} ipython3
-# Accept H0 when H0 is true (correct)
-f0_correct = np.sum(results['truth_h0'] & results['decisions_h0'])
-
-# Reject H0 when H0 is true (incorrect)
-f0_incorrect = np.sum(results['truth_h0'] & (~results['decisions_h0']))
-
-# Reject H0 when H1 is true (correct)
-f1_correct = np.sum((~results['truth_h0']) & (~results['decisions_h0']))
-
-# Accept H0 when H1 is true (incorrect)
-f1_incorrect = np.sum((~results['truth_h0']) & results['decisions_h0'])
-
-# First row is when f0 is the true distribution
-# Second row is when f1 is true
-confusion_data = np.array([[f0_correct, f0_incorrect],
-                          [f1_incorrect, f1_correct]])
-
-row_totals = confusion_data.sum(axis=1, keepdims=True)
-
-print("Confusion Matrix:")
-print(confusion_data)
-
-fig, ax = plt.subplots()
-ax.imshow(confusion_data, cmap='Blues', aspect='equal')
-ax.set_xticks([0, 1])
-ax.set_xticklabels(['accept $H_0$', 'reject $H_0$'])
-ax.set_yticks([0, 1])
-ax.set_yticklabels(['true $f_0$', 'true $f_1$'])
-
-for i in range(2):
-    for j in range(2):
-        percent = confusion_data[i, j] / row_totals[i, 0] if row_totals[i, 0] > 0 else 0
-        color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 else 'black'
-        ax.text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
-                      ha="center", va="center", 
-                      color=color, fontweight='bold')
-plt.tight_layout()
-plt.show()
+print("Confusion Matrix data:")
+print(f"Type I error: {results['type_I']:.3f}")
+print(f"Type II error: {results['type_II']:.3f}")
 ```
 
 Next we use our code to study three different $f_0, f_1$ pairs having different discrepancies between distributions.
@@ -687,74 +702,6 @@ results_2 = run_sprt(params_2)
 params_3 = SPRTParams(α=0.05, β=0.10, a0=0.5, b0=0.4, a1=0.4, 
                       b1=0.5, N=5000, seed=42)
 results_3 = run_sprt(params_3)
-```
-
-```{code-cell} ipython3
-:tags: [hide-input]
-
-def plot_sprt_results(results, params, title=""):
-    """Plot SPRT simulation results."""
-    fig, axes = plt.subplots(1, 3, figsize=(22, 8))
-    
-    # Distribution plots
-    z_grid = np.linspace(0, 1, 200)
-    axes[0].plot(z_grid, results['f0'].pdf(z_grid), 'b-', lw=2, 
-                     label=f'$f_0 = \\text{{Beta}}({params.a0},{params.b0})$')
-    axes[0].plot(z_grid, results['f1'].pdf(z_grid), 'r-', lw=2, 
-                     label=f'$f_1 = \\text{{Beta}}({params.a1},{params.b1})$')
-    axes[0].fill_between(z_grid, 0, 
-                np.minimum(results['f0'].pdf(z_grid), results['f1'].pdf(z_grid)), 
-                alpha=0.3, color='purple', label='overlap')
-    if title:
-        axes[0].set_title(title, fontsize=25)
-    axes[0].set_xlabel('z', fontsize=25)
-    axes[0].set_ylabel('density', fontsize=25)
-    axes[0].legend(fontsize=18)
-    axes[0].tick_params(axis='both', which='major', labelsize=18)
-    
-    # Stopping times
-    max_n = max(results['stopping_times'].max(), 101)
-    bins = np.arange(1, min(max_n, 101)) - 0.5
-    axes[1].hist(results['stopping_times'], bins=bins, 
-                     color="steelblue", alpha=0.8, edgecolor="black")
-    axes[1].set_title(f'stopping times (mean={results["stopping_times"].mean():.1f})', 
-                    fontsize=25)
-    axes[1].set_xlabel('n', fontsize=25)
-    axes[1].set_ylabel('frequency', fontsize=25)
-    axes[1].set_xlim(0, 100)
-    axes[1].tick_params(axis='both', which='major', labelsize=18)
-    
-    # Confusion matrix
-    f0_correct = np.sum(results['truth_h0'] & results['decisions_h0'])
-    f0_incorrect = np.sum(results['truth_h0'] & (~results['decisions_h0']))
-    f1_correct = np.sum((~results['truth_h0']) & (~results['decisions_h0']))
-    f1_incorrect = np.sum((~results['truth_h0']) & results['decisions_h0'])
-    
-    confusion_data = np.array([[f0_correct, f0_incorrect], 
-                              [f1_incorrect, f1_correct]])
-    row_totals = confusion_data.sum(axis=1, keepdims=True)
-    
-    im = axes[2].imshow(confusion_data, cmap='Blues', aspect='equal')
-    axes[2].set_title(f'errors: I={results["type_I"]:.3f} '+ 
-                      f'II={results["type_II"]:.3f}', fontsize=25)
-    axes[2].set_xticks([0, 1])
-    axes[2].set_xticklabels(['accept $H_0$', 'reject $H_0$'], fontsize=22)
-    axes[2].set_yticks([0, 1])
-    axes[2].set_yticklabels(['true $f_0$', 'true $f_1$'], fontsize=22)
-    axes[2].tick_params(axis='both', which='major', labelsize=18)
-
-    
-    for i in range(2):
-        for j in range(2):
-            percent = confusion_data[i, j] / row_totals[i, 0] if row_totals[i, 0] > 0 else 0
-            color = 'white' if confusion_data[i, j] > confusion_data.max() * 0.5 else 'black'
-            axes[2].text(j, i, f'{confusion_data[i, j]}\n({percent:.1%})',
-                             ha="center", va="center", 
-                             color=color, fontweight='bold', 
-                             fontsize=18)
-
-    plt.tight_layout()
-    plt.show()
 ```
 
 ```{code-cell} ipython3
@@ -789,20 +736,14 @@ That is what we shall do now.
 We shall compute Jensen-Shannon distance  and plot it against the average stopping times.
 
 ```{code-cell} ipython3
-def kl_div(h, f):
-    """KL divergence"""
-    integrand = lambda w: h(w) * np.log(h(w) / f(w))
-    val, _ = quad(integrand, 0, 1)
-    return val
-
 def js_dist(a0, b0, a1, b1):
     """Jensen–Shannon distance"""
-    f0 = lambda w: p(w, a0, b0)
-    f1 = lambda w: p(w, a1, b1)
+    f0 = create_beta_density(a0, b0)
+    f1 = create_beta_density(a1, b1)
 
     # Mixture
     m = lambda w: 0.5*(f0(w) + f1(w))
-    return np.sqrt(0.5*kl_div(m, f0) + 0.5*kl_div(m, f1))
+    return np.sqrt(0.5*compute_KL(m, f0) + 0.5*compute_KL(m, f1))
     
 def generate_β_pairs(N=100, T=10.0, d_min=0.5, d_max=9.5):
     ds = np.linspace(d_min, d_max, N)
@@ -831,11 +772,10 @@ for a0, b0, a1, b1 in param_comb:
     param_list.append((a0, b0, a1, b1))
 
 # Create the plot
-fig, ax = plt.subplots(figsize=(6, 6))
+fig, ax = plt.subplots()
 
 scatter = ax.scatter(js_dists, mean_stopping_times, 
-                    s=80, alpha=0.7, c=range(len(js_dists)),
-                    linewidth=0.5)
+                    s=80, alpha=0.7, linewidth=0.5)
 
 ax.set_xlabel('Jensen–Shannon distance', fontsize=14)
 ax.set_ylabel('mean stopping time', fontsize=14)
@@ -851,47 +791,41 @@ As  Jensen-Shannon divergence increases (distributions become more separated), t
 Below are sampled examples from the experiments we have above
 
 ```{code-cell} ipython3
-selected_indices = [0, 
-                    len(param_comb)//6, 
-                    len(param_comb)//3, 
-                    len(param_comb)//2, 
-                    2*len(param_comb)//3, 
-                    -1]
-
-fig, axes = plt.subplots(2, 3, figsize=(15, 8))
-
-for i, idx in enumerate(selected_indices):
-    row = i // 3
-    col = i % 3
+def plot_beta_distributions_grid(param_list, js_dists, mean_stopping_times, 
+                                selected_indices=None):
+    """Plot grid of beta distributions with JS distance and stopping times."""
+    if selected_indices is None:
+        selected_indices = [0, len(param_list)//6, len(param_list)//3, 
+                          len(param_list)//2, 2*len(param_list)//3, -1]
     
-    a0, b0, a1, b1 = param_list[idx]
-    js_dist = js_dists[idx]
-    mean_time = mean_stopping_times[idx]
-    
-    # Plot the distributions
+    fig, axes = plt.subplots(2, 3, figsize=(15, 8))
     z_grid = np.linspace(0, 1, 200)
-    f0_dist = beta(a0, b0)
-    f1_dist = beta(a1, b1)
     
-    axes[row, col].plot(z_grid, f0_dist.pdf(z_grid), 'b-', 
-                        lw=2, label='$f_0$')
-    axes[row, col].plot(z_grid, f1_dist.pdf(z_grid), 'r-', 
-                        lw=2, label='$f_1$')
-    axes[row, col].fill_between(z_grid, 0, 
-                        np.minimum(f0_dist.pdf(z_grid), 
-                        f1_dist.pdf(z_grid)), 
-                        alpha=0.3, color='purple')
-    
-    axes[row, col].set_title(f'JS dist: {js_dist:.3f}'
-                +f'\nMean time: {mean_time:.1f}', fontsize=12)
-    axes[row, col].set_xlabel('z', fontsize=10)
-    if i == 0:
-        axes[row, col].set_ylabel('density', fontsize=10)
-        axes[row, col].legend(fontsize=10)
+    for i, idx in enumerate(selected_indices):
+        row, col = i // 3, i % 3
+        a0, b0, a1, b1 = param_list[idx]
+        
+        f0 = create_beta_density(a0, b0)
+        f1 = create_beta_density(a1, b1)
+        
+        axes[row, col].plot(z_grid, f0(z_grid), 'b-', lw=2, label='$f_0$')
+        axes[row, col].plot(z_grid, f1(z_grid), 'r-', lw=2, label='$f_1$')
+        axes[row, col].fill_between(z_grid, 0, 
+                                  np.minimum(f0(z_grid), f1(z_grid)), 
+                                  alpha=0.3, color='purple')
+        
+        axes[row, col].set_title(f'JS dist: {js_dists[idx]:.3f}'
+                               f'\nMean time: {mean_stopping_times[idx]:.1f}', 
+                               fontsize=12)
+        axes[row, col].set_xlabel('z', fontsize=10)
+        if i == 0:
+            axes[row, col].set_ylabel('density', fontsize=10)
+            axes[row, col].legend(fontsize=10)
 
+    plt.tight_layout()
+    plt.show()
 
-plt.tight_layout()
-plt.show()
+plot_beta_distributions_grid(param_list, js_dists, mean_stopping_times)
 ```
 
 Again, we find that the stopping time is shorter when the distributions are more separated, as
@@ -901,18 +835,14 @@ Let's visualize individual likelihood ratio processes to see how they evolve tow
 
 ```{code-cell} ipython3
 def plot_likelihood_paths(params, n_highlight=10, n_background=200):
-    """Plot likelihood ratio paths"""
-    
-    A = (1 - params.β) / params.α
-    B = params.β / (1 - params.α)
-    logA, logB = np.log(A), np.log(B)
-    
-    f0 = beta(params.a0, params.b0)
-    f1 = beta(params.a1, params.b1)
+    """visualize likelihood ratio paths."""
+    A, B, logA, logB = compute_wald_thresholds(params.α, params.β)
+    f0, f1 = map(lambda ab: create_beta_density(*ab),
+             [(params.a0, params.b0), 
+              (params.a1, params.b1)])
     
     fig, axes = plt.subplots(1, 2, figsize=(14, 7))
     
-    # Generate and plot paths for each distribution
     for dist_idx, (true_f0, ax, title) in enumerate([
         (True, axes[0], 'true distribution: $f_0$'),
         (False, axes[1], 'true distribution: $f_1$')
@@ -920,47 +850,42 @@ def plot_likelihood_paths(params, n_highlight=10, n_background=200):
         rng = np.random.default_rng(seed=42 + dist_idx)
         paths_data = []
         
+        # Generate paths
         for path in range(n_background + n_highlight):
-            log_L_path = [0.0]  # Start at 0
-            log_L = 0.0
-            n = 0
+            log_L_path, log_L, n = [0.0], 0.0, 0
             
             while True:
-                z = f0.rvs(random_state=rng) if true_f0 else f1.rvs(random_state=rng)
+                z = rng.beta(params.a0, params.b0) if true_f0 \
+                    else rng.beta(params.a1, params.b1)
                 n += 1
-                log_L += np.log(f1.pdf(z)) - np.log(f0.pdf(z))
+                log_L += np.log(f1(z)) - np.log(f0(z))
                 log_L_path.append(log_L)
                 
-                # Check stopping conditions
                 if log_L >= logA or log_L <= logB:
-                    # True = reject H0, False = accept H0
-                    decision = log_L >= logA
+                    paths_data.append((log_L_path, n, log_L >= logA))
                     break
-            
-            paths_data.append((log_L_path, n, decision))
         
-        for i, (path, n, decision) in enumerate(paths_data[:n_background]):
-            color = 'C1' if decision else 'C0'
-            ax.plot(range(len(path)), path, 
-                    color=color, alpha=0.2, linewidth=0.5)
+        # Plot background paths
+        for path, _, decision in paths_data[:n_background]:
+            ax.plot(range(len(path)), path, color='C1' if decision else 'C0', 
+                   alpha=0.2, linewidth=0.5)
         
-        for i, (path, n, decision) in enumerate(paths_data[n_background:]):
-            # Color code by decision
-            color = 'C1' if decision else 'C0'
-            ax.plot(range(len(path)), path, color=color, 
-                    alpha=0.8, linewidth=1.5,
-                    label='reject $H_0$' if decision and i == 0 else (
-                    'accept $H_0$' if not decision and i == 0 else ''))
+        # Plot highlighted paths with labels
+        for i, (path, _, decision) in enumerate(paths_data[n_background:]):
+            ax.plot(range(len(path)), path, color='C1' if decision else 'C0', 
+                   alpha=0.8, linewidth=1.5,
+                   label='reject $H_0$' if decision and i == 0 else (
+                         'accept $H_0$' if not decision and i == 0 else ''))
         
+        # Add threshold lines and formatting
         ax.axhline(y=logA, color='C1', linestyle='--', linewidth=2, 
                   label=f'$\\log A = {logA:.2f}$')
         ax.axhline(y=logB, color='C0', linestyle='--', linewidth=2, 
                   label=f'$\\log B = {logB:.2f}$')
-        ax.axhline(y=0, color='black', linestyle='-', 
-                  alpha=0.5, linewidth=1)
+        ax.axhline(y=0, color='black', linestyle='-', alpha=0.5, linewidth=1)
         
-        ax.set_xlabel(r'$n$')
-        ax.set_ylabel(r'$log(L_n)$')
+        ax.set_xlabel(r'$n$') 
+        ax.set_ylabel(r'$\log(L_n)$')
         ax.set_title(title, fontsize=20)
         ax.legend(fontsize=18, loc='center right')
         
@@ -1072,7 +997,7 @@ This increases the probability of Type II errors.
 
 The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases.
 
-## Related Lectures
+## Related lectures
 
 We'll dig deeper into some of the ideas used here in the following earlier and later lectures:
 
@@ -1081,3 +1006,368 @@ We'll dig deeper into some of the ideas used here in the following earlier and l
 * For a deeper understanding of likelihood ratio processes and their role in frequentist and Bayesian statistical theories, see {doc}`likelihood_ratio_process`.
 * Building on that foundation, {doc}`likelihood_bayes` examines the role of likelihood ratio processes in **Bayesian learning**.
 * Finally, {doc}`this later lecture <navy_captain>` revisits the subject discussed here and examines whether the frequentist decision rule that the Navy ordered the captain to use would perform better or worse than Abraham Wald's sequential decision rule.
+
+## Exercises
+
+In the two exercises below, please try to rewrite the entire SPRT suite in this lecture.
+
+```{exercise}
+:label: wald_friedman_ex1
+
+In the first exercise, we apply the sequential probability ratio test to distinguish two models generated by 3-state Markov chains
+
+(For a review on likelihood ratio processes for Markov chains, see [this section](lrp_markov).)
+
+Consider distinguishing between two 3-state Markov chain models using Wald's sequential probability ratio test. 
+
+You have competing hypotheses about the transition probabilities:
+
+- $H_0$: The chain follows transition matrix $P^{(0)}$
+- $H_1$: The chain follows transition matrix $P^{(1)}$
+
+Given transition matrices:
+
+$$
+P^{(0)} = \begin{bmatrix}
+0.7 & 0.2 & 0.1 \\
+0.3 & 0.5 & 0.2 \\
+0.1 & 0.3 & 0.6
+\end{bmatrix}, \quad
+P^{(1)} = \begin{bmatrix}
+0.5 & 0.3 & 0.2 \\
+0.2 & 0.6 & 0.2 \\
+0.2 & 0.2 & 0.6
+\end{bmatrix}
+$$
+
+For a sequence of observations $(x_0, x_1, \ldots, x_t)$, the likelihood ratio is:
+
+$$
+\Lambda_t = \frac{\pi_{x_0}^{(1)}}{\pi_{x_0}^{(0)}} \prod_{s=1}^t \frac{P_{x_{s-1},x_s}^{(1)}}{P_{x_{s-1},x_s}^{(0)}}
+$$
+
+where $\pi^{(i)}$ is the stationary distribution under hypothesis $i$.
+
+Tasks:
+1. Implement the likelihood ratio computation for Markov chains
+2. Implement Wald's sequential test with Type I error $\alpha = 0.05$ and Type II error $\beta = 0.10$
+3. Run 1000 simulations under each hypothesis and compute empirical error rates
+4. Analyze the distribution of stopping times
+
+The test stops when:
+- $\Lambda_t \geq A = \frac{1-\beta}{\alpha} = 18$: Reject $H_0$
+- $\Lambda_t \leq B = \frac{\beta}{1-\alpha} = 0.105$: Accept $H_0$
+```
+
+
+```{solution-start} wald_friedman_ex1
+:class: dropdown
+```
+
+Below is one solution to the exercise.
+
+In the lecture, we write the code more verbosely to illustrate the concepts clearly.
+
+In the code below, we simplified some of the code structure for a shorter presentation.
+
+First we define the parameters for the Markov chain SPRT
+
+```{code-cell} ipython3
+MarkovSPRTParams = namedtuple('MarkovSPRTParams', 
+            ['α', 'β', 'P_0', 'P_1', 'N', 'seed'])
+
+def compute_stationary_distribution(P):
+    """Compute stationary distribution of transition matrix P."""
+    eigenvalues, eigenvectors = np.linalg.eig(P.T)
+    idx = np.argmin(np.abs(eigenvalues - 1))
+    pi = np.real(eigenvectors[:, idx])
+    return pi / pi.sum()
+
+@njit
+def simulate_markov_chain(P, pi_0, T, seed):
+    """Simulate a Markov chain path."""
+    np.random.seed(seed)
+    path = np.zeros(T, dtype=np.int32)
+    
+    cumsum_pi = np.cumsum(pi_0)
+    path[0] = np.searchsorted(cumsum_pi, np.random.uniform())
+    
+    for t in range(1, T):
+        cumsum_row = np.cumsum(P[path[t-1]])
+        path[t] = np.searchsorted(cumsum_row, np.random.uniform())
+    
+    return path
+```
+
+Here we define the function that runs SPRT for Markov chains
+
+```{code-cell} ipython3
+@njit
+def markov_sprt_single_run(P_0, P_1, π_0, π_1, 
+                logA, logB, true_P, true_π, seed):
+    """Run single SPRT for Markov chains."""
+    max_n = 10000
+    path = simulate_markov_chain(true_P, true_π, max_n, seed)
+    
+    log_L = np.log(π_1[path[0]] / π_0[path[0]])
+    if log_L >= logA: return 1, False
+    if log_L <= logB: return 1, True
+    
+    for t in range(1, max_n):
+        prev_state, curr_state = path[t-1], path[t]
+        p_1, p_0 = P_1[prev_state, curr_state], P_0[prev_state, curr_state]
+        
+        if p_0 > 0:
+            log_L += np.log(p_1 / p_0)
+        elif p_1 > 0:
+            log_L = np.inf
+            
+        if log_L >= logA: return t+1, False
+        if log_L <= logB: return t+1, True
+    
+    return max_n, log_L < 0
+
+def run_markov_sprt(params):
+    """Run SPRT for Markov chains."""
+    π_0 = compute_stationary_distribution(params.P_0)
+    π_1 = compute_stationary_distribution(params.P_1)
+    A, B, logA, logB = compute_wald_thresholds(params.α, params.β)
+    
+    stopping_times = np.zeros(params.N, dtype=np.int64)
+    decisions_h0 = np.zeros(params.N, dtype=bool)
+    truth_h0 = np.zeros(params.N, dtype=bool)
+    
+    for i in range(params.N):
+        true_P, true_π = (params.P_0, π_0) if i % 2 == 0 else (params.P_1, π_1)
+        truth_h0[i] = i % 2 == 0
+        
+        n, accept_h0 = markov_sprt_single_run(
+            params.P_0, params.P_1, π_0, π_1, logA, logB, 
+            true_P, true_π, params.seed + i)
+        
+        stopping_times[i] = n
+        decisions_h0[i] = accept_h0
+    
+    type_I = np.sum(truth_h0 & ~decisions_h0) / np.sum(truth_h0)
+    type_II = np.sum(~truth_h0 & decisions_h0) / np.sum(~truth_h0)
+    
+    return {
+        'stopping_times': stopping_times, 'decisions_h0': decisions_h0,
+        'truth_h0': truth_h0, 'type_I': type_I, 'type_II': type_II
+    }
+```
+
+Now we can run the SPRT for the Markov chain models and visualize the results
+
+```{code-cell} ipython3
+# Run Markov chain SPRT
+P_0 = np.array([[0.7, 0.2, 0.1], 
+                [0.3, 0.5, 0.2], 
+                [0.1, 0.3, 0.6]])
+
+P_1 = np.array([[0.5, 0.3, 0.2], 
+                [0.2, 0.6, 0.2], 
+                [0.2, 0.2, 0.6]])
+
+params_markov = MarkovSPRTParams(α=0.05, β=0.10, 
+                        P_0=P_0, P_1=P_1, N=1000, seed=42)
+results_markov = run_markov_sprt(params_markov)
+
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
+
+ax1.hist(results_markov['stopping_times'], 
+            bins=50, color="steelblue", alpha=0.8)
+ax1.set_title("stopping times")
+ax1.set_xlabel("n")
+ax1.set_ylabel("frequency")
+
+plot_confusion_matrix(results_markov, ax2)
+
+plt.tight_layout()
+plt.show()
+```
+
+```{solution-end}
+```
+
+
+```{exercise}
+:label: wald_friedman_ex2
+
+In this exercise, apply Wald's sequential test to distinguish between two VAR(1) models with different dynamics and noise structures.
+
+For a review of the likelihood ratio process with VAR models, see {doc}`likelihood_var`.
+
+Given VAR models under each hypothesis:
+- $H_0$: $x_{t+1} = A^{(0)} x_t + C^{(0)} w_{t+1}$
+- $H_1$: $x_{t+1} = A^{(1)} x_t + C^{(1)} w_{t+1}$
+
+where $w_t \sim \mathcal{N}(0, I)$ and:
+
+$$
+A^{(0)} = \begin{bmatrix} 0.8 & 0.1 \\ 0.2 & 0.7 \end{bmatrix}, \quad
+C^{(0)} = \begin{bmatrix} 0.3 & 0.1 \\ 0.1 & 0.3 \end{bmatrix}
+$$
+
+$$
+A^{(1)} = \begin{bmatrix} 0.6 & 0.2 \\ 0.3 & 0.5 \end{bmatrix}, \quad
+C^{(1)} = \begin{bmatrix} 0.4 & 0 \\ 0 & 0.4 \end{bmatrix}
+$$
+
+Tasks:
+1. Implement the VAR likelihood ratio using the functions from the VAR lecture
+2. Implement Wald's sequential test with $\alpha = 0.05$ and $\beta = 0.10$
+3. Analyze performance under both hypotheses and with model misspecification
+4. Compare with the Markov chain case in terms of stopping times and accuracy
+
+```
+
+```{solution-start} wald_friedman_ex2
+:class: dropdown
+```
+
+Below is one solution to the exercise.
+
+First we define the parameters for the VAR models and simulator
+
+```{code-cell} ipython3
+VARSPRTParams = namedtuple('VARSPRTParams', 
+            ['α', 'β', 'A_0', 'C_0', 'A_1', 'C_1', 'N', 'seed'])
+
+def create_var_model(A, C):
+    """Create VAR model."""
+    μ_0 = np.zeros(A.shape[0])
+    CC = C @ C.T
+    Σ_0 = sp.linalg.solve_discrete_lyapunov(A, CC)
+    
+    CC_inv = np.linalg.inv(CC + 1e-10 * np.eye(CC.shape[0]))
+    Σ_0_inv = np.linalg.inv(Σ_0 + 1e-10 * np.eye(Σ_0.shape[0]))
+    
+    return {
+        'A': A, 'C': C, 'μ_0': μ_0, 'Σ_0': Σ_0,
+        'CC_inv': CC_inv, 'Σ_0_inv': Σ_0_inv,
+        'log_det_CC': np.log(
+            np.linalg.det(CC + 1e-10 * np.eye(CC.shape[0]))),
+        'log_det_Σ_0': np.log(
+            np.linalg.det(Σ_0 + 1e-10 * np.eye(Σ_0.shape[0])))
+    }
+```
+
+Now we define the likelihood ratio for the VAR models and the SPRT function similar to the 
+Markov chain case
+
+```{code-cell} ipython3
+def var_log_likelihood(x_curr, x_prev, model, initial=False):
+    """Compute VAR log-likelihood."""
+    n = len(x_curr)
+    if initial:
+        diff = x_curr - model['μ_0']
+        return -0.5 * (n * np.log(2 * np.pi) + model['log_det_Σ_0'] + 
+                      diff @ model['Σ_0_inv'] @ diff)
+    else:
+        diff = x_curr - model['A'] @ x_prev
+        return -0.5 * (n * np.log(2 * np.pi) + model['log_det_CC'] + 
+                      diff @ model['CC_inv'] @ diff)
+
+def var_sprt_single_run(model_0, model_1, model_true, 
+                        logA, logB, seed):
+    """Single VAR SPRT run."""
+    np.random.seed(seed)
+    max_T = 500
+    
+    # Generate VAR path
+    Σ_chol = np.linalg.cholesky(model_true['Σ_0'])
+    x = model_true['μ_0'] + Σ_chol @ np.random.randn(
+                len(model_true['μ_0']))
+    
+    # Initial likelihood ratio
+    log_L = (var_log_likelihood(x, None, model_1, True) - 
+             var_log_likelihood(x, None, model_0, True))
+    
+    if log_L >= logA: return 1, False
+    if log_L <= logB: return 1, True
+    
+    # Sequential updates
+    for t in range(1, max_T):
+        x_prev = x.copy()
+        w = np.random.randn(model_true['C'].shape[1])
+        x = model_true['A'] @ x + model_true['C'] @ w
+        
+        log_L += (var_log_likelihood(x, x_prev, model_1) - 
+                 var_log_likelihood(x, x_prev, model_0))
+        
+        if log_L >= logA: return t+1, False
+        if log_L <= logB: return t+1, True
+    
+    return max_T, log_L < 0
+
+def run_var_sprt(params):
+    """Run VAR SPRT."""
+
+    model_0 = create_var_model(params.A_0, params.C_0)
+    model_1 = create_var_model(params.A_1, params.C_1)
+    A, B, logA, logB = compute_wald_thresholds(params.α, params.β)
+    
+    stopping_times = np.zeros(params.N)
+    decisions_h0 = np.zeros(params.N, dtype=bool)
+    truth_h0 = np.zeros(params.N, dtype=bool)
+    
+    for i in range(params.N):
+        model_true = model_0 if i % 2 == 0 else model_1
+        truth_h0[i] = i % 2 == 0
+        
+        n, accept_h0 = var_sprt_single_run(model_0, model_1, model_true, 
+                                          logA, logB, params.seed + i)
+        stopping_times[i] = n
+        decisions_h0[i] = accept_h0
+    
+    type_I = np.sum(truth_h0 & ~decisions_h0) / np.sum(truth_h0)
+    type_II = np.sum(~truth_h0 & decisions_h0) / np.sum(~truth_h0)
+    
+    return {'stopping_times': stopping_times, 
+            'decisions_h0': decisions_h0,
+            'truth_h0': truth_h0, 
+            'type_I': type_I, 'type_II': type_II}
+```
+
+Let's run SPRT and visualize the results
+
+```{code-cell} ipython3
+# Run VAR SPRT
+A_0 = np.array([[0.8, 0.1], 
+                [0.2, 0.7]])
+C_0 = np.array([[0.3, 0.1], 
+                [0.1, 0.3]])
+A_1 = np.array([[0.6, 0.2], 
+                [0.3, 0.5]])
+C_1 = np.array([[0.4, 0.0], 
+                [0.0, 0.4]])
+
+params_var = VARSPRTParams(α=0.05, β=0.10, 
+                A_0=A_0, C_0=C_0, A_1=A_1, C_1=C_1, 
+                N=1000, seed=42)
+results_var = run_var_sprt(params_var)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+
+ax1.boxplot([results_markov['stopping_times'], 
+             results_var['stopping_times']], 
+           tick_labels=['Markov Chain', 'VAR(1)'])
+ax1.set_ylabel('stopping time')
+
+x = np.arange(2)
+ax2.bar(x - 0.2, [results_markov['type_I'], results_var['type_I']], 
+        0.4, label='Type I', alpha=0.7)
+ax2.bar(x + 0.2, [results_markov['type_II'], results_var['type_II']], 
+        0.4, label='Type II', alpha=0.7)
+ax2.axhline(y=0.05, linestyle='--', alpha=0.5, color='C0')
+ax2.axhline(y=0.10, linestyle='--', alpha=0.5, color='C1')
+ax2.set_xticks(x), ax2.set_xticklabels(['Markov', 'VAR'])
+ax2.legend() 
+plt.tight_layout() 
+plt.show()
+```
+
+```{solution-end}
+```
