@@ -38,7 +38,6 @@ Among the things that we'll learn are
 * How a likelihood ratio process is a key ingredient in frequentist hypothesis testing
 * How a **receiver operator characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
 * How a statistician can combine frequentist probabilities of type I and type II errors to form posterior probabilities of mistakes in a model selection or in an individual-classification problem
-* How likelihood ratios helped Lawrence Blume and David Easley formulate an answer to ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`
 * How to use a Kullback-Leibler divergence to quantify the difference between two probability distributions with the same support 
 * How during World War II the United States Navy devised a decision rule for doing quality control on lots of ammunition, a topic that sets the stage for {doc}`this lecture <wald_friedman>`
 * A peculiar property of likelihood ratio processes
@@ -127,36 +126,71 @@ ratio process by generating a sequence $w^t$ from one of the two
 probability distributions, for example, a sequence of IID draws from $g$.
 
 ```{code-cell} ipython3
-# Parameters in the two Beta distributions.
+# Parameters for the two Beta distributions
 F_a, F_b = 1, 1
 G_a, G_b = 3, 1.2
 
 @vectorize
 def p(x, a, b):
+    """Beta distribution density function."""
     r = gamma(a + b) / (gamma(a) * gamma(b))
     return r * x** (a-1) * (1 - x) ** (b-1)
 
-# The two density functions.
 f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
-```
 
-```{code-cell} ipython3
+def create_beta_density(a, b):
+    """Create a beta density function with specified parameters."""
+    return jit(lambda x: p(x, a, b))
+
+def likelihood_ratio(w, f_func, g_func):
+    """Compute likelihood ratio for observation(s) w."""
+    return f_func(w) / g_func(w)
+
 @jit
-def simulate(a, b, T=50, N=500):
-    '''
-    Generate N sets of T observations of the likelihood ratio,
-    return as N x T matrix.
-    '''
-
+def simulate_likelihood_ratios(a, b, f_func, g_func, T=50, N=500):
+    """
+    Generate N sets of T observations of the likelihood ratio.
+    """
     l_arr = np.empty((N, T))
-
     for i in range(N):
         for j in range(T):
             w = np.random.beta(a, b)
-            l_arr[i, j] = f(w) / g(w)
-
+            l_arr[i, j] = f_func(w) / g_func(w)
     return l_arr
+
+def simulate_sequences(distribution, f_func, g_func, 
+        F_params=(1, 1), G_params=(3, 1.2), T=50, N=500):
+    """
+    Generate N sequences of T observations from specified distribution.
+    """
+    if distribution == 'f':
+        a, b = F_params
+    elif distribution == 'g':
+        a, b = G_params
+    else:
+        raise ValueError("distribution must be 'f' or 'g'")
+    
+    l_arr = simulate_likelihood_ratios(a, b, f_func, g_func, T, N)
+    l_seq = np.cumprod(l_arr, axis=1)
+    return l_arr, l_seq
+
+def plot_likelihood_paths(l_seq, title="Likelihood ratio paths", 
+                        ylim=None, n_paths=None):
+    """Plot likelihood ratio paths."""
+    N, T = l_seq.shape
+    n_show = n_paths or min(N, 100)
+    
+    plt.figure(figsize=(10, 6))
+    for i in range(n_show):
+        plt.plot(range(T), l_seq[i, :], color='b', lw=0.8, alpha=0.5)
+    
+    if ylim:
+        plt.ylim(ylim)
+    plt.title(title)
+    plt.xlabel('t')
+    plt.ylabel('$L(w^t)$')
+    plt.show()
 ```
 
 (nature_likeli)=
@@ -166,19 +200,11 @@ We first simulate the likelihood ratio process when nature permanently
 draws from $g$.
 
 ```{code-cell} ipython3
-l_arr_g = simulate(G_a, G_b)
-l_seq_g = np.cumprod(l_arr_g, axis=1)
-```
-
-```{code-cell} ipython3
-N, T = l_arr_g.shape
-
-for i in range(N):
-
-    plt.plot(range(T), l_seq_g[i, :], color='b', lw=0.8, alpha=0.5)
-
-plt.ylim([0, 3])
-plt.title("$L(w^{t})$ paths");
+# Simulate when nature draws from g
+l_arr_g, l_seq_g = simulate_sequences('g', f, g, (F_a, F_b), (G_a, G_b))
+plot_likelihood_paths(l_seq_g, 
+                     title="$L(w^{t})$ paths when nature draws from g",
+                     ylim=[0, 3])
 ```
 
 Evidently, as sample length $T$ grows, most probability mass
@@ -189,6 +215,7 @@ paths $L\left(w^{t}\right)$ that fall in the interval
 $\left[0, 0.01\right]$.
 
 ```{code-cell} ipython3
+N, T = l_arr_g.shape
 plt.plot(range(T), np.sum(l_seq_g <= 0.01, axis=0) / N)
 plt.show()
 ```
@@ -254,8 +281,8 @@ calculate the unconditional mean of $L\left(w^t\right)$ by
 averaging across these many paths at each $t$.
 
 ```{code-cell} ipython3
-l_arr_g = simulate(G_a, G_b, N=50000)
-l_seq_g = np.cumprod(l_arr_g, axis=1)
+l_arr_g, l_seq_g = simulate_sequences('g', 
+                f, g, (F_a, F_b), (G_a, G_b), N=50000)
 ```
 
 It would be useful to use simulations to verify that unconditional means
@@ -301,8 +328,9 @@ Simulations below confirm this conclusion.
 Please note the scale of the $y$ axis.
 
 ```{code-cell} ipython3
-l_arr_f = simulate(F_a, F_b, N=50000)
-l_seq_f = np.cumprod(l_arr_f, axis=1)
+# Simulate when nature draws from f
+l_arr_f, l_seq_f = simulate_sequences('f', f, g, 
+                        (F_a, F_b), (G_a, G_b), N=50000)
 ```
 
 ```{code-cell} ipython3
@@ -447,29 +475,35 @@ is what makes it possible eventually to distinguish
 $q=f$ from $q=g$.
 
 ```{code-cell} ipython3
-fig, axs = plt.subplots(2, 2, figsize=(12, 8))
-fig.suptitle('distribution of $log(L(w^t))$ under f or under g', fontsize=15)
+def plot_log_histograms(l_seq_f, l_seq_g, c=1, time_points=[1, 7, 14, 21]):
+    """Plot log likelihood ratio histograms."""
+    fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+    
+    for i, t in enumerate(time_points):
+        nr, nc = i // 2, i % 2
+        
+        axs[nr, nc].axvline(np.log(c), color="k", ls="--")
+        
+        hist_f, x_f = np.histogram(np.log(l_seq_f[:, t]), 200, density=True)
+        hist_g, x_g = np.histogram(np.log(l_seq_g[:, t]), 200, density=True)
+        
+        axs[nr, nc].plot(x_f[1:], hist_f, label="dist under f")
+        axs[nr, nc].plot(x_g[1:], hist_g, label="dist under g")
+        
+        # Fill error regions
+        for j, (x, hist, label) in enumerate(
+            zip([x_f, x_g], [hist_f, hist_g], 
+            ["Type I error", "Type II error"])):
+            ind = x[1:] <= np.log(c) if j == 0 else x[1:] > np.log(c)
+            axs[nr, nc].fill_between(x[1:][ind], hist[ind], 
+                                    alpha=0.5, label=label)
+        
+        axs[nr, nc].legend()
+        axs[nr, nc].set_title(f"t={t}")
+    
+    plt.show()
 
-for i, t in enumerate([1, 7, 14, 21]):
-    nr = i // 2
-    nc = i % 2
-
-    axs[nr, nc].axvline(np.log(c), color="k", ls="--")
-
-    hist_f, x_f = np.histogram(np.log(l_seq_f[:, t]), 200, density=True)
-    hist_g, x_g = np.histogram(np.log(l_seq_g[:, t]), 200, density=True)
-
-    axs[nr, nc].plot(x_f[1:], hist_f, label="dist under f")
-    axs[nr, nc].plot(x_g[1:], hist_g, label="dist under g")
-
-    for i, (x, hist, label) in enumerate(zip([x_f, x_g], [hist_f, hist_g], ["Type I error", "Type II error"])):
-        ind = x[1:] <= np.log(c) if i == 0 else x[1:] > np.log(c)
-        axs[nr, nc].fill_between(x[1:][ind], hist[ind], alpha=0.5, label=label)
-
-    axs[nr, nc].legend()
-    axs[nr, nc].set_title(f"t={t}")
-
-plt.show()
+plot_log_histograms(l_seq_f, l_seq_g, c=c)
 ```
 
 In the above graphs, 
@@ -485,19 +519,43 @@ $t$
   * the probability of a false alarm monotonically decreases with increases in $t$.
 
 ```{code-cell} ipython3
-PD = np.empty(T)
-PFA = np.empty(T)
 
-for t in range(T):
-    PD[t] = np.sum(l_seq_g[:, t] < c) / N
-    PFA[t] = np.sum(l_seq_f[:, t] < c) / N
+def compute_error_probabilities(l_seq_f, l_seq_g, c=1):
+    """
+    Compute Type I and Type II error probabilities.
+    """
+    N, T = l_seq_f.shape
+    
+    # Type I error (false alarm) - reject H0 when true
+    PFA = np.array([np.sum(l_seq_f[:, t] < c) / N for t in range(T)])
+    
+    # Type II error - accept H0 when false
+    beta = np.array([np.sum(l_seq_g[:, t] >= c) / N for t in range(T)])
+    
+    # Probability of detection (power)
+    PD = np.array([np.sum(l_seq_g[:, t] < c) / N for t in range(T)])
+    
+    return {
+        'alpha': PFA,
+        'beta': beta, 
+        'PD': PD,
+        'PFA': PFA
+    }
 
-plt.plot(range(T), PD, label="Probability of detection")
-plt.plot(range(T), PFA, label="Probability of false alarm")
-plt.xlabel("t")
-plt.title("$c=1$")
-plt.legend()
-plt.show()
+def plot_error_probabilities(error_dict, T, c=1, title_suffix=""):
+    """Plot error probabilities over time."""
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(T), error_dict['PD'], label="Probability of detection")
+    plt.plot(range(T), error_dict['PFA'], label="Probability of false alarm")
+    plt.xlabel("t")
+    plt.ylabel("Probability")
+    plt.title(f"Error Probabilities (c={c}){title_suffix}")
+    plt.legend()
+    plt.show()
+
+error_probs = compute_error_probabilities(l_seq_f, l_seq_g, c=c)
+N, T = l_seq_f.shape
+plot_error_probabilities(error_probs, T, c)
 ```
 
 For a given sample size $t$, the threshold $c$ uniquely pins down probabilities
@@ -513,24 +571,32 @@ Below, we plot receiver operating characteristic curves for different
 sample sizes $t$.
 
 ```{code-cell} ipython3
-PFA = np.arange(0, 100, 1)
+def plot_roc_curves(l_seq_f, l_seq_g, t_values=[1, 5, 9, 13], N=None):
+    """Plot ROC curves for different sample sizes."""
+    if N is None:
+        N = l_seq_f.shape[0]
+    
+    PFA = np.arange(0, 100, 1)
+    
+    plt.figure(figsize=(10, 6))
+    for t in t_values:
+        percentile = np.percentile(l_seq_f[:, t], PFA)
+        PD = [np.sum(l_seq_g[:, t] < p) / N for p in percentile]
+        plt.plot(PFA / 100, PD, label=f"t={t}")
+    
+    plt.scatter(0, 1, label="perfect detection")
+    plt.plot([0, 1], [0, 1], color='k', ls='--', label="random detection")
+    
+    plt.arrow(0.5, 0.5, -0.15, 0.15, head_width=0.03)
+    plt.text(0.35, 0.7, "better")
+    plt.xlabel("Probability of false alarm")
+    plt.ylabel("Probability of detection")
+    plt.legend()
+    plt.title("ROC Curve")
+    plt.show()
 
-for t in range(1, 15, 4):
-    percentile = np.percentile(l_seq_f[:, t], PFA)
-    PD = [np.sum(l_seq_g[:, t] < p) / N for p in percentile]
 
-    plt.plot(PFA / 100, PD, label=f"t={t}")
-
-plt.scatter(0, 1, label="perfect detection")
-plt.plot([0, 1], [0, 1], color='k', ls='--', label="random detection")
-
-plt.arrow(0.5, 0.5, -0.15, 0.15, head_width=0.03)
-plt.text(0.35, 0.7, "better")
-plt.xlabel("Probability of false alarm")
-plt.ylabel("Probability of detection")
-plt.legend()
-plt.title("Receiver Operating Characteristic Curve")
-plt.show()
+plot_roc_curves(l_seq_f, l_seq_g, t_values=range(1, 15, 4), N=N)
 ```
 
 Notice that as $t$ increases, we are assured a larger probability
@@ -589,9 +655,8 @@ control tests during World War II.
 A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in {doc}`this lecture <wald_friedman>`.
 
-
-(rel_entropy)=
-## Kullback–Leibler Divergence
+(llr_h)=
+### A third distribution $h$
 
 Now let's consider a case in which neither $g$ nor $f$
 generates the data.
@@ -601,11 +666,7 @@ Instead, a third distribution $h$ does.
 Let's study how accumulated likelihood ratios $L$ behave
 when $h$ governs the data.
 
-A key tool here is called **Kullback–Leibler divergence**.
-
-It is also called **relative entropy**.
-
-It measures how one probability distribution differs from another.
+A key tool here is called **Kullback–Leibler divergence** we studied in {doc}`divergence_measures`.
 
 In our application, we want to measure how much $f$ or $g$
 diverges from $h$
@@ -623,16 +684,13 @@ $$
 
 $$
 \begin{aligned}
-K_{g} = D_{KL}\bigl(h\|g\bigr) = KL(h,g)
+K_{g} = D_{KL}\bigl(h\|g\bigr) = KL(h, g)
           &= E_{h}\left[\log\frac{h(w)}{g(w)}\right] \\
           &= \int \log\left(\frac{h(w)}{g(w)}\right)h(w)dw .
 \end{aligned}
 $$
 
-+++
-
-Let's compute the Kullback–Leibler discrepancies by quadrature
-integration.
+Let's compute the Kullback–Leibler discrepancies using the same code in {doc}`divergence_measures`.
 
 ```{code-cell} ipython3
 def compute_KL(f, g):
@@ -642,19 +700,13 @@ def compute_KL(f, g):
     integrand = lambda w: f(w) * np.log(f(w) / g(w))
     val, _ = quad(integrand, 1e-5, 1-1e-5)
     return val
-```
 
-Next we create a helper function to compute KL divergence with respect to a reference distribution $h$
-
-```{code-cell} ipython3
 def compute_KL_h(h, f, g):
     """
-    Compute KL divergence with reference distribution h
+    Compute KL divergences with respect to reference distribution h
     """
-
     Kf = compute_KL(h, f)
     Kg = compute_KL(h, g)
-
     return Kf, Kg
 ```
 
@@ -666,12 +718,10 @@ There is a mathematical relationship between likelihood ratios and KL divergence
 When data is generated by distribution $h$, the expected log likelihood ratio is:
 
 $$
-\frac{1}{t} E_{h}\!\bigl[\log L_t\bigr] = KL(h, g) - KL(h, f) = K_g - K_f
+\frac{1}{t} E_{h}\!\bigl[\log L_t\bigr] = K_g - K_f
 $$ (eq:kl_likelihood_link)
 
 where $L_t=\prod_{j=1}^{t}\frac{f(w_j)}{g(w_j)}$ is the likelihood ratio process.
-
-(For the proof, see [this note](https://nowak.ece.wisc.edu/ece830/ece830_fall11_lecture7.pdf).)
 
 Equation {eq}`eq:kl_likelihood_link` tells us that:
 - When $K_g < K_f$ (i.e., $g$ is closer to $h$ than $f$ is), the expected log likelihood ratio is negative, so $L\left(w^t\right) \rightarrow 0$.
@@ -774,658 +824,13 @@ Note that
 - In the first figure, $\log L(w^t)$ diverges to $\infty$ because $K_g > K_f$.
 - In the second figure, we still have $K_g > K_f$, but the difference is smaller, so $L(w^t)$ diverges to infinity at a slower pace.
 - In the last figure, $\log L(w^t)$ diverges to $-\infty$ because $K_g < K_f$.
-- The black dotted line, $t \left(KL(h,g) - KL(h, f)\right)$, closely fits the paths verifying {eq}`eq:kl_likelihood_link`.
+- The black dotted line, $t \left(D_{KL}(h\|g) - D_{KL}(h\|f)\right)$, closely fits the paths verifying {eq}`eq:kl_likelihood_link`.
 
 These observations align with the theory.
 
-In the [next section](hetero_agent), we will see an application of these ideas.
+In {doc}`likelihood_ratio_process_2`, we will see an application of these ideas.
 
-
-(hetero_agent)=
-## Heterogeneous Beliefs and Financial Markets
-
-A likelihood ratio process lies behind Lawrence Blume and David Easley's answer to their question
-''If you're so smart, why aren't you rich?'' {cite}`blume2006if`.  
-
-Blume and Easley constructed formal models to study how differences of opinions about probabilities governing risky income processes would influence outcomes and be reflected in prices of stocks, bonds, and insurance policies that individuals use to share and hedge risks.
-
-```{note}
-{cite}`alchian1950uncertainty` and {cite}`friedman1953essays` can conjectured that, by rewarding traders with more realistic probability models, competitive markets in financial securities put wealth in the hands of better informed traders and help 
-make prices of risky assets reflect realistic probability assessments. 
-```
-
-
-Here we'll provide an example that illustrates basic components of Blume and Easley's analysis. 
-
-We'll focus only on their analysis of an environment with complete markets in which trades in all conceivable risky securities are possible. 
-
-We'll study two alternative arrangements:
-
-* perfect socialism in which individuals surrender their endowments of consumption goods each period to a central planner who then dictatorially allocates those goods
-* a decentralized system of competitive markets in which selfish price-taking individuals voluntarily trade with each other in competitive markets 
-
-The fundamental theorems of welfare economics will apply and assure us that these two arrangements end up producing exactly the same allocation of consumption goods to individuals **provided** that the social planner assigns an appropriate set of **Pareto weights**.
-
-```{note}
-You can learn about how the two welfare theorems are applied in modern macroeconomic models in {doc}`this lecture on a planning problem <cass_koopmans_1>` and {doc}`this lecture on a related competitive equilibrium <cass_koopmans_2>`. 
-```
-
-### The setting
-
-Let the random variable $s_t \in (0,1)$ at time $t =0, 1, 2, \ldots$ be distributed according to the same Beta distribution with parameters 
-$\theta = \{\theta_1, \theta_2\}$.
-
-We'll denote this probability density as
-
-$$
-\pi(s_t|\theta)
-$$
-
-Below, we'll often just write $\pi(s_t)$ instead of $\pi(s_t|\theta)$ to save space.
-
-Let $s_t \equiv y_t^1$ be the endowment of a nonstorable consumption good that a person we'll call "agent 1" receives at time $t$.
-
-Let a history $s^t = [s_t, s_{t-1}, \ldots, s_0]$ be a sequence of i.i.d. random variables with joint distribution
-
-$$
-\pi_t(s^t) = \pi(s_t) \pi(s_{t-1}) \cdots \pi(s_0)
-$$ 
-
-So in our example, the history $s^t$ is a comprehensive record of agent $1$'s endowments of the consumption good from time $0$ up to time $t$.  
-
-If agent $1$ were to live on an island by himself, agent $1$'s consumption $c^1(s_t)$ at time $t$ is 
-
-$$c^1(s_t) = y_t^1 = s_t. $$
-
-But in our model, agent 1 is not alone.
-
-### Nature and agents' beliefs
-
-Nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t(s^t)$.
-
-* so $\pi$ without a superscript is nature's model 
-* but in addition to nature, there are other entities inside our model -- artificial people that we call "agents"
-* each agent has a sequence of probability distributions over $s^t$ for $t=0, \ldots$ 
-* agent $i$ thinks that nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\{\pi_t^i(s^t)\}_{t=0}^\infty$
-   * agent $i$ is mistaken unless $\pi_t^i(s^t) = \pi_t(s^t)$
-
-```{note}
-A **rational expectations** model would set $\pi_t^i(s^t) = \pi_t(s^t)$ for all agents $i$.
-```
-
-There are two agents named $i=1$ and $i=2$.
-
-At time $t$, agent $1$ receives an endowment
-
-$$
-y_t^1 = s_t 
-$$
-
-of a nonstorable consumption good, while agent $2$ receives an endowment of 
-
-$$
-y_t^2 = 1 - s_t 
-$$
-
-The aggregate endowment of the consumption good is
-
-$$
-y_t^1 + y_t^2 = 1
-$$
-
-at each date $t \geq 0$. 
-
-At date $t$ agent $i$ consumes $c_t^i(s^t)$ of the good.
-
-A (non wasteful) feasible allocation of the aggregate endowment of $1$ each period satisfies
-
-$$
-c_t^1 + c_t^2 = 1 .
-$$
-
-### A social risk-sharing arrangement
-
-In order to share risks, a benevolent social planner will dictate a history-dependent consumption allocation in the form of a sequence of functions 
-
-$$
-c_t^i = c_t^i(s^t)
-$$
-
-that satisfy
-
-$$
-c_t^1(s^t) + c_t^2(s^t) = 1  
-$$ (eq:feasibility)
-
-for all $s^t$ for all $t \geq 0$. 
-
-To design a socially optimal allocation, the social planner wants to know what agent $1$ believes about the endowment sequence and how they feel about bearing risks.
-
-As for the endowment sequences, agent $i$ believes that nature draws i.i.d. sequences from joint densities 
-
-$$
-\pi_t^i(s^t) = \pi(s_t)^i \pi^i(s_{t-1}) \cdots \pi^i(s_0)
-$$ 
-
-As for attitudes toward bearing risks, agent $i$ has a one-period utility function
-
-$$
-u(c_t^i) = \ln (c_t^i)
-$$
-
-with marginal utility of consumption in period $i$
-
-$$
-u'(c_t^i) = \frac{1}{c_t^i}
-$$
-
-Putting its beliefs about its random endowment sequence and its attitudes toward bearing risks together, agent $i$ has intertemporal utility function 
-
-$$
-V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u(c_t^i(s^t)) \pi_t^i(s^t) ,
-$$ (eq:objectiveagenti)
-
-where $\delta \in (0,1)$ is an intertemporal discount factor, and $u(\cdot)$ is a strictly increasing, concave one-period utility function.
-
-
-### The social planner's allocation problem
-
-The benevolent dictator has all the information it requires to choose a consumption allocation that maximizes the social welfare criterion 
-
-$$
-W = \lambda V^1 + (1-\lambda) V^2
-$$ (eq:welfareW)
-
-where $\lambda \in [0,1]$ is a Pareto weight tells how much the planner likes agent $1$ and $1 - \lambda$ is a Pareto weight that tells how much the social planner likes agent $2$.  
-
-Setting $\lambda = .5$ expresses ''egalitarian'' social preferences. 
-
-Notice how social welfare criterion {eq}`eq:welfareW` takes into account both agents' preferences as represented by formula {eq}`eq:objectiveagenti`.
-
-This means that the social planner knows and respects
-
-* each agent's one period utility function $u(\cdot) = \ln(\cdot)$
-* each agent $i$'s probability model $\{\pi_t^i(s^t)\}_{t=0}^\infty$
-
-Consequently, we anticipate that these objects will appear in the social planner's rule for allocating the aggregate endowment each period. 
-
-
-First-order necessary conditions for maximizing welfare criterion {eq}`eq:welfareW` subject to the feasibility constraint {eq}`eq:feasibility` are 
-
-$$\frac{\pi_t^2(s^t)}{\pi_t^1(s^t)} \frac{(1/c_t^2(s^t))}{(1/c_t^1(s^t))} = \frac{\lambda}{1 -\lambda}$$
-
-which can be rearranged to become
-
-
-
-
-$$
-\frac{c_t^1(s^t)}{c_t^2(s^t)} = \frac{\lambda}{1- \lambda} l_t(s^t)
-$$ (eq:allocationrule0)
-
-
-where
-
-$$ l_t(s^t) = \frac{\pi_t^1(s^t)}{\pi_t^2(s^t)} $$
-
-is the likelihood ratio of agent 1's joint density to agent 2's joint density. 
-
-Using 
-
-$$c_t^1(s^t) + c_t^2(s^t) = 1$$
-
-we can rewrite allocation rule {eq}`eq:allocationrule0` as 
-
-
-
-$$\frac{c_t^1(s^t)}{1 - c_t^1(s^t)} = \frac{\lambda}{1-\lambda} l_t(s^t)$$
-
-or 
-
-$$c_t^1(s^t) = \frac{\lambda}{1-\lambda} l_t(s^t)(1 - c_t^1(s^t))$$
-
-which implies that the social planner's allocation rule is
-
-$$
-c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1-\lambda + \lambda l_t(s^t)}
-$$ (eq:allocationrule1)
-
-If we define a temporary or **continuation Pareto weight** process as 
-
-$$
-\lambda_t(s^t) = \frac{\lambda l_t(s^t)}{1-\lambda + \lambda l_t(s^t)},
-$$
-
-then we can represent the social planner's allocation rule as
-
-$$
-c_t^1(s^t) = \lambda_t(s^t) .
-$$
-
-
-
-
-### If you're so smart, $\ldots$ 
-
-
-Let's compute some values of limiting allocations {eq}`eq:allocationrule1` for some interesting possible limiting
-values of the likelihood ratio process $l_t(s^t)$:
-
- $$l_\infty (s^\infty)= 1; \quad c_\infty^1 = \lambda$$
- 
-  * In the above case, both agents are equally smart (or equally not smart) and the consumption allocation stays put at a $\lambda, 1 - \lambda$ split between the two agents. 
-
-$$l_\infty (s^\infty) = 0; \quad c_\infty^1 = 0$$
-
-* In the above case, agent 2 is ''smarter'' than agent 1, and agent 1's share of the aggregate endowment converges to zero.
-
-
-
-
-$$l_\infty (s^\infty)= \infty; \quad c_\infty^1 = 1$$
-
-* In the above case, agent 1 is smarter than agent 2, and agent 1's share of the aggregate endowment converges to 1. 
-
-```{note}
-These three cases are somehow telling us about how relative **wealths** of the agents evolve as time passes.
-* when the two agents are equally smart and $\lambda \in (0,1)$, agent 1's wealth share stays at $\lambda$ perpetually.
-* when agent 1 is smarter and $\lambda \in (0,1)$, agent 1 eventually "owns" the continuation entire continuation endowment and agent 2 eventually "owns" nothing.
-* when agent 2 is smarter and $\lambda \in (0,1)$, agent 2 eventually "owns" the continuation entire continuation endowment and agent 1 eventually "owns" nothing.
-Continuation wealths can be defined precisely after we introduce a competitive equilibrium **price** system below.
-```
-
-
-Soon we'll do some simulations that will shed further light on possible outcomes.
-
-But before we do that, let's take a detour and study some  "shadow prices" for the social planning problem that can readily be
-converted to "equilibrium prices" for a competitive equilibrium. 
-
-Doing this will allow us to connect our analysis with an argument of {cite}`alchian1950uncertainty` and {cite}`friedman1953essays` that competitive market processes can make prices of risky assets better reflect realistic probability assessments. 
-
-
-
-### Competitive Equilibrium Prices 
-
-Two fundamental welfare theorems for general equilibrium models lead us to anticipate that there is  a connection between the allocation that solves the social planning problem we have been studying and the allocation in a  **competitive equilibrium**  with complete markets in history-contingent commodities.
-
-```{note}
-For the two welfare theorems and their history, see   <https://en.wikipedia.org/wiki/Fundamental_theorems_of_welfare_economics>.
-Again, for applications to a classic  macroeconomic growth  model, see {doc}`this lecture on a planning problem <cass_koopmans_1>`  and {doc}`this lecture on a related competitive equilibrium <cass_koopmans_2>` 
-```
-
-Such a connection prevails for our model.  
-
-We'll sketch it now.
-
-In a competitive equilibrium, there is no social planner that dictatorially collects everybody's endowments and then reallocates them.
-
-Instead, there is a comprehensive centralized   market that meets at one point in time.
-
-There are **prices** at which price-taking agents can buy or sell whatever goods that they want.  
-
-Trade is multilateral in the sense that that there is a "Walrasian auctioneer" who lives outside the model and whose job is to verify that
-each agent's budget constraint is satisfied.  
-
-That budget constraint involves the total value of the agent's endowment stream and the total value of its consumption stream.  
-
-These values are computed at price vectors that the agents take as given -- they are "price-takers" who assume that they can buy or sell
-whatever quantities that they want at those prices.  
-
-Suppose that at time $-1$, before time $0$ starts, agent  $i$ can purchase one unit $c_t(s^t)$ of  consumption at time $t$ after history
-$s^t$ at price $p_t(s^t)$.  
-
-Notice that there is (very long) **vector** of prices.  
-
- * there is one price $p_t(s^t)$ for each history $s^t$ at every date $t = 0, 1, \ldots, $. 
- * so there are as many prices as there are histories and dates.
-
-These prices determined at time $-1$ before the economy starts.
-
-The market meets once at time $-1$.
-
-At times $t =0, 1, 2, \ldots$ trades made at time $-1$ are executed.
-
- 
-
-* in the background, there is an "enforcement" procedure that forces agents to carry out the exchanges or "deliveries"  that they agreed to at time $-1$.
-
-
-
-We want to study how agents'  beliefs influence equilibrium prices.  
-
-Agent $i$ faces a **single** intertemporal budget constraint
-
-$$
-\sum_{t=0}^\infty\sum_{s^t} p_t(s^t) c_t^i (s^t) \leq \sum_{t=0}^\infty\sum_{s^t} p_t(s^t) y_t^i (s^t)
-$$ (eq:budgetI)
-
-According to budget constraint {eq}`eq:budgetI`,  trade is **multilateral** in the following  sense
-
-* we can imagine  that  agent $i$ first sells his random endowment stream $\{y_t^i (s^t)\}$ and then uses the proceeds (i.e., his "wealth") to purchase a random consumption stream $\{c_t^i (s^t)\}$. 
-
-Agent $i$ puts a Lagrange multiplier $\mu_i$ on {eq}`eq:budgetI` and once-and-for-all chooses a consumption plan $\{c^i_t(s^t)\}_{t=0}^\infty$
-to maximize criterion {eq}`eq:objectiveagenti` subject to budget constraint {eq}`eq:budgetI`.
-
-This means that the agent $i$  chooses many objects, namely, $c_t^i(s^t)$ for all $s^t$ for $t = 0, 1, 2, \ldots$.
-
-
-For convenience, let's remind ourselves of criterion $V^i$ defined in {eq}`eq:objectiveagenti`:  
-
-$$
-V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u_t(c_t^i(s^t)) \pi_t^i(s^t)
-$$
-
-First-order necessary conditions for maximizing objective $V^i$ defined in {eq}`eq:objectiveagenti` with respect to $c_t^i(s^t)$ are 
-
-$$
-\delta^t u'(c^i_t(s^t)) \pi_t^i(s^t) = \mu_i p_t(s^t) ,
-$$ 
-
-which we can rearrange to obtain
-
-$$
-p_t(s^t) = \frac{ \delta^t \pi_t^i(s^t)}{\mu_i c^i_t(s^t)}   
-$$ (eq:priceequation1)
-
-for $i=1,2$.  
-
-If we divide equation {eq}`eq:priceequation1` for agent $1$ by the appropriate  version of equation {eq}`eq:priceequation1` for agent 2, use
-$c^2_t(s^t) = 1 - c^1_t(s^t)$, and do some algebra, we'll obtain
-
-$$
-c_t^1(s^t) = \frac{\mu_1 l_t(s^t)}{\mu_2 + \mu_1 l_t(s^t)} .
-$$ (eq:allocationce)
-
-We now engage in an extended "guess-and-verify" exercise that involves matching objects in our competitive equilibrium with objects in 
-our social planning problem.  
-
-* we'll match consumption allocations in the planning problem with equilibrium consumption allocations in the competitive equilibrium
-* we'll match "shadow" prices in the planning problem with competitive equilibrium prices. 
-
-Notice that if we set $\mu_1 = \lambda$ and $\mu_2 = 1 -\lambda$, then  formula {eq}`eq:allocationce` agrees with formula
-{eq}`eq:allocationrule1`.  
-
-  * doing this amounts to choosing a **numeraire** or normalization for the price system $\{p_t(s^t)\}_{t=0}^\infty$
-
-```{note}
-For information about how a numeraire  must be chosen to pin down the absolute price level in a model like ours that determines only
-relative prices,   see <https://en.wikipedia.org/wiki/Num%C3%A9raire>.
-```
-
-If we substitute formula  {eq}`eq:allocationce` for $c_t^1(s^t)$ into formula {eq}`eq:priceequation1` and rearrange, we obtain
-
-$$
-p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr]
-$$ 
-
-or
-
-$$
-p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)}  \bigl[(1 - \lambda) \pi_t^2(s^t) + \lambda \pi_t^1(s^t)\bigr]
-$$ (eq:pformulafinal)
-
-According to formula {eq}`eq:pformulafinal`, we have the following possible limiting cases:
-
-* when $l_\infty = 0$, $c_\infty^1 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ according to $p_t(s^t) \propto \delta^t \pi_t^2(s^t) $
-* when $l_\infty = \infty$, $c_\infty^1 = 1 $ and tails of competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^1(s^t)$ according to $p_t(s^t) \propto \delta^t \pi_t^1(s^t) $
-* for small $t$'s, competitive equilibrium prices reflect both agents' probability models.  
-
-### Simulations 
-
-Now let's implement some simulations when agent $1$ believes marginal density 
-
-$$\pi^1(s_t) = f(s_t) $$
-
-and agent $2$ believes marginal density 
-
-$$ \pi^2(s_t) = g(s_t) $$
-
-where $f$ and $g$ are Beta distributions like ones that  we used in earlier  sections of this lecture.
-
-Meanwhile, we'll assume that  nature believes a  marginal density
-
-$$
-\pi(s_t) = h(s_t) 
-$$
-
-where $h(s_t)$ is perhaps a  mixture of $f$ and $g$.
-
-Let's  write a Python function that computes agent 1's  consumption share
-
-```{code-cell} ipython3
-def simulate_blume_easley(sequences, f_belief=f, g_belief=g, λ=0.5):
-    """Simulate Blume-Easley model consumption shares."""
-    l_ratios, l_cumulative = compute_likelihood_ratios(sequences, f_belief, g_belief)
-    c1_share = λ * l_cumulative / (1 - λ + λ * l_cumulative)
-    return l_cumulative, c1_share
-```
-
-Now let's use this  function to generate sequences in which  
-
-*  nature draws from  $f$ each period, or 
-*  nature draws from  $g$ each period, or
-*  or nature flips a fair coin each period  to decide whether  to draw from  $f$ or $g$
-
-```{code-cell} ipython3
-λ = 0.5
-T = 100
-N = 10000
-
-# Nature follows f, g, or mixture
-s_seq_f = np.random.beta(F_a, F_b, (N, T))
-s_seq_g = np.random.beta(G_a, G_b, (N, T))
-
-h = jit(lambda x: 0.5 * f(x) + 0.5 * g(x))
-model_choices = np.random.rand(N, T) < 0.5
-s_seq_h = np.empty((N, T))
-s_seq_h[model_choices] = np.random.beta(F_a, F_b, size=model_choices.sum())
-s_seq_h[~model_choices] = np.random.beta(G_a, G_b, size=(~model_choices).sum())
-
-l_cum_f, c1_f = simulate_blume_easley(s_seq_f)
-l_cum_g, c1_g = simulate_blume_easley(s_seq_g)
-l_cum_h, c1_h = simulate_blume_easley(s_seq_h)
-```
-
-Before looking at the figure below, have some fun by guessing whether agent 1 or agent 2 will have a larger and larger consumption share as time passes in our three cases. 
-
-To make better guesses,  let's visualize instances of the likelihood ratio processes in  the three cases.
-
-```{code-cell} ipython3
-fig, axes = plt.subplots(2, 3, figsize=(15, 10))
-
-titles = ["Nature = f", "Nature = g", "Nature = mixture"]
-data_pairs = [(l_cum_f, c1_f), (l_cum_g, c1_g), (l_cum_h, c1_h)]
-
-for i, ((l_cum, c1), title) in enumerate(zip(data_pairs, titles)):
-    # Likelihood ratios
-    ax = axes[0, i]
-    for j in range(min(50, l_cum.shape[0])):
-        ax.plot(l_cum[j, :], alpha=0.3, color='blue')
-    ax.set_yscale('log')
-    ax.set_xlabel('time')
-    ax.set_ylabel('Likelihood ratio $l_t$')
-    ax.set_title(title)
-    ax.axhline(y=1, color='red', linestyle='--', alpha=0.5)
-
-    # Consumption shares
-    ax = axes[1, i]
-    for j in range(min(50, c1.shape[0])):
-        ax.plot(c1[j, :], alpha=0.3, color='green')
-    ax.set_xlabel('time')
-    ax.set_ylabel("Agent 1's consumption share")
-    ax.set_ylim([0, 1])
-    ax.axhline(y=λ, color='red', linestyle='--', alpha=0.5)
-
-plt.tight_layout()
-plt.show()
-```
-
-In the left panel, nature chooses $f$. Agent 1's consumption reaches $1$ very quickly.
-
-In the middle panel, nature chooses $g$. Agent 1's consumption ratio tends to move towards $0$ but not as fast as in the first case.
-
-In the right panel, nature flips coins each period. We see a very similar pattern to the processes in the left panel.
-
-The figures in the top panel remind us of the discussion in [this section](KL_link).
-
-We invite readers to revisit [that section](rel_entropy) and try to infer the relationships among $KL(f, g)$, $KL(g, f)$, $KL(h, f)$, and $KL(h,g)$.
-
-
-Let's compute values of KL divergence
-
-```{code-cell} ipython3
-shares = [np.mean(c1_f[:, -1]), np.mean(c1_g[:, -1]), np.mean(c1_h[:, -1])]
-Kf_g, Kg_f = compute_KL(f, g), compute_KL(g, f)
-Kf_h, Kg_h = compute_KL_h(h, f, g)
-
-print(f"Final shares: f={shares[0]:.3f}, g={shares[1]:.3f}, mix={shares[2]:.3f}")
-print(f"KL divergences: \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
-print(f"KL(h,f)={Kf_h:.3f}, KL(h,g)={Kg_h:.3f}")
-```
-
-We find that $KL(f,g) > KL(g,f)$ and $KL(h,g) > KL(h,f)$.
-
-The first inequality tells us that the average "surprise" from having belief $g$ when nature chooses $f$ is greater than the "surprise" from having  belief $f$ when nature chooses $g$.
-
-This explains the difference between the first two panels we noted above.
-
-The second inequality tells us that agent 1's belief distribution $f$ is closer to nature's pick than agent 2's belief $g$.
-
-+++
-
-To make this idea more concrete, let's compare two cases:
-
-- agent 1's belief distribution $f$ is close to agent 2's belief distribution $g$;
-- agent 1's belief distribution $f$ is far from agent 2's belief distribution $g$.
-
-
-We use the two distributions visualized below
-
-```{code-cell} ipython3
-def plot_distribution_overlap(ax, x_range, f_vals, g_vals, 
-                            f_label='f', g_label='g', 
-                            f_color='blue', g_color='red'):
-    """Plot two distributions with their overlap region."""
-    ax.plot(x_range, f_vals, color=f_color, linewidth=2, label=f_label)
-    ax.plot(x_range, g_vals, color=g_color, linewidth=2, label=g_label)
-    
-    overlap = np.minimum(f_vals, g_vals)
-    ax.fill_between(x_range, 0, overlap, alpha=0.3, color='purple', label='Overlap')
-    ax.set_xlabel('x')
-    ax.set_ylabel('Density')
-    ax.legend()
-    
-# Define close and far belief distributions
-f_close = jit(lambda x: p(x, 1, 1))
-g_close = jit(lambda x: p(x, 1.1, 1.05))
-
-f_far = jit(lambda x: p(x, 1, 1))
-g_far = jit(lambda x: p(x, 3, 1.2))
-
-# Visualize the belief distributions
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-
-x_range = np.linspace(0.001, 0.999, 200)
-
-# Close beliefs
-f_close_vals = [f_close(x) for x in x_range]
-g_close_vals = [g_close(x) for x in x_range]
-plot_distribution_overlap(ax1, x_range, f_close_vals, g_close_vals,
-                         f_label='f (Beta(1, 1))', g_label='g (Beta(1.1, 1.05))')
-ax1.set_title(f'Close Beliefs')
-
-# Far beliefs
-f_far_vals = [f_far(x) for x in x_range]
-g_far_vals = [g_far(x) for x in x_range]
-plot_distribution_overlap(ax2, x_range, f_far_vals, g_far_vals,
-                         f_label='f (Beta(1, 1))', g_label='g (Beta(3, 1.2))')
-ax2.set_title(f'Far Beliefs')
-
-plt.tight_layout()
-plt.show()
-```
-
-Let's draw the same consumption ratio plots as above for agent 1.
-
-We replace the simulation paths with median and percentiles to make the figure cleaner.
-
-Staring at the figure below, can we infer the relation between $KL(f,g)$ and $KL(g,f)$?
-
-From the right panel, can we infer the relation between $KL(h,g)$ and $KL(h,f)$?
-
-```{code-cell} ipython3
-fig, axes = plt.subplots(2, 3, figsize=(15, 10))
-nature_params = {'close': [(1, 1), (1.1, 1.05), (2, 1.5)],
-                 'far':   [(1, 1), (3, 1.2),   (2, 1.5)]}
-nature_labels = ["Nature = f", "Nature = g", "Nature = h"]
-colors = {'close': 'blue', 'far': 'red'}
-
-threshold = 1e-5  # "close to zero" cutoff
-
-for row, (f_belief, g_belief, label) in enumerate([
-                        (f_close, g_close, 'close'),
-                        (f_far, g_far, 'far')]):
-    
-    for col, nature_label in enumerate(nature_labels):
-        params = nature_params[label][col]
-        s_seq = np.random.beta(params[0], params[1], (1000, 200))
-        _, c1 = simulate_blume_easley(s_seq, f_belief, g_belief, λ)
-        
-        median_c1 = np.median(c1, axis=0)
-        p10, p90 = np.percentile(c1, [10, 90], axis=0)
-        
-        ax = axes[row, col]
-        color = colors[label]
-        ax.plot(median_c1, color=color, linewidth=2, label='Median')
-        ax.fill_between(range(len(median_c1)), p10, p90, alpha=0.3, color=color, label='10–90%')
-        ax.set_xlabel('time')
-        ax.set_ylabel("Agent 1's share")
-        ax.set_ylim([0, 1])
-        ax.set_title(nature_label)
-        ax.axhline(y=λ, color='gray', linestyle='--', alpha=0.5)
-        below = np.where(median_c1 < threshold)[0]
-        above = np.where(median_c1 > 1-threshold)[0]
-        if below.size > 0: first_zero = (below[0], True)
-        elif above.size > 0: first_zero = (above[0], False)
-        else: first_zero = None
-        if first_zero is not None:
-            ax.axvline(x=first_zero[0], color='black', linestyle='--',
-                       alpha=0.7, 
-                       label=fr'Median $\leq$ {threshold}' if first_zero[1]
-                       else fr'Median $\geq$ 1-{threshold}')
-        ax.legend()
-
-plt.tight_layout()
-plt.show()
-```
-
-Holding to our guesses, let's calculate the four values
-
-```{code-cell} ipython3
-# Close case
-Kf_g, Kg_f = compute_KL(f_close, g_close), compute_KL(g_close, f_close)
-Kf_h, Kg_h = compute_KL_h(h, f_close, g_close)
-
-print(f"KL divergences (close): \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
-print(f"KL(h,f)={Kf_h:.3f}, KL(h,g)={Kg_h:.3f}")
-
-# Far case
-Kf_g, Kg_f = compute_KL(f_far, g_far), compute_KL(g_far, f_far)
-Kf_h, Kg_h = compute_KL_h(h, f_far, g_far)
-
-print(f"KL divergences (far): \nKL(f,g)={Kf_g:.3f}, KL(g,f)={Kg_f:.3f}")
-print(f"KL(h,f)={Kf_h:.3f}, KL(h,g)={Kg_h:.3f}")
-```
-
-We find that in the first case, $KL(f,g) \approx KL(g,f)$ and both are relatively small, so although either agent 1 or agent  2 will eventually consume everything, convergence displaying in  first two panels on the top is pretty  slowly.
-
-In the first two panels at the bottom, we see convergence occurring faster (as indicated by the black dashed line) because the divergence gaps $KL(f, g)$ and $KL(g, f)$ are larger.
-
-Since $KL(f,g) > KL(g,f)$, we  see faster convergence in  the first panel at the bottom when  nature chooses $f$  than in the second panel where nature chooses $g$.
-
-This ties in nicely with {eq}`eq:kl_likelihood_link`.
-
-## Hypothesis Testing and Classification 
+## Hypothesis testing and classification 
 
 This section discusses another application of likelihood ratio processes.
 
@@ -1460,48 +865,46 @@ We consider two alternative timing protocols.
 of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
 of  IID  draws from  $g$.
 
-Let's write some Python code that implements timing protocol 1.
+**Timing Protocol 2.** Nature flips a coin **often**.  At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
+
+Here is  Python code that we'll use to implement timing protocol 1 and 2
 
 ```{code-cell} ipython3
-def protocol_1(π_minus_1, T, N=1000):
+def protocol_1(π_minus_1, T, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
     """
-    Simulate Protocol 1: 
-    Nature decides once at t=-1 which model to use.
+    Simulate Protocol 1: Nature decides once at t=-1 which model to use.
     """
+    F_a, F_b = F_params
+    G_a, G_b = G_params
     
-    # On-off coin flip for the true model
+    # Single coin flip for the true model
     true_models_F = np.random.rand(N) < π_minus_1
-    
     sequences = np.empty((N, T))
     
     n_f = np.sum(true_models_F)
     n_g = N - n_f
+    
     if n_f > 0:
         sequences[true_models_F, :] = np.random.beta(F_a, F_b, (n_f, T))
     if n_g > 0:
         sequences[~true_models_F, :] = np.random.beta(G_a, G_b, (n_g, T))
     
     return sequences, true_models_F
-```
 
-**Timing Protocol 2.** Nature flips a coin **often**.  At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
-
-Here is  Python code that we'll use to implement timing protocol 2.
-
-```{code-cell} ipython3
-def protocol_2(π_minus_1, T, N=1000):
+def protocol_2(π_minus_1, T, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
     """
-    Simulate Protocol 2: 
-    Nature decides at each time step which model to use.
+    Simulate Protocol 2: Nature decides at each time step which model to use.
     """
+    F_a, F_b = F_params
+    G_a, G_b = G_params
     
-    # Coin flips for each time t upto T
+    # Coin flips for each time step
     true_models_F = np.random.rand(N, T) < π_minus_1
-    
     sequences = np.empty((N, T))
     
     n_f = np.sum(true_models_F)
     n_g = N * T - n_f
+    
     if n_f > 0:
         sequences[true_models_F] = np.random.beta(F_a, F_b, n_f)
     if n_g > 0:
@@ -1527,7 +930,7 @@ $$
 
 For shorthand we'll write $L_t =  L(w^t)$.
 
-### Model Selection Mistake Probability 
+### Model selection mistake probability 
 
 We first study  a problem that assumes  timing protocol 1.  
 
@@ -1547,7 +950,7 @@ $$
 When model $g$ generates the data, the probability that the likelihood ratio test selects the wrong model is 
 
 $$ 
-p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T. 
+p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T.
 $$
 
 We can construct a probability that the likelihood ratio selects the wrong model by assigning a Bayesian prior probability of $\pi_{-1} = .5$ that nature selects model $f$ then  averaging $p_f$ and $p_g$ to form the Bayesian posterior probability of a detection error equal to
@@ -1556,58 +959,150 @@ $$
 p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
 $$ (eq:detectionerrorprob)
 
-Now let's simulate  timing protocol 1 and compute the error probabilities
+Now let's simulate timing protocol 1 and 2 and compute the error probabilities
 
 ```{code-cell} ipython3
-# Set parameters
+
+def compute_protocol_1_errors(π_minus_1, T_max, N_simulations, f_func, g_func, 
+                              F_params=(1, 1), G_params=(3, 1.2)):
+    """
+    Compute error probabilities for Protocol 1.
+    """
+    sequences, true_models = protocol_1(
+        π_minus_1, T_max, N_simulations, F_params, G_params)
+    l_ratios, L_cumulative = compute_likelihood_ratios(sequences, 
+                                    f_func, g_func)
+    
+    T_range = np.arange(1, T_max + 1)
+    
+    mask_f = true_models
+    mask_g = ~true_models
+    
+    L_f = L_cumulative[mask_f, :]
+    L_g = L_cumulative[mask_g, :]
+    
+    α_T = np.mean(L_f < 1, axis=0)
+    β_T = np.mean(L_g >= 1, axis=0)
+    error_prob = 0.5 * (α_T + β_T)
+    
+    return {
+        'T_range': T_range,
+        'alpha': α_T,
+        'beta': β_T, 
+        'error_prob': error_prob,
+        'L_cumulative': L_cumulative,
+        'true_models': true_models
+    }
+
+def compute_protocol_2_errors(π_minus_1, T_max, N_simulations, f_func, g_func,
+                              F_params=(1, 1), G_params=(3, 1.2)):
+    """
+    Compute error probabilities for Protocol 2.
+    """
+    sequences, true_models = protocol_2(π_minus_1, 
+                        T_max, N_simulations, F_params, G_params)
+    l_ratios, _ = compute_likelihood_ratios(sequences, f_func, g_func)
+    
+    T_range = np.arange(1, T_max + 1)
+    
+    accuracy = np.empty(T_max)
+    for t in range(T_max):
+        predictions = (l_ratios[:, t] >= 1)
+        actual = true_models[:, t]
+        accuracy[t] = np.mean(predictions == actual)
+    
+    return {
+        'T_range': T_range,
+        'accuracy': accuracy,
+        'l_ratios': l_ratios,
+        'true_models': true_models
+    }
+```
+
+The following code visualizes the error probabilities for timing protocol 1 and 2
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+def analyze_protocol_1(π_minus_1, T_max, N_simulations, f_func, g_func, 
+                      F_params=(1, 1), G_params=(3, 1.2)):
+    """Analyze Protocol 1"""
+    result = compute_protocol_1_errors(π_minus_1, T_max, N_simulations, 
+                                      f_func, g_func, F_params, G_params)
+    
+    # Plot results
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    
+    ax1.plot(result['T_range'], result['alpha'], 'b-', 
+             label=r'$\alpha_T$', linewidth=2)
+    ax1.plot(result['T_range'], result['beta'], 'r-', 
+             label=r'$\beta_T$', linewidth=2)
+    ax1.set_xlabel('$T$')
+    ax1.set_ylabel('error probability')
+    ax1.legend()
+    
+    ax2.plot(result['T_range'], result['error_prob'], 'g-', 
+             label=r'$\frac{1}{2}(\alpha_T+\beta_T)$', linewidth=2)
+    ax2.set_xlabel('$T$')
+    ax2.set_ylabel('error probability')
+    ax2.legend()
+    
+    plt.tight_layout()
+    plt.show()
+    
+    # Print summary
+    print(f"At T={T_max}:")
+    print(f"α_{T_max} = {result['alpha'][-1]:.4f}")
+    print(f"β_{T_max} = {result['beta'][-1]:.4f}")
+    print(f"Model selection error probability = {result['error_prob'][-1]:.4f}")
+    
+    return result
+
+def analyze_protocol_2(π_minus_1, T_max, N_simulations, f_func, g_func, 
+                      theory_error=None, F_params=(1, 1), G_params=(3, 1.2)):
+    """Analyze Protocol 2."""
+    result = compute_protocol_2_errors(π_minus_1, T_max, N_simulations, 
+                                      f_func, g_func, F_params, G_params)
+    
+    # Plot results
+    plt.figure(figsize=(10, 6))
+    plt.plot(result['T_range'], result['accuracy'], 
+            'b-', linewidth=2, label='empirical accuracy')
+    
+    if theory_error is not None:
+        plt.axhline(1 - theory_error, color='r', linestyle='--', 
+                   label=f'theoretical accuracy = {1 - theory_error:.4f}')
+    
+    plt.xlabel('$t$')
+    plt.ylabel('accuracy')
+    plt.legend()
+    plt.ylim(0.5, 1.0)
+    plt.show()
+    
+    return result
+
+def compare_protocols(result1, result2):
+    """Compare results from both protocols."""
+    plt.figure(figsize=(10, 6))
+    
+    plt.plot(result1['T_range'], result1['error_prob'], linewidth=2, 
+            label='Protocol 1 (Model Selection)')
+    plt.plot(result2['T_range'], 1 - result2['accuracy'], 
+            linestyle='--', linewidth=2, 
+            label='Protocol 2 (classification)')
+    
+    plt.xlabel('$T$')
+    plt.ylabel('error probability')
+    plt.legend()
+    plt.show()
+
+# Analyze Protocol 1
 π_minus_1 = 0.5
 T_max = 30
 N_simulations = 10_000
 
-sequences_p1, true_models_p1 = protocol_1(
-                            π_minus_1, T_max, N_simulations)
-l_ratios_p1, L_cumulative_p1 = compute_likelihood_ratios(sequences_p1, f, g)
-
-# Compute error probabilities for different sample sizes
-T_range = np.arange(1, T_max + 1)
-
-# Boolean masks for true models
-mask_f = true_models_p1
-mask_g = ~true_models_p1
-
-# Select cumulative likelihoods for each model
-L_f = L_cumulative_p1[mask_f, :]
-L_g = L_cumulative_p1[mask_g, :]
-
-α_T = np.mean(L_f < 1, axis=0)
-β_T = np.mean(L_g >= 1, axis=0)
-
-error_prob = 0.5 * (α_T + β_T)
-
-# Plot results
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-
-ax1.plot(T_range, α_T, 'b-', 
-         label=r'$\alpha_T$', linewidth=2)
-ax1.plot(T_range, β_T, 'r-', 
-         label=r'$\beta_T$', linewidth=2)
-ax1.set_xlabel('$T$')
-ax1.set_ylabel('error probability')
-ax1.legend()
-
-ax2.plot(T_range, error_prob, 'g-', 
-         label=r'$\frac{1}{2}(\alpha_T+\beta_T)$', linewidth=2)
-ax2.set_xlabel('$T$')
-ax2.set_ylabel('error probability')
-ax2.legend()
-
-plt.tight_layout()
-plt.show()
-
-print(f"At T={T_max}:")
-print(f"α_{T_max} = {α_T[-1]:.4f}")
-print(f"β_{T_max} = {β_T[-1]:.4f}")
-print(f"Model selection error probability = {error_prob[-1]:.4f}")
+result_p1 = analyze_protocol_1(π_minus_1, T_max, N_simulations, 
+                                f, g, (F_a, F_b), (G_a, G_b))
 ```
 
 Notice how the model selection  error probability approaches zero as $T$ grows.  
@@ -1622,8 +1117,8 @@ The decision maker uses the following classification rule:
 
 $$
 \begin{aligned}
-w_t  & \ {\rm is \ from \  f  \ if \ } l_t > 1 \\
-w_t  & \ {\rm is \ from \  g  \ if \ } l_t \leq 1 . 
+w_t  & \ {\rm is \ from \ }  f  \ {\rm if \ } l_t > 1 \\
+w_t  & \ {\rm is \ from \ } g  \ {\rm if \ } l_t \leq 1 . 
 \end{aligned}
 $$
 
@@ -1718,41 +1213,16 @@ Now we simulate timing protocol 2 and compute the classification error probabili
 In the next cell, we also compare the theoretical classification accuracy to the empirical classification accuracy
 
 ```{code-cell} ipython3
-accuracy = np.empty(T_max)
-
-sequences_p2, true_sources_p2 = protocol_2(
-                    π_minus_1, T_max, N_simulations)
-l_ratios_p2, _ = compute_likelihood_ratios(sequences_p2, f, g)
-
-for t in range(T_max):
-    predictions = (l_ratios_p2[:, t] >= 1)
-    actual = true_sources_p2[:, t]
-    accuracy[t] = np.mean(predictions == actual)
-
-plt.figure(figsize=(10, 6))
-plt.plot(range(1, T_max + 1), accuracy, 
-                'b-', linewidth=2, label='empirical accuracy')
-plt.axhline(1 - theory_error, color='r', linestyle='--', 
-                label=f'theoretical accuracy = {1 - theory_error:.4f}')
-plt.xlabel('$t$')
-plt.ylabel('accuracy')
-plt.legend()
-plt.ylim(0.5, 1.0)
-plt.show()
+# Analyze Protocol 2
+result_p2 = analyze_protocol_2(π_minus_1, T_max, N_simulations, f, g, 
+                              theory_error, (F_a, F_b), (G_a, G_b))
 ```
 
 Let's watch decisions made by  the two timing protocols as more and more observations accrue.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(7, 6))
-
-ax.plot(T_range, error_prob, linewidth=2, 
-        label='Protocol 1')
-ax.plot(T_range, 1-accuracy, linestyle='--', linewidth=2, 
-        label=f'Protocol 2')
-ax.set_ylabel('error probability')
-ax.legend()
-plt.show()
+# Compare both protocols
+compare_protocols(result_p1, result_p2)
 ```
 
 From the figure above, we can see:
@@ -1765,279 +1235,15 @@ From the figure above, we can see:
 
 **Remark:** Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem. 
 
-## Special case: Markov chain models
-
-Consider two $n$-state irreducible and aperiodic Markov chain models on the same state space $\{1, 2, \ldots, n\}$ with positive transition matrices $P^{(f)}$, $P^{(g)}$ and initial distributions $\pi_0^{(f)}$, $\pi_0^{(g)}$.
-
-In this section, we assume nature chooses $f$.
-
-For a sample path $(x_0, x_1, \ldots, x_T)$, let $N_{ij}$ count transitions from state $i$ to $j$.
-
-The likelihood under model $m \in \{f, g\}$ is
-
-$$
-L_T^{(m)} = \pi_{0,x_0}^{(m)} \prod_{i=1}^n \prod_{j=1}^n \left(P_{ij}^{(m)}\right)^{N_{ij}}
-$$
-
-Hence, 
-
-$$
-\log L_T^{(m)} =\log\pi_{0,x_0}^{(m)} +\sum_{i,j}N_{ij}\log P_{ij}^{(m)}
-$$
-
-The log-likelihood ratio is
-
-$$
-\log \frac{L_T^{(f)}}{L_T^{(g)}} = \log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} + \sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
-$$ (eq:llr_markov)
-
-### KL divergence rate
-
-By the ergodic theorem for irreducible, aperiodic Markov chains, we have
-
-$$
-\frac{N_{ij}}{T} \xrightarrow{a.s.} \pi_i^{(f)}P_{ij}^{(f)} \quad \text{as } T \to \infty
-$$
-
-where $\boldsymbol{\pi}^{(f)}$ is the stationary distribution satisfying $\boldsymbol{\pi}^{(f)} = \boldsymbol{\pi}^{(f)} P^{(f)}$.
-
-Therefore,
-
-$$
-\frac{1}{T}\log \frac{L_T^{(f)}}{L_T^{(g)}} = \frac{1}{T}\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} + \frac{1}{T}\sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
-$$
-
-Taking the limit as $T \to \infty$, we have
-- The first term: $\frac{1}{T}\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} \to 0$
-- The second term: $\frac{1}{T}\sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}} \xrightarrow{a.s.} \sum_{i,j}\pi_i^{(f)}P_{ij}^{(f)}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}$
-
-Define the **KL divergence rate** as
-
-$$
-h_{KL}(f, g) = \sum_{i=1}^n \pi_i^{(f)} \underbrace{\sum_{j=1}^n P_{ij}^{(f)} \log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}}_{=: KL(P_{i\cdot}^{(f)}, P_{i\cdot}^{(g)})}
-$$
-
-where $KL(P_{i\cdot}^{(f)}, P_{i\cdot}^{(g)})$ is the row-wise KL divergence.
-
- 
-By the ergodic theorem, we have
-
-$$
-\frac{1}{T}\log \frac{L_T^{(f)}}{L_T^{(g)}} \xrightarrow{a.s.} h_{KL}(f, g) \quad \text{as } T \to \infty
-$$
-
-Taking expectations and using the dominated convergence theorem, we can get
-
-$$
-\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] \to h_{KL}(f, g) \quad \text{as } T \to \infty
-$$
-
-Here we invite readers to pause and compare this result with {eq}`eq:kl_likelihood_link`.
-
-Let's confirm this in the simulation below.
-
-### Simulations
-
-Let's implement simulations to illustrate these concepts with a three-state Markov chain.
-
-We start with writing out functions to compute the stationary distribution and the KL divergence rate for Markov chain models
-
-```{code-cell} ipython3
-def compute_stationary_dist(P):
-    """
-    Compute stationary distribution of transition matrix P
-    """
-
-    eigenvalues, eigenvectors = np.linalg.eig(P.T)
-    idx = np.argmax(np.abs(eigenvalues))
-    stationary = np.real(eigenvectors[:, idx])
-    return stationary / stationary.sum()
-
-def markov_kl_divergence(P_f, P_g, pi_f):
-    """
-    Compute KL divergence rate between two Markov chains
-    """
-    if np.any((P_f > 0) & (P_g == 0)):
-        return np.inf
-    
-    valid_mask = (P_f > 0) & (P_g > 0)
-    
-    log_ratios = np.zeros_like(P_f)
-    log_ratios[valid_mask] = np.log(P_f[valid_mask] / P_g[valid_mask])
-    
-    # Weight by stationary probabilities and sum
-    kl_rate = np.sum(pi_f[:, np.newaxis] * P_f * log_ratios)
-    
-    return kl_rate
-
-def simulate_markov_chain(P, pi_0, T, N_paths=1000):
-    """
-    Simulate N_paths sample paths from a Markov chain 
-    """    
-    mc = qe.MarkovChain(P, state_values=None)
-    
-    initial_states = np.random.choice(len(P), size=N_paths, p=pi_0)
-    
-    paths = np.zeros((N_paths, T+1), dtype=int)
-    
-    for i in range(N_paths):
-        path = mc.simulate(T+1, init=initial_states[i])
-        paths[i, :] = path
-    
-    return paths
-    
-
-def compute_likelihood_ratio_markov(paths, P_f, P_g, π_0_f, π_0_g):
-    """
-    Compute likelihood ratio process for Markov chain paths
-    """
-    N_paths, T_plus_1 = paths.shape
-    T = T_plus_1 - 1
-    L_ratios = np.ones((N_paths, T+1))
-    
-    L_ratios[:, 0] = π_0_f[paths[:, 0]] / π_0_g[paths[:, 0]]
-    
-    for t in range(1, T+1):
-        prev_states = paths[:, t-1]
-        curr_states = paths[:, t]
-        
-        transition_ratios = P_f[prev_states, curr_states] \
-                            / P_g[prev_states, curr_states]
-        L_ratios[:, t] = L_ratios[:, t-1] * transition_ratios
-    
-    return L_ratios
-```
-
-Now let's create an example with two different 3-state Markov chains
-
-```{code-cell} ipython3
-P_f = np.array([[0.7, 0.2, 0.1],
-                [0.3, 0.5, 0.2],
-                [0.1, 0.3, 0.6]])
-
-P_g = np.array([[0.5, 0.3, 0.2],
-                [0.2, 0.6, 0.2],
-                [0.2, 0.2, 0.6]])
-
-# Compute stationary distributions
-π_f = compute_stationary_dist(P_f)
-π_g = compute_stationary_dist(P_g)
-
-print(f"Stationary distribution (f): {π_f}")
-print(f"Stationary distribution (g): {π_g}")
-
-# Compute KL divergence rate
-kl_rate_fg = markov_kl_divergence(P_f, P_g, π_f)
-kl_rate_gf = markov_kl_divergence(P_g, P_f, π_g)
-
-print(f"\nKL divergence rate h(f, g): {kl_rate_fg:.4f}")
-print(f"KL divergence rate h(g, f): {kl_rate_gf:.4f}")
-```
-
-We are now ready to simulate paths and visualize how likelihood ratios evolve.
-
-We'll verify $\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = h_{KL}(f, g)$ starting from the stationary distribution by plotting both the empirical average and the line predicted by the theory
-
-```{code-cell} ipython3
-T = 500
-N_paths = 1000
-paths_from_f = simulate_markov_chain(P_f, π_f, T, N_paths)
-
-L_ratios_f = compute_likelihood_ratio_markov(paths_from_f, 
-                                             P_f, P_g, 
-                                             π_f, π_g)
-
-plt.figure(figsize=(10, 6))
-
-# Plot individual paths
-n_show = 50
-for i in range(n_show):
-    plt.plot(np.log(L_ratios_f[i, :]), 
-             alpha=0.3, color='blue', lw=0.8)
-
-# Compute theoretical expectation
-theory_line = kl_rate_fg * np.arange(T+1)
-plt.plot(theory_line, 'k--', linewidth=2.5, 
-         label=r'$T \times h_{KL}(f,g)$')
-
-# Compute empirical mean
-avg_log_L = np.mean(np.log(L_ratios_f), axis=0)
-plt.plot(avg_log_L, 'r-', linewidth=2.5, 
-         label='empirical average', alpha=0.5)
-
-plt.axhline(y=0, color='gray', 
-            linestyle='--', alpha=0.5)
-plt.xlabel(r'$T$')
-plt.ylabel(r'$\log L_T$')
-plt.title('nature = $f$')
-plt.legend()
-plt.show()
-```
-
-Let's examine how the model selection error probability depends on sample size using the same simulation strategy in the previous section
-
-```{code-cell} ipython3
-def compute_selection_error(T_values, P_f, P_g, π_0_f, π_0_g, N_sim=1000):
-    """
-    Compute model selection error probability for different sample sizes
-    """
-    errors = []
-    
-    for T in T_values:
-        # Simulate from both models
-        paths_f = simulate_markov_chain(P_f, π_0_f, T, N_sim//2)
-        paths_g = simulate_markov_chain(P_g, π_0_g, T, N_sim//2)
-        
-        # Compute likelihood ratios
-        L_f = compute_likelihood_ratio_markov(paths_f, 
-                                              P_f, P_g, 
-                                              π_0_f, π_0_g)
-        L_g = compute_likelihood_ratio_markov(paths_g, 
-                                              P_f, P_g, 
-                                              π_0_f, π_0_g)
-        
-        # Decision rule: choose f if L_T >= 1
-        error_f = np.mean(L_f[:, -1] < 1)   # Type I error
-        error_g = np.mean(L_g[:, -1] >= 1)  # Type II error
-        
-        total_error = 0.5 * (error_f + error_g)
-        errors.append(total_error)
-    
-    return np.array(errors)
-
-# Compute error probabilities
-T_values = np.arange(10, 201, 10)
-errors = compute_selection_error(T_values, 
-                                 P_f, P_g, 
-                                 π_f, π_g)
-
-# Plot results
-plt.figure(figsize=(10, 6))
-plt.plot(T_values, errors, linewidth=2)
-plt.xlabel('$T$')
-plt.ylabel('error probability')
-plt.show()
-```
-
-## Measuring discrepancies between distributions
+### Error probability and divergence measures
 
 A plausible guess is that the ability of a likelihood ratio to distinguish distributions $f$ and $g$ depends on how "different" they are.
  
-But how should we measure discrepancies between distributions?
+We have learnt some measures of "difference" between distributions in {doc}`divergence_measures`.
 
-We've already encountered one discrepancy measure -- the Kullback-Leibler (KL) divergence. 
+Let's now study two more measures of "difference" between distributions that are useful in the context of model selection and classification.
 
-We now briefly explore two alternative discrepancy  measures.
-
-### Chernoff entropy
-
-Chernoff entropy was motivated by an early application of  the [theory of large deviations](https://en.wikipedia.org/wiki/Large_deviations_theory).
-
-```{note}
-Large deviation theory provides refinements of the central limit theorem. 
-```
-
-The Chernoff entropy between probability densities $f$ and $g$ is defined as:
+Recall that Chernoff entropy between probability densities $f$ and $g$ is defined as:
 
 $$
 C(f,g) = - \log \min_{\phi \in (0,1)} \int f^\phi(x) g^{1-\phi}(x) dx
@@ -2049,8 +1255,6 @@ $$
 e^{-C(f,g)T} .
 $$
 
-Thus, Chernoff entropy is an upper bound on the exponential rate at which the selection error probability falls as sample size $T$ grows. 
-
 Let's compute Chernoff entropy numerically with some Python code
 
 ```{code-cell} ipython3
@@ -2060,7 +1264,7 @@ def chernoff_integrand(ϕ, f, g):
     """
     def integrand(w):
         return f(w)**ϕ * g(w)**(1-ϕ)
-
+    
     result, _ = quad(integrand, 1e-5, 1-1e-5)
     return result
 
@@ -2073,7 +1277,6 @@ def compute_chernoff_entropy(f, g):
     
     # Find the minimum over ϕ in (0,1)
     result = minimize_scalar(objective, 
-                             # For numerical stability
                              bounds=(1e-5, 1-1e-5), 
                              method='bounded')
     min_value = result.fun
@@ -2081,7 +1284,6 @@ def compute_chernoff_entropy(f, g):
     
     chernoff_entropy = -np.log(min_value)
     return chernoff_entropy, ϕ_optimal
-
 C_fg, ϕ_optimal = compute_chernoff_entropy(f, g)
 print(f"Chernoff entropy C(f,g) = {C_fg:.4f}")
 print(f"Optimal ϕ = {ϕ_optimal:.4f}")
@@ -2098,7 +1300,7 @@ fig, ax = plt.subplots(figsize=(10, 6))
 
 ax.semilogy(T_range, chernoff_bound, 'r-', linewidth=2, 
            label=f'$e^{{-C(f,g)T}}$')
-ax.semilogy(T_range, error_prob, 'b-', linewidth=2, 
+ax.semilogy(T_range, result_p1['error_prob'], 'b-', linewidth=2, 
            label='Model selection error probability')
 
 ax.set_xlabel('T')
@@ -2110,19 +1312,13 @@ plt.show()
 
 Evidently, $e^{-C(f,g)T}$ is an upper bound on the error rate.
 
-### Jensen-Shannon divergence
+In `{doc}`divergence_measures`, we also studied **Jensen-Shannon divergence** as 
+a symmetric measure of distance between distributions.
 
-The [Jensen-Shannon divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence) is another  divergence measure.  
+We can use Jensen-Shannon divergence to measure the distance between distributions $f$ and $g$ and 
+compute how it covaries with the model selection error probability.
 
-For probability densities $f$ and $g$, the **Jensen-Shannon divergence** is defined as:
-
-$$
-D(f,g) = \frac{1}{2} KL(f, m) + \frac{1}{2} KL(g, m)
-$$ (eq:compute_JS)
-
-where $m = \frac{1}{2}(f+g)$ is a mixture of $f$ and $g$.
-
-Below we compute Jensen-Shannon divergence numerically with some Python code
+We also compute Jensen-Shannon divergence numerically with some Python code
 
 ```{code-cell} ipython3
 def compute_JS(f, g):
@@ -2136,24 +1332,19 @@ def compute_JS(f, g):
     return js_div
 ```
 
- 
+Now let's return to our guess that the error probability at large sample sizes is related to the Chernoff entropy  between two distributions.
+
+We verify this by computing the correlation between the log of the error probability at $T=50$ under Timing Protocol 1 and the divergence measures.
+
+In the simulation below, nature draws $N / 2$ sequences from $g$ and $N/2$ sequences from $f$.
+
 ```{note}
-We studied KL divergence in the [section above](rel_entropy) with respect to a reference distribution $h$.
-
-Recall that  KL divergence $KL(f, g)$ measures expected excess surprisal from using misspecified model $g$ instead $f$ when $f$ is the true model.
-
-Because in general $KL(f, g) \neq KL(g, f)$, KL divergence is not symmetric, but Jensen-Shannon divergence is symmetric.
-
-(In fact, the square root of the Jensen-Shannon divergence is a metric referred to as the Jensen-Shannon distance.)
-
-As {eq}`eq:compute_JS` shows, the Jensen-Shannon divergence computes average of the KL divergence of $f$ and $g$ with respect to a particular reference distribution $m$ defined below the equation.
+Nature does this rather than flipping a fair coin to decide whether to draw from $g$ or $f$ once and for all before each simulation of length $T$.
 ```
 
-Now let's create a comparison table showing KL divergence, Jensen-Shannon divergence, and Chernoff entropy for a set of pairs of Beta distributions.
+We use the following pairs of Beta distributions for $f$ and $g$ as test cases
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 distribution_pairs = [
     # (f_params, g_params)
     ((1, 1), (0.1, 0.2)),
@@ -2171,165 +1362,9 @@ distribution_pairs = [
     ((1, 1), (4, 1)),
     ((1, 1), (5, 1))
 ]
-
-# Create comparison table
-results = []
-for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
-    # Define the density functions
-    f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-    g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
-    
-    # Compute measures
-    kl_fg = compute_KL(f, g)
-    kl_gf = compute_KL(g, f)
-    js_div = compute_JS(f, g)
-    chernoff_ent, _ = compute_chernoff_entropy(f, g)
-    
-    results.append({
-        'Pair (f, g)': f"\\text{{Beta}}({f_a},{f_b}), \\text{{Beta}}({g_a},{g_b})",
-        'KL(f, g)': f"{kl_fg:.4f}",
-        'KL(g, f)': f"{kl_gf:.4f}",
-        'JS': f"{js_div:.4f}",
-        'C': f"{chernoff_ent:.4f}"
-    })
-
-df = pd.DataFrame(results)
-
-# Sort by JS divergence
-df['JS_numeric'] = df['JS'].astype(float)
-df = df.sort_values('JS_numeric').drop('JS_numeric', axis=1)
-
-# Generate LaTeX table manually
-columns = ' & '.join([f'\\text{{{col}}}' for col in df.columns])
-rows = ' \\\\\n'.join(
-    [' & '.join([f'{val}' for val in row]) 
-     for row in df.values])
-
-latex_code = rf"""
-\begin{{array}}{{lcccc}}
-{columns} \\
-\hline
-{rows}
-\end{{array}}
-"""
-
-display(Math(latex_code))
 ```
 
-The above table indicates how Jensen-Shannon divergence, and Chernoff entropy, and KL divergence covary as we alter $f$ and $g$.
-
-Let's also visualize how these diverge measures covary
-
-```{code-cell} ipython3
-kl_fg_values = [float(result['KL(f, g)']) for result in results]
-js_values = [float(result['JS']) for result in results]
-chernoff_values = [float(result['C']) for result in results]
-
-fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-
-# JS divergence and KL divergence
-axes[0].scatter(kl_fg_values, js_values, alpha=0.7, s=60)
-axes[0].set_xlabel('KL divergence KL(f, g)')
-axes[0].set_ylabel('JS divergence')
-axes[0].set_title('JS divergence and KL divergence')
-
-# Chernoff Entropy and JS divergence
-axes[1].scatter(js_values, chernoff_values, alpha=0.7, s=60)
-axes[1].set_xlabel('JS divergence')
-axes[1].set_ylabel('Chernoff entropy')
-axes[1].set_title('Chernoff entropy and JS divergence')
-
-plt.tight_layout()
-plt.show()
-```
-
-To make the comparison more concrete, let's plot the distributions and the divergence measures for a few pairs of distributions.
-
-Note that the numbers on the title changes with the area of the overlaps of two distributions
-
-```{code-cell} ipython3
-:tags: [hide-input]
-
-def plot_dist_diff():
-    """
-    Plot overlap of two distributions and divergence measures
-    """
-    
-    # Chose a subset of Beta distribution parameters
-    param_grid = [
-        ((1, 1), (1, 1)),   
-        ((1, 1), (1.5, 1.2)),
-        ((1, 1), (2, 1.5)),  
-        ((1, 1), (3, 1.2)),  
-        ((1, 1), (5, 1)),
-        ((1, 1), (0.3, 0.3))
-    ]
-    
-    fig, axes = plt.subplots(3, 2, figsize=(15, 12))
-    
-    divergence_data = []
-    
-    for i, ((f_a, f_b), (g_a, g_b)) in enumerate(param_grid):
-        row = i // 2
-        col = i % 2
-        
-        # Create density functions
-        f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-        g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
-        
-        # Compute divergence measures
-        kl_fg = compute_KL(f, g)
-        js_div = compute_JS(f, g) 
-        chernoff_ent, _ = compute_chernoff_entropy(f, g)
-        
-        divergence_data.append({
-            'f_params': (f_a, f_b),
-            'g_params': (g_a, g_b),
-            'kl_fg': kl_fg,
-            'js_div': js_div,
-            'chernoff': chernoff_ent
-        })
-        
-        # Plot distributions
-        x_range = np.linspace(0, 1, 200)
-        f_vals = [f(x) for x in x_range]
-        g_vals = [g(x) for x in x_range]
-        
-        axes[row, col].plot(x_range, f_vals, 'b-', linewidth=2, 
-                           label=f'f ~ Beta({f_a},{f_b})')
-        axes[row, col].plot(x_range, g_vals, 'r-', linewidth=2, 
-                           label=f'g ~ Beta({g_a},{g_b})')
-        
-        # Fill overlap region
-        overlap = np.minimum(f_vals, g_vals)
-        axes[row, col].fill_between(x_range, 0, overlap, alpha=0.3, 
-                                   color='purple', label='overlap')
-        
-        # Add divergence information
-        axes[row, col].set_title(
-            f'KL(f, g)={kl_fg:.3f}, JS={js_div:.3f}, C={chernoff_ent:.3f}',
-            fontsize=12)
-        axes[row, col].legend(fontsize=14)
-    
-    plt.tight_layout()
-    plt.show()
-    
-    return divergence_data
-
-divergence_data = plot_dist_diff()
-```
-
-### Error probability and divergence measures
-
-Now let's return to our guess that the error probability at large sample sizes is related to the Chernoff entropy  between two distributions.
-
-We verify this by computing the correlation between the log of the error probability at $T=50$ under Timing Protocol 1 and the divergence measures.
-
-In the simulation below, nature draws $N / 2$ sequences from $g$ and $N/2$ sequences from $f$.
-
-```{note}
-Nature does this rather than flipping a fair coin to decide whether to draw from $g$ or $f$ once and for all before each simulation of length $T$.
-```
+Now let's run the simmulation
 
 ```{code-cell} ipython3
 # Parameters for simulation
@@ -2431,14 +1466,258 @@ Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with 
 
 We'll encounter related ideas in {doc}`wald_friedman` very soon.
 
+(lrp_markov)=
+## Markov chains 
+
+Let's now look at a likelihood ratio process for a sequence of random variables that is not independently and identically distributed.
+
+Here we assume that the sequence is generated by a Markov chain on a finite state space.
+
+We consider two $n$-state irreducible and aperiodic Markov chain models on the same state space $\{1, 2, \ldots, n\}$ with positive transition matrices $P^{(f)}$, $P^{(g)}$ and initial distributions $\pi_0^{(f)}$, $\pi_0^{(g)}$.
+
+We assume that nature samples from chain $f$.
+
+For a sample path $(x_0, x_1, \ldots, x_T)$, let $N_{ij}$ count transitions from state $i$ to $j$.
+
+The likelihood process under model $m \in \{f, g\}$ is
+
+$$
+L_T^{(m)} = \pi_{0,x_0}^{(m)} \prod_{i=1}^n \prod_{j=1}^n \left(P_{ij}^{(m)}\right)^{N_{ij}}
+$$
+
+Hence, 
+
+$$
+\log L_T^{(m)} =\log\pi_{0,x_0}^{(m)} +\sum_{i,j}N_{ij}\log P_{ij}^{(m)}
+$$
+
+The log-likelihood ratio is
+
+$$
+\log \frac{L_T^{(f)}}{L_T^{(g)}} = \log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} + \sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
+$$ (eq:llr_markov)
+
+### KL divergence rate
+
+By the ergodic theorem for irreducible, aperiodic Markov chains, we have
+
+$$
+\frac{N_{ij}}{T} \xrightarrow{a.s.} \pi_i^{(f)}P_{ij}^{(f)} \quad \text{as } T \to \infty
+$$
+
+where $\boldsymbol{\pi}^{(f)}$ is the stationary distribution satisfying $\boldsymbol{\pi}^{(f)} = \boldsymbol{\pi}^{(f)} P^{(f)}$.
+
+Therefore,
+
+$$
+\frac{1}{T}\log \frac{L_T^{(f)}}{L_T^{(g)}} = \frac{1}{T}\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} + \frac{1}{T}\sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}
+$$
+
+Taking the limit as $T \to \infty$, we have:
+- The first term: $\frac{1}{T}\log \frac{\pi_{0,x_0}^{(f)}}{\pi_{0,x_0}^{(g)}} \to 0$
+- The second term: $\frac{1}{T}\sum_{i,j}N_{ij}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}} \xrightarrow{a.s.} \sum_{i,j}\pi_i^{(f)}P_{ij}^{(f)}\log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}$
+
+Define the **KL divergence rate** as
+
+$$
+h_{KL}(f, g) = \sum_{i=1}^n \pi_i^{(f)} \underbrace{\sum_{j=1}^n P_{ij}^{(f)} \log \frac{P_{ij}^{(f)}}{P_{ij}^{(g)}}}_{=: KL(P_{i\cdot}^{(f)}, P_{i\cdot}^{(g)})}
+$$
+
+where $KL(P_{i\cdot}^{(f)}, P_{i\cdot}^{(g)})$ is the row-wise KL divergence.
+
+ 
+By the ergodic theorem, we have
+
+$$
+\frac{1}{T}\log \frac{L_T^{(f)}}{L_T^{(g)}} \xrightarrow{a.s.} h_{KL}(f, g) \quad \text{as } T \to \infty
+$$
+
+Taking expectations and using the dominated convergence theorem, we obtain
+
+$$
+\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] \to h_{KL}(f, g) \quad \text{as } T \to \infty
+$$
+
+Here we invite readers to pause and compare this result with {eq}`eq:kl_likelihood_link`.
+
+Let's confirm this in the simulation below.
+
+### Simulations
+
+Let's implement simulations to illustrate these concepts with a three-state Markov chain.
+
+We start by writing functions to compute the stationary distribution and the KL divergence rate for Markov chain models.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+def compute_stationary_dist(P):
+    """
+    Compute stationary distribution of transition matrix P
+    """
+    eigenvalues, eigenvectors = np.linalg.eig(P.T)
+    idx = np.argmax(np.abs(eigenvalues))
+    stationary = np.real(eigenvectors[:, idx])
+    return stationary / stationary.sum()
+
+def markov_kl_divergence(P_f, P_g, pi_f):
+    """
+    Compute KL divergence rate between two Markov chains
+    """
+    if np.any((P_f > 0) & (P_g == 0)):
+        return np.inf
+    
+    valid_mask = (P_f > 0) & (P_g > 0)
+    log_ratios = np.zeros_like(P_f)
+    log_ratios[valid_mask] = np.log(P_f[valid_mask] / P_g[valid_mask])
+    
+    # Weight by stationary probabilities and sum
+    kl_rate = np.sum(pi_f[:, np.newaxis] * P_f * log_ratios)
+    return kl_rate
+
+def simulate_markov_chain(P, pi_0, T, N_paths=1000):
+    """
+    Simulate N_paths sample paths from a Markov chain
+    """
+    mc = qe.MarkovChain(P, state_values=None)
+    initial_states = np.random.choice(len(P), size=N_paths, p=pi_0)
+    paths = np.zeros((N_paths, T+1), dtype=int)
+    
+    for i in range(N_paths):
+        path = mc.simulate(T+1, init=initial_states[i])
+        paths[i, :] = path
+    
+    return paths
+
+def compute_likelihood_ratio_markov(paths, P_f, P_g, π_0_f, π_0_g):
+    """
+    Compute likelihood ratio process for Markov chain paths
+    """
+    N_paths, T_plus_1 = paths.shape
+    T = T_plus_1 - 1
+    L_ratios = np.ones((N_paths, T+1))
+    
+    # Initial likelihood ratio
+    L_ratios[:, 0] = π_0_f[paths[:, 0]] / π_0_g[paths[:, 0]]
+    
+    # Compute sequential likelihood ratios
+    for t in range(1, T+1):
+        prev_states = paths[:, t-1]
+        curr_states = paths[:, t]
+        
+        transition_ratios = (P_f[prev_states, curr_states] / 
+                           P_g[prev_states, curr_states])
+        L_ratios[:, t] = L_ratios[:, t-1] * transition_ratios
+    
+    return L_ratios
+
+def analyze_markov_chains(P_f, P_g, 
+                T=500, N_paths=1000, plot_paths=True, n_show=50):
+    """
+    Complete analysis of two Markov chains
+    """
+    # Compute stationary distributions
+    π_f = compute_stationary_dist(P_f)
+    π_g = compute_stationary_dist(P_g)
+    
+    print(f"Stationary distribution (f): {π_f}")
+    print(f"Stationary distribution (g): {π_g}")
+    
+    # Compute KL divergence rates
+    kl_rate_fg = markov_kl_divergence(P_f, P_g, π_f)
+    kl_rate_gf = markov_kl_divergence(P_g, P_f, π_g)
+    
+    print(f"\nKL divergence rate h(f, g): {kl_rate_fg:.4f}")
+    print(f"KL divergence rate h(g, f): {kl_rate_gf:.4f}")
+    
+    if plot_paths:
+        # Simulate and plot paths
+        paths_from_f = simulate_markov_chain(P_f, π_f, T, N_paths)
+        L_ratios_f = compute_likelihood_ratio_markov(
+            paths_from_f, P_f, P_g, π_f, π_g)
+        
+        plt.figure(figsize=(10, 6))
+        
+        # Plot individual paths
+        for i in range(min(n_show, N_paths)):
+            plt.plot(np.log(L_ratios_f[i, :]), alpha=0.3, color='blue', lw=0.8)
+        
+        # Plot theoretical expectation
+        theory_line = kl_rate_fg * np.arange(T+1)
+        plt.plot(theory_line, 'k--', linewidth=2.5, 
+                label=r'$T \times h_{KL}(f,g)$')
+        
+        # Plot empirical mean
+        avg_log_L = np.mean(np.log(L_ratios_f), axis=0)
+        plt.plot(avg_log_L, 'r-', linewidth=2.5, 
+                label='empirical average', alpha=0.7)
+        
+        plt.axhline(y=0, color='gray', linestyle='--', alpha=0.5)
+        plt.xlabel(r'$T$')
+        plt.ylabel(r'$\log L_T$')
+        plt.title('Markov chain likelihood ratios (nature = f)')
+        plt.legend()
+        plt.show()
+    
+    return {
+        'stationary_f': π_f,
+        'stationary_g': π_g,
+        'kl_rate_fg': kl_rate_fg,
+        'kl_rate_gf': kl_rate_gf
+    }
+
+def compute_markov_selection_error(T_values, P_f, P_g, π_0_f, π_0_g, N_sim=1000):
+    """
+    Compute model selection error probability for Markov chains
+    """
+    errors = []
+    
+    for T in T_values:
+        # Simulate from both models
+        paths_f = simulate_markov_chain(P_f, π_0_f, T, N_sim//2)
+        paths_g = simulate_markov_chain(P_g, π_0_g, T, N_sim//2)
+        
+        # Compute likelihood ratios
+        L_f = compute_likelihood_ratio_markov(paths_f, P_f, P_g, π_0_f, π_0_g)
+        L_g = compute_likelihood_ratio_markov(paths_g, P_f, P_g, π_0_f, π_0_g)
+        
+        # Decision rule: choose f if L_T >= 1
+        error_f = np.mean(L_f[:, -1] < 1)   # Type I error
+        error_g = np.mean(L_g[:, -1] >= 1)  # Type II error
+        
+        total_error = 0.5 * (error_f + error_g)
+        errors.append(total_error)
+    
+    return np.array(errors)
+```
+
+Now let's create an example with two different 3-state Markov chains.
+
+We are now ready to simulate paths and visualize how likelihood ratios evolve.
+
+We verify $\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = h_{KL}(f, g)$ starting from the stationary distribution by plotting both the empirical average and the line predicted by the theory
+
+```{code-cell} ipython3
+# Define example Markov chain transition matrices
+P_f = np.array([[0.7, 0.2, 0.1],
+                [0.3, 0.5, 0.2],
+                [0.1, 0.3, 0.6]])
+
+P_g = np.array([[0.5, 0.3, 0.2],
+                [0.2, 0.6, 0.2],
+                [0.2, 0.2, 0.6]])
+
+markov_results = analyze_markov_chains(P_f, P_g)
+```
 
 ## Related Lectures
 
 Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes`
 and as applied in {doc}`odu`.
 
-Likelihood ratio processes appear again in {doc}`advanced:additive_functionals`, which contains another illustration
-of the **peculiar property** of likelihood ratio processes described above.
+Likelihood ratio processes are central to  Lawrence Blume and David Easley's answer to their question ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`, the subject of the lecture{doc}`likelihood_ratio_process_2`.
+
+Likelihood ratio processes also appear  in {doc}`advanced:additive_functionals`, which contains another illustration of the **peculiar property** of likelihood ratio processes described above.
 
 
 ## Exercises
@@ -2496,7 +1775,7 @@ $$
 Now, from the definition of Kullback-Leibler divergence
 
 $$
-K_f = KL(h, f) = \int h(w) \log \frac{h(w)}{f(w)} dw = E_h[\log h(w)] - E_h[\log f(w)]
+K_f = \int h(w) \log \frac{h(w)}{f(w)} dw = E_h[\log h(w)] - E_h[\log f(w)]
 $$
 
 This gives us
@@ -2532,7 +1811,7 @@ Building on {ref}`lr_ex1`, use the result to explain what happens to $L_t$ as $t
 1. When $K_g > K_f$ (i.e., $f$ is "closer" to $h$ than $g$ is)
 2. When $K_g < K_f$ (i.e., $g$ is "closer" to $h$ than $f$ is)
 
-Relate your answer to the simulation results shown in the {ref}`Kullback-Leibler Divergence <rel_entropy>` section.
+Relate your answer to the simulation results shown in {ref}`this section <llr_h>`.
 ```
 
 ```{solution-start} lr_ex2
@@ -2566,97 +1845,6 @@ E_h[\log L_t] = t \cdot (K_g - K_f) \to -\infty \text{ as } t \to \infty
 $$
 
 Therefore by similar reasoning $L_t \to 0$ almost surely.
-
-```{solution-end}
-```
-
-```{exercise}
-:label: lr_ex3
-
-Starting from {eq}`eq:priceequation1`, show that the competitive equilibrium prices can be expressed as
-
-$$
-p_t(s^t) = \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr]
-$$
-
-```
-
-```{solution-start} lr_ex3
-:class: dropdown
-```
-
-Starting from
-
-$$
-p_t(s^t) = \frac{\delta^t \pi_t^i(s^t)}{\mu_i c_t^i(s^t)}, \qquad i=1,2.
-$$
-
-Since both expressions equal the same price, we can equate them
-
-$$
-\frac{\pi_t^1(s^t)}{\mu_1 c_t^1(s^t)} = \frac{\pi_t^2(s^t)}{\mu_2 c_t^2(s^t)}
-$$
-
-Rearranging gives
-
-$$
-\frac{c_t^1(s^t)}{c_t^2(s^t)} = \frac{\mu_2}{\mu_1} l_t(s^t)
-$$
-
-where $l_t(s^t) \equiv \pi_t^1(s^t)/\pi_t^2(s^t)$ is the likelihood ratio process.
-
-Using $c_t^2(s^t) = 1 - c_t^1(s^t)$:
-
-$$
-\frac{c_t^1(s^t)}{1 - c_t^1(s^t)} = \frac{\mu_2}{\mu_1} l_t(s^t)
-$$
-
-Solving for $c_t^1(s^t)$
-
-$$
-c_t^1(s^t) = \frac{\mu_2 l_t(s^t)}{\mu_1 + \mu_2 l_t(s^t)}
-$$
-
-
-The planner's solution gives
-
-$$
-c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1 - \lambda + \lambda l_t(s^t)}
-$$
-
-To match them, we need the following equality to hold
-
-$$
-\frac{\mu_2}{\mu_1} = \frac{\lambda}{1 - \lambda}
-$$
-
-Hence we have
-
-$$
-\mu_1 = 1 - \lambda, \qquad \mu_2 = \lambda
-$$
-
-
-With $\mu_1 = 1-\lambda$ and $c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1-\lambda+\lambda l_t(s^t)}$,
-we have
-
-$$
-\begin{aligned}
-p_t(s^t) &= \frac{\delta^t \pi_t^1(s^t)}{(1-\lambda) c_t^1(s^t)} \\
-&= \frac{\delta^t \pi_t^1(s^t)}{(1-\lambda)} \cdot \frac{1 - \lambda + \lambda l_t(s^t)}{\lambda l_t(s^t)} \\
-&= \frac{\delta^t \pi_t^1(s^t)}{(1-\lambda)\lambda l_t(s^t)} \bigl[1 - \lambda + \lambda l_t(s^t)\bigr].
-\end{aligned}
-$$
-
-Since $\pi_t^1(s^t) = l_t(s^t) \pi_t^2(s^t)$, we have
-
-$$
-\begin{aligned}
-p_t(s^t) &= \frac{\delta^t l_t(s^t) \pi_t^2(s^t)}{(1-\lambda)\lambda l_t(s^t)} \bigl[1 - \lambda + \lambda l_t(s^t)\bigr] \\
-&= \frac{\delta^t \pi_t^2(s^t)}{(1-\lambda)\lambda} \bigl[1 - \lambda + \lambda l_t(s^t)\bigr] \\
-&= \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr].
-\end{aligned}
-$$
 
 ```{solution-end}
 ```

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>33. Linear State Space Models &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>36. Linear State Space Models &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -118,8 +118,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="34. Samuelson Multiplier-Accelerator" href="samuelson.html" />
-    <link rel="prev" title="32. Inventory Dynamics" href="inventory_dynamics.html" />
+    <link rel="next" title="37. Samuelson Multiplier-Accelerator" href="samuelson.html" />
+    <link rel="prev" title="35. Inventory Dynamics" href="inventory_dynamics.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -167,62 +167,62 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">33.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-linear-state-space-model">33.2. The Linear State Space Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primitives">33.2.1. Primitives</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#martingale-difference-shocks">33.2.1.1. Martingale Difference Shocks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">36.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-linear-state-space-model">36.2. The Linear State Space Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primitives">36.2.1. Primitives</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#martingale-difference-shocks">36.2.1.1. Martingale Difference Shocks</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">33.2.2. Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#second-order-difference-equation">33.2.2.1. Second-order Difference Equation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-autoregressive-processes">33.2.2.2. Univariate Autoregressive Processes</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-autoregressions">33.2.2.3. Vector Autoregressions</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seasonals">33.2.2.4. Seasonals</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#time-trends">33.2.2.5. Time Trends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">36.2.2. Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#second-order-difference-equation">36.2.2.1. Second-order Difference Equation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-autoregressive-processes">36.2.2.2. Univariate Autoregressive Processes</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-autoregressions">36.2.2.3. Vector Autoregressions</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seasonals">36.2.2.4. Seasonals</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#time-trends">36.2.2.5. Time Trends</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-average-representations">33.2.3. Moving Average Representations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-average-representations">36.2.3. Moving Average Representations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distributions-and-moments">33.3. Distributions and Moments</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unconditional-moments">33.3.1. Unconditional Moments</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#moments-of-the-observables">33.3.1.1. Moments of the Observables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distributions-and-moments">36.3. Distributions and Moments</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unconditional-moments">36.3.1. Unconditional Moments</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#moments-of-the-observables">36.3.1.1. Moments of the Observables</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributions">33.3.2. Distributions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-interpretations">33.3.3. Ensemble Interpretations</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-means">33.3.3.1. Ensemble Means</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributions">36.3.2. Distributions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-interpretations">36.3.3. Ensemble Interpretations</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-means">36.3.3.1. Ensemble Means</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-distributions">33.3.4. Joint Distributions</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#autocovariance-functions">33.3.4.1. Autocovariance Functions</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stationarity-and-ergodicity">33.4. Stationarity and Ergodicity</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-stability">33.4.1. Visualizing Stability</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stationary-distributions">33.4.2. Stationary Distributions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-stationary-processes">33.4.3. Covariance Stationary Processes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conditions-for-stationarity">33.4.4. Conditions for Stationarity</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-globally-stable-case">33.4.4.1. The Globally Stable Case</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#processes-with-a-constant-state-component">33.4.4.2. Processes with a Constant State Component</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ergodicity">33.4.5. Ergodicity</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#averages-over-time">33.4.5.1. Averages over Time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-distributions">36.3.4. Joint Distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#autocovariance-functions">36.3.4.1. Autocovariance Functions</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#noisy-observations">33.5. Noisy Observations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction">33.6. Prediction</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-formulas-conditional-means">33.6.1. Forecasting Formulas – Conditional Means</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-of-prediction-errors">33.6.2. Covariance of Prediction Errors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stationarity-and-ergodicity">36.4. Stationarity and Ergodicity</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-stability">36.4.1. Visualizing Stability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stationary-distributions">36.4.2. Stationary Distributions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-stationary-processes">36.4.3. Covariance Stationary Processes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conditions-for-stationarity">36.4.4. Conditions for Stationarity</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-globally-stable-case">36.4.4.1. The Globally Stable Case</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#processes-with-a-constant-state-component">36.4.4.2. Processes with a Constant State Component</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">33.7. Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">33.8. Exercises</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ergodicity">36.4.5. Ergodicity</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#averages-over-time">36.4.5.1. Averages over Time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#noisy-observations">36.5. Noisy Observations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction">36.6. Prediction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-formulas-conditional-means">36.6.1. Forecasting Formulas – Conditional Means</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-of-prediction-errors">36.6.2. Covariance of Prediction Errors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">36.7. Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">36.8. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -280,7 +280,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="linear-state-space-models">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">33. </span>Linear State Space Models</a><a class="headerlink" href="#linear-state-space-models" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id3"><span class="section-number">36. </span>Linear State Space Models</a><a class="headerlink" href="#linear-state-space-models" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -334,7 +334,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">33.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">36.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture introduces the <strong>linear state space</strong> dynamic system.</p>
 <p>The linear state space system is a generalization of the scalar AR(1) process <a class="reference external" href="https://intro.quantecon.org/ar1_processes.html" title="(in Project name not set)"><span class="xref std std-doc">we studied before</span></a>.</p>
 <p>This model is a workhorse that carries a powerful theory of prediction.</p>
@@ -373,7 +373,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </section>
 <section id="the-linear-state-space-model">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">33.2. </span>The Linear State Space Model</a><a class="headerlink" href="#the-linear-state-space-model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">36.2. </span>The Linear State Space Model</a><a class="headerlink" href="#the-linear-state-space-model" title="Permalink to this heading">#</a></h2>
 <p id="index-1">The objects in play are:</p>
 <ul class="simple">
 <li><p>An <span class="math notranslate nohighlight">\(n \times 1\)</span> vector <span class="math notranslate nohighlight">\(x_t\)</span> denoting the <strong>state</strong> at time <span class="math notranslate nohighlight">\(t = 0, 1, 2, \ldots\)</span>.</p></li>
@@ -385,13 +385,13 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </ul>
 <p>Here is the linear state-space system</p>
 <div class="math notranslate nohighlight" id="equation-st-space-rep">
-<span class="eqno">(33.1)<a class="headerlink" href="#equation-st-space-rep" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(36.1)<a class="headerlink" href="#equation-st-space-rep" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
     x_{t+1} &amp; =  A x_t + C w_{t+1}   \\
     y_t &amp;  =  G x_t \nonumber \\
     x_0 &amp; \sim N(\mu_0, \Sigma_0) \nonumber
 \end{aligned}\end{split}\]</div>
 <section id="primitives">
-<span id="lss-pgs"></span><h3><span class="section-number">33.2.1. </span>Primitives<a class="headerlink" href="#primitives" title="Permalink to this heading">#</a></h3>
+<span id="lss-pgs"></span><h3><span class="section-number">36.2.1. </span>Primitives<a class="headerlink" href="#primitives" title="Permalink to this heading">#</a></h3>
 <p>The primitives of the model are</p>
 <ol class="arabic simple">
 <li><p>the matrices <span class="math notranslate nohighlight">\(A, C, G\)</span></p></li>
@@ -399,11 +399,11 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <li><p>the distribution of the initial condition <span class="math notranslate nohighlight">\(x_0\)</span>, which we have set to <span class="math notranslate nohighlight">\(N(\mu_0, \Sigma_0)\)</span></p></li>
 </ol>
 <p>Given <span class="math notranslate nohighlight">\(A, C, G\)</span> and draws of <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(w_1, w_2, \ldots\)</span>, the
-model <a class="reference internal" href="#equation-st-space-rep">(33.1)</a> pins down the values of the sequences <span class="math notranslate nohighlight">\(\{x_t\}\)</span> and <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
+model <a class="reference internal" href="#equation-st-space-rep">(36.1)</a> pins down the values of the sequences <span class="math notranslate nohighlight">\(\{x_t\}\)</span> and <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
 <p>Even without these draws, the primitives 1–3 pin down the <em>probability distributions</em> of <span class="math notranslate nohighlight">\(\{x_t\}\)</span> and <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
 <p>Later we’ll see how to compute these distributions and their moments.</p>
 <section id="martingale-difference-shocks">
-<h4><span class="section-number">33.2.1.1. </span>Martingale Difference Shocks<a class="headerlink" href="#martingale-difference-shocks" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">36.2.1.1. </span>Martingale Difference Shocks<a class="headerlink" href="#martingale-difference-shocks" title="Permalink to this heading">#</a></h4>
 <p id="index-2">We’ve made the common assumption that the shocks are independent standardized normal vectors.</p>
 <p>But some of what we say will be valid under the assumption that <span class="math notranslate nohighlight">\(\{w_{t+1}\}\)</span> is a <strong>martingale difference sequence</strong>.</p>
 <p>A martingale difference sequence is a sequence that is zero mean when conditioned on past information.</p>
@@ -416,18 +416,18 @@ model <a class="reference internal" href="#equation-st-space-rep">(33.1)</a> pin
 </section>
 </section>
 <section id="examples">
-<h3><span class="section-number">33.2.2. </span>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.2.2. </span>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h3>
 <p>By appropriate choice of the primitives, a variety of dynamics can be represented in terms of the linear state space model.</p>
 <p>The following examples help to highlight this point.</p>
 <p>They also illustrate the wise dictum <em>finding the state is an art</em>.</p>
 <section id="second-order-difference-equation">
-<span id="lss-sode"></span><h4><span class="section-number">33.2.2.1. </span>Second-order Difference Equation<a class="headerlink" href="#second-order-difference-equation" title="Permalink to this heading">#</a></h4>
+<span id="lss-sode"></span><h4><span class="section-number">36.2.2.1. </span>Second-order Difference Equation<a class="headerlink" href="#second-order-difference-equation" title="Permalink to this heading">#</a></h4>
 <p>Let <span class="math notranslate nohighlight">\(\{y_t\}\)</span> be a deterministic sequence that satisfies</p>
 <div class="math notranslate nohighlight" id="equation-st-ex-1">
-<span class="eqno">(33.2)<a class="headerlink" href="#equation-st-ex-1" title="Permalink to this equation">#</a></span>\[y_{t+1} =  \phi_0 + \phi_1 y_t + \phi_2 y_{t-1}
+<span class="eqno">(36.2)<a class="headerlink" href="#equation-st-ex-1" title="Permalink to this equation">#</a></span>\[y_{t+1} =  \phi_0 + \phi_1 y_t + \phi_2 y_{t-1}
 \quad \text{s.t.} \quad
 y_0, y_{-1} \text{ given}\]</div>
-<p>To map <a class="reference internal" href="#equation-st-ex-1">(33.2)</a> into our state space system <a class="reference internal" href="#equation-st-space-rep">(33.1)</a>, we set</p>
+<p>To map <a class="reference internal" href="#equation-st-ex-1">(36.2)</a> into our state space system <a class="reference internal" href="#equation-st-space-rep">(36.1)</a>, we set</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 x_t=
@@ -451,7 +451,7 @@ C= \begin{bmatrix}
 \qquad
 G = \begin{bmatrix} 0 &amp; 1 &amp; 0 \end{bmatrix}
 \end{split}\]</div>
-<p>You can confirm that under these definitions, <a class="reference internal" href="#equation-st-space-rep">(33.1)</a> and <a class="reference internal" href="#equation-st-ex-1">(33.2)</a> agree.</p>
+<p>You can confirm that under these definitions, <a class="reference internal" href="#equation-st-space-rep">(36.1)</a> and <a class="reference internal" href="#equation-st-ex-1">(36.2)</a> agree.</p>
 <p>The next figure shows the dynamics of this process when <span class="math notranslate nohighlight">\(\phi_0 = 1.1, \phi_1=0.8, \phi_2 = -0.8, y_0 = y_{-1} = 1\)</span>.</p>
 <div class="cell docutils container" id="lss-sode-fig">
 <div class="cell_input docutils container">
@@ -497,10 +497,10 @@ G = \begin{bmatrix} 0 &amp; 1 &amp; 0 \end{bmatrix}
 <p>Later you’ll be asked to recreate this figure.</p>
 </section>
 <section id="univariate-autoregressive-processes">
-<h4><span class="section-number">33.2.2.2. </span>Univariate Autoregressive Processes<a class="headerlink" href="#univariate-autoregressive-processes" title="Permalink to this heading">#</a></h4>
-<p id="index-3">We can use <a class="reference internal" href="#equation-st-space-rep">(33.1)</a> to represent the model</p>
+<h4><span class="section-number">36.2.2.2. </span>Univariate Autoregressive Processes<a class="headerlink" href="#univariate-autoregressive-processes" title="Permalink to this heading">#</a></h4>
+<p id="index-3">We can use <a class="reference internal" href="#equation-st-space-rep">(36.1)</a> to represent the model</p>
 <div class="math notranslate nohighlight" id="equation-eq-ar-rep">
-<span class="eqno">(33.3)<a class="headerlink" href="#equation-eq-ar-rep" title="Permalink to this equation">#</a></span>\[y_{t+1} = \phi_1 y_{t} + \phi_2 y_{t-1} + \phi_3 y_{t-2} + \phi_4  y_{t-3} + \sigma w_{t+1}\]</div>
+<span class="eqno">(36.3)<a class="headerlink" href="#equation-eq-ar-rep" title="Permalink to this equation">#</a></span>\[y_{t+1} = \phi_1 y_{t} + \phi_2 y_{t-1} + \phi_3 y_{t-2} + \phi_4  y_{t-3} + \sigma w_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{w_t\}\)</span> is IID and standard normal.</p>
 <p>To put this in the linear state space format we take <span class="math notranslate nohighlight">\(x_t = \begin{bmatrix} y_t &amp; y_{t-1} &amp;  y_{t-2} &amp;  y_{t-3} \end{bmatrix}'\)</span> and</p>
 <div class="math notranslate nohighlight">
@@ -559,15 +559,15 @@ y_{-3} = 1
 </div>
 </section>
 <section id="vector-autoregressions">
-<h4><span class="section-number">33.2.2.3. </span>Vector Autoregressions<a class="headerlink" href="#vector-autoregressions" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">36.2.2.3. </span>Vector Autoregressions<a class="headerlink" href="#vector-autoregressions" title="Permalink to this heading">#</a></h4>
 <p id="index-4">Now suppose that</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(y_t\)</span> is a <span class="math notranslate nohighlight">\(k \times 1\)</span> vector</p></li>
 <li><p><span class="math notranslate nohighlight">\(\phi_j\)</span> is a <span class="math notranslate nohighlight">\(k \times k\)</span> matrix and</p></li>
 <li><p><span class="math notranslate nohighlight">\(w_t\)</span> is <span class="math notranslate nohighlight">\(k \times 1\)</span></p></li>
 </ul>
-<p>Then <a class="reference internal" href="#equation-eq-ar-rep">(33.3)</a> is termed a <em>vector autoregression</em>.</p>
-<p>To map this into <a class="reference internal" href="#equation-st-space-rep">(33.1)</a>, we set</p>
+<p>Then <a class="reference internal" href="#equation-eq-ar-rep">(36.3)</a> is termed a <em>vector autoregression</em>.</p>
+<p>To map this into <a class="reference internal" href="#equation-st-space-rep">(36.1)</a>, we set</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 x_t =
@@ -602,13 +602,13 @@ G =
 <p>where <span class="math notranslate nohighlight">\(I\)</span> is the <span class="math notranslate nohighlight">\(k \times k\)</span> identity matrix and <span class="math notranslate nohighlight">\(\sigma\)</span> is a <span class="math notranslate nohighlight">\(k \times k\)</span> matrix.</p>
 </section>
 <section id="seasonals">
-<h4><span class="section-number">33.2.2.4. </span>Seasonals<a class="headerlink" href="#seasonals" title="Permalink to this heading">#</a></h4>
-<p id="index-5">We can use <a class="reference internal" href="#equation-st-space-rep">(33.1)</a> to represent</p>
+<h4><span class="section-number">36.2.2.4. </span>Seasonals<a class="headerlink" href="#seasonals" title="Permalink to this heading">#</a></h4>
+<p id="index-5">We can use <a class="reference internal" href="#equation-st-space-rep">(36.1)</a> to represent</p>
 <ol class="arabic simple">
 <li><p>the <em>deterministic seasonal</em> <span class="math notranslate nohighlight">\(y_t = y_{t-4}\)</span></p></li>
 <li><p>the <em>indeterministic seasonal</em> <span class="math notranslate nohighlight">\(y_t = \phi_4 y_{t-4} + w_t\)</span></p></li>
 </ol>
-<p>In fact, both are special cases of <a class="reference internal" href="#equation-eq-ar-rep">(33.3)</a>.</p>
+<p>In fact, both are special cases of <a class="reference internal" href="#equation-eq-ar-rep">(36.3)</a>.</p>
 <p>With the deterministic seasonal, the transition matrix becomes</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -628,11 +628,11 @@ x_{t+4} = x_t
 <p>The <em>indeterministic</em> seasonal produces recurrent, but aperiodic, seasonal fluctuations.</p>
 </section>
 <section id="time-trends">
-<h4><span class="section-number">33.2.2.5. </span>Time Trends<a class="headerlink" href="#time-trends" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">36.2.2.5. </span>Time Trends<a class="headerlink" href="#time-trends" title="Permalink to this heading">#</a></h4>
 <p id="index-6">The model <span class="math notranslate nohighlight">\(y_t = a t + b\)</span> is known as a <em>linear time trend</em>.</p>
 <p>We can represent this model in the linear state space form by taking</p>
 <div class="math notranslate nohighlight" id="equation-lss-ltt">
-<span class="eqno">(33.4)<a class="headerlink" href="#equation-lss-ltt" title="Permalink to this equation">#</a></span>\[\begin{split}A
+<span class="eqno">(36.4)<a class="headerlink" href="#equation-lss-ltt" title="Permalink to this equation">#</a></span>\[\begin{split}A
 = \begin{bmatrix}
     1 &amp; 1  \\
     0 &amp; 1
@@ -687,17 +687,17 @@ A^t =
 </section>
 </section>
 <section id="moving-average-representations">
-<h3><span class="section-number">33.2.3. </span>Moving Average Representations<a class="headerlink" href="#moving-average-representations" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.2.3. </span>Moving Average Representations<a class="headerlink" href="#moving-average-representations" title="Permalink to this heading">#</a></h3>
 <p id="index-7">A nonrecursive expression for <span class="math notranslate nohighlight">\(x_t\)</span> as a function of
-<span class="math notranslate nohighlight">\(x_0, w_1, w_2, \ldots,  w_t\)</span> can be found by using <a class="reference internal" href="#equation-st-space-rep">(33.1)</a> repeatedly to obtain</p>
+<span class="math notranslate nohighlight">\(x_0, w_1, w_2, \ldots,  w_t\)</span> can be found by using <a class="reference internal" href="#equation-st-space-rep">(36.1)</a> repeatedly to obtain</p>
 <div class="math notranslate nohighlight" id="equation-eqob5">
-<span class="eqno">(33.5)<a class="headerlink" href="#equation-eqob5" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(36.5)<a class="headerlink" href="#equation-eqob5" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
    x_t &amp; = Ax_{t-1} + Cw_t \\
        &amp; = A^2 x_{t-2} + ACw_{t-1} + Cw_t \nonumber \\
        &amp; \qquad \vdots \nonumber \\
        &amp; = \sum_{j=0}^{t-1} A^j Cw_{t-j}  + A^t x_0 \nonumber
 \end{aligned}\end{split}\]</div>
-<p>Representation <a class="reference internal" href="#equation-eqob5">(33.5)</a> is a  <em>moving average</em> representation.</p>
+<p>Representation <a class="reference internal" href="#equation-eqob5">(36.5)</a> is a  <em>moving average</em> representation.</p>
 <p>It expresses <span class="math notranslate nohighlight">\(\{x_t\}\)</span> as a linear function of</p>
 <ol class="arabic simple">
 <li><p>current and past values of the  process <span class="math notranslate nohighlight">\(\{w_t\}\)</span> and</p></li>
@@ -719,7 +719,7 @@ C
   \end{bmatrix}
 \end{split}\]</div>
 <p>You will be able to show that <span class="math notranslate nohighlight">\(A^t = \begin{bmatrix} 1 &amp; t \cr 0 &amp; 1 \end{bmatrix}\)</span> and  <span class="math notranslate nohighlight">\(A^j C = \begin{bmatrix} 1 &amp; 0 \end{bmatrix}'\)</span>.</p>
-<p>Substituting into the moving average representation <a class="reference internal" href="#equation-eqob5">(33.5)</a>, we obtain</p>
+<p>Substituting into the moving average representation <a class="reference internal" href="#equation-eqob5">(36.5)</a>, we obtain</p>
 <div class="math notranslate nohighlight">
 \[
 x_{1t} = \sum_{j=0}^{t-1} w_{t-j} +
@@ -735,25 +735,25 @@ x_0
 </section>
 </section>
 <section id="distributions-and-moments">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">33.3. </span>Distributions and Moments</a><a class="headerlink" href="#distributions-and-moments" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">36.3. </span>Distributions and Moments</a><a class="headerlink" href="#distributions-and-moments" title="Permalink to this heading">#</a></h2>
 <span class="target" id="index-8"></span><section id="unconditional-moments">
-<span id="index-9"></span><h3><span class="section-number">33.3.1. </span>Unconditional Moments<a class="headerlink" href="#unconditional-moments" title="Permalink to this heading">#</a></h3>
-<p>Using <a class="reference internal" href="#equation-st-space-rep">(33.1)</a>, it’s easy to obtain expressions for the
+<span id="index-9"></span><h3><span class="section-number">36.3.1. </span>Unconditional Moments<a class="headerlink" href="#unconditional-moments" title="Permalink to this heading">#</a></h3>
+<p>Using <a class="reference internal" href="#equation-st-space-rep">(36.1)</a>, it’s easy to obtain expressions for the
 (unconditional) means of <span class="math notranslate nohighlight">\(x_t\)</span> and <span class="math notranslate nohighlight">\(y_t\)</span>.</p>
 <p>We’ll explain what <em>unconditional</em> and <em>conditional</em> mean soon.</p>
 <p>Letting <span class="math notranslate nohighlight">\(\mu_t := \mathbb{E} [x_t]\)</span> and using linearity of expectations, we
 find that</p>
 <div class="math notranslate nohighlight" id="equation-lss-mut-linear-models">
-<span class="eqno">(33.6)<a class="headerlink" href="#equation-lss-mut-linear-models" title="Permalink to this equation">#</a></span>\[\mu_{t+1} = A \mu_t
+<span class="eqno">(36.6)<a class="headerlink" href="#equation-lss-mut-linear-models" title="Permalink to this equation">#</a></span>\[\mu_{t+1} = A \mu_t
 \quad \text{with} \quad \mu_0 \text{ given}\]</div>
-<p>Here <span class="math notranslate nohighlight">\(\mu_0\)</span> is a primitive given in <a class="reference internal" href="#equation-st-space-rep">(33.1)</a>.</p>
+<p>Here <span class="math notranslate nohighlight">\(\mu_0\)</span> is a primitive given in <a class="reference internal" href="#equation-st-space-rep">(36.1)</a>.</p>
 <p>The variance-covariance matrix of <span class="math notranslate nohighlight">\(x_t\)</span> is <span class="math notranslate nohighlight">\(\Sigma_t := \mathbb{E} [ (x_t - \mu_t) (x_t - \mu_t)']\)</span>.</p>
 <p>Using <span class="math notranslate nohighlight">\(x_{t+1} - \mu_{t+1} = A (x_t - \mu_t) + C w_{t+1}\)</span>, we can
 determine this matrix recursively via</p>
 <div class="math notranslate nohighlight" id="equation-eqsigmalaw-linear-models">
-<span class="eqno">(33.7)<a class="headerlink" href="#equation-eqsigmalaw-linear-models" title="Permalink to this equation">#</a></span>\[\Sigma_{t+1}  = A \Sigma_t A' + C C'
+<span class="eqno">(36.7)<a class="headerlink" href="#equation-eqsigmalaw-linear-models" title="Permalink to this equation">#</a></span>\[\Sigma_{t+1}  = A \Sigma_t A' + C C'
 \quad \text{with} \quad \Sigma_0 \text{ given}\]</div>
-<p>As with <span class="math notranslate nohighlight">\(\mu_0\)</span>, the matrix <span class="math notranslate nohighlight">\(\Sigma_0\)</span> is a primitive given in <a class="reference internal" href="#equation-st-space-rep">(33.1)</a>.</p>
+<p>As with <span class="math notranslate nohighlight">\(\mu_0\)</span>, the matrix <span class="math notranslate nohighlight">\(\Sigma_0\)</span> is a primitive given in <a class="reference internal" href="#equation-st-space-rep">(36.1)</a>.</p>
 <p>As a matter of terminology, we will sometimes call</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mu_t\)</span> the <em>unconditional mean</em>  of <span class="math notranslate nohighlight">\(x_t\)</span></p></li>
@@ -764,17 +764,17 @@ information, to be defined below.</p>
 <p>However, you should be aware that these “unconditional” moments do depend on
 the initial distribution <span class="math notranslate nohighlight">\(N(\mu_0, \Sigma_0)\)</span>.</p>
 <section id="moments-of-the-observables">
-<h4><span class="section-number">33.3.1.1. </span>Moments of the Observables<a class="headerlink" href="#moments-of-the-observables" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">36.3.1.1. </span>Moments of the Observables<a class="headerlink" href="#moments-of-the-observables" title="Permalink to this heading">#</a></h4>
 <p>Using linearity of expectations again we have</p>
 <div class="math notranslate nohighlight" id="equation-lss-umy">
-<span class="eqno">(33.8)<a class="headerlink" href="#equation-lss-umy" title="Permalink to this equation">#</a></span>\[\mathbb{E} [y_t] = \mathbb{E} [G x_t] = G \mu_t\]</div>
+<span class="eqno">(36.8)<a class="headerlink" href="#equation-lss-umy" title="Permalink to this equation">#</a></span>\[\mathbb{E} [y_t] = \mathbb{E} [G x_t] = G \mu_t\]</div>
 <p>The variance-covariance matrix of <span class="math notranslate nohighlight">\(y_t\)</span> is easily shown to be</p>
 <div class="math notranslate nohighlight" id="equation-lss-uvy">
-<span class="eqno">(33.9)<a class="headerlink" href="#equation-lss-uvy" title="Permalink to this equation">#</a></span>\[\textrm{Var} [y_t] = \textrm{Var} [G x_t] = G \Sigma_t G'\]</div>
+<span class="eqno">(36.9)<a class="headerlink" href="#equation-lss-uvy" title="Permalink to this equation">#</a></span>\[\textrm{Var} [y_t] = \textrm{Var} [G x_t] = G \Sigma_t G'\]</div>
 </section>
 </section>
 <section id="distributions">
-<h3><span class="section-number">33.3.2. </span>Distributions<a class="headerlink" href="#distributions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.3.2. </span>Distributions<a class="headerlink" href="#distributions" title="Permalink to this heading">#</a></h3>
 <p id="index-10">In general, knowing the mean and variance-covariance matrix of a random vector
 is not quite as good as knowing the full distribution.</p>
 <p>However, there are some situations where these moments alone tell us all we
@@ -789,35 +789,35 @@ distributed).</p>
 </ol>
 <p>In fact, it’s <a class="reference external" href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution#Affine_transformation">well-known</a> that</p>
 <div class="math notranslate nohighlight" id="equation-lss-glig">
-<span class="eqno">(33.10)<a class="headerlink" href="#equation-lss-glig" title="Permalink to this equation">#</a></span>\[u \sim N(\bar u, S)
+<span class="eqno">(36.10)<a class="headerlink" href="#equation-lss-glig" title="Permalink to this equation">#</a></span>\[u \sim N(\bar u, S)
 \quad \text{and} \quad
 v = a + B u
 \implies
 v \sim N(a + B \bar u, B S B')\]</div>
 <p>In particular, given our Gaussian assumptions on the primitives and the
-linearity of <a class="reference internal" href="#equation-st-space-rep">(33.1)</a> we can see immediately that  both <span class="math notranslate nohighlight">\(x_t\)</span> and
+linearity of <a class="reference internal" href="#equation-st-space-rep">(36.1)</a> we can see immediately that  both <span class="math notranslate nohighlight">\(x_t\)</span> and
 <span class="math notranslate nohighlight">\(y_t\)</span> are  Gaussian for all <span class="math notranslate nohighlight">\(t \geq 0\)</span> <a class="footnote-reference brackets" href="#fn-ag" id="id2">2</a>.</p>
 <p>Since <span class="math notranslate nohighlight">\(x_t\)</span> is Gaussian, to find the distribution, all we need to do is
 find its mean and variance-covariance matrix.</p>
-<p>But in fact we’ve already done this, in <a class="reference internal" href="#equation-lss-mut-linear-models">(33.6)</a> and <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(33.7)</a>.</p>
+<p>But in fact we’ve already done this, in <a class="reference internal" href="#equation-lss-mut-linear-models">(36.6)</a> and <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(36.7)</a>.</p>
 <p>Letting <span class="math notranslate nohighlight">\(\mu_t\)</span> and <span class="math notranslate nohighlight">\(\Sigma_t\)</span> be as defined by these equations,
 we have</p>
 <div class="math notranslate nohighlight" id="equation-lss-mgs-x">
-<span class="eqno">(33.11)<a class="headerlink" href="#equation-lss-mgs-x" title="Permalink to this equation">#</a></span>\[x_t \sim N(\mu_t, \Sigma_t)\]</div>
-<p>By similar reasoning combined with <a class="reference internal" href="#equation-lss-umy">(33.8)</a> and <a class="reference internal" href="#equation-lss-uvy">(33.9)</a>,</p>
+<span class="eqno">(36.11)<a class="headerlink" href="#equation-lss-mgs-x" title="Permalink to this equation">#</a></span>\[x_t \sim N(\mu_t, \Sigma_t)\]</div>
+<p>By similar reasoning combined with <a class="reference internal" href="#equation-lss-umy">(36.8)</a> and <a class="reference internal" href="#equation-lss-uvy">(36.9)</a>,</p>
 <div class="math notranslate nohighlight" id="equation-lss-mgs-y">
-<span class="eqno">(33.12)<a class="headerlink" href="#equation-lss-mgs-y" title="Permalink to this equation">#</a></span>\[y_t \sim N(G \mu_t, G \Sigma_t G')\]</div>
+<span class="eqno">(36.12)<a class="headerlink" href="#equation-lss-mgs-y" title="Permalink to this equation">#</a></span>\[y_t \sim N(G \mu_t, G \Sigma_t G')\]</div>
 </section>
 <section id="ensemble-interpretations">
-<h3><span class="section-number">33.3.3. </span>Ensemble Interpretations<a class="headerlink" href="#ensemble-interpretations" title="Permalink to this heading">#</a></h3>
-<p>How should we interpret the distributions defined by <a class="reference internal" href="#equation-lss-mgs-x">(33.11)</a>–<a class="reference internal" href="#equation-lss-mgs-y">(33.12)</a>?</p>
+<h3><span class="section-number">36.3.3. </span>Ensemble Interpretations<a class="headerlink" href="#ensemble-interpretations" title="Permalink to this heading">#</a></h3>
+<p>How should we interpret the distributions defined by <a class="reference internal" href="#equation-lss-mgs-x">(36.11)</a>–<a class="reference internal" href="#equation-lss-mgs-y">(36.12)</a>?</p>
 <p>Intuitively, the probabilities in a distribution correspond to relative frequencies in a large population drawn from that distribution.</p>
 <p>Let’s apply this idea to our setting, focusing on the distribution of <span class="math notranslate nohighlight">\(y_T\)</span> for fixed <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>We can generate independent draws of <span class="math notranslate nohighlight">\(y_T\)</span> by repeatedly simulating the
 evolution of the system up to time <span class="math notranslate nohighlight">\(T\)</span>, using an independent set of
 shocks each time.</p>
 <p>The next figure shows 20 simulations, producing 20 time series for <span class="math notranslate nohighlight">\(\{y_t\}\)</span>, and hence 20 draws of <span class="math notranslate nohighlight">\(y_T\)</span>.</p>
-<p>The system in question is the univariate autoregressive model <a class="reference internal" href="#equation-eq-ar-rep">(33.3)</a>.</p>
+<p>The system in question is the univariate autoregressive model <a class="reference internal" href="#equation-eq-ar-rep">(36.3)</a>.</p>
 <p>The values of <span class="math notranslate nohighlight">\(y_T\)</span> are represented by black dots in the left-hand figure</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -932,12 +932,12 @@ that shows relative frequencies from our sample of 20 <span class="math notransl
 <img alt="_images/f66d3879ce84f20dbc6a39c06ecb9ab1a818f712d72ec9f625b1b0be33b838ed.png" src="_images/f66d3879ce84f20dbc6a39c06ecb9ab1a818f712d72ec9f625b1b0be33b838ed.png" />
 </div>
 </div>
-<p>The black line is the population density of <span class="math notranslate nohighlight">\(y_T\)</span> calculated from <a class="reference internal" href="#equation-lss-mgs-y">(33.12)</a>.</p>
+<p>The black line is the population density of <span class="math notranslate nohighlight">\(y_T\)</span> calculated from <a class="reference internal" href="#equation-lss-mgs-y">(36.12)</a>.</p>
 <p>The histogram and population distribution are close, as expected.</p>
 <p>By looking at the figures and experimenting with parameters, you will gain a
 feel for how the population distribution depends on the model primitives <a class="reference internal" href="#lss-pgs"><span class="std std-ref">listed above</span></a>, as intermediated by the distribution’s parameters.</p>
 <section id="ensemble-means">
-<h4><span class="section-number">33.3.3.1. </span>Ensemble Means<a class="headerlink" href="#ensemble-means" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">36.3.3.1. </span>Ensemble Means<a class="headerlink" href="#ensemble-means" title="Permalink to this heading">#</a></h4>
 <p>In the preceding figure, we approximated the population distribution of <span class="math notranslate nohighlight">\(y_T\)</span> by</p>
 <ol class="arabic simple">
 <li><p>generating <span class="math notranslate nohighlight">\(I\)</span> sample paths (i.e., time series) where <span class="math notranslate nohighlight">\(I\)</span> is a large number</p></li>
@@ -1011,7 +1011,7 @@ and the sample size is relatively small (<span class="math notranslate nohighlig
 </section>
 </section>
 <section id="joint-distributions">
-<h3><span class="section-number">33.3.4. </span>Joint Distributions<a class="headerlink" href="#joint-distributions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.3.4. </span>Joint Distributions<a class="headerlink" href="#joint-distributions" title="Permalink to this heading">#</a></h3>
 <p>In the preceding discussion, we looked at the distributions of <span class="math notranslate nohighlight">\(x_t\)</span> and
 <span class="math notranslate nohighlight">\(y_t\)</span> in isolation.</p>
 <p>This gives us useful information but doesn’t allow us to answer questions like</p>
@@ -1035,29 +1035,29 @@ p(x, y) = p(y \, | \, x) p(x)
 p(x_0, x_1, \ldots, x_T) =  p(x_0) \prod_{t=0}^{T-1} p(x_{t+1} \,|\, x_t)
 \]</div>
 <p>The marginal <span class="math notranslate nohighlight">\(p(x_0)\)</span> is just the primitive <span class="math notranslate nohighlight">\(N(\mu_0, \Sigma_0)\)</span>.</p>
-<p>In view of <a class="reference internal" href="#equation-st-space-rep">(33.1)</a>, the conditional densities are</p>
+<p>In view of <a class="reference internal" href="#equation-st-space-rep">(36.1)</a>, the conditional densities are</p>
 <div class="math notranslate nohighlight">
 \[
 p(x_{t+1} \,|\, x_t) = N(Ax_t, C C')
 \]</div>
 <section id="autocovariance-functions">
-<h4><span class="section-number">33.3.4.1. </span>Autocovariance Functions<a class="headerlink" href="#autocovariance-functions" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">36.3.4.1. </span>Autocovariance Functions<a class="headerlink" href="#autocovariance-functions" title="Permalink to this heading">#</a></h4>
 <p>An important object related to the joint distribution is the <em>autocovariance function</em></p>
 <div class="math notranslate nohighlight" id="equation-eqnautodeff">
-<span class="eqno">(33.13)<a class="headerlink" href="#equation-eqnautodeff" title="Permalink to this equation">#</a></span>\[\Sigma_{t+j, t} := \mathbb{E} [ (x_{t+j} - \mu_{t+j})(x_t - \mu_t)' ]\]</div>
+<span class="eqno">(36.13)<a class="headerlink" href="#equation-eqnautodeff" title="Permalink to this equation">#</a></span>\[\Sigma_{t+j, t} := \mathbb{E} [ (x_{t+j} - \mu_{t+j})(x_t - \mu_t)' ]\]</div>
 <p>Elementary calculations show that</p>
 <div class="math notranslate nohighlight" id="equation-eqnautocov">
-<span class="eqno">(33.14)<a class="headerlink" href="#equation-eqnautocov" title="Permalink to this equation">#</a></span>\[\Sigma_{t+j,t} = A^j \Sigma_t\]</div>
+<span class="eqno">(36.14)<a class="headerlink" href="#equation-eqnautocov" title="Permalink to this equation">#</a></span>\[\Sigma_{t+j,t} = A^j \Sigma_t\]</div>
 <p>Notice that <span class="math notranslate nohighlight">\(\Sigma_{t+j,t}\)</span> in general depends on both <span class="math notranslate nohighlight">\(j\)</span>, the gap between the two dates, and <span class="math notranslate nohighlight">\(t\)</span>, the earlier date.</p>
 </section>
 </section>
 </section>
 <section id="stationarity-and-ergodicity">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">33.4. </span>Stationarity and Ergodicity</a><a class="headerlink" href="#stationarity-and-ergodicity" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">36.4. </span>Stationarity and Ergodicity</a><a class="headerlink" href="#stationarity-and-ergodicity" title="Permalink to this heading">#</a></h2>
 <span class="target" id="index-11"></span><p id="index-12">Stationarity and ergodicity are two properties  that, when they hold,  greatly aid analysis of linear state space models.</p>
 <p>Let’s start with the intuition.</p>
 <section id="visualizing-stability">
-<h3><span class="section-number">33.4.1. </span>Visualizing Stability<a class="headerlink" href="#visualizing-stability" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.4.1. </span>Visualizing Stability<a class="headerlink" href="#visualizing-stability" title="Permalink to this heading">#</a></h3>
 <p>Let’s look at some more time series from the same model that we analyzed above.</p>
 <p>This picture shows cross-sectional distributions for <span class="math notranslate nohighlight">\(y\)</span> at times
 <span class="math notranslate nohighlight">\(T, T', T''\)</span></p>
@@ -1122,7 +1122,7 @@ distribution as <span class="math notranslate nohighlight">\(t \to \infty\)</spa
 <p>When such a distribution exists it is called a <em>stationary distribution</em>.</p>
 </section>
 <section id="stationary-distributions">
-<h3><span class="section-number">33.4.2. </span>Stationary Distributions<a class="headerlink" href="#stationary-distributions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.4.2. </span>Stationary Distributions<a class="headerlink" href="#stationary-distributions" title="Permalink to this heading">#</a></h3>
 <p>In our setting, a distribution <span class="math notranslate nohighlight">\(\psi_{\infty}\)</span> is said to be <em>stationary</em> for <span class="math notranslate nohighlight">\(x_t\)</span> if</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1143,10 +1143,10 @@ x_{t+1} \sim \psi_{\infty}
 \psi_{\infty}
 = N(\mu_{\infty}, \Sigma_{\infty})
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\mu_{\infty}\)</span> and <span class="math notranslate nohighlight">\(\Sigma_{\infty}\)</span> are fixed points of <a class="reference internal" href="#equation-lss-mut-linear-models">(33.6)</a> and <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(33.7)</a> respectively.</p>
+<p>where <span class="math notranslate nohighlight">\(\mu_{\infty}\)</span> and <span class="math notranslate nohighlight">\(\Sigma_{\infty}\)</span> are fixed points of <a class="reference internal" href="#equation-lss-mut-linear-models">(36.6)</a> and <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(36.7)</a> respectively.</p>
 </section>
 <section id="covariance-stationary-processes">
-<h3><span class="section-number">33.4.3. </span>Covariance Stationary Processes<a class="headerlink" href="#covariance-stationary-processes" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.4.3. </span>Covariance Stationary Processes<a class="headerlink" href="#covariance-stationary-processes" title="Permalink to this heading">#</a></h3>
 <p>Let’s see what happens to the preceding figure if we start <span class="math notranslate nohighlight">\(x_0\)</span> at the stationary distribution.</p>
 <div class="cell docutils container" id="lss-s-fig">
 <div class="cell_input docutils container">
@@ -1162,7 +1162,7 @@ x_{t+1} \sim \psi_{\infty}
 <p>By</p>
 <ul class="simple">
 <li><p>our choosing <span class="math notranslate nohighlight">\(x_0 \sim N(\mu_{\infty}, \Sigma_{\infty})\)</span></p></li>
-<li><p>the definitions of <span class="math notranslate nohighlight">\(\mu_{\infty}\)</span> and <span class="math notranslate nohighlight">\(\Sigma_{\infty}\)</span> as fixed points of <a class="reference internal" href="#equation-lss-mut-linear-models">(33.6)</a> and <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(33.7)</a> respectively</p></li>
+<li><p>the definitions of <span class="math notranslate nohighlight">\(\mu_{\infty}\)</span> and <span class="math notranslate nohighlight">\(\Sigma_{\infty}\)</span> as fixed points of <a class="reference internal" href="#equation-lss-mut-linear-models">(36.6)</a> and <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(36.7)</a> respectively</p></li>
 </ul>
 <p>we’ve ensured that</p>
 <div class="math notranslate nohighlight">
@@ -1172,7 +1172,7 @@ x_{t+1} \sim \psi_{\infty}
 \Sigma_t = \Sigma_{\infty}
 \quad \text{for all } t
 \]</div>
-<p>Moreover, in view of <a class="reference internal" href="#equation-eqnautocov">(33.14)</a>, the autocovariance function takes the form <span class="math notranslate nohighlight">\(\Sigma_{t+j,t} = A^j \Sigma_\infty\)</span>, which depends on <span class="math notranslate nohighlight">\(j\)</span> but not on <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Moreover, in view of <a class="reference internal" href="#equation-eqnautocov">(36.14)</a>, the autocovariance function takes the form <span class="math notranslate nohighlight">\(\Sigma_{t+j,t} = A^j \Sigma_\infty\)</span>, which depends on <span class="math notranslate nohighlight">\(j\)</span> but not on <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>This motivates the following definition.</p>
 <p>A  process <span class="math notranslate nohighlight">\(\{x_t\}\)</span> is said to be <em>covariance stationary</em> if</p>
 <ul class="simple">
@@ -1182,13 +1182,13 @@ x_{t+1} \sim \psi_{\infty}
 <p>In our setting, <span class="math notranslate nohighlight">\(\{x_t\}\)</span> will be covariance stationary if <span class="math notranslate nohighlight">\(\mu_0, \Sigma_0, A, C\)</span>  assume values that  imply that none of <span class="math notranslate nohighlight">\(\mu_t, \Sigma_t, \Sigma_{t+j,t}\)</span> depends on <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </section>
 <section id="conditions-for-stationarity">
-<h3><span class="section-number">33.4.4. </span>Conditions for Stationarity<a class="headerlink" href="#conditions-for-stationarity" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.4.4. </span>Conditions for Stationarity<a class="headerlink" href="#conditions-for-stationarity" title="Permalink to this heading">#</a></h3>
 <section id="the-globally-stable-case">
-<h4><span class="section-number">33.4.4.1. </span>The Globally Stable Case<a class="headerlink" href="#the-globally-stable-case" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">36.4.4.1. </span>The Globally Stable Case<a class="headerlink" href="#the-globally-stable-case" title="Permalink to this heading">#</a></h4>
 <p>The difference equation <span class="math notranslate nohighlight">\(\mu_{t+1} = A \mu_t\)</span> is known to have <em>unique</em>
 fixed point <span class="math notranslate nohighlight">\(\mu_{\infty} = 0\)</span> if all eigenvalues of <span class="math notranslate nohighlight">\(A\)</span> have moduli strictly less than unity.</p>
 <p>That is, if  <code class="docutils literal notranslate"><span class="pre">(np.absolute(np.linalg.eigvals(A))</span> <span class="pre">&lt;</span> <span class="pre">1).all()</span> <span class="pre">==</span> <span class="pre">True</span></code>.</p>
-<p>The difference equation <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(33.7)</a> also has a unique fixed point in this case, and, moreover</p>
+<p>The difference equation <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(36.7)</a> also has a unique fixed point in this case, and, moreover</p>
 <div class="math notranslate nohighlight">
 \[
 \mu_t \to \mu_{\infty} = 0
@@ -1205,7 +1205,7 @@ fixed point <span class="math notranslate nohighlight">\(\mu_{\infty} = 0\)</spa
 <p>How can we find stationary solutions that respect a constant state component?</p>
 </section>
 <section id="processes-with-a-constant-state-component">
-<h4><span class="section-number">33.4.4.2. </span>Processes with a Constant State Component<a class="headerlink" href="#processes-with-a-constant-state-component" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">36.4.4.2. </span>Processes with a Constant State Component<a class="headerlink" href="#processes-with-a-constant-state-component" title="Permalink to this heading">#</a></h4>
 <p>To investigate such a process, suppose that <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(C\)</span> take the
 form</p>
 <div class="math notranslate nohighlight">
@@ -1236,9 +1236,9 @@ x_{1,t+1} &amp; = A_1 x_{1t} + a + C_1 w_{t+1}
 \]</div>
 <p>Let <span class="math notranslate nohighlight">\(\mu_{1t} = \mathbb{E} [x_{1t}]\)</span> and take expectations on both sides of this expression to get</p>
 <div class="math notranslate nohighlight" id="equation-eqob29">
-<span class="eqno">(33.15)<a class="headerlink" href="#equation-eqob29" title="Permalink to this equation">#</a></span>\[\mu_{1,t+1} = A_1 \mu_{1,t} + a\]</div>
+<span class="eqno">(36.15)<a class="headerlink" href="#equation-eqob29" title="Permalink to this equation">#</a></span>\[\mu_{1,t+1} = A_1 \mu_{1,t} + a\]</div>
 <p>Assume now that the moduli of the eigenvalues of <span class="math notranslate nohighlight">\(A_1\)</span> are all strictly less than one.</p>
-<p>Then <a class="reference internal" href="#equation-eqob29">(33.15)</a> has a unique stationary solution, namely,</p>
+<p>Then <a class="reference internal" href="#equation-eqob29">(36.15)</a> has a unique stationary solution, namely,</p>
 <div class="math notranslate nohighlight">
 \[
 \mu_{1\infty} = (I-A_1)^{-1} a
@@ -1247,7 +1247,7 @@ x_{1,t+1} &amp; = A_1 x_{1t} + a + C_1 w_{t+1}
 \mu_{1\infty}' &amp; 1 \end{bmatrix}'\)</span>.</p>
 <p>The stationary values of <span class="math notranslate nohighlight">\(\Sigma_t\)</span> and <span class="math notranslate nohighlight">\(\Sigma_{t+j,t}\)</span> satisfy</p>
 <div class="math notranslate nohighlight" id="equation-eqnsigmainf">
-<span class="eqno">(33.16)<a class="headerlink" href="#equation-eqnsigmainf" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(36.16)<a class="headerlink" href="#equation-eqnsigmainf" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
 \Sigma_\infty  &amp; = A \Sigma_\infty A' + C C' \\
 \Sigma_{t+j,t} &amp; = A^j \Sigma_\infty \nonumber
 \end{aligned}\end{split}\]</div>
@@ -1264,17 +1264,17 @@ component.</p>
 <p>If the eigenvalues of <span class="math notranslate nohighlight">\(A_1\)</span> are less than unity in modulus, then
 (a) starting from any initial value, the mean and variance-covariance
 matrix both converge to their stationary values; and (b)
-iterations on <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(33.7)</a> converge to the fixed point of the <em>discrete
-Lyapunov equation</em> in the first line of <a class="reference internal" href="#equation-eqnsigmainf">(33.16)</a>.</p>
+iterations on <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(36.7)</a> converge to the fixed point of the <em>discrete
+Lyapunov equation</em> in the first line of <a class="reference internal" href="#equation-eqnsigmainf">(36.16)</a>.</p>
 </div>
 </section>
 </section>
 <section id="ergodicity">
-<h3><span class="section-number">33.4.5. </span>Ergodicity<a class="headerlink" href="#ergodicity" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.4.5. </span>Ergodicity<a class="headerlink" href="#ergodicity" title="Permalink to this heading">#</a></h3>
 <p>Let’s suppose that we’re working with a covariance stationary process.</p>
 <p>In this case, we know that the ensemble mean will converge to <span class="math notranslate nohighlight">\(\mu_{\infty}\)</span> as the sample size <span class="math notranslate nohighlight">\(I\)</span> approaches infinity.</p>
 <section id="averages-over-time">
-<h4><span class="section-number">33.4.5.1. </span>Averages over Time<a class="headerlink" href="#averages-over-time" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">36.4.5.1. </span>Averages over Time<a class="headerlink" href="#averages-over-time" title="Permalink to this heading">#</a></h4>
 <p>Ensemble averages across simulations are interesting theoretically, but in real life, we usually observe only a <em>single</em> realization <span class="math notranslate nohighlight">\(\{x_t, y_t\}_{t=0}^T\)</span>.</p>
 <p>So now let’s take a single realization and form the time-series averages</p>
 <div class="math notranslate nohighlight">
@@ -1299,7 +1299,7 @@ expectation under the stationary distribution.</p>
 </section>
 </section>
 <section id="noisy-observations">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">33.5. </span>Noisy Observations</a><a class="headerlink" href="#noisy-observations" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">36.5. </span>Noisy Observations</a><a class="headerlink" href="#noisy-observations" title="Permalink to this heading">#</a></h2>
 <p>In some settings, the observation equation <span class="math notranslate nohighlight">\(y_t = Gx_t\)</span> is modified to
 include an error term.</p>
 <p>Often this error term represents the idea that the true state can only be
@@ -1311,7 +1311,7 @@ observed imperfectly.</p>
 </ul>
 <p>and extend the linear state-space system to</p>
 <div class="math notranslate nohighlight" id="equation-st-space-rep-noisy">
-<span class="eqno">(33.17)<a class="headerlink" href="#equation-st-space-rep-noisy" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(36.17)<a class="headerlink" href="#equation-st-space-rep-noisy" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
     x_{t+1} &amp; =  A x_t + C w_{t+1}   \\
     y_t &amp;  =  G x_t + H v_t \nonumber \\
     x_0 &amp; \sim N(\mu_0, \Sigma_0) \nonumber
@@ -1319,13 +1319,13 @@ observed imperfectly.</p>
 <p>The sequence <span class="math notranslate nohighlight">\(\{v_t\}\)</span> is assumed to be independent of <span class="math notranslate nohighlight">\(\{w_t\}\)</span>.</p>
 <p>The process <span class="math notranslate nohighlight">\(\{x_t\}\)</span> is not modified by noise in the observation
 equation and its moments, distributions and stability properties remain the same.</p>
-<p>The unconditional moments of <span class="math notranslate nohighlight">\(y_t\)</span> from <a class="reference internal" href="#equation-lss-umy">(33.8)</a> and <a class="reference internal" href="#equation-lss-uvy">(33.9)</a>
+<p>The unconditional moments of <span class="math notranslate nohighlight">\(y_t\)</span> from <a class="reference internal" href="#equation-lss-umy">(36.8)</a> and <a class="reference internal" href="#equation-lss-uvy">(36.9)</a>
 now become</p>
 <div class="math notranslate nohighlight" id="equation-lss-umy-2">
-<span class="eqno">(33.18)<a class="headerlink" href="#equation-lss-umy-2" title="Permalink to this equation">#</a></span>\[\mathbb{E} [y_t] = \mathbb{E} [G x_t + H v_t] = G \mu_t\]</div>
+<span class="eqno">(36.18)<a class="headerlink" href="#equation-lss-umy-2" title="Permalink to this equation">#</a></span>\[\mathbb{E} [y_t] = \mathbb{E} [G x_t + H v_t] = G \mu_t\]</div>
 <p>The variance-covariance matrix of <span class="math notranslate nohighlight">\(y_t\)</span> is easily shown to be</p>
 <div class="math notranslate nohighlight" id="equation-lss-uvy-2">
-<span class="eqno">(33.19)<a class="headerlink" href="#equation-lss-uvy-2" title="Permalink to this equation">#</a></span>\[\textrm{Var} [y_t] = \textrm{Var} [G x_t + H v_t] = G \Sigma_t G' + HH'\]</div>
+<span class="eqno">(36.19)<a class="headerlink" href="#equation-lss-uvy-2" title="Permalink to this equation">#</a></span>\[\textrm{Var} [y_t] = \textrm{Var} [G x_t + H v_t] = G \Sigma_t G' + HH'\]</div>
 <p>The distribution of <span class="math notranslate nohighlight">\(y_t\)</span> is therefore</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1333,11 +1333,11 @@ y_t \sim N(G \mu_t, G \Sigma_t G' + HH')
 \]</div>
 </section>
 <section id="prediction">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">33.6. </span>Prediction</a><a class="headerlink" href="#prediction" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">36.6. </span>Prediction</a><a class="headerlink" href="#prediction" title="Permalink to this heading">#</a></h2>
 <p id="index-13">The theory of prediction for linear state space systems is elegant and
 simple.</p>
 <section id="forecasting-formulas-conditional-means">
-<span id="ff-cm"></span><h3><span class="section-number">33.6.1. </span>Forecasting Formulas – Conditional Means<a class="headerlink" href="#forecasting-formulas-conditional-means" title="Permalink to this heading">#</a></h3>
+<span id="ff-cm"></span><h3><span class="section-number">36.6.1. </span>Forecasting Formulas – Conditional Means<a class="headerlink" href="#forecasting-formulas-conditional-means" title="Permalink to this heading">#</a></h3>
 <p>The natural way to predict variables is to use conditional distributions.</p>
 <p>For example, the optimal forecast of <span class="math notranslate nohighlight">\(x_{t+1}\)</span> given information known at time <span class="math notranslate nohighlight">\(t\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -1380,42 +1380,42 @@ x_{t+j} = A^j x_t + A^{j-1} C w_{t+1} + A^{j-2} C w_{t+2} +
 \]</div>
 </section>
 <section id="covariance-of-prediction-errors">
-<h3><span class="section-number">33.6.2. </span>Covariance of Prediction Errors<a class="headerlink" href="#covariance-of-prediction-errors" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">36.6.2. </span>Covariance of Prediction Errors<a class="headerlink" href="#covariance-of-prediction-errors" title="Permalink to this heading">#</a></h3>
 <p>It is useful to obtain the covariance matrix of the vector of  <span class="math notranslate nohighlight">\(j\)</span>-step-ahead prediction errors</p>
 <div class="math notranslate nohighlight" id="equation-eqob8">
-<span class="eqno">(33.20)<a class="headerlink" href="#equation-eqob8" title="Permalink to this equation">#</a></span>\[x_{t+j} - \mathbb{E}_t [ x_{t+j}] = \sum^{j-1}_{s=0} A^s C w_{t-s+j}\]</div>
+<span class="eqno">(36.20)<a class="headerlink" href="#equation-eqob8" title="Permalink to this equation">#</a></span>\[x_{t+j} - \mathbb{E}_t [ x_{t+j}] = \sum^{j-1}_{s=0} A^s C w_{t-s+j}\]</div>
 <p>Evidently,</p>
 <div class="math notranslate nohighlight" id="equation-eqob9a">
-<span class="eqno">(33.21)<a class="headerlink" href="#equation-eqob9a" title="Permalink to this equation">#</a></span>\[V_j := \mathbb{E}_t [ (x_{t+j} - \mathbb{E}_t [x_{t+j}] ) (x_{t+j} - \mathbb{E}_t [x_{t+j}] )^\prime ] =   \sum^{j-1}_{k=0} A^k C C^\prime A^{k^\prime}\]</div>
-<p><span class="math notranslate nohighlight">\(V_j\)</span> defined in <a class="reference internal" href="#equation-eqob9a">(33.21)</a> can be calculated recursively via <span class="math notranslate nohighlight">\(V_1 = CC'\)</span> and</p>
+<span class="eqno">(36.21)<a class="headerlink" href="#equation-eqob9a" title="Permalink to this equation">#</a></span>\[V_j := \mathbb{E}_t [ (x_{t+j} - \mathbb{E}_t [x_{t+j}] ) (x_{t+j} - \mathbb{E}_t [x_{t+j}] )^\prime ] =   \sum^{j-1}_{k=0} A^k C C^\prime A^{k^\prime}\]</div>
+<p><span class="math notranslate nohighlight">\(V_j\)</span> defined in <a class="reference internal" href="#equation-eqob9a">(36.21)</a> can be calculated recursively via <span class="math notranslate nohighlight">\(V_1 = CC'\)</span> and</p>
 <div class="math notranslate nohighlight" id="equation-eqob9b">
-<span class="eqno">(33.22)<a class="headerlink" href="#equation-eqob9b" title="Permalink to this equation">#</a></span>\[V_j = CC^\prime + A V_{j-1} A^\prime, \quad j \geq 2\]</div>
+<span class="eqno">(36.22)<a class="headerlink" href="#equation-eqob9b" title="Permalink to this equation">#</a></span>\[V_j = CC^\prime + A V_{j-1} A^\prime, \quad j \geq 2\]</div>
 <p><span class="math notranslate nohighlight">\(V_j\)</span> is the <em>conditional covariance matrix</em> of the errors in forecasting
 <span class="math notranslate nohighlight">\(x_{t+j}\)</span>, conditioned on time <span class="math notranslate nohighlight">\(t\)</span> information <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
 <p>Under particular conditions, <span class="math notranslate nohighlight">\(V_j\)</span> converges to</p>
 <div class="math notranslate nohighlight" id="equation-eqob10">
-<span class="eqno">(33.23)<a class="headerlink" href="#equation-eqob10" title="Permalink to this equation">#</a></span>\[V_\infty = CC' + A V_\infty A'\]</div>
-<p>Equation <a class="reference internal" href="#equation-eqob10">(33.23)</a> is an example of a <em>discrete Lyapunov</em> equation in the covariance matrix <span class="math notranslate nohighlight">\(V_\infty\)</span>.</p>
+<span class="eqno">(36.23)<a class="headerlink" href="#equation-eqob10" title="Permalink to this equation">#</a></span>\[V_\infty = CC' + A V_\infty A'\]</div>
+<p>Equation <a class="reference internal" href="#equation-eqob10">(36.23)</a> is an example of a <em>discrete Lyapunov</em> equation in the covariance matrix <span class="math notranslate nohighlight">\(V_\infty\)</span>.</p>
 <p>A sufficient condition for <span class="math notranslate nohighlight">\(V_j\)</span> to converge is that the eigenvalues of <span class="math notranslate nohighlight">\(A\)</span> be strictly less than one in modulus.</p>
 <p>Weaker sufficient conditions for convergence  associate eigenvalues equaling or exceeding one in modulus with elements of <span class="math notranslate nohighlight">\(C\)</span> that equal <span class="math notranslate nohighlight">\(0\)</span>.</p>
 </section>
 </section>
 <section id="code">
-<span id="lm-fgs"></span><h2><a class="toc-backref" href="#id10"><span class="section-number">33.7. </span>Code</a><a class="headerlink" href="#code" title="Permalink to this heading">#</a></h2>
+<span id="lm-fgs"></span><h2><a class="toc-backref" href="#id10"><span class="section-number">36.7. </span>Code</a><a class="headerlink" href="#code" title="Permalink to this heading">#</a></h2>
 <p>Our preceding simulations and calculations are based on code in
-the file <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">lss.py</a> from the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a> package.</p>
+the file <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">lss.py</a> from the <a class="reference external" href="https://quantecon.org/quantecon-py">QuantEcon.py</a> package.</p>
 <p>The code implements a class for handling linear state space models (simulations, calculating moments, etc.).</p>
 <p>One Python construct you might not be familiar with is the use of a generator function in the method <code class="docutils literal notranslate"><span class="pre">moment_sequence()</span></code>.</p>
 <p>Go back and <a class="reference external" href="https://python-programming.quantecon.org/python_advanced_features.html#generators">read the relevant documentation</a> if you’ve forgotten how generator functions work.</p>
 <p>Examples of usage are given in the solutions to the exercises.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">33.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">36.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="lss_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 33.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 36.1 </span></p>
 <section id="exercise-content">
-<p>In several contexts, we want to compute forecasts of  geometric sums of future random variables governed by the linear state-space system <a class="reference internal" href="#equation-st-space-rep">(33.1)</a>.</p>
+<p>In several contexts, we want to compute forecasts of  geometric sums of future random variables governed by the linear state-space system <a class="reference internal" href="#equation-st-space-rep">(36.1)</a>.</p>
 <p>We want the following objects</p>
 <ul class="simple">
 <li><p>Forecast of a geometric sum of future <span class="math notranslate nohighlight">\(x\)</span>’s, or <span class="math notranslate nohighlight">\(\mathbb{E}_t \left[ \sum_{j=0}^\infty \beta^j x_{t+j} \right]\)</span>.</p></li>
@@ -1442,7 +1442,7 @@ the file <a class="reference external" href="https://github.com/QuantEcon/QuantE
 </div>
 <div class="solution dropdown admonition" id="linear_models-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#lss_ex1"> Exercise 33.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#lss_ex1"> Exercise 36.1</a></p>
 <section id="solution-content">
 <p>Suppose that every eigenvalue of <span class="math notranslate nohighlight">\(A\)</span> has modulus strictly less than <span class="math notranslate nohighlight">\(\frac{1}{\beta}\)</span>.</p>
 <p>It <a class="reference internal" href="linear_algebra.html#la-neumann-remarks"><span class="std std-ref">then follows</span></a> that <span class="math notranslate nohighlight">\(I + \beta A + \beta^2 A^2 + \cdots = \left[I - \beta A \right]^{-1}\)</span>.</p>
@@ -1473,8 +1473,8 @@ the file <a class="reference external" href="https://github.com/QuantEcon/QuantE
 </dd>
 <dt class="label" id="fn-ag"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
 <dd><p>The correct way to argue this is by induction.  Suppose that
-<span class="math notranslate nohighlight">\(x_t\)</span> is Gaussian.  Then <a class="reference internal" href="#equation-st-space-rep">(33.1)</a> and
-<a class="reference internal" href="#equation-lss-glig">(33.10)</a> imply that <span class="math notranslate nohighlight">\(x_{t+1}\)</span> is Gaussian.  Since <span class="math notranslate nohighlight">\(x_0\)</span>
+<span class="math notranslate nohighlight">\(x_t\)</span> is Gaussian.  Then <a class="reference internal" href="#equation-st-space-rep">(36.1)</a> and
+<a class="reference internal" href="#equation-lss-glig">(36.10)</a> imply that <span class="math notranslate nohighlight">\(x_{t+1}\)</span> is Gaussian.  Since <span class="math notranslate nohighlight">\(x_0\)</span>
 is assumed to be Gaussian, it follows that every <span class="math notranslate nohighlight">\(x_t\)</span> is Gaussian.
 Evidently, this implies that each <span class="math notranslate nohighlight">\(y_t\)</span> is Gaussian.</p>
 </dd>
@@ -1659,43 +1659,58 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
+  <a class="reference internal" href="divergence_measures.html">
+   21. Statistical Divergence Measures
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   21. Likelihood Ratio Processes
+   22. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process_2.html">
+   23. Heterogeneous Beliefs and Financial Markets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_var.html">
+   24. Likelihood Processes for VAR Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   22. Mean of a Likelihood Ratio Process
+   25. Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   23. A Problem that Stumped Milton Friedman
+   26. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman_2.html">
-   24. A Bayesian Formulation of Friedman and Wald’s Problem
+   27. A Bayesian Formulation of Friedman and Wald’s Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   25. Exchangeability and Bayesian Updating
+   28. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   26. Likelihood Ratio Processes and Bayesian Learning
+   29. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   27. Incorrect Models
+   30. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   28. Bayesian versus Frequentist Decision Rules
+   31. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1707,12 +1722,12 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   29. Optimal Transport
+   32. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   30. Von Neumann Growth Model (and a Generalization)
+   33. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1724,42 +1739,42 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   31. Finite Markov Chains
+   34. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   32. Inventory Dynamics
+   35. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   33. Linear State Space Models
+   36. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   34. Samuelson Multiplier-Accelerator
+   37. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   35. Kesten Processes and Firm Dynamics
+   38. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   36. Wealth Distribution Dynamics
+   39. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   37. A First Look at the Kalman Filter
+   40. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   38. Another Look at the Kalman Filter
+   41. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -1771,42 +1786,42 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   39. Job Search I: The McCall Search Model
+   42. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   40. Job Search II: Search and Separation
+   43. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   41. Job Search III: Fitted Value Function Iteration
+   44. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   42. Job Search IV: Correlated Wage Offers
+   45. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   43. Job Search V: Modeling Career Choice
+   46. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   44. Job Search VI: On-the-Job Search
+   47. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   45. Job Search VII: A McCall Worker Q-Learns
+   48. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   46. Job Search VII: Search with Learning
+   49. Job Search VII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1818,67 +1833,67 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   47. Cass-Koopmans Model
+   50. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   48. Cass-Koopmans Competitive Equilibrium
+   51. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   49. Cass-Koopmans Model with Distorting Taxes
+   52. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   50. Two-Country Model with Distorting Taxes
+   53. Two-Country Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   51. Transitions in an Overlapping Generations Model
+   54. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   52. Cake Eating I: Introduction to Optimal Saving
+   55. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   53. Cake Eating II: Numerical Methods
+   56. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   54. Optimal Growth I: The Stochastic Optimal Growth Model
+   57. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   55. Optimal Growth II: Accelerating the Code with Numba
+   58. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   56. Optimal Growth III: Time Iteration
+   59. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   57. Optimal Growth IV: The Endogenous Grid Method
+   60. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   58. The Income Fluctuation Problem I: Basic Model
+   61. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   59. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   62. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1890,32 +1905,32 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   60. LQ Control: Foundations
+   63. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   61. Lagrangian for LQ Control
+   64. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   62. Eliminating Cross Products
+   65. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   63. The Permanent Income Model
+   66. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   64. Permanent Income II: LQ Techniques
+   67. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   65. Production Smoothing via Inventories
+   68. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1927,32 +1942,32 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   66. A Lake Model of Employment and Unemployment
+   69. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   67. Rational Expectations Equilibrium
+   70. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   68. Stability in Linear Rational Expectations Models
+   71. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   69. Markov Perfect Equilibrium
+   72. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   70. Uncertainty Traps
+   73. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   71. The Aiyagari Model
+   74. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1964,17 +1979,17 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   72. Asset Pricing: Finite State Models
+   75. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   73. Competitive Equilibria with Arrow Securities
+   76. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   74. Heterogeneous Beliefs and Bubbles
+   77. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1986,17 +2001,17 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   75. Pandas for Panel Data
+   78. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   76. Linear Regression in Python
+   79. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   77. Maximum Likelihood Estimation
+   80. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2008,12 +2023,12 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   78. First-Price and Second-Price Auctions
+   81. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   79. Multiple Good Allocation Mechanisms
+   82. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2025,17 +2040,17 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   80. Troubleshooting
+   83. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   81. References
+   84. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   82. Execution Statistics
+   85. Execution Statistics
   </a>
  </li>
 </ul>

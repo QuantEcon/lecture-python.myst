@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>75. Pandas for Panel Data &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>78. Pandas for Panel Data &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -116,8 +116,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="76. Linear Regression in Python" href="ols.html" />
-    <link rel="prev" title="74. Heterogeneous Beliefs and Bubbles" href="harrison_kreps.html" />
+    <link rel="next" title="79. Linear Regression in Python" href="ols.html" />
+    <link rel="prev" title="77. Heterogeneous Beliefs and Bubbles" href="harrison_kreps.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -165,12 +165,12 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">75.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#slicing-and-reshaping-data">75.2. Slicing and Reshaping Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-dataframes-and-filling-nans">75.3. Merging Dataframes and Filling NaNs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grouping-and-summarizing-data">75.4. Grouping and Summarizing Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-remarks">75.5. Final Remarks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">75.6. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">78.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#slicing-and-reshaping-data">78.2. Slicing and Reshaping Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-dataframes-and-filling-nans">78.3. Merging Dataframes and Filling NaNs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grouping-and-summarizing-data">78.4. Grouping and Summarizing Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-remarks">78.5. Final Remarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">78.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -228,7 +228,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="pandas-for-panel-data">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">75. </span><span class="target" id="index-0"></span>Pandas for Panel Data</a><a class="headerlink" href="#pandas-for-panel-data" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id1"><span class="section-number">78. </span><span class="target" id="index-0"></span>Pandas for Panel Data</a><a class="headerlink" href="#pandas-for-panel-data" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -245,7 +245,7 @@
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">75.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2"><span class="section-number">78.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In an <a class="reference external" href="https://python-programming.quantecon.org/pandas.html">earlier lecture on pandas</a>, we looked at working with simple data sets.</p>
 <p>Econometricians often need to work with more complex data sets, such as panels.</p>
 <p>Common tasks include</p>
@@ -269,7 +269,7 @@ reshaping the resulting <code class="docutils literal notranslate"><span class="
 function.</p>
 </section>
 <section id="slicing-and-reshaping-data">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">75.2. </span>Slicing and Reshaping Data</a><a class="headerlink" href="#slicing-and-reshaping-data" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">78.2. </span>Slicing and Reshaping Data</a><a class="headerlink" href="#slicing-and-reshaping-data" title="Permalink to this heading">#</a></h2>
 <p>We will read in a dataset from the OECD of real minimum wages in 32
 countries and assign it to <code class="docutils literal notranslate"><span class="pre">realwage</span></code>.</p>
 <p>The dataset can be accessed with the following link:</p>
@@ -1057,7 +1057,7 @@ the higher levels (countries in this case)</p>
 </div>
 </section>
 <section id="merging-dataframes-and-filling-nans">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">75.3. </span>Merging Dataframes and Filling NaNs</a><a class="headerlink" href="#merging-dataframes-and-filling-nans" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">78.3. </span>Merging Dataframes and Filling NaNs</a><a class="headerlink" href="#merging-dataframes-and-filling-nans" title="Permalink to this heading">#</a></h2>
 <p>Similar to relational databases like SQL, pandas has built in methods to
 merge datasets together.</p>
 <p>Using country information from
@@ -1906,7 +1906,7 @@ will go ahead and transpose <code class="docutils literal notranslate"><span cla
 </div>
 </section>
 <section id="grouping-and-summarizing-data">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">75.4. </span>Grouping and Summarizing Data</a><a class="headerlink" href="#grouping-and-summarizing-data" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">78.4. </span>Grouping and Summarizing Data</a><a class="headerlink" href="#grouping-and-summarizing-data" title="Permalink to this heading">#</a></h2>
 <p>Grouping and summarizing data can be particularly useful for
 understanding large panel datasets.</p>
 <p>A simple way to summarize data is to call an <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/getting_started/intro_tutorials/06_calculate_statistics.html">aggregation
@@ -2268,7 +2268,7 @@ object</p>
 </div>
 </section>
 <section id="final-remarks">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">75.5. </span>Final Remarks</a><a class="headerlink" href="#final-remarks" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">78.5. </span>Final Remarks</a><a class="headerlink" href="#final-remarks" title="Permalink to this heading">#</a></h2>
 <p>This lecture has provided an introduction to some of pandas’ more
 advanced features, including multiindices, merging, grouping and
 plotting.</p>
@@ -2276,10 +2276,10 @@ plotting.</p>
 extends pandas to N-dimensional data structures.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">75.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">78.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="pp_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 75.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 78.1 </span></p>
 <section id="exercise-content">
 <p>In these exercises, you’ll work with a dataset of employment rates
 in Europe by age and sex from <a class="reference external" href="https://ec.europa.eu/eurostat/data/database">Eurostat</a>.</p>
@@ -2300,7 +2300,7 @@ a wide format dataframe with a <code class="docutils literal notranslate"><span 
 </div>
 <div class="solution dropdown admonition" id="pandas_panel-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#pp_ex1"> Exercise 75.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#pp_ex1"> Exercise 78.1</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2483,7 +2483,7 @@ GEO Index([&#39;Austria&#39;, &#39;Belgium&#39;, &#39;Bulgaria&#39;, &#39;Croati
 </div>
 <div class="exercise admonition" id="pp_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 75.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 78.2 </span></p>
 <section id="exercise-content">
 <p>Filter the above dataframe to only include employment as a percentage of
 ‘active population’.</p>
@@ -2497,7 +2497,7 @@ by age group and sex.</p>
 </div>
 <div class="solution dropdown admonition" id="pandas_panel-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#pp_ex2"> Exercise 75.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#pp_ex2"> Exercise 78.2</a></p>
 <section id="solution-content">
 <p>To easily filter by country, swap <code class="docutils literal notranslate"><span class="pre">GEO</span></code> to the top level and sort the
 <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code></p>
@@ -2864,43 +2864,58 @@ dataframe</p>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
+  <a class="reference internal" href="divergence_measures.html">
+   21. Statistical Divergence Measures
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   21. Likelihood Ratio Processes
+   22. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process_2.html">
+   23. Heterogeneous Beliefs and Financial Markets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_var.html">
+   24. Likelihood Processes for VAR Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   22. Mean of a Likelihood Ratio Process
+   25. Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   23. A Problem that Stumped Milton Friedman
+   26. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman_2.html">
-   24. A Bayesian Formulation of Friedman and Wald’s Problem
+   27. A Bayesian Formulation of Friedman and Wald’s Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   25. Exchangeability and Bayesian Updating
+   28. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   26. Likelihood Ratio Processes and Bayesian Learning
+   29. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   27. Incorrect Models
+   30. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   28. Bayesian versus Frequentist Decision Rules
+   31. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -2912,12 +2927,12 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   29. Optimal Transport
+   32. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   30. Von Neumann Growth Model (and a Generalization)
+   33. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -2929,42 +2944,42 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   31. Finite Markov Chains
+   34. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   32. Inventory Dynamics
+   35. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   33. Linear State Space Models
+   36. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   34. Samuelson Multiplier-Accelerator
+   37. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   35. Kesten Processes and Firm Dynamics
+   38. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   36. Wealth Distribution Dynamics
+   39. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   37. A First Look at the Kalman Filter
+   40. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   38. Another Look at the Kalman Filter
+   41. Another Look at the Kalman Filter
   </a>
  </li>
 </ul>
@@ -2976,42 +2991,42 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   39. Job Search I: The McCall Search Model
+   42. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   40. Job Search II: Search and Separation
+   43. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   41. Job Search III: Fitted Value Function Iteration
+   44. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   42. Job Search IV: Correlated Wage Offers
+   45. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   43. Job Search V: Modeling Career Choice
+   46. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   44. Job Search VI: On-the-Job Search
+   47. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   45. Job Search VII: A McCall Worker Q-Learns
+   48. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   46. Job Search VII: Search with Learning
+   49. Job Search VII: Search with Learning
   </a>
  </li>
 </ul>
@@ -3023,67 +3038,67 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   47. Cass-Koopmans Model
+   50. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   48. Cass-Koopmans Competitive Equilibrium
+   51. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   49. Cass-Koopmans Model with Distorting Taxes
+   52. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   50. Two-Country Model with Distorting Taxes
+   53. Two-Country Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   51. Transitions in an Overlapping Generations Model
+   54. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   52. Cake Eating I: Introduction to Optimal Saving
+   55. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   53. Cake Eating II: Numerical Methods
+   56. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   54. Optimal Growth I: The Stochastic Optimal Growth Model
+   57. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   55. Optimal Growth II: Accelerating the Code with Numba
+   58. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   56. Optimal Growth III: Time Iteration
+   59. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   57. Optimal Growth IV: The Endogenous Grid Method
+   60. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   58. The Income Fluctuation Problem I: Basic Model
+   61. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   59. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   62. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -3095,32 +3110,32 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   60. LQ Control: Foundations
+   63. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   61. Lagrangian for LQ Control
+   64. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   62. Eliminating Cross Products
+   65. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   63. The Permanent Income Model
+   66. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   64. Permanent Income II: LQ Techniques
+   67. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   65. Production Smoothing via Inventories
+   68. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -3132,32 +3147,32 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   66. A Lake Model of Employment and Unemployment
+   69. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   67. Rational Expectations Equilibrium
+   70. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   68. Stability in Linear Rational Expectations Models
+   71. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   69. Markov Perfect Equilibrium
+   72. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   70. Uncertainty Traps
+   73. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   71. The Aiyagari Model
+   74. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -3169,17 +3184,17 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   72. Asset Pricing: Finite State Models
+   75. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   73. Competitive Equilibria with Arrow Securities
+   76. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   74. Heterogeneous Beliefs and Bubbles
+   77. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -3191,17 +3206,17 @@ dataframe</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   75. Pandas for Panel Data
+   78. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   76. Linear Regression in Python
+   79. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   77. Maximum Likelihood Estimation
+   80. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -3213,12 +3228,12 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   78. First-Price and Second-Price Auctions
+   81. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   79. Multiple Good Allocation Mechanisms
+   82. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -3230,17 +3245,17 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   80. Troubleshooting
+   83. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   81. References
+   84. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   82. Execution Statistics
+   85. Execution Statistics
   </a>
  </li>
 </ul>

@@ -1,0 +1,1804 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>24. Likelihood Processes for VAR Models &#8212; Intermediate Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'likelihood_var';</script>
+    <link rel="canonical" href="https://python.quantecon.org/likelihood_var.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="25. Mean of a Likelihood Ratio Process" href="imp_sample.html" />
+    <link rel="prev" title="23. Heterogeneous Beliefs and Financial Markets" href="likelihood_ratio_process_2.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Likelihood Processes for VAR Models"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Likelihood Processes for VAR Models" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/likelihood_var.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=likelihood_var>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">24.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#var-model-setup">24.2. VAR model setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-distribution">24.2.1. Joint distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conditional-densities">24.2.2. Conditional densities</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-process">24.3. Likelihood ratio process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-two-ar-1-processes">24.4. Example 1: Two AR(1) processes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-bivariate-var-models">24.5. Example 2: Bivariate VAR models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-samuelson-multiplier-accelerator">24.6. Application: Samuelson multiplier-accelerator</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">Likelihood Processes for VAR Models</p>
+
+                    </div>
+                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="likelihood-processes-for-var-models">
+<h1><a class="toc-backref" href="#id1"><span class="section-number">24. </span>Likelihood Processes for VAR Models</a><a class="headerlink" href="#likelihood-processes-for-var-models" title="Permalink to this heading">#</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#likelihood-processes-for-var-models" id="id1">Likelihood Processes for VAR Models</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
+<li><p><a class="reference internal" href="#var-model-setup" id="id3">VAR model setup</a></p></li>
+<li><p><a class="reference internal" href="#likelihood-ratio-process" id="id4">Likelihood ratio process</a></p></li>
+<li><p><a class="reference internal" href="#example-1-two-ar-1-processes" id="id5">Example 1: Two AR(1) processes</a></p></li>
+<li><p><a class="reference internal" href="#example-2-bivariate-var-models" id="id6">Example 2: Bivariate VAR models</a></p></li>
+<li><p><a class="reference internal" href="#application-samuelson-multiplier-accelerator" id="id7">Application: Samuelson multiplier-accelerator</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="overview">
+<h2><a class="toc-backref" href="#id2"><span class="section-number">24.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>This lecture extends our analysis of likelihood ratio processes to Vector Autoregressions (VARs).</p>
+<p>We’ll</p>
+<ul class="simple">
+<li><p>Construct likelihood functions for VAR models</p></li>
+<li><p>Form likelihood ratio processes for comparing two VAR models</p></li>
+<li><p>Visualize the evolution of likelihood ratios over time</p></li>
+<li><p>Connect VAR likelihood ratios to the Samuelson multiplier-accelerator model</p></li>
+</ul>
+<p>Our  analysis builds on concepts from:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a></p></li>
+<li><p><a class="reference internal" href="linear_models.html"><span class="doc">Linear State Space Models</span></a></p></li>
+<li><p><a class="reference internal" href="samuelson.html"><span class="doc">Samuelson Multiplier-Accelerator</span></a></p></li>
+</ul>
+<p>Let’s start by importing helpful  libraries:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span> <span class="k">as</span> <span class="n">mvn</span>
+<span class="kn">from</span> <span class="nn">quantecon</span> <span class="kn">import</span> <span class="n">LinearStateSpace</span>
+<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="var-model-setup">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">24.2. </span>VAR model setup</a><a class="headerlink" href="#var-model-setup" title="Permalink to this heading">#</a></h2>
+<p>Consider a VAR model of the form:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned} 
+x_{t+1} &amp; = A x_t + C w_{t+1} \\
+x_0 &amp; \sim \mathcal{N}(\mu_0, \Sigma_0) 
+\end{aligned}
+\end{split}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_t\)</span> is an <span class="math notranslate nohighlight">\(n \times 1\)</span> state vector</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_{t+1} \sim \mathcal{N}(0, I)\)</span> is an <span class="math notranslate nohighlight">\(m \times 1\)</span> vector of shocks</p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> transition matrix</p></li>
+<li><p><span class="math notranslate nohighlight">\(C\)</span> is an <span class="math notranslate nohighlight">\(n \times m\)</span> volatility matrix</p></li>
+</ul>
+<p>Let’s define the necessary data structures for the VAR model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">VARModel</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;VARModel&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;μ_0&#39;</span><span class="p">,</span> <span class="s1">&#39;Σ_0&#39;</span><span class="p">,</span>        
+                                    <span class="s1">&#39;CC&#39;</span><span class="p">,</span> <span class="s1">&#39;CC_inv&#39;</span><span class="p">,</span> <span class="s1">&#39;log_det_CC&#39;</span><span class="p">,</span> 
+                                    <span class="s1">&#39;Σ_0_inv&#39;</span><span class="p">,</span> <span class="s1">&#39;log_det_Σ_0&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">compute_stationary_var</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute stationary mean and covariance for VAR model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># Check stability</span>
+    <span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;VAR is not stationary&quot;</span><span class="p">)</span>
+    
+    <span class="n">μ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    
+    <span class="c1"># Stationary covariance: solve discrete Lyapunov equation</span>
+    <span class="c1"># Σ_0 = A @ Σ_0 @ A.T + C @ C.T</span>
+    <span class="n">CC</span> <span class="o">=</span> <span class="n">C</span> <span class="o">@</span> <span class="n">C</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">Σ_0</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">solve_discrete_lyapunov</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">CC</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">μ_0</span><span class="p">,</span> <span class="n">Σ_0</span>
+
+<span class="k">def</span> <span class="nf">create_var_model</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">μ_0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Σ_0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stationary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a VAR model with parameters and precomputed matrices</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">CC</span> <span class="o">=</span> <span class="n">C</span> <span class="o">@</span> <span class="n">C</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="k">if</span> <span class="n">stationary</span><span class="p">:</span>
+        <span class="n">μ_0_comp</span><span class="p">,</span> <span class="n">Σ_0_comp</span> <span class="o">=</span> <span class="n">compute_stationary_var</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">μ_0_comp</span> <span class="o">=</span> <span class="n">μ_0</span> <span class="k">if</span> <span class="n">μ_0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">Σ_0_comp</span> <span class="o">=</span> <span class="n">Σ_0</span> <span class="k">if</span> <span class="n">Σ_0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    
+    <span class="c1"># Check if CC is singular</span>
+    <span class="n">det_CC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">det_CC</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">:</span>
+        <span class="c1"># Use pseudo-inverse for singular case</span>
+        <span class="n">CC_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span>
+        <span class="n">CC_reg</span> <span class="o">=</span> <span class="n">CC</span> <span class="o">+</span> <span class="mf">1e-10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">CC</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">log_det_CC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">CC_reg</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">CC_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span>
+        <span class="n">log_det_CC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">det_CC</span><span class="p">)</span>
+    
+    <span class="c1"># Same check for Σ_0</span>
+    <span class="n">det_Σ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">Σ_0_comp</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">det_Σ_0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">:</span>
+        <span class="n">Σ_0_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">Σ_0_comp</span><span class="p">)</span>
+        <span class="n">Σ_0_reg</span> <span class="o">=</span> <span class="n">Σ_0_comp</span> <span class="o">+</span> <span class="mf">1e-10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">Σ_0_comp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">log_det_Σ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">Σ_0_reg</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Σ_0_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Σ_0_comp</span><span class="p">)</span>
+        <span class="n">log_det_Σ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">det_Σ_0</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">VARModel</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">μ_0</span><span class="o">=</span><span class="n">μ_0_comp</span><span class="p">,</span> <span class="n">Σ_0</span><span class="o">=</span><span class="n">Σ_0_comp</span><span class="p">,</span>
+                    <span class="n">CC</span><span class="o">=</span><span class="n">CC</span><span class="p">,</span> <span class="n">CC_inv</span><span class="o">=</span><span class="n">CC_inv</span><span class="p">,</span> <span class="n">log_det_CC</span><span class="o">=</span><span class="n">log_det_CC</span><span class="p">,</span>
+                    <span class="n">Σ_0_inv</span><span class="o">=</span><span class="n">Σ_0_inv</span><span class="p">,</span> <span class="n">log_det_Σ_0</span><span class="o">=</span><span class="n">log_det_Σ_0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="joint-distribution">
+<h3><span class="section-number">24.2.1. </span>Joint distribution<a class="headerlink" href="#joint-distribution" title="Permalink to this heading">#</a></h3>
+<p>The joint probability distribution <span class="math notranslate nohighlight">\(f(x_T, x_{T-1}, \ldots, x_0)\)</span> can be factored as:</p>
+<div class="math notranslate nohighlight">
+\[
+f(x_T, \ldots, x_0) = f(x_T | x_{T-1}) f(x_{T-1} | x_{T-2}) \cdots f(x_1 | x_0) f(x_0)
+\]</div>
+<p>Since the VAR is Markovian, <span class="math notranslate nohighlight">\(f(x_{t+1} | x_t, \ldots, x_0) = f(x_{t+1} | x_t)\)</span>.</p>
+</section>
+<section id="conditional-densities">
+<h3><span class="section-number">24.2.2. </span>Conditional densities<a class="headerlink" href="#conditional-densities" title="Permalink to this heading">#</a></h3>
+<p>Given the Gaussian structure, the conditional distribution <span class="math notranslate nohighlight">\(f(x_{t+1} | x_t)\)</span> is Gaussian with:</p>
+<ul class="simple">
+<li><p>Mean: <span class="math notranslate nohighlight">\(A x_t\)</span></p></li>
+<li><p>Covariance: <span class="math notranslate nohighlight">\(CC'\)</span></p></li>
+</ul>
+<p>The log conditional density is:</p>
+<div class="math notranslate nohighlight">
+\[
+\log f(x_{t+1} | x_t) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(CC') - \frac{1}{2} (x_{t+1} - A x_t)' (CC')^{-1} (x_{t+1} - A x_t)
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">log_likelihood_transition</span><span class="p">(</span><span class="n">x_next</span><span class="p">,</span> <span class="n">x_curr</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute log likelihood of transition from x_curr to x_next</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x_next</span><span class="p">)</span>
+    <span class="n">x_curr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x_curr</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_next</span><span class="p">)</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">x_next</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">A</span> <span class="o">@</span> <span class="n">x_curr</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">log_det_CC</span> <span class="o">+</span> 
+                  <span class="n">diff</span> <span class="o">@</span> <span class="n">model</span><span class="o">.</span><span class="n">CC_inv</span> <span class="o">@</span> <span class="n">diff</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The log density of the initial state is:</p>
+<div class="math notranslate nohighlight">
+\[
+\log f(x_0) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(\Sigma_0) - \frac{1}{2} (x_0 - \mu_0)' \Sigma_0^{-1} (x_0 - \mu_0)
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">log_likelihood_initial</span><span class="p">(</span><span class="n">x_0</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute log likelihood of initial state</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x_0</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_0</span><span class="p">)</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">x_0</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">μ_0</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">log_det_Σ_0</span> <span class="o">+</span> 
+                  <span class="n">diff</span> <span class="o">@</span> <span class="n">model</span><span class="o">.</span><span class="n">Σ_0_inv</span> <span class="o">@</span> <span class="n">diff</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s group the likelihood computations into a single function that computes the log likelihood of an entire path</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">log_likelihood_path</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute log likelihood of entire path</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">T</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">log_L</span> <span class="o">=</span> <span class="n">log_likelihood_initial</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">log_L</span> <span class="o">+=</span> <span class="n">log_likelihood_transition</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">model</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">log_L</span>
+
+<span class="k">def</span> <span class="nf">simulate_var</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_paths</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate paths from the VAR model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_paths</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_paths</span><span class="p">):</span>
+        <span class="c1"># Draw initial state</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">mvn</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">μ_0</span><span class="p">,</span> <span class="n">cov</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">Σ_0</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        
+        <span class="c1"># Simulate forward</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">A</span> <span class="o">@</span> <span class="n">x</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">C</span> <span class="o">@</span> <span class="n">w</span>
+            <span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+            
+    <span class="k">return</span> <span class="n">paths</span> <span class="k">if</span> <span class="n">N_paths</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="likelihood-ratio-process">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">24.3. </span>Likelihood ratio process</a><a class="headerlink" href="#likelihood-ratio-process" title="Permalink to this heading">#</a></h2>
+<p>Now let’s compute likelihood ratio processes for comparing two VAR models</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_likelihood_ratio_var</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">model_f</span><span class="p">,</span> <span class="n">model_g</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute likelihood ratio process for VAR models</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">paths</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="n">paths</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+    
+    <span class="n">N_paths</span><span class="p">,</span> <span class="n">T_plus_1</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">paths</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">T_plus_1</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">log_L_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_paths</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_paths</span><span class="p">):</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="c1"># Initial log likelihood ratio</span>
+        <span class="n">log_L_f_0</span> <span class="o">=</span> <span class="n">log_likelihood_initial</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model_f</span><span class="p">)</span>
+        <span class="n">log_L_g_0</span> <span class="o">=</span> <span class="n">log_likelihood_initial</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model_g</span><span class="p">)</span>
+        <span class="n">log_L_ratios</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_L_f_0</span> <span class="o">-</span> <span class="n">log_L_g_0</span>
+        
+        <span class="c1"># Recursive computation</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">log_L_f_t</span> <span class="o">=</span> <span class="n">log_likelihood_transition</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">model_f</span><span class="p">)</span>
+            <span class="n">log_L_g_t</span> <span class="o">=</span> <span class="n">log_likelihood_transition</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">model_g</span><span class="p">)</span>
+            
+            <span class="c1"># Update log likelihood ratio</span>
+            <span class="n">log_diff</span> <span class="o">=</span> <span class="n">log_L_f_t</span> <span class="o">-</span> <span class="n">log_L_g_t</span>
+            
+            <span class="n">log_L_prev</span> <span class="o">=</span> <span class="n">log_L_ratios</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">log_L_new</span> <span class="o">=</span> <span class="n">log_L_prev</span> <span class="o">+</span> <span class="n">log_diff</span>
+            <span class="n">log_L_ratios</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_L_new</span>
+
+    <span class="k">return</span> <span class="n">log_L_ratios</span> <span class="k">if</span> <span class="n">N_paths</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">log_L_ratios</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-1-two-ar-1-processes">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">24.4. </span>Example 1: Two AR(1) processes</a><a class="headerlink" href="#example-1-two-ar-1-processes" title="Permalink to this heading">#</a></h2>
+<p>Let’s start with a simple example comparing two univariate AR(1) processes with <span class="math notranslate nohighlight">\(A_f = 0.8\)</span>, <span class="math notranslate nohighlight">\(A_g = 0.5\)</span>, and <span class="math notranslate nohighlight">\(C_f = 0.3\)</span>, <span class="math notranslate nohighlight">\(C_g = 0.4\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Model f: AR(1) with persistence ρ = 0.8</span>
+<span class="n">A_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.8</span><span class="p">]])</span>
+<span class="n">C_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.3</span><span class="p">]])</span>
+
+<span class="c1"># Model g: AR(1) with persistence ρ = 0.5</span>
+<span class="n">A_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">]])</span>
+<span class="n">C_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.4</span><span class="p">]])</span>
+
+<span class="c1"># Create VAR models</span>
+<span class="n">model_f</span> <span class="o">=</span> <span class="n">create_var_model</span><span class="p">(</span><span class="n">A_f</span><span class="p">,</span> <span class="n">C_f</span><span class="p">)</span>
+<span class="n">model_g</span> <span class="o">=</span> <span class="n">create_var_model</span><span class="p">(</span><span class="n">A_g</span><span class="p">,</span> <span class="n">C_g</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s generate 100 paths of length 200 from model <span class="math notranslate nohighlight">\(f\)</span> and compute the likelihood ratio processes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate from model f</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">N_paths</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">paths_from_f</span> <span class="o">=</span> <span class="n">simulate_var</span><span class="p">(</span><span class="n">model_f</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)</span>
+
+<span class="n">L_ratios_f</span> <span class="o">=</span> <span class="n">compute_likelihood_ratio_var</span><span class="p">(</span><span class="n">paths_from_f</span><span class="p">,</span> <span class="n">model_f</span><span class="p">,</span> <span class="n">model_g</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">L_ratios_f</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log L_t$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;log likelihood ratio processes (nature = f)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/13cb8ca73a66f98564a4a744b5afc3f5097855a4a99f395cd4fe4c7578718899.png" src="_images/13cb8ca73a66f98564a4a744b5afc3f5097855a4a99f395cd4fe4c7578718899.png" />
+</div>
+</div>
+<p>As we expected, the likelihood ratio processes goes to <span class="math notranslate nohighlight">\(+\infty\)</span> as <span class="math notranslate nohighlight">\(T\)</span> increases, indicating that model <span class="math notranslate nohighlight">\(f\)</span> is chosen correctly by our algorithm.</p>
+</section>
+<section id="example-2-bivariate-var-models">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">24.5. </span>Example 2: Bivariate VAR models</a><a class="headerlink" href="#example-2-bivariate-var-models" title="Permalink to this heading">#</a></h2>
+<p>Now let’s consider an example with bivariate VAR models with</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A_f &amp; = \begin{bmatrix} 0.7 &amp; 0.2 \\ 0.1 &amp; 0.6 \end{bmatrix}, \quad C_f = \begin{bmatrix} 0.3 &amp; 0.1 \\ 0.1 &amp; 0.3 \end{bmatrix} 
+\end{split}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A_g &amp; = \begin{bmatrix} 0.5 &amp; 0.3 \\ 0.2 &amp; 0.5 \end{bmatrix}, \quad C_g = \begin{bmatrix} 0.4 &amp; 0.0 \\ 0.0 &amp; 0.4 \end{bmatrix}
+\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]])</span>
+
+<span class="n">C_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]])</span>
+
+<span class="n">A_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]])</span>
+
+<span class="n">C_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]])</span>
+
+<span class="c1"># Create VAR models</span>
+<span class="n">model2_f</span> <span class="o">=</span> <span class="n">create_var_model</span><span class="p">(</span><span class="n">A_f</span><span class="p">,</span> <span class="n">C_f</span><span class="p">)</span>
+<span class="n">model2_g</span> <span class="o">=</span> <span class="n">create_var_model</span><span class="p">(</span><span class="n">A_g</span><span class="p">,</span> <span class="n">C_g</span><span class="p">)</span>
+
+<span class="c1"># Check stationarity</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;model f eigenvalues:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">A_f</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;model g eigenvalues:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">A_g</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>model f eigenvalues: [0.8 0.5]
+model g eigenvalues: [0.74494897 0.25505103]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s generate 50 paths of length 50 from both models and compute the likelihood ratio processes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate from both models</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">N_paths</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="n">paths_from_f</span> <span class="o">=</span> <span class="n">simulate_var</span><span class="p">(</span><span class="n">model2_f</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)</span>
+<span class="n">paths_from_g</span> <span class="o">=</span> <span class="n">simulate_var</span><span class="p">(</span><span class="n">model2_g</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)</span>
+
+<span class="c1"># Compute likelihood ratios</span>
+<span class="n">L_ratios_ff</span> <span class="o">=</span> <span class="n">compute_likelihood_ratio_var</span><span class="p">(</span><span class="n">paths_from_f</span><span class="p">,</span> <span class="n">model2_f</span><span class="p">,</span> <span class="n">model2_g</span><span class="p">)</span>
+<span class="n">L_ratios_gf</span> <span class="o">=</span> <span class="n">compute_likelihood_ratio_var</span><span class="p">(</span><span class="n">paths_from_g</span><span class="p">,</span> <span class="n">model2_f</span><span class="p">,</span> <span class="n">model2_g</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see that for paths generated from model <span class="math notranslate nohighlight">\(f\)</span>, the likelihood ratio processes tend to go to <span class="math notranslate nohighlight">\(+\infty\)</span>, while for paths from model <span class="math notranslate nohighlight">\(g\)</span>, they tend to go to <span class="math notranslate nohighlight">\(-\infty\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the results</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">L_ratios_ff</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log L_t$ (nature = f)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log L_t$&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">L_ratios_gf</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log L_t$ (nature = g)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/8aa4f5a381b988a8ab1c256cfcbf1658fe2fc9b7b8cb1adeda2306e9b25d10a2.png" src="_images/8aa4f5a381b988a8ab1c256cfcbf1658fe2fc9b7b8cb1adeda2306e9b25d10a2.png" />
+</div>
+</div>
+<p>Let’s apply a  Neyman-Pearson frequentist  decision rule described   in <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a> that selects model <span class="math notranslate nohighlight">\(f\)</span> when <span class="math notranslate nohighlight">\(\log L_T \geq 0\)</span> and model <span class="math notranslate nohighlight">\(g\)</span> when <span class="math notranslate nohighlight">\(\log L_T &lt; 0\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">T_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">accuracy_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">T_values</span><span class="p">))</span>
+<span class="n">accuracy_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">T_values</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">T_values</span><span class="p">):</span>
+    <span class="c1"># Correct selection when data from f</span>
+    <span class="n">accuracy_f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">L_ratios_ff</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Correct selection when data from g</span>
+    <span class="n">accuracy_g</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">L_ratios_gf</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_values</span><span class="p">,</span> <span class="n">accuracy_f</span><span class="p">,</span> <span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;accuracy (nature = f)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_values</span><span class="p">,</span> <span class="n">accuracy_g</span><span class="p">,</span> <span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;accuracy (nature = g)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5d1891abde8250bab4564b1f9d331354e8aeb8e17472f89595e1262a45910da7.png" src="_images/5d1891abde8250bab4564b1f9d331354e8aeb8e17472f89595e1262a45910da7.png" />
+</div>
+</div>
+<p>Evidently, the accuracy approaches <span class="math notranslate nohighlight">\(1\)</span> as <span class="math notranslate nohighlight">\(T\)</span> increases, and it does so very quickly.</p>
+<p>Let’s also check the type I and type II errors as functions of <span class="math notranslate nohighlight">\(T\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">model_selection_analysis</span><span class="p">(</span><span class="n">T_values</span><span class="p">,</span> <span class="n">model_f</span><span class="p">,</span> <span class="n">model_g</span><span class="p">,</span> <span class="n">N_sim</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyze model selection performance for different sample sizes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">errors_f</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Type I errors</span>
+    <span class="n">errors_g</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Type II errors</span>
+    
+    <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">T_values</span><span class="p">:</span>
+        <span class="c1"># Simulate from model f</span>
+        <span class="n">paths_f</span> <span class="o">=</span> <span class="n">simulate_var</span><span class="p">(</span><span class="n">model_f</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_sim</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">L_ratios_f</span> <span class="o">=</span> <span class="n">compute_likelihood_ratio_var</span><span class="p">(</span><span class="n">paths_f</span><span class="p">,</span> <span class="n">model_f</span><span class="p">,</span> <span class="n">model_g</span><span class="p">)</span>
+        
+        <span class="c1"># Simulate from model g</span>
+        <span class="n">paths_g</span> <span class="o">=</span> <span class="n">simulate_var</span><span class="p">(</span><span class="n">model_g</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_sim</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">L_ratios_g</span> <span class="o">=</span> <span class="n">compute_likelihood_ratio_var</span><span class="p">(</span><span class="n">paths_g</span><span class="p">,</span> <span class="n">model_f</span><span class="p">,</span> <span class="n">model_g</span><span class="p">)</span>
+        
+        <span class="c1"># Decision rule: choose f if log L_T &gt;= 0</span>
+        <span class="n">errors_f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">L_ratios_f</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">errors_g</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">L_ratios_g</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">errors_f</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">errors_g</span><span class="p">)</span>
+
+<span class="n">T_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">errors_f</span><span class="p">,</span> <span class="n">errors_g</span> <span class="o">=</span> <span class="n">model_selection_analysis</span><span class="p">(</span><span class="n">T_values</span><span class="p">,</span> <span class="n">model2_f</span><span class="p">,</span> <span class="n">model2_g</span><span class="p">,</span> <span class="n">N_sim</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_values</span><span class="p">,</span> <span class="n">errors_f</span><span class="p">,</span> <span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;type I error&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_values</span><span class="p">,</span> <span class="n">errors_g</span><span class="p">,</span> <span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;type II error&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_values</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">errors_f</span> <span class="o">+</span> <span class="n">errors_g</span><span class="p">),</span> <span class="s1">&#39;g--&#39;</span><span class="p">,</span> 
+<span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;average error&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$T$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;error probability&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;model selection errors&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b7e83c24ef7969d72d9287a8cc99d2e75fcd02c15b4b8900ce9b6001c7dc01a8.png" src="_images/b7e83c24ef7969d72d9287a8cc99d2e75fcd02c15b4b8900ce9b6001c7dc01a8.png" />
+</div>
+</div>
+</section>
+<section id="application-samuelson-multiplier-accelerator">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">24.6. </span>Application: Samuelson multiplier-accelerator</a><a class="headerlink" href="#application-samuelson-multiplier-accelerator" title="Permalink to this heading">#</a></h2>
+<p>Now let’s connect to the Samuelson multiplier-accelerator model.</p>
+<p>The model consists of:</p>
+<ul class="simple">
+<li><p>Consumption: <span class="math notranslate nohighlight">\(C_t = \gamma + a Y_{t-1}\)</span> where <span class="math notranslate nohighlight">\(a \in (0,1)\)</span> is the marginal propensity to consume</p></li>
+<li><p>Investment: <span class="math notranslate nohighlight">\(I_t = b(Y_{t-1} - Y_{t-2})\)</span> where <span class="math notranslate nohighlight">\(b &gt; 0\)</span> is the accelerator coefficient</p></li>
+<li><p>Government spending: <span class="math notranslate nohighlight">\(G_t = G\)</span> (constant)</p></li>
+</ul>
+<p>We have the national income identity</p>
+<div class="math notranslate nohighlight">
+\[
+Y_t = C_t + I_t + G_t
+\]</div>
+<p>Equations yields the second-order difference equation:</p>
+<div class="math notranslate nohighlight">
+\[
+Y_t = (\gamma + G) + (a + b)Y_{t-1} - b Y_{t-2} + \sigma \epsilon_t
+\]</div>
+<p>With <span class="math notranslate nohighlight">\(\rho_1 = a + b\)</span> and <span class="math notranslate nohighlight">\(\rho_2 = -b\)</span>, we have:</p>
+<div class="math notranslate nohighlight">
+\[
+Y_t = (\gamma + G) + \rho_1 Y_{t-1} + \rho_2 Y_{t-2} + \sigma \epsilon_t
+\]</div>
+<p>To fit into our discussion, we write it into state-space representation.</p>
+<p>To handle the constant term properly, we use an augmented state vector <span class="math notranslate nohighlight">\(\mathbf{x}_t = [1, Y_t, Y_{t-1}]'\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{x}_{t+1} = \begin{bmatrix} 
+1 \\ 
+Y_{t+1} \\ 
+Y_t 
+\end{bmatrix} = \begin{bmatrix} 
+1 &amp; 0 &amp; 0 \\
+\gamma + G &amp; \rho_1 &amp; \rho_2 \\
+0 &amp; 1 &amp; 0 
+\end{bmatrix} \begin{bmatrix} 
+1 \\ 
+Y_t \\ 
+Y_{t-1} 
+\end{bmatrix} + \begin{bmatrix} 
+0 \\ 
+\sigma \\ 
+0 
+\end{bmatrix} \epsilon_{t+1}
+\end{split}\]</div>
+<p>The observation equation extracts the economic variables:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{y}_t = \begin{bmatrix} 
+Y_t \\ 
+C_t \\ 
+I_t 
+\end{bmatrix} = \begin{bmatrix} 
+\gamma + G &amp; \rho_1 &amp; \rho_2 \\
+\gamma &amp; a &amp; 0 \\
+0 &amp; b &amp; -b 
+\end{bmatrix} \begin{bmatrix} 
+1 \\ 
+Y_t \\ 
+Y_{t-1} 
+\end{bmatrix}
+\end{split}\]</div>
+<p>This gives us:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Y_t = (\gamma + G) \cdot 1 + \rho_1 Y_{t-1} + \rho_2 Y_{t-2}\)</span> (total output)</p></li>
+<li><p><span class="math notranslate nohighlight">\(C_t = \gamma \cdot 1 + a Y_{t-1}\)</span> (consumption)</p></li>
+<li><p><span class="math notranslate nohighlight">\(I_t = b(Y_{t-1} - Y_{t-2})\)</span> (investment)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">samuelson_to_var</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">σ</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert Samuelson model parameters to VAR form with augmented state</span>
+<span class="sd">    </span>
+<span class="sd">    Samuelson model:</span>
+<span class="sd">    - Y_t = C_t + I_t + G</span>
+<span class="sd">    - C_t = γ + a*Y_{t-1}</span>
+<span class="sd">    - I_t = b*(Y_{t-1} - Y_{t-2})</span>
+<span class="sd">    </span>
+<span class="sd">    Reduced form: Y_t = (γ+G) + (a+b)*Y_{t-1} - b*Y_{t-2} + σ*ε_t</span>
+<span class="sd">    </span>
+<span class="sd">    State vector is [1, Y_t, Y_{t-1}]&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ρ_1</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">ρ_2</span> <span class="o">=</span> <span class="o">-</span><span class="n">b</span>
+    
+    <span class="c1"># State transition matrix for augmented state</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span>      <span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">],</span>
+                  <span class="p">[</span><span class="n">γ</span> <span class="o">+</span> <span class="n">G</span><span class="p">,</span>  <span class="n">ρ_1</span><span class="p">,</span>   <span class="n">ρ_2</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mi">0</span><span class="p">,</span>      <span class="mi">1</span><span class="p">,</span>     <span class="mi">0</span><span class="p">]])</span>
+    
+    <span class="c1"># Shock loading matrix</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span>
+                  <span class="p">[</span><span class="n">σ</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+    
+    <span class="c1"># Observation matrix (extracts Y_t, C_t, I_t)</span>
+    <span class="n">G_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">γ</span> <span class="o">+</span> <span class="n">G</span><span class="p">,</span>  <span class="n">ρ_1</span><span class="p">,</span>  <span class="n">ρ_2</span><span class="p">],</span>   <span class="c1"># Y_t</span>
+                      <span class="p">[</span><span class="n">γ</span><span class="p">,</span>      <span class="n">a</span><span class="p">,</span>    <span class="mi">0</span><span class="p">],</span>     <span class="c1"># C_t</span>
+                      <span class="p">[</span><span class="mi">0</span><span class="p">,</span>      <span class="n">b</span><span class="p">,</span>   <span class="o">-</span><span class="n">b</span><span class="p">]])</span>    <span class="c1"># I_t</span>
+    
+    <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">G_obs</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We define functions in the code cell below to get the initial conditions and check stability</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_samuelson_initial_conditions</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">y_0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_m1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                                    <span class="n">stationary_init</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get initial conditions for Samuelson model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate steady state</span>
+    <span class="n">y_ss</span> <span class="o">=</span> <span class="p">(</span><span class="n">γ</span> <span class="o">+</span> <span class="n">G</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">y_0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">y_0</span> <span class="o">=</span> <span class="n">y_ss</span>
+    <span class="k">if</span> <span class="n">y_m1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">y_m1</span> <span class="o">=</span> <span class="n">y_ss</span> <span class="k">if</span> <span class="n">stationary_init</span> <span class="k">else</span> <span class="n">y_0</span> <span class="o">*</span> <span class="mf">0.95</span>
+    
+    <span class="c1"># Initial mean</span>
+    <span class="n">μ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">y_0</span><span class="p">,</span> <span class="n">y_m1</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="n">stationary_init</span><span class="p">:</span>
+        <span class="n">Σ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">],</span>
+                        <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>    <span class="mf">0.5</span><span class="p">],</span>
+                        <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mf">0.5</span><span class="p">,</span>  <span class="mi">1</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Σ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">],</span>
+                        <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">25</span><span class="p">,</span>   <span class="mi">15</span><span class="p">],</span>
+                        <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">15</span><span class="p">,</span>   <span class="mi">25</span><span class="p">]])</span>
+    
+    <span class="k">return</span> <span class="n">μ_0</span><span class="p">,</span> <span class="n">Σ_0</span>
+
+<span class="k">def</span> <span class="nf">check_samuelson_stability</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check stability of Samuelson model and return characteristic roots</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ρ_1</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">ρ_2</span> <span class="o">=</span> <span class="o">-</span><span class="n">b</span>
+
+    <span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roots</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">ρ_1</span><span class="p">,</span> <span class="o">-</span><span class="n">ρ_2</span><span class="p">])</span>
+    <span class="n">max_abs_root</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">roots</span><span class="p">))</span>
+    <span class="n">is_stable</span> <span class="o">=</span> <span class="n">max_abs_root</span> <span class="o">&lt;</span> <span class="mi">1</span>
+    
+    <span class="c1"># Determine type of dynamics</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">iscomplex</span><span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">max_abs_root</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dynamics</span> <span class="o">=</span> <span class="s2">&quot;Damped oscillations&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dynamics</span> <span class="o">=</span> <span class="s2">&quot;Explosive oscillations&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">max_abs_root</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dynamics</span> <span class="o">=</span> <span class="s2">&quot;Smooth convergence&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">dynamics</span> <span class="o">=</span> <span class="s2">&quot;Explosive growth&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dynamics</span> <span class="o">=</span> <span class="s2">&quot;Explosive oscillations (real roots)&quot;</span>
+    
+    <span class="k">return</span> <span class="n">is_stable</span><span class="p">,</span> <span class="n">roots</span><span class="p">,</span> <span class="n">max_abs_root</span><span class="p">,</span> <span class="n">dynamics</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Let’s implement it and inspect the likelihood ratio processes induced by two Samuelson models with different parameters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_samuelson_var_model</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">stationary_init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                               <span class="n">y_0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_m1</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a VAR model from Samuelson parameters</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">G_obs</span> <span class="o">=</span> <span class="n">samuelson_to_var</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">σ</span><span class="p">)</span>
+    
+    <span class="n">μ_0</span><span class="p">,</span> <span class="n">Σ_0</span> <span class="o">=</span> <span class="n">get_samuelson_initial_conditions</span><span class="p">(</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">y_0</span><span class="p">,</span> <span class="n">y_m1</span><span class="p">,</span> <span class="n">stationary_init</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># Create VAR model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">create_var_model</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">μ_0</span><span class="p">,</span> <span class="n">Σ_0</span><span class="p">,</span> <span class="n">stationary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">is_stable</span><span class="p">,</span> <span class="n">roots</span><span class="p">,</span> <span class="n">max_root</span><span class="p">,</span> <span class="n">dynamics</span> <span class="o">=</span> <span class="n">check_samuelson_stability</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span> <span class="s1">&#39;γ&#39;</span><span class="p">:</span> <span class="n">γ</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="n">G</span><span class="p">,</span> <span class="s1">&#39;σ&#39;</span><span class="p">:</span> <span class="n">σ</span><span class="p">,</span>
+        <span class="s1">&#39;ρ_1&#39;</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="s1">&#39;ρ_2&#39;</span><span class="p">:</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span>
+        <span class="s1">&#39;steady_state&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">γ</span> <span class="o">+</span> <span class="n">G</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">),</span>
+        <span class="s1">&#39;is_stable&#39;</span><span class="p">:</span> <span class="n">is_stable</span><span class="p">,</span>
+        <span class="s1">&#39;roots&#39;</span><span class="p">:</span> <span class="n">roots</span><span class="p">,</span>
+        <span class="s1">&#39;max_abs_root&#39;</span><span class="p">:</span> <span class="n">max_root</span><span class="p">,</span>
+        <span class="s1">&#39;dynamics&#39;</span><span class="p">:</span> <span class="n">dynamics</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">G_obs</span><span class="p">,</span> <span class="n">info</span>
+
+<span class="k">def</span> <span class="nf">simulate_samuelson</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">G_obs</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_paths</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate Samuelson model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Simulate state paths</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="n">simulate_var</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)</span>
+    
+    <span class="c1"># Extract observables using G matrix</span>
+    <span class="k">if</span> <span class="n">N_paths</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Single path: states is (T+1, 3)</span>
+        <span class="n">observables</span> <span class="o">=</span> <span class="p">(</span><span class="n">G_obs</span> <span class="o">@</span> <span class="n">states</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Multiple paths: states is (N_paths, T+1, 3)</span>
+        <span class="n">observables</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_paths</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_paths</span><span class="p">):</span>
+            <span class="n">observables</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">G_obs</span> <span class="o">@</span> <span class="n">states</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="k">return</span> <span class="n">states</span><span class="p">,</span> <span class="n">observables</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s simulate two Samuelson models with different accelerator coefficients and plot their sample paths</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Model f: Higher accelerator coefficient</span>
+<span class="n">a_f</span><span class="p">,</span> <span class="n">b_f</span> <span class="o">=</span> <span class="mf">0.98</span><span class="p">,</span> <span class="mf">0.9</span>
+<span class="n">γ_f</span><span class="p">,</span> <span class="n">G_f</span><span class="p">,</span> <span class="n">σ_f</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span>
+
+<span class="c1"># Model g: Lower accelerator coefficient  </span>
+<span class="n">a_g</span><span class="p">,</span> <span class="n">b_g</span> <span class="o">=</span> <span class="mf">0.98</span><span class="p">,</span> <span class="mf">0.85</span>
+<span class="n">γ_g</span><span class="p">,</span> <span class="n">G_g</span><span class="p">,</span> <span class="n">σ_g</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span>
+
+
+<span class="n">model_sam_f</span><span class="p">,</span> <span class="n">G_obs_f</span><span class="p">,</span> <span class="n">info_f</span> <span class="o">=</span> <span class="n">create_samuelson_var_model</span><span class="p">(</span>
+    <span class="n">a_f</span><span class="p">,</span> <span class="n">b_f</span><span class="p">,</span> <span class="n">γ_f</span><span class="p">,</span> <span class="n">G_f</span><span class="p">,</span> <span class="n">σ_f</span><span class="p">,</span> 
+    <span class="n">stationary_init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+    <span class="n">y_0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y_m1</span><span class="o">=</span><span class="mi">95</span>
+<span class="p">)</span>
+
+<span class="n">model_sam_g</span><span class="p">,</span> <span class="n">G_obs_g</span><span class="p">,</span> <span class="n">info_g</span> <span class="o">=</span> <span class="n">create_samuelson_var_model</span><span class="p">(</span>
+    <span class="n">a_g</span><span class="p">,</span> <span class="n">b_g</span><span class="p">,</span> <span class="n">γ_g</span><span class="p">,</span> <span class="n">G_g</span><span class="p">,</span> <span class="n">σ_g</span><span class="p">,</span>
+    <span class="n">stationary_init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">y_0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y_m1</span><span class="o">=</span><span class="mi">95</span>
+<span class="p">)</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">N_paths</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="c1"># Get both states and observables</span>
+<span class="n">states_f</span><span class="p">,</span> <span class="n">obs_f</span> <span class="o">=</span> <span class="n">simulate_samuelson</span><span class="p">(</span><span class="n">model_sam_f</span><span class="p">,</span> <span class="n">G_obs_f</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)</span>
+<span class="n">states_g</span><span class="p">,</span> <span class="n">obs_g</span> <span class="o">=</span> <span class="n">simulate_samuelson</span><span class="p">(</span><span class="n">model_sam_g</span><span class="p">,</span> <span class="n">G_obs_g</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)</span>
+
+<span class="n">output_paths_f</span> <span class="o">=</span> <span class="n">obs_f</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> 
+<span class="n">output_paths_g</span> <span class="o">=</span> <span class="n">obs_g</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;model f:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ρ_1 = a + b = </span><span class="si">{</span><span class="n">info_f</span><span class="p">[</span><span class="s1">&#39;ρ_1&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ρ_2 = -b = </span><span class="si">{</span><span class="n">info_f</span><span class="p">[</span><span class="s1">&#39;ρ_2&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  roots: </span><span class="si">{</span><span class="n">info_f</span><span class="p">[</span><span class="s1">&#39;roots&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  dynamics: </span><span class="si">{</span><span class="n">info_f</span><span class="p">[</span><span class="s1">&#39;dynamics&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">model g:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ρ_1 = a + b = </span><span class="si">{</span><span class="n">info_g</span><span class="p">[</span><span class="s1">&#39;ρ_1&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ρ_2 = -b = </span><span class="si">{</span><span class="n">info_g</span><span class="p">[</span><span class="s1">&#39;ρ_2&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  roots: </span><span class="si">{</span><span class="n">info_g</span><span class="p">[</span><span class="s1">&#39;roots&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  dynamics: </span><span class="si">{</span><span class="n">info_g</span><span class="p">[</span><span class="s1">&#39;dynamics&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">output_paths_f</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">output_paths_g</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$Y_t$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;model f&#39;</span><span class="p">,</span> <span class="s1">&#39;model g&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>model f:
+  ρ_1 = a + b = 1.88
+  ρ_2 = -b = -0.90
+  roots: [0.94+0.12806248j 0.94-0.12806248j]
+  dynamics: Damped oscillations
+
+model g:
+  ρ_1 = a + b = 1.83
+  ρ_2 = -b = -0.85
+  roots: [0.915+0.11302655j 0.915-0.11302655j]
+  dynamics: Damped oscillations
+</pre></div>
+</div>
+<img alt="_images/617fa1ba41462616dda7541893a78addfe6eb651ff333649c172de94233e4ce7.png" src="_images/617fa1ba41462616dda7541893a78addfe6eb651ff333649c172de94233e4ce7.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute likelihood ratios</span>
+<span class="n">L_ratios_ff</span> <span class="o">=</span> <span class="n">compute_likelihood_ratio_var</span><span class="p">(</span><span class="n">states_f</span><span class="p">,</span> <span class="n">model_sam_f</span><span class="p">,</span> <span class="n">model_sam_g</span><span class="p">)</span>
+<span class="n">L_ratios_gf</span> <span class="o">=</span> <span class="n">compute_likelihood_ratio_var</span><span class="p">(</span><span class="n">states_g</span><span class="p">,</span> <span class="n">model_sam_f</span><span class="p">,</span> <span class="n">model_sam_g</span><span class="p">)</span> 
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">L_ratios_ff</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log L_t$ (nature = f)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log L_t$&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">N_paths</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">L_ratios_gf</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log L_t$ (nature = g)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/14b6bca9c06bcfc3bb5aaf2c896a61bfaf5a22e0b2a0f8277e2ae41847f36304.png" src="_images/14b6bca9c06bcfc3bb5aaf2c896a61bfaf5a22e0b2a0f8277e2ae41847f36304.png" />
+</div>
+</div>
+<p>In the figure on the left, data are generated by <span class="math notranslate nohighlight">\(f\)</span> and the likelihood ratio diverges to plus infinity.</p>
+<p>In the figure on the right, data are generated by <span class="math notranslate nohighlight">\(g\)</span> and the likelihood ratio diverges to negative infinity.</p>
+<p>In both cases, we applied a lower and upper threshold for the log likelihood ratio process for numerical stability since they grow unbounded very quickly.</p>
+<p>In both cases, the likelihood ratio processes eventually lead us to select the correct model.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   1. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   2. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   3. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   4. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   5. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="var_dmd.html">
+   6. VARs and DMDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   7. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="stats_examples.html">
+   9. Some Probability Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   14. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   16. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   17. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   18. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   19. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   20. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="divergence_measures.html">
+   21. Statistical Divergence Measures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   22. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process_2.html">
+   23. Heterogeneous Beliefs and Financial Markets
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   24. Likelihood Processes for VAR Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   25. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   26. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   27. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   28. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   29. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   30. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   31. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   32. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   33. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   34. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   35. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   36. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   37. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   38. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   39. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   40. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   41. Another Look at the Kalman Filter
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   42. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   43. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   44. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   45. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   46. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   47. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   48. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   49. Job Search VII: Search with Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Capital
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   50. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   51. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   52. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal_2.html">
+   53. Two-Country Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   54. Transitions in an Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   55. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   56. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   57. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   58. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   59. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   60. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   61. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   62. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   63. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   64. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   65. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   66. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   67. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   68. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   69. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   70. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   71. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   72. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   73. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   74. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   75. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   76. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   77. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   78. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   79. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   80. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   81. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   82. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   83. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   84. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   85. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/likelihood_var.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/likelihood_var.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/likelihood_var.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/likelihood_var.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/likelihood_var.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "likelihood_var";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/likelihood_var.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>

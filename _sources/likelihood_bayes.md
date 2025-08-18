@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -193,8 +193,6 @@ l_seq_g = np.cumprod(l_arr_g, axis=1)
 l_arr_f = simulate(F_a, F_b, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
-
-
 
 ## Likelihood Ratio Processes and Bayes’ Law
 
@@ -504,7 +502,7 @@ We will first use this sequence to study how $\pi_t$ behaves.
 
 ```{note}
 Later, we can use it to study how a statistician who knows that nature generates data from an $x$-mixture of $f$ and $g$ could construct  maximum likelihood or Bayesian estimators of $x$ along with the free parameters of $f$ and $g$.
-``` 
+```
 
 ```{code-cell} ipython3
 x_true = 0.5

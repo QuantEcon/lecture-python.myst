@@ -345,7 +345,7 @@ def update(model, v, d):
     " One update on the Bellman equations. "
     α, β, c, w, q = model.α, model.β, model.c, model.w, model.q
     v_new = u(w) + β * ((1 - α) * v + α * d)
-    d_new = jnp.sum(jnp.maximum(v, u(c) + β * d) * q)
+    d_new = jnp.maximum(v, u(c) + β * d) @ q
     return v_new, d_new
 
 @jax.jit
