@@ -16,6 +16,17 @@ kernelspec:
 ```{include} _admonition/gpu.md
 ```
 
+In addition to what's included in base Anaconda, we need to install the following packages
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install kaleido
+!conda install -y -c plotly plotly plotly-orca retrying
+```
+
+We also need to install JAX to run this lecture
+
 ```{code-cell} ipython3
 :tags: [skip-execution]
 
@@ -26,15 +37,6 @@ kernelspec:
 import jax
 ## to check that gpu is activated in environment
 print(f"JAX backend: {jax.devices()[0].platform}")
-```
-
-In addition to what's included in base Anaconda, we need to install the following packages
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install kaleido
-!conda install -y -c plotly plotly plotly-orca retrying
 ```
 
 ```{note}
