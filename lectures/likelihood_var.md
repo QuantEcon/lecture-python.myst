@@ -670,7 +670,7 @@ def simulate_samuelson(model, G_obs, T, N_paths=1):
     else:
         # Multiple paths: states is (N_paths, T+1, 3)
         observables = np.zeros((N_paths, T+1, 3))
-        for i in range(min(20, N_paths)):
+        for i in range(N_paths):
             observables[i] = (G_obs @ states[i].T).T
     
     return states, observables
