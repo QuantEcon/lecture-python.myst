@@ -21,7 +21,7 @@ In addition to what's included in base Anaconda, we need to install the followin
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install kaleido
+!pip install -U kaleido
 !conda install -y -c plotly plotly plotly-orca retrying
 ```
 
