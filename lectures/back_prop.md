@@ -523,7 +523,7 @@ predictions = vmap(compute_xδw_seq, in_axes=(None, 0))(params_ex1, grid)[0][:, 
 
 ```{code-cell} ipython3
 fig = go.Figure()
-fig.add_trace(go.Scatter(x=grid, y=f_val, name=r'$-3x+2$'))
+fig.add_trace(go.Scatter(x=grid, y=f_val, name=r'-3x+2'))
 fig.add_trace(go.Scatter(x=grid, y=predictions, name='Approximation'))
 
 # Export to PNG file
