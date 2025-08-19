@@ -295,8 +295,8 @@ $$
  & =-\int q(\theta)\log\frac{\frac{p(\theta,Y)}{p(Y)}}{q(\theta)} d\theta\\
  & =-\int q(\theta)\log\frac{p(\theta,Y)}{p(\theta)q(Y)} d\theta\\
  & =-\int q(\theta)\left[\log\frac{p(\theta,Y)}{q(\theta)}-\log p(Y)\right] d\theta\\
- & =-\int q(\theta)\log\frac{p(\theta,Y)}{q(\theta)}+\int d\theta q(\theta)\log p(Y) d\theta\\
- & =-\int q(\theta)\log\frac{p(\theta,Y)}{q(\theta)}+\log p(Y) d\theta\\
+ & =-\int q(\theta)\log\frac{p(\theta,Y)}{q(\theta)}+\int q(\theta)\log p(Y) d\theta\\
+ & =-\int q(\theta)\log\frac{p(\theta,Y)}{q(\theta)} d\theta+\log p(Y)\\
 \log p(Y)&=D_{KL}(q(\theta;\phi)\;\|\;p(\theta\mid Y))+\int q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)} d\theta
 \end{aligned}
 $$
@@ -563,7 +563,6 @@ The above graphs show that sampling seems to work well with both distributions.
 Now let's see how well things work with von Mises distributions.
 
 ```{code-cell} ipython3
-# shifted von Mises
 ---
 mystnb:
   figure:
@@ -571,6 +570,7 @@ mystnb:
       Shifted von Mises distribution
     name: fig_vonmises_dist
 ---
+# shifted von Mises
 exampleVM = BayesianInference(param=10, name_dist="vonMises")
 exampleVM.show_prior(size=100000, bins=20)
 ```
@@ -815,8 +815,8 @@ BayesianInferencePlot(true_theta, num_list, BETA).MCMC_plot(
 mystnb:
   figure:
     caption: |
-      SVI density with Beta guide
-    name: fig_svi_beta
+      SVI density with Beta prior and Beta guide
+    name: fig_svi_beta_beta
 ---
 
 BayesianInferencePlot(true_theta, num_list, BETA).SVI_plot(
@@ -1061,7 +1061,6 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 ```
 
 ```{code-cell} ipython3
-# von Mises
 ---
 mystnb:
   figure:
@@ -1069,6 +1068,7 @@ mystnb:
       SVI density with von Mises prior and Beta guide
     name: fig_svi_vonmises_beta
 ---
+# von Mises
 example_CLASS = VONMISES
 print(
     f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
