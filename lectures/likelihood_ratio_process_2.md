@@ -958,13 +958,13 @@ $$
 \pi_t = \frac{ \pi_0 L(s^t)}{ \pi_0 L(s^t) + (1-\pi_0) }
 $$
 
-Now consider the mixture model
+and the mixture model
 
 $$
-m(s^t) = \pi(s^t) f(s^t) + (1- \pi(s^t)) g(s^t)
+m(s^t) = \pi_t f(s^t) + (1- \pi_t) g(s^t)
 $$ (eq:be_mix_model)
 
-Now consider the environment in our Blume-Easley lecture.  
+Now consider them in the environment in our Blume-Easley lecture.
 
 We'll endow each type of consumer with model {eq}`eq:be_mix_model`.
 
@@ -974,10 +974,10 @@ We'll endow each type of consumer with model {eq}`eq:be_mix_model`.
 Thus, consumer $i$'s probability model is 
 
 $$
-m^i(s^t) = \pi^i(s^t) f(s^t) + (1- \pi^i(s^t)) g(s^t) \tag{4}
-$$
+m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
+$$ (eq:prob_model)
 
-The idea is to hand probability models (4) for $i=1,2$ to the social planner in the Blume-Easley lecture, deduce allocation $c^i(s^t), i = 1,2$, and watch what happens when
+The idea is to hand probability models {eq}`eq:prob_model` for $i=1,2$ to the social planner in the Blume-Easley lecture, deduce allocation $c^i(s^t), i = 1,2$, and watch what happens when
 
   * nature's model is $f$
   * nature's model is $g$
