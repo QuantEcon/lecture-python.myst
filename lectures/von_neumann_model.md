@@ -334,19 +334,19 @@ $x\gg \mathbf{0}$ if $x_i>0$ for all $i=1,2,\dots,n$.
 We call a vector **non-negative** and write $x\geq \mathbf{0}$ if $x_i\geq 0$ for
 all $i=1,2,\dots,n$.
 
-We call a vector **semi-positive** and written $x > \mathbf{0}$ if
+We call a vector **semi-positive** written $x > \mathbf{0}$ if
 $x\geq \mathbf{0}$ and $x\neq \mathbf{0}$.
 
 For two conformable vectors $x$ and $y$, $x\gg y$,
 $x\geq y$ and $x> y$ mean $x-y\gg \mathbf{0}$,
 $x-y \geq \mathbf{0}$, and $x-y > \mathbf{0}$, respectively.
 
-We let all vectors in this lecture be column vectors; $x^{T}$ denotes the
+We let all vectors in this lecture be column vectors; $x^\top$ denotes the
 transpose of $x$ (i.e., a row vector).
 
 Let $\iota_n$ denote a
 column vector composed of $n$ ones, i.e.
-$\iota_n = (1,1,\dots,1)^T$.
+$\iota_n = (1,1,\dots,1)^\top$.
 
 Let $e^i$ denote a vector (of
 arbitrary size) containing zeros except for the $i$ th position
@@ -394,13 +394,13 @@ activities are operated.
 
 Therefore,
 
-- vector $x^T A$ gives the total amount of *goods used in
+- vector $x^\top A$ gives the total amount of *goods used in
   production*
-- vector $x^T B$ gives *total outputs*
+- vector $x^\top B$ gives *total outputs*
 
 An economy $(A,B)$ is said to be *productive*, if there exists a
 non-negative intensity vector $x \geq 0$ such
-that $x^T B > x^T A$.
+that $x^\top B > x^\top A$.
 
 The semi-positive $n$-vector $p$ contains prices assigned to
 the $n$ goods.
@@ -410,7 +410,7 @@ The $p$ vector implies *cost* and *revenue* vectors
 - the vector $Ap$ tells *costs* of the vector of activities
 - the vector $Bp$ tells *revenues* from the vector of activities
 
-Satisfaction or a property of an input-output pair $(A,B)$ called *irreducibility*
+Satisfaction of a property of an input-output pair $(A,B)$ called *irreducibility*
 (or indecomposability) determines whether an economy can be decomposed
 into multiple "sub-economies".
 
@@ -490,14 +490,14 @@ production.
 
 We assume that production (consumption of inputs) takes place in period
 $t$, while the consequent output materializes in period
-$t+1$, i.e., consumption of $x_{t}^TA$ in period $t$
-results in $x^T_{t}B$ amounts of output in period $t+1$.
+$t+1$, i.e., consumption of $x_{t}^\top A$ in period $t$
+results in $x^\top_{t}B$ amounts of output in period $t+1$.
 
 These timing conventions imply the following feasibility condition:
 
 $$
 \begin{aligned}
-x^T_{t}B \geq x^T_{t+1} A \hspace{1cm}\forall t\geq 1
+x^\top_{t}B \geq x^\top_{t+1} A \hspace{1cm}\forall t\geq 1
 \end{aligned}
 $$
 
@@ -524,7 +524,7 @@ With balanced growth, the law of motion of $x$ is evidently $x_{t+1}=\alpha x_t$
 and so we can rewrite the feasibility constraint as
 
 $$
-x^T_{t}B \geq \alpha x^T_t A \hspace{1cm}\forall t
+x^\top_{t}B \geq \alpha x^\top_t A \hspace{1cm}\forall t
 $$
 
 In the same spirit, define $\beta\in\mathbb{R}$ as the **interest
@@ -563,7 +563,7 @@ and a number $\alpha\in\mathbb{R}$ that satisfy
 $$
 \begin{aligned}
     &\max_{\alpha} \hspace{2mm} \alpha\\
-    &\text{s.t. }\hspace{2mm}x^T B \geq \alpha x^T A
+    &\text{s.t. }\hspace{2mm}x^\top B \geq \alpha x^\top A
     \end{aligned}
 $$
 ```
@@ -619,13 +619,13 @@ If the economy $(A,B)$ satisfies
 $\left(\gamma^{*}, x_0, p_0\right)$, where
 $\gamma^{*}\in[\beta_0, \alpha_0]\subset\mathbb{R}$, $x_0>0$
 is an $m$-vector, $p_0>0$ is an $n$-vector, and the
-following arbitrage true
+following arbitrage conditions hold
 
 $$
 \begin{aligned}
-x_0^T B &\geq \gamma^{* } x_0^T A \\
+x_0^\top B &\geq \gamma^{* } x_0^\top A \\
 Bp_0 &\leq \gamma^{* } Ap_0 \\
-x_0^T\left(B-\gamma^{* } A\right)p_0 &= 0
+x_0^\top \left(B-\gamma^{* } A\right)p_0 &= 0
 \end{aligned}
 $$
 ```
@@ -636,13 +636,13 @@ $$
 x_0)$ and $(\beta_0, p_0)$ that solve the TEP and EEP, respectively. 
 
 If $\gamma^*>\alpha_0$, then by definition of $\alpha_0$, there cannot
-exist a semi-positive $x$ that satisfies $x^T B \geq \gamma^{* }
-x^T A$.
+exist a semi-positive $x$ that satisfies $x^\top B \geq \gamma^{* }
+x^\top A$.
 
 Similarly, if $\gamma^*<\beta_0$, there is no semi-positive
 $p$ for which $Bp \leq \gamma^{* } Ap$. Let $\gamma^{*
-}\in[\beta_0, \alpha_0]$, then $x_0^T B \geq \alpha_0 x_0^T A \geq
-\gamma^{* } x_0^T A$.
+}\in[\beta_0, \alpha_0]$, then $x_0^\top B \geq \alpha_0 x_0^\top A \geq
+\gamma^{* } x_0^\top A$.
 
 Moreover, $Bp_0\leq \beta_0 A p_0\leq \gamma^* A
 p_0$. These two inequalities imply $x_0\left(B - \gamma^{* } A\right)p_0
@@ -656,27 +656,27 @@ We have already encountered and
 discussed the first two inequalities that represent feasibility and
 no-profit conditions.
 
-Moreover, the equality $x_0^T\left(B-\gamma^{* } A\right)p_0 = 0$ concisely expresses the
+Moreover, the equality $x_0^\top \left(B-\gamma^{* } A\right)p_0 = 0$ concisely expresses the
 requirements that if any good grows at a rate larger than
 $\gamma^{*}$ (i.e., if it is *oversupplied*), then its price
 must be zero; and that if any activity provides negative profit, it must
 be unused.
 
-Therefore, the conditions stated in {prf:ref}`theorem1` ex encode all equilibrium conditions.
+Therefore, the conditions stated in {prf:ref}`theorem1` encode all equilibrium conditions.
 
 So {prf:ref}`theorem1` essentially states that under {prf:ref}`assumption1` and {prf:ref}`assumption2` there 
 always exists an equilibrium $\left(\gamma^{*}, x_0, p_0\right)$
 with balanced growth.
 
 Note that {prf:ref}`theorem1` is silent about uniqueness of the equilibrium. In
-fact, it does not rule out (trivial) cases with $x_0^TBp_0 = 0$ so
+fact, it does not rule out (trivial) cases with $x_0^\top Bp_0 = 0$ so
 that nothing of value is produced.
 
 To exclude such uninteresting cases,
-Kemeny, Morgenstern and Thomspson {cite}`kemeny1956generalization` add an extra requirement
+Kemeny, Morgenstern and Thompson {cite}`kemeny1956generalization` add an extra requirement
 
 $$
-x^T_0 B p_0 > 0
+x^\top_0 B p_0 > 0
 $$
 
 and call the associated equilibria *economic solutions*.
@@ -690,7 +690,7 @@ significantly reduces the number of (relevant) solutions.
 To compute the equilibrium $(\gamma^{*}, x_0, p_0)$, we follow the
 algorithm proposed by Hamburger, Thompson and Weil (1967), building on
 the key insight that an equilibrium (with balanced growth) can be
-solves a particular two-player zero-sum game.
+solved as a particular two-player zero-sum game.
 
 First, we introduce some notation.
 
@@ -699,8 +699,8 @@ with the entries representing payoffs from the **minimizing** column
 player to the **maximizing** row player and assume that the players can
 use mixed strategies. Thus,
 
-* the row player chooses the $m$-vector $x > \mathbf{0}$ subject to $\iota_m^T x = 1$
-* the column player chooses the $n$-vector $p > \mathbf{0}$ subject to $\iota_n^T p = 1$.
+* the row player chooses the $m$-vector $x > \mathbf{0}$ subject to $\iota_m^\top x = 1$
+* the column player chooses the $n$-vector $p > \mathbf{0}$ subject to $\iota_n^\top p = 1$.
 
 ```{prf:definition}
 The $m\times n$ matrix game $C$ has the
@@ -708,8 +708,8 @@ The $m\times n$ matrix game $C$ has the
 
 $$
 \begin{aligned}
-(x^* )^T C e^j \geq V(C)\quad \forall j\in\{1, \dots, n\}\quad \quad
-\text{and}\quad\quad (e^i)^T C p^* \leq V(C)\quad \forall i\in\{1, \dots, m\}
+(x^* )^\top C e^j \geq V(C)\quad \forall j\in\{1, \dots, n\}\quad \quad
+\text{and}\quad\quad (e^i)^\top C p^* \leq V(C)\quad \forall i\in\{1, \dots, m\}
 \end{aligned}
 $$
 
@@ -720,10 +720,10 @@ From the above definition, it is clear that the value $V(C)$ has
 two alternative interpretations:
 
 * by playing the appropriate mixed
-  stategy, the maximizing player can assure himself at least $V(C)$
+  strategy, the maximizing player can assure himself at least $V(C)$
   (no matter what the column player chooses)
 * by playing the appropriate
-  mixed stategy, the minimizing player can make sure that the maximizing
+  mixed strategy, the minimizing player can make sure that the maximizing
   player will not get more than $V(C)$ (irrespective of what is the
   maximizing player’s choice)
 
@@ -734,7 +734,7 @@ zero-sum game.
 Moreover, von Neumann’s Minmax Theorem {cite}`neumann1928theorie` implies that
 
 $$
-V(C) = \max_x \min_p \hspace{2mm} x^T C p = \min_p \max_x \hspace{2mm} x^T C p = (x^*)^T C p^*
+V(C) = \max_x \min_p \hspace{2mm} x^\top C p = \min_p \max_x \hspace{2mm} x^\top C p = (x^*)^\top C p^*
 $$
 
 ### Connection with Linear Programming (LP)
@@ -743,8 +743,8 @@ Nash equilibria of a finite two-player zero-sum game solve a linear programming 
 
 To see this, we introduce the following notation
 
-* For a fixed $x$, let $v$ be the value of the minimization problem: $v \equiv \min_p x^T C p = \min_j x^T C e^j$
-* For a fixed $p$, let $u$ be the value of the maximization problem: $u \equiv \max_x x^T C p = \max_i (e^i)^T C p$
+* For a fixed $x$, let $v$ be the value of the minimization problem: $v \equiv \min_p x^\top C p = \min_j x^\top C e^j$
+* For a fixed $p$, let $u$ be the value of the maximization problem: $u \equiv \max_x x^\top C p = \max_i (e^i)^\top C p$
 
 Then the *max-min problem* (the game from the maximizing player’s point
 of view) can be written as the *primal* LP
@@ -752,9 +752,9 @@ of view) can be written as the *primal* LP
 $$
 \begin{aligned}
 V(C) = & \max \hspace{2mm} v \\
-\text{s.t. } \hspace{2mm} v \iota_n^T &\leq x^T C  \\
+\text{s.t. } \hspace{2mm} v \iota_n^\top &\leq x^\top C  \\
 x &\geq \mathbf{0} \\
-\iota_n^T x & = 1
+\iota_n^\top x & = 1
 \end{aligned}
 $$
 
@@ -766,7 +766,7 @@ $$
 V(C) = &\min \hspace{2mm} u \\
 \text{s.t. } \hspace{2mm}u \iota_m &\geq Cp  \\
 p &\geq \mathbf{0} \\
-\iota_m^T p & = 1
+\iota_m^\top p & = 1
 \end{aligned}
 $$
 
@@ -781,7 +781,7 @@ $$
 
 ```{prf:proof} (Sketch)
 * $\Rightarrow$ $V(B)>0$ implies
-$x_0^T B \gg \mathbf{0}$, where $x_0$ is a maximizing
+$x_0^\top B \gg \mathbf{0}$, where $x_0$ is a maximizing
 vector. Since $B$ is non-negative, this requires that each
 column of $B$ has at least one positive entry, which is
 {prf:ref}`assumption1`.
@@ -789,7 +789,7 @@ column of $B$ has at least one positive entry, which is
 * $\Leftarrow$ From {prf:ref}`assumption1` and the fact
 that $p>\mathbf{0}$, it follows that $Bp > \mathbf{0}$.
 This implies that the maximizing player can always choose $x$
-so that $x^TBp>0$ so that it must be the case
+so that $x^\top Bp>0$ so that it must be the case
 that $V(B)>0$.
 ```
 
@@ -805,7 +805,7 @@ calculating the solution of the game implies
 
 - If $\gamma > \alpha_0$, then for all $x>0$, there
   $\exists j\in\{1, \dots, n\}$, s.t.
-  $[x^T M(\gamma)]_j < 0$ implying
+  $[x^\top M(\gamma)]_j < 0$ implying
   that $V(M(\gamma)) < 0$.
 
 - If $\gamma < \beta_0$, then for all $p>0$, there
@@ -818,7 +818,7 @@ calculating the solution of the game implies
 
 $$
 \begin{aligned}
-x_0^T M(\gamma) \geq \mathbf{0}^T \quad \quad \text{and}\quad\quad M(\gamma) p_0 \leq \mathbf{0}
+x_0^\top M(\gamma) \geq \mathbf{0}^\top \quad \quad \text{and}\quad\quad M(\gamma) p_0 \leq \mathbf{0}
 \end{aligned}
 $$
 
@@ -837,15 +837,15 @@ is a solution for $M(\gamma)$ $\forall \gamma\in (\gamma'', \gamma')$.
 
 ```{prf:proof} (Sketch)
 If $x'$ is optimal for a maximizing player in
-game $M(\gamma')$, then $(x')^T M(\gamma')\geq \mathbf{0}^T$ and so for all $\gamma<\gamma'$.
+game $M(\gamma')$, then $(x')^\top M(\gamma')\geq \mathbf{0}^\top$ and so for all $\gamma<\gamma'$.
 ```
 
 $$
-(x')^T M(\gamma) = (x')^T M(\gamma') + (x')^T(\gamma' - \gamma)A \geq \mathbf{0}^T
+(x')^\top M(\gamma) = (x')^\top M(\gamma') + (x')^\top(\gamma' - \gamma)A \geq \mathbf{0}^\top
 $$
 
 hence $V(M(\gamma))\geq 0$. If $p''$ is optimal for a
-minimizing player in game $M(\gamma'')$, then $M(\gamma)p \leq \mathbf{0}$
+minimizing player in game $M(\gamma'')$, then $M(\gamma'')p'' \leq \mathbf{0}$
 and so for all $\gamma''<\gamma$
 
 $$
@@ -877,7 +877,7 @@ First, notice that we can easily find trivial upper and lower bounds for
 $\alpha_0$ and $\beta_0$.
 
 * TEP requires that
-$x^T(B-\alpha A)\geq \mathbf{0}^T$ and $x > \mathbf{0}$, so
+$x^\top (B-\alpha A)\geq \mathbf{0}^\top$ and $x > \mathbf{0}$, so
 if $\alpha$ is so large that
 $\max_i\{[(B-\alpha A)\iota_n]_i\} < 0$, then TEP ceases to have a
 solution.
@@ -887,9 +887,9 @@ solves $\max_i\{[(B-\alpha^{*} A)\iota_n]_i\} = 0$.
 
 * Similar to
 the upper bound, if $\beta$ is so low that
-$\min_j\{[\iota^T_m(B-\beta A)]_j\}>0$, then the EEP has no
+$\min_j\{[\iota^\top_m(B-\beta A)]_j\}>0$, then the EEP has no
 solution and so we can define **``LB``** as the $\beta^{*}$ that
-solves $\min_j\{[\iota^T_m(B-\beta^{*} A)]_j\}=0$.
+solves $\min_j\{[\iota^\top_m(B-\beta^{*} A)]_j\}=0$.
 
 The *bounds* method calculates these trivial bounds for us
 
@@ -912,7 +912,7 @@ Compute $\alpha_0$ and $\beta_0$
 
 - Finding $\beta_0$
     1. Fix $\gamma = \frac{UB + LB}{2}$ and compute the solution
-       of the two-player zero-sum game associated.
+       of the two-player zero-sum game associated
        with $M(\gamma)$. We can use either the primal or the dual
        LP problem.
     1. If $V(M(\gamma)) > 0$, then set $LB = \gamma$,
@@ -1017,7 +1017,7 @@ equilibrium, {prf:ref}`assumption1` and {prf:ref}`assumption2` are not sufficien
 Nonetheless, Kemeny et al. (1967) show that there are at most finitely
 many economic solutions, meaning that there are only finitely many
 $\gamma^*$ that satisfy $V(M(\gamma^*)) = 0$ and
-$x_0^TBp_0 > 0$ and that for each such $\gamma^*_i$, there
+$x_0^\top Bp_0 > 0$ and that for each such $\gamma^*_i$, there
 is a self-contained part of the economy (a sub-economy) that in
 equilibrium can expand independently with the expansion
 coefficient $\gamma^*_i$.
@@ -1055,8 +1055,8 @@ The simple model has the following special property (Theorem 9.11. in Gale {cite
 with $(A,I_n)$, then
 
 $$
-x_0^T = \alpha_0 x_0^T A\hspace{1cm}\Leftrightarrow\hspace{1cm}x_0^T
-A=\left(\frac{1}{\alpha_0}\right)x_0^T
+x_0^\top = \alpha_0 x_0^\top A\hspace{1cm}\Leftrightarrow\hspace{1cm}x_0^\top
+A=\left(\frac{1}{\alpha_0}\right)x_0^\top
 $$
 
 The latter shows that $1/\alpha_0$ is a positive eigenvalue of
