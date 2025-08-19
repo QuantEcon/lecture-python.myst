@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -925,6 +925,354 @@ p_t(s^t) &= \frac{\delta^t l_t(s^t) \pi_t^2(s^t)}{(1-\lambda)\lambda l_t(s^t)} \
 &= \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr].
 \end{aligned}
 $$
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex4
+
+In this exercise, we will implement the Blume-Easley model with learning agents.
+
+Consider the two models 
+
+$$
+f(s^t) = f(s_1) f(s_2) \cdots f(s_t) 
+$$
+
+and 
+
+$$
+g(s^t) = g(s_1) g(s_2) \cdots g(s_t) 
+$$
+
+and associated likelihood ratio process
+
+$$
+L(s^t) = \frac{f(s^t)}{g(s^t)}
+$$
+
+Let $\pi_0 \in (0,1)$ be a prior probability and 
+
+$$
+\pi_t = \frac{ \pi_0 L(s^t)}{ \pi_0 L(s^t) + (1-\pi_0) }
+$$
+
+Now consider the mixture model
+
+$$
+m(s^t) = \pi(s^t) f(s^t) + (1- \pi(s^t)) g(s^t)
+$$ (eq:be_mix_model)
+
+Now consider the environment in our Blume-Easley lecture.  
+
+We'll endow each type of consumer with model {eq}`eq:be_mix_model`.
+
+ * The two agents share the same $f$ and $g$, but
+ * they have different initial priors, say $\pi_0^1$ and $\pi_0^2$
+
+Thus, consumer $i$'s probability model is 
+
+$$
+m^i(s^t) = \pi^i(s^t) f(s^t) + (1- \pi^i(s^t)) g(s^t) \tag{4}
+$$
+
+The idea is to hand probability models (4) for $i=1,2$ to the social planner in the Blume-Easley lecture, deduce allocation $c^i(s^t), i = 1,2$, and watch what happens when
+
+  * nature's model is $f$
+  * nature's model is $g$
+
+Both consumers will eventually learn the "truth", but one of them will learn faster.  
+
+Questions:
+1. How do their consumption shares evolve? 
+2. Which agent learns faster when nature follows $f$? When nature follows $g$?
+3. How does the difference in initial priors $\pi_0^1$ and $\pi_0^2$ affect the convergence speed?
+
+In the exercise below, set $f \sim \text{Beta}(1.5, 1)$ and $g \sim \text{Beta}(1, 1.5)$.
+
+```
+
+```{solution-start} lr_ex4
+:class: dropdown
+```
+
+Here is one solution.
+
+First, let's set up the model with learning agents:
+
+```{code-cell} ipython3
+def bayesian_update(π_0, L_t):
+    """
+    Bayesian update of belief probability given likelihood ratio.
+    """
+    return (π_0 * L_t) / (π_0 * L_t + (1 - π_0))
+
+def mixture_density_belief(s_seq, f_func, g_func, π_seq):
+    """
+    Compute the mixture density beliefs m^i(s^t) for agent i.
+    """
+    f_vals = f_func(s_seq)
+    g_vals = g_func(s_seq)
+    return π_seq * f_vals + (1 - π_seq) * g_vals
+```
+
+Now let's implement the learning Blume-Easley simulation:
+
+```{code-cell} ipython3
+def simulate_learning_blume_easley(sequences, f_belief, g_belief, 
+                                        π_0_1, π_0_2, λ=0.5):
+    """
+    Simulate Blume-Easley model with learning agents.
+    """
+    N, T = sequences.shape
+    
+    # Initialize arrays to store results
+    π_1_seq = np.empty((N, T))
+    π_2_seq = np.empty((N, T))
+    c1_share = np.empty((N, T))
+    l_agents_seq = np.empty((N, T))
+    
+    π_1_seq[:, 0] = π_0_1
+    π_2_seq[:, 0] = π_0_2
+    
+    for n in range(N):
+        # Initialize cumulative likelihood ratio for beliefs
+        L_cumul = 1.0
+        
+        # Initialize likelihood ratio between agent densities
+        l_agents_cumul = 1.0
+        
+        for t in range(1, T):
+            s_t = sequences[n, t]
+            
+            # Compute likelihood ratio for this observation
+            l_t = f_belief(s_t) / g_belief(s_t)
+            
+            # Update cumulative likelihood ratio
+            L_cumul *= l_t
+            
+            # Bayesian update of beliefs
+            π_1_t = bayesian_update(π_0_1, L_cumul)
+            π_2_t = bayesian_update(π_0_2, L_cumul)
+            
+            # Store beliefs
+            π_1_seq[n, t] = π_1_t
+            π_2_seq[n, t] = π_2_t
+            
+            # Compute mixture densities for each agent
+            m1_t = π_1_t * f_belief(s_t) + (1 - π_1_t) * g_belief(s_t)
+            m2_t = π_2_t * f_belief(s_t) + (1 - π_2_t) * g_belief(s_t)
+            
+            # Update cumulative likelihood ratio between agents
+            l_agents_cumul *= (m1_t / m2_t)
+            l_agents_seq[n, t] = l_agents_cumul
+            
+            # c_t^1(s^t) = λ * l_t(s^t) / (1 - λ + λ * l_t(s^t))
+            # where l_t(s^t) is the cumulative likelihood ratio between agents
+            c1_share[n, t] = λ * l_agents_cumul / (1 - λ + λ * l_agents_cumul)
+    
+    return {
+        'π_1': π_1_seq,
+        'π_2': π_2_seq, 
+        'c1_share': c1_share,
+        'l_agents': l_agents_seq
+    }
+```
+
+Let's run simulations for different scenarios.
+
+We use $\lambda = 0.5$, $T=40$, and $N=1000$.
+
+```{code-cell} ipython3
+λ = 0.5
+T = 40
+N = 1000
+
+F_a, F_b = 1.5, 1
+G_a, G_b = 1, 1.5
+
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
+```
+
+We start the $\pi^i_0 \in (0, 1)$ from different starting points and widen the gap
+
+```{code-cell} ipython3
+# Different initial priors
+π_0_scenarios = [
+    (0.3, 0.7),
+    (0.7, 0.3),
+    (0.1, 0.9),
+]
+```
+
+Now we can run simulations for different scenarios
+
+```{code-cell} ipython3
+# Nature follows f
+s_seq_f = np.random.beta(F_a, F_b, (N, T))
+
+# Nature follows g
+s_seq_g = np.random.beta(G_a, G_b, (N, T)) 
+
+results_f = {}
+results_g = {}
+
+for i, (π_0_1, π_0_2) in enumerate(π_0_scenarios):
+    # When nature follows f
+    results_f[i] = simulate_learning_blume_easley(
+            s_seq_f, f, g, π_0_1, π_0_2, λ)
+    # When nature follows g  
+    results_g[i] = simulate_learning_blume_easley(
+            s_seq_g, f, g, π_0_1, π_0_2, λ)
+```
+
+Now let's visualize the results
+
+```{code-cell} ipython3
+def plot_learning_results(results, π_0_scenarios, nature_type, truth_value):
+    """
+    Plot beliefs and consumption shares for learning agents.
+    """
+    
+    fig, axes = plt.subplots(3, 2, figsize=(10, 15))
+    
+    scenario_labels = [
+        rf'$\pi_0^1 = {π_0_1}, \pi_0^2 = {π_0_2}$'
+        for π_0_1, π_0_2 in π_0_scenarios
+    ]
+    
+    for row, (scenario_idx, scenario_label) in enumerate(
+                zip(range(3), scenario_labels)):
+
+        res = results[scenario_idx]
+        
+        # Plot beliefs
+        ax = axes[row, 0]
+        π_1_med = np.median(res['π_1'], axis=0)
+        π_2_med = np.median(res['π_2'], axis=0) 
+        ax.plot(π_1_med, 'C0', label=r'$\pi_1^t$ (agent 1)', linewidth=2)
+        ax.plot(π_2_med, 'C1', label=r'$\pi_2^t$ (agent 2)', linewidth=2)
+        ax.axhline(y=truth_value, color='gray', linestyle='--', 
+                   alpha=0.5, label=f'truth ({nature_type})')
+        ax.set_title(f'beliefs when nature = {nature_type}\n{scenario_label}')
+        ax.set_ylabel('belief probability')
+        ax.set_ylim([-0.05, 1.05])
+        ax.legend()
+        
+        # Plot consumption shares
+        ax = axes[row, 1]
+        c1_med = np.median(res['c1_share'], axis=0)
+        ax.plot(c1_med, 'g-', linewidth=2, label='agent 1 consumption share')
+        ax.axhline(y=0.5, color='gray', linestyle='--', 
+                   alpha=0.5, label='equal split')
+        ax.set_title(f'consumption when nature = {nature_type}')
+        ax.set_ylabel('agent 1 share')
+        ax.set_ylim([0, 1])
+        ax.legend()
+        
+        # Add x-labels
+        for col in range(2):
+            axes[row, col].set_xlabel('time')
+    
+    plt.tight_layout()
+    return fig, axes
+```
+
+Now use the function to plot results when nature follows f:
+
+```{code-cell} ipython3
+fig_f, axes_f = plot_learning_results(
+                results_f, π_0_scenarios, 'f', 1.0)
+plt.show()
+```
+
+We can see that the agent with more "accurate" belief gets higher consumption share.
+
+Moreover, the further the initial beliefs are, the longer it takes for the consumption ratio to converge.
+
+The time it takes for the "less accurate" agent costs their share in future consumption.
+
+Now plot results when nature follows g:
+
+```{code-cell} ipython3
+fig_g, axes_g = plot_learning_results(results_g, π_0_scenarios, 'g', 0.0)
+plt.show()
+```
+
+We observe a similar but symmetrical pattern.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex5
+
+In the previous exercise, we specifically set the two beta distributions to be relatively close to each other.
+
+That is to say, it is harder to distinguish between the two distributions.
+
+Now let's explore an alternative scenario where the two distributions are further apart.
+
+Specifically, we set $f \sim \text{Beta}(2, 5)$ and $g \sim \text{Beta}(5, 2)$.
+
+Try to compare the learning dynamics in this scenario with the previous one using the simulation code we developed earlier.
+```
+
+```{solution-start} lr_ex5
+:class: dropdown
+```
+
+Here is one solution
+
+```{code-cell} ipython3
+λ = 0.5
+T = 40
+N = 1000
+
+F_a, F_b = 2, 5
+G_a, G_b = 5, 2
+
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
+
+π_0_scenarios = [
+    (0.3, 0.7),
+    (0.7, 0.3),
+    (0.1, 0.9),
+]
+
+s_seq_f = np.random.beta(F_a, F_b, (N, T))
+s_seq_g = np.random.beta(G_a, G_b, (N, T)) 
+
+results_f = {}
+results_g = {}
+
+for i, (π_0_1, π_0_2) in enumerate(π_0_scenarios):
+    # When nature follows f
+    results_f[i] = simulate_learning_blume_easley(
+            s_seq_f, f, g, π_0_1, π_0_2, λ)
+    # When nature follows g  
+    results_g[i] = simulate_learning_blume_easley(
+            s_seq_g, f, g, π_0_1, π_0_2, λ)
+```
+
+Now let's visualize the results
+
+```{code-cell} ipython3
+fig_f, axes_f = plot_learning_results(results_f, π_0_scenarios, 'f', 1.0)
+plt.show()
+```
+
+```{code-cell} ipython3
+fig_g, axes_g = plot_learning_results(results_g, π_0_scenarios, 'g', 0.0)
+plt.show()
+```
+
+In this case, it is easier to realize one's belief is incorrect, the belief adjust more quickly.
+
+Observe that consumption shares also adjust more quickly.
 
 ```{solution-end}
 ```
