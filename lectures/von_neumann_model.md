@@ -61,7 +61,6 @@ np.set_printoptions(precision=2)
 The code below provides the `Neumann` class
 
 ```{code-cell} ipython3
-:tags: [collapse-20]
 
 class Neumann:
 
