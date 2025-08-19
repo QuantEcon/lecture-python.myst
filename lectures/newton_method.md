@@ -37,7 +37,7 @@ on a `GPU` is [available here](https://jax.quantecon.org/newtons_method.html)
 
 Many economic problems involve finding [fixed
 points](https://en.wikipedia.org/wiki/Fixed_point_(mathematics)) or
-[zeros](https://en.wikipedia.org/wiki/Zero_of_a_function) (sometimes called
+[zeros](https://en.wikipedia.org/wiki/Zero_of_a_function) (also called
 "roots") of functions.
 
 For example, in a simple supply and demand model, an equilibrium price is one
@@ -55,7 +55,7 @@ Newton's method does not always work but, in situations where it does,
 convergence is often fast when compared to other methods.
 
 The lecture will apply Newton's method in one-dimensional and
-multi-dimensional settings to solve fixed-point and zero-finding problems. 
+multidimensional settings to solve fixed-point and zero-finding problems. 
 
 * When finding the fixed point of a function $f$, Newton's method updates
   an existing guess of the fixed point by solving for the fixed point of a
@@ -69,10 +69,10 @@ To build intuition, we first consider an easy, one-dimensional fixed point
 problem where we know the solution and solve it using both successive
 approximation and Newton's method.
 
-Then we apply Newton's method to multi-dimensional settings to solve
+Then we apply Newton's method to multidimensional settings to solve
 market for equilibria with multiple goods.
 
-At the end of the lecture we leverage the power of automatic
+At the end of the lecture, we leverage the power of automatic
 differentiation in [`autograd`](https://github.com/HIPS/autograd) to solve a very high-dimensional equilibrium problem
 
 ```{code-cell} ipython3
@@ -117,21 +117,21 @@ zero population growth, the law of motion for capital is
 Here
 
 - $k_t$ is capital stock per worker,
-- $A, \alpha>0$ are production parameters, $\alpha<1$
+- $A, \alpha>0$ are production parameters, $\alpha < 1$
 - $s>0$ is a savings rate, and
 - $\delta \in(0,1)$ is a rate of depreciation
 
 In this example, we wish to calculate the unique strictly positive fixed point
 of $g$, the law of motion for capital.
 
-In other words, we seek a $k^* > 0$ such that $g(k^*)=k^*$.
+In other words, we seek a $k^* > 0$ such that $g(k^*) = k^*$.
 
 * such a $k^*$ is called a [steady state](https://en.wikipedia.org/wiki/Steady_state),
   since $k_t = k^*$ implies $k_{t+1} = k^*$.
 
-Using pencil and paper to solve $g(k)=k$, you will be able to confirm that
+Using pencil and paper to solve $g(k) = k$, you will be able to confirm that
 
-$$ k^* = \left(\frac{s A}{δ}\right)^{1/(1 - α)}  $$
+$$ k^* = \left(\frac{s A}{\delta}\right)^{1/(1 - \alpha)}  $$
 
 ### Implementation
 
@@ -283,13 +283,13 @@ the function
 ```{math}
 :label: motivation
 
-\hat g(x) \approx g(x_0)+g'(x_0)(x-x_0)
+\hat g(x) \approx g(x_0) + g'(x_0)(x - x_0)
 ```
 
 We solve for the fixed point of $\hat g$ by calculating the $x_1$ that solves
 
 $$
-x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
+x_1 = \frac{g(x_0) - g'(x_0) x_0}{1 - g'(x_0)}
 $$
 
 Generalising the process above, Newton's fixed point method iterates on 
@@ -307,7 +307,7 @@ To implement Newton's method we observe that the derivative of the law of motion
 ```{math}
 :label: newton_method2
 
-g'(k) = \alpha s A k^{\alpha-1} + (1-\delta)
+g'(k) = \alpha s A k^{\alpha - 1} + (1 - \delta)
 
 ```
 
@@ -385,7 +385,7 @@ the problem of finding fixed points.
 
 ### Newton's method for zeros
 
-Let's suppose we want to find an $x$ such that $f(x)=0$ for some smooth
+Let's suppose we want to find an $x$ such that $f(x) = 0$ for some smooth
 function $f$ mapping real numbers to real numbers.
 
 Suppose we have a guess $x_0$ and we want to update it to a new point $x_1$.
@@ -393,7 +393,7 @@ Suppose we have a guess $x_0$ and we want to update it to a new point $x_1$.
 As a first step, we take the first-order approximation of $f$ around $x_0$:
 
 $$
-\hat f(x) \approx f\left(x_0\right)+f^{\prime}\left(x_0\right)\left(x-x_0\right)
+\hat f(x) \approx f\left(x_0\right) + f^{\prime}\left(x_0\right)\left(x - x_0\right)
 $$
 
 Now we solve for the zero of $\hat f$.  
@@ -451,7 +451,7 @@ to implement Newton's method ourselves.)
 Now consider again the Solow fixed-point calculation, where we solve for $k$
 satisfying $g(k) = k$.
 
-We can convert to this to a zero-finding problem by setting $f(x) := g(x)-x$.
+We can convert to this to a zero-finding problem by setting $f(x) := g(x) - x$.
 
 Any zero of $f$ is clearly a fixed point of $g$.
 
@@ -468,11 +468,11 @@ k_star_approx_newton = newton(
 k_star_approx_newton
 ```
 
-The result confirms the descent we saw in the graphs above: a very accurate result is reached with only 5 iterations.
+The result confirms the convergence we saw in the graphs above: a very accurate result is reached with only 5 iterations.
 
 
 
-## Multivariate Newton’s method
+## Multivariate Newton's method
 
 In this section, we introduce a two-good problem, present a
 visualization of the problem, and solve for the equilibrium of the two-good market
@@ -481,11 +481,11 @@ using both a zero finder in `SciPy` and Newton's method.
 We then expand the idea to a larger market with 5,000 goods and compare the
 performance of the two methods again.
 
-We will see a significant performance gain when using Netwon's method.
+We will see a significant performance gain when using Newton's method.
 
 
 (two_goods_market)=
-### A Two Goods market equilibrium
+### A two-goods market equilibrium
 
 Let's start by computing the market equilibrium of a two-good problem.
 
@@ -639,9 +639,9 @@ plot_excess_demand(ax, good=1)
 plt.show()
 ```
 
-We see the black contour line of zero, which tells us when $e_i(p)=0$.
+We see the black contour line of zero, which tells us when $e_i(p) = 0$.
 
-For a price vector $p$ such that $e_i(p)=0$ we know that good $i$ is in equilibrium (demand equals supply).
+For a price vector $p$ such that $e_i(p) = 0$ we know that good $i$ is in equilibrium (demand equals supply).
 
 If these two contour lines cross at some price vector $p^*$, then $p^*$ is an equilibrium price vector.
 
@@ -693,7 +693,7 @@ This is indeed a very small error.
 
 In many cases, for zero-finding algorithms applied to smooth functions, supplying the [Jacobian](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant) of the function leads to better convergence properties.
 
-Here we manually calculate the elements of the Jacobian
+Here, we manually calculate the elements of the Jacobian
 
 $$
 J(p) = 
@@ -747,9 +747,9 @@ This is a multivariate version of [](oneD-newton)
 
 The iteration starts from some initial guess of the price vector $p_0$. 
 
-Here, instead of coding Jacobian by hand, We use the `jacobian()` function in the `autograd` library to auto-differentiate and calculate the Jacobian.
+Here, instead of coding Jacobian by hand, we use the `jacobian()` function in the `autograd` library to auto-differentiate and calculate the Jacobian.
 
-With only slight modification, we can generalize [our previous attempt](first_newton_attempt) to multi-dimensional problems
+With only slight modification, we can generalize [our previous attempt](first_newton_attempt) to multidimensional problems
 
 ```{code-cell} ipython3
 def newton(f, x_0, tol=1e-5, max_iter=10):
@@ -865,7 +865,7 @@ A = \begin{bmatrix}
             1 & 5 & 1 \\
         \end{bmatrix},
             \quad
-s = 0.2, \quad α = 0.5, \quad δ = 0.8
+s = 0.2, \quad \alpha = 0.5, \quad \delta = 0.8
 $$
 
 As before the law of motion is
@@ -875,7 +875,7 @@ As before the law of motion is
     g(k) := sAk^\alpha + (1-\delta) k
 ```
 
-However $k_t$ is now a $3 \times 1$ vector.
+However, $k_t$ is now a $3 \times 1$ vector.
 
 Solve for the fixed point using Newton's method with the following initial values:
 
@@ -890,7 +890,7 @@ $$
 ````{hint} 
 :class: dropdown
 
-- The computation of the fixed point is equivalent to computing $k^*$ such that $f(k^*) - k^* = 0$.
+- The computation of the fixed point is equivalent to computing $k^*$ such that $g(k^*) - k^* = 0$.
 
 - If you are unsure about your solution, you can start with the solved example:
 
@@ -902,7 +902,7 @@ A = \begin{bmatrix}
         \end{bmatrix}
 ```
 
-with $s = 0.3$, $α = 0.3$, and $δ = 0.4$ and starting value: 
+with $s = 0.3$, $\alpha = 0.3$, and $\delta = 0.4$ and starting value: 
 
 
 ```{math}
@@ -932,7 +932,7 @@ s = 0.2
 initLs = [np.ones(3), np.array([3.0, 5.0, 5.0]), np.repeat(50.0, 3)]
 ```
 
-Then define the multivariate version of the formula for the [law of motion of captial](motion_law)
+Then define the multivariate version of the formula for the [law of motion of capital](motion_law)
 
 ```{code-cell} ipython3
 def multivariate_solow(k, A=A, s=s, α=α, δ=δ):
@@ -955,7 +955,7 @@ We find that the results are invariant to the starting values given the well-def
 
 But the number of iterations it takes to converge is dependent on the starting values.
 
-Let substitute the output back to the formulate to check our last result
+Let's substitute the output back into the formula to check our last result
 
 ```{code-cell} ipython3
 multivariate_solow(k) - k
@@ -1033,7 +1033,7 @@ $$
 \end{aligned}
 $$
 
-Set the tolerance to $0.0$ for more accurate output.
+Set the tolerance to $1e-15$ for more accurate output.
 
 ```{exercise-end}
 ```
@@ -1053,7 +1053,7 @@ c = np.array([1.0, 1.0, 1.0])
 initLs = [np.repeat(5.0, 3), np.ones(3), np.array([4.5, 0.1, 4.0])]
 ```
 
-Let’s run through each initial guess and check the output
+Let's run through each initial guess and check the output
 
 ```{code-cell} ipython3
 :tags: [raises-exception]
@@ -1069,7 +1069,7 @@ for init in initLs:
     attempt += 1
 ```
 
-We can find that Newton's method may fail for some starting values.
+We can see that Newton's method may fail for some starting values.
 
 Sometimes it may take a few initial guesses to achieve convergence.
 
