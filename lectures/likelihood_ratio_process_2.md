@@ -1028,11 +1028,11 @@ def simulate_learning_blume_easley(sequences, f_belief, g_belief,
     N, T = sequences.shape
     
     # Initialize arrays to store results
-    π_1_seq = np.empty((N, T))
-    π_2_seq = np.empty((N, T))
-    c1_share = np.empty((N, T))
-    l_agents_seq = np.empty((N, T))
-    
+    π_1_seq = np.full((N, T), np.nan)
+    π_2_seq = np.full((N, T), np.nan)
+    c1_share = np.full((N, T), np.nan)
+    l_agents_seq = np.full((N, T), np.nan)
+
     π_1_seq[:, 0] = π_0_1
     π_2_seq[:, 0] = π_0_2
     
@@ -1096,7 +1096,7 @@ f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
 ```
 
-We start the $\pi^i_0 \in (0, 1)$ from different starting points and widen the gap
+We start with different initial priors $\pi^i_0 \in (0, 1)$ and widen the gap between them.  
 
 ```{code-cell} ipython3
 # Different initial priors
@@ -1270,7 +1270,7 @@ fig_g, axes_g = plot_learning_results(results_g, π_0_scenarios, 'g', 0.0)
 plt.show()
 ```
 
-In this case, it is easier to realize one's belief is incorrect, the belief adjust more quickly.
+In this case, it is easier to realize one's belief is incorrect; the belief adjusts more quickly. 
 
 Observe that consumption shares also adjust more quickly.
 
