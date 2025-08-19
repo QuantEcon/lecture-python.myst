@@ -228,7 +228,7 @@ def TruncatedLogNormal_trans(loc, scale):
     """
     base_dist = ndist.TruncatedNormal(
         low=jnp.log(0), high=jnp.log(1), loc=loc, scale=scale
-    ) #TODO:is it fine to use log(0)?
+    )
     return ndist.TransformedDistribution(base_dist, ndist.transforms.ExpTransform())
 
 
@@ -279,7 +279,7 @@ Consider a **guide distribution** $q_{\phi}(\theta)$ parameterized by $\phi$ tha
 We choose parameters $\phi$ of the guide distribution to minimize a Kullback-Leibler (KL) divergence between the approximate posterior $q_{\phi}(\theta)$ and the posterior:
 
 $$
- D_{KL}(q(\theta;\phi)\;\|\;p(\theta\mid Y)) \equiv -\int d\theta q(\theta;\phi)\log\frac{p(\theta\mid Y)}{q(\theta;\phi)}
+ D_{KL}(q(\theta;\phi)\;\|\;p(\theta\mid Y)) \equiv -\int q(\theta;\phi)\log\frac{p(\theta\mid Y)}{q(\theta;\phi)} d\theta
 $$
 
 Thus, we want a **variational distribution** $q$ that solves
@@ -291,7 +291,7 @@ $$
 Note that
 
 $$
-\begin{aligned}D_{KL}(q(\theta;\phi)\;\|\;p(\theta\mid Y)) & =-\int d\theta q(\theta;\phi)\log\frac{P(\theta\mid Y)}{q(\theta;\phi)}\\
+\begin{aligned}D_{KL}(q(\theta;\phi)\;\|\;p(\theta\mid Y)) & =-\int q(\theta;\phi)\log\frac{P(\theta\mid Y)}{q(\theta;\phi)} d\theta\\
  & =-\int q(\theta)\log\frac{\frac{p(\theta,Y)}{p(Y)}}{q(\theta)} d\theta\\
  & =-\int q(\theta)\log\frac{p(\theta,Y)}{p(\theta)q(Y)} d\theta\\
  & =-\int q(\theta)\left[\log\frac{p(\theta,Y)}{q(\theta)}-\log p(Y)\right] d\theta\\
@@ -533,10 +533,26 @@ Let's see how well our sampling algorithm does in approximating
 To examine our alternative prior distributions, we'll plot approximate prior distributions below by calling the `show_prior` method.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Truncated log normal distribution
+    name: fig_lognormal_dist
+---
 # truncated log normal
 exampleLN = BayesianInference(param=(0, 2), name_dist="lognormal")
 exampleLN.show_prior(size=100000, bins=20)
+```
 
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Truncated uniform distribution
+    name: fig_uniform_dist
+---
 # truncated uniform
 exampleUN = BayesianInference(param=(0.1, 0.8), name_dist="uniform")
 exampleUN.show_prior(size=100000, bins=20)
@@ -548,6 +564,13 @@ Now let's see how well things work with von Mises distributions.
 
 ```{code-cell} ipython3
 # shifted von Mises
+---
+mystnb:
+  figure:
+    caption: |
+      Shifted von Mises distribution
+    name: fig_vonmises_dist
+---
 exampleVM = BayesianInference(param=10, name_dist="vonMises")
 exampleVM.show_prior(size=100000, bins=20)
 ```
@@ -557,6 +580,13 @@ The graphs look good too.
 Now let's try with a Laplace distribution.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Truncated Laplace distribution
+    name: fig_laplace_dist
+---
 # truncated Laplace
 exampleLP = BayesianInference(param=(0.5, 0.05), name_dist="laplace")
 exampleLP.show_prior(size=100000, bins=40)
@@ -609,7 +639,7 @@ class BayesianInferencePlot:
         self.data = simulate_draw(theta, N_max)
 
     def MCMC_plot(self, num_samples, num_warmup=1000):
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots()
 
         # plot prior
         prior_sample = self.BayesianInferenceClass.show_prior(disp_plot=0)
@@ -641,14 +671,11 @@ class BayesianInferencePlot:
                 label=f"Posterior with $n={n}$",
             )
         ax.legend(loc="upper left")
-        ax.set_title("MCMC sampling density of posterior distributions", fontsize=15)
         plt.xlim(0, 1)
         plt.show()
 
     def SVI_fitting(self, guide_dist, params):
-        """
-        Fit the beta/truncnormal curve using parameters trained by SVI.
-        """
+        """Fit the beta/truncnormal curve using parameters trained by SVI."""
         # create x axis
         xaxis = np.linspace(0, 1, 1000)
         if guide_dist == "beta":
@@ -666,7 +693,7 @@ class BayesianInferencePlot:
         return (xaxis, y)
 
     def SVI_plot(self, guide_dist, n_steps=2000):
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots()
 
         # plot prior
         prior_sample = self.BayesianInferenceClass.show_prior(disp_plot=0)
@@ -696,10 +723,6 @@ class BayesianInferencePlot:
                 label=f"Posterior with $n={n}$",
             )
         ax.legend(loc="upper left")
-        ax.set_title(
-            f"SVI density of posterior distributions with {guide_dist} guide",
-            fontsize=15,
-        )
         plt.xlim(0, 1)
         plt.show()
 ```
@@ -732,6 +755,13 @@ For the same Beta prior, we shall
 Let's start with the analytical method that we described in this {doc}`prob_meaning`
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Analytical Beta prior and posterior
+    name: fig_analytical
+---
 # first examine Beta prior
 BETA = BayesianInference(param=(5, 5), name_dist="beta")
 
@@ -741,7 +771,7 @@ BETA_plot = BayesianInferencePlot(true_theta, num_list, BETA)
 xaxis = np.linspace(0, 1, 1000)
 y_prior = st.beta.pdf(xaxis, 5, 5)
 
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots()
 # plot analytical beta prior
 ax.plot(xaxis, y_prior, label="Analytical Beta prior", color="#4C4E52")
 
@@ -758,7 +788,6 @@ for id, n in enumerate(N_list):
         label=f"Analytical Beta posterior with $n={n}$",
     )
 ax.legend(loc="upper left")
-ax.set_title("Analytical Beta prior and posterior", fontsize=15)
 plt.xlim(0, 1)
 plt.show()
 ```
@@ -772,8 +801,8 @@ We'll do this for both MCMC and VI.
 mystnb:
   figure:
     caption: |
-      MCMC sampling density of posterior distributions
-    name: mcmc
+      MCMC density with Beta prior
+    name: fig_mcmc_beta
 ---
 
 BayesianInferencePlot(true_theta, num_list, BETA).MCMC_plot(
@@ -782,6 +811,14 @@ BayesianInferencePlot(true_theta, num_list, BETA).MCMC_plot(
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      SVI density with Beta guide
+    name: fig_svi_beta
+---
+
 BayesianInferencePlot(true_theta, num_list, BETA).SVI_plot(
     guide_dist="beta", n_steps=SVI_num_steps
 )
@@ -825,7 +862,7 @@ We first initialize the `BayesianInference` classes and then can directly call `
 STD_UNIFORM = BayesianInference(param=(0, 1), name_dist="uniform")
 UNIFORM = BayesianInference(param=(0.2, 0.7), name_dist="uniform")
 
-# Try truncated lognormal
+# Try truncated log normal
 LOGNORMAL = BayesianInference(param=(0, 2), name_dist="lognormal")
 
 # Try Von Mises
@@ -836,6 +873,13 @@ LAPLACE = BayesianInference(param=(0.5, 0.07), name_dist="laplace")
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      MCMC density with uniform prior
+    name: fig_mcmc_uniform
+---
 # Uniform
 example_CLASS = STD_UNIFORM
 print(
@@ -861,7 +905,14 @@ Consequently, the posterior cannot put positive probability above $\overline{\th
 Note how when the true data-generating $\theta$ is located at $0.8$ as it is here, when $n$ gets large, the posterior concentrates on the upper bound of the support of the prior, $0.7$ here.
 
 ```{code-cell} ipython3
-# Log Normal
+---
+mystnb:
+  figure:
+    caption: |
+      MCMC density with log normal prior
+    name: fig_mcmc_lognormal
+---
+# log normal
 example_CLASS = LOGNORMAL
 print(
     f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
@@ -872,7 +923,14 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).MCMC_plot(
 ```
 
 ```{code-cell} ipython3
-# Von Mises
+---
+mystnb:
+  figure:
+    caption: |
+      MCMC density with von Mises prior
+    name: fig_mcmc_vonmises
+---
+# von Mises
 example_CLASS = VONMISES
 print(
     f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
@@ -884,6 +942,13 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).MCMC_plot(
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      MCMC density with Laplace prior
+    name: fig_mcmc_laplace
+---
 # Laplace
 example_CLASS = LAPLACE
 print(
@@ -894,15 +959,23 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).MCMC_plot(
 )
 ```
 
+### VI
+
 To get more accuracy we will now increase the number of steps for Variational Inference (VI)
 
 ```{code-cell} ipython3
 SVI_num_steps = 50000
 ```
-
-#### VI with a truncated Normal guide
+#### VI with a truncated normal guide
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      SVI density with uniform prior and normal guide
+    name: fig_svi_uniform_normal
+---
 # Uniform
 example_CLASS = BayesianInference(param=(0, 1), name_dist="uniform")
 print(
@@ -914,7 +987,14 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 ```
 
 ```{code-cell} ipython3
-# Lognormal
+---
+mystnb:
+  figure:
+    caption: |
+      SVI density with log normal prior and normal guide
+    name: fig_svi_lognormal_normal
+---
+# log normal
 example_CLASS = LOGNORMAL
 print(
     f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
@@ -925,6 +1005,13 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      SVI density with Laplace prior and normal guide
+    name: fig_svi_laplace_normal
+---
 # Laplace
 example_CLASS = LAPLACE
 print(
@@ -938,7 +1025,14 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 #### Variational inference with a Beta guide distribution
 
 ```{code-cell} ipython3
-# Uniform
+---
+mystnb:
+  figure:
+    caption: |
+      SVI density with uniform prior and Beta guide
+    name: fig_svi_uniform_beta
+---
+# uniform
 example_CLASS = STD_UNIFORM
 print(
     f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
@@ -949,7 +1043,14 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 ```
 
 ```{code-cell} ipython3
-# log Normal
+---
+mystnb:
+  figure:
+    caption: |
+      SVI density with log normal prior and Beta guide
+    name: fig_svi_lognormal_beta
+---
+# log normal
 example_CLASS = LOGNORMAL
 print(
     f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
@@ -960,7 +1061,14 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 ```
 
 ```{code-cell} ipython3
-# Von Mises
+# von Mises
+---
+mystnb:
+  figure:
+    caption: |
+      SVI density with von Mises prior and Beta guide
+    name: fig_svi_vonmises_beta
+---
 example_CLASS = VONMISES
 print(
     f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
@@ -972,6 +1080,13 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      SVI density with Laplace prior and Beta guide
+    name: fig_svi_laplace_beta
+---
 # Laplace
 example_CLASS = LAPLACE
 print(
