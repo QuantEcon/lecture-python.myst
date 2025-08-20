@@ -58,7 +58,7 @@ import quantecon as qe
 
 ## The algorithm
 
-The model is the same as the McCall model with job separation we {doc}`studied before <mccall_model_with_separation>`, except that the wage offer distribution is continuous.
+The model is the same as the McCall model with job separation that we {doc}`studied before <mccall_model_with_separation>`, except that the wage offer distribution is continuous.
 
 We are going to start with the two Bellman equations we obtained for the model with job separation after {ref}`a simplifying transformation <ast_mcm>`.
 
@@ -83,9 +83,9 @@ v(w) = u(w) + \beta
 
 The unknowns here are the function $v$ and the scalar $d$.
 
-The difference between these and the pair of Bellman equations we previously worked on are
+The differences between these and the pair of Bellman equations we previously worked on are
 
-1. in {eq}`bell1mcmc`, what used to be a sum over a finite number of wage values is an integral over an infinite set.
+1. In {eq}`bell1mcmc`, what used to be a sum over a finite number of wage values is an integral over an infinite set.
 1. The function $v$ in {eq}`bell2mcmc` is defined over all $w \in \mathbb R_+$.
 
 The function $q$ in {eq}`bell1mcmc` is the density of the wage offer distribution.
@@ -107,7 +107,7 @@ The iterates of the value function can neither be calculated exactly nor stored 
 
 To see the issue, consider {eq}`bell2mcmc`.
 
-Even if $v$ is a known function,  the only way to store its update $v'$
+Even if $v$ is a known function, the only way to store its update $v'$
 is to record its value $v'(w)$ for every $w \in \mathbb R_+$.
 
 Clearly, this is impossible.
@@ -142,7 +142,7 @@ One good choice from both respects is continuous piecewise linear interpolation.
 
 This method
 
-1. combines well with value function iteration (see., e.g.,
+1. combines well with value function iteration (see, e.g.,
    {cite}`gordon1995stable` or {cite}`stachurski2008continuous`) and
 1. preserves useful shape properties such as monotonicity and concavity/convexity.
 
