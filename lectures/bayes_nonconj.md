@@ -759,7 +759,7 @@ Let's start with the analytical method that we described in this {doc}`prob_mean
 mystnb:
   figure:
     caption: |
-      Analytical Beta prior and posterior
+      Analytical density (Beta prior)
     name: fig_analytical
 ---
 # first examine Beta prior
@@ -801,7 +801,7 @@ We'll do this for both MCMC and VI.
 mystnb:
   figure:
     caption: |
-      MCMC density with Beta prior
+      MCMC density (Beta prior)
     name: fig_mcmc_beta
 ---
 
@@ -815,7 +815,7 @@ BayesianInferencePlot(true_theta, num_list, BETA).MCMC_plot(
 mystnb:
   figure:
     caption: |
-      SVI density with Beta prior and Beta guide
+      SVI density (Beta prior, Beta guide)
     name: fig_svi_beta_beta
 ---
 
@@ -877,8 +877,8 @@ LAPLACE = BayesianInference(param=(0.5, 0.07), name_dist="laplace")
 mystnb:
   figure:
     caption: |
-      MCMC density with uniform prior
-    name: fig_mcmc_uniform
+      MCMC density (uniform prior)
+    name: fig_mcmc_stduniform
 ---
 # Uniform
 example_CLASS = STD_UNIFORM
@@ -888,7 +888,16 @@ print(
 BayesianInferencePlot(true_theta, num_list, example_CLASS).MCMC_plot(
     num_samples=MCMC_num_samples
 )
+```
 
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      MCMC density (uniform prior)
+    name: fig_mcmc_uniform
+---
 example_CLASS = UNIFORM
 print(
     f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
@@ -909,7 +918,7 @@ Note how when the true data-generating $\theta$ is located at $0.8$ as it is her
 mystnb:
   figure:
     caption: |
-      MCMC density with log normal prior
+      MCMC density (log normal prior)
     name: fig_mcmc_lognormal
 ---
 # log normal
@@ -927,7 +936,7 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).MCMC_plot(
 mystnb:
   figure:
     caption: |
-      MCMC density with von Mises prior
+      MCMC density (von Mises prior)
     name: fig_mcmc_vonmises
 ---
 # von Mises
@@ -946,7 +955,7 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).MCMC_plot(
 mystnb:
   figure:
     caption: |
-      MCMC density with Laplace prior
+      MCMC density (Laplace prior)
     name: fig_mcmc_laplace
 ---
 # Laplace
@@ -973,7 +982,7 @@ SVI_num_steps = 50000
 mystnb:
   figure:
     caption: |
-      SVI density with uniform prior and normal guide
+      SVI density (uniform prior, normal guide)
     name: fig_svi_uniform_normal
 ---
 # Uniform
@@ -991,7 +1000,7 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 mystnb:
   figure:
     caption: |
-      SVI density with log normal prior and normal guide
+      SVI density (log normal prior, normal guide)
     name: fig_svi_lognormal_normal
 ---
 # log normal
@@ -1009,7 +1018,7 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 mystnb:
   figure:
     caption: |
-      SVI density with Laplace prior and normal guide
+      SVI density (Laplace prior, normal guide)
     name: fig_svi_laplace_normal
 ---
 # Laplace
@@ -1029,7 +1038,7 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 mystnb:
   figure:
     caption: |
-      SVI density with uniform prior and Beta guide
+      SVI density (uniform prior, Beta guide)
     name: fig_svi_uniform_beta
 ---
 # uniform
@@ -1047,7 +1056,7 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 mystnb:
   figure:
     caption: |
-      SVI density with log normal prior and Beta guide
+      SVI density (log normal prior, Beta guide)
     name: fig_svi_lognormal_beta
 ---
 # log normal
@@ -1065,7 +1074,7 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 mystnb:
   figure:
     caption: |
-      SVI density with von Mises prior and Beta guide
+      SVI density (von Mises prior, Beta guide)
     name: fig_svi_vonmises_beta
 ---
 # von Mises
@@ -1084,7 +1093,7 @@ BayesianInferencePlot(true_theta, num_list, example_CLASS).SVI_plot(
 mystnb:
   figure:
     caption: |
-      SVI density with Laplace prior and Beta guide
+      SVI density (Laplace prior, Beta guide)
     name: fig_svi_laplace_beta
 ---
 # Laplace
