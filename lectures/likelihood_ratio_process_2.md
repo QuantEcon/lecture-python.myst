@@ -52,7 +52,7 @@ We'll study two alternative arrangements:
 The fundamental theorems of welfare economics will apply and assure us that these two arrangements end up producing exactly the same allocation of consumption goods to individuals **provided** that the social planner assigns an appropriate set of **Pareto weights**.
 
 ```{note}
-You can learn about how the two welfare theorems are applied in modern macroeconomic models in {doc}`this lecture on a planning problem <cass_koopmans_1>` and {doc}`this lecture on a related competitive equilibrium <cass_koopmans_2>`. 
+You can learn about how the two welfare theorems are applied in modern macroeconomic models in {doc}`this lecture on a planning problem <cass_koopmans_1>` and {doc}`this lecture on a related competitive equilibrium <cass_koopmans_2>`.   {doc}`This quantecon lecture <ge_arrow>` presents a recursive formulation of  complete markets models with homogeneous beliefs.
 ```
 
 
@@ -830,13 +830,22 @@ This ties in nicely with {eq}`eq:kl_likelihood_link`.
 
 ## Related Lectures
 
-Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes`
-and as applied in {doc}`odu`.
+Complete markets models with homogeneous beliefs, a kind often used in macroeconomics and finance,  are studied in this quantecon lecture {doc}`ge_arrow`.
+
+{cite}`blume2018case` discuss a paternalistic  case against complete markets.  Their analysis assumes that a social planner should disregard  individuals preferences in the sense that it should disregard the subjective belief components of their preferences.  
+
+Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes` and as applied in {doc}`odu`.
 
 Likelihood ratio processes appear again in {doc}`advanced:additive_functionals`. 
 
 
-## Exercise
+
+{doc}`ge_arrow`
+
+
+
+
+## Exercises
 
 ```{exercise}
 :label: lr_ex3
@@ -892,7 +901,7 @@ $$
 c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1 - \lambda + \lambda l_t(s^t)}
 $$
 
-To match them, we need the following equality to hold
+To match agent 1's choice in a competitive equilibrium with the planner's choice for agent 1,  the following equality must hold
 
 $$
 \frac{\mu_2}{\mu_1} = \frac{\lambda}{1 - \lambda}
@@ -932,9 +941,12 @@ $$
 ```{exercise}
 :label: lr_ex4
 
-In this exercise, we will implement the Blume-Easley model with learning agents.
+In this exercise, we'll study two agents, each of whom updates its posterior probability as
+data arrive.
 
-Consider the two models 
+ * each agent applies Bayes' law in the way studied  in {doc}`likelihood_bayes`.
+
+The following  two models are on the table
 
 $$
 f(s^t) = f(s_1) f(s_2) \cdots f(s_t) 
@@ -943,28 +955,26 @@ $$
 and 
 
 $$
-g(s^t) = g(s_1) g(s_2) \cdots g(s_t) 
+g(s^t) = g(s_1) g(s_2) \cdots g(s_t)  
 $$
 
-and associated likelihood ratio process
+as is an associated likelihood ratio process
 
 $$
-L(s^t) = \frac{f(s^t)}{g(s^t)}
+L(s^t) = \frac{f(s^t)}{g(s^t)} .
 $$
 
 Let $\pi_0 \in (0,1)$ be a prior probability and 
 
 $$
-\pi_t = \frac{ \pi_0 L(s^t)}{ \pi_0 L(s^t) + (1-\pi_0) }
+\pi_t = \frac{ \pi_0 L(s^t)}{ \pi_0 L(s^t) + (1-\pi_0) } .
 $$
 
-and the mixture model
+Each of our two agents deploys its own version of the mixture model
 
 $$
 m(s^t) = \pi_t f(s^t) + (1- \pi_t) g(s^t)
 $$ (eq:be_mix_model)
-
-Now consider them in the environment in our Blume-Easley lecture.
 
 We'll endow each type of consumer with model {eq}`eq:be_mix_model`.
 
@@ -977,19 +987,25 @@ $$
 m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 $$ (eq:prob_model)
 
-The idea is to hand probability models {eq}`eq:prob_model` for $i=1,2$ to the social planner in the Blume-Easley lecture, deduce allocation $c^i(s^t), i = 1,2$, and watch what happens when
+We now  hand probability models {eq}`eq:prob_model` for $i=1,2$ to the social planner.
+
+We want to deduce allocation $c^i(s^t), i = 1,2$, and watch what happens when
 
   * nature's model is $f$
   * nature's model is $g$
 
-Both consumers will eventually learn the "truth", but one of them will learn faster.  
+We  expect that  consumers will eventually learn the "truth", but that one of them will learn faster.  
 
-Questions:
-1. How do their consumption shares evolve? 
-2. Which agent learns faster when nature follows $f$? When nature follows $g$?
-3. How does the difference in initial priors $\pi_0^1$ and $\pi_0^2$ affect the convergence speed?
+To explore things, please  set $f \sim \text{Beta}(1.5, 1)$ and $g \sim \text{Beta}(1, 1.5)$.
 
-In the exercise below, set $f \sim \text{Beta}(1.5, 1)$ and $g \sim \text{Beta}(1, 1.5)$.
+Please write Python code that answers the following questions.
+
+ *  How do  consumption shares evolve? 
+ *  Which agent learns faster when nature follows $f$? 
+ *  Which agent learns faster when nature follows $g$?
+ *  How does a difference in initial priors $\pi_0^1$ and $\pi_0^2$ affect the convergence speed?
+
+
 
 ```
 
@@ -997,9 +1013,9 @@ In the exercise below, set $f \sim \text{Beta}(1.5, 1)$ and $g \sim \text{Beta}(
 :class: dropdown
 ```
 
-Here is one solution.
 
-First, let's set up the model with learning agents:
+
+First, let's write helper functions that compute model components including each agent's subjective belief function.
 
 ```{code-cell} ipython3
 def bayesian_update(π_0, L_t):
@@ -1017,7 +1033,7 @@ def mixture_density_belief(s_seq, f_func, g_func, π_seq):
     return π_seq * f_vals + (1 - π_seq) * g_vals
 ```
 
-Now let's implement the learning Blume-Easley simulation:
+Now let's write code that simulates the Blume-Easley model with our two agents.
 
 ```{code-cell} ipython3
 def simulate_learning_blume_easley(sequences, f_belief, g_belief, 
@@ -1096,7 +1112,7 @@ f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
 ```
 
-We start with different initial priors $\pi^i_0 \in (0, 1)$ and widen the gap between them.  
+We'll  start with different initial priors $\pi^i_0 \in (0, 1)$ and widen the gap between them.  
 
 ```{code-cell} ipython3
 # Different initial priors
@@ -1128,7 +1144,7 @@ for i, (π_0_1, π_0_2) in enumerate(π_0_scenarios):
             s_seq_g, f, g, π_0_1, π_0_2, λ)
 ```
 
-Now let's visualize the results
+Let's visualize the results
 
 ```{code-cell} ipython3
 def plot_learning_results(results, π_0_scenarios, nature_type, truth_value):
@@ -1180,7 +1196,7 @@ def plot_learning_results(results, π_0_scenarios, nature_type, truth_value):
     return fig, axes
 ```
 
-Now use the function to plot results when nature follows f:
+Now we'll plot outcome when nature follows f:
 
 ```{code-cell} ipython3
 fig_f, axes_f = plot_learning_results(
@@ -1188,20 +1204,20 @@ fig_f, axes_f = plot_learning_results(
 plt.show()
 ```
 
-We can see that the agent with more "accurate" belief gets higher consumption share.
+We can see that the agent with the  more accurate belief gets higher consumption share.
 
-Moreover, the further the initial beliefs are, the longer it takes for the consumption ratio to converge.
+Moreover, the further apart are  initial beliefs, the longer it takes for the consumption ratio to converge.
 
-The time it takes for the "less accurate" agent costs their share in future consumption.
+The longer  it takes for the "less accurate" agent to learn, the lower its ultimate consumption share. 
 
-Now plot results when nature follows g:
+Now let's plot outcomes when nature follows g:
 
 ```{code-cell} ipython3
 fig_g, axes_g = plot_learning_results(results_g, π_0_scenarios, 'g', 0.0)
 plt.show()
 ```
 
-We observe a similar but symmetrical pattern.
+We observe  symmetrical outcomes.
 
 ```{solution-end}
 ```
@@ -1209,15 +1225,15 @@ We observe a similar but symmetrical pattern.
 ```{exercise}
 :label: lr_ex5
 
-In the previous exercise, we specifically set the two beta distributions to be relatively close to each other.
+In the previous exercise, we purposefully  set the two beta distributions to be relatively close to each other.
 
-That is to say, it is harder to distinguish between the two distributions.
+That made it challenging to distinguish  the  distributions.
 
-Now let's explore an alternative scenario where the two distributions are further apart.
+Now let's study outcomes when  the  distributions are further apart.
 
-Specifically, we set $f \sim \text{Beta}(2, 5)$ and $g \sim \text{Beta}(5, 2)$.
+Let's set $f \sim \text{Beta}(2, 5)$ and $g \sim \text{Beta}(5, 2)$.
 
-Try to compare the learning dynamics in this scenario with the previous one using the simulation code we developed earlier.
+Please use  the Python code you  have written to study outcomes. 
 ```
 
 ```{solution-start} lr_ex5
@@ -1269,10 +1285,12 @@ plt.show()
 fig_g, axes_g = plot_learning_results(results_g, π_0_scenarios, 'g', 0.0)
 plt.show()
 ```
+Evidently, because the two distributions are further apart, it is easier to distinguish them.
 
-In this case, it is easier to realize one's belief is incorrect; the belief adjusts more quickly. 
+So learning occurs more quickly.
 
-Observe that consumption shares also adjust more quickly.
+
+So do consumption shares.
 
 ```{solution-end}
 ```
