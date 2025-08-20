@@ -306,10 +306,10 @@ Notice that
 
 $$
 \begin{aligned}
-  Y_t & =  & c_1 (r e^{i \omega})^t + c_2 (r e^{-i \omega})^t  \\
-   & = & c_1 r^t e^{i\omega t} + c_2 r^t e^{-i \omega t} \\
-   & = &  c_1 r^t [\cos(\omega t) + i \sin(\omega t) ] + c_2 r^t [\cos(\omega t) - i \sin(\omega t) ] \\
-   & = & (c_1 + c_2) r^t \cos(\omega t) + i (c_1 - c_2) r^t \sin(\omega t)
+  Y_t & =   c_1 (r e^{i \omega})^t + c_2 (r e^{-i \omega})^t  \\
+   & = c_1 r^t e^{i\omega t} + c_2 r^t e^{-i \omega t} \\
+   & =  c_1 r^t [\cos(\omega t) + i \sin(\omega t) ] + c_2 r^t [\cos(\omega t) - i \sin(\omega t) ] \\
+   & = (c_1 + c_2) r^t \cos(\omega t) + i (c_1 - c_2) r^t \sin(\omega t)
  \end{aligned}
 $$
 
