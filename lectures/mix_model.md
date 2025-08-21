@@ -820,7 +820,7 @@ def learn_x_bayesian(observations, α0, β0, grid_size=2000):
         post = np.exp(log_post)
         post /= post.sum()
 
-        μ_path[t + 1] = np.sum(x_grid * post)
+        μ_path[t + 1] = x_grid @ post
 
     return μ_path
 

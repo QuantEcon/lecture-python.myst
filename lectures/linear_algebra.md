@@ -246,15 +246,25 @@ Continuing on from the previous example, the inner product and norm can be compu
 follows
 
 ```{code-cell} python3
-np.sum(x * y)          # Inner product of x and y
+np.sum(x * y)          # Inner product of x and y, method 1
 ```
+
+```{code-cell} python3
+x @ y                  # Inner product of x and y, method 2 (preferred)
+```
+
+The `@` operator is preferred because it uses optimized BLAS libraries that implement fused multiply-add operations, providing better performance and numerical accuracy compared to the separate multiply and sum operations.
 
 ```{code-cell} python3
 np.sqrt(np.sum(x**2))  # Norm of x, take one
 ```
 
 ```{code-cell} python3
-np.linalg.norm(x)      # Norm of x, take two
+np.sqrt(x @ x)         # Norm of x, take two (preferred)
+```
+
+```{code-cell} python3
+np.linalg.norm(x)      # Norm of x, take three
 ```
 
 ### Span
