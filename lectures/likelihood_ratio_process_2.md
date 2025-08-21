@@ -1331,11 +1331,12 @@ $$
 $$
 
 
-Simulate and visualize the evolution of consumption allocations when:
+Please simulate and visualize  evolutions of posterior probabilities and  consumption allocations when:
+
 * Nature permanently draws from $f$
 * Nature permanently draws from $g$
 
-Use the existing code structure to implement this simulation and observe how the allocation evolves over time.
+
 
 ```
 
@@ -1403,7 +1404,7 @@ def compute_posterior_three_models(
     return π_f, π_g, π_h
 ```
 
-Let's also write the simulation code following the same idea as in the previous exercises
+Let's also write  simulation code along lines similar to earlier exercises
 
 ```{code-cell} ipython3
 @jit(parallel=True)
@@ -1529,7 +1530,7 @@ def plot_three_model_results(c1_data, π_data, nature_labels, λ=0.5,
 
 Now let's run the simulation. 
 
-In our simulation, agent 1 assigns positive probabilities only to  $f$ and $g$, while agent 2 puts equal weights on all three models
+In the simulation below, agent 1 assigns positive probabilities only to  $f$ and $g$, while agent 2 puts equal weights on all three models.
 
 ```{code-cell} ipython3
 T = 100
@@ -1554,17 +1555,30 @@ fig, axes = plot_three_model_results(c1_data, π_data, nature_labels, λ)
 plt.show()
 ```
 
-The results show interesting dynamics.
+Agent 1's posterior probabilities are  depicted with orange lines and agent 2's posterior beliefs are depicted with blue lines.  
 
-In the top panel, Agent 1 (orange line) who initially puts weight only on $f$ (solid line) and $g$ (dashed line) eventually dominates consumption as they learn the truth faster than Agent 2 who spreads probability across all three models.
+The  top panel shows outcomes when nature draws from $f$.
 
-When nature draws from $g$ (lower panel), we see a similar pattern but reversed -- Agent 1's consumption share decreases as their belief converges to the truth.
+Evidently, when nature draws from $f$, agent 1 learns faster than agent 2, who, unlike agent 1, attaches a positive prior probability to model $h$.
 
-For both cases, the belief on $h$ (dotted line) eventually goes to 0.
+The bottom panel depicts outcomes when nature draws from $g$. 
 
-The agent with the simpler (but correct) model structure learns faster and eventually dominates consumption allocation.
+Again,  agent 1 learns faster than agent 2, who, unlike agent 1, attaches some prior probability to model $h$.
 
-In other words, the model penalizes complexity and rewards accuracy.
+ * In both panels, agent 2's posterior probability attached to  $h$ (dotted line) converges  to 0.
+
+Notice that when nature uses model $f$, the consumption share of agent 1 is only temporarily bigger than 1, when when nature uses model $g$, agent 1's consumption share is permanently higher. 
+
+
+In this exercise, the "truth" is among possible outcomes according to both agents.
+
+Agent 2's model is "more general" because it allows a possibility -- that nature is drawing from $h$ -- that agent 1's model does not include.  
+
+Agent 1 learns more quickly because he uses a simpler model. 
+
+It would be interesting to explore why agent 1's consumption allocation when $f$ generates the data is only temporarily higher than agent 2's, while when $g$ generates the data, it is permanently higher.
+
+ * Hint: Somehow the KL divergence should be able to help us sort this out.
 
 ```{solution-end}
 ```
@@ -1581,11 +1595,12 @@ Consider the same setup as the previous exercise, but now:
 Choose $h$ to be close but not equal to either $f$ or $g$ as measured by KL divergence. 
 For example, set $h \sim \text{Beta}(1.2, 1.1)$.
 
-Simulate and visualize the evolution of consumption allocations when:
+Please simulate and visualize  evolutions of posterior probabilities and  consumption allocations when:
+
 * Nature permanently draws from $f$
 * Nature permanently draws from $g$
 
-Observe how the presence of extreme priors affects learning and allocation dynamics.
+
 
 ```
 
@@ -1593,11 +1608,10 @@ Observe how the presence of extreme priors affects learning and allocation dynam
 :class: dropdown
 ```
 
-Let's implement this case with extreme priors where one agent is almost dogmatic.
 
-For this to converge, we need a longer sequence by increasing $T$ to 1000.
+To explore this exercise, we increase $T$ to 1000.
 
-Let's define the parameters for distributions and verify that $h$ and $f$ are closer than $h$ and $g$
+Let's specify $f, g$, and $h$ and verify that $h$ and $f$ are closer than $h$ and $g$
 
 ```{code-cell} ipython3
 F_a, F_b = 1, 1
@@ -1664,13 +1678,21 @@ fig, axes = plot_three_model_results(c1_data, π_data, nature_labels, λ)
 plt.show()
 ```
 
-In the top panel, observe how slowly agent 1 is adjusting to the truth -- the belief is rigid but still updating.
+In the top panel, which depicts outcomes when nature draws from $f$, please observe how slowly agent 1 learns the truth. 
 
-The belief about $h$ slowly shifts towards 0 crossing the belief about $f$ moving up to 1 at $t = 500$.
+The posterior probability that agent 2 puts on  $h$ converges to zero slowly.
 
-However, since agent 2 is rigid about $h$, and $f$ is very difficult to distinguish from $h$ as measured by $KL(f, h)$, we can see that the belief is almost stationary due to the difficulty of realizing the belief is incorrect.
 
-In the bottom panel, since $g$ is further away from $h$, both agents adjust toward the truth very quickly, but agent 1 acts faster given the slightly higher weight on $f$ and $g$.
+This is because we have specified that $f$ is very difficult to distinguish from $h$ as measured by $KL(f, h)$. 
+
+The bottom panel shows outcomes when nature draws from $g$.
+
+We have specified things so that  $g$ is further away from $h$ as measured by the KL divergence.
+
+This helps agent 2 learn the truth more quickly.
+
+Notice that agent 1's consumption share converges to 1 both when nature permanently draws from $f$
+and when nature permanently draws from $g$.
 
 ```{solution-end}
 ```
