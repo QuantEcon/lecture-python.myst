@@ -305,7 +305,7 @@ The exercises ask you to explore the solution and how it changes with parameters
 Use the code above to explore what happens to the reservation wage when the wage parameter $\mu$
 changes.
 
-Use the default parameters and $\mu$ in `mu_vals = jnp.linspace(0.0, 2.0, 15)`.
+Use the default parameters and $\mu$ in `μ_vals = jnp.linspace(0.0, 2.0, 15)`.
 
 Is the impact on the reservation wage as you expected?
 ```
