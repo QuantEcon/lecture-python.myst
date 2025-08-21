@@ -259,7 +259,7 @@ def solve_model(model, tol=1e-5, max_iter=2000):
         return v_new, d_new, i + 1, error
     
     def cond_fun(state):
-        v, d, i, error = state
+        _, _, i, error = state
         return (error > tol) & (i < max_iter)
     
     initial_state = (v, d, 0, tol + 1)
