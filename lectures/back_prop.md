@@ -23,7 +23,6 @@ In addition to what's included in base Anaconda, we need to install the followin
 
 !pip install -U kaleido plotly
 !conda install -y -c plotly plotly-orca
-!plotly_get_chrome
 ```
 
 We also need to install JAX to run this lecture

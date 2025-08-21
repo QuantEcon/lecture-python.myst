@@ -26,6 +26,12 @@ jobs:
           pip install --upgrade "jax[cuda12-local]==0.6.2"
           pip install numpyro pyro-ppl
           python scripts/test-jax-install.py
+      - name: Install Chrome
+        shell: bash -l {0}
+        run: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb     
+          sudo apt install -y ./google-chrome-stable_current_amd64.deb
+          google-chrome --version
       - name: Check nvidia Drivers
         shell: bash -l {0}
         run: nvidia-smi
