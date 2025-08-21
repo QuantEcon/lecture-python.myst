@@ -54,6 +54,9 @@ import jax
 import jax.numpy as jnp
 from typing import NamedTuple
 import quantecon as qe
+
+# Set JAX to use CPU
+jax.config.update('jax_platform_name', 'cpu')
 ```
 
 ## The algorithm
