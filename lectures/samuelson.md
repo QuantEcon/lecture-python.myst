@@ -516,9 +516,9 @@ therefore damped oscillations')
 therefore get smooth convergence to a steady state')
 ```
 
-```{code-cell} ipython3
-### Test the categorize_solution function
+To test the categorize_solution function,
 
+```{code-cell} ipython3
 categorize_solution(1.3, -.4)
 ```
 
@@ -618,10 +618,6 @@ $$
   pairs that would generate those roots
 
 ```{code-cell} ipython3
-### code to reverse-engineer a cycle
-### y_t = r^t (c_1 cos(ϕ t) + c2 sin(ϕ t))
-###
-
 def f(r, ϕ):
     """
     Takes modulus r and angle ϕ of complex number r exp(j ϕ)
@@ -638,16 +634,16 @@ def f(r, ϕ):
     b = -ρ2                # Reverse-engineer a and b that validate these
     a = ρ1 - b
     return ρ1, ρ2, a, b
+```
 
-## Now let's use the function in an example
-## Here are the example parameters
+Now let's use the function in an example. Here are the example parameters:
 
+```{code-cell} ipython3
 r = .95
 period = 10                # Length of cycle in units of time
 ϕ = 2 * math.pi/period
 
 ## Apply the function
-
 ρ1, ρ2, a, b = f(r, ϕ)
 
 print(f"a, b = {a}, {b}")
@@ -743,8 +739,7 @@ r = 1   # Generates undamped, nonexplosive cycles
 period = 10   # Length of cycle in units of time
 ϕ = 2 * math.pi/period
 
-## Apply the reverse-engineering function f
-
+# Apply the reverse-engineering function f
 ρ1, ρ2, a, b = f(r, ϕ)
 
 # Drop the imaginary part so that it is a valid input into y_nonstochastic
