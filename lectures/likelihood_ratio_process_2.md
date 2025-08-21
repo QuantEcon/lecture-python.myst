@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.16.6
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -63,7 +63,7 @@ Let's start by importing some Python tools.
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import vectorize, jit
+from numba import vectorize, jit, prange
 from math import gamma
 from scipy.integrate import quad
 from scipy.optimize import brentq, minimize_scalar
@@ -1112,7 +1112,7 @@ f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
 ```
 
-We'll  start with different initial priors $\pi^i_0 \in (0, 1)$ and widen the gap between them.  
+We'll  start with different initial priors $\pi^i_0 \in (0, 1)$ and widen the gap between them.
 
 ```{code-cell} ipython3
 # Different initial priors
@@ -1168,29 +1168,29 @@ def plot_learning_results(results, π_0_scenarios, nature_type, truth_value):
         ax = axes[row, 0]
         π_1_med = np.median(res['π_1'], axis=0)
         π_2_med = np.median(res['π_2'], axis=0) 
-        ax.plot(π_1_med, 'C0', label=r'$\pi_1^t$ (agent 1)', linewidth=2)
-        ax.plot(π_2_med, 'C1', label=r'$\pi_2^t$ (agent 2)', linewidth=2)
+        ax.plot(π_1_med, 'C0', label=r'agent 1', linewidth=2)
+        ax.plot(π_2_med, 'C1', label=r'agent 2', linewidth=2)
         ax.axhline(y=truth_value, color='gray', linestyle='--', 
                    alpha=0.5, label=f'truth ({nature_type})')
-        ax.set_title(f'beliefs when nature = {nature_type}\n{scenario_label}')
-        ax.set_ylabel('belief probability')
+        ax.set_title(f'Beliefs when nature = {nature_type}\n{scenario_label}')
+        ax.set_ylabel(r'median $\pi_i^t$')
         ax.set_ylim([-0.05, 1.05])
         ax.legend()
         
         # Plot consumption shares
         ax = axes[row, 1]
         c1_med = np.median(res['c1_share'], axis=0)
-        ax.plot(c1_med, 'g-', linewidth=2, label='agent 1 consumption share')
+        ax.plot(c1_med, 'g-', linewidth=2, label='median')
         ax.axhline(y=0.5, color='gray', linestyle='--', 
-                   alpha=0.5, label='equal split')
-        ax.set_title(f'consumption when nature = {nature_type}')
-        ax.set_ylabel('agent 1 share')
+                   alpha=0.5)
+        ax.set_title(f'Agent 1 consumption share (Nature = {nature_type})')
+        ax.set_ylabel('consumption share')
         ax.set_ylim([0, 1])
         ax.legend()
         
         # Add x-labels
         for col in range(2):
-            axes[row, col].set_xlabel('time')
+            axes[row, col].set_xlabel('$t$')
     
     plt.tight_layout()
     return fig, axes
@@ -1285,12 +1285,369 @@ plt.show()
 fig_g, axes_g = plot_learning_results(results_g, π_0_scenarios, 'g', 0.0)
 plt.show()
 ```
+
 Evidently, because the two distributions are further apart, it is easier to distinguish them.
 
 So learning occurs more quickly.
 
 
 So do consumption shares.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex6
+
+Two agents with different beliefs about three possible models.
+
+Assume $f(x) \geq 0$, $g(x) \geq 0$, and $h(x) \geq 0$ for $x \in X$ with:
+- $\int_X f(x) dx = 1$
+- $\int_X g(x) dx = 1$ 
+- $\int_X h(x) dx = 1$
+
+We'll consider two agents:
+* Agent 1: $\pi^g_0 = 1 - \pi^f_0$, $\pi^f_0 \in (0,1)$ (believes only in models $f$ and $g$)
+* Agent 2: $\pi^g_0 = \pi^f_0 = 1/3$ (equally weights all three models)
+
+Set $h = \pi^f_0 f + (1-\pi^f_0) g$ (a mixture of $f$ and $g$).
+
+Simulate and visualize the evolution of consumption allocations when:
+* Nature permanently draws from $f$
+* Nature permanently draws from $g$
+
+Use the existing code structure to implement this simulation and observe how the allocation evolves over time.
+
+```
+
+```{solution-start} lr_ex6
+:class: dropdown
+```
+
+Let's implement this three-model case with two agents having different beliefs.
+
+First, let's define $f$ and $g$ far apart, with $h$ being a mixture of $f$ and $g$
+
+```{code-cell} ipython3
+F_a, F_b = 1, 1
+G_a, G_b = 3, 1.2
+λ = 0.5 
+π_f_0 = 0.4 
+
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
+h = jit(lambda x: π_f_0 * f(x) + (1 - π_f_0) * g(x))
+```
+
+Now we can define the belief updating for the three-agent model
+
+```{code-cell} ipython3
+@jit(parallel=True)
+def compute_posterior_three_models(
+    s_seq, f_func, g_func, h_func, π_f_0, π_g_0):
+    """
+    Compute posterior probabilities for three models.
+    """
+    N, T = s_seq.shape
+    π_h_0 = 1 - π_f_0 - π_g_0
+    
+    π_f = np.zeros((N, T))
+    π_g = np.zeros((N, T))
+    π_h = np.zeros((N, T))
+    
+    for n in prange(N):
+        # Initialize with priors
+        π_f[n, 0] = π_f_0
+        π_g[n, 0] = π_g_0
+        π_h[n, 0] = π_h_0
+        
+        # Compute cumulative likelihoods
+        f_cumul = 1.0
+        g_cumul = 1.0
+        h_cumul = 1.0
+        
+        for t in range(1, T):
+            s_t = s_seq[n, t]
+            
+            # Update cumulative likelihoods
+            f_cumul *= f_func(s_t)
+            g_cumul *= g_func(s_t)
+            h_cumul *= h_func(s_t)
+            
+            # Compute posteriors using Bayes' rule
+            denominator = π_f_0 * f_cumul + π_g_0 * g_cumul + π_h_0 * h_cumul
+            
+            π_f[n, t] = π_f_0 * f_cumul / denominator
+            π_g[n, t] = π_g_0 * g_cumul / denominator
+            π_h[n, t] = π_h_0 * h_cumul / denominator
+    
+    return π_f, π_g, π_h
+```
+
+Let's also write the simulation code following the same idea as in the previous exercises
+
+```{code-cell} ipython3
+@jit(parallel=True)
+def simulate_three_model_allocation(s_seq, f_func, g_func, h_func, 
+                                   π_f_1, π_g_1, π_f_2, π_g_2, λ=0.5):
+    """
+    Simulate two agents having beliefs over three models.
+    """
+    
+    N, T = s_seq.shape
+    
+    # Compute posteriors for both agents
+    π_f_1_seq, π_g_1_seq, π_h_1_seq = compute_posterior_three_models(
+        s_seq, f_func, g_func, h_func, π_f_1, π_g_1)
+    π_f_2_seq, π_g_2_seq, π_h_2_seq = compute_posterior_three_models(
+        s_seq, f_func, g_func, h_func, π_f_2, π_g_2)
+    
+    # Compute consumption shares
+    c1_share = np.zeros((N, T))
+    
+    for n in prange(N):
+        l_agents_cumul = 1.0  # Initialize likelihood ratio between agents
+        
+        for t in range(T):
+            # Agent 1's mixture density
+            m1_t = (π_f_1_seq[n, t] * f_func(s_seq[n, t]) + 
+                   π_g_1_seq[n, t] * g_func(s_seq[n, t]) + 
+                   π_h_1_seq[n, t] * h_func(s_seq[n, t]))
+            
+            # Agent 2's mixture density
+            m2_t = (π_f_2_seq[n, t] * f_func(s_seq[n, t]) + 
+                   π_g_2_seq[n, t] * g_func(s_seq[n, t]) + 
+                   π_h_2_seq[n, t] * h_func(s_seq[n, t]))
+            
+            # Update likelihood ratio between agents
+            if t > 0:
+                l_agents_cumul *= (m1_t / m2_t)
+            
+            # Consumption share for agent 1
+            c1_share[n, t] = λ * l_agents_cumul / (1 - λ + λ * l_agents_cumul)
+    
+    return c1_share, π_f_1_seq, π_g_1_seq, π_h_1_seq, π_f_2_seq, π_g_2_seq, π_h_2_seq
+```
+
+The following code cell defines a plotting function to show the convergence of beliefs and consumption ratio
+
+```{code-cell} ipython3
+
+def plot_three_model_results(c1_data, π_data, nature_labels, λ=0.5, 
+                            agent_labels=None, title_suffix="", figsize=(12, 10)):
+    """
+    Create plots for three-model exercises.
+    """
+    n_scenarios = len(nature_labels)
+    fig, axes = plt.subplots(2, n_scenarios, figsize=figsize)
+    if n_scenarios == 1:
+        axes = axes.reshape(2, 1)
+    
+    colors = ['blue', 'green', 'orange']  # For different nature scenarios
+    
+    for i, (nature_label, c1, π_tuple) in enumerate(
+                zip(nature_labels, c1_data, π_data)):
+        πf1, πg1, πh1, πf2, πg2, πh2 = π_tuple
+
+        ax = axes[i, 0]
+        ax.plot(np.median(πf1, axis=0), 'C0-', linewidth=2)
+        ax.plot(np.median(πg1, axis=0), 'C0--', linewidth=2)
+        ax.plot(np.median(πh1, axis=0), 'C0:', linewidth=2)
+        ax.plot(np.median(πf2, axis=0), 'C1-', linewidth=2)
+        ax.plot(np.median(πg2, axis=0), 'C1--', linewidth=2)
+        ax.plot(np.median(πh2, axis=0), 'C1:', linewidth=2)
+
+        # Truth indicator
+        truth_val = 1.0 if nature_label == 'f' else (
+                        1.0 if nature_label == 'g' else 0.0)
+        ax.axhline(y=truth_val, color='grey', linestyle='-.', alpha=0.7)
+        
+        ax.set_title(f'Beliefs when Nature = {nature_label}')
+        ax.set_xlabel('$t$')
+        ax.set_ylabel(r'median $\pi(\cdot)$')
+        ax.set_ylim([-0.01, 1.01])
+
+        if i == 0:
+            from matplotlib.lines import Line2D
+            
+            # Agent colors legend
+            agent_elements = [
+                Line2D([0], [0], color='C0', linewidth=2, label='agent 1'),
+                Line2D([0], [0], color='C1', linewidth=2, label='agent 2')
+            ]
+            agent_legend = ax.legend(handles=agent_elements, loc='upper left')
+            
+            # Line styles legend
+            style_elements = [
+                Line2D([0], [0], color='black', 
+                        linestyle='-', label='π(f)'),
+                Line2D([0], [0], color='black', 
+                        linestyle='--', label='π(g)'),
+                Line2D([0], [0], color='black', 
+                        linestyle=':', label='π(h)'),
+                Line2D([0], [0], color='grey', 
+                        linestyle='-.', alpha=0.7, label='truth')
+            ]
+            ax.legend(handles=style_elements, loc='upper right')
+            
+            ax.add_artist(agent_legend)
+            
+        ax = axes[i, 1]
+        c1_med = np.median(c1, axis=0)
+        ax.plot(c1_med, color=colors[i], linewidth=2, label="median")
+        ax.axhline(y=0.5, color='grey', linestyle='--', alpha=0.5)
+        ax.set_title(
+            f'Agent 1 consumption share (Nature = {nature_label}{title_suffix})')
+        ax.set_xlabel('t')
+        ax.set_ylabel("median consumption share")
+        ax.set_ylim([-0.01, 1.01])
+        ax.legend()
+    
+    plt.tight_layout()
+    return fig, axes
+```
+
+Now let's run the simulation. 
+
+In our simulation, agent 1 believes only in $f$ and $g$, while agent 2 has an equal weight on all three models
+
+```{code-cell} ipython3
+T = 100
+N = 1000
+
+# Generate sequences for nature f and g
+s_seq_f = np.random.beta(F_a, F_b, (N, T))
+s_seq_g = np.random.beta(G_a, G_b, (N, T))
+
+results_f = simulate_three_model_allocation(s_seq_f, 
+                        f, g, h, π_f_0, 1-π_f_0, 
+                        1/3, 1/3, λ)
+results_g = simulate_three_model_allocation(s_seq_g, 
+                        f, g, h, π_f_0, 1-π_f_0, 
+                        1/3, 1/3, λ)
+
+c1_data = [results_f[0], results_g[0]] 
+π_data = [results_f[1:], results_g[1:]]
+nature_labels = ['f', 'g']
+
+fig, axes = plot_three_model_results(c1_data, π_data, nature_labels, λ)
+plt.show()
+```
+
+The results show interesting dynamics:
+
+In the top panel, Agent 1 (orange line) who initially puts weight only on $f$ (solid line) and $g$ (dashed line) eventually dominates consumption as they learn the truth faster than Agent 2 who spreads probability across all three models.
+
+When nature draws from $g$ (lower panel), we see a similar pattern but reversed -- Agent 1's consumption share decreases as their belief converges to the truth.
+
+For both cases, the belief on $h$ (dotted line) eventually goes to 0.
+
+The agent with the simpler (but correct) model structure learns faster and eventually dominates consumption allocation.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex7
+
+Two agents with extreme priors about three models.
+
+Consider the same setup as the previous exercise, but now:
+* Agent 1: $\pi^g_0 = \pi^f_0 = \frac{\epsilon}{2} > 0$, where $\epsilon$ is close to $0$ (e.g., $\epsilon = 0.01$)
+* Agent 2: $\pi^g_0 = \pi^f_0 = 0$ (dogmatic belief in model $h$)
+
+Choose $h$ to be close but not equal to either $f$ or $g$ as measured by KL divergence. For example, set $h \sim \text{Beta}(1.2, 1.1)$.
+
+Simulate and visualize the evolution of consumption allocations when:
+* Nature permanently draws from $f$
+* Nature permanently draws from $g$
+
+Observe how the presence of extreme priors affects learning and allocation dynamics.
+
+```
+
+```{solution-start} lr_ex7
+:class: dropdown
+```
+
+Let's implement this case with extreme priors where one agent is almost dogmatic.
+
+For this to converge, we need a longer sequence by increasing $T$ to 1000.
+
+Let's define the parameters for distributions and verify that $h$ and $f$ are closer than $h$ and $g$
+
+```{code-cell} ipython3
+F_a, F_b = 1, 1
+G_a, G_b = 3, 1.2
+H_a, H_b = 1.2, 1.1
+
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
+h = jit(lambda x: p(x, H_a, H_b))
+
+Kh_f = compute_KL(h, f)
+Kh_g = compute_KL(h, g)
+Kf_h = compute_KL(f, h)
+Kg_h = compute_KL(g, h)
+
+print(f"KL divergences:")
+print(f"KL(h,f) = {Kh_f:.4f}, KL(h,g) = {Kh_g:.4f}")
+print(f"KL(f,h) = {Kf_h:.4f}, KL(g,h) = {Kg_h:.4f}")
+```
+
+Now we can set the belief models for the two agents
+
+```{code-cell} ipython3
+# Set extreme priors
+ε = 0.01
+λ = 0.5
+
+# Agent 1: π_f = ε/2, π_g = ε/2, π_h = 1-ε 
+# (almost dogmatic about h)
+π_f_1 = ε/2
+π_g_1 = ε/2
+
+# Agent 2: π_f = 0, π_g = 0, π_h = 1 
+# (fully dogmatic about h)
+π_f_2 = 1e-10
+π_g_2 = 1e-10
+```
+
+Now we can run the simulation
+
+```{code-cell} ipython3
+T = 1000
+N = 1000
+
+# Generate sequences for different nature scenarios
+s_seq_f = np.random.beta(F_a, F_b, (N, T))
+s_seq_g = np.random.beta(G_a, G_b, (N, T))
+
+# Run simulations for both scenarios
+results_f = simulate_three_model_allocation(
+                                s_seq_f, 
+                                f, g, h, 
+                                π_f_1, π_g_1, π_f_2, π_g_2, λ)
+results_g = simulate_three_model_allocation(
+                                s_seq_g, 
+                                f, g, h, 
+                                π_f_1, π_g_1, π_f_2, π_g_2, λ)
+
+c1_data = [results_f[0], results_g[0]] 
+π_data = [results_f[1:], results_g[1:]]
+nature_labels = ['f', 'g']
+
+title_suffix = f" (Agent 1: ε={ε}, Agent 2: dogmatic)"
+fig, axes = plot_three_model_results(c1_data, π_data, nature_labels, λ, 
+                                    title_suffix=title_suffix)
+plt.show()
+```
+
+In the top panel, observe how slowly agent 1 is adjusting to the truth -- the belief is rigid but still updating.
+
+However, since agent 2 is dogmatic about $h$, and $f$ is very hard to distinguish from $g$ as measured by $KL(f, g)$, we can see that the belief is almost standing still.
+
+In the bottom panel, since $g$ is further away from $h$, both agents adjust toward the truth very quickly, but agent 1 acts faster given the slightly higher weight on $f$ and $g$.
 
 ```{solution-end}
 ```
