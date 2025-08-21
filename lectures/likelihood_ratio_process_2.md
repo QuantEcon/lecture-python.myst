@@ -1308,13 +1308,13 @@ Assume $f(x) \geq 0$, $g(x) \geq 0$, and $h(x) \geq 0$ for $x \in X$ with:
 
 We'll consider two agents:
 * Agent 1: $\pi^g_0 = 1 - \pi^f_0$, $\pi^f_0 \in (0,1), \pi^h_0 = 0$ 
-(believes only in models $f$ and $g$)
+(attaches positive probability  only to models $f$ and $g$)
 * Agent 2: $\pi^g_0 = \pi^f_0 = 1/3$, $\pi^h_0 = 1/3$ 
-(equally weights all three models)
+(attaches equal  weights to  all three models)
 
 Let $f$ and $g$ be two beta distributions with $f \sim \text{Beta}(1, 1)$ and 
 $g \sim \text{Beta}(3, 1.2)$, and
-set $h = \pi^f_0 f + (1-\pi^f_0) g$ (a mixture of $f$ and $g$).
+set $h = \pi^f_0 f + (1-\pi^f_0) g$.
 
 Bayes' Law tells us that posterior probabilities on models $f$ and $g$ evolve according to 
 
@@ -1448,7 +1448,7 @@ def simulate_three_model_allocation(s_seq, f_func, g_func, h_func,
     return c1_share, π_f_1_seq, π_g_1_seq, π_h_1_seq, π_f_2_seq, π_g_2_seq, π_h_2_seq
 ```
 
-The following code cell defines a plotting function to show the convergence of beliefs and consumption ratio
+The following code cell defines a plotting function to show evolutions of beliefs and consumption ratios
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -1529,7 +1529,7 @@ def plot_three_model_results(c1_data, π_data, nature_labels, λ=0.5,
 
 Now let's run the simulation. 
 
-In our simulation, agent 1 believes only in $f$ and $g$, while agent 2 has an equal weight on all three models
+In our simulation, agent 1 assigns positive probabilities only to  $f$ and $g$, while agent 2 puts equal weights on all three models
 
 ```{code-cell} ipython3
 T = 100
