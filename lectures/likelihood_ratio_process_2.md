@@ -1436,9 +1436,10 @@ def simulate_three_model_allocation(s_seq, f_func, g_func, h_func,
 The following code cell defines a plotting function to show the convergence of beliefs and consumption ratio
 
 ```{code-cell} ipython3
+:tags: [hide-input]
 
 def plot_three_model_results(c1_data, π_data, nature_labels, λ=0.5, 
-                            agent_labels=None, title_suffix="", figsize=(12, 10)):
+                            agent_labels=None, figsize=(12, 10)):
     """
     Create plots for three-model exercises.
     """
@@ -1501,7 +1502,7 @@ def plot_three_model_results(c1_data, π_data, nature_labels, λ=0.5,
         ax.plot(c1_med, color=colors[i], linewidth=2, label="median")
         ax.axhline(y=0.5, color='grey', linestyle='--', alpha=0.5)
         ax.set_title(
-            f'Agent 1 consumption share (Nature = {nature_label}{title_suffix})')
+            f'Agent 1 consumption share (Nature = {nature_label})')
         ax.set_xlabel('t')
         ax.set_ylabel("median consumption share")
         ax.set_ylim([-0.01, 1.01])
@@ -1644,9 +1645,7 @@ c1_data = [results_f[0], results_g[0]]
 π_data = [results_f[1:], results_g[1:]]
 nature_labels = ['f', 'g']
 
-title_suffix = f" (Agent 1: ε={ε}, Agent 2: dogmatic)"
-fig, axes = plot_three_model_results(c1_data, π_data, nature_labels, λ, 
-                                    title_suffix=title_suffix)
+fig, axes = plot_three_model_results(c1_data, π_data, nature_labels, λ)
 plt.show()
 ```
 
