@@ -1299,7 +1299,7 @@ So do consumption shares.
 ```{exercise}
 :label: lr_ex6
 
-Two agents with different beliefs about three possible models.
+Two agents have different beliefs about three possible models.
 
 Assume $f(x) \geq 0$, $g(x) \geq 0$, and $h(x) \geq 0$ for $x \in X$ with:
 - $\int_X f(x) dx = 1$
@@ -1307,10 +1307,14 @@ Assume $f(x) \geq 0$, $g(x) \geq 0$, and $h(x) \geq 0$ for $x \in X$ with:
 - $\int_X h(x) dx = 1$
 
 We'll consider two agents:
-* Agent 1: $\pi^g_0 = 1 - \pi^f_0$, $\pi^f_0 \in (0,1)$ (believes only in models $f$ and $g$)
-* Agent 2: $\pi^g_0 = \pi^f_0 = 1/3$ (equally weights all three models)
+* Agent 1: $\pi^g_0 = 1 - \pi^f_0$, $\pi^f_0 \in (0,1), \pi^h_0 = 0$ 
+(believes only in models $f$ and $g$)
+* Agent 2: $\pi^g_0 = \pi^f_0 = 1/3$, $\pi^h_0 = 1/3$ 
+(equally weights all three models)
 
-Set $h = \pi^f_0 f + (1-\pi^f_0) g$ (a mixture of $f$ and $g$).
+Let $f$ and $g$ be two beta distributions with $f \sim \text{Beta}(1, 1)$ and 
+$g \sim \text{Beta}(3, 1.2)$, and
+set $h = \pi^f_0 f + (1-\pi^f_0) g$ (a mixture of $f$ and $g$).
 
 Simulate and visualize the evolution of consumption allocations when:
 * Nature permanently draws from $f$
@@ -1443,7 +1447,7 @@ def plot_three_model_results(c1_data, π_data, nature_labels, λ=0.5,
     if n_scenarios == 1:
         axes = axes.reshape(2, 1)
     
-    colors = ['blue', 'green', 'orange']  # For different nature scenarios
+    colors = ['blue', 'green', 'orange']
     
     for i, (nature_label, c1, π_tuple) in enumerate(
                 zip(nature_labels, c1_data, π_data)):
@@ -1534,7 +1538,7 @@ fig, axes = plot_three_model_results(c1_data, π_data, nature_labels, λ)
 plt.show()
 ```
 
-The results show interesting dynamics:
+The results show interesting dynamics.
 
 In the top panel, Agent 1 (orange line) who initially puts weight only on $f$ (solid line) and $g$ (dashed line) eventually dominates consumption as they learn the truth faster than Agent 2 who spreads probability across all three models.
 
@@ -1543,6 +1547,8 @@ When nature draws from $g$ (lower panel), we see a similar pattern but reversed 
 For both cases, the belief on $h$ (dotted line) eventually goes to 0.
 
 The agent with the simpler (but correct) model structure learns faster and eventually dominates consumption allocation.
+
+In other words, the model penalizes complexity and rewards accuracy.
 
 ```{solution-end}
 ```
@@ -1554,9 +1560,10 @@ Two agents with extreme priors about three models.
 
 Consider the same setup as the previous exercise, but now:
 * Agent 1: $\pi^g_0 = \pi^f_0 = \frac{\epsilon}{2} > 0$, where $\epsilon$ is close to $0$ (e.g., $\epsilon = 0.01$)
-* Agent 2: $\pi^g_0 = \pi^f_0 = 0$ (dogmatic belief in model $h$)
+* Agent 2: $\pi^g_0 = \pi^f_0 = 0$ (rigid belief in model $h$)
 
-Choose $h$ to be close but not equal to either $f$ or $g$ as measured by KL divergence. For example, set $h \sim \text{Beta}(1.2, 1.1)$.
+Choose $h$ to be close but not equal to either $f$ or $g$ as measured by KL divergence. 
+For example, set $h \sim \text{Beta}(1.2, 1.1)$.
 
 Simulate and visualize the evolution of consumption allocations when:
 * Nature permanently draws from $f$
@@ -1603,12 +1610,12 @@ Now we can set the belief models for the two agents
 λ = 0.5
 
 # Agent 1: π_f = ε/2, π_g = ε/2, π_h = 1-ε 
-# (almost dogmatic about h)
+# (almost rigid about h)
 π_f_1 = ε/2
 π_g_1 = ε/2
 
 # Agent 2: π_f = 0, π_g = 0, π_h = 1 
-# (fully dogmatic about h)
+# (fully rigid about h)
 π_f_2 = 1e-10
 π_g_2 = 1e-10
 ```
@@ -1645,7 +1652,9 @@ plt.show()
 
 In the top panel, observe how slowly agent 1 is adjusting to the truth -- the belief is rigid but still updating.
 
-However, since agent 2 is dogmatic about $h$, and $f$ is very hard to distinguish from $g$ as measured by $KL(f, g)$, we can see that the belief is almost standing still.
+The belief about $h$ slowly shifts towards 0 crossing the belief about $f$ moving up to 1 at $t = 500$.
+
+However, since agent 2 is rigid about $h$, and $f$ is very difficult to distinguish from $h$ as measured by $KL(f, h)$, we can see that the belief is almost stationary due to the difficulty of realizing the belief is incorrect.
 
 In the bottom panel, since $g$ is further away from $h$, both agents adjust toward the truth very quickly, but agent 1 acts faster given the slightly higher weight on $f$ and $g$.
 
