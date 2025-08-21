@@ -566,25 +566,25 @@ def y_nonstochastic(y_0=100, y_1=80, a=.92, b=.5, γ=10, n=80):
     ρ1 = a + b
     ρ2 = -b
 
-    print(f'ρ_1 is {ρ1}')
-    print(f'ρ_2 is {ρ2}')
+    print(f'ρ_1 is {ρ1:.2f}')
+    print(f'ρ_2 is {ρ2:.2f}')
 
     discriminant = ρ1 ** 2 + 4 * ρ2
 
     if discriminant == 0:
         roots.append(-ρ1 / 2)
         print('Single real root: ')
-        print(''.join(str(roots)))
+        print(''.join(f"{r:.2f}" for r in roots))
     elif discriminant > 0:
         roots.append((-ρ1 + sqrt(discriminant).real) / 2)
         roots.append((-ρ1 - sqrt(discriminant).real) / 2)
         print('Two real roots: ')
-        print(''.join(str(roots)))
+        print(' '.join(f"{r:.2f}" for r in roots))
     else:
         roots.append((-ρ1 + sqrt(discriminant)) / 2)
         roots.append((-ρ1 - sqrt(discriminant)) / 2)
         print('Two complex roots: ')
-        print(''.join(str(roots)))
+        print(' '.join(f"{r.real:.2f}{r.imag:+.2f}j" for r in roots))
 
     if all(abs(root) < 1 for root in roots):
         print('Absolute values of roots are less than one')
@@ -640,14 +640,14 @@ Now let's use the function in an example. Here are the example parameters:
 
 ```{code-cell} ipython3
 r = .95
-period = 10                # Length of cycle in units of time
+period = 10          # Length of cycle in units of time
 ϕ = 2 * math.pi/period
 
 ## Apply the function
 ρ1, ρ2, a, b = f(r, ϕ)
 
-print(f"a, b = {a}, {b}")
-print(f"ρ1, ρ2 = {ρ1}, {ρ2}")
+print(f"a, b = {a:.2f}, {b:.2f}")
+print(f"ρ1, ρ2 = {ρ1:.2f}, {ρ2:.2f}")
 ```
 
 ```{code-cell} ipython3
@@ -656,7 +656,7 @@ print(f"ρ1, ρ2 = {ρ1}, {ρ2}")
 ρ1 = ρ1.real
 ρ2 = ρ2.real
 
-ρ1, ρ2
+print(f"ρ1 = {ρ1:.2f}, ρ2 = {ρ2:.2f}")
 ```
 
 ### Root finding using numpy
@@ -670,19 +670,19 @@ r1, r2 = np.roots([1, -ρ1, -ρ2])
 p1 = cmath.polar(r1)
 p2 = cmath.polar(r2)
 
-print(f"r, ϕ = {r}, {ϕ}")
-print(f"p1, p2 = {p1}, {p2}")
-# print(f"g1, g2 = {g1}, {g2}")
+print(f"r, ϕ = {r:.2f}, {ϕ:.2f}")
+print(f"p1, p2 = ({p1[0]:.2f}, {p1[1]:.2f}), ({p2[0]:.2f}, {p2[1]:.2f})")
+# print(f"g1, g2 = {g1:.2f}, {g2:.2f}")
 
-print(f"a, b = {a}, {b}")
-print(f"ρ1, ρ2 = {ρ1}, {ρ2}")
+print(f"a, b = {a:.2f}, {b:.2f}")
+print(f"ρ1, ρ2 = {ρ1:.2f}, {ρ2:.2f}")
 ```
 
 ```{code-cell} ipython3
 ##=== This method uses numpy to calculate roots ===#
 
 
-def y_nonstochastic(y_0=100, y_1=80, a=.9, b=.8, γ=10, n=80):
+def y_nonstochastic(y_0=100, y_1=80, α=.9, β=.8, γ=10, n=80):
 
     """ Rather than computing the roots of the characteristic
     polynomial by hand as we did earlier, this function
@@ -690,8 +690,8 @@ def y_nonstochastic(y_0=100, y_1=80, a=.9, b=.8, γ=10, n=80):
     """
 
     # Useful constants
-    ρ1 = a + b
-    ρ2 = -b
+    ρ1 = α + β
+    ρ2 = -β
 
     categorize_solution(ρ1, ρ2)
 
@@ -739,16 +739,16 @@ r = 1   # Generates undamped, nonexplosive cycles
 period = 10   # Length of cycle in units of time
 ϕ = 2 * math.pi/period
 
-# Apply the reverse-engineering function f
+## Apply the reverse-engineering function f
 ρ1, ρ2, a, b = f(r, ϕ)
 
 # Drop the imaginary part so that it is a valid input into y_nonstochastic
 a = a.real
 b = b.real
 
-print(f"a, b = {a}, {b}")
+print(f"a, b = {a:.2f}, {b:.2f}")
 
-ytemp = y_nonstochastic(a=a, b=b, y_0=20, y_1=30)
+ytemp = y_nonstochastic(α=a, β=b, y_0=20, y_1=30)
 plot_y(ytemp)
 ```
 
@@ -783,7 +783,7 @@ demand
 
 ```{code-cell} ipython3
 def y_stochastic(y_0=0, y_1=0, a=0.8, b=0.2, γ=10, n=100, σ=5):
-
+    
     """This function takes parameters of a stochastic version of
     the model and proceeds to analyze the roots of the characteristic
     polynomial and also generate a simulation.
@@ -798,26 +798,26 @@ def y_stochastic(y_0=0, y_1=0, a=0.8, b=0.2, γ=10, n=100, σ=5):
 
     # Find roots of polynomial
     roots = np.roots([1, -ρ1, -ρ2])
-    print(roots)
+    print(f"Roots are {[f'{root:.2f}' for root in roots]}")
 
     # Check if real or complex
     if all(isinstance(root, complex) for root in roots):
-        print('Roots are complex')
+        print("Roots are complex")
     else:
-        print('Roots are real')
+        print("Roots are real")
 
     # Check if roots are less than one
     if all(abs(root) < 1 for root in roots):
-        print('Roots are less than one')
+        print("Roots are less than one")
     else:
-        print('Roots are not less than one')
+        print("Roots are not less than one")
 
     # Generate shocks
     ϵ = np.random.normal(0, 1, n)
 
     # Define transition equation
-    def transition(x, t): return ρ1 * \
-        x[t - 1] + ρ2 * x[t - 2] + γ + σ * ϵ[t]
+    def transition(x, t): 
+        return ρ1 * x[t - 1] + ρ2 * x[t - 2] + γ + σ * ϵ[t]
 
     # Set initial conditions
     y_t = [y_0, y_1]
@@ -836,19 +836,18 @@ Let's do a simulation in which there are shocks and the characteristic polynomia
 ```{code-cell} ipython3
 r = .97
 
-period = 10   #  Length of cycle in units of time
+period = 10   # Length of cycle in units of time
 ϕ = 2 * math.pi/period
 
-### Apply the  reverse-engineering function f
-
+# Apply the reverse-engineering function f
 ρ1, ρ2, a, b = f(r, ϕ)
 
 # Drop the imaginary part so that it is a valid input into y_nonstochastic
 a = a.real
 b = b.real
 
-print(f"a, b = {a}, {b}")
-plot_y(y_stochastic(y_0=40, y_1 = 42, a=a, b=b, σ=2, n=100))
+print(f"a, b = {a:.2f}, {b:.2f}")
+plot_y(y_stochastic(y_0=40, y_1=42, a=a, b=b, σ=2, n=100))
 ```
 
 ## Government spending
@@ -1248,7 +1247,7 @@ calculating the eigenvalues of $A$
 ```{code-cell} ipython3
 A = np.asarray(A)
 w, v = np.linalg.eig(A)
-print(w)
+print(np.round(w, 2))
 ```
 
 ### Inheriting methods from `LinearStateSpace`
