@@ -215,7 +215,7 @@ def create_mccall_model(c=1,
     """Factory function to create a McCall model instance."""
     if w_draws is None:
         # Generate wage draws if not provided
-         w_draws = lognormal_draws(n=mc_size, μ=μ, σ=σ, seed=seed)
+        w_draws = lognormal_draws(n=mc_size, μ=μ, σ=σ, seed=seed)
 
     w_grid = jnp.linspace(grid_min, grid_max, grid_size)
     return McCallModelContinuous(c=c, α=α, β=β, w_grid=w_grid, w_draws=w_draws)
