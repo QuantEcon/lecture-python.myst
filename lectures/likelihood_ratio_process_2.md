@@ -1316,6 +1316,21 @@ Let $f$ and $g$ be two beta distributions with $f \sim \text{Beta}(1, 1)$ and
 $g \sim \text{Beta}(3, 1.2)$, and
 set $h = \pi^f_0 f + (1-\pi^f_0) g$ (a mixture of $f$ and $g$).
 
+Bayes' Law tells us that posterior probabilities on models $f$ and $g$ evolve according to 
+
+$$
+\pi^f(s^t) := \frac{\pi^f_0 f(s^t)}{\pi^f_0 f(s^t) 
++ \pi^g(s^t) g(s^t) + (1 - \pi^f_0 - \pi^g_0) h(s^t)}
+$$
+
+and
+
+$$
+\pi^g(s^t) := \frac{\pi^g_0 g(s^t)}{\pi^f_0 f(s^t) 
++ \pi^g(s^t) g(s^t) + (1 - \pi^f_0 - \pi^g_0) h(s^t)}
+$$
+
+
 Simulate and visualize the evolution of consumption allocations when:
 * Nature permanently draws from $f$
 * Nature permanently draws from $g$
@@ -1557,7 +1572,7 @@ In other words, the model penalizes complexity and rewards accuracy.
 ```{exercise}
 :label: lr_ex7
 
-Two agents with extreme priors about three models.
+Now consider two agents with extreme priors about three models.
 
 Consider the same setup as the previous exercise, but now:
 * Agent 1: $\pi^g_0 = \pi^f_0 = \frac{\epsilon}{2} > 0$, where $\epsilon$ is close to $0$ (e.g., $\epsilon = 0.01$)
