@@ -210,9 +210,13 @@ def create_mccall_model(c=1,
                         μ=2.5,
                         σ=0.5,
                         mc_size=1000,
-                        seed=1234):
+                        seed=1234,
+                        w_draws=None):
     """Factory function to create a McCall model instance."""
-    w_draws = lognormal_draws(n=mc_size, μ=μ, σ=σ, seed=seed)
+    if w_draws is None:
+        # Generate wage draws if not provided
+         w_draws = lognormal_draws(n=mc_size, μ=μ, σ=σ, seed=seed)
+
     w_grid = jnp.linspace(grid_min, grid_max, grid_size)
     return McCallModelContinuous(c=c, α=α, β=β, w_grid=w_grid, w_draws=w_draws)
 
@@ -323,11 +327,11 @@ def compute_res_wage_given_μ(μ):
     return w_bar
 
 μ_vals = jnp.linspace(0.0, 2.0, 15)
-w_bar_vals = jax.vmap(compute_res_wage_given_mu)(mu_vals)
+w_bar_vals = jax.vmap(compute_res_wage_given_μ)(μ_vals)
 
 fig, ax = plt.subplots()
 ax.set(xlabel='mean', ylabel='reservation wage')
-ax.plot(mu_vals, w_bar_vals, label=r'$\bar w$ as a function of $\mu$')
+ax.plot(μ_vals, w_bar_vals, label=r'$\bar w$ as a function of $\mu$')
 ax.legend()
 plt.show()
 ```
@@ -370,8 +374,7 @@ def compute_res_wage_given_s(s, m=2.0, seed=1234):
     key = jax.random.PRNGKey(seed)
     uniform_draws = jax.random.uniform(key, shape=(10_000,), minval=a, maxval=b)
     # Create model with default parameters but replace wage draws
-    model = create_mccall_model()
-    model = model._replace(w_draws=uniform_draws)
+    model = create_mccall_model(w_draws=uniform_draws)
     w_bar = compute_reservation_wage(model)
     return w_bar
 
