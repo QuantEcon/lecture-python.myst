@@ -322,7 +322,7 @@ def compute_res_wage_given_μ(μ):
     w_bar = compute_reservation_wage(model)
     return w_bar
 
-mu_vals = jnp.linspace(0.0, 2.0, 15)
+μ_vals = jnp.linspace(0.0, 2.0, 15)
 w_bar_vals = jax.vmap(compute_res_wage_given_mu)(mu_vals)
 
 fig, ax = plt.subplots()
