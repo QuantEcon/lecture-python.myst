@@ -317,7 +317,7 @@ Is the impact on the reservation wage as you expected?
 Here is one solution
 
 ```{code-cell} python3
-def compute_res_wage_given_mu(μ):
+def compute_res_wage_given_μ(μ):
     model = create_mccall_model(μ=μ)
     w_bar = compute_reservation_wage(model)
     return w_bar
