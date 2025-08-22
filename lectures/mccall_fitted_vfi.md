@@ -227,6 +227,7 @@ def create_mccall_model(c=1,
 @jax.jit
 def update(model, v, d):
     """Update value function and continuation value."""
+
     # Unpack model parameters
     c, α, β, w_grid, w_draws = model
     u = jnp.log
@@ -377,12 +378,14 @@ def compute_res_wage_given_s(s, m=2.0, seed=1234):
     a, b = m - s, m + s
     key = jax.random.PRNGKey(seed)
     uniform_draws = jax.random.uniform(key, shape=(10_000,), minval=a, maxval=b)
+
     # Create model with default parameters but replace wage draws
     model = create_mccall_model(w_draws=uniform_draws)
     w_bar = compute_reservation_wage(model)
     return w_bar
 
 s_vals = jnp.linspace(1.0, 2.0, 15)
+
 # Use vmap with different seeds for each s value
 seeds = jnp.arange(len(s_vals))
 compute_vectorized = jax.vmap(compute_res_wage_given_s, in_axes=(0, None, 0))
