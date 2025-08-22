@@ -217,6 +217,7 @@ def create_mccall_model(c=1,
                         w_draws=None):
     """Factory function to create a McCall model instance."""
     if w_draws is None:
+
         # Generate wage draws if not provided
         w_draws = lognormal_draws(n=mc_size, μ=μ, σ=σ, seed=seed)
 
