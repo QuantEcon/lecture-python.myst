@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.16.6
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -1349,10 +1349,10 @@ Let's implement this three-model case with two agents having different beliefs.
 First, let's define $f$ and $g$ far apart, with $h$ being a mixture of $f$ and $g$.
 
 ```{code-cell} ipython3
-F_a, F_b = 1, 1
-G_a, G_b = 3, 1.2
+F_a, F_b = 3, 2
+G_a, G_b = 2, 3
 λ = 0.5 
-π_f_0 = 0.4 
+π_f_0 = 0.5
 
 f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
@@ -1407,46 +1407,101 @@ def compute_posterior_three_models(
 Let's also write simulation code along the lines of earlier exercises
 
 ```{code-cell} ipython3
+@jit
+def bayesian_update_three_models(π_f_0, π_g_0, L_f, L_g, L_h):
+    """Bayesian update for three models."""
+    π_h_0 = 1 - π_f_0 - π_g_0
+    denom = π_f_0 * L_f + π_g_0 * L_g + π_h_0 * L_h
+    return π_f_0 * L_f / denom, π_g_0 * L_g / denom, π_h_0 * L_h / denom
+
+@jit
+def compute_mixture_density(π_f, π_g, π_h, f_val, g_val, h_val):
+    """Compute mixture density for an agent."""
+    return π_f * f_val + π_g * g_val + π_h * h_val
+
 @jit(parallel=True)
-def simulate_three_model_allocation(s_seq, f_func, g_func, h_func, 
-                                   π_f_1, π_g_1, π_f_2, π_g_2, λ=0.5):
+def simulate_three_model_allocation(sequences, f_func, g_func, h_func,
+                                     π_f_0_1, π_g_0_1, π_f_0_2, π_g_0_2, λ=0.5):
     """
-    Simulate two agents having beliefs over three models.
+    Simulate Blume-Easley model with learning agents and three models.
     """
+    N, T = sequences.shape
     
-    N, T = s_seq.shape
+    # Initialize arrays to store results
+    beliefs_1 = {k: np.full((N, T), np.nan) for k in ['π_f', 'π_g', 'π_h']}
+    beliefs_2 = {k: np.full((N, T), np.nan) for k in ['π_f', 'π_g', 'π_h']}
+    c1_share = np.full((N, T), np.nan)
+    l_agents_seq = np.full((N, T), np.nan)
     
-    # Compute posteriors for both agents
-    π_f_1_seq, π_g_1_seq, π_h_1_seq = compute_posterior_three_models(
-        s_seq, f_func, g_func, h_func, π_f_1, π_g_1)
-    π_f_2_seq, π_g_2_seq, π_h_2_seq = compute_posterior_three_models(
-        s_seq, f_func, g_func, h_func, π_f_2, π_g_2)
+    # Set initial beliefs
+    beliefs_1['π_f'][:, 0] = π_f_0_1
+    beliefs_1['π_g'][:, 0] = π_g_0_1
+    beliefs_1['π_h'][:, 0] = 1 - π_f_0_1 - π_g_0_1
+    beliefs_2['π_f'][:, 0] = π_f_0_2
+    beliefs_2['π_g'][:, 0] = π_g_0_2
+    beliefs_2['π_h'][:, 0] = 1 - π_f_0_2 - π_g_0_2
     
-    # Compute consumption shares
-    c1_share = np.zeros((N, T))
-    
-    for n in prange(N):
-        l_agents_cumul = 1.0  # Initialize likelihood ratio between agents
+    for n in range(N):
+        # Initialize cumulative likelihoods
+        L_cumul = {'f': 1.0, 'g': 1.0, 'h': 1.0}
+        l_agents_cumul = 1.0
         
-        for t in range(T):
-            # Agent 1's mixture density
-            m1_t = (π_f_1_seq[n, t] * f_func(s_seq[n, t]) + 
-                   π_g_1_seq[n, t] * g_func(s_seq[n, t]) + 
-                   π_h_1_seq[n, t] * h_func(s_seq[n, t]))
+        # Calculate initial consumption share at t=0
+        # (before any observations, likelihood ratio = 1)
+        l_agents_seq[n, 0] = 1.0
+        c1_share[n, 0] = λ * 1.0 / (1 - λ + λ * 1.0)  # This equals λ
+        
+        for t in range(1, T):
+            s_t = sequences[n, t]
             
-            # Agent 2's mixture density
-            m2_t = (π_f_2_seq[n, t] * f_func(s_seq[n, t]) + 
-                   π_g_2_seq[n, t] * g_func(s_seq[n, t]) + 
-                   π_h_2_seq[n, t] * h_func(s_seq[n, t]))
+            # Compute densities for current observation
+            densities = {
+                'f': f_func(s_t),
+                'g': g_func(s_t),
+                'h': h_func(s_t)
+            }
             
-            # Update likelihood ratio between agents
-            if t > 0:
-                l_agents_cumul *= (m1_t / m2_t)
+            # Update cumulative likelihoods
+            for model in L_cumul:
+                L_cumul[model] *= densities[model]
+            
+            # Bayesian updates for both agents
+            π_f_1, π_g_1, π_h_1 = bayesian_update_three_models(
+                π_f_0_1, π_g_0_1, L_cumul['f'], L_cumul['g'], L_cumul['h'])
+            π_f_2, π_g_2, π_h_2 = bayesian_update_three_models(
+                π_f_0_2, π_g_0_2, L_cumul['f'], L_cumul['g'], L_cumul['h'])
+            
+            # Store beliefs
+            beliefs_1['π_f'][n, t] = π_f_1
+            beliefs_1['π_g'][n, t] = π_g_1
+            beliefs_1['π_h'][n, t] = π_h_1
+            beliefs_2['π_f'][n, t] = π_f_2
+            beliefs_2['π_g'][n, t] = π_g_2
+            beliefs_2['π_h'][n, t] = π_h_2
+            
+            # Compute mixture densities
+            m1_t = compute_mixture_density(
+                π_f_1, π_g_1, π_h_1, densities['f'], densities['g'], densities['h'])
+            m2_t = compute_mixture_density(
+                π_f_2, π_g_2, π_h_2, densities['f'], densities['g'], densities['h'])
+            
+            # Update cumulative likelihood ratio between agents
+            l_agents_cumul *= (m1_t / m2_t)
+            l_agents_seq[n, t] = l_agents_cumul
             
             # Consumption share for agent 1
             c1_share[n, t] = λ * l_agents_cumul / (1 - λ + λ * l_agents_cumul)
     
-    return c1_share, π_f_1_seq, π_g_1_seq, π_h_1_seq, π_f_2_seq, π_g_2_seq, π_h_2_seq
+    return {
+        'π_f_1': beliefs_1['π_f'],
+        'π_g_1': beliefs_1['π_g'],
+        'π_h_1': beliefs_1['π_h'],
+        'π_f_2': beliefs_2['π_f'],
+        'π_g_2': beliefs_2['π_g'],
+        'π_h_2': beliefs_2['π_h'],
+        'c1_share': c1_share,
+        'l_agents': l_agents_seq
+    }
 ```
 
 The following code cell defines a plotting function to show evolutions of beliefs and consumption ratios
@@ -1454,82 +1509,71 @@ The following code cell defines a plotting function to show evolutions of belief
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-def plot_belief_evolution(π_data, nature_labels, figsize=(15, 5)):
+def plot_belief_evolution(results, nature='f', figsize=(15, 5)):
     """
     Create plots showing belief evolution for three models (f, g, h) for both agents.
-    Each row corresponds to a different nature scenario.
     """
-    n_scenarios = len(nature_labels)
-    fig, axes = plt.subplots(n_scenarios, 3, figsize=figsize)
-    if n_scenarios == 1:
-        axes = axes.reshape(1, 3)
+    fig, axes = plt.subplots(1, 3, figsize=figsize)
     
     model_names = ['f', 'g', 'h']
+    belief_keys = [('π_f_1', 'π_f_2'), ('π_g_1', 'π_g_2'), ('π_h_1', 'π_h_2')]
     
-    for i, (nature_label, π_tuple) in enumerate(zip(nature_labels, π_data)):
-        πf1, πg1, πh1, πf2, πg2, πh2 = π_tuple
-        π_data_models = [(πf1, πf2), (πg1, πg2), (πh1, πh2)]
+    for j, (model_name, (key1, key2)) in enumerate(zip(model_names, belief_keys)):
+        ax = axes[j]
         
-        for j, (model_name, (π1, π2)) in enumerate(zip(model_names, π_data_models)):
-            ax = axes[i, j]
-            
-            # Plot agent beliefs
-            ax.plot(np.median(π1, axis=0), 'C0-', linewidth=2, label='agent 1')
-            ax.plot(np.median(π2, axis=0), 'C1-', linewidth=2, label='agent 2')
-            
-            # Truth indicator
-            if nature_label == model_name:
-                ax.axhline(y=1.0, color='grey', linestyle='-.', 
-                alpha=0.7, label='truth')
-            else:
-                ax.axhline(y=0.0, color='grey', linestyle='-.', 
-                alpha=0.7, label='truth')
-            
-            ax.set_title(f'π({model_name}) when Nature = {nature_label}')
-            ax.set_xlabel('$t$')
-            ax.set_ylabel(f'median π({model_name})')
-            ax.set_ylim([-0.01, 1.01])
-            ax.legend(loc='best')
+        # Plot agent beliefs
+        ax.plot(np.median(results[key1], axis=0), 'C0-', linewidth=2, label='agent 1')
+        ax.plot(np.median(results[key2], axis=0), 'C1-', linewidth=2, label='agent 2')
+        
+        # Truth indicator
+        if model_name == nature:
+            ax.axhline(y=1.0, color='grey', linestyle='-.', 
+                      alpha=0.7, label='truth')
+        else:
+            ax.axhline(y=0.0, color='grey', linestyle='-.', 
+                      alpha=0.7, label='truth')
+        
+        ax.set_title(f'π({model_name}) when Nature = {nature}')
+        ax.set_xlabel('$t$')
+        ax.set_ylabel(f'median π({model_name})')
+        ax.set_ylim([-0.01, 1.01])
+        ax.legend(loc='best')
     
     plt.tight_layout()
     return fig, axes
 
 
-def plot_consumption_dynamics(c1_data, nature_labels, λ=0.5, figsize=(12, 4)):
+def plot_consumption_dynamics(results_f, results_g, λ=0.5, figsize=(14, 5)):
     """
-    Create plots showing consumption share dynamics for agent 1.
+    Create plot showing consumption share dynamics for agent 1 for both nature states.
     """
-    n_scenarios = len(nature_labels)
-    fig, axes = plt.subplots(1, n_scenarios, figsize=figsize)
-    if n_scenarios == 1:
-        axes = [axes]
+    fig, axes = plt.subplots(1, 2, figsize=figsize)
     
-    colors = ['blue', 'green', 'orange']
+    results_list = [results_f, results_g]
+    nature_labels = ['f', 'g']
+    colors = ['blue', 'green']
     
-    for i, (nature_label, c1) in enumerate(zip(nature_labels, c1_data)):
+    for i, (results, nature_label, color) in enumerate(zip(results_list, nature_labels, colors)):
         ax = axes[i]
+        c1 = results['c1_share']
         c1_med = np.median(c1, axis=0)
         
         # Plot median and percentiles
-        ax.plot(c1_med, color=colors[i % len(colors)], 
-                linewidth=2, label="median")
+        ax.plot(c1_med, color=color, linewidth=2, label="median")
         
         # Add percentile bands
         c1_25 = np.percentile(c1, 25, axis=0)
         c1_75 = np.percentile(c1, 75, axis=0)
         ax.fill_between(range(len(c1_med)), c1_25, c1_75, 
-                        color=colors[i % len(colors)], alpha=0.2, 
-                        label="25-75 percentile")
+                        color=color, alpha=0.2, label="25-75 percentile")
         
         ax.axhline(y=0.5, color='grey', linestyle='--', 
                         alpha=0.5, label='equal share')
-        ax.axhline(y=λ, color='red', linestyle=':', 
-                        alpha=0.5, label=f'initial share (λ={λ})')
         
         ax.set_title(f'Agent 1 consumption share (Nature = {nature_label})')
         ax.set_xlabel('$t$')
         ax.set_ylabel("consumption share")
-        ax.set_ylim([-0.01, 1.01])
+        ax.set_ylim([-0.02, 1.02])
         ax.legend(loc='best')
     
     plt.tight_layout()
@@ -1548,72 +1592,63 @@ N = 1000
 s_seq_f = np.random.beta(F_a, F_b, (N, T))
 s_seq_g = np.random.beta(G_a, G_b, (N, T))
 
+# Run simulations
 results_f = simulate_three_model_allocation(s_seq_f, 
                         f, g, h, π_f_0, 1-π_f_0, 
                         1/3, 1/3, λ)
 results_g = simulate_three_model_allocation(s_seq_g, 
                         f, g, h, π_f_0, 1-π_f_0, 
                         1/3, 1/3, λ)
-
-c1_data = [results_f[0], results_g[0]] 
-π_data = [results_f[1:], results_g[1:]]
-nature_labels = ['f', 'g']
-
-plot_belief_evolution(π_data, nature_labels, figsize=(15, 5*len(nature_labels)))
-plt.plot();
 ```
 
-These plots show the evolution of beliefs for each model (f, g, h) separately. 
+Plots below show the evolution of beliefs for each model (f, g, h) separately. 
+
+First we show the figure when nature chooses $f$
+
+```{code-cell} ipython3
+plot_belief_evolution(results_f, nature='f', figsize=(15, 5))
+plt.show()
+```
 
 Agent 1's posterior probabilities are depicted in blue and agent 2's posterior beliefs are depicted in orange.
-
-The top panel shows outcomes when nature draws from $f$.
 
 Evidently, when nature draws from $f$, agent 1 learns faster than agent 2, who, unlike agent 1, attaches a positive prior probability to model $h$:
 
 - In the leftmost panel, both agents' beliefs for $\pi(f)$ converge toward 1 (the truth)
-- Agent 1 learns faster than agent 2, who initially assigns probability to model $h$
-- Agent 2's belief in model $h$ (rightmost panel) gradually converges to 0
+- Agent 1 learns faster than agent 2
+- Agent 2's belief in model $h$ (rightmost panel) gradually converges to 0 after an initial rise
 
+Now let's plot the belief evolution when nature = g:
 
-The bottom panel depicts outcomes when nature draws from $g$. 
+```{code-cell} ipython3
+plot_belief_evolution(results_g, nature='g', figsize=(15, 5))
+plt.show()
+```
 
-Again, agent 1 learns faster than agent 2, who, unlike agent 1, attaches some prior probability to model $h$:
-
-- In the middle panel, both agents' beliefs for $\pi(g)$ converge toward 1 (the truth) 
-- Again, agent 1 learns faster due to not considering model $h$ initially
-- Agent 2's belief in model $h$ converges to 0 over time
-
-In both panels, agent 2's posterior probability attached to $h$ (dotted line) converges to 0.
-
+Again, agent 1 learns faster than agent 2:
 
 Note the difference in the convergence speed when nature draws from $f$ and $g$.
 
 The time it takes for agent 2 to "catch up" is longer when nature draws from $g$.
 
-Agent 1 converges faster because it only needs to update beliefs between two models ($f$ and $g$), while agent 2 must also rule out model $h$. 
-
+This is because agent 1's prior is closer to the truth when nature draws from $g$
 
 Before reading the next figure, please guess how consumption shares evolve.
 
-Remember that agent 1 reaches the correct model faster than agent 2.
+Remember that agent 1 reaches the correct model faster than agent 2
 
 ```{code-cell} ipython3
-plot_consumption_dynamics(c1_data, nature_labels, λ=0.5, figsize=(12, 6))
+plot_consumption_dynamics(results_f, results_g, λ=0.5, figsize=(14, 5))
 plt.show()
 ```
 
-This plot shows the consumption share dynamics. Notice that when nature uses model $f$, the consumption share of agent 1 is only temporarily higher than 0.5, while when nature uses model $g$, agent 1's consumption share is permanently higher. 
+As we expected, agent 1 has a higher consumption share compared to agent 2.
 
 In this exercise, the "truth" is among possible outcomes according to both agents.
 
 Agent 2's model is "more general" because it allows a possibility -- that nature is drawing from $h$ -- that agent 1's model does not include.  
 
 Agent 1 learns more quickly because he uses a simpler model. 
-
-It would be interesting to explore why agent 1's consumption allocation when $f$ generates the data is only temporarily higher than agent 2's, while when $g$ generates the data, it is permanently higher.
-
- * Hint: Somehow the KL divergence should be able to help us sort this out.
 
 ```{solution-end}
 ```
@@ -1639,7 +1674,6 @@ Please simulate and visualize  evolutions of posterior probabilities and  consum
 ```{solution-start} lr_ex7
 :class: dropdown
 ```
-
 
 To explore this exercise, we increase $T$ to 1000.
 
@@ -1701,29 +1735,38 @@ results_g = simulate_three_model_allocation(
                                 s_seq_g, 
                                 f, g, h, 
                                 π_f_1, π_g_1, π_f_2, π_g_2, λ)
-
-c1_data = [results_f[0], results_g[0]] 
-π_data = [results_f[1:], results_g[1:]]
-nature_labels = ['f', 'g']
-
-plot_belief_evolution(π_data, nature_labels, figsize=(15, 5*len(nature_labels)))
-plt.plot();
 ```
 
-When nature draws from $f$ (top row), observe how slowly agent 1 learns the truth in the leftmost panel showing $\pi(f)$. 
+Let's plot the belief evolution when nature chooses $f$
 
-The posterior probability that agent 1 puts on $h$ (rightmost panel) converges to zero slowly. 
+```{code-cell} ipython3
+plot_belief_evolution(results_f, nature='f', figsize=(15, 5))
+plt.show()
+```
+
+Observe how slowly agent 1 learns the truth in the leftmost panel showing $\pi(f)$.
+
+Also note that agent 2 is not updating.
 
 This is because we have specified that $f$ is very difficult to distinguish from $h$ as measured by $KL(f, h)$.
 
-When it comes to agent 2, the belief remains stationary at 0 and does not converge to the true model because of its rigidity regarding $h$, and $f$ is very difficult to distinguish from $h$.
+The rigidity regarding $h$ prevents agent 2 from updating its beliefs when observing 
+a very similar model $f$
 
-When nature draws from $g$ (bottom row), we have specified things so that $g$ is further away from $h$ as measured by the KL divergence. 
-
-This helps both agents learn the truth more quickly, as seen in the middle panel showing $\pi(g)$.
+Now let's plot the belief evolution when nature chooses $g$
 
 ```{code-cell} ipython3
-plot_consumption_dynamics(c1_data, nature_labels, λ=0.5, figsize=(12, 6))
+plot_belief_evolution(results_g, nature='g', figsize=(15, 5))
+plt.show()
+```
+
+When nature draws from $g$, it is further away from $h$ as measured by the KL divergence. 
+
+This helps both agents learn the truth more quickly.
+
+```{code-cell} ipython3
+plot_consumption_dynamics(results_f, results_g, 
+                               λ=0.5, figsize=(14, 5))
 plt.show()
 ```
 
