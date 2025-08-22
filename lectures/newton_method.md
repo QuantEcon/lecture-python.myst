@@ -73,13 +73,8 @@ Then we apply Newton's method to multidimensional settings to solve
 market for equilibria with multiple goods.
 
 At the end of the lecture, we leverage the power of automatic
-differentiation in [`autograd`](https://github.com/HIPS/autograd) to solve a very high-dimensional equilibrium problem
+differentiation in [`jax`](https://docs.jax.dev/en/latest/_autosummary/jax.grad.html) to solve a very high-dimensional equilibrium problem
 
-```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install autograd
-```
 
 We use the following imports in this lecture
 
@@ -87,10 +82,11 @@ We use the following imports in this lecture
 import matplotlib.pyplot as plt
 from typing import NamedTuple
 from scipy.optimize import root
-from autograd import jacobian
+import jax.numpy as jnp
+import jax
 
-# Thinly-wrapped numpy to enable automatic differentiation
-import autograd.numpy as np
+# Enable 64-bit precision
+jax.config.update("jax_enable_x64", True)
 ```
 
 ## Fixed point computation using Newton's method
@@ -172,7 +168,7 @@ Here is a function to provide a 45 degree plot of the dynamics.
 def plot_45(params, ax, fontsize=14):
 
     k_min, k_max = 0.0, 3.0
-    k_grid = np.linspace(k_min, k_max, 1200)
+    k_grid = jnp.linspace(k_min, k_max, 1200)
 
     # Plot the functions
     lb = r"$g(k) = sAk^{\alpha} + (1 - \delta)k$"
@@ -353,12 +349,12 @@ def plot_trajectories(
     ax2.plot(ks4, "-o", label="newton steps")
 
     for ax in axes:
-        ax.plot(k_star * np.ones(n), "k--")
+        ax.plot(k_star * jnp.ones(n), "k--")
         ax.legend(fontsize=fs, frameon=False)
         ax.set_ylim(0.6, 3.2)
         ax.set_yticks((k_star,))
         ax.set_yticklabels(("$k^*$",), fontsize=fs)
-        ax.set_xticks(np.linspace(0, 19, 20))
+        ax.set_xticks(jnp.linspace(0, 19, 20))
 
     plt.show()
 ```
@@ -418,10 +414,12 @@ The following code implements the iteration [](oneD-newton)
 (first_newton_attempt)=
 
 ```{code-cell} ipython3
-def newton(f, Df, x_0, tol=1e-7, max_iter=100_000):
+def newton(f, x_0, tol=1e-7, max_iter=100_000):
     x = x_0
+    Df = jax.grad(f)
 
     # Implement the zero-finding formula
+    @jax.jit
     def q(x):
         return x - f(x) / Df(x)
 
@@ -432,10 +430,10 @@ def newton(f, Df, x_0, tol=1e-7, max_iter=100_000):
         if n > max_iter:
             raise Exception("Max iteration reached without convergence")
         y = q(x)
-        error = np.abs(x - y)
+        error = jnp.abs(x - y)
         x = y
         print(f"iteration {n}, error = {error:.5f}")
-    return x
+    return x.item()
 ```
 
 Numerous libraries implement Newton's method in one dimension, including
@@ -459,9 +457,7 @@ Let's apply this idea to the Solow problem
 
 ```{code-cell} ipython3
 params = create_solow_params()
-k_star_approx_newton = newton(
-    f=lambda x: g(x, params) - x, Df=lambda x: Dg(x, params) - 1, x_0=0.8
-)
+k_star_approx_newton = newton(f=lambda x: g(x, params) - x, x_0=0.8)
 ```
 
 ```{code-cell} ipython3
@@ -556,8 +552,9 @@ $$
 The function below calculates the excess demand for given parameters
 
 ```{code-cell} ipython3
+@jax.jit
 def e(p, A, b, c):
-    return np.exp(-A @ p) + c - b * np.sqrt(p)
+    return jnp.exp(-A @ p) + c - b * jnp.sqrt(p)
 ```
 
 Our default parameter values will be
@@ -581,20 +578,30 @@ A = \begin{bmatrix}
 $$
 
 ```{code-cell} ipython3
-A = np.array([[0.5, 0.4], [0.8, 0.2]])
-b = np.ones(2)
-c = np.ones(2)
+A = jnp.array([[0.5, 0.4], [0.8, 0.2]])
+b = jnp.ones(2)
+c = jnp.ones(2)
 ```
 
 At a price level of $p = (1, 0.5)$, the excess demand is
 
 ```{code-cell} ipython3
-ex_demand = e((1.0, 0.5), A, b, c)
+p = jnp.array([1, 0.5])
+ex_demand = e(p, A, b, c)
 
 print(
     f"The excess demand for good 0 is {ex_demand[0]:.3f} \n"
     f"The excess demand for good 1 is {ex_demand[1]:.3f}"
 )
+```
+
+To increase the efficiency of computation, we will use the power of vectorization using [`jax.vmap`](https://docs.jax.dev/en/latest/_autosummary/jax.vmap.html). This is much faster than the python loops.
+
+```{code-cell} ipython3
+# Create vectorization on the first axis of p.
+e_vectorized_p_1 = jax.vmap(e, in_axes=(0, None, None, None))
+# Create vectorization on the second axis of p.
+e_vectorized = jax.vmap(e_vectorized_p_1, in_axes=(0, None, None, None))
 ```
 
 Next we plot the two functions $e_0$ and $e_1$ on a grid of $(p_0, p_1)$ values, using contour surfaces and lines.
@@ -603,14 +610,15 @@ We will use the following function to build the contour plots
 
 ```{code-cell} ipython3
 def plot_excess_demand(ax, good=0, grid_size=100, grid_max=4, surface=True):
+    p_grid = jnp.linspace(0, grid_max, grid_size)
+    # Create meshgrid for all combinations of p_1 and p_2
+    P1, P2 = jnp.meshgrid(p_grid, p_grid, indexing="ij")
+    # Stack to create array of shape (grid_size, grid_size, 2)
+    P = jnp.stack([P1, P2], axis=-1)
 
-    # Create a 100x100 grid
-    p_grid = np.linspace(0, grid_max, grid_size)
-    z = np.empty((100, 100))
-
-    for i, p_1 in enumerate(p_grid):
-        for j, p_2 in enumerate(p_grid):
-            z[i, j] = e((p_1, p_2), A, b, c)[good]
+    # Compute all values at once using vectorized function
+    z_full = e_vectorized(P, A, b, c)
+    z = z_full[:, :, good]
 
     if surface:
         cs1 = ax.contourf(p_grid, p_grid, z.T, alpha=0.5)
@@ -662,7 +670,7 @@ To solve for $p^*$ more precisely, we use a zero-finding algorithm from `scipy.o
 We supply $p = (1, 1)$ as our initial guess.
 
 ```{code-cell} ipython3
-init_p = np.ones(2)
+init_p = jnp.ones(2)
 ```
 
 This uses the [modified Powell method](https://docs.scipy.org/doc/scipy/reference/optimize.root-hybr.html#optimize-root-hybr) to find the zero
@@ -682,7 +690,7 @@ p
 This looks close to our guess from observing the figure. We can plug it back into $e$ to test that $e(p) \approx 0$:
 
 ```{code-cell} ipython3
-e_p = np.max(np.abs(e(p, A, b, c)))
+e_p = jnp.max(jnp.abs(e(p, A, b, c)))
 e_p.item()
 ```
 
@@ -708,12 +716,12 @@ def jacobian_e(p, A, b, c):
     p_0, p_1 = p
     a_00, a_01 = A[0, :]
     a_10, a_11 = A[1, :]
-    j_00 = -a_00 * np.exp(-a_00 * p_0) - (b[0] / 2) * p_0 ** (-1 / 2)
-    j_01 = -a_01 * np.exp(-a_01 * p_1)
-    j_10 = -a_10 * np.exp(-a_10 * p_0)
-    j_11 = -a_11 * np.exp(-a_11 * p_1) - (b[1] / 2) * p_1 ** (-1 / 2)
+    j_00 = -a_00 * jnp.exp(-a_00 * p_0) - (b[0] / 2) * p_0 ** (-1 / 2)
+    j_01 = -a_01 * jnp.exp(-a_01 * p_1)
+    j_10 = -a_10 * jnp.exp(-a_10 * p_0)
+    j_11 = -a_11 * jnp.exp(-a_11 * p_1) - (b[1] / 2) * p_1 ** (-1 / 2)
     J = [[j_00, j_01], [j_10, j_11]]
-    return np.array(J)
+    return jnp.array(J)
 ```
 
 ```{code-cell} ipython3
@@ -727,7 +735,7 @@ Now the solution is even more accurate (although, in this low-dimensional proble
 
 ```{code-cell} ipython3
 p = solution.x
-e_p = np.max(np.abs(e(p, A, b, c)))
+e_p = jnp.max(jnp.abs(e(p, A, b, c)))
 e_p.item()
 ```
 
@@ -747,14 +755,19 @@ This is a multivariate version of [](oneD-newton)
 
 The iteration starts from some initial guess of the price vector $p_0$. 
 
-Here, instead of coding Jacobian by hand, we use the `jacobian()` function in the `autograd` library to auto-differentiate and calculate the Jacobian.
+Here, instead of coding Jacobian by hand, we use the `jacobian()` function in the `jax` library to auto-differentiate and calculate the Jacobian.
 
 With only slight modification, we can generalize [our previous attempt](first_newton_attempt) to multidimensional problems
 
 ```{code-cell} ipython3
 def newton(f, x_0, tol=1e-5, max_iter=10):
     x = x_0
-    q = lambda x: x - np.linalg.solve(jacobian(f)(x), f(x))
+    f_jac = jax.jacobian(f)
+
+    @jax.jit
+    def q(x):
+        return x - jnp.linalg.solve(f_jac(x), f(x))
+
     error = tol + 1
     n = 0
     while error > tol:
@@ -762,18 +775,13 @@ def newton(f, x_0, tol=1e-5, max_iter=10):
         if n > max_iter:
             raise Exception("Max iteration reached without convergence")
         y = q(x)
-        if any(np.isnan(y)):
+        if any(jnp.isnan(y)):
             raise Exception("Solution not found with NaN generated")
-        error = np.linalg.norm(x - y)
+        error = jnp.linalg.norm(x - y)
         x = y
         print(f"iteration {n}, error = {error:.5f}")
     print("\n" + f"Result = {x} \n")
     return x
-```
-
-```{code-cell} ipython3
-def e(p, A, b, c):
-    return np.exp(-np.dot(A, p)) + c - b * np.sqrt(p)
 ```
 
 We find the algorithm terminates in 4 steps
@@ -784,7 +792,7 @@ p = newton(lambda p: e(p, A, b, c), init_p)
 ```
 
 ```{code-cell} ipython3
-e_p = np.max(np.abs(e(p, A, b, c)))
+e_p = jnp.max(jnp.abs(e(p, A, b, c)))
 e_p.item()
 ```
 
@@ -797,30 +805,29 @@ With the larger overhead, the speed is not better than the optimized `scipy` fun
 
 Our next step is to investigate a large market with 3,000 goods.
 
-A JAX version of this section using GPU accelerated linear algebra and
-automatic differentiation is available [here](https://jax.quantecon.org/newtons_method.html#application)
 
 The excess demand function is essentially the same, but now the matrix $A$ is $3000 \times 3000$ and the parameter vectors $b$ and $c$ are $3000 \times 1$.
 
 ```{code-cell} ipython3
 dim = 3000
-np.random.seed(123)
 
-# Create a random matrix A and normalize the rows to sum to one
-A = np.random.rand(dim, dim)
-A = np.asarray(A)
-s = np.sum(A, axis=0)
+# Create JAX random key
+key = jax.random.PRNGKey(123)
+
+# Create a random matrix A and normalize the columns to sum to one
+A = jax.random.uniform(key, (dim, dim))
+s = jnp.sum(A, axis=0)
 A = A / s
 
 # Set up b and c
-b = np.ones(dim)
-c = np.ones(dim)
+b = jnp.ones(dim)
+c = jnp.ones(dim)
 ```
 
 Here's our initial condition
 
 ```{code-cell} ipython3
-init_p = np.ones(dim)
+init_p = jnp.ones(dim)
 ```
 
 ```{code-cell} ipython3
@@ -829,7 +836,7 @@ p = newton(lambda p: e(p, A, b, c), init_p)
 ```
 
 ```{code-cell} ipython3
-e_p = np.max(np.abs(e(p, A, b, c)))
+e_p = jnp.max(jnp.abs(e(p, A, b, c)))
 e_p.item()
 ```
 
@@ -837,16 +844,18 @@ With the same tolerance, we compare the runtime and accuracy of Newton's method 
 
 ```{code-cell} ipython3
 %%time
-solution = root(lambda p: e(p, A, b, c),
-                init_p, 
-                jac=lambda p: jacobian(e)(p, A, b, c), 
-                method='hybr',
-                tol=1e-5)
+solution = root(
+    lambda p: e(p, A, b, c),
+    init_p,
+    jac=lambda p: jax.jacobian(e)(p, A, b, c),
+    method="hybr",
+    tol=1e-5,
+)
 ```
 
 ```{code-cell} ipython3
 p = solution.x
-e_p = np.max(np.abs(e(p, A, b, c)))
+e_p = jnp.max(jnp.abs(e(p, A, b, c)))
 e_p.item()
 ```
 
@@ -923,20 +932,21 @@ The result should converge to the [analytical solution](solved_k).
 Let's first define the parameters for this problem
 
 ```{code-cell} ipython3
-A = np.array([[2.0, 3.0, 3.0], [2.0, 4.0, 2.0], [1.0, 5.0, 1.0]])
+A = jnp.array([[2.0, 3.0, 3.0], [2.0, 4.0, 2.0], [1.0, 5.0, 1.0]])
 
 s = 0.2
 α = 0.5
 δ = 0.8
 
-initLs = [np.ones(3), np.array([3.0, 5.0, 5.0]), np.repeat(50.0, 3)]
+initLs = [jnp.ones(3), jnp.array([3.0, 5.0, 5.0]), jnp.repeat(50.0, 3)]
 ```
 
 Then define the multivariate version of the formula for the [law of motion of capital](motion_law)
 
 ```{code-cell} ipython3
+@jax.jit
 def multivariate_solow(k, A=A, s=s, α=α, δ=δ):
-    return s * np.dot(A, k**α) + (1 - δ) * k
+    return s * jnp.dot(A, k**α) + (1 - δ) * k
 ```
 
 Let's run through each starting value and see the output
@@ -966,7 +976,7 @@ Note the error is very small.
 We can also test our results on the known solution
 
 ```{code-cell} ipython3
-A = np.array([[2.0, 0.0, 0.0],
+A = jnp.array([[2.0, 0.0, 0.0],
                [0.0, 2.0, 0.0],
                [0.0, 0.0, 2.0]])
 
@@ -974,7 +984,7 @@ s = 0.3
 α = 0.3
 δ = 0.4
 
-init = np.repeat(1.0, 3)
+init = jnp.repeat(1.0, 3)
 
 
 %time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
@@ -1045,12 +1055,11 @@ Set the tolerance to $1e-15$ for more accurate output.
 Define parameters and initial values
 
 ```{code-cell} ipython3
-A = np.array([[0.2, 0.1, 0.7], [0.3, 0.2, 0.5], [0.1, 0.8, 0.1]])
+A = jnp.array([[0.2, 0.1, 0.7], [0.3, 0.2, 0.5], [0.1, 0.8, 0.1]])
+b = jnp.array([1.0, 1.0, 1.0])
+c = jnp.array([1.0, 1.0, 1.0])
 
-b = np.array([1.0, 1.0, 1.0])
-c = np.array([1.0, 1.0, 1.0])
-
-initLs = [np.repeat(5.0, 3), np.ones(3), np.array([4.5, 0.1, 4.0])]
+initLs = [jnp.repeat(5.0, 3), jnp.ones(3), jnp.array([4.5, 0.1, 4.0])]
 ```
 
 Let's run through each initial guess and check the output
