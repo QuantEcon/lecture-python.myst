@@ -127,7 +127,9 @@ In other words, we seek a $k^* > 0$ such that $g(k^*) = k^*$.
 
 Using pencil and paper to solve $g(k) = k$, you will be able to confirm that
 
-$$ k^* = \left(\frac{s A}{\delta}\right)^{1/(1 - \alpha)}  $$
+$$
+k^* = \left(\frac{s A}{\delta}\right)^{1/(1 - \alpha)}
+$$
 
 ### Implementation
 
@@ -329,9 +331,9 @@ def plot_trajectories(
     params,
     k0_a=0.8,  # first initial condition
     k0_b=3.1,  # second initial condition
-    n=20,  # length of time series
-    fs=14,
-):  # fontsize
+    n=20,      # length of time series
+    fs=14,     # fontsize
+):
 
     fig, axes = plt.subplots(2, 1, figsize=(10, 6))
     ax1, ax2 = axes
@@ -457,14 +459,14 @@ Let's apply this idea to the Solow problem
 
 ```{code-cell} ipython3
 params = create_solow_params()
-k_star_approx_newton = newton(f=lambda x: g(x, params) - x, x_0=0.8)
+k_star_approx_newton = newton(f = lambda x: g(x, params) - x, x_0=0.8)
 ```
 
 ```{code-cell} ipython3
 k_star_approx_newton
 ```
 
-The result confirms the convergence we saw in the graphs above: a very accurate result is reached with only 5 iterations.
+The result confirms convergence we saw in the graphs above: a very accurate result is reached with only 5 iterations.
 
 
 
@@ -600,6 +602,7 @@ To increase the efficiency of computation, we will use the power of vectorizatio
 ```{code-cell} ipython3
 # Create vectorization on the first axis of p.
 e_vectorized_p_1 = jax.vmap(e, in_axes=(0, None, None, None))
+
 # Create vectorization on the second axis of p.
 e_vectorized = jax.vmap(e_vectorized_p_1, in_axes=(0, None, None, None))
 ```
@@ -611,8 +614,10 @@ We will use the following function to build the contour plots
 ```{code-cell} ipython3
 def plot_excess_demand(ax, good=0, grid_size=100, grid_max=4, surface=True):
     p_grid = jnp.linspace(0, grid_max, grid_size)
+
     # Create meshgrid for all combinations of p_1 and p_2
     P1, P2 = jnp.meshgrid(p_grid, p_grid, indexing="ij")
+
     # Stack to create array of shape (grid_size, grid_size, 2)
     P = jnp.stack([P1, P2], axis=-1)
 
@@ -627,7 +632,7 @@ def plot_excess_demand(ax, good=0, grid_size=100, grid_max=4, surface=True):
     ctr1 = ax.contour(p_grid, p_grid, z.T, levels=[0.0])
     ax.set_xlabel("$p_0$")
     ax.set_ylabel("$p_1$")
-    ax.set_title(f"Excess Demand for Good {good}")
+    ax.set_title(f"Excess demand for good {good}")
     plt.clabel(ctr1, inline=1, fontsize=13)
 ```
 
@@ -727,7 +732,10 @@ def jacobian_e(p, A, b, c):
 ```{code-cell} ipython3
 %%time
 solution = root(
-    lambda p: e(p, A, b, c), init_p, jac=lambda p: jacobian_e(p, A, b, c), method="hybr"
+    lambda p: e(p, A, b, c),
+    init_p,
+    jac = lambda p: jacobian_e(p, A, b, c),
+    method="hybr"
 )
 ```
 
@@ -847,7 +855,7 @@ With the same tolerance, we compare the runtime and accuracy of Newton's method 
 solution = root(
     lambda p: e(p, A, b, c),
     init_p,
-    jac=lambda p: jax.jacobian(e)(p, A, b, c),
+    jac = lambda p: jax.jacobian(e)(p, A, b, c),
     method="hybr",
     tol=1e-5,
 )
