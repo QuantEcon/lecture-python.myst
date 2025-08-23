@@ -403,7 +403,7 @@ $$
 We'll start by drawing an informative graph from page 189 of {cite}`Sargent1987`
 
 ```{code-cell} ipython3
-:tags: [output_scroll]
+:tags: [hide-input, output_scroll]
 
 def param_plot():
 
