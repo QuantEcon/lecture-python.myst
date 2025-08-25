@@ -26,7 +26,6 @@ kernelspec:
 :depth: 2
 ```
 
-(overview)=
 ## Overview
 
 A likelihood ratio process lies behind Lawrence Blume and David Easley's answer to their question
@@ -56,8 +55,6 @@ You can learn about how the two welfare theorems are applied in modern macroecon
 ```
 
 
-
-
 Let's start by importing some Python tools.
 
 ```{code-cell} ipython3
@@ -66,10 +63,6 @@ import numpy as np
 from numba import vectorize, jit, prange
 from math import gamma
 from scipy.integrate import quad
-from scipy.optimize import brentq, minimize_scalar
-import pandas as pd
-from IPython.display import display, Math
-import quantecon as qe
 ```
 
 ## Review: Likelihood Ratio Processes
