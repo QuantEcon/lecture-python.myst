@@ -177,7 +177,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#competitive-equilibrium-prices">23.8. Competitive Equilibrium Prices</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulations">23.9. Simulations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-lectures">23.10. Related Lectures</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">23.11. Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">23.11. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -251,19 +251,19 @@
 <li><p><a class="reference internal" href="#competitive-equilibrium-prices" id="id16">Competitive Equilibrium Prices</a></p></li>
 <li><p><a class="reference internal" href="#simulations" id="id17">Simulations</a></p></li>
 <li><p><a class="reference internal" href="#related-lectures" id="id18">Related Lectures</a></p></li>
-<li><p><a class="reference internal" href="#exercise" id="id19">Exercise</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id19">Exercises</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <section id="overview">
-<span id="id1"></span><h2><a class="toc-backref" href="#id9"><span class="section-number">23.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">23.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>A likelihood ratio process lies behind Lawrence Blume and David Easley’s answer to their question
-‘‘If you’re so smart, why aren’t you rich?’’ <span id="id2">[<a class="reference internal" href="zreferences.html#id8" title="Lawrence Blume and David Easley. If you're so smart, why aren't you rich? belief selection in complete and incomplete markets. Econometrica, 74(4):929–966, 2006.">Blume and Easley, 2006</a>]</span>.</p>
+‘‘If you’re so smart, why aren’t you rich?’’ <span id="id1">[<a class="reference internal" href="zreferences.html#id9" title="Lawrence Blume and David Easley. If you're so smart, why aren't you rich? belief selection in complete and incomplete markets. Econometrica, 74(4):929–966, 2006.">Blume and Easley, 2006</a>]</span>.</p>
 <p>Blume and Easley constructed formal models to study how differences of opinions about probabilities governing risky income processes would influence outcomes and be reflected in prices of stocks, bonds, and insurance policies that individuals use to share and hedge risks.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><span id="id3">[<a class="reference internal" href="zreferences.html#id7" title="Armen A Alchian. Uncertainty, evolution, and economic theory. Journal of political economy, 58(3):211–221, 1950.">Alchian, 1950</a>]</span> and <span id="id4">[<a class="reference internal" href="zreferences.html#id6" title="Milton Friedman. Essays in positive economics. University of Chicago press, 1953.">Friedman, 1953</a>]</span> conjectured that, by rewarding traders with more realistic probability models, competitive markets in financial securities put wealth in the hands of better informed traders and help
+<p><span id="id2">[<a class="reference internal" href="zreferences.html#id8" title="Armen A Alchian. Uncertainty, evolution, and economic theory. Journal of political economy, 58(3):211–221, 1950.">Alchian, 1950</a>]</span> and <span id="id3">[<a class="reference internal" href="zreferences.html#id7" title="Milton Friedman. Essays in positive economics. University of Chicago press, 1953.">Friedman, 1953</a>]</span> conjectured that, by rewarding traders with more realistic probability models, competitive markets in financial securities put wealth in the hands of better informed traders and help
 make prices of risky assets reflect realistic probability assessments.</p>
 </div>
 <p>Here we’ll provide an example that illustrates basic components of Blume and Easley’s analysis.</p>
@@ -276,20 +276,21 @@ make prices of risky assets reflect realistic probability assessments.</p>
 <p>The fundamental theorems of welfare economics will apply and assure us that these two arrangements end up producing exactly the same allocation of consumption goods to individuals <strong>provided</strong> that the social planner assigns an appropriate set of <strong>Pareto weights</strong>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>You can learn about how the two welfare theorems are applied in modern macroeconomic models in <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">this lecture on a planning problem</span></a> and <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">this lecture on a related competitive equilibrium</span></a>.</p>
+<p>You can learn about how the two welfare theorems are applied in modern macroeconomic models in <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">this lecture on a planning problem</span></a> and <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">this lecture on a related competitive equilibrium</span></a>.   <a class="reference internal" href="ge_arrow.html"><span class="doc">This quantecon lecture</span></a> presents a recursive formulation of  complete markets models with homogeneous beliefs.</p>
 </div>
 <p>Let’s start by importing some Python tools.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">jit</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span><span class="p">,</span> <span class="n">minimize_scalar</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Math</span>
-<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
@@ -338,7 +339,7 @@ L(w^t) = \ell (w_t) L (w^{t-1}) .
 \]</div>
 <p>The likelihood ratio and its logarithm are key tools for making
 inferences using a classic frequentist approach due to Neyman and
-Pearson <span id="id5">[<a class="reference internal" href="zreferences.html#id262" title="J. Neyman and E. S Pearson. On the problem of the most efficient tests of statistical hypotheses. Phil. Trans. R. Soc. Lond. A. 231 (694–706), pages 289–337, 1933.">Neyman and Pearson, 1933</a>]</span>.</p>
+Pearson <span id="id4">[<a class="reference internal" href="zreferences.html#id263" title="J. Neyman and E. S Pearson. On the problem of the most efficient tests of statistical hypotheses. Phil. Trans. R. Soc. Lond. A. 231 (694–706), pages 289–337, 1933.">Neyman and Pearson, 1933</a>]</span>.</p>
 <p>To help us appreciate how things work, the following Python code evaluates <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> as two different
 Beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence <span class="math notranslate nohighlight">\(w^t\)</span> from one of the two
@@ -567,7 +568,7 @@ Continuation wealths can be defined precisely after we introduce a competitive e
 <p>Soon we’ll do some simulations that will shed further light on possible outcomes.</p>
 <p>But before we do that, let’s take a detour and study some  “shadow prices” for the social planning problem that can readily be
 converted to “equilibrium prices” for a competitive equilibrium.</p>
-<p>Doing this will allow us to connect our analysis with an argument of <span id="id6">[<a class="reference internal" href="zreferences.html#id7" title="Armen A Alchian. Uncertainty, evolution, and economic theory. Journal of political economy, 58(3):211–221, 1950.">Alchian, 1950</a>]</span> and <span id="id7">[<a class="reference internal" href="zreferences.html#id6" title="Milton Friedman. Essays in positive economics. University of Chicago press, 1953.">Friedman, 1953</a>]</span> that competitive market processes can make prices of risky assets better reflect realistic probability assessments.</p>
+<p>Doing this will allow us to connect our analysis with an argument of <span id="id5">[<a class="reference internal" href="zreferences.html#id8" title="Armen A Alchian. Uncertainty, evolution, and economic theory. Journal of political economy, 58(3):211–221, 1950.">Alchian, 1950</a>]</span> and <span id="id6">[<a class="reference internal" href="zreferences.html#id7" title="Milton Friedman. Essays in positive economics. University of Chicago press, 1953.">Friedman, 1953</a>]</span> that competitive market processes can make prices of risky assets better reflect realistic probability assessments.</p>
 </section>
 <section id="competitive-equilibrium-prices">
 <h2><a class="toc-backref" href="#id16"><span class="section-number">23.8. </span>Competitive Equilibrium Prices</a><a class="headerlink" href="#competitive-equilibrium-prices" title="Permalink to this heading">#</a></h2>
@@ -802,7 +803,7 @@ integration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9fd98c4c99a41169f444c716060a173c5948cbb7bab15d3441aac4d3c27c5516.png" src="_images/9fd98c4c99a41169f444c716060a173c5948cbb7bab15d3441aac4d3c27c5516.png" />
+<img alt="_images/77f8c9547bd1c42868265ec6a394f7b041cb26e92aeadcbc9b2c53d9b8009153.png" src="_images/77f8c9547bd1c42868265ec6a394f7b041cb26e92aeadcbc9b2c53d9b8009153.png" />
 </div>
 </div>
 <p>In the left panel, nature chooses <span class="math notranslate nohighlight">\(f\)</span>. Agent 1’s consumption reaches <span class="math notranslate nohighlight">\(1\)</span> very quickly.</p>
@@ -824,7 +825,7 @@ integration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final shares: f=1.000, g=0.000, mix=0.927
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final shares: f=1.000, g=0.000, mix=0.931
 KL divergences: 
 KL(f,g)=0.759, KL(g,f)=0.344
 KL(h,f)=0.073, KL(h,g)=0.281
@@ -945,7 +946,7 @@ KL(h,f)=0.073, KL(h,g)=0.281
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/af4c6d3178b04879baa58c3f2aea492d2549a3811e903fd4b6fa5a9acca838ae.png" src="_images/af4c6d3178b04879baa58c3f2aea492d2549a3811e903fd4b6fa5a9acca838ae.png" />
+<img alt="_images/345bdebab4a5288b8eed5ffc77dc5279935522cdf6218600e65889ee3ec46b76.png" src="_images/345bdebab4a5288b8eed5ffc77dc5279935522cdf6218600e65889ee3ec46b76.png" />
 </div>
 </div>
 <p>Holding to our guesses, let’s calculate the four values</p>
@@ -985,12 +986,14 @@ KL(h,f)=0.073, KL(h,g)=0.281
 </section>
 <section id="related-lectures">
 <h2><a class="toc-backref" href="#id18"><span class="section-number">23.10. </span>Related Lectures</a><a class="headerlink" href="#related-lectures" title="Permalink to this heading">#</a></h2>
-<p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>
-and as applied in <a class="reference internal" href="odu.html"><span class="doc">Job Search VII: Search with Learning</span></a>.</p>
+<p>Complete markets models with homogeneous beliefs, a kind often used in macroeconomics and finance,  are studied in this quantecon lecture <a class="reference internal" href="ge_arrow.html"><span class="doc">Competitive Equilibria with Arrow Securities</span></a>.</p>
+<p><span id="id7">[<a class="reference internal" href="zreferences.html#id3" title="Lawrence E Blume, Timothy Cogley, David A Easley, Thomas J Sargent, and Viktor Tsyrennikov. A case for incomplete markets. Journal of Economic Theory, 178:191–221, 2018.">Blume <em>et al.</em>, 2018</a>]</span> discuss a paternalistic  case against complete markets.  Their analysis assumes that a social planner should disregard  individuals preferences in the sense that it should disregard the subjective belief components of their preferences.</p>
+<p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a> and as applied in <a class="reference internal" href="odu.html"><span class="doc">Job Search VII: Search with Learning</span></a>.</p>
 <p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html" title="(in Python)"><span>Additive and Multiplicative Functionals</span></a>.</p>
+<p><a class="reference internal" href="ge_arrow.html"><span class="doc">Competitive Equilibria with Arrow Securities</span></a></p>
 </section>
-<section id="exercise">
-<h2><a class="toc-backref" href="#id19"><span class="section-number">23.11. </span>Exercise</a><a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id19"><span class="section-number">23.11. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="lr_ex3">
 
 <p class="admonition-title"><span class="caption-number">Exercise 23.1 </span></p>
@@ -1037,7 +1040,7 @@ c_t^1(s^t) = \frac{\mu_2 l_t(s^t)}{\mu_1 + \mu_2 l_t(s^t)}
 \[
 c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1 - \lambda + \lambda l_t(s^t)}
 \]</div>
-<p>To match them, we need the following equality to hold</p>
+<p>To match agent 1’s choice in a competitive equilibrium with the planner’s choice for agent 1,  the following equality must hold</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\mu_2}{\mu_1} = \frac{\lambda}{1 - \lambda}
@@ -1066,6 +1069,886 @@ p_t(s^t) &amp;= \frac{\delta^t l_t(s^t) \pi_t^2(s^t)}{(1-\lambda)\lambda l_t(s^t
 &amp;= \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr].
 \end{aligned}
 \end{split}\]</div>
+</section>
+</div>
+<div class="exercise admonition" id="lr_ex4">
+
+<p class="admonition-title"><span class="caption-number">Exercise 23.2 </span></p>
+<section id="exercise-content">
+<p>In this exercise, we’ll study two agents, each of whom updates its posterior probability as
+data arrive.</p>
+<ul class="simple">
+<li><p>each agent applies Bayes’ law in the way studied  in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>.</p></li>
+</ul>
+<p>The following  two models are on the table</p>
+<div class="math notranslate nohighlight">
+\[
+f(s^t) = f(s_1) f(s_2) \cdots f(s_t) 
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+g(s^t) = g(s_1) g(s_2) \cdots g(s_t)  
+\]</div>
+<p>as is an associated likelihood ratio process</p>
+<div class="math notranslate nohighlight">
+\[
+L(s^t) = \frac{f(s^t)}{g(s^t)} .
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\pi_0 \in (0,1)\)</span> be a prior probability and</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_t = \frac{ \pi_0 L(s^t)}{ \pi_0 L(s^t) + (1-\pi_0) } .
+\]</div>
+<p>Each of our two agents deploys its own version of the mixture model</p>
+<div class="math notranslate nohighlight" id="equation-eq-be-mix-model">
+<span class="eqno">(23.10)<a class="headerlink" href="#equation-eq-be-mix-model" title="Permalink to this equation">#</a></span>\[
+m(s^t) = \pi_t f(s^t) + (1- \pi_t) g(s^t)
+\]</div>
+<p>We’ll endow each type of consumer with model <a class="reference internal" href="#equation-eq-be-mix-model">(23.10)</a>.</p>
+<ul class="simple">
+<li><p>The two agents share the same <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>, but</p></li>
+<li><p>they have different initial priors, say <span class="math notranslate nohighlight">\(\pi_0^1\)</span> and <span class="math notranslate nohighlight">\(\pi_0^2\)</span></p></li>
+</ul>
+<p>Thus, consumer <span class="math notranslate nohighlight">\(i\)</span>’s probability model is</p>
+<div class="math notranslate nohighlight" id="equation-eq-prob-model">
+<span class="eqno">(23.11)<a class="headerlink" href="#equation-eq-prob-model" title="Permalink to this equation">#</a></span>\[
+m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
+\]</div>
+<p>We now  hand probability models <a class="reference internal" href="#equation-eq-prob-model">(23.11)</a> for <span class="math notranslate nohighlight">\(i=1,2\)</span> to the social planner.</p>
+<p>We want to deduce allocation <span class="math notranslate nohighlight">\(c^i(s^t), i = 1,2\)</span>, and watch what happens when</p>
+<ul class="simple">
+<li><p>nature’s model is <span class="math notranslate nohighlight">\(f\)</span></p></li>
+<li><p>nature’s model is <span class="math notranslate nohighlight">\(g\)</span></p></li>
+</ul>
+<p>We  expect that  consumers will eventually learn the “truth”, but that one of them will learn faster.</p>
+<p>To explore things, please  set <span class="math notranslate nohighlight">\(f \sim \text{Beta}(1.5, 1)\)</span> and <span class="math notranslate nohighlight">\(g \sim \text{Beta}(1, 1.5)\)</span>.</p>
+<p>Please write Python code that answers the following questions.</p>
+<ul class="simple">
+<li><p>How do  consumption shares evolve?</p></li>
+<li><p>Which agent learns faster when nature follows <span class="math notranslate nohighlight">\(f\)</span>?</p></li>
+<li><p>Which agent learns faster when nature follows <span class="math notranslate nohighlight">\(g\)</span>?</p></li>
+<li><p>How does a difference in initial priors <span class="math notranslate nohighlight">\(\pi_0^1\)</span> and <span class="math notranslate nohighlight">\(\pi_0^2\)</span> affect the convergence speed?</p></li>
+</ul>
+</section>
+</div>
+<div class="solution dropdown admonition" id="likelihood_ratio_process_2-solution-3">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lr_ex4"> Exercise 23.2</a></p>
+<section id="solution-content">
+<p>First, let’s write helper functions that compute model components including each agent’s subjective belief function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bayesian_update</span><span class="p">(</span><span class="n">π_0</span><span class="p">,</span> <span class="n">L_t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bayesian update of belief probability given likelihood ratio.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">π_0</span> <span class="o">*</span> <span class="n">L_t</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_0</span> <span class="o">*</span> <span class="n">L_t</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_0</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">mixture_density_belief</span><span class="p">(</span><span class="n">s_seq</span><span class="p">,</span> <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">,</span> <span class="n">π_seq</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the mixture density beliefs m^i(s^t) for agent i.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f_vals</span> <span class="o">=</span> <span class="n">f_func</span><span class="p">(</span><span class="n">s_seq</span><span class="p">)</span>
+    <span class="n">g_vals</span> <span class="o">=</span> <span class="n">g_func</span><span class="p">(</span><span class="n">s_seq</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">π_seq</span> <span class="o">*</span> <span class="n">f_vals</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_seq</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_vals</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s write code that simulates the Blume-Easley model with our two agents.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simulate_learning_blume_easley</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">f_belief</span><span class="p">,</span> <span class="n">g_belief</span><span class="p">,</span> 
+                                        <span class="n">π_0_1</span><span class="p">,</span> <span class="n">π_0_2</span><span class="p">,</span> <span class="n">λ</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate Blume-Easley model with learning agents.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">sequences</span><span class="o">.</span><span class="n">shape</span>
+    
+    <span class="c1"># Initialize arrays to store results</span>
+    <span class="n">π_1_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">π_2_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">c1_share</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">l_agents_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="n">π_1_seq</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_0_1</span>
+    <span class="n">π_2_seq</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_0_2</span>
+    
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="c1"># Initialize cumulative likelihood ratio for beliefs</span>
+        <span class="n">L_cumul</span> <span class="o">=</span> <span class="mf">1.0</span>
+        
+        <span class="c1"># Initialize likelihood ratio between agent densities</span>
+        <span class="n">l_agents_cumul</span> <span class="o">=</span> <span class="mf">1.0</span>
+        
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+            <span class="n">s_t</span> <span class="o">=</span> <span class="n">sequences</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span>
+            
+            <span class="c1"># Compute likelihood ratio for this observation</span>
+            <span class="n">l_t</span> <span class="o">=</span> <span class="n">f_belief</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span> <span class="o">/</span> <span class="n">g_belief</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span>
+            
+            <span class="c1"># Update cumulative likelihood ratio</span>
+            <span class="n">L_cumul</span> <span class="o">*=</span> <span class="n">l_t</span>
+            
+            <span class="c1"># Bayesian update of beliefs</span>
+            <span class="n">π_1_t</span> <span class="o">=</span> <span class="n">bayesian_update</span><span class="p">(</span><span class="n">π_0_1</span><span class="p">,</span> <span class="n">L_cumul</span><span class="p">)</span>
+            <span class="n">π_2_t</span> <span class="o">=</span> <span class="n">bayesian_update</span><span class="p">(</span><span class="n">π_0_2</span><span class="p">,</span> <span class="n">L_cumul</span><span class="p">)</span>
+            
+            <span class="c1"># Store beliefs</span>
+            <span class="n">π_1_seq</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_1_t</span>
+            <span class="n">π_2_seq</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_2_t</span>
+            
+            <span class="c1"># Compute mixture densities for each agent</span>
+            <span class="n">m1_t</span> <span class="o">=</span> <span class="n">π_1_t</span> <span class="o">*</span> <span class="n">f_belief</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_1_t</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_belief</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span>
+            <span class="n">m2_t</span> <span class="o">=</span> <span class="n">π_2_t</span> <span class="o">*</span> <span class="n">f_belief</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_2_t</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_belief</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span>
+            
+            <span class="c1"># Update cumulative likelihood ratio between agents</span>
+            <span class="n">l_agents_cumul</span> <span class="o">*=</span> <span class="p">(</span><span class="n">m1_t</span> <span class="o">/</span> <span class="n">m2_t</span><span class="p">)</span>
+            <span class="n">l_agents_seq</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">l_agents_cumul</span>
+            
+            <span class="c1"># c_t^1(s^t) = λ * l_t(s^t) / (1 - λ + λ * l_t(s^t))</span>
+            <span class="c1"># where l_t(s^t) is the cumulative likelihood ratio between agents</span>
+            <span class="n">c1_share</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">λ</span> <span class="o">*</span> <span class="n">l_agents_cumul</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">λ</span> <span class="o">+</span> <span class="n">λ</span> <span class="o">*</span> <span class="n">l_agents_cumul</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;π_1&#39;</span><span class="p">:</span> <span class="n">π_1_seq</span><span class="p">,</span>
+        <span class="s1">&#39;π_2&#39;</span><span class="p">:</span> <span class="n">π_2_seq</span><span class="p">,</span> 
+        <span class="s1">&#39;c1_share&#39;</span><span class="p">:</span> <span class="n">c1_share</span><span class="p">,</span>
+        <span class="s1">&#39;l_agents&#39;</span><span class="p">:</span> <span class="n">l_agents_seq</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s run simulations for different scenarios.</p>
+<p>We use <span class="math notranslate nohighlight">\(\lambda = 0.5\)</span>, <span class="math notranslate nohighlight">\(T=40\)</span>, and <span class="math notranslate nohighlight">\(N=1000\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">λ</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll  start with different initial priors <span class="math notranslate nohighlight">\(\pi^i_0 \in (0, 1)\)</span> and widen the gap between them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Different initial priors</span>
+<span class="n">π_0_scenarios</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can run simulations for different scenarios</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Nature follows f</span>
+<span class="n">s_seq_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+
+<span class="c1"># Nature follows g</span>
+<span class="n">s_seq_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span> 
+
+<span class="n">results_f</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">results_g</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">π_0_1</span><span class="p">,</span> <span class="n">π_0_2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">π_0_scenarios</span><span class="p">):</span>
+    <span class="c1"># When nature follows f</span>
+    <span class="n">results_f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulate_learning_blume_easley</span><span class="p">(</span>
+            <span class="n">s_seq_f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">π_0_1</span><span class="p">,</span> <span class="n">π_0_2</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+    <span class="c1"># When nature follows g  </span>
+    <span class="n">results_g</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulate_learning_blume_easley</span><span class="p">(</span>
+            <span class="n">s_seq_g</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">π_0_1</span><span class="p">,</span> <span class="n">π_0_2</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s visualize the results</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_learning_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">π_0_scenarios</span><span class="p">,</span> <span class="n">nature_type</span><span class="p">,</span> <span class="n">truth_value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot beliefs and consumption shares for learning agents.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+    
+    <span class="n">scenario_labels</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="sa">rf</span><span class="s1">&#39;$\pi_0^1 = </span><span class="si">{</span><span class="n">π_0_1</span><span class="si">}</span><span class="s1">, \pi_0^2 = </span><span class="si">{</span><span class="n">π_0_2</span><span class="si">}</span><span class="s1">$&#39;</span>
+        <span class="k">for</span> <span class="n">π_0_1</span><span class="p">,</span> <span class="n">π_0_2</span> <span class="ow">in</span> <span class="n">π_0_scenarios</span>
+    <span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="p">(</span><span class="n">scenario_idx</span><span class="p">,</span> <span class="n">scenario_label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+                <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">scenario_labels</span><span class="p">)):</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">scenario_idx</span><span class="p">]</span>
+        
+        <span class="c1"># Plot beliefs</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">π_1_med</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;π_1&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">π_2_med</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;π_2&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_1_med</span><span class="p">,</span> <span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;agent 1&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_2_med</span><span class="p">,</span> <span class="s1">&#39;C1&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;agent 2&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">truth_value</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> 
+                   <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;truth (</span><span class="si">{</span><span class="n">nature_type</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Beliefs when nature = </span><span class="si">{</span><span class="n">nature_type</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">scenario_label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;median $\pi_i^t$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        
+        <span class="c1"># Plot consumption shares</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">c1_med</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;c1_share&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c1_med</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> 
+                   <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Agent 1 consumption share (Nature = </span><span class="si">{</span><span class="n">nature_type</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;consumption share&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        
+        <span class="c1"># Add x-labels</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+            <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we’ll plot outcome when nature follows f:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_f</span><span class="p">,</span> <span class="n">axes_f</span> <span class="o">=</span> <span class="n">plot_learning_results</span><span class="p">(</span>
+                <span class="n">results_f</span><span class="p">,</span> <span class="n">π_0_scenarios</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/1c7e6f9dbcfde48c9e108d16e9fa89076504109c0cf0890da1e84133bd4f6c6f.png" src="_images/1c7e6f9dbcfde48c9e108d16e9fa89076504109c0cf0890da1e84133bd4f6c6f.png" />
+</div>
+</div>
+<p>We can see that the agent with the  more accurate belief gets higher consumption share.</p>
+<p>Moreover, the further apart are  initial beliefs, the longer it takes for the consumption ratio to converge.</p>
+<p>The longer  it takes for the “less accurate” agent to learn, the lower its ultimate consumption share.</p>
+<p>Now let’s plot outcomes when nature follows g:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_g</span><span class="p">,</span> <span class="n">axes_g</span> <span class="o">=</span> <span class="n">plot_learning_results</span><span class="p">(</span><span class="n">results_g</span><span class="p">,</span> <span class="n">π_0_scenarios</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/bab8e8f5e1b36e144abfd5409bd74b9ede36d3cc27db7dd2103d4f934c6d363b.png" src="_images/bab8e8f5e1b36e144abfd5409bd74b9ede36d3cc27db7dd2103d4f934c6d363b.png" />
+</div>
+</div>
+<p>We observe  symmetrical outcomes.</p>
+</section>
+</div>
+<div class="exercise admonition" id="lr_ex5">
+
+<p class="admonition-title"><span class="caption-number">Exercise 23.3 </span></p>
+<section id="exercise-content">
+<p>In the previous exercise, we purposefully  set the two beta distributions to be relatively close to each other.</p>
+<p>That made it challenging to distinguish  the  distributions.</p>
+<p>Now let’s study outcomes when  the  distributions are further apart.</p>
+<p>Let’s set <span class="math notranslate nohighlight">\(f \sim \text{Beta}(2, 5)\)</span> and <span class="math notranslate nohighlight">\(g \sim \text{Beta}(5, 2)\)</span>.</p>
+<p>Please use  the Python code you  have written to study outcomes.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="likelihood_ratio_process_2-solution-5">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lr_ex5"> Exercise 23.3</a></p>
+<section id="solution-content">
+<p>Here is one solution</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">λ</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span>
+<span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+
+<span class="n">π_0_scenarios</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">s_seq_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+<span class="n">s_seq_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span> 
+
+<span class="n">results_f</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">results_g</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">π_0_1</span><span class="p">,</span> <span class="n">π_0_2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">π_0_scenarios</span><span class="p">):</span>
+    <span class="c1"># When nature follows f</span>
+    <span class="n">results_f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulate_learning_blume_easley</span><span class="p">(</span>
+            <span class="n">s_seq_f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">π_0_1</span><span class="p">,</span> <span class="n">π_0_2</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+    <span class="c1"># When nature follows g  </span>
+    <span class="n">results_g</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulate_learning_blume_easley</span><span class="p">(</span>
+            <span class="n">s_seq_g</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">π_0_1</span><span class="p">,</span> <span class="n">π_0_2</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s visualize the results</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_f</span><span class="p">,</span> <span class="n">axes_f</span> <span class="o">=</span> <span class="n">plot_learning_results</span><span class="p">(</span><span class="n">results_f</span><span class="p">,</span> <span class="n">π_0_scenarios</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/f400bb97e7a368180f38df90ec0adaa4097a6baad27fde6394177e124246a981.png" src="_images/f400bb97e7a368180f38df90ec0adaa4097a6baad27fde6394177e124246a981.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_g</span><span class="p">,</span> <span class="n">axes_g</span> <span class="o">=</span> <span class="n">plot_learning_results</span><span class="p">(</span><span class="n">results_g</span><span class="p">,</span> <span class="n">π_0_scenarios</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/95be5e01cb8d615cc53c02766550ece73a9b25b66b6b2b85a41180dea0056a0e.png" src="_images/95be5e01cb8d615cc53c02766550ece73a9b25b66b6b2b85a41180dea0056a0e.png" />
+</div>
+</div>
+<p>Evidently, because the two distributions are further apart, it is easier to distinguish them.</p>
+<p>So learning occurs more quickly.</p>
+<p>So do consumption shares.</p>
+</section>
+</div>
+<div class="exercise admonition" id="lr_ex6">
+
+<p class="admonition-title"><span class="caption-number">Exercise 23.4 </span></p>
+<section id="exercise-content">
+<p>Two agents have different beliefs about three possible models.</p>
+<p>Assume <span class="math notranslate nohighlight">\(f(x) \geq 0\)</span>, <span class="math notranslate nohighlight">\(g(x) \geq 0\)</span>, and <span class="math notranslate nohighlight">\(h(x) \geq 0\)</span> for <span class="math notranslate nohighlight">\(x \in X\)</span> with:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\int_X f(x) dx = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\int_X g(x) dx = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\int_X h(x) dx = 1\)</span></p></li>
+</ul>
+<p>We’ll consider two agents:</p>
+<ul class="simple">
+<li><p>Agent 1: <span class="math notranslate nohighlight">\(\pi^g_0 = 1 - \pi^f_0\)</span>, <span class="math notranslate nohighlight">\(\pi^f_0 \in (0,1), \pi^h_0 = 0\)</span>
+(attaches positive probability  only to models <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>)</p></li>
+<li><p>Agent 2: <span class="math notranslate nohighlight">\(\pi^g_0 = \pi^f_0 = 1/3\)</span>, <span class="math notranslate nohighlight">\(\pi^h_0 = 1/3\)</span>
+(attaches equal  weights to  all three models)</p></li>
+</ul>
+<p>Let <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> be two beta distributions with <span class="math notranslate nohighlight">\(f \sim \text{Beta}(3, 2)\)</span> and
+<span class="math notranslate nohighlight">\(g \sim \text{Beta}(2, 3)\)</span>, and
+set <span class="math notranslate nohighlight">\(h = \pi^f_0 f + (1-\pi^f_0) g\)</span> with <span class="math notranslate nohighlight">\(\pi^f_0 = 0.5\)</span>.</p>
+<p>Bayes’ Law tells us that posterior probabilities on models <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> evolve according to</p>
+<div class="math notranslate nohighlight">
+\[
+\pi^f(s^t) := \frac{\pi^f_0 f(s^t)}{\pi^f_0 f(s^t) 
++ \pi^g_0 g(s^t) + (1 - \pi^f_0 - \pi^g_0) h(s^t)}
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\pi^g(s^t) := \frac{\pi^g_0 g(s^t)}{\pi^f_0 f(s^t) 
++ \pi^g_0 g(s^t) + (1 - \pi^f_0 - \pi^g_0) h(s^t)}
+\]</div>
+<p>Please simulate and visualize  evolutions of posterior probabilities and  consumption allocations when:</p>
+<ul class="simple">
+<li><p>Nature permanently draws from <span class="math notranslate nohighlight">\(f\)</span></p></li>
+<li><p>Nature permanently draws from <span class="math notranslate nohighlight">\(g\)</span></p></li>
+</ul>
+</section>
+</div>
+<div class="solution dropdown admonition" id="likelihood_ratio_process_2-solution-7">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lr_ex6"> Exercise 23.4</a></p>
+<section id="solution-content">
+<p>Let’s implement this three-model case with two agents having different beliefs.</p>
+<p>Let’s define <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> far apart, with <span class="math notranslate nohighlight">\(h\)</span> being a mixture of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span>
+<span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
+<span class="n">λ</span> <span class="o">=</span> <span class="mf">0.5</span> 
+<span class="n">π_f_0</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">π_f_0</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_f_0</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can define the belief updating for the model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">compute_posterior_three_models</span><span class="p">(</span>
+    <span class="n">s_seq</span><span class="p">,</span> <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">,</span> <span class="n">h_func</span><span class="p">,</span> <span class="n">π_f_0</span><span class="p">,</span> <span class="n">π_g_0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute posterior probabilities for three models.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">s_seq</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">π_h_0</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π_f_0</span> <span class="o">-</span> <span class="n">π_g_0</span>
+    
+    <span class="n">π_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    <span class="n">π_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    <span class="n">π_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="c1"># Initialize with priors</span>
+        <span class="n">π_f</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_f_0</span>
+        <span class="n">π_g</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_g_0</span>
+        <span class="n">π_h</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_h_0</span>
+        
+        <span class="c1"># Compute cumulative likelihoods</span>
+        <span class="n">f_cumul</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">g_cumul</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">h_cumul</span> <span class="o">=</span> <span class="mf">1.0</span>
+        
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+            <span class="n">s_t</span> <span class="o">=</span> <span class="n">s_seq</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span>
+            
+            <span class="c1"># Update cumulative likelihoods</span>
+            <span class="n">f_cumul</span> <span class="o">*=</span> <span class="n">f_func</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span>
+            <span class="n">g_cumul</span> <span class="o">*=</span> <span class="n">g_func</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span>
+            <span class="n">h_cumul</span> <span class="o">*=</span> <span class="n">h_func</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span>
+            
+            <span class="c1"># Compute posteriors using Bayes&#39; rule</span>
+            <span class="n">denominator</span> <span class="o">=</span> <span class="n">π_f_0</span> <span class="o">*</span> <span class="n">f_cumul</span> <span class="o">+</span> <span class="n">π_g_0</span> <span class="o">*</span> <span class="n">g_cumul</span> <span class="o">+</span> <span class="n">π_h_0</span> <span class="o">*</span> <span class="n">h_cumul</span>
+            
+            <span class="n">π_f</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_f_0</span> <span class="o">*</span> <span class="n">f_cumul</span> <span class="o">/</span> <span class="n">denominator</span>
+            <span class="n">π_g</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_g_0</span> <span class="o">*</span> <span class="n">g_cumul</span> <span class="o">/</span> <span class="n">denominator</span>
+            <span class="n">π_h</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_h_0</span> <span class="o">*</span> <span class="n">h_cumul</span> <span class="o">/</span> <span class="n">denominator</span>
+    
+    <span class="k">return</span> <span class="n">π_f</span><span class="p">,</span> <span class="n">π_g</span><span class="p">,</span> <span class="n">π_h</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s also write simulation code along the lines of earlier exercises</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">bayesian_update_three_models</span><span class="p">(</span><span class="n">π_f_0</span><span class="p">,</span> <span class="n">π_g_0</span><span class="p">,</span> <span class="n">L_f</span><span class="p">,</span> <span class="n">L_g</span><span class="p">,</span> <span class="n">L_h</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Bayesian update for three models.&quot;&quot;&quot;</span>
+    <span class="n">π_h_0</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π_f_0</span> <span class="o">-</span> <span class="n">π_g_0</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">π_f_0</span> <span class="o">*</span> <span class="n">L_f</span> <span class="o">+</span> <span class="n">π_g_0</span> <span class="o">*</span> <span class="n">L_g</span> <span class="o">+</span> <span class="n">π_h_0</span> <span class="o">*</span> <span class="n">L_h</span>
+    <span class="k">return</span> <span class="n">π_f_0</span> <span class="o">*</span> <span class="n">L_f</span> <span class="o">/</span> <span class="n">denom</span><span class="p">,</span> <span class="n">π_g_0</span> <span class="o">*</span> <span class="n">L_g</span> <span class="o">/</span> <span class="n">denom</span><span class="p">,</span> <span class="n">π_h_0</span> <span class="o">*</span> <span class="n">L_h</span> <span class="o">/</span> <span class="n">denom</span>
+
+<span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">compute_mixture_density</span><span class="p">(</span><span class="n">π_f</span><span class="p">,</span> <span class="n">π_g</span><span class="p">,</span> <span class="n">π_h</span><span class="p">,</span> <span class="n">f_val</span><span class="p">,</span> <span class="n">g_val</span><span class="p">,</span> <span class="n">h_val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute mixture density for an agent.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">π_f</span> <span class="o">*</span> <span class="n">f_val</span> <span class="o">+</span> <span class="n">π_g</span> <span class="o">*</span> <span class="n">g_val</span> <span class="o">+</span> <span class="n">π_h</span> <span class="o">*</span> <span class="n">h_val</span>
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">simulate_three_model_allocation</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">,</span> <span class="n">h_func</span><span class="p">,</span>
+                                     <span class="n">π_f_0_1</span><span class="p">,</span> <span class="n">π_g_0_1</span><span class="p">,</span> <span class="n">π_f_0_2</span><span class="p">,</span> <span class="n">π_g_0_2</span><span class="p">,</span> <span class="n">λ</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate Blume-Easley model with learning agents and three models.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">sequences</span><span class="o">.</span><span class="n">shape</span>
+    
+    <span class="c1"># Initialize arrays to store results</span>
+    <span class="n">beliefs_1</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;π_f&#39;</span><span class="p">,</span> <span class="s1">&#39;π_g&#39;</span><span class="p">,</span> <span class="s1">&#39;π_h&#39;</span><span class="p">]}</span>
+    <span class="n">beliefs_2</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;π_f&#39;</span><span class="p">,</span> <span class="s1">&#39;π_g&#39;</span><span class="p">,</span> <span class="s1">&#39;π_h&#39;</span><span class="p">]}</span>
+    <span class="n">c1_share</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">l_agents_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    
+    <span class="c1"># Set initial beliefs</span>
+    <span class="n">beliefs_1</span><span class="p">[</span><span class="s1">&#39;π_f&#39;</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_f_0_1</span>
+    <span class="n">beliefs_1</span><span class="p">[</span><span class="s1">&#39;π_g&#39;</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_g_0_1</span>
+    <span class="n">beliefs_1</span><span class="p">[</span><span class="s1">&#39;π_h&#39;</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π_f_0_1</span> <span class="o">-</span> <span class="n">π_g_0_1</span>
+    <span class="n">beliefs_2</span><span class="p">[</span><span class="s1">&#39;π_f&#39;</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_f_0_2</span>
+    <span class="n">beliefs_2</span><span class="p">[</span><span class="s1">&#39;π_g&#39;</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_g_0_2</span>
+    <span class="n">beliefs_2</span><span class="p">[</span><span class="s1">&#39;π_h&#39;</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π_f_0_2</span> <span class="o">-</span> <span class="n">π_g_0_2</span>
+    
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="c1"># Initialize cumulative likelihoods</span>
+        <span class="n">L_cumul</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+        <span class="n">l_agents_cumul</span> <span class="o">=</span> <span class="mf">1.0</span>
+        
+        <span class="c1"># Calculate initial consumption share at t=0</span>
+        <span class="n">l_agents_seq</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">c1_share</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">λ</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">λ</span> <span class="o">+</span> <span class="n">λ</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># This equals λ</span>
+        
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+            <span class="n">s_t</span> <span class="o">=</span> <span class="n">sequences</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span>
+            
+            <span class="c1"># Compute densities for current observation</span>
+            <span class="n">densities</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="n">f_func</span><span class="p">(</span><span class="n">s_t</span><span class="p">),</span>
+                <span class="s1">&#39;g&#39;</span><span class="p">:</span> <span class="n">g_func</span><span class="p">(</span><span class="n">s_t</span><span class="p">),</span>
+                <span class="s1">&#39;h&#39;</span><span class="p">:</span> <span class="n">h_func</span><span class="p">(</span><span class="n">s_t</span><span class="p">)</span>
+            <span class="p">}</span>
+            
+            <span class="c1"># Update cumulative likelihoods</span>
+            <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">L_cumul</span><span class="p">:</span>
+                <span class="n">L_cumul</span><span class="p">[</span><span class="n">model</span><span class="p">]</span> <span class="o">*=</span> <span class="n">densities</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+            
+            <span class="c1"># Bayesian updates for both agents</span>
+            <span class="n">π_f_1</span><span class="p">,</span> <span class="n">π_g_1</span><span class="p">,</span> <span class="n">π_h_1</span> <span class="o">=</span> <span class="n">bayesian_update_three_models</span><span class="p">(</span>
+                <span class="n">π_f_0_1</span><span class="p">,</span> <span class="n">π_g_0_1</span><span class="p">,</span> <span class="n">L_cumul</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">],</span> <span class="n">L_cumul</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">],</span> <span class="n">L_cumul</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])</span>
+            <span class="n">π_f_2</span><span class="p">,</span> <span class="n">π_g_2</span><span class="p">,</span> <span class="n">π_h_2</span> <span class="o">=</span> <span class="n">bayesian_update_three_models</span><span class="p">(</span>
+                <span class="n">π_f_0_2</span><span class="p">,</span> <span class="n">π_g_0_2</span><span class="p">,</span> <span class="n">L_cumul</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">],</span> <span class="n">L_cumul</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">],</span> <span class="n">L_cumul</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])</span>
+            
+            <span class="c1"># Store beliefs</span>
+            <span class="n">beliefs_1</span><span class="p">[</span><span class="s1">&#39;π_f&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_f_1</span>
+            <span class="n">beliefs_1</span><span class="p">[</span><span class="s1">&#39;π_g&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_g_1</span>
+            <span class="n">beliefs_1</span><span class="p">[</span><span class="s1">&#39;π_h&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_h_1</span>
+            <span class="n">beliefs_2</span><span class="p">[</span><span class="s1">&#39;π_f&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_f_2</span>
+            <span class="n">beliefs_2</span><span class="p">[</span><span class="s1">&#39;π_g&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_g_2</span>
+            <span class="n">beliefs_2</span><span class="p">[</span><span class="s1">&#39;π_h&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_h_2</span>
+            
+            <span class="c1"># Compute mixture densities</span>
+            <span class="n">m1_t</span> <span class="o">=</span> <span class="n">compute_mixture_density</span><span class="p">(</span>
+                <span class="n">π_f_1</span><span class="p">,</span> <span class="n">π_g_1</span><span class="p">,</span> <span class="n">π_h_1</span><span class="p">,</span> <span class="n">densities</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">],</span> 
+                <span class="n">densities</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">],</span> <span class="n">densities</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])</span>
+            <span class="n">m2_t</span> <span class="o">=</span> <span class="n">compute_mixture_density</span><span class="p">(</span>
+                <span class="n">π_f_2</span><span class="p">,</span> <span class="n">π_g_2</span><span class="p">,</span> <span class="n">π_h_2</span><span class="p">,</span> <span class="n">densities</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">],</span> 
+                <span class="n">densities</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">],</span> <span class="n">densities</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])</span>
+            
+            <span class="c1"># Update cumulative likelihood ratio between agents</span>
+            <span class="n">l_agents_cumul</span> <span class="o">*=</span> <span class="p">(</span><span class="n">m1_t</span> <span class="o">/</span> <span class="n">m2_t</span><span class="p">)</span>
+            <span class="n">l_agents_seq</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">l_agents_cumul</span>
+            
+            <span class="c1"># Consumption share for agent 1</span>
+            <span class="n">c1_share</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">λ</span> <span class="o">*</span> <span class="n">l_agents_cumul</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">λ</span> <span class="o">+</span> <span class="n">λ</span> <span class="o">*</span> <span class="n">l_agents_cumul</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;π_f_1&#39;</span><span class="p">:</span> <span class="n">beliefs_1</span><span class="p">[</span><span class="s1">&#39;π_f&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;π_g_1&#39;</span><span class="p">:</span> <span class="n">beliefs_1</span><span class="p">[</span><span class="s1">&#39;π_g&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;π_h_1&#39;</span><span class="p">:</span> <span class="n">beliefs_1</span><span class="p">[</span><span class="s1">&#39;π_h&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;π_f_2&#39;</span><span class="p">:</span> <span class="n">beliefs_2</span><span class="p">[</span><span class="s1">&#39;π_f&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;π_g_2&#39;</span><span class="p">:</span> <span class="n">beliefs_2</span><span class="p">[</span><span class="s1">&#39;π_g&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;π_h_2&#39;</span><span class="p">:</span> <span class="n">beliefs_2</span><span class="p">[</span><span class="s1">&#39;π_h&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;c1_share&#39;</span><span class="p">:</span> <span class="n">c1_share</span><span class="p">,</span>
+        <span class="s1">&#39;l_agents&#39;</span><span class="p">:</span> <span class="n">l_agents_seq</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following code cell defines a plotting function to show evolutions of beliefs and consumption ratios</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_belief_evolution</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">nature</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create plots showing belief evolution for three models (f, g, h).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    
+    <span class="n">model_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">]</span>
+    <span class="n">belief_keys</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;π_f_1&#39;</span><span class="p">,</span> <span class="s1">&#39;π_f_2&#39;</span><span class="p">),</span> 
+                   <span class="p">(</span><span class="s1">&#39;π_g_1&#39;</span><span class="p">,</span> <span class="s1">&#39;π_g_2&#39;</span><span class="p">),</span> 
+                   <span class="p">(</span><span class="s1">&#39;π_h_1&#39;</span><span class="p">,</span> <span class="s1">&#39;π_h_2&#39;</span><span class="p">)]</span>
+    
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="p">(</span><span class="n">key1</span><span class="p">,</span> <span class="n">key2</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+                        <span class="nb">zip</span><span class="p">(</span><span class="n">model_names</span><span class="p">,</span> <span class="n">belief_keys</span><span class="p">)):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        
+        <span class="c1"># Plot agent beliefs</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">key1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;C0-&#39;</span><span class="p">,</span> 
+                            <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;agent 1&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">key2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;C1-&#39;</span><span class="p">,</span> 
+                            <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;agent 2&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Truth indicator</span>
+        <span class="k">if</span> <span class="n">model_name</span> <span class="o">==</span> <span class="n">nature</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span> 
+                      <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;truth&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span> 
+                      <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;truth&#39;</span><span class="p">)</span>
+        
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;π(</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">) when Nature = </span><span class="si">{</span><span class="n">nature</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;median π(</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span>
+
+
+<span class="k">def</span> <span class="nf">plot_consumption_dynamics</span><span class="p">(</span><span class="n">results_f</span><span class="p">,</span> <span class="n">results_g</span><span class="p">,</span> <span class="n">λ</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create plot showing consumption share dynamics for agent 1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    
+    <span class="n">results_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">results_f</span><span class="p">,</span> <span class="n">results_g</span><span class="p">]</span>
+    <span class="n">nature_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">]</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">nature_label</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+                    <span class="nb">zip</span><span class="p">(</span><span class="n">results_list</span><span class="p">,</span> <span class="n">nature_labels</span><span class="p">,</span> <span class="n">colors</span><span class="p">)):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;c1_share&#39;</span><span class="p">]</span>
+        <span class="n">c1_med</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="c1"># Plot median and percentiles</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c1_med</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;median&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Add percentile bands</span>
+        <span class="n">c1_25</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">c1_75</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">c1_med</span><span class="p">)),</span> <span class="n">c1_25</span><span class="p">,</span> <span class="n">c1_75</span><span class="p">,</span> 
+                        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;25-75 percentile&quot;</span><span class="p">)</span>
+        
+        <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> 
+                        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;equal share&#39;</span><span class="p">)</span>
+        
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Agent 1 consumption share (Nature = </span><span class="si">{</span><span class="n">nature_label</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;consumption share&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Now let’s run the simulation.</p>
+<p>In the simulation below, agent 1 assigns positive probabilities only to <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>, while agent 2 puts equal weights on all three models.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Generate sequences for nature f and g</span>
+<span class="n">s_seq_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+<span class="n">s_seq_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+
+<span class="c1"># Run simulations</span>
+<span class="n">results_f</span> <span class="o">=</span> <span class="n">simulate_three_model_allocation</span><span class="p">(</span><span class="n">s_seq_f</span><span class="p">,</span> 
+                        <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">π_f_0</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">π_f_0</span><span class="p">,</span> 
+                        <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+<span class="n">results_g</span> <span class="o">=</span> <span class="n">simulate_three_model_allocation</span><span class="p">(</span><span class="n">s_seq_g</span><span class="p">,</span> 
+                        <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">π_f_0</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">π_f_0</span><span class="p">,</span> 
+                        <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plots below show the evolution of beliefs for each model (f, g, h) separately.</p>
+<p>First we show the figure when nature chooses <span class="math notranslate nohighlight">\(f\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_belief_evolution</span><span class="p">(</span><span class="n">results_f</span><span class="p">,</span> <span class="n">nature</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c3b30aea616c28d20e6c06c416551b06d5c6d21a542d951b2bdea6b15d4d5418.png" src="_images/c3b30aea616c28d20e6c06c416551b06d5c6d21a542d951b2bdea6b15d4d5418.png" />
+</div>
+</div>
+<p>Agent 1’s posterior beliefs are depicted in blue and agent 2’s posterior beliefs are depicted in orange.</p>
+<p>Evidently, when nature draws from <span class="math notranslate nohighlight">\(f\)</span>, agent 1 learns faster than agent 2, who, unlike agent 1, attaches a positive prior probability to model <span class="math notranslate nohighlight">\(h\)</span>:</p>
+<ul class="simple">
+<li><p>In the leftmost panel, both agents’ beliefs for <span class="math notranslate nohighlight">\(\pi(f)\)</span> converge toward 1 (the truth)</p></li>
+<li><p>Agent 2’s belief in model <span class="math notranslate nohighlight">\(h\)</span> (rightmost panel) gradually converges to 0 after an initial rise</p></li>
+</ul>
+<p>Now let’s plot the belief evolution when nature chooses <span class="math notranslate nohighlight">\(g\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_belief_evolution</span><span class="p">(</span><span class="n">results_g</span><span class="p">,</span> <span class="n">nature</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a67d6da8dace9ac8d6bbfad409c480378f89dd21d2f6db78d9a874c8605ec242.png" src="_images/a67d6da8dace9ac8d6bbfad409c480378f89dd21d2f6db78d9a874c8605ec242.png" />
+</div>
+</div>
+<p>Again, agent 1 learns faster than agent 2.</p>
+<p>Before reading the next figure, please guess how consumption shares evolve.</p>
+<p>Remember that agent 1 reaches the correct model faster than agent 2</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_consumption_dynamics</span><span class="p">(</span><span class="n">results_f</span><span class="p">,</span> <span class="n">results_g</span><span class="p">,</span> <span class="n">λ</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/30fe36b66e2772b5acec10c127abb04e325d2c1e81bbefc4d41c92f6635bce13.png" src="_images/30fe36b66e2772b5acec10c127abb04e325d2c1e81bbefc4d41c92f6635bce13.png" />
+</div>
+</div>
+<p>As we expected, agent 1 has a higher consumption share compared to agent 2.</p>
+<p>In this exercise, the “truth” is among possible outcomes according to both agents.</p>
+<p>Agent 2’s model is “more general” because it allows a possibility – that nature is drawing from <span class="math notranslate nohighlight">\(h\)</span> – that agent 1’s model does not include.</p>
+<p>Agent 1 learns more quickly because he uses a simpler model.</p>
+</section>
+</div>
+<div class="exercise admonition" id="lr_ex7">
+
+<p class="admonition-title"><span class="caption-number">Exercise 23.5 </span></p>
+<section id="exercise-content">
+<p>Now consider two agents with extreme priors about three models.</p>
+<p>Consider the same setup as the previous exercise, but now:</p>
+<ul class="simple">
+<li><p>Agent 1: <span class="math notranslate nohighlight">\(\pi^g_0 = \pi^f_0 = \frac{\epsilon}{2} &gt; 0\)</span>, where <span class="math notranslate nohighlight">\(\epsilon\)</span> is close to <span class="math notranslate nohighlight">\(0\)</span> (e.g., <span class="math notranslate nohighlight">\(\epsilon = 0.01\)</span>)</p></li>
+<li><p>Agent 2: <span class="math notranslate nohighlight">\(\pi^g_0 = \pi^f_0 = 0\)</span> (rigid belief in model <span class="math notranslate nohighlight">\(h\)</span>)</p></li>
+</ul>
+<p>Choose <span class="math notranslate nohighlight">\(h\)</span> to be close but not equal to either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> as measured by KL divergence.
+For example, set <span class="math notranslate nohighlight">\(h \sim \text{Beta}(1.2, 1.1)\)</span> and <span class="math notranslate nohighlight">\(f \sim \text{Beta}(1, 1)\)</span>.</p>
+<p>Please simulate and visualize  evolutions of posterior probabilities and  consumption allocations when:</p>
+<ul class="simple">
+<li><p>Nature permanently draws from <span class="math notranslate nohighlight">\(f\)</span></p></li>
+<li><p>Nature permanently draws from <span class="math notranslate nohighlight">\(g\)</span></p></li>
+</ul>
+</section>
+</div>
+<div class="solution dropdown admonition" id="likelihood_ratio_process_2-solution-9">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lr_ex7"> Exercise 23.5</a></p>
+<section id="solution-content">
+<p>To explore this exercise, we increase <span class="math notranslate nohighlight">\(T\)</span> to 1000.</p>
+<p>Let’s specify <span class="math notranslate nohighlight">\(f, g\)</span>, and <span class="math notranslate nohighlight">\(h\)</span> and verify that <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(f\)</span> are closer than <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(g\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span>
+<span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.1</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span><span class="p">))</span>
+
+<span class="n">Kh_f</span> <span class="o">=</span> <span class="n">compute_KL</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="n">Kh_g</span> <span class="o">=</span> <span class="n">compute_KL</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+<span class="n">Kf_h</span> <span class="o">=</span> <span class="n">compute_KL</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+<span class="n">Kg_h</span> <span class="o">=</span> <span class="n">compute_KL</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;KL divergences:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;KL(h,f) = </span><span class="si">{</span><span class="n">Kh_f</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, KL(h,g) = </span><span class="si">{</span><span class="n">Kh_g</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;KL(f,h) = </span><span class="si">{</span><span class="n">Kf_h</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, KL(g,h) = </span><span class="si">{</span><span class="n">Kg_h</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>KL divergences:
+KL(h,f) = 0.0092, KL(h,g) = 0.5514
+KL(f,h) = 0.0105, KL(g,h) = 0.2919
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can set the belief models for the two agents</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ε</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">λ</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="c1"># Agent 1: π_f = ε/2, π_g = ε/2, π_h = 1-ε </span>
+<span class="c1"># (almost rigid about h)</span>
+<span class="n">π_f_1</span> <span class="o">=</span> <span class="n">ε</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">π_g_1</span> <span class="o">=</span> <span class="n">ε</span><span class="o">/</span><span class="mi">2</span>
+
+<span class="c1"># Agent 2: π_f = 0, π_g = 0, π_h = 1 </span>
+<span class="c1"># (fully rigid about h)</span>
+<span class="n">π_f_2</span> <span class="o">=</span> <span class="mf">1e-10</span>
+<span class="n">π_g_2</span> <span class="o">=</span> <span class="mf">1e-10</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can run the simulation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Generate sequences for different nature scenarios</span>
+<span class="n">s_seq_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+<span class="n">s_seq_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+
+<span class="c1"># Run simulations for both scenarios</span>
+<span class="n">results_f</span> <span class="o">=</span> <span class="n">simulate_three_model_allocation</span><span class="p">(</span>
+                                <span class="n">s_seq_f</span><span class="p">,</span> 
+                                <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> 
+                                <span class="n">π_f_1</span><span class="p">,</span> <span class="n">π_g_1</span><span class="p">,</span> <span class="n">π_f_2</span><span class="p">,</span> <span class="n">π_g_2</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+<span class="n">results_g</span> <span class="o">=</span> <span class="n">simulate_three_model_allocation</span><span class="p">(</span>
+                                <span class="n">s_seq_g</span><span class="p">,</span> 
+                                <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> 
+                                <span class="n">π_f_1</span><span class="p">,</span> <span class="n">π_g_1</span><span class="p">,</span> <span class="n">π_f_2</span><span class="p">,</span> <span class="n">π_g_2</span><span class="p">,</span> <span class="n">λ</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot the belief evolution when nature chooses <span class="math notranslate nohighlight">\(f\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_belief_evolution</span><span class="p">(</span><span class="n">results_f</span><span class="p">,</span> <span class="n">nature</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/df6742bf7de337134f7b06e534c335e6aee5bdf8bdd0a6beef5d9efbd9925322.png" src="_images/df6742bf7de337134f7b06e534c335e6aee5bdf8bdd0a6beef5d9efbd9925322.png" />
+</div>
+</div>
+<p>Observe how slowly agent 1 learns the truth in the leftmost panel showing <span class="math notranslate nohighlight">\(\pi(f)\)</span>.</p>
+<p>Also note that agent 2 is not updating.</p>
+<p>This is because we have specified that <span class="math notranslate nohighlight">\(f\)</span> is very difficult to distinguish from <span class="math notranslate nohighlight">\(h\)</span> as measured by <span class="math notranslate nohighlight">\(KL(f, h)\)</span>.</p>
+<p>The rigidity regarding <span class="math notranslate nohighlight">\(h\)</span> prevents agent 2 from updating its beliefs when observing
+a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
+<p>Now let’s plot the belief evolution when nature chooses <span class="math notranslate nohighlight">\(g\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_belief_evolution</span><span class="p">(</span><span class="n">results_g</span><span class="p">,</span> <span class="n">nature</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b0bc94c49d5956192bf6983b2161f218f30fc7f2de9b80f941c4ccc52d3dd960.png" src="_images/b0bc94c49d5956192bf6983b2161f218f30fc7f2de9b80f941c4ccc52d3dd960.png" />
+</div>
+</div>
+<p>When nature draws from <span class="math notranslate nohighlight">\(g\)</span>, it is further away from <span class="math notranslate nohighlight">\(h\)</span> as measured by the KL divergence.</p>
+<p>This helps both agents learn the truth more quickly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_consumption_dynamics</span><span class="p">(</span><span class="n">results_f</span><span class="p">,</span> <span class="n">results_g</span><span class="p">,</span> 
+                               <span class="n">λ</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c85b46e8907d9218e7adf545b5710bf97f47f7a250356f20e73cc8a2c2ee3e24.png" src="_images/c85b46e8907d9218e7adf545b5710bf97f47f7a250356f20e73cc8a2c2ee3e24.png" />
+</div>
+</div>
+<p>In the consumption dynamics plot, notice that agent 1’s consumption share converges to 1 both when nature permanently draws from <span class="math notranslate nohighlight">\(f\)</span> and when nature permanently draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </section>
 </div>
 </section>

@@ -258,8 +258,8 @@
 </ul>
 </div>
 <p>This lecture uses the class <code class="docutils literal notranslate"><span class="pre">Neumann</span></code> to calculate key objects of a
-linear growth model of John von Neumann <span id="id1">[<a class="reference internal" href="zreferences.html#id83" title="John von Neumann. Uber ein okonomsiches gleichungssystem und eine verallgemeinering des browerschen fixpunktsatzes. In Erge. Math. Kolloq., volume 8, 73–83. 1937.">von Neumann, 1937</a>]</span> that was generalized by
-Kemeny, Morgenstern and Thompson <span id="id2">[<a class="reference internal" href="zreferences.html#id86" title="John G Kemeny, Oskar Morgenstern, and Gerald L Thompson. A generalization of the von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 115–135, 1956.">Kemeny <em>et al.</em>, 1956</a>]</span>.</p>
+linear growth model of John von Neumann <span id="id1">[<a class="reference internal" href="zreferences.html#id84" title="John von Neumann. Uber ein okonomsiches gleichungssystem und eine verallgemeinering des browerschen fixpunktsatzes. In Erge. Math. Kolloq., volume 8, 73–83. 1937.">von Neumann, 1937</a>]</span> that was generalized by
+Kemeny, Morgenstern and Thompson <span id="id2">[<a class="reference internal" href="zreferences.html#id87" title="John G Kemeny, Oskar Morgenstern, and Gerald L Thompson. A generalization of the von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 115–135, 1956.">Kemeny <em>et al.</em>, 1956</a>]</span>.</p>
 <p>Objects of interest are the maximal expansion rate (<span class="math notranslate nohighlight">\(\alpha\)</span>), the
 interest factor (<span class="math notranslate nohighlight">\(β\)</span>), the optimal intensities (<span class="math notranslate nohighlight">\(x\)</span>), and
 prices (<span class="math notranslate nohighlight">\(p\)</span>).</p>
@@ -286,9 +286,9 @@ following important tools:</p>
 </div>
 </div>
 <p>The code below provides the <code class="docutils literal notranslate"><span class="pre">Neumann</span></code> class</p>
-<div class="cell tag_collapse-20 docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Neumann</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Neumann</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class describes the Generalized von Neumann growth model as it was</span>
@@ -357,7 +357,7 @@ following important tools:</p>
 <span class="s2">          - number of activities     : </span><span class="si">{m}</span>
 
 <span class="s2">        Assumptions:</span>
-<span class="s2">          - AI:  every column of B has a positive entry    : </span><span class="si">{AI}</span>
+<span class="s2">          - AI:  every column of B has a positive entry    : </span><span class="si">{AI}</span><span class="s2"> </span>
 <span class="s2">          - AII: every row of A has a positive entry       : </span><span class="si">{AII}</span>
 
 <span class="s2">        &quot;&quot;&quot;</span>
@@ -553,20 +553,20 @@ following important tools:</p>
 <p>We use the following notation.</p>
 <p><span class="math notranslate nohighlight">\(\mathbf{0}\)</span> denotes
 a vector of zeros.</p>
-<p>We call an <span class="math notranslate nohighlight">\(n\)</span>-vector  positive and write
+<p>We call an <span class="math notranslate nohighlight">\(n\)</span>-vector <strong>positive</strong> and write
 <span class="math notranslate nohighlight">\(x\gg \mathbf{0}\)</span> if <span class="math notranslate nohighlight">\(x_i&gt;0\)</span> for all <span class="math notranslate nohighlight">\(i=1,2,\dots,n\)</span>.</p>
-<p>We call a vector  non-negative and write <span class="math notranslate nohighlight">\(x\geq \mathbf{0}\)</span> if <span class="math notranslate nohighlight">\(x_i\geq 0\)</span> for
+<p>We call a vector <strong>non-negative</strong> and write <span class="math notranslate nohighlight">\(x\geq \mathbf{0}\)</span> if <span class="math notranslate nohighlight">\(x_i\geq 0\)</span> for
 all <span class="math notranslate nohighlight">\(i=1,2,\dots,n\)</span>.</p>
-<p>We call a vector  semi-positive and written <span class="math notranslate nohighlight">\(x &gt; \mathbf{0}\)</span> if
+<p>We call a vector <strong>semi-positive</strong> written <span class="math notranslate nohighlight">\(x &gt; \mathbf{0}\)</span> if
 <span class="math notranslate nohighlight">\(x\geq \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(x\neq \mathbf{0}\)</span>.</p>
 <p>For two conformable vectors <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, <span class="math notranslate nohighlight">\(x\gg y\)</span>,
 <span class="math notranslate nohighlight">\(x\geq y\)</span> and <span class="math notranslate nohighlight">\(x&gt; y\)</span> mean <span class="math notranslate nohighlight">\(x-y\gg \mathbf{0}\)</span>,
 <span class="math notranslate nohighlight">\(x-y \geq \mathbf{0}\)</span>, and <span class="math notranslate nohighlight">\(x-y &gt; \mathbf{0}\)</span>, respectively.</p>
-<p>We let all vectors in this lecture be column vectors; <span class="math notranslate nohighlight">\(x^{T}\)</span> denotes the
+<p>We let all vectors in this lecture be column vectors; <span class="math notranslate nohighlight">\(x^\top\)</span> denotes the
 transpose of <span class="math notranslate nohighlight">\(x\)</span> (i.e., a row vector).</p>
 <p>Let <span class="math notranslate nohighlight">\(\iota_n\)</span> denote a
 column vector composed of <span class="math notranslate nohighlight">\(n\)</span> ones, i.e.
-<span class="math notranslate nohighlight">\(\iota_n = (1,1,\dots,1)^T\)</span>.</p>
+<span class="math notranslate nohighlight">\(\iota_n = (1,1,\dots,1)^\top\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(e^i\)</span> denote a vector (of
 arbitrary size) containing zeros except for the <span class="math notranslate nohighlight">\(i\)</span> th position
 where it is one.</p>
@@ -590,31 +590,29 @@ amount of good <span class="math notranslate nohighlight">\(j\)</span> consumed 
 the amount of good <span class="math notranslate nohighlight">\(j\)</span> produced by activity <span class="math notranslate nohighlight">\(i\)</span></p></li>
 </ul>
 <p>Two key assumptions restrict economy <span class="math notranslate nohighlight">\((A,B)\)</span>:</p>
-<ul>
-<li><p><strong>Assumption I:</strong> (every good that is consumed is also produced)</p>
+<div class="proof assumption admonition" id="assumption1">
+<p class="admonition-title"><span class="caption-number">Assumption 33.1 </span> (every good that is consumed is also produced)</p>
+<section class="assumption-content" id="proof-content">
 <div class="math notranslate nohighlight">
-\[
-  b_{.,j} &gt; \mathbf{0}\hspace{5mm}\forall j=1,2,\dots,n
-  \]</div>
-</li>
-<li><p><strong>Assumption II:</strong> (no free lunch)</p>
+\[  b_{.,j} &gt; \mathbf{0}\hspace{5mm}\forall j=1,2,\dots,n\]</div>
+</section>
+</div><div class="proof assumption admonition" id="assumption2">
+<p class="admonition-title"><span class="caption-number">Assumption 33.2 </span> (no free lunch)</p>
+<section class="assumption-content" id="proof-content">
 <div class="math notranslate nohighlight">
-\[
-  a_{i,.} &gt; \mathbf{0}\hspace{5mm}\forall i=1,2,\dots,m
-  \]</div>
-</li>
-</ul>
-<p>A semi-positive  <em>intensity</em> <span class="math notranslate nohighlight">\(m\)</span>-vector  <span class="math notranslate nohighlight">\(x\)</span> denotes  levels at which
+\[  a_{i,.} &gt; \mathbf{0}\hspace{5mm}\forall i=1,2,\dots,m\]</div>
+</section>
+</div><p>A semi-positive <em>intensity</em> <span class="math notranslate nohighlight">\(m\)</span>-vector <span class="math notranslate nohighlight">\(x\)</span> denotes levels at which
 activities are operated.</p>
 <p>Therefore,</p>
 <ul class="simple">
-<li><p>vector <span class="math notranslate nohighlight">\(x^TA\)</span> gives the total amount of <em>goods used in
+<li><p>vector <span class="math notranslate nohighlight">\(x^\top A\)</span> gives the total amount of <em>goods used in
 production</em></p></li>
-<li><p>vector <span class="math notranslate nohighlight">\(x^TB\)</span> gives <em>total outputs</em></p></li>
+<li><p>vector <span class="math notranslate nohighlight">\(x^\top B\)</span> gives <em>total outputs</em></p></li>
 </ul>
 <p>An economy <span class="math notranslate nohighlight">\((A,B)\)</span> is said to be <em>productive</em>, if there exists a
 non-negative intensity vector <span class="math notranslate nohighlight">\(x \geq 0\)</span> such
-that <span class="math notranslate nohighlight">\(x^T B &gt; x^TA\)</span>.</p>
+that <span class="math notranslate nohighlight">\(x^\top B &gt; x^\top A\)</span>.</p>
 <p>The semi-positive <span class="math notranslate nohighlight">\(n\)</span>-vector <span class="math notranslate nohighlight">\(p\)</span> contains prices assigned to
 the <span class="math notranslate nohighlight">\(n\)</span> goods.</p>
 <p>The <span class="math notranslate nohighlight">\(p\)</span> vector implies <em>cost</em> and <em>revenue</em> vectors</p>
@@ -622,19 +620,24 @@ the <span class="math notranslate nohighlight">\(n\)</span> goods.</p>
 <li><p>the vector <span class="math notranslate nohighlight">\(Ap\)</span> tells <em>costs</em> of the vector of activities</p></li>
 <li><p>the vector <span class="math notranslate nohighlight">\(Bp\)</span> tells <em>revenues</em> from the vector of activities</p></li>
 </ul>
-<p>Satisfaction or a property of an input-output pair <span class="math notranslate nohighlight">\((A,B)\)</span> called <em>irreducibility</em>
+<p>Satisfaction of a property of an input-output pair <span class="math notranslate nohighlight">\((A,B)\)</span> called <em>irreducibility</em>
 (or indecomposability) determines whether an economy can be decomposed
-into multiple     “sub-economies”.</p>
-<p><strong>Definition:</strong> For an economy <span class="math notranslate nohighlight">\((A,B)\)</span>, the set of goods
-<span class="math notranslate nohighlight">\(S\subset \{1,2,\dots,n\}\)</span> is called an <em>independent subset</em> if
+into multiple “sub-economies”.</p>
+<div class="proof definition admonition" id="definition-2">
+<p class="admonition-title"><span class="caption-number">Definition 33.1 </span></p>
+<section class="definition-content" id="proof-content">
+<p>For an economy <span class="math notranslate nohighlight">\((A,B)\)</span>, the set of goods
+<span class="math notranslate nohighlight">\(S\subset \{1,2,\dots,n\}\)</span> is called an <strong>independent subset</strong> if
 it is possible to produce every good in <span class="math notranslate nohighlight">\(S\)</span> without consuming
-goods from outside <span class="math notranslate nohighlight">\(S\)</span>. Formally, the set <span class="math notranslate nohighlight">\(S\)</span> is independent if
+goods from outside <span class="math notranslate nohighlight">\(S\)</span>.</p>
+<p>Formally, the set <span class="math notranslate nohighlight">\(S\)</span> is independent if
 <span class="math notranslate nohighlight">\(\exists T\subset \{1,2,\dots,m\}\)</span> (a subset of activities) such
-that <span class="math notranslate nohighlight">\(a_{i,j}=0\)</span> <span class="math notranslate nohighlight">\(\forall i\in T\)</span> and <span class="math notranslate nohighlight">\(j\in S^c\)</span> and
-for all <span class="math notranslate nohighlight">\(j\in S\)</span>, <span class="math notranslate nohighlight">\(\exists i\in T\)</span> for which  <span class="math notranslate nohighlight">\(b_{i,j}&gt;0\)</span>.
-The economy is <strong>irreducible</strong> if there are no proper independent
+that <span class="math notranslate nohighlight">\(a_{i,j}=0\)</span>, <span class="math notranslate nohighlight">\(\forall i\in T\)</span> and <span class="math notranslate nohighlight">\(j\in S^c\)</span> and
+for all <span class="math notranslate nohighlight">\(j\in S\)</span>, <span class="math notranslate nohighlight">\(\exists i\in T\)</span> for which <span class="math notranslate nohighlight">\(b_{i,j}&gt;0\)</span>.</p>
+<p>The economy is <strong>irreducible</strong> if there are no proper independent
 subsets.</p>
-<p>We study two examples, both in  Chapter 9.6 of Gale <span id="id3">[<a class="reference internal" href="zreferences.html#id88" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gale, 1989</a>]</span></p>
+</section>
+</div><p>We study two examples, both in Chapter 9.6 of Gale <span id="id3">[<a class="reference internal" href="zreferences.html#id89" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gale, 1989</a>]</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># (1) Irreducible (A, B) example: α_0 = β_0</span>
@@ -677,7 +680,7 @@ instance</p>
   - number of activities     : 3
 
 Assumptions:
-  - AI:  every column of B has a positive entry    : True
+  - AI:  every column of B has a positive entry    : True 
   - AII: every row of A has a positive entry       : True
 </pre></div>
 </div>
@@ -697,7 +700,7 @@ Assumptions:
   - number of activities     : 5
 
 Assumptions:
-  - AI:  every column of B has a positive entry    : True
+  - AI:  every column of B has a positive entry    : True 
   - AII: every row of A has a positive entry       : True
 </pre></div>
 </div>
@@ -720,13 +723,13 @@ investigates the dynamics of quantities and prices only.</p>
 production.</p>
 <p>We assume that production (consumption of inputs) takes place in period
 <span class="math notranslate nohighlight">\(t\)</span>, while the consequent output materializes in period
-<span class="math notranslate nohighlight">\(t+1\)</span>, i.e., consumption of <span class="math notranslate nohighlight">\(x_{t}^TA\)</span> in period <span class="math notranslate nohighlight">\(t\)</span>
-results in <span class="math notranslate nohighlight">\(x^T_{t}B\)</span> amounts of output in period <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
+<span class="math notranslate nohighlight">\(t+1\)</span>, i.e., consumption of <span class="math notranslate nohighlight">\(x_{t}^\top A\)</span> in period <span class="math notranslate nohighlight">\(t\)</span>
+results in <span class="math notranslate nohighlight">\(x^\top_{t}B\)</span> amounts of output in period <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
 <p>These timing conventions imply the following feasibility condition:</p>
 <div class="math notranslate nohighlight">
 \[
 \begin{aligned}
-x^T_{t}B \geq x^T_{t+1} A \hspace{1cm}\forall t\geq 1
+x^\top_{t}B \geq x^\top_{t+1} A \hspace{1cm}\forall t\geq 1
 \end{aligned}
 \]</div>
 <p>which asserts that no more goods can be used today than were produced
@@ -738,7 +741,7 @@ yesterday.</p>
 <p>We follow John von Neumann in studying “balanced growth”.</p>
 <p>Let <span class="math notranslate nohighlight">\(./\)</span> denote an elementwise division of one vector by another and let
 <span class="math notranslate nohighlight">\(\alpha &gt;0\)</span> be a scalar.</p>
-<p>Then <em>balanced growth</em> is a situation in which</p>
+<p>Then <strong>balanced growth</strong> is a situation in which</p>
 <div class="math notranslate nohighlight">
 \[
 x_{t+1}./x_t = \alpha , \quad \forall t \geq 0
@@ -747,7 +750,7 @@ x_{t+1}./x_t = \alpha , \quad \forall t \geq 0
 and so we can rewrite the feasibility constraint as</p>
 <div class="math notranslate nohighlight">
 \[
-x^T_{t}B \geq \alpha x^T_t A \hspace{1cm}\forall t
+x^\top_{t}B \geq \alpha x^\top_t A \hspace{1cm}\forall t
 \]</div>
 <p>In the same spirit, define <span class="math notranslate nohighlight">\(\beta\in\mathbb{R}\)</span> as the <strong>interest
 factor</strong> per unit of time.</p>
@@ -773,23 +776,30 @@ conduct an analysis purely in terms of a time-invariant growth rate
 <p>Two problems are connected by a remarkable dual
 relationship between  technological and valuation characteristics of
 the economy:</p>
-<p><strong>Definition:</strong> The <em>technological expansion problem</em> (TEP) for the economy
+<div class="proof definition admonition" id="definition-3">
+<p class="admonition-title"><span class="caption-number">Definition 33.2 </span></p>
+<section class="definition-content" id="proof-content">
+<p>The <strong>technological expansion problem</strong> (TEP) for the economy
 <span class="math notranslate nohighlight">\((A,B)\)</span> is to find a semi-positive <span class="math notranslate nohighlight">\(m\)</span>-vector <span class="math notranslate nohighlight">\(x&gt;0\)</span>
 and a number <span class="math notranslate nohighlight">\(\alpha\in\mathbb{R}\)</span> that satisfy</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
     &amp;\max_{\alpha} \hspace{2mm} \alpha\\
-    &amp;\text{s.t. }\hspace{2mm}x^T B \geq \alpha x^T A
+    &amp;\text{s.t. }\hspace{2mm}x^\top B \geq \alpha x^\top A
     \end{aligned}
 \end{split}\]</div>
-<p>Theorem 9.3 of David Gale’s book <span id="id4">[<a class="reference internal" href="zreferences.html#id88" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gale, 1989</a>]</span> asserts that if Assumptions I and II are
+</section>
+</div><p>Theorem 9.3 of David Gale’s book <span id="id4">[<a class="reference internal" href="zreferences.html#id89" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gale, 1989</a>]</span> asserts that if <a class="reference internal" href="#assumption1">Assumption 33.1</a> and <a class="reference internal" href="#assumption2">Assumption 33.2</a> are
 both satisfied, then a maximum value of <span class="math notranslate nohighlight">\(\alpha\)</span> exists and that it is
 positive.</p>
 <p>The maximal value is called the <em>technological expansion rate</em> and is denoted
 by <span class="math notranslate nohighlight">\(\alpha_0\)</span>. The associated intensity vector <span class="math notranslate nohighlight">\(x_0\)</span> is the
 <em>optimal intensity vector</em>.</p>
-<p><strong>Definition:</strong> The economic expansion problem (EEP) for
+<div class="proof definition admonition" id="definition-4">
+<p class="admonition-title"><span class="caption-number">Definition 33.3 </span></p>
+<section class="definition-content" id="proof-content">
+<p>The economic expansion problem (EEP) for
 <span class="math notranslate nohighlight">\((A,B)\)</span> is to find a semi-positive <span class="math notranslate nohighlight">\(n\)</span>-vector <span class="math notranslate nohighlight">\(p&gt;0\)</span>
 and a number <span class="math notranslate nohighlight">\(\beta\in\mathbb{R}\)</span> that satisfy</p>
 <div class="math notranslate nohighlight">
@@ -797,47 +807,54 @@ and a number <span class="math notranslate nohighlight">\(\beta\in\mathbb{R}\)</
 \begin{aligned}
     &amp;\min_{\beta} \hspace{2mm} \beta\\
     &amp;\text{s.t. }\hspace{2mm}Bp \leq \beta Ap
-    \end{aligned}
+\end{aligned}
 \end{split}\]</div>
-<p>Assumptions I and II imply existence of a minimum value
+</section>
+</div><p><a class="reference internal" href="#assumption1">Assumption 33.1</a> and <a class="reference internal" href="#assumption2">Assumption 33.2</a> imply existence of a minimum value
 <span class="math notranslate nohighlight">\(\beta_0&gt;0\)</span> called the <em>economic expansion rate</em>.</p>
 <p>The corresponding price vector <span class="math notranslate nohighlight">\(p_0\)</span> is the <em>optimal price vector</em>.</p>
 <p>Because the criterion functions in the <em>technological expansion</em> problem
 and the <em>economical expansion problem</em> are both linearly homogeneous,
 the optimality of <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(p_0\)</span> are defined only up to a
 positive scale factor.</p>
-<p>For convenience (and to emphasize a close connection to zero-sum games),  we normalize both vectors
+<p>For convenience (and to emphasize a close connection to zero-sum games), we normalize both vectors
 <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(p_0\)</span> to have unit length.</p>
-<p>A standard duality argument (see Lemma 9.4. in (Gale, 1960) <span id="id5">[<a class="reference internal" href="zreferences.html#id88" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gale, 1989</a>]</span>) implies
-that under Assumptions I and II, <span class="math notranslate nohighlight">\(\beta_0\leq \alpha_0\)</span>.</p>
+<p>A standard duality argument (see Lemma 9.4. in (Gale, 1960) <span id="id5">[<a class="reference internal" href="zreferences.html#id89" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gale, 1989</a>]</span>) implies
+that under <a class="reference internal" href="#assumption1">Assumption 33.1</a> and <a class="reference internal" href="#assumption2">Assumption 33.2</a>, <span class="math notranslate nohighlight">\(\beta_0\leq \alpha_0\)</span>.</p>
 <p>But to deduce that <span class="math notranslate nohighlight">\(\beta_0\geq \alpha_0\)</span>,
-Assumptions I and II are not sufficient.</p>
-<p>Therefore, von Neumann <span id="id6">[<a class="reference internal" href="zreferences.html#id83" title="John von Neumann. Uber ein okonomsiches gleichungssystem und eine verallgemeinering des browerschen fixpunktsatzes. In Erge. Math. Kolloq., volume 8, 73–83. 1937.">von Neumann, 1937</a>]</span>  went on to prove the following remarkable
+<a class="reference internal" href="#assumption1">Assumption 33.1</a> and <a class="reference internal" href="#assumption2">Assumption 33.2</a> are not sufficient.</p>
+<p>Therefore, von Neumann <span id="id6">[<a class="reference internal" href="zreferences.html#id84" title="John von Neumann. Uber ein okonomsiches gleichungssystem und eine verallgemeinering des browerschen fixpunktsatzes. In Erge. Math. Kolloq., volume 8, 73–83. 1937.">von Neumann, 1937</a>]</span>  went on to prove the following remarkable
 “duality” result that connects TEP and EEP.</p>
-<p><strong>Theorem 1 (von Neumann):</strong> If the economy <span class="math notranslate nohighlight">\((A,B)\)</span> satisfies
-Assumptions I and II, then there exist
+<div class="proof theorem admonition" id="theorem1">
+<p class="admonition-title"><span class="caption-number">Theorem 33.1 </span> (von Neumann)</p>
+<section class="theorem-content" id="proof-content">
+<p>If the economy <span class="math notranslate nohighlight">\((A,B)\)</span> satisfies
+<a class="reference internal" href="#assumption1">Assumption 33.1</a> and <a class="reference internal" href="#assumption2">Assumption 33.2</a>, then there exist
 <span class="math notranslate nohighlight">\(\left(\gamma^{*}, x_0, p_0\right)\)</span>, where
 <span class="math notranslate nohighlight">\(\gamma^{*}\in[\beta_0, \alpha_0]\subset\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(x_0&gt;0\)</span>
 is an <span class="math notranslate nohighlight">\(m\)</span>-vector, <span class="math notranslate nohighlight">\(p_0&gt;0\)</span> is an <span class="math notranslate nohighlight">\(n\)</span>-vector, and the
-following arbitrage true</p>
+following arbitrage conditions hold</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-x_0^T B &amp;\geq \gamma^{* } x_0^T A \\
+x_0^\top B &amp;\geq \gamma^{* } x_0^\top A \\
 Bp_0 &amp;\leq \gamma^{* } Ap_0 \\
-x_0^T\left(B-\gamma^{* } A\right)p_0 &amp;= 0
+x_0^\top \left(B-\gamma^{* } A\right)p_0 &amp;= 0
 \end{aligned}
 \end{split}\]</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><em>Proof (Sketch):</em> Assumption I and II imply that there exist <span class="math notranslate nohighlight">\((\alpha_0,
-x_0)\)</span> and <span class="math notranslate nohighlight">\((\beta_0, p_0)\)</span> that solve the TEP and EEP, respectively. If
-<span class="math notranslate nohighlight">\(\gamma^*&gt;\alpha_0\)</span>, then by definition of <span class="math notranslate nohighlight">\(\alpha_0\)</span>, there cannot
-exist a semi-positive <span class="math notranslate nohighlight">\(x\)</span> that satisfies <span class="math notranslate nohighlight">\(x^T B \geq \gamma^{* }
-x^T A\)</span>.  Similarly, if <span class="math notranslate nohighlight">\(\gamma^*&lt;\beta_0\)</span>, there is no semi-positive
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. (Sketch)</p>
+<p><a class="reference internal" href="#assumption1">Assumption 33.1</a> and <a class="reference internal" href="#assumption2">Assumption 33.2</a> imply that there exist <span class="math notranslate nohighlight">\((\alpha_0,
+x_0)\)</span> and <span class="math notranslate nohighlight">\((\beta_0, p_0)\)</span> that solve the TEP and EEP, respectively.</p>
+<p>If <span class="math notranslate nohighlight">\(\gamma^*&gt;\alpha_0\)</span>, then by definition of <span class="math notranslate nohighlight">\(\alpha_0\)</span>, there cannot
+exist a semi-positive <span class="math notranslate nohighlight">\(x\)</span> that satisfies <span class="math notranslate nohighlight">\(x^\top B \geq \gamma^{* }
+x^\top A\)</span>.</p>
+<p>Similarly, if <span class="math notranslate nohighlight">\(\gamma^*&lt;\beta_0\)</span>, there is no semi-positive
 <span class="math notranslate nohighlight">\(p\)</span> for which <span class="math notranslate nohighlight">\(Bp \leq \gamma^{* } Ap\)</span>. Let <span class="math notranslate nohighlight">\(\gamma^{*
-}\in[\beta_0, \alpha_0]\)</span>, then <span class="math notranslate nohighlight">\(x_0^T B \geq \alpha_0 x_0^T A \geq
-\gamma^{* } x_0^T A\)</span>.  Moreover, <span class="math notranslate nohighlight">\(Bp_0\leq \beta_0 A p_0\leq \gamma^* A
+}\in[\beta_0, \alpha_0]\)</span>, then <span class="math notranslate nohighlight">\(x_0^\top B \geq \alpha_0 x_0^\top A \geq
+\gamma^{* } x_0^\top A\)</span>.</p>
+<p>Moreover, <span class="math notranslate nohighlight">\(Bp_0\leq \beta_0 A p_0\leq \gamma^* A
 p_0\)</span>. These two inequalities imply <span class="math notranslate nohighlight">\(x_0\left(B - \gamma^{* } A\right)p_0
 = 0\)</span>.</p>
 </div>
@@ -846,23 +863,23 @@ factor (not necessarily optimal).</p>
 <p>We have already encountered and
 discussed the first two inequalities that represent feasibility and
 no-profit conditions.</p>
-<p>Moreover, the equality <span class="math notranslate nohighlight">\(x_0^T\left(B-\gamma^{* } A\right)p_0 = 0\)</span> concisely expresses the
+<p>Moreover, the equality <span class="math notranslate nohighlight">\(x_0^\top \left(B-\gamma^{* } A\right)p_0 = 0\)</span> concisely expresses the
 requirements that if any good grows at a rate larger than
 <span class="math notranslate nohighlight">\(\gamma^{*}\)</span> (i.e., if it is <em>oversupplied</em>), then its price
 must be zero; and that if any activity provides negative profit, it must
 be unused.</p>
-<p>Therefore, the conditions stated in Theorem I ex encode all equilibrium conditions.</p>
-<p>So  Theorem I essentially states that under Assumptions I and II there
+<p>Therefore, the conditions stated in <a class="reference internal" href="#theorem1">Theorem 33.1</a> encode all equilibrium conditions.</p>
+<p>So <a class="reference internal" href="#theorem1">Theorem 33.1</a> essentially states that under <a class="reference internal" href="#assumption1">Assumption 33.1</a> and <a class="reference internal" href="#assumption2">Assumption 33.2</a> there
 always exists an equilibrium <span class="math notranslate nohighlight">\(\left(\gamma^{*}, x_0, p_0\right)\)</span>
 with balanced growth.</p>
-<p>Note that Theorem I is silent about uniqueness of the equilibrium. In
-fact, it does not rule out (trivial) cases with <span class="math notranslate nohighlight">\(x_0^TBp_0 = 0\)</span> so
+<p>Note that <a class="reference internal" href="#theorem1">Theorem 33.1</a> is silent about uniqueness of the equilibrium. In
+fact, it does not rule out (trivial) cases with <span class="math notranslate nohighlight">\(x_0^\top Bp_0 = 0\)</span> so
 that nothing of value is produced.</p>
 <p>To exclude such uninteresting cases,
-Kemeny, Morgenstern and Thomspson <span id="id7">[<a class="reference internal" href="zreferences.html#id86" title="John G Kemeny, Oskar Morgenstern, and Gerald L Thompson. A generalization of the von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 115–135, 1956.">Kemeny <em>et al.</em>, 1956</a>]</span> add an extra requirement</p>
+Kemeny, Morgenstern and Thompson <span id="id7">[<a class="reference internal" href="zreferences.html#id87" title="John G Kemeny, Oskar Morgenstern, and Gerald L Thompson. A generalization of the von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 115–135, 1956.">Kemeny <em>et al.</em>, 1956</a>]</span> add an extra requirement</p>
 <div class="math notranslate nohighlight">
 \[
-x^T_0 B p_0 &gt; 0
+x^\top_0 B p_0 &gt; 0
 \]</div>
 <p>and call the associated equilibria <em>economic solutions</em>.</p>
 <p>They show that
@@ -874,53 +891,56 @@ significantly reduces the number of (relevant) solutions.</p>
 <p>To compute the equilibrium <span class="math notranslate nohighlight">\((\gamma^{*}, x_0, p_0)\)</span>, we follow the
 algorithm proposed by Hamburger, Thompson and Weil (1967), building on
 the key insight that an equilibrium (with balanced growth) can be
-solves a particular two-player zero-sum game.
-First, we introduce some notation.</p>
+solved as a particular two-player zero-sum game.</p>
+<p>First, we introduce some notation.</p>
 <p>Consider the <span class="math notranslate nohighlight">\(m\times n\)</span> matrix <span class="math notranslate nohighlight">\(C\)</span> as a payoff matrix,
 with the entries representing payoffs from the <strong>minimizing</strong> column
 player to the <strong>maximizing</strong> row player and assume that the players can
 use mixed strategies. Thus,</p>
 <ul class="simple">
-<li><p>the  row player chooses the <span class="math notranslate nohighlight">\(m\)</span>-vector <span class="math notranslate nohighlight">\(x &gt; \mathbf{0}\)</span> subject to <span class="math notranslate nohighlight">\(\iota_m^T x = 1\)</span></p></li>
-<li><p>the column player chooses the <span class="math notranslate nohighlight">\(n\)</span>-vector <span class="math notranslate nohighlight">\(p &gt; \mathbf{0}\)</span> subject to <span class="math notranslate nohighlight">\(\iota_n^T p = 1\)</span>.</p></li>
+<li><p>the row player chooses the <span class="math notranslate nohighlight">\(m\)</span>-vector <span class="math notranslate nohighlight">\(x &gt; \mathbf{0}\)</span> subject to <span class="math notranslate nohighlight">\(\iota_m^\top x = 1\)</span></p></li>
+<li><p>the column player chooses the <span class="math notranslate nohighlight">\(n\)</span>-vector <span class="math notranslate nohighlight">\(p &gt; \mathbf{0}\)</span> subject to <span class="math notranslate nohighlight">\(\iota_n^\top p = 1\)</span>.</p></li>
 </ul>
-<p><strong>Definition:</strong> The <span class="math notranslate nohighlight">\(m\times n\)</span> matrix game <span class="math notranslate nohighlight">\(C\)</span> has the
+<div class="proof definition admonition" id="definition-6">
+<p class="admonition-title"><span class="caption-number">Definition 33.4 </span></p>
+<section class="definition-content" id="proof-content">
+<p>The <span class="math notranslate nohighlight">\(m\times n\)</span> matrix game <span class="math notranslate nohighlight">\(C\)</span> has the
 <em>solution</em> <span class="math notranslate nohighlight">\((x^*, p^*, V(C))\)</span> in mixed strategies if</p>
 <div class="math notranslate nohighlight">
 \[
 \begin{aligned}
-(x^* )^T C e^j \geq V(C)\quad \forall j\in\{1, \dots, n\}\quad \quad
-\text{and}\quad\quad (e^i)^T C p^* \leq V(C)\quad \forall i\in\{1, \dots, m\}
+(x^* )^\top C e^j \geq V(C)\quad \forall j\in\{1, \dots, n\}\quad \quad
+\text{and}\quad\quad (e^i)^\top C p^* \leq V(C)\quad \forall i\in\{1, \dots, m\}
 \end{aligned}
 \]</div>
-<p>The number <span class="math notranslate nohighlight">\(V(C)\)</span> is called the <em>value</em> of the game.</p>
-<p>From the above definition, it is clear that the value <span class="math notranslate nohighlight">\(V(C)\)</span> has
+<p>The number <span class="math notranslate nohighlight">\(V(C)\)</span> is called the <strong>value</strong> of the game.</p>
+</section>
+</div><p>From the above definition, it is clear that the value <span class="math notranslate nohighlight">\(V(C)\)</span> has
 two alternative interpretations:</p>
 <ul class="simple">
 <li><p>by playing the appropriate mixed
-stategy, the maximizing player can assure himself at least <span class="math notranslate nohighlight">\(V(C)\)</span>
+strategy, the maximizing player can assure himself at least <span class="math notranslate nohighlight">\(V(C)\)</span>
 (no matter what the column player chooses)</p></li>
 <li><p>by playing the appropriate
-mixed stategy, the minimizing player can make sure that the maximizing
+mixed strategy, the minimizing player can make sure that the maximizing
 player will not get more than <span class="math notranslate nohighlight">\(V(C)\)</span> (irrespective of what is the
 maximizing player’s choice)</p></li>
 </ul>
 <p>A famous theorem of Nash (1951) tells us that there always
 exists a mixed strategy Nash equilibrium for any <em>finite</em> two-player
 zero-sum game.</p>
-<p>Moreover, von Neumann’s Minmax Theorem <span id="id8">[<a class="reference internal" href="zreferences.html#id84" title="John von Neumann. Zur theorie der gesellschaftsspiele. Mathematische annalen, 100(1):295–320, 1928.">von Neumann, 1928</a>]</span> implies that</p>
+<p>Moreover, von Neumann’s Minmax Theorem <span id="id8">[<a class="reference internal" href="zreferences.html#id85" title="John von Neumann. Zur theorie der gesellschaftsspiele. Mathematische annalen, 100(1):295–320, 1928.">von Neumann, 1928</a>]</span> implies that</p>
 <div class="math notranslate nohighlight">
 \[
-V(C) = \max_x \min_p \hspace{2mm} x^T C p = \min_p \max_x \hspace{2mm} x^T C p = (x^*)^T C p^*
+V(C) = \max_x \min_p \hspace{2mm} x^\top C p = \min_p \max_x \hspace{2mm} x^\top C p = (x^*)^\top C p^*
 \]</div>
 <section id="connection-with-linear-programming-lp">
 <h3><span class="section-number">33.5.1. </span>Connection with Linear Programming (LP)<a class="headerlink" href="#connection-with-linear-programming-lp" title="Permalink to this heading">#</a></h3>
-<p>Nash equilibria of a finite two-player zero-sum game solve  a linear programming problem.</p>
-<p>To see this, we introduce
-the following notation</p>
+<p>Nash equilibria of a finite two-player zero-sum game solve a linear programming problem.</p>
+<p>To see this, we introduce the following notation</p>
 <ul class="simple">
-<li><p>For a fixed <span class="math notranslate nohighlight">\(x\)</span>, let <span class="math notranslate nohighlight">\(v\)</span> be the value of the minimization problem: <span class="math notranslate nohighlight">\(v \equiv \min_p x^T C p = \min_j x^T C e^j\)</span></p></li>
-<li><p>For a fixed <span class="math notranslate nohighlight">\(p\)</span>, let <span class="math notranslate nohighlight">\(u\)</span> be the value of the maximization problem: <span class="math notranslate nohighlight">\(u \equiv \max_x x^T C p = \max_i (e^i)^T C p\)</span></p></li>
+<li><p>For a fixed <span class="math notranslate nohighlight">\(x\)</span>, let <span class="math notranslate nohighlight">\(v\)</span> be the value of the minimization problem: <span class="math notranslate nohighlight">\(v \equiv \min_p x^\top C p = \min_j x^\top C e^j\)</span></p></li>
+<li><p>For a fixed <span class="math notranslate nohighlight">\(p\)</span>, let <span class="math notranslate nohighlight">\(u\)</span> be the value of the maximization problem: <span class="math notranslate nohighlight">\(u \equiv \max_x x^\top C p = \max_i (e^i)^\top C p\)</span></p></li>
 </ul>
 <p>Then the <em>max-min problem</em> (the game from the maximizing player’s point
 of view) can be written as the <em>primal</em> LP</p>
@@ -928,9 +948,9 @@ of view) can be written as the <em>primal</em> LP</p>
 \[\begin{split}
 \begin{aligned}
 V(C) = &amp; \max \hspace{2mm} v \\
-\text{s.t. } \hspace{2mm} v \iota_n^T &amp;\leq x^T C  \\
+\text{s.t. } \hspace{2mm} v \iota_n^\top &amp;\leq x^\top C  \\
 x &amp;\geq \mathbf{0} \\
-\iota_n^T x &amp; = 1
+\iota_n^\top x &amp; = 1
 \end{aligned}
 \end{split}\]</div>
 <p>while the <em>min-max problem</em> (the game from the minimizing player’s point
@@ -941,33 +961,32 @@ of view) is the <em>dual</em> LP</p>
 V(C) = &amp;\min \hspace{2mm} u \\
 \text{s.t. } \hspace{2mm}u \iota_m &amp;\geq Cp  \\
 p &amp;\geq \mathbf{0} \\
-\iota_m^T p &amp; = 1
+\iota_m^\top p &amp; = 1
 \end{aligned}
 \end{split}\]</div>
-<p>Hamburger, Thompson and Weil <span id="id9">[<a class="reference internal" href="zreferences.html#id87" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">Hamburger <em>et al.</em>, 1967</a>]</span> view the input-output pair of the
+<p>Hamburger, Thompson and Weil <span id="id9">[<a class="reference internal" href="zreferences.html#id88" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">Hamburger <em>et al.</em>, 1967</a>]</span> view the input-output pair of the
 economy as payoff matrices of two-player zero-sum games.</p>
-<p>Using this interpretation, they restate Assumption I and II as follows</p>
+<p>Using this interpretation, they restate <a class="reference internal" href="#assumption1">Assumption 33.1</a> and <a class="reference internal" href="#assumption2">Assumption 33.2</a> as follows</p>
 <div class="math notranslate nohighlight">
 \[
 V(-A) &lt; 0\quad\quad \text{and}\quad\quad V(B)&gt;0
 \]</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><em>Proof (Sketch)</em>:</p>
+<div class="proof admonition" id="proof">
+<p>Proof. (Sketch)</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> <span class="math notranslate nohighlight">\(V(B)&gt;0\)</span> implies
-<span class="math notranslate nohighlight">\(x_0^T B \gg \mathbf{0}\)</span>, where <span class="math notranslate nohighlight">\(x_0\)</span> is a maximizing
+<span class="math notranslate nohighlight">\(x_0^\top B \gg \mathbf{0}\)</span>, where <span class="math notranslate nohighlight">\(x_0\)</span> is a maximizing
 vector. Since <span class="math notranslate nohighlight">\(B\)</span> is non-negative, this requires that each
 column of <span class="math notranslate nohighlight">\(B\)</span> has at least one positive entry, which is
-Assumption I.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\Leftarrow\)</span> From Assumption I and the fact
+<a class="reference internal" href="#assumption1">Assumption 33.1</a>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Leftarrow\)</span> From <a class="reference internal" href="#assumption1">Assumption 33.1</a> and the fact
 that <span class="math notranslate nohighlight">\(p&gt;\mathbf{0}\)</span>, it follows that <span class="math notranslate nohighlight">\(Bp &gt; \mathbf{0}\)</span>.
 This implies that the maximizing player can always choose <span class="math notranslate nohighlight">\(x\)</span>
-so that <span class="math notranslate nohighlight">\(x^TBp&gt;0\)</span> so that it must be the case
+so that <span class="math notranslate nohighlight">\(x^\top Bp&gt;0\)</span> so that it must be the case
 that <span class="math notranslate nohighlight">\(V(B)&gt;0\)</span>.</p></li>
 </ul>
 </div>
-<p>In order to (re)state Theorem I in terms of a particular two-player
+<p>In order to (re)state <a class="reference internal" href="#theorem1">Theorem 33.1</a> in terms of a particular two-player
 zero-sum game, we define a matrix for <span class="math notranslate nohighlight">\(\gamma\in\mathbb{R}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -978,19 +997,19 @@ calculating the solution of the game implies</p>
 <ul class="simple">
 <li><p>If <span class="math notranslate nohighlight">\(\gamma &gt; \alpha_0\)</span>, then for all <span class="math notranslate nohighlight">\(x&gt;0\)</span>, there
 <span class="math notranslate nohighlight">\(\exists j\in\{1, \dots, n\}\)</span>, s.t.
-<span class="math notranslate nohighlight">\([x^T M(\gamma)]_j &lt; 0\)</span> implying
+<span class="math notranslate nohighlight">\([x^\top M(\gamma)]_j &lt; 0\)</span> implying
 that <span class="math notranslate nohighlight">\(V(M(\gamma)) &lt; 0\)</span>.</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(\gamma &lt; \beta_0\)</span>, then for all <span class="math notranslate nohighlight">\(p&gt;0\)</span>, there
 <span class="math notranslate nohighlight">\(\exists i\in\{1, \dots, m\}\)</span>, s.t.
 <span class="math notranslate nohighlight">\([M(\gamma)p]_i &gt; 0\)</span> implying that <span class="math notranslate nohighlight">\(V(M(\gamma)) &gt; 0\)</span>.</p></li>
-<li><p>If <span class="math notranslate nohighlight">\(\gamma \in \{\beta_0, \alpha_0\}\)</span>, then (by Theorem I) the
+<li><p>If <span class="math notranslate nohighlight">\(\gamma \in \{\beta_0, \alpha_0\}\)</span>, then (by <a class="reference internal" href="#theorem1">Theorem 33.1</a>) the
 optimal intensity and price vectors <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(p_0\)</span>
 satisfy</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[
 \begin{aligned}
-x_0^T M(\gamma) \geq \mathbf{0}^T \quad \quad \text{and}\quad\quad M(\gamma) p_0 \leq \mathbf{0}
+x_0^\top M(\gamma) \geq \mathbf{0}^\top \quad \quad \text{and}\quad\quad M(\gamma) p_0 \leq \mathbf{0}
 \end{aligned}
 \]</div>
 <p>That is, <span class="math notranslate nohighlight">\((x_0, p_0, 0)\)</span> is a solution of the game
@@ -1005,14 +1024,17 @@ that <span class="math notranslate nohighlight">\(V\left(M(\beta_0)\right) = V\l
 <span class="math notranslate nohighlight">\(p''\)</span> is optimal for the minimizing player in <span class="math notranslate nohighlight">\(M(\gamma'')\)</span>
 where <span class="math notranslate nohighlight">\(\gamma''\in(\beta_0, \gamma')\)</span>, then <span class="math notranslate nohighlight">\((x', p'', 0)\)</span>
 is a solution for <span class="math notranslate nohighlight">\(M(\gamma)\)</span> <span class="math notranslate nohighlight">\(\forall \gamma\in (\gamma'', \gamma')\)</span>.</p>
-<p><em>Proof (Sketch):</em> If <span class="math notranslate nohighlight">\(x'\)</span> is optimal for a maximizing player in
-game <span class="math notranslate nohighlight">\(M(\gamma')\)</span>, then <span class="math notranslate nohighlight">\((x')^T M(\gamma')\geq \mathbf{0}^T\)</span> and so for all <span class="math notranslate nohighlight">\(\gamma&lt;\gamma'\)</span>.</p>
+<div class="proof admonition" id="proof">
+<p>Proof. (Sketch)
+If <span class="math notranslate nohighlight">\(x'\)</span> is optimal for a maximizing player in
+game <span class="math notranslate nohighlight">\(M(\gamma')\)</span>, then <span class="math notranslate nohighlight">\((x')^\top M(\gamma')\geq \mathbf{0}^\top\)</span> and so for all <span class="math notranslate nohighlight">\(\gamma&lt;\gamma'\)</span>.</p>
+</div>
 <div class="math notranslate nohighlight">
 \[
-(x')^T M(\gamma) = (x')^T M(\gamma') + (x')^T(\gamma' - \gamma)A \geq \mathbf{0}^T
+(x')^\top M(\gamma) = (x')^\top M(\gamma') + (x')^\top(\gamma' - \gamma)A \geq \mathbf{0}^\top
 \]</div>
 <p>hence <span class="math notranslate nohighlight">\(V(M(\gamma))\geq 0\)</span>. If <span class="math notranslate nohighlight">\(p''\)</span> is optimal for a
-minimizing player in game <span class="math notranslate nohighlight">\(M(\gamma'')\)</span>, then <span class="math notranslate nohighlight">\(M(\gamma)p \leq \mathbf{0}\)</span>
+minimizing player in game <span class="math notranslate nohighlight">\(M(\gamma'')\)</span>, then <span class="math notranslate nohighlight">\(M(\gamma'')p'' \leq \mathbf{0}\)</span>
 and so for all <span class="math notranslate nohighlight">\(\gamma''&lt;\gamma\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -1021,7 +1043,7 @@ M(\gamma)p'' = M(\gamma'') + (\gamma'' - \gamma)Ap'' \leq \mathbf{0}
 <p>hence <span class="math notranslate nohighlight">\(V(M(\gamma))\leq 0\)</span>.</p>
 <p>It is clear from the above argument that <span class="math notranslate nohighlight">\(\beta_0\)</span>, <span class="math notranslate nohighlight">\(\alpha_0\)</span> are the minimal and maximal <span class="math notranslate nohighlight">\(\gamma\)</span> for which
 <span class="math notranslate nohighlight">\(V(M(\gamma))=0\)</span>.</p>
-<p>Furthermore, Hamburger et al. <span id="id10">[<a class="reference internal" href="zreferences.html#id87" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">Hamburger <em>et al.</em>, 1967</a>]</span> show that the
+<p>Furthermore, Hamburger et al. <span id="id10">[<a class="reference internal" href="zreferences.html#id88" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">Hamburger <em>et al.</em>, 1967</a>]</span> show that the
 function <span class="math notranslate nohighlight">\(\gamma \mapsto V(M(\gamma))\)</span> is continuous and
 nonincreasing in <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
 <p>This suggests an algorithm to compute
@@ -1030,7 +1052,7 @@ input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span>.<
 </section>
 <section id="algorithm">
 <h3><span class="section-number">33.5.2. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this heading">#</a></h3>
-<p>Hamburger, Thompson and Weil <span id="id11">[<a class="reference internal" href="zreferences.html#id87" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">Hamburger <em>et al.</em>, 1967</a>]</span> propose a simple bisection algorithm
+<p>Hamburger, Thompson and Weil <span id="id11">[<a class="reference internal" href="zreferences.html#id88" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">Hamburger <em>et al.</em>, 1967</a>]</span> propose a simple bisection algorithm
 to find the minimal and maximal roots (i.e. <span class="math notranslate nohighlight">\(\beta_0\)</span> and
 <span class="math notranslate nohighlight">\(\alpha_0\)</span>) of the function <span class="math notranslate nohighlight">\(\gamma \mapsto V(M(\gamma))\)</span>.</p>
 <section id="step-1">
@@ -1039,7 +1061,7 @@ to find the minimal and maximal roots (i.e. <span class="math notranslate nohigh
 <span class="math notranslate nohighlight">\(\alpha_0\)</span> and <span class="math notranslate nohighlight">\(\beta_0\)</span>.</p>
 <ul class="simple">
 <li><p>TEP requires that
-<span class="math notranslate nohighlight">\(x^T(B-\alpha A)\geq \mathbf{0}^T\)</span> and <span class="math notranslate nohighlight">\(x &gt; \mathbf{0}\)</span>, so
+<span class="math notranslate nohighlight">\(x^\top (B-\alpha A)\geq \mathbf{0}^\top\)</span> and <span class="math notranslate nohighlight">\(x &gt; \mathbf{0}\)</span>, so
 if <span class="math notranslate nohighlight">\(\alpha\)</span> is so large that
 <span class="math notranslate nohighlight">\(\max_i\{[(B-\alpha A)\iota_n]_i\} &lt; 0\)</span>, then TEP ceases to have a
 solution.</p></li>
@@ -1049,9 +1071,9 @@ solves <span class="math notranslate nohighlight">\(\max_i\{[(B-\alpha^{*} A)\io
 <ul class="simple">
 <li><p>Similar to
 the upper bound, if <span class="math notranslate nohighlight">\(\beta\)</span> is so low that
-<span class="math notranslate nohighlight">\(\min_j\{[\iota^T_m(B-\beta A)]_j\}&gt;0\)</span>, then the EEP has no
+<span class="math notranslate nohighlight">\(\min_j\{[\iota^\top_m(B-\beta A)]_j\}&gt;0\)</span>, then the EEP has no
 solution and so we can define <strong><code class="docutils literal notranslate"><span class="pre">LB</span></code></strong> as the <span class="math notranslate nohighlight">\(\beta^{*}\)</span> that
-solves <span class="math notranslate nohighlight">\(\min_j\{[\iota^T_m(B-\beta^{*} A)]_j\}=0\)</span>.</p></li>
+solves <span class="math notranslate nohighlight">\(\min_j\{[\iota^\top_m(B-\beta^{*} A)]_j\}=0\)</span>.</p></li>
 </ul>
 <p>The <em>bounds</em> method calculates these trivial bounds for us</p>
 <div class="cell docutils container">
@@ -1085,7 +1107,7 @@ otherwise let <span class="math notranslate nohighlight">\(UB = \gamma\)</span>.
 <li><p>Finding <span class="math notranslate nohighlight">\(\beta_0\)</span></p>
 <ol class="arabic simple">
 <li><p>Fix <span class="math notranslate nohighlight">\(\gamma = \frac{UB + LB}{2}\)</span> and compute the solution
-of the two-player zero-sum game associated.
+of the two-player zero-sum game associated
 with <span class="math notranslate nohighlight">\(M(\gamma)\)</span>. We can use either the primal or the dual
 LP problem.</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(V(M(\gamma)) &gt; 0\)</span>, then set <span class="math notranslate nohighlight">\(LB = \gamma\)</span>,
@@ -1241,45 +1263,53 @@ bisection algorithms might differ, so there might be multiple
 <span class="math notranslate nohighlight">\(\gamma^*\)</span> that make the value of the game
 with <span class="math notranslate nohighlight">\(M(\gamma^*)\)</span> zero. (see the figure above).</p>
 <p>Indeed, although the von Neumann theorem assures existence of the
-equilibrium, Assumptions I and II are not sufficient for uniqueness.
+equilibrium, <a class="reference internal" href="#assumption1">Assumption 33.1</a> and <a class="reference internal" href="#assumption2">Assumption 33.2</a> are not sufficient for uniqueness.
 Nonetheless, Kemeny et al. (1967) show that there are at most finitely
 many economic solutions, meaning that there are only finitely many
 <span class="math notranslate nohighlight">\(\gamma^*\)</span> that satisfy <span class="math notranslate nohighlight">\(V(M(\gamma^*)) = 0\)</span> and
-<span class="math notranslate nohighlight">\(x_0^TBp_0 &gt; 0\)</span> and that for each such <span class="math notranslate nohighlight">\(\gamma^*_i\)</span>, there
+<span class="math notranslate nohighlight">\(x_0^\top Bp_0 &gt; 0\)</span> and that for each such <span class="math notranslate nohighlight">\(\gamma^*_i\)</span>, there
 is a self-contained part of the economy (a sub-economy) that in
 equilibrium can expand independently with the expansion
 coefficient <span class="math notranslate nohighlight">\(\gamma^*_i\)</span>.</p>
-<p>The following theorem (see Theorem 9.10. in Gale <span id="id12">[<a class="reference internal" href="zreferences.html#id88" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gale, 1989</a>]</span>) asserts that
+<p>The following theorem (see Theorem 9.10. in Gale <span id="id12">[<a class="reference internal" href="zreferences.html#id89" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gale, 1989</a>]</span>) asserts that
 imposing irreducibility is sufficient for uniqueness of
 <span class="math notranslate nohighlight">\((\gamma^*, x_0, p_0)\)</span>.</p>
-<p><strong>Theorem II:</strong> Adopt the conditions of Theorem 1. If the economy
+<div class="proof theorem admonition" id="theorem2">
+<p class="admonition-title"><span class="caption-number">Theorem 33.2 </span></p>
+<section class="theorem-content" id="proof-content">
+<p>Adopt the conditions of <a class="reference internal" href="#theorem1">Theorem 33.1</a>. If the economy
 <span class="math notranslate nohighlight">\((A,B)\)</span> is irreducible, then <span class="math notranslate nohighlight">\(\gamma^*=\alpha_0=\beta_0\)</span>.</p>
 </section>
+</div></section>
 <section id="a-special-case">
 <h3><span class="section-number">33.5.4. </span>A Special Case<a class="headerlink" href="#a-special-case" title="Permalink to this heading">#</a></h3>
 <p>There is a special <span class="math notranslate nohighlight">\((A,B)\)</span> that allows us to simplify the solution
 method significantly by invoking the powerful Perron-Frobenius theorem
 for non-negative matrices.</p>
-<p><strong>Definition:</strong> We call an economy <em>simple</em> if it satisfies</p>
+<div class="proof definition admonition" id="definition-8">
+<p class="admonition-title"><span class="caption-number">Definition 33.5 </span></p>
+<section class="definition-content" id="proof-content">
+<p>We call an economy <em>simple</em> if it satisfies</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(n=m\)</span></p></li>
 <li><p>Each activity produces exactly one good</p></li>
 <li><p>Each good is produced by one and only one activity.</p></li>
 </ul>
-<p>These assumptions imply that <span class="math notranslate nohighlight">\(B=I_n\)</span>, i.e., that <span class="math notranslate nohighlight">\(B\)</span> can be
+</section>
+</div><p>These assumptions imply that <span class="math notranslate nohighlight">\(B=I_n\)</span>, i.e., that <span class="math notranslate nohighlight">\(B\)</span> can be
 written as an identity matrix (possibly after reshuffling its rows and
 columns).</p>
-<p>The simple model has the following special property (Theorem 9.11. in Gale <span id="id13">[<a class="reference internal" href="zreferences.html#id88" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gale, 1989</a>]</span>): if <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(\alpha_0&gt;0\)</span> solve the TEP
+<p>The simple model has the following special property (Theorem 9.11. in Gale <span id="id13">[<a class="reference internal" href="zreferences.html#id89" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gale, 1989</a>]</span>): if <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(\alpha_0&gt;0\)</span> solve the TEP
 with <span class="math notranslate nohighlight">\((A,I_n)\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[
-x_0^T = \alpha_0 x_0^T A\hspace{1cm}\Leftrightarrow\hspace{1cm}x_0^T
-A=\left(\frac{1}{\alpha_0}\right)x_0^T
+x_0^\top = \alpha_0 x_0^\top A\hspace{1cm}\Leftrightarrow\hspace{1cm}x_0^\top
+A=\left(\frac{1}{\alpha_0}\right)x_0^\top
 \]</div>
 <p>The latter shows that <span class="math notranslate nohighlight">\(1/\alpha_0\)</span> is a positive eigenvalue of
 <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(x_0\)</span> is the corresponding non-negative left
 eigenvector.</p>
-<p>The classic result of <strong>Perron and Frobenius</strong> implies
+<p>The classic result of <em>Perron and Frobenius</em> implies
 that a non-negative matrix  has a non-negative
 eigenvalue-eigenvector pair.</p>
 <p>Moreover, if <span class="math notranslate nohighlight">\(A\)</span> is irreducible, then

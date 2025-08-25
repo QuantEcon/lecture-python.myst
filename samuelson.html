@@ -291,7 +291,7 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.9.0)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
@@ -310,7 +310,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 <section id="overview">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">37.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>This lecture creates non-stochastic and stochastic versions of Paul Samuelson’s celebrated multiplier accelerator model <span id="id1">[<a class="reference internal" href="zreferences.html#id95" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Samuelson, 1939</a>]</span>.</p>
+<p>This lecture creates non-stochastic and stochastic versions of Paul Samuelson’s celebrated multiplier accelerator model <span id="id1">[<a class="reference internal" href="zreferences.html#id96" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Samuelson, 1939</a>]</span>.</p>
 <p>In doing so, we extend the example of the Solow model class in <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html">our second OOP lecture</a>.</p>
 <p>Our objectives are to</p>
 <ul class="simple">
@@ -358,7 +358,7 @@ times the difference in output between period <span class="math notranslate nohi
 <p>Consumption plus investment plus government purchases
 constitute <em>aggregate demand,</em> which automatically calls forth an
 equal amount of <em>aggregate supply</em>.</p>
-<p>(To read about linear difference equations see <a class="reference external" href="https://en.wikipedia.org/wiki/Linear_difference_equation">here</a> or chapter IX of <span id="id2">[<a class="reference internal" href="zreferences.html#id217" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sargent, 1987</a>]</span>.)</p>
+<p>(To read about linear difference equations see <a class="reference external" href="https://en.wikipedia.org/wiki/Linear_difference_equation">here</a> or chapter IX of <span id="id2">[<a class="reference internal" href="zreferences.html#id218" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sargent, 1987</a>]</span>.)</p>
 <p>Samuelson used the model to analyze how particular values of the
 marginal propensity to consume and the accelerator coefficient might
 give rise to transient <em>business cycles</em> in national output.</p>
@@ -376,7 +376,7 @@ identity representing random fluctuations in aggregate demand.</p>
 <em>stochastic linear difference equation</em> that, with appropriate parameter values,
 gives rise to recurrent irregular business cycles.</p>
 <p>(To read about stochastic linear difference equations see chapter XI of
-<span id="id3">[<a class="reference internal" href="zreferences.html#id217" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sargent, 1987</a>]</span>.)</p>
+<span id="id3">[<a class="reference internal" href="zreferences.html#id218" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sargent, 1987</a>]</span>.)</p>
 </section>
 </section>
 <section id="details">
@@ -548,7 +548,7 @@ oscillations with <strong>period</strong> <span class="math notranslate nohighli
 \frac{2 \pi}{\omega}\)</span> and <strong>damping factor</strong> <span class="math notranslate nohighlight">\(r\)</span>.</p>
 <p>We say that <span class="math notranslate nohighlight">\(\check p\)</span> is the <strong>period</strong> because in that amount of time the cosine wave <span class="math notranslate nohighlight">\(\cos(\omega t + \theta)\)</span> goes through exactly one complete cycles.</p>
 <p>(Draw a cosine function to convince yourself of this please)</p>
-<p><strong>Remark:</strong> Following <span id="id4">[<a class="reference internal" href="zreferences.html#id95" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Samuelson, 1939</a>]</span>, we want to choose the parameters
+<p><strong>Remark:</strong> Following <span id="id4">[<a class="reference internal" href="zreferences.html#id96" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Samuelson, 1939</a>]</span>, we want to choose the parameters
 <span class="math notranslate nohighlight">\(a, b\)</span> of the model so that the absolute values (of the possibly
 complex) roots <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2\)</span> of the characteristic
 polynomial are both strictly less than one:</p>
@@ -594,7 +594,7 @@ A = \begin{bmatrix} 1 &amp; 0 &amp; 0 \cr
 </section>
 <section id="implementation">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">37.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
-<p>We’ll start by drawing an informative graph from page 189 of <span id="id5">[<a class="reference internal" href="zreferences.html#id217" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sargent, 1987</a>]</span></p>
+<p>We’ll start by drawing an informative graph from page 189 of <span id="id5">[<a class="reference internal" href="zreferences.html#id218" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sargent, 1987</a>]</span></p>
 <div class="cell tag_output_scroll docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">param_plot</span><span class="p">():</span>
@@ -1134,7 +1134,7 @@ Roots are real
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/391f587f7f5eff475d0527717b22d385036aa389309347879795545b0fba4e01.png" src="_images/391f587f7f5eff475d0527717b22d385036aa389309347879795545b0fba4e01.png" />
+<img alt="_images/02de2fcc2ef9d5ddfddba2f6ba2ea6758277dac68301d783737c964afa4443aa.png" src="_images/02de2fcc2ef9d5ddfddba2f6ba2ea6758277dac68301d783737c964afa4443aa.png" />
 </div>
 </div>
 <p>Let’s do a simulation in which there are shocks and the characteristic polynomial has complex roots</p>
@@ -1166,7 +1166,7 @@ Roots are complex
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/2e4ee796afd79c6ce375f32ae15594de7c7d8a8be1c675efc5af00c5b7913034.png" src="_images/2e4ee796afd79c6ce375f32ae15594de7c7d8a8be1c675efc5af00c5b7913034.png" />
+<img alt="_images/c0cbc07d752acca9d4d752fcad51cb73587c8bc62b3997e99fc8700054b51e09.png" src="_images/c0cbc07d752acca9d4d752fcad51cb73587c8bc62b3997e99fc8700054b51e09.png" />
 </div>
 </div>
 </section>
@@ -1275,7 +1275,7 @@ Roots are real
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/d64dd6c8d3a2071aae235a05544b7cdcddef4526f52119e322579f2f5d6b17b0.png" src="_images/d64dd6c8d3a2071aae235a05544b7cdcddef4526f52119e322579f2f5d6b17b0.png" />
+<img alt="_images/73211982d4863499fb5bcbbba6bd54a8d1b7562d4e1715041d413c62482fb0af.png" src="_images/73211982d4863499fb5bcbbba6bd54a8d1b7562d4e1715041d413c62482fb0af.png" />
 </div>
 </div>
 <p>We can also see the response to a one time jump in government expenditures</p>
@@ -1292,7 +1292,7 @@ Roots are real
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/b8c39ecad52b870e59ec99a78440df93cb34c685c7a0c8239ff1db5610fb5863.png" src="_images/b8c39ecad52b870e59ec99a78440df93cb34c685c7a0c8239ff1db5610fb5863.png" />
+<img alt="_images/0e1d1bdc4283370cfed8582a5fd7d7584d9cb59fc3ad1cbc754d5ed0a5975848.png" src="_images/0e1d1bdc4283370cfed8582a5fd7d7584d9cb59fc3ad1cbc754d5ed0a5975848.png" />
 </div>
 </div>
 </section>
@@ -1529,7 +1529,7 @@ Permanent government spending shock at t = 20
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b15e4c542d6fb3a0172c3d3e3bee09c71a7f8ac3e4d20f52732ed7515d1ec7ed.png" src="_images/b15e4c542d6fb3a0172c3d3e3bee09c71a7f8ac3e4d20f52732ed7515d1ec7ed.png" />
+<img alt="_images/f898e6330921c8749f50cccc30496d2591642c02c5cc85a25df3b89d3e057805.png" src="_images/f898e6330921c8749f50cccc30496d2591642c02c5cc85a25df3b89d3e057805.png" />
 </div>
 </div>
 </section>
@@ -1603,7 +1603,7 @@ much of the work that we have done from scratch above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/921bf35df776bbb656dde21a2ca17f9d0cc2850c282b7163af87001c325f3e98.png" src="_images/921bf35df776bbb656dde21a2ca17f9d0cc2850c282b7163af87001c325f3e98.png" />
+<img alt="_images/db45e1b04ebb9c53660d6cf5826a3d3538118885b1923f7d2406a346eff5d6f4.png" src="_images/db45e1b04ebb9c53660d6cf5826a3d3538118885b1923f7d2406a346eff5d6f4.png" />
 </div>
 </div>
 <section id="other-methods-in-the-linearstatespace-class">
@@ -1773,7 +1773,7 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d069d1d3a2469cd8a83ac669e36de723142f6a82d91fcff2d7282938fa66d1d2.png" src="_images/d069d1d3a2469cd8a83ac669e36de723142f6a82d91fcff2d7282938fa66d1d2.png" />
+<img alt="_images/8e9e00cc0e5b5638ce3197d45c36024fb829f851b3d4bef4f378c258eb0fb603.png" src="_images/8e9e00cc0e5b5638ce3197d45c36024fb829f851b3d4bef4f378c258eb0fb603.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1784,7 +1784,7 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ffe5ae9a425ef392dfa410d00d9aa4f38e9062361e44e68a198d2fa03dbc321c.png" src="_images/ffe5ae9a425ef392dfa410d00d9aa4f38e9062361e44e68a198d2fa03dbc321c.png" />
+<img alt="_images/23db35a86b8780f66327859ca8518106fef1b61152cbc5ba60113465c05bf1b2.png" src="_images/23db35a86b8780f66327859ca8518106fef1b61152cbc5ba60113465c05bf1b2.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1834,8 +1834,8 @@ accelerator</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/55529f79a6d1bc41ca9a378a812ea3dc14749da7371bcee8d6d25f4aed1f24aa.png" src="_images/55529f79a6d1bc41ca9a378a812ea3dc14749da7371bcee8d6d25f4aed1f24aa.png" />
-<img alt="_images/55529f79a6d1bc41ca9a378a812ea3dc14749da7371bcee8d6d25f4aed1f24aa.png" src="_images/55529f79a6d1bc41ca9a378a812ea3dc14749da7371bcee8d6d25f4aed1f24aa.png" />
+<img alt="_images/98a6e666a0a96d907d1a14ba902d2116fbc6221d71a8ec17f9ba286c3ea97a85.png" src="_images/98a6e666a0a96d907d1a14ba902d2116fbc6221d71a8ec17f9ba286c3ea97a85.png" />
+<img alt="_images/98a6e666a0a96d907d1a14ba902d2116fbc6221d71a8ec17f9ba286c3ea97a85.png" src="_images/98a6e666a0a96d907d1a14ba902d2116fbc6221d71a8ec17f9ba286c3ea97a85.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1852,8 +1852,8 @@ accelerator</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f9287914abbfb531b9f9eb5b369823776f7de3e3ee36b30ebe04ec0dcb00ea6b.png" src="_images/f9287914abbfb531b9f9eb5b369823776f7de3e3ee36b30ebe04ec0dcb00ea6b.png" />
-<img alt="_images/f9287914abbfb531b9f9eb5b369823776f7de3e3ee36b30ebe04ec0dcb00ea6b.png" src="_images/f9287914abbfb531b9f9eb5b369823776f7de3e3ee36b30ebe04ec0dcb00ea6b.png" />
+<img alt="_images/304e5756db694a5bc588284642c07cf82147bec0720a011bd29e5824bcc0337b.png" src="_images/304e5756db694a5bc588284642c07cf82147bec0720a011bd29e5824bcc0337b.png" />
+<img alt="_images/304e5756db694a5bc588284642c07cf82147bec0720a011bd29e5824bcc0337b.png" src="_images/304e5756db694a5bc588284642c07cf82147bec0720a011bd29e5824bcc0337b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1872,7 +1872,7 @@ accelerator</p></li>
 <h2><a class="toc-backref" href="#id16"><span class="section-number">37.9. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we wrote functions and classes to represent non-stochastic and
 stochastic versions of the Samuelson (1939) multiplier-accelerator model, described
-in <span id="id6">[<a class="reference internal" href="zreferences.html#id95" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Samuelson, 1939</a>]</span>.</p>
+in <span id="id6">[<a class="reference internal" href="zreferences.html#id96" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Samuelson, 1939</a>]</span>.</p>
 <p>We saw that different parameter values led to different output paths, which
 could either be stationary, explosive, or oscillating.</p>
 <p>We also were able to represent the model using the <a class="reference external" href="https://quantecon.org/quantecon-py">QuantEcon.py</a>

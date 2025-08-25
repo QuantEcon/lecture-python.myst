@@ -3,10 +3,12 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 (von_neumann_model)=
@@ -16,6 +18,7 @@ kernelspec:
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div>
+
 ```
 
 ```{index} single: python
@@ -46,7 +49,7 @@ following important tools:
 
 We'll begin with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve, linprog
@@ -57,11 +60,9 @@ np.set_printoptions(precision=2)
 
 The code below provides the `Neumann` class
 
-```{code-cell} python3
----
-tags: [collapse-20]
----
-class Neumann(object):
+```{code-cell} ipython3
+
+class Neumann:
 
     """
     This class describes the Generalized von Neumann growth model as it was
@@ -130,7 +131,7 @@ class Neumann(object):
           - number of activities     : {m}
 
         Assumptions:
-          - AI:  every column of B has a positive entry    : {AI}
+          - AI:  every column of B has a positive entry    : {AI} 
           - AII: every row of A has a positive entry       : {AII}
 
         """
@@ -326,25 +327,25 @@ We use the following notation.
 $\mathbf{0}$ denotes
 a vector of zeros.
 
-We call an $n$-vector  positive and write
+We call an $n$-vector **positive** and write
 $x\gg \mathbf{0}$ if $x_i>0$ for all $i=1,2,\dots,n$.
 
-We call a vector  non-negative and write $x\geq \mathbf{0}$ if $x_i\geq 0$ for
+We call a vector **non-negative** and write $x\geq \mathbf{0}$ if $x_i\geq 0$ for
 all $i=1,2,\dots,n$.
 
-We call a vector  semi-positive and written $x > \mathbf{0}$ if
+We call a vector **semi-positive** written $x > \mathbf{0}$ if
 $x\geq \mathbf{0}$ and $x\neq \mathbf{0}$.
 
 For two conformable vectors $x$ and $y$, $x\gg y$,
 $x\geq y$ and $x> y$ mean $x-y\gg \mathbf{0}$,
 $x-y \geq \mathbf{0}$, and $x-y > \mathbf{0}$, respectively.
 
-We let all vectors in this lecture be column vectors; $x^{T}$ denotes the
+We let all vectors in this lecture be column vectors; $x^\top$ denotes the
 transpose of $x$ (i.e., a row vector).
 
 Let $\iota_n$ denote a
 column vector composed of $n$ ones, i.e.
-$\iota_n = (1,1,\dots,1)^T$.
+$\iota_n = (1,1,\dots,1)^\top$.
 
 Let $e^i$ denote a vector (of
 arbitrary size) containing zeros except for the $i$ th position
@@ -372,31 +373,33 @@ an economy.
 
 Two key assumptions restrict economy $(A,B)$:
 
-- **Assumption I:** (every good that is consumed is also produced)
+````{prf:assumption} every good that is consumed is also produced
+:label: assumption1
 
-  $$
+```{math}
   b_{.,j} > \mathbf{0}\hspace{5mm}\forall j=1,2,\dots,n
-  $$
+```
+````
 
-- **Assumption II:** (no free lunch)
-
-  $$
+````{prf:assumption} no free lunch
+:label: assumption2
+```{math}
   a_{i,.} > \mathbf{0}\hspace{5mm}\forall i=1,2,\dots,m
-  $$
+```
+````
 
-
-A semi-positive  *intensity* $m$-vector  $x$ denotes  levels at which
+A semi-positive *intensity* $m$-vector $x$ denotes levels at which
 activities are operated.
 
 Therefore,
 
-- vector $x^TA$ gives the total amount of *goods used in
+- vector $x^\top A$ gives the total amount of *goods used in
   production*
-- vector $x^TB$ gives *total outputs*
+- vector $x^\top B$ gives *total outputs*
 
 An economy $(A,B)$ is said to be *productive*, if there exists a
 non-negative intensity vector $x \geq 0$ such
-that $x^T B > x^TA$.
+that $x^\top B > x^\top A$.
 
 The semi-positive $n$-vector $p$ contains prices assigned to
 the $n$ goods.
@@ -406,23 +409,28 @@ The $p$ vector implies *cost* and *revenue* vectors
 - the vector $Ap$ tells *costs* of the vector of activities
 - the vector $Bp$ tells *revenues* from the vector of activities
 
-Satisfaction or a property of an input-output pair $(A,B)$ called *irreducibility*
+Satisfaction of a property of an input-output pair $(A,B)$ called *irreducibility*
 (or indecomposability) determines whether an economy can be decomposed
-into multiple     "sub-economies".
+into multiple "sub-economies".
 
-**Definition:** For an economy $(A,B)$, the set of goods
-$S\subset \{1,2,\dots,n\}$ is called an *independent subset* if
+```{prf:definition}
+For an economy $(A,B)$, the set of goods
+$S\subset \{1,2,\dots,n\}$ is called an **independent subset** if
 it is possible to produce every good in $S$ without consuming
-goods from outside $S$. Formally, the set $S$ is independent if
+goods from outside $S$.
+
+Formally, the set $S$ is independent if
 $\exists T\subset \{1,2,\dots,m\}$ (a subset of activities) such
-that $a_{i,j}=0$ $\forall i\in T$ and $j\in S^c$ and
-for all $j\in S$, $\exists i\in T$ for which  $b_{i,j}>0$.
+that $a_{i,j}=0$, $\forall i\in T$ and $j\in S^c$ and
+for all $j\in S$, $\exists i\in T$ for which $b_{i,j}>0$.
+
 The economy is **irreducible** if there are no proper independent
 subsets.
+```
 
-We study two examples, both in  Chapter 9.6 of Gale {cite}`gale1989theory`
+We study two examples, both in Chapter 9.6 of Gale {cite}`gale1989theory`
 
-```{code-cell} python3
+```{code-cell} ipython3
 # (1) Irreducible (A, B) example: α_0 = β_0
 A1 = np.array([[0, 1, 0, 0],
                [1, 0, 0, 1],
@@ -449,14 +457,14 @@ B2 = np.array([[1, 0, 0, 1, 0, 0],
 The following code sets up our first Neumann economy or `Neumann`
 instance
 
-```{code-cell} python3
+```{code-cell} ipython3
 n1 = Neumann(A1, B1)
 n1
 ```
 
 Here is a second instance of a Neumann economy
 
-```{code-cell} python3
+```{code-cell} ipython3
 n2 = Neumann(A2, B2)
 n2
 ```
@@ -481,14 +489,14 @@ production.
 
 We assume that production (consumption of inputs) takes place in period
 $t$, while the consequent output materializes in period
-$t+1$, i.e., consumption of $x_{t}^TA$ in period $t$
-results in $x^T_{t}B$ amounts of output in period $t+1$.
+$t+1$, i.e., consumption of $x_{t}^\top A$ in period $t$
+results in $x^\top_{t}B$ amounts of output in period $t+1$.
 
 These timing conventions imply the following feasibility condition:
 
 $$
 \begin{aligned}
-x^T_{t}B \geq x^T_{t+1} A \hspace{1cm}\forall t\geq 1
+x^\top_{t}B \geq x^\top_{t+1} A \hspace{1cm}\forall t\geq 1
 \end{aligned}
 $$
 
@@ -505,7 +513,7 @@ We follow John von Neumann in studying “balanced growth”.
 Let $./$ denote an elementwise division of one vector by another and let
 $\alpha >0$ be a scalar.
 
-Then *balanced growth* is a situation in which
+Then **balanced growth** is a situation in which
 
 $$
 x_{t+1}./x_t = \alpha , \quad \forall t \geq 0
@@ -515,7 +523,7 @@ With balanced growth, the law of motion of $x$ is evidently $x_{t+1}=\alpha x_t$
 and so we can rewrite the feasibility constraint as
 
 $$
-x^T_{t}B \geq \alpha x^T_t A \hspace{1cm}\forall t
+x^\top_{t}B \geq \alpha x^\top_t A \hspace{1cm}\forall t
 $$
 
 In the same spirit, define $\beta\in\mathbb{R}$ as the **interest
@@ -546,18 +554,20 @@ Two problems are connected by a remarkable dual
 relationship between  technological and valuation characteristics of
 the economy:
 
-**Definition:** The *technological expansion problem* (TEP) for the economy
+```{prf:definition}
+The **technological expansion problem** (TEP) for the economy
 $(A,B)$ is to find a semi-positive $m$-vector $x>0$
 and a number $\alpha\in\mathbb{R}$ that satisfy
 
 $$
 \begin{aligned}
     &\max_{\alpha} \hspace{2mm} \alpha\\
-    &\text{s.t. }\hspace{2mm}x^T B \geq \alpha x^T A
+    &\text{s.t. }\hspace{2mm}x^\top B \geq \alpha x^\top A
     \end{aligned}
 $$
+```
 
-Theorem 9.3 of David Gale’s book {cite}`gale1989theory` asserts that if Assumptions I and II are
+Theorem 9.3 of David Gale’s book {cite}`gale1989theory` asserts that if {prf:ref}`assumption1` and {prf:ref}`assumption2` are
 both satisfied, then a maximum value of $\alpha$ exists and that it is
 positive.
 
@@ -565,7 +575,8 @@ The maximal value is called the *technological expansion rate* and is denoted
 by $\alpha_0$. The associated intensity vector $x_0$ is the
 *optimal intensity vector*.
 
-**Definition:** The economic expansion problem (EEP) for
+```{prf:definition}
+The economic expansion problem (EEP) for
 $(A,B)$ is to find a semi-positive $n$-vector $p>0$
 and a number $\beta\in\mathbb{R}$ that satisfy
 
@@ -573,10 +584,11 @@ $$
 \begin{aligned}
     &\min_{\beta} \hspace{2mm} \beta\\
     &\text{s.t. }\hspace{2mm}Bp \leq \beta Ap
-    \end{aligned}
+\end{aligned}
 $$
+```
 
-Assumptions I and II imply existence of a minimum value
+{prf:ref}`assumption1` and {prf:ref}`assumption2` imply existence of a minimum value
 $\beta_0>0$ called the *economic expansion rate*.
 
 The corresponding price vector $p_0$ is the *optimal price vector*.
@@ -586,42 +598,52 @@ and the *economical expansion problem* are both linearly homogeneous,
 the optimality of $x_0$ and $p_0$ are defined only up to a
 positive scale factor.
 
-For convenience (and to emphasize a close connection to zero-sum games),  we normalize both vectors
+For convenience (and to emphasize a close connection to zero-sum games), we normalize both vectors
 $x_0$ and $p_0$ to have unit length.
 
 A standard duality argument (see Lemma 9.4. in (Gale, 1960) {cite}`gale1989theory`) implies
-that under Assumptions I and II, $\beta_0\leq \alpha_0$.
+that under {prf:ref}`assumption1` and {prf:ref}`assumption2`, $\beta_0\leq \alpha_0$.
 
 But to deduce that $\beta_0\geq \alpha_0$,
-Assumptions I and II are not sufficient.
+{prf:ref}`assumption1` and {prf:ref}`assumption2` are not sufficient.
 
 Therefore, von Neumann {cite}`von1937uber`  went on to prove the following remarkable
 “duality” result that connects TEP and EEP.
 
-**Theorem 1 (von Neumann):** If the economy $(A,B)$ satisfies
-Assumptions I and II, then there exist
+```{prf:theorem} von Neumann
+:label: theorem1
+
+If the economy $(A,B)$ satisfies
+{prf:ref}`assumption1` and {prf:ref}`assumption2`, then there exist
 $\left(\gamma^{*}, x_0, p_0\right)$, where
 $\gamma^{*}\in[\beta_0, \alpha_0]\subset\mathbb{R}$, $x_0>0$
 is an $m$-vector, $p_0>0$ is an $n$-vector, and the
-following arbitrage true
+following arbitrage conditions hold
 
 $$
 \begin{aligned}
-x_0^T B &\geq \gamma^{* } x_0^T A \\
+x_0^\top B &\geq \gamma^{* } x_0^\top A \\
 Bp_0 &\leq \gamma^{* } Ap_0 \\
-x_0^T\left(B-\gamma^{* } A\right)p_0 &= 0
+x_0^\top \left(B-\gamma^{* } A\right)p_0 &= 0
 \end{aligned}
 $$
+```
 
-```{note}
-*Proof (Sketch):* Assumption I and II imply that there exist $(\alpha_0,
-x_0)$ and $(\beta_0, p_0)$ that solve the TEP and EEP, respectively. If
-$\gamma^*>\alpha_0$, then by definition of $\alpha_0$, there cannot
-exist a semi-positive $x$ that satisfies $x^T B \geq \gamma^{* }
-x^T A$.  Similarly, if $\gamma^*<\beta_0$, there is no semi-positive
+```{prf:proof} (Sketch)
+
+{prf:ref}`assumption1` and {prf:ref}`assumption2` imply that there exist $(\alpha_0,
+x_0)$ and $(\beta_0, p_0)$ that solve the TEP and EEP, respectively. 
+
+If $\gamma^*>\alpha_0$, then by definition of $\alpha_0$, there cannot
+exist a semi-positive $x$ that satisfies $x^\top B \geq \gamma^{* }
+x^\top A$.
+
+Similarly, if $\gamma^*<\beta_0$, there is no semi-positive
 $p$ for which $Bp \leq \gamma^{* } Ap$. Let $\gamma^{*
-}\in[\beta_0, \alpha_0]$, then $x_0^T B \geq \alpha_0 x_0^T A \geq
-\gamma^{* } x_0^T A$.  Moreover, $Bp_0\leq \beta_0 A p_0\leq \gamma^* A
+}\in[\beta_0, \alpha_0]$, then $x_0^\top B \geq \alpha_0 x_0^\top A \geq
+\gamma^{* } x_0^\top A$.
+
+Moreover, $Bp_0\leq \beta_0 A p_0\leq \gamma^* A
 p_0$. These two inequalities imply $x_0\left(B - \gamma^{* } A\right)p_0
 = 0$.
 ```
@@ -633,27 +655,27 @@ We have already encountered and
 discussed the first two inequalities that represent feasibility and
 no-profit conditions.
 
-Moreover, the equality $x_0^T\left(B-\gamma^{* } A\right)p_0 = 0$ concisely expresses the
+Moreover, the equality $x_0^\top \left(B-\gamma^{* } A\right)p_0 = 0$ concisely expresses the
 requirements that if any good grows at a rate larger than
 $\gamma^{*}$ (i.e., if it is *oversupplied*), then its price
 must be zero; and that if any activity provides negative profit, it must
 be unused.
 
-Therefore, the conditions stated in Theorem I ex encode all equilibrium conditions.
+Therefore, the conditions stated in {prf:ref}`theorem1` encode all equilibrium conditions.
 
-So  Theorem I essentially states that under Assumptions I and II there
+So {prf:ref}`theorem1` essentially states that under {prf:ref}`assumption1` and {prf:ref}`assumption2` there 
 always exists an equilibrium $\left(\gamma^{*}, x_0, p_0\right)$
 with balanced growth.
 
-Note that Theorem I is silent about uniqueness of the equilibrium. In
-fact, it does not rule out (trivial) cases with $x_0^TBp_0 = 0$ so
+Note that {prf:ref}`theorem1` is silent about uniqueness of the equilibrium. In
+fact, it does not rule out (trivial) cases with $x_0^\top Bp_0 = 0$ so
 that nothing of value is produced.
 
 To exclude such uninteresting cases,
-Kemeny, Morgenstern and Thomspson {cite}`kemeny1956generalization` add an extra requirement
+Kemeny, Morgenstern and Thompson {cite}`kemeny1956generalization` add an extra requirement
 
 $$
-x^T_0 B p_0 > 0
+x^\top_0 B p_0 > 0
 $$
 
 and call the associated equilibria *economic solutions*.
@@ -667,7 +689,8 @@ significantly reduces the number of (relevant) solutions.
 To compute the equilibrium $(\gamma^{*}, x_0, p_0)$, we follow the
 algorithm proposed by Hamburger, Thompson and Weil (1967), building on
 the key insight that an equilibrium (with balanced growth) can be
-solves a particular two-player zero-sum game.
+solved as a particular two-player zero-sum game.
+
 First, we introduce some notation.
 
 Consider the $m\times n$ matrix $C$ as a payoff matrix,
@@ -675,29 +698,31 @@ with the entries representing payoffs from the **minimizing** column
 player to the **maximizing** row player and assume that the players can
 use mixed strategies. Thus,
 
-* the  row player chooses the $m$-vector $x > \mathbf{0}$ subject to $\iota_m^T x = 1$
-* the column player chooses the $n$-vector $p > \mathbf{0}$ subject to $\iota_n^T p = 1$.
+* the row player chooses the $m$-vector $x > \mathbf{0}$ subject to $\iota_m^\top x = 1$
+* the column player chooses the $n$-vector $p > \mathbf{0}$ subject to $\iota_n^\top p = 1$.
 
-**Definition:** The $m\times n$ matrix game $C$ has the
+```{prf:definition}
+The $m\times n$ matrix game $C$ has the
 *solution* $(x^*, p^*, V(C))$ in mixed strategies if
 
 $$
 \begin{aligned}
-(x^* )^T C e^j \geq V(C)\quad \forall j\in\{1, \dots, n\}\quad \quad
-\text{and}\quad\quad (e^i)^T C p^* \leq V(C)\quad \forall i\in\{1, \dots, m\}
+(x^* )^\top C e^j \geq V(C)\quad \forall j\in\{1, \dots, n\}\quad \quad
+\text{and}\quad\quad (e^i)^\top C p^* \leq V(C)\quad \forall i\in\{1, \dots, m\}
 \end{aligned}
 $$
 
-The number $V(C)$ is called the *value* of the game.
+The number $V(C)$ is called the **value** of the game.
+```
 
 From the above definition, it is clear that the value $V(C)$ has
 two alternative interpretations:
 
 * by playing the appropriate mixed
-  stategy, the maximizing player can assure himself at least $V(C)$
+  strategy, the maximizing player can assure himself at least $V(C)$
   (no matter what the column player chooses)
 * by playing the appropriate
-  mixed stategy, the minimizing player can make sure that the maximizing
+  mixed strategy, the minimizing player can make sure that the maximizing
   player will not get more than $V(C)$ (irrespective of what is the
   maximizing player’s choice)
 
@@ -708,18 +733,17 @@ zero-sum game.
 Moreover, von Neumann’s Minmax Theorem {cite}`neumann1928theorie` implies that
 
 $$
-V(C) = \max_x \min_p \hspace{2mm} x^T C p = \min_p \max_x \hspace{2mm} x^T C p = (x^*)^T C p^*
+V(C) = \max_x \min_p \hspace{2mm} x^\top C p = \min_p \max_x \hspace{2mm} x^\top C p = (x^*)^\top C p^*
 $$
 
 ### Connection with Linear Programming (LP)
 
-Nash equilibria of a finite two-player zero-sum game solve  a linear programming problem.
+Nash equilibria of a finite two-player zero-sum game solve a linear programming problem.
 
-To see this, we introduce
-the following notation
+To see this, we introduce the following notation
 
-* For a fixed $x$, let $v$ be the value of the minimization problem: $v \equiv \min_p x^T C p = \min_j x^T C e^j$
-* For a fixed $p$, let $u$ be the value of the maximization problem: $u \equiv \max_x x^T C p = \max_i (e^i)^T C p$
+* For a fixed $x$, let $v$ be the value of the minimization problem: $v \equiv \min_p x^\top C p = \min_j x^\top C e^j$
+* For a fixed $p$, let $u$ be the value of the maximization problem: $u \equiv \max_x x^\top C p = \max_i (e^i)^\top C p$
 
 Then the *max-min problem* (the game from the maximizing player’s point
 of view) can be written as the *primal* LP
@@ -727,9 +751,9 @@ of view) can be written as the *primal* LP
 $$
 \begin{aligned}
 V(C) = & \max \hspace{2mm} v \\
-\text{s.t. } \hspace{2mm} v \iota_n^T &\leq x^T C  \\
+\text{s.t. } \hspace{2mm} v \iota_n^\top &\leq x^\top C  \\
 x &\geq \mathbf{0} \\
-\iota_n^T x & = 1
+\iota_n^\top x & = 1
 \end{aligned}
 $$
 
@@ -741,34 +765,34 @@ $$
 V(C) = &\min \hspace{2mm} u \\
 \text{s.t. } \hspace{2mm}u \iota_m &\geq Cp  \\
 p &\geq \mathbf{0} \\
-\iota_m^T p & = 1
+\iota_m^\top p & = 1
 \end{aligned}
 $$
 
 Hamburger, Thompson and Weil {cite}`hamburger1967computation` view the input-output pair of the
 economy as payoff matrices of two-player zero-sum games.
 
-Using this interpretation, they restate Assumption I and II as follows
+Using this interpretation, they restate {prf:ref}`assumption1` and {prf:ref}`assumption2` as follows
 
 $$
 V(-A) < 0\quad\quad \text{and}\quad\quad V(B)>0
 $$
 
-```{note}
-*Proof (Sketch)*:
+```{prf:proof} (Sketch)
 * $\Rightarrow$ $V(B)>0$ implies
-$x_0^T B \gg \mathbf{0}$, where $x_0$ is a maximizing
+$x_0^\top B \gg \mathbf{0}$, where $x_0$ is a maximizing
 vector. Since $B$ is non-negative, this requires that each
 column of $B$ has at least one positive entry, which is
-Assumption I.
-* $\Leftarrow$ From Assumption I and the fact
+{prf:ref}`assumption1`.
+
+* $\Leftarrow$ From {prf:ref}`assumption1` and the fact
 that $p>\mathbf{0}$, it follows that $Bp > \mathbf{0}$.
 This implies that the maximizing player can always choose $x$
-so that $x^TBp>0$ so that it must be the case
+so that $x^\top Bp>0$ so that it must be the case
 that $V(B)>0$.
 ```
 
-In order to (re)state Theorem I in terms of a particular two-player
+In order to (re)state {prf:ref}`theorem1` in terms of a particular two-player
 zero-sum game, we define a matrix for $\gamma\in\mathbb{R}$
 
 $$
@@ -780,18 +804,20 @@ calculating the solution of the game implies
 
 - If $\gamma > \alpha_0$, then for all $x>0$, there
   $\exists j\in\{1, \dots, n\}$, s.t.
-  $[x^T M(\gamma)]_j < 0$ implying
+  $[x^\top M(\gamma)]_j < 0$ implying
   that $V(M(\gamma)) < 0$.
+
 - If $\gamma < \beta_0$, then for all $p>0$, there
   $\exists i\in\{1, \dots, m\}$, s.t.
   $[M(\gamma)p]_i > 0$ implying that $V(M(\gamma)) > 0$.
-- If $\gamma \in \{\beta_0, \alpha_0\}$, then (by Theorem I) the
+  
+- If $\gamma \in \{\beta_0, \alpha_0\}$, then (by {prf:ref}`theorem1`) the
   optimal intensity and price vectors $x_0$ and $p_0$
   satisfy
 
 $$
 \begin{aligned}
-x_0^T M(\gamma) \geq \mathbf{0}^T \quad \quad \text{and}\quad\quad M(\gamma) p_0 \leq \mathbf{0}
+x_0^\top M(\gamma) \geq \mathbf{0}^\top \quad \quad \text{and}\quad\quad M(\gamma) p_0 \leq \mathbf{0}
 \end{aligned}
 $$
 
@@ -808,15 +834,17 @@ $p''$ is optimal for the minimizing player in $M(\gamma'')$
 where $\gamma''\in(\beta_0, \gamma')$, then $(x', p'', 0)$
 is a solution for $M(\gamma)$ $\forall \gamma\in (\gamma'', \gamma')$.
 
-*Proof (Sketch):* If $x'$ is optimal for a maximizing player in
-game $M(\gamma')$, then $(x')^T M(\gamma')\geq \mathbf{0}^T$ and so for all $\gamma<\gamma'$.
+```{prf:proof} (Sketch)
+If $x'$ is optimal for a maximizing player in
+game $M(\gamma')$, then $(x')^\top M(\gamma')\geq \mathbf{0}^\top$ and so for all $\gamma<\gamma'$.
+```
 
 $$
-(x')^T M(\gamma) = (x')^T M(\gamma') + (x')^T(\gamma' - \gamma)A \geq \mathbf{0}^T
+(x')^\top M(\gamma) = (x')^\top M(\gamma') + (x')^\top(\gamma' - \gamma)A \geq \mathbf{0}^\top
 $$
 
 hence $V(M(\gamma))\geq 0$. If $p''$ is optimal for a
-minimizing player in game $M(\gamma'')$, then $M(\gamma)p \leq \mathbf{0}$
+minimizing player in game $M(\gamma'')$, then $M(\gamma'')p'' \leq \mathbf{0}$
 and so for all $\gamma''<\gamma$
 
 $$
@@ -848,7 +876,7 @@ First, notice that we can easily find trivial upper and lower bounds for
 $\alpha_0$ and $\beta_0$.
 
 * TEP requires that
-$x^T(B-\alpha A)\geq \mathbf{0}^T$ and $x > \mathbf{0}$, so
+$x^\top (B-\alpha A)\geq \mathbf{0}^\top$ and $x > \mathbf{0}$, so
 if $\alpha$ is so large that
 $\max_i\{[(B-\alpha A)\iota_n]_i\} < 0$, then TEP ceases to have a
 solution.
@@ -858,13 +886,13 @@ solves $\max_i\{[(B-\alpha^{*} A)\iota_n]_i\} = 0$.
 
 * Similar to
 the upper bound, if $\beta$ is so low that
-$\min_j\{[\iota^T_m(B-\beta A)]_j\}>0$, then the EEP has no
+$\min_j\{[\iota^\top_m(B-\beta A)]_j\}>0$, then the EEP has no
 solution and so we can define **``LB``** as the $\beta^{*}$ that
-solves $\min_j\{[\iota^T_m(B-\beta^{*} A)]_j\}=0$.
+solves $\min_j\{[\iota^\top_m(B-\beta^{*} A)]_j\}=0$.
 
 The *bounds* method calculates these trivial bounds for us
 
-```{code-cell} python3
+```{code-cell} ipython3
 n1.bounds()
 ```
 
@@ -880,14 +908,16 @@ Compute $\alpha_0$ and $\beta_0$
     1. If $V(M(\gamma)) \geq 0$, then set $LB = \gamma$,
        otherwise let $UB = \gamma$.
     1. Iterate on 1. and 2. until $|UB - LB| < \epsilon$.
+
 - Finding $\beta_0$
     1. Fix $\gamma = \frac{UB + LB}{2}$ and compute the solution
-       of the two-player zero-sum game associated.
+       of the two-player zero-sum game associated
        with $M(\gamma)$. We can use either the primal or the dual
        LP problem.
     1. If $V(M(\gamma)) > 0$, then set $LB = \gamma$,
        otherwise let $UB = \gamma$.
     1. Iterate on 1. and 2. until $|UB - LB| < \epsilon$.
+
 - *Existence*: Since $V(M(LB))>0$ and $V(M(UB))<0$ and
   $V(M(\cdot))$ is a continuous, nonincreasing function, there is
   at least one $\gamma\in[LB, UB]$, s.t. $V(M(\gamma))=0$.
@@ -895,7 +925,7 @@ Compute $\alpha_0$ and $\beta_0$
 The *zerosum* method calculates the value and optimal strategies
 associated with a given $\gamma$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 γ = 2
 
 print(f'Value of the game with γ = {γ}')
@@ -906,7 +936,7 @@ print('Price vector (from the dual)')
 print(n1.zerosum(γ=γ, dual=True)[1])
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 numb_grid = 100
 γ_grid = np.linspace(0.4, 2.1, numb_grid)
 
@@ -932,7 +962,7 @@ plt.show()
 The *expansion* method implements the bisection algorithm for
 $\alpha_0$ (and uses the primal LP problem for $x_0$)
 
-```{code-cell} python3
+```{code-cell} ipython3
 α_0, x, p = n1.expansion()
 print(f'α_0 = {α_0}')
 print(f'x_0 = {x}')
@@ -942,7 +972,7 @@ print(f'The corresponding p from the dual = {p}')
 The *interest* method implements the bisection algorithm for
 $\beta_0$ (and uses the dual LP problem for $p_0$)
 
-```{code-cell} python3
+```{code-cell} ipython3
 β_0, x, p = n1.interest()
 print(f'β_0 = {β_0}')
 print(f'p_0 = {p}')
@@ -962,14 +992,14 @@ As an illustration, compute first the maximal and minimal roots of
 $V(M(\cdot))$ for our Example 2 that has a reducible
 input-output pair $(A, B)$
 
-```{code-cell} python3
+```{code-cell} ipython3
 α_0, x, p = n2.expansion()
 print(f'α_0 = {α_0}')
 print(f'x_0 = {x}')
 print(f'The corresponding p from the dual = {p}')
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 β_0, x, p = n2.interest()
 print(f'β_0 = {β_0}')
 print(f'p_0 = {p}')
@@ -982,11 +1012,11 @@ $\gamma^*$ that make the value of the game
 with $M(\gamma^*)$ zero. (see the figure above).
 
 Indeed, although the von Neumann theorem assures existence of the
-equilibrium, Assumptions I and II are not sufficient for uniqueness.
+equilibrium, {prf:ref}`assumption1` and {prf:ref}`assumption2` are not sufficient for uniqueness.
 Nonetheless, Kemeny et al. (1967) show that there are at most finitely
 many economic solutions, meaning that there are only finitely many
 $\gamma^*$ that satisfy $V(M(\gamma^*)) = 0$ and
-$x_0^TBp_0 > 0$ and that for each such $\gamma^*_i$, there
+$x_0^\top Bp_0 > 0$ and that for each such $\gamma^*_i$, there
 is a self-contained part of the economy (a sub-economy) that in
 equilibrium can expand independently with the expansion
 coefficient $\gamma^*_i$.
@@ -995,8 +1025,12 @@ The following theorem (see Theorem 9.10. in Gale {cite}`gale1989theory`) asserts
 imposing irreducibility is sufficient for uniqueness of
 $(\gamma^*, x_0, p_0)$.
 
-**Theorem II:** Adopt the conditions of Theorem 1. If the economy
+```{prf:theorem}
+:label: theorem2
+
+Adopt the conditions of {prf:ref}`theorem1`. If the economy
 $(A,B)$ is irreducible, then $\gamma^*=\alpha_0=\beta_0$.
+```
 
 ### A Special Case
 
@@ -1004,11 +1038,13 @@ There is a special $(A,B)$ that allows us to simplify the solution
 method significantly by invoking the powerful Perron-Frobenius theorem
 for non-negative matrices.
 
-**Definition:** We call an economy *simple* if it satisfies
+```{prf:definition}
+We call an economy *simple* if it satisfies
 
 * $n=m$
 * Each activity produces exactly one good
 * Each good is produced by one and only one activity.
+```
 
 These assumptions imply that $B=I_n$, i.e., that $B$ can be
 written as an identity matrix (possibly after reshuffling its rows and
@@ -1018,15 +1054,15 @@ The simple model has the following special property (Theorem 9.11. in Gale {cite
 with $(A,I_n)$, then
 
 $$
-x_0^T = \alpha_0 x_0^T A\hspace{1cm}\Leftrightarrow\hspace{1cm}x_0^T
-A=\left(\frac{1}{\alpha_0}\right)x_0^T
+x_0^\top = \alpha_0 x_0^\top A\hspace{1cm}\Leftrightarrow\hspace{1cm}x_0^\top
+A=\left(\frac{1}{\alpha_0}\right)x_0^\top
 $$
 
 The latter shows that $1/\alpha_0$ is a positive eigenvalue of
 $A$ and $x_0$ is the corresponding non-negative left
 eigenvector.
 
-The classic result of **Perron and Frobenius** implies
+The classic result of *Perron and Frobenius* implies
 that a non-negative matrix  has a non-negative
 eigenvalue-eigenvector pair.
 
