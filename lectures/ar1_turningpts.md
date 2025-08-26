@@ -48,6 +48,15 @@ import pymc as pmc
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# jax
+import jax.random as random
+import jax.numpy as jnp
+
+# numpyro
+import numpyro
+import numpyro.distributions as dist
+from numpyro.infer import MCMC, NUTS
+
 sns.set_style('white')
 colors = sns.color_palette()
 
@@ -91,12 +100,16 @@ We form this predictive distribution by integrating {eq}`ar1-tp-eq3` with respec
 that conditions on an observed history $y^t = \{y_s\}_{s=0}^t$:
 
 $$ 
-f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^t ) d \rho d \sigma
+\begin{aligned}
+f(y_{t+j} | y^t)  
+= \int f(y_{t+j} | y^t, \rho, \sigma) \pi_t(\rho,\sigma | y^t ) d \rho d \sigma
+= \int f(y_{t+j} | y_t, \rho, \sigma) \pi_t(\rho,\sigma | y^t ) d \rho d \sigma
+\end{aligned}
 $$ (ar1-tp-eq4)
 
-Predictive distribution {eq}`ar1-tp-eq3` assumes that parameters $(\rho,\sigma)$ are known.
+Predictive distribution {eq}`ar1-tp-eq3` assumes that parameters $(\rho,\sigma)$ are known. 
 
-Predictive distribution {eq}`ar1-tp-eq4` assumes that parameters $(\rho,\sigma)$ are uncertain, but have known probability distribution $\pi_t(\rho,\sigma | y^t )$.
+Predictive distribution {eq}`ar1-tp-eq4` assumes that parameters $(\rho,\sigma)$ are uncertain, but have known probability distribution $\pi_t(\rho,\sigma | y^t )$. Notice the second equality follows that $\{y_t\}$ is a AR(1) process when $\(\rho, \sigma\)$ are given.  
 
 We also want to compute some  predictive distributions of "sample path statistics" that might  include, for example
 
@@ -123,8 +136,22 @@ we'll plot $.9$ and $.95$ coverage intervals using conditional distribution
 We'll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.  
 
 ```{code-cell} ipython3
-def AR1_simulate(rho, sigma, y0, T):
+class AR1(NamedTuple):
+    """Define a AR1 process
 
+    Parameters
+    ---------
+    rho: float
+        coefficient
+    sigma: float
+        standard error of the error term
+    """
+    rho:float
+    sigma:float
+
+
+def AR1_simulate(rho, sigma, y0, T):
+    """Generate a realization of the AR1 process given parameters and length"""
     # Allocate space and draw epsilons
     y = np.empty(T)
     eps = np.random.normal(0, sigma, T)
@@ -134,42 +161,63 @@ def AR1_simulate(rho, sigma, y0, T):
     for t in range(1, T):
         y[t] = rho * y[t-1] + eps[t]
         
-    return y
+    return jnp.asarray(y)
 
 
-def plot_initial_path(initial_path):
-    """
-    Plot the initial path and the preceding predictive densities
-    """
-    # Compute .9 confidence interval]
-    y0 = initial_path[-1]
-    center = np.array([rho**j * y0 for j in range(T1)])
-    vars = np.array([sigma**2 * (1 - rho**(2 * j)) / (1 - rho**2) for j in range(T1)])
-    y_bounds1_c95, y_bounds2_c95 = center + 1.96 * np.sqrt(vars), center - 1.96 * np.sqrt(vars)
-    y_bounds1_c90, y_bounds2_c90 = center + 1.65 * np.sqrt(vars), center - 1.65 * np.sqrt(vars)
+def plot_initial_path(ar1, initial_path, predict_length):
+    """Plot the initial path and the preceding predictive densities"""
+    rho, sigma = ar1.rho, ar1.sigma
+    T0 = len(initial_path)
+    T1 = predict_length
+    
+    # Compute moments and confidence intervals
+    y_T0 = initial_path[-1]
+    center = jnp.array([rho**j * y_T0 for j in range(T1)])
+    vars = jnp.array(
+        [sigma**2 * (1 - rho**(2 * j)) / (1 - rho**2) for j in range(T1)]
+        )
+
+    y_upper_c95 = center + 1.96 * np.sqrt(vars)
+    y_lower_c95 = center - 1.96 * np.sqrt(vars)
+
+    y_upper_c90 = center + 1.65 * np.sqrt(vars)
+    y_lower_c90 = center - 1.65 * np.sqrt(vars)
 
     # Plot
-    fig, ax = plt.subplots(1, 1, figsize=(12, 6))
-    ax.set_title("Initial Path and Predictive Densities", fontsize=15)
+    fig, ax = plt.subplots(1, 1)
+    #ax.set_title("Initial Path and Predictive Densities", fontsize=15)
     ax.plot(np.arange(-T0 + 1, 1), initial_path)
     ax.set_xlim([-T0, T1])
     ax.axvline(0, linestyle='--', alpha=.4, color='k', lw=1)
 
-    # Simulate future paths
+    # Simulate 10 future paths
     for i in range(10):
-        y_future = AR1_simulate(rho, sigma, y0, T1)
+        y_future = AR1_simulate(rho, sigma, y_T0, T1)
         ax.plot(np.arange(T1), y_future, color='grey', alpha=.5)
     
     # Plot 90% CI
-    ax.fill_between(np.arange(T1), y_bounds1_c95, y_bounds2_c95, alpha=.3, label='95% CI')
-    ax.fill_between(np.arange(T1), y_bounds1_c90, y_bounds2_c90, alpha=.35, label='90% CI')
-    ax.plot(np.arange(T1), center, color='red', alpha=.7, label='expected mean')
+    ax.fill_between(
+        np.arange(T1), y_upper_c95, y_lower_c95, alpha=.3, label='95% CI'
+        )
+    ax.fill_between(
+        np.arange(T1), y_upper_c90, y_lower_c90, alpha=.35, label='90% CI'
+        )
+    ax.plot(np.arange(T1), center, color='red', alpha=.7, label='expectation')
     ax.legend(fontsize=12)
     plt.show()
+```
 
-
-sigma =  1
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+        Initial path and predictive densities
+    name: fig_path
+---
+ar1 = AR1(rho=0.9, sigma=1)
 rho = 0.9
+simga = 1
 T0, T1 = 100, 100
 y0 = 10
 
@@ -178,7 +226,7 @@ np.random.seed(145)
 initial_path = AR1_simulate(rho, sigma, y0, T0)
 
 # Plot
-plot_initial_path(initial_path)
+plot_initial_path(ar1, initial_path, T1)
 ```
 
 As functions of forecast horizon, the coverage intervals have shapes like those described in 
@@ -199,25 +247,17 @@ The first was **time until the next turning point**.
 
 To examine this statistic, let $Z$ be an indicator process
 
-<!-- $$
-Z_t(Y(\omega)) := \left\{ 
-\begin{array} {c}
-\ 1 & \text{if } Y_t(\omega)< Y_{t-1}(\omega)< Y_{t-2}(\omega) \geq Y_{t-3}(\omega) \\
-0 & \text{otherwise}
-\end{array} \right.
-$$ -->
-
-
-
 $$
-Z_t(Y(\omega)) :=  
+Z_t(\omega) :=  
 \begin{cases} 
 \ 1 & \text{if } Y_t(\omega)< Y_{t-1}(\omega)< Y_{t-2}(\omega) \geq Y_{t-3}(\omega) \\
-0 & \text{otherwise}
+\ 0 & \text{otherwise}
 \end{cases} 
 $$
 
-Then the random variable **time until the next turning point**  is defined as the following **stopping time** with respect to $Z$:
+Here $\omega \in Omega$ is a sequence of events, and $Y_t: \Omega \rightarrow R$ gives $y_t$ according to $\omega$ and the AR(1) process.
+
+Then the random variable **time until the next turning point**  is defined as the following *stopping time* with respect to $Z$:
 
 $$
 W_t(\omega):= \inf \{ k\geq 1 \mid Z_{t+k}(\omega) = 1\}
@@ -233,50 +273,29 @@ $$
 It is interesting to study yet another possible concept of a **turning point**.
 
 Thus, let
-<!-- 
-$$
-T_t(Y(\omega)) := \left\{ 
-\begin{array}{c}
-\ 1 & \text{if } Y_{t-2}(\omega)> Y_{t-1}(\omega) > Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) < Y_{t+1}(\omega) < Y_{t+2}(\omega) \\
-\ -1 & \text{if } Y_{t-2}(\omega)< Y_{t-1}(\omega) < Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) > Y_{t+1}(\omega) > Y_{t+2}(\omega) \\
-0 & \text{otherwise}
-\end{array} \right.
-$$ -->
-
 
 $$
-T_t(Y(\omega)) := 
+T_t(\omega) := 
 \begin{cases}
 \ 1 & \text{if } Y_{t-2}(\omega)> Y_{t-1}(\omega) > Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) < Y_{t+1}(\omega) < Y_{t+2}(\omega) \\
 \ -1 & \text{if } Y_{t-2}(\omega)< Y_{t-1}(\omega) < Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) > Y_{t+1}(\omega) > Y_{t+2}(\omega) \\
-0 & \text{otherwise}
+\ 0 & \text{otherwise}
 \end{cases}
 $$
 
-
-
 Define a **positive turning point today or tomorrow** statistic as 
-
-<!-- $$
-P_t(\omega) := \left\{ 
-\begin{array}{c}
-\ 1 & \text{if } T_t(\omega)=1 \ \text{or} \ T_{t+1}(\omega)=1 \\
-0 & \text{otherwise}
-\end{array} \right.
-$$ -->
-
 
 $$
 P_t(\omega) := 
 \begin{cases}
 \ 1 & \text{if } T_t(\omega)=1 \ \text{or} \ T_{t+1}(\omega)=1 \\
-0 & \text{otherwise}
+\ 0 & \text{otherwise}
 \end{cases}
 $$
 
 This is designed to express the event
 
-- ``after one or two decrease(s), $Y$ will grow for two consecutive quarters'' 
+- "after one or two decrease(s), $Y$ will grow for two consecutive quarters" 
 
 Following {cite}`wecker1979predicting`, we can use simulations to calculate  probabilities of $P_t$ and $N_t$ for each period $t$. 
 
@@ -286,15 +305,15 @@ The procedure consists of the following steps:
 
 * index a sample path by $\omega_i$ 
 
-* for a given date $t$, simulate $I$ sample paths of length $N$ 
+* from a given date $t$, simulate $I$ sample paths of length $N$ 
 
 $$
 Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omega_i)\right\}_{i=1}^I
 $$
 
-* for each path $\omega_i$, compute the associated value of $W_t(\omega_i), W_{t+1}(\omega_i), \dots$
+* for each path $\omega_i$, compute the associated value of $W_t(\omega_i), W_{t+1}(\omega_i), \dots , W_{t+N}$
 
-* consider the sets $\{W_t(\omega_i)\}^{T}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{T}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{T}_{i=1}$ as samples from the predictive distributions $f(W_{t+1} \mid \mathcal y_t, \dots)$, $f(W_{t+2} \mid y_t, y_{t-1}, \dots)$, $\dots$, $f(W_{t+N} \mid y_t, y_{t-1}, \dots)$.
+* consider the sets $\{W_t(\omega_i)\}^{I}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{I}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{I}_{i=1}$ as samples from the predictive distributions $f(W_{t+1} \mid y_t, y_{t-1}, \dots , y_0)$, $f(W_{t+2} \mid y_t, y_{t-1}, \dots , y_0)$, $\dots$, $f(W_{t+N} \mid y_t, y_{t-1}, \dots , y_0)$.
 
 
 ## Using Simulations to Approximate a Posterior Distribution
