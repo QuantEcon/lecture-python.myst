@@ -94,7 +94,7 @@ The number of billionaires is integer-valued.
 Hence we consider distributions that take values only in the nonnegative integers.
 
 (This is one reason least squares regression is not the best tool for the present problem, since the dependent variable in linear regression is not restricted
-to integer values)
+to integer values.)
 
 One integer distribution is the [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution), the probability mass function (pmf) of which is
 
@@ -176,7 +176,7 @@ In Treisman's paper, the dependent variable --- the number of billionaires $y_i$
 
 Hence, the distribution of $y_i$ needs to be conditioned on the vector of explanatory variables $\mathbf{x}_i$.
 
-The standard formulation --- the so-called *poisson regression* model --- is as follows:
+The standard formulation --- the so-called *Poisson regression* model --- is as follows:
 
 ```{math}
 :label: poissonreg
@@ -322,7 +322,7 @@ $$
 $$
 
 In doing so it is generally easier to maximize the log-likelihood (consider
-differentiating $f(x) = x \exp(x)$  vs.  $f(x) = \log(x) + x$).
+differentiating $f(x) = x \exp(x)$ vs. $f(x) = \log(x) + x$).
 
 Given that taking a logarithm is a monotone increasing transformation, a maximizer of the likelihood function will also be a maximizer of the log-likelihood function.
 
@@ -350,7 +350,7 @@ $$
 \end{split}
 $$
 
-The MLE of the Poisson to the Poisson  for $\hat{\beta}$ can be obtained by solving
+The MLE of the Poisson for $\hat{\beta}$ can be obtained by solving
 
 $$
 \underset{\beta}{\max} \Big(
@@ -386,7 +386,7 @@ def logL(β):
     return -((β - 10) ** 2) - 10
 ```
 
-To find the value of gradient of the above function, we can use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html) which auto-differentiates the given function.
+To find the value of the gradient of the above function, we can use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html) which auto-differentiates the given function.
 
 We further use [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html) which vectorizes the given function i.e. the function acting upon scalar inputs can now be used with vector inputs.
 
@@ -443,17 +443,17 @@ guess), then
    \end{aligned}
    $$
 
-1. Check whether $\boldsymbol{\beta}_{(k+1)} - \boldsymbol{\beta}_{(k)} < tol$
+2. Check whether $\boldsymbol{\beta}_{(k+1)} - \boldsymbol{\beta}_{(k)} < tol$
     - If true, then stop iterating and set
       $\hat{\boldsymbol{\beta}} = \boldsymbol{\beta}_{(k+1)}$
     - If false, then update $\boldsymbol{\beta}_{(k+1)}$
 
 As can be seen from the updating equation,
 $\boldsymbol{\beta}_{(k+1)} = \boldsymbol{\beta}_{(k)}$ only when
-$G(\boldsymbol{\beta}_{(k)}) = 0$ ie. where the first derivative is equal to 0.
+$G(\boldsymbol{\beta}_{(k)}) = 0$ i.e. where the first derivative is equal to 0.
 
 (In practice, we stop iterating when the difference is below a small
-tolerance threshold)
+tolerance threshold.)
 
 Let's have a go at implementing the Newton-Raphson algorithm.
 
@@ -639,7 +639,7 @@ Before we begin, let's re-estimate our simple model with `statsmodels`
 to confirm we obtain the same coefficients and log-likelihood value.
 
 Now, as `statsmodels` accepts only NumPy arrays, we can use the `__array__` method
-of JAX arrays to convert it to NumPy arrays.
+of JAX arrays to convert them to NumPy arrays.
 
 ```{code-cell} ipython3
 X = jnp.array([[1, 2, 5], [1, 1, 3], [1, 4, 2], [1, 5, 2], [1, 3, 1]])
@@ -757,7 +757,7 @@ capitalization, and negatively correlated with top marginal income tax
 rate.
 
 To analyze our results by country, we can plot the difference between
-the predicted an actual values, then sort from highest to lowest and
+the predicted and actual values, then sort from highest to lowest and
 plot the first 15
 
 ```{code-cell} ipython3
@@ -846,7 +846,7 @@ To begin, find the log-likelihood function and derive the gradient and
 Hessian.
 
 The `jax.scipy.stats` module `norm` contains the functions needed to
-compute the cmf and pmf of the normal distribution.
+compute the cdf and pdf of the normal distribution.
 ```
 
 ```{solution-start} mle_ex1
