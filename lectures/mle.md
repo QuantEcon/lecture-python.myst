@@ -27,7 +27,7 @@ kernelspec:
 
 ## Overview
 
-In a {doc}`previous lecture <ols>`, we estimated the relationship between
+In {doc}`ols`, we estimated the relationship between
 dependent and explanatory variables using linear regression.
 
 But what if a linear relationship is not an appropriate assumption for our model?
@@ -64,11 +64,11 @@ from mpl_toolkits.mplot3d import Axes3D
 
 We assume familiarity with basic probability and multivariate calculus.
 
-## Set Up and Assumptions
+## Set up and assumptions
 
 Let's consider the steps we need to go through in maximum likelihood estimation and how they pertain to this study.
 
-### Flow of Ideas
+### Flow of ideas
 
 The first step with maximum likelihood estimation is to choose the probability distribution believed to be generating the data.
 
@@ -85,7 +85,7 @@ We'll let the data pick out a particular element of the class by pinning down th
 
 The parameter estimates so produced will be called **maximum likelihood estimates**.
 
-### Counting Billionaires
+### Counting billionaires
 
 Treisman {cite}`Treisman2016` is interested in estimating the number of billionaires in different countries.
 
@@ -170,7 +170,7 @@ plt.show()
 
 From the histogram, it appears that the Poisson assumption is not unreasonable (albeit with a very low $\mu$ and some outliers).
 
-## Conditional Distributions
+## Conditional distributions
 
 In Treisman's paper, the dependent variable --- the number of billionaires $y_i$ in country $i$ --- is modeled as a function of GDP per capita, population size, and years membership in GATT and WTO.
 
@@ -238,7 +238,7 @@ plt.show()
 We can see that the distribution of $y_i$ is conditional on
 $\mathbf{x}_i$ ($\mu_i$ is no longer constant).
 
-## Maximum Likelihood Estimation
+## Maximum likelihood estimation
 
 In our model for number of billionaires, the conditional distribution
 contains 4 ($k = 4$) parameters that we need to estimate.
@@ -845,7 +845,7 @@ Probit model.
 To begin, find the log-likelihood function and derive the gradient and
 Hessian.
 
-The `scipy` module `stats.norm` contains the functions needed to
+The `jax.scipy.stats` module `norm` contains the functions needed to
 compute the cmf and pmf of the normal distribution.
 ```
 
@@ -990,7 +990,7 @@ newton_raphson(prob, β)
 
 ```{code-cell} ipython3
 # Use statsmodels to verify results
-# Note that use __array__() method to convert jax to numpy arrays
+# Note: use __array__() method to convert jax to numpy arrays
 print(Probit(y.__array__(), X.__array__()).fit().summary())
 ```
 
