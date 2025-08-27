@@ -911,8 +911,8 @@ def logL(β, model):
 ```
 
 ```{code-cell} ipython3
-G_logL = jax.grad(probit_logL)
-H_logL = jax.jacfwd(G_probit_logL)
+G_logL = jax.grad(logL)
+H_logL = jax.jacfwd(logL)
 ```
 
 ```{solution-end}
