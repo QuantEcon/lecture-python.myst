@@ -59,11 +59,7 @@ from numpyro.infer import MCMC, NUTS
 
 sns.set_style('white')
 colors = sns.color_palette()
-
-import logging
-logging.basicConfig()
-logger = logging.getLogger('pymc')
-logger.setLevel(logging.CRITICAL)
+key = random.PRNGKey(0)
 ```
 
 ## A Univariate First-Order Autoregressive Process
@@ -150,21 +146,21 @@ class AR1(NamedTuple):
     sigma:float
 
 
-def AR1_simulate(rho, sigma, y0, T):
+def AR1_simulate(ar1: AR1, y0, T, subkey):
     """Generate a realization of the AR1 process given parameters and length"""
     # Allocate space and draw epsilons
-    y = np.empty(T)
-    eps = np.random.normal(0, sigma, T)
+    y = jnp.empty(T)
+    eps = ar1.sigma * random.normal(subkey, (T,))
 
     # Initial condition and step forward
-    y[0] = y0
+    y.at[0].set(y0)
     for t in range(1, T):
-        y[t] = rho * y[t-1] + eps[t]
+        y.at[t].set(ar1.rho * y[t-1] + eps[t])
         
     return jnp.asarray(y)
 
 
-def plot_initial_path(ar1, initial_path, predict_length):
+def plot_path(ar1, initial_path, predict_length):
     """Plot the initial path and the preceding predictive densities"""
     rho, sigma = ar1.rho, ar1.sigma
     T0 = len(initial_path)
@@ -177,32 +173,33 @@ def plot_initial_path(ar1, initial_path, predict_length):
         [sigma**2 * (1 - rho**(2 * j)) / (1 - rho**2) for j in range(T1)]
         )
 
-    y_upper_c95 = center + 1.96 * np.sqrt(vars)
-    y_lower_c95 = center - 1.96 * np.sqrt(vars)
+    y_upper_c95 = center + 1.96 * jnp.sqrt(vars)
+    y_lower_c95 = center - 1.96 * jnp.sqrt(vars)
 
-    y_upper_c90 = center + 1.65 * np.sqrt(vars)
-    y_lower_c90 = center - 1.65 * np.sqrt(vars)
+    y_upper_c90 = center + 1.65 * jnp.sqrt(vars)
+    y_lower_c90 = center - 1.65 * jnp.sqrt(vars)
 
     # Plot
     fig, ax = plt.subplots(1, 1)
     #ax.set_title("Initial Path and Predictive Densities", fontsize=15)
-    ax.plot(np.arange(-T0 + 1, 1), initial_path)
+    ax.plot(jnp.arange(-T0 + 1, 1), initial_path)
     ax.set_xlim([-T0, T1])
     ax.axvline(0, linestyle='--', alpha=.4, color='k', lw=1)
 
     # Simulate 10 future paths
+    subkeys = random.split(key, num=10)
     for i in range(10):
-        y_future = AR1_simulate(rho, sigma, y_T0, T1)
-        ax.plot(np.arange(T1), y_future, color='grey', alpha=.5)
+        y_future = AR1_simulate(ar1, y_T0, T1, subkeys[i])
+        ax.plot(jnp.arange(T1), y_future, color='grey', alpha=.5)
     
     # Plot 90% CI
     ax.fill_between(
-        np.arange(T1), y_upper_c95, y_lower_c95, alpha=.3, label='95% CI'
+        jnp.arange(T1), y_upper_c95, y_lower_c95, alpha=.3, label='95% CI'
         )
     ax.fill_between(
-        np.arange(T1), y_upper_c90, y_lower_c90, alpha=.35, label='90% CI'
+        jnp.arange(T1), y_upper_c90, y_lower_c90, alpha=.35, label='90% CI'
         )
-    ax.plot(np.arange(T1), center, color='red', alpha=.7, label='expectation')
+    ax.plot(jnp.arange(T1), center, color='red', alpha=.7, label='expectation')
     ax.legend(fontsize=12)
     plt.show()
 ```
@@ -216,17 +213,14 @@ mystnb:
     name: fig_path
 ---
 ar1 = AR1(rho=0.9, sigma=1)
-rho = 0.9
-simga = 1
 T0, T1 = 100, 100
 y0 = 10
 
 # Simulate
-np.random.seed(145)
-initial_path = AR1_simulate(rho, sigma, y0, T0)
+initial_path = AR1_simulate(ar1, y0, T0)
 
 # Plot
-plot_initial_path(ar1, initial_path, T1)
+plot_path(ar1, initial_path, T1)
 ```
 
 As functions of forecast horizon, the coverage intervals have shapes like those described in 
@@ -323,110 +317,122 @@ The next code cells use `pymc` to compute the time $t$ posterior distribution of
 Note that in defining the likelihood function, we choose to condition on the initial value $y_0$.
 
 ```{code-cell} ipython3
-def draw_from_posterior(sample):
-    """
-    Draw a sample of size N from the posterior distribution.
-    """
-
-    AR1_model = pmc.Model()
-
-    with AR1_model:
-        
-        # Start with priors
-        rho = pmc.Uniform('rho',lower=-1.,upper=1.)  # Assume stable rho
-        sigma = pmc.HalfNormal('sigma', sigma = np.sqrt(10))
-
-        # Expected value of y at the next period (rho * y)
-        yhat = rho * sample[:-1]
+---
+mystnb:
+  figure:
+    caption: |
+        Posterior distributions (rho, sigma)
+    name: fig_post
+---
+def draw_from_posterior(sample, size=1e5, bins=20, dis_plot=1):
+    """Draw a sample of size from the posterior distribution.""" 
+    # Start with priors
+    rho = numpyro.sample('rho', dist.Uniform(-1, 1))  # Assume stable rho
+    sigma = numpyro.sample('sigma', dis.HalfNormal(sqrt(10)))
+    
+    # Define likelihood recursively
+    for t in range(1, len(sample))
+        # Expectation of y_t
+        mu = rho * sample[t-1]
 
         # Likelihood of the actual realization.
-        y_like = pmc.Normal('y_obs', mu=yhat, sigma=sigma, observed=sample[1:])
+        numpyro.sample(f'y_{t}', dist.Normal(mu, sigma), obs=sample[t])
 
-    with AR1_model:
-        trace = pmc.sample(10000, tune=5000)
-
-    # check condition
-    with AR1_model:
-        az.plot_trace(trace, figsize=(17, 6))
-    
-    rhos = trace.posterior.rho.values.flatten()
-    sigmas = trace.posterior.sigma.values.flatten()
+    # Compute posterior distribution of parameters
+    nuts_kernel = NUTS(model)
+    mcmc = MCMC(
+        nuts_kernek, 
+        num_warmup=5000, 
+        num_sample=size, 
+        progress_bar=False)
+    mcmc.run(random.PRNGKey(0), sample=sample)
 
     post_sample = {
-        'rho': rhos,
-        'sigma': sigmas
+        'rho': mcmc.get_samples()['rho'],
+        'sigma': mcmc.get_samples()['sigma']
     }
-    
+
+    if dis_plot==1:
+        sns.displot(
+            post_sample, kde=True, stat="density", bins=bins, height=5, aspect=1.5
+            )
+  
     return post_sample
 
 post_samples = draw_from_posterior(initial_path)
 ```
 
-The graphs on the left portray posterior marginal distributions.
+The graphs above portray posterior distributions.
 
 ## Calculating Sample Path Statistics
 
 Our next step is to prepare Python code to compute our sample path statistics.
 
+These statistics were originally defined as random variables with respect to $\omega$, but here we use $\{Y_t\}$ as the argument because $\omega$ is implicit.
+
+Also, these two kinds of definitions are equivalent because $\omega$ determins path statistics only through $\{Y_t\}$
+
 ```{code-cell} ipython3
-# define statistics
-def next_recession(omega):
-    n = omega.shape[0] - 3
-    z = np.zeros(n, dtype=int)
+# Define statistics as functions of y, the realized path values.
+def next_recession(y):
+    n = y.shape[0] - 3
+    z = jnp.zeros(n, dtype=int)
     
     for i in range(n):
-        z[i] = int(omega[i] <= omega[i+1] and omega[i+1] > omega[i+2] and omega[i+2] > omega[i+3])
+        z.at[i].set(int(y[i] <= y[i+1] and y[i+1] > y[i+2] and y[i+2] > y[i+3]))
 
-    if np.any(z) == False:
+    if jnp.any(z) == False:
         return 500
     else:
-        return np.where(z==1)[0][0] + 1
+        return jnp.where(z == 1)[0][0] + 1
 
-def minimum_value(omega):
-    return min(omega[:8])
 
-def severe_recession(omega):
-    z = np.diff(omega)
+def next_severe_recession(y):
+    z = jnp.diff(y)
     n = z.shape[0]
     
     sr = (z < -.02).astype(int)
-    indices = np.where(sr == 1)[0]
+    indices = jnp.where(sr == 1)[0]
 
     if len(indices) == 0:
         return T1
     else:
         return indices[0] + 1
 
-def next_turning_point(omega):
+
+def minimum_value_8q(y):
+    return jnp.min(y[:8])
+
+
+def next_turning_point(y):
     """
-    Suppose that omega is of length 6
+    Suppose that y is of length 6
     
         y_{t-2}, y_{t-1}, y_{t}, y_{t+1}, y_{t+2}, y_{t+3}
     
     that is sufficient for determining the value of P/N    
     """
     
-    n = np.asarray(omega).shape[0] - 4
-    T = np.zeros(n, dtype=int)
+    n = jnp.asarray(y).shape[0] - 4
+    T = jnp.zeros(n, dtype=int)
     
     for i in range(n):
-        if ((omega[i] > omega[i+1]) and (omega[i+1] > omega[i+2]) and 
-            (omega[i+2] < omega[i+3]) and (omega[i+3] < omega[i+4])):
+        if ((y[i] > y[i+1]) and (y[i+1] > y[i+2]) and 
+            (y[i+2] < y[i+3]) and (y[i+3] < y[i+4])):
             T[i] = 1
-        elif ((omega[i] < omega[i+1]) and (omega[i+1] < omega[i+2]) and 
-            (omega[i+2] > omega[i+3]) and (omega[i+3] > omega[i+4])):
+        elif ((y[i] < y[i+1]) and (y[i+1] < y[i+2]) and 
+            (y[i+2] > y[i+3]) and (y[i+3] > y[i+4])):
             T[i] = -1
     
-    up_turn = np.where(T == 1)[0][0] + 1 if (1 in T) == True else T1
-    down_turn = np.where(T == -1)[0][0] + 1 if (-1 in T) == True else T1
+    up_turn = jnp.where(T == 1)[0][0] + 1 if (1 in T) == True else T1
+    down_turn = jnp.where(T == -1)[0][0] + 1 if (-1 in T) == True else T1
 
     return up_turn, down_turn
 ```
 
 ## Original Wecker Method
 
-Now we  apply Wecker's original  method by simulating future paths and compute predictive distributions, conditioning
-on the true  parameters associated with the data-generating model.
+Now we apply Wecker's original method by simulating future paths and compute predictive distributions, conditioning on the true parameters associated with the data-generating model.
 
 ```{code-cell} ipython3
 def plot_Wecker(initial_path, N, ax):
@@ -458,11 +464,12 @@ def plot_Wecker(initial_path, N, ax):
     ax[0, 0].plot(np.arange(T1), center, color='red', alpha=.7)
 
     # Simulate future paths
+    subkeys = random.split(key, num=N)
     for n in range(N):
-        sim_path = AR1_simulate(rho, sigma, initial_path[-1], T1)
+        sim_path = AR1_simulate(ar1, initial_path[-1], T1, subkeys[n])
         next_reces[n] = next_recession(np.hstack([initial_path[-3:-1], sim_path]))
-        severe_rec[n] = severe_recession(sim_path)
-        min_vals[n] = minimum_value(sim_path)
+        severe_rec[n] = next_severe_recession(sim_path)
+        min_vals[n] = minimum_value_8q(sim_path)
         next_up_turn[n], next_down_turn[n] = next_turning_point(sim_path)
 
         if n%(N/10) == 0:
@@ -519,11 +526,13 @@ def plot_extended_Wecker(post_samples, initial_path, N, ax):
     ax[0, 0].axvline(0, linestyle='--', alpha=.4, color='k', lw=1)
 
     # Simulate future paths
+    subkeys = random.split(key, num=N)
     for n in range(N):
-        sim_path = AR1_simulate(rho_sample[n], sigma_sample[n], initial_path[-1], T1)
+        ar1_n = AR1(rho=rho_sample[n], sigma=sigma_sample[n])
+        sim_path = AR1_simulate(ar1_n, initial_path[-1], T1, subkeys[n])
         next_reces[n] = next_recession(np.hstack([initial_path[-3:-1], sim_path]))
-        severe_rec[n] = severe_recession(sim_path)
-        min_vals[n] = minimum_value(sim_path)
+        severe_rec[n] = next_severe_recession(sim_path)
+        min_vals[n] = minimum_value_8q(sim_path)
         next_up_turn[n], next_down_turn[n] = next_turning_point(sim_path)
 
         if n % (N / 10) == 0:
