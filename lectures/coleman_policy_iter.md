@@ -347,7 +347,7 @@ n = 15
 σ = grid.copy()  # Set initial condition
 
 fig, ax = plt.subplots()
-lb = 'initial condition $\sigma(y) = y$'
+lb = r'initial condition $\sigma(y) = y$'
 ax.plot(grid, σ, color=plt.cm.jet(0), alpha=0.6, label=lb)
 
 for i in range(n):

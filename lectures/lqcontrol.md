@@ -556,7 +556,7 @@ for $t = 0, \ldots, T-1$ attains the minimum of {eq}`lq_object` subject to our c
 ## Implementation
 
 We will use code from [lqcontrol.py](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lqcontrol.py)
-in [QuantEcon.py](http://quantecon.org/quantecon-py)
+in [QuantEcon.py](https://quantecon.org/quantecon-py)
 to solve finite and infinite horizon linear quadratic control problems.
 
 In the module, the various updating, simulation and fixed point methods
@@ -1605,7 +1605,7 @@ ax.set(xlabel='Time', xlim=(0, max(time)))
 ax.plot(time, q_bar, 'k-', lw=2, alpha=0.6, label=r'$\bar q_t$')
 ax.plot(time, q, 'b-', lw=2, alpha=0.6, label='$q_t$')
 ax.legend(ncol=2, **legend_args)
-s = f'dynamics with $\gamma = {γ}$'
+s = fr'dynamics with $\gamma = {γ}$'
 ax.text(max(time) * 0.6, 1 * q_bar.max(), s, fontsize=14)
 plt.show()
 ```

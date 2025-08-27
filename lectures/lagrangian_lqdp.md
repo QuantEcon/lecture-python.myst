@@ -206,29 +206,29 @@ It is useful to proceed with the following steps:
 * arrange the resulting equation and the second equation of {eq}`lag-lqdp-eq2`  into the form
 
 $$
-L\ \begin{pmatrix}x_{t+1}\cr \mu_{t+1}\cr\end{pmatrix}\ = \ N\ \begin{pmatrix}x_t\cr \mu_t\cr\end{pmatrix}\
+L\ \begin{bmatrix}x_{t+1}\cr \mu_{t+1}\cr\end{bmatrix}\ = \ N\ \begin{bmatrix}x_t\cr \mu_t\cr\end{bmatrix}\
 ,\ t \geq 0,
 $$ (eq:systosolve)
 
 where
 
 $$
-L = \ \begin{pmatrix}I & BQ^{-1} B^\prime \cr 0 & A^\prime\cr\end{pmatrix}, \quad N = \
-\begin{pmatrix}A & 0\cr -R & I\cr\end{pmatrix}.
+L = \ \begin{bmatrix}I & BQ^{-1} B^\prime \cr 0 & A^\prime\cr\end{bmatrix}, \quad N = \
+\begin{bmatrix}A & 0\cr -R & I\cr\end{bmatrix}.
 $$
 
 When $L$ is of full rank (i.e., when $A$ is of full rank), we can write
 system {eq}`eq:systosolve` as
 
 $$
-\begin{pmatrix}x_{t+1}\cr \mu_{t+1}\cr\end{pmatrix}\ = M\ \begin{pmatrix}x_t\cr\mu_t\cr\end{pmatrix}
+\begin{bmatrix}x_{t+1}\cr \mu_{t+1}\cr\end{bmatrix}\ = M\ \begin{bmatrix}x_t\cr\mu_t\cr\end{bmatrix}
 $$ (eq4orig)
 
 where
 
 $$
-M\equiv L^{-1} N = \begin{pmatrix}A+B Q^{-1} B^\prime A^{\prime-1}R &
--B Q^{-1} B^\prime A^{\prime-1}\cr -A^{\prime -1} R & A^{\prime -1}\cr\end{pmatrix}.
+M\equiv L^{-1} N = \begin{bmatrix}A+B Q^{-1} B^\prime A^{\prime-1}R &
+-B Q^{-1} B^\prime A^{\prime-1}\cr -A^{\prime -1} R & A^{\prime -1}\cr\end{bmatrix}.
 $$ (Mdefn)
 
 +++
@@ -262,7 +262,7 @@ To proceed, we study properties of the $(2n \times 2n)$ matrix $M$ defined in {e
 It helps to introduce a $(2n \times 2n)$ matrix
 
 $$
-J = \begin{pmatrix}0 & -I_n\cr I_n & 0\cr\end{pmatrix}.
+J = \begin{bmatrix}0 & -I_n\cr I_n & 0\cr\end{bmatrix}.
 $$
 
 The rank of $J$ is $2n$.
@@ -308,12 +308,12 @@ $$
 y_{t+1} = M y_t
 $$ (eq658)
 
-where $y_t = \begin{pmatrix}x_t\cr \mu_t\cr\end{pmatrix}$. 
+where $y_t = \begin{bmatrix}x_t\cr \mu_t\cr\end{bmatrix}$. 
 
 Consider a **triangularization** of $M$
 
 $$
-V^{-1} M V= \begin{pmatrix}W_{11} & W_{12} \cr 0 & W_{22}\cr\end{pmatrix}
+V^{-1} M V= \begin{bmatrix}W_{11} & W_{12} \cr 0 & W_{22}\cr\end{bmatrix}
 $$ (eqn:triangledecomp)
 
 where 
@@ -353,9 +353,9 @@ and where $W^t_{ii}$ is $W_{ii}$ raised to the $t$th  power.
 Write equation {eq}`eq6510` as
 
 $$
-\begin{pmatrix}y^\ast_{1t}\cr y^\ast_{2t}\cr\end{pmatrix}\ =\ \left[\begin{matrix} W^t_{11} &
-W_{12, t}\cr 0 & W^t_{22}\cr\end{matrix}\right]\quad \begin{pmatrix}y^\ast_{10}\cr
-y^\ast_{20}\cr\end{pmatrix}
+\begin{bmatrix}y^\ast_{1t}\cr y^\ast_{2t}\cr\end{bmatrix}\ =\ \left[\begin{matrix} W^t_{11} &
+W_{12, t}\cr 0 & W^t_{22}\cr\end{matrix}\right]\quad \begin{bmatrix}y^\ast_{10}\cr
+y^\ast_{20}\cr\end{bmatrix}
 $$
 
 where $y^\ast_t = V^{-1} y_t$, and in particular where
@@ -394,7 +394,7 @@ But notice that because $(V^{21}\ V^{22})$ is the second row block of
 the inverse of $V,$ it follows that
 
 $$
-(V^{21} \ V^{22})\quad \begin{pmatrix}V_{11}\cr V_{21}\cr\end{pmatrix} = 0
+(V^{21} \ V^{22})\quad \begin{bmatrix}V_{11}\cr V_{21}\cr\end{bmatrix} = 0
 $$
 
 which implies

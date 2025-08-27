@@ -780,7 +780,7 @@ plt.fill_between(range(1, n+1), μθ_hat_lower, μθ_hat_higher,
                  color='b', alpha=0.2, label='95%')
 
 plt.xlabel('number of test scores')
-plt.ylabel('$\hat{θ}$')
+plt.ylabel(r'$\hat{θ}$')
 plt.legend()
 
 plt.show()
@@ -2225,7 +2225,7 @@ Below we’ll plot several things
 
 ```{code-cell} python3
 plt.scatter(range(N), y, label='y')
-plt.scatter(range(N), ε, label='$\epsilon$')
+plt.scatter(range(N), ε, label=r'$\epsilon$')
 plt.hlines(f[0], 0, N//2-1, ls='--', label='$f_{1}$')
 plt.hlines(f[1], N//2, N-1, ls='-.', label='$f_{2}$')
 plt.legend()

@@ -16,6 +16,28 @@ kernelspec:
 ```{include} _admonition/gpu.md
 ```
 
+In addition to what's included in base Anaconda, we need to install the following packages
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install -U kaleido plotly
+!conda install -y -c plotly plotly-orca
+
+# kaleido needs chrome to build images
+import kaleido
+kaleido.get_chrome_sync()
+```
+
+```{note}
+If you are running this on Google Colab the above cell will 
+present an error. This is because Google Colab doesn't use Anaconda to manage
+the Python packages. However this lecture will still execute as Google Colab
+has `plotly` installed.
+```
+
+We also need to install JAX to run this lecture
+
 ```{code-cell} ipython3
 :tags: [skip-execution]
 
@@ -24,24 +46,7 @@ kernelspec:
 
 ```{code-cell} ipython3
 import jax
-## to check that gpu is activated in environment
-print(f"JAX backend: {jax.devices()[0].platform}")
-```
-
-In addition to what's included in base Anaconda, we need to install the following packages
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install kaleido
-!conda install -y -c plotly plotly plotly-orca retrying
-```
-
-```{note}
-If you are running this on Google Colab the above cell will 
-present an error. This is because Google Colab doesn't use Anaconda to manage
-the Python packages. However this lecture will still execute as Google Colab
-has `plotly` installed.
+print(f"JAX backend: {jax.devices()[0].platform}") # to check that gpu is activated in environment
 ```
 
 ## Overview
@@ -535,7 +540,7 @@ Image(fig.to_image(format="png"))
 It  is  fun to think about how deepening the neural net for the above example affects the quality of  approximation 
 
 
-* If the network is too deep, you'll run into the [vanishing gradient problem](http://neuralnetworksanddeeplearning.com/chap5.html)
+* If the network is too deep, you'll run into the [vanishing gradient problem](https://neuralnetworksanddeeplearning.com/chap5.html)
 * Other parameters such as the step size and the number of epochs can be as  important or more important than the number of layers in the situation considered in this lecture.
 * Indeed, since $f$ is a linear function of $x$, a one-layer network with the identity map as an activation would probably work best. 
   

@@ -18,16 +18,16 @@ kernelspec:
 ```
 
 ```{code-cell} ipython3
-:tags: [no-execute]
+:tags: [no-execute, hide-output]
 
 !pip install numpyro jax
 ```
 
 ## Overview
 
-This  is a sequel to {doc}`this  quantecon lecture <likelihood_bayes>`.
+This is a sequel to {doc}`this quantecon lecture <likelihood_bayes>`.
 
-We discuss  two ways to create compound lottery and their consequences.
+We discuss two ways to create a compound lottery and their consequences.
 
 A compound lottery can be said to create a _mixture distribution_.
 
@@ -35,7 +35,7 @@ Our two ways of constructing a compound lottery will differ in their **timing**.
 
 * in one, mixing between two possible probability distributions  will occur once and all at the beginning of time
 
-* in the other, mixing between the same two possible possible probability distributions will occur each period
+* in the other, mixing between the same two possible probability distributions will occur each period
 
 The statistical setting is close but not identical to the problem studied in that quantecon lecture.
 
@@ -50,7 +50,7 @@ The agent represented that ignorance  by assuming that nature had chosen  $f$ or
 That assumption allowed the agent to construct a subjective joint probability distribution over the
 random sequence $\{W_t\}_{t=0}^\infty$.
 
-We studied how the agent would then use the laws of conditional probability and an observed   history $w^t =\{w_s\}_{t=0}^t$   to form
+We studied how the agent would then use the laws of conditional probability and an observed history $w^t =\{w_s\}_{s=0}^t$ to form
 
 $$
 \pi_t = E [ \textrm{nature chose distribution}  f | w^t] , \quad  t = 0, 1, 2, \ldots
@@ -65,10 +65,10 @@ Thus, we change the {doc}`quantecon lecture <likelihood_bayes>` specification in
 Now, **each period** $t \geq 0$, nature flips a possibly unfair coin that comes up $f$ with probability $\alpha$
 and $g$ with probability $1 -\alpha$.
 
-Thus, naturally perpetually draws from the **mixture distribution** with c.d.f.
+Thus, nature perpetually draws from the **mixture distribution** with c.d.f.
 
 $$
-H(w ) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
+H(w) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
 $$
 
 We'll study two agents  who try to learn about the wage process, but who use different  statistical models.
@@ -95,7 +95,7 @@ possible.
 
 Nevertheless, we'll see that our first type of agent muddles through and eventually learns something  interesting and useful, even though it is not *true*.
 
-Instead, it turn out that our type 1 agent who is armed with a wrong statistical model ends up learning  whichever probability distribution, $f$ or $g$,
+Instead, it turns out that our type 1 agent who is armed with a wrong statistical model ends up learning whichever probability distribution, $f$ or $g$,
 is in a special sense *closest* to the $h$ that actually generates the data.
 
 We'll tell the sense in which it is closest.
@@ -232,7 +232,7 @@ Here is pseudo code for a direct "method 1" for drawing from our compound lotter
 
 Our second method uses a uniform distribution and the following fact that we also described and used in the quantecon lecture <https://python.quantecon.org/prob_matrix.html>:
 
- * If a random variable $X$ has c.d.f. $F(X)$, then a random variable $F^{-1}(U)$ also has c.d.f. $F(x)$, where $U$ is a uniform random variable on $[0,1]$.
+ * If a random variable $X$ has c.d.f. $F$, then a random variable $F^{-1}(U)$ also has c.d.f. $F$, where $U$ is a uniform random variable on $[0,1]$.
 
 In other words, if $X \sim F(x)$ we can generate a random sample from $F$ by drawing a random sample from
 a uniform distribution on $[0,1]$ and computing $F^{-1}(U)$.
@@ -261,7 +261,6 @@ def draw_lottery(p, N):
             draws.append(np.random.beta(F_a, F_b))
         else:
             draws.append(np.random.beta(G_a, G_b))
-
     return np.array(draws)
 
 def draw_lottery_MC(p, N):
@@ -294,18 +293,6 @@ plt.legend()
 plt.show()
 ```
 
-```{code-cell} ipython3
-# %%timeit    # compare speed
-# sample1 = draw_lottery(α, N=int(1e6))
-```
-
-```{code-cell} ipython3
-# %%timeit
-# sample2 = draw_lottery_MC(α, N=int(1e6))
-```
-
-**Note:** With numba acceleration the first method is actually only slightly slower than the second when we generated 1,000,000 samples.
-
 ## Type 1 Agent
 
 We'll now study what our type 1 agent learns
@@ -329,13 +316,13 @@ Bayes’ law implies that $ \{\pi_t\} $ obeys the recursion
 
 $$
 \pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
-$$ (equation-eq-recur1)
+$$ (eq:recur1)
 
 with $ \pi_{0} $ being a Bayesian prior probability that $ q = f $,
 i.e., a personal or subjective belief about $ q $ based on our having seen no data.
 
 Below we define a Python function that updates belief $ \pi $ using
-likelihood ratio $ \ell $ according to  recursion {eq}`equation-eq-recur1`
+likelihood ratio $ \ell $ according to recursion {eq}`eq:recur1`
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -350,7 +337,7 @@ def update(π, l):
     return π
 ```
 
-Formula {eq}`equation-eq-recur1` can be generalized  by iterating on it and thereby deriving an
+Formula {eq}`eq:recur1` can be generalized  by iterating on it and thereby deriving an
 expression for  the time $ t $ posterior $ \pi_{t+1} $ as a function
 of the time $ 0 $ prior $ \pi_0 $ and the likelihood ratio process
 $ L(w^{t+1}) $ at time $ t $.
@@ -402,20 +389,18 @@ and the initial prior $ \pi_{0} $
 
 $$
 \pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}}.
-$$ (equation-eq-bayeslaw103)
+$$ (eq:bayeslaw103)
 
-Formula {eq}`equation-eq-bayeslaw103` generalizes formula {eq}`equation-eq-recur1`.
+Formula {eq}`eq:bayeslaw103` generalizes formula {eq}`eq:recur1`.
 
-Formula {eq}`equation-eq-bayeslaw103`  can be regarded as a one step  revision of prior probability $ \pi_0 $ after seeing
+Formula {eq}`eq:bayeslaw103` can be regarded as a one step revision of prior probability $ \pi_0 $ after seeing
 the batch of data $ \left\{ w_{i}\right\} _{i=1}^{t+1} $.
 
 ## What a type 1 Agent Learns when Mixture $H$ Generates Data
 
-We now study what happens when the mixture distribution $h;\alpha$  truly generated the data each period.
+We now study what happens when the mixture distribution $h;\alpha$ truly generated the data each period.
 
-A submartingale or supermartingale continues to describe $\pi_t$
-
-It raises its ugly head and causes $\pi_t$ to converge either to $0$ or to $1$.
+The sequence $\pi_t$ continues to converge, despite the agent's misspecified model, and the limit is either $0$ or $1$.
 
 This is true even though in truth nature always mixes between $f$ and $g$.
 
@@ -462,7 +447,7 @@ def plot_π_seq(α, π1=0.2, π2=0.8, T=200):
     ax1.set_ylabel(r"$\pi_t$")
     ax1.set_xlabel("t")
     ax1.legend()
-    ax1.set_title("when $\\alpha G + (1-\\alpha)$ F governs data")
+    ax1.set_title("when $\\alpha F + (1-\\alpha)G$ governs data")
 
     ax2 = ax1.twinx()
     ax2.plot(range(1, T+1), np.log(l_seq_mixed[0, :]), '--', color='b')
@@ -496,13 +481,13 @@ $$ h(w) \equiv h(w | \alpha) = \alpha f(w) + (1-\alpha) g(w) $$
 we shall compute the following two Kullback-Leibler divergences
 
 $$
-KL_g (\alpha) = \int \log\left(\frac{g(w)}{h(w)}\right) h(w) d w
+KL_g (\alpha) = \int \log\left(\frac{h(w)}{g(w)}\right) h(w) d w
 $$
 
 and
 
 $$
-KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w
+KL_f (\alpha) = \int \log\left(\frac{h(w)}{f(w)}\right) h(w) d w
 $$
 
 We shall plot both of these functions against $\alpha$ as we use $\alpha$ to vary
@@ -514,38 +499,38 @@ $$ \min_{f,g} \{KL_g, KL_f\} $$
 
 The only possible limits are $0$ and $1$.
 
-As $\rightarrow +\infty$, $\pi_t$ goes to one if and only if  $KL_f < KL_g$
+As $t \rightarrow +\infty$, $\pi_t$ goes to one if and only if  $KL_f < KL_g$
 
 ```{code-cell} ipython3
 @vectorize
 def KL_g(α):
-    "Compute the KL divergence between g and h."
+    "Compute the KL divergence KL(h, g)."
     err = 1e-8                          # to avoid 0 at end points
     ws = np.linspace(err, 1-err, 10000)
     gs, fs = g(ws), f(ws)
     hs = α*fs + (1-α)*gs
-    return np.sum(np.log(gs/hs)*hs)/10000
+    return np.sum(np.log(hs/gs)*hs)/10000
 
 @vectorize
 def KL_f(α):
-    "Compute the KL divergence between f and h."
+    "Compute the KL divergence KL(h, f)."
     err = 1e-8                          # to avoid 0 at end points
     ws = np.linspace(err, 1-err, 10000)
     gs, fs = g(ws), f(ws)
     hs = α*fs + (1-α)*gs
-    return np.sum(np.log(fs/hs)*hs)/10000
+    return np.sum(np.log(hs/fs)*hs)/10000
 
 
 # compute KL using quad in Scipy
 def KL_g_quad(α):
-    "Compute the KL divergence between g and h using scipy.integrate."
+    "Compute the KL divergence KL(h, g) using scipy.integrate."
     h = lambda x: α*f(x) + (1-α)*g(x)
-    return quad(lambda x: np.log(g(x)/h(x))*h(x), 0, 1)[0]
+    return quad(lambda x: h(x) * np.log(h(x)/g(x)), 0, 1)[0]
 
 def KL_f_quad(α):
-    "Compute the KL divergence between f and h using scipy.integrate."
+    "Compute the KL divergence KL(h, f) using scipy.integrate."
     h = lambda x: α*f(x) + (1-α)*g(x)
-    return quad(lambda x: np.log(f(x)/h(x))*h(x), 0, 1)[0]
+    return quad(lambda x: h(x) * np.log(h(x)/f(x)), 0, 1)[0]
 
 # vectorize
 KL_g_quad_v = np.vectorize(KL_g_quad)
@@ -575,37 +560,20 @@ KL_f_arr = KL_f(α_arr)
 
 fig, ax = plt.subplots(1, figsize=[10, 6])
 
-ax.plot(α_arr, KL_g_arr, label='KL(g, h)')
-ax.plot(α_arr, KL_f_arr, label='KL(f, h)')
-ax.set_ylabel('K-L divergence')
+ax.plot(α_arr, KL_g_arr, label='KL(h, g)')
+ax.plot(α_arr, KL_f_arr, label='KL(h, f)')
+ax.set_ylabel('KL divergence')
 ax.set_xlabel(r'$\alpha$')
 
 ax.legend(loc='upper right')
 plt.show()
 ```
 
-```{code-cell} ipython3
-# # using Scipy to compute KL divergence
-
-# α_arr = np.linspace(0, 1, 100)
-# KL_g_arr = KL_g_quad_v(α_arr)
-# KL_f_arr = KL_f_quad_v(α_arr)
-
-# fig, ax = plt.subplots(1, figsize=[10, 6])
-
-# ax.plot(α_arr, KL_g_arr, label='KL(g, h)')
-# ax.plot(α_arr, KL_f_arr, label='KL(f, h)')
-# ax.set_ylabel('K-L divergence')
-
-# ax.legend(loc='upper right')
-# plt.show()
-```
-
 Let's compute an $\alpha$ for which  the KL divergence  between $h$ and $g$ is the same as that between $h$ and $f$.
 
 ```{code-cell} ipython3
 # where KL_f = KL_g
-α_arr[np.argmin(np.abs(KL_g_arr-KL_f_arr))]
+discretion = α_arr[np.argmin(np.abs(KL_g_arr-KL_f_arr))]
 ```
 
 We can compute and plot the convergence point $\pi_{\infty}$ for each $\alpha$ to verify that the convergence is indeed governed by the KL divergence.
@@ -617,21 +585,24 @@ Thus, the graph below confirms how a minimum  KL divergence governs what our typ
 
 
 ```{code-cell} ipython3
-α_arr_x = α_arr[(α_arr<0.28)|(α_arr>0.38)]
+α_arr_x = α_arr[(α_arr<discretion)|(α_arr>discretion)]
 π_lim_arr = π_lim_v(α_arr_x)
 
 # plot
 fig, ax = plt.subplots(1, figsize=[10, 6])
 
-ax.plot(α_arr, KL_g_arr, label='KL(g, h)')
-ax.plot(α_arr, KL_f_arr, label='KL(f, h)')
-ax.set_ylabel('K-L divergence')
+ax.plot(α_arr, KL_g_arr, label='KL(h, g)')
+ax.plot(α_arr, KL_f_arr, label='KL(h, f)')
+ax.set_ylabel('KL divergence')
 ax.set_xlabel(r'$\alpha$')
 
 # plot KL
 ax2 = ax.twinx()
 # plot limit point
-ax2.scatter(α_arr_x, π_lim_arr, facecolors='none', edgecolors='tab:blue', label=r'$\pi$ lim')
+ax2.scatter(α_arr_x, π_lim_arr, 
+            facecolors='none', 
+            edgecolors='tab:blue', 
+            label=r'$\pi$ lim')
 ax2.set_ylabel('π lim')
 
 ax.legend(loc=[0.85, 0.8])
@@ -640,13 +611,17 @@ plt.show()
 ```
 
 Evidently, our type 1 learner who applies Bayes' law to his misspecified set of statistical models eventually learns an approximating model that is as close as possible to the true model, as measured by its
-Kullback-Leibler divergence.
+Kullback-Leibler divergence:
+
+- When $\alpha$ is small, $KL_g < KL_f$ meaning the divergence of $g$ from $h$ is smaller than that of $f$ and so the limit point of $\pi_t$ is close to $0$.
+
+- When $\alpha$ is large, $KL_f < KL_g$ meaning the divergence of $f$ from $h$ is smaller than that of $g$ and so the limit point of $\pi_t$ is close to $1$.
 
 ## Type 2 Agent
 
 We now describe how our type 2 agent formulates his learning problem and what he eventually learns.
 
-Our type 2 agent understands the correct statistical  model but acknowledges does not know $\alpha$.
+Our type 2 agent understands the correct statistical model but does not know $\alpha$.
 
 We apply Bayes law to deduce an algorithm for  learning $\alpha$ under the assumption
 that the agent knows that
@@ -657,7 +632,7 @@ $$
 
 but does not know $\alpha$.
 
-We'll assume that the person starts out with a prior probabilty $\pi_0(\alpha)$ on
+We'll assume that the person starts out with a prior probability $\pi_0(\alpha)$ on
 $\alpha \in (0,1)$ where the prior has one of the forms that we deployed in {doc}`this quantecon lecture <bayes_nonconj>`.
 
 
@@ -681,7 +656,7 @@ $t \rightarrow + \infty$.
 
 Let us try a uniform prior first.
 
-We use the `Mixture` class in Numpyro to construct the likelihood function.
+We use the `Mixture` class in numpyro to construct the likelihood function.
 
 ```{code-cell} ipython3
 α = 0.8
@@ -699,8 +674,8 @@ def model(w):
 def MCMC_run(ws):
     "Compute posterior using MCMC with observed ws"
 
-    kernal = NUTS(model)
-    mcmc = MCMC(kernal, num_samples=5000, num_warmup=1000, progress_bar=False)
+    kernel = NUTS(model)
+    mcmc = MCMC(kernel, num_samples=5000, num_warmup=1000, progress_bar=False)
 
     mcmc.run(rng_key=random.PRNGKey(142857), w=jnp.array(ws))
     sample = mcmc.get_samples()
@@ -753,9 +728,149 @@ Thus, the  following situation prevails quite generally in empirical work.
 A scientist approaches the data with a manifold $S$ of statistical models $ s (X | \theta)$ , where $s$ is a probability distribution over a random vector $X$, $\theta \in \Theta$
 is a vector of parameters, and $\Theta$ indexes the manifold of models.
 
-The scientist with observations that he interprests as realizations $x$ of the random vector $X$ wants to solve an **inverse problem** of somehow _inverting_
+The scientist with observations that he interprets as realizations $x$ of the random vector $X$ wants to solve an **inverse problem** of somehow _inverting_
 $s(x | \theta)$ to infer $\theta$ from $x$.
 
 But the scientist's model is misspecified, being only an approximation to an unknown  model $h$ that nature uses to generate $X$.
 
 If the scientist uses Bayes' law or a related  likelihood-based  method to infer $\theta$, it occurs quite generally that for large sample sizes the inverse problem infers a  $\theta$ that minimizes  the KL divergence of the scientist's model $s$ relative to nature's   model $h$.
+
+
+## Exercises
+
+```{exercise}
+:label: mix_model_ex1
+
+In {doc}`likelihood_bayes`, we studied the consequence of applying likelihood ratio 
+and Bayes' law to a misspecified statistical model.
+
+In that lecture, we used a model selection algorithm to study the case where the true data generating process is a mixture.
+
+In this lecture, we studied how to correctly "learn" a model generated by a mixing process using a Bayesian approach.
+
+To fix the algorithm we used in {doc}`likelihood_bayes`, a correct Bayesian approach should directly model the uncertainty about $x$ and update beliefs about it as new data arrives. 
+
+Here is the algorithm:
+
+First we specify a prior distribution for $x$ given by $x \sim \text{Beta}(\alpha_0, \beta_0)$ with expectation $\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}$.
+
+The likelihood for a single observation $w_t$ is $p(w_t|x) = x f(w_t) + (1-x) g(w_t)$. 
+
+For a sequence $w^t = (w_1, \dots, w_t)$, the likelihood is $p(w^t|x) = \prod_{i=1}^t p(w_i|x)$. 
+
+The posterior distribution is updated using $p(x|w^t) \propto p(w^t|x) p(x)$. 
+
+Recursively, the posterior after $w_t$ is $p(x|w^t) \propto p(w_t|x) p(x|w^{t-1})$. 
+
+Without a conjugate prior, we can approximate the posterior by discretizing $x$ into a grid. 
+
+Your task is to implement this algorithm in Python. 
+
+You can verify your implementation by checking that the posterior mean converges to the true value of $x$ as $t$ increases in {doc}`likelihood_bayes`.
+```
+
+```{solution-start} mix_model_ex1
+:class: dropdown
+```
+
+Here is one solution:
+
+First we define the mixture probability 
+and parameters of prior distributions
+
+```{code-cell} ipython3
+x_true = 0.5
+T_mix = 200
+
+# Three different priors with means 0.25, 0.5, 0.75
+prior_params = [(1, 3), (1, 1), (3, 1)]
+prior_means = [a/(a+b) for a, b in prior_params]
+
+w_mix = draw_lottery(x_true, T_mix)
+```
+
+```{code-cell} ipython3
+@jit
+def learn_x_bayesian(observations, α0, β0, grid_size=2000):
+    """
+    Sequential Bayesian learning of the mixing probability x
+    using a grid approximation.
+    """
+    w = np.asarray(observations)
+    T = w.size
+
+    x_grid = np.linspace(1e-3, 1 - 1e-3, grid_size)
+
+    # Log prior
+    log_prior = (α0 - 1) * np.log(x_grid) + (β0 - 1) * np.log1p(-x_grid)
+
+    μ_path = np.empty(T + 1)
+    μ_path[0] = α0 / (α0 + β0)
+
+    log_post = log_prior.copy()
+
+    for t in range(T):
+        wt = w[t]
+        # P(w_t | x) = x f(w_t) + (1 - x) g(w_t)
+        like = x_grid * f(wt) + (1 - x_grid) * g(wt)
+        log_post += np.log(like)
+
+        # normalize
+        log_post -= log_post.max()
+        post = np.exp(log_post)
+        post /= post.sum()
+
+        μ_path[t + 1] = x_grid @ post
+
+    return μ_path
+
+x_posterior_means = [learn_x_bayesian(w_mix, α0, β0) for α0, β0 in prior_params]
+```
+
+Let's visualize how the posterior mean of $x$ evolves over time, starting from three different prior beliefs.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(10, 6))
+
+for i, (x_means, mean0) in enumerate(zip(x_posterior_means, prior_means)):
+    ax.plot(range(T_mix + 1), x_means, 
+            label=fr'Prior mean = ${mean0:.2f}$', 
+            color=colors[i], linewidth=2)
+
+ax.axhline(y=x_true, color='black', linestyle='--', 
+           label=f'True x = {x_true}', linewidth=2)
+ax.set_xlabel('$t$')
+ax.set_ylabel('Posterior mean of $x$')
+ax.legend()
+plt.show()
+```
+
+The plot shows that regardless of the initial prior belief, all three posterior means eventually converge towards the true value of $x=0.5$.
+
+Next, let's look at multiple simulations with a longer time horizon, all starting from a uniform prior.
+
+```{code-cell} ipython3
+set_seed()
+n_paths = 20
+T_long = 10_000
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+for j in range(n_paths):
+    w_path = draw_lottery(x_true, T_long) 
+    x_means = learn_x_bayesian(w_path, 1, 1)  # Uniform prior
+    ax.plot(range(T_long + 1), x_means, alpha=0.5, linewidth=1)
+
+ax.axhline(y=x_true, color='red', linestyle='--', 
+            label=f'True x = {x_true}', linewidth=2)
+ax.set_ylabel('Posterior mean of $x$')
+ax.set_xlabel('$t$')
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+We can see that the posterior mean of $x$ converges to the true value $x=0.5$.
+
+```{solution-end}
+```

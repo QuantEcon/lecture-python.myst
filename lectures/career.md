@@ -206,8 +206,8 @@ class CareerWorkerProblem:
 
         self.F_probs = BetaBinomial(grid_size - 1, F_a, F_b).pdf()
         self.G_probs = BetaBinomial(grid_size - 1, G_a, G_b).pdf()
-        self.F_mean = np.sum(self.θ * self.F_probs)
-        self.G_mean = np.sum(self.ϵ * self.G_probs)
+        self.F_mean = self.θ @ self.F_probs
+        self.G_mean = self.ϵ @ self.G_probs
 
         # Store these parameters for str and repr methods
         self._F_a, self._F_b = F_a, F_b

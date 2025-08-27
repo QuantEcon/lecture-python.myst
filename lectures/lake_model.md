@@ -155,10 +155,10 @@ $$
 X_{t+1} = A X_t
 \quad \text{where} \quad
 A :=
-\begin{pmatrix}
+\begin{bmatrix}
     (1-d)(1-\lambda) + b & (1-d)\alpha + b  \\
     (1-d)\lambda & (1-d)(1-\alpha)
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 This law tells us how total employment and unemployment evolve over time.
@@ -170,16 +170,16 @@ Now let's derive the law of motion for rates.
 To get these we can divide both sides of $X_{t+1} = A X_t$ by  $N_{t+1}$ to get
 
 $$
-\begin{pmatrix}
+\begin{bmatrix}
     U_{t+1}/N_{t+1} \\
     E_{t+1}/N_{t+1}
-\end{pmatrix} =
+\end{bmatrix} =
 \frac1{1+g} A
-\begin{pmatrix}
+\begin{bmatrix}
     U_{t}/N_{t}
     \\
     E_{t}/N_{t}
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 Letting
@@ -257,7 +257,7 @@ class LakeModel:
 
 
     def rate_steady_state(self, tol=1e-6):
-        """
+        r"""
         Finds the steady state of the system :math:`x_{t+1} = \hat A x_{t}`
 
         Returns
@@ -496,7 +496,7 @@ Thus, the percentages of time that an  infinitely lived worker  spends employed 
 
 How long does it take for time series sample averages to converge to cross-sectional averages?
 
-We can use [QuantEcon.py's](http://quantecon.org/quantecon-py)
+We can use [QuantEcon.py's](https://quantecon.org/quantecon-py)
 MarkovChain class to investigate this.
 
 Let's plot the path of the sample averages over 5,000 periods
@@ -699,7 +699,7 @@ def _update_bellman(α, β, γ, c, σ, w_vec, p_vec, V, V_new, U):
         V_new[w_idx] = u(w, σ) + β * ((1 - α) * V[w_idx] + α * U)
 
     U_new = u(c, σ) + β * (1 - γ) * U + \
-                    β * γ * np.sum(np.maximum(U, V) * p_vec)
+                    β * γ * (np.maximum(U, V) @ p_vec)
 
     return U_new
 
@@ -836,8 +836,8 @@ def compute_steady_state_quantities(c, τ):
     u, e = x
 
     # Compute steady state welfare
-    w = np.sum(V * p_vec * (w_vec - τ > w_bar)) / np.sum(p_vec * (w_vec -
-            τ > w_bar))
+    mask = (w_vec - τ > w_bar)
+    w = ((V * p_vec * mask) @ np.ones_like(p_vec)) / ((p_vec * mask) @ np.ones_like(p_vec))
     welfare = e * w + u * U
 
     return e, u, welfare
@@ -1005,7 +1005,7 @@ class LakeModelModified:
 
 
     def rate_steady_state(self, tol=1e-6):
-        """
+        r"""
         Finds the steady state of the system :math:`x_{t+1} = \hat A x_{t}`
 
         Returns
