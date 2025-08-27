@@ -185,12 +185,12 @@ The **Kronecker product** of $A$ and $B$ is defined, in block matrix form, by
 
 $$
     A \otimes B =
-    \begin{pmatrix}
+    \begin{bmatrix}
     a_{11}B & a_{12}B & \dots & a_{1s}B \\
     a_{21}B & a_{22}B & \dots & a_{2s}B \\
       &   & \vdots &   \\
     a_{m1}B & a_{m2}B & \dots & a_{ms}B \\
-    \end{pmatrix}.
+    \end{bmatrix}.
 $$
 
 $A \otimes B$ is an $mn \times st$ matrix.
@@ -243,15 +243,15 @@ where
 
 $$
     A =
-    \begin{pmatrix}
+    \begin{bmatrix}
         \mathbf{1}_n' \otimes \mathbf{I}_m \\
         \mathbf{I}_n \otimes \mathbf{1}_m' \\
-    \end{pmatrix}
+    \end{bmatrix}
     \quad \text{and} \quad
-    b = \begin{pmatrix}
+    b = \begin{bmatrix}
             p \\
             q \\
-        \end{pmatrix}
+        \end{bmatrix}
 $$
 
 
@@ -300,27 +300,27 @@ The numbers in the above table tell us to set $m = 3$, $n = 5$, and construct
 the following objects:
 
 $$
-p = \begin{pmatrix}
+p = \begin{bmatrix}
         50 \\
         100 \\
         150
-    \end{pmatrix},
+    \end{bmatrix},
     \quad
     q =
-    \begin{pmatrix}
+    \begin{bmatrix}
         25 \\
         115 \\
         60 \\
         30 \\
         70
-    \end{pmatrix}
+    \end{bmatrix}
     \quad \text{and} \quad
     C =
-    \begin{pmatrix}
+    \begin{bmatrix}
         10 &15 &20 &20 &40 \\
         20 &40 &15 &30 &30 \\
         30 &35 &40 &55 &25
-    \end{pmatrix}.
+    \end{bmatrix}.
 $$
 
 Let's write Python code that sets up the problem and solves it.
@@ -576,7 +576,7 @@ We can write the dual problem as
 $$
 \begin{aligned}
 \max_{u_i, v_j} \ & p u + q v \\
-\mbox{subject to } \ & A' \begin{pmatrix} u \\ v \\ \end{pmatrix} = \operatorname{vec}(C) \\
+\mbox{subject to } \ & A' \begin{bmatrix} u \\ v \\ \end{bmatrix} = \operatorname{vec}(C) \\
 \end{aligned}
 $$ (dualproblem2)
 

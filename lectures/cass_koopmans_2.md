@@ -857,7 +857,7 @@ T_arr = [250, 150, 75, 50]
 fix, axs = plt.subplots(2, 3, figsize=(13, 6))
 titles = ['Arrow-Hicks Prices', 'Labor Rental Rate', 'Capital Rental Rate',
           'Consumption', 'Capital', 'Lagrange Multiplier']
-ylabels = ['$q_t^0$', '$w_t$', '$\eta_t$', '$c_t$', '$k_t$', '$\mu_t$']
+ylabels = ['$q_t^0$', '$w_t$', r'$\eta_t$', '$c_t$', '$k_t$', r'$\mu_t$']
 
 for T in T_arr:
     c_path, k_path = bisection(pp, 0.3, k_ss/3, T, verbose=False)
@@ -905,7 +905,7 @@ for γ in γ_arr:
     paths = [q_path, w_path, η_path, c_path, k_path, μ_path]
 
     for i, ax in enumerate(axs.flatten()):
-        ax.plot(paths[i], label=f'$\gamma = {γ}$')
+        ax.plot(paths[i], label=fr'$\gamma = {γ}$')
         ax.set(title=titles[i], ylabel=ylabels[i], xlabel='t')
         if titles[i] == 'Capital':
             ax.axhline(k_ss, lw=1, ls='--', c='k')

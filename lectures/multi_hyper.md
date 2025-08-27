@@ -71,7 +71,7 @@ Things have to add up so $\sum_{i=1}^c k_i = n$.
 Under the hypothesis that the selection process judges proposals on their quality and that quality is independent of continent of the author's continent of residence, the administrator views the outcome of the selection procedure as a random vector
 
 $$
-X = \begin{pmatrix} k_1 \cr k_2 \cr \vdots \cr k_c \end{pmatrix}.
+X = \begin{bmatrix} k_1 \cr k_2 \cr \vdots \cr k_c \end{bmatrix}.
 $$
 
 To evaluate whether the selection procedure is **color blind** the administrator wants to  study whether the particular realization of $X$ drawn can plausibly
@@ -94,7 +94,7 @@ So $n = 15$.
 The administrator wants to know the probability distribution of outcomes
 
 $$
-X = \begin{pmatrix} k_1 \cr k_2 \cr \vdots \cr k_4 \end{pmatrix}.
+X = \begin{bmatrix} k_1 \cr k_2 \cr \vdots \cr k_4 \end{bmatrix}.
 $$
 
 In particular, he wants to know whether a particular
@@ -272,7 +272,7 @@ K_arr = [5, 10, 15]
 urn = Urn(K_arr)
 ```
 
-Now use the Urn Class method `pmf` to compute the probability of the outcome $X = \begin{pmatrix} 2 & 2 & 2 \end{pmatrix}$
+Now use the Urn Class method `pmf` to compute the probability of the outcome $X = \begin{bmatrix} 2 & 2 & 2 \end{bmatrix}$
 
 ```{code-cell} python3
 k_arr = [2, 2, 2] # array of number of observed successes

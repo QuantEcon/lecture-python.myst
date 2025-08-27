@@ -481,7 +481,7 @@ def learning_example(F_a=1, F_b=1, G_a=3, G_b=1.2):
     ax3.fill_between(π_grid, roots[0], roots[1], color='green', alpha=0.15)
     ax3.fill_between(π_grid, roots[1], w_max, color='blue', alpha=0.15)
     ax3.hlines(roots, 0., 1., linestyle="--")
-    ax3.set(xlabel='$\pi$', ylabel='$w$')
+    ax3.set(xlabel=r'$\pi$', ylabel='$w$')
     ax3.grid()
 
     plt.show()
@@ -694,8 +694,8 @@ def expected_ratio(F_a=1, F_b=1, G_a=3, G_b=1.2):
         plt.plot(π_grid, expected_rario, label=f"{q} generates")
 
     plt.hlines(1, 0, 1, linestyle="--")
-    plt.xlabel("$π_t$")
-    plt.ylabel("$E[\pi_{t+1}/\pi_t]$")
+    plt.xlabel(r"$\pi_t$")
+    plt.ylabel(r"$E[\pi_{t+1}/\pi_t]$")
     plt.legend()
 
     plt.show()

@@ -654,7 +654,7 @@ of rank $1$.
 Thus, we have
 
 $$
-X = \sigma_1 \begin{pmatrix}U_{11}V_{1}^\top \\U_{21}V_{1}^\top \\\cdots\\U_{m1}V_{1}^\top \\\end{pmatrix} + \sigma_2\begin{pmatrix}U_{12}V_{2}^\top \\U_{22}V_{2}^\top \\\cdots\\U_{m2}V_{2}^\top \\\end{pmatrix}+\ldots + \sigma_p\begin{pmatrix}U_{1p}V_{p}^\top \\U_{2p}V_{p}^\top \\\cdots\\U_{mp}V_{p}^\top \\\end{pmatrix}
+X = \sigma_1 \begin{bmatrix}U_{11}V_{1}^\top \\U_{21}V_{1}^\top \\\cdots\\U_{m1}V_{1}^\top \\\end{bmatrix} + \sigma_2\begin{bmatrix}U_{12}V_{2}^\top \\U_{22}V_{2}^\top \\\cdots\\U_{m2}V_{2}^\top \\\end{bmatrix}+\ldots + \sigma_p\begin{bmatrix}U_{1p}V_{p}^\top \\U_{2p}V_{p}^\top \\\cdots\\U_{mp}V_{p}^\top \\\end{bmatrix}
 $$ (eq:PCA2)
 
 Here is how we would interpret the objects in the  matrix equation {eq}`eq:PCA2` in
@@ -974,7 +974,7 @@ def compare_pca_svd(da):
     axs[0].set_title('ε')
     axs[0].set_xlabel('n')
     axs[1].plot(da.VT[:da.r, :].T * np.sqrt(da.λ))
-    axs[1].set_title('$V^\top *\sqrt{\lambda}$')
+    axs[1].set_title(r'$V^\top *\sqrt{\lambda}$')
     axs[1].set_xlabel('n')
     plt.show()
 ```

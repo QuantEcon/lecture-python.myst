@@ -1334,7 +1334,7 @@ Weaker sufficient conditions for convergence  associate eigenvalues equaling or 
 ## Code
 
 Our preceding simulations and calculations are based on code in
-the file [lss.py](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) from the [QuantEcon.py](http://quantecon.org/quantecon-py) package.
+the file [lss.py](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) from the [QuantEcon.py](https://quantecon.org/quantecon-py) package.
 
 The code implements a class for handling linear state space models (simulations, calculating moments, etc.).
 
