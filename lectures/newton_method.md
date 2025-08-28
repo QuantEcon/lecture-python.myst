@@ -29,7 +29,7 @@ kernelspec:
 ```
 
 ```{seealso}
-A version of this lecture using a GPU is [available here](https://jax.quantecon.org/newtons_method.html)
+A version of this lecture using [JAX](https://github.com/jax-ml/jax) is {doc}`available here <jax:newtons_method>`
 ```
 
 ## Overview
@@ -789,7 +789,7 @@ With the larger overhead, the speed is not better than the optimized `scipy` fun
 Our next step is to investigate a large market with 3,000 goods.
 
 A JAX version of this section using GPU accelerated linear algebra and
-automatic differentiation is available [here](https://jax.quantecon.org/newtons_method.html#application)
+automatic differentiation is {doc}`available here <jax:newtons_method>`
 
 The excess demand function is essentially the same, but now the matrix $A$ is $3000 \times 3000$ and the parameter vectors $b$ and $c$ are $3000 \times 1$.
 
