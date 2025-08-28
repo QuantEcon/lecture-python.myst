@@ -548,7 +548,8 @@ Let's consider how the interest rate affects consumption.
 
 Reproduce the following figure, which shows (approximately) optimal consumption policies for different interest rates
 
-```{figure} /_static/lecture_specific/ifp/ifp_policies.png
+```{image} /_static/lecture_specific/ifp/ifp_policies.png
+:align: center
 ```
 
 * Other than `r`, all parameters are at their default values.
