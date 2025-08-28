@@ -912,7 +912,7 @@ def logL(β, model):
 
 ```{code-cell} ipython3
 G_logL = jax.grad(logL)
-H_logL = jax.jacfwd(logL)
+H_logL = jax.jacfwd(G_logL)
 ```
 
 ```{solution-end}
