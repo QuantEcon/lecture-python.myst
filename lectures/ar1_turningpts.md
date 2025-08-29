@@ -133,21 +133,49 @@ We'll also plot a bunch of samples of sequences of future values and watch where
 
 ```{code-cell} ipython3
 class AR1(NamedTuple):
-    """Define a AR1 process
+    """
+    Represents a univariate first-order autoregressive (AR(1)) process.
 
     Parameters
-    ---------
-    rho: float
-        coefficient
-    sigma: float
-        standard error of the error term
+    ----------
+    rho : float
+        Autoregressive coefficient, must satisfy |rho| < 1 for stationarity.
+    sigma : float
+        Standard deviation of the error term.
+    y0 : float
+        Initial value of the process at time t=0.
+    T0 : int, optional
+        Length of the initial observed path (default is 100).
+    T1 : int, optional
+        Length of the future path to simulate (default is 100).
     """
     rho:float
     sigma:float
+    y0: float
+    T0: int=100
+    T1: int=100
 
 
-def AR1_simulate(ar1: AR1, y0, T, subkey):
-    """Generate a realization of the AR1 process given parameters and length"""
+def AR1_simulate(ar1: AR1, T, subkey):
+    """
+    Simulate a realization of the AR(1) process for a given number of periods.
+
+    Parameters
+    ----------
+    ar1 : AR1
+        AR1 named tuple containing process parameters (rho, sigma, y0).
+    T : int
+        Number of time steps to simulate.
+    subkey : jax.random.PRNGKey
+        JAX random key for generating random noise.
+
+    Returns
+    -------
+    y : jax.numpy.ndarray
+        Simulated path of the AR(1) process of length T.
+    """
+    # ...function code...
+    rho, sigma, y0 = ar.rho, ar1.sigma, ar1.y0
     # Allocate space and draw epsilons
     y = jnp.empty(T)
     eps = ar1.sigma * random.normal(subkey, (T,))
@@ -160,11 +188,9 @@ def AR1_simulate(ar1: AR1, y0, T, subkey):
     return jnp.asarray(y)
 
 
-def plot_path(ar1, initial_path, predict_length):
+def plot_path(ar1, initial_path, key, ax):
     """Plot the initial path and the preceding predictive densities"""
-    rho, sigma = ar1.rho, ar1.sigma
-    T0 = len(initial_path)
-    T1 = predict_length
+    rho, sigma, T0, T1 = ar1.rho, ar1.sigma, ar1.T0, ar1.T1
     
     # Compute moments and confidence intervals
     y_T0 = initial_path[-1]
@@ -180,8 +206,6 @@ def plot_path(ar1, initial_path, predict_length):
     y_lower_c90 = center - 1.65 * jnp.sqrt(vars)
 
     # Plot
-    fig, ax = plt.subplots(1, 1)
-    #ax.set_title("Initial Path and Predictive Densities", fontsize=15)
     ax.plot(jnp.arange(-T0 + 1, 1), initial_path)
     ax.set_xlim([-T0, T1])
     ax.axvline(0, linestyle='--', alpha=.4, color='k', lw=1)
@@ -189,7 +213,8 @@ def plot_path(ar1, initial_path, predict_length):
     # Simulate 10 future paths
     subkeys = random.split(key, num=10)
     for i in range(10):
-        y_future = AR1_simulate(ar1, y_T0, T1, subkeys[i])
+        ar1_n = AR1(rho=rho, sigma=sigma, y0=y_T0)
+        y_future = AR1_simulate(ar1, T1, subkeys[i])
         ax.plot(jnp.arange(T1), y_future, color='grey', alpha=.5)
     
     # Plot 90% CI
@@ -201,7 +226,6 @@ def plot_path(ar1, initial_path, predict_length):
         )
     ax.plot(jnp.arange(T1), center, color='red', alpha=.7, label='expectation')
     ax.legend(fontsize=12)
-    plt.show()
 ```
 
 ```{code-cell} ipython3
@@ -212,15 +236,15 @@ mystnb:
         Initial path and predictive densities
     name: fig_path
 ---
-ar1 = AR1(rho=0.9, sigma=1)
-T0, T1 = 100, 100
-y0 = 10
+ar1 = AR1(rho=0.9, sigma=1, y0=10, T0=100, T1=100)
 
 # Simulate
-initial_path = AR1_simulate(ar1, y0, T0)
+initial_path = AR1_simulate(ar1, ar1.T0, key)
 
 # Plot
-plot_path(ar1, initial_path, T1)
+fig, ax = plt.subplots(1, 1)
+plot_path(ar1, initial_path, key, ax)
+plt.show()
 ```
 
 As functions of forecast horizon, the coverage intervals have shapes like those described in 
@@ -356,8 +380,9 @@ def draw_from_posterior(sample, size=1e5, bins=20, dis_plot=1):
         sns.displot(
             post_sample, kde=True, stat="density", bins=bins, height=5, aspect=1.5
             )
-  
+    # TODO:Check plot and return
     return post_sample
+
 
 post_samples = draw_from_posterior(initial_path)
 ```
@@ -435,64 +460,118 @@ def next_turning_point(y):
 Now we apply Wecker's original method by simulating future paths and compute predictive distributions, conditioning on the true parameters associated with the data-generating model.
 
 ```{code-cell} ipython3
-def plot_Wecker(initial_path, N, ax):
+---
+mystnb:
+  figure:
+    caption: |
+        Distributions of statistics by Wecker's method
+    name: fig_wecker
+---
+def plot_Wecker(ar1: AR1, initial_path, N, ax):
     """
     Plot the predictive distributions from "pure" Wecker's method.
+
+    Parameters
+    ----------
+    ar1 : AR1
+        An AR1 named tuple containing the process parameters (rho, sigma, T0, T1).
+    initial_path : array-like
+        The initial observed path of the AR(1) process.
+    N : int
+        Number of future sample paths to simulate for predictive distributions.
     """
+    rho, sigma, T0, T1 = ar1.rho, ar1.sigma, ar1.T0, ar1.T1
     # Store outcomes
-    next_reces = np.zeros(N)
-    severe_rec = np.zeros(N)
-    min_vals = np.zeros(N)
-    next_up_turn, next_down_turn = np.zeros(N), np.zeros(N)
+    next_reces = jnp.zeros(N)
+    severe_rec = jnp.zeros(N)
+    min_vals = jnp.zeros(N)
+    next_up_turn, next_down_turn = jnp.zeros(N), jnp.zeros(N)
     
-    # Compute .9 confidence interval]
-    y0 = initial_path[-1]
-    center = np.array([rho**j * y0 for j in range(T1)])
-    vars = np.array([sigma**2 * (1 - rho**(2 * j)) / (1 - rho**2) for j in range(T1)])
-    y_bounds1_c95, y_bounds2_c95 = center + 1.96 * np.sqrt(vars), center - 1.96 * np.sqrt(vars)
-    y_bounds1_c90, y_bounds2_c90 = center + 1.65 * np.sqrt(vars), center - 1.65 * np.sqrt(vars)
+    # Compute confidence intervals
+    y_T0 = initial_path[-1]
+    center = jnp.array([rho**j * yT0 for j in range(T1)])
+    vars = jnp.array(
+        [sigma**2 * (1 - rho**(2 * j)) / (1 - rho**2) for j in range(T1)]
+        )
+    y_upper_c95 = center + 1.96 * jnp.sqrt(vars)
+    y_lower_c95 = center - 1.96 * jnp.sqrt(vars)
+
+    y_upper_c90 = center + 1.65 * jnp.sqrt(vars)
+    y_lower_c90 = center - 1.65 * jnp.sqrt(vars)
 
     # Plot
     ax[0, 0].set_title("Initial path and predictive densities", fontsize=15)
-    ax[0, 0].plot(np.arange(-T0 + 1, 1), initial_path)
+    ax[0, 0].plot(jnp.arange(-T0 + 1, 1), initial_path)
     ax[0, 0].set_xlim([-T0, T1])
     ax[0, 0].axvline(0, linestyle='--', alpha=.4, color='k', lw=1)
 
     # Plot 90% CI
-    ax[0, 0].fill_between(np.arange(T1), y_bounds1_c95, y_bounds2_c95, alpha=.3)
-    ax[0, 0].fill_between(np.arange(T1), y_bounds1_c90, y_bounds2_c90, alpha=.35)
-    ax[0, 0].plot(np.arange(T1), center, color='red', alpha=.7)
+    ax[0, 0].fill_between(jnp.arange(T1), y_upper_c95, y_lower_c95, alpha=.3)
+    ax[0, 0].fill_between(jnp.arange(T1), y_upper_c90, y_lower_c90, alpha=.35)
+    ax[0, 0].plot(jnp.arange(T1), center, color='red', alpha=.7)
 
     # Simulate future paths
     subkeys = random.split(key, num=N)
     for n in range(N):
-        sim_path = AR1_simulate(ar1, initial_path[-1], T1, subkeys[n])
-        next_reces[n] = next_recession(np.hstack([initial_path[-3:-1], sim_path]))
+        ar1_n = AR1(rho=rho, sigma=sigma, y0=y_T0)
+        sim_path = AR1_simulate(ar1_n, T1, subkeys[n])
+        next_reces[n] = next_recession(jnp.hstack([initial_path[-3:-1], sim_path]))
         severe_rec[n] = next_severe_recession(sim_path)
         min_vals[n] = minimum_value_8q(sim_path)
         next_up_turn[n], next_down_turn[n] = next_turning_point(sim_path)
 
         if n%(N/10) == 0:
-            ax[0, 0].plot(np.arange(T1), sim_path, color='gray', alpha=.3, lw=1)
+            ax[0, 0].plot(jnp.arange(T1), sim_path, color='gray', alpha=.3, lw=1)
             
     # Return next_up_turn, next_down_turn
-    sns.histplot(next_reces, kde=True, stat='density', ax=ax[0, 1], alpha=.8, label='True parameters')
-    ax[0, 1].set_title("Predictive distribution of time until the next recession", fontsize=13)
+    sns.histplot(
+        next_reces, kde=True, stat='density', 
+        ax=ax[0, 1], alpha=.8, label='True parameters'
+        )
+    ax[0, 1].set_title(
+        "Predictive distribution (time until the next recession)",
+        fontsize=13
+        )
 
-    sns.histplot(severe_rec, kde=False, stat='density', ax=ax[1, 0], binwidth=0.9, alpha=.7, label='True parameters')
-    ax[1, 0].set_title(r"Predictive distribution of stopping time of growth$<-2\%$", fontsize=13)
+    sns.histplot(
+        severe_rec, kde=False, stat='density', 
+        ax=ax[1, 0], binwidth=0.9, alpha=.7, label='True parameters'
+        )
+    ax[1, 0].set_title(
+        r"Predictive distribution (stopping time of growth$<-2\%$)",
+        fontsize=13
+        )
 
-    sns.histplot(min_vals, kde=True, stat='density', ax=ax[1, 1], alpha=.8, label='True parameters')
-    ax[1, 1].set_title("Predictive distribution of minimum value in the next 8 periods", fontsize=13)
+    sns.histplot(
+        min_vals, kde=True, stat='density', 
+        ax=ax[1, 1], alpha=.8, label='True parameters'
+        )
+    ax[1, 1].set_title(
+        "Predictive distribution (minimum value in next 8 periods)",
+        fontsize=13
+        )
 
-    sns.histplot(next_up_turn, kde=True, stat='density', ax=ax[2, 0], alpha=.8, label='True parameters')
-    ax[2, 0].set_title("Predictive distribution of time until the next positive turn", fontsize=13)
+    sns.histplot(
+        next_up_turn, kde=True, stat='density', 
+        ax=ax[2, 0], alpha=.8, label='True parameters'
+        )
+    ax[2, 0].set_title(
+        "Predictive distribution (time until the next positive turn)", 
+        fontsize=13
+        )
 
-    sns.histplot(next_down_turn, kde=True, stat='density', ax=ax[2, 1], alpha=.8, label='True parameters')
-    ax[2, 1].set_title("Predictive distribution of time until the next negative turn", fontsize=13)
+    sns.histplot(
+        next_down_turn, kde=True, stat='density', 
+        ax=ax[2, 1], alpha=.8, label='True parameters'
+        )
+    ax[2, 1].set_title(
+        "Predictive distribution (time until the next negative turn)",
+        fontsize=13
+        )
 
-fig, ax = plt.subplots(3, 2, figsize=(15,12))
-plot_Wecker(initial_path, 1000, ax)
+
+fig, ax = plt.subplots(3, 2)
+plot_Wecker(ar1, initial_path, 1000)
 plt.show()
 ```
 
@@ -504,58 +583,107 @@ Now we apply we apply our  "extended" Wecker method based on  predictive densiti
 To approximate  the intergration on the right side of {eq}`ar1-tp-eq4`, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model {eq}`ar1-tp-eq1`.
 
 ```{code-cell} ipython3
-def plot_extended_Wecker(post_samples, initial_path, N, ax):
+---
+mystnb:
+  figure:
+    caption: |
+        Distributions of statistics by extended Wecker's method
+    name: fig_extend_wecker
+---
+def plot_extended_Wecker(ar1, post_samples, initial_path, N, ax):
     """
     Plot the extended Wecker's predictive distribution
     """
+    rho, sigma, T0, T1 = ar1.rho, ar1.sigma, ar1.T0, ar1.T1
     # Select a sample
-    index = np.random.choice(np.arange(len(post_samples['rho'])), N + 1, replace=False)
+    index = random.choice(
+        key, jnp.arange(len(post_samples['rho'])), (N + 1,), replace=False
+        )
     rho_sample = post_samples['rho'][index]
     sigma_sample = post_samples['sigma'][index]
 
     # Store outcomes
-    next_reces = np.zeros(N)
-    severe_rec = np.zeros(N)
-    min_vals = np.zeros(N)
-    next_up_turn, next_down_turn = np.zeros(N), np.zeros(N)
+    next_reces = jnp.zeros(N)
+    severe_rec = jnp.zeros(N)
+    min_vals = jnp.zeros(N)
+    next_up_turn, next_down_turn = jnp.zeros(N), jnp.zeros(N)
 
     # Plot
-    ax[0, 0].set_title("Initial path and future paths simulated from posterior draws", fontsize=15)
-    ax[0, 0].plot(np.arange(-T0 + 1, 1), initial_path)
+    ax[0, 0].set_title(
+        "Initial path and future paths simulated from posterior draws", 
+        fontsize=15
+        )
+    ax[0, 0].plot(jnp.arange(-T0 + 1, 1), initial_path)
     ax[0, 0].set_xlim([-T0, T1])
     ax[0, 0].axvline(0, linestyle='--', alpha=.4, color='k', lw=1)
 
     # Simulate future paths
     subkeys = random.split(key, num=N)
     for n in range(N):
-        ar1_n = AR1(rho=rho_sample[n], sigma=sigma_sample[n])
-        sim_path = AR1_simulate(ar1_n, initial_path[-1], T1, subkeys[n])
-        next_reces[n] = next_recession(np.hstack([initial_path[-3:-1], sim_path]))
+        ar1_n = AR1(
+            rho=rho_sample[n], sigma=sigma_sample[n], y0= initial_path[-1]
+            )
+        sim_path = AR1_simulate(ar1_n, T1, subkeys[n])
+        next_reces[n] = next_recession(
+            jnp.hstack([initial_path[-3:-1], sim_path])
+            )
         severe_rec[n] = next_severe_recession(sim_path)
         min_vals[n] = minimum_value_8q(sim_path)
         next_up_turn[n], next_down_turn[n] = next_turning_point(sim_path)
 
         if n % (N / 10) == 0:
-            ax[0, 0].plot(np.arange(T1), sim_path, color='gray', alpha=.3, lw=1)
+            ax[0, 0].plot(jnp.arange(T1), sim_path, color='gray', alpha=.3, lw=1)
         
     # Return next_up_turn, next_down_turn
-    sns.histplot(next_reces, kde=True, stat='density', ax=ax[0, 1], alpha=.6, color=colors[1], label='Sampling from posterior')
-    ax[0, 1].set_title("Predictive distribution of time until the next recession", fontsize=13)
+    sns.histplot(
+        next_reces, kde=True, stat='density',
+        ax=ax[0, 1], alpha=.6, color=colors[1], 
+        label='Sampling from posterior'
+    )
+    ax[0, 1].set_title(
+        "Predictive distribution (time until the next recession)", 
+        fontsize=13)
 
-    sns.histplot(severe_rec, kde=False, stat='density', ax=ax[1, 0], binwidth=.9, alpha=.6, color=colors[1], label='Sampling from posterior')
-    ax[1, 0].set_title(r"Predictive distribution of stopping time of growth$<-2\%$", fontsize=13)
+    sns.histplot(
+        severe_rec, kde=False, stat='density', 
+        ax=ax[1, 0], binwidth=.9, alpha=.6, color=colors[1], 
+        label='Sampling from posterior'
+        )
+    ax[1, 0].set_title(
+        r"Predictive distribution (stopping time of growth$<-2\%$)", 
+        fontsize=13
+        )
 
-    sns.histplot(min_vals, kde=True, stat='density', ax=ax[1, 1], alpha=.6, color=colors[1], label='Sampling from posterior')
-    ax[1, 1].set_title("Predictive distribution of minimum value in the next 8 periods", fontsize=13)
+    sns.histplot(
+        min_vals, kde=True, stat='density', 
+        ax=ax[1, 1], alpha=.6, color=colors[1], 
+        label='Sampling from posterior'
+        )
+    ax[1, 1].set_title(
+        "Predictive distribution (minimum value in the next 8 periods)", 
+        fontsize=13)
 
-    sns.histplot(next_up_turn, kde=True, stat='density', ax=ax[2, 0], alpha=.6, color=colors[1], label='Sampling from posterior')
-    ax[2, 0].set_title("Predictive distribution of time until the next positive turn", fontsize=13)
+    sns.histplot(
+        next_up_turn, kde=True, stat='density', 
+        ax=ax[2, 0], alpha=.6, color=colors[1], 
+        label='Sampling from posterior')
+    ax[2, 0].set_title(
+        "Predictive distribution of time until the next positive turn", 
+        fontsize=13
+        )
 
-    sns.histplot(next_down_turn, kde=True, stat='density', ax=ax[2, 1], alpha=.6, color=colors[1], label='Sampling from posterior')
-    ax[2, 1].set_title("Predictive distribution of time until the next negative turn", fontsize=13)
+    sns.histplot(
+        next_down_turn, kde=True, stat='density', 
+        ax=ax[2, 1], alpha=.6, color=colors[1], 
+        label='Sampling from posterior'
+        )
+    ax[2, 1].set_title(
+        "Predictive distribution of time until the next negative turn", 
+        fontsize=13
+        )
 
-fig, ax = plt.subplots(3, 2, figsize=(15, 12))
-plot_extended_Wecker(post_samples, initial_path, 1000, ax)
+fig, ax = plt.subplots(3, 2)
+plot_extended_Wecker(ar1, post_samples, initial_path, 1000, ax)
 plt.show()
 ```
 
@@ -564,10 +692,17 @@ plt.show()
 Finally, we plot both the original Wecker method and the extended method with parameter values drawn from the posterior together to compare the differences that emerge from pretending to know parameter values when they are actually uncertain.  
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(3, 2, figsize=(15,12))
-plot_Wecker(initial_path, 1000, ax)
+---
+mystnb:
+  figure:
+    caption: |
+        Comparison between two methods
+    name: fig_wecker
+---
+fig, ax = plt.subplots(3, 2)
+plot_Wecker(ar1, initial_path, 1000, ax)
 ax[0, 0].clear()
-plot_extended_Wecker(post_samples, initial_path, 1000, ax)
+plot_extended_Wecker(ar1, post_samples, initial_path, 1000, ax)
 plt.legend()
 plt.show()
 ```
