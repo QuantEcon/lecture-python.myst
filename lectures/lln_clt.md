@@ -52,7 +52,6 @@ We'll need the following imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import random
 import numpy as np
 from scipy.stats import t, beta, lognorm, expon, gamma, uniform

@@ -52,7 +52,6 @@ We'll begin by loading some Python modules.
 :hide-output: false
 
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numba import vectorize, jit, prange
 from math import gamma

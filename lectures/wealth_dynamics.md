@@ -77,7 +77,6 @@ We will use the following imports.
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
 from numba import jit, float64, prange

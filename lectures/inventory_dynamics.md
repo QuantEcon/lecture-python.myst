@@ -48,7 +48,6 @@ Let's start with some imports
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numba import jit, float64, prange
 from numba.experimental import jitclass
