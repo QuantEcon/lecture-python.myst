@@ -53,7 +53,6 @@ Let's start with some standard imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import quantecon as qe
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
@@ -1113,7 +1112,8 @@ is known as [PageRank](https://en.wikipedia.org/wiki/PageRank).
 
 To illustrate the idea, consider the following diagram
 
-```{figure} /_static/lecture_specific/finite_markov/web_graph.png
+```{image} /_static/lecture_specific/finite_markov/web_graph.png
+:align: center
 ```
 
 Imagine that this is a miniature version of the WWW, with

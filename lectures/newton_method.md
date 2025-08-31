@@ -29,8 +29,7 @@ kernelspec:
 ```
 
 ```{seealso}
-**GPU:** A version of this lecture which makes use of [jax](https://jax.readthedocs.io) to run the code
-on a `GPU` is [available here](https://jax.quantecon.org/newtons_method.html)
+A version of this lecture using [JAX](https://github.com/jax-ml/jax) is {doc}`available here <jax:newtons_method>`
 ```
 
 ## Overview
@@ -84,9 +83,7 @@ from typing import NamedTuple
 from scipy.optimize import root
 import jax.numpy as jnp
 import jax
-
-# Enable 64-bit precision
-jax.config.update("jax_enable_x64", True)
+jax.config.update("jax_enable_x64", True) # Enable 64-bit precision
 ```
 
 ## Fixed point computation using Newton's method
@@ -812,7 +809,6 @@ With the larger overhead, the speed is not better than the optimized `scipy` fun
 ### A high-dimensional problem
 
 Our next step is to investigate a large market with 3,000 goods.
-
 
 The excess demand function is essentially the same, but now the matrix $A$ is $3000 \times 3000$ and the parameter vectors $b$ and $c$ are $3000 \times 1$.
 
