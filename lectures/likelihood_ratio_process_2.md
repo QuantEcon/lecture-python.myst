@@ -260,7 +260,7 @@ To design a socially optimal allocation, the social planner wants to know what a
 As for the endowment sequences, agent $i$ believes that nature draws i.i.d. sequences from joint densities 
 
 $$
-\pi_t^i(s^t) = \pi(s_t)^i \pi^i(s_{t-1}) \cdots \pi^i(s_0)
+\pi_t^i(s^t) = \pi^i(s_t) \pi^i(s_{t-1}) \cdots \pi^i(s_0)
 $$ 
 
 As for attitudes toward bearing risks, agent $i$ has a one-period utility function
@@ -269,7 +269,7 @@ $$
 u(c_t^i) = \ln (c_t^i)
 $$
 
-with marginal utility of consumption in period $i$
+with marginal utility of consumption in period $t$
 
 $$
 u'(c_t^i) = \frac{1}{c_t^i}
@@ -303,7 +303,36 @@ This means that the social planner knows and respects
 * each agent's one period utility function $u(\cdot) = \ln(\cdot)$
 * each agent $i$'s probability model $\{\pi_t^i(s^t)\}_{t=0}^\infty$
 
-Consequently, we anticipate that these objects will appear in the social planner's rule for allocating the aggregate endowment each period. 
+Consequently, we anticipate that these objects will appear in the social planner's rule for allocating the aggregate endowment each period.
+
+The Lagrangian for the social planner's problem is
+
+$$
+L = \sum_{t=0}^{\infty}\sum_{s^t} \{ \lambda \delta^t u(c_t^1(s^t)) \pi_t^1(s^t) + (1-\lambda) \delta^t u(c_t^2(s^t)) \pi_t^2(s^t) + \theta_t(s^t)(1-c_t^1(s^t)-c_t^2(s^t)) \}
+$$
+
+where $\theta_t(s^t)$ are the shadow prices.
+
+The first order conditions for maximizing $L$ with respect to $c_t^i(s^t)$ are:
+
+$$
+\lambda \delta^t u'(c_t^1(s^t)) \pi_t^1(s^t) = \theta_t(s^t), \quad (1-\lambda) \delta^t u'(c_t^2(s^t)) \pi_t^2(s^t) = \theta_t(s^t)
+$$
+
+Substituting formula {eq}`eq:allocationrule1` for $c_t^1(s^t)$, we get
+
+$$
+\theta_t(s^t) = \delta^t [(1-\lambda)\pi_t^2(s^t) + \lambda \pi_t^1(s^t)]
+$$
+
+Now for the competitive equilibrium, notice that if we take $\mu_1 = \frac{1}{\lambda}$ and $\mu_2 = \frac{1}{1-\lambda}$, formula {eq}`eq:allocationce` agrees with formula {eq}`eq:allocationrule1`, and we get from {eq}`eq:priceequation1`
+
+$$
+p_t(s^t) = \delta^t \lambda \pi_t^1(s^t) \frac{1-\lambda + \lambda l_t(s^t)}{\lambda l_t(s^t)} = \delta^t \pi_t^2(s^t)[1-\lambda + \lambda l_t(s^t)] = 
+\delta^t  \bigl[(1 - \lambda) \pi_t^2(s^t) + \lambda \pi_t^1(s^t)\bigr]
+$$
+
+Thus, "shadow" prices $\theta_t(s^t)$ in the planning problem equal the competitive equilibrium prices $p_t(s^t)$. 
 
 
 First-order necessary conditions for maximizing welfare criterion {eq}`eq:welfareW` subject to the feasibility constraint {eq}`eq:feasibility` are 
@@ -830,11 +859,6 @@ Complete markets models with homogeneous beliefs, a kind often used in macroecon
 Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes` and as applied in {doc}`odu`.
 
 Likelihood ratio processes appear again in {doc}`advanced:additive_functionals`. 
-
-
-
-{doc}`ge_arrow`
-
 
 
 

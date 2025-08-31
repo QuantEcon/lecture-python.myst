@@ -233,7 +233,7 @@ For our importance sampling estimate, we set $q = h$.
 estimate(g_a, g_b, h_a, h_b, T=1, N=10000)
 ```
 
-Evidently, even at T=1, our importance sampling  estimate is closer to $1$ than is the Monte Carlo estimate.
+Evidently, even at $T=1$, our importance sampling  estimate is closer to $1$ than is the Monte Carlo estimate.
 
 Bigger differences arise when computing expectations over longer sequences, $E_0\left[L\left(\omega^t\right)\right]$.
 
@@ -247,6 +247,16 @@ estimate(g_a, g_b, g_a, g_b, T=10, N=10000)
 ```{code-cell} ipython3
 estimate(g_a, g_b, h_a, h_b, T=10, N=10000)
 ```
+
+The Monte Carlo method underestimates because the likelihood ratio $L(\omega^T) = \prod_{t=1}^T \frac{f(\omega_t)}{g(\omega_t)}$ has a highly skewed distribution under $g$.
+
+Most samples from $g$ produce small likelihood ratios, while the true mean requires occasional very large values that are rarely sampled.
+
+In our case, since $g(\omega) \to 0$ as $\omega \to 0$ while $f(\omega)$ remains bounded, the Monte Carlo procedure undersamples precisely where the likelihood ratio $\frac{f(\omega)}{g(\omega)}$ is largest.
+
+As $T$ increases, this problem worsens exponentially, making standard Monte Carlo increasingly unreliable.
+
+Importance sampling with $q = h$ fixes this by sampling more uniformly from regions important to both $f$ and $g$.
 
 ## Distribution of  Sample Mean
 
@@ -364,10 +374,10 @@ b_list = [0.5, 1.2, 5.]
 ```{code-cell} ipython3
 w_range = np.linspace(1e-5, 1-1e-5, 1000)
 
-plt.plot(w_range, g(w_range), label=f'p=Beta({g_a}, {g_b})')
-plt.plot(w_range, p(w_range, a_list[0], b_list[0]), label=f'g=Beta({a_list[0]}, {b_list[0]})')
-plt.plot(w_range, p(w_range, a_list[1], b_list[1]), label=f'g=Beta({a_list[1]}, {b_list[1]})')
-plt.plot(w_range, p(w_range, a_list[2], b_list[2]), label=f'g=Beta({a_list[2]}, {b_list[2]})')
+plt.plot(w_range, g(w_range), label=f'g=Beta({g_a}, {g_b})')
+plt.plot(w_range, p(w_range, a_list[0], b_list[0]), label=f'$h_1$=Beta({a_list[0]},{b_list[0]})')
+plt.plot(w_range, p(w_range, a_list[1], b_list[1]), label=f'$h_2$=Beta({a_list[1]},{b_list[1]})')
+plt.plot(w_range, p(w_range, a_list[2], b_list[2]), label=f'$h_3$=Beta({a_list[2]},{b_list[2]})')
 plt.title('real data generating process $g$ and importance distribution $h$')
 plt.legend()
 plt.ylim([0., 3.])

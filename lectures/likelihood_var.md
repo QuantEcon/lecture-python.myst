@@ -234,7 +234,29 @@ def simulate_var(model, T, N_paths=1):
 
 ## Likelihood ratio process
 
-Now let's compute likelihood ratio processes for comparing two VAR models
+Now let's compute likelihood ratio processes for comparing two VAR models.
+
+For a VAR model with state vector $x_t$, the log likelihood ratio at time $t$ is
+
+$$
+\ell_t = \log \frac{p_f(x_t | x_{t-1})}{p_g(x_t | x_{t-1})}
+$$
+
+where $p_f$ and $p_g$ are the conditional densities under models $f$ and $g$ respectively.
+
+The cumulative log likelihood ratio process is
+
+$$
+L_t = \sum_{s=1}^{t} \ell_s = \sum_{s=1}^{t} \log \frac{p_f(x_s | x_{s-1})}{p_g(x_s | x_{s-1})}
+$$
+
+For the VAR model $x_{t+1} = A x_t + C w_{t+1}$ where $w_{t+1} \sim \mathcal{N}(0, I)$, the conditional density is
+
+$$
+p(x_{t+1} | x_t) = (2\pi)^{-n/2} |CC^T|^{-1/2} \exp\left(-\frac{1}{2}(x_{t+1} - Ax_t)^T (CC^T)^{-1} (x_{t+1} - Ax_t)\right)
+$$
+
+Let's write those equations in Python
 
 ```{code-cell} ipython3
 def compute_likelihood_ratio_var(paths, model_f, model_g):

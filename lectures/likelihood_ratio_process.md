@@ -993,33 +993,9 @@ def compute_protocol_1_errors(π_minus_1, T_max, N_simulations, f_func, g_func,
         'L_cumulative': L_cumulative,
         'true_models': true_models
     }
-
-def compute_protocol_2_errors(π_minus_1, T_max, N_simulations, f_func, g_func,
-                              F_params=(1, 1), G_params=(3, 1.2)):
-    """
-    Compute error probabilities for Protocol 2.
-    """
-    sequences, true_models = protocol_2(π_minus_1, 
-                        T_max, N_simulations, F_params, G_params)
-    l_ratios, _ = compute_likelihood_ratios(sequences, f_func, g_func)
-    
-    T_range = np.arange(1, T_max + 1)
-    
-    accuracy = np.empty(T_max)
-    for t in range(T_max):
-        predictions = (l_ratios[:, t] >= 1)
-        actual = true_models[:, t]
-        accuracy[t] = np.mean(predictions == actual)
-    
-    return {
-        'T_range': T_range,
-        'accuracy': accuracy,
-        'l_ratios': l_ratios,
-        'true_models': true_models
-    }
 ```
 
-The following code visualizes the error probabilities for timing protocol 1 and 2
+The following code visualizes the error probabilities for timing protocol 1
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -1058,44 +1034,6 @@ def analyze_protocol_1(π_minus_1, T_max, N_simulations, f_func, g_func,
     
     return result
 
-def analyze_protocol_2(π_minus_1, T_max, N_simulations, f_func, g_func, 
-                      theory_error=None, F_params=(1, 1), G_params=(3, 1.2)):
-    """Analyze Protocol 2."""
-    result = compute_protocol_2_errors(π_minus_1, T_max, N_simulations, 
-                                      f_func, g_func, F_params, G_params)
-    
-    # Plot results
-    plt.figure(figsize=(10, 6))
-    plt.plot(result['T_range'], result['accuracy'], 
-            'b-', linewidth=2, label='empirical accuracy')
-    
-    if theory_error is not None:
-        plt.axhline(1 - theory_error, color='r', linestyle='--', 
-                   label=f'theoretical accuracy = {1 - theory_error:.4f}')
-    
-    plt.xlabel('$t$')
-    plt.ylabel('accuracy')
-    plt.legend()
-    plt.ylim(0.5, 1.0)
-    plt.show()
-    
-    return result
-
-def compare_protocols(result1, result2):
-    """Compare results from both protocols."""
-    plt.figure(figsize=(10, 6))
-    
-    plt.plot(result1['T_range'], result1['error_prob'], linewidth=2, 
-            label='Protocol 1 (Model Selection)')
-    plt.plot(result2['T_range'], 1 - result2['accuracy'], 
-            linestyle='--', linewidth=2, 
-            label='Protocol 2 (classification)')
-    
-    plt.xlabel('$T$')
-    plt.ylabel('error probability')
-    plt.legend()
-    plt.show()
-
 # Analyze Protocol 1
 π_minus_1 = 0.5
 T_max = 30
@@ -1129,6 +1067,33 @@ p(\textrm{misclassification}) = {1 \over 2} (\tilde \alpha_t + \tilde \beta_t)
 $$ (eq:classerrorprob)
 
 where $\tilde \alpha_t = {\rm Prob}(l_t < 1 \mid f)$ and $\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)$.
+
+```{code-cell} ipython3
+def compute_protocol_2_errors(π_minus_1, T_max, N_simulations, f_func, g_func,
+                              F_params=(1, 1), G_params=(3, 1.2)):
+    """
+    Compute error probabilities for Protocol 2.
+    """
+    sequences, true_models = protocol_2(π_minus_1, 
+                        T_max, N_simulations, F_params, G_params)
+    l_ratios, _ = compute_likelihood_ratios(sequences, f_func, g_func)
+    
+    T_range = np.arange(1, T_max + 1)
+    
+    accuracy = np.empty(T_max)
+    for t in range(T_max):
+        predictions = (l_ratios[:, t] >= 1)
+        actual = true_models[:, t]
+        accuracy[t] = np.mean(predictions == actual)
+    
+    return {
+        'T_range': T_range,
+        'accuracy': accuracy,
+        'l_ratios': l_ratios,
+        'true_models': true_models
+    }
+
+```
 
 Since for each $t$, the decision boundary is the same, the decision boundary can be computed as
 
@@ -1177,11 +1142,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-To the left of the green vertical line $g < f$, so $l_t < 1$; therefore a $w_t$ that falls to the left of the green line is classified as a type $g$ individual. 
+To the left of the green vertical line $g < f$, so $l_t > 1$; therefore a $w_t$ that falls to the left of the green line is classified as a type $f$ individual. 
 
- * The shaded orange area equals $\beta$ -- the probability of classifying someone as a type $g$ individual when it is really a type $f$ individual.
+ * The shaded red area equals $\beta$ -- the probability of classifying someone as a type $g$ individual when it is really a type $f$ individual.
 
-To the right of the green vertical line $g > f$, so $l_t >1 $; therefore a $w_t$ that falls to the right of the green line is classified as a type $f$ individual. 
+To the right of the green vertical line $g > f$, so $l_t < 1$; therefore a $w_t$ that falls to the right of the green line is classified as a type $g$ individual.
 
  * The shaded blue area equals $\alpha$ -- the probability of classifying someone as a type $f$ when it is really a type $g$ individual.  
 
@@ -1213,6 +1178,29 @@ Now we simulate timing protocol 2 and compute the classification error probabili
 In the next cell, we also compare the theoretical classification accuracy to the empirical classification accuracy
 
 ```{code-cell} ipython3
+def analyze_protocol_2(π_minus_1, T_max, N_simulations, f_func, g_func, 
+                      theory_error=None, F_params=(1, 1), G_params=(3, 1.2)):
+    """Analyze Protocol 2."""
+    result = compute_protocol_2_errors(π_minus_1, T_max, N_simulations, 
+                                      f_func, g_func, F_params, G_params)
+    
+    # Plot results
+    plt.figure(figsize=(10, 6))
+    plt.plot(result['T_range'], result['accuracy'], 
+            'b-', linewidth=2, label='empirical accuracy')
+    
+    if theory_error is not None:
+        plt.axhline(1 - theory_error, color='r', linestyle='--', 
+                   label=f'theoretical accuracy = {1 - theory_error:.4f}')
+    
+    plt.xlabel('$t$')
+    plt.ylabel('accuracy')
+    plt.legend()
+    plt.ylim(0.5, 1.0)
+    plt.show()
+    
+    return result
+
 # Analyze Protocol 2
 result_p2 = analyze_protocol_2(π_minus_1, T_max, N_simulations, f, g, 
                               theory_error, (F_a, F_b), (G_a, G_b))
@@ -1221,7 +1209,21 @@ result_p2 = analyze_protocol_2(π_minus_1, T_max, N_simulations, f, g,
 Let's watch decisions made by  the two timing protocols as more and more observations accrue.
 
 ```{code-cell} ipython3
-# Compare both protocols
+def compare_protocols(result1, result2):
+    """Compare results from both protocols."""
+    plt.figure(figsize=(10, 6))
+    
+    plt.plot(result1['T_range'], result1['error_prob'], linewidth=2, 
+            label='Protocol 1 (Model Selection)')
+    plt.plot(result2['T_range'], 1 - result2['accuracy'], 
+            linestyle='--', linewidth=2, 
+            label='Protocol 2 (classification)')
+    
+    plt.xlabel('$T$')
+    plt.ylabel('error probability')
+    plt.legend()
+    plt.show()
+    
 compare_protocols(result_p1, result_p2)
 ```
 

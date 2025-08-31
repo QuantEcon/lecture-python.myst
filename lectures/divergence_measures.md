@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.16.6
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -59,10 +59,6 @@ from scipy.optimize import minimize_scalar
 import pandas as pd
 from IPython.display import display, Math
 ```
-
-
-
-
 
 ## Primer on entropy, cross-entropy, KL divergence
 
@@ -163,6 +159,8 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 \Gamma(p) := \int_{0}^{\infty} x^{p-1} e^{-x} dx
 $$
 
+We introduce two Beta distributions $f(x)$ and $g(x)$, which we will use to illustrate the different divergence measures.
+
 Let's define parameters and density functions in Python
 
 ```{code-cell} ipython3
@@ -197,8 +195,6 @@ plt.ylabel('density')
 plt.legend()
 plt.show()
 ```
-
-
 
 (rel_entropy)=
 ## Kullback–Leibler divergence
@@ -457,15 +453,14 @@ plt.show()
 
 We now generate plots illustrating how overlap visually diminishes as divergence measures increase.
 
-
 ```{code-cell} ipython3
 param_grid = [
     ((1, 1), (1, 1)),   
     ((1, 1), (1.5, 1.2)),
     ((1, 1), (2, 1.5)),  
     ((1, 1), (3, 1.2)),  
-    ((1, 1), (5, 1)),
-    ((1, 1), (0.3, 0.3))
+    ((1, 1), (0.3, 0.3)),
+    ((1, 1), (5, 1))
 ]
 ```
 
@@ -510,9 +505,24 @@ def plot_dist_diff(para_grid):
     return divergence_data
 
 divergence_data = plot_dist_diff(param_grid)
+
+from pandas.plotting import parallel_coordinates
+kl_gf_values = [float(result['KL(g, f)']) for result in results]
+
+df_plot = pd.DataFrame({
+    "KL(f,g)": kl_fg_values,
+    "KL(g,f)": kl_gf_values,
+    "JS": js_values,
+    "Chernoff": chernoff_values
+})
+df_plot["pair"] = df_plot.index.astype(str)  # just to group lines
+
+plt.figure(figsize=(8,5))
+parallel_coordinates(df_plot, "pair", color="blue", alpha=0.3)
+plt.ylabel("Value")
+plt.title("Parallel comparison of divergence measures per pair")
+plt.show()
 ```
-
-
 
 ## KL divergence and maximum-likelihood estimation
 
