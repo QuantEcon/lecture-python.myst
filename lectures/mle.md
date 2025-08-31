@@ -44,6 +44,7 @@ economic factors such as market size and tax rate predict.
 
 We'll require the following imports:
 
+
 ```{code-cell} ipython3
 import jax.numpy as jnp
 import jax

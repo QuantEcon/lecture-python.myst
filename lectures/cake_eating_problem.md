@@ -41,11 +41,10 @@ In what follows, we require the following imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 ```
 
-## The Model
+## The model
 
 We consider an infinite time horizon $t=0, 1, 2, 3..$
 
@@ -115,7 +114,7 @@ In this problem, the following terminology is standard:
 * $c_t$ is called the **control variable** or the **action**
 * $\beta$ and $\gamma$ are **parameters**
 
-### Trade-Off
+### Trade-off
 
 The key trade-off in the cake-eating problem is this:
 
@@ -145,14 +144,14 @@ parameters*.
 
 Let's see if this is true.
 
-## The Value Function
+## The value function
 
 The first step of our dynamic programming treatment is to obtain the Bellman
 equation.
 
 The next step is to use it to calculate the solution.
 
-### The Bellman Equation
+### The Bellman equation
 
 To this end, we let $v(x)$ be maximum lifetime utility attainable from
 the current time when $x$ units of cake are left.
@@ -199,7 +198,7 @@ If $c$ is chosen optimally using this trade off strategy, then we obtain maximal
 
 Hence, $v(x)$ equals the right hand side of {eq}`bellman-cep`, as claimed.
 
-### An Analytical Solution
+### An analytical solution
 
 It has been shown that, with $u$ as the CRRA utility function in
 {eq}`crra_utility`, the function
@@ -249,7 +248,7 @@ ax.legend(fontsize=12)
 plt.show()
 ```
 
-## The Optimal Policy
+## The optimal policy
 
 Now that we have the value function, it is straightforward to calculate the
 optimal action at each state.
@@ -309,7 +308,7 @@ ax.legend()
 plt.show()
 ```
 
-## The Euler Equation
+## The Euler equation
 
 In the discussion above we have provided a complete solution to the cake
 eating problem in the case of CRRA utility.
@@ -323,7 +322,7 @@ Euler equation.
 This is because, for more difficult problems, this equation
 provides key insights that are hard to obtain by other methods.
 
-### Statement and Implications
+### Statement and implications
 
 The Euler equation for the present problem can be stated as
 
@@ -376,7 +375,7 @@ see proposition 2.2 of {cite}`ma2020income`.
 The following arguments focus on necessity, explaining why an optimal path or
 policy should satisfy the Euler equation.
 
-### Derivation I: A Perturbation Approach
+### Derivation I: a perturbation approach
 
 Let's write $c$ as a shorthand for consumption path $\{c_t\}_{t=0}^\infty$.
 
@@ -444,7 +443,7 @@ $$
 
 This is just the Euler equation.
 
-### Derivation II: Using the Bellman Equation
+### Derivation II: using the Bellman equation
 
 Another way to derive the Euler equation is to use the Bellman equation {eq}`bellman-cep`.
 
