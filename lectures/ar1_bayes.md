@@ -201,7 +201,7 @@ def AR1_model(data):
     yhat = ρ * data[:-1]
 
     # Likelihood of the actual realization.
-    y_data = numpyro.sample('y_obs', 
+    numpyro.sample('y_obs', 
                 dist.Normal(loc=yhat, scale=σ), obs=data[1:])
 
 ```
@@ -226,7 +226,7 @@ plot_posterior(mcmc.get_samples())
 
 Evidently, the posteriors aren't centered on the true values of $.5, 1$ that we used to generate the data.
 
-This is a symptom of the classic **Hurwicz bias** for first order autoregressive processes (see Leonid Hurwicz {cite}`hurwicz1950least`.)
+This is a symptom of the classic **Hurwicz bias** for first order autoregressive processes (see  {cite}`hurwicz1950least`.)
 
 The Hurwicz bias is worse the smaller is the sample (see {cite}`Orcutt_Winokur_69`).
 
@@ -259,9 +259,9 @@ def AR1_model_y0(data):
     yhat = ρ * data[:-1]
 
     # Likelihood of the actual realization.
-    y_data = numpyro.sample('y_obs', 
+    numpyro.sample('y_obs', 
                     dist.Normal(loc=yhat, scale=σ), obs=data[1:])
-    y0_data = numpyro.sample('y0_obs', 
+    numpyro.sample('y0_obs', 
                     dist.Normal(loc=0., scale=y_sd), obs=data[0])
 ```
 
