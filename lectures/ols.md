@@ -59,7 +59,6 @@ Let's start with some imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
@@ -604,7 +603,7 @@ results.
 
 ```{code-cell} python3
 # Load in data
-df4 = pd.read_stata('https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable4.dta?raw=true')
+df4 = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable4.dta')
 
 # Add a constant term
 df4['const'] = 1
@@ -677,7 +676,7 @@ using `numpy` - your results should be the same as those in the
 
 ```{code-cell} python3
 # Load in data
-df1 = pd.read_stata('https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable1.dta?raw=true')
+df1 = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable1.dta')
 df1 = df1.dropna(subset=['logpgp95', 'avexpr'])
 
 # Add a constant term

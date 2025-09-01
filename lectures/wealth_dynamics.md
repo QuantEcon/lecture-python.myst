@@ -24,8 +24,7 @@ kernelspec:
 ```
 
 ```{seealso}
-A [version of this lecture](https://jax.quantecon.org/wealth_dynamics.html) using a `GPU`
-is [available here](https://jax.quantecon.org/wealth_dynamics.html)
+A version of this lecture using [JAX](https://github.com/jax-ml/jax) is {doc}`available here <jax:wealth_dynamics>`
 ```
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
@@ -77,7 +76,6 @@ We will use the following imports.
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
 from numba import jit, float64, prange
