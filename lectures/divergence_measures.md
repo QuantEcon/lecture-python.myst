@@ -505,23 +505,6 @@ def plot_dist_diff(para_grid):
     return divergence_data
 
 divergence_data = plot_dist_diff(param_grid)
-
-from pandas.plotting import parallel_coordinates
-kl_gf_values = [float(result['KL(g, f)']) for result in results]
-
-df_plot = pd.DataFrame({
-    "KL(f,g)": kl_fg_values,
-    "KL(g,f)": kl_gf_values,
-    "JS": js_values,
-    "Chernoff": chernoff_values
-})
-df_plot["pair"] = df_plot.index.astype(str)  # just to group lines
-
-plt.figure(figsize=(8,5))
-parallel_coordinates(df_plot, "pair", color="blue", alpha=0.3)
-plt.ylabel("Value")
-plt.title("Parallel comparison of divergence measures per pair")
-plt.show()
 ```
 
 ## KL divergence and maximum-likelihood estimation

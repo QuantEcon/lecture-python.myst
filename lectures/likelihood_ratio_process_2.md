@@ -65,7 +65,7 @@ from math import gamma
 from scipy.integrate import quad
 ```
 
-## Review: Likelihood Ratio Processes
+## Review: likelihood ratio processes
 
 We'll begin by reminding ourselves definitions and properties of likelihood ratio processes.  
 
@@ -166,7 +166,7 @@ def simulate(a, b, T=50, N=500):
     return l_arr
 ```
 
-## Blume and Easley's Setting
+## Blume and Easley's setting
 
 Let the random variable $s_t \in (0,1)$ at time $t =0, 1, 2, \ldots$ be distributed according to the same Beta distribution with parameters 
 $\theta = \{\theta_1, \theta_2\}$.
@@ -195,7 +195,7 @@ $$c^1(s_t) = y_t^1 = s_t. $$
 
 But in our model, agent 1 is not alone.
 
-## Nature and Agents' Beliefs
+## Nature and agents' beliefs
 
 Nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t(s^t)$.
 
@@ -239,7 +239,7 @@ $$
 c_t^1 + c_t^2 = 1 .
 $$
 
-## A Socialist Risk-Sharing Arrangement
+## A socialist risk-sharing arrangement
 
 In order to share risks, a benevolent social planner  dictates a history-dependent consumption allocation that takes the form of a sequence of functions 
 
@@ -284,7 +284,7 @@ $$ (eq:objectiveagenti)
 where $\delta \in (0,1)$ is an intertemporal discount factor, and $u(\cdot)$ is a strictly increasing, concave one-period utility function.
 
 
-## Social Planner's Allocation Problem
+## Social planner's allocation problem
 
 The benevolent dictator has all the information it requires to choose a consumption allocation that maximizes the social welfare criterion 
 
@@ -305,44 +305,11 @@ This means that the social planner knows and respects
 
 Consequently, we anticipate that these objects will appear in the social planner's rule for allocating the aggregate endowment each period.
 
-The Lagrangian for the social planner's problem is
-
-$$
-L = \sum_{t=0}^{\infty}\sum_{s^t} \{ \lambda \delta^t u(c_t^1(s^t)) \pi_t^1(s^t) + (1-\lambda) \delta^t u(c_t^2(s^t)) \pi_t^2(s^t) + \theta_t(s^t)(1-c_t^1(s^t)-c_t^2(s^t)) \}
-$$
-
-where $\theta_t(s^t)$ are the shadow prices.
-
-The first order conditions for maximizing $L$ with respect to $c_t^i(s^t)$ are:
-
-$$
-\lambda \delta^t u'(c_t^1(s^t)) \pi_t^1(s^t) = \theta_t(s^t), \quad (1-\lambda) \delta^t u'(c_t^2(s^t)) \pi_t^2(s^t) = \theta_t(s^t)
-$$
-
-Substituting formula {eq}`eq:allocationrule1` for $c_t^1(s^t)$, we get
-
-$$
-\theta_t(s^t) = \delta^t [(1-\lambda)\pi_t^2(s^t) + \lambda \pi_t^1(s^t)]
-$$
-
-Now for the competitive equilibrium, notice that if we take $\mu_1 = \frac{1}{\lambda}$ and $\mu_2 = \frac{1}{1-\lambda}$, formula {eq}`eq:allocationce` agrees with formula {eq}`eq:allocationrule1`, and we get from {eq}`eq:priceequation1`
-
-$$
-p_t(s^t) = \delta^t \lambda \pi_t^1(s^t) \frac{1-\lambda + \lambda l_t(s^t)}{\lambda l_t(s^t)} = \delta^t \pi_t^2(s^t)[1-\lambda + \lambda l_t(s^t)] = 
-\delta^t  \bigl[(1 - \lambda) \pi_t^2(s^t) + \lambda \pi_t^1(s^t)\bigr]
-$$
-
-Thus, "shadow" prices $\theta_t(s^t)$ in the planning problem equal the competitive equilibrium prices $p_t(s^t)$. 
-
-
 First-order necessary conditions for maximizing welfare criterion {eq}`eq:welfareW` subject to the feasibility constraint {eq}`eq:feasibility` are 
 
 $$\frac{\pi_t^2(s^t)}{\pi_t^1(s^t)} \frac{(1/c_t^2(s^t))}{(1/c_t^1(s^t))} = \frac{\lambda}{1-\lambda}$$
 
 which can be rearranged to become
-
-
-
 
 $$
 \frac{c_t^1(s^t)}{c_t^2(s^t)} = \frac{\lambda}{1-\lambda} l_t(s^t)
@@ -390,7 +357,7 @@ $$
 
 
 
-## If You're So Smart, $\ldots$ 
+## If you're so smart, $\ldots$ 
 
 
 Let's compute some values of limiting allocations {eq}`eq:allocationrule1` for some interesting possible limiting
@@ -429,7 +396,7 @@ Doing this will allow us to connect our analysis with an argument of {cite}`alch
 
 
 
-## Competitive Equilibrium Prices 
+## Competitive equilibrium prices 
 
 Two fundamental welfare theorems for general equilibrium models lead us to anticipate that there is  a connection between the allocation that solves the social planning problem we have been studying and the allocation in a  **competitive equilibrium**  with complete markets in history-contingent commodities.
 
@@ -554,6 +521,9 @@ According to formula {eq}`eq:pformulafinal`, we have the following possible limi
 * when $l_\infty = 0$, $c_\infty^1 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ according to $p_t(s^t) \propto \delta^t \pi_t^2(s^t) $
 * when $l_\infty = \infty$, $c_\infty^1 = 1 $ and tails of competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^1(s^t)$ according to $p_t(s^t) \propto \delta^t \pi_t^1(s^t) $
 * for small $t$'s, competitive equilibrium prices reflect both agents' probability models.  
+
+We leave the verification of the shadow prices to the reader since it follows from 
+the same reasoning.
 
 ## Simulations 
 
@@ -850,7 +820,7 @@ This ties in nicely with {eq}`eq:kl_likelihood_link`.
 
 
 
-## Related Lectures
+## Related lectures
 
 Complete markets models with homogeneous beliefs, a kind often used in macroeconomics and finance,  are studied in this quantecon lecture {doc}`ge_arrow`.
 
