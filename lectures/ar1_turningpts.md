@@ -343,7 +343,7 @@ Z_t(\omega) :=
 \end{cases} 
 $$
 
-Here $\omega \in Omega$ is a sequence of events, and $Y_t: \Omega \rightarrow R$ gives $y_t$ according to $\omega$ and the AR(1) process.
+Here $\omega \in \Omega$ is a sequence of events, and $Y_t: \Omega \rightarrow R$ gives $y_t$ according to $\omega$ and the AR(1) process.
 
 By Wecker's definition, period $t$ is a turning point, and $Y_{t-2}(\omega) \geq Y_{t-3}(\omega)$ excludes that period $t-1$ is a turning point.
 
@@ -353,7 +353,7 @@ $$
 W_t(\omega):= \inf \{ k\geq 1 \mid Z_{t+k}(\omega) = 1\}
 $$
 
-In the following code, we name this statistic *time until the next recession* to distinguish it from another concept of *turning point*.
+In the following code, we name this statistic as *time until the next recession* to distinguish it from another concept of *turning point*.
 
 Moreover, the statistic *time until the next severe recession* is defined in a similar way, except the decline between periods is greater than $0.02$.
 
@@ -643,13 +643,6 @@ def plot_extended_Wecker(
         )
     rho_sample = post_samples['rho'][index]
     sigma_sample = post_samples['sigma'][index]
-
-    # Store outcomes
-    future_path = jnp.zeros((N, T1))
-    next_reces = jnp.zeros(N)
-    severe_rec = jnp.zeros(N)
-    min_vals = jnp.zeros(N)
-    next_up_turn, next_down_turn = jnp.zeros(N), jnp.zeros(N)
 
     # Compute path statistics
     subkeys = random.split(key, num=N)
