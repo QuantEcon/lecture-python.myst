@@ -8,7 +8,7 @@ jobs:
   cache:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Setup Anaconda
@@ -17,7 +17,7 @@ jobs:
           auto-update-conda: true
           auto-activate-base: true
           miniconda-version: 'latest'
-          python-version: "3.12"
+          python-version: "3.13"
           environment-file: environment.yml
           activate-environment: quantecon
       - name: Install JAX, Numpyro, PyTorch

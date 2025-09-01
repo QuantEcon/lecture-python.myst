@@ -48,7 +48,6 @@ We begin with some imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
 from numba import jit, prange
@@ -206,8 +205,8 @@ class CareerWorkerProblem:
 
         self.F_probs = BetaBinomial(grid_size - 1, F_a, F_b).pdf()
         self.G_probs = BetaBinomial(grid_size - 1, G_a, G_b).pdf()
-        self.F_mean = np.sum(self.θ * self.F_probs)
-        self.G_mean = np.sum(self.ϵ * self.G_probs)
+        self.F_mean = self.θ @ self.F_probs
+        self.G_mean = self.ϵ @ self.G_probs
 
         # Store these parameters for str and repr methods
         self._F_a, self._F_b = F_a, F_b
@@ -370,7 +369,8 @@ when the worker follows the optimal policy.
 
 In particular, modulo randomness, reproduce the following figure (where the horizontal axis represents time)
 
-```{figure} /_static/lecture_specific/career/career_solutions_ex1_py.png
+```{image} /_static/lecture_specific/career/career_solutions_ex1_py.png
+:align: center
 ```
 
 ```{hint}

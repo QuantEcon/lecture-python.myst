@@ -124,7 +124,6 @@ As usual, we'll start by importing some Python tools.
 :hide-output: false
 
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numba import vectorize, jit
 from math import gamma
@@ -820,7 +819,7 @@ def learn_x_bayesian(observations, α0, β0, grid_size=2000):
         post = np.exp(log_post)
         post /= post.sum()
 
-        μ_path[t + 1] = np.sum(x_grid * post)
+        μ_path[t + 1] = x_grid @ post
 
     return μ_path
 

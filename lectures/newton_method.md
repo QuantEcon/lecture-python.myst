@@ -29,8 +29,7 @@ kernelspec:
 ```
 
 ```{seealso}
-**GPU:** A version of this lecture which makes use of [jax](https://jax.readthedocs.io) to run the code
-on a `GPU` is [available here](https://jax.quantecon.org/newtons_method.html)
+A version of this lecture using [JAX](https://github.com/jax-ml/jax) is {doc}`available here <jax:newtons_method>`
 ```
 
 ## Overview
@@ -90,8 +89,6 @@ from scipy.optimize import root
 from autograd import jacobian
 # Thinly-wrapped numpy to enable automatic differentiation
 import autograd.numpy as np
-
-plt.rcParams["figure.figsize"] = (10, 5.7)
 ```
 
 ## Fixed Point Computation Using Newton's Method
@@ -513,20 +510,20 @@ An equilibrium price vector $p^*$ satisfies $e_i(p^*) = 0$.
 We set
 
 $$
-A = \begin{pmatrix}
+A = \begin{bmatrix}
             a_{00} & a_{01} \\
             a_{10} & a_{11}
-        \end{pmatrix},
+        \end{bmatrix},
             \qquad 
-    b = \begin{pmatrix}
+    b = \begin{bmatrix}
             b_0 \\
             b_1
-        \end{pmatrix}
+        \end{bmatrix}
     \qquad \text{and} \qquad
-    c = \begin{pmatrix}
+    c = \begin{bmatrix}
             c_0 \\
             c_1
-        \end{pmatrix}
+        \end{bmatrix}
 $$
 
 for this particular question.
@@ -539,10 +536,10 @@ Our first step is to define the excess demand function
 
 $$
 e(p) = 
-    \begin{pmatrix}
+    \begin{bmatrix}
     e_0(p) \\
     e_1(p)
-    \end{pmatrix}
+    \end{bmatrix}
 $$
 
 The function below calculates the excess demand for given parameters
@@ -556,20 +553,20 @@ Our default parameter values will be
 
 
 $$
-A = \begin{pmatrix}
+A = \begin{bmatrix}
             0.5 & 0.4 \\
             0.8 & 0.2
-        \end{pmatrix},
+        \end{bmatrix},
             \qquad 
-    b = \begin{pmatrix}
+    b = \begin{bmatrix}
             1 \\
             1
-        \end{pmatrix}
+        \end{bmatrix}
     \qquad \text{and} \qquad
-    c = \begin{pmatrix}
+    c = \begin{bmatrix}
             1 \\
             1
-        \end{pmatrix}
+        \end{bmatrix}
 $$
 
 ```{code-cell} ipython3
@@ -689,10 +686,10 @@ Here we manually calculate the elements of the Jacobian
 
 $$
 J(p) = 
-    \begin{pmatrix}
+    \begin{bmatrix}
         \frac{\partial e_0}{\partial p_0}(p) & \frac{\partial e_0}{\partial p_1}(p) \\
         \frac{\partial e_1}{\partial p_0}(p) & \frac{\partial e_1}{\partial p_1}(p)
-    \end{pmatrix}
+    \end{bmatrix}
 $$
 
 ```{code-cell} ipython3
@@ -790,7 +787,7 @@ With the larger overhead, the speed is not better than the optimized `scipy` fun
 Our next step is to investigate a large market with 3,000 goods.
 
 A JAX version of this section using GPU accelerated linear algebra and
-automatic differentiation is available [here](https://jax.quantecon.org/newtons_method.html#application)
+automatic differentiation is {doc}`available here <jax:newtons_method>`
 
 The excess demand function is essentially the same, but now the matrix $A$ is $3000 \times 3000$ and the parameter vectors $b$ and $c$ are $3000 \times 1$.
 
@@ -850,11 +847,11 @@ np.max(np.abs(e(p, A, b, c)))
 Consider a three-dimensional extension of the Solow fixed point problem with
 
 $$
-A = \begin{pmatrix}
+A = \begin{bmatrix}
             2 & 3 & 3 \\
             2 & 4 & 2 \\
             1 & 5 & 1 \\
-        \end{pmatrix},
+        \end{bmatrix},
             \quad
 s = 0.2, \quad α = 0.5, \quad δ = 0.8
 $$
@@ -886,11 +883,11 @@ $$
 - If you are unsure about your solution, you can start with the solved example:
 
 ```{math}
-A = \begin{pmatrix}
+A = \begin{bmatrix}
             2 & 0 & 0 \\
             0 & 2 & 0 \\
             0 & 0 & 2 \\
-        \end{pmatrix}
+        \end{bmatrix}
 ```
 
 with $s = 0.3$, $α = 0.3$, and $δ = 0.4$ and starting value: 
@@ -999,23 +996,23 @@ In this exercise, let's try different initial values and check how Newton's meth
 Let's define a three-good problem with the following default values:
 
 $$
-A = \begin{pmatrix}
+A = \begin{bmatrix}
             0.2 & 0.1 & 0.7 \\
             0.3 & 0.2 & 0.5 \\
             0.1 & 0.8 & 0.1 \\
-        \end{pmatrix},
+        \end{bmatrix},
             \qquad 
-b = \begin{pmatrix}
+b = \begin{bmatrix}
             1 \\
             1 \\
             1
-        \end{pmatrix}
+        \end{bmatrix}
     \qquad \text{and} \qquad
-c = \begin{pmatrix}
+c = \begin{bmatrix}
             1 \\
             1 \\
             1
-        \end{pmatrix}
+        \end{bmatrix}
 $$
 
 For this exercise, use the following extreme price vectors as initial values:

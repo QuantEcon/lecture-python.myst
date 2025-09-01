@@ -69,7 +69,6 @@ Let's start with some imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from quantecon import MarkovChain
 from scipy.stats import norm
@@ -155,10 +154,10 @@ $$
 X_{t+1} = A X_t
 \quad \text{where} \quad
 A :=
-\begin{pmatrix}
+\begin{bmatrix}
     (1-d)(1-\lambda) + b & (1-d)\alpha + b  \\
     (1-d)\lambda & (1-d)(1-\alpha)
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 This law tells us how total employment and unemployment evolve over time.
@@ -170,16 +169,16 @@ Now let's derive the law of motion for rates.
 To get these we can divide both sides of $X_{t+1} = A X_t$ by  $N_{t+1}$ to get
 
 $$
-\begin{pmatrix}
+\begin{bmatrix}
     U_{t+1}/N_{t+1} \\
     E_{t+1}/N_{t+1}
-\end{pmatrix} =
+\end{bmatrix} =
 \frac1{1+g} A
-\begin{pmatrix}
+\begin{bmatrix}
     U_{t}/N_{t}
     \\
     E_{t}/N_{t}
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 Letting
@@ -699,7 +698,7 @@ def _update_bellman(α, β, γ, c, σ, w_vec, p_vec, V, V_new, U):
         V_new[w_idx] = u(w, σ) + β * ((1 - α) * V[w_idx] + α * U)
 
     U_new = u(c, σ) + β * (1 - γ) * U + \
-                    β * γ * np.sum(np.maximum(U, V) * p_vec)
+                    β * γ * (np.maximum(U, V) @ p_vec)
 
     return U_new
 
@@ -836,8 +835,8 @@ def compute_steady_state_quantities(c, τ):
     u, e = x
 
     # Compute steady state welfare
-    w = np.sum(V * p_vec * (w_vec - τ > w_bar)) / np.sum(p_vec * (w_vec -
-            τ > w_bar))
+    mask = (w_vec - τ > w_bar)
+    w = ((V * p_vec * mask) @ np.ones_like(p_vec)) / ((p_vec * mask) @ np.ones_like(p_vec))
     welfare = e * w + u * U
 
     return e, u, welfare
