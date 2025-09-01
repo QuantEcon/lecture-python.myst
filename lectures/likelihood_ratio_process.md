@@ -26,6 +26,12 @@ kernelspec:
 :depth: 2
 ```
 
+In addition to what’s in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+!pip install --upgrade quantecon
+```
 
 ## Overview
 
