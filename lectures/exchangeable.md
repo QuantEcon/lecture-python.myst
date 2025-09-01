@@ -71,7 +71,6 @@ Let’s start with some imports:
 tags: [hide-output]
 ---
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import jit, vectorize
 from math import gamma
 import scipy.optimize as op

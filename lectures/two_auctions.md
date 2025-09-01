@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -46,12 +46,9 @@ Anders Munk-Nielsen put his code [on GitHub](https://github.com/GamEconCph/Lectu
 
 Much of our  Python code below is based on his.
 
-
-
-
 +++
 
-##  First-Price Sealed-Bid Auction (FPSB)
+##  First-price sealed-bid auction (FPSB)
 
 +++
 
@@ -77,7 +74,7 @@ Evidently,
 
 - If $i$ bids exactly $v_i$, she pays what she thinks it is worth and gathers no surplus value.
 - Buyer $i$ will never want to bid more than $v_i$.
-- If buyer $i$ bids $b < v_i$ and wins the auction, then she gathers surplus value $b - v_i > 0$.
+- If buyer $i$ bids $b < v_i$ and wins the auction, then she gathers surplus value $v_i - b > 0$.
 - If buyer $i$ bids $b < v_i$ and someone else bids more than $b$, buyer $i$ loses the auction and gets no surplus value.
 - To proceed, buyer $i$ wants to know the probability that she wins the auction as a function of her bid $v_i$
    - this requires that she know a probability distribution of bids $v_j$ made by  prospective buyers $j \neq i$
@@ -94,7 +91,7 @@ To complete the specification of the situation, we'll  assume that  prospective 
 
 Bidder optimally chooses to bid less than $v_i$.
 
-### Characterization of FPSB Auction
+### Characterization of FPSB auction
 
 A FPSB auction has a unique symmetric Bayesian Nash Equilibrium.
 
@@ -112,28 +109,28 @@ $$ (eq:optbid2)
 
 
 
-A proof for this assertion is available  at the [Wikepedia page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vickrey auctions
+A proof for this assertion is available  at the [Wikipedia page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vickrey auctions
 
 +++
 
-## Second-Price Sealed-Bid Auction (SPSB)
+## Second-price sealed-bid auction (SPSB)
 
 +++
 
 **Protocols:** In a  second-price sealed-bid (SPSB) auction,  the winner pays the second-highest bid.
 
-## Characterization of SPSB Auction
+## Characterization of SPSB auction
 
 In a  SPSB auction  bidders optimally choose to bid their  values.
 
 Formally, a dominant strategy profile in a SPSB auction with a single, indivisible item has each bidder  bidding its  value.
 
-A proof is provided at [the Wikepedia
+A proof is provided at [the Wikipedia
         page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vickrey auctions
 
 +++
 
-## Uniform Distribution of Private Values
+## Uniform distribution of private values
 
 +++
 
@@ -184,13 +181,13 @@ $$
 \end{aligned}
 $$
 
-## Second Price Sealed Bid Auction
+## Second price sealed bid auction
 
 In a  **SPSB**, it is optimal for bidder $i$ to bid $v_i$.
 
 +++
 
-## Python Code
+## Python code
 
 ```{code-cell} ipython3
 import numpy as np
@@ -201,9 +198,9 @@ import scipy.interpolate as interp
 
 # for plots
 plt.rcParams.update({"text.usetex": True, 'font.size': 14})
-colors = plt. rcParams['axes.prop_cycle'].by_key()['color']
+colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
-# ensure the notebook generate the same randomess
+# ensure the notebook generates the same randomness
 np.random.seed(1337)
 ```
 
@@ -215,30 +212,37 @@ The valuations of each bidder is distributed $U(0,1)$.
 N = 5
 R = 100_000
 
-v = np.random.uniform(0,1,(N,R))
+v = np.random.uniform(0, 1, (N, R))
 
 # BNE in first-price sealed bid
 
-b_star = lambda vi,N :((N-1)/N) * vi
+b_star = lambda vi, N: ((N-1)/N) * vi
 b = b_star(v,N)
 ```
 
 We compute and sort bid price distributions   that emerge under both  FPSB and SPSB.
 
 ```{code-cell} ipython3
-idx = np.argsort(v, axis=0)  # Biders' values are sorted in ascending order in each auction.
+# Bidders' values are sorted in ascending order in each auction.
 # We record the order because we want to apply it to bid price and their id.
+idx = np.argsort(v, axis=0)
 
-v = np.take_along_axis(v, idx, axis=0)  # same as np.sort(v, axis=0), except now we retain the idx
+# same as np.sort(v, axis=0), except now we retain the idx
+v = np.take_along_axis(v, idx, axis=0)
 b = np.take_along_axis(b, idx, axis=0)
 
-ii = np.repeat(np.arange(1,N+1)[:,None], R, axis=1)  # the id for the bidders is created.
-ii = np.take_along_axis(ii, idx, axis=0)  # the id is sorted according to bid price as well.
+# the id for the bidders is created.
+ii = np.repeat(np.arange(1, N+1)[:, None], R, axis=1)
+# the id is sorted according to bid price as well.
+ii = np.take_along_axis(ii, idx, axis=0)
 
-winning_player = ii[-1,:] # In FPSB and SPSB, winners are those with highest values.
+# In FPSB and SPSB, winners are those with highest values.
+winning_player = ii[-1, :]
 
-winner_pays_fpsb = b[-1,:]  # highest bid
-winner_pays_spsb = v[-2,:]  # 2nd-highest valuation
+# highest bid
+winner_pays_fpsb = b[-1, :]
+# 2nd-highest valuation
+winner_pays_spsb = v[-2, :]
 ```
 
 Let's now plot the _winning_ bids $b_{(n)}$ (i.e. the payment) against valuations, $v_{(n)}$ for both FPSB and SPSB.
@@ -250,8 +254,7 @@ Note that
 
 ```{code-cell} ipython3
 # We intend to compute average payments of different groups of bidders
-
-binned = stats.binned_statistic(v[-1,:], v[-2,:], statistic='mean', bins=20)
+binned = stats.binned_statistic(v[-1, :], v[-2, :], statistic='mean', bins=20)
 xx = binned.bin_edges
 xx = [(xx[ii]+xx[ii+1])/2 for ii in range(len(xx)-1)]
 yy = binned.statistic
@@ -259,8 +262,9 @@ yy = binned.statistic
 fig, ax = plt.subplots(figsize=(6, 4))
 
 ax.plot(xx, yy, label='SPSB average payment')
-ax.plot(v[-1,:], b[-1,:], '--', alpha = 0.8, label = 'FPSB analytic')
-ax.plot(v[-1,:], v[-2,:], 'o', alpha = 0.05, markersize = 0.1, label = 'SPSB: actual bids')
+ax.plot(v[-1, :], b[-1, :], '--', alpha=0.8, label='FPSB analytic')
+ax.plot(v[-1, :], v[-2, :], 'o', alpha=0.05, 
+                markersize=0.1, label='SPSB: actual bids')
 
 ax.legend(loc='best')
 ax.set_xlabel('Valuation, $v_i$')
@@ -268,7 +272,7 @@ ax.set_ylabel('Bid, $b_i$')
 sns.despine()
 ```
 
-## Revenue Equivalence Theorem
+## Revenue equivalence theorem
 
 +++
 
@@ -311,8 +315,9 @@ Thus, while probability distributions of winning bids typically differ across th
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(6, 4))
 
-for payment,label in zip([winner_pays_fpsb, winner_pays_spsb], ['FPSB', 'SPSB']):
-    print('The average payment of %s: %.4f. Std.: %.4f. Median: %.4f'% (label,payment.mean(),payment.std(),np.median(payment)))
+for payment, label in zip([winner_pays_fpsb, winner_pays_spsb], ['FPSB', 'SPSB']):
+    print('The average payment of %s: %.4f. Std.: %.4f. Median: %.4f' % (
+        label, payment.mean(), payment.std(), np.median(payment)))
     ax.hist(payment, density=True, alpha=0.6, label=label, bins=100)
 
 ax.axvline(winner_pays_fpsb.mean(), ls='--', c='g', label='Mean')
@@ -339,7 +344,7 @@ sns.despine()
 
 **Detour: Computing a Bayesian Nash Equibrium for  FPSB**
 
-The Revenue Equivalence Theorem lets us an optimal bidding strategy for  a  FPSB auction  from outcomes of a SPSB auction.
+The Revenue Equivalence Theorem lets us find an optimal bidding strategy for  a  FPSB auction  from outcomes of a SPSB auction.
 
 Let  $b(v_{i})$ be the optimal bid in a FPSB auction.
 
@@ -355,11 +360,11 @@ It follows that an optimal bidding strategy in a FPSB auction is $b(v_{i}) = \ma
 
 +++
 
-##  Calculation of  Bid Price in FPSB
+##  Calculation of  bid price in FPSB
 
 +++
 
-In equations {eq}`eq:optbid1` and {eq}`eq:optbid1`, we displayed formulas for
+In equations {eq}`eq:optbid1` and {eq}`eq:optbid2`, we displayed formulas for
 optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.
 
 $$
@@ -396,14 +401,25 @@ def evaluate_largest(v_hat, array, order=1):
                      the order for second-largest number beside winner is 2.
 
     """
-    N,R = array.shape
-    array_residual=array[1:,:].copy()  # drop the first row because we assume first row is the winner's bid
+    N, R = array.shape
 
-    index=(array_residual<v_hat).all(axis=0)
-    array_conditional=array_residual[:,index].copy()
+    # drop the first row because we assume first row is the winner's bid
+    array_residual = array[1:, :].copy() 
 
-    array_conditional=np.sort(array_conditional, axis=0)
-    return array_conditional[-order,:].mean()
+    winning_auctions_mask = (array_residual < v_hat).all(axis=0) 
+
+    num_winning_auctions = np.sum(winning_auctions_mask)
+
+    if num_winning_auctions == 0:
+        return np.nan
+
+    array_conditional = array_residual[:, winning_auctions_mask]
+    
+    array_conditional_sorted = np.sort(array_conditional, axis=0)
+
+    order_largest_bids = array_conditional_sorted[-order, :] 
+    
+    return np.mean(order_largest_bids)
 ```
 
 We can check the accuracy of our `evaluate_largest` method by comparing it with an analytical solution.
@@ -437,7 +453,7 @@ We'll start by taking a look at a $\chi^2$ distribution with the help of the fol
 
 ```{code-cell} ipython3
 np.random.seed(1337)
-v = np.random.chisquare(df=2, size=(N*R,))
+v = np.random.chisquare(df=2, size=(N * R,))
 
 plt.hist(v, bins=50, edgecolor='w')
 plt.xlabel('Values: $v$')
@@ -448,21 +464,20 @@ Now we'll get Python to construct a bid price function
 
 ```{code-cell} ipython3
 np.random.seed(1337)
-v = np.random.chisquare(df=2, size=(N,R))
-
+v = np.random.chisquare(df=2, size=(N, R))
 
 # we compute the quantile of v as our grid
 pct_quantile = np.linspace(0, 100, 101)[1:-1]
 v_grid = np.percentile(v.flatten(), q=pct_quantile)
 
-EV=[evaluate_largest(ii, v) for ii in v_grid]
 # nan values are returned for some low quantiles due to lack of observations
+EV = [evaluate_largest(ii, v) for ii in v_grid]
 ```
 
 ```{code-cell} ipython3
 # we insert 0 into our grid and bid price function as a complement
-EV=np.insert(EV,0,0)
-v_grid=np.insert(v_grid,0,0)
+EV = np.insert(EV, 0, 0)
+v_grid = np.insert(v_grid, 0, 0)
 
 b_star_num = interp.interp1d(v_grid, EV, fill_value="extrapolate")
 ```
@@ -476,7 +491,8 @@ v_grid_fine = np.percentile(v.flatten(), q=pct_quantile_fine)
 fig, ax = plt.subplots(figsize=(6, 4))
 
 ax.plot(v_grid, EV, 'or', label='Simulation on Grid')
-ax.plot(v_grid_fine, b_star_num(v_grid_fine) , '-', label='Interpolation Solution')
+ax.plot(v_grid_fine, b_star_num(v_grid_fine), 
+                '-', label='Interpolation Solution')
 
 ax.legend(loc='best')
 ax.set_xlabel('Valuation, $v_i$')
@@ -487,26 +503,31 @@ sns.despine()
 Now we can use Python to compute the probability distribution of the price paid by the winning bidder
 
 ```{code-cell} ipython3
-b=b_star_num(v)
+b = b_star_num(v)
 
 idx = np.argsort(v, axis=0)
-v = np.take_along_axis(v, idx, axis=0)  # same as np.sort(v, axis=0), except now we retain the idx
+# same as np.sort(v, axis=0), except now we retain the idx
+v = np.take_along_axis(v, idx, axis=0)
 b = np.take_along_axis(b, idx, axis=0)
 
-ii = np.repeat(np.arange(1,N+1)[:,None], R, axis=1)
+ii = np.repeat(np.arange(1, N + 1)[:, None], R, axis=1)
 ii = np.take_along_axis(ii, idx, axis=0)
 
-winning_player = ii[-1,:]
+winning_player = ii[-1, :]
 
-winner_pays_fpsb = b[-1,:]  # highest bid
-winner_pays_spsb = v[-2,:]  # 2nd-highest valuation
+# highest bid
+winner_pays_fpsb = b[-1, :]
+# 2nd-highest valuation
+winner_pays_spsb = v[-2, :]
 ```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(6, 4))
 
-for payment,label in zip([winner_pays_fpsb, winner_pays_spsb], ['FPSB', 'SPSB']):
-    print('The average payment of %s: %.4f. Std.: %.4f. Median: %.4f'% (label,payment.mean(),payment.std(),np.median(payment)))
+for payment, label in zip([winner_pays_fpsb, winner_pays_spsb],
+                          ['FPSB', 'SPSB']):
+    print('The average payment of %s: %.4f. Std.: %.4f. Median: %.4f' % (
+        label, payment.mean(), payment.std(), np.median(payment)))
     ax.hist(payment, density=True, alpha=0.6, label=label, bins=100)
 
 ax.axvline(winner_pays_fpsb.mean(), ls='--', c='g', label='Mean')
@@ -518,7 +539,7 @@ ax.set_ylabel('Density')
 sns.despine()
 ```
 
-## 5 Code Summary
+## Code summary
 
 +++
 
@@ -536,11 +557,11 @@ class bid_price_solution:
         Parameters:
         ----------
 
-        array: 2 dimensional array of bidders' values in shape of (N,R),
+        array: 2 dimensional array of bidders' values in shape of (N, R),
                where N: number of players, R: number of auctions
 
         """
-        self.value_mat=array.copy()
+        self.value_mat = array.copy()
 
         return None
 
@@ -552,38 +573,48 @@ class bid_price_solution:
         return None
 
     def evaluate_largest(self, v_hat, order=1):
-        N,R = self.value_mat.shape
-        array_residual = self.value_mat[1:,:].copy()
+        N, R = self.value_mat.shape
+
         # drop the first row because we assume first row is the winner's bid
+        array_residual = self.value_mat[1:, :].copy() 
 
-        index=(array_residual<v_hat).all(axis=0)
-        array_conditional=array_residual[:,index].copy()
+        winning_auctions_mask = (array_residual < v_hat).all(axis=0) 
 
-        array_conditional=np.sort(array_conditional, axis=0)
+        num_winning_auctions = np.sum(winning_auctions_mask)
 
-        return array_conditional[-order,:].mean()
+        if num_winning_auctions == 0:
+            return np.nan
+
+        array_conditional = array_residual[:, winning_auctions_mask]
+        array_conditional_sorted = np.sort(array_conditional, axis=0)
+        order_largest_bids = array_conditional_sorted[-order, :]
+
+        return np.mean(order_largest_bids)
 
     def compute_optimal_bid_FPSB(self):
         # we compute the quantile of v as our grid
         pct_quantile = np.linspace(0, 100, 101)[1:-1]
         v_grid = np.percentile(self.value_mat.flatten(), q=pct_quantile)
 
-        EV=[self.evaluate_largest(ii) for ii in v_grid]
         # nan values are returned for some low quantiles due to lack of observations
+        EV = [self.evaluate_largest(ii) for ii in v_grid]
 
         # we insert 0 into our grid and bid price function as a complement
-        EV=np.insert(EV,0,0)
-        v_grid=np.insert(v_grid,0,0)
+        EV = np.insert(EV, 0, 0)
+        v_grid = np.insert(v_grid, 0, 0)
 
-        self.b_star_num = interp.interp1d(v_grid, EV, fill_value="extrapolate")
+        self.b_star_num = interp.interp1d(v_grid, EV,
+                                           fill_value="extrapolate")
 
         pct_quantile_fine = np.linspace(0, 100, 1001)[1:-1]
-        v_grid_fine = np.percentile(self.value_mat.flatten(), q=pct_quantile_fine)
+        v_grid_fine = np.percentile(self.value_mat.flatten(),
+                                    q=pct_quantile_fine)
 
         fig, ax = plt.subplots(figsize=(6, 4))
 
         ax.plot(v_grid, EV, 'or', label='Simulation on Grid')
-        ax.plot(v_grid_fine, self.b_star_num(v_grid_fine) , '-', label='Interpolation Solution')
+        ax.plot(v_grid_fine, self.b_star_num(v_grid_fine), 
+                            '-', label='Interpolation Solution')
 
         ax.legend(loc='best')
         ax.set_xlabel('Valuation, $v_i$')
@@ -596,21 +627,27 @@ class bid_price_solution:
         self.b = self.b_star_num(self.value_mat)
 
         idx = np.argsort(self.value_mat, axis=0)
-        self.v = np.take_along_axis(self.value_mat, idx, axis=0)  # same as np.sort(v, axis=0), except now we retain the idx
+        # same as np.sort(v, axis=0), except now we retain the idx
+        self.v = np.take_along_axis(self.value_mat, idx, axis=0)
         self.b = np.take_along_axis(self.b, idx, axis=0)
 
-        self.ii = np.repeat(np.arange(1,N+1)[:,None], R, axis=1)
+        N, R = self.value_mat.shape
+        self.ii = np.repeat(np.arange(1, N + 1)[:, None], R, axis=1)
         self.ii = np.take_along_axis(self.ii, idx, axis=0)
 
-        winning_player = self.ii[-1,:]
+        winning_player = self.ii[-1, :]
 
-        winner_pays_fpsb = self.b[-1,:]  # highest bid
-        winner_pays_spsb = self.v[-2,:]  # 2nd-highest valuation
+        # highest bid
+        winner_pays_fpsb = self.b[-1, :]
+        # 2nd-highest valuation
+        winner_pays_spsb = self.v[-2, :]
 
         fig, ax = plt.subplots(figsize=(6, 4))
 
-        for payment,label in zip([winner_pays_fpsb, winner_pays_spsb], ['FPSB', 'SPSB']):
-            print('The average payment of %s: %.4f. Std.: %.4f. Median: %.4f'% (label,payment.mean(),payment.std(),np.median(payment)))
+        for payment, label in zip([winner_pays_fpsb, winner_pays_spsb],
+                                   ['FPSB', 'SPSB']):
+            print('The average payment of %s: %.4f. Std.: %.4f. Median: %.4f' %
+                  (label, payment.mean(), payment.std(), np.median(payment)))
             ax.hist(payment, density=True, alpha=0.6, label=label, bins=100)
 
         ax.axvline(winner_pays_fpsb.mean(), ls='--', c='g', label='Mean')
@@ -626,7 +663,7 @@ class bid_price_solution:
 
 ```{code-cell} ipython3
 np.random.seed(1337)
-v = np.random.chisquare(df=2, size=(N,R))
+v = np.random.chisquare(df=2, size=(N, R))
 
 chi_squ_case = bid_price_solution(v)
 ```

@@ -57,7 +57,6 @@ Let's start with some imports:
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from quantecon.markov import DiscreteDP
 from numba import jit
