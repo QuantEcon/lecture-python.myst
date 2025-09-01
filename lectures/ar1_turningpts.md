@@ -40,7 +40,7 @@ We consider two sorts of statistics:
 
 To investigate sample path properties we'll use a simulation procedure recommended by Wecker {cite}`wecker1979predicting`.
 
-To acknowledge uncertainty about parameters, we'll deploy `pymc` to construct a Bayesian joint posterior distribution for unknown parameters.
+To acknowledge uncertainty about parameters, we'll deploy `numpyro` to construct a Bayesian joint posterior distribution for unknown parameters.
 
 Let's start with some imports.
 
@@ -110,7 +110,7 @@ Predictive distribution {eq}`ar1-tp-eq3` assumes that parameters $(\rho,\sigma)$
 
 Predictive distribution {eq}`ar1-tp-eq4` assumes that parameters $(\rho,\sigma)$ are uncertain, but have known probability distribution $\pi_t(\rho,\sigma | y^t )$. Notice the second equality follows that $\{y_t\}$ is a AR(1) process when $(\rho, \sigma)$ are given.  
 
-We also want to compute some  predictive distributions of "sample path statistics" that might  include, for example
+We also want to compute some  predictive distributions of "sample path statistics" that might include, for example
 
 - the time until the next "recession",
 - the minimum value of $Y$ over the next 8 periods,
@@ -152,8 +152,8 @@ class AR1(NamedTuple):
     T1 : int, optional
         Length of the future path to simulate (default is 100).
     """
-    rho:float
-    sigma:float
+    rho: float
+    sigma: float
     y0: float
     T0: int=100
     T1: int=100
@@ -173,11 +173,11 @@ def AR1_simulate_past(ar1: AR1, key=key):
     Returns
     -------
     initial_path : jax.numpy.ndarray
-        Simulated path of the AR(1) process of length T.
+        Simulated path of the AR(1) process and the initial y0.
     """
     rho, sigma, y0, T0 = ar1.rho, ar1.sigma, ar1.y0, ar1.T0
     # Draw epsilons
-    eps = sigma * random.normal(key, (T0 - 1,))
+    eps = sigma * random.normal(key, (T0,))
     # Set step function
     def ar1_step(y_prev, t_rho_eps):
         rho, eps_t = t_rho_eps
@@ -185,7 +185,7 @@ def AR1_simulate_past(ar1: AR1, key=key):
         return y_t, y_t
     
     # Scan over time steps
-    _, y_seq = lax.scan(ar1_step, y0, (jnp.full(T0-1, rho), eps))
+    _, y_seq = lax.scan(ar1_step, y0, (jnp.full(T0, rho), eps))
     # Concatenate initial value
     initial_path = jnp.concatenate([jnp.array([y0]), y_seq])
 
@@ -241,7 +241,7 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
     ar1 : AR1
         AR1 named tuple containing process parameters (rho, sigma, T0, T1).
     initial_path : array-like
-        Simulated initial path of the AR(1) process of length T0.
+        Simulated initial path of the AR(1) process, shape(T0+1,).
     future_path : array-like
         Simulated future paths of the AR(1) process, shape (N, T1).
     ax : matplotlib.axes.Axes
@@ -260,7 +260,7 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
     
     # Compute moments and confidence intervals
     y_T0 = initial_path[-1]
-    j = jnp.arange(T1)
+    j = jnp.arange(1, T1+1)
     center = rho**j * y_T0
     vars = sigma**2 * (1 - rho**(2 * j)) / (1 - rho**2)
     # 95% CI
@@ -271,24 +271,24 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
     y_lower_c90 = center - 1.65 * jnp.sqrt(vars)
 
     # Plot
-    ax.plot(jnp.arange(-T0, 0), initial_path)
+    ax.plot(jnp.arange(-T0, 1), initial_path)
     ax.axvline(0, linestyle='--', alpha=.4, color='k', lw=1)
-    # Choose 10 future paths to plot
+    # Chooise 10 future paths to plot
     index = random.choice(
         key, jnp.arange(future_path.shape[0]), (10,), replace=False
         )
     for i in index:
-        ax.plot(jnp.arange(T1), future_path[i, :], color='grey', alpha=.5)
+        ax.plot(jnp.arange(1, T1+1), future_path[i, :], color='grey', alpha=.5)
 
     # Plot 90% and 95% CI
     ax.fill_between(
-        jnp.arange(T1), y_upper_c95, y_lower_c95, alpha=.3, label='95% CI'
+        jnp.arange(1, T1+1), y_upper_c95, y_lower_c95, alpha=.3, label='95% CI'
         )
     ax.fill_between(
-        jnp.arange(T1), y_upper_c90, y_lower_c90, alpha=.35, label='90% CI'
+        jnp.arange(1, T1+1), y_upper_c90, y_lower_c90, alpha=.35, label='90% CI'
         )
     ax.plot(
-        jnp.arange(T1), center, color='red', alpha=.7, label='expectation'
+        jnp.arange(1, T1+1), center, color='red', alpha=.7, label='expectation'
         )
     ax.set_xlim([-T0, T1])
     ax.set_xlabel("time", fontsize=13)
@@ -325,13 +325,15 @@ Wecker {cite}`wecker1979predicting` proposed using simulation techniques to char
 
 He called these functions "path properties" to contrast them with properties of single data points.
 
-He studied two special  prospective path properties of a given series $\{y_t\}$. 
+He studied two special prospective path properties of a given series $\{y_t\}$. 
 
-The first was **time until the next turning point**.
+The first was *time until the next turning point*.
 
-* he defined a **"turning point"** to be the date of the  second of two successive declines in  $y$. 
+* he defined a **"turning point"** to be the date of the second of two successive declines in $y$.
 
-To examine this statistic, let $Z$ be an indicator process
+For example, if $y_t(\omega)< y_{t-1}(\omega)< y_{t-2}(\omega)$, then $t$, then period $t$ is a turning point.
+
+To examine the *time until the next turning point*, let $Z$ be an indicator process
 
 $$
 Z_t(\omega) :=  
@@ -343,11 +345,17 @@ $$
 
 Here $\omega \in Omega$ is a sequence of events, and $Y_t: \Omega \rightarrow R$ gives $y_t$ according to $\omega$ and the AR(1) process.
 
-Then the random variable **time until the next turning point**  is defined as the following *stopping time* with respect to $Z$:
+By Wecker's definition, period $t$ is a turning point, and $Y_{t-2}(\omega) \geq Y_{t-3}(\omega)$ excludes that period $t-1$ is a turning point.
+
+Then the random variable **time until the next turning point** is defined as the following *stopping time* with respect to $Z$:
 
 $$
 W_t(\omega):= \inf \{ k\geq 1 \mid Z_{t+k}(\omega) = 1\}
 $$
+
+In the following code, we name this statistic *time until the next recession* to distinguish it from another concept of *turning point*.
+
+Moreover, the statistic *time until the next severe recession* is defined in a similar way, except the decline between periods is greater than $0.02$.
 
 Wecker  {cite}`wecker1979predicting` also studied **the minimum value of $Y$ over the next 8 quarters**
 which can be defined as the random variable.
@@ -383,7 +391,11 @@ This is designed to express the event
 
 - "after one or two decrease(s), $Y$ will grow for two consecutive quarters" 
 
+The **negative turning point today or tomorrow** $N_t$ is defined in the same way.
+
 Following {cite}`wecker1979predicting`, we can use simulations to calculate  probabilities of $P_t$ and $N_t$ for each period $t$. 
+
+However, in the following code, we only use $T_{t+1}(\omega)=1$ to determine $P_t(\omega)$ and $N_t(\omega)$, because we only want to find out the first positive turning point.
 
 ## A Wecker-Like Algorithm
 
@@ -404,7 +416,7 @@ $$
 
 ## Using Simulations to Approximate a Posterior Distribution
 
-The next code cells use `pymc` to compute the time $t$ posterior distribution of $\rho, \sigma$.
+The next code cells use `numpyro` to compute the time $t$ posterior distribution of $\rho, \sigma$.
 
 Note that in defining the likelihood function, we choose to condition on the initial value $y_0$.
 
@@ -445,7 +457,7 @@ def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
         'sigma': mcmc.get_samples()['sigma']
     }
     # Plot posterior distributions
-    if dis_plot==1:
+    if dis_plot == 1:
         fig, ax = plt.subplots(1, 2, figsize=(12, 5))
         sns.histplot(
             post_sample['rho'], kde=True, stat="density", bins=bins, ax=ax[0]
@@ -469,28 +481,30 @@ Our next step is to prepare Python code to compute our sample path statistics.
 
 These statistics were originally defined as random variables with respect to $\omega$, but here we use $\{Y_t\}$ as the argument because $\omega$ is implicit.
 
-Also, these two kinds of definitions are equivalent because $\omega$ determins path statistics only through $\{Y_t\}$
+These two kinds of definitions are equivalent because $\omega$ determins path statistics only through $\{Y_t\}$.
+
+Moreover, we ignore all equality in the definitions, as equality occurs with zero probablity for countinuous random variables.
 
 ```{code-cell} ipython3
 def compute_path_statistics(initial_path, future_path):
     """Compute path statistics for the AR(1) process."""
     # Concatenate the last two elements of initial path to identify recession
-    y = jnp.concatenate([initial_path[-2:], future_path])
+    y = jnp.concatenate([initial_path[-3:], future_path])
     n = y.shape[0]
     def step(carry, i):
         # identify recession
-        rec_cond = (y[i] < y[i-1]) & (y[i-1] < y[i-2])
+        rec_cond = (y[i] < y[i-1]) & (y[i-1] < y[i-2]) & (y[i-2] > y[i-3])
         # identify severe recession
-        sev_cond = (y[i] - y[i-1] < -0.02) & (y[i-1] - y[i-2] < -0.02)
-        # identify positive turning point
+        sev_cond = (
+            (y[i] - y[i-1] < -0.02) & (y[i-1] - y[i-2] < -0.02) & (y[i-2] > y[i-3])
+            )
+        # identify positive turning point.
         up_cond = (
-            ((y[i-2] > y[i-1]) & (y[i-1] > y[i]) & (y[i] < y[i+1]) & (y[i+1] < y[i+2])) 
-            | ((y[i-1] > y[i]) & (y[i] > y[i+1]) & (y[i+1] < y[i+2]) & (y[i+2] < y[i+3]))
+            (y[i-2] > y[i-1]) & (y[i-1] > y[i]) & (y[i] < y[i+1]) & (y[i+1] < y[i+2])
         )
         # identify negative turning point
         down_cond = (
             (y[i-2] < y[i-1]) & (y[i-1] < y[i]) & (y[i] > y[i+1]) & (y[i+1] > y[i+2]) 
-            | ((y[i-1] < y[i]) & (y[i] < y[i+1]) & (y[i+1] > y[i+2]) & (y[i+2] > y[i+3]))
         )
         # Convert to int
         rec = jnp.where(rec_cond, 1, 0)
@@ -499,30 +513,37 @@ def compute_path_statistics(initial_path, future_path):
         down = jnp.where(down_cond, 1, 0)
         return carry, (rec, sev, up, down)
     
-    _, (rec_seq, sev_seq, up_seq, down_seq) = lax.scan(step, None, jnp.arange(2, n-3))
+    _, (rec_seq, sev_seq, up_seq, down_seq) = lax.scan(step, None, jnp.arange(3, n-3))
     
-    # Get the index of the first recession
+    # Get the time until the first recession
     next_recession = jnp.where(
         jnp.any(rec_seq == 1), jnp.argmax(rec_seq == 1) + 1, len(y)
     )
     next_severe_recession = jnp.where(
         jnp.any(sev_seq == 1), jnp.argmax(sev_seq == 1) + 1, len(y)
     )
-    min_val_8q = jnp.min(future_path[:8]) # Minimum value in the next 8 periods
+    # Minimum value in the next 8 periods
+    min_val_8q = jnp.min(future_path[:8]) 
+    # Get the time until the first turning point. 
     next_up_turn = jnp.where(
-        jnp.any(up_seq == 1), jnp.argmax(up_seq == 1) + 1, len(y)
+        jnp.any(up_seq == 1),
+        jnp.maximum(jnp.argmax(up_seq == 1), 1), # Exclude 0 return
+        len(y)
     )
     next_down_turn = jnp.where(
-        jnp.any(down_seq == 1), jnp.argmax(down_seq == 1) + 1, len(y)
+        jnp.any(down_seq == 1),
+        jnp.maximum(jnp.argmax(down_seq == 1), 1),
+        len(y)
     )
-
-    path_stats = (next_recession, next_severe_recession, min_val_8q, 
-             next_up_turn, next_down_turn)
+    path_stats = (
+        next_recession, next_severe_recession, min_val_8q, 
+        next_up_turn, next_down_turn
+        )
     return path_stats
 
 
 def plot_path_stats(next_recession, next_severe_recession, min_val_8q, 
-     next_up_turn, next_down_turn, ax):
+                    next_up_turn, next_down_turn, ax):
     """Plot the path statistics in subplots(3,2)"""
     # ax[0, 0] is for paths of y
     sns.histplot(next_recession, kde=True, stat='density', ax=ax[0, 1], alpha=.8)
@@ -531,7 +552,7 @@ def plot_path_stats(next_recession, next_severe_recession, min_val_8q,
     sns.histplot(
         next_severe_recession, kde=True, stat='density', ax=ax[1, 0], alpha=.8
         )
-    ax[1, 0].set_xlabel("time until the next severe recession",fontsize=13)
+    ax[1, 0].set_xlabel("time until the next severe recession", fontsize=13)
 
     sns.histplot(min_val_8q, kde=True, stat='density', ax=ax[1, 1], alpha=.8)
     ax[1, 1].set_xlabel("minimum value in next 8 periods", fontsize=13)
@@ -666,12 +687,11 @@ mystnb:
   figure:
     caption: |
         Comparison between two methods
-    name: fig_wecker
+    name: fig_compare_wecker
 ---
 fig, ax = plt.subplots(3, 2, figsize=(12, 15))
 plot_Wecker(ar1, initial_path, ax)
 ax[0, 0].clear()
 plot_extended_Wecker(ar1, post_samples, initial_path, ax)
-plt.legend()
 plt.show()
 ```
