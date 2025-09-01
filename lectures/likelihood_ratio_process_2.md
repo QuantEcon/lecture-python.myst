@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.16.6
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -26,7 +26,6 @@ kernelspec:
 :depth: 2
 ```
 
-(overview)=
 ## Overview
 
 A likelihood ratio process lies behind Lawrence Blume and David Easley's answer to their question
@@ -52,10 +51,8 @@ We'll study two alternative arrangements:
 The fundamental theorems of welfare economics will apply and assure us that these two arrangements end up producing exactly the same allocation of consumption goods to individuals **provided** that the social planner assigns an appropriate set of **Pareto weights**.
 
 ```{note}
-You can learn about how the two welfare theorems are applied in modern macroeconomic models in {doc}`this lecture on a planning problem <cass_koopmans_1>` and {doc}`this lecture on a related competitive equilibrium <cass_koopmans_2>`. 
+You can learn about how the two welfare theorems are applied in modern macroeconomic models in {doc}`this lecture on a planning problem <cass_koopmans_1>` and {doc}`this lecture on a related competitive equilibrium <cass_koopmans_2>`.   {doc}`This quantecon lecture <ge_arrow>` presents a recursive formulation of  complete markets models with homogeneous beliefs.
 ```
-
-
 
 
 Let's start by importing some Python tools.
@@ -63,13 +60,9 @@ Let's start by importing some Python tools.
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import vectorize, jit
+from numba import vectorize, jit, prange
 from math import gamma
 from scipy.integrate import quad
-from scipy.optimize import brentq, minimize_scalar
-import pandas as pd
-from IPython.display import display, Math
-import quantecon as qe
 ```
 
 ## Review: Likelihood Ratio Processes
@@ -830,13 +823,22 @@ This ties in nicely with {eq}`eq:kl_likelihood_link`.
 
 ## Related Lectures
 
-Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes`
-and as applied in {doc}`odu`.
+Complete markets models with homogeneous beliefs, a kind often used in macroeconomics and finance,  are studied in this quantecon lecture {doc}`ge_arrow`.
+
+{cite}`blume2018case` discuss a paternalistic  case against complete markets.  Their analysis assumes that a social planner should disregard  individuals preferences in the sense that it should disregard the subjective belief components of their preferences.  
+
+Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes` and as applied in {doc}`odu`.
 
 Likelihood ratio processes appear again in {doc}`advanced:additive_functionals`. 
 
 
-## Exercise
+
+{doc}`ge_arrow`
+
+
+
+
+## Exercises
 
 ```{exercise}
 :label: lr_ex3
@@ -892,7 +894,7 @@ $$
 c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1 - \lambda + \lambda l_t(s^t)}
 $$
 
-To match them, we need the following equality to hold
+To match agent 1's choice in a competitive equilibrium with the planner's choice for agent 1,  the following equality must hold
 
 $$
 \frac{\mu_2}{\mu_1} = \frac{\lambda}{1 - \lambda}
@@ -925,6 +927,837 @@ p_t(s^t) &= \frac{\delta^t l_t(s^t) \pi_t^2(s^t)}{(1-\lambda)\lambda l_t(s^t)} \
 &= \frac{\delta^t}{\lambda(1-\lambda)} \pi_t^2(s^t) \bigl[1 - \lambda + \lambda l_t(s^t)\bigr].
 \end{aligned}
 $$
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex4
+
+In this exercise, we'll study two agents, each of whom updates its posterior probability as
+data arrive.
+
+ * each agent applies Bayes' law in the way studied  in {doc}`likelihood_bayes`.
+
+The following  two models are on the table
+
+$$
+f(s^t) = f(s_1) f(s_2) \cdots f(s_t) 
+$$
+
+and 
+
+$$
+g(s^t) = g(s_1) g(s_2) \cdots g(s_t)  
+$$
+
+as is an associated likelihood ratio process
+
+$$
+L(s^t) = \frac{f(s^t)}{g(s^t)} .
+$$
+
+Let $\pi_0 \in (0,1)$ be a prior probability and 
+
+$$
+\pi_t = \frac{ \pi_0 L(s^t)}{ \pi_0 L(s^t) + (1-\pi_0) } .
+$$
+
+Each of our two agents deploys its own version of the mixture model
+
+$$
+m(s^t) = \pi_t f(s^t) + (1- \pi_t) g(s^t)
+$$ (eq:be_mix_model)
+
+We'll endow each type of consumer with model {eq}`eq:be_mix_model`.
+
+ * The two agents share the same $f$ and $g$, but
+ * they have different initial priors, say $\pi_0^1$ and $\pi_0^2$
+
+Thus, consumer $i$'s probability model is 
+
+$$
+m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
+$$ (eq:prob_model)
+
+We now  hand probability models {eq}`eq:prob_model` for $i=1,2$ to the social planner.
+
+We want to deduce allocation $c^i(s^t), i = 1,2$, and watch what happens when
+
+  * nature's model is $f$
+  * nature's model is $g$
+
+We  expect that  consumers will eventually learn the "truth", but that one of them will learn faster.  
+
+To explore things, please  set $f \sim \text{Beta}(1.5, 1)$ and $g \sim \text{Beta}(1, 1.5)$.
+
+Please write Python code that answers the following questions.
+
+ *  How do  consumption shares evolve? 
+ *  Which agent learns faster when nature follows $f$? 
+ *  Which agent learns faster when nature follows $g$?
+ *  How does a difference in initial priors $\pi_0^1$ and $\pi_0^2$ affect the convergence speed?
+
+
+
+```
+
+```{solution-start} lr_ex4
+:class: dropdown
+```
+
+First, let's write helper functions that compute model components including each agent's subjective belief function.
+
+```{code-cell} ipython3
+def bayesian_update(π_0, L_t):
+    """
+    Bayesian update of belief probability given likelihood ratio.
+    """
+    return (π_0 * L_t) / (π_0 * L_t + (1 - π_0))
+
+def mixture_density_belief(s_seq, f_func, g_func, π_seq):
+    """
+    Compute the mixture density beliefs m^i(s^t) for agent i.
+    """
+    f_vals = f_func(s_seq)
+    g_vals = g_func(s_seq)
+    return π_seq * f_vals + (1 - π_seq) * g_vals
+```
+
+Now let's write code that simulates the Blume-Easley model with our two agents.
+
+```{code-cell} ipython3
+def simulate_learning_blume_easley(sequences, f_belief, g_belief, 
+                                        π_0_1, π_0_2, λ=0.5):
+    """
+    Simulate Blume-Easley model with learning agents.
+    """
+    N, T = sequences.shape
+    
+    # Initialize arrays to store results
+    π_1_seq = np.full((N, T), np.nan)
+    π_2_seq = np.full((N, T), np.nan)
+    c1_share = np.full((N, T), np.nan)
+    l_agents_seq = np.full((N, T), np.nan)
+
+    π_1_seq[:, 0] = π_0_1
+    π_2_seq[:, 0] = π_0_2
+    
+    for n in range(N):
+        # Initialize cumulative likelihood ratio for beliefs
+        L_cumul = 1.0
+        
+        # Initialize likelihood ratio between agent densities
+        l_agents_cumul = 1.0
+        
+        for t in range(1, T):
+            s_t = sequences[n, t]
+            
+            # Compute likelihood ratio for this observation
+            l_t = f_belief(s_t) / g_belief(s_t)
+            
+            # Update cumulative likelihood ratio
+            L_cumul *= l_t
+            
+            # Bayesian update of beliefs
+            π_1_t = bayesian_update(π_0_1, L_cumul)
+            π_2_t = bayesian_update(π_0_2, L_cumul)
+            
+            # Store beliefs
+            π_1_seq[n, t] = π_1_t
+            π_2_seq[n, t] = π_2_t
+            
+            # Compute mixture densities for each agent
+            m1_t = π_1_t * f_belief(s_t) + (1 - π_1_t) * g_belief(s_t)
+            m2_t = π_2_t * f_belief(s_t) + (1 - π_2_t) * g_belief(s_t)
+            
+            # Update cumulative likelihood ratio between agents
+            l_agents_cumul *= (m1_t / m2_t)
+            l_agents_seq[n, t] = l_agents_cumul
+            
+            # c_t^1(s^t) = λ * l_t(s^t) / (1 - λ + λ * l_t(s^t))
+            # where l_t(s^t) is the cumulative likelihood ratio between agents
+            c1_share[n, t] = λ * l_agents_cumul / (1 - λ + λ * l_agents_cumul)
+    
+    return {
+        'π_1': π_1_seq,
+        'π_2': π_2_seq, 
+        'c1_share': c1_share,
+        'l_agents': l_agents_seq
+    }
+```
+
+Let's run simulations for different scenarios.
+
+We use $\lambda = 0.5$, $T=40$, and $N=1000$.
+
+```{code-cell} ipython3
+λ = 0.5
+T = 40
+N = 1000
+
+F_a, F_b = 1.5, 1
+G_a, G_b = 1, 1.5
+
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
+```
+
+We'll  start with different initial priors $\pi^i_0 \in (0, 1)$ and widen the gap between them.
+
+```{code-cell} ipython3
+# Different initial priors
+π_0_scenarios = [
+    (0.3, 0.7),
+    (0.7, 0.3),
+    (0.1, 0.9),
+]
+```
+
+Now we can run simulations for different scenarios
+
+```{code-cell} ipython3
+# Nature follows f
+s_seq_f = np.random.beta(F_a, F_b, (N, T))
+
+# Nature follows g
+s_seq_g = np.random.beta(G_a, G_b, (N, T)) 
+
+results_f = {}
+results_g = {}
+
+for i, (π_0_1, π_0_2) in enumerate(π_0_scenarios):
+    # When nature follows f
+    results_f[i] = simulate_learning_blume_easley(
+            s_seq_f, f, g, π_0_1, π_0_2, λ)
+    # When nature follows g  
+    results_g[i] = simulate_learning_blume_easley(
+            s_seq_g, f, g, π_0_1, π_0_2, λ)
+```
+
+Let's visualize the results
+
+```{code-cell} ipython3
+def plot_learning_results(results, π_0_scenarios, nature_type, truth_value):
+    """
+    Plot beliefs and consumption shares for learning agents.
+    """
+    
+    fig, axes = plt.subplots(3, 2, figsize=(10, 15))
+    
+    scenario_labels = [
+        rf'$\pi_0^1 = {π_0_1}, \pi_0^2 = {π_0_2}$'
+        for π_0_1, π_0_2 in π_0_scenarios
+    ]
+    
+    for row, (scenario_idx, scenario_label) in enumerate(
+                zip(range(3), scenario_labels)):
+
+        res = results[scenario_idx]
+        
+        # Plot beliefs
+        ax = axes[row, 0]
+        π_1_med = np.median(res['π_1'], axis=0)
+        π_2_med = np.median(res['π_2'], axis=0) 
+        ax.plot(π_1_med, 'C0', label=r'agent 1', linewidth=2)
+        ax.plot(π_2_med, 'C1', label=r'agent 2', linewidth=2)
+        ax.axhline(y=truth_value, color='gray', linestyle='--', 
+                   alpha=0.5, label=f'truth ({nature_type})')
+        ax.set_title(f'Beliefs when nature = {nature_type}\n{scenario_label}')
+        ax.set_ylabel(r'median $\pi_i^t$')
+        ax.set_ylim([-0.05, 1.05])
+        ax.legend()
+        
+        # Plot consumption shares
+        ax = axes[row, 1]
+        c1_med = np.median(res['c1_share'], axis=0)
+        ax.plot(c1_med, 'g-', linewidth=2, label='median')
+        ax.axhline(y=0.5, color='gray', linestyle='--', 
+                   alpha=0.5)
+        ax.set_title(f'Agent 1 consumption share (Nature = {nature_type})')
+        ax.set_ylabel('consumption share')
+        ax.set_ylim([0, 1])
+        ax.legend()
+        
+        # Add x-labels
+        for col in range(2):
+            axes[row, col].set_xlabel('$t$')
+    
+    plt.tight_layout()
+    return fig, axes
+```
+
+Now we'll plot outcome when nature follows f:
+
+```{code-cell} ipython3
+fig_f, axes_f = plot_learning_results(
+                results_f, π_0_scenarios, 'f', 1.0)
+plt.show()
+```
+
+We can see that the agent with the  more accurate belief gets higher consumption share.
+
+Moreover, the further apart are  initial beliefs, the longer it takes for the consumption ratio to converge.
+
+The longer  it takes for the "less accurate" agent to learn, the lower its ultimate consumption share. 
+
+Now let's plot outcomes when nature follows g:
+
+```{code-cell} ipython3
+fig_g, axes_g = plot_learning_results(results_g, π_0_scenarios, 'g', 0.0)
+plt.show()
+```
+
+We observe  symmetrical outcomes.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex5
+
+In the previous exercise, we purposefully  set the two beta distributions to be relatively close to each other.
+
+That made it challenging to distinguish  the  distributions.
+
+Now let's study outcomes when  the  distributions are further apart.
+
+Let's set $f \sim \text{Beta}(2, 5)$ and $g \sim \text{Beta}(5, 2)$.
+
+Please use  the Python code you  have written to study outcomes. 
+```
+
+```{solution-start} lr_ex5
+:class: dropdown
+```
+
+Here is one solution
+
+```{code-cell} ipython3
+λ = 0.5
+T = 40
+N = 1000
+
+F_a, F_b = 2, 5
+G_a, G_b = 5, 2
+
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
+
+π_0_scenarios = [
+    (0.3, 0.7),
+    (0.7, 0.3),
+    (0.1, 0.9),
+]
+
+s_seq_f = np.random.beta(F_a, F_b, (N, T))
+s_seq_g = np.random.beta(G_a, G_b, (N, T)) 
+
+results_f = {}
+results_g = {}
+
+for i, (π_0_1, π_0_2) in enumerate(π_0_scenarios):
+    # When nature follows f
+    results_f[i] = simulate_learning_blume_easley(
+            s_seq_f, f, g, π_0_1, π_0_2, λ)
+    # When nature follows g  
+    results_g[i] = simulate_learning_blume_easley(
+            s_seq_g, f, g, π_0_1, π_0_2, λ)
+```
+
+Now let's visualize the results
+
+```{code-cell} ipython3
+fig_f, axes_f = plot_learning_results(results_f, π_0_scenarios, 'f', 1.0)
+plt.show()
+```
+
+```{code-cell} ipython3
+fig_g, axes_g = plot_learning_results(results_g, π_0_scenarios, 'g', 0.0)
+plt.show()
+```
+
+Evidently, because the two distributions are further apart, it is easier to distinguish them.
+
+So learning occurs more quickly.
+
+
+So do consumption shares.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex6
+
+Two agents have different beliefs about three possible models.
+
+Assume $f(x) \geq 0$, $g(x) \geq 0$, and $h(x) \geq 0$ for $x \in X$ with:
+- $\int_X f(x) dx = 1$
+- $\int_X g(x) dx = 1$ 
+- $\int_X h(x) dx = 1$
+
+We'll consider two agents:
+* Agent 1: $\pi^g_0 = 1 - \pi^f_0$, $\pi^f_0 \in (0,1), \pi^h_0 = 0$ 
+(attaches positive probability  only to models $f$ and $g$)
+* Agent 2: $\pi^g_0 = \pi^f_0 = 1/3$, $\pi^h_0 = 1/3$ 
+(attaches equal  weights to  all three models)
+
+Let $f$ and $g$ be two beta distributions with $f \sim \text{Beta}(3, 2)$ and 
+$g \sim \text{Beta}(2, 3)$, and
+set $h = \pi^f_0 f + (1-\pi^f_0) g$ with $\pi^f_0 = 0.5$.
+
+Bayes' Law tells us that posterior probabilities on models $f$ and $g$ evolve according to 
+
+$$
+\pi^f(s^t) := \frac{\pi^f_0 f(s^t)}{\pi^f_0 f(s^t) 
++ \pi^g_0 g(s^t) + (1 - \pi^f_0 - \pi^g_0) h(s^t)}
+$$
+
+and
+
+$$
+\pi^g(s^t) := \frac{\pi^g_0 g(s^t)}{\pi^f_0 f(s^t) 
++ \pi^g_0 g(s^t) + (1 - \pi^f_0 - \pi^g_0) h(s^t)}
+$$
+
+
+Please simulate and visualize  evolutions of posterior probabilities and  consumption allocations when:
+
+* Nature permanently draws from $f$
+* Nature permanently draws from $g$
+```
+
+```{solution-start} lr_ex6
+:class: dropdown
+```
+
+Let's implement this three-model case with two agents having different beliefs.
+
+Let's define $f$ and $g$ far apart, with $h$ being a mixture of $f$ and $g$.
+
+```{code-cell} ipython3
+F_a, F_b = 3, 2
+G_a, G_b = 2, 3
+λ = 0.5 
+π_f_0 = 0.5
+
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
+h = jit(lambda x: π_f_0 * f(x) + (1 - π_f_0) * g(x))
+```
+
+Now we can define the belief updating for the model
+
+```{code-cell} ipython3
+@jit(parallel=True)
+def compute_posterior_three_models(
+    s_seq, f_func, g_func, h_func, π_f_0, π_g_0):
+    """
+    Compute posterior probabilities for three models.
+    """
+    N, T = s_seq.shape
+    π_h_0 = 1 - π_f_0 - π_g_0
+    
+    π_f = np.zeros((N, T))
+    π_g = np.zeros((N, T))
+    π_h = np.zeros((N, T))
+    
+    for n in prange(N):
+        # Initialize with priors
+        π_f[n, 0] = π_f_0
+        π_g[n, 0] = π_g_0
+        π_h[n, 0] = π_h_0
+        
+        # Compute cumulative likelihoods
+        f_cumul = 1.0
+        g_cumul = 1.0
+        h_cumul = 1.0
+        
+        for t in range(1, T):
+            s_t = s_seq[n, t]
+            
+            # Update cumulative likelihoods
+            f_cumul *= f_func(s_t)
+            g_cumul *= g_func(s_t)
+            h_cumul *= h_func(s_t)
+            
+            # Compute posteriors using Bayes' rule
+            denominator = π_f_0 * f_cumul + π_g_0 * g_cumul + π_h_0 * h_cumul
+            
+            π_f[n, t] = π_f_0 * f_cumul / denominator
+            π_g[n, t] = π_g_0 * g_cumul / denominator
+            π_h[n, t] = π_h_0 * h_cumul / denominator
+    
+    return π_f, π_g, π_h
+```
+
+Let's also write simulation code along the lines of earlier exercises
+
+```{code-cell} ipython3
+@jit
+def bayesian_update_three_models(π_f_0, π_g_0, L_f, L_g, L_h):
+    """Bayesian update for three models."""
+    π_h_0 = 1 - π_f_0 - π_g_0
+    denom = π_f_0 * L_f + π_g_0 * L_g + π_h_0 * L_h
+    return π_f_0 * L_f / denom, π_g_0 * L_g / denom, π_h_0 * L_h / denom
+
+@jit
+def compute_mixture_density(π_f, π_g, π_h, f_val, g_val, h_val):
+    """Compute mixture density for an agent."""
+    return π_f * f_val + π_g * g_val + π_h * h_val
+
+@jit(parallel=True)
+def simulate_three_model_allocation(sequences, f_func, g_func, h_func,
+                                     π_f_0_1, π_g_0_1, π_f_0_2, π_g_0_2, λ=0.5):
+    """
+    Simulate Blume-Easley model with learning agents and three models.
+    """
+    N, T = sequences.shape
+    
+    # Initialize arrays to store results
+    beliefs_1 = {k: np.full((N, T), np.nan) for k in ['π_f', 'π_g', 'π_h']}
+    beliefs_2 = {k: np.full((N, T), np.nan) for k in ['π_f', 'π_g', 'π_h']}
+    c1_share = np.full((N, T), np.nan)
+    l_agents_seq = np.full((N, T), np.nan)
+    
+    # Set initial beliefs
+    beliefs_1['π_f'][:, 0] = π_f_0_1
+    beliefs_1['π_g'][:, 0] = π_g_0_1
+    beliefs_1['π_h'][:, 0] = 1 - π_f_0_1 - π_g_0_1
+    beliefs_2['π_f'][:, 0] = π_f_0_2
+    beliefs_2['π_g'][:, 0] = π_g_0_2
+    beliefs_2['π_h'][:, 0] = 1 - π_f_0_2 - π_g_0_2
+    
+    for n in range(N):
+        # Initialize cumulative likelihoods
+        L_cumul = {'f': 1.0, 'g': 1.0, 'h': 1.0}
+        l_agents_cumul = 1.0
+        
+        # Calculate initial consumption share at t=0
+        l_agents_seq[n, 0] = 1.0
+        c1_share[n, 0] = λ * 1.0 / (1 - λ + λ * 1.0)  # This equals λ
+        
+        for t in range(1, T):
+            s_t = sequences[n, t]
+            
+            # Compute densities for current observation
+            densities = {
+                'f': f_func(s_t),
+                'g': g_func(s_t),
+                'h': h_func(s_t)
+            }
+            
+            # Update cumulative likelihoods
+            for model in L_cumul:
+                L_cumul[model] *= densities[model]
+            
+            # Bayesian updates for both agents
+            π_f_1, π_g_1, π_h_1 = bayesian_update_three_models(
+                π_f_0_1, π_g_0_1, L_cumul['f'], L_cumul['g'], L_cumul['h'])
+            π_f_2, π_g_2, π_h_2 = bayesian_update_three_models(
+                π_f_0_2, π_g_0_2, L_cumul['f'], L_cumul['g'], L_cumul['h'])
+            
+            # Store beliefs
+            beliefs_1['π_f'][n, t] = π_f_1
+            beliefs_1['π_g'][n, t] = π_g_1
+            beliefs_1['π_h'][n, t] = π_h_1
+            beliefs_2['π_f'][n, t] = π_f_2
+            beliefs_2['π_g'][n, t] = π_g_2
+            beliefs_2['π_h'][n, t] = π_h_2
+            
+            # Compute mixture densities
+            m1_t = compute_mixture_density(
+                π_f_1, π_g_1, π_h_1, densities['f'], 
+                densities['g'], densities['h'])
+            m2_t = compute_mixture_density(
+                π_f_2, π_g_2, π_h_2, densities['f'], 
+                densities['g'], densities['h'])
+            
+            # Update cumulative likelihood ratio between agents
+            l_agents_cumul *= (m1_t / m2_t)
+            l_agents_seq[n, t] = l_agents_cumul
+            
+            # Consumption share for agent 1
+            c1_share[n, t] = λ * l_agents_cumul / (1 - λ + λ * l_agents_cumul)
+    
+    return {
+        'π_f_1': beliefs_1['π_f'],
+        'π_g_1': beliefs_1['π_g'],
+        'π_h_1': beliefs_1['π_h'],
+        'π_f_2': beliefs_2['π_f'],
+        'π_g_2': beliefs_2['π_g'],
+        'π_h_2': beliefs_2['π_h'],
+        'c1_share': c1_share,
+        'l_agents': l_agents_seq
+    }
+```
+
+The following code cell defines a plotting function to show evolutions of beliefs and consumption ratios
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+def plot_belief_evolution(results, nature='f', figsize=(15, 5)):
+    """
+    Create plots showing belief evolution for three models (f, g, h).
+    """
+    fig, axes = plt.subplots(1, 3, figsize=figsize)
+    
+    model_names = ['f', 'g', 'h']
+    belief_keys = [('π_f_1', 'π_f_2'), 
+                   ('π_g_1', 'π_g_2'), 
+                   ('π_h_1', 'π_h_2')]
+    
+    for j, (model_name, (key1, key2)) in enumerate(
+                        zip(model_names, belief_keys)):
+        ax = axes[j]
+        
+        # Plot agent beliefs
+        ax.plot(np.median(results[key1], axis=0), 'C0-', 
+                            linewidth=2, label='agent 1')
+        ax.plot(np.median(results[key2], axis=0), 'C1-', 
+                            linewidth=2, label='agent 2')
+        
+        # Truth indicator
+        if model_name == nature:
+            ax.axhline(y=1.0, color='grey', linestyle='-.', 
+                      alpha=0.7, label='truth')
+        else:
+            ax.axhline(y=0.0, color='grey', linestyle='-.', 
+                      alpha=0.7, label='truth')
+        
+        ax.set_title(f'π({model_name}) when Nature = {nature}')
+        ax.set_xlabel('$t$')
+        ax.set_ylabel(f'median π({model_name})')
+        ax.set_ylim([-0.01, 1.01])
+        ax.legend(loc='best')
+    
+    plt.tight_layout()
+    return fig, axes
+
+
+def plot_consumption_dynamics(results_f, results_g, λ=0.5, figsize=(14, 5)):
+    """
+    Create plot showing consumption share dynamics for agent 1.
+    """
+    fig, axes = plt.subplots(1, 2, figsize=figsize)
+    
+    results_list = [results_f, results_g]
+    nature_labels = ['f', 'g']
+    colors = ['blue', 'green']
+    
+    for i, (results, nature_label, color) in enumerate(
+                    zip(results_list, nature_labels, colors)):
+        ax = axes[i]
+        c1 = results['c1_share']
+        c1_med = np.median(c1, axis=0)
+        
+        # Plot median and percentiles
+        ax.plot(c1_med, color=color, linewidth=2, label="median")
+        
+        # Add percentile bands
+        c1_25 = np.percentile(c1, 25, axis=0)
+        c1_75 = np.percentile(c1, 75, axis=0)
+        ax.fill_between(range(len(c1_med)), c1_25, c1_75, 
+                        color=color, alpha=0.2, label="25-75 percentile")
+        
+        ax.axhline(y=0.5, color='grey', linestyle='--', 
+                        alpha=0.5, label='equal share')
+        
+        ax.set_title(f'Agent 1 consumption share (Nature = {nature_label})')
+        ax.set_xlabel('$t$')
+        ax.set_ylabel("consumption share")
+        ax.set_ylim([-0.02, 1.02])
+        ax.legend(loc='best')
+    
+    plt.tight_layout()
+    return fig, axes
+```
+
+Now let's run the simulation. 
+
+In the simulation below, agent 1 assigns positive probabilities only to $f$ and $g$, while agent 2 puts equal weights on all three models.
+
+```{code-cell} ipython3
+T = 100
+N = 1000
+
+# Generate sequences for nature f and g
+s_seq_f = np.random.beta(F_a, F_b, (N, T))
+s_seq_g = np.random.beta(G_a, G_b, (N, T))
+
+# Run simulations
+results_f = simulate_three_model_allocation(s_seq_f, 
+                        f, g, h, π_f_0, 1-π_f_0, 
+                        1/3, 1/3, λ)
+results_g = simulate_three_model_allocation(s_seq_g, 
+                        f, g, h, π_f_0, 1-π_f_0, 
+                        1/3, 1/3, λ)
+```
+
+Plots below show the evolution of beliefs for each model (f, g, h) separately. 
+
+First we show the figure when nature chooses $f$
+
+```{code-cell} ipython3
+plot_belief_evolution(results_f, nature='f', figsize=(15, 5))
+plt.show()
+```
+
+Agent 1's posterior beliefs are depicted in blue and agent 2's posterior beliefs are depicted in orange.
+
+Evidently, when nature draws from $f$, agent 1 learns faster than agent 2, who, unlike agent 1, attaches a positive prior probability to model $h$:
+
+- In the leftmost panel, both agents' beliefs for $\pi(f)$ converge toward 1 (the truth)
+- Agent 2's belief in model $h$ (rightmost panel) gradually converges to 0 after an initial rise
+
+Now let's plot the belief evolution when nature chooses $g$:
+
+```{code-cell} ipython3
+plot_belief_evolution(results_g, nature='g', figsize=(15, 5))
+plt.show()
+```
+
+Again, agent 1 learns faster than agent 2.
+
+Before reading the next figure, please guess how consumption shares evolve.
+
+Remember that agent 1 reaches the correct model faster than agent 2
+
+```{code-cell} ipython3
+plot_consumption_dynamics(results_f, results_g, λ=0.5, figsize=(14, 5))
+plt.show()
+```
+
+As we expected, agent 1 has a higher consumption share compared to agent 2.
+
+In this exercise, the "truth" is among possible outcomes according to both agents.
+
+Agent 2's model is "more general" because it allows a possibility -- that nature is drawing from $h$ -- that agent 1's model does not include.  
+
+Agent 1 learns more quickly because he uses a simpler model. 
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex7
+
+Now consider two agents with extreme priors about three models.
+
+Consider the same setup as the previous exercise, but now:
+* Agent 1: $\pi^g_0 = \pi^f_0 = \frac{\epsilon}{2} > 0$, where $\epsilon$ is close to $0$ (e.g., $\epsilon = 0.01$)
+* Agent 2: $\pi^g_0 = \pi^f_0 = 0$ (rigid belief in model $h$)
+
+Choose $h$ to be close but not equal to either $f$ or $g$ as measured by KL divergence. 
+For example, set $h \sim \text{Beta}(1.2, 1.1)$ and $f \sim \text{Beta}(1, 1)$.
+
+Please simulate and visualize  evolutions of posterior probabilities and  consumption allocations when:
+
+* Nature permanently draws from $f$
+* Nature permanently draws from $g$
+```
+
+```{solution-start} lr_ex7
+:class: dropdown
+```
+
+To explore this exercise, we increase $T$ to 1000.
+
+Let's specify $f, g$, and $h$ and verify that $h$ and $f$ are closer than $h$ and $g$
+
+```{code-cell} ipython3
+F_a, F_b = 1, 1
+G_a, G_b = 3, 1.2
+H_a, H_b = 1.2, 1.1
+
+f = jit(lambda x: p(x, F_a, F_b))
+g = jit(lambda x: p(x, G_a, G_b))
+h = jit(lambda x: p(x, H_a, H_b))
+
+Kh_f = compute_KL(h, f)
+Kh_g = compute_KL(h, g)
+Kf_h = compute_KL(f, h)
+Kg_h = compute_KL(g, h)
+
+print(f"KL divergences:")
+print(f"KL(h,f) = {Kh_f:.4f}, KL(h,g) = {Kh_g:.4f}")
+print(f"KL(f,h) = {Kf_h:.4f}, KL(g,h) = {Kg_h:.4f}")
+```
+
+Now we can set the belief models for the two agents
+
+```{code-cell} ipython3
+ε = 0.01
+λ = 0.5
+
+# Agent 1: π_f = ε/2, π_g = ε/2, π_h = 1-ε 
+# (almost rigid about h)
+π_f_1 = ε/2
+π_g_1 = ε/2
+
+# Agent 2: π_f = 0, π_g = 0, π_h = 1 
+# (fully rigid about h)
+π_f_2 = 1e-10
+π_g_2 = 1e-10
+```
+
+Now we can run the simulation
+
+```{code-cell} ipython3
+T = 1000
+N = 1000
+
+# Generate sequences for different nature scenarios
+s_seq_f = np.random.beta(F_a, F_b, (N, T))
+s_seq_g = np.random.beta(G_a, G_b, (N, T))
+
+# Run simulations for both scenarios
+results_f = simulate_three_model_allocation(
+                                s_seq_f, 
+                                f, g, h, 
+                                π_f_1, π_g_1, π_f_2, π_g_2, λ)
+results_g = simulate_three_model_allocation(
+                                s_seq_g, 
+                                f, g, h, 
+                                π_f_1, π_g_1, π_f_2, π_g_2, λ)
+```
+
+Let's plot the belief evolution when nature chooses $f$
+
+```{code-cell} ipython3
+plot_belief_evolution(results_f, nature='f', figsize=(15, 5))
+plt.show()
+```
+
+Observe how slowly agent 1 learns the truth in the leftmost panel showing $\pi(f)$.
+
+Also note that agent 2 is not updating.
+
+This is because we have specified that $f$ is very difficult to distinguish from $h$ as measured by $KL(f, h)$.
+
+The rigidity regarding $h$ prevents agent 2 from updating its beliefs when observing 
+a very similar model $f$
+
+Now let's plot the belief evolution when nature chooses $g$
+
+```{code-cell} ipython3
+plot_belief_evolution(results_g, nature='g', figsize=(15, 5))
+plt.show()
+```
+
+When nature draws from $g$, it is further away from $h$ as measured by the KL divergence. 
+
+This helps both agents learn the truth more quickly.
+
+```{code-cell} ipython3
+plot_consumption_dynamics(results_f, results_g, 
+                               λ=0.5, figsize=(14, 5))
+plt.show()
+```
+
+In the consumption dynamics plot, notice that agent 1's consumption share converges to 1 both when nature permanently draws from $f$ and when nature permanently draws from $g$.
 
 ```{solution-end}
 ```
