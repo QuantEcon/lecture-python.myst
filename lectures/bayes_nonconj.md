@@ -640,8 +640,6 @@ class BayesianInferencePlot:
         a class initiated using BayesianInference()
 
     """
-
-    """Enter Parameters for data generation and plotting"""
     theta: float
     N_list: list
     BayesianInferenceClass: BayesianInference
