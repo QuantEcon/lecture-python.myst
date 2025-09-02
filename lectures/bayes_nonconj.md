@@ -273,7 +273,7 @@ $$
 where
 
 $$
-p\left(Y\right)=\int p\left(Y\mid\theta\right)p\left(Y\right) d\theta.
+p\left(Y\right)=\int p\left(Y\mid\theta\right)p\left(\theta\right) d\theta.
 $$ (eq:intchallenge)
 
 The integral on the right side of {eq}`eq:intchallenge` is typically difficult to compute.
@@ -297,7 +297,7 @@ Note that
 $$
 \begin{aligned}D_{KL}(q(\theta;\phi)\;\|\;p(\theta\mid Y)) & =-\int q(\theta;\phi)\log\frac{P(\theta\mid Y)}{q(\theta;\phi)} d\theta\\
  & =-\int q(\theta)\log\frac{\frac{p(\theta,Y)}{p(Y)}}{q(\theta)} d\theta\\
- & =-\int q(\theta)\log\frac{p(\theta,Y)}{p(\theta)q(Y)} d\theta\\
+ & =-\int q(\theta)\log\frac{p(\theta,Y)}{q(\theta)p(Y)} d\theta\\
  & =-\int q(\theta)\left[\log\frac{p(\theta,Y)}{q(\theta)}-\log p(Y)\right] d\theta\\
  & =-\int q(\theta)\log\frac{p(\theta,Y)}{q(\theta)}+\int q(\theta)\log p(Y) d\theta\\
  & =-\int q(\theta)\log\frac{p(\theta,Y)}{q(\theta)} d\theta+\log p(Y)\\
@@ -406,7 +406,7 @@ def sample_prior(model: BayesianInference):
 
     elif model.name_dist == "vonMises":
         # unpack parameters
-        kappa = model.param
+        kappa, = model.param
         sample = numpyro.sample(
             "theta", ShiftedVonMises(kappa), rng_key=model.rng_key
         )
@@ -425,7 +425,8 @@ def show_prior(
     model: BayesianInference, size=1e5, bins=20, disp_plot=1
     ):
     """
-    Visualizes prior distribution by sampling from prior and plots the approximated sampling distribution
+    Visualizes prior distribution by sampling from prior 
+    and plots the approximated sampling distribution
     """
     with numpyro.plate("show_prior", size=size):
         sample = sample_prior(model)
