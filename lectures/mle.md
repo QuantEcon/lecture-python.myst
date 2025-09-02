@@ -125,7 +125,7 @@ for μ in [1, 5, 10]:
     )
 
 ax.grid()
-ax.set_xlabel("$y$", fontsize=14)
+ax.set_xlabel(r"$y$", fontsize=14)
 ax.set_ylabel(r"$f(y \mid \mu)$", fontsize=14)
 ax.axis(xmin=0, ymin=0)
 ax.legend(fontsize=14)
@@ -284,8 +284,8 @@ def plot_joint_poisson(μ=7, y_n=20):
     ax = fig.add_subplot(111, projection="3d")
     ax.plot_surface(X, Y, Z.T, cmap="terrain", alpha=0.6)
     ax.scatter(X, Y, Z.T, color="black", alpha=0.5, linewidths=1)
-    ax.set(xlabel="$y_1$", ylabel="$y_2$")
-    ax.set_zlabel("$f(y_1, y_2)$", labelpad=10)
+    ax.set(xlabel=r"$y_1$", ylabel=r"$y_2$")
+    ax.set_zlabel(r"$f(y_1, y_2)$", labelpad=10)
     plt.show()
 
 
@@ -610,7 +610,7 @@ for β in [7, 8.5, 9.5, 10]:
     m, c = find_tangent(β)
     y = m * β_line + c
     ax.plot(β_line, y, "-", c="purple", alpha=0.8)
-    ax.text(β + 2.05, y[-1], f"$G({β}) = {abs(m):.0f}$", fontsize=12)
+    ax.text(β + 2.05, y[-1], rf"$G({β}) = {abs(m):.0f}$", fontsize=12)
     ax.vlines(β, -24, logL(β), linestyles="--", alpha=0.5)
     ax.hlines(logL(β), 6, β, linestyles="--", alpha=0.5)
 
@@ -646,7 +646,9 @@ X = jnp.array([[1, 2, 5], [1, 1, 3], [1, 4, 2], [1, 5, 2], [1, 3, 1]])
 
 y = jnp.array([1, 0, 1, 1, 0])
 
-stats_poisson = Poisson(y.__array__(), X.__array__()).fit()
+y_numpy = y.__array__()
+X_numpy = X.__array__()
+stats_poisson = Poisson(y_numpy, X_numpy).fit()
 print(stats_poisson.summary())
 ```
 
@@ -991,7 +993,9 @@ newton_raphson(prob, β)
 ```{code-cell} ipython3
 # Use statsmodels to verify results
 # Note: use __array__() method to convert jax to numpy arrays
-print(Probit(y.__array__(), X.__array__()).fit().summary())
+y_numpy = y.__array__()
+X_numpy = X.__array__()
+print(Probit(y_numpy, X_numpy).fit().summary())
 ```
 
 ```{solution-end}
