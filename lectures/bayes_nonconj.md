@@ -406,7 +406,7 @@ def sample_prior(model: BayesianInference):
 
     elif model.name_dist == "vonMises":
         # unpack parameters
-        kappa, = model.param
+        kappa = model.param
         sample = numpyro.sample(
             "theta", ShiftedVonMises(kappa), rng_key=model.rng_key
         )
