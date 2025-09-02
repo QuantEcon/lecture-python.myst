@@ -22,11 +22,11 @@ kernelspec:
 !pip install numpyro jax
 ```
 
-This lecture describes methods for forecasting statistics that are functions of future values of a univariate autogressive process.  
+This lecture describes methods for forecasting statistics that are functions of future values of a univariate autoregressive process.
 
 The methods are designed to take into account two possible sources of uncertainty about these statistics:
 
-- random shocks that impinge of the transition law
+- random shocks that impinge on the transition law
 
 - uncertainty about the parameter values of the AR(1) process
 
@@ -90,7 +90,7 @@ $$
 f(y_{t+j} | y_{t}; \rho, \sigma) \sim {\mathcal N}\left(\rho^j y_{t}, \sigma^2 \frac{1 - \rho^{2j}}{1 - \rho^2} \right) 
 $$ (ar1-tp-eq3)
 
-The predictive distribution {eq}`ar1-tp-eq3` that assumes that the parameters $\rho, \sigma$ are known, which we express
+The predictive distribution {eq}`ar1-tp-eq3` assumes that the parameters $\rho, \sigma$ are known, which we express
 by conditioning on them.
 
 We also want to compute a  predictive distribution that does not condition on $\rho,\sigma$ but instead takes account of our uncertainty about them.
@@ -108,7 +108,7 @@ $$ (ar1-tp-eq4)
 
 Predictive distribution {eq}`ar1-tp-eq3` assumes that parameters $(\rho,\sigma)$ are known. 
 
-Predictive distribution {eq}`ar1-tp-eq4` assumes that parameters $(\rho,\sigma)$ are uncertain, but have known probability distribution $\pi_t(\rho,\sigma | y^t )$. Notice the second equality follows that $\{y_t\}$ is a AR(1) process when $(\rho, \sigma)$ are given.  
+Predictive distribution {eq}`ar1-tp-eq4` assumes that parameters $(\rho,\sigma)$ are uncertain, but have a known probability distribution $\pi_t(\rho,\sigma | y^t )$. Notice the second equality follows because $\{y_t\}$ is an AR(1) process when $(\rho, \sigma)$ are given.  
 
 We also want to compute some  predictive distributions of "sample path statistics" that might include, for example
 
@@ -121,18 +121,18 @@ To accomplish that for situations in which we are uncertain about parameter valu
 
 - first simulate an initial path of length $T_0$;
 - for a given prior, draw a sample of size $N$ from the posterior joint distribution of parameters $\left(\rho,\sigma\right)$ after observing the initial path;
-- for each draw $n=0,1,...,N$, simulate a "future path" of length $T_1$ with parameters $\left(\rho_n,\sigma_n\right)$ and compute our three "sample path statistics";
+- for each draw $n=0,1,...,N$, simulate a "future path" of length $T_1$ with parameters $\left(\rho_n,\sigma_n\right)$ and compute our "sample path statistics";
 - finally, plot the desired statistics from the $N$ samples as an empirical distribution.
 
 ## Implementation
 
-First, we'll simulate a  sample path from which to launch our forecasts.  
+First, we'll simulate a sample path from which to launch our forecasts.
 
 In addition to plotting the sample path, under the assumption that the true parameter values are known,
-we'll plot $.9$ and $.95$ coverage intervals using conditional distribution
+we'll plot $0.9$ and $0.95$ coverage intervals using conditional distribution
 {eq}`ar1-tp-eq3` described above. 
 
-We'll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.  
+We'll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.
 
 ```{code-cell} ipython3
 class AR1(NamedTuple):
@@ -178,6 +178,7 @@ def AR1_simulate_past(ar1: AR1, key=key):
     rho, sigma, y0, T0 = ar1.rho, ar1.sigma, ar1.y0, ar1.T0
     # Draw epsilons
     eps = sigma * random.normal(key, (T0,))
+    
     # Set step function
     def ar1_step(y_prev, t_rho_eps):
         rho, eps_t = t_rho_eps
@@ -186,12 +187,16 @@ def AR1_simulate_past(ar1: AR1, key=key):
     
     # Scan over time steps
     _, y_seq = lax.scan(ar1_step, y0, (jnp.full(T0, rho), eps))
+    
     # Concatenate initial value
     initial_path = jnp.concatenate([jnp.array([y0]), y_seq])
 
     return initial_path
+```
 
+Now we define the simulation function that generates a realization of the AR(1) process for future $T1$ periods.
 
+```{code-cell} ipython3
 def AR1_simulate_future(ar1: AR1, y_T0, N=10, key=key):
     """
     Simulate a realization of the AR(1) process for T1 periods.
@@ -216,6 +221,7 @@ def AR1_simulate_future(ar1: AR1, y_T0, N=10, key=key):
 
     def single_path_scan(y_T0, subkey):
         eps = sigma * random.normal(subkey, (T1,))
+        
         def ar1_step(y_prev, t_rho_eps):
             rho, eps_t = t_rho_eps
             y_t = rho * y_prev + eps_t
@@ -225,12 +231,16 @@ def AR1_simulate_future(ar1: AR1, y_T0, N=10, key=key):
 
     # Split key to generate different paths
     subkeys = random.split(key, num=N)
+    
     # Simulate N paths
     future_path = jax.vmap(single_path_scan, in_axes=(None, 0))(y_T0, subkeys)
 
     return future_path
+```
 
+The following function plots the initial observed AR(1) path and simulated future paths along with predictive confidence intervals.
 
+```{code-cell} ipython3
 def plot_path(ar1, initial_path, future_path, ax, key=key):
     """
     Plot the initial observed AR(1) path and simulated future paths, 
@@ -263,9 +273,11 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
     j = jnp.arange(1, T1+1)
     center = rho**j * y_T0
     vars = sigma**2 * (1 - rho**(2 * j)) / (1 - rho**2)
+    
     # 95% CI
     y_upper_c95 = center + 1.96 * jnp.sqrt(vars)
     y_lower_c95 = center - 1.96 * jnp.sqrt(vars)
+    
     # 90% CI
     y_upper_c90 = center + 1.65 * jnp.sqrt(vars)
     y_lower_c90 = center - 1.65 * jnp.sqrt(vars)
@@ -273,7 +285,8 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
     # Plot
     ax.plot(jnp.arange(-T0, 1), initial_path)
     ax.axvline(0, linestyle='--', alpha=.4, color='k', lw=1)
-    # Chooise 10 future paths to plot
+    
+    # Choose 10 future paths to plot
     index = random.choice(
         key, jnp.arange(future_path.shape[0]), (10,), replace=False
         )
@@ -309,6 +322,7 @@ ar1 = AR1(rho=0.9, sigma=1, y0=10, T0=100, T1=100)
 # Simulate
 initial_path = AR1_simulate_past(ar1)
 future_path = AR1_simulate_future(ar1, initial_path[-1])
+
 # Plot
 fig, ax = plt.subplots(1, 1)
 plot_path(ar1, initial_path, future_path, ax)
@@ -321,17 +335,17 @@ https://python.quantecon.org/perm_income_cons.html
 
 ## Predictive Distributions of Path Properties
 
-Wecker {cite}`wecker1979predicting` proposed using simulation techniques to characterize  predictive distribution of some statistics that are  non-linear functions of $y$. 
+Wecker {cite}`wecker1979predicting` proposed using simulation techniques to characterize the predictive distribution of some statistics that are non-linear functions of $y$. 
 
 He called these functions "path properties" to contrast them with properties of single data points.
 
-He studied two special prospective path properties of a given series $\{y_t\}$. 
+He studied two special prospective path properties of a given series $\{y_t\}$.
 
 The first was *time until the next turning point*.
 
 * he defined a **"turning point"** to be the date of the second of two successive declines in $y$.
 
-For example, if $y_t(\omega)< y_{t-1}(\omega)< y_{t-2}(\omega)$, then $t$, then period $t$ is a turning point.
+For example, if $y_t(\omega)< y_{t-1}(\omega)< y_{t-2}(\omega)$, then period $t$ is a turning point.
 
 To examine the *time until the next turning point*, let $Z$ be an indicator process
 
@@ -343,9 +357,9 @@ Z_t(\omega) :=
 \end{cases} 
 $$
 
-Here $\omega \in \Omega$ is a sequence of events, and $Y_t: \Omega \rightarrow R$ gives $y_t$ according to $\omega$ and the AR(1) process.
+Here $\omega \in \Omega$ is a sequence of events, and $Y_t: \Omega \rightarrow \mathbb{R}$ gives $y_t$ according to $\omega$ and the AR(1) process.
 
-By Wecker's definition, period $t$ is a turning point, and $Y_{t-2}(\omega) \geq Y_{t-3}(\omega)$ excludes that period $t-1$ is a turning point.
+By Wecker's definition, period $t$ is a turning point, and $Y_{t-2}(\omega) \geq Y_{t-3}(\omega)$ excludes the possibility that period $t-1$ is a turning point.
 
 Then the random variable **time until the next turning point** is defined as the following *stopping time* with respect to $Z$:
 
@@ -353,12 +367,12 @@ $$
 W_t(\omega):= \inf \{ k\geq 1 \mid Z_{t+k}(\omega) = 1\}
 $$
 
-In the following code, we name this statistic as *time until the next recession* to distinguish it from another concept of *turning point*.
+In the following code, we name this statistic *time until the next recession* to distinguish it from another concept of *turning point*.
 
 Moreover, the statistic *time until the next severe recession* is defined in a similar way, except the decline between periods is greater than $0.02$.
 
-Wecker  {cite}`wecker1979predicting` also studied **the minimum value of $Y$ over the next 8 quarters**
-which can be defined as the random variable.
+Wecker {cite}`wecker1979predicting` also studied **the minimum value of $Y$ over the next 8 quarters**,
+which can be defined as the random variable
 
 $$ 
 M_t(\omega) := \min \{ Y_{t+1}(\omega); Y_{t+2}(\omega); \dots; Y_{t+8}(\omega)\}
@@ -389,29 +403,29 @@ $$
 
 This is designed to express the event
 
-- "after one or two decrease(s), $Y$ will grow for two consecutive quarters" 
+- "after one or two decreases, $Y$ will grow for two consecutive quarters" 
 
 The **negative turning point today or tomorrow** $N_t$ is defined in the same way.
 
-Following {cite}`wecker1979predicting`, we can use simulations to calculate  probabilities of $P_t$ and $N_t$ for each period $t$. 
+Following {cite}`wecker1979predicting`, we can use simulations to calculate probabilities of $P_t$ and $N_t$ for each period $t$. 
 
-However, in the following code, we only use $T_{t+1}(\omega)=1$ to determine $P_t(\omega)$ and $N_t(\omega)$, because we only want to find out the first positive turning point.
+However, in the following code, we only use $T_{t+1}(\omega)=1$ to determine $P_t(\omega)$ and $N_t(\omega)$, because we only want to find the first positive turning point.
 
 ## A Wecker-Like Algorithm
 
 The procedure consists of the following steps: 
 
-* index a sample path by $\omega_i$ 
+- index a sample path by $\omega_i$
 
-* from a given date $t$, simulate $I$ sample paths of length $N$ 
+- from a given date $t$, simulate $I$ sample paths of length $N$ 
 
 $$
 Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omega_i)\right\}_{i=1}^I
 $$
 
-* for each path $\omega_i$, compute the associated value of $W_t(\omega_i), W_{t+1}(\omega_i), \dots , W_{t+N}$
+- for each path $\omega_i$, compute the associated value of $W_t(\omega_i), W_{t+1}(\omega_i), \dots , W_{t+N}$
 
-* consider the sets $\{W_t(\omega_i)\}^{I}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{I}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{I}_{i=1}$ as samples from the predictive distributions $f(W_{t+1} \mid y_t, y_{t-1}, \dots , y_0)$, $f(W_{t+2} \mid y_t, y_{t-1}, \dots , y_0)$, $\dots$, $f(W_{t+N} \mid y_t, y_{t-1}, \dots , y_0)$.
+- consider the sets $\{W_t(\omega_i)\}^{I}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{I}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{I}_{i=1}$ as samples from the predictive distributions $f(W_{t+1} \mid y_t, y_{t-1}, \dots , y_0)$, $f(W_{t+2} \mid y_t, y_{t-1}, \dots , y_0)$, $\dots$, $f(W_{t+N} \mid y_t, y_{t-1}, \dots , y_0)$.
 
 
 ## Using Simulations to Approximate a Posterior Distribution
@@ -434,28 +448,34 @@ def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
         # Start with priors
         rho = numpyro.sample('rho', dist.Uniform(-1, 1))  # Assume stable rho
         sigma = numpyro.sample('sigma', dist.HalfNormal(jnp.sqrt(10)))
+        
         # Define likelihood recursively
         for t in range(1, len(data)):
             # Expectation of y_t
             mu = rho * data[t-1]
+            
             # Likelihood of the actual realization.
             numpyro.sample(f'y_{t}', dist.Normal(mu, sigma), obs=data[t])
 
     # Compute posterior distribution of parameters
     nuts_kernel = NUTS(model)
+    
     # Define MCMC class to compute the posteriors
     mcmc = MCMC(
         nuts_kernel,
         num_warmup=5000,
         num_samples=size,
         progress_bar=False)
+    
     # Run MCMC
     mcmc.run(key, data=data)
+    
     # Get posterior samples
     post_sample = {
         'rho': mcmc.get_samples()['rho'],
         'sigma': mcmc.get_samples()['sigma']
     }
+    
     # Plot posterior distributions
     if dis_plot == 1:
         fig, ax = plt.subplots(1, 2, figsize=(12, 5))
@@ -481,9 +501,9 @@ Our next step is to prepare Python code to compute our sample path statistics.
 
 These statistics were originally defined as random variables with respect to $\omega$, but here we use $\{Y_t\}$ as the argument because $\omega$ is implicit.
 
-These two kinds of definitions are equivalent because $\omega$ determins path statistics only through $\{Y_t\}$.
+These two kinds of definitions are equivalent because $\omega$ determines path statistics only through $\{Y_t\}$.
 
-Moreover, we ignore all equality in the definitions, as equality occurs with zero probablity for countinuous random variables.
+Moreover, we ignore all equality in the definitions, as equality occurs with zero probability for continuous random variables.
 
 ```{code-cell} ipython3
 def compute_path_statistics(initial_path, future_path):
@@ -491,6 +511,7 @@ def compute_path_statistics(initial_path, future_path):
     # Concatenate the last two elements of initial path to identify recession
     y = jnp.concatenate([initial_path[-3:], future_path])
     n = y.shape[0]
+    
     def step(carry, i):
         # identify recession
         rec_cond = (y[i] < y[i-1]) & (y[i-1] < y[i-2]) & (y[i-2] > y[i-3])
@@ -498,14 +519,17 @@ def compute_path_statistics(initial_path, future_path):
         sev_cond = (
             (y[i] - y[i-1] < -0.02) & (y[i-1] - y[i-2] < -0.02) & (y[i-2] > y[i-3])
             )
-        # identify positive turning point.
+        
+        # identify positive turning point
         up_cond = (
             (y[i-2] > y[i-1]) & (y[i-1] > y[i]) & (y[i] < y[i+1]) & (y[i+1] < y[i+2])
         )
+        
         # identify negative turning point
         down_cond = (
             (y[i-2] < y[i-1]) & (y[i-1] < y[i]) & (y[i] > y[i+1]) & (y[i+1] > y[i+2]) 
         )
+        
         # Convert to int
         rec = jnp.where(rec_cond, 1, 0)
         sev = jnp.where(sev_cond, 1, 0)
@@ -513,7 +537,7 @@ def compute_path_statistics(initial_path, future_path):
         down = jnp.where(down_cond, 1, 0)
         return carry, (rec, sev, up, down)
     
-    _, (rec_seq, sev_seq, up_seq, down_seq) = lax.scan(step, None, jnp.arange(3, n-3))
+    _, (rec_seq, sev_seq, up_seq, down_seq) = lax.scan(step, None, jnp.arange(3, n-2))
     
     # Get the time until the first recession
     next_recession = jnp.where(
@@ -522,9 +546,11 @@ def compute_path_statistics(initial_path, future_path):
     next_severe_recession = jnp.where(
         jnp.any(sev_seq == 1), jnp.argmax(sev_seq == 1) + 1, len(y)
     )
+    
     # Minimum value in the next 8 periods
     min_val_8q = jnp.min(future_path[:8]) 
-    # Get the time until the first turning point. 
+    
+    # Get the time until the first turning point
     next_up_turn = jnp.where(
         jnp.any(up_seq == 1),
         jnp.maximum(jnp.argmax(up_seq == 1), 1), # Exclude 0 return
@@ -540,8 +566,10 @@ def compute_path_statistics(initial_path, future_path):
         next_up_turn, next_down_turn
         )
     return path_stats
+```
+The following function creates visualizations of the path statistics in a subplot grid.
 
-
+```{code-cell} ipython3
 def plot_path_stats(next_recession, next_severe_recession, min_val_8q, 
                     next_up_turn, next_down_turn, ax):
     """Plot the path statistics in subplots(3,2)"""
@@ -597,16 +625,16 @@ def plot_Wecker(ar1: AR1, initial_path, ax, N=1000):
     # Simulate future paths and compute statistics
     def step(carry, n):
         future_temp = future_path[n, :]
-        (next_reces, severe_rec, min_vals, next_up_turn, next_down_turn
+        (next_reces, severe_rec, min_val_8q, next_up_turn, next_down_turn
          ) = compute_path_statistics(initial_path, future_temp)
     
-        return carry, (next_reces, severe_rec, min_vals, next_up_turn, next_down_turn)
+        return carry, (next_reces, severe_rec, min_val_8q, next_up_turn, next_down_turn)
     
-    _, (next_reces, severe_rec, min_vals, next_up_turn, next_down_turn
+    _, (next_reces, severe_rec, min_val_8q, next_up_turn, next_down_turn
         ) = lax.scan(step, None, jnp.arange(N))
     
     # Plot path statistics
-    plot_path_stats(next_reces, severe_rec, min_vals, 
+    plot_path_stats(next_reces, severe_rec, min_val_8q, 
                     next_up_turn, next_down_turn, ax)
 
 
@@ -617,10 +645,10 @@ plt.show()
 
 ## Extended Wecker Method
 
-Now we apply we apply our  "extended" Wecker method based on  predictive densities of $y$ defined by
+Now we apply our "extended" Wecker method based on predictive densities of $y$ defined by
 {eq}`ar1-tp-eq4` that acknowledge posterior uncertainty in the parameters $\rho, \sigma$.
 
-To approximate  the intergration on the right side of {eq}`ar1-tp-eq4`, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model {eq}`ar1-tp-eq1`.
+To approximate the integration on the right side of {eq}`ar1-tp-eq4`, we repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model {eq}`ar1-tp-eq1`.
 
 ```{code-cell} ipython3
 ---
@@ -646,23 +674,25 @@ def plot_extended_Wecker(
 
     # Compute path statistics
     subkeys = random.split(key, num=N)
+    
     def step(carry, n):
         ar1_n = AR1(rho=rho_sample[n], sigma=sigma_sample[n], y0=y0)
         future_temp = AR1_simulate_future(
             ar1_n, y_T0, N=1, key=subkeys[n]
             ).reshape(-1)
-        (next_reces, severe_rec, min_vals, next_up_turn, next_down_turn
+        (next_reces, severe_rec, min_val_8q, next_up_turn, next_down_turn
          ) = compute_path_statistics(initial_path, future_temp)
         return carry, (future_temp, next_reces, severe_rec, 
-                       min_vals, next_up_turn, next_down_turn)
+                       min_val_8q, next_up_turn, next_down_turn)
 
-    _, (future_path, next_reces, severe_rec, min_vals, next_up_turn, next_down_turn
+    _, (future_path, next_reces, severe_rec, min_val_8q, next_up_turn, next_down_turn
         ) = jax.lax.scan(step, None, jnp.arange(N))
 
     # Plot simulated initial and future paths
     plot_path(ar1, initial_path, future_path, ax[0, 0])
+    
     # Plot path statistics
-    plot_path_stats(next_reces, severe_rec, min_vals, 
+    plot_path_stats(next_reces, severe_rec, min_val_8q, 
                     next_up_turn, next_down_turn, ax)
 
 fig, ax = plt.subplots(3, 2, figsize=(12, 15))
@@ -672,7 +702,7 @@ plt.show()
 
 ## Comparison
 
-Finally, we plot both the original Wecker method and the extended method with parameter values drawn from the posterior together to compare the differences that emerge from pretending to know parameter values when they are actually uncertain.  
+Finally, we plot both the original Wecker method and the extended method with parameter values drawn from the posterior together to compare the differences that emerge from pretending to know parameter values when they are actually uncertain.
 
 ```{code-cell} ipython3
 ---
