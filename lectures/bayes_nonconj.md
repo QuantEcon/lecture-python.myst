@@ -141,7 +141,8 @@ def simulate_draw(theta, n):
 
 def analytical_beta_posterior(data, alpha0, beta0):
     """
-    Computes analytically the posterior distribution with beta prior parametrized by (alpha, beta)
+    Computes analytically the posterior distribution 
+    with beta prior parametrized by (alpha, beta)
     given # num observations
 
     Parameters
@@ -226,7 +227,8 @@ We will use the following priors:
 ```{code-cell} ipython3
 def TruncatedLogNormal_trans(loc, scale):
     """
-    Obtains the truncated log normal distribution using numpyro's TruncatedNormal and ExpTransform
+    Obtains the truncated log normal distribution 
+    using numpyro's TruncatedNormal and ExpTransform
     """
     base_dist = ndist.TruncatedNormal(
         low=-jnp.inf, high=jnp.log(1), loc=loc, scale=scale
@@ -443,7 +445,8 @@ def show_prior(
 
 def set_model(model: BayesianInference, data):
     """
-    Define the probabilistic model by specifying prior, conditional likelihood, and data conditioning
+    Define the probabilistic model by specifying prior, 
+    conditional likelihood, and data conditioning
     """
     theta = sample_prior(model)
     output = numpyro.sample(
@@ -455,7 +458,8 @@ def MCMC_sampling(
     model: BayesianInference, data, num_samples, num_warmup=1000
     ):
     """
-    Computes numerically the posterior distribution with beta prior parametrized by (alpha0, beta0)
+    Computes numerically the posterior distribution 
+    with beta prior parametrized by (alpha0, beta0)
     given data using MCMC
     """
     data = jnp.array(data, dtype=float)
@@ -476,7 +480,8 @@ def MCMC_sampling(
 # this is required by svi.run()
 def beta_guide(model: BayesianInference, data):
     """
-    Defines the candidate parametrized variational distribution that we train to approximate posterior with numpyro
+    Defines the candidate parametrized variational distribution 
+    that we train to approximate posterior with numpyro
     Here we use parameterized beta
     """
     alpha_q = numpyro.param("alpha_q", 10, constraint=nconstraints.positive)
@@ -488,7 +493,8 @@ def beta_guide(model: BayesianInference, data):
 # similar with beta_guide()
 def truncnormal_guide(model: BayesianInference, data):
     """
-    Defines the candidate parametrized variational distribution that we train to approximate posterior with numpyro
+    Defines the candidate parametrized variational distribution 
+    that we train to approximate posterior with numpyro
     Here we use truncated normal on [0,1]
     """
     loc = numpyro.param("loc", 0.5, constraint=nconstraints.interval(0.0, 1.0))
@@ -638,10 +644,8 @@ class BayesianInferencePlot:
         a list of sample size
     BayesianInferenceClass : class.
         a class initiated using BayesianInference()
-
     """
 
-    """Enter Parameters for data generation and plotting"""
     theta: float
     N_list: list
     BayesianInferenceClass: BayesianInference
