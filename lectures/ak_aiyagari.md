@@ -11,14 +11,37 @@ kernelspec:
   name: python3
 ---
 
-# Prerequisite
 
-Two quantecon lectures:
+# A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+
+## Overview
+
+This lecture describes an  overlapping generations model with these features:
+
+- A competitive equilibrium with incomplete markets determines prices and quantities
+- Agents live many periods as in   {cite}`auerbach1987dynamic`
+- Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in   {cite}`Aiyagari1994`
+- Government fiscal policy instruments include tax rates, debt, and transfers as in chapter 2 of {cite}`auerbach1987dynamic` and {doc}`Transitions in an Overlapping Generations Model<ak_2>`
+- Among other equilibrium objects, a competitive determines a sequence of cross-section densities of heterogeneous agents' consumptions, labor incomes, and savings
+
+
+We use the model to study:
+- How fiscal policies affect different generations
+- How market incompleteness promotes precautionary savings
+- How life-cycle savings and buffer-stock savings motives interact
+- How fiscal policies  redistribute resources across and within generations
+
+
+As prerequisites for this lecture, we recommend two quantecon lectures:
 
 1. [Discrete State Dynamic Programming](https://python-advanced.quantecon.org/discrete_dp.html)
 2. [Transitions in an Overlapping Generations Model](https://python.quantecon.org/ak2.html)
 
-Optional: [The Aiyagari Model (with JAX)](https://jax.quantecon.org/aiyagari_jax.html)
+as well as the following optional reading
+
+3. [The Aiyagari Model (with JAX)](https://jax.quantecon.org/aiyagari_jax.html)
+
+As usual, let's start by importing some Python modules.
 
 ```{code-cell} ipython3
 :id: ac32ac26
@@ -33,59 +56,42 @@ import jax
 
 +++ {"id": "ec922397", "user_expressions": []}
 
-# Transitions in an AK-Aiyagari Model
+## Environment
 
-## 1. Introduction
-
-This lecture describes an  overlapping generations model with these features:
-
-
-- Agents live many periods as in Auerbach and Kotlikoff (1987)  (AK)
-- Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in  Aiyagari (1994)
-- Government fiscal policy instruments include taxes, debt, and transfers as in  AK
-- A competitive equilibrium determines prices and quantities
-
-We use the framework to study:
-- How fiscal policies affect different generations
-- How market incompleteness promotes precautionary savings
-- How life-cycle savings and buffer-stock savings motives interact
-- Fiscal policies that redistribute resources across and within generations
-
-## 2. Basic Settings
-
-### Demographics and Time
+## Demographics and Time
 
 - Time is discrete and is indexed by $t = 0, 1, 2, ...$
 - Each agent lives for $J = 50$ periods and faces no mortality risk
 - Age is indexed by $j = 0, 1, ..., 49$
 - Population size  is fixed at $1/J$
 
-### Individual State Variables
+## Individuals' State Variables
 
-Agent $i$ of age $j$ at time t is characterized by:
+Agent $i$ of age $j$ at time $t$ has
 
-1. Asset holdings $a_{i,j,t}$
-2. Idiosyncratic labor productivity $γ_{i,j,t}$
+- Asset holdings $a_{i,j,t}$
+- Idiosyncratic labor productivity $γ_{i,j,t}$
 
-The idiosyncratic labor productivity process follows a two-state Markov chain with:
+An idiosyncratic labor productivity process follows a two-state Markov chain with:
 - Values $γ_l, γ_h$
 - Transition matrix $Π$
 - Initial distribution for newborns $π = [0.5, 0.5]$
 
-### Labor Supply
+## Labor Supply
 
 - An agent with productivity $γ_{i,j,t}$ supplies $l(j)γ_{i,j,t}$ efficiency units of labor
 - $l(j)$ is a deterministic age-specific labor efficiency units profile
-- An agent's effective  labor supply combines both the life-cycle efficiency profile  and the idiosyncratic stochastic process
-### Initial Conditions
+- An agent's effective  labor supply depends on a life-cycle efficiency profile  and an idiosyncratic stochastic process
+
+## Initial Conditions
 
 - Newborns start with zero assets: $a_{i,0,t} = 0$
 - Initial idiosyncratic  productivityies are drawn from distribution $π$
 - Agents leave no bequests and have  terminal value function $V_J(a) = 0$
 
-## 3. Production
+##  Production
 
-A representative firm operates a constant returns to scale Cobb-Douglas technology:
+A representative firm operates a constant returns to scale Cobb-Douglas production:
 
 $$Y_t = Z_t K_t^\alpha L_t^{1-\alpha}$$
 
@@ -95,16 +101,16 @@ where:
 - $Z_t$ is total factor productivity
 - $α$ is the capital share
 
-## 4. Government
+## Government
 
-The government:
+The government
 
 1. Issues one-period debt $D_t$
 2. Collects flat-rate tax rate  $τ_t$ on labor and capital income
 3. Implements age-specific lump-sum taxes/transfers $δ_{j,t}$
 4. Makes government purchases $G_t$
 
-### Government Budget Constraint
+
 
 The government budget constraint at time $t$ is:
 
@@ -114,11 +120,11 @@ where total tax revenues $T_t$ satisfy:
 
 $$T_t = \tau_t w_t L_t + \tau_t r_t(D_t + K_t) + \sum_j \delta_{j,t}$$
 
-## 5. Activities in Factor Markets
+##  Activities in Factor Markets
 
 At each time $t ≥ 0$, agents supply labor and capital:
 
-### Age-Specific Labor Supply
+### Age-Specific Labor Supplies
 - Agents of age $j ∈ {0,1,...,J-1}$ supply labor according to:
   * Their deterministic age-efficiency profile $l(j)$
   * Their current idiosyncratic productivity shock $γ_{i,j,t}$
@@ -134,39 +140,39 @@ At each time $t ≥ 0$, agents supply labor and capital:
   * Receive/pay age-specific transfers $δ_{j,t}$
 
 ### Key Features
-1. Lifecycle Patterns:
+* Lifecycle Patterns:
    - Labor productivity varies systematically with age according to $l(j)$
    - Asset holdings typically follow a lifecycle pattern
    - Age-specific fiscal transfers are described by  $δ_{j,t}$
 
-2. Within-Cohort Heterogeneity:
+* Within-Cohort Heterogeneity:
    - Agents of the same age differ in:
      * Their asset holdings $a_{i,j,t}$ due to different histories of idiosyncratic productivity shocks
      * Their  productivities $γ_{i,j,t}$
      * Their consequent labor incomes and financial wealth
 
-3. Cross-Cohort Interactions:
+* Cross-Cohort Interactions:
    - All cohorts participate together in factor markets
    - Asset supplies from all cohorts determine aggregate capital
    - Effective labor supplies from all cohorts determine aggregate labor
    - Equilibrium prices  reflect both lifecycle and re-distributional forces
 
-## 6. Representative Firm's Problem
+## Representative Firm's Problem
 
 A representative firm chooses capital and effective labor to maximize profits:
 
 $$\max_{K,L} Z_t K_t^\alpha L_t^{1-\alpha} - r_t K_t - w_t L_t$$
 
-First-order necessary conditions yield:
+First-order necessary conditions imply that
 
 $$w_t = (1-\alpha)Z_t(K_t/L_t)^\alpha$$
 $$r_t = \alpha Z_t(K_t/L_t)^{\alpha-1}$$
 
-## 7. Individual's Problems
+##  Households' Problems
 
-### Value Function
 
-The household's value functions satisfy the Bellman equations
+
+A household's value function satisfies a Bellman equation
 
 $$V_{j,t}(a, \gamma) = \max_{c,a'} \{u(c) + \beta\mathbb{E}[V_{j+1,t+1}(a', \gamma')]\}$$
 
@@ -175,40 +181,40 @@ where maximization is subject to
 $$c + a' = (1 + r_t(1-\tau_t))a + (1-\tau_t)w_t l(j)\gamma - \delta_{j,t}$$
 $$c \geq 0$$
 
-and the  terminal condition
+and a  terminal condition
 $V_{J,t}(a, γ) = 0$
 
-### Population Dynamics
+## Population Dynamics
 
 The joint probability density function $μ_{j,t}(a,γ)$ of asset holdings and idiosyncratic labor evolves according to
 
-1. For newborns $(j=0)$:
+- For newborns $(j=0)$:
    $$μ_{0,t+1}(a',γ') = π(γ')\text{ if }a'=0\text{, }0\text{ otherwise}$$
 
-2. For other cohorts:
+- For other cohorts:
    $$\mu_{j+1,t+1}(a',\gamma') = \int 1\{\sigma_{j,t}(a,\gamma)=a'\}\Pi(\gamma,\gamma')\mu_{j,t}(a,\gamma)d(a,\gamma)$$
 
 where $σ_{j,t}(a,γ)$ is the optimal saving policy function.
 
-## 8. Equilibrium
+## Equilibrium
 
 An equilibrium consists of:
-1. Value functions $V_{j,t}$
-2. Policy functions $σ_{j,t}$
-3. Joint probability distributions $μ_{j,t}$
-4. Prices $r_t, w_t$
-5. Government policies $τ_t, D_t, δ_{j,t}, G_t$
+- Value functions $V_{j,t}$
+- Policy functions $σ_{j,t}$
+- Joint probability distributions $μ_{j,t}$
+- Prices $r_t, w_t$
+- Government policies $τ_t, D_t, δ_{j,t}, G_t$
 
 that satisfy the following conditions
 
-1. Given prices and government policies, value and policy functions solve  households' problems
-2. Given prices, firms maximize profits
-3. Government budget constraints are  satisfied
-4. Markets clear:
+- Given prices and government policies, value and policy functions solve  households' problems
+- Given prices, the representative firm maximizes profits
+- Government budget constraints are  satisfied
+- Markets clear:
    - Asset market: $K_t = \sum_j \int a \mu_{j,t}(a,\gamma)d(a,\gamma) - D_t$
    - Labor market: $L_t = \sum_j \int l(j)\gamma \mu_{j,t}(a,\gamma)d(a,\gamma)$
    
-Relative to the AK model, our model adds
+Relative to the  model presented in {doc}`Transitions in an Overlapping Generations Model<ak_2>`, the present  model adds
 - Heterogeneity within generations due to productivity shocks
 - A precautionary savings motive
 - More re-distributional effects
@@ -220,22 +226,20 @@ Relative to the AK model, our model adds
 
 +++ {"id": "pZKvFG_D6bK-", "user_expressions": []}
 
-Using tools in  [discrete state dynamic programming lecture](https://python-advanced.quantecon.org/discrete_dp.html), we solve our
-AK-Aiyagari model by combining
+Using tools in  [discrete state dynamic programming lecture](https://python-advanced.quantecon.org/discrete_dp.html), we solve our model by combining
 
 * value function iteration with
 * equilibrium price determination.
 
-A reasonable  approach is  to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.
+A sensible  approach is  to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.
 
 For each candidate sequence  of prices (interest rates $r$ and wages $w$), we can solve individual households' dynamic programming problems using either value function iteration or policy function iteration to obtain optimal policy functions, then deduce associated stationary joint probability distributions of asset holdings and idiosyncratic labor efficiency units for each age cohort.
 
-That would give us aggregate capital supply (from household savings) and labor supply (from the age-efficiency profile and productivity shocks).
+That will give us an aggregate capital supply (from household savings) and a labor supply (from the age-efficiency profile and productivity shocks).
 
-We can then compare these with capital and labor demand from firms, compute deviations between factor market supplies and demands,
-then  update our price guesses until we find market-clearing prices.
+We can then compare these with capital and labor demand from firms, compute deviations between factor market supplies and demands, then  update  price guesses until we find market-clearing prices.
 
-For transition dynamics, we want to compute  sequences of time-varying prices by
+For transition dynamics, we can compute  sequences of time-varying prices by
 
 * using backward induction to compute  value and policy functions,
 * forward iteration for the distributions of agents across states.
