@@ -46,6 +46,7 @@ We'll require the following imports:
 
 
 ```{code-cell} ipython3
+import numpy as np
 import jax.numpy as jnp
 import jax
 import pandas as pd
@@ -639,16 +640,16 @@ likelihood estimates.
 Before we begin, let's re-estimate our simple model with `statsmodels`
 to confirm we obtain the same coefficients and log-likelihood value.
 
-Now, as `statsmodels` accepts only NumPy arrays, we can use the `__array__` method
-of JAX arrays to convert them to NumPy arrays.
+Now, as `statsmodels` accepts only NumPy arrays, we can use `np.array` method
+to convert them to NumPy arrays.
 
 ```{code-cell} ipython3
 X = jnp.array([[1, 2, 5], [1, 1, 3], [1, 4, 2], [1, 5, 2], [1, 3, 1]])
 
 y = jnp.array([1, 0, 1, 1, 0])
 
-y_numpy = y.__array__()
-X_numpy = X.__array__()
+y_numpy = np.array(y)
+X_numpy = np.array(X)
 stats_poisson = Poisson(y_numpy, X_numpy).fit()
 print(stats_poisson.summary())
 ```
@@ -993,9 +994,8 @@ newton_raphson(prob, β)
 
 ```{code-cell} ipython3
 # Use statsmodels to verify results
-# Note: use __array__() method to convert jax to numpy arrays
-y_numpy = y.__array__()
-X_numpy = X.__array__()
+y_numpy = np.array(y)
+X_numpy = np.array(X)
 print(Probit(y_numpy, X_numpy).fit().summary())
 ```
 
