@@ -21,7 +21,7 @@ This lecture describes an  overlapping generations model with these features:
 - A competitive equilibrium with incomplete markets determines prices and quantities
 - Agents live many periods as in   {cite}`auerbach1987dynamic`
 - Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in   {cite}`Aiyagari1994`
-- Government fiscal policy instruments include tax rates, debt, and transfers as in chapter 2 of {cite}`auerbach1987dynamic` and {doc}`Transitions in an Overlapping Generations Model<ak_2>`
+- Government fiscal policy instruments include tax rates, debt, and transfers as in chapter 2 of {cite}`auerbach1987dynamic` and {doc}`Transitions in an Overlapping Generations Model<ak2>`
 - Among other equilibrium objects, a competitive determines a sequence of cross-section densities of heterogeneous agents' consumptions, labor incomes, and savings
 
 
@@ -44,8 +44,6 @@ as well as the following optional reading
 As usual, let's start by importing some Python modules.
 
 ```{code-cell} ipython3
-:id: ac32ac26
-
 from collections import namedtuple
 import numpy as np
 import matplotlib.pyplot as plt
@@ -53,8 +51,6 @@ import jax.numpy as jnp
 import jax.scipy as jsp
 import jax
 ```
-
-+++ {"id": "ec922397", "user_expressions": []}
 
 ## Environment
 
@@ -214,17 +210,13 @@ that satisfy the following conditions
    - Asset market: $K_t = \sum_j \int a \mu_{j,t}(a,\gamma)d(a,\gamma) - D_t$
    - Labor market: $L_t = \sum_j \int l(j)\gamma \mu_{j,t}(a,\gamma)d(a,\gamma)$
    
-Relative to the  model presented in {doc}`Transitions in an Overlapping Generations Model<ak_2>`, the present  model adds
+Relative to the  model presented in {doc}`Transitions in an Overlapping Generations Model<ak2>`, the present  model adds
 - Heterogeneity within generations due to productivity shocks
 - A precautionary savings motive
 - More re-distributional effects
 - More complicated transition dynamics
 
-+++ {"id": "SrLouZTftR5W", "user_expressions": []}
-
 ## Implementation
-
-+++ {"id": "pZKvFG_D6bK-", "user_expressions": []}
 
 Using tools in  [discrete state dynamic programming lecture](https://python-advanced.quantecon.org/discrete_dp.html), we solve our model by combining
 
@@ -274,14 +266,9 @@ For transition dynamics, we can compute  sequences of time-varying prices by
      - Solve for price sequences
      - Update until all markets clear in all periods
 
-+++ {"id": "a3ab2468-7977-4c66-804f-ce56189fa86a", "user_expressions": []}
-
 We  start coding by defining helper functions that describe preferences, firms, and  government budget constraints.
 
 ```{code-cell} ipython3
-:id: 18c57a2f
-
-# ϕ, k_bar = 0.2, 2.
 ϕ, k_bar = 0., 0.
 
 @jax.jit
@@ -292,8 +279,6 @@ def V_bar(a):
 ```
 
 ```{code-cell} ipython3
-:id: 8c81e074
-
 ν = 0.5
 
 @jax.jit
@@ -311,13 +296,9 @@ def l(j):
     return l1 + l2 * j + l3 * j ** 2
 ```
 
-+++ {"id": "9f18ac68-3362-4c7c-8c95-7071ee707851", "user_expressions": []}
-
 Let's define a `Firm` namedtuple that  contains parameters governing the  production technology.
 
 ```{code-cell} ipython3
-:id: a45f7b71
-
 Firm = namedtuple("Firm", ("α", "Z"))
 
 def create_firm(α=0.3, Z=1):
@@ -326,18 +307,12 @@ def create_firm(α=0.3, Z=1):
 ```
 
 ```{code-cell} ipython3
-:id: 0110c7c7
-
 firm = create_firm()
 ```
-
-+++ {"id": "ef0a9141-3d7b-4264-b701-6eb3ecca3818", "user_expressions": []}
 
 The following helper functions describe  relationship between the aggregates ($K, L$) and the prices ($w, r$) that emerge from the representative  firm's first-order necessary conditions.
 
 ```{code-cell} ipython3
-:id: e766a3ec
-
 @jax.jit
 def KL_to_r(K, L, firm):
 
@@ -353,13 +328,9 @@ def KL_to_w(K, L, firm):
     return Z * (1 - α) * (K / L) ** α
 ```
 
-+++ {"id": "2a4fc9d5-5fa9-46ed-ab84-c5fd6495e1c5", "user_expressions": []}
-
 We use a function `find_τ` to find  flat tax rates that balance the government budget constraint given other policy variables that include s debt levels, government spending, and transfers.
 
 ```{code-cell} ipython3
-:id: 732ce8b4
-
 @jax.jit
 def find_τ(policy, price, aggs):
 
@@ -373,13 +344,9 @@ def find_τ(policy, price, aggs):
     return num / denom
 ```
 
-+++ {"id": "ca66a85d-6c03-4f1f-ac5a-252ed9d955ab", "user_expressions": []}
-
 We also use a namedtuple `Household` to store all the relevant parameters that characterize  the household problems.
 
 ```{code-cell} ipython3
-:id: 67cf6952
-
 Household = namedtuple("Household", ("j_grid", "a_grid", "γ_grid",
                                      "Π", "β", "init_μ", "VJ"))
 
@@ -416,20 +383,14 @@ def create_household(
 ```
 
 ```{code-cell} ipython3
-:id: fu8p40dCFy0G
-
 hh = create_household()
 ```
-
-+++ {"id": "d4896e9f-b22e-4115-8c41-3103274dab72", "user_expressions": []}
 
 We  solve household optimization problems using discrete state dynamic programming tools.
 
 Initial steps involve preparing rewards and transition matrices, $R$ and $Q$, for our  discretized Bellman equations.
 
 ```{code-cell} ipython3
-:id: 7d9439b0
-
 @jax.jit
 def populate_Q(household):
 
@@ -461,23 +422,15 @@ def populate_R(j, r, w, τ, δ, household):
                       (num_state, num_action))
 ```
 
-+++ {"id": "1a48bef2-a41f-4bfe-8c84-857588f55075", "user_expressions": []}
-
 ## Steady State Computation
 
-+++ {"id": "8d359435-d678-4450-b906-9e83eba4d225", "user_expressions": []}
-
 We first  compute  steady state.
-
-+++ {"id": "211fe8d6-7fcd-40ea-af69-dad5fe8cccec", "user_expressions": []}
 
 Given  guesses of prices and taxes, we can use backwards induction to solve for  value functions and optimal consumption and saving policies  at all  ages.
 
 The function `backwards_opt` solve for optimal values by applying the discretized bellman operator backwards.
 
 ```{code-cell} ipython3
-:id: ucF_5omDrBZw
-
 @jax.jit
 def backwards_opt(prices, taxes, household, Q):
 
@@ -511,8 +464,6 @@ def backwards_opt(prices, taxes, household, Q):
 ```
 
 ```{code-cell} ipython3
-:id: 6ea68dc5
-
 r, w = 0.05, 1
 τ, δ = 0.15, np.zeros(hh.j_grid.size)
 
@@ -520,29 +471,17 @@ Q = populate_Q(hh)
 ```
 
 ```{code-cell} ipython3
-:id: lrfizzme3Ubi
-
 V, σ = backwards_opt([r, w], [τ, δ], hh, Q)
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-id: dL0bCx1PyJ5a
-outputId: dbde5d66-eab9-4673-b6e2-fbc4338e25f9
----
 %time backwards_opt([r, w], [τ, δ], hh, Q)
 ```
-
-+++ {"id": "f1d86162-1095-4341-aa22-64790c62a05f", "user_expressions": []}
 
 Given optimal consumption and saving choices by each cohorts, we can compute the stationary joint probability  distribution
 of asset levels and idiosyncratic productivity levels in the steady state.
 
 ```{code-cell} ipython3
-:id: PEkQYUu_1MKv
-
 @jax.jit
 def popu_dist(σ, household, Q):
 
@@ -567,22 +506,12 @@ def popu_dist(σ, household, Q):
 ```
 
 ```{code-cell} ipython3
-:id: baa7ed0a
-
 μ = popu_dist(σ, hh, Q)
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-id: fca544fe
-outputId: a735b2d2-0bbe-4d50-e6ac-3c6d40704930
----
 %time popu_dist(σ, hh, Q)
 ```
-
-+++ {"id": "9bc310c2-5abe-4510-8159-13a7a1cff040", "user_expressions": []}
 
 Here we plot the distribution over savings by each age group.
 
@@ -591,13 +520,6 @@ It makes sense  that  young cohorts enter the economy with no asset holdings, th
 As they approach the end of life, they deplete their asset holdings -- they leave no bequests.
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-  height: 490
-id: 4ed11e8a
-outputId: 107851f3-75b1-4bc4-ac1b-8008cc29eaa5
----
 for j in [0, 5, 20, 45, 49]:
     plt.plot(hh.a_grid, jnp.sum(μ[j].reshape((hh.a_grid.size, hh.γ_grid.size)), axis=1), label=f'j={j}')
 
@@ -611,13 +533,34 @@ plt.ylim([0, 0.1])
 plt.show()
 ```
 
-+++ {"id": "63f9ed1f-5195-4e8b-98d6-24703b9a9a23", "user_expressions": []}
+It is also intuitive to investigate the optimal saving policies.
+
+```{code-cell} ipython3
+σ_reshaped = σ.reshape(hh.j_grid.size, hh.a_grid.size, hh.γ_grid.size)
+j_labels = [f'j={j}' for j in [0, 5, 20, 45, 49]]
+
+fig, axs = plt.subplots(1, 2, figsize=(14, 5))
+
+axs[0].plot(hh.a_grid, hh.a_grid[σ_reshaped[[0, 5, 20, 45, 49], :, 0].T])
+axs[0].plot(hh.a_grid, hh.a_grid, '--')
+axs[0].set_xlabel("$a_{j}$")
+axs[0].set_ylabel("$a^*_{j+1}$")
+axs[0].legend(j_labels+['45 degree line'])
+axs[0].set_title("Optimal saving policy, low γ")
+
+axs[1].plot(hh.a_grid, hh.a_grid[σ_reshaped[[0, 5, 20, 45, 49], :, 1].T])
+axs[1].plot(hh.a_grid, hh.a_grid, '--')
+axs[1].set_xlabel("$a_{j}$")
+axs[1].set_ylabel("$a^*_{j+1}$")
+axs[1].legend(j_labels+['45 degree line'])
+axs[1].set_title("Optimal saving policy, high γ")
+
+plt.show()
+```
 
 From an  implied stationary population distribution, we can compute the aggregate labor supply $L$ and private savings $A$.
 
 ```{code-cell} ipython3
-:id: 05813ff9
-
 @jax.jit
 def compute_aggregates(μ, household):
 
@@ -639,50 +582,28 @@ def compute_aggregates(μ, household):
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-id: b5a65f79
-outputId: 5eb56b0c-bee1-45c7-af92-4ecbeabdd36c
----
 A, L = compute_aggregates(μ, hh)
 A, L
 ```
 
-+++ {"id": "f29b3e57-5105-4696-ac09-eef997389977", "user_expressions": []}
-
 The capital stock in this economy equals $A-D$.
 
 ```{code-cell} ipython3
-:id: 8aa3d7d1
-
 D = 0
 K = A - D
 ```
 
-+++ {"id": "0c29eab7-2a49-4013-8840-cd8eae50cada", "user_expressions": []}
-
 The firm's optimality conditions imply  interest rate $r$ and wage rate $w$.
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-id: 8a73b7ce
-outputId: 804cc186-c477-46e2-e83d-9cfc4c83ee1e
----
 KL_to_r(K, L, firm), KL_to_w(K, L, firm)
 ```
-
-+++ {"id": "db5dca01-d878-402e-a64f-f0ad95be7f86", "user_expressions": []}
 
 The implied prices $(r,w)$ differ  from our guesses, so we must update our guesses and iterate until we find a fixed point.
 
 This is our  outer loop.
 
 ```{code-cell} ipython3
-:id: KcyKDWCX55v1
-
 @jax.jit
 def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
 
@@ -699,14 +620,16 @@ def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
     τ = 0.15
 
     def cond_fn(state):
+        "The convergence criteria."
 
-      V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old = state
+        V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old = state
 
-      error = (r - r_old) ** 2 + (w - w_old) ** 2
+        error = (r - r_old) ** 2 + (w - w_old) ** 2
 
-      return error > tol
+        return error > tol
 
     def body_fn(state):
+        "The main body of iteration."
 
         V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old = state
         r_old, w_old, τ_old = r, w, τ
@@ -747,24 +670,14 @@ def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
 ```
 
 ```{code-cell} ipython3
-:id: 5f0b2495
-
 ss1 = find_ss(hh, firm, [0, 0.1, np.zeros(hh.j_grid.size)], Q, verbose=True)
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-id: 50d23855
-outputId: 817c7f88-5ab3-448a-fbca-28cf6023816c
----
 %time find_ss(hh, firm, [0, 0.1, np.zeros(hh.j_grid.size)], Q);
 ```
 
 ```{code-cell} ipython3
-:id: fc5a72f8
-
 hh_out_ss1 = ss1[:3]
 quant_ss1 = ss1[3:5]
 price_ss1 = ss1[5:7]
@@ -772,19 +685,11 @@ policy_ss1 = ss1[7:11]
 ```
 
 ```{code-cell} ipython3
-:id: 4a0f47b5-3039-4147-8764-d1922fd46487
-
 # V, σ, μ
 V_ss1, σ_ss1, μ_ss1 = hh_out_ss1
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-id: 3c44de09
-outputId: e325605a-2249-4279-d73d-274c23652447
----
 # K, L
 K_ss1, L_ss1 = quant_ss1
 
@@ -792,12 +697,6 @@ K_ss1, L_ss1
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-id: 677d5d7f
-outputId: 45e269b4-621f-4bdc-b5c3-aaa17b3148ef
----
 # r, w
 r_ss1, w_ss1 = price_ss1
 
@@ -805,23 +704,13 @@ r_ss1, w_ss1
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-id: f18eb0f1
-outputId: 64da6e40-afb0-4004-f069-9c9ac639cceb
----
 # τ, D, G, δ
 τ_ss1, D_ss1, G_ss1, δ_ss1 = policy_ss1
 
 τ_ss1, D_ss1, G_ss1, δ_ss1
 ```
 
-+++ {"id": "417b7af6-6540-41ee-9566-205cd19c71dc", "user_expressions": []}
-
 ## Transition Dynamics
-
-+++ {"id": "85256e73-8668-4710-bb4d-4c3e15f011d5", "user_expressions": []}
 
 We  compute transition dynamics using a function `path_iteration`.
 
@@ -836,12 +725,10 @@ We then  update our  guesses of prices and taxes given the aggregate labor suppl
 
 We require two steady states as inputs:
 
-* 1. the initial steady state to provide the initial condition for `simulate_forward`,
-* 2. the final steady state to provide continuation values for `solve_backwards`.
+ 1. the initial steady state to provide the initial condition for `simulate_forward`,
+ 2. the final steady state to provide continuation values for `solve_backwards`.
 
 ```{code-cell} ipython3
-:id: DHTE2pzyuaOb
-
 @jax.jit
 def bellman_operator(prices, taxes, V_next, household, Q):
 
@@ -875,8 +762,6 @@ def bellman_operator(prices, taxes, V_next, household, Q):
 ```
 
 ```{code-cell} ipython3
-:id: 979c35a7
-
 @jax.jit
 def solve_backwards(V_ss2, σ_ss2, household, firm, price_seq, pol_seq, Q):
 
@@ -912,8 +797,6 @@ def solve_backwards(V_ss2, σ_ss2, household, firm, price_seq, pol_seq, Q):
 ```
 
 ```{code-cell} ipython3
-:id: f9f42858
-
 @jax.jit
 def population_evolution(σt, μt, household, Q):
 
@@ -936,8 +819,6 @@ def population_evolution(σt, μt, household, Q):
 ```
 
 ```{code-cell} ipython3
-:id: 6cfafb24
-
 @jax.jit
 def simulate_forwards(σ_seq, D_seq, μ_ss1, K_ss1, L_ss1, household, Q):
 
@@ -969,55 +850,51 @@ def simulate_forwards(σ_seq, D_seq, μ_ss1, K_ss1, L_ss1, household, Q):
     return μ_seq, K_seq, L_seq
 ```
 
-+++ {"id": "259e729a-acc0-4e08-b3bd-f9f8c25c1b53", "user_expressions": []}
-
 The following pseudo code  describe the algorithm of path iteration.
-
-+++ {"id": "APfwIqU7LTfY", "user_expressions": []}
 
 ```
 Algorithm 1 AK-Aiyagari Transition Path Algorithm
-1: procedure TRANSITION-PATH(ss₁, ss₂, T, D, G, δ)
-2:    V₁, σ₁, μ₁ ← ss₁                           ▷ Initial steady state
-3:    V₂, σ₂, μ₂ ← ss₂                           ▷ Final steady state
-4:    r, w, τ ← initialize_prices(T)              ▷ Linear interpolation
-5:    error ← ∞, i ← 0
-6:    repeat
-7:       i ← i + 1
-8:       r_old, w_old, τ_old ← r, w, τ
-9:       for t ∈ [T, 1] do                        ▷ Backward induction
-10:          for j ∈ [0, J-1] do                  ▷ Age groups
-11:             V[t,j] ← max_{a'} {u(c) + βE[V[t+1,j+1]]}
-12:             σ[t,j] ← argmax_{a'} {u(c) + βE[V[t+1,j+1]]}
-13:          end for
-14:       end for
-15:       for t ∈ [1, T] do                       ▷ Forward simulation
-16:          μ[t] ← Γ(σ[t], μ[t-1])              ▷ Distribution evolution
-17:          K[t] ← ∫a dμ[t] - D[t]              ▷ Aggregate capital
-18:          L[t] ← ∫l(j)γ dμ[t]                 ▷ Aggregate labor
-19:          r[t] ← αZ(K[t]/L[t])^(α-1)          ▷ Interest rate
-20:          w[t] ← (1-α)Z(K[t]/L[t])^α          ▷ Wage rate
-21:          τ[t] ← solve_budget(r[t],w[t],K[t],L[t],D[t],G[t])
-22:       end for
-23:       error ← ‖r - r_old‖ + ‖w - w_old‖ + ‖τ - τ_old‖
-24:       r ← λr + (1-λ)r_old                    ▷ Price dampening
-25:       w ← λw + (1-λ)w_old
-26:       τ ← λτ + (1-λ)τ_old
-27:    until error < ε or i > max_iter
-28:    return V, σ, μ, r, w, τ
-29: end procedure
+    procedure Path Iteration (ss₁, ss₂, T, D, G, δ)
+       V₁, σ₁, μ₁ ← ss₁                            ▷ Initial steady state
+       V₂, σ₂, μ₂ ← ss₂                            ▷ Final steady state
+       r, w, τ ← initialize_prices(T)              ▷ Linear interpolation
+       error ← ∞, i ← 0
+       repeat
+          i ← i + 1
+          r_old, w_old, τ_old ← r, w, τ
+          for t ∈ [T, 1] do                        ▷ Backward induction
+             for j ∈ [0, J-1] do                   ▷ Age groups
+                V[t,j] ← max_{a'} {u(c) + βE[V[t+1,j+1]]}
+                σ[t,j] ← argmax_{a'} {u(c) + βE[V[t+1,j+1]]}
+             end for
+          end for
+          for t ∈ [1, T] do                        ▷ Forward simulation
+             μ[t] ← Γ(σ[t], μ[t-1])                ▷ Distribution evolution
+             K[t] ← ∫a dμ[t] - D[t]                ▷ Aggregate capital
+             L[t] ← ∫l(j)γ dμ[t]                   ▷ Aggregate labor
+             r[t] ← αZ(K[t]/L[t])^(α-1)            ▷ Interest rate
+             w[t] ← (1-α)Z(K[t]/L[t])^α            ▷ Wage rate
+             τ[t] ← solve_budget(r[t],w[t],K[t],L[t],D[t],G[t])
+          end for
+          error ← ‖r - r_old‖ + ‖w - w_old‖ + ‖τ - τ_old‖
+          r ← λr + (1-λ)r_old                      ▷ Price dampening
+          w ← λw + (1-λ)w_old
+          τ ← λτ + (1-λ)τ_old
+       until error < ε or i > max_iter
+       return V, σ, μ, r, w, τ
+    end procedure
 ```
 
 ```{code-cell} ipython3
-:id: fb927e09
-
 def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=False):
 
+    # starting point: initial steady state
     V_ss1, σ_ss1, μ_ss1 = ss1[:3]
     K_ss1, L_ss1 = ss1[3:5]
     r_ss1, w_ss1 = ss1[5:7]
     τ_ss1, D_ss1, G_ss1, δ_ss1 = ss1[7:11]
 
+    # ending point: converging new steady state
     V_ss2, σ_ss2, μ_ss2 = ss2[:3]
     K_ss2, L_ss2 = ss2[3:5]
     r_ss2, w_ss2 = ss2[5:7]
@@ -1027,11 +904,11 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
     D_seq, G_seq, δ_seq = pol_target
     T = G_seq.shape[0]
 
-    # initial guess price
+    # initial guesses of prices
     r_seq = jnp.linspace(0, 1, T) * (r_ss2 - r_ss1) + r_ss1
     w_seq = jnp.linspace(0, 1, T) * (w_ss2 - w_ss1) + w_ss1
 
-    # initial guess τ=τ_ss1
+    # initial guess of policy
     τ_seq = jnp.linspace(0, 1, T) * (τ_ss2 - τ_ss1) + τ_ss1
 
     error = 1
@@ -1044,23 +921,31 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
         axs[2].plot(jnp.arange(T), τ_seq, label=f'iter {num_iter}')
 
     while error > tol:
+        # repeat until finding the fixed point
 
         r_old, w_old, τ_old = r_seq, w_seq, τ_seq
 
         pol_seq = (τ_seq, D_seq, G_seq, δ_seq)
         price_seq = (r_seq, w_seq)
 
+        # solve optimal policies backwards
         V_seq, σ_seq = solve_backwards(V_ss2, σ_ss2, hh, firm, price_seq, pol_seq, Q)
+        # compute population evolution forwards
         μ_seq, K_seq, L_seq = simulate_forwards(σ_seq, D_seq, μ_ss1, K_ss1, L_ss1, household, Q)
 
+        # update prices by aggregate capital and labor supply
         r_seq = KL_to_r(K_seq, L_seq, firm)
         w_seq = KL_to_w(K_seq, L_seq, firm)
 
+        # find taxes that balance the government budget constraint
         τ_seq = find_τ([D_seq[:-1], D_seq[1:], G_seq, δ_seq],
-                           [r_seq, w_seq],
-                           [K_seq, L_seq])
+                       [r_seq, w_seq],
+                       [K_seq, L_seq])
 
-        error = jnp.sum((r_old - r_seq) ** 2) + jnp.sum((w_old - w_seq) ** 2) + jnp.sum((τ_old - τ_seq) ** 2)
+        # distance between new and old guesses
+        error = jnp.sum((r_old - r_seq) ** 2) + \
+                jnp.sum((w_old - w_seq) ** 2) + \
+                jnp.sum((τ_old - τ_seq) ** 2)
 
         num_iter += 1
         if verbose:
@@ -1084,20 +969,12 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
 
         axs[2].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
-        plt.savefig('AK-Aiyagari convergence.png', dpi=600)
-
     return V_seq, σ_seq, μ_seq, K_seq, L_seq, r_seq, w_seq, τ_seq, D_seq, G_seq, δ_seq
 ```
 
-+++ {"id": "67d2bc7b-9adc-4d37-a871-9c895e2ec6cb", "user_expressions": []}
-
-We now have  tools for  computing  equilibrium transition dynamics ignited by fiscal policy reforms, in the spirit of the [AK lecture](https://python.quantecon.org/ak2.html).
-
-+++ {"id": "NU0ptFQKJ-K-", "user_expressions": []}
+We now have  tools for  computing  equilibrium transition dynamics ignited by fiscal policy reforms, in the spirit of the {doc}`Transitions in an Overlapping Generations Model<ak2>`.
 
 ## Experiment 1: Immediate Tax Cut
-
-+++ {"id": "6db5bec6-08b7-4bd0-8fd5-c7a6be1ee030", "user_expressions": []}
 
 Assume  that the government cuts the tax rate immediately balances its  budget by issuing debt.
 
@@ -1109,15 +986,11 @@ Assume  that the government cuts the tax rate immediately balances its  budget b
 
 We want to compute the  equilibrium transition path.
 
-+++ {"id": "07f5d7c1-3ce9-4b5a-a554-7a1ed21ed598", "user_expressions": []}
-
 Our first step is to prepare appropriate policy variable arrays `D_seq`, `G_seq`, `δ_seq`
 
 We'll compute a `τ_seq`  that balances government budgets.
 
 ```{code-cell} ipython3
-:id: 11c6a6ce
-
 T = 150
 
 D_seq = jnp.ones(T+1) * D_ss1
@@ -1129,40 +1002,23 @@ G_seq = jnp.ones(T) * G_ss1
 δ_seq = jnp.repeat(δ_ss1, T).reshape((T, δ_ss1.size))
 ```
 
-+++ {"id": "87b67456-1830-4d9c-937c-a8c5eb5572c2", "user_expressions": []}
-
 In order to iterate the path, we need to first find its destination, which is the new steady state under the new fiscal policy.
 
 ```{code-cell} ipython3
-:id: 8ab3a414
-
 ss2 = find_ss(hh, firm, [D_seq[-1], G_seq[-1], δ_seq[-1]], Q)
 ```
-
-+++ {"id": "4e24949c-a4d7-44f6-b7e0-baa2f0f102b6", "user_expressions": []}
 
 We can use `path_iteration` to find  equilibrium transition dynamics.
 
 Setting the key argument `verbose=True` tells  the function `path_iteration` to display  convergence information.
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-  height: 455
-id: d46bb77c
-outputId: 08d81f40-8ce2-474e-ecbe-4bef44dcd20e
----
 paths = path_iteration(ss1, ss2, [D_seq, G_seq, δ_seq], hh, firm, Q, verbose=True)
 ```
-
-+++ {"id": "d6ee740a-1b02-413b-8bb5-1ea99a6ec729", "user_expressions": []}
 
 After successfully computing transition dynamics, let's study them.
 
 ```{code-cell} ipython3
-:id: 3a7b3524
-
 V_seq, σ_seq, μ_seq = paths[:3]
 K_seq, L_seq = paths[3:5]
 r_seq, w_seq = paths[5:7]
@@ -1170,14 +1026,10 @@ r_seq, w_seq = paths[5:7]
 ```
 
 ```{code-cell} ipython3
-:id: 5494ec30
-
 ap = hh.a_grid[σ_seq[0]]
 ```
 
 ```{code-cell} ipython3
-:id: 95f148cf
-
 j = jnp.reshape(hh.j_grid, (hh.j_grid.size, 1, 1))
 lj = l(j)
 a = jnp.reshape(hh.a_grid, (1, hh.a_grid.size, 1))
@@ -1185,8 +1037,6 @@ a = jnp.reshape(hh.a_grid, (1, hh.a_grid.size, 1))
 ```
 
 ```{code-cell} ipython3
-:id: 06892ec2
-
 t = 0
 
 ap = hh.a_grid[σ_seq[t]]
@@ -1200,20 +1050,11 @@ c = inc - ap
 c_mean0 = (c * μ_seq[t]).sum(axis=1)
 ```
 
-+++ {"id": "2a973cca-db35-49b5-98f5-6427f65ae3e5", "user_expressions": []}
-
 We care about how such policy change impacts consumption levels of  cohorts at different  times.
 
 We can study  age-specific average consumption levels.
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-  height: 489
-id: 61ae59d5
-outputId: 0573b9cc-cc8d-4b96-9342-32ea0e13019a
----
 for t in [1, 10, 20, 50, 149]:
 
     ap = hh.a_grid[σ_seq[t]]
@@ -1233,9 +1074,7 @@ plt.xlabel(r'j')
 plt.title(r'Δmean(C(j))')
 ```
 
-+++ {"id": "d8e841b8-1b16-4a4c-a156-396559e0550a", "user_expressions": []}
-
-To summarize the transition, we can plot paths as we did in [AK lecture](https://python.quantecon.org/ak2.html#experiment-1-tax-cut).
+To summarize the transition, we can plot paths as we did in {doc}`Transitions in an Overlapping Generations Model<ak2>`.
 
 Unlike the AK setup, we no longer have representative old and young agents.
 
@@ -1244,8 +1083,6 @@ Instead we have agents from 50 cohorts coexisting simultaneously.
 To get a counterpart of AK lectures we can construct two age groups with equal size, setting a threshold at age 25.
 
 ```{code-cell} ipython3
-:id: 1b7fe4e7
-
 ap = hh.a_grid[σ_ss1]
 J = hh.j_grid.size
 δ = δ_ss1.reshape((hh.j_grid.size, 1, 1))
@@ -1260,8 +1097,6 @@ Co_ss1 = (c[J//2:] * μ_ss1[J//2:]).sum() / (J // 2)
 ```
 
 ```{code-cell} ipython3
-:id: b912bdf1
-
 T = σ_seq.shape[0]
 J = σ_seq.shape[1]
 
@@ -1282,13 +1117,6 @@ for t in range(T):
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-  height: 855
-id: cf48686f
-outputId: c163452c-b4cf-4494-df41-98f9ac74a316
----
 fig, axs = plt.subplots(3, 3, figsize=(14, 10))
 
 # Cy (j=0-24)
@@ -1320,13 +1148,9 @@ axs[2, 2].set_ylim([ss1[9]-0.1, ss1[9]+0.1])
 plt.show()
 ```
 
-+++ {"id": "336ced39-80b5-47c3-8a67-1472d27a9221", "user_expressions": []}
-
 To look into the evolution of consumption distribution over age in more detail, let's compute the mean and variance of consumption conditional on age in each time $t$.
 
 ```{code-cell} ipython3
-:id: 9b84b7ca-bc79-45b8-890a-1771d29dfb11
-
 Cmean_seq = np.empty((T, J))
 Cvar_seq = np.empty((T, J))
 
@@ -1344,13 +1168,6 @@ for t in range(T):
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-  height: 681
-id: 9c6c6a49-6f29-4b90-b171-a2cfba2f2d43
-outputId: 4fc2f07e-4a10-4413-b0c8-f8135ea6219d
----
 J_seq, T_range = np.meshgrid(np.arange(J), np.arange(T))
 
 fig = plt.figure(figsize=[20, 20])
@@ -1374,25 +1191,16 @@ ax2.set_ylabel(r"j")
 plt.show()
 ```
 
-+++ {"id": "48756aed-3bcc-41f8-8489-548f46445565", "user_expressions": []}
-
 ## Experiment 2: Preannounced Tax Cut
-
-+++ {"id": "fa340801-bf90-4d55-97bb-9314055a67ba", "user_expressions": []}
-
 
 
 Instead of implementing a tax rate cut immediately as it did in Experiment 1, now the government announces a tax rate cut at time $0$ but  delays implementing it for  20 periods.
-
-+++ {"id": "09929aa0-533d-478c-b33a-95870d871e32", "user_expressions": []}
 
 We will use the same key toolkit `path_iteration`.
 
 We only need to specify  `D_seq` appropriately.
 
 ```{code-cell} ipython3
-:id: 7562ddf6
-
 T = 150
 
 D_t = 20
@@ -1406,25 +1214,14 @@ G_seq = jnp.ones(T) * G_ss1
 ```
 
 ```{code-cell} ipython3
-:id: d100dd45
-
 ss2 = find_ss(hh, firm, [D_seq[-1], G_seq[-1], δ_seq[-1]], Q)
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-  height: 437
-id: c1e2cf31
-outputId: 5ec48f9b-76c8-4723-c468-86e612124147
----
 paths = path_iteration(ss1, ss2, [D_seq, G_seq, δ_seq], hh, firm, Q, verbose=True)
 ```
 
 ```{code-cell} ipython3
-:id: dfec98f5
-
 V_seq, σ_seq, μ_seq = paths[:3]
 K_seq, L_seq = paths[3:5]
 r_seq, w_seq = paths[5:7]
@@ -1432,8 +1229,6 @@ r_seq, w_seq = paths[5:7]
 ```
 
 ```{code-cell} ipython3
-:id: e84bb57c
-
 T = σ_seq.shape[0]
 J = σ_seq.shape[1]
 
@@ -1453,32 +1248,21 @@ for t in range(T):
     Co_seq[t] = (c[J//2:] * μ_seq[t, J//2:]).sum() / (J // 2)
 ```
 
-+++ {"id": "7743c581-e0a4-41b9-9558-1be5718eac87", "user_expressions": []}
-
 Below we plot the transition paths of the economy.
 
 Notice how prices and quantities  respond to the foreseen tax rate increase.
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-  height: 855
-id: e2407bcc
-outputId: c6e8f769-94d1-4410-fb2e-fda6d3a412e4
----
 fig, axs = plt.subplots(3, 3, figsize=(14, 10))
 
 # Cy (j=0-24)
 axs[0, 0].plot(Cy_seq)
 axs[0, 0].hlines(Cy_ss1, 0, T, color='r', linestyle='--')
-# axs[0, 0].vlines(D_t-1, Cy_seq.min()*0.95, Cy_seq.max()*1.05, color='k', linestyle='--', linewidth=0.5)
 axs[0, 0].set_title('Cy (j < 25)')
 
 # Cy (j=25-49)
 axs[0, 1].plot(Co_seq)
 axs[0, 1].hlines(Co_ss1, 0, T, color='r', linestyle='--')
-# axs[0, 1].vlines(D_t-1, Co_seq.min()*0.95, Co_seq.max()*1.05, color='k', linestyle='--', linewidth=0.5)
 axs[0, 1].set_title(r'Co (j $\geq$ 25)')
 
 names = ['K', 'L', 'r', 'w', 'τ', 'D', 'G']
@@ -1491,7 +1275,6 @@ for i in range(len(names)):
 
     axs[row_i, col_i].plot(paths[i_var])
     axs[row_i, col_i].hlines(ss1[i_var], 0, T, color='r', linestyle='--')
-#     axs[row_i, col_i].vlines(D_t-1, paths[i_var].min()*0.95, paths[i_var].max()*1.05, color='k', linestyle='--', linewidth=0.5)
     axs[row_i, col_i].set_title(names[i])
 
 # ylims
@@ -1501,18 +1284,9 @@ axs[2, 2].set_ylim([ss1[9]-0.1, ss1[9]+0.1])
 plt.show()
 ```
 
-+++ {"id": "d48df239-c4d4-455e-890a-a1a3034fea2f", "user_expressions": []}
-
 Let's zoom in and look at how the capital stock  responds to the future tax cut.
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-  height: 489
-id: 00cbf90b
-outputId: eb54401c-6b5b-4b9d-8505-d2f0942f76c0
----
 # K
 i_var = 3
 
@@ -1525,9 +1299,16 @@ plt.title("K")
 plt.xlabel("t")
 ```
 
-```{code-cell} ipython3
-:id: ca1b3484-4fac-415d-82bb-d011f2e349cf
+After the tax cut policy is implemented after $t=20$, the aggregate capital will decrease because of the crowding out effect.
 
+Forseeing the increase in the interest rate, individuals living in a few periods before $t=20$ will save more. This will cause a temporary decrease in the interest rate because of the increase in capital supply.
+
+For agents living in earlier periods, they will consequently save less because the lower interest rate.
+
+This manifests interesting dynamics of the economy between the annoucement of a policy and its actual implementation, with agents holding rational expectations.
+
+As above, we could also plot the evolution of mean and variance of consumption by different cohorts along the transition path.
+```{code-cell} ipython3
 Cmean_seq = np.empty((T, J))
 Cvar_seq = np.empty((T, J))
 
@@ -1545,13 +1326,6 @@ for t in range(T):
 ```
 
 ```{code-cell} ipython3
----
-colab:
-  base_uri: https://localhost:8080/
-  height: 681
-id: 035dbce4-d586-4c3c-83c9-a791cfb3310f
-outputId: 6c7d9091-5eed-4902-fcac-341a7fb929bd
----
 J_seq, T_range = np.meshgrid(np.arange(J), np.arange(T))
 
 fig = plt.figure(figsize=[20, 20])
@@ -1573,10 +1347,4 @@ ax2.set_xlabel(r"t")
 ax2.set_ylabel(r"j")
 
 plt.show()
-```
-
-```{code-cell} ipython3
-:id: 94996077-9966-442f-b1ce-9bd93fb850d4
-
-
 ```
