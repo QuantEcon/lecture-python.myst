@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# A lake model of employment and unemployment
+# A Lake Model of Employment and Unemployment
 
 ```{index} single: Lake Model
 ```
@@ -32,10 +32,17 @@ kernelspec:
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython
----
-tags: [hide-output]
----
+:tags: [hide-output]
+
 !pip install quantecon
+```
+
+We also need to install JAX if you haven't done so already:
+
+```{code-cell} ipython3
+:tags: [skip-execution]
+
+!pip install --upgrade jax
 ```
 
 ## Overview
