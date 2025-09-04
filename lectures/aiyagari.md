@@ -26,6 +26,14 @@ kernelspec:
 :depth: 2
 ```
 
+In addition to what's included in base Anaconda, we need to install JAX.
+
+```{code-cell} ipython3
+:tags: [skip-execution]
+
+!pip install --upgrade jax
+```
+
 ## Overview
 
 In this lecture, we describe the structure of a class of models that build on work by Truman Bewley {cite}`Bewley1977`.
@@ -46,14 +54,6 @@ The Aiyagari model has been used to investigate many topics, including
 * etc., etc., etc.
 
 ### Preliminaries
-
-In addition to what's included in base Anaconda, we need to install JAX.
-
-```{code-cell} ipython3
-:tags: [skip-execution]
-
-!pip install --upgrade jax
-```
 
 We use the following imports:
 
