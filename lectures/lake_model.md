@@ -931,9 +931,8 @@ unemployment_rates = jax.vmap(compute_unemployment_rate)(λ_values)
 # Plot the results
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.plot(λ_values, unemployment_rates, lw=2)
-ax.set_xlabel('job finding rate (λ)')
+ax.set_xlabel(r'$\lambda$')
 ax.set_ylabel('steady-state unemployment rate')
-ax.set_title('unemployment rate vs job finding rate')
 plt.show()
 
 base_model = create_lake_model()
