@@ -481,7 +481,8 @@ def simulate_markov_chain(P, T, init_state, key):
     def step(carry, key):
         state = carry
         probs = P[state]
-        state_new = jax.random.choice(key, a=jnp.arange(len(probs)), p=probs)
+        state_new = jax.random.choice(key, 
+                            a=jnp.arange(len(probs)), p=probs)
         return state_new, state_new
     
     keys = jax.random.split(key, T)
@@ -649,7 +650,8 @@ class McCallModel(NamedTuple):
     p_vec: jnp.ndarray  # Probabilities over w_vec
 
 
-def create_mccall_model(α=0.2, β=0.98, γ=0.7, c=6.0, σ=2.0, w_vec=None, p_vec=None):
+def create_mccall_model(α=0.2, β=0.98, γ=0.7, c=6.0, σ=2.0, 
+                            w_vec=None, p_vec=None):
     """
     Create a McCallModel with default wage distribution if not provided.
     """
@@ -741,36 +743,55 @@ Now let's compute and plot welfare, employment, unemployment, and tax revenue as
 function of the unemployment compensation rate
 
 ```{code-cell} ipython3
-# Some global variables that will stay constant
-α = 0.013
-α_q = (1-(1-α)**3)   # Quarterly (α is monthly)
-b = 0.0124
-d = 0.00822
-β = 0.98
-γ = 1.0
-σ = 2.0
+class EconomyParameters(NamedTuple):
+    """Parameters for the economy"""
+    α: float
+    α_q: float  # Quarterly (α is monthly)
+    b: float
+    d: float
+    β: float
+    γ: float
+    σ: float
+    log_wage_mean: float
+    wage_grid_size: int
+    max_wage: float
 
-log_wage_mean, wage_grid_size, max_wage = 20, 200, 170
-w_vec_temp = jnp.linspace(1e-8, max_wage, wage_grid_size + 1)
-cdf = stats.norm.cdf(jnp.log(w_vec_temp), 
-                        loc=jnp.log(log_wage_mean), scale=1)
-pdf = cdf[1:] - cdf[:-1]
-p_vec = pdf / pdf.sum()
-w_vec = (w_vec_temp[1:] + w_vec_temp[:-1]) / 2
+def create_economy_params(α=0.013, b=0.0124, d=0.00822, 
+                          β=0.98, γ=1.0, σ=2.0,
+                          log_wage_mean=20, 
+                          wage_grid_size=200, 
+                          max_wage=170):
+    """Create economy parameters with default values"""
+    α_q = (1-(1-α)**3)   # Convert monthly to quarterly
+    return EconomyParameters(α=α, α_q=α_q, b=b, d=d, β=β, γ=γ, σ=σ,
+                           log_wage_mean=log_wage_mean, 
+                           wage_grid_size=wage_grid_size, 
+                           max_wage=max_wage)
+
+def create_wage_distribution(params):
+    """Create wage distribution from parameters"""
+    w_vec_temp = jnp.linspace(1e-8, params.max_wage, 
+                                params.wage_grid_size + 1)
+    cdf = stats.norm.cdf(jnp.log(w_vec_temp), 
+                            loc=jnp.log(params.log_wage_mean), scale=1)
+    pdf = cdf[1:] - cdf[:-1]
+    p_vec = pdf / pdf.sum()
+    w_vec = (w_vec_temp[1:] + w_vec_temp[:-1]) / 2
+    return w_vec, p_vec
 
 
 @jax.jit
-def compute_optimal_quantities(c, τ):
+def compute_optimal_quantities(c, τ, params, w_vec, p_vec):
     """
     Compute the reservation wage, job finding rate and value functions
     of the workers given c and τ.
     """
     mcm = create_mccall_model(
-        α=α_q,
-        β=β,
-        γ=γ,
+        α=params.α_q,
+        β=params.β,
+        γ=params.γ,
         c=c-τ,          # Post tax compensation
-        σ=σ,
+        σ=params.σ,
         w_vec=w_vec-τ,  # Post tax wages
         p_vec=p_vec
     )
@@ -779,21 +800,22 @@ def compute_optimal_quantities(c, τ):
     w_idx = jnp.searchsorted(V - U, 0)
     w_bar = jnp.where(w_idx == len(V), jnp.inf, mcm.w_vec[w_idx])
     
-    λ = γ * jnp.sum(p_vec * (w_vec - τ > w_bar))
+    λ = params.γ * jnp.sum(p_vec * (w_vec - τ > w_bar))
     return w_bar, λ, V, U
 
 
 @jax.jit
-def compute_steady_state_quantities(c, τ):
+def compute_steady_state_quantities(c, τ, params, w_vec, p_vec):
     """
     Compute the steady state unemployment rate given c and τ using optimal
     quantities from the McCall model and computing corresponding steady
     state quantities
     """
-    w_bar, λ, V, U = compute_optimal_quantities(c, τ)
+    w_bar, λ, V, U = compute_optimal_quantities(c, τ, 
+                                        params, w_vec, p_vec)
     
     # Compute steady state employment and unemployment rates
-    lm = create_lake_model(α=α_q, λ=λ, b=b, d=d)
+    lm = create_lake_model(α=params.α_q, λ=λ, b=params.b, d=params.d)
     x = rate_steady_state(lm)
     u, e = x
     
@@ -805,12 +827,13 @@ def compute_steady_state_quantities(c, τ):
     return e, u, welfare
 
 
-def find_balanced_budget_tax(c):
+def find_balanced_budget_tax(c, params, w_vec, p_vec):
     """
     Find the tax level that will induce a balanced budget using bisection.
     """
     def steady_state_budget(t):
-        e, u, w = compute_steady_state_quantities(c, t)
+        e, u, w = compute_steady_state_quantities(c, t, 
+                                            params, w_vec, p_vec)
         return t - u * c
     
     # Use a simple bisection method
@@ -832,6 +855,10 @@ def find_balanced_budget_tax(c):
     return t_mid
 
 
+# Create economy parameters and wage distribution
+params = create_economy_params()
+w_vec, p_vec = create_wage_distribution(params)
+
 # Levels of unemployment insurance we wish to study
 c_vec = jnp.linspace(5, 140, 60)
 
@@ -841,8 +868,9 @@ empl_vec = []
 welfare_vec = []
 
 for c in c_vec:
-    t = find_balanced_budget_tax(c)
-    e_rate, u_rate, welfare = compute_steady_state_quantities(c, t)
+    t = find_balanced_budget_tax(c, params, w_vec, p_vec)
+    e_rate, u_rate, welfare = compute_steady_state_quantities(c, t, params, 
+                                        w_vec, p_vec)
     tax_vec.append(t)
     unempl_vec.append(u_rate)
     empl_vec.append(e_rate)
@@ -875,7 +903,6 @@ In the JAX implementation of the Lake Model, we use a `NamedTuple` for parameter
 This approach has several advantages:
 1. It's immutable, which aligns with JAX's functional programming paradigm
 2. Functions can be JIT-compiled for better performance
-3. It's easier to use with JAX's automatic differentiation
 
 In this exercise, your task is to:
 1. Update parameters by creating a new instance of the model with the desired parameters (`α=0.02, λ=0.3`).
@@ -950,10 +977,6 @@ Plot the transition dynamics for the rates.
 How long does the economy take to converge to its new steady state?
 
 What is the new steady state level of employment?
-
-```{note}
-It may be easier to use the class created in exercise 1 to help with changing variables.
-```
 
 ```{exercise-end}
 ```
