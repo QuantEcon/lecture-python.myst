@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.4
+    jupytext_version: 1.17.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -19,7 +19,7 @@ kernelspec:
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install numpyro jax
+!pip install numpyro jax arviz
 ```
 
 This lecture describes methods for forecasting statistics that are functions of future values of a univariate autoregressive process.
@@ -59,6 +59,9 @@ from jax import lax
 import numpyro
 import numpyro.distributions as dist
 from numpyro.infer import MCMC, NUTS
+
+# arviz
+import arviz as az
 
 sns.set_style('white')
 colors = sns.color_palette()
@@ -141,9 +144,9 @@ class AR1(NamedTuple):
 
     Parameters
     ----------
-    rho : float
-        Autoregressive coefficient, must satisfy |rho| < 1 for stationarity.
-    sigma : float
+    ρ : float
+        Autoregressive coefficient, must satisfy |ρ| < 1 for stationarity.
+    σ : float
         Standard deviation of the error term.
     y0 : float
         Initial value of the process at time t=0.
@@ -152,11 +155,23 @@ class AR1(NamedTuple):
     T1 : int, optional
         Length of the future path to simulate (default is 100).
     """
-    rho: float
-    sigma: float
+    ρ: float
+    σ: float
     y0: float
-    T0: int=100
-    T1: int=100
+    T0: int
+    T1: int
+
+
+def make_ar1(ρ: float, σ: float, y0: float, T0: int = 100, T1: int = 100):
+    """
+    Factory function to create an AR1 instance with default values for T0 and T1.
+    
+    Returns
+    -------
+    AR1
+        AR1 named tuple containing the specified parameters.
+    """
+    return AR1(ρ=ρ, σ=σ, y0=y0, T0=T0, T1=T1)
 
 
 def AR1_simulate_past(ar1: AR1, key=key):
@@ -166,7 +181,7 @@ def AR1_simulate_past(ar1: AR1, key=key):
     Parameters
     ----------
     ar1 : AR1
-        AR1 named tuple containing parameters (rho, sigma, y0, T0, T1).
+        AR1 named tuple containing parameters (ρ, σ, y0, T0, T1).
     key : jax.random.PRNGKey
         JAX random key for generating random noise.
 
@@ -175,18 +190,18 @@ def AR1_simulate_past(ar1: AR1, key=key):
     initial_path : jax.numpy.ndarray
         Simulated path of the AR(1) process and the initial y0.
     """
-    rho, sigma, y0, T0 = ar1.rho, ar1.sigma, ar1.y0, ar1.T0
-    # Draw epsilons
-    eps = sigma * random.normal(key, (T0,))
+    ρ, σ, y0, T0 = ar1.ρ, ar1.σ, ar1.y0, ar1.T0
+    # Draw εs
+    ε = σ * random.normal(key, (T0,))
     
     # Set step function
-    def ar1_step(y_prev, t_rho_eps):
-        rho, eps_t = t_rho_eps
-        y_t = rho * y_prev + eps_t
+    def ar1_step(y_prev, t_ρ_ε):
+        ρ, ε_t = t_ρ_ε
+        y_t = ρ * y_prev + ε_t
         return y_t, y_t
     
     # Scan over time steps
-    _, y_seq = lax.scan(ar1_step, y0, (jnp.full(T0, rho), eps))
+    _, y_seq = lax.scan(ar1_step, y0, (jnp.full(T0, ρ), ε))
     
     # Concatenate initial value
     initial_path = jnp.concatenate([jnp.array([y0]), y_seq])
@@ -204,7 +219,7 @@ def AR1_simulate_future(ar1: AR1, y_T0, N=10, key=key):
     Parameters
     ----------
     ar1 : AR1
-        AR1 named tuple containing parameters (rho, sigma, y0, T0, T1).
+        AR1 named tuple containing parameters (ρ, σ, y0, T0, T1).
     y_T0 : float
         Value of the process at time T0.
     N: int
@@ -217,16 +232,16 @@ def AR1_simulate_future(ar1: AR1, y_T0, N=10, key=key):
     future_path : jax.numpy.ndarray
         Simulated N paths of the AR(1) process of length T1.
     """
-    rho, sigma, T1 = ar1.rho, ar1.sigma, ar1.T1
+    ρ, σ, T1 = ar1.ρ, ar1.σ, ar1.T1
 
     def single_path_scan(y_T0, subkey):
-        eps = sigma * random.normal(subkey, (T1,))
+        ε = σ * random.normal(subkey, (T1,))
         
-        def ar1_step(y_prev, t_rho_eps):
-            rho, eps_t = t_rho_eps
-            y_t = rho * y_prev + eps_t
+        def ar1_step(y_prev, t_ρ_ε):
+            ρ, ε_t = t_ρ_ε
+            y_t = ρ * y_prev + ε_t
             return y_t, y_t
-        _, y = lax.scan(ar1_step, y_T0, (jnp.full(T1, rho), eps))
+        _, y = lax.scan(ar1_step, y_T0, (jnp.full(T1, ρ), ε))
         return y
 
     # Split key to generate different paths
@@ -249,7 +264,7 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
     Parameters
     ----------
     ar1 : AR1
-        AR1 named tuple containing process parameters (rho, sigma, T0, T1).
+        AR1 named tuple containing process parameters (ρ, σ, T0, T1).
     initial_path : array-like
         Simulated initial path of the AR(1) process, shape(T0+1,).
     future_path : array-like
@@ -266,13 +281,13 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
     - 90% and 95% predictive confidence intervals
     - Expected future path
     """
-    rho, sigma, T0, T1 = ar1.rho, ar1.sigma, ar1.T0, ar1.T1
+    ρ, σ, T0, T1 = ar1.ρ, ar1.σ, ar1.T0, ar1.T1
     
     # Compute moments and confidence intervals
     y_T0 = initial_path[-1]
     j = jnp.arange(1, T1+1)
-    center = rho**j * y_T0
-    vars = sigma**2 * (1 - rho**(2 * j)) / (1 - rho**2)
+    center = ρ**j * y_T0
+    vars = σ**2 * (1 - ρ**(2 * j)) / (1 - ρ**2)
     
     # 95% CI
     y_upper_c95 = center + 1.96 * jnp.sqrt(vars)
@@ -313,11 +328,10 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
 ---
 mystnb:
   figure:
-    caption: |
-        Initial and predictive future paths 
+    caption: "Initial and predictive future paths \n"
     name: fig_path
 ---
-ar1 = AR1(rho=0.9, sigma=1, y0=10, T0=100, T1=100)
+ar1 = make_ar1(ρ=0.9, σ=1, y0=10)
 
 # Simulate
 initial_path = AR1_simulate_past(ar1)
@@ -438,24 +452,23 @@ Note that in defining the likelihood function, we choose to condition on the ini
 ---
 mystnb:
   figure:
-    caption: |
-        Posterior distributions (rho, sigma)
-    name: fig_post
+    caption: "AR(1) model"
+    name: fig_trace
 ---
 def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
     """Draw a sample of size from the posterior distribution.""" 
     def model(data):
         # Start with priors
-        rho = numpyro.sample('rho', dist.Uniform(-1, 1))  # Assume stable rho
-        sigma = numpyro.sample('sigma', dist.HalfNormal(jnp.sqrt(10)))
+        ρ = numpyro.sample('rho', dist.Uniform(-1, 1))  # Assume stable ρ
+        σ = numpyro.sample('sigma', dist.HalfNormal(jnp.sqrt(10)))
         
         # Define likelihood recursively
         for t in range(1, len(data)):
             # Expectation of y_t
-            mu = rho * data[t-1]
+            μ = ρ * data[t-1]
             
             # Likelihood of the actual realization.
-            numpyro.sample(f'y_{t}', dist.Normal(mu, sigma), obs=data[t])
+            numpyro.sample(f'y_{t}', dist.Normal(μ, σ), obs=data[t])
 
     # Compute posterior distribution of parameters
     nuts_kernel = NUTS(model)
@@ -465,6 +478,7 @@ def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
         nuts_kernel,
         num_warmup=5000,
         num_samples=size,
+        num_chains=4, # plot 4 chains in the trace
         progress_bar=False)
     
     # Run MCMC
@@ -476,24 +490,26 @@ def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
         'sigma': mcmc.get_samples()['sigma']
     }
     
-    # Plot posterior distributions
+    # Plot posterior distributions and trace plots
     if dis_plot == 1:
-        fig, ax = plt.subplots(1, 2, figsize=(12, 5))
-        sns.histplot(
-            post_sample['rho'], kde=True, stat="density", bins=bins, ax=ax[0]
+        plot_data = az.from_numpyro(posterior=mcmc)
+        axes = az.plot_trace(
+            data=plot_data,
+            compact=True,
+            lines=[
+                ("ρ", {}, ar1.ρ),
+                ("σ", {}, ar1.σ),
+            ],
+            backend_kwargs={"figsize": (10, 6), "layout": "constrained"},
         )
-        ax[0].set_xlabel(r"$\rho$")
-        sns.histplot(
-            post_sample['sigma'], kde=True, stat="density", bins=bins, ax=ax[1]
-        )
-        ax[1].set_xlabel(r"$\sigma$")
+    
     return post_sample
 
 
 post_samples = draw_from_posterior(initial_path)
 ```
 
-The graphs above portray posterior distributions.
+The graphs above portray posterior distributions and trace plots. The posterior distributions (top row) show the marginal distributions of the parameters after observing the data, while the trace plots (bottom row) help diagnose MCMC convergence by showing how the sampler explored the parameter space over iterations.
 
 ## Calculating Sample Path Statistics
 
@@ -567,6 +583,7 @@ def compute_path_statistics(initial_path, future_path):
         )
     return path_stats
 ```
+
 The following function creates visualizations of the path statistics in a subplot grid.
 
 ```{code-cell} ipython3
@@ -611,7 +628,7 @@ def plot_Wecker(ar1: AR1, initial_path, ax, N=1000):
     Parameters
     ----------
     ar1 : AR1
-        An AR1 named tuple containing the process parameters (rho, sigma, T0, T1).
+        An AR1 named tuple containing the process parameters (ρ, σ, T0, T1).
     initial_path : array-like
         The initial observed path of the AR(1) process.
     N : int
@@ -669,14 +686,14 @@ def plot_extended_Wecker(
     index = random.choice(
         key, jnp.arange(len(post_samples['rho'])), (N + 1,), replace=False
         )
-    rho_sample = post_samples['rho'][index]
-    sigma_sample = post_samples['sigma'][index]
+    ρ_sample = post_samples['rho'][index]
+    σ_sample = post_samples['sigma'][index]
 
     # Compute path statistics
     subkeys = random.split(key, num=N)
     
     def step(carry, n):
-        ar1_n = AR1(rho=rho_sample[n], sigma=sigma_sample[n], y0=y0)
+        ar1_n = make_ar1(ρ=ρ_sample[n], σ=σ_sample[n], y0=y0, T1=T1)
         future_temp = AR1_simulate_future(
             ar1_n, y_T0, N=1, key=subkeys[n]
             ).reshape(-1)
