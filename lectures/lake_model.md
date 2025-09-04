@@ -1121,8 +1121,7 @@ Finally, we combine these two paths and plot
 
 ```{code-cell} ipython3
 # Combine paths
-x_path = jnp.vstack([x_path1, x_path2])
-X_path = jnp.vstack([X_path1, X_path2])
+X_path = jnp.vstack([X_path1, X_path2[1:]])
 
 fig, axes = plt.subplots(3, 1, figsize=[10, 9])
 
