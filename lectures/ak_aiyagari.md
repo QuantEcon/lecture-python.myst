@@ -443,6 +443,8 @@ Given  guesses of prices and taxes, we can use backwards induction to solve for 
 
 The function `backwards_opt` solve for optimal values by applying the discretized bellman operator backwards.
 
+We use `jax.lax.scan` to facilitate sequential and recurrant computations efficiently.
+
 ```{code-cell} ipython3
 @jax.jit
 def backwards_opt(prices, taxes, household, Q):
@@ -457,6 +459,7 @@ def backwards_opt(prices, taxes, household, Q):
     num_action = a_grid.size
 
     def bellman_operator_j(V_next, j):
+        "Solve household optimization problem at age j given Vj+1"
 
         Rj = populate_R(j, r, w, τ, δ, household)
         vals = Rj + β * Q.dot(V_next)
@@ -468,6 +471,7 @@ def backwards_opt(prices, taxes, household, Q):
     js = jnp.arange(J-1, -1, -1)
     init_V = VJ
 
+    # iterate from age J to 1
     _, outputs = jax.lax.scan(bellman_operator_j, init_V, js)
     V, σ = outputs
     V = V[::-1]
@@ -503,6 +507,7 @@ def popu_dist(σ, household, Q):
     num_state = hh.a_grid.size * hh.γ_grid.size
 
     def update_popu_j(μ_j, j):
+        "Update population distribution from age j to j+1"
 
         Qσ = Q[jnp.arange(num_state), σ[j]]
         μ_next = μ_j @ Qσ
@@ -511,6 +516,7 @@ def popu_dist(σ, household, Q):
 
     js = jnp.arange(J-1)
 
+    # iterate from age 1 to J
     _, μ = jax.lax.scan(update_popu_j, init_μ, js)
     μ = jnp.concatenate([init_μ[jnp.newaxis], μ], axis=0)
 
