@@ -498,8 +498,8 @@ def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
             data=plot_data,
             compact=True,
             lines=[
-                ("ρ", {}, ar1.ρ),
-                ("σ", {}, ar1.σ),
+                ("rho", {}, ar1.ρ),
+                ("sigma", {}, ar1.σ),
             ],
             backend_kwargs={"figsize": (10, 6), "layout": "constrained"},
         )
