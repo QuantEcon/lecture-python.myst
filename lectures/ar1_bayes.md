@@ -30,9 +30,8 @@ We'll begin with some Python imports.
 import numpyro
 from numpyro import distributions as dist
 
-import numpy as np
 import jax.numpy as jnp
-from jax import random
+from jax import random, lax
 import matplotlib.pyplot as plt
 ```
 
@@ -129,16 +128,14 @@ How we select the initial value $y_0$ matters.
 To illustrate the issue, we'll begin by choosing an initial $y_0$ that is far out in a tail of the stationary distribution.
 
 ```{code-cell} ipython3
-def ar1_simulate(ρ, σ, y0, T):
+def ar1_simulate(ρ, σ, y0, T, key):
+    ε = random.normal(key, shape=(T,)) * σ
 
-    # Allocate space and draw epsilons
-    y = np.empty(T)
-    eps = np.random.normal(0., σ, T)
+    def scan_fn(y_prev, ε_t):
+        y_t = ρ * y_prev + ε_t
+        return y_t, y_t
 
-    # Initial condition and step forward
-    y[0] = y0
-    for t in range(1, T):
-        y[t] = ρ * y[t-1] + eps[t]
+    _, y = lax.scan(scan_fn, y0, ε)
 
     return y
 
@@ -146,8 +143,8 @@ def ar1_simulate(ρ, σ, y0, T):
 ρ = 0.5
 T = 50
 
-np.random.seed(145353452)
-y = ar1_simulate(ρ, σ, 10, T)
+key = random.PRNGKey(145353452)
+y = ar1_simulate(ρ, σ, 10.0, T, key)
 ```
 
 ```{code-cell} ipython3
@@ -168,15 +165,14 @@ def plot_posterior(sample):
     """
     Plot trace and histogram
     """
-    # To np array
     ρs = sample['ρ']
     σs = sample['σ']
-    ρs, σs = np.array(ρs), np.array(σs)
 
     fig, axs = plt.subplots(2, 2, figsize=(17, 6))
+    
     # Plot trace
     axs[0, 0].plot(ρs)   # ρ
-    axs[1, 0].plot(σs) # σ
+    axs[1, 0].plot(σs)   # σ
 
     # Plot posterior
     axs[0, 1].hist(ρs, bins=50, density=True, alpha=0.7)
@@ -195,7 +191,7 @@ def plot_posterior(sample):
 def AR1_model(data):
     # set prior
     ρ = numpyro.sample('ρ', dist.Uniform(low=-1., high=1.))
-    σ = numpyro.sample('σ', dist.HalfNormal(scale=np.sqrt(10)))
+    σ = numpyro.sample('σ', dist.HalfNormal(scale=jnp.sqrt(10)))
 
     # Expected value of y at the next period (ρ * y)
     yhat = ρ * data[:-1]
@@ -209,14 +205,14 @@ def AR1_model(data):
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-# Make jnp array
 y = jnp.array(y)
 
 # Set NUTS kernel
 NUTS_kernel = numpyro.infer.NUTS(AR1_model)
 
 # Run MCMC
-mcmc = numpyro.infer.MCMC(NUTS_kernel, num_samples=50000, num_warmup=10000, progress_bar=False)
+mcmc = numpyro.infer.MCMC(NUTS_kernel, 
+            num_samples=50000, num_warmup=10000, progress_bar=False)
 mcmc.run(rng_key=random.PRNGKey(1), data=y)
 ```
 
@@ -250,7 +246,7 @@ Here's the new code to achieve this.
 def AR1_model_y0(data):
     # Set prior
     ρ = numpyro.sample('ρ', dist.Uniform(low=-1., high=1.))
-    σ = numpyro.sample('σ', dist.HalfNormal(scale=np.sqrt(10)))
+    σ = numpyro.sample('σ', dist.HalfNormal(scale=jnp.sqrt(10)))
 
     # Standard deviation of ergodic y
     y_sd = σ / jnp.sqrt(1 - ρ**2)
@@ -268,14 +264,14 @@ def AR1_model_y0(data):
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-# Make jnp array
 y = jnp.array(y)
 
 # Set NUTS kernel
 NUTS_kernel = numpyro.infer.NUTS(AR1_model_y0)
 
 # Run MCMC
-mcmc2 = numpyro.infer.MCMC(NUTS_kernel, num_samples=50000, num_warmup=10000, progress_bar=False)
+mcmc2 = numpyro.infer.MCMC(NUTS_kernel, 
+                num_samples=50000, num_warmup=10000, progress_bar=False)
 mcmc2.run(rng_key=random.PRNGKey(1), data=y)
 ```
 
