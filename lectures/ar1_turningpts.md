@@ -66,6 +66,7 @@ import arviz as az
 sns.set_style('white')
 colors = sns.color_palette()
 key = random.PRNGKey(0)
+numpyro.set_host_device_count(4)
 ```
 
 ## A Univariate First-Order Autoregressive Process
