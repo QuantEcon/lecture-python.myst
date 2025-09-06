@@ -52,7 +52,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import scipy.stats as st
 
-from dataclasses import dataclass, field
 from typing import NamedTuple, Sequence
 import jax.numpy as jnp
 from jax import random
