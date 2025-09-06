@@ -54,36 +54,40 @@ import jax
 
 ## Environment
 
-## Demographics and Time
+### Demographics and time
 
 - Time is discrete and is indexed by $t = 0, 1, 2, ...$
 - Each agent lives for $J = 50$ periods and faces no mortality risk
 - Age is indexed by $j = 0, 1, ..., 49$
 - Population size  is fixed at $1/J$
 
-## Individuals' State Variables
+### Individuals' state variables
 
 Agent $i$ of age $j$ at time $t$ has
 
 - Asset holdings $a_{i,j,t}$
-- Idiosyncratic labor productivity $γ_{i,j,t}$
+- Idiosyncratic labor productivity $\gamma_{i,j,t}$
 
 An idiosyncratic labor productivity process follows a two-state Markov chain with:
-- Values $γ_l, γ_h$
-- Transition matrix $Π$
-- Initial distribution for newborns $π = [0.5, 0.5]$
+- Values $\gamma_l, \gamma_h$
+- Transition matrix $\Pi$
+- Initial distribution for newborns $\pi = [0.5, 0.5]$
 
-## Labor Supply
+### Labor supply
 
-- An agent with productivity $γ_{i,j,t}$ supplies $l(j)γ_{i,j,t}$ efficiency units of labor
-- $l(j)$ is a deterministic age-specific labor efficiency units profile
-- An agent's effective  labor supply depends on a life-cycle efficiency profile  and an idiosyncratic stochastic process
+An agent with productivity $\gamma_{i,j,t}$ supplies $l(j)\gamma_{i,j,t}$ efficiency units of labor.
 
-## Initial Conditions
+$l(j)$ is a deterministic age-specific labor efficiency units profile.
 
-- Newborns start with zero assets: $a_{i,0,t} = 0$
-- Initial idiosyncratic  productivityies are drawn from distribution $π$
-- Agents leave no bequests and have  terminal value function $V_J(a) = 0$
+An agent's effective  labor supply depends on a life-cycle efficiency profile  and an idiosyncratic stochastic process.
+
+### Initial conditions
+
+Newborns start with zero assets: $a_{i,0,t} = 0$.
+
+Initial idiosyncratic productivities are drawn from distribution $\pi$.
+
+Agents leave no bequests and have  terminal value function $V_J(a) = 0$.
 
 ##  Production
 
@@ -95,16 +99,16 @@ where:
 - $K_t$ is aggregate capital
 - $L_t$ is aggregate efficiency units of  labor
 - $Z_t$ is total factor productivity
-- $α$ is the capital share
+- $\alpha$ is the capital share
 
 ## Government
 
 The government
 
-1. Issues one-period debt $D_t$
-2. Collects flat-rate tax rate  $τ_t$ on labor and capital income
-3. Implements age-specific lump-sum taxes/transfers $δ_{j,t}$
-4. Makes government purchases $G_t$
+- Issues one-period debt $D_t$
+- Collects flat-rate tax rate  $\tau_t$ on labor and capital income
+- Implements age-specific lump-sum taxes/transfers $\delta_{j,t}$
+- Makes government purchases $G_t$
 
 
 
@@ -116,44 +120,45 @@ where total tax revenues $T_t$ satisfy:
 
 $$T_t = \tau_t w_t L_t + \tau_t r_t(D_t + K_t) + \sum_j \delta_{j,t}$$
 
-##  Activities in Factor Markets
+## Activities in factor markets
 
-At each time $t ≥ 0$, agents supply labor and capital:
+At each time $t \geq 0$, agents supply labor and capital.
 
-### Age-Specific Labor Supplies
-- Agents of age $j ∈ {0,1,...,J-1}$ supply labor according to:
-  * Their deterministic age-efficiency profile $l(j)$
-  * Their current idiosyncratic productivity shock $γ_{i,j,t}$
-  * Total effective labor supply of $l(j)γ_{i,j,t}$ units
-  * A competitive wage $w_t$ per effective unit of labor
-  * A flat tax rate  $τ_t$ on labor earnings
+### Age-specific labor supplies
 
-### Asset Market Participation
-- Agents of all ages $j ∈ {0,1,...,J-1}$ can:
-  * Hold assets $a_{i,j,t}$ (subject to borrowing constraints)
-  * Earn a risk-free one-period return $r_t$ on savings
-  * Pay capital income taxes at a flat rate  $τ_t$
-  * Receive/pay age-specific transfers $δ_{j,t}$
+Agents of age $j ∈ \{0,1,...,J-1\}$ supply labor according to:
+- Their deterministic age-efficiency profile $l(j)$
+- Their current idiosyncratic productivity shock $\gamma_{i,j,t}$
 
-### Key Features
-* Lifecycle Patterns:
-   - Labor productivity varies systematically with age according to $l(j)$
-   - Asset holdings typically follow a lifecycle pattern
-   - Age-specific fiscal transfers are described by  $δ_{j,t}$
+Each agent supplies $l(j)\gamma_{i,j,t}$ effective units of labor and earns a competitive wage $w_t$ per effective unit, subject to a flat tax rate $\tau_t$ on labor earnings.
 
-* Within-Cohort Heterogeneity:
-   - Agents of the same age differ in:
-     * Their asset holdings $a_{i,j,t}$ due to different histories of idiosyncratic productivity shocks
-     * Their  productivities $γ_{i,j,t}$
-     * Their consequent labor incomes and financial wealth
+### Asset market participation
 
-* Cross-Cohort Interactions:
-   - All cohorts participate together in factor markets
-   - Asset supplies from all cohorts determine aggregate capital
-   - Effective labor supplies from all cohorts determine aggregate labor
-   - Equilibrium prices  reflect both lifecycle and re-distributional forces
+All agents, regardless of age $j \in \{0,1,...,J-1\}$, can:
+- Hold assets $a_{i,j,t}$ (subject to borrowing constraints)
+- Earn a risk-free one-period return $r_t$ on savings
+- Pay capital income taxes at flat rate $\tau_t$
+- Receive or pay age-specific transfers $\delta_{j,t}$
 
-## Representative Firm's Problem
+### Key features
+
+*Lifecycle patterns* shape economic behavior across ages.
+
+  - Labor productivity varies systematically with age according to the profile $l(j)$, while asset holdings typically follow a lifecycle pattern of accumulation during working years and decumulation during retirement.
+
+  - Age-specific fiscal transfers $\delta_{j,t}$ redistribute resources across generations.
+
+*Within-cohort heterogeneity* creates dispersion among agents of the same age.
+
+  - Agents of the same age differ in their asset holdings $a_{i,j,t}$ due to different histories of idiosyncratic productivity shocks, their current productivities $\gamma_{i,j,t}$, and consequently their labor incomes and financial wealth.
+
+*Cross-cohort interactions* determine equilibrium outcomes through market aggregation.
+
+  - All cohorts participate together in factor markets, with asset supplies from all cohorts determining aggregate capital and effective labor supplies from all cohorts determining aggregate labor.
+
+  - Equilibrium prices reflect both lifecycle and redistributional forces.
+
+## Representative firm's problem
 
 A representative firm chooses capital and effective labor to maximize profits:
 
@@ -164,7 +169,7 @@ First-order necessary conditions imply that
 $$w_t = (1-\alpha)Z_t(K_t/L_t)^\alpha$$
 $$r_t = \alpha Z_t(K_t/L_t)^{\alpha-1}$$
 
-##  Households' Problems
+##  Households' problems
 
 
 
@@ -178,17 +183,17 @@ $$c + a' = (1 + r_t(1-\tau_t))a + (1-\tau_t)w_t l(j)\gamma - \delta_{j,t}$$
 $$c \geq 0$$
 
 and a  terminal condition
-$V_{J,t}(a, γ) = 0$
+$V_{J,t}(a, \gamma) = 0$
 
-## Population Dynamics
+## Population dynamics
 
-The joint probability density function $μ_{j,t}(a,γ)$ of asset holdings and idiosyncratic labor evolves according to
+The joint probability density function $\mu_{j,t}(a,\gamma)$ of asset holdings and idiosyncratic labor evolves according to
 
 - For newborns $(j=0)$:
   
    $$
-μ_{0,t+1}(a',γ') =\begin{cases}
-π(γ') &\text{ if }a'=0\text{, }\\
+\mu_{0,t+1}(a',\gamma') =\begin{cases}
+\pi(\gamma') &\text{ if }a'=0\text{, }\\
 		    0, & \text{otherwise}
 		 \end{cases}
 $$
@@ -200,16 +205,16 @@ $$
    \mu_{j+1,t+1}(a',\gamma') = \int {\bf 1}_{\sigma_{j,t}(a,\gamma)=a'}\Pi(\gamma,\gamma')\mu_{j,t}(a,\gamma)d(a,\gamma)
    $$
 
-where $σ_{j,t}(a,γ)$ is the optimal saving policy function.
+where $\sigma_{j,t}(a,\gamma)$ is the optimal saving policy function.
 
 ## Equilibrium
 
 An equilibrium consists of:
 - Value functions $V_{j,t}$
-- Policy functions $σ_{j,t}$
-- Joint probability distributions $μ_{j,t}$
+- Policy functions $\sigma_{j,t}$
+- Joint probability distributions $\mu_{j,t}$
 - Prices $r_t, w_t$
-- Government policies $τ_t, D_t, δ_{j,t}, G_t$
+- Government policies $\tau_t, D_t, \delta_{j,t}, G_t$
 
 that satisfy the following conditions
 
@@ -228,26 +233,19 @@ Relative to the  model presented in {doc}`Transitions in an Overlapping Generati
 
 ## Implementation
 
-Using tools in  [discrete state dynamic programming lecture](https://python-advanced.quantecon.org/discrete_dp.html), we solve our model by combining
-
-* value function iteration with
-* equilibrium price determination.
+Using tools in  [discrete state dynamic programming lecture](https://python-advanced.quantecon.org/discrete_dp.html), we solve our model by combining value function iteration with equilibrium price determination.
 
 A sensible  approach is  to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.
 
-For a candidate sequence  of prices interest rates $r_t$ and wages $w_t$, we can 
+For a candidate sequence  of prices interest rates $r_t$ and wages $w_t$, we can solve individual households' dynamic programming problems using either value function iteration or policy function iteration to obtain optimal policy functions.
 
-* solve individual households' dynamic programming problems using either value function iteration or policy function iteration to obtain optimal policy functions
-*  then deduce associated stationary joint probability distributions of asset holdings and idiosyncratic labor efficiency units for each age cohort
+We then deduce associated stationary joint probability distributions of asset holdings and idiosyncratic labor efficiency units for each age cohort.
 
-* that will give us an aggregate capital supply (from household savings) and a labor supply (from the age-efficiency profile and productivity shocks)
+That will give us an aggregate capital supply (from household savings) and a labor supply (from the age-efficiency profile and productivity shocks).
 
-*  can then compare these with capital and labor demand from firms, compute deviations between factor market supplies and demands, then  update  price guesses until we find market-clearing prices
+We can then compare these with capital and labor demand from firms, compute deviations between factor market supplies and demands, then  update  price guesses until we find market-clearing prices.
 
-To contruct transition dynamics, we can compute  sequences of time-varying prices by
-
-* using backward induction to compute  value and policy functions,
-* forward iteration for the distributions of agents across states.
+To construct transition dynamics, we can compute sequences of time-varying prices by using _backward induction_ to compute value and policy functions, and _forward iteration_ for the distributions of agents across states.
 
 1. Outer Loop (Market Clearing)
    * Guess initial prices ($r_t, w_t$)
@@ -435,7 +433,7 @@ def populate_R(j, r, w, τ, δ, household):
                       (num_state, num_action))
 ```
 
-## Computing a Steady State
+## Computing a steady state
 
 We first  compute  steady state.
 
@@ -443,7 +441,7 @@ Given  guesses of prices and taxes, we can use backwards induction to solve for 
 
 The function `backwards_opt` solve for optimal values by applying the discretized bellman operator backwards.
 
-We use `jax.lax.scan` to facilitate sequential and recurrant computations efficiently.
+We use `jax.lax.scan` to facilitate sequential and recurrent computations efficiently.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -541,7 +539,7 @@ for j in [0, 5, 20, 45, 49]:
 plt.legend()
 plt.xlabel('a')
 
-plt.title(r'marginal distribution over a, $\sum_\gamma μ_j(a, γ)$')
+plt.title(r'marginal distribution over a, $\sum_\gamma \mu_j(a, \gamma)$')
 plt.xlim([0, 8])
 plt.ylim([0, 0.1])
 
@@ -557,7 +555,7 @@ As agents age, at first they  gradually accumulate assets.
 
   * the orange $j=5$ distribution puts positive mass on positive but low asset levels
   * the green $j=20$ distribution puts positive mass on a much wider range of asset levels. 
-  * the red $j=45$ distibution is even wider
+  * the red $j=45$ distribution is even wider
   
 At a later   age, they gradually  deplete their asset holdings.
 
@@ -581,14 +579,14 @@ axs[0].plot(hh.a_grid, hh.a_grid, '--')
 axs[0].set_xlabel("$a_{j}$")
 axs[0].set_ylabel("$a^*_{j+1}$")
 axs[0].legend(j_labels+['45 degree line'])
-axs[0].set_title("Optimal saving policy, low γ")
+axs[0].set_title(r"Optimal saving policy, low $\gamma$")
 
 axs[1].plot(hh.a_grid, hh.a_grid[σ_reshaped[[0, 5, 20, 45, 49], :, 1].T])
 axs[1].plot(hh.a_grid, hh.a_grid, '--')
 axs[1].set_xlabel("$a_{j}$")
 axs[1].set_ylabel("$a^*_{j+1}$")
 axs[1].legend(j_labels+['45 degree line'])
-axs[1].set_title("Optimal saving policy, high γ")
+axs[1].set_title(r"Optimal saving policy, high $\gamma$")
 
 plt.show()
 ```
@@ -745,7 +743,7 @@ r_ss1, w_ss1
 τ_ss1, D_ss1, G_ss1, δ_ss1
 ```
 
-## Transition Dynamics
+## Transition dynamics
 
 We  compute transition dynamics using a function `path_iteration`.
 
@@ -885,39 +883,48 @@ def simulate_forwards(σ_seq, D_seq, μ_ss1, K_ss1, L_ss1, household, Q):
     return μ_seq, K_seq, L_seq
 ```
 
-The following pseudo code  describe the algorithm of path iteration.
+The following algorithm describes the path iteration procedure:
 
-```
-Algorithm 1 AK-Aiyagari Transition Path Algorithm
-    procedure Path Iteration (ss₁, ss₂, T, D, G, δ)
-       V₁, σ₁, μ₁ ← ss₁                            ▷ Initial steady state
-       V₂, σ₂, μ₂ ← ss₂                            ▷ Final steady state
-       r, w, τ ← initialize_prices(T)              ▷ Linear interpolation
-       error ← ∞, i ← 0
-       repeat
-          i ← i + 1
-          r_old, w_old, τ_old ← r, w, τ
-          for t ∈ [T, 1] do                        ▷ Backward induction
-             for j ∈ [0, J-1] do                   ▷ Age groups
-                V[t,j] ← max_{a'} {u(c) + βE[V[t+1,j+1]]}
-                σ[t,j] ← argmax_{a'} {u(c) + βE[V[t+1,j+1]]}
-             end for
-          end for
-          for t ∈ [1, T] do                        ▷ Forward simulation
-             μ[t] ← Γ(σ[t], μ[t-1])                ▷ Distribution evolution
-             K[t] ← ∫a dμ[t] - D[t]                ▷ Aggregate capital
-             L[t] ← ∫l(j)γ dμ[t]                   ▷ Aggregate labor
-             r[t] ← αZ(K[t]/L[t])^(α-1)            ▷ Interest rate
-             w[t] ← (1-α)Z(K[t]/L[t])^α            ▷ Wage rate
-             τ[t] ← solve_budget(r[t],w[t],K[t],L[t],D[t],G[t])
-          end for
-          error ← ‖r - r_old‖ + ‖w - w_old‖ + ‖τ - τ_old‖
-          r ← λr + (1-λ)r_old                      ▷ Price dampening
-          w ← λw + (1-λ)w_old
-          τ ← λτ + (1-λ)τ_old
-       until error < ε or i > max_iter
-       return V, σ, μ, r, w, τ
-    end procedure
+```{prf:algorithm} AK-Aiyagari transition path algorithm
+:label: ak-aiyagari-algorithm
+
+**Inputs** Given initial steady state $ss_1$, final steady state $ss_2$, time horizon $T$, and policy sequences $(D, G, \delta)$
+
+**Output** Compute equilibrium transition paths for value functions $V$, policy functions $\sigma$, distributions $\mu$, and prices $(r, w, \tau)$
+
+1. Initialize from steady states:
+   - $(V_1, \sigma_1, \mu_1) \leftarrow ss_1$ *(Initial steady state)*
+   - $(V_2, \sigma_2, \mu_2) \leftarrow ss_2$ *(Final steady state)*
+   - $(r, w, \tau) \leftarrow \text{initialize\_prices}(T)$ *(Linear interpolation)*
+   - $\text{error} \leftarrow \infty$, $i \leftarrow 0$
+
+2. **While** $\text{error} > \varepsilon$ or $i \leq \text{max\_iter}$:
+
+   1. $i \leftarrow i + 1$
+   2. $(r_{\text{old}}, w_{\text{old}}, \tau_{\text{old}}) \leftarrow (r, w, \tau)$
+   
+   3. **Backward induction:** For $t \in [T, 1]$:
+      - For $j \in [0, J-1]$ *(age groups)*:
+        - $V[t,j] \leftarrow \max_{a'} \{u(c) + \beta\mathbb{E}[V[t+1,j+1]]\}$
+        - $\sigma[t,j] \leftarrow \arg\max_{a'} \{u(c) + \beta\mathbb{E}[V[t+1,j+1]]\}$
+   
+   4. **Forward simulation:** For $t \in [1, T]$:
+      - $\mu[t] \leftarrow \Gamma(\sigma[t], \mu[t-1])$ *(Distribution evolution)*
+      - $K[t] \leftarrow \int a \, d\mu[t] - D[t]$ *(Aggregate capital)*
+      - $L[t] \leftarrow \int l(j)\gamma \, d\mu[t]$ *(Aggregate labor)*
+      - $r[t] \leftarrow \alpha Z(K[t]/L[t])^{\alpha-1}$ *(Interest rate)*
+      - $w[t] \leftarrow (1-\alpha)Z(K[t]/L[t])^{\alpha}$ *(Wage rate)*
+      - $\tau[t] \leftarrow \text{solve\_budget}(r[t],w[t],K[t],L[t],D[t],G[t])$
+   
+   5. Compute convergence metric:
+      - $\text{error} \leftarrow \|r - r_{\text{old}}\| + \|w - w_{\text{old}}\| + \|\tau - \tau_{\text{old}}\|$
+   
+   6. Update prices with dampening:
+      - $r \leftarrow \lambda r + (1-\lambda)r_{\text{old}}$
+      - $w \leftarrow \lambda w + (1-\lambda)w_{\text{old}}$
+      - $\tau \leftarrow \lambda \tau + (1-\lambda)\tau_{\text{old}}$
+
+3. **Return** $(V, \sigma, \mu, r, w, \tau)$
 ```
 
 ```{code-cell} ipython3
@@ -1009,15 +1016,19 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
 
 We can now   compute  equilibrium transitions that are  ignited by fiscal policy reforms.
 
-## Experiment 1: Immediate Tax Cut
+## Experiment 1: Immediate tax cut
 
 Assume  that the government cuts the tax rate immediately balances its  budget by issuing debt.
 
-1. at $t=0$, the government unexpectedly announces an immediate tax cut
-2. from $t=0$ to $19$, the government  issues debt, so debt  $D_{t+1}$  increases linearly for $20$ periods
-3. the government sets a target for its new debt level  $D_{20} =D_0 + 1 = \bar{D} + 1$
-4. government spending $\bar{G}$ and transfers $\bar{\delta}_j$ remain constant
-5. the government  adjust $\tau_t$ to balance the budget along the transition
+At $t=0$, the government unexpectedly announces an immediate tax cut.
+
+From $t=0$ to $19$, the government  issues debt, so debt  $D_{t+1}$  increases linearly for $20$ periods.
+
+The government sets a target for its new debt level  $D_{20} =D_0 + 1 = \bar{D} + 1$.
+
+Government spending $\bar{G}$ and transfers $\bar{\delta}_j$ remain constant.
+
+The government adjusts $\tau_t$ to balance the budget along the transition.
 
 We want to compute the  equilibrium transition path.
 
@@ -1051,7 +1062,7 @@ Setting the key argument `verbose=True` tells  the function `path_iteration` to 
 paths = path_iteration(ss1, ss2, [D_seq, G_seq, δ_seq], hh, firm, Q, verbose=True)
 ```
 
-Having successfully computing transition dynamics, let's study them.
+Having successfully computed transition dynamics, let's study them.
 
 ```{code-cell} ipython3
 V_seq, σ_seq, μ_seq = paths[:3]
@@ -1106,7 +1117,7 @@ for t in [1, 10, 20, 50, 149]:
 
 plt.legend()
 plt.xlabel(r'j')
-plt.title(r'Δmean(C(j))')
+plt.title(r'$\Delta mean(C(j))$')
 ```
 
 To summarize the transition, we can plot paths as we did in {doc}`Transitions in an Overlapping Generations Model<ak2>`.
@@ -1228,7 +1239,7 @@ ax2.set_ylabel(r"j")
 plt.show()
 ```
 
-## Experiment 2: Preannounced Tax Cut
+## Experiment 2: Preannounced tax cut
 
 
 Now the government announces a permanent tax rate cut at time $0$ but   implements it only after 20 periods.
@@ -1340,9 +1351,9 @@ plt.xlabel("t")
 
 After the tax cut policy is implemented after $t=20$, the aggregate capital will decrease because of the crowding out effect.
 
-Having foreseen an  increase in the interest rate, individuals  few periods before $t=20$ start  saving more. 
+Having foreseen an increase in the interest rate, individuals a few periods before $t=20$ start saving more.
 
-Because that increases the  capital, a temporary decrease in the interest rate ensues.
+Because that increases the capital, a temporary decrease in the interest rate ensues.
 
 For agents living in much earlier periods, that lower interest rate causes them to save less.
 
