@@ -53,18 +53,18 @@ import matplotlib.pyplot as plt
 import scipy.stats as st
 
 from dataclasses import dataclass, field
-from typing import NamedTuple
+from typing import NamedTuple, Sequence
 import jax.numpy as jnp
-from jax import random as jax_random
+from jax import random
 
 import numpyro
-from numpyro import distributions as ndist
-import numpyro.distributions.constraints as nconstraints
-from numpyro.infer import MCMC as nMCMC
-from numpyro.infer import NUTS as nNUTS
-from numpyro.infer import SVI as nSVI
-from numpyro.infer import Trace_ELBO as nTrace_ELBO
-from numpyro.optim import Adam as nAdam
+from numpyro import distributions as dist
+import numpyro.distributions.constraints as constraints
+from numpyro.infer import MCMC
+from numpyro.infer import NUTS
+from numpyro.infer import SVI
+from numpyro.infer import Trace_ELBO
+from numpyro.optim import Adam
 ```
 
 ## Unleashing MCMC on a binomial likelihood
@@ -132,24 +132,24 @@ $$
 The analytical posterior for a given conjugate beta prior is coded in the following
 
 ```{code-cell} ipython3
-def simulate_draw(theta, n):
-    """Draws a Bernoulli sample of size n with probability P(Y=1) = theta"""
+def simulate_draw(θ, n):
+    """Draws a Bernoulli sample of size n with probability P(Y=1) = θ"""
     rand_draw = np.random.rand(n)
-    draw = (rand_draw < theta).astype(int)
+    draw = (rand_draw < θ).astype(int)
     return draw
 
 
-def analytical_beta_posterior(data, alpha0, beta0):
+def analytical_beta_posterior(data, α0, β0):
     """
     Computes analytically the posterior distribution 
-    with beta prior parametrized by (alpha, beta)
+    with beta prior parametrized by (α, β)
     given # num observations
 
     Parameters
     ---------
     num : int.
         the number of observations after which we calculate the posterior
-    alpha0, beta0 : float.
+    α0, β0 : float.
         the parameters for the beta distribution as a prior
 
     Returns
@@ -159,7 +159,7 @@ def analytical_beta_posterior(data, alpha0, beta0):
     num = len(data)
     up_num = data.sum()
     down_num = num - up_num
-    return st.beta(alpha0 + up_num, beta0 + down_num)
+    return st.beta(α0 + up_num, β0 + down_num)
 ```
 
 ### Two ways to approximate posteriors
@@ -230,24 +230,24 @@ def TruncatedLogNormal_trans(loc, scale):
     Obtains the truncated log normal distribution 
     using numpyro's TruncatedNormal and ExpTransform
     """
-    base_dist = ndist.TruncatedNormal(
+    base_dist = dist.TruncatedNormal(
         low=-jnp.inf, high=jnp.log(1), loc=loc, scale=scale
     )
-    return ndist.TransformedDistribution(base_dist, ndist.transforms.ExpTransform())
+    return dist.TransformedDistribution(base_dist, dist.transforms.ExpTransform())
 
 
-def ShiftedVonMises(kappa):
+def ShiftedVonMises(κ):
     """Obtains the shifted von Mises distribution using AffineTransform"""
-    base_dist = ndist.VonMises(0, kappa)
-    return ndist.TransformedDistribution(
-        base_dist, ndist.transforms.AffineTransform(loc=0.5, scale=1 / (2 * jnp.pi))
+    base_dist = dist.VonMises(0, κ)
+    return dist.TransformedDistribution(
+        base_dist, dist.transforms.AffineTransform(loc=0.5, scale=1 / (2 * jnp.pi))
     )
 
 
 def TruncatedLaplace(loc, scale):
     """Obtains the truncated Laplace distribution on [0,1]"""
-    base_dist = ndist.Laplace(loc, scale)
-    return ndist.TruncatedDistribution(base_dist, low=0.0, high=1.0)
+    base_dist = dist.Laplace(loc, scale)
+    return dist.TruncatedDistribution(base_dist, low=0.0, high=1.0)
 ```
 
 ### Variational inference
@@ -321,7 +321,7 @@ We can implement Stochastic Variational Inference (SVI) in numpyro using the `Ad
 
 We use two sets of variational distributions: Beta and TruncatedNormal with support $[0,1]$
 
-- Learnable parameters for the Beta distribution are (alpha, beta), both of which are positive.
+- Learnable parameters for the Beta distribution are ($\alpha$, $\beta$), both of which are positive.
 - Learnable parameters for the Truncated Normal distribution are (loc, scale).
 
 ```{note}
@@ -336,14 +336,14 @@ We have constructed a Python class `BayesianInference` that requires the followi
 - `name_dist`: a string that specifies distribution names
 
 The (`param`, `name_dist`) pair includes:
-- (alpha, beta, 'beta')
+- ($\alpha$, $\beta$, 'beta')
 
 - (lower_bound, upper_bound, 'uniform')
 
 - (loc, scale, 'lognormal')
    - Note: This is the truncated log normal.
 
-- (kappa, 'vonMises'), where kappa denotes concentration parameter, and center location is set to $0.5$. Using `numpyro`, this is the **shifted** distribution.
+- ($\kappa$, 'vonMises'), where $\kappa$ denotes concentration parameter, and center location is set to $0.5$. Using `numpyro`, this is the **shifted** distribution.
 
 - (loc, scale, 'laplace')
    - Note: This is the truncated Laplace
@@ -378,23 +378,41 @@ class BayesianInference(NamedTuple):
     param: tuple
     name_dist: str
     # jax requires explicit PRNG state to be passed
-    rng_key: jax_random.PRNGKey = jax_random.PRNGKey(0)
+    rng_key: random.PRNGKey
+
+
+def create_bayesian_inference(
+    param: tuple, 
+    name_dist: str, 
+    *, 
+    rng_key: random.PRNGKey = None
+) -> BayesianInference:
+    """Factory function to create a BayesianInference instance"""
+
+    if rng_key is None:
+        rng_key = random.PRNGKey(0)
+    
+    return BayesianInference(
+        param=param,
+        name_dist=name_dist,
+        rng_key=rng_key
+    )
 
 
 def sample_prior(model: BayesianInference):
     """Define the prior distribution to sample from in numpyro models."""
     if model.name_dist == "beta":
         # unpack parameters
-        alpha0, beta0 = model.param
+        α0, β0 = model.param
         sample = numpyro.sample(
-            "theta", ndist.Beta(alpha0, beta0), rng_key=model.rng_key
+            "theta", dist.Beta(α0, β0), rng_key=model.rng_key
         )
 
     elif model.name_dist == "uniform":
         # unpack parameters
         lb, ub = model.param
         sample = numpyro.sample(
-            "theta", ndist.Uniform(lb, ub), rng_key=model.rng_key
+            "theta", dist.Uniform(lb, ub), rng_key=model.rng_key
         )
 
     elif model.name_dist == "lognormal":
@@ -406,9 +424,9 @@ def sample_prior(model: BayesianInference):
 
     elif model.name_dist == "vonMises":
         # unpack parameters
-        kappa = model.param
+        κ = model.param
         sample = numpyro.sample(
-            "theta", ShiftedVonMises(kappa), rng_key=model.rng_key
+            "theta", ShiftedVonMises(κ), rng_key=model.rng_key
         )
 
     elif model.name_dist == "laplace":
@@ -423,7 +441,7 @@ def sample_prior(model: BayesianInference):
 
 def show_prior(
     model: BayesianInference, size=1e5, bins=20, disp_plot=1
-    ):
+):
     """
     Visualizes prior distribution by sampling from prior 
     and plots the approximated sampling distribution
@@ -451,21 +469,21 @@ def set_model(model: BayesianInference, data):
     """
     theta = sample_prior(model)
     output = numpyro.sample(
-        "obs", ndist.Binomial(len(data), theta), obs=jnp.sum(data)
+        "obs", dist.Binomial(len(data), theta), obs=jnp.sum(data)
     )
 
 
 def MCMC_sampling(
     model: BayesianInference, data, num_samples, num_warmup=1000
-    ):
+):
     """
     Computes numerically the posterior distribution 
-    with beta prior parametrized by (alpha0, beta0)
+    with beta prior parametrized by (α0, β0)
     given data using MCMC
     """
     data = jnp.array(data, dtype=float)
-    nuts_kernel = nNUTS(set_model)
-    mcmc = nMCMC(
+    nuts_kernel = NUTS(set_model)
+    mcmc = MCMC(
         nuts_kernel,
         num_samples=num_samples,
         num_warmup=num_warmup,
@@ -485,10 +503,10 @@ def beta_guide(model: BayesianInference, data):
     that we train to approximate posterior with numpyro
     Here we use parameterized beta
     """
-    alpha_q = numpyro.param("alpha_q", 10, constraint=nconstraints.positive)
-    beta_q = numpyro.param("beta_q", 10, constraint=nconstraints.positive)
+    α_q = numpyro.param("alpha_q", 10, constraint=constraints.positive)
+    β_q = numpyro.param("beta_q", 10, constraint=constraints.positive)
 
-    numpyro.sample("theta", ndist.Beta(alpha_q, beta_q))
+    numpyro.sample("theta", dist.Beta(α_q, β_q))
 
 
 # similar with beta_guide()
@@ -498,9 +516,9 @@ def truncnormal_guide(model: BayesianInference, data):
     that we train to approximate posterior with numpyro
     Here we use truncated normal on [0,1]
     """
-    loc = numpyro.param("loc", 0.5, constraint=nconstraints.interval(0.0, 1.0))
-    scale = numpyro.param("scale", 1, constraint=nconstraints.positive)
-    numpyro.sample("theta", ndist.TruncatedNormal(loc, scale, low=0.0, high=1.0))
+    loc = numpyro.param("loc", 0.5, constraint=constraints.interval(0.0, 1.0))
+    scale = numpyro.param("scale", 1, constraint=constraints.positive)
+    numpyro.sample("theta", dist.TruncatedNormal(loc, scale, low=0.0, high=1.0))
 
 
 def SVI_init(model: BayesianInference, guide_dist, lr=0.0005):
@@ -508,14 +526,14 @@ def SVI_init(model: BayesianInference, guide_dist, lr=0.0005):
     adam_params = {"lr": lr}
 
     if guide_dist == "beta":
-        optimizer = nAdam(step_size=lr)
-        svi = nSVI(
-            set_model, beta_guide, optimizer, loss=nTrace_ELBO()
+        optimizer = Adam(step_size=lr)
+        svi = SVI(
+            set_model, beta_guide, optimizer, loss=Trace_ELBO()
         )
     elif guide_dist == "normal":
-        optimizer = nAdam(step_size=lr)
-        svi = nSVI(
-            set_model, truncnormal_guide, optimizer, loss=nTrace_ELBO()
+        optimizer = Adam(step_size=lr)
+        svi = SVI(
+            set_model, truncnormal_guide, optimizer, loss=Trace_ELBO()
         )
     else:
         print("WARNING: Please input either 'beta' or 'normal'")
@@ -565,8 +583,8 @@ mystnb:
     name: fig_lognormal_dist
 ---
 # truncated log normal
-exampleLN = BayesianInference(param=(0, 2), name_dist="lognormal")
-show_prior(exampleLN, size=100000, bins=20)
+example_ln = create_bayesian_inference(param=(0, 2), name_dist="lognormal")
+show_prior(example_ln, size=100000, bins=20)
 ```
 
 ```{code-cell} ipython3
@@ -578,8 +596,8 @@ mystnb:
     name: fig_uniform_dist
 ---
 # truncated uniform
-exampleUN = BayesianInference(param=(0.1, 0.8), name_dist="uniform")
-show_prior(exampleUN, size=100000, bins=20)
+example_un = create_bayesian_inference(param=(0.1, 0.8), name_dist="uniform")
+show_prior(example_un, size=100000, bins=20)
 ```
 
 The above graphs show that sampling seems to work well with both distributions.
@@ -595,8 +613,8 @@ mystnb:
     name: fig_vonmises_dist
 ---
 # shifted von Mises
-exampleVM = BayesianInference(param=10, name_dist="vonMises")
-show_prior(exampleVM, size=100000, bins=20)
+example_vm = create_bayesian_inference(param=10, name_dist="vonMises")
+show_prior(example_vm, size=100000, bins=20)
 ```
 
 The graphs look good too.
@@ -612,8 +630,8 @@ mystnb:
     name: fig_laplace_dist
 ---
 # truncated Laplace
-exampleLP = BayesianInference(param=(0.5, 0.05), name_dist="laplace")
-show_prior(exampleLP, size=100000, bins=20)
+example_lp = create_bayesian_inference(param=(0.5, 0.05), name_dist="laplace")
+show_prior(example_lp, size=100000, bins=20)
 ```
 
 Having assured ourselves that our sampler seems to do a good job, let's put it to work in using MCMC to compute posterior probabilities.
@@ -622,7 +640,7 @@ Having assured ourselves that our sampler seems to do a good job, let's put it t
 
 We construct a class `BayesianInferencePlot` to implement MCMC or VI algorithms and plot multiple posteriors for different updating data sizes and different possible priors.
 
-This class takes as inputs the true data generating parameter `theta`, a list of updating data sizes for multiple posterior plotting, and a defined and parametrized `BayesianInference` class.
+This class takes as inputs the true data generating parameter `θ`, a list of updating data sizes for multiple posterior plotting, and a defined and parametrized `BayesianInference` class.
 
 It has two key methods:
 
@@ -631,49 +649,73 @@ It has two key methods:
 - `BayesianInferencePlot.SVI_plot()` takes desired VI distribution class ('beta' or 'normal') as input and plots the posteriors together with the prior.
 
 ```{code-cell} ipython3
-@dataclass
-class BayesianInferencePlot:
+class BayesianInferencePlot(NamedTuple):
     """
-    Easily implement the MCMC and VI inference for a given instance of BayesianInference class and
-    plot the prior together with multiple posteriors
+    Easily implement the MCMC and VI inference for a given instance of 
+    BayesianInference class and plot the prior together with multiple posteriors
 
     Parameters
     ----------
-    theta : float.
+    θ : float.
         the true DGP parameter
     N_list : list.
         a list of sample size
-    BayesianInferenceClass : class.
-        a class initiated using BayesianInference()
+    bayesian_model : BayesianInference.
+        a class initiated using create_bayesian_inference()
+    binwidth : float.
+        plotting parameter for histogram bin width
+    linewidth : float.
+        plotting parameter for line width
+    colorlist : list.
+        list of colors for plotting
+    N_max : int.
+        maximum sample size
+    data : np.ndarray.
+        generated data array
     """
+    θ: float
+    N_list: Sequence[int]
+    bayesian_model: BayesianInference
+    binwidth: float
+    linewidth: float
+    colorlist: list
+    N_max: int
+    data: np.ndarray
 
-    theta: float
-    N_list: list
-    BayesianInferenceClass: BayesianInference
 
-    # plotting parameters
-    binwidth: float = 0.02
-    linewidth: float = 0.05
-    colorlist: list = field(init=False)
+def create_bayesian_inference_plot(
+    θ: float,
+    N_list: Sequence[int],
+    bayesian_model: BayesianInference,
+    *,
+    binwidth: float = 0.02,
+    linewidth: float = 0.05,
+) -> BayesianInferencePlot:
+    """Factory function to create a BayesianInferencePlot instance"""
 
-    # data generation
-    N_max: float = field(init=False)
-    data: np.array = field(init=False)
-
-    def __post_init__(self):
-        self.colorlist = sns.color_palette(n_colors=len(self.N_list))
-        self.N_max = max(self.N_list)
-        self.data = simulate_draw(self.theta, self.N_max)
+    colorlist = sns.color_palette(n_colors=len(N_list))
+    N_max = int(max(N_list))
+    data = simulate_draw(θ, N_max)
+    return BayesianInferencePlot(
+        θ=θ,
+        N_list=list(map(int, N_list)),
+        bayesian_model=bayesian_model,
+        binwidth=binwidth,
+        linewidth=linewidth,
+        colorlist=colorlist,
+        N_max=N_max,
+        data=data,
+    )
 
 
 def MCMC_plot(
     plot_model: BayesianInferencePlot, num_samples, num_warmup=1000
-    ):
+):
     fig, ax = plt.subplots()
 
     # plot prior
     prior_sample = show_prior(
-        plot_model.BayesianInferenceClass, disp_plot=0
+        plot_model.bayesian_model, disp_plot=0
         )
     sns.histplot(
         data=prior_sample,
@@ -690,7 +732,7 @@ def MCMC_plot(
     # plot posteriors
     for id, n in enumerate(plot_model.N_list):
         samples = MCMC_sampling(
-            plot_model.BayesianInferenceClass, plot_model.data[:n], num_samples, num_warmup
+            plot_model.bayesian_model, plot_model.data[:n], num_samples, num_warmup
         )
         sns.histplot(
             samples,
@@ -728,11 +770,11 @@ def SVI_fitting(guide_dist, params):
 
 def SVI_plot(
     plot_model: BayesianInferencePlot, guide_dist, n_steps=2000
-    ):
+):
     fig, ax = plt.subplots()
 
     # plot prior
-    prior_sample = show_prior(plot_model.BayesianInferenceClass, disp_plot=0)
+    prior_sample = show_prior(plot_model.bayesian_model, disp_plot=0)
     sns.histplot(
         data=prior_sample,
         kde=True,
@@ -748,7 +790,7 @@ def SVI_plot(
     # plot posteriors
     for id, n in enumerate(plot_model.N_list):
         (params, losses) = SVI_run(
-            plot_model.BayesianInferenceClass, plot_model.data[:n], guide_dist, n_steps
+            plot_model.bayesian_model, plot_model.data[:n], guide_dist, n_steps
         )
         x, y = SVI_fitting(guide_dist, params)
         ax.plot(
@@ -765,17 +807,17 @@ def SVI_plot(
 
 Let's set some parameters that we'll use in all of the examples below.
 
-To save computer time at first, notice that we'll set `MCMC_num_samples = 2000` and `SVI_num_steps = 5000`.
+To save computer time at first, notice that we'll set `mcmc_num_samples = 2000` and `svi_num_steps = 5000`.
 
 (Later, to increase accuracy of approximations, we'll want to increase these.)
 
 ```{code-cell} ipython3
 num_list = [5, 10, 50, 100, 1000]
-MCMC_num_samples = 2000
-SVI_num_steps = 5000
+mcmc_num_samples = 2000
+svi_num_steps = 5000
 
-# theta is the data generating process
-true_theta = 0.8
+# θ is the data generating process
+true_θ = 0.8
 ```
 
 ### Beta prior and posteriors:
@@ -799,9 +841,9 @@ mystnb:
     name: fig_analytical
 ---
 # first examine Beta prior
-BETA = BayesianInference(param=(5, 5), name_dist="beta")
+beta = create_bayesian_inference(param=(5, 5), name_dist="beta")
 
-BETA_plot = BayesianInferencePlot(true_theta, num_list, BETA)
+beta_plot = create_bayesian_inference_plot(true_θ, num_list, beta)
 
 # plot analytical Beta prior and posteriors
 xaxis = jnp.linspace(0, 1, 1000)
@@ -811,11 +853,11 @@ fig, ax = plt.subplots()
 # plot analytical beta prior
 ax.plot(xaxis, y_prior, label="Analytical Beta prior", color="#4C4E52")
 
-data, colorlist, N_list = BETA_plot.data, BETA_plot.colorlist, BETA_plot.N_list
+data, colorlist, N_list = beta_plot.data, beta_plot.colorlist, beta_plot.N_list
 
 # Plot analytical beta posteriors
 for id, n in enumerate(N_list):
-    func = analytical_beta_posterior(data[:n], alpha0=5, beta0=5)
+    func = analytical_beta_posterior(data[:n], α0=5, β0=5)
     y_posterior = func.pdf(xaxis)
     ax.plot(
         xaxis,
@@ -842,7 +884,7 @@ mystnb:
 ---
 
 MCMC_plot(
-    BETA_plot, num_samples=MCMC_num_samples
+    beta_plot, num_samples=mcmc_num_samples
 )
 ```
 
@@ -856,7 +898,7 @@ mystnb:
 ---
 
 SVI_plot(
-    BETA_plot, guide_dist="beta", n_steps=SVI_num_steps
+    beta_plot, guide_dist="beta", n_steps=svi_num_steps
 )
 ```
 
@@ -875,7 +917,7 @@ that will be more accurate, as we shall see next.
 
 ```{code-cell} ipython3
 SVI_plot(
-    BETA_plot, guide_dist="beta", n_steps=100000
+    beta_plot, guide_dist="beta", n_steps=100000
 )
 ```
 
@@ -886,7 +928,7 @@ next proceed to situations in which our prior is not a beta distribution, so we 
 
 So we will have non-conjugate priors and are cast into situations in which we can't calculate posteriors analytically.
 
-### MCMC
+### Markov chain Monte Carlo
 
 First, we implement and display MCMC.
 
@@ -895,17 +937,63 @@ We first initialize the `BayesianInference` classes and then can directly call `
 ```{code-cell} ipython3
 # Initialize BayesianInference classes
 # Try uniform
-STD_UNIFORM = BayesianInference(param=(0, 1), name_dist="uniform")
-UNIFORM = BayesianInference(param=(0.2, 0.7), name_dist="uniform")
+std_uniform = create_bayesian_inference(param=(0, 1), name_dist="uniform")
+uniform = create_bayesian_inference(param=(0.2, 0.7), name_dist="uniform")
 
 # Try truncated log normal
-LOGNORMAL = BayesianInference(param=(0, 2), name_dist="lognormal")
+lognormal = create_bayesian_inference(param=(0, 2), name_dist="lognormal")
 
 # Try Von Mises
-VONMISES = BayesianInference(param=10, name_dist="vonMises")
+vonmises = create_bayesian_inference(param=10, name_dist="vonMises")
 
 # Try Laplace
-LAPLACE = BayesianInference(param=(0.5, 0.07), name_dist="laplace")
+laplace = create_bayesian_inference(param=(0.5, 0.07), name_dist="laplace")
+```
+
+To conduct our experiments more concisely, here we define two experiment functions that will print the model information and plot the result.
+
+
+```{code-cell} ipython3
+def plot_mcmc_experiment(
+    bayesian_model: BayesianInference,
+    true_θ: float,
+    num_list: Sequence[int],
+    num_samples: int,
+    num_warmup: int = 1000,
+    description: str = ""
+):
+    """
+    Helper function to run and plot MCMC experiments for a given Bayesian model
+    """
+    print(
+        f"=======INFO=======\nParameters: {bayesian_model.param}\nPrior Dist: {bayesian_model.name_dist}"
+    )
+    if description:
+        print(description)
+    
+    plot_model = create_bayesian_inference_plot(true_θ, num_list, bayesian_model)
+    MCMC_plot(plot_model, num_samples=num_samples, num_warmup=num_warmup)
+
+
+def plot_svi_experiment(
+    bayesian_model: BayesianInference,
+    true_θ: float,
+    num_list: Sequence[int],
+    guide_dist: str,
+    n_steps: int,
+    description: str = ""
+):
+    """
+    Helper function to run and plot SVI experiments for a given Bayesian model
+    """
+    print(
+        f"=======INFO=======\nParameters: {bayesian_model.param}\nPrior Dist: {bayesian_model.name_dist}"
+    )
+    if description:
+        print(description)
+
+    plot_model = create_bayesian_inference_plot(true_θ, num_list, bayesian_model)
+    SVI_plot(plot_model, guide_dist=guide_dist, n_steps=n_steps)
 ```
 
 ```{code-cell} ipython3
@@ -917,15 +1005,11 @@ mystnb:
     name: fig_mcmc_stduniform
 ---
 # Uniform
-example_CLASS = STD_UNIFORM
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-MCMC_plot(
-    example_plotCLASS, num_samples=MCMC_num_samples
+plot_mcmc_experiment(
+    std_uniform, 
+    true_θ, 
+    num_list, 
+    mcmc_num_samples
 )
 ```
 
@@ -937,15 +1021,11 @@ mystnb:
       MCMC density (uniform prior)
     name: fig_mcmc_uniform
 ---
-example_CLASS = UNIFORM
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-MCMC_plot(
-    example_plotCLASS, num_samples=MCMC_num_samples
+plot_mcmc_experiment(
+    uniform, 
+    true_θ, 
+    num_list, 
+    mcmc_num_samples
 )
 ```
 
@@ -964,15 +1044,11 @@ mystnb:
     name: fig_mcmc_lognormal
 ---
 # log normal
-example_CLASS = LOGNORMAL
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-MCMC_plot(
-    example_plotCLASS, num_samples=MCMC_num_samples
+plot_mcmc_experiment(
+    lognormal, 
+    true_θ, 
+    num_list, 
+    mcmc_num_samples
 )
 ```
 
@@ -985,16 +1061,12 @@ mystnb:
     name: fig_mcmc_vonmises
 ---
 # von Mises
-example_CLASS = VONMISES
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-print("\nNOTE: Shifted von Mises")
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-MCMC_plot(
-    example_plotCLASS, num_samples=MCMC_num_samples
+plot_mcmc_experiment(
+    vonmises, 
+    true_θ, 
+    num_list, 
+    mcmc_num_samples,
+    description="\nNOTE: Shifted von Mises"
 )
 ```
 
@@ -1007,24 +1079,20 @@ mystnb:
     name: fig_mcmc_laplace
 ---
 # Laplace
-example_CLASS = LAPLACE
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-MCMC_plot(
-    example_plotCLASS, num_samples=MCMC_num_samples
+plot_mcmc_experiment(
+    laplace, 
+    true_θ, 
+    num_list, 
+    mcmc_num_samples
 )
 ```
 
-### VI
+### Variational inference
 
 To get more accuracy we will now increase the number of steps for Variational Inference (VI)
 
 ```{code-cell} ipython3
-SVI_num_steps = 50000
+svi_num_steps = 50000
 ```
 #### VI with a truncated normal guide
 
@@ -1037,15 +1105,12 @@ mystnb:
     name: fig_svi_uniform_normal
 ---
 # Uniform
-example_CLASS = BayesianInference(param=(0, 1), name_dist="uniform")
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-SVI_plot(
-    example_plotCLASS, guide_dist="normal", n_steps=SVI_num_steps
+plot_svi_experiment(
+    create_bayesian_inference(param=(0, 1), name_dist="uniform"),
+    true_θ, 
+    num_list, 
+    "normal", 
+    svi_num_steps
 )
 ```
 
@@ -1058,15 +1123,12 @@ mystnb:
     name: fig_svi_lognormal_normal
 ---
 # log normal
-example_CLASS = LOGNORMAL
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-SVI_plot(
-    example_plotCLASS, guide_dist="normal", n_steps=SVI_num_steps
+plot_svi_experiment(
+    lognormal,
+    true_θ, 
+    num_list, 
+    "normal", 
+    svi_num_steps
 )
 ```
 
@@ -1079,15 +1141,12 @@ mystnb:
     name: fig_svi_laplace_normal
 ---
 # Laplace
-example_CLASS = LAPLACE
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-SVI_plot(
-    example_plotCLASS, guide_dist="normal", n_steps=SVI_num_steps
+plot_svi_experiment(
+    laplace,
+    true_θ, 
+    num_list, 
+    "normal", 
+    svi_num_steps
 )
 ```
 
@@ -1102,15 +1161,12 @@ mystnb:
     name: fig_svi_uniform_beta
 ---
 # uniform
-example_CLASS = STD_UNIFORM
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-SVI_plot(
-    example_plotCLASS, guide_dist="beta", n_steps=SVI_num_steps
+plot_svi_experiment(
+    std_uniform,
+    true_θ, 
+    num_list, 
+    "beta", 
+    svi_num_steps
 )
 ```
 
@@ -1123,15 +1179,12 @@ mystnb:
     name: fig_svi_lognormal_beta
 ---
 # log normal
-example_CLASS = LOGNORMAL
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-SVI_plot(
-    example_plotCLASS, guide_dist="beta", n_steps=SVI_num_steps
+plot_svi_experiment(
+    lognormal,
+    true_θ, 
+    num_list, 
+    "beta", 
+    svi_num_steps
 )
 ```
 
@@ -1144,16 +1197,13 @@ mystnb:
     name: fig_svi_vonmises_beta
 ---
 # von Mises
-example_CLASS = VONMISES
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-print("Shifted von Mises")
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-SVI_plot(
-    example_plotCLASS, guide_dist="beta", n_steps=SVI_num_steps
+plot_svi_experiment(
+    vonmises,
+    true_θ, 
+    num_list, 
+    "beta", 
+    svi_num_steps,
+    description="Shifted von Mises"
 )
 ```
 
@@ -1166,14 +1216,11 @@ mystnb:
     name: fig_svi_laplace_beta
 ---
 # Laplace
-example_CLASS = LAPLACE
-print(
-    f"=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {example_CLASS.name_dist}"
-)
-example_plotCLASS = BayesianInferencePlot(
-    true_theta, num_list, example_CLASS
-    )
-SVI_plot(
-    example_plotCLASS, guide_dist="beta", n_steps=SVI_num_steps
+plot_svi_experiment(
+    laplace,
+    true_θ, 
+    num_list, 
+    "beta", 
+    svi_num_steps
 )
 ```
