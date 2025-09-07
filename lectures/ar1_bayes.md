@@ -198,14 +198,14 @@ AR1_model = pmc.Model()
 with AR1_model:
 
     # Start with priors
-    ρ = pmc.Uniform('ρ', lower=-1., upper=1.) # Assume stable ρ
-    σ = pmc.HalfNormal('σ', sigma = np.sqrt(10))
+    rho = pmc.Uniform('rho', lower=-1., upper=1.) # Assume stable ρ
+    sigma = pmc.HalfNormal('sigma', sigma = np.sqrt(10))
 
     # Expected value of y at the next period (ρ * y)
-    yhat = ρ * y[:-1]
+    yhat = rho * y[:-1]
 
     # Likelihood of the actual realization
-    y_like = pmc.Normal('y_obs', mu=yhat, sigma=σ, observed=y[1:])
+    y_like = pmc.Normal('y_obs', mu=yhat, sigma=sigma, observed=y[1:])
 ```
 
 [pmc.sample](https://www.pymc.io/projects/docs/en/v5.10.0/api/generated/pymc.sample.html#pymc-sample) by default uses the NUTS samplers to generate samples as shown in the below cell:
@@ -254,15 +254,15 @@ AR1_model_y0 = pmc.Model()
 with AR1_model_y0:
 
     # Start with priors
-    ρ = pmc.Uniform('ρ', lower=-1., upper=1.) # Assume stable ρ
-    σ = pmc.HalfNormal('σ', sigma=np.sqrt(10))
+    rho = pmc.Uniform('rho', lower=-1., upper=1.) # Assume stable ρ
+    sigma = pmc.HalfNormal('sigma', sigma=np.sqrt(10))
 
     # Standard deviation of ergodic y
-    y_sd = σ / np.sqrt(1 - ρ**2)
+    y_sd = sigma / np.sqrt(1 - rho**2)
 
     # yhat
-    yhat = ρ * y[:-1]
-    y_data = pmc.Normal('y_obs', mu=yhat, sigma=σ, observed=y[1:])
+    yhat = rho * y[:-1]
+    y_data = pmc.Normal('y_obs', mu=yhat, sigma=sigma, observed=y[1:])
     y0_data = pmc.Normal('y0_obs', mu=0., sigma=y_sd, observed=y[0])
 ```
 
@@ -309,19 +309,19 @@ def plot_posterior(sample):
     Plot trace and histogram
     """
     # To np array
-    ρs = sample['ρ']
-    σs = sample['σ']
-    ρs, σs, = np.array(ρs), np.array(σs)
+    rhos = sample['rho']
+    sigmas = sample['sigma']
+    rhos, sigmas, = np.array(rhos), np.array(sigmas)
 
     fig, axs = plt.subplots(2, 2, figsize=(17, 6))
     # Plot trace
-    axs[0, 0].plot(ρs)   # ρ
-    axs[1, 0].plot(σs) # σ
+    axs[0, 0].plot(rhos)   # ρ
+    axs[1, 0].plot(sigmas) # σ
 
     # Plot posterior
-    axs[0, 1].hist(ρs, bins=50, density=True, alpha=0.7)
+    axs[0, 1].hist(rhos, bins=50, density=True, alpha=0.7)
     axs[0, 1].set_xlim([0, 1])
-    axs[1, 1].hist(σs, bins=50, density=True, alpha=0.7)
+    axs[1, 1].hist(sigmas, bins=50, density=True, alpha=0.7)
 
     axs[0, 0].set_title("ρ")
     axs[0, 1].set_title("ρ")
@@ -333,14 +333,14 @@ def plot_posterior(sample):
 ```{code-cell} ipython3
 def AR1_model(data):
     # set prior
-    ρ = numpyro.sample('ρ', dist.Uniform(low=-1., high=1.))
-    σ = numpyro.sample('σ', dist.HalfNormal(scale=np.sqrt(10)))
+    rho = numpyro.sample('rho', dist.Uniform(low=-1., high=1.))
+    sigma = numpyro.sample('sigma', dist.HalfNormal(scale=np.sqrt(10)))
 
     # Expected value of y at the next period (ρ * y)
-    yhat = ρ * data[:-1]
+    yhat = rho * data[:-1]
 
     # Likelihood of the actual realization.
-    y_data = numpyro.sample('y_obs', dist.Normal(loc=yhat, scale=σ), obs=data[1:])
+    y_data = numpyro.sample('y_obs', dist.Normal(loc=yhat, scale=sigma), obs=data[1:])
 
 ```
 
@@ -377,17 +377,17 @@ Here's the new code to achieve this.
 ```{code-cell} ipython3
 def AR1_model_y0(data):
     # Set prior
-    ρ = numpyro.sample('ρ', dist.Uniform(low=-1., high=1.))
-    σ = numpyro.sample('σ', dist.HalfNormal(scale=np.sqrt(10)))
+    rho = numpyro.sample('rho', dist.Uniform(low=-1., high=1.))
+    sigma = numpyro.sample('sigma', dist.HalfNormal(scale=np.sqrt(10)))
 
     # Standard deviation of ergodic y
-    y_sd = σ / jnp.sqrt(1 - ρ**2)
+    y_sd = sigma / jnp.sqrt(1 - rho**2)
 
     # Expected value of y at the next period (ρ * y)
-    yhat = ρ * data[:-1]
+    yhat = rho * data[:-1]
 
     # Likelihood of the actual realization.
-    y_data = numpyro.sample('y_obs', dist.Normal(loc=yhat, scale=σ), obs=data[1:])
+    y_data = numpyro.sample('y_obs', dist.Normal(loc=yhat, scale=sigma), obs=data[1:])
     y0_data = numpyro.sample('y0_obs', dist.Normal(loc=0., scale=y_sd), obs=data[0])
 ```
 
