@@ -734,7 +734,7 @@ ss1 = find_ss(hh, firm, [0, 0.1, np.zeros(hh.j_grid.size)], Q, verbose=True)
 ```
 
 ```{code-cell} ipython3
-%time find_ss(hh, firm, [0, 0.1, np.zeros(hh.j_grid.size)], Q);
+%time find_ss(hh, firm, [0, 0.1, np.zeros(hh.j_grid.size)], Q).block_until_ready();
 ```
 
 ```{code-cell} ipython3
