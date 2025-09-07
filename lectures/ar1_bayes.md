@@ -198,7 +198,7 @@ def plot_posterior(sample):
     axs[0, 1].set_xlabel("ρ")
     axs[1, 0].set_ylabel("σ")
     axs[1, 1].set_xlabel("σ")
-    
+
     plt.tight_layout()
     plt.show()
 ```
@@ -212,7 +212,7 @@ def AR1_model(data):
     # Expected value of y in the next period (ρ * y)
     yhat = ρ * data[:-1]
 
-    # Likelihood of the actual realization.
+    # Likelihood of the actual realization
     numpyro.sample('y_obs', 
                 dist.Normal(loc=yhat, scale=σ), obs=data[1:])
 
@@ -270,7 +270,7 @@ def AR1_model_y0(data):
     # Expected value of y in the next period (ρ * y)
     yhat = ρ * data[:-1]
 
-    # Likelihood of the actual realization.
+    # Likelihood of the actual realization
     numpyro.sample('y_obs', 
                     dist.Normal(loc=yhat, scale=σ), obs=data[1:])
     numpyro.sample('y0_obs', 
