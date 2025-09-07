@@ -11,12 +11,12 @@ kernelspec:
   name: python3
 ---
 
-# Posterior Distributions for  AR(1) Parameters
+# Posterior Distributions for AR(1) Parameters
 
 ```{include} _admonition/gpu.md
 ```
 
-In addition to what's included in base Anaconda, we need to install the following packages
+In addition to what's included in base Anaconda, we need to install the following package:
 
 ```{code-cell} ipython3
 :tags: [hide-output]
@@ -35,10 +35,10 @@ from jax import random, lax
 import matplotlib.pyplot as plt
 ```
 
-This lecture uses Bayesian methods offered by [numpyro](https://num.pyro.ai/en/stable/) to make statistical inferences about two parameters of a univariate first-order autoregression.
+This lecture uses Bayesian methods offered by [`numpyro`](https://num.pyro.ai/en/stable/) to make statistical inferences about two parameters of a univariate first-order autoregression.
 
 
-The model is a good laboratory for illustrating
+The model is a good laboratory for illustrating the
 consequences of alternative ways of modeling the distribution of the initial  $y_0$:
 
 - As a fixed number
@@ -52,7 +52,8 @@ $$
 y_{t+1} = \rho y_t + \sigma_x \epsilon_{t+1}, \quad t \geq 0
 $$ (eq:themodel)
 
-where the scalars $\rho$ and $\sigma_x$ satisfy $|\rho| < 1$ and $\sigma_x > 0$;
+where the scalars $\rho$ and $\sigma_x$ satisfy $|\rho| < 1$ and $\sigma_x > 0$.
+
 $\{\epsilon_{t+1}\}$ is a sequence of i.i.d. normal random variables with mean $0$ and variance $1$.
 
 The second component of the statistical model is
@@ -65,7 +66,7 @@ $$ (eq:themodel_2)
 
 Consider a sample $\{y_t\}_{t=0}^T$ governed by this statistical model.
 
-The model implies that the likelihood function of $\{y_t\}_{t=0}^T$ can be **factored**:
+The model implies that the likelihood function of $\{y_t\}_{t=0}^T$ can be *factored*:
 
 $$
 f(y_T, y_{T-1}, \ldots, y_0) = f(y_T| y_{T-1}) f(y_{T-1}| y_{T-2}) \cdots f(y_1 | y_0 ) f(y_0)
@@ -73,7 +74,7 @@ $$
 
 where we use $f$ to denote a generic probability density.
 
-The  statistical model {eq}`eq:themodel`-{eq}`eq:themodel_2` implies
+The statistical model {eq}`eq:themodel`-{eq}`eq:themodel_2` implies
 
 $$
 \begin{aligned}
@@ -86,46 +87,57 @@ We want to study how inferences about the unknown parameters $(\rho, \sigma_x)$ 
 
 Below, we study two widely used alternative assumptions:
 
--  $(\mu_0,\sigma_0) = (y_0, 0)$ which means  that $y_0$ is  drawn from the distribution ${\mathcal N}(y_0, 0)$; in effect, we are **conditioning on an observed initial value**.
+-  $(\mu_0,\sigma_0) = (y_0, 0)$ which means that $y_0$ is drawn from the distribution ${\mathcal N}(y_0, 0)$; in effect, we are *conditioning on an observed initial value*.
 
 -  $\mu_0,\sigma_0$ are functions of $\rho, \sigma_x$ because $y_0$ is drawn from the stationary distribution implied by $\rho, \sigma_x$.
 
 
-
-**Note:** We do **not** treat a third possible case in which  $\mu_0,\sigma_0$ are free parameters to be estimated.
+```{note}
+We do *not* treat a third possible case in which $\mu_0,\sigma_0$ are free parameters to be estimated.
+```
 
 Unknown parameters are $\rho, \sigma_x$.
 
-We have  independent **prior probability distributions** for $\rho, \sigma_x$ and want to compute a posterior probability distribution after observing a sample $\{y_{t}\}_{t=0}^T$.
+We have independent **prior probability distributions** for $\rho, \sigma_x$.
 
-The notebook uses `numpyro` to compute a posterior distribution of $\rho, \sigma_x$. We will use NUTS samplers to generate samples from the posterior in a chain.
+We want to compute a posterior probability distribution after observing a sample $\{y_{t}\}_{t=0}^T$.
 
-NUTS is a form of Monte Carlo Markov Chain (MCMC) algorithm that bypasses random walk behaviour and allows for convergence to a target distribution more quickly. This not only has the advantage of speed, but allows for complex models to be fitted without having to employ specialised knowledge regarding the theory underlying those fitting methods.
+The notebook uses `numpyro` to compute a posterior distribution of $\rho, \sigma_x$.
+
+We will use NUTS samplers to generate samples from the posterior in a chain.
+
+NUTS is a form of Monte Carlo Markov Chain (MCMC) algorithm that bypasses random walk behavior and allows for faster convergence to a target distribution. 
+
+This not only has the advantage of speed, but also allows complex models to be fitted without having to employ specialized knowledge regarding the theory underlying those fitting methods.
 
 Thus, we explore consequences of making these alternative assumptions about the distribution of $y_0$:
 
-- A first procedure is to condition on whatever value of $y_0$ is observed. This amounts to assuming that the probability distribution of the random variable  $y_0$ is a Dirac delta function that puts probability one on the observed value of $y_0$.
+* A first procedure is to condition on whatever value of $y_0$ is observed.
 
-- A second procedure  assumes that $y_0$ is drawn from the stationary distribution of a process described by {eq}`eq:themodel`
-so that  $y_0 \sim {\mathcal{N}} \left(0, \frac{\sigma_x^2}{(1-\rho)^2} \right)$
+    - This amounts to assuming that the probability distribution of the random variable $y_0$ is a Dirac delta function that puts probability one on the observed value of $y_0$.
 
-When the initial value $y_0$ is far out in a tail of the stationary distribution, conditioning on an initial value gives a posterior that is **more accurate** in a sense that we'll explain.
+* A second procedure assumes that $y_0$ is drawn from the stationary distribution of a process described by {eq}`eq:themodel`
+so that $y_0 \sim {\mathcal{N}} \left(0, \frac{\sigma_x^2}{(1-\rho)^2} \right)$
 
-Basically, when $y_0$ happens to be  in a tail of the stationary distribution and we **don't condition on $y_0$**, the likelihood function for $\{y_t\}_{t=0}^T$ adjusts the posterior distribution of the parameter pair $\rho, \sigma_x $ to make the observed value of $y_0$  more likely than it really is under the stationary distribution, thereby adversely twisting the posterior in short samples.
+When the initial value $y_0$ is far out in the tail of the stationary distribution, conditioning on an initial value gives a posterior that is *more accurate* in a sense that we'll explain.
+
+Basically, when $y_0$ happens to be in the tail of the stationary distribution and we *don't condition on $y_0$*, the likelihood function for $\{y_t\}_{t=0}^T$ adjusts the posterior distribution of the parameter pair $\rho, \sigma_x$ to make the observed value of $y_0$ more likely than it really is under the stationary distribution, thereby adversely twisting the posterior in short samples.
 
 An example below shows how not conditioning on $y_0$ adversely shifts the posterior probability distribution of $\rho$ toward larger values.
 
 
-We begin by solving a **direct problem** that simulates an AR(1) process.
+We begin by solving a *direct problem* that simulates an AR(1) process.
 
-How we select the initial value $y_0$ matters.
+How we select the initial value $y_0$ matters:
 
-   * If we think $y_0$ is drawn from the stationary distribution ${\mathcal N}(0, \frac{\sigma_x^{2}}{1-\rho^2})$, then it is a good idea to use this distribution as $f(y_0)$.  Why? Because $y_0$ contains information about $\rho, \sigma_x$.
+   * If we think $y_0$ is drawn from the stationary distribution ${\mathcal N}(0, \frac{\sigma_x^{2}}{1-\rho^2})$, then it is a good idea to use this distribution as $f(y_0)$. 
+  
+       -  Why? Because $y_0$ contains information about $\rho, \sigma_x$.
 
-   * If we suspect that $y_0$ is far in the tails of the stationary distribution -- so that variation in early observations in the sample have a significant **transient component** -- it is better to condition on $y_0$ by setting $f(y_0) = 1$.
+   * If we suspect that $y_0$ is far in the tail of the stationary distribution -- so that variation in early observations in the sample has a significant *transient component* -- it is better to condition on $y_0$ by setting $f(y_0) = 1$.
 
 
-To illustrate the issue, we'll begin by choosing an initial $y_0$ that is far out in a tail of the stationary distribution.
+To illustrate the issue, we'll begin by choosing an initial $y_0$ that is far out in the tail of the stationary distribution.
 
 ```{code-cell} ipython3
 def ar1_simulate(ρ, σ, y0, T, key):
@@ -158,7 +170,9 @@ Now we shall use Bayes' law to construct a posterior distribution, conditioning 
 
 ## Implementation
 
-First, we'll implement the AR(1) model conditioning on the initial value using NumPyro. The NUTS sampler is used to generate samples from the posterior distribution.
+First, we'll implement the AR(1) model conditioning on the initial value using `numpyro`. 
+
+The NUTS sampler is used to generate samples from the posterior distribution
 
 ```{code-cell} ipython3
 def plot_posterior(sample):
@@ -184,16 +198,18 @@ def plot_posterior(sample):
     axs[0, 1].set_xlabel("ρ")
     axs[1, 0].set_ylabel("σ")
     axs[1, 1].set_xlabel("σ")
+    
+    plt.tight_layout()
     plt.show()
 ```
 
 ```{code-cell} ipython3
 def AR1_model(data):
-    # set prior
+    # Set prior
     ρ = numpyro.sample('ρ', dist.Uniform(low=-1., high=1.))
     σ = numpyro.sample('σ', dist.HalfNormal(scale=jnp.sqrt(10)))
 
-    # Expected value of y at the next period (ρ * y)
+    # Expected value of y in the next period (ρ * y)
     yhat = ρ * data[:-1]
 
     # Likelihood of the actual realization.
@@ -251,7 +267,7 @@ def AR1_model_y0(data):
     # Standard deviation of ergodic y
     y_sd = σ / jnp.sqrt(1 - ρ**2)
 
-    # Expected value of y at the next period (ρ * y)
+    # Expected value of y in the next period (ρ * y)
     yhat = ρ * data[:-1]
 
     # Likelihood of the actual realization.
@@ -295,7 +311,7 @@ that make observations more likely.
 Look what happened to the posterior!
 
 It has moved far from the true values of the parameters used to generate the data because of how Bayes' Law (i.e., conditional probability)
-is telling `numpyro` to explain what it interprets as  "explosive" observations early in the sample.
+is telling `numpyro` to explain what it interprets as "explosive" observations early in the sample.
 
 Bayes' Law is able to generate a plausible likelihood for the first observation by driving $\rho \rightarrow 1$ and $\sigma \uparrow$ in order to raise the variance of the stationary distribution.
 
