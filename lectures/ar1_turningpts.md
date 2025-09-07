@@ -49,16 +49,17 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from typing import NamedTuple
 
+# numpyro
+import numpyro
+import numpyro.distributions as dist
+from numpyro.infer import MCMC, NUTS
+numpyro.set_host_device_count(4)
+
 # jax
 import jax
 import jax.random as random
 import jax.numpy as jnp
 from jax import lax
-
-# numpyro
-import numpyro
-import numpyro.distributions as dist
-from numpyro.infer import MCMC, NUTS
 
 # arviz
 import arviz as az
@@ -66,7 +67,6 @@ import arviz as az
 sns.set_style('white')
 colors = sns.color_palette()
 key = random.PRNGKey(0)
-numpyro.set_host_device_count(4)
 ```
 
 ## A Univariate First-Order Autoregressive Process
