@@ -20,12 +20,13 @@ This lecture describes an  overlapping generations model with these features:
 
 - A competitive equilibrium with incomplete markets determines prices and quantities
 - Agents live many periods as in   {cite}`auerbach1987dynamic`
-- Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in   {cite}`Aiyagari1994`
+- Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in  {cite}`Aiyagari1994`
 - Government fiscal policy instruments include tax rates, debt, and transfers as in chapter 2 of {cite}`auerbach1987dynamic` and {doc}`Transitions in an Overlapping Generations Model<ak2>`
 - Among other equilibrium objects, a competitive determines a sequence of cross-section densities of heterogeneous agents' consumptions, labor incomes, and savings
 
 
 We use the model to study:
+
 - How fiscal policies affect different generations
 - How market incompleteness promotes precautionary savings
 - How life-cycle savings and buffer-stock savings motives interact
@@ -34,12 +35,10 @@ We use the model to study:
 
 As prerequisites for this lecture, we recommend two quantecon lectures:
 
-1. [Discrete State Dynamic Programming](https://python-advanced.quantecon.org/discrete_dp.html)
-2. [Transitions in an Overlapping Generations Model](https://python.quantecon.org/ak2.html)
+1. {doc}`advanced:discrete_dp`
+2. {doc}`ak2`
 
-as well as the following optional reading
-
-3. [The Aiyagari Model (with JAX)](https://jax.quantecon.org/aiyagari_jax.html)
+as well as the optional reading {doc}`aiyagari`
 
 As usual, let's start by importing some Python modules.
 
@@ -56,22 +55,19 @@ import jax
 
 ### Demographics and time
 
-- Time is discrete and is indexed by $t = 0, 1, 2, ...$
-- Each agent lives for $J = 50$ periods and faces no mortality risk
-- Age is indexed by $j = 0, 1, ..., 49$
-- Population size  is fixed at $1/J$
+We work in discrete time indexed by $t = 0, 1, 2, ...$. 
+
+Each agent lives for $J = 50$ periods and faces no mortality risk. 
+
+We index age by $j = 0, 1, ..., 49$, and the population size remains fixed at $1/J$.
 
 ### Individuals' state variables
 
-Agent $i$ of age $j$ at time $t$ has
+Each agent $i$ of age $j$ at time $t$ is characterized by two state variables: asset holdings $a_{i,j,t}$ and idiosyncratic labor productivity $\gamma_{i,j,t}$.
 
-- Asset holdings $a_{i,j,t}$
-- Idiosyncratic labor productivity $\gamma_{i,j,t}$
+The idiosyncratic labor productivity process follows a two-state Markov chain that takes values $\gamma_l$ and $\gamma_h$ with transition matrix $\Pi$. 
 
-An idiosyncratic labor productivity process follows a two-state Markov chain with:
-- Values $\gamma_l, \gamma_h$
-- Transition matrix $\Pi$
-- Initial distribution for newborns $\pi = [0.5, 0.5]$
+Newborn agents begin with an initial distribution $\pi = [0.5, 0.5]$ over these productivity states.
 
 ### Labor supply
 
@@ -83,7 +79,7 @@ An agent's effective  labor supply depends on a life-cycle efficiency profile  a
 
 ### Initial conditions
 
-Newborns start with zero assets: $a_{i,0,t} = 0$.
+Newborns start with zero assets $a_{i,0,t} = 0$.
 
 Initial idiosyncratic productivities are drawn from distribution $\pi$.
 
@@ -103,22 +99,25 @@ where:
 
 ## Government
 
-The government
+The government follows a fiscal policy that includes debt, taxes, transfers, and government spending.
 
-- Issues one-period debt $D_t$
-- Collects flat-rate tax rate  $\tau_t$ on labor and capital income
-- Implements age-specific lump-sum taxes/transfers $\delta_{j,t}$
-- Makes government purchases $G_t$
+The government issues one-period debt $D_t$ to finance its operations and collects revenues through a flat-rate tax $\tau_t$ on both labor and capital income. 
 
+The government also implements age-specific lump-sum taxes or transfers $\delta_{j,t}$ that can redistribute resources across different age groups. 
 
+Additionally, it makes government purchases $G_t$ for public goods and services.
 
-The government budget constraint at time $t$ is:
+The government budget constraint at time $t$ is
 
-$$D_{t+1} - D_t = r_t D_t + G_t - T_t$$
+$$
+D_{t+1} - D_t = r_t D_t + G_t - T_t
+$$
 
-where total tax revenues $T_t$ satisfy:
+where total tax revenues $T_t$ satisfy
 
-$$T_t = \tau_t w_t L_t + \tau_t r_t(D_t + K_t) + \sum_j \delta_{j,t}$$
+$$
+T_t = \tau_t w_t L_t + \tau_t r_t(D_t + K_t) + \sum_j \delta_{j,t}
+$$
 
 ## Activities in factor markets
 
@@ -126,7 +125,7 @@ At each time $t \geq 0$, agents supply labor and capital.
 
 ### Age-specific labor supplies
 
-Agents of age $j ∈ \{0,1,...,J-1\}$ supply labor according to:
+Agents of age $j \in \{0,1,...,J-1\}$ supply labor according to:
 - Their deterministic age-efficiency profile $l(j)$
 - Their current idiosyncratic productivity shock $\gamma_{i,j,t}$
 
@@ -134,7 +133,7 @@ Each agent supplies $l(j)\gamma_{i,j,t}$ effective units of labor and earns a co
 
 ### Asset market participation
 
-All agents, regardless of age $j \in \{0,1,...,J-1\}$, can:
+Summarizing activities in the asset market, all agents, regardless of age $j \in \{0,1,...,J-1\}$, can:
 - Hold assets $a_{i,j,t}$ (subject to borrowing constraints)
 - Earn a risk-free one-period return $r_t$ on savings
 - Pay capital income taxes at flat rate $\tau_t$
@@ -142,17 +141,17 @@ All agents, regardless of age $j \in \{0,1,...,J-1\}$, can:
 
 ### Key features
 
-*Lifecycle patterns* shape economic behavior across ages.
+*Lifecycle patterns* shape economic behavior across ages:
 
   - Labor productivity varies systematically with age according to the profile $l(j)$, while asset holdings typically follow a lifecycle pattern of accumulation during working years and decumulation during retirement.
 
   - Age-specific fiscal transfers $\delta_{j,t}$ redistribute resources across generations.
 
-*Within-cohort heterogeneity* creates dispersion among agents of the same age.
+*Within-cohort heterogeneity* creates dispersion among agents of the same age:
 
   - Agents of the same age differ in their asset holdings $a_{i,j,t}$ due to different histories of idiosyncratic productivity shocks, their current productivities $\gamma_{i,j,t}$, and consequently their labor incomes and financial wealth.
 
-*Cross-cohort interactions* determine equilibrium outcomes through market aggregation.
+*Cross-cohort interactions* determine equilibrium outcomes through market aggregation:
 
   - All cohorts participate together in factor markets, with asset supplies from all cohorts determining aggregate capital and effective labor supplies from all cohorts determining aggregate labor.
 
@@ -160,29 +159,42 @@ All agents, regardless of age $j \in \{0,1,...,J-1\}$, can:
 
 ## Representative firm's problem
 
-A representative firm chooses capital and effective labor to maximize profits:
+A representative firm chooses capital and effective labor to maximize profits
 
-$$\max_{K,L} Z_t K_t^\alpha L_t^{1-\alpha} - r_t K_t - w_t L_t$$
+$$
+\max_{K,L} Z_t K_t^\alpha L_t^{1-\alpha} - r_t K_t - w_t L_t
+$$
 
 First-order necessary conditions imply that
 
-$$w_t = (1-\alpha)Z_t(K_t/L_t)^\alpha$$
-$$r_t = \alpha Z_t(K_t/L_t)^{\alpha-1}$$
+$$
+w_t = (1-\alpha)Z_t(K_t/L_t)^\alpha
+$$
+
+and
+
+$$
+r_t = \alpha Z_t(K_t/L_t)^{\alpha-1}
+$$
 
 ##  Households' problems
 
-
-
 A household's value function satisfies a Bellman equation
 
-$$V_{j,t}(a, \gamma) = \max_{c,a'} \{u(c) + \beta\mathbb{E}[V_{j+1,t+1}(a', \gamma')]\}$$
+$$
+V_{j,t}(a, \gamma) = \max_{c,a'} \{u(c) + \beta\mathbb{E}[V_{j+1,t+1}(a', \gamma')]\}
+$$
 
 where maximization is subject to
 
-$$c + a' = (1 + r_t(1-\tau_t))a + (1-\tau_t)w_t l(j)\gamma - \delta_{j,t}$$
-$$c \geq 0$$
+$$
+c + a' = (1 + r_t(1-\tau_t))a + (1-\tau_t)w_t l(j)\gamma - \delta_{j,t}
+$$
+$$
+c \geq 0
+$$
 
-and a  terminal condition
+and a terminal condition
 $V_{J,t}(a, \gamma) = 0$
 
 ## Population dynamics
@@ -191,7 +203,7 @@ The joint probability density function $\mu_{j,t}(a,\gamma)$ of asset holdings a
 
 - For newborns $(j=0)$:
   
-   $$
+$$
 \mu_{0,t+1}(a',\gamma') =\begin{cases}
 \pi(\gamma') &\text{ if }a'=0\text{, }\\
 		    0, & \text{otherwise}
@@ -220,7 +232,7 @@ that satisfy the following conditions
 
 - Given prices and government policies, value and policy functions solve  households' problems
 - Given prices, the representative firm maximizes profits
-- Government budget constraints are  satisfied
+- Government budget constraints are satisfied
 - Markets clear:
    - Asset market: $K_t = \sum_j \int a \mu_{j,t}(a,\gamma)d(a,\gamma) - D_t$
    - Labor market: $L_t = \sum_j \int l(j)\gamma \mu_{j,t}(a,\gamma)d(a,\gamma)$
@@ -233,11 +245,11 @@ Relative to the  model presented in {doc}`Transitions in an Overlapping Generati
 
 ## Implementation
 
-Using tools in  [discrete state dynamic programming lecture](https://python-advanced.quantecon.org/discrete_dp.html), we solve our model by combining value function iteration with equilibrium price determination.
+Using tools in  {doc}`discrete_dp`, we solve our model by combining value function iteration with equilibrium price determination.
 
 A sensible  approach is  to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.
 
-For a candidate sequence  of prices interest rates $r_t$ and wages $w_t$, we can solve individual households' dynamic programming problems using either value function iteration or policy function iteration to obtain optimal policy functions.
+For a candidate sequence  of prices interest rates $r_t$ and wages $w_t$, we can solve individual households' dynamic programming problems using either value function iteration or policy iteration to obtain optimal policy functions.
 
 We then deduce associated stationary joint probability distributions of asset holdings and idiosyncratic labor efficiency units for each age cohort.
 
@@ -247,12 +259,12 @@ We can then compare these with capital and labor demand from firms, compute devi
 
 To construct transition dynamics, we can compute sequences of time-varying prices by using _backward induction_ to compute value and policy functions, and _forward iteration_ for the distributions of agents across states.
 
-1. Outer Loop (Market Clearing)
+1. Outer loop (market clearing)
    * Guess initial prices ($r_t, w_t$)
    * Iterate until asset and labor markets clear
    * Use firms' first-order necessary conditions to update prices
 
-2. Inner Loop (Individual Dynamic Programming)
+2. Inner loop (individual dynamic programming)
    * For each age cohort:
      - Discretize asset and productivity state space
      - Use value function iteration or policy iteration
@@ -375,15 +387,14 @@ def create_household(
     γ_grid, Π = map(jnp.array, (γ_grid, Π))
     γ_size = len(γ_grid)
 
-    # population distribution of new borns
+    # Population distribution of new borns
     init_μ = jnp.zeros((a_size * γ_size))
 
-    # newborns are endowed with zero asset
-    # equal probability of γ
+    # Newborns are endowed with zero asset
+    # and equal probability of γ
     init_μ = init_μ.at[:γ_size].set(1 / γ_size)
 
-    # terminal value
-    # V_bar(a)
+    # Terminal value V_bar(a)
     VJ = jnp.empty(a_size * γ_size)
     for a_i in range(a_size):
         a = a_grid[a_i]
@@ -469,7 +480,7 @@ def backwards_opt(prices, taxes, household, Q):
     js = jnp.arange(J-1, -1, -1)
     init_V = VJ
 
-    # iterate from age J to 1
+    # Iterate from age J to 1
     _, outputs = jax.lax.scan(bellman_operator_j, init_V, js)
     V, σ = outputs
     V = V[::-1]
@@ -490,7 +501,7 @@ V, σ = backwards_opt([r, w], [τ, δ], hh, Q)
 ```
 
 ```{code-cell} ipython3
-%time backwards_opt([r, w], [τ, δ], hh, Q)
+%time backwards_opt([r, w], [τ, δ], hh, Q).block_until_ready()
 ```
 
 From optimal consumption and saving choices by each cohort, we can compute a joint probability  distribution of asset levels and idiosyncratic productivity levels in a steady state.
@@ -526,7 +537,7 @@ def popu_dist(σ, household, Q):
 ```
 
 ```{code-cell} ipython3
-%time popu_dist(σ, hh, Q)
+%time popu_dist(σ, hh, Q).block_until_ready()
 ```
 
 Below we plot the marginal  distribution of  savings for  each age group.
@@ -603,7 +614,7 @@ def compute_aggregates(μ, household):
 
     μ = μ.reshape((J, hh.a_grid.size, hh.γ_grid.size))
 
-    # compute private savings
+    # Compute private savings
     a = a_grid.reshape((1, a_size, 1))
     A = (a * μ).sum() / J
 
@@ -646,10 +657,10 @@ def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
 
     D, G, δ = pol_target
 
-    # initial guesses of prices
+    # Initial guesses of prices
     r, w = 0.05, 1.
 
-    # initial guess of τ
+    # Initial guess of τ
     τ = 0.15
 
     def cond_fn(state):
@@ -667,20 +678,20 @@ def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
         V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old = state
         r_old, w_old, τ_old = r, w, τ
 
-        # household optimal decisions and values
+        # Household optimal decisions and values
         V, σ = backwards_opt([r, w], [τ, δ], hh, Q)
 
-        # compute the stationary distribution
+        # Compute the stationary distribution
         μ = popu_dist(σ, hh, Q)
 
-        # compute aggregates
+        # Compute aggregates
         A, L = compute_aggregates(μ, hh)
         K = A - D
 
-        # update prices
+        # Update prices
         r, w = KL_to_r(K, L, firm), KL_to_w(K, L, firm)
 
-        # find τ
+        # Find τ
         D_next = D
         τ = find_τ([D, D_next, G, δ],
                    [r, w],
@@ -691,13 +702,15 @@ def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
 
         return V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old
 
-    # initial state
+    # Initial state
     V = jnp.empty((J, num_state), dtype=float)
     σ = jnp.empty((J, num_state), dtype=int)
     μ = jnp.empty((J, num_state), dtype=float)
+
     K, L = 1., 1.
     initial_state = (V, σ, μ, K, L, r, w, τ, D, G, δ, r-1, w-1)
-    V, σ, μ, K, L, r, w, τ, D, G, δ, _, _ = jax.lax.while_loop(cond_fn, body_fn, initial_state)
+    V, σ, μ, K, L, r, w, τ, D, G, δ, _, _ = jax.lax.while_loop(
+                                    cond_fn, body_fn, initial_state)
 
     return V, σ, μ, K, L, r, w, τ, D, G, δ
 ```
@@ -784,7 +797,7 @@ def bellman_operator(prices, taxes, V_next, household, Q):
 
     V, σ = jax.vmap(bellman_operator_j, (0,))(jnp.arange(J-1))
 
-    # the last life stage
+    # The last life stage
     j = J-1
     Rj = populate_R(j, r, w, τ, δ, household)
     vals = Rj + β * Q.dot(VJ)
@@ -930,27 +943,27 @@ The following algorithm describes the path iteration procedure:
 ```{code-cell} ipython3
 def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=False):
 
-    # starting point: initial steady state
+    # Starting point: initial steady state
     V_ss1, σ_ss1, μ_ss1 = ss1[:3]
     K_ss1, L_ss1 = ss1[3:5]
     r_ss1, w_ss1 = ss1[5:7]
     τ_ss1, D_ss1, G_ss1, δ_ss1 = ss1[7:11]
 
-    # ending point: converging new steady state
+    # Ending point: converging new steady state
     V_ss2, σ_ss2, μ_ss2 = ss2[:3]
     K_ss2, L_ss2 = ss2[3:5]
     r_ss2, w_ss2 = ss2[5:7]
     τ_ss2, D_ss2, G_ss2, δ_ss2 = ss2[7:11]
 
-    # the given policies: D, G, δ
+    # The given policies: D, G, δ
     D_seq, G_seq, δ_seq = pol_target
     T = G_seq.shape[0]
 
-    # initial guesses of prices
+    # Initial guesses of prices
     r_seq = jnp.linspace(0, 1, T) * (r_ss2 - r_ss1) + r_ss1
     w_seq = jnp.linspace(0, 1, T) * (w_ss2 - w_ss1) + w_ss1
 
-    # initial guess of policy
+    # Initial guess of policy
     τ_seq = jnp.linspace(0, 1, T) * (τ_ss2 - τ_ss1) + τ_ss1
 
     error = 1
@@ -963,28 +976,29 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
         axs[2].plot(jnp.arange(T), τ_seq, label=f'iter {num_iter}')
 
     while error > tol:
-        # repeat until finding the fixed point
+        # Repeat until finding the fixed point
 
         r_old, w_old, τ_old = r_seq, w_seq, τ_seq
 
         pol_seq = (τ_seq, D_seq, G_seq, δ_seq)
         price_seq = (r_seq, w_seq)
 
-        # solve optimal policies backwards
+        # Solve optimal policies backwards
         V_seq, σ_seq = solve_backwards(V_ss2, σ_ss2, hh, firm, price_seq, pol_seq, Q)
-        # compute population evolution forwards
+
+        # Compute population evolution forwards
         μ_seq, K_seq, L_seq = simulate_forwards(σ_seq, D_seq, μ_ss1, K_ss1, L_ss1, household, Q)
 
-        # update prices by aggregate capital and labor supply
+        # Update prices by aggregate capital and labor supply
         r_seq = KL_to_r(K_seq, L_seq, firm)
         w_seq = KL_to_w(K_seq, L_seq, firm)
 
-        # find taxes that balance the government budget constraint
+        # Find taxes that balance the government budget constraint
         τ_seq = find_τ([D_seq[:-1], D_seq[1:], G_seq, δ_seq],
                        [r_seq, w_seq],
                        [K_seq, L_seq])
 
-        # distance between new and old guesses
+        # Distance between new and old guesses
         error = jnp.sum((r_old - r_seq) ** 2) + \
                 jnp.sum((w_old - w_seq) ** 2) + \
                 jnp.sum((τ_old - τ_seq) ** 2)
@@ -1120,7 +1134,7 @@ plt.xlabel(r'j')
 plt.title(r'$\Delta mean(C(j))$')
 ```
 
-To summarize the transition, we can plot paths as we did in {doc}`Transitions in an Overlapping Generations Model<ak2>`.
+To summarize the transition, we can plot paths as we did in {doc}`ak2`.
 
 But unlike the setup in that two-period lived overlapping generations model, we no longer have representative old and young agents.
 
@@ -1220,7 +1234,7 @@ J_seq, T_range = np.meshgrid(np.arange(J), np.arange(T))
 
 fig = plt.figure(figsize=[20, 20])
 
-# plot the consumption mean over age and time
+# Plot the consumption mean over age and time
 ax1 = fig.add_subplot(121, projection='3d')
 ax1.plot_surface(T_range, J_seq, Cmean_seq, rstride=1, cstride=1,
                 cmap='viridis', edgecolor='none')
@@ -1383,7 +1397,7 @@ J_seq, T_range = np.meshgrid(np.arange(J), np.arange(T))
 
 fig = plt.figure(figsize=[20, 20])
 
-# plot the consumption mean over age and time
+# Plot the consumption mean over age and time
 ax1 = fig.add_subplot(121, projection='3d')
 ax1.plot_surface(T_range, J_seq, Cmean_seq, rstride=1, cstride=1,
                 cmap='viridis', edgecolor='none')
@@ -1391,7 +1405,7 @@ ax1.set_title(r"Mean of consumption")
 ax1.set_xlabel(r"t")
 ax1.set_ylabel(r"j")
 
-# plot the consumption variance over age and time
+# Plot the consumption variance over age and time
 ax2 = fig.add_subplot(122, projection='3d')
 ax2.plot_surface(T_range, J_seq, Cvar_seq, rstride=1, cstride=1,
                 cmap='viridis', edgecolor='none')
