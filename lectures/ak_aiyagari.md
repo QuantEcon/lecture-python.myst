@@ -14,6 +14,14 @@ kernelspec:
 
 # A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
 
+In addition to what's in Anaconda, this lecture will need the following library
+
+```{code-cell} ipython3
+:tags: [skip-execution]
+
+!pip install jax
+```
+
 ## Overview
 
 This lecture describes an  overlapping generations model with these features:
@@ -22,7 +30,7 @@ This lecture describes an  overlapping generations model with these features:
 - Agents live many periods as in   {cite}`auerbach1987dynamic`
 - Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in  {cite}`Aiyagari1994`
 - Government fiscal policy instruments include tax rates, debt, and transfers as in chapter 2 of {cite}`auerbach1987dynamic` and {doc}`Transitions in an Overlapping Generations Model<ak2>`
-- Among other equilibrium objects, a competitive determines a sequence of cross-section densities of heterogeneous agents' consumptions, labor incomes, and savings
+- Among other equilibrium objects, a competitive equilibrium determines a sequence of cross-section densities of heterogeneous agents' consumptions, labor incomes, and savings
 
 
 We use the model to study:
@@ -40,7 +48,7 @@ As prerequisites for this lecture, we recommend two quantecon lectures:
 
 as well as the optional reading {doc}`aiyagari`
 
-As usual, let's start by importing some Python modules.
+As usual, let's start by importing some Python modules
 
 ```{code-cell} ipython3
 from collections import namedtuple
@@ -52,6 +60,8 @@ import jax
 ```
 
 ## Environment
+
+We start by introducing the economic environment we are operating in.
 
 ### Demographics and time
 
@@ -75,7 +85,7 @@ An agent with productivity $\gamma_{i,j,t}$ supplies $l(j)\gamma_{i,j,t}$ effici
 
 $l(j)$ is a deterministic age-specific labor efficiency units profile.
 
-An agent's effective  labor supply depends on a life-cycle efficiency profile  and an idiosyncratic stochastic process.
+An agent's effective labor supply depends on a life-cycle efficiency profile and an idiosyncratic stochastic process.
 
 ### Initial conditions
 
@@ -199,7 +209,7 @@ $V_{J,t}(a, \gamma) = 0$
 
 ## Population dynamics
 
-The joint probability density function $\mu_{j,t}(a,\gamma)$ of asset holdings and idiosyncratic labor evolves according to
+The joint probability density function $\mu_{j,t}(a,\gamma)$ of asset holdings and idiosyncratic labor productivity evolves according to
 
 - For newborns $(j=0)$:
   
@@ -245,7 +255,7 @@ Relative to the  model presented in {doc}`Transitions in an Overlapping Generati
 
 ## Implementation
 
-Using tools in  {doc}`discrete_dp`, we solve our model by combining value function iteration with equilibrium price determination.
+Using tools in  {doc}`advanced:discrete_dp`, we solve our model by combining value function iteration with equilibrium price determination.
 
 A sensible  approach is  to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.
 
@@ -253,11 +263,11 @@ For a candidate sequence  of prices interest rates $r_t$ and wages $w_t$, we can
 
 We then deduce associated stationary joint probability distributions of asset holdings and idiosyncratic labor efficiency units for each age cohort.
 
-That will give us an aggregate capital supply (from household savings) and a labor supply (from the age-efficiency profile and productivity shocks).
+This will give us an aggregate capital supply (from household savings) and a labor supply (from the age-efficiency profile and productivity shocks).
 
 We can then compare these with capital and labor demand from firms, compute deviations between factor market supplies and demands, then  update  price guesses until we find market-clearing prices.
 
-To construct transition dynamics, we can compute sequences of time-varying prices by using _backward induction_ to compute value and policy functions, and _forward iteration_ for the distributions of agents across states.
+To construct transition dynamics, we can compute sequences of time-varying prices by using _backward induction_ to compute value and policy functions, and _forward iteration_ for the distributions of agents across states:
 
 1. Outer loop (market clearing)
    * Guess initial prices ($r_t, w_t$)
@@ -319,7 +329,7 @@ def l(j):
     return l1 + l2 * j + l3 * j ** 2
 ```
 
-Let's define a `Firm` namedtuple that  contains parameters governing the  production technology.
+Let's define a `Firm` namedtuple that contains parameters governing the production technology.
 
 ```{code-cell} ipython3
 Firm = namedtuple("Firm", ("α", "Z"))
@@ -333,7 +343,7 @@ def create_firm(α=0.3, Z=1):
 firm = create_firm()
 ```
 
-The following helper functions link  aggregates ($K, L$) and  prices ($w, r$) that emerge from the representative  firm's first-order necessary conditions.
+The following helper functions link aggregates ($K, L$) and prices ($w, r$) that emerge from the representative firm's first-order necessary conditions.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -351,7 +361,7 @@ def KL_to_w(K, L, firm):
     return Z * (1 - α) * (K / L) ** α
 ```
 
-We use a function `find_τ` to find  flat tax rates that balance the government budget constraint given other policy variables that include debt levels, government spending, and transfers.
+We use a function `find_τ` to find flat tax rates that balance the government budget constraint given other policy variables that include debt levels, government spending, and transfers.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -367,7 +377,7 @@ def find_τ(policy, price, aggs):
     return num / denom
 ```
 
-We  use a namedtuple `Household` to store parameters that characterize   households' problems.
+We use a namedtuple `Household` to store parameters that characterize households' problems.
 
 ```{code-cell} ipython3
 Household = namedtuple("Household", ("j_grid", "a_grid", "γ_grid",
@@ -408,7 +418,7 @@ def create_household(
 hh = create_household()
 ```
 
-We  apply discrete state dynamic programming tools.
+We apply discrete state dynamic programming tools.
 
 Initial steps involve preparing rewards and transition matrices $R$ and $Q$ for our  discretized Bellman equations.
 
@@ -446,11 +456,11 @@ def populate_R(j, r, w, τ, δ, household):
 
 ## Computing a steady state
 
-We first  compute  steady state.
+We first compute a steady state.
 
 Given  guesses of prices and taxes, we can use backwards induction to solve for  value functions and optimal consumption and saving policies  at all  ages.
 
-The function `backwards_opt` solve for optimal values by applying the discretized bellman operator backwards.
+The function `backwards_opt` solves for optimal values by applying the discretized bellman operator backwards.
 
 We use `jax.lax.scan` to facilitate sequential and recurrent computations efficiently.
 
@@ -500,11 +510,13 @@ Q = populate_Q(hh)
 V, σ = backwards_opt([r, w], [τ, δ], hh, Q)
 ```
 
+Let's time the computation with `block_until_ready()` to ensure that all JAX operations are complete
+
 ```{code-cell} ipython3
-%time backwards_opt([r, w], [τ, δ], hh, Q).block_until_ready()
+%time backwards_opt([r, w], [τ, δ], hh, Q)[0].block_until_ready();
 ```
 
-From optimal consumption and saving choices by each cohort, we can compute a joint probability  distribution of asset levels and idiosyncratic productivity levels in a steady state.
+From the optimal consumption and saving choices by each cohort, we can compute a joint probability distribution of asset levels and idiosyncratic productivity levels in a steady state.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -536,8 +548,10 @@ def popu_dist(σ, household, Q):
 μ = popu_dist(σ, hh, Q)
 ```
 
+Let's time the computation
+
 ```{code-cell} ipython3
-%time popu_dist(σ, hh, Q).block_until_ready()
+%time popu_dist(σ, hh, Q)[0].block_until_ready();
 ```
 
 Below we plot the marginal  distribution of  savings for  each age group.
@@ -558,11 +572,11 @@ plt.show()
 ```
 
 
-These marginal distributions  confirm that new  agents  enter the economy with no asset holdings.
+These marginal distributions confirm that new agents enter the economy with no asset holdings.
 
-  *  the blue $j=0$ distribution has mass only at $a=0$.
+  * the blue $j=0$ distribution has mass only at $a=0$.
   
-As agents age, at first they  gradually accumulate assets.
+As agents age, at first they gradually accumulate assets.
 
   * the orange $j=5$ distribution puts positive mass on positive but low asset levels
   * the green $j=20$ distribution puts positive mass on a much wider range of asset levels. 
@@ -643,9 +657,9 @@ The firm's optimality conditions imply  interest rate $r$ and wage rate $w$.
 KL_to_r(K, L, firm), KL_to_w(K, L, firm)
 ```
 
-The implied prices $(r,w)$ differ  from our guesses, so we must update our guesses and iterate until we find a fixed point.
+The implied prices $(r,w)$ differ from our guesses, so we must update our guesses and iterate until we find a fixed point.
 
-This is our  outer loop.
+This is our outer loop.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -758,7 +772,7 @@ r_ss1, w_ss1
 
 ## Transition dynamics
 
-We  compute transition dynamics using a function `path_iteration`.
+We compute transition dynamics using a function `path_iteration`.
 
 In an outer loop, we iterate over guesses of prices and taxes.
 
@@ -908,10 +922,10 @@ The following algorithm describes the path iteration procedure:
 1. Initialize from steady states:
    - $(V_1, \sigma_1, \mu_1) \leftarrow ss_1$ *(Initial steady state)*
    - $(V_2, \sigma_2, \mu_2) \leftarrow ss_2$ *(Final steady state)*
-   - $(r, w, \tau) \leftarrow \text{initialize\_prices}(T)$ *(Linear interpolation)*
+   - $(r, w, \tau) \leftarrow \text{initialize_prices}(T)$ *(Linear interpolation)*
    - $\text{error} \leftarrow \infty$, $i \leftarrow 0$
 
-2. **While** $\text{error} > \varepsilon$ or $i \leq \text{max\_iter}$:
+2. **While** $\text{error} > \varepsilon$ or $i \leq \text{max_iter}$:
 
    1. $i \leftarrow i + 1$
    2. $(r_{\text{old}}, w_{\text{old}}, \tau_{\text{old}}) \leftarrow (r, w, \tau)$
@@ -927,8 +941,8 @@ The following algorithm describes the path iteration procedure:
       - $L[t] \leftarrow \int l(j)\gamma \, d\mu[t]$ *(Aggregate labor)*
       - $r[t] \leftarrow \alpha Z(K[t]/L[t])^{\alpha-1}$ *(Interest rate)*
       - $w[t] \leftarrow (1-\alpha)Z(K[t]/L[t])^{\alpha}$ *(Wage rate)*
-      - $\tau[t] \leftarrow \text{solve\_budget}(r[t],w[t],K[t],L[t],D[t],G[t])$
-   
+      - $\tau[t] \leftarrow \text{solve_budget}(r[t],w[t],K[t],L[t],D[t],G[t])$
+
    5. Compute convergence metric:
       - $\text{error} \leftarrow \|r - r_{\text{old}}\| + \|w - w_{\text{old}}\| + \|\tau - \tau_{\text{old}}\|$
    
@@ -1032,23 +1046,23 @@ We can now   compute  equilibrium transitions that are  ignited by fiscal policy
 
 ## Experiment 1: Immediate tax cut
 
-Assume  that the government cuts the tax rate immediately balances its  budget by issuing debt.
+Assume that the government cuts the tax rate and immediately balances its budget by issuing debt.
 
 At $t=0$, the government unexpectedly announces an immediate tax cut.
 
 From $t=0$ to $19$, the government  issues debt, so debt  $D_{t+1}$  increases linearly for $20$ periods.
 
-The government sets a target for its new debt level  $D_{20} =D_0 + 1 = \bar{D} + 1$.
+The government sets a target for its new debt level $D_{20} =D_0 + 1 = \bar{D} + 1$.
 
 Government spending $\bar{G}$ and transfers $\bar{\delta}_j$ remain constant.
 
 The government adjusts $\tau_t$ to balance the budget along the transition.
 
-We want to compute the  equilibrium transition path.
+We want to compute the equilibrium transition path.
 
 Our first step is to prepare appropriate policy variable arrays `D_seq`, `G_seq`, `δ_seq`
 
-We'll compute a `τ_seq`  that balances government budgets.
+We'll compute a `τ_seq` that balances government budgets.
 
 ```{code-cell} ipython3
 T = 150
@@ -1068,9 +1082,9 @@ In order to iterate the path, we need to first find its destination, which is th
 ss2 = find_ss(hh, firm, [D_seq[-1], G_seq[-1], δ_seq[-1]], Q)
 ```
 
-We can use `path_iteration` to find  equilibrium transition dynamics.
+We can use `path_iteration` to find equilibrium transition dynamics.
 
-Setting the key argument `verbose=True` tells  the function `path_iteration` to display  convergence information.
+Setting the key argument `verbose=True` tells the function `path_iteration` to display convergence information.
 
 ```{code-cell} ipython3
 paths = path_iteration(ss1, ss2, [D_seq, G_seq, δ_seq], hh, firm, Q, verbose=True)
@@ -1138,11 +1152,11 @@ To summarize the transition, we can plot paths as we did in {doc}`ak2`.
 
 But unlike the setup in that two-period lived overlapping generations model, we no longer have representative old and young agents.
 
- * now  we have  50 cohorts of different ages at each time
+ * now we have 50 cohorts of different ages at each time
 
-To proceed,  we  construct two age groups of equal size -- young and old.
+To proceed, we construct two age groups of equal size -- young and old.
 
- * at  age 25, someone moves from being young to become  old
+ * at age 25, someone moves from being young to becoming old
 
 ```{code-cell} ipython3
 ap = hh.a_grid[σ_ss1]
@@ -1255,12 +1269,11 @@ plt.show()
 
 ## Experiment 2: Preannounced tax cut
 
-
-Now the government announces a permanent tax rate cut at time $0$ but   implements it only after 20 periods.
+Now the government announces a permanent tax rate cut at time $0$ but implements it only after 20 periods.
 
 We will use the same key toolkit `path_iteration`.
 
-We  must specify  `D_seq` appropriately.
+We must specify `D_seq` appropriately.
 
 ```{code-cell} ipython3
 T = 150
@@ -1363,7 +1376,7 @@ plt.title("K")
 plt.xlabel("t")
 ```
 
-After the tax cut policy is implemented after $t=20$, the aggregate capital will decrease because of the crowding out effect.
+After the tax cut policy is implemented at $t=20$, the aggregate capital will decrease because of the crowding out effect.
 
 Having foreseen an increase in the interest rate, individuals a few periods before $t=20$ start saving more.
 
@@ -1373,7 +1386,7 @@ For agents living in much earlier periods, that lower interest rate causes them 
 
 
 
-We can  also plot evolutions of means and variances of consumption by different cohorts along a transition path.
+We can also plot evolutions of means and variances of consumption by different cohorts along a transition path.
 
 ```{code-cell} ipython3
 Cmean_seq = np.empty((T, J))
