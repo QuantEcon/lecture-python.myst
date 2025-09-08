@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.3
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -53,7 +53,6 @@ from typing import NamedTuple
 import numpyro
 import numpyro.distributions as dist
 from numpyro.infer import MCMC, NUTS
-numpyro.set_host_device_count(4)
 
 # jax
 import jax
@@ -67,9 +66,6 @@ import arviz as az
 sns.set_style('white')
 colors = sns.color_palette()
 key = random.PRNGKey(0)
-
-print(f"Available devices: {jax.local_device_count()}")
-print(f"Device list: {jax.devices()}")
 ```
 
 ## A Univariate First-Order Autoregressive Process
@@ -456,16 +452,17 @@ Note that in defining the likelihood function, we choose to condition on the ini
 ---
 mystnb:
   figure:
-    caption: "AR(1) model"
+    caption: AR(1) model
     name: fig_trace
 ---
 def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
-    """Draw a sample of size from the posterior distribution.""" 
+    """Draw a sample of size from the posterior distribution."""
+
     def model(data):
         # Start with priors
-        ρ = numpyro.sample('rho', dist.Uniform(-1, 1))  # Assume stable ρ
-        σ = numpyro.sample('sigma', dist.HalfNormal(jnp.sqrt(10)))
-        
+        ρ = numpyro.sample('ρ', dist.Uniform(-1, 1))  # Assume stable ρ
+        σ = numpyro.sample('σ', dist.HalfNormal(jnp.sqrt(10)))
+
         # Define likelihood recursively
         for t in range(1, len(data)):
             # Expectation of y_t
@@ -476,24 +473,26 @@ def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
 
     # Compute posterior distribution of parameters
     nuts_kernel = NUTS(model)
-    
+
     # Define MCMC class to compute the posteriors
     mcmc = MCMC(
         nuts_kernel,
         num_warmup=5000,
         num_samples=size,
-        num_chains=4, # plot 4 chains in the trace
-        progress_bar=False)
-    
+        num_chains=4,  # plot 4 chains in the trace
+        progress_bar=False,
+        chain_method='vectorized'
+    )
+
     # Run MCMC
     mcmc.run(key, data=data)
-    
+
     # Get posterior samples
     post_sample = {
-        'rho': mcmc.get_samples()['rho'],
-        'sigma': mcmc.get_samples()['sigma']
+        'ρ': mcmc.get_samples()['ρ'],
+        'σ': mcmc.get_samples()['σ'],
     }
-    
+
     # Plot posterior distributions and trace plots
     if dis_plot == 1:
         plot_data = az.from_numpyro(posterior=mcmc)
@@ -501,14 +500,13 @@ def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
             data=plot_data,
             compact=True,
             lines=[
-                ("rho", {}, ar1.ρ),
-                ("sigma", {}, ar1.σ),
+                ("σ", {}, ar1.ρ),
+                ("ρ", {}, ar1.σ),
             ],
             backend_kwargs={"figsize": (10, 6), "layout": "constrained"},
         )
-    
-    return post_sample
 
+    return post_sample
 
 post_samples = draw_from_posterior(initial_path)
 ```
@@ -688,10 +686,10 @@ def plot_extended_Wecker(
 
     # Select a parameter sample
     index = random.choice(
-        key, jnp.arange(len(post_samples['rho'])), (N + 1,), replace=False
+        key, jnp.arange(len(post_samples['ρ'])), (N + 1,), replace=False
         )
-    ρ_sample = post_samples['rho'][index]
-    σ_sample = post_samples['sigma'][index]
+    ρ_sample = post_samples['ρ'][index]
+    σ_sample = post_samples['σ'][index]
 
     # Compute path statistics
     subkeys = random.split(key, num=N)
