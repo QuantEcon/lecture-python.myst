@@ -37,14 +37,11 @@ import matplotlib.pyplot as plt
 
 This lecture uses Bayesian methods offered by [`numpyro`](https://num.pyro.ai/en/stable/) to make statistical inferences about two parameters of a univariate first-order autoregression.
 
-
 The model is a good laboratory for illustrating the
 consequences of alternative ways of modeling the distribution of the initial  $y_0$:
 
 - As a fixed number
-
 - As a random variable drawn from the stationary distribution of the $\{y_t\}$ stochastic process
-
 
 The first component of the statistical model is
 
@@ -61,8 +58,6 @@ The second component of the statistical model is
 $$
 y_0 \sim {\mathcal{N}}(\mu_0, \sigma_0^2)
 $$ (eq:themodel_2)
-
-
 
 Consider a sample $\{y_t\}_{t=0}^T$ governed by this statistical model.
 
@@ -88,7 +83,6 @@ We want to study how inferences about the unknown parameters $(\rho, \sigma_x)$ 
 Below, we study two widely used alternative assumptions:
 
 -  $(\mu_0,\sigma_0) = (y_0, 0)$ which means that $y_0$ is drawn from the distribution ${\mathcal N}(y_0, 0)$; in effect, we are *conditioning on an observed initial value*.
-
 -  $\mu_0,\sigma_0$ are functions of $\rho, \sigma_x$ because $y_0$ is drawn from the stationary distribution implied by $\rho, \sigma_x$.
 
 
@@ -125,17 +119,13 @@ Basically, when $y_0$ happens to be in the tail of the stationary distribution a
 
 An example below shows how not conditioning on $y_0$ adversely shifts the posterior probability distribution of $\rho$ toward larger values.
 
-
 We begin by solving a *direct problem* that simulates an AR(1) process.
 
 How we select the initial value $y_0$ matters:
 
-   * If we think $y_0$ is drawn from the stationary distribution ${\mathcal N}(0, \frac{\sigma_x^{2}}{1-\rho^2})$, then it is a good idea to use this distribution as $f(y_0)$. 
-  
-       -  Why? Because $y_0$ contains information about $\rho, \sigma_x$.
-
-   * If we suspect that $y_0$ is far in the tail of the stationary distribution -- so that variation in early observations in the sample has a significant *transient component* -- it is better to condition on $y_0$ by setting $f(y_0) = 1$.
-
+* If we think $y_0$ is drawn from the stationary distribution ${\mathcal N}(0, \frac{\sigma_x^{2}}{1-\rho^2})$, then it is a good idea to use this distribution as $f(y_0)$. 
+  -  Why? Because $y_0$ contains information about $\rho, \sigma_x$.
+* If we suspect that $y_0$ is far in the tail of the stationary distribution -- so that variation in early observations in the sample has a significant *transient component* -- it is better to condition on $y_0$ by setting $f(y_0) = 1$.
 
 To illustrate the issue, we'll begin by choosing an initial $y_0$ that is far out in the tail of the stationary distribution.
 
@@ -238,7 +228,7 @@ plot_posterior(mcmc.get_samples())
 
 Evidently, the posteriors aren't centered on the true values of $.5, 1$ that we used to generate the data.
 
-This is a symptom of the classic **Hurwicz bias** for first order autoregressive processes (see  {cite}`hurwicz1950least`.)
+This is a symptom of the classic **Hurwicz bias** for first order autoregressive processes (see {cite}`hurwicz1950least`.)
 
 The Hurwicz bias is worse the smaller is the sample (see {cite}`Orcutt_Winokur_69`).
 
