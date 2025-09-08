@@ -172,8 +172,11 @@ def make_ar1(ρ: float, σ: float, y0: float, T0: int = 100, T1: int = 100):
         AR1 named tuple containing the specified parameters.
     """
     return AR1(ρ=ρ, σ=σ, y0=y0, T0=T0, T1=T1)
+```
 
+Using the `AR1` class, we can simulate paths more conveniently. The following function simulates an initial path with $T0$ length.
 
+```{code-cell} ipython3
 def AR1_simulate_past(ar1: AR1, key=key):
     """
     Simulate a realization of the AR(1) process for T0 periods.
@@ -500,8 +503,8 @@ def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
             data=plot_data,
             compact=True,
             lines=[
-                ("σ", {}, ar1.ρ),
-                ("ρ", {}, ar1.σ),
+                ("ρ", {}, ar1.ρ),
+                ("σ", {}, ar1.σ),
             ],
             backend_kwargs={"figsize": (10, 6), "layout": "constrained"},
         )
