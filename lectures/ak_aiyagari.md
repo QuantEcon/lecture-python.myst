@@ -922,7 +922,7 @@ The following algorithm describes the path iteration procedure:
 1. Initialize from steady states:
    - $(V_1, \sigma_1, \mu_1) \leftarrow ss_1$ *(Initial steady state)*
    - $(V_2, \sigma_2, \mu_2) \leftarrow ss_2$ *(Final steady state)*
-   - $(r, w, \tau) \leftarrow \text{initialize_prices}(T)$ *(Linear interpolation)*
+   - $(r, w, \tau) \leftarrow \texttt{initialize_prices}(T)$ *(Linear interpolation)*
    - $\text{error} \leftarrow \infty$, $i \leftarrow 0$
 
 2. **While** $\text{error} > \varepsilon$ or $i \leq \text{max_iter}$:
@@ -941,7 +941,7 @@ The following algorithm describes the path iteration procedure:
       - $L[t] \leftarrow \int l(j)\gamma \, d\mu[t]$ *(Aggregate labor)*
       - $r[t] \leftarrow \alpha Z(K[t]/L[t])^{\alpha-1}$ *(Interest rate)*
       - $w[t] \leftarrow (1-\alpha)Z(K[t]/L[t])^{\alpha}$ *(Wage rate)*
-      - $\tau[t] \leftarrow \text{solve_budget}(r[t],w[t],K[t],L[t],D[t],G[t])$
+      - $\tau[t] \leftarrow \texttt{solve_budget}(r[t],w[t],K[t],L[t],D[t],G[t])$
 
    5. Compute convergence metric:
       - $\text{error} \leftarrow \|r - r_{\text{old}}\| + \|w - w_{\text{old}}\| + \|\tau - \tau_{\text{old}}\|$
