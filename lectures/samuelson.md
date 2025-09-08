@@ -119,9 +119,9 @@ Let's assume that
   another endogenous variable.
 
 - $\alpha$ is the marginal propensity to consume in the Keynesian
-  consumption function $C_t = ⍺ Y_{t-1} + \gamma$.
+  consumption function $C_t = \alpha Y_{t-1} + \gamma$.
 - $\beta$ is the "accelerator coefficient" in the "investment
-  accelerator" $I_t = β (Y_{t-1} - Y_{t-2})$.
+  accelerator" $I_t = \beta (Y_{t-1} - Y_{t-2})$.
 - $\{\epsilon_{t}\}$ is an IID sequence standard normal random variables.
 - $\sigma \geq 0$ is a "volatility"
   parameter --- setting $\sigma = 0$ recovers the non-stochastic case
@@ -132,7 +132,7 @@ The model combines the consumption function
 ```{math}
 :label: consumption
 
-C_t = ⍺ Y_{t-1} + \gamma
+C_t = \alpha Y_{t-1} + \gamma
 ```
 
 with the investment accelerator
@@ -140,7 +140,7 @@ with the investment accelerator
 ```{math}
 :label: accelerator
 
-I_t = β (Y_{t-1} - Y_{t-2})
+I_t = \beta (Y_{t-1} - Y_{t-2})
 ```
 
 and the national income identity
@@ -162,7 +162,7 @@ Equations {eq}`consumption`, {eq}`accelerator`, and {eq}`income_identity`
 imply the following second-order linear difference equation for national income:
 
 $$
-Y_t = (⍺+β) Y_{t-1} - β Y_{t-2} + (\gamma + G_t)
+Y_t = (\alpha+\beta) Y_{t-1} - \beta Y_{t-2} + (\gamma + G_t)
 $$
 
 or
@@ -212,7 +212,7 @@ equation**:
 ```{math}
 :label: second_stochastic
 
-Y_t = (⍺+β) Y_{t-1} - β Y_{t-2} + (\gamma + G_t) + \sigma \epsilon_t
+Y_t = (\alpha+\beta) Y_{t-1} - \beta Y_{t-2} + (\gamma + G_t) + \sigma \epsilon_t
 ```
 
 ### Mathematical analysis of the model
