@@ -79,11 +79,11 @@ pair indicating latitude-longitude coordinates on a map.
 At the present moment in time, the precise location $x$ is unknown, but
 we do have some beliefs about $x$.
 
-One way to summarize our knowledge is a point prediction $\hat x$
+One way to summarize our knowledge is a point prediction $\hat{x}$
 
 * But what if the President wants to know the probability that the missile is currently over the Sea of Japan?
 * Then it is better to summarize our initial beliefs with a bivariate probability density $p$
-  * $\int_E p(x)dx$ indicates the probability that we attach to the missile being in region $E$.
+* $\int_E p(x)dx$ indicates the probability that we attach to the missile being in region $E$.
 
 The density $p$ is called our *prior* for the random variable $x$.
 
@@ -94,110 +94,109 @@ In particular, we take
 ```{math}
 :label: prior
 
-p = N(\hat x, \Sigma)
+p = N(\hat{x}, \Sigma)
 ```
 
-where $\hat x$ is the mean of the distribution and $\Sigma$ is a
+where $\hat{x}$ is the mean of the distribution and $\Sigma$ is a
 $2 \times 2$ covariance matrix.  In our simulations, we will suppose that
 
 ```{math}
 :label: kalman_dhxs
 
-\hat x
-= \left(
-\begin{array}{c}
+\hat{x}
+=
+\begin{bmatrix}
     0.2 \\
     -0.2
-\end{array}
-  \right),
+\end{bmatrix}
+,
 \qquad
 \Sigma
-= \left(
-\begin{array}{cc}
+=
+\begin{bmatrix}
     0.4 & 0.3 \\
     0.3 & 0.45
-\end{array}
-  \right)
+\end{bmatrix}
 ```
 
-This density $p(x)$ is shown below as a contour map, with the center of the red ellipse being equal to $\hat x$.
+This density $p(x)$ is shown below as a contour map, with the center of the red ellipse being equal to $\hat{x}$.
 
 ```{code-cell} ipython3
-:tags: [output_scroll]
-
 # Set up the Gaussian prior density p
-Σ = [[0.4, 0.3], [0.3, 0.45]]
-Σ = np.matrix(Σ)
-x_hat = np.matrix([0.2, -0.2]).T
+Σ = jnp.array([[0.4, 0.3], 
+               [0.3, 0.45]])
+x_hat = jnp.array([[0.2], 
+                   [-0.2]])
 # Define the matrices G and R from the equation y = G x + N(0, R)
-G = [[1, 0], [0, 1]]
-G = np.matrix(G)
+G = jnp.array([[1, 0], 
+               [0, 1]])
 R = 0.5 * Σ
 # The matrices A and Q
-A = [[1.2, 0], [0, -0.2]]
-A = np.matrix(A)
+A = jnp.array([[1.2, 0], 
+               [0, -0.2]])
 Q = 0.3 * Σ
 # The observed value of y
-y = np.matrix([2.3, -1.9]).T
+y = jnp.array([[2.3], 
+               [-1.9]])
 
 # Set up grid for plotting
-x_grid = np.linspace(-1.5, 2.9, 100)
-y_grid = np.linspace(-3.1, 1.7, 100)
-X, Y = np.meshgrid(x_grid, y_grid)
+x_grid = jnp.linspace(-1.5, 2.9, 100)
+y_grid = jnp.linspace(-3.1, 1.7, 100)
+X, Y = jnp.meshgrid(x_grid, y_grid)
 
-def bivariate_normal(x, y, σ_x=1.0, σ_y=1.0, μ_x=0.0, μ_y=0.0, σ_xy=0.0):
+def compute_bivariate_normal(X, Y, μ, Σ):
     """
     Compute and return the probability density function of bivariate normal
-    distribution of normal random variables x and y
+    distribution
 
     Parameters
     ----------
-    x : array_like(float)
-        Random variable
+    X, Y : array_like(float)
+        Meshgrid arrays defining the grid over which to evaluate the PDF.
 
-    y : array_like(float)
-        Random variable
+    μ : array_like(float)
+        Mean vector of the distribution. Shape (2, 1) or (2,).
 
-    σ_x : array_like(float)
-          Standard deviation of random variable x
-
-    σ_y : array_like(float)
-          Standard deviation of random variable y
-
-    μ_x : scalar(float)
-          Mean value of random variable x
-
-    μ_y : scalar(float)
-          Mean value of random variable y
-
-    σ_xy : array_like(float)
-           Covariance of random variables x and y
-
+    Σ : array_like(float)
+        Covariance matrix of the distribution. Shape (2, 2).
+    
+    Returns
+    -------
+    Z : array_like(float)
+        PDF values with same shape as X and Y meshgrids.
     """
+    
+    # Create coordinate arrays: stack X and Y to get shape (2, M, N)
+    coords = jnp.stack([X, Y], axis=0)
+    
+    # Reshape to (2, M*N) for batch processing
+    coords_flat = coords.reshape(2, -1)
+    
+    # Vectorized computation
+    def bivariate_normal(x):
+        """Compute PDF for a single point x"""
+        x_μ = x.reshape(-1, 1) - μ  # (2, 1)
+        z = x_μ.T @ jnp.linalg.inv(Σ) @ x_μ  # scalar
+        denom = 2 * jnp.pi * jnp.sqrt(jnp.linalg.det(Σ))
+        return jnp.exp(-0.5 * z) / denom
+    
+    # Apply vmap over columns (each column is a point)
+    vectorized_pdf = jax.vmap(bivariate_normal, in_axes=1)
 
-    x_μ = x - μ_x
-    y_μ = y - μ_y
-
-    ρ = σ_xy / (σ_x * σ_y)
-    z = x_μ**2 / σ_x**2 + y_μ**2 / σ_y**2 - 2 * ρ * x_μ * y_μ / (σ_x * σ_y)
-    denom = 2 * np.pi * σ_x * σ_y * np.sqrt(1 - ρ**2)
-    return np.exp(-z / (2 * (1 - ρ**2))) / denom
-
-def gen_gaussian_plot_vals(μ, C):
-    "Z values for plotting the bivariate Gaussian N(μ, C)"
-    m_x, m_y = float(μ[0,0]), float(μ[1,0])
-    s_x, s_y = np.sqrt(C[0, 0]), np.sqrt(C[1, 1])
-    s_xy = C[0, 1]
-    return bivariate_normal(X, Y, s_x, s_y, m_x, m_y, s_xy)
+    # Compute all PDF values
+    pdf_values = vectorized_pdf(coords_flat)
+    
+    # Reshape back to original meshgrid shape
+    return pdf_values.reshape(X.shape)
 
 # Plot the figure
 
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots()
 ax.grid()
 
-Z = gen_gaussian_plot_vals(x_hat, Σ)
-ax.contourf(X, Y, Z, 6, alpha=0.6, cmap=cm.jet)
-cs = ax.contour(X, Y, Z, 6, colors="black")
+Z = compute_bivariate_normal(X, Y, x_hat, Σ)
+ax.contourf(X, Y, Z, levels=6, alpha=0.6, cmap=cm.jet)
+cs = ax.contour(X, Y, Z, levels=6, colors="black")
 ax.clabel(cs, inline=1, fontsize=10)
 
 plt.show()
@@ -210,7 +209,7 @@ We are now presented with some good news and some bad news.
 The good news is that the missile has been located by our sensors, which report that the current location is $y = (2.3, -1.9)$.
 
 The next figure shows the original prior $p(x)$ and the new reported
-location $y$
+location $y$.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 8))
@@ -227,8 +226,7 @@ plt.show()
 
 The bad news is that our sensors are imprecise.
 
-In particular, we should interpret the output of our sensor not as
-$y=x$, but rather as
+In particular, we should interpret the output of our sensor not as $y=x$, but rather as
 
 ```{math}
 :label: kl_measurement_model
@@ -236,16 +234,17 @@ $y=x$, but rather as
 y = G x + v, \quad \text{where} \quad v \sim N(0, R)
 ```
 
-Here $G$ and $R$ are $2 \times 2$ matrices with $R$
-positive definite.  Both are assumed known, and the noise term $v$ is assumed
+Here $G$ and $R$ are $2 \times 2$ matrices with $R$ positive definite.
+
+Both are assumed known, and the noise term $v$ is assumed
 to be independent of $x$.
 
-How then should we combine our prior $p(x) = N(\hat x, \Sigma)$ and this
+How then should we combine our prior $p(x) = N(\hat{x}, \Sigma)$ and this
 new information $y$ to improve our understanding of the location of the
 missile?
 
 As you may have guessed, the answer is to use Bayes' theorem, which tells
-us to  update our prior $p(x)$ to $p(x \,|\, y)$ via
+us to update our prior $p(x)$ to $p(x \,|\, y)$ via
 
 $$
 p(x \,|\, y) = \frac{p(y \,|\, x) \, p(x)} {p(y)}
@@ -255,7 +254,7 @@ where $p(y) = \int p(y \,|\, x) \, p(x) dx$.
 
 In solving for $p(x \,|\, y)$, we observe that
 
-* $p(x) = N(\hat x, \Sigma)$.
+* $p(x) = N(\hat{x}, \Sigma)$.
 * In view of {eq}`kl_measurement_model`, the conditional density $p(y \,|\, x)$ is $N(Gx, R)$.
 * $p(y)$ does not depend on $x$, and enters into the calculations only as a normalizing constant.
 
@@ -272,14 +271,14 @@ where
 ```{math}
 :label: kl_filter_exp
 
-\hat x^F := \hat x + \Sigma G' (G \Sigma G' + R)^{-1}(y - G \hat x)
+\hat{x}^F := \hat{x} + \Sigma G' (G \Sigma G' + R)^{-1}(y - G \hat{x})
 \quad \text{and} \quad
 \Sigma^F := \Sigma - \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma
 ```
 
-Here  $\Sigma G' (G \Sigma G' + R)^{-1}$ is the matrix of population regression coefficients of the hidden object $x - \hat x$ on the surprise $y - G \hat x$.
+Here  $\Sigma G' (G \Sigma G' + R)^{-1}$ is the matrix of population regression coefficients of the hidden object $x - \hat{x}$ on the surprise $y - G \hat{x}$.
 
-This new density $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is shown in the next figure via contour lines and the color map.
+This new density $p(x \,|\, y) = N(\hat{x}^F, \Sigma^F)$ is shown in the next figure via contour lines and the color map.
 
 The original density is left in as contour lines for comparison
 
