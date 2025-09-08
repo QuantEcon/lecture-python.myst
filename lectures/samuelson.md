@@ -118,9 +118,9 @@ Let's assume that
 * $\{Y_t\}$ is a sequence of levels of national income, yet
   another endogenous variable.
 
-- $⍺$ is the marginal propensity to consume in the Keynesian
+- $\alpha$ is the marginal propensity to consume in the Keynesian
   consumption function $C_t = ⍺ Y_{t-1} + \gamma$.
-- $β$ is the "accelerator coefficient" in the "investment
+- $\beta$ is the "accelerator coefficient" in the "investment
   accelerator" $I_t = β (Y_{t-1} - Y_{t-2})$.
 - $\{\epsilon_{t}\}$ is an IID sequence standard normal random variables.
 - $\sigma \geq 0$ is a "volatility"
@@ -151,10 +151,10 @@ and the national income identity
 Y_t = C_t + I_t + G_t
 ```
 
-- The parameter $⍺$ is peoples' *marginal propensity to consume*
+- The parameter $\alpha$ is peoples' *marginal propensity to consume*
   out of income - equation {eq}`consumption` asserts that people consume a fraction of
-  $⍺ \in (0,1)$ of each additional dollar of income.
-- The parameter $β > 0$ is the investment accelerator coefficient - equation
+  $\alpha \in (0,1)$ of each additional dollar of income.
+- The parameter $\beta > 0$ is the investment accelerator coefficient - equation
   {eq}`accelerator` asserts that people invest in physical capital when
   income is increasing and disinvest when it is decreasing.
 
@@ -173,7 +173,7 @@ or
 Y_t = \rho_1 Y_{t-1} + \rho_2 Y_{t-2} + (\gamma + G_t)
 ```
 
-where $\rho_1 = (⍺+β)$ and $\rho_2 = -β$.
+where $\rho_1 = (\alpha+\beta)$ and $\rho_2 = -\beta$.
 
 To complete the model, we require two **initial conditions**.
 
@@ -184,7 +184,7 @@ $$
 Y_{-1} = \bar Y_{-1}, \quad  Y_{-2} = \bar Y_{-2}
 $$
 
-We'll ordinarily set the parameters $(⍺,β)$ so that starting from
+We'll ordinarily set the parameters $(\alpha,\beta)$ so that starting from
 an arbitrary pair of initial conditions
 $(\bar Y_{-1}, \bar Y_{-2})$, national income $Y_t$ converges to
 a constant value as $t$ becomes large.
@@ -341,7 +341,7 @@ We say that $\check p$ is the **period** because in that amount of time the cosi
 (Draw a cosine function to convince yourself of this please)
 
 **Remark:** Following {cite}`Samuelson1939`, we want to choose the parameters
-$⍺, β$ of the model so that the absolute values (of the possibly
+$\alpha, \beta$ of the model so that the absolute values (of the possibly
 complex) roots $\lambda_1, \lambda_2$ of the characteristic
 polynomial are both strictly less than one:
 
@@ -360,7 +360,7 @@ We write a function to generate simulations of a $\{Y_t\}$ sequence as a functio
 
 The function requires that we put in initial conditions for $Y_{-1}, Y_{-2}$.
 
-The function checks that $⍺, β$ are set so that $\lambda_1, \lambda_2$ are less than
+The function checks that $\alpha, \beta$ are set so that $\lambda_1, \lambda_2$ are less than
 unity in absolute value (also called "modulus").
 
 The function also tells us whether the roots are complex, and, if they are complex, returns both their real and complex parts.
@@ -477,7 +477,7 @@ plt.show()
 ```
 
 The graph portrays regions in which the $(\lambda_1, \lambda_2)$
-root pairs implied by the $(\rho_1 = (⍺+β), \rho_2 = - β)$
+root pairs implied by the $(\rho_1 = (\alpha+\beta), \rho_2 = - \beta)$
 difference equation parameter pairs in the Samuelson model are such that:
 
 - $(\lambda_1, \lambda_2)$ are complex with modulus less than
@@ -492,7 +492,7 @@ difference equation parameter pairs in the Samuelson model are such that:
   convergence to the steady state without damped cycles.
 
 Later we'll present the graph with a red mark showing the particular
-point implied by the setting of $(⍺,β)$.
+point implied by the setting of $(\alpha,\beta)$.
 
 ### Function to describe implications of characteristic polynomial
 
@@ -614,7 +614,7 @@ $$
 
 - The code assumes that these two complex numbers are the roots of the
   characteristic polynomial
-- It then reverse-engineers $(⍺,β)$ and $(\rho_1, \rho_2)$,
+- It then reverse-engineers $(\alpha,\beta)$ and $(\rho_1, \rho_2)$,
   pairs that would generate those roots
 
 ```{code-cell} ipython3
@@ -624,7 +624,7 @@ def f(r, ϕ):
     and creates ρ1 and ρ2 of characteristic polynomial for which
     r exp(j ϕ) and r exp(- j ϕ) are complex roots.
 
-    Returns the multiplier coefficient ⍺ and the accelerator coefficient β
+    Returns the multiplier coefficient $\alpha$ and the accelerator coefficient $\beta$
     that verifies those roots.
     """
     g1 = cmath.rect(r, ϕ)  # Generate two complex roots
@@ -969,7 +969,7 @@ class Samuelson():
 
     .. math::
 
-        Y_t =  α (1 + β) Y_{t-1} - α β Y_{t-2}
+        Y_t =  $\alpha$ (1 + $\beta$) Y_{t-1} - $\alpha$ $\beta$ Y_{t-2}
 
     Parameters
     ----------
