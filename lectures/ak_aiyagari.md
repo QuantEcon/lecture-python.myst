@@ -288,7 +288,7 @@ To construct transition dynamics, we can compute sequences of time-varying price
      - Aggregate effective labor supply
    * Take into account  population weights $1/J$
 
-4. Transition Dynamics
+4. Transition dynamics
    * Backward induction:
      - Start from final steady state
      - Solve sequence of value functions
@@ -780,13 +780,9 @@ In an inner loop, we  compute the optimal consumption and saving choices by each
 
 We then  update our  guesses of prices and taxes given the aggregate labor supply and capital stock in the economy.
 
- * We use `solve_backwards` to solve for optimal saving choices given  price and tax sequences
- * We use `simulate_forward` to compute the  evolution of the joint distributions.
+We use `solve_backwards` to solve for optimal saving choices given  price and tax sequences and `simulate_forward` to compute the  evolution of the joint distributions.
 
-We require two steady states as inputs:
-
- 1. the initial steady state to provide the initial condition for `simulate_forward`,
- 2. the final steady state to provide continuation values for `solve_backwards`.
+We require two steady states as inputs: the initial steady state to provide the initial condition for `simulate_forward`, and the final steady state to provide continuation values for `solve_backwards`.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -922,10 +918,10 @@ The following algorithm describes the path iteration procedure:
 1. Initialize from steady states:
    - $(V_1, \sigma_1, \mu_1) \leftarrow ss_1$ *(Initial steady state)*
    - $(V_2, \sigma_2, \mu_2) \leftarrow ss_2$ *(Final steady state)*
-   - $(r, w, \tau) \leftarrow $\texttt{initialize_prices}$(T)$ *(Linear interpolation)*
-   - $\text{error} \leftarrow \infty$, $i \leftarrow 0$
+   - $(r, w, \tau) \leftarrow initialize\_prices(T)$ *(Linear interpolation)*
+   - $error \leftarrow \infty$, $i \leftarrow 0$
 
-2. **While** $\text{error} > \varepsilon$ or $i \leq \text{max_iter}$:
+2. **While** $error > \varepsilon$ or $i \leq max\_iter$:
 
    1. $i \leftarrow i + 1$
    2. $(r_{\text{old}}, w_{\text{old}}, \tau_{\text{old}}) \leftarrow (r, w, \tau)$
@@ -941,10 +937,10 @@ The following algorithm describes the path iteration procedure:
       - $L[t] \leftarrow \int l(j)\gamma \, d\mu[t]$ *(Aggregate labor)*
       - $r[t] \leftarrow \alpha Z(K[t]/L[t])^{\alpha-1}$ *(Interest rate)*
       - $w[t] \leftarrow (1-\alpha)Z(K[t]/L[t])^{\alpha}$ *(Wage rate)*
-      - $\tau[t] \leftarrow $\texttt{solve_budget}$(r[t],w[t],K[t],L[t],D[t],G[t])$
+      - $\tau[t] \leftarrow solve\_budget(r[t],w[t],K[t],L[t],D[t],G[t])$
 
    5. Compute convergence metric:
-      - $\text{error} \leftarrow \|r - r_{\text{old}}\| + \|w - w_{\text{old}}\| + \|\tau - \tau_{\text{old}}\|$
+      - $error \leftarrow \|r - r_{\text{old}}\| + \|w - w_{\text{old}}\| + \|\tau - \tau_{\text{old}}\|$
    
    6. Update prices with dampening:
       - $r \leftarrow \lambda r + (1-\lambda)r_{\text{old}}$
