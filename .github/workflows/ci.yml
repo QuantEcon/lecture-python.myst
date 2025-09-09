@@ -78,9 +78,11 @@ jobs:
         with:
           name: execution-reports
           path: _build/html/reports
-      - name: Install Netlify CLI
+      - name: Install Node.js and Netlify CLI
         shell: bash -l {0}
-        run: npm install -g netlify-cli
+        run: |
+          conda install -c conda-forge nodejs npm -y
+          npm install -g netlify-cli
       - name: Preview Deploy to Netlify
         shell: bash -l {0}
         run: |
