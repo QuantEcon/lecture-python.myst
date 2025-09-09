@@ -90,7 +90,7 @@ jobs:
         run: |
           # Deploy to Netlify and capture the deploy URL
           DEPLOY_URL=$(netlify deploy \
-            --dir=. \
+            --dir=_build/html \
             --site=${{ secrets.NETLIFY_SITE_ID }} \
             --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} \
             --json | jq -r '.deploy_url')
