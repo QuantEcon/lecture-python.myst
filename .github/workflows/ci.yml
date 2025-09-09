@@ -2,6 +2,11 @@ name: Build Project [using jupyter-book]
 on: 
   pull_request:
   workflow_dispatch:
+    inputs:
+      preview_page:
+        description: 'Specific page to preview (e.g., aiyagari.html)'
+        required: false
+        type: string
 jobs:
   preview:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
@@ -85,26 +90,110 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y nodejs npm
           sudo npm install -g netlify-cli
+      - name: Detect Changed Lecture Files
+        id: detect-changes
+        shell: bash -l {0}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "Detecting changed lecture files..."
+            
+            # Get changed files in the lectures directory
+            changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep '^lectures/.*\.md$' | grep -v '^lectures/_' || true)
+            
+            if [ ! -z "$changed_files" ]; then
+              echo "Changed lecture files:"
+              echo "$changed_files"
+              
+              # Convert .md files to .html and create preview URLs
+              preview_urls=""
+              for file in $changed_files; do
+                # Extract filename without path and extension
+                basename=$(basename "$file" .md)
+                html_file="${basename}.html"
+                preview_urls="${preview_urls}https://deploy-preview-${{ github.event.pull_request.number }}--sunny-cactus-210e3e.netlify.app/${html_file}\n"
+              done
+              
+              echo "preview_urls<<EOF" >> $GITHUB_OUTPUT
+              echo -e "$preview_urls" >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+              
+              echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+              echo "$changed_files" >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+            else
+              echo "No lecture files changed"
+              echo "preview_urls=" >> $GITHUB_OUTPUT
+              echo "changed_files=" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "Not a PR, skipping change detection"
+            echo "preview_urls=" >> $GITHUB_OUTPUT
+            echo "changed_files=" >> $GITHUB_OUTPUT
+          fi
       - name: Preview Deploy to Netlify
         shell: bash -l {0}
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Construct deployment message with preview URLs
+            deploy_message="Preview Deploy from GitHub Actions PR #${{ github.event.pull_request.number }} (commit: ${{ github.sha }})"
+            
+            # Add manual preview page if specified
+            if [ ! -z "${{ github.event.inputs.preview_page }}" ]; then
+              deploy_message="${deploy_message}\n\n🎯 Manual Preview Page: https://deploy-preview-${{ github.event.pull_request.number }}--sunny-cactus-210e3e.netlify.app/${{ github.event.inputs.preview_page }}"
+            fi
+            
+            # Add changed lecture pages
+            if [ ! -z "${{ steps.detect-changes.outputs.changed_files }}" ]; then
+              deploy_message="${deploy_message}\n\n📚 Changed Lecture Pages:"
+              deploy_message="${deploy_message}\n${{ steps.detect-changes.outputs.preview_urls }}"
+            fi
+            
             netlify deploy \
               --dir _build/html/ \
               --site ${{ secrets.NETLIFY_SITE_ID }} \
               --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
               --context deploy-preview \
-              --message "Preview Deploy from GitHub Actions PR #${{ github.event.pull_request.number }} (commit: ${{ github.sha }})" \
+              --message "${deploy_message}" \
               --json
+              
+            echo "✅ Deployment completed!"
+            echo "🌐 Preview URL: https://deploy-preview-${{ github.event.pull_request.number }}--sunny-cactus-210e3e.netlify.app/"
+            
+            # Display preview URLs for changed files
+            if [ ! -z "${{ steps.detect-changes.outputs.preview_urls }}" ]; then
+              echo ""
+              echo "📚 Direct links to changed lecture pages:"
+              echo -e "${{ steps.detect-changes.outputs.preview_urls }}"
+            fi
+            
+            # Display manual preview page if specified
+            if [ ! -z "${{ github.event.inputs.preview_page }}" ]; then
+              echo ""
+              echo "🎯 Manual preview page: https://deploy-preview-${{ github.event.pull_request.number }}--sunny-cactus-210e3e.netlify.app/${{ github.event.inputs.preview_page }}"
+            fi
           else
+            # Handle manual deployment
+            deploy_message="Manual Deploy from GitHub Actions (commit: ${{ github.sha }})"
+            
+            if [ ! -z "${{ github.event.inputs.preview_page }}" ]; then
+              deploy_message="${deploy_message}\n\n🎯 Preview Page: https://manual-${{ github.run_id }}--sunny-cactus-210e3e.netlify.app/${{ github.event.inputs.preview_page }}"
+            fi
+            
             netlify deploy \
               --dir _build/html/ \
               --site ${{ secrets.NETLIFY_SITE_ID }} \
               --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
               --alias manual-${{ github.run_id }} \
               --context dev \
-              --message "Manual Deploy from GitHub Actions (commit: ${{ github.sha }})" \
+              --message "${deploy_message}" \
               --json
+              
+            echo "✅ Manual deployment completed!"
+            echo "🌐 Preview URL: https://manual-${{ github.run_id }}--sunny-cactus-210e3e.netlify.app/"
+            
+            if [ ! -z "${{ github.event.inputs.preview_page }}" ]; then
+              echo "🎯 Preview page: https://manual-${{ github.run_id }}--sunny-cactus-210e3e.netlify.app/${{ github.event.inputs.preview_page }}"
+            fi
           fi
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
