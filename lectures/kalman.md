@@ -49,7 +49,7 @@ For additional (more advanced) reading on the Kalman filter, see
 * {cite}`Ljungqvist2012`, section 2.7
 * {cite}`AndersonMoore2005`
 
-The second reference presents a  comprehensive treatment of the Kalman filter.
+The second reference presents a comprehensive treatment of the Kalman filter.
 
 Required knowledge: Familiarity with matrix manipulations, multivariate normal distributions, covariance matrices, etc.
 
@@ -60,7 +60,6 @@ import matplotlib.pyplot as plt
 from scipy import linalg
 import jax
 import jax.numpy as jnp
-import numpy as np
 import matplotlib.cm as cm
 from quantecon import Kalman, LinearStateSpace
 from scipy.stats import norm
@@ -89,7 +88,7 @@ One way to summarize our knowledge is a point prediction $\hat{x}$
 
 The density $p$ is called our *prior* for the random variable $x$.
 
-To keep things tractable in our example,  we  assume that our prior is Gaussian.
+To keep things tractable in our example, we assume that our prior is Gaussian.
 
 In particular, we take
 
@@ -386,12 +385,11 @@ the update has used parameters.
 
 $$
 A
-= \left(
-\begin{array}{cc}
+=
+\begin{bmatrix}
     1.2 & 0.0 \\
     0.0 & -0.2
-\end{array}
-  \right),
+\end{bmatrix},
   \qquad
 Q = 0.3 * \Sigma
 $$
@@ -546,11 +544,11 @@ Q := CC' \quad \text{and} \quad R := HH'
 $$
 
 * The class `Kalman` from the [QuantEcon.py](https://quantecon.org/quantecon-py) package has a number of methods, some that we will wait to use until we study more advanced applications in subsequent lectures.
-* Methods pertinent for this lecture  are:
+* Methods pertinent for this lecture are:
     * `prior_to_filtered`, which updates $(\hat x_t, \Sigma_t)$ to $(\hat x_t^F, \Sigma_t^F)$
     * `filtered_to_forecast`, which updates the filtering distribution to the predictive distribution -- which becomes the new prior $(\hat x_{t+1}, \Sigma_{t+1})$
     * `update`, which combines the last two methods
-    * a `stationary_values`, which computes the solution to {eq}`kalman_dare` and the corresponding (stationary) Kalman gain
+    * `stationary_values`, which computes the solution to {eq}`kalman_dare` and the corresponding (stationary) Kalman gain
 
 You can view the program [on GitHub](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/kalman.py).
 
@@ -572,7 +570,7 @@ State dynamics are therefore given by {eq}`kl_xdynam` with $A=1$, $Q=0$ and $x_0
 
 The measurement equation is $y_t = \theta + v_t$ where $v_t$ is $N(0,1)$ and IID.
 
-The task of this exercise to simulate the model and, using the code from `kalman.py`, plot the first five predictive densities $p_t(x) = N(\hat x_t, \Sigma_t)$.
+The task of this exercise is to simulate the model and, using the code from `kalman.py`, plot the first five predictive densities $p_t(x) = N(\hat x_t, \Sigma_t)$.
 
 As shown in {cite}`Ljungqvist2012`, sections 2.9.1--2.9.2, these distributions asymptotically put all mass on the unknown value $\theta$.
 
@@ -610,13 +608,13 @@ y = y.flatten()
 
 # Set up plot
 fig, ax = plt.subplots()
-xgrid = np.linspace(θ - 5, θ + 2, 200)
+xgrid = jnp.linspace(θ - 5, θ + 2, 200)
 
 for i in range(N):
     # Record the current predicted mean and variance
     m, v = kalman.x_hat.item(), kalman.Sigma.item()
     # Plot, update filter
-    ax.plot(xgrid, norm.pdf(xgrid, loc=m, scale=np.sqrt(v)), label=f'$t={i}$')
+    ax.plot(xgrid, norm.pdf(xgrid, loc=m, scale=jnp.sqrt(v)), label=f'$t={i}$')
     kalman.update(y[i])
 
 ax.set_title(f'First {N} densities when $\\theta = {θ:.1f}$')
@@ -668,9 +666,9 @@ x_hat_0, Σ_0 = 8, 1
 kalman = Kalman(ss, x_hat_0, Σ_0)
 
 T = 600
-see = 1234
-z = jnp.empty(T, seed)
-x, y = ss.simulate(T)
+seed = 1234
+z = jnp.empty(T)
+x, y = ss.simulate(T, seed)
 y = y.flatten()
 
 for t in range(T):
@@ -772,14 +770,13 @@ A = jnp.array([[0.5, 0.4],
                [0.6, 0.3]])
 C = jnp.sqrt(0.3) * G
 
-# Set up state space mode, initial value x_0 set to zero
-ss = LinearStateSpace(A, C, G, H, mu_0 = jnp.zeros((2, 1)))
+# Set up state space model, initial value x_0 set to zero
+ss = LinearStateSpace(A, C, G, H, mu_0=jnp.zeros(2))
 
 # Define the prior density
 Σ = jnp.array([[0.9, 0.3],
                [0.3, 0.9]])
-x_hat = jnp.array([[8], 
-                   [8]])
+x_hat = jnp.array([8, 8])
 
 # Initialize the Kalman filter
 kn = Kalman(ss, x_hat, Σ)
