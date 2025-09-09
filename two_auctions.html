@@ -1,15 +1,14 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>81. First-Price and Second-Price Auctions &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>82. First-Price and Second-Price Auctions &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,16 +108,24 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'two_auctions';</script>
     <link rel="canonical" href="https://python.quantecon.org/two_auctions.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="82. Multiple Good Allocation Mechanisms" href="house_auction.html" />
-    <link rel="prev" title="80. Maximum Likelihood Estimation" href="mle.html" />
+    <link rel="next" title="83. Multiple Good Allocation Mechanisms" href="house_auction.html" />
+    <link rel="prev" title="81. Maximum Likelihood Estimation" href="mle.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -167,22 +174,22 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-price-sealed-bid-auction-fpsb">81.1. First-price sealed-bid auction (FPSB)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#characterization-of-fpsb-auction">81.1.1. Characterization of FPSB auction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-price-sealed-bid-auction-fpsb">82.1. First-price sealed-bid auction (FPSB)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#characterization-of-fpsb-auction">82.1.1. Characterization of FPSB auction</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-price-sealed-bid-auction-spsb">81.2. Second-price sealed-bid auction (SPSB)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#characterization-of-spsb-auction">81.3. Characterization of SPSB auction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniform-distribution-of-private-values">81.4. Uniform distribution of private values</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">81.5. Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-price-sealed-bid-auction">81.6. First price sealed bid auction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-price-sealed-bid-auction">81.7. Second price sealed bid auction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-code">81.8. Python code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#revenue-equivalence-theorem">81.9. Revenue equivalence theorem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation-of-bid-price-in-fpsb">81.10. Calculation of  bid price in FPSB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-2-distribution">81.11. <span class="math notranslate nohighlight">\(\chi^2\)</span> Distribution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-summary">81.12. Code summary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">81.13. References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-price-sealed-bid-auction-spsb">82.2. Second-price sealed-bid auction (SPSB)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#characterization-of-spsb-auction">82.3. Characterization of SPSB auction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniform-distribution-of-private-values">82.4. Uniform distribution of private values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">82.5. Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-price-sealed-bid-auction">82.6. First price sealed bid auction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-price-sealed-bid-auction">82.7. Second price sealed bid auction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-code">82.8. Python code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#revenue-equivalence-theorem">82.9. Revenue equivalence theorem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation-of-bid-price-in-fpsb">82.10. Calculation of  bid price in FPSB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-2-distribution">82.11. <span class="math notranslate nohighlight">\(\chi^2\)</span> Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-summary">82.12. Code summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">82.13. References</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -240,7 +247,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="first-price-and-second-price-auctions">
-<h1><span class="section-number">81. </span>First-Price and Second-Price Auctions<a class="headerlink" href="#first-price-and-second-price-auctions" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">82. </span>First-Price and Second-Price Auctions<a class="headerlink" href="#first-price-and-second-price-auctions" title="Link to this heading">#</a></h1>
 <p>This lecture is designed to set the stage for a subsequent lecture about <a class="reference external" href="https://python.quantecon.org/house_auction.html">Multiple Good Allocation Mechanisms</a></p>
 <p>In that lecture, a planner or auctioneer simultaneously allocates several goods to set of people.</p>
 <p>In the present lecture, a single good is allocated to one person within a set of people.</p>
@@ -262,7 +269,7 @@
 </iframe></div><p>Anders Munk-Nielsen put his code <a class="reference external" href="https://github.com/GamEconCph/Lectures-2021/tree/main/Bayesian%20Games">on GitHub</a>.</p>
 <p>Much of our  Python code below is based on his.</p>
 <section id="first-price-sealed-bid-auction-fpsb">
-<h2><span class="section-number">81.1. </span>First-price sealed-bid auction (FPSB)<a class="headerlink" href="#first-price-sealed-bid-auction-fpsb" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.1. </span>First-price sealed-bid auction (FPSB)<a class="headerlink" href="#first-price-sealed-bid-auction-fpsb" title="Link to this heading">#</a></h2>
 <p><strong>Protocols:</strong></p>
 <ul class="simple">
 <li><p>A single good is auctioned.</p></li>
@@ -295,34 +302,34 @@
 <p>To complete the specification of the situation, we’ll  assume that  prospective buyers’ valuations are independently and identically distributed according to a probability distribution that is known by all bidders.</p>
 <p>Bidder optimally chooses to bid less than <span class="math notranslate nohighlight">\(v_i\)</span>.</p>
 <section id="characterization-of-fpsb-auction">
-<h3><span class="section-number">81.1.1. </span>Characterization of FPSB auction<a class="headerlink" href="#characterization-of-fpsb-auction" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">82.1.1. </span>Characterization of FPSB auction<a class="headerlink" href="#characterization-of-fpsb-auction" title="Link to this heading">#</a></h3>
 <p>A FPSB auction has a unique symmetric Bayesian Nash Equilibrium.</p>
 <p>The optimal  bid of buyer <span class="math notranslate nohighlight">\(i\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-optbid1">
-<span class="eqno">(81.1)<a class="headerlink" href="#equation-eq-optbid1" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(82.1)<a class="headerlink" href="#equation-eq-optbid1" title="Link to this equation">#</a></span>\[
 \mathbf{E}[y_{i} | y_{i} &lt; v_{i}]
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(v_{i}\)</span> is  the valuation of bidder <span class="math notranslate nohighlight">\(i\)</span> and  <span class="math notranslate nohighlight">\(y_{i}\)</span> is the maximum valuation of all other bidders:</p>
 <div class="math notranslate nohighlight" id="equation-eq-optbid2">
-<span class="eqno">(81.2)<a class="headerlink" href="#equation-eq-optbid2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(82.2)<a class="headerlink" href="#equation-eq-optbid2" title="Link to this equation">#</a></span>\[
 y_{i} = \max_{j \neq i} v_{j}
 \]</div>
 <p>A proof for this assertion is available  at the <a class="reference external" href="https://en.wikipedia.org/wiki/Vickrey_auction">Wikipedia page</a> about Vickrey auctions</p>
 </section>
 </section>
 <section id="second-price-sealed-bid-auction-spsb">
-<h2><span class="section-number">81.2. </span>Second-price sealed-bid auction (SPSB)<a class="headerlink" href="#second-price-sealed-bid-auction-spsb" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.2. </span>Second-price sealed-bid auction (SPSB)<a class="headerlink" href="#second-price-sealed-bid-auction-spsb" title="Link to this heading">#</a></h2>
 <p><strong>Protocols:</strong> In a  second-price sealed-bid (SPSB) auction,  the winner pays the second-highest bid.</p>
 </section>
 <section id="characterization-of-spsb-auction">
-<h2><span class="section-number">81.3. </span>Characterization of SPSB auction<a class="headerlink" href="#characterization-of-spsb-auction" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.3. </span>Characterization of SPSB auction<a class="headerlink" href="#characterization-of-spsb-auction" title="Link to this heading">#</a></h2>
 <p>In a  SPSB auction  bidders optimally choose to bid their  values.</p>
 <p>Formally, a dominant strategy profile in a SPSB auction with a single, indivisible item has each bidder  bidding its  value.</p>
 <p>A proof is provided at <a class="reference external" href="https://en.wikipedia.org/wiki/Vickrey_auction">the Wikipedia
 page</a> about Vickrey auctions</p>
 </section>
 <section id="uniform-distribution-of-private-values">
-<h2><span class="section-number">81.4. </span>Uniform distribution of private values<a class="headerlink" href="#uniform-distribution-of-private-values" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.4. </span>Uniform distribution of private values<a class="headerlink" href="#uniform-distribution-of-private-values" title="Link to this heading">#</a></h2>
 <p>We assume valuation <span class="math notranslate nohighlight">\(v_{i}\)</span>  of bidder <span class="math notranslate nohighlight">\(i\)</span> is distributed <span class="math notranslate nohighlight">\(v_{i} \stackrel{\text{i.i.d.}}{\sim} U(0,1)\)</span>.</p>
 <p>Under this assumption, we can analytically compute probability  distributions of  prices bid in both  FPSB and SPSB.</p>
 <p>We’ll  simulate outcomes and, by using  a law of large numbers, verify that the simulated outcomes agree with analytical ones.</p>
@@ -330,13 +337,13 @@ page</a> about Vickrey auctions</p>
 <p>To read about the revenue equivalence theorem, see <a class="reference external" href="https://en.wikipedia.org/wiki/Revenue_equivalence">this Wikepedia page</a></p>
 </section>
 <section id="setup">
-<h2><span class="section-number">81.5. </span>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.5. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>There are <span class="math notranslate nohighlight">\(n\)</span> bidders.</p>
 <p>Each bidder knows that there are <span class="math notranslate nohighlight">\(n-1\)</span> other bidders.</p>
 </section>
 <section id="first-price-sealed-bid-auction">
-<h2><span class="section-number">81.6. </span>First price sealed bid auction<a class="headerlink" href="#first-price-sealed-bid-auction" title="Permalink to this heading">#</a></h2>
-<p>An optimal bid  for bidder <span class="math notranslate nohighlight">\(i\)</span> in a <strong>FPSB</strong>  is described by equations <a class="reference internal" href="#equation-eq-optbid1">(81.1)</a> and <a class="reference internal" href="#equation-eq-optbid2">(81.2)</a>.</p>
+<h2><span class="section-number">82.6. </span>First price sealed bid auction<a class="headerlink" href="#first-price-sealed-bid-auction" title="Link to this heading">#</a></h2>
+<p>An optimal bid  for bidder <span class="math notranslate nohighlight">\(i\)</span> in a <strong>FPSB</strong>  is described by equations <a class="reference internal" href="#equation-eq-optbid1">(82.1)</a> and <a class="reference internal" href="#equation-eq-optbid2">(82.2)</a>.</p>
 <p>When bids are i.i.d. draws from a uniform distribution, the CDF of <span class="math notranslate nohighlight">\(y_{i}\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -359,18 +366,18 @@ page</a> about Vickrey auctions</p>
 \end{split}\]</div>
 </section>
 <section id="second-price-sealed-bid-auction">
-<h2><span class="section-number">81.7. </span>Second price sealed bid auction<a class="headerlink" href="#second-price-sealed-bid-auction" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.7. </span>Second price sealed bid auction<a class="headerlink" href="#second-price-sealed-bid-auction" title="Link to this heading">#</a></h2>
 <p>In a  <strong>SPSB</strong>, it is optimal for bidder <span class="math notranslate nohighlight">\(i\)</span> to bid <span class="math notranslate nohighlight">\(v_i\)</span>.</p>
 </section>
 <section id="python-code">
-<h2><span class="section-number">81.8. </span>Python code<a class="headerlink" href="#python-code" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.8. </span>Python code<a class="headerlink" href="#python-code" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
-<span class="kn">import</span> <span class="nn">scipy.interpolate</span> <span class="k">as</span> <span class="nn">interp</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">interp</span>
 
 <span class="c1"># for plots</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;text.usetex&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">})</span>
@@ -455,12 +462,12 @@ page</a> about Vickrey auctions</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/197e72d0f18259c72eb7c827a71bc45e28eebd9e4135b08ee265b3857943eb08.png" src="_images/197e72d0f18259c72eb7c827a71bc45e28eebd9e4135b08ee265b3857943eb08.png" />
+<img alt="_images/f05fe9592d72ae605964c459282fc2a887ea2019ef97ab6bdea7dc37de6e738a.png" src="_images/f05fe9592d72ae605964c459282fc2a887ea2019ef97ab6bdea7dc37de6e738a.png" />
 </div>
 </div>
 </section>
 <section id="revenue-equivalence-theorem">
-<h2><span class="section-number">81.9. </span>Revenue equivalence theorem<a class="headerlink" href="#revenue-equivalence-theorem" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.9. </span>Revenue equivalence theorem<a class="headerlink" href="#revenue-equivalence-theorem" title="Link to this heading">#</a></h2>
 <p>We now compare  FPSB and a SPSB auctions from the point of view of the  revenues that a seller can expect to acquire.</p>
 <p><strong>Expected Revenue FPSB:</strong></p>
 <p>The winner with valuation <span class="math notranslate nohighlight">\(y\)</span> pays <span class="math notranslate nohighlight">\(\frac{n-1}{n}*y\)</span>, where n is the number of bidders.</p>
@@ -508,15 +515,15 @@ page</a> about Vickrey auctions</p>
 The average payment of SPSB: 0.6667. Std.: 0.1782. Median: 0.6862
 </pre></div>
 </div>
-<img alt="_images/2b8417f440a9c2c729647c181c5745f459b89739cf86220c50d9027d7fe04e68.png" src="_images/2b8417f440a9c2c729647c181c5745f459b89739cf86220c50d9027d7fe04e68.png" />
+<img alt="_images/6b6209841d5d3a2860308064e0aa5e8842069a8ca79a5da843a3da759fdad61e.png" src="_images/6b6209841d5d3a2860308064e0aa5e8842069a8ca79a5da843a3da759fdad61e.png" />
 </div>
 </div>
 <p><strong><center>Summary of FPSB and SPSB results with uniform distribution on <span class="math notranslate nohighlight">\([0,1]\)</span></center></strong></p>
-<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="text-center head"><p>Auction: Sealed-Bid</p></th>
-<th class="text-center head"><p>First-Price</p></th>
-<th class="text-center head"><p>Second-Price</p></th>
+<tr class="row-odd"><th class="head text-center"><p>Auction: Sealed-Bid</p></th>
+<th class="head text-center"><p>First-Price</p></th>
+<th class="head text-center"><p>Second-Price</p></th>
 </tr>
 </thead>
 <tbody>
@@ -559,8 +566,8 @@ b(v_{i})\mathbf{P}(y_{i} &lt; v_{i}) + 0 * \mathbf{P}(y_{i} \ge v_{i}) = \mathbf
 <p>It follows that an optimal bidding strategy in a FPSB auction is <span class="math notranslate nohighlight">\(b(v_{i}) = \mathbf{E}_{y_{i}}[y_{i} | y_{i} &lt; v_{i}]\)</span>.</p>
 </section>
 <section id="calculation-of-bid-price-in-fpsb">
-<h2><span class="section-number">81.10. </span>Calculation of  bid price in FPSB<a class="headerlink" href="#calculation-of-bid-price-in-fpsb" title="Permalink to this heading">#</a></h2>
-<p>In equations <a class="reference internal" href="#equation-eq-optbid1">(81.1)</a> and <a class="reference internal" href="#equation-eq-optbid2">(81.2)</a>, we displayed formulas for
+<h2><span class="section-number">82.10. </span>Calculation of  bid price in FPSB<a class="headerlink" href="#calculation-of-bid-price-in-fpsb" title="Link to this heading">#</a></h2>
+<p>In equations <a class="reference internal" href="#equation-eq-optbid1">(82.1)</a> and <a class="reference internal" href="#equation-eq-optbid2">(82.2)</a>, we displayed formulas for
 optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -576,7 +583,7 @@ optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
 <p>Instead, we can  compute  bid prices in FPSB auctions numerically as functions of the distribution of private values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">evaluate_largest</span><span class="p">(</span><span class="n">v_hat</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_largest</span><span class="p">(</span><span class="n">v_hat</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A method to estimate the largest (or certain-order largest) value of the other biders,</span>
 <span class="sd">    conditional on player 1 wins the auction.</span>
@@ -639,12 +646,12 @@ optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a67d309d49f16dc0353e7f0d2bdaec59971eafeaf84712ec5d7e60c7a8d897f4.png" src="_images/a67d309d49f16dc0353e7f0d2bdaec59971eafeaf84712ec5d7e60c7a8d897f4.png" />
+<img alt="_images/e84a891b96ed7ed3bb4c174573f815bde54a3146544043e956ea42667b3eede3.png" src="_images/e84a891b96ed7ed3bb4c174573f815bde54a3146544043e956ea42667b3eede3.png" />
 </div>
 </div>
 </section>
 <section id="chi-2-distribution">
-<h2><span class="section-number">81.11. </span><span class="math notranslate nohighlight">\(\chi^2\)</span> Distribution<a class="headerlink" href="#chi-2-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.11. </span><span class="math notranslate nohighlight">\(\chi^2\)</span> Distribution<a class="headerlink" href="#chi-2-distribution" title="Link to this heading">#</a></h2>
 <p>Let’s try an example in which the distribution of private values is a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution.</p>
 <p>We’ll start by taking a look at a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution with the help of the following Python code:</p>
 <div class="cell docutils container">
@@ -659,7 +666,7 @@ optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1101354851a6ea475ea6ac3570e19c16c1c586375ab20f447b32df126b435abb.png" src="_images/1101354851a6ea475ea6ac3570e19c16c1c586375ab20f447b32df126b435abb.png" />
+<img alt="_images/e9040a40d32a235797631e078e82f3f3c06225c7bda1ea96281e896d48cbea21.png" src="_images/e9040a40d32a235797631e078e82f3f3c06225c7bda1ea96281e896d48cbea21.png" />
 </div>
 </div>
 <p>Now we’ll get Python to construct a bid price function</p>
@@ -709,7 +716,7 @@ optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c0c0e7674177747545f81781045fbe14c1062f42af65a8dda680ea73617a6bf2.png" src="_images/c0c0e7674177747545f81781045fbe14c1062f42af65a8dda680ea73617a6bf2.png" />
+<img alt="_images/33371dc327a551d3695776ed99936d408ac293e7fdbd177f7fd748a085da17d4.png" src="_images/33371dc327a551d3695776ed99936d408ac293e7fdbd177f7fd748a085da17d4.png" />
 </div>
 </div>
 <p>Now we can use Python to compute the probability distribution of the price paid by the winning bidder</p>
@@ -760,18 +767,18 @@ optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
 The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 </pre></div>
 </div>
-<img alt="_images/87d2d85c13464693651020ed544d16c47258c07866e83e9f74988e3ef569a921.png" src="_images/87d2d85c13464693651020ed544d16c47258c07866e83e9f74988e3ef569a921.png" />
+<img alt="_images/7e0c23f6a3c2c783aaf5db9c65cbdbc8f483b67b99b4c9a7923bd6b36f4d4662.png" src="_images/7e0c23f6a3c2c783aaf5db9c65cbdbc8f483b67b99b4c9a7923bd6b36f4d4662.png" />
 </div>
 </div>
 </section>
 <section id="code-summary">
-<h2><span class="section-number">81.12. </span>Code summary<a class="headerlink" href="#code-summary" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.12. </span>Code summary<a class="headerlink" href="#code-summary" title="Link to this heading">#</a></h2>
 <p>We assemble the functions that we have used into a Python  class</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">bid_price_solution</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">bid_price_solution</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A class that can plot the value distribution of bidders,</span>
 <span class="sd">        compute the optimal bid price for bidders in FPSB</span>
@@ -788,14 +795,14 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">plot_value_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_value_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value_mat</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Values: $v$&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">evaluate_largest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_hat</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_largest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_hat</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">N</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_mat</span><span class="o">.</span><span class="n">shape</span>
 
         <span class="c1"># drop the first row because we assume first row is the winner&#39;s bid</span>
@@ -814,7 +821,7 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">order_largest_bids</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">compute_optimal_bid_FPSB</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_optimal_bid_FPSB</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># we compute the quantile of v as our grid</span>
         <span class="n">pct_quantile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">v_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value_mat</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">q</span><span class="o">=</span><span class="n">pct_quantile</span><span class="p">)</span>
@@ -846,7 +853,7 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">plot_winner_payment_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_winner_payment_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_star_num</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value_mat</span><span class="p">)</span>
 
         <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -903,7 +910,7 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1101354851a6ea475ea6ac3570e19c16c1c586375ab20f447b32df126b435abb.png" src="_images/1101354851a6ea475ea6ac3570e19c16c1c586375ab20f447b32df126b435abb.png" />
+<img alt="_images/e9040a40d32a235797631e078e82f3f3c06225c7bda1ea96281e896d48cbea21.png" src="_images/e9040a40d32a235797631e078e82f3f3c06225c7bda1ea96281e896d48cbea21.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -913,7 +920,7 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c0c0e7674177747545f81781045fbe14c1062f42af65a8dda680ea73617a6bf2.png" src="_images/c0c0e7674177747545f81781045fbe14c1062f42af65a8dda680ea73617a6bf2.png" />
+<img alt="_images/33371dc327a551d3695776ed99936d408ac293e7fdbd177f7fd748a085da17d4.png" src="_images/33371dc327a551d3695776ed99936d408ac293e7fdbd177f7fd748a085da17d4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -927,12 +934,12 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 </pre></div>
 </div>
-<img alt="_images/87d2d85c13464693651020ed544d16c47258c07866e83e9f74988e3ef569a921.png" src="_images/87d2d85c13464693651020ed544d16c47258c07866e83e9f74988e3ef569a921.png" />
+<img alt="_images/7e0c23f6a3c2c783aaf5db9c65cbdbc8f483b67b99b4c9a7923bd6b36f4d4662.png" src="_images/7e0c23f6a3c2c783aaf5db9c65cbdbc8f483b67b99b4c9a7923bd6b36f4d4662.png" />
 </div>
 </div>
 </section>
 <section id="references">
-<h2><span class="section-number">81.13. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">82.13. </span>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>Wikipedia for FPSB: <a class="reference external" href="https://en.wikipedia.org/wiki/First-price_sealed-bid_auction">https://en.wikipedia.org/wiki/First-price_sealed-bid_auction</a></p></li>
 <li><p>Wikipedia for SPSB: <a class="reference external" href="https://en.wikipedia.org/wiki/Vickrey_auction">https://en.wikipedia.org/wiki/Vickrey_auction</a></p></li>
@@ -975,6 +982,8 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1432,6 +1441,11 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1441,17 +1455,17 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1463,17 +1477,17 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1485,12 +1499,12 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1502,17 +1516,17 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1652,7 +1666,7 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

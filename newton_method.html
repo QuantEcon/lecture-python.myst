@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>7. Using Newton’s Method to Solve Economic Models &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'newton_method';</script>
     <link rel="canonical" href="https://python.quantecon.org/newton_method.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="8. Elementary Probability with Matrices" href="prob_matrix.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -251,8 +258,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="using-newtons-method-to-solve-economic-models">
-<span id="index-0"></span><h1><a class="toc-backref" href="#id1"><span class="section-number">7. </span>Using Newton’s Method to Solve Economic Models</a><a class="headerlink" href="#using-newtons-method-to-solve-economic-models" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1" role="doc-backlink"><span class="section-number">7. </span>Using Newton’s Method to Solve Economic Models</a><a class="headerlink" href="#using-newtons-method-to-solve-economic-models" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#using-newtons-method-to-solve-economic-models" id="id1">Using Newton’s Method to Solve Economic Models</a></p>
@@ -265,14 +272,13 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><strong>GPU:</strong> A version of this lecture which makes use of <a class="reference external" href="https://jax.readthedocs.io">jax</a> to run the code
-on a <code class="docutils literal notranslate"><span class="pre">GPU</span></code> is <a class="reference external" href="https://jax.quantecon.org/newtons_method.html">available here</a></p>
+<p>A version of this lecture using <a class="reference external" href="https://github.com/jax-ml/jax">JAX</a> is <a class="reference external" href="https://jax.quantecon.org/newtons_method.html" title="(in Project name not set)"><span class="xref std std-doc">available here</span></a></p>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">7.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">7.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>Many economic problems involve finding <a class="reference external" href="https://en.wikipedia.org/wiki/Fixed_point_(mathematics)">fixed
 points</a> or
 <a class="reference external" href="https://en.wikipedia.org/wiki/Zero_of_a_function">zeros</a> (sometimes called
@@ -319,7 +325,7 @@ differentiation in <a class="reference external" href="https://github.com/HIPS/a
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading autograd-1.8.0-py3-none-any.whl.metadata (7.5 kB)
-Requirement already satisfied: numpy&lt;3 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from autograd) (1.26.4)
+Requirement already satisfied: numpy&lt;3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from autograd) (2.1.3)
 Downloading autograd-1.8.0-py3-none-any.whl (51 kB)
 </pre></div>
 </div>
@@ -335,32 +341,30 @@ Downloading autograd-1.8.0-py3-none-any.whl (51 kB)
 <p>We use the following imports in this lecture</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">root</span>
-<span class="kn">from</span> <span class="nn">autograd</span> <span class="kn">import</span> <span class="n">jacobian</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">root</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">autograd</span><span class="w"> </span><span class="kn">import</span> <span class="n">jacobian</span>
 <span class="c1"># Thinly-wrapped numpy to enable automatic differentiation</span>
-<span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">5.7</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">autograd.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="fixed-point-computation-using-newtons-method">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">7.2. </span>Fixed Point Computation Using Newton’s Method</a><a class="headerlink" href="#fixed-point-computation-using-newtons-method" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">7.2. </span>Fixed Point Computation Using Newton’s Method</a><a class="headerlink" href="#fixed-point-computation-using-newtons-method" title="Link to this heading">#</a></h2>
 <p>In this section we solve the fixed point of the law of motion for capital in
 the setting of the <a class="reference external" href="https://en.wikipedia.org/wiki/Solow%E2%80%93Swan_model">Solow growth
 model</a>.</p>
 <p>We will inspect the fixed point visually, solve it by successive
 approximation, and then apply Newton’s method to achieve faster convergence.</p>
 <section id="the-solow-model">
-<span id="solow"></span><h3><span class="section-number">7.2.1. </span>The Solow Model<a class="headerlink" href="#the-solow-model" title="Permalink to this heading">#</a></h3>
+<span id="solow"></span><h3><span class="section-number">7.2.1. </span>The Solow Model<a class="headerlink" href="#the-solow-model" title="Link to this heading">#</a></h3>
 <p>In the Solow growth model, assuming Cobb-Douglas production technology and
 zero population growth, the law of motion for capital is</p>
 <div class="math notranslate nohighlight" id="equation-motion-law">
-<span class="eqno">(7.1)<a class="headerlink" href="#equation-motion-law" title="Permalink to this equation">#</a></span>\[    k_{t+1} = g(k_t) \quad \text{where} \quad
+<span class="eqno">(7.1)<a class="headerlink" href="#equation-motion-law" title="Link to this equation">#</a></span>\[    k_{t+1} = g(k_t) \quad \text{where} \quad
     g(k) := sAk^\alpha + (1-\delta) k\]</div>
 <p>Here</p>
 <ul class="simple">
@@ -381,7 +385,7 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 \[ k^* = \left(\frac{s A}{δ}\right)^{1/(1 - α)}  \]</div>
 </section>
 <section id="implementation">
-<h3><span class="section-number">7.2.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.2.2. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h3>
 <p>Let’s store our parameters in <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.namedtuple"><code class="docutils literal notranslate"><span class="pre">namedtuple</span></code></a> to help us keep our code clean and concise.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -393,7 +397,7 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 <p>This function creates a suitable <code class="docutils literal notranslate"><span class="pre">namedtuple</span></code> with default parameter values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_solow_params</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_solow_params</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
     <span class="s2">&quot;Creates a Solow model parameterization with default values.&quot;</span>
     <span class="k">return</span> <span class="n">SolowParameters</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="n">δ</span><span class="p">)</span>
 </pre></div>
@@ -403,11 +407,11 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 <p>The next two functions implement the law of motion <a class="reference internal" href="#equation-motion-law">(7.1)</a> and store the true fixed point <span class="math notranslate nohighlight">\(k^*\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">g</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
     <span class="n">A</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">δ</span> <span class="o">=</span> <span class="n">params</span>
     <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="n">s</span> <span class="o">*</span> <span class="n">k</span><span class="o">**</span><span class="n">α</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">δ</span><span class="p">)</span> <span class="o">*</span> <span class="n">k</span>
     
-<span class="k">def</span> <span class="nf">exact_fixed_point</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">exact_fixed_point</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
     <span class="n">A</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">δ</span> <span class="o">=</span> <span class="n">params</span>
     <span class="k">return</span> <span class="p">((</span><span class="n">s</span> <span class="o">*</span> <span class="n">A</span><span class="p">)</span> <span class="o">/</span> <span class="n">δ</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">))</span>
 </pre></div>
@@ -417,7 +421,7 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 <p>Here is a function to provide a 45 degree plot of the dynamics.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_45</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_45</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">):</span>
     
     <span class="n">k_min</span><span class="p">,</span> <span class="n">k_max</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">3.0</span>
     <span class="n">k_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">k_min</span><span class="p">,</span> <span class="n">k_max</span><span class="p">,</span> <span class="mi">1200</span><span class="p">)</span>
@@ -460,7 +464,7 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f956bc432dacf080faeefae387dee7fec41db96bd059f9eee7c3a6591a1b6d58.png" src="_images/f956bc432dacf080faeefae387dee7fec41db96bd059f9eee7c3a6591a1b6d58.png" />
+<img alt="_images/10471d4ffe2c8f37e91a09de840fc9c08231ac3ee57b96418d82c313f0a23870.png" src="_images/10471d4ffe2c8f37e91a09de840fc9c08231ac3ee57b96418d82c313f0a23870.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -473,19 +477,19 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ff74f7f673aabc456501e52e2d24389237c4edad58433584fe8420fe99cd8836.png" src="_images/ff74f7f673aabc456501e52e2d24389237c4edad58433584fe8420fe99cd8836.png" />
+<img alt="_images/527d96170b775de3306ce35b6581c3d5a9fbdf58f64c26c40b996a05ccbd002c.png" src="_images/527d96170b775de3306ce35b6581c3d5a9fbdf58f64c26c40b996a05ccbd002c.png" />
 </div>
 </div>
 <p>We see that <span class="math notranslate nohighlight">\(k^*\)</span> is indeed the unique positive fixed point.</p>
 <section id="successive-approximation">
-<h4><span class="section-number">7.2.2.1. </span>Successive Approximation<a class="headerlink" href="#successive-approximation" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.2.2.1. </span>Successive Approximation<a class="headerlink" href="#successive-approximation" title="Link to this heading">#</a></h4>
 <p>First let’s compute the fixed point using successive approximation.</p>
 <p>In this case, successive approximation means repeatedly updating capital
 from some initial state <span class="math notranslate nohighlight">\(k_0\)</span> using the law of motion.</p>
 <p>Here’s a time series from a particular choice of <span class="math notranslate nohighlight">\(k_0\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_iterates</span><span class="p">(</span><span class="n">k_0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_iterates</span><span class="p">(</span><span class="n">k_0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
     <span class="s2">&quot;Compute time series of length n generated by arbitrary function f.&quot;</span>
     <span class="n">k</span> <span class="o">=</span> <span class="n">k_0</span>
     <span class="n">k_iterates</span> <span class="o">=</span> <span class="p">[]</span>
@@ -513,7 +517,7 @@ from some initial state <span class="math notranslate nohighlight">\(k_0\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/262e1918ff7d48beddc356e4b6961ee24b31f38c10d6c3ac3ac01901d5e39506.png" src="_images/262e1918ff7d48beddc356e4b6961ee24b31f38c10d6c3ac3ac01901d5e39506.png" />
+<img alt="_images/75c7bc5326d7cc9534bf92cd157fcd9eed0c24232fe98d35185b42f15129e304.png" src="_images/75c7bc5326d7cc9534bf92cd157fcd9eed0c24232fe98d35185b42f15129e304.png" />
 </div>
 </div>
 <p>Let’s see the output for a long time series.</p>
@@ -546,7 +550,7 @@ from some initial state <span class="math notranslate nohighlight">\(k_0\)</span
 </div>
 </section>
 <section id="newtons-method">
-<h4><span class="section-number">7.2.2.2. </span>Newton’s Method<a class="headerlink" href="#newtons-method" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.2.2.2. </span>Newton’s Method<a class="headerlink" href="#newtons-method" title="Link to this heading">#</a></h4>
 <p>In general, when applying Newton’s fixed point method to some function <span class="math notranslate nohighlight">\(g\)</span>,
 we start with a guess <span class="math notranslate nohighlight">\(x_0\)</span> of the fixed
 point and then update by solving for the fixed point of a tangent line at
@@ -555,7 +559,7 @@ point and then update by solving for the fixed point of a tangent line at
 (i.e., the first order Taylor approximation of <span class="math notranslate nohighlight">\(g\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span>) is
 the function</p>
 <div class="math notranslate nohighlight" id="equation-motivation">
-<span class="eqno">(7.2)<a class="headerlink" href="#equation-motivation" title="Permalink to this equation">#</a></span>\[\hat g(x) \approx g(x_0)+g'(x_0)(x-x_0)\]</div>
+<span class="eqno">(7.2)<a class="headerlink" href="#equation-motivation" title="Link to this equation">#</a></span>\[\hat g(x) \approx g(x_0)+g'(x_0)(x-x_0)\]</div>
 <p>We solve for the fixed point of <span class="math notranslate nohighlight">\(\hat g\)</span> by calculating the <span class="math notranslate nohighlight">\(x_1\)</span> that solves</p>
 <div class="math notranslate nohighlight">
 \[
@@ -563,15 +567,15 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 \]</div>
 <p>Generalising the process above, Newton’s fixed point method iterates on</p>
 <div class="math notranslate nohighlight" id="equation-newtons-method">
-<span class="eqno">(7.3)<a class="headerlink" href="#equation-newtons-method" title="Permalink to this equation">#</a></span>\[x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
+<span class="eqno">(7.3)<a class="headerlink" href="#equation-newtons-method" title="Link to this equation">#</a></span>\[x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
 \quad x_0 \text{ given}\]</div>
 <p>To implement Newton’s method we observe that the derivative of the law of motion for capital <a class="reference internal" href="#equation-motion-law">(7.1)</a> is</p>
 <div class="math notranslate nohighlight" id="equation-newton-method2">
-<span class="eqno">(7.4)<a class="headerlink" href="#equation-newton-method2" title="Permalink to this equation">#</a></span>\[g'(k) = \alpha s A k^{\alpha-1} + (1-\delta)\]</div>
+<span class="eqno">(7.4)<a class="headerlink" href="#equation-newton-method2" title="Link to this equation">#</a></span>\[g'(k) = \alpha s A k^{\alpha-1} + (1-\delta)\]</div>
 <p>Let’s define this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Dg</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">Dg</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
     <span class="n">A</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">δ</span> <span class="o">=</span> <span class="n">params</span>
     <span class="k">return</span> <span class="n">α</span> <span class="o">*</span> <span class="n">A</span> <span class="o">*</span> <span class="n">s</span> <span class="o">*</span> <span class="n">k</span><span class="o">**</span><span class="p">(</span><span class="n">α</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">δ</span><span class="p">)</span>
 </pre></div>
@@ -581,7 +585,7 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 <p>Here’s a function <span class="math notranslate nohighlight">\(q\)</span> representing <a class="reference internal" href="#equation-newtons-method">(7.3)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">q</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="o">-</span> <span class="n">Dg</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Dg</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">params</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -590,7 +594,7 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 <p>Now let’s plot some trajectories.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_trajectories</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_trajectories</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> 
                       <span class="n">k0_a</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># first initial condition</span>
                       <span class="n">k0_b</span><span class="o">=</span><span class="mf">3.1</span><span class="p">,</span>  <span class="c1"># second initial condition</span>
                       <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>      <span class="c1"># length of time series</span>
@@ -632,7 +636,7 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e375c7a1a37047591a17e1a2c958105120621c657d14fd72f92465edf2faa5df.png" src="_images/e375c7a1a37047591a17e1a2c958105120621c657d14fd72f92465edf2faa5df.png" />
+<img alt="_images/b7a47ed5953fa6a866d398b6201f9a916dca851aeed336d1403ee68725952743.png" src="_images/b7a47ed5953fa6a866d398b6201f9a916dca851aeed336d1403ee68725952743.png" />
 </div>
 </div>
 <p>We can see that Newton’s method converges faster than successive approximation.</p>
@@ -640,14 +644,14 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 </section>
 </section>
 <section id="root-finding-in-one-dimension">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">7.3. </span>Root-Finding in One Dimension</a><a class="headerlink" href="#root-finding-in-one-dimension" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">7.3. </span>Root-Finding in One Dimension</a><a class="headerlink" href="#root-finding-in-one-dimension" title="Link to this heading">#</a></h2>
 <p>In the previous section we computed fixed points.</p>
 <p>In fact Newton’s method is more commonly associated with the problem of
 finding zeros of functions.</p>
 <p>Let’s discuss this “root-finding” problem and then show how it is connected to
 the problem of finding fixed points.</p>
 <section id="newtons-method-for-zeros">
-<h3><span class="section-number">7.3.1. </span>Newton’s Method for Zeros<a class="headerlink" href="#newtons-method-for-zeros" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.3.1. </span>Newton’s Method for Zeros<a class="headerlink" href="#newtons-method-for-zeros" title="Link to this heading">#</a></h3>
 <p>Let’s suppose we want to find an <span class="math notranslate nohighlight">\(x\)</span> such that <span class="math notranslate nohighlight">\(f(x)=0\)</span> for some smooth
 function <span class="math notranslate nohighlight">\(f\)</span> mapping real numbers to real numbers.</p>
 <p>Suppose we have a guess <span class="math notranslate nohighlight">\(x_0\)</span> and we want to update it to a new point <span class="math notranslate nohighlight">\(x_1\)</span>.</p>
@@ -665,16 +669,16 @@ x_1 = x_0 - \frac{ f(x_0) }{ f'(x_0) },
 \]</div>
 <p>Generalizing the formula above, for one-dimensional zero-finding problems, Newton’s method iterates on</p>
 <div class="math notranslate nohighlight" id="equation-oned-newton">
-<span class="eqno">(7.5)<a class="headerlink" href="#equation-oned-newton" title="Permalink to this equation">#</a></span>\[x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
+<span class="eqno">(7.5)<a class="headerlink" href="#equation-oned-newton" title="Link to this equation">#</a></span>\[x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
 \quad x_0 \text{ given}\]</div>
 <p>The following code implements the iteration <a class="reference internal" href="#equation-oned-newton">(7.5)</a></p>
 <div class="cell docutils container" id="first-newton-attempt">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Df</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Df</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">):</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
 
     <span class="c1"># Implement the zero-finding formula</span>
-    <span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">q</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">Df</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
     <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
@@ -699,7 +703,7 @@ automatic differentiation or GPU acceleration, it will be helpful to know how
 to implement Newton’s method ourselves.)</p>
 </section>
 <section id="application-to-finding-fixed-points">
-<h3><span class="section-number">7.3.2. </span>Application to Finding Fixed Points<a class="headerlink" href="#application-to-finding-fixed-points" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.3.2. </span>Application to Finding Fixed Points<a class="headerlink" href="#application-to-finding-fixed-points" title="Link to this heading">#</a></h3>
 <p>Now consider again the Solow fixed-point calculation, where we solve for <span class="math notranslate nohighlight">\(k\)</span>
 satisfying <span class="math notranslate nohighlight">\(g(k) = k\)</span>.</p>
 <p>We can convert to this to a zero-finding problem by setting <span class="math notranslate nohighlight">\(f(x) := g(x)-x\)</span>.</p>
@@ -740,7 +744,7 @@ iteration 5, error = 0.00000
 </section>
 </section>
 <section id="multivariate-newtons-method">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">7.4. </span>Multivariate Newton’s Method</a><a class="headerlink" href="#multivariate-newtons-method" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">7.4. </span>Multivariate Newton’s Method</a><a class="headerlink" href="#multivariate-newtons-method" title="Link to this heading">#</a></h2>
 <p>In this section, we introduce a two-good problem, present a
 visualization of the problem, and solve for the equilibrium of the two-good market
 using both a zero finder in <code class="docutils literal notranslate"><span class="pre">SciPy</span></code> and Newton’s method.</p>
@@ -748,7 +752,7 @@ using both a zero finder in <code class="docutils literal notranslate"><span cla
 performance of the two methods again.</p>
 <p>We will see a significant performance gain when using Netwon’s method.</p>
 <section id="a-two-goods-market-equilibrium">
-<span id="two-goods-market"></span><h3><span class="section-number">7.4.1. </span>A Two Goods Market Equilibrium<a class="headerlink" href="#a-two-goods-market-equilibrium" title="Permalink to this heading">#</a></h3>
+<span id="two-goods-market"></span><h3><span class="section-number">7.4.1. </span>A Two Goods Market Equilibrium<a class="headerlink" href="#a-two-goods-market-equilibrium" title="Link to this heading">#</a></h3>
 <p>Let’s start by computing the market equilibrium of a two-good problem.</p>
 <p>We consider a market for two related products, good 0 and good 1, with
 price vector <span class="math notranslate nohighlight">\(p = (p_0, p_1)\)</span></p>
@@ -790,7 +794,7 @@ A = \begin{bmatrix}
 \end{split}\]</div>
 <p>for this particular question.</p>
 <section id="a-graphical-exploration">
-<h4><span class="section-number">7.4.1.1. </span>A Graphical Exploration<a class="headerlink" href="#a-graphical-exploration" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.4.1.1. </span>A Graphical Exploration<a class="headerlink" href="#a-graphical-exploration" title="Link to this heading">#</a></h4>
 <p>Since our problem is only two-dimensional, we can use graphical analysis to visualize and help understand the problem.</p>
 <p>Our first step is to define the excess demand function</p>
 <div class="math notranslate nohighlight">
@@ -804,7 +808,7 @@ e(p) =
 <p>The function below calculates the excess demand for given parameters</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">A</span> <span class="o">@</span> <span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -861,7 +865,7 @@ The excess demand for good 1 is 0.699
 <p>We will use the following function to build the contour plots</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_excess_demand</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">good</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">grid_max</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_excess_demand</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">good</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">grid_max</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">surface</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
     <span class="c1"># Create a 100x100 grid</span>
     <span class="n">p_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
@@ -894,7 +898,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/65987f6895fea6bc7de3b7967808d82424186b760ad9b8141257d00e73984232.png" src="_images/65987f6895fea6bc7de3b7967808d82424186b760ad9b8141257d00e73984232.png" />
+<img alt="_images/207633612cb756c4c887598fa7bd27704e21c61d0c397aea8995ed64720fc794.png" src="_images/207633612cb756c4c887598fa7bd27704e21c61d0c397aea8995ed64720fc794.png" />
 </div>
 </div>
 <p>Here’s our plot of <span class="math notranslate nohighlight">\(e_1\)</span>:</p>
@@ -907,7 +911,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d295a6ba857859e561de7ed57938f891dcaa3757dc37fa80a4d657b19da13cb1.png" src="_images/d295a6ba857859e561de7ed57938f891dcaa3757dc37fa80a4d657b19da13cb1.png" />
+<img alt="_images/b55af7a9334924a970a2fab6edadf7c5f250e28466447eda558c547a78ba8acf.png" src="_images/b55af7a9334924a970a2fab6edadf7c5f250e28466447eda558c547a78ba8acf.png" />
 </div>
 </div>
 <p>We see the black contour line of zero, which tells us when <span class="math notranslate nohighlight">\(e_i(p)=0\)</span>.</p>
@@ -923,13 +927,13 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/be8ffc184143d406ce85934004b5e3d5266b8d92b79e8787881a73b11adea7ca.png" src="_images/be8ffc184143d406ce85934004b5e3d5266b8d92b79e8787881a73b11adea7ca.png" />
+<img alt="_images/394c1f0397f5b95124db0fee0d22bdaf3555ca29268df4a4c9cacdf1ce7acf40.png" src="_images/394c1f0397f5b95124db0fee0d22bdaf3555ca29268df4a4c9cacdf1ce7acf40.png" />
 </div>
 </div>
 <p>It seems there is an equilibrium close to <span class="math notranslate nohighlight">\(p = (1.6, 1.5)\)</span>.</p>
 </section>
 <section id="using-a-multidimensional-root-finder">
-<h4><span class="section-number">7.4.1.2. </span>Using a Multidimensional Root Finder<a class="headerlink" href="#using-a-multidimensional-root-finder" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.4.1.2. </span>Using a Multidimensional Root Finder<a class="headerlink" href="#using-a-multidimensional-root-finder" title="Link to this heading">#</a></h4>
 <p>To solve for <span class="math notranslate nohighlight">\(p^*\)</span> more precisely, we use a zero-finding algorithm from <code class="docutils literal notranslate"><span class="pre">scipy.optimize</span></code>.</p>
 <p>We supply <span class="math notranslate nohighlight">\(p = (1, 1)\)</span> as our initial guess.</p>
 <div class="cell docutils container">
@@ -948,8 +952,8 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 192 μs, sys: 13 μs, total: 205 μs
-Wall time: 207 μs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 226 μs, sys: 0 ns, total: 226 μs
+Wall time: 232 μs
 </pre></div>
 </div>
 </div>
@@ -976,7 +980,7 @@ Wall time: 207 μs
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.036149027162537e-13
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(2.0383694732117874e-13)
 </pre></div>
 </div>
 </div>
@@ -984,7 +988,7 @@ Wall time: 207 μs
 <p>This is indeed a very small error.</p>
 </section>
 <section id="adding-gradient-information">
-<h4><span class="section-number">7.4.1.3. </span>Adding Gradient Information<a class="headerlink" href="#adding-gradient-information" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.4.1.3. </span>Adding Gradient Information<a class="headerlink" href="#adding-gradient-information" title="Link to this heading">#</a></h4>
 <p>In many cases, for zero-finding algorithms applied to smooth functions, supplying the <a class="reference external" href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">Jacobian</a> of the function leads to better convergence properties.</p>
 <p>Here we manually calculate the elements of the Jacobian</p>
 <div class="math notranslate nohighlight">
@@ -997,7 +1001,7 @@ J(p) =
 \end{split}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">jacobian_e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">jacobian_e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="n">p_0</span><span class="p">,</span> <span class="n">p_1</span> <span class="o">=</span> <span class="n">p</span>
     <span class="n">a_00</span><span class="p">,</span> <span class="n">a_01</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
     <span class="n">a_10</span><span class="p">,</span> <span class="n">a_11</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
@@ -1023,8 +1027,8 @@ J(p) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 330 μs, sys: 0 ns, total: 330 μs
-Wall time: 322 μs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 291 μs, sys: 21 μs, total: 312 μs
+Wall time: 316 μs
 </pre></div>
 </div>
 </div>
@@ -1038,17 +1042,17 @@ Wall time: 322 μs
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.3322676295501878e-15
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(1.3322676295501878e-15)
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="using-newtons-method">
-<h4><span class="section-number">7.4.1.4. </span>Using Newton’s Method<a class="headerlink" href="#using-newtons-method" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.4.1.4. </span>Using Newton’s Method<a class="headerlink" href="#using-newtons-method" title="Link to this heading">#</a></h4>
 <p>Now let’s use Newton’s method to compute the equilibrium price using the multivariate version of Newton’s method</p>
 <div class="math notranslate nohighlight" id="equation-multi-newton">
-<span class="eqno">(7.6)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
+<span class="eqno">(7.6)<a class="headerlink" href="#equation-multi-newton" title="Link to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
 <p>This is a multivariate version of <a class="reference internal" href="#equation-oned-newton">(7.5)</a></p>
 <p>(Here <span class="math notranslate nohighlight">\(J_e(p_n)\)</span> is the Jacobian of <span class="math notranslate nohighlight">\(e\)</span> evaluated at <span class="math notranslate nohighlight">\(p_n\)</span>.)</p>
 <p>The iteration starts from some initial guess of the price vector <span class="math notranslate nohighlight">\(p_0\)</span>.</p>
@@ -1056,7 +1060,7 @@ Wall time: 322 μs
 <p>With only slight modification, we can generalize <a class="reference internal" href="#first-newton-attempt"><span class="std std-ref">our previous attempt</span></a> to multi-dimensional problems</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
     <span class="n">q</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">jacobian</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
     <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
@@ -1079,7 +1083,7 @@ Wall time: 322 μs
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span> <span class="o">+</span> <span class="n">c</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1101,8 +1105,8 @@ iteration 4, error = 0.00000
 
 Result = [1.57080182 1.46928838] 
 
-CPU times: user 1.92 ms, sys: 998 μs, total: 2.92 ms
-Wall time: 2.7 ms
+CPU times: user 2.39 ms, sys: 28 μs, total: 2.42 ms
+Wall time: 2.26 ms
 </pre></div>
 </div>
 </div>
@@ -1114,7 +1118,7 @@ Wall time: 2.7 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.461053500406706e-13
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(1.4632739464559563e-13)
 </pre></div>
 </div>
 </div>
@@ -1124,10 +1128,10 @@ Wall time: 2.7 ms
 </section>
 </section>
 <section id="a-high-dimensional-problem">
-<h3><span class="section-number">7.4.2. </span>A High-Dimensional Problem<a class="headerlink" href="#a-high-dimensional-problem" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.4.2. </span>A High-Dimensional Problem<a class="headerlink" href="#a-high-dimensional-problem" title="Link to this heading">#</a></h3>
 <p>Our next step is to investigate a large market with 3,000 goods.</p>
 <p>A JAX version of this section using GPU accelerated linear algebra and
-automatic differentiation is available <a class="reference external" href="https://jax.quantecon.org/newtons_method.html#application">here</a></p>
+automatic differentiation is <a class="reference external" href="https://jax.quantecon.org/newtons_method.html" title="(in Project name not set)"><span class="xref std std-doc">available here</span></a></p>
 <p>The excess demand function is essentially the same, but now the matrix <span class="math notranslate nohighlight">\(A\)</span> is <span class="math notranslate nohighlight">\(3000 \times 3000\)</span> and the parameter vectors <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(c\)</span> are <span class="math notranslate nohighlight">\(3000 \times 1\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1179,8 +1183,8 @@ automatic differentiation is available <a class="reference external" href="https
 
 Result = [1.50185286 1.49865815 1.50028285 ... 1.50875149 1.48724784 1.48577532] 
 
-CPU times: user 1min 28s, sys: 640 ms, total: 1min 29s
-Wall time: 22.3 s
+CPU times: user 1min 30s, sys: 639 ms, total: 1min 31s
+Wall time: 22.8 s
 </pre></div>
 </div>
 </div>
@@ -1192,7 +1196,7 @@ Wall time: 22.3 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.440892098500626e-16
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(4.440892098500626e-16)
 </pre></div>
 </div>
 </div>
@@ -1210,8 +1214,8 @@ Wall time: 22.3 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 8s, sys: 258 ms, total: 1min 8s
-Wall time: 41.5 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 8s, sys: 279 ms, total: 1min 8s
+Wall time: 41.3 s
 </pre></div>
 </div>
 </div>
@@ -1224,7 +1228,7 @@ Wall time: 41.5 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.295585953721485e-07
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(8.295585953721485e-07)
 </pre></div>
 </div>
 </div>
@@ -1232,7 +1236,7 @@ Wall time: 41.5 s
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">7.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">7.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="newton_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 7.1 </span></p>
@@ -1306,7 +1310,7 @@ s = 0.2, \quad α = 0.5, \quad δ = 0.8
 <p>Then define the multivariate version of the formula for the <a class="reference internal" href="#equation-motion-law">(7.1)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multivariate_solow</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="n">δ</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">multivariate_solow</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="n">δ</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">k</span><span class="o">**</span><span class="n">α</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">δ</span><span class="p">)</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1337,8 +1341,8 @@ iteration 6, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 15.6 ms, sys: 978 μs, total: 16.6 ms
-Wall time: 4.07 ms
+CPU times: user 15.2 ms, sys: 24 μs, total: 15.3 ms
+Wall time: 3.75 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 
@@ -1349,8 +1353,8 @@ iteration 4, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 9.52 ms, sys: 990 μs, total: 10.5 ms
-Wall time: 2.61 ms
+CPU times: user 10.1 ms, sys: 0 ns, total: 10.1 ms
+Wall time: 2.46 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 
@@ -1363,8 +1367,8 @@ iteration 6, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 13.4 ms, sys: 10 μs, total: 13.4 ms
-Wall time: 3.35 ms
+CPU times: user 13.5 ms, sys: 999 μs, total: 14.5 ms
+Wall time: 3.55 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1413,8 +1417,8 @@ iteration 4, error = 0.00000
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 10.2 ms, sys: 995 μs, total: 11.2 ms
-Wall time: 2.74 ms
+CPU times: user 13 ms, sys: 0 ns, total: 13 ms
+Wall time: 3.21 ms
 </pre></div>
 </div>
 </div>
@@ -1437,8 +1441,8 @@ iteration 5, error = 0.00000
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 12.6 ms, sys: 984 μs, total: 13.6 ms
-Wall time: 3.32 ms
+CPU times: user 15.6 ms, sys: 0 ns, total: 15.6 ms
+Wall time: 3.87 ms
 </pre></div>
 </div>
 </div>
@@ -1527,9 +1531,9 @@ c = \begin{bmatrix}
 iteration 1, error = 9.24381
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages/autograd/tracer.py:54: RuntimeWarning: invalid value encountered in sqrt
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages/autograd/tracer.py:54: RuntimeWarning: invalid value encountered in sqrt
   return f_raw(*args, **kwargs)
-/home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages/autograd/numpy/numpy_vjps.py:184: RuntimeWarning: invalid value encountered in power
+/home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages/autograd/numpy/numpy_vjps.py:184: RuntimeWarning: invalid value encountered in power
   defvjp(anp.sqrt, lambda ans, x: lambda g: g * 0.5 * x**-0.5)
 </pre></div>
 </div>
@@ -1559,8 +1563,8 @@ iteration 6, error = 0.00000
 
 Result = [1.49744442 1.49744442 1.49744442] 
 
-CPU times: user 3.63 ms, sys: 0 ns, total: 3.63 ms
-Wall time: 3.38 ms
+CPU times: user 3.4 ms, sys: 0 ns, total: 3.4 ms
+Wall time: 3.24 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [4.5 0.1 4. ] 
 
@@ -1575,8 +1579,8 @@ iteration 8, error = 0.00000
 
 Result = [1.49744442 1.49744442 1.49744442] 
 
-CPU times: user 3.64 ms, sys: 1 ms, total: 4.64 ms
-Wall time: 4.3 ms
+CPU times: user 4.13 ms, sys: 0 ns, total: 4.13 ms
+Wall time: 3.93 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1634,6 +1638,8 @@ Wall time: 4.3 ms
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -2091,6 +2097,11 @@ Wall time: 4.3 ms
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -2100,17 +2111,17 @@ Wall time: 4.3 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2122,17 +2133,17 @@ Wall time: 4.3 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2144,12 +2155,12 @@ Wall time: 4.3 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2161,17 +2172,17 @@ Wall time: 4.3 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -2311,7 +2322,7 @@ Wall time: 4.3 ms
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>20. Forecasting an AR(1) Process &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,15 +108,23 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="application/vnd.jupyter.widget-state+json">{"state": {"b53e5e22e6e24049866763e970507840": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "e000e4b41d8c4811987039b38971cf2d": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_b53e5e22e6e24049866763e970507840", "msg_id": "", "outputs": [{"data": {"text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                  </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span>   15000   0             1.00        3            735.66 draws/s   0:00:20   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span>   15000   0             0.55        7            714.00 draws/s   0:00:21   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span>   15000   0             0.87        3            688.91 draws/s   0:00:21   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span>   15000   0             0.89        3            694.03 draws/s   0:00:21   0:00:00    \n                                                                                                                   \n</pre>\n", "text/plain": "                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                 \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 \n  \u001b[38;2;31;119;180m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m   15000   0             1.00        3            735.66 draws/s   0:00:20   0:00:00    \n  \u001b[38;2;31;119;180m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m   15000   0             0.55        7            714.00 draws/s   0:00:21   0:00:00    \n  \u001b[38;2;31;119;180m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m   15000   0             0.87        3            688.91 draws/s   0:00:21   0:00:00    \n  \u001b[38;2;31;119;180m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m   15000   0             0.89        3            694.03 draws/s   0:00:21   0:00:00    \n                                                                                                                   \n"}, "metadata": {}, "output_type": "display_data"}]}}}, "version_major": 2, "version_minor": 0}</script>
+    <script type="application/vnd.jupyter.widget-state+json">{"state": {"ab6e8575f5414aaea1df762f6e4bb902": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_e21924d309394139891400f35ad1ea05", "msg_id": "", "outputs": [{"data": {"text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                  </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span>   15000   0             0.93        3            686.59 draws/s   0:00:21   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span>   15000   0             0.82        3            712.52 draws/s   0:00:21   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span>   15000   0             0.97        3            684.55 draws/s   0:00:21   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501</span>   15000   0             1.12        3            683.02 draws/s   0:00:21   0:00:00    \n                                                                                                                   \n</pre>\n", "text/plain": "                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                 \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 \n  \u001b[38;2;31;119;180m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m   15000   0             0.93        3            686.59 draws/s   0:00:21   0:00:00    \n  \u001b[38;2;31;119;180m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m   15000   0             0.82        3            712.52 draws/s   0:00:21   0:00:00    \n  \u001b[38;2;31;119;180m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m   15000   0             0.97        3            684.55 draws/s   0:00:21   0:00:00    \n  \u001b[38;2;31;119;180m\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[0m   15000   0             1.12        3            683.02 draws/s   0:00:21   0:00:00    \n                                                                                                                   \n"}, "metadata": {}, "output_type": "display_data"}], "tabbable": null, "tooltip": null}}, "e21924d309394139891400f35ad1ea05": {"model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}}, "version_major": 2, "version_minor": 0}</script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script crossorigin="anonymous" data-jupyter-widgets-cdn="https://cdn.jsdelivr.net/npm/" src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@1.0.6/dist/embed-amd.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'ar1_turningpts';</script>
     <link rel="canonical" href="https://python.quantecon.org/ar1_turningpts.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="21. Statistical Divergence Measures" href="divergence_measures.html" />
@@ -149,6 +155,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -236,7 +243,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="forecasting-an-ar-1-process">
-<h1><span class="section-number">20. </span>Forecasting  an AR(1) Process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">20. </span>Forecasting  an AR(1) Process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Link to this heading">#</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>arviz<span class="w"> </span>pymc
@@ -249,48 +256,48 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.22.0)
-Requirement already satisfied: pymc in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (5.25.1)
-Requirement already satisfied: setuptools&gt;=60.0.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from arviz) (75.1.0)
-Requirement already satisfied: matplotlib&gt;=3.8 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from arviz) (3.9.2)
-Requirement already satisfied: numpy&gt;=1.26.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from arviz) (1.26.4)
-Requirement already satisfied: scipy&gt;=1.11.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from arviz) (1.13.1)
-Requirement already satisfied: packaging in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from arviz) (24.1)
-Requirement already satisfied: pandas&gt;=2.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from arviz) (2.2.2)
-Requirement already satisfied: xarray&gt;=2023.7.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from arviz) (2025.8.0)
-Requirement already satisfied: h5netcdf&gt;=1.0.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from arviz) (1.6.4)
-Requirement already satisfied: typing-extensions&gt;=4.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from arviz) (4.11.0)
-Requirement already satisfied: xarray-einstats&gt;=0.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from arviz) (0.9.1)
-Requirement already satisfied: cachetools&gt;=4.2.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pymc) (5.3.3)
-Requirement already satisfied: cloudpickle in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pymc) (3.0.0)
-Requirement already satisfied: pytensor&lt;2.32,&gt;=2.31.7 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pymc) (2.31.7)
-Requirement already satisfied: rich&gt;=13.7.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pymc) (13.7.1)
-Requirement already satisfied: threadpoolctl&lt;4.0.0,&gt;=3.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pymc) (3.5.0)
-Requirement already satisfied: h5py in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.11.0)
-Requirement already satisfied: contourpy&gt;=1.0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (1.2.0)
-Requirement already satisfied: cycler&gt;=0.10 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (0.11.0)
-Requirement already satisfied: fonttools&gt;=4.22.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (4.51.0)
-Requirement already satisfied: kiwisolver&gt;=1.3.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (1.4.4)
-Requirement already satisfied: pillow&gt;=8 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (10.4.0)
-Requirement already satisfied: pyparsing&gt;=2.3.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (3.1.2)
-Requirement already satisfied: python-dateutil&gt;=2.7 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (2.9.0.post0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.22.0)
+Requirement already satisfied: pymc in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (5.25.1)
+Requirement already satisfied: setuptools&gt;=60.0.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from arviz) (72.1.0)
+Requirement already satisfied: matplotlib&gt;=3.8 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from arviz) (3.10.0)
+Requirement already satisfied: numpy&gt;=1.26.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from arviz) (2.1.3)
+Requirement already satisfied: scipy&gt;=1.11.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from arviz) (1.15.3)
+Requirement already satisfied: packaging in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from arviz) (24.2)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2020.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pandas&gt;=2.1.0-&gt;arviz) (2024.1)
-Requirement already satisfied: tzdata&gt;=2022.7 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pandas&gt;=2.1.0-&gt;arviz) (2023.3)
-Requirement already satisfied: filelock&gt;=3.15 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (3.19.1)
-Requirement already satisfied: etuples in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (0.3.10)
-Requirement already satisfied: logical-unification in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (0.4.6)
-Requirement already satisfied: miniKanren in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (1.0.5)
-Requirement already satisfied: cons in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (0.4.7)
-Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from rich&gt;=13.7.1-&gt;pymc) (2.2.0)
-Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from rich&gt;=13.7.1-&gt;pymc) (2.15.1)
-Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich&gt;=13.7.1-&gt;pymc) (0.1.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=2.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from arviz) (2.2.3)
+Requirement already satisfied: xarray&gt;=2023.7.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from arviz) (2025.4.0)
+Requirement already satisfied: h5netcdf&gt;=1.0.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from arviz) (1.6.4)
+Requirement already satisfied: typing-extensions&gt;=4.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from arviz) (4.12.2)
+Requirement already satisfied: xarray-einstats&gt;=0.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from arviz) (0.9.1)
+Requirement already satisfied: cachetools&gt;=4.2.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pymc) (5.5.1)
+Requirement already satisfied: cloudpickle in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pymc) (3.0.0)
+Requirement already satisfied: pytensor&lt;2.32,&gt;=2.31.7 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pymc) (2.31.7)
+Requirement already satisfied: rich&gt;=13.7.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pymc) (14.1.0)
+Requirement already satisfied: threadpoolctl&lt;4.0.0,&gt;=3.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pymc) (3.5.0)
+Requirement already satisfied: filelock&gt;=3.15 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (3.17.0)
+Requirement already satisfied: etuples in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (0.3.10)
+Requirement already satisfied: logical-unification in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (0.4.6)
+Requirement already satisfied: miniKanren in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (1.0.5)
+Requirement already satisfied: cons in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (0.4.7)
+Requirement already satisfied: h5py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.12.1)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (1.3.1)
+Requirement already satisfied: cycler&gt;=0.10 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (0.11.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (4.55.3)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (1.4.8)
+Requirement already satisfied: pillow&gt;=8 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (11.1.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (3.2.0)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from matplotlib&gt;=3.8-&gt;arviz) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pandas&gt;=2.1.0-&gt;arviz) (2024.1)
+Requirement already satisfied: tzdata&gt;=2022.7 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pandas&gt;=2.1.0-&gt;arviz) (2025.2)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.8-&gt;arviz) (1.16.0)
-Requirement already satisfied: toolz in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from logical-unification-&gt;pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (0.12.0)
-Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from logical-unification-&gt;pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (0.6.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.8-&gt;arviz) (1.17.0)
+Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from rich&gt;=13.7.1-&gt;pymc) (3.0.0)
+Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from rich&gt;=13.7.1-&gt;pymc) (2.19.1)
+Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich&gt;=13.7.1-&gt;pymc) (0.1.0)
+Requirement already satisfied: toolz in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from logical-unification-&gt;pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (1.0.0)
+Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from logical-unification-&gt;pytensor&lt;2.32,&gt;=2.31.7-&gt;pymc) (0.6.0)
 </pre></div>
 </div>
 </div>
@@ -313,16 +320,16 @@ Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/
 <p>Let’s start with some imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
-<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pmc</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pmc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
 <span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
 
-<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">()</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;pymc&#39;</span><span class="p">)</span>
 <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
@@ -331,10 +338,10 @@ Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/
 </div>
 </div>
 <section id="a-univariate-first-order-autoregressive-process">
-<h2><span class="section-number">20.1. </span>A Univariate First-Order Autoregressive Process<a class="headerlink" href="#a-univariate-first-order-autoregressive-process" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.1. </span>A Univariate First-Order Autoregressive Process<a class="headerlink" href="#a-univariate-first-order-autoregressive-process" title="Link to this heading">#</a></h2>
 <p>Consider the univariate AR(1) model:</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq1">
-<span class="eqno">(20.1)<a class="headerlink" href="#equation-ar1-tp-eq1" title="Permalink to this equation">#</a></span>\[ 
+<span class="eqno">(20.1)<a class="headerlink" href="#equation-ar1-tp-eq1" title="Link to this equation">#</a></span>\[ 
 y_{t+1} = \rho y_t + \sigma \epsilon_{t+1}, \quad t \geq 0 
 \]</div>
 <p>where the scalars <span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> satisfy <span class="math notranslate nohighlight">\(|\rho| &lt; 1\)</span> and <span class="math notranslate nohighlight">\(\sigma &gt; 0\)</span>;
@@ -342,12 +349,12 @@ y_{t+1} = \rho y_t + \sigma \epsilon_{t+1}, \quad t \geq 0
 <p>The initial condition <span class="math notranslate nohighlight">\(y_{0}\)</span> is a known number.</p>
 <p>Equation <a class="reference internal" href="#equation-ar1-tp-eq1">(20.1)</a> implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+1}\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq2">
-<span class="eqno">(20.2)<a class="headerlink" href="#equation-ar1-tp-eq2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(20.2)<a class="headerlink" href="#equation-ar1-tp-eq2" title="Link to this equation">#</a></span>\[
 f(y_{t+1} | y_{t}; \rho, \sigma) \sim {\mathcal N}(\rho y_{t}, \sigma^2) \
 \]</div>
 <p>Further, equation <a class="reference internal" href="#equation-ar1-tp-eq1">(20.1)</a> also implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+j}\)</span> for <span class="math notranslate nohighlight">\(j \geq 1\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq3">
-<span class="eqno">(20.3)<a class="headerlink" href="#equation-ar1-tp-eq3" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(20.3)<a class="headerlink" href="#equation-ar1-tp-eq3" title="Link to this equation">#</a></span>\[
 f(y_{t+j} | y_{t}; \rho, \sigma) \sim {\mathcal N}\left(\rho^j y_{t}, \sigma^2 \frac{1 - \rho^{2j}}{1 - \rho^2} \right) 
 \]</div>
 <p>The predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(20.3)</a> that assumes that the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span> are known, which we express
@@ -356,7 +363,7 @@ by conditioning on them.</p>
 <p>We form this predictive distribution by integrating <a class="reference internal" href="#equation-ar1-tp-eq3">(20.3)</a> with respect to a joint posterior distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t)\)</span>
 that conditions on an observed history <span class="math notranslate nohighlight">\(y^t = \{y_s\}_{s=0}^t\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq4">
-<span class="eqno">(20.4)<a class="headerlink" href="#equation-ar1-tp-eq4" title="Permalink to this equation">#</a></span>\[ 
+<span class="eqno">(20.4)<a class="headerlink" href="#equation-ar1-tp-eq4" title="Link to this equation">#</a></span>\[ 
 f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^t ) d \rho d \sigma
 \]</div>
 <p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(20.3)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are known.</p>
@@ -377,7 +384,7 @@ f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^
 </ul>
 </section>
 <section id="implementation">
-<h2><span class="section-number">20.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.2. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>First, we’ll simulate a  sample path from which to launch our forecasts.</p>
 <p>In addition to plotting the sample path, under the assumption that the true parameter values are known,
 we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> coverage intervals using conditional distribution
@@ -385,7 +392,7 @@ we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span 
 <p>We’ll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">AR1_simulate</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">AR1_simulate</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
 
     <span class="c1"># Allocate space and draw epsilons</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
@@ -399,7 +406,7 @@ we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span 
     <span class="k">return</span> <span class="n">y</span>
 
 
-<span class="k">def</span> <span class="nf">plot_initial_path</span><span class="p">(</span><span class="n">initial_path</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_initial_path</span><span class="p">(</span><span class="n">initial_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot the initial path and the preceding predictive densities</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -445,14 +452,14 @@ we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c2c356af759d9882fac4bc83c6f8b86b188befad8091dab5e9184fec1fc10dfe.png" src="_images/c2c356af759d9882fac4bc83c6f8b86b188befad8091dab5e9184fec1fc10dfe.png" />
+<img alt="_images/487e4fd6660750c472b1383c5c8d432dc1116948dd13a9f2b89957f1d9778d03.png" src="_images/487e4fd6660750c472b1383c5c8d432dc1116948dd13a9f2b89957f1d9778d03.png" />
 </div>
 </div>
 <p>As functions of forecast horizon, the coverage intervals have shapes like those described in
 <a class="reference external" href="https://python.quantecon.org/perm_income_cons.html">https://python.quantecon.org/perm_income_cons.html</a></p>
 </section>
 <section id="predictive-distributions-of-path-properties">
-<h2><span class="section-number">20.3. </span>Predictive Distributions of Path Properties<a class="headerlink" href="#predictive-distributions-of-path-properties" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.3. </span>Predictive Distributions of Path Properties<a class="headerlink" href="#predictive-distributions-of-path-properties" title="Link to this heading">#</a></h2>
 <p>Wecker <span id="id3">[<a class="reference internal" href="zreferences.html#id16" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span> proposed using simulation techniques to characterize  predictive distribution of some statistics that are  non-linear functions of <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>He called these functions “path properties” to contrast them with properties of single data points.</p>
 <p>He studied two special  prospective path properties of a given series <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
@@ -530,7 +537,7 @@ P_t(\omega) :=
 <p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id16" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wecker, 1979</a>]</span>, we can use simulations to calculate  probabilities of <span class="math notranslate nohighlight">\(P_t\)</span> and <span class="math notranslate nohighlight">\(N_t\)</span> for each period <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </section>
 <section id="a-wecker-like-algorithm">
-<h2><span class="section-number">20.4. </span>A Wecker-Like Algorithm<a class="headerlink" href="#a-wecker-like-algorithm" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.4. </span>A Wecker-Like Algorithm<a class="headerlink" href="#a-wecker-like-algorithm" title="Link to this heading">#</a></h2>
 <p>The procedure consists of the following steps:</p>
 <ul class="simple">
 <li><p>index a sample path by <span class="math notranslate nohighlight">\(\omega_i\)</span></p></li>
@@ -546,12 +553,12 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </ul>
 </section>
 <section id="using-simulations-to-approximate-a-posterior-distribution">
-<h2><span class="section-number">20.5. </span>Using Simulations to Approximate a Posterior Distribution<a class="headerlink" href="#using-simulations-to-approximate-a-posterior-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.5. </span>Using Simulations to Approximate a Posterior Distribution<a class="headerlink" href="#using-simulations-to-approximate-a-posterior-distribution" title="Link to this heading">#</a></h2>
 <p>The next code cells use <code class="docutils literal notranslate"><span class="pre">pymc</span></code> to compute the time <span class="math notranslate nohighlight">\(t\)</span> posterior distribution of <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
 <p>Note that in defining the likelihood function, we choose to condition on the initial value <span class="math notranslate nohighlight">\(y_0\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_from_posterior</span><span class="p">(</span><span class="n">sample</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">draw_from_posterior</span><span class="p">(</span><span class="n">sample</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draw a sample of size N from the posterior distribution.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -592,21 +599,19 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "e000e4b41d8c4811987039b38971cf2d", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">
-</pre>
-</div><img alt="_images/8ca6b7a1dc9aa0352ed42ed7cfbb7e6c8dde492114059fb1fded6158f313dc75.png" src="_images/8ca6b7a1dc9aa0352ed42ed7cfbb7e6c8dde492114059fb1fded6158f313dc75.png" />
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ab6e8575f5414aaea1df762f6e4bb902", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
+</div><img alt="_images/1226b6c157cbfa7d899a353c7bb0662216ddd8cac623433063d7b68be8b61c93.png" src="_images/1226b6c157cbfa7d899a353c7bb0662216ddd8cac623433063d7b68be8b61c93.png" />
 </div>
 </div>
 <p>The graphs on the left portray posterior marginal distributions.</p>
 </section>
 <section id="calculating-sample-path-statistics">
-<h2><span class="section-number">20.6. </span>Calculating Sample Path Statistics<a class="headerlink" href="#calculating-sample-path-statistics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.6. </span>Calculating Sample Path Statistics<a class="headerlink" href="#calculating-sample-path-statistics" title="Link to this heading">#</a></h2>
 <p>Our next step is to prepare Python code to compute our sample path statistics.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define statistics</span>
-<span class="k">def</span> <span class="nf">next_recession</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">next_recession</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">omega</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     
@@ -618,10 +623,10 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">z</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
 
-<span class="k">def</span> <span class="nf">minimum_value</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">minimum_value</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">omega</span><span class="p">[:</span><span class="mi">8</span><span class="p">])</span>
 
-<span class="k">def</span> <span class="nf">severe_recession</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">severe_recession</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     
@@ -633,7 +638,7 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
 
-<span class="k">def</span> <span class="nf">next_turning_point</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">next_turning_point</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Suppose that omega is of length 6</span>
 <span class="sd">    </span>
@@ -663,12 +668,12 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div>
 </section>
 <section id="original-wecker-method">
-<h2><span class="section-number">20.7. </span>Original Wecker Method<a class="headerlink" href="#original-wecker-method" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.7. </span>Original Wecker Method<a class="headerlink" href="#original-wecker-method" title="Link to this heading">#</a></h2>
 <p>Now we  apply Wecker’s original  method by simulating future paths and compute predictive distributions, conditioning
 on the true  parameters associated with the data-generating model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_Wecker</span><span class="p">(</span><span class="n">initial_path</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_Wecker</span><span class="p">(</span><span class="n">initial_path</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot the predictive distributions from &quot;pure&quot; Wecker&#39;s method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -730,18 +735,18 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/22a78fd6c8ad3decfa84ba698995fb13de7da5e23e8d4e70aa31edca8b769849.png" src="_images/22a78fd6c8ad3decfa84ba698995fb13de7da5e23e8d4e70aa31edca8b769849.png" />
+<img alt="_images/3a88bb484a9976f69fda6bc3d29e21be7b481d0c01f6baa352b7c1f78847c11d.png" src="_images/3a88bb484a9976f69fda6bc3d29e21be7b481d0c01f6baa352b7c1f78847c11d.png" />
 </div>
 </div>
 </section>
 <section id="extended-wecker-method">
-<h2><span class="section-number">20.8. </span>Extended Wecker Method<a class="headerlink" href="#extended-wecker-method" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.8. </span>Extended Wecker Method<a class="headerlink" href="#extended-wecker-method" title="Link to this heading">#</a></h2>
 <p>Now we apply we apply our  “extended” Wecker method based on  predictive densities of <span class="math notranslate nohighlight">\(y\)</span> defined by
 <a class="reference internal" href="#equation-ar1-tp-eq4">(20.4)</a> that acknowledge posterior uncertainty in the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
 <p>To approximate  the intergration on the right side of <a class="reference internal" href="#equation-ar1-tp-eq4">(20.4)</a>, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model <a class="reference internal" href="#equation-ar1-tp-eq1">(20.1)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_extended_Wecker</span><span class="p">(</span><span class="n">post_samples</span><span class="p">,</span> <span class="n">initial_path</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_extended_Wecker</span><span class="p">(</span><span class="n">post_samples</span><span class="p">,</span> <span class="n">initial_path</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot the extended Wecker&#39;s predictive distribution</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -796,12 +801,12 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/48e4a4a6059cb5b47c6a4832f32d92471e97e209fe7124db917dad516160a2d3.png" src="_images/48e4a4a6059cb5b47c6a4832f32d92471e97e209fe7124db917dad516160a2d3.png" />
+<img alt="_images/aaa656cfd3166a17e27ecee807e447dbb6e071503a313af9ba22376d5a527050.png" src="_images/aaa656cfd3166a17e27ecee807e447dbb6e071503a313af9ba22376d5a527050.png" />
 </div>
 </div>
 </section>
 <section id="comparison">
-<h2><span class="section-number">20.9. </span>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.9. </span>Comparison<a class="headerlink" href="#comparison" title="Link to this heading">#</a></h2>
 <p>Finally, we plot both the original Wecker method and the extended method with parameter values drawn from the posterior together to compare the differences that emerge from pretending to know parameter values when they are actually uncertain.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -815,7 +820,7 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1b4dd9b28ff946293715e8e1dd22127ac92abf334417f05fa19f47be16177c38.png" src="_images/1b4dd9b28ff946293715e8e1dd22127ac92abf334417f05fa19f47be16177c38.png" />
+<img alt="_images/4284bbf96f6f477a7dd0b963c88df642e601042a62b51d3b0d39eb939921067c.png" src="_images/4284bbf96f6f477a7dd0b963c88df642e601042a62b51d3b0d39eb939921067c.png" />
 </div>
 </div>
 </section>
@@ -852,6 +857,8 @@ on the true  parameters associated with the data-generating model.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1309,6 +1316,11 @@ on the true  parameters associated with the data-generating model.</p>
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1318,17 +1330,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1340,17 +1352,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1362,12 +1374,12 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1379,17 +1391,17 @@ on the true  parameters associated with the data-generating model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1529,7 +1541,7 @@ on the true  parameters associated with the data-generating model.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

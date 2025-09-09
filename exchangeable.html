@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>28. Exchangeability and Bayesian Updating &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'exchangeable';</script>
     <link rel="canonical" href="https://python.quantecon.org/exchangeable.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="29. Likelihood Ratio Processes and Bayesian Learning" href="likelihood_bayes.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -241,8 +248,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="exchangeability-and-bayesian-updating">
-<h1><a class="toc-backref" href="#id5"><span class="section-number">28. </span>Exchangeability and Bayesian Updating</a><a class="headerlink" href="#exchangeability-and-bayesian-updating" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<h1><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">28. </span>Exchangeability and Bayesian Updating</a><a class="headerlink" href="#exchangeability-and-bayesian-updating" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#exchangeability-and-bayesian-updating" id="id5">Exchangeability and Bayesian Updating</a></p>
@@ -259,9 +266,9 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">28.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">28.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture studies  learning
 via Bayes’ Law.</p>
 <p>We touch foundations of Bayesian statistical inference invented by Bruno DeFinetti <span id="id1">[<a class="reference internal" href="zreferences.html#id54" title="Bruno de Finetti. La prevision: ses lois logiques, ses sources subjectives. Annales de l'Institute Henri Poincare', 7:1 - 68, 1937. English translation in Kyburg and Smokler (eds.), \it Studies in Subjective Probability, Wiley, New York, 1964.">de Finetti, 1937</a>]</span>.</p>
@@ -293,20 +300,19 @@ an assumption of conditional independence makes learning possible.</p>
 <p>Let’s start with some imports:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vectorize</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
-<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">op</span>
-<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vectorize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">gamma</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">op</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">quad</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="independently-and-identically-distributed">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">28.2. </span>Independently and Identically Distributed</a><a class="headerlink" href="#independently-and-identically-distributed" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">28.2. </span>Independently and Identically Distributed</a><a class="headerlink" href="#independently-and-identically-distributed" title="Link to this heading">#</a></h2>
 <p>We begin by looking at the notion of an  <strong>independently and identically  distributed sequence</strong> of random variables.</p>
 <p>An independently and identically distributed sequence is often abbreviated as IID.</p>
 <p>Two notions are involved</p>
@@ -327,7 +333,7 @@ p(W_0, W_1, \ldots) =  p(W_0) p(W_1) \cdots
 \]</div>
 <p>so that the joint density is the product of a sequence of identical marginal densities.</p>
 <section id="iid-means-past-observations-dont-tell-us-anything-about-future-observations">
-<h3><span class="section-number">28.2.1. </span>IID Means Past Observations Don’t Tell Us Anything About Future Observations<a class="headerlink" href="#iid-means-past-observations-dont-tell-us-anything-about-future-observations" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.2.1. </span>IID Means Past Observations Don’t Tell Us Anything About Future Observations<a class="headerlink" href="#iid-means-past-observations-dont-tell-us-anything-about-future-observations" title="Link to this heading">#</a></h3>
 <p>If a sequence is random variables is IID, past information provides no information about future realizations.</p>
 <p>Therefore, there is <strong>nothing to learn</strong> from the past  about the future.</p>
 <p>To understand these statements, let the joint distribution of a sequence of random variables <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^T\)</span>
@@ -363,7 +369,7 @@ p(W_t | W_{t-1}, \ldots, W_0)   =  p(W_t) ,
 </section>
 </section>
 <section id="a-setting-in-which-past-observations-are-informative">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">28.3. </span>A Setting in Which Past Observations Are Informative</a><a class="headerlink" href="#a-setting-in-which-past-observations-are-informative" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">28.3. </span>A Setting in Which Past Observations Are Informative</a><a class="headerlink" href="#a-setting-in-which-past-observations-are-informative" title="Link to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^\infty\)</span> be a sequence of nonnegative
 scalar random variables with a joint probability distribution
 constructed as follows.</p>
@@ -400,7 +406,7 @@ or <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <p>We’ll discuss that next and in the process describe the concept of <strong>exchangeability</strong>.</p>
 </section>
 <section id="relationship-between-iid-and-exchangeable">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">28.4. </span>Relationship Between IID and Exchangeable</a><a class="headerlink" href="#relationship-between-iid-and-exchangeable" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">28.4. </span>Relationship Between IID and Exchangeable</a><a class="headerlink" href="#relationship-between-iid-and-exchangeable" title="Link to this heading">#</a></h2>
 <p>Conditional on nature selecting <span class="math notranslate nohighlight">\(F\)</span>, the joint density of the
 sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -423,7 +429,7 @@ independently and identically distributed.</p>
 <p>The unconditional distribution of <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is
 evidently</p>
 <div class="math notranslate nohighlight" id="equation-eq-definetti">
-<span class="eqno">(28.1)<a class="headerlink" href="#equation-eq-definetti" title="Permalink to this equation">#</a></span>\[h(W_0, W_1, \ldots ) \equiv \tilde \pi [f(W_0) f(W_1) \cdots \ ] + ( 1- \tilde \pi) [g(W_0) g(W_1) \cdots \ ]\]</div>
+<span class="eqno">(28.1)<a class="headerlink" href="#equation-eq-definetti" title="Link to this equation">#</a></span>\[h(W_0, W_1, \ldots ) \equiv \tilde \pi [f(W_0) f(W_1) \cdots \ ] + ( 1- \tilde \pi) [g(W_0) g(W_1) \cdots \ ]\]</div>
 <p>Under the unconditional distribution <span class="math notranslate nohighlight">\(h(W_0, W_1, \ldots )\)</span>, the
 sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is <strong>not</strong> independently and
 identically distributed.</p>
@@ -444,7 +450,7 @@ h(W_1 | W_0) \equiv \frac{h(W_0, W_1)}{(\tilde \pi f(W_0) + (1-\tilde \pi) g(W_0
 <p>So there is something to learn from the past about the future.</p>
 </section>
 <section id="exchangeability">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">28.5. </span>Exchangeability</a><a class="headerlink" href="#exchangeability" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">28.5. </span>Exchangeability</a><a class="headerlink" href="#exchangeability" title="Link to this heading">#</a></h2>
 <p>While the sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is not IID, it can be verified that it is
 <strong>exchangeable</strong>, which means that the   joint distributions <span class="math notranslate nohighlight">\(h(W_0, W_1)\)</span> and <span class="math notranslate nohighlight">\(h(W_1, W_0)\)</span> of the ‘‘re-ordered’’ sequences
 satisfy</p>
@@ -468,7 +474,7 @@ Bernoulli parameter <span class="math notranslate nohighlight">\(\theta\)</span>
 </div>
 </section>
 <section id="bayes-law">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">28.6. </span>Bayes’ Law</a><a class="headerlink" href="#bayes-law" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">28.6. </span>Bayes’ Law</a><a class="headerlink" href="#bayes-law" title="Link to this heading">#</a></h2>
 <p>We noted above that in our example model there is something to learn about about the future from past data drawn
 from our particular instance of a process that is exchangeable but not IID.</p>
 <p>But how can we learn?</p>
@@ -503,7 +509,7 @@ from and let</p>
 \]</div>
 <p>Bayes’ rule for updating <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-bayes102">
-<span class="eqno">(28.2)<a class="headerlink" href="#equation-eq-bayes102" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(28.2)<a class="headerlink" href="#equation-eq-bayes102" title="Link to this equation">#</a></span>\[
 \pi_{t+1} = \frac{\pi_t f(w_{t+1})}{\pi_t f(w_{t+1}) + (1 - \pi_t) g(w_{t+1})}
 \]</div>
 <p>Equation <a class="reference internal" href="#equation-eq-bayes102">(28.2)</a> follows from Bayes’ rule, which
@@ -521,7 +527,7 @@ tells us that</p>
 \]</div>
 </section>
 <section id="more-details-about-bayesian-updating">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">28.7. </span>More Details about Bayesian Updating</a><a class="headerlink" href="#more-details-about-bayesian-updating" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">28.7. </span>More Details about Bayesian Updating</a><a class="headerlink" href="#more-details-about-bayesian-updating" title="Link to this heading">#</a></h2>
 <p>Let’s stare at and rearrange Bayes’ Law as represented in equation <a class="reference internal" href="#equation-eq-bayes102">(28.2)</a> with the aim of understanding
 how the <strong>posterior</strong> probability <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> is influenced by the <strong>prior</strong> probability <span class="math notranslate nohighlight">\(\pi_t\)</span> and the <strong>likelihood ratio</strong></p>
 <div class="math notranslate nohighlight">
@@ -537,7 +543,7 @@ l(w) = \frac{f(w)}{g(w)}
 \]</div>
 <p>This implies that</p>
 <div class="math notranslate nohighlight" id="equation-eq-bayes103">
-<span class="eqno">(28.3)<a class="headerlink" href="#equation-eq-bayes103" title="Permalink to this equation">#</a></span>\[\begin{split}\frac{\pi_{t+1}}{\pi_{t}}=\frac{l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}\begin{cases} &gt;1 &amp;
+<span class="eqno">(28.3)<a class="headerlink" href="#equation-eq-bayes103" title="Link to this equation">#</a></span>\[\begin{split}\frac{\pi_{t+1}}{\pi_{t}}=\frac{l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}\begin{cases} &gt;1 &amp;
 \text{if }l\left(w_{t+1}\right)&gt;1\\
 \leq1 &amp; \text{if }l\left(w_{t+1}\right)\leq1
 \end{cases}\end{split}\]</div>
@@ -557,12 +563,12 @@ given parameters of <span class="math notranslate nohighlight">\(f\)</span> and 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@vectorize</span>
-<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="s2">&quot;The general beta distribution function.&quot;</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">learning_example</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">learning_example</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A wrapper function that displays the updating rule of belief π,</span>
 <span class="sd">    given the parameters which specify F and G distributions.</span>
@@ -650,7 +656,7 @@ given parameters of <span class="math notranslate nohighlight">\(f\)</span> and 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/28d63c4d5711b46f1de0375d5855b3bf8b202eaf7269ae3ba8c375e549a5c325.png" src="_images/28d63c4d5711b46f1de0375d5855b3bf8b202eaf7269ae3ba8c375e549a5c325.png" />
+<img alt="_images/6c10b36f7cfb5504b390e6cec65da7e00a64ab90fdf07fbc1081511f104bbc44.png" src="_images/6c10b36f7cfb5504b390e6cec65da7e00a64ab90fdf07fbc1081511f104bbc44.png" />
 </div>
 </div>
 <p>Please look at the three graphs above created for an instance in which <span class="math notranslate nohighlight">\(f\)</span> is a uniform distribution on <span class="math notranslate nohighlight">\([0,1]\)</span>
@@ -685,15 +691,15 @@ is a Beta distribution with parameters <span class="math notranslate nohighlight
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/33126636aac3ecd5177062dd6749bead422bc306351a224b823c2b625877dc5a.png" src="_images/33126636aac3ecd5177062dd6749bead422bc306351a224b823c2b625877dc5a.png" />
+<img alt="_images/71e1cedd3d21040c786e14cd87526d7e0f58857ccffafed4a0da166d89cd90ee.png" src="_images/71e1cedd3d21040c786e14cd87526d7e0f58857ccffafed4a0da166d89cd90ee.png" />
 </div>
 </div>
 <p>Notice how the likelihood ratio, the middle graph, and the arrows compare with the previous instance of our example.</p>
 </section>
 <section id="appendix">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">28.8. </span>Appendix</a><a class="headerlink" href="#appendix" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">28.8. </span>Appendix</a><a class="headerlink" href="#appendix" title="Link to this heading">#</a></h2>
 <section id="sample-paths-of-pi-t">
-<h3><span class="section-number">28.8.1. </span>Sample Paths of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#sample-paths-of-pi-t" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.8.1. </span>Sample Paths of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#sample-paths-of-pi-t" title="Link to this heading">#</a></h3>
 <p>Now we’ll have some fun by plotting multiple realizations of sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> under two possible
 assumptions about nature’s choice of distribution, namely</p>
 <ul class="simple">
@@ -705,14 +711,14 @@ assumptions about nature’s choice of distribution, namely</p>
 <p>To proceed, we create some Python code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">function_factory</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">function_factory</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">):</span>
 
     <span class="c1"># define f and g</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
 
     <span class="nd">@jit</span>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
         <span class="s2">&quot;Update π by drawing from beta distribution with parameters a and b&quot;</span>
 
         <span class="c1"># Draw</span>
@@ -724,7 +730,7 @@ assumptions about nature’s choice of distribution, namely</p>
         <span class="k">return</span> <span class="n">π</span>
 
     <span class="nd">@jit</span>
-    <span class="k">def</span> <span class="nf">simulate_path</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">simulate_path</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
         <span class="s2">&quot;Simulates a path of beliefs π with length T&quot;</span>
 
         <span class="n">π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
@@ -737,7 +743,7 @@ assumptions about nature’s choice of distribution, namely</p>
 
         <span class="k">return</span> <span class="n">π</span>
 
-    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">simulate</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="s2">&quot;Simulates N paths of beliefs π with length T&quot;</span>
 
         <span class="n">π_paths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
@@ -783,7 +789,7 @@ periods when the sequence is truly IID draws from <span class="math notranslate 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/927e878533243bc201ed0657d2f9bef14e46993b4c187ba5c85a30a6baba7c5b.png" src="_images/927e878533243bc201ed0657d2f9bef14e46993b4c187ba5c85a30a6baba7c5b.png" />
+<img alt="_images/11bac0d1868e36922f4b1b2fae31beb239812bd317a9038b4827d4213d526033.png" src="_images/11bac0d1868e36922f4b1b2fae31beb239812bd317a9038b4827d4213d526033.png" />
 </div>
 </div>
 <p>In the above example,  for most paths <span class="math notranslate nohighlight">\(\pi_t \rightarrow 1\)</span>.</p>
@@ -799,13 +805,13 @@ periods when the sequence is truly IID draws from <span class="math notranslate 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/970d57c5828d2b4359a25792df39518f0fd3e33fdf6f6811c7bb4c60457fe324.png" src="_images/970d57c5828d2b4359a25792df39518f0fd3e33fdf6f6811c7bb4c60457fe324.png" />
+<img alt="_images/90103c03a30af228167334323f3e17bbd725cc55c16887ebe95c9e23ab9c6b08.png" src="_images/90103c03a30af228167334323f3e17bbd725cc55c16887ebe95c9e23ab9c6b08.png" />
 </div>
 </div>
 <p>In the above graph we observe that now  most paths <span class="math notranslate nohighlight">\(\pi_t \rightarrow 0\)</span>.</p>
 </section>
 <section id="rates-of-convergence">
-<h3><span class="section-number">28.8.2. </span>Rates of convergence<a class="headerlink" href="#rates-of-convergence" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.8.2. </span>Rates of convergence<a class="headerlink" href="#rates-of-convergence" title="Link to this heading">#</a></h3>
 <p>We study rates of  convergence of <span class="math notranslate nohighlight">\(\pi_t\)</span> to <span class="math notranslate nohighlight">\(1\)</span> when nature generates the data as IID draws from <span class="math notranslate nohighlight">\(F\)</span>
 and of convergence of <span class="math notranslate nohighlight">\(\pi_t\)</span> to <span class="math notranslate nohighlight">\(0\)</span> when nature generates  IID draws from <span class="math notranslate nohighlight">\(G\)</span>.</p>
 <p>We do this by averaging across simulated paths of <span class="math notranslate nohighlight">\(\{\pi_t\}_{t=0}^T\)</span>.</p>
@@ -822,13 +828,13 @@ and compute <span class="math notranslate nohighlight">\(\sum_{i=1}^{N}\pi_{i,t}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/52f34bc2422725eb2aeb9d88203ea307a937c8d4e0d72acb044c856e23fd2433.png" src="_images/52f34bc2422725eb2aeb9d88203ea307a937c8d4e0d72acb044c856e23fd2433.png" />
+<img alt="_images/9be16cd53ae58385d7bb249f1275a65888d1b81682adf10e4a8a6ea687c61ba6.png" src="_images/9be16cd53ae58385d7bb249f1275a65888d1b81682adf10e4a8a6ea687c61ba6.png" />
 </div>
 </div>
 <p>From the above graph, rates of convergence appear not to depend on whether <span class="math notranslate nohighlight">\(F\)</span> or <span class="math notranslate nohighlight">\(G\)</span> generates the data.</p>
 </section>
 <section id="graph-of-ensemble-dynamics-of-pi-t">
-<h3><span class="section-number">28.8.3. </span>Graph of Ensemble Dynamics of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#graph-of-ensemble-dynamics-of-pi-t" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">28.8.3. </span>Graph of Ensemble Dynamics of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#graph-of-ensemble-dynamics-of-pi-t" title="Link to this heading">#</a></h3>
 <p>More insights about the dynamics of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span> can be gleaned by computing
 conditional expectations of <span class="math notranslate nohighlight">\(\frac{\pi_{t+1}}{\pi_{t}}\)</span> as functions of <span class="math notranslate nohighlight">\(\pi_t\)</span> via integration with respect
 to the pertinent probability distribution:</p>
@@ -843,7 +849,7 @@ E\left[\frac{\pi_{t+1}}{\pi_{t}}\biggm|q=a, \pi_{t}\right] &amp;=E\left[\frac{l\
 <p>The following code approximates the integral above:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">expected_ratio</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">expected_ratio</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">):</span>
 
     <span class="c1"># define f and g</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
@@ -880,7 +886,7 @@ E\left[\frac{\pi_{t+1}}{\pi_{t}}\biggm|q=a, \pi_{t}\right] &amp;=E\left[\frac{l\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3bf6a5f8081241c52a3696fa5079f9660100e105dbaab5e111c4c7504609d2ce.png" src="_images/3bf6a5f8081241c52a3696fa5079f9660100e105dbaab5e111c4c7504609d2ce.png" />
+<img alt="_images/16887ef976eead847e296b45c915aff7279554b695f0b1df613617d31e661b92.png" src="_images/16887ef976eead847e296b45c915aff7279554b695f0b1df613617d31e661b92.png" />
 </div>
 </div>
 <p>The above graphs shows that when <span class="math notranslate nohighlight">\(F\)</span> generates the data, <span class="math notranslate nohighlight">\(\pi_t\)</span> on average always heads north, while
@@ -896,7 +902,7 @@ is nothing to learn.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/567ef4ba9408d811fbcea45d3c35536187fc979cc2f625720af9e05ab35fbd83.png" src="_images/567ef4ba9408d811fbcea45d3c35536187fc979cc2f625720af9e05ab35fbd83.png" />
+<img alt="_images/d0d5aae75abc286dd0458529ff1de88e927a66c2e1e8ae58a12b5cb3e7c4d53f.png" src="_images/d0d5aae75abc286dd0458529ff1de88e927a66c2e1e8ae58a12b5cb3e7c4d53f.png" />
 </div>
 </div>
 <p>The above graph says that <span class="math notranslate nohighlight">\(\pi_t\)</span> is inert and  remains at its initial value.</p>
@@ -910,13 +916,13 @@ different nor identical, in particular one in which  <span class="math notransla
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/97d8ed56c41821e61e419f00471eb731b2f558a8b0205704f35d7c0ae4418e7b.png" src="_images/97d8ed56c41821e61e419f00471eb731b2f558a8b0205704f35d7c0ae4418e7b.png" />
+<img alt="_images/b7543738bf2e3f8917956dbfa5824bb3d2481be87829de43994a45f6dcd03d63.png" src="_images/b7543738bf2e3f8917956dbfa5824bb3d2481be87829de43994a45f6dcd03d63.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="sequels">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">28.9. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">28.9. </span>Sequels</a><a class="headerlink" href="#sequels" title="Link to this heading">#</a></h2>
 <p>We’ll apply and dig deeper into some of the ideas presented in this lecture:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a> describes <strong>likelihood ratio processes</strong>
@@ -959,6 +965,8 @@ Wald had not yet designed.</p></li>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1416,6 +1424,11 @@ Wald had not yet designed.</p></li>
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1425,17 +1438,17 @@ Wald had not yet designed.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1447,17 +1460,17 @@ Wald had not yet designed.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1469,12 +1482,12 @@ Wald had not yet designed.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1486,17 +1499,17 @@ Wald had not yet designed.</p></li>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1636,7 +1649,7 @@ Wald had not yet designed.</p></li>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

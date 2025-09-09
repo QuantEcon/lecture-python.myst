@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>15. Introduction to Artificial Neural Networks &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'back_prop';</script>
     <link rel="canonical" href="https://python.quantecon.org/back_prop.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="16. Randomized Response Surveys" href="rand_resp.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -232,7 +239,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-artificial-neural-networks">
-<h1><span class="section-number">15. </span>Introduction to Artificial Neural Networks<a class="headerlink" href="#introduction-to-artificial-neural-networks" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">15. </span>Introduction to Artificial Neural Networks<a class="headerlink" href="#introduction-to-artificial-neural-networks" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with the latest CUDA and CUDANN frameworks installed with access to a GPU.</p>
@@ -246,7 +253,7 @@
 <span class="o">!</span>conda<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>-c<span class="w"> </span>plotly<span class="w"> </span>plotly-orca
 
 <span class="c1"># kaleido needs chrome to build images</span>
-<span class="kn">import</span> <span class="nn">kaleido</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">kaleido</span>
 <span class="n">kaleido</span><span class="o">.</span><span class="n">get_chrome_sync</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -261,14 +268,14 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading kaleido-1.0.0-py3-none-any.whl.metadata (5.6 kB)
-Requirement already satisfied: plotly in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (5.24.1)
+Requirement already satisfied: plotly in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (5.24.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting plotly
-  Downloading plotly-6.3.0-py3-none-any.whl.metadata (8.5 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting choreographer&gt;=1.0.5 (from kaleido)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading plotly-6.3.0-py3-none-any.whl.metadata (8.5 kB)
+Collecting choreographer&gt;=1.0.5 (from kaleido)
   Downloading choreographer-1.0.10-py3-none-any.whl.metadata (5.6 kB)
 </pre></div>
 </div>
@@ -277,51 +284,121 @@ Requirement already satisfied: plotly in /home/runner/miniconda3/envs/quantecon/
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting orjson&gt;=3.10.15 (from kaleido)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading orjson-3.11.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.2 kB)
-Requirement already satisfied: packaging in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from kaleido) (24.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting narwhals&gt;=1.15.1 (from plotly)
-  Downloading narwhals-2.1.2-py3-none-any.whl.metadata (11 kB)
+  Downloading orjson-3.11.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (41 kB)
+Requirement already satisfied: packaging in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from kaleido) (24.2)
+Requirement already satisfied: narwhals&gt;=1.15.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from plotly) (1.31.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting simplejson&gt;=3.19.3 (from choreographer&gt;=1.0.5-&gt;kaleido)
+  Downloading simplejson-3.20.1-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading simplejson-3.20.1-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.2 kB)
-Downloading kaleido-1.0.0-py3-none-any.whl (51 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading plotly-6.3.0-py3-none-any.whl (9.8 MB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading kaleido-1.0.0-py3-none-any.whl (51 kB)
+Downloading plotly-6.3.0-py3-none-any.whl (9.8 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/9.8 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">9.8/9.8 MB</span> <span class=" -Color -Color-Red">106.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5.0/9.8 MB</span> <span class=" -Color -Color-Red">26.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">9.8/9.8 MB</span> <span class=" -Color -Color-Red">34.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hDownloading choreographer-1.0.10-py3-none-any.whl (51 kB)
-Downloading logistro-1.1.0-py3-none-any.whl (7.9 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading narwhals-2.1.2-py3-none-any.whl (392 kB)
-Downloading orjson-3.11.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (121 kB)
-Downloading simplejson-3.20.1-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (152 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading logistro-1.1.0-py3-none-any.whl (7.9 kB)
+Downloading orjson-3.11.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (132 kB)
+Downloading simplejson-3.20.1-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (152 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: simplejson, orjson, narwhals, logistro, plotly, choreographer, kaleido
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: simplejson, plotly, orjson, logistro, choreographer, kaleido
+?25l
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: plotly
+
     Found existing installation: plotly 5.24.1
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling plotly-5.24.1:
+   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled plotly-5.24.1
+   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed choreographer-1.0.10 kaleido-1.0.0 logistro-1.1.0 narwhals-2.1.2 orjson-3.11.2 plotly-6.3.0 simplejson-3.20.1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/6</span> [plotly]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4/6</span> [choreographer]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">6/6</span> [kaleido]
+?25h
+
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed choreographer-1.0.10 kaleido-1.0.0 logistro-1.1.0 orjson-3.11.3 plotly-6.3.0 simplejson-3.20.1
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Yellow">CI detected...</span>
@@ -642,20 +719,8 @@ Collecting package metadata (repodata.json): -
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: | 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+Solving environment: - 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
@@ -686,6 +751,15 @@ Solving environment: |
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -714,8 +788,9 @@ The following NEW packages will be INSTALLED:
 
 
 Downloading and Extracting Packages:
-
-plotly-orca-1.3.1    | 56.6 MB   |                                       |   0% 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>plotly-orca-1.3.1    | 56.6 MB   |                                       |   0% 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>plotly-orca-1.3.1    | 56.6 MB   | ##################################### | 100% 
@@ -726,27 +801,27 @@ plotly-orca-1.3.1    | 56.6 MB   | ##################################### | 100%
                                                                                 
 
 
-Preparing transaction: - 
+Preparing transaction: / 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Verifying transaction: | 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Executing transaction: \ 
+Verifying transaction: \ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+Executing transaction: - 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PosixPath(&#39;/home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages/choreographer/cli/browser_exe/chrome-linux64/chrome&#39;)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PosixPath(&#39;/home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages/choreographer/cli/browser_exe/chrome-linux64/chrome&#39;)
 </pre></div>
 </div>
 </div>
@@ -769,7 +844,7 @@ has <code class="docutils literal notranslate"><span class="pre">plotly</span></
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX backend: </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># to check that gpu is activated in environment</span>
 </pre></div>
 </div>
@@ -781,7 +856,7 @@ has <code class="docutils literal notranslate"><span class="pre">plotly</span></
 </div>
 </div>
 <section id="overview">
-<h2><span class="section-number">15.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">15.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>Substantial parts of <strong>machine learning</strong> and <strong>artificial intelligence</strong> are about</p>
 <ul class="simple">
 <li><p>approximating an unknown function with a known function</p></li>
@@ -800,7 +875,7 @@ approximate a function <span class="math notranslate nohighlight">\(f\)</span> t
 </ul>
 </section>
 <section id="a-deep-but-not-wide-artificial-neural-network">
-<h2><span class="section-number">15.2. </span>A Deep (but not Wide) Artificial Neural Network<a class="headerlink" href="#a-deep-but-not-wide-artificial-neural-network" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">15.2. </span>A Deep (but not Wide) Artificial Neural Network<a class="headerlink" href="#a-deep-but-not-wide-artificial-neural-network" title="Link to this heading">#</a></h2>
 <p>We describe a  “deep” neural network of “width” one.</p>
 <p><strong>Deep</strong> means that the network composes a large number of functions organized into nodes of a graph.</p>
 <p><strong>Width</strong> refers to the number of right hand  side variables on the right hand side of the function being approximated.</p>
@@ -850,7 +925,7 @@ f(x)\approx\hat{f}(x)=h_{N}\circ l_{N}\circ h_{N-1}\circ l_{1}\circ\cdots\circ h
 <p>Evidently,  if we know  the parameters <span class="math notranslate nohighlight">\(\{w_i, b_i\}_{i=1}^N\)</span>, then we can compute
 <span class="math notranslate nohighlight">\(\hat f(x)\)</span> for a given <span class="math notranslate nohighlight">\(x = \tilde x\)</span> by iterating on the recursion</p>
 <div class="math notranslate nohighlight" id="equation-eq-recursion">
-<span class="eqno">(15.1)<a class="headerlink" href="#equation-eq-recursion" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(15.1)<a class="headerlink" href="#equation-eq-recursion" title="Link to this equation">#</a></span>\[
 x_{i+1} = h_i \circ l_i(x_i) , \quad, i = 1, \ldots N
 \]</div>
 <p>starting from <span class="math notranslate nohighlight">\(x_1 = \tilde x\)</span>.</p>
@@ -858,7 +933,7 @@ x_{i+1} = h_i \circ l_i(x_i) , \quad, i = 1, \ldots N
 equals <span class="math notranslate nohighlight">\(\hat f(\tilde x)\)</span>.</p>
 </section>
 <section id="calibrating-parameters">
-<h2><span class="section-number">15.3. </span>Calibrating  Parameters<a class="headerlink" href="#calibrating-parameters" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">15.3. </span>Calibrating  Parameters<a class="headerlink" href="#calibrating-parameters" title="Link to this heading">#</a></h2>
 <p>We now consider a  neural network like the one describe above  with width 1, depth <span class="math notranslate nohighlight">\(N\)</span>,  and activation functions <span class="math notranslate nohighlight">\(h_{i}\)</span> for <span class="math notranslate nohighlight">\(1\leqslant i\leqslant N\)</span> that map <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> into itself.</p>
 <p>Let <span class="math notranslate nohighlight">\(\left\{ \left(w_{i},b_{i}\right)\right\} _{i=1}^{N}\)</span> denote a sequence of weights and biases.</p>
 <p>As mentioned above, for a given input <span class="math notranslate nohighlight">\(x_{1}\)</span>, our approximating function <span class="math notranslate nohighlight">\(\hat f\)</span> evaluated
@@ -891,7 +966,7 @@ p = \begin{bmatrix}
 \]</div>
 <p>Applying a “poor man’s version” of a <strong>stochastic gradient descent</strong> algorithm for finding a zero of a function leads to the following update rule for parameters:</p>
 <div class="math notranslate nohighlight" id="equation-eq-sgd">
-<span class="eqno">(15.2)<a class="headerlink" href="#equation-eq-sgd" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(15.2)<a class="headerlink" href="#equation-eq-sgd" title="Link to this equation">#</a></span>\[
 p_{k+1}=p_k-\alpha\frac{d \mathcal{L}}{dx_{N+1}}\frac{dx_{N+1}}{dp_k}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\frac{d {\mathcal L}}{dx_{N+1}}=-\left(x_{N+1}-y\right)\)</span> and <span class="math notranslate nohighlight">\(\alpha &gt; 0 \)</span> is a step size.</p>
@@ -901,7 +976,7 @@ relates to Newton’s method.)</p>
 <p>In the neural network literature, this step is accomplished by what is known as <strong>back propagation</strong>.</p>
 </section>
 <section id="back-propagation-and-the-chain-rule">
-<h2><span class="section-number">15.4. </span>Back Propagation and the Chain Rule<a class="headerlink" href="#back-propagation-and-the-chain-rule" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">15.4. </span>Back Propagation and the Chain Rule<a class="headerlink" href="#back-propagation-and-the-chain-rule" title="Link to this heading">#</a></h2>
 <p>Thanks to  properties of</p>
 <ul class="simple">
 <li><p>the chain and product rules for differentiation from differential calculus, and</p></li>
@@ -983,7 +1058,7 @@ dx_{N+1}/db_{N}
 <p>We can then solve the above problem by applying our update for <span class="math notranslate nohighlight">\(p\)</span> multiple times for a collection of input-output pairs <span class="math notranslate nohighlight">\(\left\{ \left(x_{1}^{i},y^{i}\right)\right\} _{i=1}^{M}\)</span> that we’ll call our “training set”.</p>
 </section>
 <section id="training-set">
-<h2><span class="section-number">15.5. </span>Training Set<a class="headerlink" href="#training-set" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">15.5. </span>Training Set<a class="headerlink" href="#training-set" title="Link to this heading">#</a></h2>
 <p>Choosing a  training set amounts to a choice of measure <span class="math notranslate nohighlight">\(\mu\)</span> in the above  formulation of our  function approximation problem as a minimization problem.</p>
 <p>In this spirit,  we shall use a uniform grid of, say, 50 or 200 points.</p>
 <p>There are many possible approaches to the minimization  problem posed above:</p>
@@ -995,12 +1070,12 @@ dx_{N+1}/db_{N}
 <p>The update rule <a class="reference internal" href="#equation-eq-sgd">(15.2)</a> described above  amounts  to a stochastic gradient descent algorithm.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">jacfwd</span><span class="p">,</span> <span class="n">vmap</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">random</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">jacfwd</span><span class="p">,</span> <span class="n">vmap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
 </pre></div>
 </div>
 </div>
@@ -1009,12 +1084,12 @@ dx_{N+1}/db_{N}
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A helper function to randomly initialize weights and biases</span>
 <span class="c1"># for a dense neural network layer</span>
-<span class="k">def</span> <span class="nf">random_layer_params</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">random_layer_params</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
     <span class="n">w_key</span><span class="p">,</span> <span class="n">b_key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">w_key</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)),</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">b_key</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,))</span>
 
 <span class="c1"># Initialize all layers for a fully-connected neural network with sizes &quot;sizes&quot;</span>
-<span class="k">def</span> <span class="nf">init_network_params</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">init_network_params</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sizes</span><span class="p">))</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">random_layer_params</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sizes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">keys</span><span class="p">)]</span>
 </pre></div>
@@ -1023,7 +1098,7 @@ dx_{N+1}/db_{N}
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_xδw_seq</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_xδw_seq</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="c1"># Initialize arrays</span>
     <span class="n">δ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
     <span class="n">xs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -1055,7 +1130,7 @@ dx_{N+1}/db_{N}
     <span class="k">return</span> <span class="n">xs</span><span class="p">,</span> <span class="n">δ</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">bs</span>
     
 
-<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">xs</span><span class="p">,</span> <span class="n">δ</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">bs</span> <span class="o">=</span> <span class="n">compute_xδw_seq</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
     <span class="n">preds</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     
@@ -1155,13 +1230,13 @@ dx_{N+1}/db_{N}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">update_ad</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_ad</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">grads</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">loss</span><span class="p">)(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[(</span><span class="n">w</span> <span class="o">-</span> <span class="n">step_size</span> <span class="o">*</span> <span class="n">dw</span><span class="p">,</span> <span class="n">b</span> <span class="o">-</span> <span class="n">step_size</span> <span class="o">*</span> <span class="n">db</span><span class="p">)</span>
           <span class="k">for</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">dw</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grads</span><span class="p">)]</span>
 
 <span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">update_la</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_la</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">xs</span><span class="p">,</span> <span class="n">δ</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">bs</span> <span class="o">=</span> <span class="n">compute_xδw_seq</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="n">L</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">δ</span> <span class="o">*</span> <span class="n">ws</span><span class="p">,</span> <span class="n">k</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
@@ -1211,7 +1286,7 @@ dx_{N+1}/db_{N}
 </div>
 </section>
 <section id="example-1">
-<h2><span class="section-number">15.6. </span>Example 1<a class="headerlink" href="#example-1" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">15.6. </span>Example 1<a class="headerlink" href="#example-1" title="Link to this heading">#</a></h2>
 <p>Consider the function</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1223,7 +1298,7 @@ f\left(x\right)=-3x+2
 <p>Weights are initialized randomly.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span>
 
 <span class="n">M</span> <span class="o">=</span> <span class="mi">200</span>
@@ -1238,7 +1313,7 @@ f\left(x\right)=-3x+2
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">f_val</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">300</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">f_val</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">300</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
         <span class="n">key</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">random_permutation</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">indices</span><span class="p">)</span>
@@ -1268,8 +1343,8 @@ f\left(x\right)=-3x+2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 18.1 s, sys: 3.24 s, total: 21.3 s
-Wall time: 15.6 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 17.9 s, sys: 3.73 s, total: 21.7 s
+Wall time: 15.8 s
 </pre></div>
 </div>
 </div>
@@ -1300,7 +1375,7 @@ Wall time: 15.6 s
 </div>
 </section>
 <section id="how-deep">
-<h2><span class="section-number">15.7. </span>How Deep?<a class="headerlink" href="#how-deep" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">15.7. </span>How Deep?<a class="headerlink" href="#how-deep" title="Link to this heading">#</a></h2>
 <p>It  is  fun to think about how deepening the neural net for the above example affects the quality of  approximation</p>
 <ul class="simple">
 <li><p>If the network is too deep, you’ll run into the <a class="reference external" href="https://neuralnetworksanddeeplearning.com/chap5.html">vanishing gradient problem</a></p></li>
@@ -1309,7 +1384,7 @@ Wall time: 15.6 s
 </ul>
 </section>
 <section id="example-2">
-<h2><span class="section-number">15.8. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">15.8. </span>Example 2<a class="headerlink" href="#example-2" title="Link to this heading">#</a></h2>
 <p>We use the same setup as for the previous example with</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1317,7 +1392,7 @@ f\left(x\right)=\log\left(x\right)
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
 <span class="n">grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">M</span><span class="p">)</span>
@@ -1439,6 +1514,8 @@ f\left(x\right)=\log\left(x\right)
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1896,6 +1973,11 @@ f\left(x\right)=\log\left(x\right)
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1905,17 +1987,17 @@ f\left(x\right)=\log\left(x\right)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1927,17 +2009,17 @@ f\left(x\right)=\log\left(x\right)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1949,12 +2031,12 @@ f\left(x\right)=\log\left(x\right)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1966,17 +2048,17 @@ f\left(x\right)=\log\left(x\right)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -2116,7 +2198,7 @@ f\left(x\right)=\log\left(x\right)
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

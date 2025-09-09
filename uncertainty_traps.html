@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>73. Uncertainty Traps &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'uncertainty_traps';</script>
     <link rel="canonical" href="https://python.quantecon.org/uncertainty_traps.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="74. The Aiyagari Model" href="aiyagari.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -235,8 +242,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1><a class="toc-backref" href="#id5"><span class="section-number">73. </span>Uncertainty Traps</a><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<h1><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">73. </span>Uncertainty Traps</a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#id1" id="id5">Uncertainty Traps</a></p>
@@ -249,9 +256,9 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">73.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">73.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In this lecture, we study a simplified version of an uncertainty traps model of Fajgelbaum, Schaal and Taschereau-Dumouchel <span id="id2">[<a class="reference internal" href="zreferences.html#id145" title="Pablo Fajgelbaum, Edouard Schaal, and Mathieu Taschereau-Dumouchel. Uncertainty traps. Technical Report, National Bureau of Economic Research, 2015.">Fajgelbaum <em>et al.</em>, 2015</a>]</span>.</p>
 <p>The model features self-reinforcing uncertainty that has big impacts on economic activity.</p>
 <p>In the model,</p>
@@ -274,20 +281,19 @@
 <p>Let’s start with some standard imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="the-model">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">73.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">73.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
 <p>The original model described in <span id="id3">[<a class="reference internal" href="zreferences.html#id145" title="Pablo Fajgelbaum, Edouard Schaal, and Mathieu Taschereau-Dumouchel. Uncertainty traps. Technical Report, National Bureau of Economic Research, 2015.">Fajgelbaum <em>et al.</em>, 2015</a>]</span> has many interesting moving parts.</p>
 <p>Here we examine a simplified version that nonetheless captures many of the key ideas.</p>
 <section id="fundamentals">
-<h3><span class="section-number">73.2.1. </span>Fundamentals<a class="headerlink" href="#fundamentals" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">73.2.1. </span>Fundamentals<a class="headerlink" href="#fundamentals" title="Link to this heading">#</a></h3>
 <p>The evolution of the fundamental process <span class="math notranslate nohighlight">\(\{\theta_t\}\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[
@@ -301,12 +307,12 @@
 <p>The random variable <span class="math notranslate nohighlight">\(\theta_t\)</span> is not observable at any time.</p>
 </section>
 <section id="output">
-<h3><span class="section-number">73.2.2. </span>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">73.2.2. </span>Output<a class="headerlink" href="#output" title="Link to this heading">#</a></h3>
 <p>There is a total <span class="math notranslate nohighlight">\(\bar M\)</span> of risk-averse entrepreneurs.</p>
 <p>Output of the <span class="math notranslate nohighlight">\(m\)</span>-th entrepreneur, conditional on being active in the market at
 time <span class="math notranslate nohighlight">\(t\)</span>, is equal to</p>
 <div class="math notranslate nohighlight" id="equation-xgt">
-<span class="eqno">(73.1)<a class="headerlink" href="#equation-xgt" title="Permalink to this equation">#</a></span>\[x_m = \theta + \epsilon_m
+<span class="eqno">(73.1)<a class="headerlink" href="#equation-xgt" title="Link to this equation">#</a></span>\[x_m = \theta + \epsilon_m
 \quad \text{where} \quad
 \epsilon_m \sim N \left(0, \gamma_x^{-1} \right)\]</div>
 <p>Here the time subscript has been dropped to simplify notation.</p>
@@ -315,7 +321,7 @@ time <span class="math notranslate nohighlight">\(t\)</span>, is equal to</p>
 <p>Output shocks are independent across time and firms.</p>
 </section>
 <section id="information-and-beliefs">
-<h3><span class="section-number">73.2.3. </span>Information and Beliefs<a class="headerlink" href="#information-and-beliefs" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">73.2.3. </span>Information and Beliefs<a class="headerlink" href="#information-and-beliefs" title="Link to this heading">#</a></h3>
 <p>All entrepreneurs start with identical beliefs about <span class="math notranslate nohighlight">\(\theta_0\)</span>.</p>
 <p>Signals are publicly observable and hence all agents have identical beliefs always.</p>
 <p>Dropping time subscripts, beliefs for current <span class="math notranslate nohighlight">\(\theta\)</span> are represented by the normal
@@ -330,9 +336,9 @@ distribution <span class="math notranslate nohighlight">\(N(\mu, \gamma^{-1})\)<
 </ul>
 <p>With this notation and primes for next period values, we can write the updating of the mean and precision via</p>
 <div class="math notranslate nohighlight" id="equation-update-mean">
-<span class="eqno">(73.2)<a class="headerlink" href="#equation-update-mean" title="Permalink to this equation">#</a></span>\[\mu' = \rho \frac{\gamma \mu + M \gamma_x X}{\gamma + M \gamma_x}\]</div>
+<span class="eqno">(73.2)<a class="headerlink" href="#equation-update-mean" title="Link to this equation">#</a></span>\[\mu' = \rho \frac{\gamma \mu + M \gamma_x X}{\gamma + M \gamma_x}\]</div>
 <div class="math notranslate nohighlight" id="equation-update-prec">
-<span class="eqno">(73.3)<a class="headerlink" href="#equation-update-prec" title="Permalink to this equation">#</a></span>\[\gamma' =
+<span class="eqno">(73.3)<a class="headerlink" href="#equation-update-prec" title="Link to this equation">#</a></span>\[\gamma' =
     \left(
     \frac{\rho^2}{\gamma + M \gamma_x} + \sigma_\theta^2
     \right)^{-1}\]</div>
@@ -355,10 +361,10 @@ fundamental, and hence more precision in steady state</p></li>
 <p>In practice, as we’ll see, the number of active firms fluctuates stochastically.</p>
 </section>
 <section id="participation">
-<h3><span class="section-number">73.2.4. </span>Participation<a class="headerlink" href="#participation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">73.2.4. </span>Participation<a class="headerlink" href="#participation" title="Link to this heading">#</a></h3>
 <p>Omitting time subscripts once more, entrepreneurs enter the market in the current period if</p>
 <div class="math notranslate nohighlight" id="equation-pref1">
-<span class="eqno">(73.4)<a class="headerlink" href="#equation-pref1" title="Permalink to this equation">#</a></span>\[\mathbb E [ u(x_m - F_m) ] &gt; c\]</div>
+<span class="eqno">(73.4)<a class="headerlink" href="#equation-pref1" title="Link to this equation">#</a></span>\[\mathbb E [ u(x_m - F_m) ] &gt; c\]</div>
 <p>Here</p>
 <ul class="simple">
 <li><p>the mathematical expectation of <span class="math notranslate nohighlight">\(x_m\)</span> is based on <a class="reference internal" href="#equation-xgt">(73.1)</a> and beliefs <span class="math notranslate nohighlight">\(N(\mu, \gamma^{-1})\)</span> for <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
@@ -368,7 +374,7 @@ fundamental, and hence more precision in steady state</p></li>
 <p>The statement that <span class="math notranslate nohighlight">\(F_m\)</span> is pre-visible means that it is realized at the start of the period and treated as a constant in <a class="reference internal" href="#equation-pref1">(73.4)</a>.</p>
 <p>The utility function has the constant absolute risk aversion form</p>
 <div class="math notranslate nohighlight" id="equation-pref2">
-<span class="eqno">(73.5)<a class="headerlink" href="#equation-pref2" title="Permalink to this equation">#</a></span>\[u(x) = \frac{1}{a} \left(1 - \exp(-a x) \right)\]</div>
+<span class="eqno">(73.5)<a class="headerlink" href="#equation-pref2" title="Link to this equation">#</a></span>\[u(x) = \frac{1}{a} \left(1 - \exp(-a x) \right)\]</div>
 <p>where <span class="math notranslate nohighlight">\(a\)</span> is a positive parameter.</p>
 <p>Combining <a class="reference internal" href="#equation-pref1">(73.4)</a> and <a class="reference internal" href="#equation-pref2">(73.5)</a>, entrepreneur <span class="math notranslate nohighlight">\(m\)</span> participates in the market (or is said to be active) when</p>
 <div class="math notranslate nohighlight">
@@ -383,7 +389,7 @@ fundamental, and hence more precision in steady state</p></li>
 \]</div>
 <p>Using standard formulas for expectations of <a class="reference external" href="https://en.wikipedia.org/wiki/Log-normal_distribution">lognormal</a> random variables, this is equivalent to the condition</p>
 <div class="math notranslate nohighlight" id="equation-firm-test">
-<span class="eqno">(73.6)<a class="headerlink" href="#equation-firm-test" title="Permalink to this equation">#</a></span>\[\psi(\mu, \gamma, F_m) :=
+<span class="eqno">(73.6)<a class="headerlink" href="#equation-firm-test" title="Link to this equation">#</a></span>\[\psi(\mu, \gamma, F_m) :=
 \frac{1}{a}
     \left(
         1 - \exp \left(
@@ -394,7 +400,7 @@ fundamental, and hence more precision in steady state</p></li>
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">73.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">73.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>We want to simulate this economy.</p>
 <p>As a first step, let’s put together a class that bundles</p>
 <ul class="simple">
@@ -408,9 +414,9 @@ two belief parameters <span class="math notranslate nohighlight">\(\mu\)</span> 
 <p>The <strong>init</strong> method encodes as default values the parameters we’ll use in the simulations below</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">UncertaintyTrapEcon</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">UncertaintyTrapEcon</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                 <span class="n">a</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>          <span class="c1"># Risk aversion</span>
                 <span class="n">γ_x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>        <span class="c1"># Production shock precision</span>
                 <span class="n">ρ</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span>         <span class="c1"># Correlation coefficient for θ</span>
@@ -430,12 +436,12 @@ two belief parameters <span class="math notranslate nohighlight">\(\mu\)</span> 
         <span class="c1"># == Initialize states == #</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span> <span class="o">=</span> <span class="n">γ_init</span><span class="p">,</span> <span class="n">μ_init</span><span class="p">,</span> <span class="n">θ_init</span>
 
-    <span class="k">def</span> <span class="nf">ψ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ψ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">):</span>
         <span class="n">temp1</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">μ</span> <span class="o">-</span> <span class="n">F</span><span class="p">)</span>
         <span class="n">temp2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">γ_x</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">temp1</span> <span class="o">+</span> <span class="n">temp2</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span>
 
-    <span class="k">def</span> <span class="nf">update_beliefs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_beliefs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update beliefs (μ, γ) based on aggregates X and M.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -448,13 +454,13 @@ two belief parameters <span class="math notranslate nohighlight">\(\mu\)</span> 
         <span class="c1"># Update γ</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">γ</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">ρ</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span> <span class="o">+</span> <span class="n">M</span> <span class="o">*</span> <span class="n">γ_x</span><span class="p">)</span> <span class="o">+</span> <span class="n">σ_θ</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update_θ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_θ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the fundamental state θ given shock w.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">θ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ρ</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">σ_θ</span> <span class="o">*</span> <span class="n">w</span>
 
-    <span class="k">def</span> <span class="nf">gen_aggregates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gen_aggregates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate aggregates based on current beliefs (μ, γ). This</span>
 <span class="sd">        is a simulation step that depends on the draws for F.</span>
@@ -474,7 +480,7 @@ two belief parameters <span class="math notranslate nohighlight">\(\mu\)</span> 
 <p>In the results below we use this code to simulate time series for the major variables.</p>
 </section>
 <section id="results">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">73.4. </span>Results</a><a class="headerlink" href="#results" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">73.4. </span>Results</a><a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
 <p>Let’s look first at the dynamics of <span class="math notranslate nohighlight">\(\mu\)</span>, which the agents use to track <span class="math notranslate nohighlight">\(\theta\)</span></p>
 <figure class="align-default">
 <img alt="_images/uncertainty_traps_mu.png" src="_images/uncertainty_traps_mu.png" />
@@ -497,7 +503,7 @@ at once, for a given set of shocks</p>
 <p>Thus, the model gives us a <em>propagation mechanism</em> that maps bad random draws into long downturns in economic activity.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">73.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">73.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="uncertainty_traps_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 73.1 </span></p>
@@ -595,7 +601,7 @@ different values of <span class="math notranslate nohighlight">\(M\)</span></p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/430664a1713ab89f5919316c732a4efc21b905f65e6dbb6193f27ce3eb9ed748.png" src="_images/430664a1713ab89f5919316c732a4efc21b905f65e6dbb6193f27ce3eb9ed748.png" />
+<img alt="_images/9a22cadddcf6209818c33229bbcfd0cea6b5e450c888037b5a3e136765a7d24e.png" src="_images/9a22cadddcf6209818c33229bbcfd0cea6b5e450c888037b5a3e136765a7d24e.png" />
 </div>
 </div>
 <p>The points where the curves hit the 45 degree lines are the long-run
@@ -654,7 +660,7 @@ simulations</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8f57c6f35068c5426ba029c33ae9a2abc08642abe0423fdabafd2973f0304b48.png" src="_images/8f57c6f35068c5426ba029c33ae9a2abc08642abe0423fdabafd2973f0304b48.png" />
+<img alt="_images/055264104c06e6b4eebb43fc548c4abe3ffbfee524548363d2f783d0325f6f34.png" src="_images/055264104c06e6b4eebb43fc548c4abe3ffbfee524548363d2f783d0325f6f34.png" />
 </div>
 </div>
 <p>Now let’s plot the whole thing together</p>
@@ -684,7 +690,7 @@ simulations</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ee063490be2d24fe155541e9e5295d020458cf800ba2daa4d7b82821b3a27e50.png" src="_images/ee063490be2d24fe155541e9e5295d020458cf800ba2daa4d7b82821b3a27e50.png" />
+<img alt="_images/daafbfb329a3c14e12392022b6f6a65424c2ea44320cc8a241c9a1d84f305e8e.png" src="_images/daafbfb329a3c14e12392022b6f6a65424c2ea44320cc8a241c9a1d84f305e8e.png" />
 </div>
 </div>
 <p>If you run the code above you’ll get different plots, of course.</p>
@@ -729,6 +735,8 @@ us outside the world of the standard Kalman filter)</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1186,6 +1194,11 @@ us outside the world of the standard Kalman filter)</p>
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1195,17 +1208,17 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1217,17 +1230,17 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1239,12 +1252,12 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1256,17 +1269,17 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1406,7 +1419,7 @@ us outside the world of the standard Kalman filter)</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

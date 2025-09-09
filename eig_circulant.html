@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>4. Circulant Matrices &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'eig_circulant';</script>
     <link rel="canonical" href="https://python.quantecon.org/eig_circulant.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="5. Singular Value Decomposition (SVD)" href="svd_intro.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -233,9 +240,9 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="circulant-matrices">
-<h1><span class="section-number">4. </span>Circulant Matrices<a class="headerlink" href="#circulant-matrices" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">4. </span>Circulant Matrices<a class="headerlink" href="#circulant-matrices" title="Link to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture describes circulant matrices and some of their properties.</p>
 <p>Circulant matrices have a special structure that connects them to  useful concepts
 including</p>
@@ -248,9 +255,9 @@ including</p>
 <p>We begin by importing some Python packages</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 </pre></div>
 </div>
 </div>
@@ -264,14 +271,14 @@ including</p>
 </div>
 </section>
 <section id="constructing-a-circulant-matrix">
-<h2><span class="section-number">4.2. </span>Constructing a Circulant Matrix<a class="headerlink" href="#constructing-a-circulant-matrix" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.2. </span>Constructing a Circulant Matrix<a class="headerlink" href="#constructing-a-circulant-matrix" title="Link to this heading">#</a></h2>
 <p>To construct an <span class="math notranslate nohighlight">\(N \times N\)</span> circulant matrix, we  need only the first row, say,</p>
 <div class="math notranslate nohighlight">
 \[ \begin{bmatrix} c_{0} &amp; c_{1} &amp; c_{2} &amp; c_{3} &amp; c_{4} &amp; \cdots &amp; c_{N-1} \end{bmatrix} .\]</div>
 <p>After setting entries in the first row, the remaining rows of a circulant matrix are determined as
 follows:</p>
 <div class="math notranslate nohighlight" id="equation-eqn-circulant">
-<span class="eqno">(4.1)<a class="headerlink" href="#equation-eqn-circulant" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-eqn-circulant" title="Link to this equation">#</a></span>\[\begin{split}
 C=\left[\begin{array}{ccccccc}
 c_{0} &amp; c_{1} &amp; c_{2} &amp; c_{3} &amp; c_{4} &amp; \cdots &amp; c_{N-1}\\
 c_{N-1} &amp; c_{0} &amp; c_{1} &amp; c_{2} &amp; c_{3} &amp; \cdots &amp; c_{N-2}\\
@@ -288,7 +295,7 @@ first column needs to be specified.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">construct_cirlulant</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">construct_cirlulant</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
 
     <span class="n">N</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">size</span>
 
@@ -320,7 +327,7 @@ first column needs to be specified.</p>
 </div>
 </div>
 <section id="some-properties-of-circulant-matrices">
-<h3><span class="section-number">4.2.1. </span>Some Properties of Circulant Matrices<a class="headerlink" href="#some-properties-of-circulant-matrices" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">4.2.1. </span>Some Properties of Circulant Matrices<a class="headerlink" href="#some-properties-of-circulant-matrices" title="Link to this heading">#</a></h3>
 <p>Here are some useful properties:</p>
 <p>Suppose that <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are both circulant matrices. Then it can be verified that</p>
 <ul class="simple">
@@ -337,7 +344,7 @@ first column needs to be specified.</p>
 \[ a = \begin{bmatrix} a_0 &amp; a_1 &amp; \cdots  &amp;  a_{N-1} \end{bmatrix} \]</div>
 <p>The <strong>convolution</strong> of  vectors <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(a\)</span> is defined   as the vector <span class="math notranslate nohighlight">\(b = c * a \)</span>  with components</p>
 <div class="math notranslate nohighlight" id="equation-eqn-conv">
-<span class="eqno">(4.2)<a class="headerlink" href="#equation-eqn-conv" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(4.2)<a class="headerlink" href="#equation-eqn-conv" title="Link to this equation">#</a></span>\[
  b_k = \sum_{i=0}^{n-1} c_{k-i} a_i
 \]</div>
 <p>We use <span class="math notranslate nohighlight">\(*\)</span> to denote <strong>convolution</strong> via the calculation described in equation <a class="reference internal" href="#equation-eqn-conv">(4.2)</a>.</p>
@@ -348,7 +355,7 @@ first column needs to be specified.</p>
 </section>
 </section>
 <section id="connection-to-permutation-matrix">
-<h2><span class="section-number">4.3. </span>Connection to Permutation Matrix<a class="headerlink" href="#connection-to-permutation-matrix" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.3. </span>Connection to Permutation Matrix<a class="headerlink" href="#connection-to-permutation-matrix" title="Link to this heading">#</a></h2>
 <p>A good way to construct a circulant matrix is to use a <strong>permutation matrix</strong>.</p>
 <p>Before defining a permutation <strong>matrix</strong>, we’ll define a <strong>permutation</strong>.</p>
 <p>A <strong>permutation</strong> of a set of the set of non-negative integers <span class="math notranslate nohighlight">\(\{0, 1, 2, \ldots \}\)</span> is a one-to-one mapping of the set into itself.</p>
@@ -358,7 +365,7 @@ first column needs to be specified.</p>
 <p>Every permutation corresponds to a unique permutation matrix.</p>
 <p>For example, the <span class="math notranslate nohighlight">\(N \times N\)</span> matrix</p>
 <div class="math notranslate nohighlight" id="equation-eqn-examplep">
-<span class="eqno">(4.3)<a class="headerlink" href="#equation-eqn-examplep" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(4.3)<a class="headerlink" href="#equation-eqn-examplep" title="Link to this equation">#</a></span>\[\begin{split}
 P=\left[\begin{array}{cccccc}
 0 &amp; 1 &amp; 0 &amp; 0 &amp; \cdots &amp; 0\\
 0 &amp; 0 &amp; 1 &amp; 0 &amp; \cdots &amp; 0\\
@@ -396,12 +403,12 @@ P P' = I
 \]</div>
 </section>
 <section id="examples-with-python">
-<h2><span class="section-number">4.4. </span>Examples with Python<a class="headerlink" href="#examples-with-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.4. </span>Examples with Python<a class="headerlink" href="#examples-with-python" title="Link to this heading">#</a></h2>
 <p>Let’s write some Python code to illustrate these ideas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">construct_P</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">construct_P</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
 
     <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
 
@@ -497,7 +504,7 @@ z = \exp\left(\frac{2 \pi j k }{N} \right) , \quad k = 0, \ldots, N-1
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/271af94c1fcb323aec2c765f69d8d2d87e60821fd43536e74b10b22ab4971769.png" src="_images/271af94c1fcb323aec2c765f69d8d2d87e60821fd43536e74b10b22ab4971769.png" />
+<img alt="_images/5f00cefd7a025811b6c7b961bd52e722f48c5f5bad0e86ce2dcbf3873aeade8a.png" src="_images/5f00cefd7a025811b6c7b961bd52e722f48c5f5bad0e86ce2dcbf3873aeade8a.png" />
 </div>
 </div>
 <p>For a vector of  coefficients <span class="math notranslate nohighlight">\(\{c_i\}_{i=0}^{n-1}\)</span>, eigenvectors of <span class="math notranslate nohighlight">\(P\)</span> are also  eigenvectors of</p>
@@ -528,7 +535,7 @@ F_{8}=\left[\begin{array}{ccccc}
 <p>The eigenvalues corresponding to each eigenvector are <span class="math notranslate nohighlight">\(\{w^{j}\}_{j=0}^{7}\)</span> in order.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">construct_F</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">construct_F</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
 
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
 
@@ -656,7 +663,7 @@ F_{8}=\left[\begin{array}{ccccc}
 </div>
 </section>
 <section id="associated-permutation-matrix">
-<h2><span class="section-number">4.5. </span>Associated Permutation Matrix<a class="headerlink" href="#associated-permutation-matrix" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.5. </span>Associated Permutation Matrix<a class="headerlink" href="#associated-permutation-matrix" title="Link to this heading">#</a></h2>
 <p>Next, we execute calculations to verify that the circulant matrix <span class="math notranslate nohighlight">\(C\)</span> defined  in equation <a class="reference internal" href="#equation-eqn-circulant">(4.1)</a> can be written as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -678,7 +685,7 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.539, 0.345, 0.831, 0.836, 0.852, 0.082, 0.909, 0.385])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.332, 0.293, 0.913, 0.818, 0.563, 0.188, 0.866, 0.3  ])
 </pre></div>
 </div>
 </div>
@@ -712,14 +719,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.539, 0.345, 0.831, 0.836, 0.852, 0.082, 0.909, 0.385],
-       [0.385, 0.539, 0.345, 0.831, 0.836, 0.852, 0.082, 0.909],
-       [0.909, 0.385, 0.539, 0.345, 0.831, 0.836, 0.852, 0.082],
-       [0.082, 0.909, 0.385, 0.539, 0.345, 0.831, 0.836, 0.852],
-       [0.852, 0.082, 0.909, 0.385, 0.539, 0.345, 0.831, 0.836],
-       [0.836, 0.852, 0.082, 0.909, 0.385, 0.539, 0.345, 0.831],
-       [0.831, 0.836, 0.852, 0.082, 0.909, 0.385, 0.539, 0.345],
-       [0.345, 0.831, 0.836, 0.852, 0.082, 0.909, 0.385, 0.539]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.332, 0.293, 0.913, 0.818, 0.563, 0.188, 0.866, 0.3  ],
+       [0.3  , 0.332, 0.293, 0.913, 0.818, 0.563, 0.188, 0.866],
+       [0.866, 0.3  , 0.332, 0.293, 0.913, 0.818, 0.563, 0.188],
+       [0.188, 0.866, 0.3  , 0.332, 0.293, 0.913, 0.818, 0.563],
+       [0.563, 0.188, 0.866, 0.3  , 0.332, 0.293, 0.913, 0.818],
+       [0.818, 0.563, 0.188, 0.866, 0.3  , 0.332, 0.293, 0.913],
+       [0.913, 0.818, 0.563, 0.188, 0.866, 0.3  , 0.332, 0.293],
+       [0.293, 0.913, 0.818, 0.563, 0.188, 0.866, 0.3  , 0.332]])
 </pre></div>
 </div>
 </div>
@@ -731,14 +738,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.539, 0.345, 0.831, 0.836, 0.852, 0.082, 0.909, 0.385],
-       [0.385, 0.539, 0.345, 0.831, 0.836, 0.852, 0.082, 0.909],
-       [0.909, 0.385, 0.539, 0.345, 0.831, 0.836, 0.852, 0.082],
-       [0.082, 0.909, 0.385, 0.539, 0.345, 0.831, 0.836, 0.852],
-       [0.852, 0.082, 0.909, 0.385, 0.539, 0.345, 0.831, 0.836],
-       [0.836, 0.852, 0.082, 0.909, 0.385, 0.539, 0.345, 0.831],
-       [0.831, 0.836, 0.852, 0.082, 0.909, 0.385, 0.539, 0.345],
-       [0.345, 0.831, 0.836, 0.852, 0.082, 0.909, 0.385, 0.539]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.332, 0.293, 0.913, 0.818, 0.563, 0.188, 0.866, 0.3  ],
+       [0.3  , 0.332, 0.293, 0.913, 0.818, 0.563, 0.188, 0.866],
+       [0.866, 0.3  , 0.332, 0.293, 0.913, 0.818, 0.563, 0.188],
+       [0.188, 0.866, 0.3  , 0.332, 0.293, 0.913, 0.818, 0.563],
+       [0.563, 0.188, 0.866, 0.3  , 0.332, 0.293, 0.913, 0.818],
+       [0.818, 0.563, 0.188, 0.866, 0.3  , 0.332, 0.293, 0.913],
+       [0.913, 0.818, 0.563, 0.188, 0.866, 0.3  , 0.332, 0.293],
+       [0.293, 0.913, 0.818, 0.563, 0.188, 0.866, 0.3  , 0.332]])
 </pre></div>
 </div>
 </div>
@@ -751,7 +758,7 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.0)
 </pre></div>
 </div>
 </div>
@@ -775,8 +782,8 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 4.779+0.j   , -0.446-0.428j, -0.348+0.793j, -0.181-0.583j,
-        1.484+0.j   , -0.181+0.583j, -0.348-0.793j, -0.446+0.428j])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 4.274+0.j   , -0.523-0.488j, -0.883+0.637j,  0.061-0.394j,
+        1.074+0.j   ,  0.061+0.394j, -0.883-0.637j, -0.523+0.488j])
 </pre></div>
 </div>
 </div>
@@ -792,21 +799,21 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.+0.j -0.+0.j -0.+0.j -0.+0.j -0.+0.j -0.+0.j -0.+0.j -0.+0.j]
-[ 0.+0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j]
-[ 0.+0.j  0.-0.j -0.-0.j -0.+0.j  0.+0.j  0.-0.j -0.-0.j -0.+0.j]
-[ 0.-0.j -0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j  0.+0.j -0.-0.j]
-[-0.+0.j  0.-0.j -0.-0.j  0.+0.j -0.-0.j  0.+0.j -0.-0.j  0.+0.j]
-[-0.+0.j  0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j -0.+0.j  0.-0.j]
-[ 0.-0.j  0.-0.j  0.-0.j  0.+0.j -0.+0.j -0.-0.j  0.-0.j  0.+0.j]
-[-0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.+0.j]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j]
+[ 0.-0.j  0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j]
+[-0.+0.j  0.-0.j -0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j -0.+0.j]
+[-0.+0.j  0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j  0.+0.j  0.-0.j]
+[ 0.-0.j -0.-0.j  0.-0.j -0.+0.j  0.-0.j -0.+0.j  0.-0.j -0.+0.j]
+[ 0.+0.j -0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j -0.+0.j -0.-0.j]
+[-0.+0.j  0.-0.j  0.-0.j  0.+0.j -0.+0.j -0.-0.j  0.-0.j  0.+0.j]
+[0.+0.j 0.-0.j 0.-0.j 0.-0.j 0.-0.j 0.-0.j 0.-0.j 0.+0.j]
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="discrete-fourier-transform">
-<h2><span class="section-number">4.6. </span>Discrete Fourier Transform<a class="headerlink" href="#discrete-fourier-transform" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.6. </span>Discrete Fourier Transform<a class="headerlink" href="#discrete-fourier-transform" title="Link to this heading">#</a></h2>
 <p>The <strong>Discrete Fourier Transform</strong> (DFT) allows us to  represent a  discrete time sequence as a weighted sum of complex sinusoids.</p>
 <p>Consider a sequence of <span class="math notranslate nohighlight">\(N\)</span> real number <span class="math notranslate nohighlight">\(\{x_j\}_{j=0}^{N-1}\)</span>.</p>
 <p>The <strong>Discrete Fourier Transform</strong> maps <span class="math notranslate nohighlight">\(\{x_j\}_{j=0}^{N-1}\)</span> into a sequence of complex numbers <span class="math notranslate nohighlight">\(\{X_k\}_{k=0}^{N-1}\)</span></p>
@@ -817,7 +824,7 @@ X_{k}=\sum_{n=0}^{N-1}x_{n}e^{-2\pi\frac{kn}{N}i}
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">DFT</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">DFT</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="s2">&quot;The discrete Fourier transform.&quot;</span>
 
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -886,7 +893,7 @@ x_{n}=\begin{cases}
 <p>We can plot  magnitudes of a sequence of numbers and the  associated discrete Fourier transform.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_magnitude</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_magnitude</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
@@ -922,8 +929,8 @@ x_{n}=\begin{cases}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/94c5fa8560aa85278fa163fa3d65e264d37efd5fe5add04304c4967a11e8f63f.png" src="_images/94c5fa8560aa85278fa163fa3d65e264d37efd5fe5add04304c4967a11e8f63f.png" />
-<img alt="_images/8d1f91c96975dbda17fa1356338fab26004669a223575f5f5d9a9f08ba19b165.png" src="_images/8d1f91c96975dbda17fa1356338fab26004669a223575f5f5d9a9f08ba19b165.png" />
+<img alt="_images/9b70f190e553367ea56ad42176ee7db9f29d864c2772ebeee314a6efbefd0a62.png" src="_images/9b70f190e553367ea56ad42176ee7db9f29d864c2772ebeee314a6efbefd0a62.png" />
+<img alt="_images/c473c405a06551129aa37a8114b494694452f9a1b6853eeccbf54770dc008fdf.png" src="_images/c473c405a06551129aa37a8114b494694452f9a1b6853eeccbf54770dc008fdf.png" />
 </div>
 </div>
 <p>The <strong>inverse Fourier transform</strong>  transforms a Fourier transform  <span class="math notranslate nohighlight">\(X\)</span> of <span class="math notranslate nohighlight">\(x\)</span>  back to <span class="math notranslate nohighlight">\(x\)</span>.</p>
@@ -934,7 +941,7 @@ x_{n} = \sum_{k=0}^{N-1} \frac{1}{N} X_{k} e^{2\pi\left(\frac{kn}{N}\right)i}, \
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
 
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span> <span class="o">**</span> <span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
@@ -995,8 +1002,8 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fcecbaf03f711916b5c1fe21de2ba0ec188857042a6cc8d86a59aa74b01b1fbf.png" src="_images/fcecbaf03f711916b5c1fe21de2ba0ec188857042a6cc8d86a59aa74b01b1fbf.png" />
-<img alt="_images/2cd34536b42beebd90214400247115f391e384b3b95deea500fbadcd8fd8ad61.png" src="_images/2cd34536b42beebd90214400247115f391e384b3b95deea500fbadcd8fd8ad61.png" />
+<img alt="_images/618202060d8133270dc6a2141e36d204b63423e778e9475b393b3ff8d5aeb441.png" src="_images/618202060d8133270dc6a2141e36d204b63423e778e9475b393b3ff8d5aeb441.png" />
+<img alt="_images/a1a3f2ba0347c96793e32981ee5a1d1e15855026f9fcf654f10b2b18d803d080.png" src="_images/a1a3f2ba0347c96793e32981ee5a1d1e15855026f9fcf654f10b2b18d803d080.png" />
 </div>
 </div>
 <p>What happens if we change the last example to <span class="math notranslate nohighlight">\(x_{n}=2\cos\left(2\pi\frac{10}{40}n\right)\)</span>?</p>
@@ -1026,8 +1033,8 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/660fbe197375132f5eb73d523205ecba334778976782cefa3031355a1359bbde.png" src="_images/660fbe197375132f5eb73d523205ecba334778976782cefa3031355a1359bbde.png" />
-<img alt="_images/d6bf89ca0aae5e41cb92357ab4dbcbcefb228df261524c4e4d00224c83053a1f.png" src="_images/d6bf89ca0aae5e41cb92357ab4dbcbcefb228df261524c4e4d00224c83053a1f.png" />
+<img alt="_images/c977566f9b17e834c6e489bce48f7969ee2354c28eddc2471efc870d4a94dcb2.png" src="_images/c977566f9b17e834c6e489bce48f7969ee2354c28eddc2471efc870d4a94dcb2.png" />
+<img alt="_images/b5cb1a42989ea154e9f75d4686c3689886ccd106ce9fa37a0775f03b7943a7d3.png" src="_images/b5cb1a42989ea154e9f75d4686c3689886ccd106ce9fa37a0775f03b7943a7d3.png" />
 </div>
 </div>
 <p>If we represent the discrete Fourier transform as a matrix, we discover that it equals the  matrix <span class="math notranslate nohighlight">\(F_{N}\)</span> of eigenvectors  of the permutation matrix <span class="math notranslate nohighlight">\(P_{N}\)</span>.</p>
@@ -1148,6 +1155,8 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1605,6 +1614,11 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1614,17 +1628,17 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1636,17 +1650,17 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1658,12 +1672,12 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1675,17 +1689,17 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1825,7 +1839,7 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

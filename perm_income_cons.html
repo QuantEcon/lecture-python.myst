@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>67. Permanent Income II: LQ Techniques &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'perm_income_cons';</script>
     <link rel="canonical" href="https://python.quantecon.org/perm_income_cons.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="68. Production Smoothing via Inventories" href="lq_inventories.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -249,8 +256,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="permanent-income-ii-lq-techniques">
-<h1><a class="toc-backref" href="#id7"><span class="section-number">67. </span><span class="target" id="index-0"></span>Permanent Income II: LQ Techniques</a><a class="headerlink" href="#permanent-income-ii-lq-techniques" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<h1><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">67. </span><span class="target" id="index-0"></span>Permanent Income II: LQ Techniques</a><a class="headerlink" href="#permanent-income-ii-lq-techniques" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#permanent-income-ii-lq-techniques" id="id7">Permanent Income II: LQ Techniques</a></p>
@@ -263,7 +270,7 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -277,25 +284,27 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.9.0)
-Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
-Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
-Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
-Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.14.0)
-Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.43.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.7)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
-Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
+Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
+Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
+Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
+Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 </div>
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">67.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">67.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture continues our analysis of the linear-quadratic (LQ) permanent income model of savings and consumption.</p>
 <p>As we saw in our <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a> on this topic, Robert Hall <span id="id1">[<a class="reference internal" href="zreferences.html#id173" title="Robert E Hall. Stochastic Implications of the Life Cycle-Permanent Income Hypothesis: Theory and Evidence. Journal of Political Economy, 86(6):971–987, 1978.">Hall, 1978</a>]</span> used the LQ permanent income model to restrict and interpret intertemporal comovements of nondurable consumption, nonfinancial income, and financial wealth.</p>
 <p>For example, we saw how the model asserts that for any covariance stationary process for nonfinancial income</p>
@@ -325,44 +334,44 @@ consumption dynamics in the spirit of Truman Bewley <span id="id3">[<a class="re
 <p>Let’s start with some imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.linalg</span> <span class="k">as</span> <span class="nn">la</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">la</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="setup">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">67.2. </span>Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">67.2. </span>Setup</a><a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>Let’s recall the basic features of the model discussed in the <a class="reference internal" href="perm_income.html"><span class="doc">permanent income model</span></a>.</p>
 <p>Consumer preferences are ordered  by</p>
 <div class="math notranslate nohighlight" id="equation-old1">
-<span class="eqno">(67.1)<a class="headerlink" href="#equation-old1" title="Permalink to this equation">#</a></span>\[E_0 \sum_{t=0}^\infty \beta^t u(c_t)\]</div>
+<span class="eqno">(67.1)<a class="headerlink" href="#equation-old1" title="Link to this equation">#</a></span>\[E_0 \sum_{t=0}^\infty \beta^t u(c_t)\]</div>
 <p>where <span class="math notranslate nohighlight">\(u(c) = -(c - \gamma)^2\)</span>.</p>
 <p>The consumer maximizes <a class="reference internal" href="#equation-old1">(67.1)</a> by choosing a
 consumption, borrowing plan <span class="math notranslate nohighlight">\(\{c_t, b_{t+1}\}_{t=0}^\infty\)</span>
 subject to the sequence of budget constraints</p>
 <div class="math notranslate nohighlight" id="equation-old2">
-<span class="eqno">(67.2)<a class="headerlink" href="#equation-old2" title="Permalink to this equation">#</a></span>\[c_t + b_t = \frac{1}{1 + r} b_{t+1}  + y_t,
+<span class="eqno">(67.2)<a class="headerlink" href="#equation-old2" title="Link to this equation">#</a></span>\[c_t + b_t = \frac{1}{1 + r} b_{t+1}  + y_t,
 \quad t \geq 0\]</div>
 <p>and the no-Ponzi condition</p>
 <div class="math notranslate nohighlight" id="equation-old42">
-<span class="eqno">(67.3)<a class="headerlink" href="#equation-old42" title="Permalink to this equation">#</a></span>\[E_0 \sum_{t=0}^\infty \beta^t b_t^2 &lt; \infty\]</div>
+<span class="eqno">(67.3)<a class="headerlink" href="#equation-old42" title="Link to this equation">#</a></span>\[E_0 \sum_{t=0}^\infty \beta^t b_t^2 &lt; \infty\]</div>
 <p>The interpretation of all variables and parameters are the same as in the
 <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a>.</p>
 <p>We continue to assume that <span class="math notranslate nohighlight">\((1 + r) \beta = 1\)</span>.</p>
 <p>The dynamics of <span class="math notranslate nohighlight">\(\{y_t\}\)</span> again follow the linear state space model</p>
 <div class="math notranslate nohighlight" id="equation-sprob15ab2">
-<span class="eqno">(67.4)<a class="headerlink" href="#equation-sprob15ab2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(67.4)<a class="headerlink" href="#equation-sprob15ab2" title="Link to this equation">#</a></span>\[\begin{split}\begin{aligned}
     z_{t+1} &amp; = A z_t + C w_{t+1}
     \\
     y_t &amp; = U  z_t
 \end{aligned}\end{split}\]</div>
 <p>The restrictions on the shock process and parameters are the same as in our <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a>.</p>
 <section id="digression-on-a-useful-isomorphism">
-<h3><span class="section-number">67.2.1. </span>Digression on a Useful Isomorphism<a class="headerlink" href="#digression-on-a-useful-isomorphism" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">67.2.1. </span>Digression on a Useful Isomorphism<a class="headerlink" href="#digression-on-a-useful-isomorphism" title="Link to this heading">#</a></h3>
 <p>The LQ permanent income model of consumption is mathematically isomorphic with a version of
 Barro’s <span id="id4">[<a class="reference internal" href="zreferences.html#id157" title="Robert J Barro. On the Determination of the Public Debt. Journal of Political Economy, 87(5):940–971, 1979.">Barro, 1979</a>]</span> model of tax smoothing.</p>
 <p>In the LQ permanent income model</p>
@@ -387,7 +396,7 @@ Barro’s <span id="id4">[<a class="reference internal" href="zreferences.html#i
 <p>See <a class="reference external" href="https://python-advanced.quantecon.org/smoothing.html">consumption and tax smoothing models</a> for further exploitation of an isomorphism between consumption and tax smoothing models.</p>
 </section>
 <section id="a-specification-of-the-nonfinancial-income-process">
-<h3><span class="section-number">67.2.2. </span>A Specification of the Nonfinancial Income Process<a class="headerlink" href="#a-specification-of-the-nonfinancial-income-process" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">67.2.2. </span>A Specification of the Nonfinancial Income Process<a class="headerlink" href="#a-specification-of-the-nonfinancial-income-process" title="Link to this heading">#</a></h3>
 <p>For the purposes of this lecture, let’s assume <span class="math notranslate nohighlight">\(\{y_t\}\)</span> is a second-order univariate autoregressive process:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -422,7 +431,7 @@ U = \begin{bmatrix} 0 &amp; 1 &amp; 0 \end{bmatrix}
 </section>
 </section>
 <section id="the-lq-approach">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">67.3. </span>The LQ Approach</a><a class="headerlink" href="#the-lq-approach" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">67.3. </span>The LQ Approach</a><a class="headerlink" href="#the-lq-approach" title="Link to this heading">#</a></h2>
 <p><a class="reference internal" href="perm_income.html#odr-pi"><span class="std std-ref">Previously</span></a> we solved the permanent income model  by solving a system of linear expectational difference equations subject to two boundary conditions.</p>
 <p>Here we solve the same model using <a class="reference internal" href="lqcontrol.html"><span class="doc">LQ methods</span></a> based on dynamic programming.</p>
 <p>After confirming that answers produced by the two methods agree, we apply <a class="reference external" href="https://quantecon.org/quantecon-py">QuantEcon</a>’s <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a>
@@ -436,7 +445,7 @@ class to illustrate features of the model.</p>
 <li><p>iterations on a Bellman equation  implicitly jointly solve both a  forecasting problem and a control problem</p></li>
 </ul>
 <section id="the-lq-problem">
-<h3><span class="section-number">67.3.1. </span>The LQ Problem<a class="headerlink" href="#the-lq-problem" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">67.3.1. </span>The LQ Problem<a class="headerlink" href="#the-lq-problem" title="Link to this heading">#</a></h3>
 <p>Recall from our <a class="reference internal" href="lqcontrol.html"><span class="doc">lecture on LQ theory</span></a> that the optimal linear regulator problem is to choose
 a decision rule for <span class="math notranslate nohighlight">\(u_t\)</span> to minimize</p>
 <div class="math notranslate nohighlight">
@@ -446,7 +455,7 @@ a decision rule for <span class="math notranslate nohighlight">\(u_t\)</span> to
 \]</div>
 <p>subject to <span class="math notranslate nohighlight">\(x_0\)</span> given and the law of motion</p>
 <div class="math notranslate nohighlight" id="equation-pilqsd">
-<span class="eqno">(67.5)<a class="headerlink" href="#equation-pilqsd" title="Permalink to this equation">#</a></span>\[x_{t+1} =  \tilde A x_t+ \tilde B u_t+ \tilde C w_{t+1},
+<span class="eqno">(67.5)<a class="headerlink" href="#equation-pilqsd" title="Link to this equation">#</a></span>\[x_{t+1} =  \tilde A x_t+ \tilde B u_t+ \tilde C w_{t+1},
 \qquad t\geq 0,\]</div>
 <p>where <span class="math notranslate nohighlight">\(w_{t+1}\)</span> is IID with mean vector zero and <span class="math notranslate nohighlight">\(\mathbb E w_t w'_t= I\)</span>.</p>
 <p>The tildes in <span class="math notranslate nohighlight">\(\tilde A, \tilde B, \tilde C\)</span> are to avoid clashing with notation in <a class="reference internal" href="#equation-sprob15ab2">(67.4)</a>.</p>
@@ -459,7 +468,7 @@ a decision rule for <span class="math notranslate nohighlight">\(u_t\)</span> to
 <p>Under an optimal decision rule <span class="math notranslate nohighlight">\(F\)</span>, the state vector <span class="math notranslate nohighlight">\(x_t\)</span> evolves according to <span class="math notranslate nohighlight">\(x_{t+1} = (\tilde A-\tilde BF) x_t + \tilde C w_{t+1}\)</span>.</p>
 </section>
 <section id="mapping-into-the-lq-framework">
-<h3><span class="section-number">67.3.2. </span>Mapping into the LQ Framework<a class="headerlink" href="#mapping-into-the-lq-framework" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">67.3.2. </span>Mapping into the LQ Framework<a class="headerlink" href="#mapping-into-the-lq-framework" title="Link to this heading">#</a></h3>
 <p>To map into the LQ framework, we’ll use</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -514,14 +523,14 @@ on the debt sequence <span class="math notranslate nohighlight">\(\{b_t\}\)</spa
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">67.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">67.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>Let’s write some code to solve the model.</p>
 <p>One comment before we start is that the bliss level of consumption <span class="math notranslate nohighlight">\(\gamma\)</span> in the utility function has no effect on the optimal decision rule.</p>
 <p>We saw this in the previous lecture  <a class="reference internal" href="perm_income.html"><span class="doc">permanent income</span></a>.</p>
 <p>The reason is that it drops out of the Euler equation for consumption.</p>
 <p>In what follows we set it equal to unity.</p>
 <section id="the-exogenous-nonfinancial-income-process">
-<h3><span class="section-number">67.4.1. </span>The Exogenous Nonfinancial Income Process<a class="headerlink" href="#the-exogenous-nonfinancial-income-process" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">67.4.1. </span>The Exogenous Nonfinancial Income Process<a class="headerlink" href="#the-exogenous-nonfinancial-income-process" title="Link to this heading">#</a></h3>
 <p>First, we create the objects for the optimal linear regulator</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -632,7 +641,7 @@ employing an alternative solution method</p>
 </div>
 </section>
 <section id="comparison-with-the-difference-equation-approach">
-<h3><span class="section-number">67.4.2. </span>Comparison with the Difference Equation Approach<a class="headerlink" href="#comparison-with-the-difference-equation-approach" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">67.4.2. </span>Comparison with the Difference Equation Approach<a class="headerlink" href="#comparison-with-the-difference-equation-approach" title="Link to this heading">#</a></h3>
 <p>In our <a class="reference internal" href="perm_income.html"><span class="doc">first lecture</span></a> on the infinite horizon permanent
 income problem we used a different solution method.</p>
 <p>The method was based around</p>
@@ -718,7 +727,7 @@ income problem we used a different solution method.</p>
 </section>
 </section>
 <section id="two-example-economies">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">67.5. </span>Two Example Economies</a><a class="headerlink" href="#two-example-economies" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">67.5. </span>Two Example Economies</a><a class="headerlink" href="#two-example-economies" title="Link to this heading">#</a></h2>
 <p>In the spirit of Bewley models <span id="id5">[<a class="reference internal" href="zreferences.html#id121" title="Truman F Bewley. Stationary monetary equilibrium with a continuum of independently fluctuating consumers. In Werner Hildenbran and Andreu Mas-Colell, editors, Contributions to Mathematical Economics in Honor of Gerard Debreu, pages 27-102. North-Holland, Amsterdam, 1986.">Bewley, 1986</a>]</span>, we’ll generate panels of consumers.</p>
 <p>The examples differ only in  the initial states with which we endow the consumers.</p>
 <p>All other parameter values are kept the same in the two examples</p>
@@ -742,7 +751,7 @@ pronounced transients early in the sample</p>
 <p>Those transient effects will not be present in the second example.</p>
 <p>We use methods affiliated with the <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class to simulate the model.</p>
 <section id="first-set-of-initial-conditions">
-<h3><span class="section-number">67.5.1. </span>First Set of Initial Conditions<a class="headerlink" href="#first-set-of-initial-conditions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">67.5.1. </span>First Set of Initial Conditions<a class="headerlink" href="#first-set-of-initial-conditions" title="Link to this heading">#</a></h3>
 <p>We generate  25 paths of the exogenous non-financial income process and the associated optimal consumption and debt paths.</p>
 <p>In the first set of graphs,  darker lines depict a particular sample path, while the lighter lines describe 24 other  paths.</p>
 <p>A second graph  plots a collection of simulations against the population distribution that we extract from the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> instance <code class="docutils literal notranslate"><span class="pre">LSS</span></code>.</p>
@@ -756,7 +765,7 @@ pronounced transients early in the sample</p>
 </div>
 </section>
 <section id="population-and-sample-panels">
-<h3><span class="section-number">67.5.2. </span>Population and Sample Panels<a class="headerlink" href="#population-and-sample-panels" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">67.5.2. </span>Population and Sample Panels<a class="headerlink" href="#population-and-sample-panels" title="Link to this heading">#</a></h3>
 <p>In the code below, we use the <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class to</p>
 <ul class="simple">
 <li><p>compute and plot population quantiles of the distributions of
@@ -766,7 +775,7 @@ graph as the population distribution.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">income_consumption_debt_series</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">μ_0</span><span class="p">,</span> <span class="n">Σ_0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">npaths</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">income_consumption_debt_series</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">μ_0</span><span class="p">,</span> <span class="n">Σ_0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">npaths</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function takes initial conditions (μ_0, Σ_0) and uses the</span>
 <span class="sd">    LinearStateSpace class from QuantEcon to  simulate an economy</span>
@@ -801,7 +810,7 @@ graph as the population distribution.</p></li>
 
     <span class="k">return</span> <span class="n">bsim</span><span class="p">,</span> <span class="n">csim</span><span class="p">,</span> <span class="n">ysim</span><span class="p">,</span> <span class="n">cons_mean</span><span class="p">,</span> <span class="n">cons_var</span><span class="p">,</span> <span class="n">debt_mean</span><span class="p">,</span> <span class="n">debt_var</span>
 
-<span class="k">def</span> <span class="nf">consumption_income_debt_figure</span><span class="p">(</span><span class="n">bsim</span><span class="p">,</span> <span class="n">csim</span><span class="p">,</span> <span class="n">ysim</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">consumption_income_debt_figure</span><span class="p">(</span><span class="n">bsim</span><span class="p">,</span> <span class="n">csim</span><span class="p">,</span> <span class="n">ysim</span><span class="p">):</span>
 
     <span class="c1"># Get T</span>
     <span class="n">T</span> <span class="o">=</span>  <span class="n">bsim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -828,7 +837,7 @@ graph as the population distribution.</p></li>
     <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">fig</span>
 
-<span class="k">def</span> <span class="nf">consumption_debt_fanchart</span><span class="p">(</span><span class="n">csim</span><span class="p">,</span> <span class="n">cons_mean</span><span class="p">,</span> <span class="n">cons_var</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">consumption_debt_fanchart</span><span class="p">(</span><span class="n">csim</span><span class="p">,</span> <span class="n">cons_mean</span><span class="p">,</span> <span class="n">cons_var</span><span class="p">,</span>
                               <span class="n">bsim</span><span class="p">,</span> <span class="n">debt_mean</span><span class="p">,</span> <span class="n">debt_var</span><span class="p">):</span>
     <span class="c1"># Get T</span>
     <span class="n">T</span> <span class="o">=</span>  <span class="n">bsim</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -887,7 +896,7 @@ graph as the population distribution.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c17d16e5acaaab3fa2afe54bb1342a99ca56f90b5ea8ba4629fc109fa3aad255.png" src="_images/c17d16e5acaaab3fa2afe54bb1342a99ca56f90b5ea8ba4629fc109fa3aad255.png" />
+<img alt="_images/2f1f002b827cee30bb769f702d171955e98464b70e00a6e1bb14a0f14a6349d9.png" src="_images/2f1f002b827cee30bb769f702d171955e98464b70e00a6e1bb14a0f14a6349d9.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -900,7 +909,7 @@ graph as the population distribution.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c7eb21d31b80b163345c5f1ccb36dc198106b2ab74c8001b299430189b4fb022.png" src="_images/c7eb21d31b80b163345c5f1ccb36dc198106b2ab74c8001b299430189b4fb022.png" />
+<img alt="_images/39cf3c3744f850085ef3697fb84151090c9e5c14315b370098a549b6db0b3d47.png" src="_images/39cf3c3744f850085ef3697fb84151090c9e5c14315b370098a549b6db0b3d47.png" />
 </div>
 </div>
 <p>Here is what is going on in the above graphs.</p>
@@ -908,7 +917,7 @@ graph as the population distribution.</p></li>
 <p>Because <span class="math notranslate nohighlight">\(y_{-1} = y_{-2} = 0\)</span>, nonfinancial income <span class="math notranslate nohighlight">\(y_t\)</span> starts far below its stationary mean <span class="math notranslate nohighlight">\(\mu_{y, \infty}\)</span> and rises early in each simulation.</p>
 <p>Recall from  the <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a> that we can represent the optimal decision rule for consumption in terms of the <strong>co-integrating relationship</strong></p>
 <div class="math notranslate nohighlight" id="equation-old12">
-<span class="eqno">(67.6)<a class="headerlink" href="#equation-old12" title="Permalink to this equation">#</a></span>\[(1-\beta) b_t + c_t = (1-\beta) E_t \sum_{j=0}^\infty \beta^j y_{t+j}\]</div>
+<span class="eqno">(67.6)<a class="headerlink" href="#equation-old12" title="Link to this equation">#</a></span>\[(1-\beta) b_t + c_t = (1-\beta) E_t \sum_{j=0}^\infty \beta^j y_{t+j}\]</div>
 <p>So at time <span class="math notranslate nohighlight">\(0\)</span> we have</p>
 <div class="math notranslate nohighlight">
 \[
@@ -922,7 +931,7 @@ c_0 = (1-\beta) E_0 \sum_{t=0}^\infty \beta^j y_{t}
 <p>All of them accumulate debt in anticipation of rising nonfinancial income.</p>
 <p>They expect their nonfinancial income to rise toward the invariant distribution of income, a consequence of our having started them at <span class="math notranslate nohighlight">\(y_{-1} = y_{-2} = 0\)</span>.</p>
 <section id="cointegration-residual">
-<h4><span class="section-number">67.5.2.1. </span>Cointegration Residual<a class="headerlink" href="#cointegration-residual" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">67.5.2.1. </span>Cointegration Residual<a class="headerlink" href="#cointegration-residual" title="Link to this heading">#</a></h4>
 <p>The following figure plots realizations of the left side of <a class="reference internal" href="#equation-old12">(67.6)</a>, which,
 <a class="reference internal" href="perm_income.html#coint-pi"><span class="std std-ref">as discussed in our last lecture</span></a>, is called the <strong>cointegrating residual</strong>.</p>
 <p>As mentioned above, the right side can be thought of as an
@@ -942,7 +951,7 @@ behavior early in the sample.</p>
 <p>By altering initial conditions, we shall remove this transient in our second example to be presented below</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cointegration_figure</span><span class="p">(</span><span class="n">bsim</span><span class="p">,</span> <span class="n">csim</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cointegration_figure</span><span class="p">(</span><span class="n">bsim</span><span class="p">,</span> <span class="n">csim</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plots the cointegration</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -966,13 +975,13 @@ behavior early in the sample.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8fb59af4580fd07ef7d901261d20aa6784116da468153fb26df19af6dec8f012.png" src="_images/8fb59af4580fd07ef7d901261d20aa6784116da468153fb26df19af6dec8f012.png" />
+<img alt="_images/b721457dbac3bac439e564aced6129f4136827d77a6a67f71f41cce1640a6bf4.png" src="_images/b721457dbac3bac439e564aced6129f4136827d77a6a67f71f41cce1640a6bf4.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="a-borrowers-and-lenders-closed-economy">
-<h3><span class="section-number">67.5.3. </span>A “Borrowers and Lenders” Closed Economy<a class="headerlink" href="#a-borrowers-and-lenders-closed-economy" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">67.5.3. </span>A “Borrowers and Lenders” Closed Economy<a class="headerlink" href="#a-borrowers-and-lenders-closed-economy" title="Link to this heading">#</a></h3>
 <p>When we set <span class="math notranslate nohighlight">\(y_{-1} = y_{-2} = 0\)</span> and <span class="math notranslate nohighlight">\(b_0 =0\)</span> in the
 preceding exercise, we make debt “head north” early in the sample.</p>
 <p>Average debt in the cross-section rises and approaches the asymptote.</p>
@@ -1011,7 +1020,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fc0c91b714e1b8201e404bbf150a44f9bc1e519a137e712b726c360dddf5ae5c.png" src="_images/fc0c91b714e1b8201e404bbf150a44f9bc1e519a137e712b726c360dddf5ae5c.png" />
+<img alt="_images/3688b4832ff7652178724ff2481156f7f93d4cfbd7b7a8e227e0c35b2e2984df.png" src="_images/3688b4832ff7652178724ff2481156f7f93d4cfbd7b7a8e227e0c35b2e2984df.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1024,7 +1033,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4fdb50d3e65d2a5a1e46c733997305497b9933f1784870697c9eae891a83ff76.png" src="_images/4fdb50d3e65d2a5a1e46c733997305497b9933f1784870697c9eae891a83ff76.png" />
+<img alt="_images/f9e6ea0ca27590a2d8f722eec5288ac8c68fefb95573196116547ca93fa2a3c1.png" src="_images/f9e6ea0ca27590a2d8f722eec5288ac8c68fefb95573196116547ca93fa2a3c1.png" />
 </div>
 </div>
 <p>The graphs confirm the following outcomes:</p>
@@ -1046,7 +1055,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5bb3257abcc2c8895d07b9bef84cd2ec3ef247f4d6ffc7dbf6bc9b71abccfd51.png" src="_images/5bb3257abcc2c8895d07b9bef84cd2ec3ef247f4d6ffc7dbf6bc9b71abccfd51.png" />
+<img alt="_images/9d0c6aa8f83096241b96c8942b83001a5216f420c498abed3181492d1cef054d.png" src="_images/9d0c6aa8f83096241b96c8942b83001a5216f420c498abed3181492d1cef054d.png" />
 </div>
 </div>
 </section>
@@ -1084,6 +1093,8 @@ with each other at a gross risk-free interest rate of
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1541,6 +1552,11 @@ with each other at a gross risk-free interest rate of
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1550,17 +1566,17 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1572,17 +1588,17 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1594,12 +1610,12 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1611,17 +1627,17 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1761,7 +1777,7 @@ with each other at a gross risk-free interest rate of
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

@@ -1,15 +1,14 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>82. Multiple Good Allocation Mechanisms &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>83. Multiple Good Allocation Mechanisms &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,16 +108,24 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'house_auction';</script>
     <link rel="canonical" href="https://python.quantecon.org/house_auction.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="83. Troubleshooting" href="troubleshooting.html" />
-    <link rel="prev" title="81. First-Price and Second-Price Auctions" href="two_auctions.html" />
+    <link rel="next" title="84. Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="82. First-Price and Second-Price Auctions" href="two_auctions.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -167,30 +174,30 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">82.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ascending-bids-auction-for-multiple-goods">82.2. Ascending Bids Auction for Multiple Goods</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-benevolent-planner">82.3. A Benevolent Planner</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equivalence-of-allocations">82.4. Equivalence of Allocations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ascending-bid-auction">82.5. Ascending Bid Auction</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-setting">82.5.1. Basic Setting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">83.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ascending-bids-auction-for-multiple-goods">83.2. Ascending Bids Auction for Multiple Goods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-benevolent-planner">83.3. A Benevolent Planner</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equivalence-of-allocations">83.4. Equivalence of Allocations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ascending-bid-auction">83.5. Ascending Bid Auction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-setting">83.5.1. Basic Setting</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pseudocode">82.6. Pseudocode</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example">82.7. An Example</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-1">82.7.1. round 1</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-2">82.7.2. round 2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-3">82.7.3. round 3</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-4">82.7.4. round 4</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-5">82.7.5. round 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pseudocode">83.6. Pseudocode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example">83.7. An Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-1">83.7.1. round 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-2">83.7.2. round 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-3">83.7.3. round 3</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-4">83.7.4. round 4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#round-5">83.7.5. round 5</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-python-class">82.8. A Python Class</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robustness-checks">82.9. Robustness Checks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-groves-clarke-mechanism">82.10. A Groves-Clarke Mechanism</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-solved-by-hand">82.11. An Example Solved by Hand</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-python-class">82.12. Another Python Class</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elaborations">82.12.1. Elaborations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#social-cost">82.12.2. Social Cost</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-python-class">83.8. A Python Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robustness-checks">83.9. Robustness Checks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-groves-clarke-mechanism">83.10. A Groves-Clarke Mechanism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-solved-by-hand">83.11. An Example Solved by Hand</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-python-class">83.12. Another Python Class</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elaborations">83.12.1. Elaborations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#social-cost">83.12.2. Social Cost</a></li>
 </ul>
 </li>
 </ul>
@@ -250,7 +257,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="multiple-good-allocation-mechanisms">
-<h1><span class="section-number">82. </span>Multiple Good Allocation Mechanisms<a class="headerlink" href="#multiple-good-allocation-mechanisms" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">83. </span>Multiple Good Allocation Mechanisms<a class="headerlink" href="#multiple-good-allocation-mechanisms" title="Link to this heading">#</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>prettytable
@@ -267,7 +274,7 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading prettytable-3.16.0-py3-none-any.whl.metadata (33 kB)
-Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from prettytable) (0.2.5)
+Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from prettytable) (0.2.5)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading prettytable-3.16.0-py3-none-any.whl (33 kB)
@@ -283,7 +290,7 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 </details>
 </div>
 <section id="overview">
-<h2><span class="section-number">82.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture describes two mechanisms for allocating <span class="math notranslate nohighlight">\(n\)</span> private goods (“houses”)  to <span class="math notranslate nohighlight">\(m\)</span> people (“buyers”).</p>
 <p>We assume that  <span class="math notranslate nohighlight">\(m &gt; n\)</span> so that there are more potential buyers than there are houses.</p>
 <p>Prospective buyers regard the houses  as <strong>substitutes</strong>.</p>
@@ -305,7 +312,7 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 <p>We begin with  overviews of the two mechanisms.</p>
 </section>
 <section id="ascending-bids-auction-for-multiple-goods">
-<h2><span class="section-number">82.2. </span>Ascending Bids Auction for Multiple Goods<a class="headerlink" href="#ascending-bids-auction-for-multiple-goods" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.2. </span>Ascending Bids Auction for Multiple Goods<a class="headerlink" href="#ascending-bids-auction-for-multiple-goods" title="Link to this heading">#</a></h2>
 <p>An auction is administered by an <strong>auctioneer</strong></p>
 <p>The auctioneer has an <span class="math notranslate nohighlight">\(n \times 1\)</span> vector <span class="math notranslate nohighlight">\(r\)</span> of reservation prices on the <span class="math notranslate nohighlight">\(n\)</span> houses.</p>
 <p>The auctioneer sells house <span class="math notranslate nohighlight">\(i\)</span> only if the final price bid for it exceeds <span class="math notranslate nohighlight">\(r_i\)</span></p>
@@ -324,7 +331,7 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 <p>In this auction,  person <span class="math notranslate nohighlight">\(j\)</span> never tells anyone else his/her private values <span class="math notranslate nohighlight">\(v_{ij}\)</span></p>
 </section>
 <section id="a-benevolent-planner">
-<h2><span class="section-number">82.3. </span>A Benevolent Planner<a class="headerlink" href="#a-benevolent-planner" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.3. </span>A Benevolent Planner<a class="headerlink" href="#a-benevolent-planner" title="Link to this heading">#</a></h2>
 <p>This mechanism is designed so that all prospective buyers voluntarily choose to reveal their private values to a <strong>social planner</strong> who uses them to construct a socially optimal allocation.</p>
 <p>Among all feasible allocations,  a <strong>socially optimal allocation</strong> maximizes the sum of  private values across all prospective buyers.</p>
 <p>The planner tells everyone in advance how he/she will allocate houses based on the matrix of values that prospective buyers report.</p>
@@ -332,16 +339,16 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 <p>After the planner receives everyone’s vector of private values, the planner deploys a <strong>sequential</strong> algorithm to determine an <strong>allocation</strong> of houses and a set of <strong>fees</strong> that he charges awardees  for the negative <strong>externality</strong> that their presence impose on other prospective buyers.</p>
 </section>
 <section id="equivalence-of-allocations">
-<h2><span class="section-number">82.4. </span>Equivalence of Allocations<a class="headerlink" href="#equivalence-of-allocations" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.4. </span>Equivalence of Allocations<a class="headerlink" href="#equivalence-of-allocations" title="Link to this heading">#</a></h2>
 <p>Remarkably, these two mechanisms can produce virtually identical allocations.</p>
 <p>We construct Python code for both mechanism.</p>
 <p>We also work out some examples by hand or almost by hand.</p>
 <p>Next, let’s dive down into the details.</p>
 </section>
 <section id="ascending-bid-auction">
-<h2><span class="section-number">82.5. </span>Ascending Bid Auction<a class="headerlink" href="#ascending-bid-auction" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.5. </span>Ascending Bid Auction<a class="headerlink" href="#ascending-bid-auction" title="Link to this heading">#</a></h2>
 <section id="basic-setting">
-<h3><span class="section-number">82.5.1. </span>Basic Setting<a class="headerlink" href="#basic-setting" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">83.5.1. </span>Basic Setting<a class="headerlink" href="#basic-setting" title="Link to this heading">#</a></h3>
 <p>We start with  a more detailed description of the setting.</p>
 <ul class="simple">
 <li><p>A seller owns <span class="math notranslate nohighlight">\(n\)</span> houses that he wants to sell for the maximum possible amounts to a  set of <span class="math notranslate nohighlight">\(m\)</span> prospective eligible buyers.</p></li>
@@ -371,7 +378,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </section>
 </section>
 <section id="pseudocode">
-<h2><span class="section-number">82.6. </span>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.6. </span>Pseudocode<a class="headerlink" href="#pseudocode" title="Link to this heading">#</a></h2>
 <p>Here is a quick sketch of a possible simple structure for our Python code</p>
 <p><strong>Inputs:</strong></p>
 <ul class="simple">
@@ -435,8 +442,8 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <p>However, this will happen only when the bid price increment <span class="math notranslate nohighlight">\(\epsilon\)</span> is nonnegligible.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">prettytable</span> <span class="k">as</span> <span class="nn">pt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">prettytable</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pt</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
@@ -452,7 +459,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </section>
 <section id="an-example">
-<h2><span class="section-number">82.7. </span>An Example<a class="headerlink" href="#an-example" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.7. </span>An Example<a class="headerlink" href="#an-example" title="Link to this heading">#</a></h2>
 <p>Before building a Python class, let’s step by step solve things almost “by hand”  to grasp  how the auction proceeds.</p>
 <p>A step-by-step procedure also helps reduce bugs, especially when the value matrix is peculiar (e.g. the differences between values are negligible, a column containing identical values or multiple buyers have the same valuation etc.).</p>
 <p>Fortunately, our auction  behaves well and  robustly with various peculiar matrices.</p>
@@ -503,7 +510,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find_argmax_with_randomness</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">find_argmax_with_randomness</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    We build our own verion of argmax function such that the argmax index will be returned randomly</span>
 <span class="sd">    when there are multiple maximum values. This function is similiar to np.argmax(v,axis=0)</span>
@@ -529,7 +536,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">present_dict</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">present_dict</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A function that present the information in table.</span>
 
@@ -550,7 +557,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <p><strong>Check Kick Off Condition</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_kick_off_condition</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">check_kick_off_condition</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A function that checks whether the auction could be initiated given the reservation price and value matrix.</span>
 <span class="sd">    To avoid the situation that the reservation prices are so high that no one would even bid in the first round.</span>
@@ -582,17 +589,17 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.True_
 </pre></div>
 </div>
 </div>
 </div>
 <section id="round-1">
-<h3><span class="section-number">82.7.1. </span>round 1<a class="headerlink" href="#round-1" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">83.7.1. </span>round 1<a class="headerlink" href="#round-1" title="Link to this heading">#</a></h3>
 <p><strong>submit bid</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">submit_initial_bid</span><span class="p">(</span><span class="n">p_initial</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">submit_initial_bid</span><span class="p">(</span><span class="n">p_initial</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A function that describes the bid information in the first round.</span>
 
@@ -681,7 +688,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <p>Therefore, final price could be 3 or 4, depending on the winner in the last round.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_terminal_condition</span><span class="p">(</span><span class="n">bid_info</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">check_terminal_condition</span><span class="p">(</span><span class="n">bid_info</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A function that checks whether the auction ends.</span>
 
@@ -765,7 +772,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2, 1, 0]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[np.int64(2), np.int64(1), np.int64(0)]
 </pre></div>
 </div>
 </div>
@@ -777,19 +784,19 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[3]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[np.int64(3)]
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="round-2">
-<h3><span class="section-number">82.7.2. </span>round 2<a class="headerlink" href="#round-2" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">83.7.2. </span>round 2<a class="headerlink" href="#round-2" title="Link to this heading">#</a></h3>
 <p>From the second round on, the auction proceeds differently from the first round.</p>
 <p>Now only active losers (those who have positive surplus values) have  an incentive to submit bids to displace temporary winners from the previous round.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">submit_bid</span><span class="p">(</span><span class="n">loser_list</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">bid_info</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">submit_bid</span><span class="p">(</span><span class="n">loser_list</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">bid_info</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A function that executes the bid operation after the first round.</span>
 <span class="sd">    After the first round, only active losers would cast a new bid with price as old price + increment.</span>
@@ -909,7 +916,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </section>
 <section id="round-3">
-<h3><span class="section-number">82.7.3. </span>round 3<a class="headerlink" href="#round-3" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">83.7.3. </span>round 3<a class="headerlink" href="#round-3" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">,</span><span class="n">bid_info</span> <span class="o">=</span> <span class="n">submit_bid</span><span class="p">(</span><span class="n">loser_list</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">bid_info</span><span class="p">)</span>
@@ -975,7 +982,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </section>
 <section id="round-4">
-<h3><span class="section-number">82.7.4. </span>round 4<a class="headerlink" href="#round-4" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">83.7.4. </span>round 4<a class="headerlink" href="#round-4" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">,</span><span class="n">bid_info</span> <span class="o">=</span> <span class="n">submit_bid</span><span class="p">(</span><span class="n">loser_list</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">bid_info</span><span class="p">)</span>
@@ -1042,7 +1049,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </section>
 <section id="round-5">
-<h3><span class="section-number">82.7.5. </span>round 5<a class="headerlink" href="#round-5" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">83.7.5. </span>round 5<a class="headerlink" href="#round-5" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">,</span><span class="n">bid_info</span> <span class="o">=</span> <span class="n">submit_bid</span><span class="p">(</span><span class="n">loser_list</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">bid_info</span><span class="p">)</span>
@@ -1130,7 +1137,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(10)
 </pre></div>
 </div>
 </div>
@@ -1138,16 +1145,16 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </section>
 </section>
 <section id="a-python-class">
-<h2><span class="section-number">82.8. </span>A Python Class<a class="headerlink" href="#a-python-class" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.8. </span>A Python Class<a class="headerlink" href="#a-python-class" title="Link to this heading">#</a></h2>
 <p>Above we simulated an ascending bid auction step by step.</p>
 <p>When defining  functions, we repeatedly computed some intermediate objects because our Python function loses track of variables once the  function is executed.</p>
 <p>That of course led  to redundancy in our code</p>
 <p>It is much more efficient  to collect all of the aforementioned code into a class that  records information about all rounds.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ascending_bid_auction</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ascending_bid_auction</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A class that simulates an ascending bid auction for houses.</span>
 
@@ -1177,7 +1184,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="bp">self</span><span class="o">.</span><span class="n">loser_history</span> <span class="o">=</span> <span class="p">[]</span>
 
 
-    <span class="k">def</span> <span class="nf">find_argmax_with_randomness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_argmax_with_randomness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">n</span><span class="p">,</span><span class="n">m</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">index_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="n">result</span><span class="o">=</span><span class="p">[]</span>
@@ -1189,7 +1196,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">check_kick_off_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_kick_off_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># we convert the price vector to a matrix in the same shape as value matrix to facilitate subtraction</span>
         <span class="n">p_start</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ϵ</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)[</span><span class="kc">None</span><span class="p">,:]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">surplus_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">-</span> <span class="n">p_start</span>
@@ -1197,7 +1204,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="k">return</span> <span class="n">buyer_decision</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
 
 
-    <span class="k">def</span> <span class="nf">submit_initial_bid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">submit_initial_bid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># we intend to find the optimal choice of each buyer</span>
         <span class="n">p_start_mat</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ϵ</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)[</span><span class="kc">None</span><span class="p">,:]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">surplus_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">-</span> <span class="n">p_start_mat</span>
@@ -1247,7 +1254,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">check_terminal_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_terminal_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">loser_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">loser_num</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -1262,7 +1269,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="k">return</span> <span class="o">~</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_decision</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
 
 
-    <span class="k">def</span> <span class="nf">submit_bid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">submit_bid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">bid_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocation_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># we only record the bid info of winner</span>
 
         <span class="n">loser_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span><span class="p">)</span>
@@ -1318,7 +1325,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">start_auction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_auction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The Ascending Bid Auction for Houses&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
@@ -1463,18 +1470,18 @@ The bid prices for houses are
 |    Price     | 3 | 2 | 1 |
 +--------------+---+---+---+
 The winners are
-[2, 1, 0]
+[np.int64(2), np.int64(1), np.int64(0)]
 The losers are
-[3]
+[np.int64(3)]
 
 
 Round 2
 The bid information is
-+--------------+-----+-----+-----+
-| House Number |  0  |  1  |  2  |
-+--------------+-----+-----+-----+
-|    Buyer     | [2] | [1] | [3] |
-+--------------+-----+-----+-----+
++--------------+---------------+---------------+-----+
+| House Number |       0       |       1       |  2  |
++--------------+---------------+---------------+-----+
+|    Buyer     | [np.int64(2)] | [np.int64(1)] | [3] |
++--------------+---------------+---------------+-----+
 The bid prices for houses are
 +--------------+---+---+---+
 | House Number | 0 | 1 | 2 |
@@ -1482,18 +1489,18 @@ The bid prices for houses are
 |    Price     | 3 | 2 | 2 |
 +--------------+---+---+---+
 The winners are
-[2, 1, 3]
+[np.int64(2), np.int64(1), np.int64(3)]
 The losers are
-[0]
+[np.int64(0)]
 
 
 Round 3
 The bid information is
-+--------------+-----+-----+-----+
-| House Number |  0  |  1  |  2  |
-+--------------+-----+-----+-----+
-|    Buyer     | [2] | [1] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+---------------+-----+
+| House Number |       0       |       1       |  2  |
++--------------+---------------+---------------+-----+
+|    Buyer     | [np.int64(2)] | [np.int64(1)] | [0] |
++--------------+---------------+---------------+-----+
 The bid prices for houses are
 +--------------+---+---+---+
 | House Number | 0 | 1 | 2 |
@@ -1501,18 +1508,18 @@ The bid prices for houses are
 |    Price     | 3 | 2 | 3 |
 +--------------+---+---+---+
 The winners are
-[2, 1, 0]
+[np.int64(2), np.int64(1), np.int64(0)]
 The losers are
-[3]
+[np.int64(3)]
 
 
 Round 4
 The bid information is
-+--------------+-----+-----+-----+
-| House Number |  0  |  1  |  2  |
-+--------------+-----+-----+-----+
-|    Buyer     | [2] | [3] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+-----+---------------+
+| House Number |       0       |  1  |       2       |
++--------------+---------------+-----+---------------+
+|    Buyer     | [np.int64(2)] | [3] | [np.int64(0)] |
++--------------+---------------+-----+---------------+
 The bid prices for houses are
 +--------------+---+---+---+
 | House Number | 0 | 1 | 2 |
@@ -1520,18 +1527,18 @@ The bid prices for houses are
 |    Price     | 3 | 3 | 3 |
 +--------------+---+---+---+
 The winners are
-[2, 3, 0]
+[np.int64(2), np.int64(3), np.int64(0)]
 The losers are
-[1]
+[np.int64(1)]
 
 
 Round 5
 The bid information is
-+--------------+-----+-----+-----+
-| House Number |  0  |  1  |  2  |
-+--------------+-----+-----+-----+
-|    Buyer     | [2] | [1] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+-----+---------------+
+| House Number |       0       |  1  |       2       |
++--------------+---------------+-----+---------------+
+|    Buyer     | [np.int64(2)] | [1] | [np.int64(0)] |
++--------------+---------------+-----+---------------+
 The bid prices for houses are
 +--------------+---+---+---+
 | House Number | 0 | 1 | 2 |
@@ -1539,9 +1546,9 @@ The bid prices for houses are
 |    Price     | 3 | 4 | 3 |
 +--------------+---+---+---+
 The winners are
-[2, 1, 0]
+[np.int64(2), np.int64(1), np.int64(0)]
 The losers are
-[3]
+[np.int64(3)]
 
 
 Auction ends
@@ -1551,11 +1558,11 @@ The final result is as follows
 
 
 The allocation plan is
-+--------------+-----+-----+-----+
-| House Number |  0  |  1  |  2  |
-+--------------+-----+-----+-----+
-|    Buyer     | [2] | [1] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+---------------+---------------+
+| House Number |       0       |       1       |       2       |
++--------------+---------------+---------------+---------------+
+|    Buyer     | [np.int64(2)] | [np.int64(1)] | [np.int64(0)] |
++--------------+---------------+---------------+---------------+
 The bid prices for houses are
 +--------------+---+---+---+
 | House Number | 0 | 1 | 2 |
@@ -1563,9 +1570,9 @@ The bid prices for houses are
 |    Price     | 3 | 4 | 3 |
 +--------------+---+---+---+
 The winners are
-[2, 1, 0]
+[np.int64(2), np.int64(1), np.int64(0)]
 The losers are
-[3]
+[np.int64(3)]
 The houses unsold are
 []
 The total revenue is 10.00
@@ -1607,7 +1614,7 @@ The total revenue is 10.00
 </div>
 </section>
 <section id="robustness-checks">
-<h2><span class="section-number">82.9. </span>Robustness Checks<a class="headerlink" href="#robustness-checks" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.9. </span>Robustness Checks<a class="headerlink" href="#robustness-checks" title="Link to this heading">#</a></h2>
 <p>Let’s do some stress testing of our code by applying it to  auctions characterized by different matrices of private values.</p>
 <p><strong>1. number of houses = number of buyers</strong></p>
 <div class="cell docutils container">
@@ -1659,7 +1666,7 @@ The bid prices for houses are
 |    Price     | 3 | 2 | 1 |
 +--------------+---+---+---+
 The winners are
-[2, 1, 0]
+[np.int64(2), np.int64(1), np.int64(0)]
 The losers are
 []
 
@@ -1674,11 +1681,11 @@ The final result is as follows
 
 
 The allocation plan is
-+--------------+-----+-----+-----+
-| House Number |  0  |  1  |  2  |
-+--------------+-----+-----+-----+
-|    Buyer     | [2] | [1] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+---------------+---------------+
+| House Number |       0       |       1       |       2       |
++--------------+---------------+---------------+---------------+
+|    Buyer     | [np.int64(2)] | [np.int64(1)] | [np.int64(0)] |
++--------------+---------------+---------------+---------------+
 The bid prices for houses are
 +--------------+---+---+---+
 | House Number | 0 | 1 | 2 |
@@ -1686,7 +1693,7 @@ The bid prices for houses are
 |    Price     | 3 | 2 | 1 |
 +--------------+---+---+---+
 The winners are
-[2, 1, 0]
+[np.int64(2), np.int64(1), np.int64(0)]
 The losers are
 []
 The houses unsold are
@@ -1746,18 +1753,18 @@ The bid prices for houses are
 |    Price     | 3 | 2 | 1 |
 +--------------+---+---+---+
 The winners are
-[2, 4, 3]
+[np.int64(2), np.int64(4), np.int64(3)]
 The losers are
-[0, 1]
+[np.int64(0), np.int64(1)]
 
 
 Round 2
 The bid information is
-+--------------+-----+-----+-----+
-| House Number |  0  |  1  |  2  |
-+--------------+-----+-----+-----+
-|    Buyer     | [2] | [1] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+-----+-----+
+| House Number |       0       |  1  |  2  |
++--------------+---------------+-----+-----+
+|    Buyer     | [np.int64(2)] | [1] | [0] |
++--------------+---------------+-----+-----+
 The bid prices for houses are
 +--------------+---+---+---+
 | House Number | 0 | 1 | 2 |
@@ -1765,18 +1772,18 @@ The bid prices for houses are
 |    Price     | 3 | 3 | 2 |
 +--------------+---+---+---+
 The winners are
-[2, 1, 0]
+[np.int64(2), np.int64(1), np.int64(0)]
 The losers are
-[3, 4]
+[np.int64(3), np.int64(4)]
 
 
 Round 3
 The bid information is
-+--------------+-----+-----+-----+
-| House Number |  0  |  1  |  2  |
-+--------------+-----+-----+-----+
-|    Buyer     | [2] | [4] | [3] |
-+--------------+-----+-----+-----+
++--------------+---------------+-----+-----+
+| House Number |       0       |  1  |  2  |
++--------------+---------------+-----+-----+
+|    Buyer     | [np.int64(2)] | [4] | [3] |
++--------------+---------------+-----+-----+
 The bid prices for houses are
 +--------------+---+---+---+
 | House Number | 0 | 1 | 2 |
@@ -1784,18 +1791,18 @@ The bid prices for houses are
 |    Price     | 3 | 4 | 3 |
 +--------------+---+---+---+
 The winners are
-[2, 4, 3]
+[np.int64(2), np.int64(4), np.int64(3)]
 The losers are
-[0, 1]
+[np.int64(0), np.int64(1)]
 
 
 Round 4
 The bid information is
-+--------------+-----+-----+-----+
-| House Number |  0  |  1  |  2  |
-+--------------+-----+-----+-----+
-|    Buyer     | [2] | [1] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+-----+-----+
+| House Number |       0       |  1  |  2  |
++--------------+---------------+-----+-----+
+|    Buyer     | [np.int64(2)] | [1] | [0] |
++--------------+---------------+-----+-----+
 The bid prices for houses are
 +--------------+---+---+---+
 | House Number | 0 | 1 | 2 |
@@ -1803,9 +1810,9 @@ The bid prices for houses are
 |    Price     | 3 | 5 | 4 |
 +--------------+---+---+---+
 The winners are
-[2, 1, 0]
+[np.int64(2), np.int64(1), np.int64(0)]
 The losers are
-[3, 4]
+[np.int64(3), np.int64(4)]
 
 
 Auction ends
@@ -1815,11 +1822,11 @@ The final result is as follows
 
 
 The allocation plan is
-+--------------+-----+-----+-----+
-| House Number |  0  |  1  |  2  |
-+--------------+-----+-----+-----+
-|    Buyer     | [2] | [1] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+---------------+---------------+
+| House Number |       0       |       1       |       2       |
++--------------+---------------+---------------+---------------+
+|    Buyer     | [np.int64(2)] | [np.int64(1)] | [np.int64(0)] |
++--------------+---------------+---------------+---------------+
 The bid prices for houses are
 +--------------+---+---+---+
 | House Number | 0 | 1 | 2 |
@@ -1827,9 +1834,9 @@ The bid prices for houses are
 |    Price     | 3 | 5 | 4 |
 +--------------+---+---+---+
 The winners are
-[2, 1, 0]
+[np.int64(2), np.int64(1), np.int64(0)]
 The losers are
-[3, 4]
+[np.int64(3), np.int64(4)]
 The houses unsold are
 []
 The total revenue is 12.00
@@ -1890,18 +1897,18 @@ The bid prices for houses are
 |    Price     | 2 | 2 | 1 | 1 | 1 |
 +--------------+---+---+---+---+---+
 The winners are
-[1, 2]
+[np.int64(1), np.int64(2)]
 The losers are
-[0]
+[np.int64(0)]
 
 
 Round 2
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [0] |
-+--------------+-----+-----+
++--------------+---------------+-----+
+| House Number |       1       |  2  |
++--------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [0] |
++--------------+---------------+-----+
 The bid prices for houses are
 +--------------+---+---+---+---+---+
 | House Number | 0 | 1 | 2 | 3 | 4 |
@@ -1909,18 +1916,18 @@ The bid prices for houses are
 |    Price     | 2 | 2 | 2 | 1 | 1 |
 +--------------+---+---+---+---+---+
 The winners are
-[1, 0]
+[np.int64(1), np.int64(0)]
 The losers are
-[2]
+[np.int64(2)]
 
 
 Round 3
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [2] |
-+--------------+-----+-----+
++--------------+---------------+-----+
+| House Number |       1       |  2  |
++--------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [2] |
++--------------+---------------+-----+
 The bid prices for houses are
 +--------------+---+---+---+---+---+
 | House Number | 0 | 1 | 2 | 3 | 4 |
@@ -1928,18 +1935,18 @@ The bid prices for houses are
 |    Price     | 2 | 2 | 3 | 1 | 1 |
 +--------------+---+---+---+---+---+
 The winners are
-[1, 2]
+[np.int64(1), np.int64(2)]
 The losers are
-[0]
+[np.int64(0)]
 
 
 Round 4
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [0] |
-+--------------+-----+-----+
++--------------+---------------+-----+
+| House Number |       1       |  2  |
++--------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [0] |
++--------------+---------------+-----+
 The bid prices for houses are
 +--------------+---+---+---+---+---+
 | House Number | 0 | 1 | 2 | 3 | 4 |
@@ -1947,18 +1954,18 @@ The bid prices for houses are
 |    Price     | 2 | 2 | 4 | 1 | 1 |
 +--------------+---+---+---+---+---+
 The winners are
-[1, 0]
+[np.int64(1), np.int64(0)]
 The losers are
-[2]
+[np.int64(2)]
 
 
 Round 5
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [2] | [0] |
-+--------------+-----+-----+
++--------------+-----+---------------+
+| House Number |  1  |       2       |
++--------------+-----+---------------+
+|    Buyer     | [2] | [np.int64(0)] |
++--------------+-----+---------------+
 The bid prices for houses are
 +--------------+---+---+---+---+---+
 | House Number | 0 | 1 | 2 | 3 | 4 |
@@ -1966,18 +1973,18 @@ The bid prices for houses are
 |    Price     | 2 | 3 | 4 | 1 | 1 |
 +--------------+---+---+---+---+---+
 The winners are
-[2, 0]
+[np.int64(2), np.int64(0)]
 The losers are
-[1]
+[np.int64(1)]
 
 
 Round 6
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [0] |
-+--------------+-----+-----+
++--------------+-----+---------------+
+| House Number |  1  |       2       |
++--------------+-----+---------------+
+|    Buyer     | [1] | [np.int64(0)] |
++--------------+-----+---------------+
 The bid prices for houses are
 +--------------+---+---+---+---+---+
 | House Number | 0 | 1 | 2 | 3 | 4 |
@@ -1985,18 +1992,18 @@ The bid prices for houses are
 |    Price     | 2 | 4 | 4 | 1 | 1 |
 +--------------+---+---+---+---+---+
 The winners are
-[1, 0]
+[np.int64(1), np.int64(0)]
 The losers are
-[2]
+[np.int64(2)]
 
 
 Round 7
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [2] |
-+--------------+-----+-----+
++--------------+---------------+-----+
+| House Number |       1       |  2  |
++--------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [2] |
++--------------+---------------+-----+
 The bid prices for houses are
 +--------------+---+---+---+---+---+
 | House Number | 0 | 1 | 2 | 3 | 4 |
@@ -2004,18 +2011,18 @@ The bid prices for houses are
 |    Price     | 2 | 4 | 5 | 1 | 1 |
 +--------------+---+---+---+---+---+
 The winners are
-[1, 2]
+[np.int64(1), np.int64(2)]
 The losers are
-[0]
+[np.int64(0)]
 
 
 Round 8
 The bid information is
-+--------------+-----+-----+-----+
-| House Number |  1  |  2  |  0  |
-+--------------+-----+-----+-----+
-|    Buyer     | [1] | [2] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+---------------+-----+
+| House Number |       1       |       2       |  0  |
++--------------+---------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [np.int64(2)] | [0] |
++--------------+---------------+---------------+-----+
 The bid prices for houses are
 +--------------+---+---+---+---+---+
 | House Number | 0 | 1 | 2 | 3 | 4 |
@@ -2023,7 +2030,7 @@ The bid prices for houses are
 |    Price     | 3 | 4 | 5 | 1 | 1 |
 +--------------+---+---+---+---+---+
 The winners are
-[1, 2, 0]
+[np.int64(1), np.int64(2), np.int64(0)]
 The losers are
 []
 
@@ -2038,11 +2045,11 @@ The final result is as follows
 
 
 The allocation plan is
-+--------------+-----+-----+-----+
-| House Number |  1  |  2  |  0  |
-+--------------+-----+-----+-----+
-|    Buyer     | [1] | [2] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+---------------+---------------+
+| House Number |       1       |       2       |       0       |
++--------------+---------------+---------------+---------------+
+|    Buyer     | [np.int64(1)] | [np.int64(2)] | [np.int64(0)] |
++--------------+---------------+---------------+---------------+
 The bid prices for houses are
 +--------------+---+---+---+---+---+
 | House Number | 0 | 1 | 2 | 3 | 4 |
@@ -2050,11 +2057,11 @@ The bid prices for houses are
 |    Price     | 3 | 4 | 5 | 1 | 1 |
 +--------------+---+---+---+---+---+
 The winners are
-[1, 2, 0]
+[np.int64(1), np.int64(2), np.int64(0)]
 The losers are
 []
 The houses unsold are
-[3, 4]
+[np.int64(3), np.int64(4)]
 The total revenue is 12.00
 </pre></div>
 </div>
@@ -2113,18 +2120,18 @@ The bid prices for houses are
 |    Price     | 10 | 2 | 1 | 1 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[1, 0]
+[np.int64(1), np.int64(0)]
 The losers are
-[2]
+[np.int64(2)]
 
 
 Round 2
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [2] |
-+--------------+-----+-----+
++--------------+---------------+-----+
+| House Number |       1       |  2  |
++--------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [2] |
++--------------+---------------+-----+
 The bid prices for houses are
 +--------------+----+---+---+---+---+
 | House Number | 0  | 1 | 2 | 3 | 4 |
@@ -2132,18 +2139,18 @@ The bid prices for houses are
 |    Price     | 10 | 2 | 2 | 1 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[1, 2]
+[np.int64(1), np.int64(2)]
 The losers are
-[0]
+[np.int64(0)]
 
 
 Round 3
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [0] |
-+--------------+-----+-----+
++--------------+---------------+-----+
+| House Number |       1       |  2  |
++--------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [0] |
++--------------+---------------+-----+
 The bid prices for houses are
 +--------------+----+---+---+---+---+
 | House Number | 0  | 1 | 2 | 3 | 4 |
@@ -2151,18 +2158,18 @@ The bid prices for houses are
 |    Price     | 10 | 2 | 3 | 1 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[1, 0]
+[np.int64(1), np.int64(0)]
 The losers are
-[2]
+[np.int64(2)]
 
 
 Round 4
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [2] |
-+--------------+-----+-----+
++--------------+---------------+-----+
+| House Number |       1       |  2  |
++--------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [2] |
++--------------+---------------+-----+
 The bid prices for houses are
 +--------------+----+---+---+---+---+
 | House Number | 0  | 1 | 2 | 3 | 4 |
@@ -2170,18 +2177,18 @@ The bid prices for houses are
 |    Price     | 10 | 2 | 4 | 1 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[1, 2]
+[np.int64(1), np.int64(2)]
 The losers are
-[0]
+[np.int64(0)]
 
 
 Round 5
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [0] |
-+--------------+-----+-----+
++--------------+---------------+-----+
+| House Number |       1       |  2  |
++--------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [0] |
++--------------+---------------+-----+
 The bid prices for houses are
 +--------------+----+---+---+---+---+
 | House Number | 0  | 1 | 2 | 3 | 4 |
@@ -2189,18 +2196,18 @@ The bid prices for houses are
 |    Price     | 10 | 2 | 5 | 1 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[1, 0]
+[np.int64(1), np.int64(0)]
 The losers are
-[2]
+[np.int64(2)]
 
 
 Round 6
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [2] | [0] |
-+--------------+-----+-----+
++--------------+-----+---------------+
+| House Number |  1  |       2       |
++--------------+-----+---------------+
+|    Buyer     | [2] | [np.int64(0)] |
++--------------+-----+---------------+
 The bid prices for houses are
 +--------------+----+---+---+---+---+
 | House Number | 0  | 1 | 2 | 3 | 4 |
@@ -2208,18 +2215,18 @@ The bid prices for houses are
 |    Price     | 10 | 3 | 5 | 1 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[2, 0]
+[np.int64(2), np.int64(0)]
 The losers are
-[1]
+[np.int64(1)]
 
 
 Round 7
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [0] |
-+--------------+-----+-----+
++--------------+-----+---------------+
+| House Number |  1  |       2       |
++--------------+-----+---------------+
+|    Buyer     | [1] | [np.int64(0)] |
++--------------+-----+---------------+
 The bid prices for houses are
 +--------------+----+---+---+---+---+
 | House Number | 0  | 1 | 2 | 3 | 4 |
@@ -2227,18 +2234,18 @@ The bid prices for houses are
 |    Price     | 10 | 4 | 5 | 1 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[1, 0]
+[np.int64(1), np.int64(0)]
 The losers are
-[2]
+[np.int64(2)]
 
 
 Round 8
 The bid information is
-+--------------+-----+-----+
-| House Number |  1  |  2  |
-+--------------+-----+-----+
-|    Buyer     | [1] | [2] |
-+--------------+-----+-----+
++--------------+---------------+-----+
+| House Number |       1       |  2  |
++--------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [2] |
++--------------+---------------+-----+
 The bid prices for houses are
 +--------------+----+---+---+---+---+
 | House Number | 0  | 1 | 2 | 3 | 4 |
@@ -2246,18 +2253,18 @@ The bid prices for houses are
 |    Price     | 10 | 4 | 6 | 1 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[1, 2]
+[np.int64(1), np.int64(2)]
 The losers are
-[0]
+[np.int64(0)]
 
 
 Round 9
 The bid information is
-+--------------+-----+-----+-----+
-| House Number |  1  |  2  |  3  |
-+--------------+-----+-----+-----+
-|    Buyer     | [1] | [2] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+---------------+-----+
+| House Number |       1       |       2       |  3  |
++--------------+---------------+---------------+-----+
+|    Buyer     | [np.int64(1)] | [np.int64(2)] | [0] |
++--------------+---------------+---------------+-----+
 The bid prices for houses are
 +--------------+----+---+---+---+---+
 | House Number | 0  | 1 | 2 | 3 | 4 |
@@ -2265,7 +2272,7 @@ The bid prices for houses are
 |    Price     | 10 | 4 | 6 | 2 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[1, 2, 0]
+[np.int64(1), np.int64(2), np.int64(0)]
 The losers are
 []
 
@@ -2280,11 +2287,11 @@ The final result is as follows
 
 
 The allocation plan is
-+--------------+-----+-----+-----+
-| House Number |  1  |  2  |  3  |
-+--------------+-----+-----+-----+
-|    Buyer     | [1] | [2] | [0] |
-+--------------+-----+-----+-----+
++--------------+---------------+---------------+---------------+
+| House Number |       1       |       2       |       3       |
++--------------+---------------+---------------+---------------+
+|    Buyer     | [np.int64(1)] | [np.int64(2)] | [np.int64(0)] |
++--------------+---------------+---------------+---------------+
 The bid prices for houses are
 +--------------+----+---+---+---+---+
 | House Number | 0  | 1 | 2 | 3 | 4 |
@@ -2292,11 +2299,11 @@ The bid prices for houses are
 |    Price     | 10 | 4 | 6 | 2 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[1, 2, 0]
+[np.int64(1), np.int64(2), np.int64(0)]
 The losers are
 []
 The houses unsold are
-[0, 4]
+[np.int64(0), np.int64(4)]
 The total revenue is 12.00
 </pre></div>
 </div>
@@ -2342,7 +2349,7 @@ The auction can not start because of high reservation prices
 </div>
 </section>
 <section id="a-groves-clarke-mechanism">
-<h2><span class="section-number">82.10. </span>A Groves-Clarke Mechanism<a class="headerlink" href="#a-groves-clarke-mechanism" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.10. </span>A Groves-Clarke Mechanism<a class="headerlink" href="#a-groves-clarke-mechanism" title="Link to this heading">#</a></h2>
 <p>We now decribe an alternative way for society to allocate <span class="math notranslate nohighlight">\(n\)</span>  houses to <span class="math notranslate nohighlight">\(m\)</span> possible buyers in a way that maximizes
 total value across all potential buyers.</p>
 <p>We continue to assume that each buyer can purchase at most one house.</p>
@@ -2373,7 +2380,7 @@ total value across all potential buyers.</p>
 </ul>
 </section>
 <section id="an-example-solved-by-hand">
-<h2><span class="section-number">82.11. </span>An Example Solved by Hand<a class="headerlink" href="#an-example-solved-by-hand" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.11. </span>An Example Solved by Hand<a class="headerlink" href="#an-example-solved-by-hand" title="Link to this heading">#</a></h2>
 <p>Let’s see how our Groves-Clarke algorithm would work for the following simple  matrix <span class="math notranslate nohighlight">\(V\)</span> matrix of private values</p>
 <div class="math notranslate nohighlight">
 \[
@@ -2553,7 +2560,7 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 3)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.int64(2), np.int64(3))
 </pre></div>
 </div>
 </div>
@@ -2631,13 +2638,13 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
 </div>
 </section>
 <section id="another-python-class">
-<h2><span class="section-number">82.12. </span>Another Python Class<a class="headerlink" href="#another-python-class" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">83.12. </span>Another Python Class<a class="headerlink" href="#another-python-class" title="Link to this heading">#</a></h2>
 <p>It is efficient to assemble our calculations in a single Python Class.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">GC_Mechanism</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">GC_Mechanism</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Implementation of the special Groves Clarke Mechanism for house auction.</span>
 
@@ -2654,7 +2661,7 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">find_argmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_argmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the house-buyer pair with the highest value.</span>
 <span class="sd">        When the highest private value corresponds to more than one house, bidder pairs,</span>
@@ -2688,16 +2695,16 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
                 <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
 
-    <span class="k">def</span> <span class="nf">update_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">j</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
-    <span class="k">def</span> <span class="nf">calculate_surplus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_surplus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_orig</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">)</span><span class="nd">@self</span><span class="o">.</span><span class="n">Q</span>
 
-    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">while</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">)</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">):</span>
             <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_argmax</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_status</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
@@ -2760,7 +2767,7 @@ The surplus matrix:
 </div>
 </div>
 <section id="elaborations">
-<h3><span class="section-number">82.12.1. </span>Elaborations<a class="headerlink" href="#elaborations" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">83.12.1. </span>Elaborations<a class="headerlink" href="#elaborations" title="Link to this heading">#</a></h3>
 <p>Here we use some additional notation designed to conform with standard notation in parts of the VCG literature.</p>
 <p>We want to verify that our pseudo code is indeed a <strong>pivot mechanism</strong>, also called a <strong>VCG</strong> (Vickrey-Clarke-Groves) mechanism.</p>
 <ul class="simple">
@@ -2774,17 +2781,17 @@ The surplus matrix:
 <p>Let <span class="math notranslate nohighlight">\(\check t_j(v)\)</span> the payment that the mechanism charges person <span class="math notranslate nohighlight">\(j\)</span>.</p>
 <p>The  VCG mechanism chooses the allocation</p>
 <div class="math notranslate nohighlight" id="equation-eq-gc1">
-<span class="eqno">(82.1)<a class="headerlink" href="#equation-eq-gc1" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(83.1)<a class="headerlink" href="#equation-eq-gc1" title="Link to this equation">#</a></span>\[
 X(v)  = \operatorname{argmax}_{x \in X} \sum_{j=1}^m v_j(x)
 \]</div>
 <p>and charges person <span class="math notranslate nohighlight">\(j\)</span> a “social cost”</p>
 <div class="math notranslate nohighlight" id="equation-eq-gc2">
-<span class="eqno">(82.2)<a class="headerlink" href="#equation-eq-gc2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(83.2)<a class="headerlink" href="#equation-eq-gc2" title="Link to this equation">#</a></span>\[
 \check t_j(v) = \max_{x \in  X} \sum_{k \neq j} v_k(x) -  \sum_{k \neq j} v_k(X(v))
 \]</div>
-<p>In our setting, equation <a class="reference internal" href="#equation-eq-gc1">(82.1)</a> says that the VCG allocation allocates houses to maximize the total value of the successful prospective buyers.</p>
-<p>In our setting, equation <a class="reference internal" href="#equation-eq-gc2">(82.2)</a> says that the mechanism charges people for the externality that their presence in society imposes on other prospective buyers.</p>
-<p>Thus, notice that according to equation <a class="reference internal" href="#equation-eq-gc2">(82.2)</a>:</p>
+<p>In our setting, equation <a class="reference internal" href="#equation-eq-gc1">(83.1)</a> says that the VCG allocation allocates houses to maximize the total value of the successful prospective buyers.</p>
+<p>In our setting, equation <a class="reference internal" href="#equation-eq-gc2">(83.2)</a> says that the mechanism charges people for the externality that their presence in society imposes on other prospective buyers.</p>
+<p>Thus, notice that according to equation <a class="reference internal" href="#equation-eq-gc2">(83.2)</a>:</p>
 <ul class="simple">
 <li><p>unsuccessful prospective buyers pay <span class="math notranslate nohighlight">\(0\)</span> because removing  them from “society” would not affect the allocation chosen by the mechanim</p></li>
 <li><p>successful prospective buyers pay the difference between the total value society could achieve without them present and the total value that others present in society do achieve under the mechanism.</p></li>
@@ -2793,7 +2800,7 @@ X(v)  = \operatorname{argmax}_{x \in X} \sum_{j=1}^m v_j(x)
 We want to compute <span class="math notranslate nohighlight">\(\check t_j\)</span> for <span class="math notranslate nohighlight">\(j = 1, \ldots, m\)</span> and compare with <span class="math notranslate nohighlight">\(p_j\)</span> from the second price auction.</p>
 </section>
 <section id="social-cost">
-<h3><span class="section-number">82.12.2. </span>Social Cost<a class="headerlink" href="#social-cost" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">83.12.2. </span>Social Cost<a class="headerlink" href="#social-cost" title="Link to this heading">#</a></h3>
 <p>Using the GC_Mechanism class, we can  calculate the social cost of each buyer.</p>
 <p>Let’s see a simpler example with private value matrix</p>
 <div class="math notranslate nohighlight">
@@ -2820,9 +2827,9 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
 
 
 House 1 is sold to buyer 1 at price 7
-
-
-House 2 is sold to buyer 2 at price 5
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>House 2 is sold to buyer 2 at price 5
 
 
 Prices of house:
@@ -3018,6 +3025,8 @@ The social cost of buyer 2: 5.0
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -3475,6 +3484,11 @@ The social cost of buyer 2: 5.0
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -3484,17 +3498,17 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -3506,17 +3520,17 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -3528,12 +3542,12 @@ The social cost of buyer 2: 5.0
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -3545,17 +3559,17 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -3695,7 +3709,7 @@ The social cost of buyer 2: 5.0
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

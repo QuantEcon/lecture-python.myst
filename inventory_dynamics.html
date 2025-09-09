@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>35. Inventory Dynamics &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'inventory_dynamics';</script>
     <link rel="canonical" href="https://python.quantecon.org/inventory_dynamics.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="36. Linear State Space Models" href="linear_models.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -228,8 +235,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="inventory-dynamics">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">35. </span>Inventory Dynamics</a><a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<h1><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">35. </span>Inventory Dynamics</a><a class="headerlink" href="#inventory-dynamics" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#inventory-dynamics" id="id2">Inventory Dynamics</a></p>
@@ -241,9 +248,9 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">35.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">35.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In this lecture we will study the time path of inventories for firms that
 follow so-called s-S inventory dynamics.</p>
 <p>Such firms</p>
@@ -258,18 +265,17 @@ follow so-called s-S inventory dynamics.</p>
 <p>Let’s start with some imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">prange</span>
-<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba.experimental</span><span class="w"> </span><span class="kn">import</span> <span class="n">jitclass</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="sample-paths">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">35.2. </span>Sample Paths</a><a class="headerlink" href="#sample-paths" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">35.2. </span>Sample Paths</a><a class="headerlink" href="#sample-paths" title="Link to this heading">#</a></h2>
 <p>Consider a firm with inventory <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
 <p>The firm waits until <span class="math notranslate nohighlight">\(X_t \leq s\)</span> and then restocks up to <span class="math notranslate nohighlight">\(S\)</span> units.</p>
 <p>It faces stochastic demand <span class="math notranslate nohighlight">\(\{ D_t \}\)</span>, which we assume is IID.</p>
@@ -302,13 +308,13 @@ and standard normal.</p>
 
 
 <span class="nd">@jitclass</span><span class="p">(</span><span class="n">firm_data</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Firm</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Firm</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="s2">&quot;Update the state from t to t+1 given current state x.&quot;</span>
 
         <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">()</span>
@@ -318,7 +324,7 @@ and standard normal.</p>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">sim_inventory_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_init</span><span class="p">,</span> <span class="n">sim_length</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sim_inventory_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_init</span><span class="p">,</span> <span class="n">sim_length</span><span class="p">):</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">sim_length</span><span class="p">)</span>
         <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_init</span>
@@ -360,7 +366,7 @@ and standard normal.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6a255f6c7815528a39363bd8b21a3604f4c907c272f4cfe65098b46d751ab749.png" src="_images/6a255f6c7815528a39363bd8b21a3604f4c907c272f4cfe65098b46d751ab749.png" />
+<img alt="_images/7a0f7608e9f519030bd69125ac0052c145358070557abf6b336d77dc914b5e72.png" src="_images/7a0f7608e9f519030bd69125ac0052c145358070557abf6b336d77dc914b5e72.png" />
 </div>
 </div>
 <p>Now let’s simulate multiple paths in order to build a more complete picture of
@@ -384,12 +390,12 @@ the probabilities of different outcomes:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bf47189bd5e5b25e4748ab5699ffe33ab8ac65c022b439fe24cb7c9794530641.png" src="_images/bf47189bd5e5b25e4748ab5699ffe33ab8ac65c022b439fe24cb7c9794530641.png" />
+<img alt="_images/d016ab384e56f036975c0d46917a30bf9db56654b5b4fc7b3a11e417ccb85e02.png" src="_images/d016ab384e56f036975c0d46917a30bf9db56654b5b4fc7b3a11e417ccb85e02.png" />
 </div>
 </div>
 </section>
 <section id="marginal-distributions">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">35.3. </span>Marginal Distributions</a><a class="headerlink" href="#marginal-distributions" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">35.3. </span>Marginal Distributions</a><a class="headerlink" href="#marginal-distributions" title="Link to this heading">#</a></h2>
 <p>Now let’s look at the marginal distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> of <span class="math notranslate nohighlight">\(X_T\)</span> for some
 fixed <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>We will do this by generating many draws of <span class="math notranslate nohighlight">\(X_T\)</span> given initial
@@ -438,7 +444,7 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/236d121c1834aa2789974016b59dd5a75689c33d8fcb0723d9a7004355c26894.png" src="_images/236d121c1834aa2789974016b59dd5a75689c33d8fcb0723d9a7004355c26894.png" />
+<img alt="_images/853d3c15d575a19fe102692e3dada7d4deb18686067e8b2e5047f92c6e759ffc.png" src="_images/853d3c15d575a19fe102692e3dada7d4deb18686067e8b2e5047f92c6e759ffc.png" />
 </div>
 </div>
 <p>We can build up a clearer picture by drawing more samples</p>
@@ -465,7 +471,7 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a9e8159603c57d17569865d51ce4c8994916a232471dbe0e38ddafea31ee93c7.png" src="_images/a9e8159603c57d17569865d51ce4c8994916a232471dbe0e38ddafea31ee93c7.png" />
+<img alt="_images/21f1cd361e9a9c075c831bc6eafdd35fd266147bda8b46f4522c4d25d6ba01b4.png" src="_images/21f1cd361e9a9c075c831bc6eafdd35fd266147bda8b46f4522c4d25d6ba01b4.png" />
 </div>
 </div>
 <p>Note that the distribution is bimodal</p>
@@ -479,9 +485,9 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 <p>We will use a kernel density estimator from <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KernelDensity</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neighbors</span><span class="w"> </span><span class="kn">import</span> <span class="n">KernelDensity</span>
 
-<span class="k">def</span> <span class="nf">plot_kde</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_kde</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 
     <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">sample</span><span class="p">),</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
     <span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
@@ -502,14 +508,14 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ae39c9afea0b9b1fcf0c61fd2c03dbd8b88a2c29ad1f25c9ce243ceecfd3e353.png" src="_images/ae39c9afea0b9b1fcf0c61fd2c03dbd8b88a2c29ad1f25c9ce243ceecfd3e353.png" />
+<img alt="_images/3109e3288704a9fd6525cbb783761cc3e59d240b53fa38a00bdeb386f58a97f6.png" src="_images/3109e3288704a9fd6525cbb783761cc3e59d240b53fa38a00bdeb386f58a97f6.png" />
 </div>
 </div>
 <p>The allocation of probability mass is similar to what was shown by the
 histogram just above.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">35.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">35.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="id_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 35.1 </span></p>
@@ -542,7 +548,7 @@ code efficiently.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">sigma</span>
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">shift_firms_forward</span><span class="p">(</span><span class="n">current_inventory_levels</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">shift_firms_forward</span><span class="p">(</span><span class="n">current_inventory_levels</span><span class="p">,</span> <span class="n">num_periods</span><span class="p">):</span>
 
     <span class="n">num_firms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_inventory_levels</span><span class="p">)</span>
     <span class="n">new_inventory_levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_firms</span><span class="p">)</span>
@@ -590,7 +596,7 @@ code efficiently.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d0ede8a463b6a59f235c4e11f3e72d35558a9f7d60b524cd27249fb17ae44889.png" src="_images/d0ede8a463b6a59f235c4e11f3e72d35558a9f7d60b524cd27249fb17ae44889.png" />
+<img alt="_images/346a4c9cfb4c573c5bd676072c23b05ba2314ef3577be0e6602583164d39c231.png" src="_images/346a4c9cfb4c573c5bd676072c23b05ba2314ef3577be0e6602583164d39c231.png" />
 </div>
 </div>
 <p>Notice that by <span class="math notranslate nohighlight">\(t=500\)</span> or <span class="math notranslate nohighlight">\(t=750\)</span> the densities are barely
@@ -622,7 +628,7 @@ specialized function rather than using the class above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">compute_freq</span><span class="p">(</span><span class="n">sim_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">x_init</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">num_firms</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_freq</span><span class="p">(</span><span class="n">sim_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">x_init</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">num_firms</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">):</span>
 
     <span class="n">firm_counter</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Records number of firms that restock 2x or more</span>
     <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">num_firms</span><span class="p">):</span>
@@ -657,9 +663,9 @@ specialized function rather than using the class above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency of at least two stock outs = 0.446677
-CPU times: user 3.31 s, sys: 3.11 ms, total: 3.31 s
-Wall time: 777 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency of at least two stock outs = 0.447758
+CPU times: user 3.24 s, sys: 0 ns, total: 3.24 s
+Wall time: 757 ms
 </pre></div>
 </div>
 </div>
@@ -704,6 +710,8 @@ above.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1161,6 +1169,11 @@ above.</p>
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1170,17 +1183,17 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1192,17 +1205,17 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1214,12 +1227,12 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1231,17 +1244,17 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1381,7 +1394,7 @@ above.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

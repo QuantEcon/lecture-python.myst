@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>14. Fault Tree Uncertainties &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'hoist_failure';</script>
     <link rel="canonical" href="https://python.quantecon.org/hoist_failure.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="15. Introduction to Artificial Neural Networks" href="back_prop.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -233,9 +240,9 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="fault-tree-uncertainties">
-<h1><span class="section-number">14. </span>Fault Tree Uncertainties<a class="headerlink" href="#fault-tree-uncertainties" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">14. </span>Fault Tree Uncertainties<a class="headerlink" href="#fault-tree-uncertainties" title="Link to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">14.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">14.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture puts elementary tools to work to approximate probability distributions of the annual failure rates of a system consisting of
 a number of critical parts.</p>
 <p>We’ll use log normal distributions to approximate probability distributions of critical  component parts.</p>
@@ -262,18 +269,18 @@ uncertainty about the reliability of a safety system.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: tabulate in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.9.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: tabulate in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.9.0)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">fftconvolve</span>
-<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
-<span class="kn">import</span> <span class="nn">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">fftconvolve</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabulate</span><span class="w"> </span><span class="kn">import</span> <span class="n">tabulate</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 </pre></div>
 </div>
 </div>
@@ -288,7 +295,7 @@ uncertainty about the reliability of a safety system.</p>
 <!-- #region -->
 </section>
 <section id="log-normal-distribution">
-<h2><span class="section-number">14.2. </span>Log normal distribution<a class="headerlink" href="#log-normal-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">14.2. </span>Log normal distribution<a class="headerlink" href="#log-normal-distribution" title="Link to this heading">#</a></h2>
 <p>If a random variable <span class="math notranslate nohighlight">\(x\)</span> follows a normal distribution with mean <span class="math notranslate nohighlight">\(\mu\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>,
 then the natural logarithm of <span class="math notranslate nohighlight">\(x\)</span>, say <span class="math notranslate nohighlight">\(y = \log(x)\)</span>, follows a <strong>log normal distribution</strong> with parameters <span class="math notranslate nohighlight">\(\mu, \sigma^2\)</span>.</p>
 <p>Notice that we said <strong>parameters</strong> and not <strong>mean and variance</strong> <span class="math notranslate nohighlight">\(\mu,\sigma^2\)</span>.</p>
@@ -330,7 +337,7 @@ with parameters <span class="math notranslate nohighlight">\((\mu_1 + \mu_2, \si
 <p>To compute the probability distribution of the sum of two log normal distributions, we can use the following convolution property of a probability distribution that is a sum of independent random variables.</p>
 </section>
 <section id="the-convolution-property">
-<h2><span class="section-number">14.3. </span>The Convolution Property<a class="headerlink" href="#the-convolution-property" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">14.3. </span>The Convolution Property<a class="headerlink" href="#the-convolution-property" title="Link to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(x\)</span> be a random variable with probability density <span class="math notranslate nohighlight">\(f(x)\)</span>, where <span class="math notranslate nohighlight">\(x \in {\bf R}\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(y\)</span> be a random variable with probability density <span class="math notranslate nohighlight">\(g(y)\)</span>, where <span class="math notranslate nohighlight">\(y \in {\bf R}\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> be independent random variables and let <span class="math notranslate nohighlight">\(z = x + y \in {\bf R}\)</span>.</p>
@@ -394,7 +401,7 @@ hf =  [0.   0.45 0.15 0.3  0.1 ] ,np.sum(hf) =  1.0000000000000002
 <p>That’s why we rely on it later in this lecture.</p>
 </section>
 <section id="approximating-distributions">
-<h2><span class="section-number">14.4. </span>Approximating Distributions<a class="headerlink" href="#approximating-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">14.4. </span>Approximating Distributions<a class="headerlink" href="#approximating-distributions" title="Link to this heading">#</a></h2>
 <p>We’ll construct an example to verify that  discretized distributions can do a good job of approximating  samples drawn from underlying
 continuous distributions.</p>
 <p>We’ll start by generating samples of size 25000 of three independent  log normal random variates as well as pairwise and triple-wise sums.</p>
@@ -422,7 +429,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eca3725f0913242f32dbfd71453138ded0859eb8205879108e961493156c1096.png" src="_images/eca3725f0913242f32dbfd71453138ded0859eb8205879108e961493156c1096.png" />
+<img alt="_images/f62a8297bbda9faa62abec3b2ef72906833566c3076fea17075d263dbd94a8aa.png" src="_images/f62a8297bbda9faa62abec3b2ef72906833566c3076fea17075d263dbd94a8aa.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -432,7 +439,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d651c024dcdd7f87f9fd79f026514a8861a1f051b80c5952e5a3ef3b8a5bf9ca.png" src="_images/d651c024dcdd7f87f9fd79f026514a8861a1f051b80c5952e5a3ef3b8a5bf9ca.png" />
+<img alt="_images/570e3423a5576c8d3421010a4f197699e489cb2a9761b0467adbd79d7ef9c14c.png" src="_images/570e3423a5576c8d3421010a4f197699e489cb2a9761b0467adbd79d7ef9c14c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -442,7 +449,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5b7c7a0c64a4fc6a174983c66944d922a9c086eeae3ee2804eff41f936fe1efa.png" src="_images/5b7c7a0c64a4fc6a174983c66944d922a9c086eeae3ee2804eff41f936fe1efa.png" />
+<img alt="_images/258446d9f6598eff6fcce59ec923f64c63a097080c164005c01545249c7dc55b.png" src="_images/258446d9f6598eff6fcce59ec923f64c63a097080c164005c01545249c7dc55b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -455,7 +462,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(244.69193226422038, 246.20831084473207, 5.0, 1.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(244.69193226422038), np.float64(240.40867245788152), 5.0, 1.0)
 </pre></div>
 </div>
 </div>
@@ -464,11 +471,11 @@ continuous distributions.</p>
 probability density function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">p_log_normal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">μ</span><span class="p">,</span><span class="n">σ</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">p_log_normal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">μ</span><span class="p">,</span><span class="n">σ</span><span class="p">):</span>
     <span class="n">p</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">σ</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">μ</span><span class="p">)</span><span class="o">/</span><span class="n">σ</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">p</span>
 
-<span class="k">def</span> <span class="nf">pdf_seq</span><span class="p">(</span><span class="n">μ</span><span class="p">,</span><span class="n">σ</span><span class="p">,</span><span class="n">I</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pdf_seq</span><span class="p">(</span><span class="n">μ</span><span class="p">,</span><span class="n">σ</span><span class="p">,</span><span class="n">I</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">1e-7</span><span class="p">,</span><span class="n">I</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
     <span class="n">p_array</span> <span class="o">=</span> <span class="n">p_log_normal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">μ</span><span class="p">,</span><span class="n">σ</span><span class="p">)</span>
     <span class="n">p_array_norm</span> <span class="o">=</span> <span class="n">p_array</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p_array</span><span class="p">)</span>
@@ -515,7 +522,7 @@ to compute a convolution of two sequences (discrete distributions).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f803fdd945a81952733caafb2665529e1136fbf2d24d1a289020d5fd8bfc280d.png" src="_images/f803fdd945a81952733caafb2665529e1136fbf2d24d1a289020d5fd8bfc280d.png" />
+<img alt="_images/ee180594e9d1bc6f50a55d4b3bcc34833a3ac984a83185d84b383756d35d4db1.png" src="_images/ee180594e9d1bc6f50a55d4b3bcc34833a3ac984a83185d84b383756d35d4db1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -529,14 +536,14 @@ to compute a convolution of two sequences (discrete distributions).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(244.69059898302916, 244.69193226422038)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(244.69059898302908), np.float64(244.69193226422038))
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="convolving-probability-mass-functions">
-<h2><span class="section-number">14.5. </span>Convolving Probability Mass Functions<a class="headerlink" href="#convolving-probability-mass-functions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">14.5. </span>Convolving Probability Mass Functions<a class="headerlink" href="#convolving-probability-mass-functions" title="Link to this heading">#</a></h2>
 <p>Now let’s use the convolution theorem to compute the probability distribution of a sum of the two log normal random variables we have parameterized above.</p>
 <p>We’ll also compute the probability of a sum of three log normal distributions constructed above.</p>
 <p>Before we do these things, we shall explain our choice of Python algorithm to compute a convolution
@@ -550,13 +557,13 @@ is much faster.</p>
 <p>The <strong>Fourier transform</strong> of a sequence <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^{T-1}\)</span> is  a sequence of complex numbers
 <span class="math notranslate nohighlight">\(\{x(\omega_j)\}_{j=0}^{T-1}\)</span> given by</p>
 <div class="math notranslate nohighlight" id="equation-eq-ft1">
-<span class="eqno">(14.1)<a class="headerlink" href="#equation-eq-ft1" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(14.1)<a class="headerlink" href="#equation-eq-ft1" title="Link to this equation">#</a></span>\[
  x(\omega_j) = \sum_{t=0}^{T-1} x_t \exp(- i \omega_j t)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\omega_j = \frac{2 \pi j}{T}\)</span> for <span class="math notranslate nohighlight">\(j=0, 1, \ldots, T-1\)</span>.</p>
 <p>The <strong>inverse Fourier transform</strong> of the sequence <span class="math notranslate nohighlight">\(\{x(\omega_j)\}_{j=0}^{T-1}\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-ift1">
-<span class="eqno">(14.2)<a class="headerlink" href="#equation-eq-ift1" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(14.2)<a class="headerlink" href="#equation-eq-ift1" title="Link to this equation">#</a></span>\[
  x_t = T^{-1} \sum_{j=0}^{T-1} x(\omega_j) \exp (i \omega_j t)
 \]</div>
 <p>The sequences <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^{T-1}\)</span> and <span class="math notranslate nohighlight">\(\{x(\omega_j)\}_{j=0}^{T-1}\)</span> contain the same information.</p>
@@ -602,7 +609,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  33.30704052100009 ; time with fftconvolve =  0.1543115040003613
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  32.56885474499995 ; time with fftconvolve =  0.16099725299955026
 </pre></div>
 </div>
 </div>
@@ -626,7 +633,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d2a6538cc5c8329fca0080e6d0b5dc7a47d4ae9411d77447502fd054ce0f21e8.png" src="_images/d2a6538cc5c8329fca0080e6d0b5dc7a47d4ae9411d77447502fd054ce0f21e8.png" />
+<img alt="_images/7cf40462f5d1e76cf45aefa3d6ea465fe42f72cefe2c2da981cda6f61166d5c4.png" src="_images/7cf40462f5d1e76cf45aefa3d6ea465fe42f72cefe2c2da981cda6f61166d5c4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -645,7 +652,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/870d2ebdf2f0866b167d086f37be4586d76286c0804713e787d7b3f0b465c87a.png" src="_images/870d2ebdf2f0866b167d086f37be4586d76286c0804713e787d7b3f0b465c87a.png" />
+<img alt="_images/7ee03703617f4795ca4586437c04b9b12a7cd136429dfef742a4d62fa1f7d4ae.png" src="_images/7ee03703617f4795ca4586437c04b9b12a7cd136429dfef742a4d62fa1f7d4ae.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -658,7 +665,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(489.38109740938404, 489.38386452844077)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(489.38109740938546), np.float64(489.38386452844077))
 </pre></div>
 </div>
 </div>
@@ -673,7 +680,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(734.0714863312247, 734.0757967926611)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(734.0714863312278), np.float64(734.0757967926611))
 </pre></div>
 </div>
 </div>
@@ -681,7 +688,7 @@ calculations very quickly.</p>
 <!-- #region -->
 </section>
 <section id="failure-tree-analysis">
-<h2><span class="section-number">14.6. </span>Failure Tree Analysis<a class="headerlink" href="#failure-tree-analysis" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">14.6. </span>Failure Tree Analysis<a class="headerlink" href="#failure-tree-analysis" title="Link to this heading">#</a></h2>
 <p>We shall soon apply the convolution theorem to compute the probability of a <strong>top event</strong> in a failure tree analysis.</p>
 <p>Before applying the convolution theorem, we first describe the model that connects constituent events to the <strong>top</strong> end whose
 failure rate we seek to quantify.</p>
@@ -706,7 +713,7 @@ the event that <span class="math notranslate nohighlight">\(A\)</span> <strong>O
 <p>This approximation is widely used in evaluating system failures.</p>
 </section>
 <section id="application">
-<h2><span class="section-number">14.7. </span>Application<a class="headerlink" href="#application" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">14.7. </span>Application<a class="headerlink" href="#application" title="Link to this heading">#</a></h2>
 <p>A system has been designed with the feature a system  failure occurs when <strong>any</strong> of  <span class="math notranslate nohighlight">\(n\)</span> critical  components  fails.</p>
 <p>The failure probability <span class="math notranslate nohighlight">\(P(A_i)\)</span>  of each event <span class="math notranslate nohighlight">\(A_i\)</span>  is small.</p>
 <p>We assume that failures of the components are statistically independent random variables.</p>
@@ -716,13 +723,13 @@ of a system failure:</p>
 \[ P(F) \approx P(A_1) + P (A_2) + \cdots + P (A_n) \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-probtop">
-<span class="eqno">(14.3)<a class="headerlink" href="#equation-eq-probtop" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(14.3)<a class="headerlink" href="#equation-eq-probtop" title="Link to this equation">#</a></span>\[
 P(F) \approx \sum_{i=1}^n P (A_i)
 \]</div>
 <p>Probabilities for each event are recorded as failure rates per year.</p>
 </section>
 <section id="failure-rates-unknown">
-<h2><span class="section-number">14.8. </span>Failure Rates Unknown<a class="headerlink" href="#failure-rates-unknown" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">14.8. </span>Failure Rates Unknown<a class="headerlink" href="#failure-rates-unknown" title="Link to this heading">#</a></h2>
 <p>Now we come to the problem that really interests us, following  <span id="id5">[<a class="reference internal" href="zreferences.html#id30" title="Ashraf Ben El-Shanawany, Keith H Ardron, and Simon P Walker. Lognormal approximations of fault tree uncertainty distributions. Risk Analysis, 38(8):1576–1584, 2018.">El-Shanawany <em>et al.</em>, 2018</a>]</span> and Greenfield and Sargent
 <span id="id6">[<a class="reference internal" href="zreferences.html#id29" title="Moses A Greenfield and Thomas J Sargent. A probabilistic analysis of a catastrophic transuranic waste hoise accident at the wipp. Environmental Evaluation Group, Albuquerque, New Mexico, June 1993. URL: http://www.tomsargent.com/research/EEG-53.pdf.">Greenfield and Sargent, 1993</a>]</span>  in the spirit of Apostolakis  <span id="id7">[<a class="reference internal" href="zreferences.html#id28" title="George Apostolakis. The concept of probability in safety assessments of technological systems. Science, 250(4986):1359–1364, 1990.">Apostolakis, 1990</a>]</span>.</p>
 <p>The constituent probabilities or failure rates <span class="math notranslate nohighlight">\(P(A_i)\)</span> are not known a priori and have to be estimated.</p>
@@ -752,7 +759,7 @@ of the systems failure probability <span class="math notranslate nohighlight">\(
 <!-- #endregion -->
 </section>
 <section id="waste-hoist-failure-rate">
-<h2><span class="section-number">14.9. </span>Waste Hoist Failure Rate<a class="headerlink" href="#waste-hoist-failure-rate" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">14.9. </span>Waste Hoist Failure Rate<a class="headerlink" href="#waste-hoist-failure-rate" title="Link to this heading">#</a></h2>
 <p>We’ll take close to a real world example by assuming that <span class="math notranslate nohighlight">\(n = 14\)</span>.</p>
 <p>The example estimates the annual failure rate of a critical  hoist at a nuclear waste facility.</p>
 <p>A regulatory agency wants the sytem to be designed in a way that makes the failure rate of the top event small with high probability.</p>
@@ -784,7 +791,7 @@ above parameter values actually describe <span class="math notranslate nohighlig
 <p>To extract a table that summarizes computed quantiles, we’ll use a helper function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find_nearest</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">find_nearest</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">array</span> <span class="o">-</span> <span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">idx</span>
@@ -846,7 +853,7 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  8.368033262000608
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  8.504422177000379
 </pre></div>
 </div>
 </div>
@@ -894,7 +901,7 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d02a55f7fe3c45d606b9b9afaca7362a927519538a850a38bc8c15c576ef0a26.png" src="_images/d02a55f7fe3c45d606b9b9afaca7362a927519538a850a38bc8c15c576ef0a26.png" />
+<img alt="_images/60a6d48c6f37003f8be78ee775540d4c91fca6e74d27f91a173fd037e7b4d37c.png" src="_images/60a6d48c6f37003f8be78ee775540d4c91fca6e74d27f91a173fd037e7b4d37c.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Percentile      x * 1e-9
 ------------  ----------
 1%                 76.15
@@ -948,6 +955,8 @@ and in the number of points deployed in the discretizations.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1405,6 +1414,11 @@ and in the number of points deployed in the discretizations.</p>
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1414,17 +1428,17 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1436,17 +1450,17 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1458,12 +1472,12 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1475,17 +1489,17 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1625,7 +1639,7 @@ and in the number of points deployed in the discretizations.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

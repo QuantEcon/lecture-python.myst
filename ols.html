@@ -1,15 +1,14 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>79. Linear Regression in Python &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>80. Linear Regression in Python &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,16 +108,24 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'ols';</script>
     <link rel="canonical" href="https://python.quantecon.org/ols.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="80. Maximum Likelihood Estimation" href="mle.html" />
-    <link rel="prev" title="78. Pandas for Panel Data" href="pandas_panel.html" />
+    <link rel="next" title="81. Maximum Likelihood Estimation" href="mle.html" />
+    <link rel="prev" title="79. Pandas for Panel Data" href="pandas_panel.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -167,15 +174,15 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">79.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">79.1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">80.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">80.1.1. Prerequisites</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-linear-regression">79.2. Simple Linear Regression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-the-linear-regression-model">79.3. Extending the Linear Regression Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endogeneity">79.4. Endogeneity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">79.5. Summary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">79.6. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-linear-regression">80.2. Simple Linear Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-the-linear-regression-model">80.3. Extending the Linear Regression Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endogeneity">80.4. Endogeneity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">80.5. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">80.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -233,8 +240,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="linear-regression-in-python">
-<h1><a class="toc-backref" href="#id11"><span class="section-number">79. </span>Linear Regression in Python</a><a class="headerlink" href="#linear-regression-in-python" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<h1><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">80. </span>Linear Regression in Python</a><a class="headerlink" href="#linear-regression-in-python" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#linear-regression-in-python" id="id11">Linear Regression in Python</a></p>
@@ -248,7 +255,7 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -265,76 +272,97 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting linearmodels
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading linearmodels-6.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.9 kB)
-Requirement already satisfied: numpy&lt;3,&gt;=1.22.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from linearmodels) (1.26.4)
-Requirement already satisfied: pandas&gt;=1.4.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from linearmodels) (2.2.2)
-Requirement already satisfied: scipy&gt;=1.8.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from linearmodels) (1.13.1)
-Requirement already satisfied: statsmodels&gt;=0.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from linearmodels) (0.14.2)
-Requirement already satisfied: mypy-extensions&gt;=0.4 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from linearmodels) (1.0.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading linearmodels-6.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.9 kB)
+Requirement already satisfied: numpy&lt;3,&gt;=1.22.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (2.1.3)
+Requirement already satisfied: pandas&gt;=1.4.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (2.2.3)
+Requirement already satisfied: scipy&gt;=1.8.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (1.15.3)
+Requirement already satisfied: statsmodels&gt;=0.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (0.14.4)
+Requirement already satisfied: mypy-extensions&gt;=0.4 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (1.0.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting Cython&gt;=3.0.10 (from linearmodels)
-  Downloading cython-3.1.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (4.7 kB)
+  Downloading cython-3.1.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (4.7 kB)
+Collecting pyhdfe&gt;=0.1 (from linearmodels)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyhdfe&gt;=0.1 (from linearmodels)
-  Downloading pyhdfe-0.2.0-py3-none-any.whl.metadata (4.0 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pyhdfe-0.2.0-py3-none-any.whl.metadata (4.0 kB)
+Collecting formulaic&gt;=1.0.0 (from linearmodels)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting formulaic&gt;=1.0.0 (from linearmodels)
-  Downloading formulaic-1.2.0-py3-none-any.whl.metadata (7.0 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading formulaic-1.2.0-py3-none-any.whl.metadata (7.0 kB)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting setuptools-scm&lt;9.0.0,&gt;=8.0.0 (from setuptools-scm[toml]&lt;9.0.0,&gt;=8.0.0-&gt;linearmodels)
   Downloading setuptools_scm-8.3.1-py3-none-any.whl.metadata (7.0 kB)
+Requirement already satisfied: packaging&gt;=20 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from setuptools-scm&lt;9.0.0,&gt;=8.0.0-&gt;setuptools-scm[toml]&lt;9.0.0,&gt;=8.0.0-&gt;linearmodels) (24.2)
+Requirement already satisfied: setuptools in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from setuptools-scm&lt;9.0.0,&gt;=8.0.0-&gt;setuptools-scm[toml]&lt;9.0.0,&gt;=8.0.0-&gt;linearmodels) (72.1.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting interface-meta&gt;=1.2.0 (from formulaic&gt;=1.0.0-&gt;linearmodels)
   Downloading interface_meta-1.3.0-py3-none-any.whl.metadata (6.7 kB)
-Requirement already satisfied: narwhals&gt;=1.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from formulaic&gt;=1.0.0-&gt;linearmodels) (2.1.2)
-Requirement already satisfied: typing-extensions&gt;=4.2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from formulaic&gt;=1.0.0-&gt;linearmodels) (4.11.0)
-Requirement already satisfied: wrapt&gt;=1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from formulaic&gt;=1.0.0-&gt;linearmodels) (1.14.1)
+Requirement already satisfied: narwhals&gt;=1.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from formulaic&gt;=1.0.0-&gt;linearmodels) (1.31.0)
+Requirement already satisfied: typing-extensions&gt;=4.2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from formulaic&gt;=1.0.0-&gt;linearmodels) (4.12.2)
+Requirement already satisfied: wrapt&gt;=1.17.0rc1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from formulaic&gt;=1.0.0-&gt;linearmodels) (1.17.0)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pandas&gt;=1.4.0-&gt;linearmodels) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pandas&gt;=1.4.0-&gt;linearmodels) (2024.1)
+Requirement already satisfied: tzdata&gt;=2022.7 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pandas&gt;=1.4.0-&gt;linearmodels) (2025.2)
+Requirement already satisfied: six&gt;=1.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=1.4.0-&gt;linearmodels) (1.17.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil&gt;=2.8.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pandas&gt;=1.4.0-&gt;linearmodels) (2.9.0.post0)
-Requirement already satisfied: pytz&gt;=2020.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pandas&gt;=1.4.0-&gt;linearmodels) (2024.1)
-Requirement already satisfied: tzdata&gt;=2022.7 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pandas&gt;=1.4.0-&gt;linearmodels) (2023.3)
-Requirement already satisfied: packaging&gt;=20 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from setuptools-scm&lt;9.0.0,&gt;=8.0.0-&gt;setuptools-scm[toml]&lt;9.0.0,&gt;=8.0.0-&gt;linearmodels) (24.1)
-Requirement already satisfied: setuptools in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from setuptools-scm&lt;9.0.0,&gt;=8.0.0-&gt;setuptools-scm[toml]&lt;9.0.0,&gt;=8.0.0-&gt;linearmodels) (75.1.0)
-Requirement already satisfied: patsy&gt;=0.5.6 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from statsmodels&gt;=0.13.0-&gt;linearmodels) (0.5.6)
-Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from patsy&gt;=0.5.6-&gt;statsmodels&gt;=0.13.0-&gt;linearmodels) (1.16.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading linearmodels-6.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.7 MB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: patsy&gt;=0.5.6 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from statsmodels&gt;=0.13.0-&gt;linearmodels) (1.0.1)
+Downloading linearmodels-6.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.7 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.7 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.7/1.7 MB</span> <span class=" -Color -Color-Red">43.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading cython-3.1.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.3 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/3.3 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3.3/3.3 MB</span> <span class=" -Color -Color-Red">106.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.7/1.7 MB</span> <span class=" -Color -Color-Red">15.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading formulaic-1.2.0-py3-none-any.whl (117 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading setuptools_scm-8.3.1-py3-none-any.whl (43 kB)
+Downloading cython-3.1.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.3 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/3.3 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3.3/3.3 MB</span> <span class=" -Color -Color-Red">30.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading formulaic-1.2.0-py3-none-any.whl (117 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading interface_meta-1.3.0-py3-none-any.whl (14 kB)
 Downloading pyhdfe-0.2.0-py3-none-any.whl (19 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading setuptools_scm-8.3.1-py3-none-any.whl (43 kB)
-Downloading interface_meta-1.3.0-py3-none-any.whl (14 kB)
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: setuptools-scm, interface-meta, Cython, pyhdfe, formulaic, linearmodels
+?25l
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed Cython-3.1.3 formulaic-1.2.0 interface-meta-1.3.0 linearmodels-6.1 pyhdfe-0.2.0 setuptools-scm-8.3.1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/6</span> [Cython]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/6</span> [Cython]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/6</span> [Cython]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/6</span> [Cython]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4/6</span> [formulaic]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ <span class=" -Color -Color-Green">5/6</span> [linearmodels]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">6/6</span> [linearmodels]
+?25h
+Successfully installed Cython-3.1.3 formulaic-1.2.0 interface-meta-1.3.0 linearmodels-6.1 pyhdfe-0.2.0 setuptools-scm-8.3.1
 </pre></div>
 </div>
 </div>
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">79.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">80.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>Linear regression is a standard tool for analyzing the relationship between two or more variables.</p>
 <p>In this lecture, we’ll use the Python package <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> to estimate, interpret, and visualize linear regression models.</p>
 <p>Along the way, we’ll discuss a variety of topics, including</p>
@@ -354,28 +382,27 @@ Downloading interface_meta-1.3.0-py3-none-any.whl (14 kB)
 <p>Let’s start with some imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
-<span class="kn">from</span> <span class="nn">statsmodels.iolib.summary2</span> <span class="kn">import</span> <span class="n">summary_col</span>
-<span class="kn">from</span> <span class="nn">linearmodels.iv</span> <span class="kn">import</span> <span class="n">IV2SLS</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.iolib.summary2</span><span class="w"> </span><span class="kn">import</span> <span class="n">summary_col</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">linearmodels.iv</span><span class="w"> </span><span class="kn">import</span> <span class="n">IV2SLS</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="prerequisites">
-<h3><span class="section-number">79.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">80.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
 <p>This lecture assumes you are familiar with basic econometrics.</p>
 <p>For an introductory text covering these topics, see, for example,
 <span id="id2">[<a class="reference internal" href="zreferences.html#id104" title="Jeffrey M Wooldridge. Introductory econometrics: A modern approach. Nelson Education, 2015.">Wooldridge, 2015</a>]</span>.</p>
 </section>
 </section>
 <section id="simple-linear-regression">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">79.2. </span>Simple Linear Regression</a><a class="headerlink" href="#simple-linear-regression" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">80.2. </span>Simple Linear Regression</a><a class="headerlink" href="#simple-linear-regression" title="Link to this heading">#</a></h2>
 <p><span id="id3">[<a class="reference internal" href="zreferences.html#id105" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> wish to determine whether or not differences in institutions can help to explain observed economic outcomes.</p>
 <p>How do we measure <em>institutional differences</em> and <em>economic outcomes</em>?</p>
 <p>In this paper,</p>
@@ -522,7 +549,7 @@ expropriation index</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7be9c10a876bb6901af07b90c927b05fb1a34b8737f1b84340c0288d59407601.png" src="_images/7be9c10a876bb6901af07b90c927b05fb1a34b8737f1b84340c0288d59407601.png" />
+<img alt="_images/cf1546e9104493b972573365c7aa5e8fe92ac847cf4a334d9c55f490f34fa14d.png" src="_images/cf1546e9104493b972573365c7aa5e8fe92ac847cf4a334d9c55f490f34fa14d.png" />
 </div>
 </div>
 <p>The plot shows a fairly strong positive relationship between
@@ -584,7 +611,7 @@ fits the data, as in the following plot (Figure 2 in <span id="id4">[<a class="r
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6eebdeef7e4be921ff0f37eb9b706f48f205156e9359746ecaecbe221bf50528.png" src="_images/6eebdeef7e4be921ff0f37eb9b706f48f205156e9359746ecaecbe221bf50528.png" />
+<img alt="_images/ebdab590687f25c25622222a1202d5fb946cfd9abcd46df1d08c8ae46fcd6e2d.png" src="_images/ebdab590687f25c25622222a1202d5fb946cfd9abcd46df1d08c8ae46fcd6e2d.png" />
 </div>
 </div>
 <p>The most common technique to estimate the parameters (<span class="math notranslate nohighlight">\(\beta\)</span>’s)
@@ -657,8 +684,8 @@ coefficients differ slightly.</p>
 Dep. Variable:               logpgp95   R-squared:                       0.611
 Model:                            OLS   Adj. R-squared:                  0.608
 Method:                 Least Squares   F-statistic:                     171.4
-Date:                Mon, 25 Aug 2025   Prob (F-statistic):           4.16e-24
-Time:                        05:09:21   Log-Likelihood:                -119.71
+Date:                Mon, 08 Sep 2025   Prob (F-statistic):           4.16e-24
+Time:                        05:04:09   Log-Likelihood:                -119.71
 No. Observations:                 111   AIC:                             243.4
 Df Residuals:                     109   BIC:                             248.8
 Df Model:                           1                                         
@@ -716,7 +743,7 @@ in 1995 is 8.38.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.515625
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float32(6.515625)
 </pre></div>
 </div>
 </div>
@@ -782,12 +809,12 @@ comparison purposes</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bf575732734a84d60a1817a1573bdd9b51db1afc4ff214d5a62fb406d3179fb3.png" src="_images/bf575732734a84d60a1817a1573bdd9b51db1afc4ff214d5a62fb406d3179fb3.png" />
+<img alt="_images/11b6f1b63abb674e1e765b08df080610ccffca1c79574c5b1aee7636d73466b2.png" src="_images/11b6f1b63abb674e1e765b08df080610ccffca1c79574c5b1aee7636d73466b2.png" />
 </div>
 </div>
 </section>
 <section id="extending-the-linear-regression-model">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">79.3. </span>Extending the Linear Regression Model</a><a class="headerlink" href="#extending-the-linear-regression-model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">80.3. </span>Extending the Linear Regression Model</a><a class="headerlink" href="#extending-the-linear-regression-model" title="Link to this heading">#</a></h2>
 <p>So far we have only accounted for institutions affecting economic
 performance - almost certainly there are numerous other factors
 affecting GDP that are not included in our model.</p>
@@ -880,7 +907,7 @@ Standard errors in parentheses.
 </div>
 </section>
 <section id="endogeneity">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">79.4. </span>Endogeneity</a><a class="headerlink" href="#endogeneity" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">80.4. </span>Endogeneity</a><a class="headerlink" href="#endogeneity" title="Link to this heading">#</a></h2>
 <p>As <span id="id6">[<a class="reference internal" href="zreferences.html#id105" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> discuss, the OLS models likely suffer from
 <strong>endogeneity</strong> issues, resulting in biased and inconsistent model
 estimates.</p>
@@ -948,7 +975,7 @@ condition of a valid instrument.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8bbac2977b67ca51b5a090b55fecfaede871eeaa413e227ac2ae27b47b4987d4.png" src="_images/8bbac2977b67ca51b5a090b55fecfaede871eeaa413e227ac2ae27b47b4987d4.png" />
+<img alt="_images/40e9ea59b3ffe984dcc5a339468df5e0d4080f283d324bd4e6397ce515ac9b08.png" src="_images/40e9ea59b3ffe984dcc5a339468df5e0d4080f283d324bd4e6397ce515ac9b08.png" />
 </div>
 </div>
 <p>The second condition may not be satisfied if settler mortality rates in the 17th to 19th centuries have a direct effect on current GDP (in addition to their indirect effect through institutions).</p>
@@ -1001,8 +1028,8 @@ used for estimation)</p>
 Dep. Variable:                 avexpr   R-squared:                       0.270
 Model:                            OLS   Adj. R-squared:                  0.258
 Method:                 Least Squares   F-statistic:                     22.95
-Date:                Mon, 25 Aug 2025   Prob (F-statistic):           1.08e-05
-Time:                        05:09:22   Log-Likelihood:                -104.83
+Date:                Mon, 08 Sep 2025   Prob (F-statistic):           1.08e-05
+Time:                        05:04:11   Log-Likelihood:                -104.83
 No. Observations:                  64   AIC:                             213.7
 Df Residuals:                      62   BIC:                             218.0
 Df Model:                           1                                         
@@ -1051,8 +1078,8 @@ predicted values <span class="math notranslate nohighlight">\(\widehat{avexpr}_i
 Dep. Variable:               logpgp95   R-squared:                       0.477
 Model:                            OLS   Adj. R-squared:                  0.469
 Method:                 Least Squares   F-statistic:                     56.60
-Date:                Mon, 25 Aug 2025   Prob (F-statistic):           2.66e-10
-Time:                        05:09:22   Log-Likelihood:                -72.268
+Date:                Mon, 08 Sep 2025   Prob (F-statistic):           2.66e-10
+Time:                        05:04:11   Log-Likelihood:                -72.268
 No. Observations:                  64   AIC:                             148.5
 Df Residuals:                      62   BIC:                             152.9
 Df Model:                           1                                         
@@ -1104,8 +1131,8 @@ included exogenous variables)</p>
 Dep. Variable:               logpgp95   R-squared:                      0.1870
 Estimator:                    IV-2SLS   Adj. R-squared:                 0.1739
 No. Observations:                  64   F-statistic:                    37.568
-Date:                Mon, Aug 25 2025   P-value (F-stat)                0.0000
-Time:                        05:09:22   Distribution:                  chi2(1)
+Date:                Mon, Sep 08 2025   P-value (F-stat)                0.0000
+Time:                        05:04:11   Distribution:                  chi2(1)
 Cov. Estimator:            unadjusted                                         
                                                                               
                              Parameter Estimates                              
@@ -1134,15 +1161,15 @@ quality) implies up to a 7-fold difference in income, emphasizing the
 significance of institutions in economic development.</p>
 </section>
 <section id="summary">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">79.5. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">80.5. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>We have demonstrated basic OLS and 2SLS regression in <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> and <code class="docutils literal notranslate"><span class="pre">linearmodels</span></code>.</p>
 <p>If you are familiar with R, you may want to use the <a class="reference external" href="https://www.statsmodels.org/dev/example_formulas.html">formula interface</a> to <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>, or consider using <a class="reference external" href="https://rpy2.github.io/">r2py</a> to call R from within Python.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">79.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">80.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="ols_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 79.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 80.1 </span></p>
 <section id="exercise-content">
 <p>In the lecture, we think the original model suffers from endogeneity
 bias due to the likely effect income has on institutional development.</p>
@@ -1179,12 +1206,12 @@ results.</p>
 </div>
 <div class="solution dropdown admonition" id="ols-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ols_ex1"> Exercise 79.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ols_ex1"> Exercise 80.1</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load in data</span>
-<span class="n">df4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s1">&#39;https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable4.dta?raw=true&#39;</span><span class="p">)</span>
+<span class="n">df4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s1">&#39;https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable4.dta&#39;</span><span class="p">)</span>
 
 <span class="c1"># Add a constant term</span>
 <span class="n">df4</span><span class="p">[</span><span class="s1">&#39;const&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
@@ -1212,8 +1239,8 @@ results.</p>
 Dep. Variable:               logpgp95   R-squared:                       0.689
 Model:                            OLS   Adj. R-squared:                  0.679
 Method:                 Least Squares   F-statistic:                     74.05
-Date:                Mon, 25 Aug 2025   Prob (F-statistic):           1.07e-17
-Time:                        05:09:22   Log-Likelihood:                -62.031
+Date:                Mon, 08 Sep 2025   Prob (F-statistic):           1.07e-17
+Time:                        05:04:11   Log-Likelihood:                -62.031
 No. Observations:                  70   AIC:                             130.1
 Df Residuals:                      67   BIC:                             136.8
 Df Model:                           2                                         
@@ -1243,7 +1270,7 @@ significant, indicating <span class="math notranslate nohighlight">\(avexpr_i\)<
 </div>
 <div class="exercise admonition" id="ols_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 79.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 80.2 </span></p>
 <section id="exercise-content">
 <p>The OLS parameter <span class="math notranslate nohighlight">\(\beta\)</span> can also be estimated using matrix
 algebra and <code class="docutils literal notranslate"><span class="pre">numpy</span></code> (you may need to review the
@@ -1279,12 +1306,12 @@ using <code class="docutils literal notranslate"><span class="pre">numpy</span><
 </div>
 <div class="solution dropdown admonition" id="ols-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ols_ex2"> Exercise 79.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ols_ex2"> Exercise 80.2</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load in data</span>
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s1">&#39;https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable1.dta?raw=true&#39;</span><span class="p">)</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s1">&#39;https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable1.dta&#39;</span><span class="p">)</span>
 <span class="n">df1</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;logpgp95&#39;</span><span class="p">,</span> <span class="s1">&#39;avexpr&#39;</span><span class="p">])</span>
 
 <span class="c1"># Add a constant term</span>
@@ -1349,6 +1376,8 @@ computations.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1806,6 +1835,11 @@ computations.</p>
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1815,17 +1849,17 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1837,17 +1871,17 @@ computations.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1859,12 +1893,12 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1876,17 +1910,17 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -2026,7 +2060,7 @@ computations.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

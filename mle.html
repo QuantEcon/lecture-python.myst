@@ -1,15 +1,14 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>80. Maximum Likelihood Estimation &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>81. Maximum Likelihood Estimation &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,16 +108,24 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'mle';</script>
     <link rel="canonical" href="https://python.quantecon.org/mle.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="81. First-Price and Second-Price Auctions" href="two_auctions.html" />
-    <link rel="prev" title="79. Linear Regression in Python" href="ols.html" />
+    <link rel="next" title="82. First-Price and Second-Price Auctions" href="two_auctions.html" />
+    <link rel="prev" title="80. Linear Regression in Python" href="ols.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -167,21 +174,21 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">80.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">80.1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">81.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">81.1.1. Prerequisites</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-and-assumptions">80.2. Set Up and Assumptions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flow-of-ideas">80.2.1. Flow of Ideas</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-billionaires">80.2.2. Counting Billionaires</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-and-assumptions">81.2. Set Up and Assumptions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flow-of-ideas">81.2.1. Flow of Ideas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-billionaires">81.2.2. Counting Billionaires</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditional-distributions">80.3. Conditional Distributions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">80.4. Maximum Likelihood Estimation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-numerical-methods">80.5. MLE with Numerical Methods</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation-with-statsmodels">80.6. Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">80.7. Summary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">80.8. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditional-distributions">81.3. Conditional Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">81.4. Maximum Likelihood Estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-numerical-methods">81.5. MLE with Numerical Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation-with-statsmodels">81.6. Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">81.7. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">81.8. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -239,8 +246,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="maximum-likelihood-estimation">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">80. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<h1><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">81. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#maximum-likelihood-estimation" id="id3">Maximum Likelihood Estimation</a></p>
@@ -256,9 +263,9 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">80.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">81.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In a <a class="reference internal" href="ols.html"><span class="doc">previous lecture</span></a>, we estimated the relationship between
 dependent and explanatory variables using linear regression.</p>
 <p>But what if a linear relationship is not an appropriate assumption for our model?</p>
@@ -271,31 +278,30 @@ economic factors such as market size and tax rate predict.</p>
 <p>We’ll require the following imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span>
-<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">factorial</span><span class="p">,</span> <span class="n">gammaln</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
-<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
-<span class="kn">from</span> <span class="nn">statsmodels.api</span> <span class="kn">import</span> <span class="n">Poisson</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
-<span class="kn">from</span> <span class="nn">statsmodels.iolib.summary2</span> <span class="kn">import</span> <span class="n">summary_col</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">exp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">factorial</span><span class="p">,</span> <span class="n">gammaln</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.mplot3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">Poisson</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.iolib.summary2</span><span class="w"> </span><span class="kn">import</span> <span class="n">summary_col</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="prerequisites">
-<h3><span class="section-number">80.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">81.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
 <p>We assume familiarity with basic probability and multivariate calculus.</p>
 </section>
 </section>
 <section id="set-up-and-assumptions">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">80.2. </span>Set Up and Assumptions</a><a class="headerlink" href="#set-up-and-assumptions" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">81.2. </span>Set Up and Assumptions</a><a class="headerlink" href="#set-up-and-assumptions" title="Link to this heading">#</a></h2>
 <p>Let’s consider the steps we need to go through in maximum likelihood estimation and how they pertain to this study.</p>
 <section id="flow-of-ideas">
-<h3><span class="section-number">80.2.1. </span>Flow of Ideas<a class="headerlink" href="#flow-of-ideas" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">81.2.1. </span>Flow of Ideas<a class="headerlink" href="#flow-of-ideas" title="Link to this heading">#</a></h3>
 <p>The first step with maximum likelihood estimation is to choose the probability distribution believed to be generating the data.</p>
 <p>More precisely, we need to make an assumption as to which <em>parametric class</em> of distributions is generating the data.</p>
 <ul class="simple">
@@ -310,7 +316,7 @@ indexed by its mean <span class="math notranslate nohighlight">\(\mu \in (-\inft
 <p>The parameter estimates so produced will be called <strong>maximum likelihood estimates</strong>.</p>
 </section>
 <section id="counting-billionaires">
-<h3><span class="section-number">80.2.2. </span>Counting Billionaires<a class="headerlink" href="#counting-billionaires" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">81.2.2. </span>Counting Billionaires<a class="headerlink" href="#counting-billionaires" title="Link to this heading">#</a></h3>
 <p>Treisman <span id="id1">[<a class="reference internal" href="zreferences.html#id103" title="Daniel Treisman. Russia's billionaires. The American Economic Review, 106(5):236–241, 2016.">Treisman, 2016</a>]</span> is interested in estimating the number of billionaires in different countries.</p>
 <p>The number of billionaires is integer-valued.</p>
 <p>Hence we consider distributions that take values only in the nonnegative integers.</p>
@@ -352,7 +358,7 @@ f(y) = \frac{\mu^{y}}{y!} e^{-\mu},
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f6a9e8a7871e9277293d1b5673329f418e1153b2d31a5cb87ee80be213030e28.png" src="_images/f6a9e8a7871e9277293d1b5673329f418e1153b2d31a5cb87ee80be213030e28.png" />
+<img alt="_images/e261a48817c1fef585e407eb0809b3693d8b80a3ebe8992f1f133371bcd75f52.png" src="_images/e261a48817c1fef585e407eb0809b3693d8b80a3ebe8992f1f133371bcd75f52.png" />
 </div>
 </div>
 <p>Notice that the Poisson distribution begins to resemble a normal distribution as the mean of <span class="math notranslate nohighlight">\(y\)</span> increases.</p>
@@ -497,19 +503,19 @@ dropped for plotting purposes)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/344f8ecb875843b035fe98125a29dc87a00753123ec9aeed7d597da17bcea04c.png" src="_images/344f8ecb875843b035fe98125a29dc87a00753123ec9aeed7d597da17bcea04c.png" />
+<img alt="_images/b4c087d43ca660025d7cad553c6862389374a0f17cfcd29aff0684ab6e776bdd.png" src="_images/b4c087d43ca660025d7cad553c6862389374a0f17cfcd29aff0684ab6e776bdd.png" />
 </div>
 </div>
 <p>From the histogram, it appears that the Poisson assumption is not unreasonable (albeit with a very low <span class="math notranslate nohighlight">\(\mu\)</span> and some outliers).</p>
 </section>
 </section>
 <section id="conditional-distributions">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">80.3. </span>Conditional Distributions</a><a class="headerlink" href="#conditional-distributions" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">81.3. </span>Conditional Distributions</a><a class="headerlink" href="#conditional-distributions" title="Link to this heading">#</a></h2>
 <p>In Treisman’s paper, the dependent variable — the number of billionaires <span class="math notranslate nohighlight">\(y_i\)</span> in country <span class="math notranslate nohighlight">\(i\)</span> — is modeled as a function of GDP per capita, population size, and years membership in GATT and WTO.</p>
 <p>Hence, the distribution of <span class="math notranslate nohighlight">\(y_i\)</span> needs to be conditioned on the vector of explanatory variables <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>.</p>
 <p>The standard formulation — the so-called <em>poisson regression</em> model — is as follows:</p>
 <div class="math notranslate nohighlight" id="equation-poissonreg">
-<span class="eqno">(80.1)<a class="headerlink" href="#equation-poissonreg" title="Permalink to this equation">#</a></span>\[f(y_i \mid \mathbf{x}_i) = \frac{\mu_i^{y_i}}{y_i!} e^{-\mu_i}; \qquad y_i = 0, 1, 2, \ldots , \infty .\]</div>
+<span class="eqno">(81.1)<a class="headerlink" href="#equation-poissonreg" title="Link to this equation">#</a></span>\[f(y_i \mid \mathbf{x}_i) = \frac{\mu_i^{y_i}}{y_i!} e^{-\mu_i}; \qquad y_i = 0, 1, 2, \ldots , \infty .\]</div>
 <div class="math notranslate nohighlight">
 \[
 \text{where}\ \mu_i
@@ -558,14 +564,14 @@ dropped for plotting purposes)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/379cbb68b1782c7f701ff60de3a2fd924ba5dd5031008f923526ccb0f6948b25.png" src="_images/379cbb68b1782c7f701ff60de3a2fd924ba5dd5031008f923526ccb0f6948b25.png" />
+<img alt="_images/7d738abf2e4010935d26a6c7d914d0219af6042348c7247dfc5106ceb029b52f.png" src="_images/7d738abf2e4010935d26a6c7d914d0219af6042348c7247dfc5106ceb029b52f.png" />
 </div>
 </div>
 <p>We can see that the distribution of <span class="math notranslate nohighlight">\(y_i\)</span> is conditional on
 <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> (<span class="math notranslate nohighlight">\(\mu_i\)</span> is no longer constant).</p>
 </section>
 <section id="id2">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">80.4. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">81.4. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p>In our model for number of billionaires, the conditional distribution
 contains 4 (<span class="math notranslate nohighlight">\(k = 4\)</span>) parameters that we need to estimate.</p>
 <p>We will label our entire parameter vector as <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> where</p>
@@ -590,7 +596,7 @@ data is <span class="math notranslate nohighlight">\(f(y_1, y_2) = f(y_1) \cdot 
 we can visualize the joint pmf like so</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_joint_poisson</span><span class="p">(</span><span class="n">μ</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">y_n</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_joint_poisson</span><span class="p">(</span><span class="n">μ</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">y_n</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
     <span class="n">yi_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Create coordinate points of X and Y</span>
@@ -612,7 +618,7 @@ we can visualize the joint pmf like so</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f532ed3650b3d781859c9086ad5153540fe111f8e323d13489f86f366419ad09.png" src="_images/f532ed3650b3d781859c9086ad5153540fe111f8e323d13489f86f366419ad09.png" />
+<img alt="_images/ac6f7e5e36c833c70024b47197fe8da844203065e9c8c90d8d86ab73e4f4ce19.png" src="_images/ac6f7e5e36c833c70024b47197fe8da844203065e9c8c90d8d86ab73e4f4ce19.png" />
 </div>
 </div>
 <p>Similarly, the joint pmf of our data (which is distributed as a
@@ -678,7 +684,7 @@ differentiating <span class="math notranslate nohighlight">\(f(x) = x \exp(x)\)<
 we need to use numerical methods.</p>
 </section>
 <section id="mle-with-numerical-methods">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">80.5. </span>MLE with Numerical Methods</a><a class="headerlink" href="#mle-with-numerical-methods" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">81.5. </span>MLE with Numerical Methods</a><a class="headerlink" href="#mle-with-numerical-methods" title="Link to this heading">#</a></h2>
 <p>Many distributions do not have nice, analytical solutions and therefore require
 numerical methods to solve for parameter estimates.</p>
 <p>One such numerical method is the Newton-Raphson algorithm.</p>
@@ -717,7 +723,7 @@ function will be equal to 0.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8fdd7880454df0718c42ed2d97362a81c2597234048b24344454569b3c5cff16.png" src="_images/8fdd7880454df0718c42ed2d97362a81c2597234048b24344454569b3c5cff16.png" />
+<img alt="_images/dca72447fed25f262844ec715d7b03b5e7e7568ea51089b64b2477f6a5444a8e.png" src="_images/dca72447fed25f262844ec715d7b03b5e7e7568ea51089b64b2477f6a5444a8e.png" />
 </div>
 </div>
 <p>The plot shows that the maximum likelihood value (the top plot) occurs
@@ -766,9 +772,9 @@ easily recompute the values of the log likelihood, gradient and Hessian
 for every iteration</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PoissonRegression</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PoissonRegression</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">β</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">β</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
         <span class="c1"># Reshape y as a n_by_1 column vector</span>
@@ -776,20 +782,20 @@ for every iteration</p>
         <span class="c1"># Reshape β as a k_by_1 column vector</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">β</span> <span class="o">=</span> <span class="n">β</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">μ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">μ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">logL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">logL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
         <span class="n">μ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">μ</span><span class="p">)</span> <span class="o">-</span> <span class="n">μ</span> <span class="o">-</span> <span class="n">gammaln</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
         <span class="n">μ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">μ</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">H</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span>
         <span class="n">μ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">()</span>
         <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">μ</span> <span class="o">*</span> <span class="n">X</span><span class="p">))</span>
@@ -812,7 +818,7 @@ an option <code class="docutils literal notranslate"><span class="pre">display=T
 iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">newton_raphson</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">newton_raphson</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">error</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Initial error value</span>
@@ -904,9 +910,9 @@ and therefore the numerator in our updating equation is becoming smaller.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-2.54740673e-13],
-       [-6.45705711e-13],
-       [-4.98712183e-13]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-2.55240273e-13],
+       [-6.47093490e-13],
+       [-5.00377517e-13]])
 </pre></div>
 </div>
 </div>
@@ -917,7 +923,7 @@ the maximum is found at <span class="math notranslate nohighlight">\(\beta = 10\
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logL</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">10</span>
 
-<span class="k">def</span> <span class="nf">find_tangent</span><span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_tangent</span><span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="n">y1</span> <span class="o">=</span> <span class="n">logL</span><span class="p">(</span><span class="n">β</span><span class="p">)</span>
     <span class="n">y2</span> <span class="o">=</span> <span class="n">logL</span><span class="p">(</span><span class="n">β</span><span class="o">+</span><span class="n">a</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">β</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">β</span><span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
@@ -949,7 +955,7 @@ the maximum is found at <span class="math notranslate nohighlight">\(\beta = 10\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f7d8c9c7b8e75b866501326ee020bc4db03d2513cb4cf5337c75b35b298adde3.png" src="_images/f7d8c9c7b8e75b866501326ee020bc4db03d2513cb4cf5337c75b35b298adde3.png" />
+<img alt="_images/ab9776abd3af17436dcc84b863221d5279fef76fd4854cf8536437c1a1ea2fee.png" src="_images/ab9776abd3af17436dcc84b863221d5279fef76fd4854cf8536437c1a1ea2fee.png" />
 </div>
 </div>
 <p>Note that our implementation of the Newton-Raphson algorithm is rather
@@ -957,7 +963,7 @@ basic — for more robust implementations see,
 for example, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a>.</p>
 </section>
 <section id="maximum-likelihood-estimation-with-statsmodels">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">80.6. </span>Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a><a class="headerlink" href="#maximum-likelihood-estimation-with-statsmodels" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">81.6. </span>Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a><a class="headerlink" href="#maximum-likelihood-estimation-with-statsmodels" title="Link to this heading">#</a></h2>
 <p>Now that we know what’s going on under the hood, we can apply MLE to an interesting application.</p>
 <p>We’ll use the Poisson regression model in <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> to obtain
 a richer output with standard errors, test values, and more.</p>
@@ -989,8 +995,8 @@ to confirm we obtain the same coefficients and log-likelihood value.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 25 Aug 2025   Pseudo R-squ.:                  0.2546
-Time:                        05:06:18   Log-Likelihood:                -3.3784
+Date:                Mon, 08 Sep 2025   Pseudo R-squ.:                  0.2546
+Time:                        05:01:11   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
@@ -1007,7 +1013,7 @@ x2             0.8433      0.798      1.057      0.291      -0.720       2.407
 <p>Now let’s replicate results from Daniel Treisman’s paper, <a class="reference external" href="https://www.aeaweb.org/articles?id=10.1257/aer.p20161068">Russia’s
 Billionaires</a>,
 mentioned earlier in the lecture.</p>
-<p>Treisman starts by estimating equation <a class="reference internal" href="#equation-poissonreg">(80.1)</a>, where:</p>
+<p>Treisman starts by estimating equation <a class="reference internal" href="#equation-poissonreg">(81.1)</a>, where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(y_i\)</span> is <span class="math notranslate nohighlight">\({number\ of\ billionaires}_i\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(x_{i1}\)</span> is <span class="math notranslate nohighlight">\(\log{GDP\ per\ capita}_i\)</span></p></li>
@@ -1056,8 +1062,8 @@ model.</p>
 Dep. Variable:                numbil0   No. Observations:                  197
 Model:                        Poisson   Df Residuals:                      193
 Method:                           MLE   Df Model:                            3
-Date:                Mon, 25 Aug 2025   Pseudo R-squ.:                  0.8574
-Time:                        05:06:18   Log-Likelihood:                -438.54
+Date:                Mon, 08 Sep 2025   Pseudo R-squ.:                  0.8574
+Time:                        05:01:11   Log-Likelihood:                -438.54
 converged:                       True   LL-Null:                       -3074.7
 Covariance Type:                  HC0   LLR p-value:                     0.000
 ==============================================================================
@@ -1178,7 +1184,7 @@ plot the first 15</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/dc228467959765ab6867720c7ef28305a8bdcd0135f62647847117b928e3ff22.png" src="_images/dc228467959765ab6867720c7ef28305a8bdcd0135f62647847117b928e3ff22.png" />
+<img alt="_images/4964baf27b3b59541e2e9de78d6c12af663cebded329393f4ab90ec2539ed5a2.png" src="_images/4964baf27b3b59541e2e9de78d6c12af663cebded329393f4ab90ec2539ed5a2.png" />
 </div>
 </div>
 <p>As we can see, Russia has by far the highest number of billionaires in
@@ -1189,7 +1195,7 @@ Russia, the political climate, and the history of privatization in the
 years after the USSR.</p>
 </section>
 <section id="summary">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">80.7. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">81.7. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>In this lecture, we used Maximum Likelihood Estimation to estimate the
 parameters of a Poisson model.</p>
 <p><code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> contains other built-in likelihood models such as
@@ -1202,10 +1208,10 @@ example notebook can be found
 <a class="reference external" href="https://www.statsmodels.org/dev/examples/notebooks/generated/generic_mle.html">here</a>.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">80.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">81.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="mle_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 80.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 81.1 </span></p>
 <section id="exercise-content">
 <p>Suppose we wanted to estimate the probability of an event <span class="math notranslate nohighlight">\(y_i\)</span>
 occurring, given some observations.</p>
@@ -1231,7 +1237,7 @@ compute the cmf and pmf of the normal distribution.</p>
 </div>
 <div class="solution dropdown admonition" id="mle-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex1"> Exercise 80.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex1"> Exercise 81.1</a></p>
 <section id="solution-content">
 <p>The log-likelihood can be written as</p>
 <div class="math notranslate nohighlight">
@@ -1272,31 +1278,31 @@ y_i \frac{ \phi (\mathbf{x}_i' \boldsymbol{\beta}) + \mathbf{x}_i' \boldsymbol{\
 follows</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ProbitRegression</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ProbitRegression</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">β</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">β</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span> <span class="o">=</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">β</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="k">def</span> <span class="nf">μ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">μ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">ϕ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ϕ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">logL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">logL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
         <span class="n">μ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">y</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">μ</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">μ</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>  
         <span class="n">μ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">()</span>
         <span class="n">ϕ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ϕ</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">ϕ</span> <span class="o">/</span> <span class="n">μ</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">ϕ</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">μ</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">H</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
         <span class="n">β</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span>
@@ -1313,7 +1319,7 @@ follows</p>
 </div>
 <div class="exercise admonition" id="mle_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 80.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 81.2 </span></p>
 <section id="exercise-content">
 <p>Use the following dataset and initial values of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> to
 estimate the MLE with the Newton-Raphson algorithm developed earlier in
@@ -1349,7 +1355,7 @@ y =
 function with the following import statement</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">statsmodels.discrete.discrete_model</span> <span class="kn">import</span> <span class="n">Probit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.discrete.discrete_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Probit</span>
 </pre></div>
 </div>
 </div>
@@ -1361,7 +1367,7 @@ achieve convergence with different starting values.</p>
 </div>
 <div class="solution dropdown admonition" id="mle-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex2"> Exercise 80.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex2"> Exercise 81.2</a></p>
 <section id="solution-content">
 <p>Here is one solution</p>
 <div class="cell docutils container">
@@ -1418,8 +1424,8 @@ Number of iterations: 4
 Dep. Variable:                      y   No. Observations:                    5
 Model:                         Probit   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 25 Aug 2025   Pseudo R-squ.:                  0.2961
-Time:                        05:06:19   Log-Likelihood:                -2.3687
+Date:                Mon, 08 Sep 2025   Pseudo R-squ.:                  0.2961
+Time:                        05:01:11   Log-Likelihood:                -2.3687
 converged:                       True   LL-Null:                       -3.3651
 Covariance Type:            nonrobust   LLR p-value:                    0.3692
 ==============================================================================
@@ -1469,6 +1475,8 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1926,6 +1934,11 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1935,17 +1948,17 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1957,17 +1970,17 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1979,12 +1992,12 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1996,17 +2009,17 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -2146,7 +2159,7 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

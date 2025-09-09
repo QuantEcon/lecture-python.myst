@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>27. A Bayesian Formulation of Friedman and Wald’s Problem &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'wald_friedman_2';</script>
     <link rel="canonical" href="https://python.quantecon.org/wald_friedman_2.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="28. Exchangeability and Bayesian Updating" href="exchangeable.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -239,8 +246,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="a-bayesian-formulation-of-friedman-and-wald-s-problem">
-<h1><a class="toc-backref" href="#id6"><span class="section-number">27. </span><span class="target" id="index-0"></span>A Bayesian Formulation of Friedman and Wald’s Problem</a><a class="headerlink" href="#a-bayesian-formulation-of-friedman-and-wald-s-problem" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<h1><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">27. </span><span class="target" id="index-0"></span>A Bayesian Formulation of Friedman and Wald’s Problem</a><a class="headerlink" href="#a-bayesian-formulation-of-friedman-and-wald-s-problem" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#a-bayesian-formulation-of-friedman-and-wald-s-problem" id="id6">A Bayesian Formulation of Friedman and Wald’s Problem</a></p>
@@ -252,9 +259,9 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">27.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">27.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture revisits the  statistical decision problem presented to Milton
 Friedman and W. Allen Wallis during World War II when they were analysts at
 the U.S. Government’s  Statistical Research Group at Columbia University.</p>
@@ -306,18 +313,18 @@ a prior probability distribution over the parameters that represents his persona
 <p>We’ll begin with some imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
-<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba.experimental</span><span class="w"> </span><span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">gamma</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="a-dynamic-programming-approach">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">27.2. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">27.2. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Link to this heading">#</a></h2>
 <p>The following presentation of the problem closely follows Dmitri
 Bertsekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id2">[<a class="reference internal" href="zreferences.html#id119" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">Bertsekas, 1975</a>]</span>.</p>
 <p>A decision-maker can observe a sequence of draws of a random variable <span class="math notranslate nohighlight">\(z\)</span>.</p>
@@ -362,7 +369,7 @@ that <span class="math notranslate nohighlight">\(z_{k+1}\)</span> has probabili
 f_{{\pi}_k} (v) = (1-\pi_k) f_0(v) + \pi_k f_1 (v) ,
 \]</div>
 <p>which  is a mixture of distributions <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span>, with the weight
-on <span class="math notranslate nohighlight">\(f_1\)</span> being the posterior probability that <span class="math notranslate nohighlight">\(f = f_1\)</span> <a class="footnote-reference brackets" href="#f1" id="id4">1</a>.</p>
+on <span class="math notranslate nohighlight">\(f_1\)</span> being the posterior probability that <span class="math notranslate nohighlight">\(f = f_1\)</span> <a class="footnote-reference brackets" href="#f1" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <p>To  illustrate such a distribution, let’s inspect some mixtures of beta distributions.</p>
 <p>The density of a beta probability distribution with parameters <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -376,7 +383,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
@@ -405,11 +412,11 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6d7dcf8864ebe7c7ba24810e6d841f7af7b8d82d772368cb7e6e8370072582ea.png" src="_images/6d7dcf8864ebe7c7ba24810e6d841f7af7b8d82d772368cb7e6e8370072582ea.png" />
+<img alt="_images/f82d720f3867ceb7ca5e0d2071c08a899c7311d26e6e370ee9d8101dbe8d1591.png" src="_images/f82d720f3867ceb7ca5e0d2071c08a899c7311d26e6e370ee9d8101dbe8d1591.png" />
 </div>
 </div>
 <section id="losses-and-costs">
-<h3><span class="section-number">27.2.1. </span>Losses and Costs<a class="headerlink" href="#losses-and-costs" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">27.2.1. </span>Losses and Costs<a class="headerlink" href="#losses-and-costs" title="Link to this heading">#</a></h3>
 <p>After observing <span class="math notranslate nohighlight">\(z_k, z_{k-1}, \ldots, z_0\)</span>, the decision-maker
 chooses among three distinct actions:</p>
 <ul class="simple">
@@ -430,7 +437,7 @@ another <span class="math notranslate nohighlight">\(z\)</span></p></li>
 </ul>
 </section>
 <section id="digression-on-type-i-and-type-ii-errors">
-<h3><span class="section-number">27.2.2. </span>Digression on Type I and Type II Errors<a class="headerlink" href="#digression-on-type-i-and-type-ii-errors" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">27.2.2. </span>Digression on Type I and Type II Errors<a class="headerlink" href="#digression-on-type-i-and-type-ii-errors" title="Link to this heading">#</a></h3>
 <p>If we regard  <span class="math notranslate nohighlight">\(f=f_0\)</span> as a null hypothesis and <span class="math notranslate nohighlight">\(f=f_1\)</span> as an alternative hypothesis,
 then <span class="math notranslate nohighlight">\(L_1\)</span> and <span class="math notranslate nohighlight">\(L_0\)</span> are losses associated with two types of statistical errors</p>
 <ul class="simple">
@@ -446,7 +453,7 @@ error.</p></li>
 </ul>
 </section>
 <section id="intuition">
-<h3><span class="section-number">27.2.3. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">27.2.3. </span>Intuition<a class="headerlink" href="#intuition" title="Link to this heading">#</a></h3>
 <p>Before proceeding,  let’s try to guess what an optimal decision rule might look like.</p>
 <p>Suppose at some given point in time that <span class="math notranslate nohighlight">\(\pi\)</span> is close to 1.</p>
 <p>Then our prior beliefs and the evidence so far point strongly to <span class="math notranslate nohighlight">\(f = f_1\)</span>.</p>
@@ -462,11 +469,11 @@ error.</p></li>
 parameter such as <span class="math notranslate nohighlight">\(c\)</span> or <span class="math notranslate nohighlight">\(L_0\)</span> on <span class="math notranslate nohighlight">\(A\)</span> or <span class="math notranslate nohighlight">\(B\)</span>.</p>
 </section>
 <section id="a-bellman-equation">
-<h3><span class="section-number">27.2.4. </span>A Bellman Equation<a class="headerlink" href="#a-bellman-equation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">27.2.4. </span>A Bellman Equation<a class="headerlink" href="#a-bellman-equation" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(J(\pi)\)</span> be the total loss for a decision-maker with current belief <span class="math notranslate nohighlight">\(\pi\)</span> who chooses optimally.</p>
 <p>Principles of <strong>dynamic programming</strong> teach  us that an optimal loss function  <span class="math notranslate nohighlight">\(J\)</span> satisfies the following  the Bellman functional  equation</p>
 <div class="math notranslate nohighlight" id="equation-new1">
-<span class="eqno">(27.1)<a class="headerlink" href="#equation-new1" title="Permalink to this equation">#</a></span>\[J(\pi) =
+<span class="eqno">(27.1)<a class="headerlink" href="#equation-new1" title="Link to this equation">#</a></span>\[J(\pi) =
     \min
     \left\{
         \underbrace{\pi L_0}_{ \text{accept } f_0 } \; , \; \underbrace{(1-\pi) L_1}_{ \text{accept } f_1 } \; , \;
@@ -490,7 +497,7 @@ f_{\pi}(v) = (1-\pi) f_0(v) + \pi f_1 (v)
 </ol>
 <p>We can represent the  Bellman equation as</p>
 <div class="math notranslate nohighlight" id="equation-optdec">
-<span class="eqno">(27.2)<a class="headerlink" href="#equation-optdec" title="Permalink to this equation">#</a></span>\[J(\pi) =
+<span class="eqno">(27.2)<a class="headerlink" href="#equation-optdec" title="Link to this equation">#</a></span>\[J(\pi) =
 \min \left\{ \pi L_0, \; (1-\pi) L_1, \; h(\pi) \right\}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\pi \in [0,1]\)</span> and</p>
 <ul class="simple">
@@ -524,14 +531,14 @@ the expected cost associated with drawing one more <span class="math notranslate
 and <span class="math notranslate nohighlight">\(B\)</span>.</p>
 <p>To help make our computations more manageable,  we can use <a class="reference internal" href="#equation-optdec">(27.2)</a> to  write the continuation cost <span class="math notranslate nohighlight">\(h(\pi)\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-optdec2">
-<span class="eqno">(27.3)<a class="headerlink" href="#equation-optdec2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(27.3)<a class="headerlink" href="#equation-optdec2" title="Link to this equation">#</a></span>\[\begin{split}\begin{aligned}
 h(\pi) &amp;= c + \mathbb E [J(\pi')] \\
 &amp;= c + \mathbb E_{\pi'} \min \{ \pi' L_0, (1 - \pi') L_1, h(\pi') \} \\
 &amp;= c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 \end{aligned}\end{split}\]</div>
 <p>The equality</p>
 <div class="math notranslate nohighlight" id="equation-funceq">
-<span class="eqno">(27.4)<a class="headerlink" href="#equation-funceq" title="Permalink to this equation">#</a></span>\[h(\pi) =
+<span class="eqno">(27.4)<a class="headerlink" href="#equation-funceq" title="Link to this equation">#</a></span>\[h(\pi) =
 c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'\]</div>
 <p>is an equation  in an unknown function  <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <div class="admonition note">
@@ -551,7 +558,7 @@ c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">27.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">27.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>First, we will construct a <code class="docutils literal notranslate"><span class="pre">jitclass</span></code> to store the parameters of the model</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -574,9 +581,9 @@ c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jitclass</span><span class="p">(</span><span class="n">wf_data</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">WaldFriedman</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WaldFriedman</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">c</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
                  <span class="n">a0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                  <span class="n">b0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -597,21 +604,21 @@ c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \
         <span class="bp">self</span><span class="o">.</span><span class="n">z0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">mc_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">mc_size</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">f0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b0</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">f1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">f0_rvs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f0_rvs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b0</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">f1_rvs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f1_rvs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">κ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates π using Bayes&#39; rule and the current observation z</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -635,7 +642,7 @@ c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">Q</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Q</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
 
     <span class="n">c</span><span class="p">,</span> <span class="n">π_grid</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span>
     <span class="n">L0</span><span class="p">,</span> <span class="n">L1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
@@ -672,7 +679,7 @@ c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the continuation cost function</span>
 
@@ -700,7 +707,7 @@ c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \
 </div>
 </section>
 <section id="analysis">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">27.4. </span>Analysis</a><a class="headerlink" href="#analysis" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">27.4. </span>Analysis</a><a class="headerlink" href="#analysis" title="Link to this heading">#</a></h2>
 <p>Let’s inspect outcomes.</p>
 <p>We will be using the default parameterization with distributions like so</p>
 <div class="cell docutils container">
@@ -718,11 +725,11 @@ c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/430de3682834c712ee387e74cd11a94a202fbdf96ffd0a2a77db4a052661bbc6.png" src="_images/430de3682834c712ee387e74cd11a94a202fbdf96ffd0a2a77db4a052661bbc6.png" />
+<img alt="_images/c21b723a447a8249fb4a3ed9bd1c2fe1006a8831cbb57b6c166b62520bd05933.png" src="_images/c21b723a447a8249fb4a3ed9bd1c2fe1006a8831cbb57b6c166b62520bd05933.png" />
 </div>
 </div>
 <section id="cost-function">
-<h3><span class="section-number">27.4.1. </span>Cost Function<a class="headerlink" href="#cost-function" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">27.4.1. </span>Cost Function<a class="headerlink" href="#cost-function" title="Link to this heading">#</a></h3>
 <p>To solve the model, we will call our <code class="docutils literal notranslate"><span class="pre">solve_model</span></code> function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -736,7 +743,7 @@ and plot these on our cost function plot</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function takes a continuation cost function and returns the</span>
@@ -798,7 +805,7 @@ and plot these on our cost function plot</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/441174025d0d5f4d757caa67f55f8a895854fad80ed4e1190930420fec72a649.png" src="_images/441174025d0d5f4d757caa67f55f8a895854fad80ed4e1190930420fec72a649.png" />
+<img alt="_images/6f56625996f7d675a88c5ea80627f00b7004a21dc550a02f7905fe77b12da7f3.png" src="_images/6f56625996f7d675a88c5ea80627f00b7004a21dc550a02f7905fe77b12da7f3.png" />
 </div>
 </div>
 <p>The cost function <span class="math notranslate nohighlight">\(J\)</span> equals <span class="math notranslate nohighlight">\(\pi L_0\)</span> for <span class="math notranslate nohighlight">\(\pi \leq B\)</span>, and <span class="math notranslate nohighlight">\((1-\pi) L_1\)</span> for <span class="math notranslate nohighlight">\(\pi
@@ -811,7 +818,7 @@ probability assigned to <span class="math notranslate nohighlight">\(f_1\)</span
 model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <span class="math notranslate nohighlight">\(B\)</span> or above <span class="math notranslate nohighlight">\(A\)</span>.</p>
 </section>
 <section id="simulations">
-<h3><span class="section-number">27.4.2. </span>Simulations<a class="headerlink" href="#simulations" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">27.4.2. </span>Simulations<a class="headerlink" href="#simulations" title="Link to this heading">#</a></h3>
 <p>The next figure shows the outcomes of 500 simulations of the decision process.</p>
 <p>On the left is a histogram of <strong>stopping times</strong>, i.e.,  the number of draws of <span class="math notranslate nohighlight">\(z_k\)</span> required to make a decision.</p>
 <p>The average number of draws is around 6.6.</p>
@@ -819,7 +826,7 @@ model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <spa
 <p>In this case, the decision-maker is correct 80% of the time</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">true_dist</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">π_0</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">true_dist</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">π_0</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function takes an initial condition and simulates until it</span>
@@ -869,7 +876,7 @@ model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <spa
 
     <span class="k">return</span> <span class="n">correct</span><span class="p">,</span> <span class="n">π</span><span class="p">,</span> <span class="n">t</span>
 
-<span class="k">def</span> <span class="nf">stopping_dist</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">ndraws</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">true_dist</span><span class="o">=</span><span class="s2">&quot;f0&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">stopping_dist</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">ndraws</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">true_dist</span><span class="o">=</span><span class="s2">&quot;f0&quot;</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simulates repeatedly to get distributions of time needed to make a</span>
@@ -886,7 +893,7 @@ model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <spa
 
     <span class="k">return</span> <span class="n">cdist</span><span class="p">,</span> <span class="n">tdist</span>
 
-<span class="k">def</span> <span class="nf">simulation_plot</span><span class="p">(</span><span class="n">wf</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simulation_plot</span><span class="p">(</span><span class="n">wf</span><span class="p">):</span>
     <span class="n">h_star</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
     <span class="n">ndraws</span> <span class="o">=</span> <span class="mi">500</span>
     <span class="n">cdist</span><span class="p">,</span> <span class="n">tdist</span> <span class="o">=</span> <span class="n">stopping_dist</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">ndraws</span><span class="p">)</span>
@@ -911,12 +918,12 @@ model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7e38d8ab8998d4fe63d3069c4bdcaa5c80e74a109b5593c37721fafdd56d2783.png" src="_images/7e38d8ab8998d4fe63d3069c4bdcaa5c80e74a109b5593c37721fafdd56d2783.png" />
+<img alt="_images/558e1fac7f5820c195987c16459bc9380c5333881a383f4b64bfde789da17dc7.png" src="_images/558e1fac7f5820c195987c16459bc9380c5333881a383f4b64bfde789da17dc7.png" />
 </div>
 </div>
 </section>
 <section id="comparative-statics">
-<h3><span class="section-number">27.4.3. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">27.4.3. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Link to this heading">#</a></h3>
 <p>Now let’s consider the following exercise.</p>
 <p>We double the cost of drawing an additional observation.</p>
 <p>Before you look, think about what will happen:</p>
@@ -932,7 +939,7 @@ model <span class="math notranslate nohighlight">\(f_1\)</span> falls below <spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6b3654b5d2a6439cd1d823dd6b5de097faa580179c0dcf1d5f3cf0b9f41183d0.png" src="_images/6b3654b5d2a6439cd1d823dd6b5de097faa580179c0dcf1d5f3cf0b9f41183d0.png" />
+<img alt="_images/da3f1352fe8a07d19142ae88032433e68c4f01f02808bd1550fea10cb8d274d6.png" src="_images/da3f1352fe8a07d19142ae88032433e68c4f01f02808bd1550fea10cb8d274d6.png" />
 </div>
 </div>
 <p>Increased cost per draw has induced the decision-maker to take fewer draws before deciding.</p>
@@ -950,13 +957,14 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <li><p>associated histograms of correct and incorrect decisions.</p></li>
 </ul>
 <hr class="footnotes docutils" />
-<dl class="footnote brackets">
-<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id4">1</a></span></dt>
-<dd><p>The decision maker acts as if he believes that the sequence of random variables
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">1</a><span class="fn-bracket">]</span></span>
+<p>The decision maker acts as if he believes that the sequence of random variables
 <span class="math notranslate nohighlight">\([z_{0}, z_{1}, \ldots]\)</span> is <em>exchangeable</em>. See <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a> and
 <span id="id5">[<a class="reference internal" href="zreferences.html#id118" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kreps, 1988</a>]</span> chapter 11, for discussions of exchangeability.</p>
-</dd>
-</dl>
+</aside>
+</aside>
 </section>
 </section>
 </section>
@@ -992,6 +1000,8 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1449,6 +1459,11 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1458,17 +1473,17 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1480,17 +1495,17 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1502,12 +1517,12 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1519,17 +1534,17 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1669,7 +1684,7 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

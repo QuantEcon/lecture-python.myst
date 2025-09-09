@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>25. Mean of a Likelihood Ratio Process &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'imp_sample';</script>
     <link rel="canonical" href="https://python.quantecon.org/imp_sample.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="26. A Problem that Stumped Milton Friedman" href="wald_friedman.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -231,8 +238,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="mean-of-a-likelihood-ratio-process">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">25. </span>Mean of a Likelihood Ratio Process</a><a class="headerlink" href="#mean-of-a-likelihood-ratio-process" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<h1><a class="toc-backref" href="#id1" role="doc-backlink"><span class="section-number">25. </span>Mean of a Likelihood Ratio Process</a><a class="headerlink" href="#mean-of-a-likelihood-ratio-process" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#mean-of-a-likelihood-ratio-process" id="id1">Mean of a Likelihood Ratio Process</a></p>
@@ -247,9 +254,9 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">25.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">25.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In  <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a> we described a peculiar property of a likelihood ratio process, namely, that its mean equals one for all <span class="math notranslate nohighlight">\(t \geq 0\)</span> despite it’s converging to zero almost surely.</p>
 <p>While it is easy to verify that peculiar properly analytically (i.e., in population), it is challenging to use a computer simulation to verify it via an application of a law of large numbers that entails studying sample averages of repeated simulations.</p>
 <p>To confront this challenge, this lecture puts <strong>importance sampling</strong> to work to accelerate convergence of sample averages to population means.</p>
@@ -257,17 +264,17 @@
 <p>We start by importing some Python packages.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">prange</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">gamma</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="mathematical-expectation-of-likelihood-ratio">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">25.2. </span>Mathematical Expectation of Likelihood Ratio</a><a class="headerlink" href="#mathematical-expectation-of-likelihood-ratio" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">25.2. </span>Mathematical Expectation of Likelihood Ratio</a><a class="headerlink" href="#mathematical-expectation-of-likelihood-ratio" title="Link to this heading">#</a></h2>
 <p>In <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a>, we studied a likelihood ratio <span class="math notranslate nohighlight">\(\ell \left(\omega_t\right)\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -297,7 +304,7 @@ provides a more computationally efficient way to approximate the mean of the cum
 <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span>
 
 <span class="nd">@vectorize</span>
-<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">w</span> <span class="o">**</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
@@ -322,7 +329,7 @@ provides a more computationally efficient way to approximate the mean of the cum
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5e657bf0441a126f74c6ee453a63fc1a662f6426d3c8def1f73fae2241e3d73f.png" src="_images/5e657bf0441a126f74c6ee453a63fc1a662f6426d3c8def1f73fae2241e3d73f.png" />
+<img alt="_images/88bc7d2e2e7e88c9bf99417beb28b37643ed58c897e838f9be5bbd477df3d3b3.png" src="_images/88bc7d2e2e7e88c9bf99417beb28b37643ed58c897e838f9be5bbd477df3d3b3.png" />
 </div>
 </div>
 <p>The likelihood ratio is <code class="docutils literal notranslate"><span class="pre">l(w)=f(w)/g(w)</span></code>.</p>
@@ -343,7 +350,7 @@ provides a more computationally efficient way to approximate the mean of the cum
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f1e87f9ab3d7514bcd837f89344416dd94334fa83d784bbde4d1a0e1f5ce700a.png" src="_images/f1e87f9ab3d7514bcd837f89344416dd94334fa83d784bbde4d1a0e1f5ce700a.png" />
+<img alt="_images/531c9756513654d5d91225e2b3d79c934751a9f34e2c28b5757ca06ebdb571fa.png" src="_images/531c9756513654d5d91225e2b3d79c934751a9f34e2c28b5757ca06ebdb571fa.png" />
 </div>
 </div>
 <p>The above plots shows that as <span class="math notranslate nohighlight">\(\omega \rightarrow 0\)</span>, <span class="math notranslate nohighlight">\(f \left(\omega\right)\)</span> is unchanged and <span class="math notranslate nohighlight">\(g \left(\omega\right) \rightarrow 0\)</span>, so  the likelihood ratio approaches infinity.</p>
@@ -352,7 +359,7 @@ provides a more computationally efficient way to approximate the mean of the cum
 <p>We illustrate this numerically below.</p>
 </section>
 <section id="importance-sampling">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">25.3. </span>Importance sampling</a><a class="headerlink" href="#importance-sampling" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">25.3. </span>Importance sampling</a><a class="headerlink" href="#importance-sampling" title="Link to this heading">#</a></h2>
 <p>We circumvent the issue by using a <em>change of distribution</em> called <strong>importance sampling</strong>.</p>
 <p>Instead of drawing from <span class="math notranslate nohighlight">\(g\)</span> to generate data during the simulation, we use  an alternative
 distribution <span class="math notranslate nohighlight">\(h\)</span> to generate draws of <span class="math notranslate nohighlight">\(\omega\)</span>.</p>
@@ -381,7 +388,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 \]</div>
 </section>
 <section id="selecting-a-sampling-distribution">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">25.4. </span>Selecting a Sampling Distribution</a><a class="headerlink" href="#selecting-a-sampling-distribution" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">25.4. </span>Selecting a Sampling Distribution</a><a class="headerlink" href="#selecting-a-sampling-distribution" title="Link to this heading">#</a></h2>
 <p>Since we must use an <span class="math notranslate nohighlight">\(h\)</span> that has larger mass in parts of the distribution to which  <span class="math notranslate nohighlight">\(g\)</span> puts low mass, we use <span class="math notranslate nohighlight">\(h=Beta(0.5, 0.5)\)</span> as our importance distribution.</p>
 <p>The  plots compare <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <div class="cell docutils container">
@@ -406,12 +413,12 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2cc120b2177c2c554adb0c4769a1e8799b67d31e9fe410a132d613273788e305.png" src="_images/2cc120b2177c2c554adb0c4769a1e8799b67d31e9fe410a132d613273788e305.png" />
+<img alt="_images/43ae7eca9f2c59d8f011e29e27442b267bd90eab47bd99126a406ddc30dd0a02.png" src="_images/43ae7eca9f2c59d8f011e29e27442b267bd90eab47bd99126a406ddc30dd0a02.png" />
 </div>
 </div>
 </section>
 <section id="approximating-a-cumulative-likelihood-ratio">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">25.5. </span>Approximating a Cumulative Likelihood Ratio</a><a class="headerlink" href="#approximating-a-cumulative-likelihood-ratio" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">25.5. </span>Approximating a Cumulative Likelihood Ratio</a><a class="headerlink" href="#approximating-a-cumulative-likelihood-ratio" title="Link to this heading">#</a></h2>
 <p>We now study how to use importance sampling to approximate
 <span class="math notranslate nohighlight">\({E} \left[L(\omega^t)\right] = \left[\prod_{i=1}^T \ell \left(\omega_i\right)\right]\)</span>.</p>
 <p>As above, our plan is to draw  sequences <span class="math notranslate nohighlight">\(\omega^t\)</span> from <span class="math notranslate nohighlight">\(q\)</span> and then re-weight the likelihood ratio appropriately:</p>
@@ -426,7 +433,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">estimate</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">estimate</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
 
     <span class="n">μ_L</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
@@ -458,7 +465,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0097441523992057
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9481129885096751
 </pre></div>
 </div>
 </div>
@@ -471,7 +478,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9909915464393174
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9962321827984888
 </pre></div>
 </div>
 </div>
@@ -487,7 +494,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7350585049183597
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5752729002581816
 </pre></div>
 </div>
 </div>
@@ -499,20 +506,20 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9984852988823449
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.94094071675006
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="distribution-of-sample-mean">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">25.6. </span>Distribution of  Sample Mean</a><a class="headerlink" href="#distribution-of-sample-mean" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">25.6. </span>Distribution of  Sample Mean</a><a class="headerlink" href="#distribution-of-sample-mean" title="Link to this heading">#</a></h2>
 <p>We next study the bias and efficiency of the Monte Carlo and importance sampling approaches.</p>
 <p>The code  below produces distributions of estimates using both Monte Carlo and importance sampling methods.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">N_simu</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">N_simu</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 
     <span class="n">μ_L_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N_simu</span><span class="p">)</span>
     <span class="n">μ_L_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N_simu</span><span class="p">)</span>
@@ -544,7 +551,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9991583307168774, 0.013469705598545335)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(0.9930712704927237), np.float64(0.006352989191190154))
 </pre></div>
 </div>
 </div>
@@ -557,7 +564,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0002666220665488, 2.2334225160044235e-05)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(1.0000967612538028), np.float64(2.2601034016327223e-05))
 </pre></div>
 </div>
 </div>
@@ -595,14 +602,14 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/da16159bda3009d2400522c2002e0b5d219503a94e8335eb99a1e10f119acab1.png" src="_images/da16159bda3009d2400522c2002e0b5d219503a94e8335eb99a1e10f119acab1.png" />
+<img alt="_images/76d134ac7d85fe8e0371010f749386e4db4bcddf160e43369e680791131504d8.png" src="_images/76d134ac7d85fe8e0371010f749386e4db4bcddf160e43369e680791131504d8.png" />
 </div>
 </div>
 <p>The simulation exercises above show that the importance sampling estimates are unbiased under all <span class="math notranslate nohighlight">\(T\)</span> while the standard Monte Carlo estimates are biased downwards.</p>
 <p>Evidently, the bias increases with increases in <span class="math notranslate nohighlight">\(T\)</span>.</p>
 </section>
 <section id="choosing-a-sampling-distribution">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">25.7. </span>Choosing a  Sampling Distribution</a><a class="headerlink" href="#choosing-a-sampling-distribution" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">25.7. </span>Choosing a  Sampling Distribution</a><a class="headerlink" href="#choosing-a-sampling-distribution" title="Link to this heading">#</a></h2>
 <p>Above, we arbitraily chose <span class="math notranslate nohighlight">\(h = Beta(0.5,0.5)\)</span> as the importance distribution.</p>
 <p>Is there an optimal importance distribution?</p>
 <p>In our particular case, since we  know in advance that <span class="math notranslate nohighlight">\(E_0 \left[ L\left(\omega^t\right) \right] = 1\)</span>.</p>
@@ -628,7 +635,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0, 0.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(1.0), np.float64(0.0))
 </pre></div>
 </div>
 </div>
@@ -659,7 +666,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d0d4300c665c61a69a76467c2904ac1914eac5c92bfa64d26e96d966aacc4e9b.png" src="_images/d0d4300c665c61a69a76467c2904ac1914eac5c92bfa64d26e96d966aacc4e9b.png" />
+<img alt="_images/a9f48f983bca708dc1d7ae53ea98c638604e1a72871cab1d3c5329d47297f94c.png" src="_images/a9f48f983bca708dc1d7ae53ea98c638604e1a72871cab1d3c5329d47297f94c.png" />
 </div>
 </div>
 <p>We consider two additional distributions.</p>
@@ -704,7 +711,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2f3bce6acc7e9776fcb1155d18552336dc12b15b1bf4c6ea0c96b87c03321227.png" src="_images/2f3bce6acc7e9776fcb1155d18552336dc12b15b1bf4c6ea0c96b87c03321227.png" />
+<img alt="_images/3656f884c56d4ff1eaf8fd03cbecbc8526319acab09768d4faa81b6709edad14.png" src="_images/3656f884c56d4ff1eaf8fd03cbecbc8526319acab09768d4faa81b6709edad14.png" />
 </div>
 </div>
 <p>Our simulations suggest that indeed <span class="math notranslate nohighlight">\(h_2\)</span> is a quite  good importance sampling distribution for our problem.</p>
@@ -742,7 +749,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/feedb6e964847a7289bc8b63e9a4754e795c3f9b106b77f9854d9ecfabc9273f.png" src="_images/feedb6e964847a7289bc8b63e9a4754e795c3f9b106b77f9854d9ecfabc9273f.png" />
+<img alt="_images/79f428f245890996cd9dc96057af0b972a78526a366578af879c55d2918d0ed6.png" src="_images/79f428f245890996cd9dc96057af0b972a78526a366578af879c55d2918d0ed6.png" />
 </div>
 </div>
 <p>However, <span class="math notranslate nohighlight">\(h_3\)</span> is evidently a poor importance sampling distribution for our problem,
@@ -783,6 +790,8 @@ with a mean estimate far away from <span class="math notranslate nohighlight">\(
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1240,6 +1249,11 @@ with a mean estimate far away from <span class="math notranslate nohighlight">\(
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1249,17 +1263,17 @@ with a mean estimate far away from <span class="math notranslate nohighlight">\(
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1271,17 +1285,17 @@ with a mean estimate far away from <span class="math notranslate nohighlight">\(
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1293,12 +1307,12 @@ with a mean estimate far away from <span class="math notranslate nohighlight">\(
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1310,17 +1324,17 @@ with a mean estimate far away from <span class="math notranslate nohighlight">\(
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1460,7 +1474,7 @@ with a mean estimate far away from <span class="math notranslate nohighlight">\(
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

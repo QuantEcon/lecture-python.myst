@@ -1,15 +1,14 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>76. Competitive Equilibria with Arrow Securities &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>77. Competitive Equilibria with Arrow Securities &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,16 +108,24 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'ge_arrow';</script>
     <link rel="canonical" href="https://python.quantecon.org/ge_arrow.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="77. Heterogeneous Beliefs and Bubbles" href="harrison_kreps.html" />
-    <link rel="prev" title="75. Asset Pricing: Finite State Models" href="markov_asset.html" />
+    <link rel="next" title="78. Heterogeneous Beliefs and Bubbles" href="harrison_kreps.html" />
+    <link rel="prev" title="76. Asset Pricing: Finite State Models" href="markov_asset.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -167,40 +174,40 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">76.1. Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-setting">76.2. The setting</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preferences-and-endowments">76.2.1. Preferences and endowments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">77.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-setting">77.2. The setting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preferences-and-endowments">77.2.1. Preferences and endowments</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursive-formulation">76.3. Recursive Formulation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-variable-degeneracy">76.4. State Variable Degeneracy</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-asset-prices">76.5. Markov Asset Prices</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exogenous-pricing-kernel">76.5.1. Exogenous Pricing Kernel</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-step-forward-transition-probabilities-and-pricing-kernels">76.5.2. Multi-Step-Forward Transition Probabilities and Pricing Kernels</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#laws-of-iterated-expectations-and-iterated-values">76.5.3. Laws of Iterated Expectations and Iterated Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursive-formulation">77.3. Recursive Formulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-variable-degeneracy">77.4. State Variable Degeneracy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-asset-prices">77.5. Markov Asset Prices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exogenous-pricing-kernel">77.5.1. Exogenous Pricing Kernel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-step-forward-transition-probabilities-and-pricing-kernels">77.5.2. Multi-Step-Forward Transition Probabilities and Pricing Kernels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#laws-of-iterated-expectations-and-iterated-values">77.5.3. Laws of Iterated Expectations and Iterated Values</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-equilibrium">76.6. General Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inputs">76.6.1. Inputs</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outputs">76.6.2. Outputs</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q-is-the-pricing-kernel">76.6.3. <span class="math notranslate nohighlight">\(Q\)</span> is the Pricing Kernel</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#values">76.6.4. Values</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuation-wealth">76.6.5. Continuation Wealth</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-portfolios">76.6.6. Optimal Portfolios</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium-wealth-distribution-alpha">76.6.7. Equilibrium Wealth Distribution <span class="math notranslate nohighlight">\(\alpha\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-equilibrium">77.6. General Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inputs">77.6.1. Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outputs">77.6.2. Outputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q-is-the-pricing-kernel">77.6.3. <span class="math notranslate nohighlight">\(Q\)</span> is the Pricing Kernel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#values">77.6.4. Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuation-wealth">77.6.5. Continuation Wealth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-portfolios">77.6.6. Optimal Portfolios</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium-wealth-distribution-alpha">77.6.7. Equilibrium Wealth Distribution <span class="math notranslate nohighlight">\(\alpha\)</span></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finite-horizon">76.7. Finite Horizon</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuation-wealths">76.7.1. Continuation Wealths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finite-horizon">77.7. Finite Horizon</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuation-wealths">77.7.1. Continuation Wealths</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-code">76.8. Python Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">76.9. Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">76.9.1. Example 1</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">76.9.2. Example 2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">76.9.3. Example 3</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4">76.9.4. Example 4</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finite-horizon-example">76.9.5. Finite Horizon Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-code">77.8. Python Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">77.9. Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">77.9.1. Example 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">77.9.2. Example 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">77.9.3. Example 3</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4">77.9.4. Example 4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finite-horizon-example">77.9.5. Finite Horizon Example</a></li>
 </ul>
 </li>
 </ul>
@@ -260,9 +267,9 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="competitive-equilibria-with-arrow-securities">
-<h1><span class="section-number">76. </span>Competitive Equilibria with Arrow Securities<a class="headerlink" href="#competitive-equilibria-with-arrow-securities" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">77. </span>Competitive Equilibria with Arrow Securities<a class="headerlink" href="#competitive-equilibria-with-arrow-securities" title="Link to this heading">#</a></h1>
 <section id="introduction">
-<h2><span class="section-number">76.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">77.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>This lecture presents Python code for experimenting with  competitive equilibria of  an infinite-horizon pure exchange economy with</p>
 <ul class="simple">
 <li><p>Heterogeneous agents</p></li>
@@ -291,10 +298,10 @@
 </ul>
 </section>
 <section id="the-setting">
-<h2><span class="section-number">76.2. </span>The setting<a class="headerlink" href="#the-setting" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">77.2. </span>The setting<a class="headerlink" href="#the-setting" title="Link to this heading">#</a></h2>
 <p>In effect, this lecture implements a Python version of  the model presented in section 9.3.3 of Ljungqvist and Sargent <span id="id1">[<a class="reference internal" href="zreferences.html#id194" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>.</p>
 <section id="preferences-and-endowments">
-<h3><span class="section-number">76.2.1. </span>Preferences and endowments<a class="headerlink" href="#preferences-and-endowments" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.2.1. </span>Preferences and endowments<a class="headerlink" href="#preferences-and-endowments" title="Link to this heading">#</a></h3>
 <p>In each period <span class="math notranslate nohighlight">\(t\geq 0\)</span>,  a stochastic
 event <span class="math notranslate nohighlight">\(s_t \in {\bf S}\)</span> is realized.</p>
 <p>Let the history of events up until time <span class="math notranslate nohighlight">\(t\)</span>
@@ -356,7 +363,7 @@ that  consumers share   probabilities <span class="math notranslate nohighlight"
 </section>
 </section>
 <section id="recursive-formulation">
-<h2><span class="section-number">76.3. </span>Recursive Formulation<a class="headerlink" href="#recursive-formulation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">77.3. </span>Recursive Formulation<a class="headerlink" href="#recursive-formulation" title="Link to this heading">#</a></h2>
 <p>Following descriptions in section 9.3.3 of Ljungqvist and Sargent <span id="id2">[<a class="reference internal" href="zreferences.html#id194" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span> chapter 9, we  set up  a competitive equilibrium of a pure exchange economy with complete markets in one-period Arrow securities.</p>
 <p>When  endowments <span class="math notranslate nohighlight">\(y^k(s)\)</span> are all functions of a common Markov state <span class="math notranslate nohighlight">\(s\)</span>,
 the pricing kernel takes the form <span class="math notranslate nohighlight">\(Q(s'|s)\)</span>, where <span class="math notranslate nohighlight">\(Q(s'| s)\)</span> is the price of one unit of consumption
@@ -429,7 +436,7 @@ for all <span class="math notranslate nohighlight">\(t\)</span> and <span class=
 are  zero net aggregate claims.</p>
 </section>
 <section id="state-variable-degeneracy">
-<h2><span class="section-number">76.4. </span>State Variable Degeneracy<a class="headerlink" href="#state-variable-degeneracy" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">77.4. </span>State Variable Degeneracy<a class="headerlink" href="#state-variable-degeneracy" title="Link to this heading">#</a></h2>
 <p>Please see Ljungqvist and Sargent <span id="id3">[<a class="reference internal" href="zreferences.html#id194" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span> for a description of
 timing protocol for trades  consistent with an  Arrow-Debreu vision in which</p>
 <ul class="simple">
@@ -458,7 +465,7 @@ the  single  budget constraint in   arrangement with all trades occurring at tim
 <p>For example, it does not prevail in the incomplete markets setting of this lecture <a class="reference internal" href="aiyagari.html"><span class="doc">The Aiyagari Model</span></a></p>
 </section>
 <section id="markov-asset-prices">
-<h2><span class="section-number">76.5. </span>Markov Asset Prices<a class="headerlink" href="#markov-asset-prices" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">77.5. </span>Markov Asset Prices<a class="headerlink" href="#markov-asset-prices" title="Link to this heading">#</a></h2>
 <p>Let’s start with a brief summary of formulas for computing asset prices in
 a Markov setting.</p>
 <p>The setup assumes the following infrastructure</p>
@@ -483,7 +490,7 @@ Q_{ij} = {\textrm{Price}} \left\{s_{t+1} = \bar{s}_j \mid s_t = \bar{s}_i \right
 <li><p>The gross rate of return on a one-period risk-free bond Markov state <span class="math notranslate nohighlight">\(\bar s_i\)</span> is <span class="math notranslate nohighlight">\(R_i = (\sum_j Q_{i,j})^{-1}\)</span></p></li>
 </ul>
 <section id="exogenous-pricing-kernel">
-<h3><span class="section-number">76.5.1. </span>Exogenous Pricing Kernel<a class="headerlink" href="#exogenous-pricing-kernel" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.5.1. </span>Exogenous Pricing Kernel<a class="headerlink" href="#exogenous-pricing-kernel" title="Link to this heading">#</a></h3>
 <p>At this point, we’ll take the pricing kernel <span class="math notranslate nohighlight">\(Q\)</span> as exogenous, i.e., determined outside the model</p>
 <p>Two examples would be</p>
 <ul class="simple">
@@ -514,7 +521,7 @@ is an example of a <strong>resolvent operator</strong>.</p>
 <p>In constructing our model, we’ll repeatedly encounter formulas that remind us of our asset pricing formulas.</p>
 </section>
 <section id="multi-step-forward-transition-probabilities-and-pricing-kernels">
-<h3><span class="section-number">76.5.2. </span>Multi-Step-Forward Transition Probabilities and Pricing Kernels<a class="headerlink" href="#multi-step-forward-transition-probabilities-and-pricing-kernels" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.5.2. </span>Multi-Step-Forward Transition Probabilities and Pricing Kernels<a class="headerlink" href="#multi-step-forward-transition-probabilities-and-pricing-kernels" title="Link to this heading">#</a></h3>
 <p>The <span class="math notranslate nohighlight">\((i,j)\)</span> component of  the <span class="math notranslate nohighlight">\(\ell\)</span>-step ahead transition probability <span class="math notranslate nohighlight">\(P^\ell\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -528,7 +535,7 @@ Q^{(\ell)}(s_{t+\ell} = \bar s_j | s_t = \bar s_i)   = Q^{\ell}_{i,j}
 <p>We’ll use these objects to state a useful property in asset pricing theory.</p>
 </section>
 <section id="laws-of-iterated-expectations-and-iterated-values">
-<h3><span class="section-number">76.5.3. </span>Laws of Iterated Expectations and Iterated Values<a class="headerlink" href="#laws-of-iterated-expectations-and-iterated-values" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.5.3. </span>Laws of Iterated Expectations and Iterated Values<a class="headerlink" href="#laws-of-iterated-expectations-and-iterated-values" title="Link to this heading">#</a></h3>
 <p>A  <strong>law of iterated values</strong> has a mathematical structure that parallels a
 <strong>law of iterated expectations</strong></p>
 <p>We can describe its structure readily in the  Markov setting of this lecture</p>
@@ -582,11 +589,11 @@ V \left[ V  ( d(s_{t+j}) | s_{t+1} ) \right] | s_t
 </section>
 </section>
 <section id="general-equilibrium">
-<h2><span class="section-number">76.6. </span>General Equilibrium<a class="headerlink" href="#general-equilibrium" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">77.6. </span>General Equilibrium<a class="headerlink" href="#general-equilibrium" title="Link to this heading">#</a></h2>
 <p>Now we are ready to do some fun calculations.</p>
 <p>We find it interesting to think in terms of analytical <strong>inputs</strong> into and <strong>outputs</strong> from our general equilibrium theorizing.</p>
 <section id="inputs">
-<h3><span class="section-number">76.6.1. </span>Inputs<a class="headerlink" href="#inputs" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.6.1. </span>Inputs<a class="headerlink" href="#inputs" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Markov states: <span class="math notranslate nohighlight">\(s \in S = \left[\bar{s}_1, \ldots, \bar{s}_n \right]\)</span> governed by  an <span class="math notranslate nohighlight">\(n\)</span>-state Markov chain with transition probability</p></li>
 </ul>
@@ -620,7 +627,7 @@ u^\prime \left(c\right) = c^{-\gamma}
 \]</div>
 </section>
 <section id="outputs">
-<h3><span class="section-number">76.6.2. </span>Outputs<a class="headerlink" href="#outputs" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.6.2. </span>Outputs<a class="headerlink" href="#outputs" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>An <span class="math notranslate nohighlight">\(n \times n\)</span> matrix  pricing kernel <span class="math notranslate nohighlight">\(Q\)</span> for one-period Arrow securities, where <span class="math notranslate nohighlight">\( Q_{ij}\)</span>  = price at time <span class="math notranslate nohighlight">\(t\)</span> in state <span class="math notranslate nohighlight">\(s_t = \bar s_i\)</span> of one unit of consumption when <span class="math notranslate nohighlight">\(s_{t+1} = \bar s_j\)</span> at time <span class="math notranslate nohighlight">\(t+1\)</span></p></li>
 <li><p>pure exchange so that <span class="math notranslate nohighlight">\(c\left(s\right) = y\left(s\right)\)</span></p></li>
@@ -629,7 +636,7 @@ u^\prime \left(c\right) = c^{-\gamma}
 </ul>
 </section>
 <section id="q-is-the-pricing-kernel">
-<h3><span class="section-number">76.6.3. </span><span class="math notranslate nohighlight">\(Q\)</span> is the Pricing Kernel<a class="headerlink" href="#q-is-the-pricing-kernel" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.6.3. </span><span class="math notranslate nohighlight">\(Q\)</span> is the Pricing Kernel<a class="headerlink" href="#q-is-the-pricing-kernel" title="Link to this heading">#</a></h3>
 <p>For any agent  <span class="math notranslate nohighlight">\(k \in \left[1, \ldots, K\right]\)</span>, at the equilibrium allocation,
 the one-period Arrow securities pricing kernel satisfies</p>
 <div class="math notranslate nohighlight">
@@ -654,14 +661,14 @@ that satisfies</p>
 \[ \alpha_k \in \left(0, 1\right), \quad \sum_{k=1}^K \alpha_k = 1 \]</div>
 <p>This means that we can compute the pricing kernel from</p>
 <div class="math notranslate nohighlight" id="equation-eq-qformula">
-<span class="eqno">(76.1)<a class="headerlink" href="#equation-eq-qformula" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(77.1)<a class="headerlink" href="#equation-eq-qformula" title="Link to this equation">#</a></span>\[
 Q_{ij} = \beta \left(\frac{y_j}{y_i}\right)^{-\gamma} P_{ij}
 \]</div>
 <p>Note that <span class="math notranslate nohighlight">\(Q_{ij}\)</span> is independent of vector <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <p><strong>Key finding:</strong> We can compute competitive equilibrium <strong>prices</strong> prior to computing a <strong>distribution of wealth</strong>.</p>
 </section>
 <section id="values">
-<h3><span class="section-number">76.6.4. </span>Values<a class="headerlink" href="#values" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.6.4. </span>Values<a class="headerlink" href="#values" title="Link to this heading">#</a></h3>
 <p>Having computed an equilibrium pricing kernel <span class="math notranslate nohighlight">\(Q\)</span>, we can compute several <strong>values</strong> that are required
 to pose or represent the solution of an individual household’s optimum problem.</p>
 <p>We denote  an <span class="math notranslate nohighlight">\(K \times 1\)</span> vector of  state-dependent values of agents’ endowments in Markov state <span class="math notranslate nohighlight">\(s\)</span> as</p>
@@ -705,7 +712,7 @@ even if he consumes zero goods forevermore.</p>
 be nonnegative, then in a <strong>finite horizon</strong> economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section on a Finite Horizon Economy  below.</p>
 </section>
 <section id="continuation-wealth">
-<h3><span class="section-number">76.6.5. </span>Continuation Wealth<a class="headerlink" href="#continuation-wealth" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.6.5. </span>Continuation Wealth<a class="headerlink" href="#continuation-wealth" title="Link to this heading">#</a></h3>
 <p>Continuation wealth plays an important role in Bellmanizing a competitive equilibrium with sequential
 trading of a complete set of one-period Arrow securities.</p>
 <p>We denote  an <span class="math notranslate nohighlight">\(K \times 1\)</span> vector of  state-dependent continuation wealths in Markov state <span class="math notranslate nohighlight">\(s\)</span> as</p>
@@ -728,7 +735,7 @@ trading of a complete set of one-period Arrow securities.</p>
 \end{split}\]</div>
 <p>Continuation wealth  <span class="math notranslate nohighlight">\(\psi^k\)</span> of consumer <span class="math notranslate nohighlight">\(k\)</span> satisfies</p>
 <div class="math notranslate nohighlight" id="equation-eq-continwealth">
-<span class="eqno">(76.2)<a class="headerlink" href="#equation-eq-continwealth" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(77.2)<a class="headerlink" href="#equation-eq-continwealth" title="Link to this equation">#</a></span>\[
 \psi^k = \left[I - Q\right]^{-1} \left[\alpha_k y - y^k\right]
 \]</div>
 <p>where</p>
@@ -751,17 +758,17 @@ the economy begins with  all agents being debt-free and financial-asset-free at 
 <p><strong>Remark:</strong> Note that all agents’ continuation wealths recurrently return to zero when the Markov state returns to whatever value <span class="math notranslate nohighlight">\(s_0\)</span> it had at time <span class="math notranslate nohighlight">\(0\)</span>.</p>
 </section>
 <section id="optimal-portfolios">
-<h3><span class="section-number">76.6.6. </span>Optimal Portfolios<a class="headerlink" href="#optimal-portfolios" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.6.6. </span>Optimal Portfolios<a class="headerlink" href="#optimal-portfolios" title="Link to this heading">#</a></h3>
 <p>A nifty feature of the model is that an optimal portfolio of  a type <span class="math notranslate nohighlight">\(k\)</span> agent equals the continuation wealth that we just computed.</p>
 <p>Thus, agent <span class="math notranslate nohighlight">\(k\)</span>’s state-by-state purchases of Arrow securities next period depend only on next period’s
 Markov state and equal</p>
 <div class="math notranslate nohighlight" id="equation-eqn-optport">
-<span class="eqno">(76.3)<a class="headerlink" href="#equation-eqn-optport" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(77.3)<a class="headerlink" href="#equation-eqn-optport" title="Link to this equation">#</a></span>\[
 a_k(s) = \psi^k(s), \quad s \in \left[\bar s_1, \ldots, \bar s_n \right]
 \]</div>
 </section>
 <section id="equilibrium-wealth-distribution-alpha">
-<h3><span class="section-number">76.6.7. </span>Equilibrium Wealth Distribution <span class="math notranslate nohighlight">\(\alpha\)</span><a class="headerlink" href="#equilibrium-wealth-distribution-alpha" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.6.7. </span>Equilibrium Wealth Distribution <span class="math notranslate nohighlight">\(\alpha\)</span><a class="headerlink" href="#equilibrium-wealth-distribution-alpha" title="Link to this heading">#</a></h3>
 <p>With the initial state being  a particular state <span class="math notranslate nohighlight">\(s_0 \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]\)</span>,
 we must have</p>
 <div class="math notranslate nohighlight">
@@ -770,18 +777,18 @@ we must have</p>
 \]</div>
 <p>which means the equilibrium distribution of wealth satisfies</p>
 <div class="math notranslate nohighlight" id="equation-eqn-alphakform">
-<span class="eqno">(76.4)<a class="headerlink" href="#equation-eqn-alphakform" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(77.4)<a class="headerlink" href="#equation-eqn-alphakform" title="Link to this equation">#</a></span>\[
 \alpha_k = \frac{V_z y^k}{V_z y}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(V \equiv \left[I - Q\right]^{-1}\)</span> and <span class="math notranslate nohighlight">\(z\)</span> is the row index corresponding to the initial state <span class="math notranslate nohighlight">\(s_0\)</span>.</p>
 <p>Since <span class="math notranslate nohighlight">\(\sum_{k=1}^K V_z y^k = V_z y\)</span>,  <span class="math notranslate nohighlight">\(\sum_{k=1}^K \alpha_k = 1\)</span>.</p>
 <p>In summary, here is the logical flow of an algorithm to compute a competitive equilibrium:</p>
 <ul class="simple">
-<li><p>compute <span class="math notranslate nohighlight">\(Q\)</span> from the aggregate allocation and  formula <a class="reference internal" href="#equation-eq-qformula">(76.1)</a></p></li>
-<li><p>compute the distribution of wealth <span class="math notranslate nohighlight">\(\alpha\)</span> from the formula <a class="reference internal" href="#equation-eqn-alphakform">(76.4)</a></p></li>
+<li><p>compute <span class="math notranslate nohighlight">\(Q\)</span> from the aggregate allocation and  formula <a class="reference internal" href="#equation-eq-qformula">(77.1)</a></p></li>
+<li><p>compute the distribution of wealth <span class="math notranslate nohighlight">\(\alpha\)</span> from the formula <a class="reference internal" href="#equation-eqn-alphakform">(77.4)</a></p></li>
 <li><p>Using  <span class="math notranslate nohighlight">\(\alpha\)</span> assign each consumer <span class="math notranslate nohighlight">\(k\)</span> the share  <span class="math notranslate nohighlight">\(\alpha_k\)</span> of the aggregate endowment at each state</p></li>
-<li><p>return to the <span class="math notranslate nohighlight">\(\alpha\)</span>-dependent formula <a class="reference internal" href="#equation-eq-continwealth">(76.2)</a>  and compute continuation wealths</p></li>
-<li><p>via formula <a class="reference internal" href="#equation-eqn-optport">(76.3)</a> equate agent <span class="math notranslate nohighlight">\(k\)</span>’s portfolio to its continuation wealth state by state</p></li>
+<li><p>return to the <span class="math notranslate nohighlight">\(\alpha\)</span>-dependent formula <a class="reference internal" href="#equation-eq-continwealth">(77.2)</a>  and compute continuation wealths</p></li>
+<li><p>via formula <a class="reference internal" href="#equation-eqn-optport">(77.3)</a> equate agent <span class="math notranslate nohighlight">\(k\)</span>’s portfolio to its continuation wealth state by state</p></li>
 </ul>
 <p>We can also add formulas for optimal value functions in  a competitive equilibrium with trades
 in a complete set of one-period state-contingent Arrow securities.</p>
@@ -793,7 +800,7 @@ in a complete set of one-period state-contingent Arrow securities.</p>
 </section>
 </section>
 <section id="finite-horizon">
-<h2><span class="section-number">76.7. </span>Finite Horizon<a class="headerlink" href="#finite-horizon" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">77.7. </span>Finite Horizon<a class="headerlink" href="#finite-horizon" title="Link to this heading">#</a></h2>
 <p>We now describe a finite-horizon version of the economy that operates  for <span class="math notranslate nohighlight">\(T+1\)</span> periods
 <span class="math notranslate nohighlight">\(t \in {\bf T} = \{ 0, 1, \ldots, T\}\)</span>.</p>
 <p>Consequently, we’ll  want  <span class="math notranslate nohighlight">\(T+1\)</span> counterparts to objects described above, with one important exception:
@@ -805,7 +812,7 @@ one-period utility function <span class="math notranslate nohighlight">\(u(c)\)<
 limits borrowing.</p></li>
 </ul>
 <section id="continuation-wealths">
-<h3><span class="section-number">76.7.1. </span>Continuation Wealths<a class="headerlink" href="#continuation-wealths" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.7.1. </span>Continuation Wealths<a class="headerlink" href="#continuation-wealths" title="Link to this heading">#</a></h3>
 <p>We denote  a <span class="math notranslate nohighlight">\(K \times 1\)</span> vector of  state-dependent continuation wealths in Markov state <span class="math notranslate nohighlight">\(s\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -826,7 +833,7 @@ limits borrowing.</p></li>
 \end{split}\]</div>
 <p>Continuation wealths  <span class="math notranslate nohighlight">\(\psi^k\)</span> of consumer <span class="math notranslate nohighlight">\(k\)</span> satisfy</p>
 <div class="math notranslate nohighlight" id="equation-eq-vv">
-<span class="eqno">(76.5)<a class="headerlink" href="#equation-eq-vv" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(77.5)<a class="headerlink" href="#equation-eq-vv" title="Link to this equation">#</a></span>\[
 \begin{aligned}
 \psi_T^k &amp; =  \left[\alpha_k y - y^k\right] \cr
 \psi_{T-1}^k &amp; =  \left[I + Q \right] \left[\alpha_k y - y^k\right] \cr
@@ -859,12 +866,12 @@ the economy begins with  all agents being debt-free and financial-asset-free at 
 \]</div>
 <p>which means the equilibrium distribution of wealth satisfies</p>
 <div class="math notranslate nohighlight" id="equation-eq-w">
-<span class="eqno">(76.6)<a class="headerlink" href="#equation-eq-w" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(77.6)<a class="headerlink" href="#equation-eq-w" title="Link to this equation">#</a></span>\[
 \alpha_k = \frac{V_z y^k}{V_z y}
 \]</div>
 <p>where  now in our finite-horizon economy</p>
 <div class="math notranslate nohighlight" id="equation-eq-ww">
-<span class="eqno">(76.7)<a class="headerlink" href="#equation-eq-ww" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(77.7)<a class="headerlink" href="#equation-eq-ww" title="Link to this equation">#</a></span>\[
  V = \left[I + Q + Q^2 + \cdots + Q^T \right]
 \]</div>
 <p>and <span class="math notranslate nohighlight">\(z\)</span> is the row index corresponding to the initial state <span class="math notranslate nohighlight">\(s_0\)</span>.</p>
@@ -872,10 +879,10 @@ the economy begins with  all agents being debt-free and financial-asset-free at 
 <p>In summary, here is the logical flow of an algorithm to compute a competitive equilibrium with Arrow securities
 in our finite-horizon Markov economy:</p>
 <ul class="simple">
-<li><p>compute <span class="math notranslate nohighlight">\(Q\)</span> from the aggregate allocation and  formula <a class="reference internal" href="#equation-eq-qformula">(76.1)</a></p></li>
-<li><p>compute the distribution of wealth <span class="math notranslate nohighlight">\(\alpha\)</span> from  formulas <a class="reference internal" href="#equation-eq-w">(76.6)</a> and <a class="reference internal" href="#equation-eq-ww">(76.7)</a></p></li>
+<li><p>compute <span class="math notranslate nohighlight">\(Q\)</span> from the aggregate allocation and  formula <a class="reference internal" href="#equation-eq-qformula">(77.1)</a></p></li>
+<li><p>compute the distribution of wealth <span class="math notranslate nohighlight">\(\alpha\)</span> from  formulas <a class="reference internal" href="#equation-eq-w">(77.6)</a> and <a class="reference internal" href="#equation-eq-ww">(77.7)</a></p></li>
 <li><p>using  <span class="math notranslate nohighlight">\(\alpha\)</span>, assign each consumer <span class="math notranslate nohighlight">\(k\)</span> the share  <span class="math notranslate nohighlight">\(\alpha_k\)</span> of the aggregate endowment at each state</p></li>
-<li><p>return to the <span class="math notranslate nohighlight">\(\alpha\)</span>-dependent formula <a class="reference internal" href="#equation-eq-vv">(76.5)</a> for continuation wealths and compute continuation wealths</p></li>
+<li><p>return to the <span class="math notranslate nohighlight">\(\alpha\)</span>-dependent formula <a class="reference internal" href="#equation-eq-vv">(77.5)</a> for continuation wealths and compute continuation wealths</p></li>
 <li><p>equate agent <span class="math notranslate nohighlight">\(k\)</span>’s portfolio to its continuation wealth state by state</p></li>
 </ul>
 <p>While for  the infinite horizon economy, the formula for value functions  is</p>
@@ -888,13 +895,13 @@ in our finite-horizon Markov economy:</p>
 </section>
 </section>
 <section id="python-code">
-<h2><span class="section-number">76.8. </span>Python Code<a class="headerlink" href="#python-code" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">77.8. </span>Python Code<a class="headerlink" href="#python-code" title="Link to this heading">#</a></h2>
 <p>We are ready to dive into some Python code.</p>
 <p>As usual, we start with Python imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 </pre></div>
 </div>
 </div>
@@ -912,13 +919,13 @@ with sequential trading of one-period Arrow securities.</p>
 <p>We’ll study examples of  finite horizon economies after we first  look at  some infinite-horizon economies.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">RecurCompetitive</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">RecurCompetitive</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class that represents a recursive competitive economy</span>
 <span class="sd">    with one-period Arrow securities.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">s</span><span class="p">,</span>        <span class="c1"># state vector</span>
                  <span class="n">P</span><span class="p">,</span>        <span class="c1"># transition matrix</span>
                  <span class="n">ys</span><span class="p">,</span>       <span class="c1"># endowments ys = [y1, y2, .., yI]</span>
@@ -967,17 +974,17 @@ with sequential trading of one-period Arrow securities.</p>
         <span class="c1"># natural debt limit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">@</span> <span class="n">ys</span>
 
-    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="s2">&quot;The CRRA utility&quot;</span>
 
         <span class="k">return</span> <span class="n">c</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">u_prime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">u_prime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="s2">&quot;The first derivative of CRRA utility&quot;</span>
 
         <span class="k">return</span> <span class="n">c</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">pricing_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pricing_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Compute the pricing kernel matrix Q&quot;</span>
 
         <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
@@ -993,7 +1000,7 @@ with sequential trading of one-period Arrow securities.</p>
 
         <span class="k">return</span> <span class="n">Q</span>
 
-    <span class="k">def</span> <span class="nf">wealth_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s0_idx</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wealth_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s0_idx</span><span class="p">):</span>
         <span class="s2">&quot;Solve for wealth distribution α&quot;</span>
 
         <span class="c1"># set initial state</span>
@@ -1012,7 +1019,7 @@ with sequential trading of one-period Arrow securities.</p>
 
         <span class="k">return</span> <span class="n">α</span>
 
-    <span class="k">def</span> <span class="nf">continuation_wealths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">continuation_wealths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Given α, compute the continuation wealths ψ&quot;</span>
 
         <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
@@ -1024,7 +1031,7 @@ with sequential trading of one-period Arrow securities.</p>
 
         <span class="k">return</span> <span class="n">ψ</span>
 
-    <span class="k">def</span> <span class="nf">price_risk_free_bond</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">price_risk_free_bond</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Give Q, compute price of one-period risk free bond&quot;</span>
 
         <span class="n">PRF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1032,7 +1039,7 @@ with sequential trading of one-period Arrow securities.</p>
 
         <span class="k">return</span> <span class="n">PRF</span>
 
-    <span class="k">def</span> <span class="nf">risk_free_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">risk_free_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Given Q, compute one-period gross risk-free interest rate R&quot;</span>
 
         <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1041,7 +1048,7 @@ with sequential trading of one-period Arrow securities.</p>
 
         <span class="k">return</span> <span class="n">R</span>
 
-    <span class="k">def</span> <span class="nf">value_functionss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">value_functionss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Given α, compute the optimal value functions J in equilibrium&quot;</span>
 
         <span class="n">n</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span>
@@ -1078,12 +1085,12 @@ with sequential trading of one-period Arrow securities.</p>
 </div>
 </section>
 <section id="examples">
-<h2><span class="section-number">76.9. </span>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">77.9. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
 <p>We’ll use our code to construct equilibrium objects in several example economies.</p>
 <p>Our first several examples will be infinite horizon economies.</p>
 <p>Our final example will be a finite horizon economy.</p>
 <section id="example-1">
-<h3><span class="section-number">76.9.1. </span>Example 1<a class="headerlink" href="#example-1" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.9.1. </span>Example 1<a class="headerlink" href="#example-1" title="Link to this heading">#</a></h3>
 <p>Please read the preceding class for default parameter values and the  following Python code for the fundamentals of the economy.</p>
 <p>Here goes.</p>
 <div class="cell docutils container">
@@ -1211,7 +1218,7 @@ J =
 </div>
 </section>
 <section id="example-2">
-<h3><span class="section-number">76.9.2. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.9.2. </span>Example 2<a class="headerlink" href="#example-2" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># dimensions</span>
@@ -1287,7 +1294,7 @@ R =  [1.10604104 0.93477529]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4141255848169731
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.4141255848169731)
 </pre></div>
 </div>
 </div>
@@ -1299,7 +1306,7 @@ R =  [1.10604104 0.93477529]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5797758187437624
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.5797758187437624)
 </pre></div>
 </div>
 </div>
@@ -1375,7 +1382,7 @@ J =
 </div>
 </section>
 <section id="example-3">
-<h3><span class="section-number">76.9.3. </span>Example 3<a class="headerlink" href="#example-3" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.9.3. </span>Example 3<a class="headerlink" href="#example-3" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># dimensions</span>
@@ -1538,12 +1545,12 @@ J =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5ea409d88103ed0691aa76f9f9aab65cce87c07b8b73c8827c3b2905d79f7e31.png" src="_images/5ea409d88103ed0691aa76f9f9aab65cce87c07b8b73c8827c3b2905d79f7e31.png" />
+<img alt="_images/4849fc26e92e7e14914263779bcb95d7926b4a4673e3d41698fa4f8b89ac9e33.png" src="_images/4849fc26e92e7e14914263779bcb95d7926b4a4673e3d41698fa4f8b89ac9e33.png" />
 </div>
 </div>
 </section>
 <section id="example-4">
-<h3><span class="section-number">76.9.4. </span>Example 4<a class="headerlink" href="#example-4" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.9.4. </span>Example 4<a class="headerlink" href="#example-4" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># dimensions</span>
@@ -1653,7 +1660,7 @@ J =
 </div>
 </section>
 <section id="finite-horizon-example">
-<h3><span class="section-number">76.9.5. </span>Finite Horizon Example<a class="headerlink" href="#finite-horizon-example" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">77.9.5. </span>Finite Horizon Example<a class="headerlink" href="#finite-horizon-example" title="Link to this heading">#</a></h3>
 <p>We now  revisit the economy defined in example 1, but set the time horizon to be <span class="math notranslate nohighlight">\(T=10\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1998,6 +2005,8 @@ J =
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -2455,6 +2464,11 @@ J =
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -2464,17 +2478,17 @@ J =
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2486,17 +2500,17 @@ J =
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2508,12 +2522,12 @@ J =
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2525,17 +2539,17 @@ J =
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -2675,7 +2689,7 @@ J =
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

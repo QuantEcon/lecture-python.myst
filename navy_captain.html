@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>31. Bayesian versus Frequentist Decision Rules &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'navy_captain';</script>
     <link rel="canonical" href="https://python.quantecon.org/navy_captain.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="32. Optimal Transport" href="opt_transport.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -233,8 +240,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="bayesian-versus-frequentist-decision-rules">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">31. </span>Bayesian versus Frequentist Decision Rules</a><a class="headerlink" href="#bayesian-versus-frequentist-decision-rules" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<h1><a class="toc-backref" href="#id1" role="doc-backlink"><span class="section-number">31. </span>Bayesian versus Frequentist Decision Rules</a><a class="headerlink" href="#bayesian-versus-frequentist-decision-rules" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#bayesian-versus-frequentist-decision-rules" id="id1">Bayesian versus Frequentist Decision Rules</a></p>
@@ -251,21 +258,21 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
-<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba.experimental</span><span class="w"> </span><span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">gamma</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">31.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">31.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture follows up on ideas presented in the following lectures:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="wald_friedman.html"><span class="doc">A Problem that Stumped Milton Friedman</span></a></p></li>
@@ -288,7 +295,7 @@ updating and likelihood ratio processes.</p>
 <p>The simulations confirm the Navy Captain’s hunch that there is a better rule than the Neyman-Pearson likelihood ratio test that the Navy had told him to use.</p>
 </section>
 <section id="setup">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">31.2. </span>Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">31.2. </span>Setup</a><a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>To formalize the problem that had confronted the  Navy Captain, we consider a setting with the following parts.</p>
 <ul class="simple">
 <li><p>Each period a decision maker draws a non-negative random variable
@@ -326,7 +333,7 @@ be beta distributions with <span class="math notranslate nohighlight">\(a_{0}=b_
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="s2">&quot;Beta distribution.&quot;</span>
 
     <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
@@ -362,9 +369,9 @@ frequentist Navy Captains.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jitclass</span><span class="p">(</span><span class="n">wf_data</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">WaldFriedman</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WaldFriedman</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">c</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
                  <span class="n">a0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                  <span class="n">b0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -384,15 +391,15 @@ frequentist Navy Captains.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">z0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">mc_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">mc_size</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">f0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b0</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">f1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">κ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates π using Bayes&#39; rule and the current observation z</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -429,14 +436,14 @@ frequentist Navy Captains.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6a8eb2d228c7005997a7d51b16844e40d967aa93fa205d549656aa614202249f.png" src="_images/6a8eb2d228c7005997a7d51b16844e40d967aa93fa205d549656aa614202249f.png" />
+<img alt="_images/10edf29526578e512e2733256849aad2d7295981e417914440f23fe204cc0568.png" src="_images/10edf29526578e512e2733256849aad2d7295981e417914440f23fe204cc0568.png" />
 </div>
 </div>
 <p>Above, we plot the two possible probability densities <span class="math notranslate nohighlight">\(f_0\)</span> and
 <span class="math notranslate nohighlight">\(f_1\)</span></p>
 </section>
 <section id="frequentist-decision-rule">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">31.3. </span>Frequentist Decision Rule</a><a class="headerlink" href="#frequentist-decision-rule" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">31.3. </span>Frequentist Decision Rule</a><a class="headerlink" href="#frequentist-decision-rule" title="Link to this heading">#</a></h2>
 <p>The Navy told the Captain to use a Neyman-Pearson likelihood ratio  decision rule.</p>
 <p>That decision rule is characterized by</p>
 <ul class="simple">
@@ -464,7 +471,7 @@ hypotheses be</p>
 <p>Given sample size <span class="math notranslate nohighlight">\(t\)</span> and cutoff <span class="math notranslate nohighlight">\(d\)</span>, under the model
 described above, the mathematical expectation of total loss is</p>
 <div class="math notranslate nohighlight" id="equation-val1">
-<span class="eqno">(31.1)<a class="headerlink" href="#equation-val1" title="Permalink to this equation">#</a></span>\[\begin{aligned}
+<span class="eqno">(31.1)<a class="headerlink" href="#equation-val1" title="Link to this equation">#</a></span>\[\begin{aligned}
 \bar{V}_{fre}\left(t,d\right)=ct+\pi^{*}PFA\times \bar L_{1}+\left(1-\pi^{*}\right)\left(1-PD\right)\times \bar L_{0}
 \end{aligned}\]</div>
 <div class="math notranslate nohighlight">
@@ -517,7 +524,7 @@ generates data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/32cfa2a6428438cd9b53e72625c595df4cc8eff9d28a9ff2364089e93fa74b7f.png" src="_images/32cfa2a6428438cd9b53e72625c595df4cc8eff9d28a9ff2364089e93fa74b7f.png" />
+<img alt="_images/b5bb7846d760af80fad89b84edeca6df606a6ae955ae3a46596c07d27352cf97.png" src="_images/b5bb7846d760af80fad89b84edeca6df606a6ae955ae3a46596c07d27352cf97.png" />
 </div>
 </div>
 <p>We can compute sequences of likelihood ratios using simulated samples.</p>
@@ -566,7 +573,7 @@ generates data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/78f53c15bdc36885538c72d3c672a3603fadeb8647607d9f8fa1112e42cd1813.png" src="_images/78f53c15bdc36885538c72d3c672a3603fadeb8647607d9f8fa1112e42cd1813.png" />
+<img alt="_images/84c73b50fe2646bb4d1a1b34c8b38e719921b32e4cc8949c4e4e76a81cefee58.png" src="_images/84c73b50fe2646bb4d1a1b34c8b38e719921b32e4cc8949c4e4e76a81cefee58.png" />
 </div>
 </div>
 <p>We can  minimize the expected total loss presented in equation
@@ -585,7 +592,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">V_fre_d_t</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">V_fre_d_t</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
 
     <span class="n">N</span> <span class="o">=</span> <span class="n">L0_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -601,7 +608,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">V_fre_t</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">V_fre_t</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">V_fre_d_t</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Nelder-Mead&#39;</span><span class="p">)</span>
     <span class="n">V</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">fun</span>
@@ -617,7 +624,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_V_fre</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_V_fre</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
 
     <span class="n">T</span> <span class="o">=</span> <span class="n">L0_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
@@ -650,7 +657,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/54b377940dd4a2a288cf8978587afe5a1a5870cc4561e88109914f026e51c004.png" src="_images/54b377940dd4a2a288cf8978587afe5a1a5870cc4561e88109914f026e51c004.png" />
+<img alt="_images/36f2895001efb773baf9b862f168262f5abd0ef2e83c27309df06ff5ed50d116.png" src="_images/36f2895001efb773baf9b862f168262f5abd0ef2e83c27309df06ff5ed50d116.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -696,7 +703,7 @@ rule changes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/147008e7c2ede79cd3ca7276cc5b03a58dcbbe0b4a024a487f72e9192c17b603.png" src="_images/147008e7c2ede79cd3ca7276cc5b03a58dcbbe0b4a024a487f72e9192c17b603.png" />
+<img alt="_images/84e8395770ef99caad59d7dc94a61e7d976d85985be299a92c912fa1eb22212c.png" src="_images/84e8395770ef99caad59d7dc94a61e7d976d85985be299a92c912fa1eb22212c.png" />
 </div>
 </div>
 <p>The following shows how optimal sample size <span class="math notranslate nohighlight">\(t\)</span> and targeted
@@ -720,12 +727,12 @@ rule changes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/32f9a3a46eb7c09c8060a8b5ad7798090ac3d81e56c96057ead81f00e3b1179f.png" src="_images/32f9a3a46eb7c09c8060a8b5ad7798090ac3d81e56c96057ead81f00e3b1179f.png" />
+<img alt="_images/69906ba851525a76b632a6ae6a003f2662672709c1afac6e3b92c86a0732a2b4.png" src="_images/69906ba851525a76b632a6ae6a003f2662672709c1afac6e3b92c86a0732a2b4.png" />
 </div>
 </div>
 </section>
 <section id="bayesian-decision-rule">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">31.4. </span>Bayesian Decision Rule</a><a class="headerlink" href="#bayesian-decision-rule" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">31.4. </span>Bayesian Decision Rule</a><a class="headerlink" href="#bayesian-decision-rule" title="Link to this heading">#</a></h2>
 <p>In  <a class="reference internal" href="wald_friedman.html"><span class="doc">A Problem that Stumped Milton Friedman</span></a>,
 we learned how Abraham Wald confirmed the Navy Captain’s hunch that there is a better decision rule.</p>
 <p>In <a class="reference internal" href="wald_friedman_2.html"><span class="doc">A Bayesian Formulation of Friedman and Wald’s Problem</span></a>
@@ -739,7 +746,7 @@ that computes optimal values of <span class="math notranslate nohighlight">\(A\)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">Q</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Q</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
 
     <span class="n">c</span><span class="p">,</span> <span class="n">π_grid</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span>
     <span class="n">L0</span><span class="p">,</span> <span class="n">L1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
@@ -775,7 +782,7 @@ that computes optimal values of <span class="math notranslate nohighlight">\(A\)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the continuation value function</span>
 
@@ -811,7 +818,7 @@ that computes optimal values of <span class="math notranslate nohighlight">\(A\)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function takes a continuation value function and returns the</span>
@@ -867,7 +874,7 @@ that computes optimal values of <span class="math notranslate nohighlight">\(A\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c71751481b1105bdfc1ceac875f7866fd1c9637b5aebbcaf3b2834bd7f5c6dde.png" src="_images/c71751481b1105bdfc1ceac875f7866fd1c9637b5aebbcaf3b2834bd7f5c6dde.png" />
+<img alt="_images/75f2854b4aca46b3aac4bbd87b0fa065d512e1836565f2fcaa1026b94994de31.png" src="_images/75f2854b4aca46b3aac4bbd87b0fa065d512e1836565f2fcaa1026b94994de31.png" />
 </div>
 </div>
 <p>The above figure portrays the value function plotted against the decision
@@ -919,7 +926,7 @@ numerically.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">V_q</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">V_q</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
     <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid_size</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">flag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">z_arr</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">z0</span>
@@ -973,7 +980,7 @@ numerically.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1c24138d45dabac0471887fdbcff3590cb86ce0d5fca0161692145f709ac334c.png" src="_images/1c24138d45dabac0471887fdbcff3590cb86ce0d5fca0161692145f709ac334c.png" />
+<img alt="_images/089cf6fbdb5d9a3625d4e806fba613a5e16a8f5a450265176f85664c9e10ae31.png" src="_images/089cf6fbdb5d9a3625d4e806fba613a5e16a8f5a450265176f85664c9e10ae31.png" />
 </div>
 </div>
 <p>Given an assumed value for
@@ -986,7 +993,7 @@ minimizes this objective concept of expected loss.</p>
 <p>We observe that in each case <span class="math notranslate nohighlight">\(\pi_{0}^{*}\)</span> equals <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_V_baye_bar</span><span class="p">(</span><span class="n">π_star</span><span class="p">,</span> <span class="n">V0</span><span class="p">,</span> <span class="n">V1</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_V_baye_bar</span><span class="p">(</span><span class="n">π_star</span><span class="p">,</span> <span class="n">V0</span><span class="p">,</span> <span class="n">V1</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
 
     <span class="n">V_baye</span> <span class="o">=</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">V0</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span> <span class="n">V1</span>
     <span class="n">π_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">V_baye</span><span class="p">)</span>
@@ -1025,7 +1032,7 @@ minimizes this objective concept of expected loss.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/43527401b230a61ec68eda6e6c88ccf94258510f92396703f469b66b6e8e6b2d.png" src="_images/43527401b230a61ec68eda6e6c88ccf94258510f92396703f469b66b6e8e6b2d.png" />
+<img alt="_images/f008e7dd27ccf4f8f8a77df38dd6fa36acc855bc54d29e452ce2d0853eae344c.png" src="_images/f008e7dd27ccf4f8f8a77df38dd6fa36acc855bc54d29e452ce2d0853eae344c.png" />
 </div>
 </div>
 <p>This pattern of outcomes holds more generally.</p>
@@ -1064,12 +1071,12 @@ for all <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d2dc405a437888e66fe8fe5f9de69dd427817007264f0ad534cbfea84514464e.png" src="_images/d2dc405a437888e66fe8fe5f9de69dd427817007264f0ad534cbfea84514464e.png" />
+<img alt="_images/bfb5d230ac466fc68d5c0427647232cd7140bba17e012f156161bdd9efeeb9bd.png" src="_images/bfb5d230ac466fc68d5c0427647232cd7140bba17e012f156161bdd9efeeb9bd.png" />
 </div>
 </div>
 </section>
 <section id="was-the-navy-captains-hunch-correct">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">31.5. </span>Was the Navy Captain’s Hunch Correct?</a><a class="headerlink" href="#was-the-navy-captains-hunch-correct" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">31.5. </span>Was the Navy Captain’s Hunch Correct?</a><a class="headerlink" href="#was-the-navy-captains-hunch-correct" title="Link to this heading">#</a></h2>
 <p>We now compare average  losses obtained by our frequentist Neyman-Pearson
 and Bayesian decision rules.</p>
 <p>As a starting point, let’s compare average loss functions when
@@ -1105,7 +1112,7 @@ and Bayesian decision rules.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/94771f8af2f00e5f1070752667ecb808ccb20dc0dcbf953e7921e5be5dbe2e32.png" src="_images/94771f8af2f00e5f1070752667ecb808ccb20dc0dcbf953e7921e5be5dbe2e32.png" />
+<img alt="_images/9381272efc2027e34bdd8db56ff04950efa0ad89498087852f73d399fc18bd77.png" src="_images/9381272efc2027e34bdd8db56ff04950efa0ad89498087852f73d399fc18bd77.png" />
 </div>
 </div>
 <p>Evidently, there is no sample size <span class="math notranslate nohighlight">\(t\)</span> at which the Neyman-Pearson
@@ -1130,7 +1137,7 @@ rule does better on average for all values of <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1eb060927a6a4bca2450d9ebc7f6dfbd8545c2736a721c3a99e566300be5a8b7.png" src="_images/1eb060927a6a4bca2450d9ebc7f6dfbd8545c2736a721c3a99e566300be5a8b7.png" />
+<img alt="_images/8c48f1428cc3c883582cc6e83a2955b31fd8ec3b4e3713e7357c6ebcf8c63750.png" src="_images/8c48f1428cc3c883582cc6e83a2955b31fd8ec3b4e3713e7357c6ebcf8c63750.png" />
 </div>
 </div>
 <p>The right panel of the above graph plots the difference
@@ -1138,7 +1145,7 @@ rule does better on average for all values of <span class="math notranslate nohi
 <p>It is always positive.</p>
 </section>
 <section id="more-details">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">31.6. </span>More Details</a><a class="headerlink" href="#more-details" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">31.6. </span>More Details</a><a class="headerlink" href="#more-details" title="Link to this heading">#</a></h2>
 <p>We can provide more insights by focusing on the case in which
 <span class="math notranslate nohighlight">\(\pi^{*}=0.5=\pi_{0}\)</span>.</p>
 <div class="cell docutils container">
@@ -1158,7 +1165,7 @@ sample size <code class="docutils literal notranslate"><span class="pre">t_optim
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(9)
 </pre></div>
 </div>
 </div>
@@ -1174,7 +1181,7 @@ corresponding to <code class="docutils literal notranslate"><span class="pre">t_
 </div>
 </section>
 <section id="distribution-of-bayesian-decision-rules-time-to-decide">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">31.7. </span>Distribution of Bayesian Decision Rule’s Time to Decide</a><a class="headerlink" href="#distribution-of-bayesian-decision-rules-time-to-decide" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">31.7. </span>Distribution of Bayesian Decision Rule’s Time to Decide</a><a class="headerlink" href="#distribution-of-bayesian-decision-rules-time-to-decide" title="Link to this heading">#</a></h2>
 <p>We use  simulations to  compute the frequency distribution of the  time to
 decide for the Bayesian decision rule and compare that time to the
 frequentist rule’s fixed <span class="math notranslate nohighlight">\(t\)</span>.</p>
@@ -1190,7 +1197,7 @@ rule when <span class="math notranslate nohighlight">\(q= f_0\)</span> and <stro
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">check_results</span><span class="p">(</span><span class="n">L_arr</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">π0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_results</span><span class="p">(</span><span class="n">L_arr</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">π0</span><span class="p">):</span>
 
     <span class="n">N</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">L_arr</span><span class="o">.</span><span class="n">shape</span>
 
@@ -1243,7 +1250,7 @@ rule when <span class="math notranslate nohighlight">\(q= f_0\)</span> and <stro
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b0b0811e7c914268008168325bfd95e803e510ca2133f7965770d260733b53bf.png" src="_images/b0b0811e7c914268008168325bfd95e803e510ca2133f7965770d260733b53bf.png" />
+<img alt="_images/9ea1728fbca17732232acd1beec02fb478603205520348a440dd7052d8e13d7e.png" src="_images/9ea1728fbca17732232acd1beec02fb478603205520348a440dd7052d8e13d7e.png" />
 </div>
 </div>
 <p>Later we’ll figure out how these distributions ultimately affect
@@ -1283,7 +1290,7 @@ the one-to-one mapping from <span class="math notranslate nohighlight">\(L_{t}\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/969455c4e224cb495ecdb4f8ea3bd1aebc37903952677ac2e0f5761bc5599de2.png" src="_images/969455c4e224cb495ecdb4f8ea3bd1aebc37903952677ac2e0f5761bc5599de2.png" />
+<img alt="_images/f497d27abca24ddd2add73098c48815ea0ba1e3ea75ddd3acb58c3f3f2e617ea.png" src="_images/f497d27abca24ddd2add73098c48815ea0ba1e3ea75ddd3acb58c3f3f2e617ea.png" />
 </div>
 </div>
 <p>The above figures compare averages and variances of updated Bayesian
@@ -1319,12 +1326,12 @@ confirm the Navy Captain’s hunch.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/81e53c092ff307ca1b301a700b4d95a91e9b523e3fab5b89b111401c9a02a65b.png" src="_images/81e53c092ff307ca1b301a700b4d95a91e9b523e3fab5b89b111401c9a02a65b.png" />
+<img alt="_images/ed96bac41e578193567ef51d07af812b455784074291be5fa627694d0483789e.png" src="_images/ed96bac41e578193567ef51d07af812b455784074291be5fa627694d0483789e.png" />
 </div>
 </div>
 </section>
 <section id="probability-of-making-correct-decision">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">31.8. </span>Probability of Making Correct Decision</a><a class="headerlink" href="#probability-of-making-correct-decision" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">31.8. </span>Probability of Making Correct Decision</a><a class="headerlink" href="#probability-of-making-correct-decision" title="Link to this heading">#</a></h2>
 <p>Now we use simulations to compute the fractions of samples in which the
 Bayesian and the frequentist Neyman-Pearson  decision rules decide correctly.</p>
 <p>For the frequentist Neyman-Pearson rule, the probability of making the correct decision
@@ -1365,7 +1372,7 @@ with the conditional probabilities that the Bayesian rule decides before
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/55a73fe7d68762a8b224fe3c0b7e84c7fd16de1d00f4ae2fcb4585df2c175fbb.png" src="_images/55a73fe7d68762a8b224fe3c0b7e84c7fd16de1d00f4ae2fcb4585df2c175fbb.png" />
+<img alt="_images/ac6d770ffc997055ad4e9ac3d0472ace2c5de6d718e2c8145cd19b4aff1970c2.png" src="_images/ac6d770ffc997055ad4e9ac3d0472ace2c5de6d718e2c8145cd19b4aff1970c2.png" />
 </div>
 </div>
 <p>By averaging using <span class="math notranslate nohighlight">\(\pi^{*}\)</span>, we also plot the unconditional
@@ -1390,12 +1397,12 @@ distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/349ebbef0c11e32cb186f02d054ed182ca404c3fe283debdf531a0144b26da0a.png" src="_images/349ebbef0c11e32cb186f02d054ed182ca404c3fe283debdf531a0144b26da0a.png" />
+<img alt="_images/a018e08fbd6355797d11407f330325a27c30610800282d06176751f76ec83f91.png" src="_images/a018e08fbd6355797d11407f330325a27c30610800282d06176751f76ec83f91.png" />
 </div>
 </div>
 </section>
 <section id="distribution-of-likelihood-ratios-at-neyman-pearsons-t">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">31.9. </span>Distribution of Likelihood Ratios at Neyman-Pearson’s <span class="math notranslate nohighlight">\(t\)</span></a><a class="headerlink" href="#distribution-of-likelihood-ratios-at-neyman-pearsons-t" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">31.9. </span>Distribution of Likelihood Ratios at Neyman-Pearson’s <span class="math notranslate nohighlight">\(t\)</span></a><a class="headerlink" href="#distribution-of-likelihood-ratios-at-neyman-pearsons-t" title="Link to this heading">#</a></h2>
 <p>Next we use simulations to construct distributions of likelihood ratios
 after <span class="math notranslate nohighlight">\(t\)</span> draws.</p>
 <p>To serve as useful reference points, we also show likelihood ratios that
@@ -1434,7 +1441,7 @@ generating the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c295bb56e8555336db56a6859273e019b878257d24fd477209e74f885e017bff.png" src="_images/c295bb56e8555336db56a6859273e019b878257d24fd477209e74f885e017bff.png" />
+<img alt="_images/f2af9d5ba2a9abc4d94be95523d6684fc783361770893459a72207c9e89aa9ed.png" src="_images/f2af9d5ba2a9abc4d94be95523d6684fc783361770893459a72207c9e89aa9ed.png" />
 </div>
 </div>
 <p>The next graph plots the unconditional distribution of Bayesian times to
@@ -1457,7 +1464,7 @@ distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/012166cce1dcdea3e8fd91a4c0362ba9be2ab4992970c1c95f22f91c6c273ada.png" src="_images/012166cce1dcdea3e8fd91a4c0362ba9be2ab4992970c1c95f22f91c6c273ada.png" />
+<img alt="_images/0be1eb1a5ff11b4062a170f6a3860c56c7a3658afb97bd456bea11583f781866.png" src="_images/0be1eb1a5ff11b4062a170f6a3860c56c7a3658afb97bd456bea11583f781866.png" />
 </div>
 </div>
 </section>
@@ -1494,6 +1501,8 @@ distributions.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1951,6 +1960,11 @@ distributions.</p>
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1960,17 +1974,17 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1982,17 +1996,17 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2004,12 +2018,12 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2021,17 +2035,17 @@ distributions.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -2171,7 +2185,7 @@ distributions.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

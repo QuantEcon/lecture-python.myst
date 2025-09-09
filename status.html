@@ -1,15 +1,14 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>85. Execution Statistics &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>86. Execution Statistics &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,13 +108,21 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'status';</script>
     <link rel="canonical" href="https://python.quantecon.org/status.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="84. References" href="zreferences.html" />
+    <link rel="prev" title="85. References" href="zreferences.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -143,6 +149,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -217,9 +224,9 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="execution-statistics">
-<h1><span class="section-number">85. </span>Execution Statistics<a class="headerlink" href="#execution-statistics" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">86. </span>Execution Statistics<a class="headerlink" href="#execution-statistics" title="Link to this heading">#</a></h1>
 <p>This table contains the latest execution statistics.</p>
-<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Document</p></th>
 <th class="head"><p>Modified</p></th>
@@ -230,519 +237,525 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="aiyagari.html"><span class="doc">aiyagari</span></a></p></td>
-<td><p>2025-08-25 03:33</p></td>
+<td><p>2025-09-08 03:28</p></td>
 <td><p>cache</p></td>
-<td><p>21.1</p></td>
+<td><p>14.47</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="ak2.html"><span class="doc">ak2</span></a></p></td>
-<td><p>2025-08-25 03:33</p></td>
+<td><p>2025-09-08 03:29</p></td>
 <td><p>cache</p></td>
-<td><p>12.58</p></td>
+<td><p>12.07</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="ar1_bayes.html"><span class="doc">ar1_bayes</span></a></p></td>
-<td><p>2025-08-25 03:39</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="ak_aiyagari.html"><span class="doc">ak_aiyagari</span></a></p></td>
+<td><p>2025-09-09 01:46</p></td>
 <td><p>cache</p></td>
-<td><p>340.61</p></td>
+<td><p>45.47</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="ar1_turningpts.html"><span class="doc">ar1_turningpts</span></a></p></td>
-<td><p>2025-08-25 03:40</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="ar1_bayes.html"><span class="doc">ar1_bayes</span></a></p></td>
+<td><p>2025-09-08 03:34</p></td>
 <td><p>cache</p></td>
-<td><p>36.76</p></td>
+<td><p>348.64</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="back_prop.html"><span class="doc">back_prop</span></a></p></td>
-<td><p>2025-08-25 03:41</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="ar1_turningpts.html"><span class="doc">ar1_turningpts</span></a></p></td>
+<td><p>2025-09-08 03:35</p></td>
 <td><p>cache</p></td>
-<td><p>97.02</p></td>
+<td><p>36.11</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="bayes_nonconj.html"><span class="doc">bayes_nonconj</span></a></p></td>
-<td><p>2025-08-25 04:49</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="back_prop.html"><span class="doc">back_prop</span></a></p></td>
+<td><p>2025-09-08 03:37</p></td>
 <td><p>cache</p></td>
-<td><p>4080.01</p></td>
+<td><p>98.19</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="cake_eating_numerical.html"><span class="doc">cake_eating_numerical</span></a></p></td>
-<td><p>2025-08-25 04:50</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="bayes_nonconj.html"><span class="doc">bayes_nonconj</span></a></p></td>
+<td><p>2025-09-08 04:44</p></td>
 <td><p>cache</p></td>
-<td><p>22.09</p></td>
+<td><p>4022.95</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="cake_eating_problem.html"><span class="doc">cake_eating_problem</span></a></p></td>
-<td><p>2025-08-25 04:50</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="cake_eating_numerical.html"><span class="doc">cake_eating_numerical</span></a></p></td>
+<td><p>2025-09-08 04:44</p></td>
 <td><p>cache</p></td>
-<td><p>1.86</p></td>
+<td><p>23.25</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="career.html"><span class="doc">career</span></a></p></td>
-<td><p>2025-08-25 04:50</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="cake_eating_problem.html"><span class="doc">cake_eating_problem</span></a></p></td>
+<td><p>2025-09-08 04:44</p></td>
+<td><p>cache</p></td>
+<td><p>1.66</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="career.html"><span class="doc">career</span></a></p></td>
+<td><p>2025-09-08 04:44</p></td>
 <td><p>cache</p></td>
 <td><p>11.5</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="cass_fiscal.html"><span class="doc">cass_fiscal</span></a></p></td>
-<td><p>2025-08-25 04:50</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="cass_fiscal.html"><span class="doc">cass_fiscal</span></a></p></td>
+<td><p>2025-09-08 04:45</p></td>
 <td><p>cache</p></td>
-<td><p>19.18</p></td>
+<td><p>17.65</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="cass_fiscal_2.html"><span class="doc">cass_fiscal_2</span></a></p></td>
-<td><p>2025-08-25 04:50</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="cass_fiscal_2.html"><span class="doc">cass_fiscal_2</span></a></p></td>
+<td><p>2025-09-08 04:45</p></td>
 <td><p>cache</p></td>
-<td><p>5.6</p></td>
+<td><p>5.44</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="cass_koopmans_1.html"><span class="doc">cass_koopmans_1</span></a></p></td>
-<td><p>2025-08-25 04:50</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="cass_koopmans_1.html"><span class="doc">cass_koopmans_1</span></a></p></td>
+<td><p>2025-09-08 04:45</p></td>
 <td><p>cache</p></td>
-<td><p>13.8</p></td>
+<td><p>12.65</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="cass_koopmans_2.html"><span class="doc">cass_koopmans_2</span></a></p></td>
-<td><p>2025-08-25 04:51</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="cass_koopmans_2.html"><span class="doc">cass_koopmans_2</span></a></p></td>
+<td><p>2025-09-08 04:45</p></td>
 <td><p>cache</p></td>
-<td><p>6.96</p></td>
+<td><p>6.61</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="coleman_policy_iter.html"><span class="doc">coleman_policy_iter</span></a></p></td>
-<td><p>2025-08-25 04:51</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="coleman_policy_iter.html"><span class="doc">coleman_policy_iter</span></a></p></td>
+<td><p>2025-09-08 04:45</p></td>
 <td><p>cache</p></td>
-<td><p>11.4</p></td>
+<td><p>10.32</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="cross_product_trick.html"><span class="doc">cross_product_trick</span></a></p></td>
-<td><p>2025-08-25 04:51</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="cross_product_trick.html"><span class="doc">cross_product_trick</span></a></p></td>
+<td><p>2025-09-08 04:45</p></td>
 <td><p>cache</p></td>
-<td><p>0.91</p></td>
+<td><p>1.14</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="divergence_measures.html"><span class="doc">divergence_measures</span></a></p></td>
-<td><p>2025-08-25 04:51</p></td>
-<td><p>cache</p></td>
-<td><p>12.82</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="egm_policy_iter.html"><span class="doc">egm_policy_iter</span></a></p></td>
-<td><p>2025-08-25 04:51</p></td>
-<td><p>cache</p></td>
-<td><p>5.4</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="eig_circulant.html"><span class="doc">eig_circulant</span></a></p></td>
-<td><p>2025-08-25 04:51</p></td>
-<td><p>cache</p></td>
-<td><p>4.03</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="exchangeable.html"><span class="doc">exchangeable</span></a></p></td>
-<td><p>2025-08-25 04:51</p></td>
-<td><p>cache</p></td>
-<td><p>8.29</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="finite_markov.html"><span class="doc">finite_markov</span></a></p></td>
-<td><p>2025-08-25 04:51</p></td>
-<td><p>cache</p></td>
-<td><p>6.23</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="ge_arrow.html"><span class="doc">ge_arrow</span></a></p></td>
-<td><p>2025-08-25 04:51</p></td>
-<td><p>cache</p></td>
-<td><p>2.21</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="harrison_kreps.html"><span class="doc">harrison_kreps</span></a></p></td>
-<td><p>2025-08-25 04:52</p></td>
-<td><p>cache</p></td>
-<td><p>3.6</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="hoist_failure.html"><span class="doc">hoist_failure</span></a></p></td>
-<td><p>2025-08-25 04:52</p></td>
-<td><p>cache</p></td>
-<td><p>53.37</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="house_auction.html"><span class="doc">house_auction</span></a></p></td>
-<td><p>2025-08-25 04:52</p></td>
-<td><p>cache</p></td>
-<td><p>3.17</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="ifp.html"><span class="doc">ifp</span></a></p></td>
-<td><p>2025-08-25 04:53</p></td>
-<td><p>cache</p></td>
-<td><p>37.4</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="ifp_advanced.html"><span class="doc">ifp_advanced</span></a></p></td>
-<td><p>2025-08-25 04:53</p></td>
-<td><p>cache</p></td>
-<td><p>22.12</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="imp_sample.html"><span class="doc">imp_sample</span></a></p></td>
-<td><p>2025-08-25 04:58</p></td>
-<td><p>cache</p></td>
-<td><p>250.44</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="intro.html"><span class="doc">intro</span></a></p></td>
-<td><p>2025-08-25 04:58</p></td>
-<td><p>cache</p></td>
-<td><p>0.85</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="inventory_dynamics.html"><span class="doc">inventory_dynamics</span></a></p></td>
-<td><p>2025-08-25 04:58</p></td>
-<td><p>cache</p></td>
-<td><p>9.85</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="jv.html"><span class="doc">jv</span></a></p></td>
-<td><p>2025-08-25 04:58</p></td>
-<td><p>cache</p></td>
-<td><p>15.59</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="kalman.html"><span class="doc">kalman</span></a></p></td>
-<td><p>2025-08-25 04:58</p></td>
-<td><p>cache</p></td>
-<td><p>6.65</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="kalman_2.html"><span class="doc">kalman_2</span></a></p></td>
-<td><p>2025-08-25 04:59</p></td>
-<td><p>cache</p></td>
-<td><p>42.22</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="kesten_processes.html"><span class="doc">kesten_processes</span></a></p></td>
-<td><p>2025-08-25 04:59</p></td>
-<td><p>cache</p></td>
-<td><p>31.48</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="lagrangian_lqdp.html"><span class="doc">lagrangian_lqdp</span></a></p></td>
-<td><p>2025-08-25 05:00</p></td>
-<td><p>cache</p></td>
-<td><p>26.08</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="lake_model.html"><span class="doc">lake_model</span></a></p></td>
-<td><p>2025-08-25 05:00</p></td>
-<td><p>cache</p></td>
-<td><p>13.1</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="likelihood_bayes.html"><span class="doc">likelihood_bayes</span></a></p></td>
-<td><p>2025-08-25 05:01</p></td>
-<td><p>cache</p></td>
-<td><p>43.2</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="likelihood_ratio_process.html"><span class="doc">likelihood_ratio_process</span></a></p></td>
-<td><p>2025-08-25 05:01</p></td>
-<td><p>cache</p></td>
-<td><p>21.36</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="likelihood_ratio_process_2.html"><span class="doc">likelihood_ratio_process_2</span></a></p></td>
-<td><p>2025-08-25 11:47</p></td>
-<td><p>cache</p></td>
-<td><p>38.03</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="likelihood_var.html"><span class="doc">likelihood_var</span></a></p></td>
-<td><p>2025-08-25 05:02</p></td>
-<td><p>cache</p></td>
-<td><p>21.14</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="linear_algebra.html"><span class="doc">linear_algebra</span></a></p></td>
-<td><p>2025-08-25 05:02</p></td>
-<td><p>cache</p></td>
-<td><p>2.41</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="linear_models.html"><span class="doc">linear_models</span></a></p></td>
-<td><p>2025-08-25 05:02</p></td>
-<td><p>cache</p></td>
-<td><p>6.13</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="lln_clt.html"><span class="doc">lln_clt</span></a></p></td>
-<td><p>2025-08-25 05:02</p></td>
-<td><p>cache</p></td>
-<td><p>11.0</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="lq_inventories.html"><span class="doc">lq_inventories</span></a></p></td>
-<td><p>2025-08-25 05:02</p></td>
-<td><p>cache</p></td>
-<td><p>12.75</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="lqcontrol.html"><span class="doc">lqcontrol</span></a></p></td>
-<td><p>2025-08-25 05:02</p></td>
-<td><p>cache</p></td>
-<td><p>4.9</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="markov_asset.html"><span class="doc">markov_asset</span></a></p></td>
-<td><p>2025-08-25 05:02</p></td>
-<td><p>cache</p></td>
-<td><p>5.31</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="markov_perf.html"><span class="doc">markov_perf</span></a></p></td>
-<td><p>2025-08-25 05:02</p></td>
-<td><p>cache</p></td>
-<td><p>4.4</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="mccall_correlated.html"><span class="doc">mccall_correlated</span></a></p></td>
-<td><p>2025-08-25 05:04</p></td>
-<td><p>cache</p></td>
-<td><p>78.99</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="mccall_fitted_vfi.html"><span class="doc">mccall_fitted_vfi</span></a></p></td>
-<td><p>2025-08-25 05:04</p></td>
-<td><p>cache</p></td>
-<td><p>5.41</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="mccall_model.html"><span class="doc">mccall_model</span></a></p></td>
-<td><p>2025-08-25 05:04</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="divergence_measures.html"><span class="doc">divergence_measures</span></a></p></td>
+<td><p>2025-09-08 04:45</p></td>
 <td><p>cache</p></td>
 <td><p>12.62</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="mccall_model_with_separation.html"><span class="doc">mccall_model_with_separation</span></a></p></td>
-<td><p>2025-08-25 05:04</p></td>
-<td><p>cache</p></td>
-<td><p>7.4</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="mccall_q.html"><span class="doc">mccall_q</span></a></p></td>
-<td><p>2025-08-25 05:05</p></td>
-<td><p>cache</p></td>
-<td><p>16.29</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="mix_model.html"><span class="doc">mix_model</span></a></p></td>
-<td><p>2025-08-25 05:06</p></td>
-<td><p>cache</p></td>
-<td><p>74.22</p></td>
-<td><p>✅</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="mle.html"><span class="doc">mle</span></a></p></td>
-<td><p>2025-08-25 05:06</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="egm_policy_iter.html"><span class="doc">egm_policy_iter</span></a></p></td>
+<td><p>2025-09-08 04:46</p></td>
 <td><p>cache</p></td>
 <td><p>4.82</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="multi_hyper.html"><span class="doc">multi_hyper</span></a></p></td>
-<td><p>2025-08-25 05:06</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="eig_circulant.html"><span class="doc">eig_circulant</span></a></p></td>
+<td><p>2025-09-08 04:46</p></td>
 <td><p>cache</p></td>
-<td><p>19.84</p></td>
+<td><p>6.2</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="multivariate_normal.html"><span class="doc">multivariate_normal</span></a></p></td>
-<td><p>2025-08-25 05:06</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="exchangeable.html"><span class="doc">exchangeable</span></a></p></td>
+<td><p>2025-09-08 04:46</p></td>
 <td><p>cache</p></td>
-<td><p>4.62</p></td>
+<td><p>7.73</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="navy_captain.html"><span class="doc">navy_captain</span></a></p></td>
-<td><p>2025-08-25 05:07</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="finite_markov.html"><span class="doc">finite_markov</span></a></p></td>
+<td><p>2025-09-08 04:46</p></td>
 <td><p>cache</p></td>
-<td><p>28.61</p></td>
+<td><p>6.12</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="newton_method.html"><span class="doc">newton_method</span></a></p></td>
-<td><p>2025-08-25 05:08</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="ge_arrow.html"><span class="doc">ge_arrow</span></a></p></td>
+<td><p>2025-09-08 04:46</p></td>
 <td><p>cache</p></td>
-<td><p>69.48</p></td>
+<td><p>1.99</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="odu.html"><span class="doc">odu</span></a></p></td>
-<td><p>2025-08-25 05:09</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="harrison_kreps.html"><span class="doc">harrison_kreps</span></a></p></td>
+<td><p>2025-09-08 04:46</p></td>
 <td><p>cache</p></td>
-<td><p>50.75</p></td>
+<td><p>3.64</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="ols.html"><span class="doc">ols</span></a></p></td>
-<td><p>2025-08-25 05:09</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="hoist_failure.html"><span class="doc">hoist_failure</span></a></p></td>
+<td><p>2025-09-08 04:47</p></td>
 <td><p>cache</p></td>
-<td><p>9.07</p></td>
+<td><p>52.39</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="opt_transport.html"><span class="doc">opt_transport</span></a></p></td>
-<td><p>2025-08-25 05:09</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="house_auction.html"><span class="doc">house_auction</span></a></p></td>
+<td><p>2025-09-08 04:47</p></td>
 <td><p>cache</p></td>
-<td><p>13.71</p></td>
+<td><p>3.11</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="optgrowth.html"><span class="doc">optgrowth</span></a></p></td>
-<td><p>2025-08-25 05:10</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="ifp.html"><span class="doc">ifp</span></a></p></td>
+<td><p>2025-09-08 04:48</p></td>
 <td><p>cache</p></td>
-<td><p>63.74</p></td>
+<td><p>38.03</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="optgrowth_fast.html"><span class="doc">optgrowth_fast</span></a></p></td>
-<td><p>2025-08-25 05:11</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="ifp_advanced.html"><span class="doc">ifp_advanced</span></a></p></td>
+<td><p>2025-09-08 04:48</p></td>
 <td><p>cache</p></td>
-<td><p>19.67</p></td>
+<td><p>23.96</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="pandas_panel.html"><span class="doc">pandas_panel</span></a></p></td>
-<td><p>2025-08-25 05:11</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="imp_sample.html"><span class="doc">imp_sample</span></a></p></td>
+<td><p>2025-09-08 04:52</p></td>
 <td><p>cache</p></td>
-<td><p>4.28</p></td>
+<td><p>248.6</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="perm_income.html"><span class="doc">perm_income</span></a></p></td>
-<td><p>2025-08-25 05:11</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="intro.html"><span class="doc">intro</span></a></p></td>
+<td><p>2025-09-08 04:52</p></td>
 <td><p>cache</p></td>
-<td><p>3.82</p></td>
+<td><p>0.88</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="perm_income_cons.html"><span class="doc">perm_income_cons</span></a></p></td>
-<td><p>2025-08-25 05:11</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="inventory_dynamics.html"><span class="doc">inventory_dynamics</span></a></p></td>
+<td><p>2025-09-08 04:52</p></td>
 <td><p>cache</p></td>
-<td><p>5.74</p></td>
+<td><p>9.98</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="prob_matrix.html"><span class="doc">prob_matrix</span></a></p></td>
-<td><p>2025-08-25 05:11</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="jv.html"><span class="doc">jv</span></a></p></td>
+<td><p>2025-09-08 04:52</p></td>
 <td><p>cache</p></td>
-<td><p>9.39</p></td>
+<td><p>15.47</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="prob_meaning.html"><span class="doc">prob_meaning</span></a></p></td>
-<td><p>2025-08-25 05:12</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="kalman.html"><span class="doc">kalman</span></a></p></td>
+<td><p>2025-09-08 04:53</p></td>
 <td><p>cache</p></td>
-<td><p>57.23</p></td>
+<td><p>8.86</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="qr_decomp.html"><span class="doc">qr_decomp</span></a></p></td>
-<td><p>2025-08-25 05:12</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="kalman_2.html"><span class="doc">kalman_2</span></a></p></td>
+<td><p>2025-09-08 04:53</p></td>
 <td><p>cache</p></td>
-<td><p>1.33</p></td>
+<td><p>44.38</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="rand_resp.html"><span class="doc">rand_resp</span></a></p></td>
-<td><p>2025-08-25 05:12</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="kesten_processes.html"><span class="doc">kesten_processes</span></a></p></td>
+<td><p>2025-09-08 04:54</p></td>
 <td><p>cache</p></td>
-<td><p>2.77</p></td>
+<td><p>30.83</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="rational_expectations.html"><span class="doc">rational_expectations</span></a></p></td>
-<td><p>2025-08-25 05:12</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="lagrangian_lqdp.html"><span class="doc">lagrangian_lqdp</span></a></p></td>
+<td><p>2025-09-08 04:54</p></td>
 <td><p>cache</p></td>
-<td><p>3.62</p></td>
+<td><p>27.7</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="re_with_feedback.html"><span class="doc">re_with_feedback</span></a></p></td>
-<td><p>2025-08-25 05:12</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="lake_model.html"><span class="doc">lake_model</span></a></p></td>
+<td><p>2025-09-08 04:55</p></td>
 <td><p>cache</p></td>
-<td><p>8.82</p></td>
+<td><p>12.89</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="samuelson.html"><span class="doc">samuelson</span></a></p></td>
-<td><p>2025-08-25 05:12</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="likelihood_bayes.html"><span class="doc">likelihood_bayes</span></a></p></td>
+<td><p>2025-09-08 04:55</p></td>
 <td><p>cache</p></td>
-<td><p>10.58</p></td>
+<td><p>42.08</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="sir_model.html"><span class="doc">sir_model</span></a></p></td>
-<td><p>2025-08-25 05:12</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="likelihood_ratio_process.html"><span class="doc">likelihood_ratio_process</span></a></p></td>
+<td><p>2025-09-08 04:56</p></td>
 <td><p>cache</p></td>
-<td><p>2.95</p></td>
+<td><p>20.77</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="stats_examples.html"><span class="doc">stats_examples</span></a></p></td>
-<td><p>2025-08-25 05:12</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="likelihood_ratio_process_2.html"><span class="doc">likelihood_ratio_process_2</span></a></p></td>
+<td><p>2025-09-08 04:56</p></td>
 <td><p>cache</p></td>
-<td><p>4.37</p></td>
+<td><p>29.41</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="#"><span class="doc">status</span></a></p></td>
-<td><p>2025-08-25 05:13</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="likelihood_var.html"><span class="doc">likelihood_var</span></a></p></td>
+<td><p>2025-09-08 04:56</p></td>
 <td><p>cache</p></td>
-<td><p>7.64</p></td>
+<td><p>20.85</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="svd_intro.html"><span class="doc">svd_intro</span></a></p></td>
-<td><p>2025-08-25 05:13</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="linear_algebra.html"><span class="doc">linear_algebra</span></a></p></td>
+<td><p>2025-09-08 04:57</p></td>
 <td><p>cache</p></td>
-<td><p>1.62</p></td>
+<td><p>2.46</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="troubleshooting.html"><span class="doc">troubleshooting</span></a></p></td>
-<td><p>2025-08-25 04:58</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="linear_models.html"><span class="doc">linear_models</span></a></p></td>
+<td><p>2025-09-08 04:57</p></td>
 <td><p>cache</p></td>
-<td><p>0.85</p></td>
+<td><p>8.3</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="two_auctions.html"><span class="doc">two_auctions</span></a></p></td>
-<td><p>2025-08-25 05:13</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="lln_clt.html"><span class="doc">lln_clt</span></a></p></td>
+<td><p>2025-09-08 04:57</p></td>
 <td><p>cache</p></td>
-<td><p>23.91</p></td>
+<td><p>10.64</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="uncertainty_traps.html"><span class="doc">uncertainty_traps</span></a></p></td>
-<td><p>2025-08-25 05:13</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="lq_inventories.html"><span class="doc">lq_inventories</span></a></p></td>
+<td><p>2025-09-08 04:57</p></td>
 <td><p>cache</p></td>
-<td><p>2.64</p></td>
+<td><p>12.54</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="util_rand_resp.html"><span class="doc">util_rand_resp</span></a></p></td>
-<td><p>2025-08-25 05:13</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="lqcontrol.html"><span class="doc">lqcontrol</span></a></p></td>
+<td><p>2025-09-08 04:57</p></td>
 <td><p>cache</p></td>
-<td><p>2.9</p></td>
+<td><p>4.85</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="var_dmd.html"><span class="doc">var_dmd</span></a></p></td>
-<td><p>2025-08-25 04:58</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="markov_asset.html"><span class="doc">markov_asset</span></a></p></td>
+<td><p>2025-09-08 04:57</p></td>
 <td><p>cache</p></td>
-<td><p>0.85</p></td>
+<td><p>5.16</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="von_neumann_model.html"><span class="doc">von_neumann_model</span></a></p></td>
-<td><p>2025-08-25 05:13</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="markov_perf.html"><span class="doc">markov_perf</span></a></p></td>
+<td><p>2025-09-08 04:57</p></td>
 <td><p>cache</p></td>
-<td><p>2.2</p></td>
+<td><p>4.3</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="wald_friedman.html"><span class="doc">wald_friedman</span></a></p></td>
-<td><p>2025-08-25 05:14</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="mccall_correlated.html"><span class="doc">mccall_correlated</span></a></p></td>
+<td><p>2025-09-08 04:59</p></td>
 <td><p>cache</p></td>
-<td><p>20.21</p></td>
+<td><p>79.07</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="wald_friedman_2.html"><span class="doc">wald_friedman_2</span></a></p></td>
-<td><p>2025-08-25 05:14</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="mccall_fitted_vfi.html"><span class="doc">mccall_fitted_vfi</span></a></p></td>
+<td><p>2025-09-08 04:59</p></td>
 <td><p>cache</p></td>
-<td><p>14.19</p></td>
+<td><p>5.41</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="wealth_dynamics.html"><span class="doc">wealth_dynamics</span></a></p></td>
-<td><p>2025-08-25 05:14</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="mccall_model.html"><span class="doc">mccall_model</span></a></p></td>
+<td><p>2025-09-08 04:59</p></td>
 <td><p>cache</p></td>
-<td><p>29.18</p></td>
+<td><p>14.75</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="zreferences.html"><span class="doc">zreferences</span></a></p></td>
-<td><p>2025-08-25 04:58</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="mccall_model_with_separation.html"><span class="doc">mccall_model_with_separation</span></a></p></td>
+<td><p>2025-09-08 04:59</p></td>
 <td><p>cache</p></td>
-<td><p>0.85</p></td>
+<td><p>7.29</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="mccall_q.html"><span class="doc">mccall_q</span></a></p></td>
+<td><p>2025-09-08 04:59</p></td>
+<td><p>cache</p></td>
+<td><p>17.24</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="mix_model.html"><span class="doc">mix_model</span></a></p></td>
+<td><p>2025-09-08 05:01</p></td>
+<td><p>cache</p></td>
+<td><p>73.68</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="mle.html"><span class="doc">mle</span></a></p></td>
+<td><p>2025-09-08 05:01</p></td>
+<td><p>cache</p></td>
+<td><p>4.67</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="multi_hyper.html"><span class="doc">multi_hyper</span></a></p></td>
+<td><p>2025-09-08 05:01</p></td>
+<td><p>cache</p></td>
+<td><p>18.21</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="multivariate_normal.html"><span class="doc">multivariate_normal</span></a></p></td>
+<td><p>2025-09-08 05:01</p></td>
+<td><p>cache</p></td>
+<td><p>4.33</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="navy_captain.html"><span class="doc">navy_captain</span></a></p></td>
+<td><p>2025-09-08 05:02</p></td>
+<td><p>cache</p></td>
+<td><p>29.33</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="newton_method.html"><span class="doc">newton_method</span></a></p></td>
+<td><p>2025-09-08 05:03</p></td>
+<td><p>cache</p></td>
+<td><p>69.76</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="odu.html"><span class="doc">odu</span></a></p></td>
+<td><p>2025-09-08 05:04</p></td>
+<td><p>cache</p></td>
+<td><p>48.73</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="ols.html"><span class="doc">ols</span></a></p></td>
+<td><p>2025-09-08 05:04</p></td>
+<td><p>cache</p></td>
+<td><p>9.35</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="opt_transport.html"><span class="doc">opt_transport</span></a></p></td>
+<td><p>2025-09-08 05:04</p></td>
+<td><p>cache</p></td>
+<td><p>24.98</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="optgrowth.html"><span class="doc">optgrowth</span></a></p></td>
+<td><p>2025-09-08 05:05</p></td>
+<td><p>cache</p></td>
+<td><p>63.65</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="optgrowth_fast.html"><span class="doc">optgrowth_fast</span></a></p></td>
+<td><p>2025-09-08 05:05</p></td>
+<td><p>cache</p></td>
+<td><p>17.92</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="pandas_panel.html"><span class="doc">pandas_panel</span></a></p></td>
+<td><p>2025-09-08 05:06</p></td>
+<td><p>cache</p></td>
+<td><p>4.54</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="perm_income.html"><span class="doc">perm_income</span></a></p></td>
+<td><p>2025-09-08 05:06</p></td>
+<td><p>cache</p></td>
+<td><p>3.84</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="perm_income_cons.html"><span class="doc">perm_income_cons</span></a></p></td>
+<td><p>2025-09-08 05:06</p></td>
+<td><p>cache</p></td>
+<td><p>8.36</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="prob_matrix.html"><span class="doc">prob_matrix</span></a></p></td>
+<td><p>2025-09-08 05:06</p></td>
+<td><p>cache</p></td>
+<td><p>9.44</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="prob_meaning.html"><span class="doc">prob_meaning</span></a></p></td>
+<td><p>2025-09-08 05:07</p></td>
+<td><p>cache</p></td>
+<td><p>57.59</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="qr_decomp.html"><span class="doc">qr_decomp</span></a></p></td>
+<td><p>2025-09-08 05:07</p></td>
+<td><p>cache</p></td>
+<td><p>1.23</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="rand_resp.html"><span class="doc">rand_resp</span></a></p></td>
+<td><p>2025-09-08 05:07</p></td>
+<td><p>cache</p></td>
+<td><p>2.6</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="rational_expectations.html"><span class="doc">rational_expectations</span></a></p></td>
+<td><p>2025-09-08 05:07</p></td>
+<td><p>cache</p></td>
+<td><p>3.94</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="re_with_feedback.html"><span class="doc">re_with_feedback</span></a></p></td>
+<td><p>2025-09-08 05:07</p></td>
+<td><p>cache</p></td>
+<td><p>11.02</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="samuelson.html"><span class="doc">samuelson</span></a></p></td>
+<td><p>2025-09-08 05:07</p></td>
+<td><p>cache</p></td>
+<td><p>12.36</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="sir_model.html"><span class="doc">sir_model</span></a></p></td>
+<td><p>2025-09-08 05:07</p></td>
+<td><p>cache</p></td>
+<td><p>2.86</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="stats_examples.html"><span class="doc">stats_examples</span></a></p></td>
+<td><p>2025-09-08 05:08</p></td>
+<td><p>cache</p></td>
+<td><p>4.26</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="#"><span class="doc">status</span></a></p></td>
+<td><p>2025-09-08 05:08</p></td>
+<td><p>cache</p></td>
+<td><p>7.63</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="svd_intro.html"><span class="doc">svd_intro</span></a></p></td>
+<td><p>2025-09-08 05:08</p></td>
+<td><p>cache</p></td>
+<td><p>1.36</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="troubleshooting.html"><span class="doc">troubleshooting</span></a></p></td>
+<td><p>2025-09-08 04:52</p></td>
+<td><p>cache</p></td>
+<td><p>0.88</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="two_auctions.html"><span class="doc">two_auctions</span></a></p></td>
+<td><p>2025-09-08 05:08</p></td>
+<td><p>cache</p></td>
+<td><p>24.6</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="uncertainty_traps.html"><span class="doc">uncertainty_traps</span></a></p></td>
+<td><p>2025-09-08 05:08</p></td>
+<td><p>cache</p></td>
+<td><p>2.36</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="util_rand_resp.html"><span class="doc">util_rand_resp</span></a></p></td>
+<td><p>2025-09-08 05:08</p></td>
+<td><p>cache</p></td>
+<td><p>2.84</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="var_dmd.html"><span class="doc">var_dmd</span></a></p></td>
+<td><p>2025-09-08 04:52</p></td>
+<td><p>cache</p></td>
+<td><p>0.88</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="von_neumann_model.html"><span class="doc">von_neumann_model</span></a></p></td>
+<td><p>2025-09-08 05:08</p></td>
+<td><p>cache</p></td>
+<td><p>2.66</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="wald_friedman.html"><span class="doc">wald_friedman</span></a></p></td>
+<td><p>2025-09-08 05:09</p></td>
+<td><p>cache</p></td>
+<td><p>19.92</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="wald_friedman_2.html"><span class="doc">wald_friedman_2</span></a></p></td>
+<td><p>2025-09-08 05:09</p></td>
+<td><p>cache</p></td>
+<td><p>13.88</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="wealth_dynamics.html"><span class="doc">wealth_dynamics</span></a></p></td>
+<td><p>2025-09-08 05:09</p></td>
+<td><p>cache</p></td>
+<td><p>31.16</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="zreferences.html"><span class="doc">zreferences</span></a></p></td>
+<td><p>2025-09-08 04:52</p></td>
+<td><p>cache</p></td>
+<td><p>0.88</p></td>
 <td><p>✅</p></td>
 </tr>
 </tbody>
@@ -757,7 +770,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Python 3.12.7
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Python 3.13.5
 </pre></div>
 </div>
 </div>
@@ -781,31 +794,31 @@
 _libgcc_mutex                    0.1                       main
 _openmp_mutex                    5.1                       1_gnu
 accessible-pygments              0.0.5                     pypi_0              pypi
-aiobotocore                      2.12.3                    py312h06a4308_0
-aiohappyeyeballs                 2.4.0                     py312h06a4308_0
-aiohttp                          3.10.5                    py312h5eee18b_0
+aiobotocore                      2.19.0                    py313h06a4308_0
+aiohappyeyeballs                 2.4.4                     py313h06a4308_0
+aiohttp                          3.11.10                   py313h5eee18b_0
 aioitertools                     0.7.1                     pyhd3eb1b0_0
 aiosignal                        1.2.0                     pyhd3eb1b0_0
-alabaster                        0.7.16                    py312h06a4308_0
-altair                           5.0.1                     py312h06a4308_0
-anaconda                         2024.10                   py312_mkl_0
-anyio                            4.2.0                     py312h06a4308_0
-aom                              3.6.0                     h6a678d5_0
+alabaster                        0.7.16                    py313h06a4308_0
+altair                           5.5.0                     py313h06a4308_0
+anaconda                         2025.06                   py313_mkl_2
+anyio                            4.7.0                     py313h06a4308_0
 appdirs                          1.4.4                     pyhd3eb1b0_0
 argon2-cffi                      21.3.0                    pyhd3eb1b0_0
-argon2-cffi-bindings             21.2.0                    py312h5eee18b_0
-arrow                            1.2.3                     py312h06a4308_1
-arrow-cpp                        16.1.0                    hc1eb8f0_0
+argon2-cffi-bindings             21.2.0                    py313h5eee18b_1
+arrow                            1.3.0                     py313h06a4308_0
+arrow-cpp                        19.0.0                    h865e1df_2
 arviz                            0.22.0                    pypi_0              pypi
-astroid                          2.14.2                    py312h06a4308_0
-astropy                          6.1.3                     py312h5eee18b_0
-astropy-iers-data                0.2024.9.2.0.33.23        py312h06a4308_0
-asttokens                        2.0.5                     pyhd3eb1b0_0
-async-lru                        2.0.4                     py312h06a4308_0
+astroid                          3.3.8                     py313h06a4308_0
+astropy                          7.0.0                     py313h5eee18b_0
+astropy-iers-data                0.2025.1.13.0.34.51       py313h06a4308_0
+asttokens                        3.0.0                     py313h06a4308_0
+async-lru                        2.0.4                     py313h06a4308_0
+asyncssh                         2.17.0                    py313h06a4308_0
 atomicwrites                     1.4.0                     py_0
-attrs                            23.1.0                    py312h06a4308_0
+attrs                            24.3.0                    py313h06a4308_0
 autograd                         1.8.0                     pypi_0              pypi
-automat                          20.2.0                    py_0
+automat                          24.8.1                    py313h06a4308_0
 autopep8                         2.0.4                     pyhd3eb1b0_0
 aws-c-auth                       0.6.19                    h5eee18b_0
 aws-c-cal                        0.5.20                    hdbd6064_0
@@ -819,184 +832,175 @@ aws-c-s3                         0.1.51                    hdbd6064_0
 aws-c-sdkutils                   0.1.6                     h5eee18b_0
 aws-checksums                    0.1.13                    h5eee18b_0
 aws-crt-cpp                      0.18.16                   h6a678d5_0
-aws-sdk-cpp                      1.10.55                   h721c034_0
-babel                            2.11.0                    py312h06a4308_0
-bcrypt                           3.2.0                     py312h5eee18b_1
-beautifulsoup4                   4.12.3                    py312h06a4308_0
+aws-sdk-cpp                      1.11.212                  hecad206_0
+babel                            2.16.0                    py313h06a4308_0
+bcrypt                           4.3.0                     py313h4aa5aa6_0
+beautifulsoup4                   4.12.3                    py313h06a4308_0
 binaryornot                      0.4.4                     pyhd3eb1b0_1
-black                            24.8.0                    py312h06a4308_0
+black                            24.10.0                   py313h06a4308_0
 blas                             1.0                       mkl
-bleach                           4.1.0                     pyhd3eb1b0_0
-blinker                          1.6.2                     py312h06a4308_0
+bleach                           6.2.0                     py313h06a4308_0
+blinker                          1.9.0                     py313h06a4308_0
 blosc                            1.21.3                    h6a678d5_0
-bokeh                            3.6.0                     py312h06a4308_0
+bokeh                            3.6.2                     py313h06a4308_0
 boost-cpp                        1.82.0                    hdb19cb5_2
-botocore                         1.34.69                   py312h06a4308_0
-bottleneck                       1.3.7                     py312ha883a20_0
-brotli                           1.0.9                     h5eee18b_8
-brotli-bin                       1.0.9                     h5eee18b_8
-brotli-python                    1.0.9                     py312h6a678d5_8
-brunsli                          0.1                       h2531618_0
+botocore                         1.36.3                    py313h06a4308_0
+bottleneck                       1.4.2                     py313hf0014fa_0
+brotli-python                    1.0.9                     py313h6a678d5_9
 bzip2                            1.0.8                     h5eee18b_6
 c-ares                           1.19.1                    h5eee18b_0
-c-blosc2                         2.12.0                    h80c7b02_0
-ca-certificates                  2024.9.24                 h06a4308_0
-cachetools                       5.3.3                     py312h06a4308_0
-certifi                          2024.8.30                 py312h06a4308_0
-cffi                             1.17.1                    py312h1fdaa30_0
-cfitsio                          3.470                     h5893167_7
-chardet                          4.0.0                     py312h06a4308_1003
-charls                           2.2.0                     h2531618_0
+c-blosc2                         2.17.1                    h4257ac4_0
+ca-certificates                  2025.2.25                 h06a4308_0
+cachetools                       5.5.1                     py313h06a4308_0
+certifi                          2025.4.26                 py313h06a4308_0
+cffi                             1.17.1                    py313h1fdaa30_1
+chardet                          4.0.0                     py313h06a4308_1003
 charset-normalizer               3.3.2                     pyhd3eb1b0_0
 choreographer                    1.0.10                    pypi_0              pypi
-click                            8.1.7                     py312h06a4308_0
-cloudpickle                      3.0.0                     py312h06a4308_0
-colorama                         0.4.6                     py312h06a4308_0
-colorcet                         3.1.0                     py312h06a4308_0
-comm                             0.2.1                     py312h06a4308_0
+click                            8.1.8                     py313h06a4308_0
+cloudpickle                      3.0.0                     py313h06a4308_0
+colorama                         0.4.6                     pypi_0              pypi
+colorcet                         3.1.0                     py313h06a4308_0
+comm                             0.2.1                     py313h06a4308_0
 cons                             0.4.7                     pypi_0              pypi
-constantly                       23.10.4                   py312h06a4308_0
-contourpy                        1.2.0                     py312hdb19cb5_0
-cookiecutter                     2.6.0                     py312h06a4308_0
-cryptography                     43.0.0                    py312hdda0065_0
-cssselect                        1.2.0                     py312h06a4308_0
-curl                             8.9.1                     hdbd6064_0
+constantly                       23.10.4                   py313h06a4308_0
+contourpy                        1.3.1                     py313hdb19cb5_0
+cookiecutter                     1.7.3                     pyhd3eb1b0_0
+cryptography                     44.0.1                    py313h7825ff9_0
+cssselect                        1.2.0                     py313h06a4308_0
+curl                             8.12.1                    h251f7ec_0
 curl-cffi                        0.13.0                    pypi_0              pypi
 cycler                           0.11.0                    pyhd3eb1b0_0
 cyrus-sasl                       2.1.28                    h52b45da_1
 cython                           3.1.3                     pypi_0              pypi
-cytoolz                          0.12.2                    py312h5eee18b_0
-dask                             2024.8.2                  py312h06a4308_0
-dask-core                        2024.8.2                  py312h06a4308_0
-dask-expr                        1.1.13                    py312h06a4308_0
-datashader                       0.16.3                    py312h06a4308_0
-dav1d                            1.2.1                     h5eee18b_0
+cytoolz                          1.0.1                     py313h5eee18b_0
+dask                             2025.2.0                  py313h06a4308_0
+dask-core                        2025.2.0                  py313h06a4308_0
+dask-expr                        2.0.0                     py313h06a4308_0
+datashader                       0.18.0                    py313h06a4308_0
 dbus                             1.13.18                   hb2f20db_0
-debugpy                          1.6.7                     py312h6a678d5_0
+debugpy                          1.8.11                    py313h6a678d5_0
 decorator                        5.1.1                     pyhd3eb1b0_0
 defusedxml                       0.7.1                     pyhd3eb1b0_0
+deprecated                       1.2.13                    py313h06a4308_0
 diff-match-patch                 20200713                  pyhd3eb1b0_0
-dill                             0.3.8                     py312h06a4308_0
-distributed                      2024.8.2                  py312h06a4308_0
-docstring-to-markdown            0.11                      py312h06a4308_0
-docutils                         0.17.1                    pypi_0              pypi
-et_xmlfile                       1.1.0                     py312h06a4308_1
+dill                             0.3.8                     py313h06a4308_0
+distributed                      2025.2.0                  py313h06a4308_0
+docstring-to-markdown            0.11                      py313h06a4308_0
+docutils                         0.21.2                    py313h06a4308_0
+et_xmlfile                       1.1.0                     py313h06a4308_1
 etuples                          0.3.10                    pypi_0              pypi
 executing                        0.8.3                     pyhd3eb1b0_0
-expat                            2.6.3                     h6a678d5_0
-filelock                         3.19.1                    pypi_0              pypi
-flake8                           7.0.0                     py312h06a4308_0
-flask                            3.0.3                     py312h06a4308_0
-fontconfig                       2.14.1                    h4c34cd2_2
-fonttools                        4.51.0                    py312h5eee18b_0
+expat                            2.7.1                     h6a678d5_0
+filelock                         3.17.0                    py313h06a4308_0
+flake8                           7.1.1                     py313h06a4308_0
+flask                            3.1.0                     py313h06a4308_0
+fontconfig                       2.14.1                    h55d465d_3
+fonttools                        4.55.3                    py313h5eee18b_0
 formulaic                        1.2.0                     pypi_0              pypi
 fqdn                             1.5.1                     pypi_0              pypi
-freetype                         2.12.1                    h4a9f257_0
+freetype                         2.13.3                    h4a9f257_0
 frozendict                       2.4.6                     pypi_0              pypi
-frozenlist                       1.4.0                     py312h5eee18b_0
-fsspec                           2024.6.1                  py312h06a4308_0
-gensim                           4.3.3                     py312h526ad5a_0
+frozenlist                       1.5.0                     py313h5eee18b_0
+fsspec                           2025.3.2                  py313h7040dfc_0
 gflags                           2.2.2                     h6a678d5_1
-ghp-import                       1.1.0                     pypi_0              pypi
-giflib                           5.2.1                     h5eee18b_3
 gitdb                            4.0.7                     pyhd3eb1b0_0
-gitpython                        3.1.43                    py312h06a4308_0
+gitpython                        3.1.43                    py313h06a4308_0
 glib                             2.78.4                    h6a678d5_0
 glib-tools                       2.78.4                    h6a678d5_0
 glog                             0.5.0                     h6a678d5_1
-greenlet                         3.0.1                     py312h6a678d5_0
+gmp                              6.3.0                     h6a678d5_0
+gmpy2                            2.2.1                     py313h5eee18b_0
+greenlet                         3.1.1                     py313h6a678d5_0
 gst-plugins-base                 1.14.1                    h6a678d5_1
 gstreamer                        1.14.1                    h5eee18b_1
-h11                              0.14.0                    py312h06a4308_0
+h11                              0.16.0                    py313h06a4308_0
 h5netcdf                         1.6.4                     pypi_0              pypi
-h5py                             3.11.0                    py312h34c39bb_0
-hdf5                             1.12.1                    h2b7332f_3
+h5py                             3.12.1                    py313h5842655_1
+hdf5                             1.14.5                    h2b7332f_2
 heapdict                         1.0.1                     pyhd3eb1b0_0
-holoviews                        1.19.1                    py312h06a4308_0
-httpcore                         1.0.2                     py312h06a4308_0
-httpx                            0.27.0                    py312h06a4308_0
-hvplot                           0.11.0                    py312h06a4308_0
+holoviews                        1.20.2                    py313h06a4308_0
+httpcore                         1.0.9                     py313h06a4308_0
+httpx                            0.28.1                    py313h06a4308_0
+hvplot                           0.11.3                    py313h06a4308_0
 hyperlink                        21.0.0                    pyhd3eb1b0_0
 icu                              73.1                      h6a678d5_0
-idna                             3.7                       py312h06a4308_0
-imagecodecs                      2023.1.23                 py312h81b8100_1
-imageio                          2.33.1                    py312h06a4308_0
-imagesize                        1.4.1                     py312h06a4308_0
-imbalanced-learn                 0.12.3                    py312h06a4308_1
-importlib-metadata               7.0.1                     py312h06a4308_0
-incremental                      22.10.0                   pyhd3eb1b0_0
-inflection                       0.5.1                     py312h06a4308_1
+idna                             3.7                       py313h06a4308_0
+imageio                          2.37.0                    py313h06a4308_0
+imagesize                        1.4.1                     py313h06a4308_0
+imbalanced-learn                 0.13.0                    py313h06a4308_0
+importlib-metadata               8.5.0                     py313h06a4308_0
+incremental                      24.7.2                    pyhd3eb1b0_0
+inflection                       0.5.1                     py313h06a4308_1
 iniconfig                        1.1.1                     pyhd3eb1b0_0
-intake                           2.0.7                     py312h06a4308_0
+intake                           2.0.7                     py313h06a4308_0
 intel-openmp                     2023.1.0                  hdb19cb5_46306
 interface-meta                   1.3.0                     pypi_0              pypi
 interpolation                    2.2.7                     pypi_0              pypi
 intervaltree                     3.1.0                     pyhd3eb1b0_0
-ipykernel                        6.28.0                    py312h06a4308_0
-ipython                          8.27.0                    py312h06a4308_0
-ipython_genutils                 0.2.0                     pyhd3eb1b0_1
-ipywidgets                       7.8.1                     py312h06a4308_0
+ipykernel                        6.29.5                    py313h06a4308_1
+ipython                          8.30.0                    py313h06a4308_0
+ipywidgets                       8.1.5                     py313h06a4308_0
 isoduration                      20.11.0                   pypi_0              pypi
-isort                            5.13.2                    py312h06a4308_0
+isort                            6.0.1                     py313h06a4308_0
 itemadapter                      0.3.0                     pyhd3eb1b0_0
-itemloaders                      1.1.0                     py312h06a4308_0
-itsdangerous                     2.2.0                     py312h06a4308_0
+itemloaders                      1.3.2                     py313h06a4308_0
+itsdangerous                     2.2.0                     py313h06a4308_0
 jaraco.classes                   3.2.1                     pyhd3eb1b0_0
+jaraco.context                   6.0.0                     py313h06a4308_0
+jaraco.functools                 4.1.0                     py313h06a4308_0
 jax                              0.6.2                     pypi_0              pypi
 jax-cuda12-pjrt                  0.6.2                     pypi_0              pypi
 jax-cuda12-plugin                0.6.2                     pypi_0              pypi
 jaxlib                           0.6.2                     pypi_0              pypi
-jedi                             0.19.1                    py312h06a4308_0
+jedi                             0.19.2                    py313h06a4308_0
 jeepney                          0.7.1                     pyhd3eb1b0_0
-jellyfish                        1.0.1                     py312hb02cf49_0
-jinja2                           3.1.4                     py312h06a4308_0
-jmespath                         1.0.1                     py312h06a4308_0
-joblib                           1.4.2                     py312h06a4308_0
+jellyfish                        1.1.3                     py313h4aa5aa6_0
+jinja2                           3.1.6                     py313h06a4308_0
+jinja2-time                      0.2.0                     pyhd3eb1b0_3
+jmespath                         1.0.1                     py313h06a4308_0
+joblib                           1.4.2                     py313h06a4308_0
 jpeg                             9e                        h5eee18b_3
-jq                               1.6                       h27cfd23_1000
-json5                            0.9.6                     pyhd3eb1b0_0
+jq                               1.7.1                     h5eee18b_0
+json5                            0.9.25                    py313h06a4308_0
 jsonpointer                      3.0.0                     pypi_0              pypi
-jsonschema                       4.23.0                    py312h06a4308_0
-jsonschema-specifications        2023.7.1                  py312h06a4308_0
-jupyter                          1.0.0                     py312h06a4308_9
-jupyter-book                     1.0.3                     pypi_0              pypi
+jsonschema                       4.23.0                    py313h06a4308_0
+jsonschema-specifications        2023.7.1                  py313h06a4308_0
+jupyter                          1.1.1                     py313h06a4308_0
+jupyter-book                     1.0.4.post1               pypi_0              pypi
 jupyter-cache                    1.0.1                     pypi_0              pypi
-jupyter-lsp                      2.2.0                     py312h06a4308_0
+jupyter-lsp                      2.2.5                     py313h06a4308_0
 jupyter-server-mathjax           0.2.6                     pypi_0              pypi
-jupyter_client                   8.6.0                     py312h06a4308_0
-jupyter_console                  6.6.3                     py312h06a4308_1
-jupyter_core                     5.7.2                     py312h06a4308_0
-jupyter_events                   0.10.0                    py312h06a4308_0
-jupyter_server                   2.14.1                    py312h06a4308_0
-jupyter_server_terminals         0.4.4                     py312h06a4308_1
-jupyterlab                       4.2.5                     py312h06a4308_0
-jupyterlab-variableinspector     3.1.0                     py312h06a4308_0
-jupyterlab_pygments              0.1.2                     py_0
-jupyterlab_server                2.27.3                    py312h06a4308_0
-jupyterlab_widgets               1.0.0                     pyhd3eb1b0_1
-jxrlib                           1.1                       h7b6447c_2
+jupyter_client                   8.6.3                     py313h06a4308_0
+jupyter_console                  6.6.3                     py313h06a4308_1
+jupyter_core                     5.7.2                     py313h06a4308_0
+jupyter_events                   0.12.0                    py313h06a4308_0
+jupyter_server                   2.15.0                    py313h06a4308_0
+jupyter_server_terminals         0.5.3                     py313h06a4308_0
+jupyterlab                       4.3.4                     py313h06a4308_0
+jupyterlab-variableinspector     3.2.4                     py313h06a4308_0
+jupyterlab_pygments              0.3.0                     py313h06a4308_0
+jupyterlab_server                2.27.3                    py313h06a4308_0
+jupyterlab_widgets               3.0.13                    py313h06a4308_0
 kaleido                          1.0.0                     pypi_0              pypi
-keyring                          24.3.1                    py312h06a4308_0
-kiwisolver                       1.4.4                     py312h6a678d5_0
+keyring                          25.6.0                    py313h06a4308_0
+kiwisolver                       1.4.8                     py313h6a678d5_0
 krb5                             1.20.1                    h143b758_1
 latexcodec                       3.0.1                     pypi_0              pypi
-lazy-object-proxy                1.10.0                    py312h5eee18b_0
-lazy_loader                      0.4                       py312h06a4308_0
-lcms2                            2.12                      h3be6417_0
+lazy_loader                      0.4                       py313h06a4308_0
+lcms2                            2.16                      h92b89f2_1
 ld_impl_linux-64                 2.40                      h12ee557_0
-lerc                             3.0                       h295c915_0
-libabseil                        20240116.2                cxx17_h6a678d5_0
-libaec                           1.0.4                     he6710b0_1
-libavif                          0.11.1                    h5eee18b_0
+lerc                             4.0.0                     h6a678d5_0
+libabseil                        20250127.0                cxx17_h6a678d5_0
 libboost                         1.82.0                    h109eef0_2
-libbrotlicommon                  1.0.9                     h5eee18b_8
-libbrotlidec                     1.0.9                     h5eee18b_8
-libbrotlienc                     1.0.9                     h5eee18b_8
-libclang                         14.0.6                    default_hc6dbbc7_1
-libclang13                       14.0.6                    default_he11475f_1
+libbrotlicommon                  1.0.9                     h5eee18b_9
+libbrotlidec                     1.0.9                     h5eee18b_9
+libbrotlienc                     1.0.9                     h5eee18b_9
+libclang                         14.0.6                    default_hc6dbbc7_2
+libclang13                       14.0.6                    default_he11475f_2
 libcups                          2.4.2                     h2d74bed_1
-libcurl                          8.9.1                     h251f7ec_0
-libdeflate                       1.17                      h5eee18b_1
+libcurl                          8.12.1                    hc9e6f67_0
+libdeflate                       1.22                      h5eee18b_0
 libedit                          3.1.20230828              h5eee18b_0
 libev                            4.33                      h7f8727e_1
 libevent                         2.1.12                    hdbd6064_1
@@ -1006,82 +1010,87 @@ libgfortran-ng                   11.2.0                    h00389a5_1
 libgfortran5                     11.2.0                    h1234567_1
 libglib                          2.78.4                    hdc74915_0
 libgomp                          11.2.0                    h1234567_1
-libgrpc                          1.62.2                    h2d74bed_0
+libgrpc                          1.71.0                    h2d74bed_0
 libiconv                         1.16                      h5eee18b_3
 libllvm14                        14.0.6                    hecde1de_4
+libmpdec                         4.0.0                     h5eee18b_0
 libnghttp2                       1.57.0                    h2d74bed_0
 libpng                           1.6.39                    h5eee18b_0
-libpq                            12.17                     hdbd6064_0
-libprotobuf                      4.25.3                    he621ea3_0
+libpq                            17.4                      hdbd6064_0
+libprotobuf                      5.29.3                    hc99497a_0
+libre2-11                        2024.07.02                h6a678d5_0
 libsass                          0.23.0                    pypi_0              pypi
 libsodium                        1.0.18                    h7b6447c_0
 libspatialindex                  1.9.3                     h2531618_0
-libssh2                          1.11.0                    h251f7ec_0
+libssh2                          1.11.1                    h251f7ec_0
 libstdcxx-ng                     11.2.0                    h1234567_1
 libthrift                        0.15.0                    h1795dd8_2
-libtiff                          4.5.1                     h6a678d5_0
+libtiff                          4.7.0                     hde9077f_0
 libuuid                          1.41.5                    h5eee18b_0
-libwebp-base                     1.3.2                     h5eee18b_0
-libxcb                           1.15                      h7f8727e_0
-libxkbcommon                     1.0.1                     h5eee18b_1
-libxml2                          2.10.4                    hfdd30dd_2
-libxslt                          1.1.37                    h5eee18b_1
-libzopfli                        1.0.3                     he6710b0_0
+libwebp-base                     1.3.2                     h5eee18b_1
+libxcb                           1.17.0                    h9b100fa_0
+libxkbcommon                     1.9.1                     h69220b7_0
+libxml2                          2.13.8                    hfdd30dd_0
+libxslt                          1.1.41                    h097e994_0
 linearmodels                     6.1                       pypi_0              pypi
-linkify-it-py                    2.0.0                     py312h06a4308_0
-llvmlite                         0.43.0                    py312h6a678d5_0
-locket                           1.0.0                     py312h06a4308_0
+linkify-it-py                    2.0.0                     py313h06a4308_0
+llvmlite                         0.44.0                    py313hc1e8f15_1
+locket                           1.0.0                     py313h06a4308_0
 logical-unification              0.4.6                     pypi_0              pypi
 logistro                         1.1.0                     pypi_0              pypi
-lxml                             5.2.1                     py312hdbbb534_0
-lz4                              4.3.2                     py312h5eee18b_0
+lxml                             5.3.0                     py313h57af460_1
+lz4                              4.3.2                     py313h5eee18b_1
 lz4-c                            1.9.4                     h6a678d5_1
 lzo                              2.10                      h7b6447c_2
-markdown                         3.4.1                     py312h06a4308_0
-markdown-it-py                   2.2.0                     py312h06a4308_1
-markupsafe                       2.1.3                     py312h5eee18b_0
-matplotlib                       3.9.2                     py312h06a4308_0
-matplotlib-base                  3.9.2                     py312h66fe004_0
-matplotlib-inline                0.1.6                     py312h06a4308_0
+markdown                         3.8                       py313h06a4308_0
+markdown-it-py                   3.0.0                     pypi_0              pypi
+markupsafe                       3.0.2                     py313h5eee18b_0
+matplotlib                       3.10.0                    py313h06a4308_1
+matplotlib-base                  3.10.0                    py313h68cf311_1
+matplotlib-inline                0.1.6                     py313h06a4308_0
 mccabe                           0.7.0                     pyhd3eb1b0_0
-mdit-py-plugins                  0.3.5                     pypi_0              pypi
-mdurl                            0.1.0                     py312h06a4308_0
+mdit-py-plugins                  0.5.0                     pypi_0              pypi
+mdurl                            0.1.0                     py313h06a4308_0
 minikanren                       1.0.5                     pypi_0              pypi
-mistune                          2.0.4                     py312h06a4308_0
+mistune                          3.1.2                     py313h06a4308_0
 mkl                              2023.1.0                  h213fc3f_46344
-mkl-service                      2.4.0                     py312h5eee18b_1
-mkl_fft                          1.3.10                    py312h5eee18b_0
-mkl_random                       1.2.7                     py312h526ad5a_0
+mkl-service                      2.4.0                     py313h5eee18b_2
+mkl_fft                          1.3.11                    py313h5eee18b_0
+mkl_random                       1.2.8                     py313h06d7b56_0
 ml-dtypes                        0.5.3                     pypi_0              pypi
-more-itertools                   10.3.0                    py312h06a4308_0
-mpmath                           1.3.0                     py312h06a4308_0
-msgpack-python                   1.0.3                     py312hdb19cb5_0
-multidict                        6.0.4                     py312h5eee18b_0
-multipledispatch                 0.6.0                     py312h06a4308_0
+more-itertools                   10.3.0                    py313h06a4308_0
+mpc                              1.3.1                     h5eee18b_0
+mpfr                             4.2.1                     h5eee18b_0
+mpmath                           1.3.0                     py313h06a4308_0
+msgpack-python                   1.0.3                     py313hdb19cb5_0
+multidict                        6.1.0                     py313h5eee18b_0
+multipledispatch                 0.6.0                     py313h06a4308_0
 multitasking                     0.0.12                    pypi_0              pypi
-mypy                             1.11.2                    py312h5eee18b_0
-mypy_extensions                  1.0.0                     py312h06a4308_0
-mysql                            5.7.24                    h721c034_2
+mypy                             1.14.1                    py313h5eee18b_0
+mypy_extensions                  1.0.0                     py313h06a4308_0
+mysql                            8.4.0                     h721767e_2
 myst-nb                          1.3.0                     pypi_0              pypi
-myst-parser                      1.0.0                     pypi_0              pypi
-narwhals                         2.1.2                     pypi_0              pypi
-nbclient                         0.8.0                     py312h06a4308_0
-nbconvert                        7.16.4                    py312h06a4308_0
+myst-parser                      3.0.1                     pypi_0              pypi
+narwhals                         1.31.0                    py313h06a4308_1
+nbclient                         0.10.2                    py313h06a4308_0
+nbconvert                        7.16.6                    py313h06a4308_0
+nbconvert-core                   7.16.6                    py313h06a4308_0
+nbconvert-pandoc                 7.16.6                    py313h06a4308_0
 nbdime                           4.0.2                     pypi_0              pypi
-nbformat                         5.10.4                    py312h06a4308_0
+nbformat                         5.10.4                    py313h06a4308_0
 ncurses                          6.4                       h6a678d5_0
-nest-asyncio                     1.6.0                     py312h06a4308_0
-networkx                         3.3                       py312h06a4308_0
-nltk                             3.9.1                     py312h06a4308_0
-notebook                         7.2.2                     py312h06a4308_1
-notebook-shim                    0.2.3                     py312h06a4308_0
+nest-asyncio                     1.6.0                     py313h06a4308_0
+networkx                         3.4.2                     py313h06a4308_0
+nltk                             3.9.1                     py313h06a4308_0
+notebook                         7.3.2                     py313h06a4308_1
+notebook-shim                    0.2.4                     py313h06a4308_0
 nspr                             4.35                      h6a678d5_0
 nss                              3.89.1                    h6a678d5_0
-numba                            0.60.0                    py312h526ad5a_0
-numexpr                          2.8.7                     py312hf827012_0
-numpy                            1.26.4                    py312hc5e2394_0
-numpy-base                       1.26.4                    py312h0da6c21_0
-numpydoc                         1.7.0                     py312h06a4308_0
+numba                            0.61.0                    py313h6a678d5_1
+numexpr                          2.10.1                    py313h3c60e43_0
+numpy                            2.1.3                     py313hf4aebb8_0
+numpy-base                       2.1.3                     py313h3fc9231_0
+numpydoc                         1.7.0                     py313h06a4308_0
 numpyro                          0.19.0                    pypi_0              pypi
 nvidia-cublas-cu12               12.8.4.1                  pypi_0              pypi
 nvidia-cuda-cupti-cu12           12.8.90                   pypi_0              pypi
@@ -1099,236 +1108,249 @@ nvidia-nvjitlink-cu12            12.8.93                   pypi_0              p
 nvidia-nvshmem-cu12              3.3.20                    pypi_0              pypi
 nvidia-nvtx-cu12                 12.8.90                   pypi_0              pypi
 oniguruma                        6.9.7.1                   h27cfd23_0
-openjpeg                         2.5.2                     he7f1fd0_0
-openpyxl                         3.1.5                     py312h5eee18b_0
-openssl                          3.0.15                    h5eee18b_0
+openjpeg                         2.5.2                     h0d4d230_1
+openldap                         2.6.4                     h42fbc30_0
+openpyxl                         3.1.5                     py313h5eee18b_1
+openssl                          3.0.16                    h5eee18b_0
 opt-einsum                       3.4.0                     pypi_0              pypi
-orc                              2.0.1                     h2d29ad5_0
-orjson                           3.11.2                    pypi_0              pypi
-overrides                        7.4.0                     py312h06a4308_0
-packaging                        24.1                      py312h06a4308_0
-pandas                           2.2.2                     py312h526ad5a_0
+orc                              2.1.1                     hd396ef6_0
+orjson                           3.11.3                    pypi_0              pypi
+overrides                        7.4.0                     py313h06a4308_0
+packaging                        24.2                      py313h06a4308_0
+pandas                           2.2.3                     py313h6a678d5_0
+pandoc                           2.12                      h06a4308_3
 pandocfilters                    1.5.0                     pyhd3eb1b0_0
-panel                            1.5.2                     py312h06a4308_0
-param                            2.1.1                     py312h06a4308_0
-parsel                           1.8.1                     py312h06a4308_0
-parso                            0.8.3                     pyhd3eb1b0_0
-partd                            1.4.1                     py312h06a4308_0
-pathspec                         0.10.3                    py312h06a4308_0
-patsy                            0.5.6                     py312h06a4308_0
+panel                            1.7.0                     py313h06a4308_0
+param                            2.2.0                     py313h06a4308_0
+parsel                           1.8.1                     py313h06a4308_0
+parso                            0.8.4                     py313h06a4308_0
+partd                            1.4.2                     py313h06a4308_0
+pathspec                         0.10.3                    py313h06a4308_0
+patsy                            1.0.1                     py313h06a4308_0
 pcre2                            10.42                     hebb0a14_1
 peewee                           3.18.2                    pypi_0              pypi
 pexpect                          4.8.0                     pyhd3eb1b0_3
 pickleshare                      0.7.5                     pyhd3eb1b0_1003
-pillow                           10.4.0                    py312h5eee18b_0
-pip                              24.2                      py312h06a4308_0
-platformdirs                     3.10.0                    py312h06a4308_0
+pillow                           11.1.0                    py313hac6e08b_1
+pip                              25.1                      pyhc872135_2
+platformdirs                     4.3.7                     py313h06a4308_0
 plotly                           6.3.0                     pypi_0              pypi
 plotly-orca                      1.3.1                     1                   plotly
-pluggy                           1.0.0                     py312h06a4308_1
-ply                              3.11                      py312h06a4308_1
+pluggy                           1.5.0                     py313h06a4308_0
+ply                              3.11                      py313h06a4308_1
 pot                              0.9.5                     pypi_0              pypi
+poyo                             0.5.0                     pyhd3eb1b0_0
 prettytable                      3.16.0                    pypi_0              pypi
-prometheus_client                0.14.1                    py312h06a4308_0
-prompt-toolkit                   3.0.43                    py312h06a4308_0
+prometheus_client                0.21.1                    py313h06a4308_0
+prompt-toolkit                   3.0.43                    py313h06a4308_0
 prompt_toolkit                   3.0.43                    hd3eb1b0_0
-protego                          0.1.16                    py_0
-protobuf                         4.25.3                    py312h12ddb61_0
-psutil                           5.9.0                     py312h5eee18b_0
+propcache                        0.3.1                     py313h5eee18b_0
+protego                          0.4.0                     py313h06a4308_0
+protobuf                         5.29.3                    py313he621ea3_0
+psutil                           5.9.0                     py313h5eee18b_1
+pthread-stubs                    0.3                       h0ce48e5_1
 ptyprocess                       0.7.0                     pyhd3eb1b0_2
 pure_eval                        0.2.2                     pyhd3eb1b0_0
-py-cpuinfo                       9.0.0                     py312h06a4308_0
-pyarrow                          16.1.0                    py312h526ad5a_0
+py-cpuinfo                       9.0.0                     py313h06a4308_0
+pyarrow                          19.0.0                    py313h6a678d5_1
 pyasn1                           0.4.8                     pyhd3eb1b0_0
 pyasn1-modules                   0.2.8                     py_0
-pybind11-abi                     5                         hd3eb1b0_0
 pybtex                           0.25.1                    pypi_0              pypi
 pybtex-docutils                  1.0.3                     pypi_0              pypi
-pycodestyle                      2.11.1                    py312h06a4308_0
+pycodestyle                      2.12.1                    py313h06a4308_0
 pycparser                        2.21                      pyhd3eb1b0_0
-pyct                             0.5.0                     py312h06a4308_0
-pycurl                           7.45.3                    py312hdbd6064_0
+pyct                             0.5.0                     py313h06a4308_0
+pycurl                           7.45.6                    py313haf51bff_0
 pydata-sphinx-theme              0.15.4                    pypi_0              pypi
-pydeck                           0.8.0                     py312h06a4308_2
-pydispatcher                     2.0.5                     py312h06a4308_3
-pydocstyle                       6.3.0                     py312h06a4308_0
-pyerfa                           2.0.1.4                   py312ha883a20_0
-pyflakes                         3.2.0                     py312h06a4308_0
-pygments                         2.15.1                    py312h06a4308_1
+pydispatcher                     2.0.5                     py313h06a4308_3
+pydocstyle                       6.3.0                     py313h06a4308_0
+pyerfa                           2.0.1.5                   py313h5eee18b_0
+pyflakes                         3.2.0                     py313h06a4308_0
+pygithub                         2.4.0                     py313h06a4308_0
+pygments                         2.19.1                    py313h06a4308_0
 pyhdfe                           0.2.0                     pypi_0              pypi
-pylint                           2.16.2                    py312h06a4308_0
-pylint-venv                      3.0.3                     py312h06a4308_0
+pyjwt                            2.10.1                    py313h06a4308_0
+pylint                           3.3.5                     py313h06a4308_0
+pylint-venv                      3.0.3                     py313h06a4308_0
 pyls-spyder                      0.4.0                     pyhd3eb1b0_0
 pymc                             5.25.1                    pypi_0              pypi
-pyodbc                           5.1.0                     py312h6a678d5_0
-pyopenssl                        24.2.1                    py312h06a4308_0
-pyparsing                        3.1.2                     py312h06a4308_0
-pyqt                             5.15.10                   py312h6a678d5_0
-pyqt5-sip                        12.13.0                   py312h5eee18b_0
-pyqtwebengine                    5.15.10                   py312h6a678d5_0
+pynacl                           1.5.0                     py313h5eee18b_1
+pyodbc                           5.2.0                     py313h6a678d5_0
+pyopenssl                        25.0.0                    py313h06a4308_0
+pyparsing                        3.2.0                     py313h06a4308_0
+pyqt                             5.15.10                   py313h6a678d5_1
+pyqt5-sip                        12.13.0                   py313h5eee18b_1
+pyqtwebengine                    5.15.10                   py313h6a678d5_1
 pyro-api                         0.1.2                     pypi_0              pypi
 pyro-ppl                         1.9.1                     pypi_0              pypi
-pysocks                          1.7.1                     py312h06a4308_0
-pytables                         3.10.1                    py312h387d6ec_0
+pysocks                          1.7.1                     py313h06a4308_0
+pytables                         3.10.2                    py313hc48ae32_2
 pytensor                         2.31.7                    pypi_0              pypi
-pytest                           7.4.4                     py312h06a4308_0
-python                           3.12.7                    h5148396_0
-python-dateutil                  2.9.0post0                py312h06a4308_2
-python-fastjsonschema            2.16.2                    py312h06a4308_0
-python-json-logger               2.0.7                     py312h06a4308_0
-python-lmdb                      1.4.1                     py312h6a678d5_0
-python-lsp-black                 2.0.0                     py312h06a4308_0
+pytest                           8.3.4                     py313h06a4308_0
+python                           3.13.5                    h4612cfd_100_cp313
+python-dateutil                  2.9.0post0                py313h06a4308_2
+python-fastjsonschema            2.20.0                    py313h06a4308_0
+python-json-logger               3.2.1                     py313h06a4308_0
+python-lmdb                      1.6.2                     py313h6a678d5_0
+python-lsp-black                 2.0.0                     py313h06a4308_1
 python-lsp-jsonrpc               1.1.2                     pyhd3eb1b0_0
-python-lsp-server                1.10.0                    py312h06a4308_0
+python-lsp-server                1.12.2                    py313h7040dfc_0
 python-slugify                   5.0.2                     pyhd3eb1b0_0
-python-tzdata                    2023.3                    pyhd3eb1b0_0
-pytoolconfig                     1.2.6                     py312h06a4308_0
+python-tzdata                    2025.2                    pyhd3eb1b0_0
+python_abi                       3.13                      0_cp313
+pytoolconfig                     1.2.6                     py313h06a4308_0
 pytorch-triton                   3.4.0+gitf7888497         pypi_0              pypi
-pytz                             2024.1                    py312h06a4308_0
-pyviz_comms                      3.0.2                     py312h06a4308_0
-pywavelets                       1.7.0                     py312h5eee18b_0
+pytz                             2024.1                    py313h06a4308_0
+pyuca                            1.2                       py313h06a4308_1
+pyviz_comms                      3.0.2                     py313h06a4308_0
+pywavelets                       1.8.0                     py313h5eee18b_0
 pyxdg                            0.27                      pyhd3eb1b0_0
-pyyaml                           6.0.1                     py312h5eee18b_0
-pyzmq                            25.1.2                    py312h6a678d5_0
+pyyaml                           6.0.2                     py313h5eee18b_0
+pyzmq                            26.2.0                    py313h6a678d5_0
 qdarkstyle                       3.2.3                     pyhd3eb1b0_0
-qstylizer                        0.2.2                     py312h06a4308_0
-qt-main                          5.15.2                    h53bd1ea_10
-qt-webengine                     5.15.9                    h9ab4d14_7
-qtawesome                        1.3.1                     py312h06a4308_0
-qtconsole                        5.5.1                     py312h06a4308_0
-qtpy                             2.4.1                     py312h06a4308_0
-quantecon                        0.9.0                     pypi_0              pypi
-quantecon-book-theme             0.7.6                     pypi_0              pypi
-queuelib                         1.6.2                     py312h06a4308_0
-re2                              2022.04.01                h295c915_0
+qstylizer                        0.2.2                     py313h06a4308_0
+qt-main                          5.15.2                    hb6262e9_12
+qt-webengine                     5.15.9                    he2071f7_8
+qtawesome                        1.4.0                     py313h06a4308_0
+qtconsole                        5.6.1                     py313h06a4308_1
+qtpy                             2.4.1                     py313h06a4308_0
+quantecon                        0.10.1                    pypi_0              pypi
+quantecon-book-theme             0.9.0                     pypi_0              pypi
+queuelib                         1.6.2                     py313h06a4308_0
+re2                              2024.07.02                hdb19cb5_0
 readline                         8.2                       h5eee18b_0
-referencing                      0.30.2                    py312h06a4308_0
-regex                            2024.9.11                 py312h5eee18b_0
-requests                         2.32.3                    py312h06a4308_0
-requests-file                    1.5.1                     pyhd3eb1b0_0
-rfc3339-validator                0.1.4                     py312h06a4308_0
-rfc3986-validator                0.1.1                     py312h06a4308_0
-rich                             13.7.1                    py312h06a4308_0
-rope                             1.12.0                    py312h06a4308_0
-rpds-py                          0.10.6                    py312hb02cf49_0
-rtree                            1.0.1                     py312h06a4308_0
+referencing                      0.30.2                    py313h06a4308_0
+regex                            2024.11.6                 py313h5eee18b_0
+requests                         2.32.3                    py313h06a4308_1
+requests-file                    2.1.0                     py313h06a4308_0
+rfc3339-validator                0.1.4                     py313h06a4308_0
+rfc3986-validator                0.1.1                     py313h06a4308_0
+rich                             14.1.0                    pypi_0              pypi
+roman-numerals-py                3.1.0                     py313h06a4308_0
+rope                             1.13.0                    py313h06a4308_0
+rpds-py                          0.22.3                    py313h4aa5aa6_0
+rtree                            1.0.1                     py313h06a4308_0
 s2n                              1.3.27                    hdbd6064_0
-s3fs                             2024.6.1                  py312h06a4308_0
-scikit-image                     0.24.0                    py312h526ad5a_0
-scikit-learn                     1.5.1                     py312h526ad5a_0
-scipy                            1.13.1                    py312hc5e2394_0
-scrapy                           2.11.1                    py312h06a4308_0
-seaborn                          0.13.2                    py312h06a4308_0
-secretstorage                    3.3.1                     py312h06a4308_1
-send2trash                       1.8.2                     py312h06a4308_0
-service_identity                 18.1.0                    pyhd3eb1b0_1
-setuptools                       75.1.0                    py312h06a4308_0
+s3fs                             2025.3.2                  py313h06a4308_0
+scikit-image                     0.25.0                    py313h6a678d5_0
+scikit-learn                     1.6.1                     py313h6a678d5_0
+scipy                            1.15.3                    py313h7f54423_0
+scrapy                           2.12.0                    py313h06a4308_1
+seaborn                          0.13.2                    py313h06a4308_3
+secretstorage                    3.3.1                     py313h06a4308_1
+send2trash                       1.8.2                     py313h06a4308_1
+service_identity                 24.2.0                    py313h06a4308_0
+setuptools                       72.1.0                    py313h06a4308_0
 setuptools-scm                   8.3.1                     pypi_0              pypi
 simplejson                       3.20.1                    pypi_0              pypi
-sip                              6.7.12                    py312h6a678d5_0
-six                              1.16.0                    pyhd3eb1b0_1
-smart_open                       5.2.1                     py312h06a4308_0
+sip                              6.7.12                    py313h6a678d5_1
+six                              1.17.0                    py313h06a4308_0
+sklearn-compat                   0.1.3                     py313h06a4308_0
 smmap                            4.0.0                     pyhd3eb1b0_0
 snappy                           1.2.1                     h6a678d5_0
-sniffio                          1.3.0                     py312h06a4308_0
+sniffio                          1.3.0                     py313h06a4308_0
 snowballstemmer                  2.2.0                     pyhd3eb1b0_0
 sortedcontainers                 2.4.0                     pyhd3eb1b0_0
-soupsieve                        2.5                       py312h06a4308_0
-sphinx                           5.3.0                     pypi_0              pypi
-sphinx-book-theme                1.1.3                     pypi_0              pypi
+soupsieve                        2.5                       py313h06a4308_0
+sphinx                           7.4.7                     pypi_0              pypi
+sphinx-book-theme                1.1.4                     pypi_0              pypi
 sphinx-comments                  0.0.3                     pypi_0              pypi
 sphinx-copybutton                0.5.2                     pypi_0              pypi
-sphinx-design                    0.6.0                     pypi_0              pypi
+sphinx-design                    0.6.1                     pypi_0              pypi
 sphinx-exercise                  1.0.1                     pypi_0              pypi
 sphinx-external-toc              1.0.1                     pypi_0              pypi
 sphinx-jupyterbook-latex         1.0.0                     pypi_0              pypi
 sphinx-multitoc-numbering        0.1.3                     pypi_0              pypi
-sphinx-proof                     0.2.0                     pypi_0              pypi
+sphinx-proof                     0.2.1                     pypi_0              pypi
 sphinx-reredirects               0.1.4                     pypi_0              pypi
 sphinx-thebe                     0.3.1                     pypi_0              pypi
 sphinx-togglebutton              0.3.2                     pypi_0              pypi
-sphinx-tojupyter                 0.3.0                     pypi_0              pypi
-sphinxcontrib-applehelp          1.0.2                     pyhd3eb1b0_0
+sphinx-tojupyter                 0.3.1                     pypi_0              pypi
+sphinxcontrib-applehelp          2.0.0                     pyhd3eb1b0_1
 sphinxcontrib-bibtex             2.6.5                     pypi_0              pypi
-sphinxcontrib-devhelp            1.0.2                     pyhd3eb1b0_0
-sphinxcontrib-htmlhelp           2.0.0                     pyhd3eb1b0_0
+sphinxcontrib-devhelp            2.0.0                     pyhd3eb1b0_0
+sphinxcontrib-htmlhelp           2.1.0                     pyhd3eb1b0_0
 sphinxcontrib-jsmath             1.0.1                     pyhd3eb1b0_0
-sphinxcontrib-qthelp             1.0.3                     pyhd3eb1b0_0
-sphinxcontrib-serializinghtml    1.1.10                    py312h06a4308_0
-sphinxcontrib-youtube            1.3.0                     pypi_0              pypi
+sphinxcontrib-qthelp             2.0.0                     pyhd3eb1b0_1
+sphinxcontrib-serializinghtml    2.0.0                     pyhd3eb1b0_0
+sphinxcontrib-youtube            1.4.1                     pypi_0              pypi
 sphinxext-rediraffe              0.2.7                     pypi_0              pypi
-spyder                           5.5.1                     py312h06a4308_4
-spyder-kernels                   2.5.0                     py312h06a4308_0
-sqlalchemy                       2.0.34                    py312h00e1ef3_0
+spyder                           6.0.7                     py313h06a4308_1
+spyder-kernels                   3.0.5                     py313h7040dfc_0
+sqlalchemy                       2.0.39                    py313h00e1ef3_0
 sqlite                           3.45.3                    h5eee18b_0
 stack_data                       0.2.0                     pyhd3eb1b0_0
-statsmodels                      0.14.2                    py312ha883a20_0
-streamlit                        1.37.1                    py312h06a4308_0
-sympy                            1.14.0                    pypi_0              pypi
-tabulate                         0.9.0                     py312h06a4308_0
+statsmodels                      0.14.4                    py313h5eee18b_0
+streamlit                        1.45.1                    py313h06a4308_1
+superqt                          0.7.3                     py313h7040dfc_0
+sympy                            1.13.3                    py313h06a4308_1
+tabulate                         0.9.0                     py313h06a4308_0
 tbb                              2021.8.0                  hdb19cb5_0
-tblib                            1.7.0                     pyhd3eb1b0_0
-tenacity                         8.2.3                     py312h06a4308_0
-terminado                        0.17.1                    py312h06a4308_0
+tblib                            3.1.0                     py313h06a4308_0
+tenacity                         9.0.0                     py313h06a4308_0
+terminado                        0.17.1                    py313h06a4308_0
 text-unidecode                   1.3                       pyhd3eb1b0_0
-textdistance                     4.2.1                     pyhd3eb1b0_0
-threadpoolctl                    3.5.0                     py312he106c6f_0
+textdistance                     4.6.3                     py313h7040dfc_0
+threadpoolctl                    3.5.0                     py313h7040dfc_0
 three-merge                      0.1.1                     pyhd3eb1b0_0
-tifffile                         2023.4.12                 py312h06a4308_0
-tinycss2                         1.2.1                     py312h06a4308_0
-tk                               8.6.14                    h39e8969_0
-tldextract                       5.1.2                     py312h06a4308_0
+tifffile                         2025.2.18                 py313h06a4308_0
+tinycss2                         1.4.0                     py313h06a4308_0
+tk                               8.6.14                    h993c535_1
+tldextract                       5.1.2                     py313h06a4308_0
 toml                             0.10.2                    pyhd3eb1b0_0
-tomli                            2.0.1                     py312h06a4308_1
-tomlkit                          0.11.1                    py312h06a4308_0
-toolz                            0.12.0                    py312h06a4308_0
-torch                            2.9.0.dev20250824+cu128   pypi_0              pypi
-torchaudio                       2.8.0.dev20250824+cu128   pypi_0              pypi
-torchvision                      0.24.0.dev20250824+cu128  pypi_0              pypi
-tornado                          6.4.1                     py312h5eee18b_0
-tqdm                             4.66.5                    py312he106c6f_0
-traitlets                        5.14.3                    py312h06a4308_0
-twisted                          23.10.0                   py312h06a4308_0
-typing-extensions                4.11.0                    py312h06a4308_0
-typing_extensions                4.11.0                    py312h06a4308_0
-tzdata                           2024b                     h04d1e81_0
-uc-micro-py                      1.0.1                     py312h06a4308_0
-ujson                            5.10.0                    py312h6a678d5_0
-unicodedata2                     15.1.0                    py312h5eee18b_0
-unidecode                        1.3.8                     py312h06a4308_0
+tomli                            2.0.1                     py313h06a4308_1
+tomlkit                          0.13.2                    py313h06a4308_0
+toolz                            1.0.0                     py313h06a4308_0
+torch                            2.9.0.dev20250907+cu128   pypi_0              pypi
+torchaudio                       2.8.0.dev20250907+cu128   pypi_0              pypi
+torchvision                      0.24.0.dev20250907+cu128  pypi_0              pypi
+tornado                          6.5.1                     py313h5eee18b_0
+tqdm                             4.67.1                    py313h7040dfc_0
+traitlets                        5.14.3                    py313h06a4308_0
+twisted                          24.11.0                   py313h06a4308_0
+typing-extensions                4.12.2                    py313h06a4308_0
+typing_extensions                4.12.2                    py313h06a4308_0
+tzdata                           2025b                     h04d1e81_0
+uc-micro-py                      1.0.1                     py313h06a4308_0
+ujson                            5.10.0                    py313h6a678d5_1
+unidecode                        1.3.8                     py313h06a4308_0
 unixodbc                         2.3.11                    h5eee18b_0
 uri-template                     1.3.0                     pypi_0              pypi
-urllib3                          2.2.3                     py312h06a4308_0
+urllib3                          2.3.0                     py313h06a4308_0
 utf8proc                         2.6.1                     h5eee18b_1
 w3lib                            1.21.0                    pyhd3eb1b0_0
-watchdog                         4.0.1                     py312h06a4308_0
+watchdog                         4.0.2                     py313h06a4308_0
 wcwidth                          0.2.5                     pyhd3eb1b0_0
 webcolors                        24.11.1                   pypi_0              pypi
-webencodings                     0.5.1                     py312h06a4308_2
-websocket-client                 1.8.0                     py312h06a4308_0
+webencodings                     0.5.1                     py313h06a4308_2
+websocket-client                 1.8.0                     py313h06a4308_0
 websockets                       15.0.1                    pypi_0              pypi
-werkzeug                         3.0.3                     py312h06a4308_0
-whatthepatch                     1.0.2                     py312h06a4308_0
-wheel                            0.44.0                    py312h06a4308_0
-widgetsnbextension               3.6.6                     py312h06a4308_0
-wrapt                            1.14.1                    py312h5eee18b_0
-wurlitzer                        3.0.2                     py312h06a4308_0
-xarray                           2025.8.0                  pypi_0              pypi
+werkzeug                         3.1.3                     py313h06a4308_0
+whatthepatch                     1.0.2                     py313h06a4308_0
+wheel                            0.45.1                    py313h06a4308_0
+widgetsnbextension               4.0.13                    py313h06a4308_0
+wrapt                            1.17.0                    py313h5eee18b_0
+wurlitzer                        3.0.2                     py313h06a4308_0
+xarray                           2025.4.0                  py313h06a4308_0
 xarray-einstats                  0.9.1                     pypi_0              pypi
-xyzservices                      2022.9.0                  py312h06a4308_1
-xz                               5.4.6                     h5eee18b_1
+xkeyboard-config                 2.44                      h5eee18b_0
+xorg-libx11                      1.8.12                    h9b100fa_1
+xorg-libxau                      1.0.12                    h9b100fa_0
+xorg-libxdmcp                    1.1.5                     h9b100fa_0
+xorg-xorgproto                   2024.1                    h5eee18b_1
+xyzservices                      2022.9.0                  py313h06a4308_1
+xz                               5.6.4                     h5eee18b_1
 yaml                             0.2.5                     h7b6447c_0
-yapf                             0.40.2                    py312h06a4308_0
-yarl                             1.11.0                    py312h5eee18b_0
+yapf                             0.40.2                    py313h06a4308_0
+yarl                             1.18.0                    py313h5eee18b_0
 yfinance                         0.2.65                    pypi_0              pypi
 zeromq                           4.3.5                     h6a678d5_0
-zfp                              1.0.0                     h6a678d5_0
-zict                             3.0.0                     py312h06a4308_0
-zipp                             3.17.0                    py312h06a4308_0
+zict                             3.0.0                     py313h06a4308_0
+zipp                             3.21.0                    py313h06a4308_0
 zlib                             1.2.13                    h5eee18b_1
 zlib-ng                          2.0.7                     h5eee18b_0
-zope                             1.0                       py312h06a4308_1
-zope.interface                   5.4.0                     py312h5eee18b_0
+zope                             1.0                       py313h06a4308_1
+zope.interface                   7.1.1                     py313h5eee18b_0
 zstd                             1.5.6                     hc292b87_0
 </pre></div>
 </div>
@@ -1343,7 +1365,7 @@ zstd                             1.5.6                     hc292b87_0
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug 25 05:13:04 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Sep  8 05:08:09 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -1352,7 +1374,7 @@ zstd                             1.5.6                     hc292b87_0
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   33C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   27C    P8             10W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
@@ -1370,7 +1392,7 @@ zstd                             1.5.6                     hc292b87_0
 <p>You can check the backend used by JAX using:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
 <span class="c1"># Check if JAX is using GPU</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX backend: </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1415,6 +1437,8 @@ zstd                             1.5.6                     hc292b87_0
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1872,6 +1896,11 @@ zstd                             1.5.6                     hc292b87_0
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1881,17 +1910,17 @@ zstd                             1.5.6                     hc292b87_0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1903,17 +1932,17 @@ zstd                             1.5.6                     hc292b87_0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1925,12 +1954,12 @@ zstd                             1.5.6                     hc292b87_0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1942,17 +1971,17 @@ zstd                             1.5.6                     hc292b87_0
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -2092,7 +2121,7 @@ zstd                             1.5.6                     hc292b87_0
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

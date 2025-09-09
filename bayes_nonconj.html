@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>18. Non-Conjugate Priors &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'bayes_nonconj';</script>
     <link rel="canonical" href="https://python.quantecon.org/bayes_nonconj.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="19. Posterior Distributions for AR(1) Parameters" href="ar1_bayes.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -247,7 +254,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="non-conjugate-priors">
-<h1><span class="section-number">18. </span>Non-Conjugate Priors<a class="headerlink" href="#non-conjugate-priors" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">18. </span>Non-Conjugate Priors<a class="headerlink" href="#non-conjugate-priors" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with the latest CUDA and CUDANN frameworks installed with access to a GPU.</p>
@@ -266,7 +273,7 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.19.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.19.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyro-ppl
@@ -275,60 +282,73 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pyro_ppl-1.9.1-py3-none-any.whl.metadata (7.8 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: torch in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (2.9.0.dev20250824+cu128)
-Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.6.2)
-Requirement already satisfied: jaxlib&gt;=0.4.25 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.2)
-Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (0.6.0)
-Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (1.26.4)
-Requirement already satisfied: tqdm in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numpyro) (4.66.5)
-Requirement already satisfied: opt-einsum&gt;=2.3.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from pyro-ppl) (3.4.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: torch in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (2.9.0.dev20250907+cu128)
+Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.6.2)
+Requirement already satisfied: jaxlib&gt;=0.4.25 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numpyro) (0.6.2)
+Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numpyro) (0.6.0)
+Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numpyro) (2.1.3)
+Requirement already satisfied: tqdm in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numpyro) (4.67.1)
+Requirement already satisfied: opt-einsum&gt;=2.3.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pyro-ppl) (3.4.0)
+Collecting pyro-api&gt;=0.1.1 (from pyro-ppl)
+  Downloading pyro_api-0.1.2-py3-none-any.whl.metadata (2.5 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyro-api&gt;=0.1.1 (from pyro-ppl)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: filelock in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (3.17.0)
+Requirement already satisfied: typing-extensions&gt;=4.10.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (4.12.2)
+Requirement already satisfied: setuptools in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (72.1.0)
+Requirement already satisfied: sympy&gt;=1.13.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (1.13.3)
+Requirement already satisfied: networkx&gt;=2.5.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (3.4.2)
+Requirement already satisfied: jinja2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (3.1.6)
+Requirement already satisfied: fsspec&gt;=0.8.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (2025.3.2)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.93 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (12.8.93)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.90 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (12.8.90)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.90 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (12.8.90)
+Requirement already satisfied: nvidia-cudnn-cu12==9.10.2.21 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (9.10.2.21)
+Requirement already satisfied: nvidia-cublas-cu12==12.8.4.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (12.8.4.1)
+Requirement already satisfied: nvidia-cufft-cu12==11.3.3.83 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (11.3.3.83)
+Requirement already satisfied: nvidia-curand-cu12==10.3.9.90 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (10.3.9.90)
+Requirement already satisfied: nvidia-cusolver-cu12==11.7.3.90 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (11.7.3.90)
+Requirement already satisfied: nvidia-cusparse-cu12==12.5.8.93 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (12.5.8.93)
+Requirement already satisfied: nvidia-cusparselt-cu12==0.7.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (0.7.1)
+Requirement already satisfied: nvidia-nccl-cu12==2.27.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (2.27.5)
+Requirement already satisfied: nvidia-nvshmem-cu12==3.3.20 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (3.3.20)
+Requirement already satisfied: nvidia-nvtx-cu12==12.8.90 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (12.8.90)
+Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.93 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (12.8.93)
+Requirement already satisfied: nvidia-cufile-cu12==1.13.1.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (1.13.1.3)
+Requirement already satisfied: pytorch-triton==3.4.0+gitf7888497 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from torch) (3.4.0+gitf7888497)
+Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.5.3)
+Requirement already satisfied: scipy&gt;=1.12 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (1.15.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pyro_api-0.1.2-py3-none-any.whl.metadata (2.5 kB)
-Requirement already satisfied: filelock in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.19.1)
-Requirement already satisfied: typing-extensions&gt;=4.10.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (4.11.0)
-Requirement already satisfied: setuptools in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (75.1.0)
-Requirement already satisfied: sympy&gt;=1.13.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (1.14.0)
-Requirement already satisfied: networkx&gt;=2.5.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.3)
-Requirement already satisfied: jinja2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.1.4)
-Requirement already satisfied: fsspec&gt;=0.8.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (2024.6.1)
-Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.93 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.93)
-Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.90 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.90)
-Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.90 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.90)
-Requirement already satisfied: nvidia-cudnn-cu12==9.10.2.21 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (9.10.2.21)
-Requirement already satisfied: nvidia-cublas-cu12==12.8.4.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.4.1)
-Requirement already satisfied: nvidia-cufft-cu12==11.3.3.83 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (11.3.3.83)
-Requirement already satisfied: nvidia-curand-cu12==10.3.9.90 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (10.3.9.90)
-Requirement already satisfied: nvidia-cusolver-cu12==11.7.3.90 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (11.7.3.90)
-Requirement already satisfied: nvidia-cusparse-cu12==12.5.8.93 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.5.8.93)
-Requirement already satisfied: nvidia-cusparselt-cu12==0.7.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (0.7.1)
-Requirement already satisfied: nvidia-nccl-cu12==2.27.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (2.27.5)
-Requirement already satisfied: nvidia-nvshmem-cu12==3.3.20 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.3.20)
-Requirement already satisfied: nvidia-nvtx-cu12==12.8.90 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.90)
-Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.93 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (12.8.93)
-Requirement already satisfied: nvidia-cufile-cu12==1.13.1.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (1.13.1.3)
-Requirement already satisfied: pytorch-triton==3.4.0+gitf7888497 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from torch) (3.4.0+gitf7888497)
-Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (0.5.3)
-Requirement already satisfied: scipy&gt;=1.12 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jax) (1.13.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy&gt;=1.13.3-&gt;torch) (1.3.0)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jinja2-&gt;torch) (3.0.2)
+Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from multipledispatch-&gt;numpyro) (1.17.0)
+Downloading pyro_ppl-1.9.1-py3-none-any.whl (755 kB)
+?25l
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy&gt;=1.13.3-&gt;torch) (1.3.0)
-Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from jinja2-&gt;torch) (2.1.3)
-Requirement already satisfied: six in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/756.0 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading pyro_ppl-1.9.1-py3-none-any.whl (755 kB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/756.0 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">756.0/756.0 kB</span> <span class=" -Color -Color-Red">23.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">756.0/756.0 kB</span> <span class=" -Color -Color-Red">10.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hDownloading pyro_api-0.1.2-py3-none-any.whl (11 kB)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: pyro-api, pyro-ppl
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25l
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/2</span> [pyro-ppl]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/2</span> [pyro-ppl]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/2</span> [pyro-ppl]
+?25h
+
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed pyro-api-0.1.2 pyro-ppl-1.9.1
@@ -364,40 +384,40 @@ be described below.</p>
 <p>As usual, we begin by importing some Python code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">binom</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
-<span class="kn">import</span> <span class="nn">torch</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">binom</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="c1"># jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span><span class="p">,</span> <span class="n">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">lax</span><span class="p">,</span> <span class="n">random</span>
 
 <span class="c1"># pyro</span>
-<span class="kn">import</span> <span class="nn">pyro</span>
-<span class="kn">from</span> <span class="nn">pyro</span> <span class="kn">import</span> <span class="n">distributions</span> <span class="k">as</span> <span class="n">dist</span>
-<span class="kn">import</span> <span class="nn">pyro.distributions.constraints</span> <span class="k">as</span> <span class="nn">constraints</span>
-<span class="kn">from</span> <span class="nn">pyro.infer</span> <span class="kn">import</span> <span class="n">MCMC</span><span class="p">,</span> <span class="n">NUTS</span><span class="p">,</span> <span class="n">SVI</span><span class="p">,</span> <span class="n">ELBO</span><span class="p">,</span> <span class="n">Trace_ELBO</span>
-<span class="kn">from</span> <span class="nn">pyro.optim</span> <span class="kn">import</span> <span class="n">Adam</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyro</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyro</span><span class="w"> </span><span class="kn">import</span> <span class="n">distributions</span> <span class="k">as</span> <span class="n">dist</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyro.distributions.constraints</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">constraints</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyro.infer</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCMC</span><span class="p">,</span> <span class="n">NUTS</span><span class="p">,</span> <span class="n">SVI</span><span class="p">,</span> <span class="n">ELBO</span><span class="p">,</span> <span class="n">Trace_ELBO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyro.optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Adam</span>
 
 <span class="c1"># numpyro</span>
-<span class="kn">import</span> <span class="nn">numpyro</span>
-<span class="kn">from</span> <span class="nn">numpyro</span> <span class="kn">import</span> <span class="n">distributions</span> <span class="k">as</span> <span class="n">ndist</span>
-<span class="kn">import</span> <span class="nn">numpyro.distributions.constraints</span> <span class="k">as</span> <span class="nn">nconstraints</span>
-<span class="kn">from</span> <span class="nn">numpyro.infer</span> <span class="kn">import</span> <span class="n">MCMC</span> <span class="k">as</span> <span class="n">nMCMC</span>
-<span class="kn">from</span> <span class="nn">numpyro.infer</span> <span class="kn">import</span> <span class="n">NUTS</span> <span class="k">as</span> <span class="n">nNUTS</span>
-<span class="kn">from</span> <span class="nn">numpyro.infer</span> <span class="kn">import</span> <span class="n">SVI</span> <span class="k">as</span> <span class="n">nSVI</span>
-<span class="kn">from</span> <span class="nn">numpyro.infer</span> <span class="kn">import</span> <span class="n">ELBO</span> <span class="k">as</span> <span class="n">nELBO</span>
-<span class="kn">from</span> <span class="nn">numpyro.infer</span> <span class="kn">import</span> <span class="n">Trace_ELBO</span> <span class="k">as</span> <span class="n">nTrace_ELBO</span>
-<span class="kn">from</span> <span class="nn">numpyro.optim</span> <span class="kn">import</span> <span class="n">Adam</span> <span class="k">as</span> <span class="n">nAdam</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpyro</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpyro</span><span class="w"> </span><span class="kn">import</span> <span class="n">distributions</span> <span class="k">as</span> <span class="n">ndist</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpyro.distributions.constraints</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nconstraints</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpyro.infer</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCMC</span> <span class="k">as</span> <span class="n">nMCMC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpyro.infer</span><span class="w"> </span><span class="kn">import</span> <span class="n">NUTS</span> <span class="k">as</span> <span class="n">nNUTS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpyro.infer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVI</span> <span class="k">as</span> <span class="n">nSVI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpyro.infer</span><span class="w"> </span><span class="kn">import</span> <span class="n">ELBO</span> <span class="k">as</span> <span class="n">nELBO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpyro.infer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Trace_ELBO</span> <span class="k">as</span> <span class="n">nTrace_ELBO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpyro.optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Adam</span> <span class="k">as</span> <span class="n">nAdam</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="unleashing-mcmc-on-a-binomial-likelihood">
-<h2><span class="section-number">18.1. </span>Unleashing MCMC on a  Binomial Likelihood<a class="headerlink" href="#unleashing-mcmc-on-a-binomial-likelihood" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.1. </span>Unleashing MCMC on a  Binomial Likelihood<a class="headerlink" href="#unleashing-mcmc-on-a-binomial-likelihood" title="Link to this heading">#</a></h2>
 <p>This lecture begins with the binomial example in the <a class="reference internal" href="prob_meaning.html"><span class="doc">quantecon lecture</span></a>.</p>
 <p>That lecture computed a posterior</p>
 <ul class="simple">
@@ -412,7 +432,7 @@ be described below.</p>
 <p>We use several alternative prior distributions</p>
 <p>We  compare computed posteriors  with ones associated with a conjugate prior as described in  <a class="reference internal" href="prob_meaning.html"><span class="doc">the quantecon lecture</span></a></p>
 <section id="analytical-posterior">
-<h3><span class="section-number">18.1.1. </span>Analytical Posterior<a class="headerlink" href="#analytical-posterior" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.1.1. </span>Analytical Posterior<a class="headerlink" href="#analytical-posterior" title="Link to this heading">#</a></h3>
 <p>Assume that the random variable <span class="math notranslate nohighlight">\(X\sim Binom\left(n,\theta\right)\)</span>.</p>
 <p>This defines a likelihood function</p>
 <div class="math notranslate nohighlight">
@@ -449,7 +469,7 @@ f(\theta) = \textrm{Prob}(\theta) = \frac{\theta^{\alpha - 1} (1 - \theta)^{\bet
 <p>The analytical posterior for a given conjugate beta prior is coded in the following Python code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simulate_draw</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_draw</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draws a Bernoulli sample of size n with probability P(Y=1) = theta</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -458,7 +478,7 @@ f(\theta) = \textrm{Prob}(\theta) = \frac{\theta^{\alpha - 1} (1 - \theta)^{\bet
     <span class="k">return</span> <span class="n">draw</span>
 
 
-<span class="k">def</span> <span class="nf">analytical_beta_posterior</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">alpha0</span><span class="p">,</span> <span class="n">beta0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">analytical_beta_posterior</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">alpha0</span><span class="p">,</span> <span class="n">beta0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes analytically the posterior distribution with beta prior parametrized by (alpha, beta)</span>
 <span class="sd">    given # num observations</span>
@@ -484,7 +504,7 @@ f(\theta) = \textrm{Prob}(\theta) = \frac{\theta^{\alpha - 1} (1 - \theta)^{\bet
 </div>
 </section>
 <section id="two-ways-to-approximate-posteriors">
-<h3><span class="section-number">18.1.2. </span>Two Ways to Approximate Posteriors<a class="headerlink" href="#two-ways-to-approximate-posteriors" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.1.2. </span>Two Ways to Approximate Posteriors<a class="headerlink" href="#two-ways-to-approximate-posteriors" title="Link to this heading">#</a></h3>
 <p>Suppose that we don’t have a conjugate prior.</p>
 <p>Then  we  can’t compute posteriors analytically.</p>
 <p>Instead,  we use computational tools to approximate the posterior distribution for a set of alternative prior distributions using both <code class="docutils literal notranslate"><span class="pre">Pyro</span></code> and <code class="docutils literal notranslate"><span class="pre">Numpyro</span></code> packages in Python.</p>
@@ -506,7 +526,7 @@ a Kullback-Leibler (KL) divergence between true posterior and the putatitive pos
 </section>
 </section>
 <section id="prior-distributions">
-<h2><span class="section-number">18.2. </span>Prior Distributions<a class="headerlink" href="#prior-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.2. </span>Prior Distributions<a class="headerlink" href="#prior-distributions" title="Link to this heading">#</a></h2>
 <p>In order to be able to apply MCMC sampling or VI, <code class="docutils literal notranslate"><span class="pre">Pyro</span></code> and <code class="docutils literal notranslate"><span class="pre">Numpyro</span></code> require  that a prior distribution satisfy special properties:</p>
 <ul class="simple">
 <li><p>we must be able sample from it;</p></li>
@@ -541,7 +561,7 @@ a Kullback-Leibler (KL) divergence between true posterior and the putatitive pos
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># used by Numpyro</span>
-<span class="k">def</span> <span class="nf">TruncatedLogNormal_trans</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">TruncatedLogNormal_trans</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Obtains the truncated log normal distribution using numpyro&#39;s TruncatedNormal and ExpTransform</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -550,7 +570,7 @@ a Kullback-Leibler (KL) divergence between true posterior and the putatitive pos
         <span class="n">base_dist</span><span class="p">,</span><span class="n">ndist</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">ExpTransform</span><span class="p">()</span>
         <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">ShiftedVonMises</span><span class="p">(</span><span class="n">kappa</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ShiftedVonMises</span><span class="p">(</span><span class="n">kappa</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Obtains the shifted von Mises distribution using AffineTransform</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -559,7 +579,7 @@ a Kullback-Leibler (KL) divergence between true posterior and the putatitive pos
         <span class="n">base_dist</span><span class="p">,</span> <span class="n">ndist</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">AffineTransform</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
         <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">TruncatedLaplace</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">TruncatedLaplace</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Obtains the truncated Laplace distribution on [0,1]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -569,34 +589,34 @@ a Kullback-Leibler (KL) divergence between true posterior and the putatitive pos
     <span class="p">)</span>
 
 <span class="c1"># used by Pyro</span>
-<span class="k">class</span> <span class="nc">TruncatedLogNormal</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Rejector</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TruncatedLogNormal</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Rejector</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Define a TruncatedLogNormal distribution through rejection sampling in Pyro</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">scale_0</span><span class="p">,</span> <span class="n">upp</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">scale_0</span><span class="p">,</span> <span class="n">upp</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upp</span> <span class="o">=</span> <span class="n">upp</span>
         <span class="n">propose</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">LogNormal</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale_0</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">log_prob_accept</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">log_prob_accept</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">upp</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">log</span><span class="p">()</span>
 
         <span class="n">log_scale</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">LogNormal</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale_0</span><span class="p">)</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">upp</span><span class="p">))</span><span class="o">.</span><span class="n">log</span><span class="p">()</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TruncatedLogNormal</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">propose</span><span class="p">,</span> <span class="n">log_prob_accept</span><span class="p">,</span> <span class="n">log_scale</span><span class="p">)</span>
 
     <span class="nd">@constraints</span><span class="o">.</span><span class="n">dependent_property</span>
-    <span class="k">def</span> <span class="nf">support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">constraints</span><span class="o">.</span><span class="n">interval</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upp</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">TruncatedvonMises</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Rejector</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TruncatedvonMises</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Rejector</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Define a TruncatedvonMises distribution through rejection sampling in Pyro</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upp</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upp</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upp</span> <span class="o">=</span> <span class="n">low</span><span class="p">,</span> <span class="n">upp</span>
         <span class="n">propose</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">VonMises</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">log_prob_accept</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">log_prob_accept</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">((</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">low</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">upp</span><span class="p">))</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">log</span><span class="p">()</span>
 
         <span class="n">log_scale</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
@@ -607,14 +627,14 @@ a Kullback-Leibler (KL) divergence between true posterior and the putatitive pos
         <span class="nb">super</span><span class="p">(</span><span class="n">TruncatedvonMises</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">propose</span><span class="p">,</span> <span class="n">log_prob_accept</span><span class="p">,</span> <span class="n">log_scale</span><span class="p">)</span>
 
     <span class="nd">@constraints</span><span class="o">.</span><span class="n">dependent_property</span>
-    <span class="k">def</span> <span class="nf">support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">constraints</span><span class="o">.</span><span class="n">interval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upp</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="variational-inference">
-<h3><span class="section-number">18.2.1. </span>Variational Inference<a class="headerlink" href="#variational-inference" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.2.1. </span>Variational Inference<a class="headerlink" href="#variational-inference" title="Link to this heading">#</a></h3>
 <p>Instead of directly sampling from the posterior,  the <strong>variational inference</strong>  methodw approximates an unknown posterior distribution with  a family of tractable distributions/densities.</p>
 <p>It then seeks to minimizes a measure of statistical discrepancy between the approximating and  true posteriors.</p>
 <p>Thus variational inference (VI)  approximates a posterior by solving  a  minimization problem.</p>
@@ -628,7 +648,7 @@ p\left(\theta\vert Y\right)=\frac{p\left(Y,\theta\right)}{p\left(Y\right)}=\frac
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-eq-intchallenge">
-<span class="eqno">(18.1)<a class="headerlink" href="#equation-eq-intchallenge" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(18.1)<a class="headerlink" href="#equation-eq-intchallenge" title="Link to this equation">#</a></span>\[
 p\left(Y\right)=\int d\theta p\left(Y\mid\theta\right)p\left(Y\right).
 \]</div>
 <p>The integral on the right side of <a class="reference internal" href="#equation-eq-intchallenge">(18.1)</a>  is typically difficult to compute.</p>
@@ -657,7 +677,7 @@ p\left(Y\right)=\int d\theta p\left(Y\mid\theta\right)p\left(Y\right).
 \end{split}\]</div>
 <p>For  observed data <span class="math notranslate nohighlight">\(Y\)</span>, <span class="math notranslate nohighlight">\(p(\theta,Y)\)</span> is a constant, so minimizing KL divergence is equivalent to maximizing</p>
 <div class="math notranslate nohighlight" id="equation-eq-elbo">
-<span class="eqno">(18.2)<a class="headerlink" href="#equation-eq-elbo" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(18.2)<a class="headerlink" href="#equation-eq-elbo" title="Link to this equation">#</a></span>\[
 ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=\mathbb{E}_{q_{\phi}(\theta)}\left[\log p(\theta,Y)-\log q_{\phi}(\theta)\right]
 \]</div>
 <p>Formula <a class="reference internal" href="#equation-eq-elbo">(18.2)</a> is called  the evidence lower bound (ELBO).</p>
@@ -676,7 +696,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </section>
 </section>
 <section id="implementation">
-<h2><span class="section-number">18.3. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.3. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>We have constructed a Python class <code class="docutils literal notranslate"><span class="pre">BaysianInference</span></code> that requires the following arguments to be initialized:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">param</span></code>: a tuple/scalar of parameters dependent on distribution types</p></li>
@@ -732,8 +752,8 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BayesianInference</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">name_dist</span><span class="p">,</span> <span class="n">solver</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BayesianInference</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">name_dist</span><span class="p">,</span> <span class="n">solver</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ---------</span>
@@ -752,7 +772,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
         <span class="bp">self</span><span class="o">.</span><span class="n">rng_key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">sample_prior</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sample_prior</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Define the prior distribution to sample from in Pyro/Numpyro models.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -800,7 +820,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
         <span class="k">return</span> <span class="n">sample</span>
 
 
-    <span class="k">def</span> <span class="nf">show_prior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">1e5</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">disp_plot</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_prior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">1e5</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">disp_plot</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Visualizes prior distribution by sampling from prior and plots the approximated sampling distribution</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -827,7 +847,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
             <span class="k">return</span> <span class="n">sample_array</span>
 
 
-    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Define the probabilistic model by specifying prior, conditional likelihood, and data conditioning</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -845,7 +865,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
         <span class="k">return</span> <span class="n">output</span>
 
 
-    <span class="k">def</span> <span class="nf">MCMC_sampling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">num_warmup</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">MCMC_sampling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">num_warmup</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes numerically the posterior distribution with beta prior parametrized by (alpha0, beta0)</span>
 <span class="sd">        given data using MCMC</span>
@@ -870,7 +890,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
         <span class="k">return</span> <span class="n">samples</span>
 
 
-    <span class="k">def</span> <span class="nf">beta_guide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">beta_guide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Defines the candidate parametrized variational distribution that we train to approximate posterior with Pyro/Numpyro</span>
 <span class="sd">        Here we use parameterized beta</span>
@@ -891,7 +911,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
             <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">ndist</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="n">alpha_q</span><span class="p">,</span> <span class="n">beta_q</span><span class="p">))</span>
 
 
-    <span class="k">def</span> <span class="nf">truncnormal_guide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">truncnormal_guide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Defines the candidate parametrized variational distribution that we train to approximate posterior with Pyro/Numpyro</span>
 <span class="sd">        Here we use truncated normal on [0,1]</span>
@@ -903,7 +923,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
         <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">ndist</span><span class="o">.</span><span class="n">TruncatedNormal</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
 
 
-    <span class="k">def</span> <span class="nf">SVI_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guide_dist</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">SVI_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guide_dist</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initiate SVI training mode with Adam optimizer</span>
 <span class="sd">        NOTE: truncnormal_guide can only be used with numpyro solver</span>
@@ -934,7 +954,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 
         <span class="k">return</span> <span class="n">svi</span>
 
-    <span class="k">def</span> <span class="nf">SVI_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">guide_dist</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">SVI_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">guide_dist</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Runs SVI and returns optimized parameters and losses</span>
 
@@ -978,7 +998,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </section>
 <section id="alternative-prior-distributions">
-<h2><span class="section-number">18.4. </span>Alternative Prior Distributions<a class="headerlink" href="#alternative-prior-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.4. </span>Alternative Prior Distributions<a class="headerlink" href="#alternative-prior-distributions" title="Link to this heading">#</a></h2>
 <p>Let’s see how well our sampling algorithm does in approximating</p>
 <ul class="simple">
 <li><p>a log normal distribution</p></li>
@@ -999,8 +1019,8 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b9c3b01d128108fdb6f54e4d9abb6a3b99aec07306c8c5a5c2c5a13ec749a96c.png" src="_images/b9c3b01d128108fdb6f54e4d9abb6a3b99aec07306c8c5a5c2c5a13ec749a96c.png" />
-<img alt="_images/8959b1628e6f5ddde7029c4425f8ede06aefb1fa1cf163956b59e250d9c4942b.png" src="_images/8959b1628e6f5ddde7029c4425f8ede06aefb1fa1cf163956b59e250d9c4942b.png" />
+<img alt="_images/1ccf1957b65d8ff95c13dfb63a952d8d2e58d7c601b570dde87cc0bd384ee71f.png" src="_images/1ccf1957b65d8ff95c13dfb63a952d8d2e58d7c601b570dde87cc0bd384ee71f.png" />
+<img alt="_images/bd942f72b41c33ed2f8332ef97f4e3088381088c5d1893f1bbfd431a56f7dfec.png" src="_images/bd942f72b41c33ed2f8332ef97f4e3088381088c5d1893f1bbfd431a56f7dfec.png" />
 </div>
 </div>
 <p>The above graphs show that sampling seems to work well with both distributions.</p>
@@ -1018,8 +1038,8 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0cacfb27f9a674cd7068cb43f9260eb966d9967dffe2ecbca7d282d609373b5a.png" src="_images/0cacfb27f9a674cd7068cb43f9260eb966d9967dffe2ecbca7d282d609373b5a.png" />
-<img alt="_images/ad44107151cc4126932de19874f0bcf5ac16acdc59645f312a1979c2ebec21d5.png" src="_images/ad44107151cc4126932de19874f0bcf5ac16acdc59645f312a1979c2ebec21d5.png" />
+<img alt="_images/24dd9641339112cf189ef33675feffcc05a07a21338289577678da1d03dc3ecc.png" src="_images/24dd9641339112cf189ef33675feffcc05a07a21338289577678da1d03dc3ecc.png" />
+<img alt="_images/e79d91c09865c9224a107a1429773d737a7ce47473d3d46f188a15549a96fdd8.png" src="_images/e79d91c09865c9224a107a1429773d737a7ce47473d3d46f188a15549a96fdd8.png" />
 </div>
 </div>
 <p>These graphs look good too.</p>
@@ -1033,13 +1053,13 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/52e993490f436966f83c7e09bee0a627e9fbe6b9fb34169bd62a17db0e7e943f.png" src="_images/52e993490f436966f83c7e09bee0a627e9fbe6b9fb34169bd62a17db0e7e943f.png" />
+<img alt="_images/b15bc5d790fbe88943103be8ca89f733b0fbbe73d74a384bd30132ec9c499b15.png" src="_images/b15bc5d790fbe88943103be8ca89f733b0fbbe73d74a384bd30132ec9c499b15.png" />
 </div>
 </div>
 <p>Having assured ourselves that our sampler seems to do a good job, let’s put it to work in using MCMC to compute posterior probabilities.</p>
 </section>
 <section id="posteriors-via-mcmc-and-vi">
-<h2><span class="section-number">18.5. </span>Posteriors Via MCMC and VI<a class="headerlink" href="#posteriors-via-mcmc-and-vi" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.5. </span>Posteriors Via MCMC and VI<a class="headerlink" href="#posteriors-via-mcmc-and-vi" title="Link to this heading">#</a></h2>
 <p>We construct a class  <code class="docutils literal notranslate"><span class="pre">BayesianInferencePlot</span></code> to implement MCMC or VI algorithms and plot multiple posteriors for different updating data sizes and different  possible prior.</p>
 <p>This class takes as inputs the true data generating parameter ‘theta’, a list of updating data sizes for multiple posterior plotting, and a defined and parametrized <code class="docutils literal notranslate"><span class="pre">BayesianInference</span></code> class.</p>
 <p>It has two key methods:</p>
@@ -1049,7 +1069,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BayesianInferencePlot</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BayesianInferencePlot</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Easily implement the MCMC and VI inference for a given instance of BayesianInference class and</span>
 <span class="sd">    plot the prior together with multiple posteriors</span>
@@ -1065,7 +1085,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">N_list</span><span class="p">,</span> <span class="n">BayesianInferenceClass</span><span class="p">,</span> <span class="n">binwidth</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">N_list</span><span class="p">,</span> <span class="n">BayesianInferenceClass</span><span class="p">,</span> <span class="n">binwidth</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Enter Parameters for data generation and plotting</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1083,7 +1103,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">simulate_draw</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">N_max</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">MCMC_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">num_warmup</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">MCMC_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">num_warmup</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters as in MCMC_sampling except that data is already defined</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1120,7 +1140,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 
-    <span class="k">def</span> <span class="nf">SVI_fitting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guide_dist</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">SVI_fitting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guide_dist</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the beta/truncnormal curve using parameters trained by SVI.</span>
 <span class="sd">        I create plot using PDF given by scipy.stats distributions since torch.dist do not have embedded PDF methods.</span>
@@ -1141,7 +1161,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
         <span class="k">return</span> <span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">SVI_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guide_dist</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">SVI_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guide_dist</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters as in SVI_run except that data is already defined</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1192,7 +1212,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <section id="beta-prior-and-posteriors">
-<h3><span class="section-number">18.5.1. </span>Beta Prior and Posteriors:<a class="headerlink" href="#beta-prior-and-posteriors" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.5.1. </span>Beta Prior and Posteriors:<a class="headerlink" href="#beta-prior-and-posteriors" title="Link to this heading">#</a></h3>
 <p>Let’s compare outcomes when we use a Beta prior.</p>
 <p>For the same Beta prior, we shall</p>
 <ul class="simple">
@@ -1234,7 +1254,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/824261105c17a43fe167ca8dd3dad2b4d8505b490336216f74b743c49e2fabf1.png" src="_images/824261105c17a43fe167ca8dd3dad2b4d8505b490336216f74b743c49e2fabf1.png" />
+<img alt="_images/e9fdfb947b97c5aa70d5bc84a09a6edf3d466ee39bb256f01496d4cfb887a7e7.png" src="_images/e9fdfb947b97c5aa70d5bc84a09a6edf3d466ee39bb256f01496d4cfb887a7e7.png" />
 </div>
 </div>
 <p>Now let’s use MCMC while still using a beta prior.</p>
@@ -1247,8 +1267,8 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b34804fdbb42a43fa7dbe298982196b5278ca94168517c824fed28293d2ed3f1.png" src="_images/b34804fdbb42a43fa7dbe298982196b5278ca94168517c824fed28293d2ed3f1.png" />
-<img alt="_images/8ea9e3dcc559f5f09fb7bac76d247d4489011c4fd5a1fb2ed5ac951880425b40.png" src="_images/8ea9e3dcc559f5f09fb7bac76d247d4489011c4fd5a1fb2ed5ac951880425b40.png" />
+<img alt="_images/0f188c497bdf2ae7e067876785592d88400e80d6f638fcdc64d36b0bfe66a65f.png" src="_images/0f188c497bdf2ae7e067876785592d88400e80d6f638fcdc64d36b0bfe66a65f.png" />
+<img alt="_images/90d9252f79b03c0e32f67eaf1e67a3c383017ea115f33c2007a1fa091a9ca50f.png" src="_images/90d9252f79b03c0e32f67eaf1e67a3c383017ea115f33c2007a1fa091a9ca50f.png" />
 </div>
 </div>
 <p>Here the MCMC approximation looks good.</p>
@@ -1267,18 +1287,18 @@ will be  more accurate, as we shall see next.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6e593f3908e9dd084ff150b0d6218aa3f36864501136a49a5747f18b8c784d1e.png" src="_images/6e593f3908e9dd084ff150b0d6218aa3f36864501136a49a5747f18b8c784d1e.png" />
+<img alt="_images/0c1bceaa40cffef2091bffea3e167b67af4975d183b0733657550fa31ae4b6e9.png" src="_images/0c1bceaa40cffef2091bffea3e167b67af4975d183b0733657550fa31ae4b6e9.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="non-conjugate-prior-distributions">
-<h2><span class="section-number">18.6. </span>Non-conjugate Prior Distributions<a class="headerlink" href="#non-conjugate-prior-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.6. </span>Non-conjugate Prior Distributions<a class="headerlink" href="#non-conjugate-prior-distributions" title="Link to this heading">#</a></h2>
 <p>Having assured ourselves that our MCMC and VI methods can work well when we have  conjugate prior and so can also compute analytically, we
 next proceed to situations in which our  prior  is not a beta distribution, so we don’t have a conjugate prior.</p>
 <p>So we will have non-conjugate priors and are cast into situations in which we can’t calculate posteriors analytically.</p>
 <section id="mcmc">
-<h3><span class="section-number">18.6.1. </span>MCMC<a class="headerlink" href="#mcmc" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.6.1. </span>MCMC<a class="headerlink" href="#mcmc" title="Link to this heading">#</a></h3>
 <p>First, we implement and display  MCMC.</p>
 <p>We first initialize the <code class="docutils literal notranslate"><span class="pre">BayesianInference</span></code> classes and then can directly call <code class="docutils literal notranslate"><span class="pre">BayesianInferencePlot</span></code> to plot both MCMC and SVI approximating posteriors.</p>
 <div class="cell docutils container">
@@ -1324,14 +1344,14 @@ Prior Dist: uniform
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/cc62334462485f265861efedd3ab064b2a5d481873e3d6dfb7ace3590a20a7be.png" src="_images/cc62334462485f265861efedd3ab064b2a5d481873e3d6dfb7ace3590a20a7be.png" />
+<img alt="_images/2b06d9382e61768a0a024a3ed166d07fdba2af780e00a6dced9395adccb9b6f2.png" src="_images/2b06d9382e61768a0a024a3ed166d07fdba2af780e00a6dced9395adccb9b6f2.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0.2, 0.7)
 Prior Dist: uniform
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/2c86523442a8422ae27c5ef3d3037e56085fe9c5fcc8afc20dfbeb4f4ef02bd2.png" src="_images/2c86523442a8422ae27c5ef3d3037e56085fe9c5fcc8afc20dfbeb4f4ef02bd2.png" />
+<img alt="_images/7cc94e6e6e99504d2ffded4144bb7dea7f7620206f7d5b5baf1ca622f2a6017a.png" src="_images/7cc94e6e6e99504d2ffded4144bb7dea7f7620206f7d5b5baf1ca622f2a6017a.png" />
 </div>
 </div>
 <p>In the situation depicted above, we have assumed a  <span class="math notranslate nohighlight">\(Uniform(\underline{\theta}, \overline{\theta})\)</span> prior that puts zero probability   outside a bounded support that excludes the true value.</p>
@@ -1357,14 +1377,14 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/4b3041c8df7f5863e5a1eee8c88a48bdc7d5f9029f48ddc0b2163e5cf60847f5.png" src="_images/4b3041c8df7f5863e5a1eee8c88a48bdc7d5f9029f48ddc0b2163e5cf60847f5.png" />
+<img alt="_images/21d94b07bc606ebcf2fd912d8ec9084233517d659785523d48004c9393eeb58b.png" src="_images/21d94b07bc606ebcf2fd912d8ec9084233517d659785523d48004c9393eeb58b.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0, 2)
 Prior Dist: lognormal
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/f226be7eead6cf817dc6bb53dccfb0260dc5c2a3a64a40b0844d175ccacbb769.png" src="_images/f226be7eead6cf817dc6bb53dccfb0260dc5c2a3a64a40b0844d175ccacbb769.png" />
+<img alt="_images/b3aa40bb5dcde8ad49cb67927bafffd66670fc917ad6713eba7b98aae37f87f0.png" src="_images/b3aa40bb5dcde8ad49cb67927bafffd66670fc917ad6713eba7b98aae37f87f0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1391,7 +1411,7 @@ Solver: numpyro
 NOTE: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/2e8d90e2814e40128660b5db667c4f6f5ce134493ec900ad0bc58c6b6be09389.png" src="_images/2e8d90e2814e40128660b5db667c4f6f5ce134493ec900ad0bc58c6b6be09389.png" />
+<img alt="_images/21beb7247db01421dad1034b320486ce30bac17974ea6405c921309a3ac10211.png" src="_images/21beb7247db01421dad1034b320486ce30bac17974ea6405c921309a3ac10211.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: 40
 Prior Dist: vonMises
@@ -1400,7 +1420,7 @@ Solver: pyro
 NOTE: Truncated von Mises
 </pre></div>
 </div>
-<img alt="_images/464aa70aa8c28b12ac5861646ae64e3ad03bb6694f1ff3b3056f69d3475a8d30.png" src="_images/464aa70aa8c28b12ac5861646ae64e3ad03bb6694f1ff3b3056f69d3475a8d30.png" />
+<img alt="_images/5e1379ee2dbe074e0584e61b8fedac2e457bb4001ee254d0968274a11b24b019.png" src="_images/5e1379ee2dbe074e0584e61b8fedac2e457bb4001ee254d0968274a11b24b019.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1419,7 +1439,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/e4f9b94712fa5f67a953187725f638b892811cdcaa7de3b088f749f44fb727cc.png" src="_images/e4f9b94712fa5f67a953187725f638b892811cdcaa7de3b088f749f44fb727cc.png" />
+<img alt="_images/df067ae6e2dc6c4343ea155d7186cd272c6f0f4e7aab604841f65cd0f1c7c971.png" src="_images/df067ae6e2dc6c4343ea155d7186cd272c6f0f4e7aab604841f65cd0f1c7c971.png" />
 </div>
 </div>
 <p>To get more accuracy we will now increase the number of steps for Variational Inference (VI)</p>
@@ -1431,7 +1451,7 @@ Solver: numpyro
 </div>
 </div>
 <section id="vi-with-a-truncated-normal-guide">
-<h4><span class="section-number">18.6.1.1. </span>VI with a  Truncated Normal Guide<a class="headerlink" href="#vi-with-a-truncated-normal-guide" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">18.6.1.1. </span>VI with a  Truncated Normal Guide<a class="headerlink" href="#vi-with-a-truncated-normal-guide" title="Link to this heading">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uniform</span>
@@ -1448,7 +1468,7 @@ Prior Dist: uniform
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/3aaa7d243c627edaf39ed28be93eed089dbe6f1de1db6d96af6c402fe1ada6b3.png" src="_images/3aaa7d243c627edaf39ed28be93eed089dbe6f1de1db6d96af6c402fe1ada6b3.png" />
+<img alt="_images/15a0ec3f7b83457606c33aaf21bbc181e461291907b246c61aac0054b195fd60.png" src="_images/15a0ec3f7b83457606c33aaf21bbc181e461291907b246c61aac0054b195fd60.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1467,7 +1487,7 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/625ea8aa0764822e81d801988d84cd6093db859c6abfbb15f28181c38e8ce1af.png" src="_images/625ea8aa0764822e81d801988d84cd6093db859c6abfbb15f28181c38e8ce1af.png" />
+<img alt="_images/4766d901cab522fabcb7164cd6bd37d92ca52814a963fbe1084759c18ff26fc1.png" src="_images/4766d901cab522fabcb7164cd6bd37d92ca52814a963fbe1084759c18ff26fc1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1489,7 +1509,7 @@ Solver: numpyro
 NB: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/53f5315646ef8bd455e724cc857a325ff8528e7d2d843ac0e2d9b6eb7d58f1f7.png" src="_images/53f5315646ef8bd455e724cc857a325ff8528e7d2d843ac0e2d9b6eb7d58f1f7.png" />
+<img alt="_images/503b0cf66e9053f8b53fbbefd4c9f3500fd1c8590171757bd722dfe5fc07a9b5.png" src="_images/503b0cf66e9053f8b53fbbefd4c9f3500fd1c8590171757bd722dfe5fc07a9b5.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1508,12 +1528,12 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/2aedd58a07a4d20db1d9bb14665b69a1e98fee61d811b2c9a3b74ab2ca703a9b.png" src="_images/2aedd58a07a4d20db1d9bb14665b69a1e98fee61d811b2c9a3b74ab2ca703a9b.png" />
+<img alt="_images/b3e0e3ad7f2aa95f14cfd31ffd3097d146bd838ec808d11a045770244da2e5c1.png" src="_images/b3e0e3ad7f2aa95f14cfd31ffd3097d146bd838ec808d11a045770244da2e5c1.png" />
 </div>
 </div>
 </section>
 <section id="variational-inference-with-a-beta-guide-distribution">
-<h4><span class="section-number">18.6.1.2. </span>Variational Inference with a  Beta Guide Distribution<a class="headerlink" href="#variational-inference-with-a-beta-guide-distribution" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">18.6.1.2. </span>Variational Inference with a  Beta Guide Distribution<a class="headerlink" href="#variational-inference-with-a-beta-guide-distribution" title="Link to this heading">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uniform</span>
@@ -1530,7 +1550,7 @@ Prior Dist: uniform
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/990218949175f11b1a75131d61ebbc60bd7eeea8fe09d655988a4aa2f16e7253.png" src="_images/990218949175f11b1a75131d61ebbc60bd7eeea8fe09d655988a4aa2f16e7253.png" />
+<img alt="_images/f39e3e312eb7f4864c7b139b7740afde5b60bb3f115cbdd86845e1c19d67c4fc.png" src="_images/f39e3e312eb7f4864c7b139b7740afde5b60bb3f115cbdd86845e1c19d67c4fc.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1553,14 +1573,14 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/a08129beb7ea9349a70db0573c8ee0aa9130a3074dfa0f116d42522b95bba3e6.png" src="_images/a08129beb7ea9349a70db0573c8ee0aa9130a3074dfa0f116d42522b95bba3e6.png" />
+<img alt="_images/7a9e93e0e16e23fe4446df03e6aecd60420e424aee2511c4d78e586236215029.png" src="_images/7a9e93e0e16e23fe4446df03e6aecd60420e424aee2511c4d78e586236215029.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0, 2)
 Prior Dist: lognormal
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/63bd5c545e1ae027986d420b023ffcaea0320b0cda04e81b7d60329be7efe2ef.png" src="_images/63bd5c545e1ae027986d420b023ffcaea0320b0cda04e81b7d60329be7efe2ef.png" />
+<img alt="_images/402700947dcf2afd02148d48ea77af75a99825a040a281e90d2559db915c933e.png" src="_images/402700947dcf2afd02148d48ea77af75a99825a040a281e90d2559db915c933e.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1587,7 +1607,7 @@ Solver: numpyro
 NB: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/eaa5ee3be9446360a1d308a56436dc93b273dabec7af221cd357f2b22077a1f9.png" src="_images/eaa5ee3be9446360a1d308a56436dc93b273dabec7af221cd357f2b22077a1f9.png" />
+<img alt="_images/154cf0b0918600987781a845484e364e46a901f727f8cef44b2248b9922acdbc.png" src="_images/154cf0b0918600987781a845484e364e46a901f727f8cef44b2248b9922acdbc.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: 40
 Prior Dist: vonMises
@@ -1596,7 +1616,7 @@ Solver: pyro
 NB: Truncated von Mises
 </pre></div>
 </div>
-<img alt="_images/db1aed6354cbb57c62881b55022d33f6c7cf6177305162e4cec8c7120122007f.png" src="_images/db1aed6354cbb57c62881b55022d33f6c7cf6177305162e4cec8c7120122007f.png" />
+<img alt="_images/19ada32c1ce106386d82d8d5ba6cb37ad0aee9be674aa8be4af58e7e3e3cd602.png" src="_images/19ada32c1ce106386d82d8d5ba6cb37ad0aee9be674aa8be4af58e7e3e3cd602.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1615,7 +1635,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/cbd20f0ce26a06ada120aeaf6688dc62c4eeec858ad048783c8fa371ced49670.png" src="_images/cbd20f0ce26a06ada120aeaf6688dc62c4eeec858ad048783c8fa371ced49670.png" />
+<img alt="_images/0de832547c962102b3a79d72e7fce353c13fc0b5a8a907a6296df4ddf79c25e8.png" src="_images/0de832547c962102b3a79d72e7fce353c13fc0b5a8a907a6296df4ddf79c25e8.png" />
 </div>
 </div>
 </section>
@@ -1654,6 +1674,8 @@ Solver: numpyro
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -2111,6 +2133,11 @@ Solver: numpyro
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -2120,17 +2147,17 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2142,17 +2169,17 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2164,12 +2191,12 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2181,17 +2208,17 @@ Solver: numpyro
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -2331,7 +2358,7 @@ Solver: numpyro
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

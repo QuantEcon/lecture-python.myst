@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>12. Multivariate Hypergeometric Distribution &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'multi_hyper';</script>
     <link rel="canonical" href="https://python.quantecon.org/multi_hyper.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="13. Multivariate Normal Distribution" href="multivariate_normal.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -236,8 +243,8 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="multivariate-hypergeometric-distribution">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">12. </span>Multivariate Hypergeometric Distribution</a><a class="headerlink" href="#multivariate-hypergeometric-distribution" title="Permalink to this heading">#</a></h1>
-<div class="contents topic" id="contents">
+<h1><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">12. </span>Multivariate Hypergeometric Distribution</a><a class="headerlink" href="#multivariate-hypergeometric-distribution" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#multivariate-hypergeometric-distribution" id="id2">Multivariate Hypergeometric Distribution</a></p>
@@ -248,9 +255,9 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">12.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">12.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture describes how an  administrator deployed a <strong>multivariate hypergeometric distribution</strong> in order to access the fairness of a procedure for awarding research grants.</p>
 <p>In the lecture we’ll learn about</p>
 <ul class="simple">
@@ -261,7 +268,7 @@
 </ul>
 </section>
 <section id="the-administrators-problem">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">12.2. </span>The Administrator’s Problem</a><a class="headerlink" href="#the-administrators-problem" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">12.2. </span>The Administrator’s Problem</a><a class="headerlink" href="#the-administrators-problem" title="Link to this heading">#</a></h2>
 <p>An administrator in charge of allocating research grants is in the following situation.</p>
 <p>To help us forget details that are none of our business here and to protect the anonymity of the administrator and the subjects, we call
 research proposals <strong>balls</strong> and continents of residence of authors of a proposal a <strong>color</strong>.</p>
@@ -276,7 +283,7 @@ research proposals <strong>balls</strong> and continents of residence of authors
 <p>The <span class="math notranslate nohighlight">\(n\)</span> balls drawn represent  successful proposals and are  awarded research funds.</p>
 <p>The remaining <span class="math notranslate nohighlight">\(N-n\)</span> balls receive no research funds.</p>
 <section id="details-of-the-awards-procedure-under-study">
-<h3><span class="section-number">12.2.1. </span>Details of the Awards Procedure Under Study<a class="headerlink" href="#details-of-the-awards-procedure-under-study" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">12.2.1. </span>Details of the Awards Procedure Under Study<a class="headerlink" href="#details-of-the-awards-procedure-under-study" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(k_i\)</span> be the number of balls of color <span class="math notranslate nohighlight">\(i\)</span> that are drawn.</p>
 <p>Things have to add up so <span class="math notranslate nohighlight">\(\sum_{i=1}^c k_i = n\)</span>.</p>
 <p>Under the hypothesis that the selection process judges proposals on their quality and that quality is independent of continent of the author’s continent of residence, the administrator views the outcome of the selection procedure as a random vector</p>
@@ -307,16 +314,15 @@ the population of <span class="math notranslate nohighlight">\(N\)</span> balls.
 <p>The right tool for the administrator’s job is the <strong>multivariate hypergeometric distribution</strong>.</p>
 </section>
 <section id="id1">
-<h3><span class="section-number">12.2.2. </span>Multivariate Hypergeometric Distribution<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">12.2.2. </span>Multivariate Hypergeometric Distribution<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <p>Let’s start with some imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">comb</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">normaltest</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">comb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">normaltest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span>
 </pre></div>
 </div>
 </div>
@@ -354,9 +360,9 @@ the total number of objects in the urn and <span class="math notranslate nohighl
 <p>To do our work for us, we’ll write an <code class="docutils literal notranslate"><span class="pre">Urn</span></code> class.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Urn</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Urn</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">K_arr</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">K_arr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialization given the number of each type i object in the urn.</span>
 
@@ -370,7 +376,7 @@ the total number of objects in the urn and <span class="math notranslate nohighl
         <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">K_arr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">K_arr</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">pmf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k_arr</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pmf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k_arr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Probability mass function.</span>
 
@@ -392,7 +398,7 @@ the total number of objects in the urn and <span class="math notranslate nohighl
 
         <span class="k">return</span> <span class="n">pr</span>
 
-    <span class="k">def</span> <span class="nf">moments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">moments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the mean and variance-covariance matrix for</span>
 <span class="sd">        multivariate hypergeometric distribution.</span>
@@ -420,7 +426,7 @@ the total number of objects in the urn and <span class="math notranslate nohighl
 
         <span class="k">return</span> <span class="n">μ</span><span class="p">,</span> <span class="n">Σ</span>
 
-    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Simulate a sample from multivariate hypergeometric</span>
 <span class="sd">        distribution where at each draw we take n objects</span>
@@ -449,9 +455,9 @@ the total number of objects in the urn and <span class="math notranslate nohighl
 </section>
 </section>
 <section id="usage">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">12.3. </span>Usage</a><a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">12.3. </span>Usage</a><a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
 <section id="first-example">
-<h3><span class="section-number">12.3.1. </span>First example<a class="headerlink" href="#first-example" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">12.3.1. </span>First example<a class="headerlink" href="#first-example" title="Link to this heading">#</a></h3>
 <p>Apply this to an example from
 <a class="reference external" href="https://en.wikipedia.org/wiki/Hypergeometric_distribution#Multivariate_hypergeometric_distribution">wiki</a>:</p>
 <p>Suppose there are 5 black, 10 white, and 15 red marbles in an urn. If
@@ -538,7 +544,7 @@ observing each case.</p>
 </div>
 </section>
 <section id="back-to-the-administrators-problem">
-<h3><span class="section-number">12.3.2. </span>Back to The Administrator’s Problem<a class="headerlink" href="#back-to-the-administrators-problem" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">12.3.2. </span>Back to The Administrator’s Problem<a class="headerlink" href="#back-to-the-administrators-problem" title="Link to this heading">#</a></h3>
 <p>Now let’s turn to the grant administrator’s problem.</p>
 <p>Here the array of
 numbers of <span class="math notranslate nohighlight">\(i\)</span> objects in the urn is
@@ -635,7 +641,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.9577531, 0.2773664, 1.1596737, 0.6052068])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.9576372, 0.2773592, 1.1600467, 0.6049569])
 </pre></div>
 </div>
 </div>
@@ -648,10 +654,10 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.31818983, -0.17903155, -0.74872316, -0.39043513],
-       [-0.17903155,  0.25915331, -0.05257632, -0.02754543],
-       [-0.74872316, -0.05257632,  0.9156759 , -0.11437642],
-       [-0.39043513, -0.02754543, -0.11437642,  0.53235698]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.31914073, -0.17943461, -0.74889095, -0.39081517],
+       [-0.17943461,  0.2591137 , -0.05230733, -0.02737176],
+       [-0.74889095, -0.05230733,  0.91565365, -0.11445537],
+       [-0.39081517, -0.02737176, -0.11445537,  0.5326423 ]])
 </pre></div>
 </div>
 </div>
@@ -659,7 +665,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 <p>Evidently, the sample means and covariances approximate their population counterparts well.</p>
 </section>
 <section id="quality-of-normal-approximation">
-<h3><span class="section-number">12.3.3. </span>Quality of Normal Approximation<a class="headerlink" href="#quality-of-normal-approximation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">12.3.3. </span>Quality of Normal Approximation<a class="headerlink" href="#quality-of-normal-approximation" title="Link to this heading">#</a></h3>
 <p>To judge the quality of a multivariate normal approximation to the multivariate hypergeometric distribution, we draw a large sample from a multivariate normal distribution with the mean vector  and covariance matrix for the corresponding multivariate hypergeometric distribution and compare the simulated distribution with the population multivariate hypergeometric distribution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -670,7 +676,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bivariate_normal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">Σ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">bivariate_normal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">Σ</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
 
     <span class="n">μ_x</span><span class="p">,</span> <span class="n">μ_y</span> <span class="o">=</span> <span class="n">μ</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">μ</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
     <span class="n">σ_x</span><span class="p">,</span> <span class="n">σ_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Σ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Σ</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
@@ -691,7 +697,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="n">size</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="n">count_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
@@ -737,7 +743,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7212385bd48677e44f199ca250ffe2fbedf531c9c4408ce683a3ae385f99b896.png" src="_images/7212385bd48677e44f199ca250ffe2fbedf531c9c4408ce683a3ae385f99b896.png" />
+<img alt="_images/2ab4be970dd3cf01f23998bf67bc5e6233d5ffe43a3e7d9c650decfb502f7620.png" src="_images/2ab4be970dd3cf01f23998bf67bc5e6233d5ffe43a3e7d9c650decfb502f7620.png" />
 </div>
 </div>
 <p>The diagonal graphs plot the marginal distributions of <span class="math notranslate nohighlight">\(k_i\)</span> for
@@ -776,7 +782,7 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.26376267, 0.21628232, 0.54107878, 0.26815984])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.93017188, 0.4715408 , 0.90788533, 0.17610922])
 </pre></div>
 </div>
 </div>
@@ -817,6 +823,8 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1274,6 +1282,11 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1283,17 +1296,17 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1305,17 +1318,17 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1327,12 +1340,12 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1344,17 +1357,17 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1494,7 +1507,7 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

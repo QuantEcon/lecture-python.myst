@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>9. Some Probability Distributions &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,15 +69,15 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=b4b7a797" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -86,22 +85,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -110,12 +108,20 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'stats_examples';</script>
     <link rel="canonical" href="https://python.quantecon.org/stats_examples.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="10. LLN and CLT" href="lln_clt.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -232,7 +239,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="some-probability-distributions">
-<h1><span class="section-number">9. </span>Some Probability Distributions<a class="headerlink" href="#some-probability-distributions" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">9. </span>Some Probability Distributions<a class="headerlink" href="#some-probability-distributions" title="Link to this heading">#</a></h1>
 <p>This lecture is a supplement to <a class="reference internal" href="prob_matrix.html"><span class="doc">this lecture on statistics with matrices</span></a>.</p>
 <p>It describes some popular distributions and uses Python to sample from them.</p>
 <p>It also describes a way to sample from an arbitrary probability distribution that you make up by
@@ -250,8 +257,8 @@ transforming a sample from a uniform probability distribution.</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (3.16.0)
-Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from prettytable) (0.2.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (3.16.0)
+Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from prettytable) (0.2.5)
 </pre></div>
 </div>
 </div>
@@ -260,18 +267,18 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 <p>As usual, we’ll start with some imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">prettytable</span> <span class="k">as</span> <span class="nn">pt</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
-<span class="kn">from</span> <span class="nn">matplotlib_inline.backend_inline</span> <span class="kn">import</span> <span class="n">set_matplotlib_formats</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">prettytable</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.mplot3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib_inline.backend_inline</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_matplotlib_formats</span>
 <span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;retina&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="some-discrete-probability-distributions">
-<h2><span class="section-number">9.1. </span>Some Discrete Probability Distributions<a class="headerlink" href="#some-discrete-probability-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.1. </span>Some Discrete Probability Distributions<a class="headerlink" href="#some-discrete-probability-distributions" title="Link to this heading">#</a></h2>
 <p>Let’s write some Python code to compute   means and variances of some  univariate random variables.</p>
 <p>We’ll use our code to</p>
 <ul class="simple">
@@ -281,7 +288,7 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 </ul>
 </section>
 <section id="geometric-distribution">
-<h2><span class="section-number">9.2. </span>Geometric distribution<a class="headerlink" href="#geometric-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.2. </span>Geometric distribution<a class="headerlink" href="#geometric-distribution" title="Link to this heading">#</a></h2>
 <p>A discrete geometric distribution has probability  mass function</p>
 <div class="math notranslate nohighlight">
 \[
@@ -317,8 +324,8 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.336675 
-The sample variance is:  7.802860944374998
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.336398 
+The sample variance is:  7.781928385595998
 
 The population mean is:  3.3333333333333335
 The population variance is:  7.777777777777778
@@ -328,7 +335,7 @@ The population variance is:  7.777777777777778
 </div>
 </section>
 <section id="pascal-negative-binomial-distribution">
-<h2><span class="section-number">9.3. </span>Pascal (negative binomial) distribution<a class="headerlink" href="#pascal-negative-binomial-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.3. </span>Pascal (negative binomial) distribution<a class="headerlink" href="#pascal-negative-binomial-distribution" title="Link to this heading">#</a></h2>
 <p>Consider a sequence of independent Bernoulli trials.</p>
 <p>Let <span class="math notranslate nohighlight">\(p\)</span> be the probability of success.</p>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be a random variable that represents the number of failures before we get <span class="math notranslate nohighlight">\(r\)</span> successes.</p>
@@ -368,8 +375,8 @@ X  &amp; \sim NB(r,p) \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.335546 
-The sample variance is:  77.69398488188402
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.335042 
+The sample variance is:  77.66674285823605
 
 The population mean is:  23.333333333333336
 The population variance is:  77.77777777777779
@@ -379,7 +386,7 @@ The population variance is:  77.77777777777779
 </div>
 </section>
 <section id="newcombbenford-distribution">
-<h2><span class="section-number">9.4. </span>Newcomb–Benford distribution<a class="headerlink" href="#newcombbenford-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.4. </span>Newcomb–Benford distribution<a class="headerlink" href="#newcombbenford-distribution" title="Link to this heading">#</a></h2>
 <p>The <strong>Newcomb–Benford law</strong> fits  many data sets, e.g., reports of incomes to tax authorities, in which
 the leading digit is more likely to be small than large.</p>
 <p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Benford%27s_law">https://en.wikipedia.org/wiki/Benford’s_law</a></p>
@@ -422,8 +429,8 @@ the leading digit is more likely to be small than large.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
-3.440236967123207
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9999999999999999
+3.4402369671232065
 6.056512631375667
 </pre></div>
 </div>
@@ -439,13 +446,14 @@ the leading digit is more likely to be small than large.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/0085ffe51ace5be2b9f5bf6cf450d92603275505637803a0631c3cf0a4751f6c.png"><img alt="_images/0085ffe51ace5be2b9f5bf6cf450d92603275505637803a0631c3cf0a4751f6c.png" src="_images/0085ffe51ace5be2b9f5bf6cf450d92603275505637803a0631c3cf0a4751f6c.png" style="width: 556px; height: 434px;" /></a>
+<a class="reference internal image-reference" href="_images/5a7d78a1aa086c18457e4f2583ab0d523c52d92e65da6b81ad59e9ae33aef526.png"><img alt="_images/5a7d78a1aa086c18457e4f2583ab0d523c52d92e65da6b81ad59e9ae33aef526.png" src="_images/5a7d78a1aa086c18457e4f2583ab0d523c52d92e65da6b81ad59e9ae33aef526.png" style="width: 556px; height: 434px;" />
+</a>
 </div>
 </div>
 <p>Now let’s turn to some continuous random variables.</p>
 </section>
 <section id="univariate-gaussian-distribution">
-<h2><span class="section-number">9.5. </span>Univariate Gaussian distribution<a class="headerlink" href="#univariate-gaussian-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.5. </span>Univariate Gaussian distribution<a class="headerlink" href="#univariate-gaussian-distribution" title="Link to this heading">#</a></h2>
 <p>We write</p>
 <div class="math notranslate nohighlight">
 \[
@@ -476,8 +484,8 @@ X \sim N(\mu,\sigma^2)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  1.0337513318063085e-05
-The sample standard deviation is:  0.09995836165615343
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -6.850522920303559e-05
+The sample standard deviation is:  0.10000570387068551
 </pre></div>
 </div>
 </div>
@@ -499,7 +507,7 @@ True
 </div>
 </section>
 <section id="uniform-distribution">
-<h2><span class="section-number">9.6. </span>Uniform Distribution<a class="headerlink" href="#uniform-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.6. </span>Uniform Distribution<a class="headerlink" href="#uniform-distribution" title="Link to this heading">#</a></h2>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -537,8 +545,8 @@ f(x)&amp; = \begin{cases} \frac{1}{b-a}, &amp; a \leq x \leq b \\ \quad0, &amp; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.998469082935351 
-The sample variance is:  8.339640748840015
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  15.001201663364201 
+The sample variance is:  8.323576536684465
 
 The population mean is:  15.0
 The population variance is:  8.333333333333334
@@ -548,7 +556,7 @@ The population variance is:  8.333333333333334
 </div>
 </section>
 <section id="a-mixed-discrete-continuous-distribution">
-<h2><span class="section-number">9.7. </span>A Mixed Discrete-Continuous Distribution<a class="headerlink" href="#a-mixed-discrete-continuous-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.7. </span>A Mixed Discrete-Continuous Distribution<a class="headerlink" href="#a-mixed-discrete-continuous-distribution" title="Link to this heading">#</a></h2>
 <p>We’ll motivate this example with  a little story.</p>
 <p>Suppose that  to apply for a job  you take an interview and either pass or fail it.</p>
 <p>You have <span class="math notranslate nohighlight">\(5\%\)</span> chance to pass an interview and you know your salary will uniformly distributed in the interval 300~400 a day only if you pass.</p>
@@ -581,8 +589,8 @@ f(x) = 0.0005
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.524713406947164 
-The sample variance is:  5864.925784752189
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.479918811241365 
+The sample variance is:  5856.528902091548
 </pre></div>
 </div>
 </div>
@@ -622,7 +630,7 @@ variance:  5860.416666666666
 </div>
 </section>
 <section id="drawing-a-random-number-from-a-particular-distribution">
-<h2><span class="section-number">9.8. </span>Drawing a  Random Number from a Particular Distribution<a class="headerlink" href="#drawing-a-random-number-from-a-particular-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.8. </span>Drawing a  Random Number from a Particular Distribution<a class="headerlink" href="#drawing-a-random-number-from-a-particular-distribution" title="Link to this heading">#</a></h2>
 <p>Suppose we have at our disposal a pseudo random number that draws a uniform random variable, i.e., one with probability distribution</p>
 <div class="math notranslate nohighlight">
 \[
@@ -720,7 +728,8 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/1cc333c3fe8e1b6e85b2b3e8eb9782ddf1bcc63094b407716b346006024b5432.png"><img alt="_images/1cc333c3fe8e1b6e85b2b3e8eb9782ddf1bcc63094b407716b346006024b5432.png" src="_images/1cc333c3fe8e1b6e85b2b3e8eb9782ddf1bcc63094b407716b346006024b5432.png" style="width: 563px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/b341b19580e2b1c21418d59aefc58e833b1229ad230f55a7244a09b0d824f03b.png"><img alt="_images/b341b19580e2b1c21418d59aefc58e833b1229ad230f55a7244a09b0d824f03b.png" src="_images/b341b19580e2b1c21418d59aefc58e833b1229ad230f55a7244a09b0d824f03b.png" style="width: 556px; height: 413px;" />
+</a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -731,7 +740,8 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/104db711ac46860ce24c74fc6161f1a4986e423f952a65b0c11fe6f858a163d0.png"><img alt="_images/104db711ac46860ce24c74fc6161f1a4986e423f952a65b0c11fe6f858a163d0.png" src="_images/104db711ac46860ce24c74fc6161f1a4986e423f952a65b0c11fe6f858a163d0.png" style="width: 556px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/39f1d8081eb2b86039fbb050b7c0eeeb1968f3055e2d610023f592e1ad993db5.png"><img alt="_images/39f1d8081eb2b86039fbb050b7c0eeeb1968f3055e2d610023f592e1ad993db5.png" src="_images/39f1d8081eb2b86039fbb050b7c0eeeb1968f3055e2d610023f592e1ad993db5.png" style="width: 556px; height: 413px;" />
+</a>
 </div>
 </div>
 <p><strong>Geometric distribution</strong></p>
@@ -798,7 +808,8 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/dada9a1a5e898bb5080e96eaf7b4a775f8ae313e295f3f54a845733c8742deac.png"><img alt="_images/dada9a1a5e898bb5080e96eaf7b4a775f8ae313e295f3f54a845733c8742deac.png" src="_images/dada9a1a5e898bb5080e96eaf7b4a775f8ae313e295f3f54a845733c8742deac.png" style="width: 547px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/ebd0ceaa50ac60695452a30732f041c62f176dcf0dc5f5d82ef07c6111102067.png"><img alt="_images/ebd0ceaa50ac60695452a30732f041c62f176dcf0dc5f5d82ef07c6111102067.png" src="_images/ebd0ceaa50ac60695452a30732f041c62f176dcf0dc5f5d82ef07c6111102067.png" style="width: 554px; height: 413px;" />
+</a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -808,7 +819,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>66
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(58)
 </pre></div>
 </div>
 </div>
@@ -820,7 +831,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7610560044063084
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.7610560044063083)
 </pre></div>
 </div>
 </div>
@@ -833,7 +844,8 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7ade9599ed7c7a9d78f897a4d99d2259fe17423c53387e82f5e3fa6367f1e6d5.png"><img alt="_images/7ade9599ed7c7a9d78f897a4d99d2259fe17423c53387e82f5e3fa6367f1e6d5.png" src="_images/7ade9599ed7c7a9d78f897a4d99d2259fe17423c53387e82f5e3fa6367f1e6d5.png" style="width: 547px; height: 413px;" /></a>
+<a class="reference internal image-reference" href="_images/275ab40276fecba086e2bc37992f29d24b4f4252ecd2202d8ee9b7f095369f72.png"><img alt="_images/275ab40276fecba086e2bc37992f29d24b4f4252ecd2202d8ee9b7f095369f72.png" src="_images/275ab40276fecba086e2bc37992f29d24b4f4252ecd2202d8ee9b7f095369f72.png" style="width: 547px; height: 413px;" />
+</a>
 </div>
 </div>
 </section>
@@ -870,6 +882,8 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1327,6 +1341,11 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
    74. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   75. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1336,17 +1355,17 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   76. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   77. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1358,17 +1377,17 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   79. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   80. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   81. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1380,12 +1399,12 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   82. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   83. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1397,17 +1416,17 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   84. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   85. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   86. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1547,7 +1566,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

@@ -722,7 +722,8 @@ c1 = c2 = np.array([1, -2, 1])
 e1 = e2 = np.array([10, 10, 3])
 ```
 
-```{figure} /_static/lecture_specific/markov_perf/judd_fig2.png
+```{image} /_static/lecture_specific/markov_perf/judd_fig2.png
+:align: center
 ```
 
 Inventories trend to a common steady state.
@@ -731,7 +732,8 @@ If we increase the depreciation rate to $\delta = 0.05$, then we expect steady s
 
 This is indeed the case, as the next figure shows
 
-```{figure} /_static/lecture_specific/markov_perf/judd_fig1.png
+```{image} /_static/lecture_specific/markov_perf/judd_fig1.png
+:align: center
 ```
 
 In this exercise, reproduce the figure when $\delta = 0.02$.
