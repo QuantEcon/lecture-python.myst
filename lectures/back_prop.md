@@ -201,7 +201,7 @@ $$ (eq:sgd)
 
 where $\frac{d {\mathcal L}}{dx_{N+1}}=-\left(x_{N+1}-y\right)$ and $\alpha > 0 $ is a step size.
 
-(See [this](https://en.wikipedia.org/wiki/Gradient_descent#Description) and [this](https://en.wikipedia.org/wiki/Newton%27s_method) to gather insights about how stochastic gradient descent
+(See [this](https://en.wikipedia.org/wiki/Gradient_descent#Description) and [this](https://en.wikipedia.org/wiki/Newton's_method) to gather insights about how stochastic gradient descent
 relates to Newton's method.)
 
 To implement one step of this parameter update rule, we want  the vector of derivatives $\frac{dx_{N+1}}{dp_k}$.
@@ -540,7 +540,7 @@ Image(fig.to_image(format="png"))
 It  is  fun to think about how deepening the neural net for the above example affects the quality of  approximation 
 
 
-* If the network is too deep, you'll run into the [vanishing gradient problem](https://neuralnetworksanddeeplearning.com/chap5.html)
+* If the network is too deep, you'll run into the [vanishing gradient problem](https://en.wikipedia.org/wiki/Vanishing_gradient_problem)
 * Other parameters such as the step size and the number of epochs can be as  important or more important than the number of layers in the situation considered in this lecture.
 * Indeed, since $f$ is a linear function of $x$, a one-layer network with the identity map as an activation would probably work best. 
   
