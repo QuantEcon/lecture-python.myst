@@ -46,23 +46,3 @@ jobs:
         with:
           name: execution-reports
           path: _build/html/reports
-      - name: Install Node.js and Netlify CLI
-        shell: bash -l {0}
-        run: |
-          curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-          apt-get install -y nodejs
-          npm install -g netlify-cli
-      - name: Preview Deploy to Netlify
-        shell: bash -l {0}
-        run: |
-          netlify deploy \
-            --dir _build/html/ \
-            --site ${{ secrets.NETLIFY_SITE_ID }} \
-            --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
-            --alias collab-pr-${{ github.event.pull_request.number }} \
-            --context deploy-preview \
-            --message "Collab Preview Deploy from GitHub Actions PR #${{ github.event.pull_request.number }} (commit: ${{ github.sha }})" \
-            --json
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
