@@ -83,7 +83,9 @@ from typing import NamedTuple
 from scipy.optimize import root
 import jax.numpy as jnp
 import jax
-jax.config.update("jax_enable_x64", True) # Enable 64-bit precision
+
+# Enable 64-bit precision
+jax.config.update("jax_enable_x64", True)
 ```
 
 ## Fixed point computation using Newton's method
@@ -732,7 +734,7 @@ solution = root(
     lambda p: e(p, A, b, c),
     init_p,
     jac = lambda p: jacobian_e(p, A, b, c),
-    method="hybr"
+    method="hybr",
 )
 ```
 
@@ -980,27 +982,29 @@ Note the error is very small.
 We can also test our results on the known solution
 
 ```{code-cell} ipython3
-A = jnp.array([[2.0, 0.0, 0.0],
-               [0.0, 2.0, 0.0],
-               [0.0, 0.0, 2.0]])
+A = jnp.array([[2.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 2.0]])
 
 s = 0.3
 α = 0.3
 δ = 0.4
 
 init = jnp.repeat(1.0, 3)
+```
 
+```{code-cell} ipython3
+%%time
 
-%time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
-                 init)
+k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, init)
 ```
 
 The result is very close to the ground truth but still slightly different.
 
 ```{code-cell} ipython3
-%time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
-                 init,\
-                 tol=1e-7)
+%%time
+
+k = newton(
+    lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, init, tol=1e-7
+)
 ```
 
 We can see it steps towards a more accurate solution.
@@ -1073,12 +1077,9 @@ Let's run through each initial guess and check the output
 
 attempt = 1
 for init in initLs:
-    print(f'Attempt {attempt}: Starting value is {init} \n')
-    %time p = newton(lambda p: e(p, A, b, c), \
-                init, \
-                tol=1e-15, \
-                max_iter=15)
-    print('-'*64)
+    print(f"Attempt {attempt}: Starting value is {init} \n")
+    %time p = newton(lambda p: e(p, A, b, c), init, tol=1e-15, max_iter=15)
+    print("-" * 64)
     attempt += 1
 ```
 
