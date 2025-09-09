@@ -1,15 +1,19 @@
 name: Build Project on Google Collab (Execution)
-on: [pull_request]
+on:
+  schedule:
+    # Execute weekly on Monday at 4am UTC (offset from cache.yml)
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
 jobs:
   execution-checks:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=ubuntu24-gpu-x64/disk=large"
+    permissions:
+      issues: write # required for creating issues on execution failure
     container:
       image: docker://us-docker.pkg.dev/colab-images/public/runtime:latest
       options: --gpus all
     steps:
       - uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
       # Install build software
       - name: Install Build Software & LaTeX
         shell: bash -l {0}
@@ -46,3 +50,43 @@ jobs:
         with:
           name: execution-reports
           path: _build/html/reports
+      - name: Create execution failure report
+        if: failure()
+        run: |
+          cat > execution-failure-report.md << 'EOF'
+          # Colab Execution Failure Report
+
+          The weekly Google Colab execution check has failed. This indicates that one or more notebooks failed to execute properly in the Colab environment.
+
+          ## Details
+
+          **Workflow Run:** [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          **Date:** ${{ github.event.head_commit.timestamp || github.event.schedule }}
+          **Branch:** ${{ github.ref_name }}
+          **Commit:** ${{ github.sha }}
+
+          ## Execution Reports
+
+          Detailed execution reports have been uploaded as artifacts to this workflow run. Please check the following:
+
+          1. Download the `execution-reports` artifact from the workflow run
+          2. Review the failed notebook execution logs
+          3. Fix any execution issues in the notebooks
+          4. Test locally or in Colab before merging
+
+          ## Next Steps
+
+          1. Investigate the failure by reviewing the execution reports
+          2. Fix the identified issues
+          3. Test the fixes
+          4. Close this issue once resolved
+
+          This is an automated issue created by the weekly Colab execution check.
+          EOF
+      - name: Create Issue on Execution Failure
+        if: failure()
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "Weekly Colab Execution Check Failed - ${{ github.run_id }}"
+          content-filepath: execution-failure-report.md
+          labels: execution-failure, automated-issue, colab
