@@ -733,8 +733,10 @@ def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
 ss1 = find_ss(hh, firm, [0, 0.1, np.zeros(hh.j_grid.size)], Q, verbose=True)
 ```
 
+Let's time the computation
+
 ```{code-cell} ipython3
-%time find_ss(hh, firm, [0, 0.1, np.zeros(hh.j_grid.size)], Q).block_until_ready();
+%time find_ss(hh, firm, [0, 0.1, np.zeros(hh.j_grid.size)], Q)[0].block_until_ready();
 ```
 
 ```{code-cell} ipython3
@@ -994,10 +996,12 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
         price_seq = (r_seq, w_seq)
 
         # Solve optimal policies backwards
-        V_seq, σ_seq = solve_backwards(V_ss2, σ_ss2, hh, firm, price_seq, pol_seq, Q)
+        V_seq, σ_seq = solve_backwards(
+            V_ss2, σ_ss2, hh, firm, price_seq, pol_seq, Q)
 
         # Compute population evolution forwards
-        μ_seq, K_seq, L_seq = simulate_forwards(σ_seq, D_seq, μ_ss1, K_ss1, L_ss1, household, Q)
+        μ_seq, K_seq, L_seq = simulate_forwards(
+            σ_seq, D_seq, μ_ss1, K_ss1, L_ss1, household, Q)
 
         # Update prices by aggregate capital and labor supply
         r_seq = KL_to_r(K_seq, L_seq, firm)
@@ -1015,7 +1019,7 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
 
         num_iter += 1
         if verbose:
-            print(error)
+            print(f"Iteration {num_iter:3d}: error = {error:.6e}")
             axs[0].plot(jnp.arange(T), r_seq)
             axs[1].plot(jnp.arange(T), w_seq)
             axs[2].plot(jnp.arange(T), τ_seq, label=f'iter {num_iter}')
@@ -1035,7 +1039,8 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
 
         axs[2].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
-    return V_seq, σ_seq, μ_seq, K_seq, L_seq, r_seq, w_seq, τ_seq, D_seq, G_seq, δ_seq
+    return V_seq, σ_seq, μ_seq, K_seq, L_seq, r_seq, w_seq, \
+            τ_seq, D_seq, G_seq, δ_seq
 ```
 
 We can now   compute  equilibrium transitions that are  ignited by fiscal policy reforms.
@@ -1112,7 +1117,8 @@ t = 0
 ap = hh.a_grid[σ_seq[t]]
 δ = δ_seq[t].reshape((hh.j_grid.size, 1, 1))
 
-inc = (1 + r_seq[t]*(1-τ_seq[t])) * a + (1-τ_seq[t]) * w_seq[t] * lj * γ - δ
+inc = (1 + r_seq[t]*(1-τ_seq[t])) * a \
+        + (1-τ_seq[t]) * w_seq[t] * lj * γ - δ
 inc = inc.reshape((hh.j_grid.size, hh.a_grid.size * hh.γ_grid.size))
 
 c = inc - ap
@@ -1142,6 +1148,7 @@ for t in [1, 10, 20, 50, 149]:
 plt.legend()
 plt.xlabel(r'j')
 plt.title(r'$\Delta mean(C(j))$')
+plt.show()
 ```
 
 To summarize the transition, we can plot paths as we did in {doc}`ak2`.
@@ -1289,7 +1296,8 @@ ss2 = find_ss(hh, firm, [D_seq[-1], G_seq[-1], δ_seq[-1]], Q)
 ```
 
 ```{code-cell} ipython3
-paths = path_iteration(ss1, ss2, [D_seq, G_seq, δ_seq], hh, firm, Q, verbose=True)
+paths = path_iteration(ss1, ss2, [D_seq, G_seq, δ_seq], 
+                    hh, firm, Q, verbose=True)
 ```
 
 ```{code-cell} ipython3
@@ -1370,6 +1378,7 @@ plt.text(17, 6.56, r'tax cut')
 plt.ylim([6.52, 6.65])
 plt.title("K")
 plt.xlabel("t")
+plt.show()
 ```
 
 After the tax cut policy is implemented at $t=20$, the aggregate capital will decrease because of the crowding out effect.
@@ -1398,7 +1407,8 @@ for t in range(T):
     c = inc - ap
 
     Cmean_seq[t] = (c * μ_seq[t]).sum(axis=1)
-    Cvar_seq[t] = ((c - Cmean_seq[t].reshape((J, 1))) ** 2 * μ_seq[t]).sum(axis=1)
+    Cvar_seq[t] = (
+        (c - Cmean_seq[t].reshape((J, 1))) ** 2 * μ_seq[t]).sum(axis=1)
 ```
 
 ```{code-cell} ipython3
