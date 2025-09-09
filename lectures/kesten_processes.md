@@ -108,7 +108,9 @@ Composite Index for the period 1st January 2006 to 1st November 2019.
 (ndcode)=
 
 ```{code-cell} ipython3
-s = yf.download("^IXIC", "2006-1-1", "2019-11-1", auto_adjust=False)["Adj Close"]
+s = yf.download("^IXIC", "2006-1-1", "2019-11-1", auto_adjust=False)[
+    "Adj Close"
+]
 
 r = s.pct_change()
 
@@ -694,7 +696,8 @@ def generate_single_draw(key, μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar, T, s_in
 
         # Conditional logic using jnp.where
         # If s < s_bar: new_s = exp(μ_e + σ_e * randn())
-        # Else: new_s = a * s + b where a = exp(μ_a + σ_a * randn()), b = exp(μ_b + σ_b * randn())
+        # Else: new_s = a * s + b
+        # where a = exp(μ_a + σ_a * randn()), b = exp(μ_b + σ_b * randn())
 
         # For the else branch, we need two random numbers
         subkey, key1, key2 = random.split(subkey, 3)
@@ -755,7 +758,9 @@ def generate_draws(
         in_axes=(0, None, None, None, None, None, None, None, None, None),
     )
 
-    draws = vectorized_single_draw(keys, μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar, T, s_init)
+    draws = vectorized_single_draw(
+        keys, μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar, T, s_init
+    )
 
     return draws
 ```
