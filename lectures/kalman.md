@@ -58,6 +58,8 @@ We'll need the following imports:
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 from scipy import linalg
+import jax
+import jax.numpy as jnp
 import numpy as np
 import matplotlib.cm as cm
 from quantecon import Kalman, LinearStateSpace
@@ -127,24 +129,13 @@ This density $p(x)$ is shown below as a contour map, with the center of the red 
                [0.3, 0.45]])
 x_hat = jnp.array([[0.2], 
                    [-0.2]])
-# Define the matrices G and R from the equation y = G x + N(0, R)
-G = jnp.array([[1, 0], 
-               [0, 1]])
-R = 0.5 * Σ
-# The matrices A and Q
-A = jnp.array([[1.2, 0], 
-               [0, -0.2]])
-Q = 0.3 * Σ
-# The observed value of y
-y = jnp.array([[2.3], 
-               [-1.9]])
 
 # Set up grid for plotting
 x_grid = jnp.linspace(-1.5, 2.9, 100)
 y_grid = jnp.linspace(-3.1, 1.7, 100)
 X, Y = jnp.meshgrid(x_grid, y_grid)
 
-def compute_bivariate_normal(X, Y, μ, Σ):
+def gen_gaussian_plot_vals(X, Y, μ, Σ):
     """
     Compute and return the probability density function of bivariate normal
     distribution
@@ -194,7 +185,7 @@ def compute_bivariate_normal(X, Y, μ, Σ):
 fig, ax = plt.subplots()
 ax.grid()
 
-Z = compute_bivariate_normal(X, Y, x_hat, Σ)
+Z = gen_gaussian_plot_vals(X, Y, x_hat, Σ)
 ax.contourf(X, Y, Z, levels=6, alpha=0.6, cmap=cm.jet)
 cs = ax.contour(X, Y, Z, levels=6, colors="black")
 ax.clabel(cs, inline=1, fontsize=10)
@@ -212,14 +203,18 @@ The next figure shows the original prior $p(x)$ and the new reported
 location $y$.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 8))
+# The observed value of y
+y = jnp.array([[2.3], 
+               [-1.9]])
+
+fig, ax = plt.subplots()
 ax.grid()
 
-Z = gen_gaussian_plot_vals(x_hat, Σ)
-ax.contourf(X, Y, Z, 6, alpha=0.6, cmap=cm.jet)
-cs = ax.contour(X, Y, Z, 6, colors="black")
+Z = gen_gaussian_plot_vals(X, Y, x_hat, Σ)
+ax.contourf(X, Y, Z, levels=6, alpha=0.6, cmap=cm.jet)
+cs = ax.contour(X, Y, Z, levels=6, colors="black")
 ax.clabel(cs, inline=1, fontsize=10)
-ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
+ax.text(y[0, 0], y[1, 0], "$y$", fontsize=20, color="black")
 
 plt.show()
 ```
@@ -283,20 +278,32 @@ This new density $p(x \,|\, y) = N(\hat{x}^F, \Sigma^F)$ is shown in the next fi
 The original density is left in as contour lines for comparison
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 8))
+# Define the matrices G and R from the equation y = G x + N(0, R)
+G = jnp.array([[1, 0], 
+               [0, 1]])
+R = 0.5 * Σ
+
+fig, ax = plt.subplots()
 ax.grid()
 
-Z = gen_gaussian_plot_vals(x_hat, Σ)
-cs1 = ax.contour(X, Y, Z, 6, colors="black")
+# Density 1
+Z = gen_gaussian_plot_vals(X, Y, x_hat, Σ)
+cs1 = ax.contour(X, Y, Z, levels=6, colors="black")
 ax.clabel(cs1, inline=1, fontsize=10)
-M = Σ * G.T * linalg.inv(G * Σ * G.T + R)
-x_hat_F = x_hat + M * (y - G * x_hat)
-Σ_F = Σ - M * G * Σ
-new_Z = gen_gaussian_plot_vals(x_hat_F, Σ_F)
-cs2 = ax.contour(X, Y, new_Z, 6, colors="black")
+
+# Density 2
+M = Σ @ G.T @ linalg.inv(G @ Σ @ G.T + R)
+x_hat_F = x_hat + M @ (y - G @ x_hat)
+Σ_F = Σ - M @ G @ Σ
+Z_F = gen_gaussian_plot_vals(X, Y, x_hat_F, Σ_F)
+Z_F = Z_F.at[jnp.where(Z_F < 1e-10)].set(0.1)  # Avoid very small values
+
+ax.contourf(X, Y, Z_F, levels=6, alpha=0.6, cmap=cm.jet)
+cs2 = ax.contour(X, Y, Z_F, levels=6, colors="black")
 ax.clabel(cs2, inline=1, fontsize=10)
-ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap=cm.jet)
-ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
+
+# Observed value
+ax.text(y[0, 0], y[1, 0], "$y$", fontsize=20, color="black")
 
 plt.show()
 ```
@@ -390,30 +397,39 @@ Q = 0.3 * \Sigma
 $$
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 8))
+# The matrices A and Q
+A = jnp.array([[1.2, 0], 
+               [0, -0.2]])
+Q = 0.3 * Σ
+
+fig, ax = plt.subplots()
 ax.grid()
 
 # Density 1
-Z = gen_gaussian_plot_vals(x_hat, Σ)
+Z = gen_gaussian_plot_vals(X, Y, x_hat, Σ)
 cs1 = ax.contour(X, Y, Z, 6, colors="black")
 ax.clabel(cs1, inline=1, fontsize=10)
 
 # Density 2
-M = Σ * G.T * linalg.inv(G * Σ * G.T + R)
-x_hat_F = x_hat + M * (y - G * x_hat)
-Σ_F = Σ - M * G * Σ
-Z_F = gen_gaussian_plot_vals(x_hat_F, Σ_F)
+M = Σ @ G.T @ linalg.inv(G @ Σ @ G.T + R)
+x_hat_F = x_hat + M @ (y - G @ x_hat)
+Σ_F = Σ - M @ G @ Σ
+Z_F = gen_gaussian_plot_vals(X, Y, x_hat_F, Σ_F)
+Z_F = Z_F.at[jnp.where(Z_F < 1e-10)].set(0.1)  # Avoid very small values
 cs2 = ax.contour(X, Y, Z_F, 6, colors="black")
 ax.clabel(cs2, inline=1, fontsize=10)
 
+# Observed value
+ax.text(y[0, 0], y[1, 0], "$y$", fontsize=20, color="black")
+
 # Density 3
-new_x_hat = A * x_hat_F
-new_Σ = A * Σ_F * A.T + Q
-new_Z = gen_gaussian_plot_vals(new_x_hat, new_Σ)
+new_x_hat = A @ x_hat_F
+new_Σ = A @ Σ_F @ A.T + Q
+new_Z = gen_gaussian_plot_vals(X, Y, new_x_hat, new_Σ)
 cs3 = ax.contour(X, Y, new_Z, 6, colors="black")
 ax.clabel(cs3, inline=1, fontsize=10)
 ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap=cm.jet)
-ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
+
 
 plt.show()
 ```
@@ -588,16 +604,17 @@ kalman = Kalman(ss, x_hat_0, Σ_0)
 
 # Draw observations of y from state space model
 N = 5
-x, y = ss.simulate(N)
+seed = 1234 # Set random seed
+x, y = ss.simulate(N, seed)
 y = y.flatten()
 
 # Set up plot
-fig, ax = plt.subplots(figsize=(10,8))
+fig, ax = plt.subplots()
 xgrid = np.linspace(θ - 5, θ + 2, 200)
 
 for i in range(N):
     # Record the current predicted mean and variance
-    m, v = [float(z) for z in (kalman.x_hat.item(), kalman.Sigma.item())]
+    m, v = kalman.x_hat.item(), kalman.Sigma.item()
     # Plot, update filter
     ax.plot(xgrid, norm.pdf(xgrid, loc=m, scale=np.sqrt(v)), label=f'$t={i}$')
     kalman.update(y[i])
@@ -651,25 +668,29 @@ x_hat_0, Σ_0 = 8, 1
 kalman = Kalman(ss, x_hat_0, Σ_0)
 
 T = 600
-z = np.empty(T)
+see = 1234
+z = jnp.empty(T, seed)
 x, y = ss.simulate(T)
 y = y.flatten()
 
 for t in range(T):
     # Record the current predicted mean and variance and plot their densities
-    m, v = [float(temp) for temp in (kalman.x_hat.item(), kalman.Sigma.item())]
+    m, v = kalman.x_hat.item(), kalman.Sigma.item()
 
-    f = lambda x: norm.pdf(x, loc=m, scale=np.sqrt(v))
+    # Wrap parameters
+    def f(x):
+        return norm.pdf(x, loc=m, scale=jnp.sqrt(v))
+    
     integral, error = quad(f, θ - ϵ, θ + ϵ)
-    z[t] = 1 - integral
+    z = z.at[t].set(1 - integral)
 
     kalman.update(y[t])
 
-fig, ax = plt.subplots(figsize=(9, 7))
+fig, ax = plt.subplots()
 ax.set_ylim(0, 1)
 ax.set_xlim(0, T)
 ax.plot(range(T), z)
-ax.fill_between(range(T), np.zeros(T), z, color="blue", alpha=0.2)
+ax.fill_between(range(T), jnp.zeros(T), z, color="blue", alpha=0.2)
 plt.show()
 ```
 
@@ -706,25 +727,21 @@ the $2 \times 2$ identity.
 Set
 
 $$
-A
-= \left(
-\begin{array}{cc}
+A =
+\begin{bmatrix}
     0.5 & 0.4 \\
     0.6 & 0.3
-\end{array}
-  \right)
+\end{bmatrix}
 $$
 
 To initialize the prior density, set
 
 $$
-\Sigma_0
-= \left(
-\begin{array}{cc}
+\Sigma_0 =
+\begin{bmatrix}
     0.9 & 0.3 \\
     0.3 & 0.9
-\end{array}
-  \right)
+\end{bmatrix}
 $$
 
 and $\hat x_0 = (8, 8)$.
@@ -748,21 +765,21 @@ Observe how, after an initial learning period, the Kalman filter performs quite 
 
 ```{code-cell} ipython3
 # Define A, C, G, H
-G = np.identity(2)
-H = np.sqrt(0.5) * np.identity(2)
+G = jnp.eye(2)
+H = jnp.sqrt(0.5) * G
 
-A = [[0.5, 0.4],
-     [0.6, 0.3]]
-C = np.sqrt(0.3) * np.identity(2)
+A = jnp.array([[0.5, 0.4],
+               [0.6, 0.3]])
+C = jnp.sqrt(0.3) * G
 
 # Set up state space mode, initial value x_0 set to zero
-ss = LinearStateSpace(A, C, G, H, mu_0 = np.zeros(2))
+ss = LinearStateSpace(A, C, G, H, mu_0 = jnp.zeros((2, 1)))
 
 # Define the prior density
-Σ = [[0.9, 0.3],
-     [0.3, 0.9]]
-Σ = np.array(Σ)
-x_hat = np.array([8, 8])
+Σ = jnp.array([[0.9, 0.3],
+               [0.3, 0.9]])
+x_hat = jnp.array([[8], 
+                   [8]])
 
 # Initialize the Kalman filter
 kn = Kalman(ss, x_hat, Σ)
@@ -778,19 +795,20 @@ print(S)
 
 # Generate the plot
 T = 50
-x, y = ss.simulate(T)
+seed = 1234
+x, y = ss.simulate(T, seed)
 
-e1 = np.empty(T-1)
-e2 = np.empty(T-1)
+e1 = jnp.empty(T-1)
+e2 = jnp.empty(T-1)
 
 for t in range(1, T):
     kn.update(y[:,t])
     diff1 = x[:, t] - kn.x_hat.flatten()
     diff2 = x[:, t] - A @ x[:, t-1]
-    e1[t-1] = diff1 @ diff1
-    e2[t-1] = diff2 @ diff2
+    e1 = e1.at[t-1].set(diff1 @ diff1)
+    e2 = e2.at[t-1].set(diff2 @ diff2)
 
-fig, ax = plt.subplots(figsize=(9,6))
+fig, ax = plt.subplots()
 ax.plot(range(1, T), e1, 'k-', lw=2, alpha=0.6,
         label='Kalman filter error')
 ax.plot(range(1, T), e2, 'g-', lw=2, alpha=0.6,
