@@ -26,6 +26,13 @@ jobs:
           pip install --upgrade "jax[cuda12-local]==0.6.2"
           pip install numpyro pyro-ppl
           python scripts/test-jax-install.py
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
       - name: Check nvidia Drivers
         shell: bash -l {0}
         run: nvidia-smi
@@ -78,13 +85,73 @@ jobs:
         with:
           name: execution-reports
           path: _build/html/reports
-      - name: Preview Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3
+      - name: Deploy to Netlify
+        id: netlify-deploy
+        run: |
+          # Deploy to Netlify and capture the deploy URL
+          DEPLOY_URL=$(netlify deploy \
+            --dir=. \
+            --site=${{ secrets.NETLIFY_SITE_ID }} \
+            --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            --json | jq -r '.deploy_url')
+          
+          echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_OUTPUT
+          echo "Preview URL: $DEPLOY_URL"
+
+      - name: Comment PR with preview link
+        uses: actions/github-script@v7
         with:
-          publish-dir: '_build/html/'
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Preview Deploy from GitHub Actions"
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          script: |
+            const deployUrl = '${{ steps.netlify-deploy.outputs.DEPLOY_URL }}';
+            const comment = `🚀 **Preview deployed!**
+            
+            Preview URL: ${deployUrl}
+            
+            Built from commit: ${context.sha.substring(0, 7)}`;
+            
+            // Check if we already commented on this PR
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('Preview deployed!')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+
+      - name: Update deployment status
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const deployUrl = '${{ steps.netlify-deploy.outputs.DEPLOY_URL }}';
+            const state = '${{ job.status }}' === 'success' ? 'success' : 'failure';
+            
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: context.payload.deployment?.id || 0,
+              state: state,
+              environment_url: deployUrl,
+              description: state === 'success' ? 'Preview deployed successfully' : 'Preview deployment failed'
+            });
