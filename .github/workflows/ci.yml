@@ -93,7 +93,6 @@ jobs:
               --dir _build/html/ \
               --site ${{ secrets.NETLIFY_SITE_ID }} \
               --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
-              --alias pr-${{ github.event.pull_request.number }} \
               --context deploy-preview \
               --message "Preview Deploy from GitHub Actions PR #${{ github.event.pull_request.number }} (commit: ${{ github.sha }})" \
               --json
