@@ -123,7 +123,12 @@ for μ in [1, 5, 10]:
     for y_i in y_values:
         distribution.append(poisson_pmf(y_i, μ))
     ax.plot(
-        y_values, distribution, label=rf"$\mu$={μ}", alpha=0.5, marker="o", markersize=8
+        y_values,
+        distribution,
+        label=rf"$\mu$={μ}",
+        alpha=0.5,
+        marker="o",
+        markersize=8,
     )
 
 ax.grid()
@@ -157,9 +162,9 @@ billionaires per country, `numbil0`, in 2008 (the United States is
 dropped for plotting purposes)
 
 ```{code-cell} ipython3
-numbil0_2008 = df[(df["year"] == 2008) & (df["country"] != "United States")].loc[
-    :, "numbil0"
-]
+numbil0_2008 = df[
+    (df["year"] == 2008) & (df["country"] != "United States")
+].loc[:, "numbil0"]
 
 plt.subplots(figsize=(12, 8))
 plt.hist(numbil0_2008, bins=30)
@@ -404,9 +409,14 @@ fig, (ax1, ax2) = plt.subplots(2, sharex=True, figsize=(12, 8))
 ax1.plot(β, logL(β), lw=2)
 ax2.plot(β, dlogL(β), lw=2)
 
-ax1.set_ylabel(r"$log \mathcal{L(\beta)}$", rotation=0, labelpad=35, fontsize=15)
+ax1.set_ylabel(
+    r"$log \mathcal{L(\beta)}$", rotation=0, labelpad=35, fontsize=15
+)
 ax2.set_ylabel(
-    r"$\frac{dlog \mathcal{L(\beta)}}{d \beta}$ ", rotation=0, labelpad=35, fontsize=19
+    r"$\frac{dlog \mathcal{L(\beta)}}{d \beta}$ ",
+    rotation=0,
+    labelpad=35,
+    fontsize=19,
 )
 ax2.set_xlabel(r"$\beta$", fontsize=15)
 ax1.grid(), ax2.grid()
@@ -618,7 +628,9 @@ for β in [7, 8.5, 9.5, 10]:
 
 ax.set(ylim=(-24, -4), xlim=(6, 13))
 ax.set_xlabel(r"$\beta$", fontsize=15)
-ax.set_ylabel(r"$log \mathcal{L(\beta)}$", rotation=0, labelpad=25, fontsize=15)
+ax.set_ylabel(
+    r"$log \mathcal{L(\beta)}$", rotation=0, labelpad=25, fontsize=15
+)
 ax.grid(alpha=0.3)
 plt.show()
 ```
@@ -679,7 +691,15 @@ df["const"] = 1
 
 # Variable sets
 reg1 = ["const", "lngdppc", "lnpop", "gattwto08"]
-reg2 = ["const", "lngdppc", "lnpop", "gattwto08", "lnmcap08", "rintr", "topint08"]
+reg2 = [
+    "const",
+    "lngdppc",
+    "lnpop",
+    "gattwto08",
+    "lnmcap08",
+    "rintr",
+    "topint08",
+]
 reg3 = [
     "const",
     "lngdppc",
@@ -700,7 +720,9 @@ We'll use robust standard errors as in the author's paper
 
 ```{code-cell} ipython3
 # Specify model
-poisson_reg = Poisson(df[["numbil0"]], df[reg1], missing="drop").fit(cov_type="HC0")
+poisson_reg = Poisson(df[["numbil0"]], df[reg1], missing="drop").fit(
+    cov_type="HC0"
+)
 print(poisson_reg.summary())
 ```
 
@@ -790,7 +812,9 @@ results_df["difference"] = results_df["numbil0"] - results_df["prediction"]
 results_df.sort_values("difference", ascending=False, inplace=True)
 
 # Plot the first 15 data points
-results_df[:15].plot("country", "difference", kind="bar", figsize=(12, 8), legend=False)
+results_df[:15].plot(
+    "country", "difference", kind="bar", figsize=(12, 8), legend=False
+)
 plt.ylabel("Number of billionaires above predicted level")
 plt.xlabel("Country")
 plt.show()
