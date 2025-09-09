@@ -198,3 +198,44 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      - name: Post PR Comment with Preview Links
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const changedFiles = `${{ steps.detect-changes.outputs.changed_files }}`;
+            const previewUrls = `${{ steps.detect-changes.outputs.preview_urls }}`;
+            const manualPage = `${{ github.event.inputs.preview_page }}`;
+            const prNumber = ${{ github.event.pull_request.number }};
+            const baseUrl = `https://deploy-preview-${prNumber}--sunny-cactus-210e3e.netlify.app`;
+            
+            let comment = `## 📖 Netlify Preview Ready!\n\n`;
+            comment += `**Preview URL:** ${baseUrl}\n\n`;
+            
+            // Add manual preview page if specified
+            if (manualPage) {
+              comment += `🎯 **Manual Preview:** [${manualPage}](${baseUrl}/${manualPage})\n\n`;
+            }
+            
+            // Add direct links to changed lecture pages
+            if (changedFiles && previewUrls) {
+              comment += `📚 **Changed Lecture Pages:**\n`;
+              const files = changedFiles.split('\n').filter(f => f.trim());
+              const urls = previewUrls.split('\n').filter(u => u.trim());
+              
+              for (let i = 0; i < files.length && i < urls.length; i++) {
+                const fileName = files[i].replace('lectures/', '').replace('.md', '');
+                const url = urls[i].trim();
+                if (url) {
+                  comment += `- [${fileName}](${url})\n`;
+                }
+              }
+            }
+            
+            // Post the comment
+            await github.rest.issues.createComment({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
