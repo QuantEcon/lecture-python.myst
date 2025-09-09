@@ -147,11 +147,15 @@ jobs:
             const deployUrl = '${{ steps.netlify-deploy.outputs.DEPLOY_URL }}';
             const state = '${{ job.status }}' === 'success' ? 'success' : 'failure';
             
-            await github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: context.payload.deployment?.id || 0,
-              state: state,
-              environment_url: deployUrl,
-              description: state === 'success' ? 'Preview deployed successfully' : 'Preview deployment failed'
-            });
+            if (context.payload.deployment?.id) {
+              await github.rest.repos.createDeploymentStatus({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                deployment_id: context.payload.deployment.id,
+                state: state,
+                environment_url: deployUrl,
+                description: state === 'success' ? 'Preview deployed successfully' : 'Preview deployment failed'
+              });
+            } else {
+              console.log('No deployment ID found; skipping deployment status update.');
+            }
