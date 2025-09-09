@@ -165,7 +165,7 @@ Summarizing activities in the asset market, all agents, regardless of age $j \in
 
   - All cohorts participate together in factor markets, with asset supplies from all cohorts determining aggregate capital and effective labor supplies from all cohorts determining aggregate labor.
 
-  - Equilibrium prices reflect both lifecycle and redistributional forces.
+  - Equilibrium prices reflect both lifecycle and redistributive forces.
 
 ## Representative firm's problem
 
