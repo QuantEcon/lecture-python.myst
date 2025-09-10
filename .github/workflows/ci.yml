@@ -172,7 +172,7 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             # Deploy to Netlify and capture the response
-            deploy_message="Preview Deploy from GitHub Actions PR #${{ github.event.pull_request.number }} (commit: ${{ github.sha }})"
+            deploy_message="Preview Deploy from GitHub Actions PR #${{ github.event.pull_request.number }} (commit: ${{ github.event.pull_request.head.sha }})"
             
             netlify_output=$(netlify deploy \
               --dir _build/html/ \
@@ -250,7 +250,7 @@ jobs:
             const manualPage = `${{ github.event.inputs.preview_page }}`;
             const deployUrl = `${{ steps.netlify-deploy.outputs.deploy_url }}`;
             const prNumber = ${{ github.event.pull_request.number }};
-            const commitSha = `${{ github.sha }}`;
+            const commitSha = `${{ github.event.pull_request.head.sha }}`;
             const shortSha = commitSha.substring(0, 7);
             
             console.log(`Checking for existing comments for commit: ${commitSha}`);
