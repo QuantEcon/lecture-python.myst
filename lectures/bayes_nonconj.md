@@ -1044,7 +1044,7 @@ mystnb:
     caption: |
       MCMC density (uniform prior)
     name: fig_mcmc_uniform
----
+--- 
 plot_mcmc_experiment(
     uniform, 
     true_θ, 
