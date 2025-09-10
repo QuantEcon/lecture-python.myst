@@ -101,47 +101,65 @@ jobs:
             echo "Base SHA: ${{ github.event.pull_request.base.sha }}"
             echo "Head SHA: ${{ github.event.pull_request.head.sha }}"
             
-            # Get changed files in the lectures directory with better validation
-            all_changed=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} || true)
-            echo "All changed files:"
+            # Ensure we have both base and head commits available
+            git fetch origin ${{ github.event.pull_request.base.sha }}:refs/remotes/origin/pr-base || true
+            git fetch origin ${{ github.event.pull_request.head.sha }}:refs/remotes/origin/pr-head || true
+            
+            # Get changed files using git diff with status to see the type of change
+            echo "Getting diff between commits..."
+            all_changed=$(git diff --name-status ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} 2>/dev/null || echo "")
+            
+            if [ -z "$all_changed" ]; then
+              echo "No changes detected or error in git diff"
+              echo "changed_files=" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+            
+            echo "All changed files with status:"
             echo "$all_changed"
             
-            changed_files=$(echo "$all_changed" | grep '^lectures/.*\.md$' | grep -v '^lectures/_' | grep -v '^lectures/intro\.md$' || true)
-            
-            if [ ! -z "$changed_files" ]; then
-              echo "Filtered lecture files:"
-              echo "$changed_files"
+            # Filter for lecture files that are Added or Modified (not Deleted)
+            # Format: M lectures/file.md or A lectures/file.md
+            changed_lecture_files=""
+            while IFS=$'\t' read -r status file; do
+              # Skip if empty line
+              [ -z "$status" ] && continue
               
-              # Validate that these files actually exist and contain changes
-              validated_files=""
-              while IFS= read -r file; do
-                if [ ! -z "$file" ] && [ -f "$file" ]; then
-                  # Check if the file actually has changes
-                  if git diff --quiet ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} -- "$file"; then
-                    echo "Warning: $file shows no actual changes, skipping"
-                  else
-                    echo "Confirmed changes in: $file"
-                    if [ -z "$validated_files" ]; then
-                      validated_files="$file"
+              echo "Processing: status='$status' file='$file'"
+              
+              # Only include Added (A) or Modified (M) files, skip Deleted (D)
+              if [[ "$status" =~ ^[AM] ]] && [[ "$file" =~ ^lectures/.*\.md$ ]] && [[ ! "$file" =~ ^lectures/_ ]] && [[ "$file" != "lectures/intro.md" ]]; then
+                # Double-check that the file exists and has real content changes
+                if [ -f "$file" ]; then
+                  # Use git show to check if there are actual content changes (not just metadata)
+                  content_diff=$(git diff ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} -- "$file" | grep -E '^[+-]' | grep -v '^[+-]{3}' | wc -l)
+                  if [ "$content_diff" -gt 0 ]; then
+                    echo "✓ Confirmed content changes in: $file"
+                    if [ -z "$changed_lecture_files" ]; then
+                      changed_lecture_files="$file"
                     else
-                      validated_files="$validated_files"$'\n'"$file"
+                      changed_lecture_files="$changed_lecture_files"$'\n'"$file"
                     fi
+                  else
+                    echo "⚠ No content changes found in: $file (possibly metadata only)"
                   fi
+                else
+                  echo "⚠ File not found in working directory: $file"
                 fi
-              done <<< "$changed_files"
-              
-              if [ ! -z "$validated_files" ]; then
-                echo "Final validated changed files:"
-                echo "$validated_files"
-                echo "changed_files<<EOF" >> $GITHUB_OUTPUT
-                echo "$validated_files" >> $GITHUB_OUTPUT
-                echo "EOF" >> $GITHUB_OUTPUT
               else
-                echo "No lecture files with actual changes found"
-                echo "changed_files=" >> $GITHUB_OUTPUT
+                echo "⚠ Skipping: $file (status: $status, doesn't match lecture file pattern or is excluded)"
               fi
+            done <<< "$all_changed"
+            
+            if [ ! -z "$changed_lecture_files" ]; then
+              echo ""
+              echo "Final validated changed lecture files:"
+              echo "$changed_lecture_files"
+              echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+              echo "$changed_lecture_files" >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
             else
-              echo "No lecture files changed"
+              echo "No lecture files with actual content changes found"
               echo "changed_files=" >> $GITHUB_OUTPUT
             fi
           else
@@ -233,25 +251,39 @@ jobs:
             const deployUrl = `${{ steps.netlify-deploy.outputs.deploy_url }}`;
             const prNumber = ${{ github.event.pull_request.number }};
             const commitSha = `${{ github.sha }}`;
+            const shortSha = commitSha.substring(0, 7);
             
-            // Check if we already posted a comment for this commit
+            console.log(`Checking for existing comments for commit: ${commitSha}`);
+            console.log(`Deploy URL: ${deployUrl}`);
+            console.log(`Changed files: ${changedFiles}`);
+            
+            // Get all comments on this PR to check for duplicates
             const comments = await github.rest.issues.listComments({
               issue_number: prNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
             
-            const existingCommentForCommit = comments.data.find(c => 
-              c.body.includes('**📖 Netlify Preview Ready!**') && 
-              c.body.includes(`([${commitSha.substring(0, 7)}]`)
-            );
+            console.log(`Found ${comments.data.length} comments on PR`);
             
-            if (existingCommentForCommit) {
-              console.log(`Comment already exists for commit ${commitSha}, skipping...`);
+            // Look for existing comment with this exact commit SHA and deploy URL
+            const duplicateComment = comments.data.find(comment => {
+              const hasMarker = comment.body.includes('**📖 Netlify Preview Ready!**');
+              const hasCommitSha = comment.body.includes(`([${shortSha}]`);
+              const hasDeployUrl = comment.body.includes(deployUrl);
+              
+              console.log(`Comment ${comment.id}: hasMarker=${hasMarker}, hasCommitSha=${hasCommitSha}, hasDeployUrl=${hasDeployUrl}`);
+              
+              return hasMarker && hasCommitSha && hasDeployUrl;
+            });
+            
+            if (duplicateComment) {
+              console.log(`Duplicate comment found (${duplicateComment.id}) for commit ${shortSha} and deploy URL ${deployUrl}, skipping...`);
               return;
             }
             
-            const shortSha = commitSha.substring(0, 7);
+            console.log(`No duplicate found, creating new comment for commit ${shortSha}`);
+            
             const commitUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${commitSha}`;
             
             let comment = `**📖 Netlify Preview Ready!**\n\n`;
@@ -264,9 +296,9 @@ jobs:
             
             // Add direct links to changed lecture pages
             if (changedFiles && changedFiles.trim()) {
-              console.log('Raw changedFiles:', JSON.stringify(changedFiles));
+              console.log('Processing changed files for preview links...');
               const files = changedFiles.split('\n').filter(f => f.trim() && f.includes('lectures/') && f.endsWith('.md'));
-              console.log('Filtered files:', files);
+              console.log('Filtered lecture files:', files);
               
               if (files.length > 0) {
                 comment += `📚 **Changed Lecture Pages:** `;
@@ -276,7 +308,7 @@ jobs:
                   const cleanFile = file.trim();
                   if (cleanFile && cleanFile.startsWith('lectures/') && cleanFile.endsWith('.md')) {
                     const fileName = cleanFile.replace('lectures/', '').replace('.md', '');
-                    console.log(`Processing file: ${cleanFile} -> ${fileName}`);
+                    console.log(`Creating preview link: ${cleanFile} -> ${fileName}.html`);
                     const pageUrl = `${deployUrl}/${fileName}.html`;
                     pageLinks.push(`[${fileName}](${pageUrl})`);
                   }
@@ -284,9 +316,17 @@ jobs:
                 
                 if (pageLinks.length > 0) {
                   comment += pageLinks.join(', ') + '\n\n';
+                } else {
+                  console.log('No valid page links created');
                 }
+              } else {
+                console.log('No lecture files in changed files list');
               }
+            } else {
+              console.log('No changed files detected');
             }
+            
+            console.log('Final comment:', comment);
             
             // Post the comment
             await github.rest.issues.createComment({
@@ -295,3 +335,5 @@ jobs:
               repo: context.repo.repo,
               body: comment
             });
+            
+            console.log('Comment posted successfully');
