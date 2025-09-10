@@ -370,7 +370,7 @@ $$
 (R_{\sigma} v)(a, z) = v(a, z) - \beta \sum_{z'} v(\sigma(a, z), z') \Pi(z, z')
 $$
 
-(Notice that $R_\sigma$ is expressed as a linear operator rather than a matrix—-this is much easier and cleaner to code, and also exploits sparsity.)
+(Notice that $R_\sigma$ is expressed as a linear operator rather than a matrix—this is much easier and cleaner to code, and also exploits sparsity.)
 
 ```{code-cell} ipython3
 @jax.jit
