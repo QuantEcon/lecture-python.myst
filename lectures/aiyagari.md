@@ -42,9 +42,9 @@ We begin by discussing an example of a Bewley model due to Rao Aiyagari {cite}`A
 
 The model features
 
-* Heterogeneous agents
-* A single exogenous vehicle for borrowing and lending
-* Limits on amounts individual agents may borrow
+* heterogeneous agents
+* a single exogenous vehicle for borrowing and lending
+* limits on amounts individual agents may borrow
 
 The Aiyagari model has been used to investigate many topics, including
 
@@ -133,7 +133,7 @@ The wage and interest rate are fixed over time.
 
 In this simple version of the model, households supply labor inelastically because they do not value leisure.
 
-## Firms
+### Firms
 
 Firms produce output by hiring capital and labor.
 
@@ -217,7 +217,7 @@ def r_to_w(r, firm):
 
 ### Equilibrium
 
-We construct a *stationary rational expectations equilibrium* (SREE).
+We construct  a **stationary rational expectations equilibrium (SREE)**.
 
 In such an equilibrium
 
@@ -231,16 +231,7 @@ In more detail, an SREE lists a set of prices, savings and production policies s
 * the resulting aggregate quantities are consistent with the prices; in particular, the demand for capital equals the supply
 * aggregate quantities (defined as cross-sectional averages) are constant
 
-In practice, once parameter values are set, we can check for an SREE by the following steps
-
-1. pick a proposed quantity $K$ for aggregate capital
-1. determine corresponding prices, with interest rate $r$ determined by {eq}`aiy_rgk` and a wage rate $w(r)$ as given in {eq}`aiy_wgr`
-1. determine the common optimal savings policy of households given these prices
-1. compute aggregate capital as the mean of steady-state capital given this savings policy
-
-If this final quantity agrees with $K$ then we have a SREE.
-
-## Code
+## Implementation
 
 Let's look at how we might compute such an equilibrium in practice.
 
@@ -250,7 +241,7 @@ Below we provide code to solve the household problem, taking $r$ and $w$ as fixe
 
 We will solve the household problem using Howard policy iteration (see Ch 5 of [Dynamic Programming](https://dp.quantecon.org/)).
 
-First we set up a namedtuple to store the parameters that define a household asset accumulation problem, as well as the grids used to solve it.
+First we set up a `NamedTuple` to store the parameters that define a household asset accumulation problem, as well as the grids used to solve it
 
 ```{code-cell} ipython3
 class Household(NamedTuple):
@@ -272,15 +263,13 @@ def create_household(β=0.96,                      # Discount factor
     return Household(β=β, a_grid=a_grid, z_grid=z_grid, Π=Π)
 ```
 
-For now we assume that $u(c) = \log(c)$.
-
-(CRRA utility is treated in the exercises.)
+For now we assume that $u(c) = \log(c)$
 
 ```{code-cell} ipython3
 u = jnp.log
 ```
 
-Here's a namedtuple that stores the wage rate and interest rate, as well as a function that creates a price namedtuple with default values.
+Here's a namedtuple that stores the wage rate and interest rate, as well as a function that creates a price namedtuple with default values
 
 ```{code-cell} ipython3
 class Prices(NamedTuple):
@@ -317,15 +306,15 @@ def B(v, household, prices):
     c = w * z + (1 + r) * a - ap
 
     # Calculate continuation rewards at all combinations of (a, z, ap)
-    v = jnp.reshape(v, (1, 1, a_size, z_size))   # v[ip, jp] -> v[i, j, ip, jp]
-    Π = jnp.reshape(Π, (1, z_size, 1, z_size))   # Π[j, jp]  -> Π[i, j, ip, jp]
-    EV = jnp.sum(v * Π, axis=-1)                 # sum over last index jp
+    v = jnp.reshape(v, (1, 1, a_size, z_size)) # v[ip, jp] -> v[i, j, ip, jp]
+    Π = jnp.reshape(Π, (1, z_size, 1, z_size)) # Π[j, jp]  -> Π[i, j, ip, jp]
+    EV = jnp.sum(v * Π, axis=-1)               # sum over last index jp
 
     # Compute the right-hand side of the Bellman equation
     return jnp.where(c > 0, u(c) + β * EV, -jnp.inf)
 ```
 
-The next function computes greedy policies.
+The next function computes greedy policies
 
 ```{code-cell} ipython3
 @jax.jit
@@ -334,10 +323,11 @@ def get_greedy(v, household, prices):
     Computes a v-greedy policy σ, returned as a set of indices. If 
     σ[i, j] equals ip, then a_grid[ip] is the maximizer at i, j.
     """
-    return jnp.argmax(B(v, household, prices), axis=-1) # argmax over ap
+    # argmax over ap
+    return jnp.argmax(B(v, household, prices), axis=-1)
 ```
 
-The following function computes the array $r_{\sigma}$ which gives current rewards given policy $\sigma$.
+The following function computes the array $r_{\sigma}$ which gives current rewards given policy $\sigma$
 
 ```{code-cell} ipython3
 @jax.jit
@@ -402,7 +392,7 @@ def R_σ(v, σ, household):
     return v - β * jnp.sum(V * Π, axis=-1)
 ```
 
-The next function computes the lifetime value of a given policy.
+The next function computes the lifetime value of a given policy
 
 ```{code-cell} ipython3
 @jax.jit
@@ -413,13 +403,15 @@ def get_value(σ, household, prices):
         v_σ = R_σ^{-1} r_σ
     """
     r_σ = compute_r_σ(σ, household, prices)
+    
     # Reduce R_σ to a function in v
     _R_σ = lambda v: R_σ(v, σ, household)
-    # Compute v_σ = R_σ^{-1} r_σ using an iterative routing.
+
+    # Compute v_σ = R_σ^{-1} r_σ using an iterative routine.
     return jax.scipy.sparse.linalg.bicgstab(_R_σ, r_σ)[0]
 ```
 
-Here's the Howard policy iteration.
+Here's the Howard policy iteration
 
 ```{code-cell} ipython3
 def howard_policy_iteration(household, prices,
@@ -442,11 +434,11 @@ def howard_policy_iteration(household, prices,
         v_σ = v_σ_new
         i = i + 1
         if verbose:
-            print(f"Concluded loop {i} with error {error}.")
+            print(f"iteration {i} with error {error}.")
     return σ
 ```
 
-As a first example of what we can do, let's compute and plot an optimal accumulation policy at fixed prices.
+As a first example of what we can do, let's compute and plot an optimal accumulation policy at fixed prices
 
 ```{code-cell} ipython3
 # Create an instance of Household
@@ -461,7 +453,7 @@ print(f"Interest rate: {r}, Wage: {w}")
 %time σ_star = howard_policy_iteration(household, prices, verbose=True)
 ```
 
-The next plot shows asset accumulation policies at different values of the exogenous state.
+The next plot shows asset accumulation policies at different values of the exogenous state
 
 ```{code-cell} ipython3
 β, a_grid, z_grid, Π = household
@@ -537,7 +529,7 @@ The distribution should sum to one:
 ψ_a.sum()
 ```
 
-The next function computes aggregate capital supply by households under policy $\sigma$, given wages and interest rates.
+The next function computes aggregate capital supply by households under policy $\sigma$, given wages and interest rates
 
 ```{code-cell} ipython3
 def capital_supply(σ, household):
@@ -549,9 +541,9 @@ def capital_supply(σ, household):
     return float(jnp.sum(ψ_a * a_grid))
 ```
 
-## Equilibrium
+### Equilibrium
 
-We compute a stationary rational expectations equilibrium (SREE) as follows:
+We compute a SREE as follows:
 
 1. Set $n=0$ and start with an initial guess $K_0$ for aggregate capital.
 1. Determine prices $r, w$ from the firm decision problem, given $K_n$.
@@ -569,13 +561,14 @@ If $K_{n+1}$ agrees with $K_n$ then we have a SREE.
 
 In other words, our problem is to find the fixed point of the one-dimensional map $G$.
 
-Here's $G$ expressed as a Python function:
+Here's $G$ expressed as a Python function
 
 ```{code-cell} ipython3
 def G(K, firm, household):
     # Get prices r, w associated with K
     r = r_given_k(K, firm)
     w = r_to_w(r, firm)
+
     # Generate a household object with these prices, compute
     # aggregate capital.
     prices = create_prices(r=r, w=w)
@@ -583,9 +576,7 @@ def G(K, firm, household):
     return capital_supply(σ_star, household)
 ```
 
-### Visual inspection
-
-Let's inspect visually as a first pass.
+Let's inspect visually as a first pass
 
 ```{code-cell} ipython3
 num_points = 50
@@ -601,8 +592,6 @@ ax.set_xlabel('capital')
 ax.legend()
 plt.show()
 ```
-
-### Computing the equilibrium
 
 Now let's compute the equilibrium.
 
@@ -647,14 +636,13 @@ You can try varying $\alpha$, but usually this parameter is hard to set a priori
 
 In the exercises below you will be asked to use bisection instead, which generally performs better.
 
-
 ### Supply and demand curves
 
 We can visualize the equilibrium using supply and demand curves.
 
 The following code draws the aggregate supply and demand curves.
 
-The intersection gives the equilibrium interest rate and capital.
+The intersection gives the equilibrium interest rate and capital
 
 ```{code-cell} ipython3
 def prices_to_capital_stock(household, r, firm):
@@ -717,7 +705,7 @@ In `bisect`,
 :class: dropdown
 ```
 
-We use bisection to find the zero of the function $h(k) = k - G(k)$.
+We use bisection to find the zero of the function $h(k) = k - G(k)$
 
 ```{code-cell} ipython3
 def compute_equilibrium_bisect(firm, household, a=1.0, b=20.0):
