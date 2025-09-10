@@ -654,7 +654,7 @@ The shocks $\{w_t\}$ were taken to be IID and standard normal.
 ```{code-cell} python3
 # Model parameters
 r = 0.05
-β = 1/(1 + r)
+β = 1 / (1 + r)
 T = 45
 c_bar = 2
 σ = 0.25
@@ -693,14 +693,14 @@ bbox = (0., 1.02, 1., .102)
 legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
 p_args = {'lw': 2, 'alpha': 0.7}
 
-axes[0].plot(list(range(1, T+1)), income, 'g-', label="non-financial income",
+axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
             **p_args)
-axes[0].plot(list(range(T)), c, 'k-', label="consumption", **p_args)
+axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
 
-axes[1].plot(list(range(1, T+1)), np.cumsum(income - μ), 'r-',
+axes[1].plot(range(1, T+1), np.cumsum(income - μ), 'r-',
             label="cumulative unanticipated income", **p_args)
-axes[1].plot(list(range(T+1)), assets, 'b-', label="assets", **p_args)
-axes[1].plot(list(range(T)), np.zeros(T), 'k-')
+axes[1].plot(range(T+1), assets, 'b-', label="assets", **p_args)
+axes[1].plot(range(T), np.zeros(T), 'k-')
 
 for ax in axes:
     ax.grid()
@@ -761,14 +761,14 @@ bbox = (0., 1.02, 1., .102)
 legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
 p_args = {'lw': 2, 'alpha': 0.7}
 
-axes[0].plot(list(range(1, T+1)), income, 'g-', label="non-financial income",
+axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
              **p_args)
-axes[0].plot(list(range(T)), c, 'k-', label="consumption", **p_args)
+axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
 
-axes[1].plot(list(range(1, T+1)), np.cumsum(income - μ), 'r-',
+axes[1].plot(range(1, T+1), np.cumsum(income - μ), 'r-',
              label="cumulative unanticipated income", **p_args)
-axes[1].plot(list(range(T+1)), assets, 'b-', label="assets", **p_args)
-axes[1].plot(list(range(T)), np.zeros(T), 'k-')
+axes[1].plot(range(T+1), assets, 'b-', label="assets", **p_args)
+axes[1].plot(range(T), np.zeros(T), 'k-')
 
 for ax in axes:
     ax.grid()
@@ -1256,6 +1256,7 @@ The parameters are $r = 0.05, \beta = 1 / (1 + r), \bar c = 1.5,  \mu = 2, \sigm
 
 ```{solution-start} lqc_ex1
 :class: dropdown
+:label: lqc_ex1_solution
 ```
 
 Here’s one solution.
@@ -1385,6 +1386,7 @@ together the simulations from these two separate models.
 
 ```{solution-start} lqc_ex2
 :class: dropdown
+:label: lqc_ex2_solution
 ```
 
 This is a permanent income / life-cycle model with polynomial growth in
@@ -1508,6 +1510,7 @@ For parameters, use $a_0 = 5, a_1 = 0.5, \sigma = 0.15, \rho = 0.9,
 
 ```{solution-start} lqc_ex3
 :class: dropdown
+:label: lqc_ex3_solution
 ```
 
 The first task is to find the matrices $A, B, C, Q, R$ that define
