@@ -50,14 +50,14 @@ These themes appear repeatedly below.
 
 Mathematically, LQ control problems are closely related to {doc}`the Kalman filter <kalman>`
 
-* Recursive formulations of linear-quadratic control problems and Kalman filtering problems both involve matrix **Riccati equations**.
-* Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example [this lecture](https://python-advanced.quantecon.org/lu_tricks.html) and [this lecture](https://python-advanced.quantecon.org/classical_filtering.html)).
+* Recursive formulations of linear-quadratic control problems and Kalman filtering problems both involve matrix [Riccati equations](https://en.wikipedia.org/wiki/Riccati_equation).
+* Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example[Classical Control with Linear Algebra](https://python-advanced.quantecon.org/lu_tricks.html) and [Classical Prediction and Filtering With Linear Algebra](https://python-advanced.quantecon.org/classical_filtering.html)).
 
 In reading what follows, it will be useful to have some familiarity with
 
 * matrix manipulations
 * vectors of random variables
-* dynamic programming and the Bellman equation (see for example {doc}`this lecture <intro:short_path>` and {doc}`this lecture <optgrowth>`)
+* dynamic programming and the Bellman equation (see for example {doc}`Shortest Paths <intro:short_path>` and {doc}`Optimal Growth <optgrowth>`)
 
 For additional reading on LQ control, see, for example,
 
@@ -98,7 +98,7 @@ x_{t+1} = A x_t + B u_t + C w_{t+1},
 Here
 
 * $u_t$ is a "control" vector, incorporating choices available to a decision-maker confronting the current state $x_t$
-* $\{w_t\}$ is an uncorrelated zero mean shock process satisfying $\mathbb E w_t w_t' = I$, where the right-hand side is the identity matrix
+* $\{w_t\}$ is a sequence of uncorrelated zero mean shock process satisfying $\mathbb E w_t w_t' = I$, where the right-hand side is the identity matrix
 
 Regarding the dimensions
 
@@ -117,8 +117,8 @@ $$
 Here $a_t$ is assets, $r$ is a fixed interest rate, $c_t$ is
 current consumption, and $y_t$ is current non-financial income.
 
-If we suppose that $\{ y_t \}$ is serially uncorrelated and $N(0,
-\sigma^2)$, then, taking $\{ w_t \}$ to be standard normal, we can write
+If we suppose that $\{y_t\}$ is serially uncorrelated and $N(0,
+\sigma^2)$, then, taking $\{w_t\}$ to be standard normal, we can write
 the system as
 
 $$
@@ -254,6 +254,8 @@ In the LQ model, the aim is to minimize flow of losses, where time-$t$ loss is g
 x_t' R x_t + u_t' Q u_t
 ```
 
+Where the entries in matrices $R$ and $Q$ are chosen to match the specific problem that is being studied.
+
 Here
 
 * $R$ is assumed to be $n \times n$, symmetric and nonnegative definite.
@@ -261,6 +263,11 @@ Here
 
 ```{note}
 In fact, for many economic problems, the definiteness conditions on $R$ and $Q$ can be relaxed.  It is sufficient that certain submatrices of $R$ and $Q$ be nonnegative definite. See {cite}`HansenSargent2008` for details.
+
+```
+
+```{note}
+The use of $R$ and $Q$ notations may differ depending on the source. Some authors use $Q$ to be the matrix associated with the state variables and $R$ with the control variables. 
 ```
 
 #### Example 1
@@ -328,7 +335,7 @@ Comments:
 
 * We assume $R_f$ to be $n \times n$, symmetric and nonnegative definite.
 * We allow $\beta = 1$, and hence include the undiscounted case.
-* $x_0$ may itself be random, in which case we require it to be independent of the shock sequence $w_1, \ldots, w_T$.
+* $x_0$ may itself be random, in which case we require it to be independent of the shock sequence $\{w_1, \ldots, w_T\}$.
 
 (lq_cp)=
 ### Information
@@ -369,7 +376,7 @@ What's special about the LQ case is that -- as we shall soon see ---  the optima
 ### Solution
 
 To solve the finite horizon LQ problem we can use a dynamic programming
-strategy based on backward induction that is conceptually similar to the approach adopted in {doc}`this lecture <intro:short_path>`.
+strategy based on backward induction that is conceptually similar to the approach adopted in {doc}`Shortest Paths <intro:short_path>`.
 
 For reasons that will soon become clear, we first introduce the notation $J_T(x) = x' R_f x$.
 
@@ -387,6 +394,8 @@ x_{T-1}' R x_{T-1} + u' Q u + \beta \,
 \mathbb E J_T(A x_{T-1} + B u + C w_T)
 \}
 $$
+
+We use $u$ instead of $u_{T-1}$ here to simplify notation.
 
 At this stage, it is convenient to define the function
 
@@ -506,7 +515,7 @@ d_{T-1} := \beta \mathop{\mathrm{trace}}(C' P_T C)
 
 (The algebra is a good exercise --- we'll leave it up to you.)
 
-If we continue working backwards in this manner, it soon becomes clear that $J_t (x) = x' P_t x + d_t$ as claimed, where $\{P_t\}$ and $\{d_t\}$ satisfy the recursions
+If we continue working backwards in this manner, it soon becomes clear that $J_t (x) = x' P_t x + d_t$ as claimed, where $P_t$ and $d_t$ satisfy the recursions
 
 ```{math}
 :label: lq_pr
@@ -541,7 +550,7 @@ These are the linear optimal control policies we {ref}`discussed above <lq_cp>`.
 
 In particular,  the sequence of controls given by {eq}`lq_oc` and {eq}`lq_lom` solves our finite horizon LQ problem.
 
-Rephrasing this more precisely, the sequence $u_0, \ldots, u_{T-1}$ given by
+Rephrasing this more precisely, the sequence $\{u_0, \ldots, u_{T-1}\}$ given by
 
 ```{math}
 :label: lq_xud
@@ -639,7 +648,7 @@ $$
 Now that the problem is expressed in LQ form, we can proceed to the solution
 by applying {eq}`lq_pr` and {eq}`lq_oc`.
 
-After generating shocks $w_1, \ldots, w_T$, the dynamics for assets and
+After generating shocks $\{w_1, \ldots, w_T\}$, the dynamics for assets and
 consumption can be simulated via {eq}`lq_xud`.
 
 The following figure was computed using $r = 0.05, \beta = 1 / (1+ r),
