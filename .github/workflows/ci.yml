@@ -1,6 +1,7 @@
 name: Build Project [using jupyter-book]
 on: 
   pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
     inputs:
       preview_page:
@@ -199,9 +200,28 @@ jobs:
             const manualPage = `${{ github.event.inputs.preview_page }}`;
             const deployUrl = `${{ steps.netlify-deploy.outputs.deploy_url }}`;
             const prNumber = ${{ github.event.pull_request.number }};
+            const commitSha = `${{ github.sha }}`;
+            
+            // Check if we already posted a comment for this commit
+            const comments = await github.rest.issues.listComments({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const existingCommentForCommit = comments.data.find(c => 
+              c.body.includes('## 📖 Netlify Preview Ready!') && 
+              c.body.includes(`**Commit:** \`${commitSha}\``)
+            );
+            
+            if (existingCommentForCommit) {
+              console.log(`Comment already exists for commit ${commitSha}, skipping...`);
+              return;
+            }
             
             let comment = `## 📖 Netlify Preview Ready!\n\n`;
             comment += `**Preview URL:** ${deployUrl}\n\n`;
+            comment += `**Commit:** \`${{ github.sha }}\`\n\n`;
             
             // Add manual preview page if specified
             if (manualPage) {
@@ -224,31 +244,10 @@ jobs:
               }
             }
             
-            // Check if there's already a Netlify preview comment
-            const comments = await github.rest.issues.listComments({
+            // Post the comment
+            await github.rest.issues.createComment({
               issue_number: prNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
+              body: comment
             });
-            
-            const existingComment = comments.data.find(c => 
-              c.body.includes('## 📖 Netlify Preview Ready!')
-            );
-            
-            if (existingComment) {
-              // Update the existing comment
-              await github.rest.issues.updateComment({
-                comment_id: existingComment.id,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: comment
-              });
-            } else {
-              // Create a new comment
-              await github.rest.issues.createComment({
-                issue_number: prNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: comment
-              });
-            }
