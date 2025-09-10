@@ -98,17 +98,48 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "Detecting changed lecture files..."
+            echo "Base SHA: ${{ github.event.pull_request.base.sha }}"
+            echo "Head SHA: ${{ github.event.pull_request.head.sha }}"
             
-            # Get changed files in the lectures directory
-            changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep '^lectures/.*\.md$' | grep -v '^lectures/_' || true)
+            # Get changed files in the lectures directory with better validation
+            all_changed=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} || true)
+            echo "All changed files:"
+            echo "$all_changed"
+            
+            changed_files=$(echo "$all_changed" | grep '^lectures/.*\.md$' | grep -v '^lectures/_' | grep -v '^lectures/intro\.md$' || true)
             
             if [ ! -z "$changed_files" ]; then
-              echo "Changed lecture files:"
+              echo "Filtered lecture files:"
               echo "$changed_files"
               
-              echo "changed_files<<EOF" >> $GITHUB_OUTPUT
-              echo "$changed_files" >> $GITHUB_OUTPUT
-              echo "EOF" >> $GITHUB_OUTPUT
+              # Validate that these files actually exist and contain changes
+              validated_files=""
+              while IFS= read -r file; do
+                if [ ! -z "$file" ] && [ -f "$file" ]; then
+                  # Check if the file actually has changes
+                  if git diff --quiet ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} -- "$file"; then
+                    echo "Warning: $file shows no actual changes, skipping"
+                  else
+                    echo "Confirmed changes in: $file"
+                    if [ -z "$validated_files" ]; then
+                      validated_files="$file"
+                    else
+                      validated_files="$validated_files"$'\n'"$file"
+                    fi
+                  fi
+                fi
+              done <<< "$changed_files"
+              
+              if [ ! -z "$validated_files" ]; then
+                echo "Final validated changed files:"
+                echo "$validated_files"
+                echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+                echo "$validated_files" >> $GITHUB_OUTPUT
+                echo "EOF" >> $GITHUB_OUTPUT
+              else
+                echo "No lecture files with actual changes found"
+                echo "changed_files=" >> $GITHUB_OUTPUT
+              fi
             else
               echo "No lecture files changed"
               echo "changed_files=" >> $GITHUB_OUTPUT
@@ -232,20 +263,28 @@ jobs:
             }
             
             // Add direct links to changed lecture pages
-            if (changedFiles) {
-              const files = changedFiles.split('\n').filter(f => f.trim());
+            if (changedFiles && changedFiles.trim()) {
+              console.log('Raw changedFiles:', JSON.stringify(changedFiles));
+              const files = changedFiles.split('\n').filter(f => f.trim() && f.includes('lectures/') && f.endsWith('.md'));
+              console.log('Filtered files:', files);
+              
               if (files.length > 0) {
                 comment += `📚 **Changed Lecture Pages:** `;
                 
                 const pageLinks = [];
                 for (const file of files) {
-                  if (file.trim()) {
-                    const fileName = file.replace('lectures/', '').replace('.md', '');
+                  const cleanFile = file.trim();
+                  if (cleanFile && cleanFile.startsWith('lectures/') && cleanFile.endsWith('.md')) {
+                    const fileName = cleanFile.replace('lectures/', '').replace('.md', '');
+                    console.log(`Processing file: ${cleanFile} -> ${fileName}`);
                     const pageUrl = `${deployUrl}/${fileName}.html`;
                     pageLinks.push(`[${fileName}](${pageUrl})`);
                   }
                 }
-                comment += pageLinks.join(', ') + '\n\n';
+                
+                if (pageLinks.length > 0) {
+                  comment += pageLinks.join(', ') + '\n\n';
+                }
               }
             }
             
