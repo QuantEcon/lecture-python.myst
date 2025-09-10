@@ -19,7 +19,7 @@ kernelspec:
 In addition to what's included in base Anaconda, we need to install the following package:
 
 ```{code-cell} ipython3
-:tags: [hide-output]
+:tags: [no-execute, hide-output]
 
 !pip install numpyro
 ```
@@ -145,7 +145,7 @@ def ar1_simulate(ρ, σ, y0, T, key):
 ρ = 0.5
 T = 50
 
-key = random.PRNGKey(145353452)
+key = random.PRNGKey(0)
 y = ar1_simulate(ρ, σ, 10.0, T, key)
 ```
 
@@ -188,6 +188,16 @@ def plot_posterior(sample):
     axs[0, 1].set_xlabel("ρ")
     axs[1, 0].set_ylabel("σ")
     axs[1, 1].set_xlabel("σ")
+
+    # Unify the y-axis limits for trace plots
+    max_ylim = max(axs[0, 0].get_ylim()[1], axs[1, 0].get_ylim()[1])
+    axs[0, 0].set_ylim(0, max_ylim)
+    axs[1, 0].set_ylim(0, max_ylim)
+
+    # Unify the x-axis limits for histograms
+    max_xlim = max(axs[0, 1].get_xlim()[1], axs[1, 1].get_xlim()[1])
+    axs[0, 1].set_xlim(0, max_xlim)
+    axs[1, 1].set_xlim(0, max_xlim)
 
     plt.tight_layout()
     plt.show()
