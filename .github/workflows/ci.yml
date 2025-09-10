@@ -104,95 +104,86 @@ jobs:
               echo "Changed lecture files:"
               echo "$changed_files"
               
-              # Convert .md files to .html and create preview URLs
-              preview_urls=""
-              for file in $changed_files; do
-                # Extract filename without path and extension
-                basename=$(basename "$file" .md)
-                html_file="${basename}.html"
-                preview_urls="${preview_urls}https://deploy-preview-${{ github.event.pull_request.number }}--sunny-cactus-210e3e.netlify.app/${html_file}\n"
-              done
-              
-              echo "preview_urls<<EOF" >> $GITHUB_OUTPUT
-              echo -e "$preview_urls" >> $GITHUB_OUTPUT
-              echo "EOF" >> $GITHUB_OUTPUT
-              
               echo "changed_files<<EOF" >> $GITHUB_OUTPUT
               echo "$changed_files" >> $GITHUB_OUTPUT
               echo "EOF" >> $GITHUB_OUTPUT
             else
               echo "No lecture files changed"
-              echo "preview_urls=" >> $GITHUB_OUTPUT
               echo "changed_files=" >> $GITHUB_OUTPUT
             fi
           else
             echo "Not a PR, skipping change detection"
-            echo "preview_urls=" >> $GITHUB_OUTPUT
             echo "changed_files=" >> $GITHUB_OUTPUT
           fi
       - name: Preview Deploy to Netlify
+        id: netlify-deploy
         shell: bash -l {0}
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # Construct deployment message with preview URLs
+            # Deploy to Netlify and capture the response
             deploy_message="Preview Deploy from GitHub Actions PR #${{ github.event.pull_request.number }} (commit: ${{ github.sha }})"
             
-            # Add manual preview page if specified
-            if [ ! -z "${{ github.event.inputs.preview_page }}" ]; then
-              deploy_message="${deploy_message}\n\n🎯 Manual Preview Page: https://deploy-preview-${{ github.event.pull_request.number }}--sunny-cactus-210e3e.netlify.app/${{ github.event.inputs.preview_page }}"
-            fi
-            
-            # Add changed lecture pages
-            if [ ! -z "${{ steps.detect-changes.outputs.changed_files }}" ]; then
-              deploy_message="${deploy_message}\n\n📚 Changed Lecture Pages:"
-              deploy_message="${deploy_message}\n${{ steps.detect-changes.outputs.preview_urls }}"
-            fi
-            
-            netlify deploy \
+            netlify_output=$(netlify deploy \
               --dir _build/html/ \
               --site ${{ secrets.NETLIFY_SITE_ID }} \
               --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
               --context deploy-preview \
               --message "${deploy_message}" \
-              --json
+              --json)
               
-            echo "✅ Deployment completed!"
-            echo "🌐 Preview URL: https://deploy-preview-${{ github.event.pull_request.number }}--sunny-cactus-210e3e.netlify.app/"
+            echo "Netlify deployment output:"
+            echo "$netlify_output"
             
-            # Display preview URLs for changed files
-            if [ ! -z "${{ steps.detect-changes.outputs.preview_urls }}" ]; then
+            # Extract the actual deploy URL from the JSON response
+            deploy_url=$(echo "$netlify_output" | jq -r '.deploy_url')
+            
+            echo "deploy_url=$deploy_url" >> $GITHUB_OUTPUT
+            echo "✅ Deployment completed!"
+            echo "🌐 Actual Deploy URL: $deploy_url"
+            
+            # Generate preview URLs for changed files using the actual deploy URL
+            if [ ! -z "${{ steps.detect-changes.outputs.changed_files }}" ]; then
               echo ""
               echo "📚 Direct links to changed lecture pages:"
-              echo -e "${{ steps.detect-changes.outputs.preview_urls }}"
+              while read -r file; do
+                if [ ! -z "$file" ]; then
+                  basename=$(basename "$file" .md)
+                  html_file="${basename}.html"
+                  echo "- ${basename}: ${deploy_url}/${html_file}"
+                fi
+              done <<< "${{ steps.detect-changes.outputs.changed_files }}"
             fi
             
             # Display manual preview page if specified
             if [ ! -z "${{ github.event.inputs.preview_page }}" ]; then
               echo ""
-              echo "🎯 Manual preview page: https://deploy-preview-${{ github.event.pull_request.number }}--sunny-cactus-210e3e.netlify.app/${{ github.event.inputs.preview_page }}"
+              echo "🎯 Manual preview page: ${deploy_url}/${{ github.event.inputs.preview_page }}"
             fi
           else
             # Handle manual deployment
             deploy_message="Manual Deploy from GitHub Actions (commit: ${{ github.sha }})"
             
-            if [ ! -z "${{ github.event.inputs.preview_page }}" ]; then
-              deploy_message="${deploy_message}\n\n🎯 Preview Page: https://manual-${{ github.run_id }}--sunny-cactus-210e3e.netlify.app/${{ github.event.inputs.preview_page }}"
-            fi
-            
-            netlify deploy \
+            netlify_output=$(netlify deploy \
               --dir _build/html/ \
               --site ${{ secrets.NETLIFY_SITE_ID }} \
               --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
               --alias manual-${{ github.run_id }} \
               --context dev \
               --message "${deploy_message}" \
-              --json
+              --json)
               
+            echo "Netlify deployment output:"
+            echo "$netlify_output"
+            
+            # Extract the actual deploy URL from the JSON response
+            deploy_url=$(echo "$netlify_output" | jq -r '.deploy_url')
+            
+            echo "deploy_url=$deploy_url" >> $GITHUB_OUTPUT
             echo "✅ Manual deployment completed!"
-            echo "🌐 Preview URL: https://manual-${{ github.run_id }}--sunny-cactus-210e3e.netlify.app/"
+            echo "🌐 Actual Deploy URL: $deploy_url"
             
             if [ ! -z "${{ github.event.inputs.preview_page }}" ]; then
-              echo "🎯 Preview page: https://manual-${{ github.run_id }}--sunny-cactus-210e3e.netlify.app/${{ github.event.inputs.preview_page }}"
+              echo "🎯 Preview page: ${deploy_url}/${{ github.event.inputs.preview_page }}"
             fi
           fi
         env:
@@ -204,30 +195,30 @@ jobs:
         with:
           script: |
             const changedFiles = `${{ steps.detect-changes.outputs.changed_files }}`;
-            const previewUrls = `${{ steps.detect-changes.outputs.preview_urls }}`;
             const manualPage = `${{ github.event.inputs.preview_page }}`;
+            const deployUrl = `${{ steps.netlify-deploy.outputs.deploy_url }}`;
             const prNumber = ${{ github.event.pull_request.number }};
-            const baseUrl = `https://deploy-preview-${prNumber}--sunny-cactus-210e3e.netlify.app`;
             
             let comment = `## 📖 Netlify Preview Ready!\n\n`;
-            comment += `**Preview URL:** ${baseUrl}\n\n`;
+            comment += `**Preview URL:** ${deployUrl}\n\n`;
             
             // Add manual preview page if specified
             if (manualPage) {
-              comment += `🎯 **Manual Preview:** [${manualPage}](${baseUrl}/${manualPage})\n\n`;
+              comment += `🎯 **Manual Preview:** [${manualPage}](${deployUrl}/${manualPage})\n\n`;
             }
             
             // Add direct links to changed lecture pages
-            if (changedFiles && previewUrls) {
-              comment += `📚 **Changed Lecture Pages:**\n`;
+            if (changedFiles) {
               const files = changedFiles.split('\n').filter(f => f.trim());
-              const urls = previewUrls.split('\n').filter(u => u.trim());
-              
-              for (let i = 0; i < files.length && i < urls.length; i++) {
-                const fileName = files[i].replace('lectures/', '').replace('.md', '');
-                const url = urls[i].trim();
-                if (url) {
-                  comment += `- [${fileName}](${url})\n`;
+              if (files.length > 0) {
+                comment += `📚 **Changed Lecture Pages:**\n`;
+                
+                for (const file of files) {
+                  if (file.trim()) {
+                    const fileName = file.replace('lectures/', '').replace('.md', '');
+                    const pageUrl = `${deployUrl}/${fileName}.html`;
+                    comment += `- [${fileName}](${pageUrl})\n`;
+                  }
                 }
               }
             }
