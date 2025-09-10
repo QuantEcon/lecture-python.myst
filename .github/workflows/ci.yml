@@ -211,8 +211,8 @@ jobs:
             });
             
             const existingCommentForCommit = comments.data.find(c => 
-              c.body.includes('## 📖 Netlify Preview Ready!') && 
-              c.body.includes(`**Commit:** \`${commitSha}\``)
+              c.body.includes('**📖 Netlify Preview Ready!**') && 
+              c.body.includes(`([${commitSha.substring(0, 7)}]`)
             );
             
             if (existingCommentForCommit) {
@@ -220,9 +220,11 @@ jobs:
               return;
             }
             
-            let comment = `## 📖 Netlify Preview Ready!\n\n`;
-            comment += `**Preview URL:** ${deployUrl}\n\n`;
-            comment += `**Commit:** \`${{ github.sha }}\`\n\n`;
+            const shortSha = commitSha.substring(0, 7);
+            const commitUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${commitSha}`;
+            
+            let comment = `**📖 Netlify Preview Ready!**\n\n`;
+            comment += `**Preview URL:** ${deployUrl} ([${shortSha}](${commitUrl}))\n\n`;
             
             // Add manual preview page if specified
             if (manualPage) {
@@ -233,15 +235,17 @@ jobs:
             if (changedFiles) {
               const files = changedFiles.split('\n').filter(f => f.trim());
               if (files.length > 0) {
-                comment += `📚 **Changed Lecture Pages:**\n`;
+                comment += `📚 **Changed Lecture Pages:** `;
                 
+                const pageLinks = [];
                 for (const file of files) {
                   if (file.trim()) {
                     const fileName = file.replace('lectures/', '').replace('.md', '');
                     const pageUrl = `${deployUrl}/${fileName}.html`;
-                    comment += `- [${fileName}](${pageUrl})\n`;
+                    pageLinks.push(`[${fileName}](${pageUrl})`);
                   }
                 }
+                comment += pageLinks.join(', ') + '\n\n';
               }
             }
             
