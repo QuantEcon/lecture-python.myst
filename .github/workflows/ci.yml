@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v3
         with:
