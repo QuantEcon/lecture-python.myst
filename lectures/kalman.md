@@ -123,6 +123,13 @@ $2 \times 2$ covariance matrix.  In our simulations, we will suppose that
 This density $p(x)$ is shown below as a contour map, with the center of the red ellipse being equal to $\hat{x}$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Prior distribution
+    name: fig_prior
+---
 # Set up the Gaussian prior density p
 Σ = jnp.array([[0.4, 0.3], 
                [0.3, 0.45]])
@@ -202,6 +209,13 @@ The next figure shows the original prior $p(x)$ and the new reported
 location $y$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Prior distribution and observation
+    name: fig_obs
+---
 # The observed value of y
 y = jnp.array([[2.3], 
                [-1.9]])
@@ -277,6 +291,13 @@ This new density $p(x \,|\, y) = N(\hat{x}^F, \Sigma^F)$ is shown in the next fi
 The original density is left in as contour lines for comparison
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Updated distribution from observation
+    name: fig_update_obs
+---
 # Define the matrices G and R from the equation y = G x + N(0, R)
 G = jnp.array([[1, 0], 
                [0, 1]])
@@ -395,6 +416,13 @@ Q = 0.3 * \Sigma
 $$
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Updated distribution from transition
+    name: fig_update_trans
+---
 # The matrices A and Q
 A = jnp.array([[1.2, 0], 
                [0, -0.2]])
@@ -591,6 +619,13 @@ Your figure should -- modulo randomness -- look something like this
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      First 5 densities when θ=10.0
+    name: fig_5_density
+---
 # Parameters
 θ = 10  # Constant value of state x_t
 A, C, G, H = 1, 0, 1, 1
@@ -617,7 +652,6 @@ for i in range(N):
     ax.plot(xgrid, norm.pdf(xgrid, loc=m, scale=jnp.sqrt(v)), label=f'$t={i}$')
     kalman.update(y[i])
 
-ax.set_title(f'First {N} densities when $\\theta = {θ:.1f}$')
 ax.legend(loc='upper left')
 plt.show()
 ```
@@ -657,6 +691,13 @@ Your figure should show error erratically declining something like this
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Probability differences
+    name: fig_convergence
+---
 ϵ = 0.1
 θ = 10  # Constant value of state x_t
 A, C, G, H = 1, 0, 1, 1
@@ -762,6 +803,13 @@ Observe how, after an initial learning period, the Kalman filter performs quite 
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Kalman filter vs conditional expectation
+    name: fig_compare
+---
 # Define A, C, G, H
 G = jnp.eye(2)
 H = jnp.sqrt(0.5) * G
