@@ -178,8 +178,8 @@ jobs:
               --dir _build/html/ \
               --site ${{ secrets.NETLIFY_SITE_ID }} \
               --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
-              --context deploy-preview \
-              --alias deploy-preview-${{ github.event.pull_request.number }} \
+              --context pr-preview \
+              --alias pr-${{ github.event.pull_request.number }} \
               --message "${deploy_message}" \
               --json)
               
