@@ -59,10 +59,7 @@ from jax import random
 import numpyro
 from numpyro import distributions as dist
 import numpyro.distributions.constraints as constraints
-from numpyro.infer import MCMC
-from numpyro.infer import NUTS
-from numpyro.infer import SVI
-from numpyro.infer import Trace_ELBO
+from numpyro.infer import MCMC, NUTS, SVI, Trace_ELBO
 from numpyro.optim import Adam
 ```
 
