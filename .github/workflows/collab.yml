@@ -90,13 +90,3 @@ jobs:
           title: "Weekly Colab Execution Check Failed - ${{ github.run_id }}"
           content-filepath: execution-failure-report.md
           labels: execution-failure, automated-issue, colab
-      - name: Preview Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3
-        with:
-          publish-dir: '_build/html/'
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Preview Deploy from GitHub Actions"
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
