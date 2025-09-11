@@ -175,7 +175,7 @@ Y_t = \rho_1 Y_{t-1} + \rho_2 Y_{t-2} + (\gamma + G_t)
 
 where $\rho_1 = (\alpha+\beta)$ and $\rho_2 = -\beta$.
 
-To complete the model, we require two **initial conditions**.
+To complete the model, we require two *initial conditions*.
 
 If the model is to generate time series for $t=0, \ldots, T$, we
 require initial values
@@ -192,8 +192,8 @@ a constant value as $t$ becomes large.
 We are interested in studying
 
 - the transient fluctuations in $Y_t$ as it converges to its
-  **steady state** level
-- the **rate** at which it converges to a steady state level
+  *steady state* level
+- the *rate* at which it converges to a steady state level
 
 The deterministic version of the model described so far --- meaning that
 no random shocks hit aggregate demand --- has only transient fluctuations.
@@ -203,11 +203,10 @@ fluctuations by adding a random shock to aggregate demand.
 
 ### Stochastic version of the model
 
-We create a **random** or **stochastic** version of the model by adding
-a random process of **shocks** or **disturbances**
+We create a *random* or *stochastic* version of the model by adding
+a random process of *shocks* or *disturbances*
 $\{\sigma \epsilon_t \}$ to the right side of equation {eq}`second_order`,
-leading to the **second-order scalar linear stochastic difference
-equation**:
+leading to the *second-order scalar linear stochastic difference equation*:
 
 ```{math}
 :label: second_stochastic
@@ -235,7 +234,7 @@ Y_{t+2} - \rho_1 Y_{t+1} - \rho_2 Y_t  = 0
 ```
 
 To discover the properties of the solution of {eq}`second_stochastic2`,
-it is useful first to form the **characteristic polynomial**
+it is useful first to form the *characteristic polynomial*
 for {eq}`second_stochastic2`:
 
 ```{math}
@@ -246,7 +245,7 @@ z^2 - \rho_1 z  - \rho_2
 
 where $z$ is possibly a complex number.
 
-We want to find the two **zeros** (a.k.a. **roots**) -- namely
+We want to find the two *zeros* (a.k.a. *roots*) -- namely
 $\lambda_1, \lambda_2$ -- of the characteristic polynomial.
 
 These are two special values of $z$, say $z= \lambda_1$ and
@@ -260,7 +259,7 @@ the characteristic polynomial {eq}`polynomial` equals zero:
 z^2 - \rho_1 z  - \rho_2  = (z- \lambda_1 ) (z -\lambda_2) = 0
 ```
 
-Equation {eq}`polynomial_sol` is said to **factor** the characteristic polynomial.
+Equation {eq}`polynomial_sol` is said to *factor* the characteristic polynomial.
 
 When the roots are complex, they will occur as a complex conjugate pair.
 
@@ -287,8 +286,8 @@ $$
 (To read about the polar form, see
 [here](https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf:complex/x9e81a4f98389efdf:complex-mul-div-polar/a/complex-number-polar-form-review))
 
-Given **initial conditions** $Y_{-1}, Y_{-2}$, we want to generate
-a **solution** of the difference equation {eq}`second_stochastic2`.
+Given *initial conditions* $Y_{-1}, Y_{-2}$, we want to generate
+a *solution* of the difference equation {eq}`second_stochastic2`.
 
 It can be represented as
 
@@ -333,14 +332,14 @@ $$
 where $v$ and $\theta$ are constants that must be chosen to satisfy initial conditions for $Y_{-1}, Y_{-2}$.
 
 This formula shows that when the roots are complex, $Y_t$ displays
-oscillations with **period** $\check p =
-\frac{2 \pi}{\omega}$ and **damping factor** $r$.
+oscillations with *period* $\check p =
+\frac{2 \pi}{\omega}$ and *damping factor* $r$.
 
-We say that $\check p$ is the **period** because in that amount of time the cosine wave $\cos(\omega t + \theta)$ goes through exactly one complete cycles.
+We say that $\check p$ is the *period* because in that amount of time the cosine wave $\cos(\omega t + \theta)$ goes through exactly one complete cycles.
 
 (Draw a cosine function to convince yourself of this please)
 
-**Remark:** Following {cite}`Samuelson1939`, we want to choose the parameters
+*Remark:* Following {cite}`Samuelson1939`, we want to choose the parameters
 $\alpha, \beta$ of the model so that the absolute values (of the possibly
 complex) roots $\lambda_1, \lambda_2$ of the characteristic
 polynomial are both strictly less than one:
@@ -349,7 +348,7 @@ $$
 | \lambda_j | < 1 \quad \quad \text{for } j = 1, 2
 $$
 
-**Remark:** When both roots  $\lambda_1, \lambda_2$ of the characteristic polynomial have
+*Remark:* When both roots  $\lambda_1, \lambda_2$ of the characteristic polynomial have
 absolute values strictly less than one, the absolute value of the larger
 one governs the rate of convergence to the steady state of the non
 stochastic version of the model.
@@ -731,7 +730,7 @@ plot_y(y_nonstochastic())
 The next cell studies the implications of reverse-engineered complex
 roots.
 
-We'll generate an **undamped** cycle of period 10
+We'll generate an *undamped* cycle of period 10
 
 ```{code-cell} ipython3
 r = 1   # Generates undamped, nonexplosive cycles
@@ -1230,7 +1229,7 @@ plt.show()
 
 ### Other methods in the `LinearStateSpace` class
 
-Let's plot **impulse response functions** for the instance of the
+Let's plot *impulse response functions* for the instance of the
 Samuelson model using a method in the `LinearStateSpace` class
 
 ```{code-cell} ipython3
