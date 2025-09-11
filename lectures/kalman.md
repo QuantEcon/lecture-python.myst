@@ -86,7 +86,7 @@ One way to summarize our knowledge is a point prediction $\hat{x}$
 * Then it is better to summarize our initial beliefs with a bivariate probability density $p$
 * $\int_E p(x)dx$ indicates the probability that we attach to the missile being in region $E$.
 
-The density $p$ is called our *prior* for the random variable $x$.
+The density $p$ is called our **prior** for the random variable $x$.
 
 To keep things tractable in our example, we assume that our prior is Gaussian.
 
@@ -163,13 +163,10 @@ def gen_gaussian_plot_vals(X, Y, μ, Σ):
         PDF values with same shape as X and Y meshgrids.
     """
     
-    # Create coordinate arrays: stack X and Y to get shape (2, M, N)
-    coords = jnp.stack([X, Y], axis=0)
+    # Create coordinate arrays: stack X and Y to get shape (2, M * N)
+    coords = jnp.stack([X.ravel(), Y.ravel()])
     
-    # Reshape to (2, M*N) for batch processing
-    coords_flat = coords.reshape(2, -1)
-    
-    # Vectorized computation
+    # Define bivariate normal p.d.f
     def bivariate_normal(x):
         """Compute PDF for a single point x"""
         x_μ = x.reshape(-1, 1) - μ  # (2, 1)
@@ -181,7 +178,7 @@ def gen_gaussian_plot_vals(X, Y, μ, Σ):
     vectorized_pdf = jax.vmap(bivariate_normal, in_axes=1)
 
     # Compute all PDF values
-    pdf_values = vectorized_pdf(coords_flat)
+    pdf_values = vectorized_pdf(coords)
     
     # Reshape back to original meshgrid shape
     return pdf_values.reshape(X.shape)
@@ -203,7 +200,7 @@ plt.show()
 
 We are now presented with some good news and some bad news.
 
-The good news is that the missile has been located by our sensors, which report that the current location is $y = (2.3, -1.9)$.
+The good news is that the missile has been located by our sensors, which report that the current location is $y = (2.3, -1.9)^top$.
 
 The next figure shows the original prior $p(x)$ and the new reported
 location $y$.
@@ -284,7 +281,14 @@ where
 \Sigma^F := \Sigma - \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma
 ```
 
-Here  $\Sigma G' (G \Sigma G' + R)^{-1}$ is the matrix of population regression coefficients of the hidden object $x - \hat{x}$ on the surprise $y - G \hat{x}$.
+Here $\Sigma G' (G \Sigma G' + R)^{-1}$ is the matrix of population regression coefficients of the hidden object $x - \hat{x}$ on the surprise $y - G \hat{x}$.
+
+We can verify it by computing
+```{math}
+\mathrm{Cov}(x - \hat{x}, y - G \hat{x})\mathrm{Var}(y - G \hat{x})^{-1}
+= \mathrm{Cov}(x - \hat{x}, G x + v - G \hat{x})\mathrm{Var}(G x + v  - G \hat{x})^{-1}
+= \Sigma G'(G \Sigma G' + R)^{-1}
+```
 
 This new density $p(x \,|\, y) = N(\hat{x}^F, \Sigma^F)$ is shown in the next figure via contour lines and the color map.
 
@@ -343,7 +347,7 @@ We have obtained probabilities for the current location of the state (missile) g
 This is called "filtering" rather than forecasting because we are filtering
 out noise rather than looking into the future.
 
-* $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is called the *filtering distribution*
+* $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is called the **filtering distribution**
 
 But now let's suppose that we are given another task: to predict the location of the missile after one unit of time (whatever that may be) has elapsed.
 
@@ -382,7 +386,7 @@ $$
 $$
 
 The matrix $A \Sigma G' (G \Sigma G' + R)^{-1}$ is often written as
-$K_{\Sigma}$ and called the *Kalman gain*.
+$K_{\Sigma}$ and called the **Kalman gain**.
 
 * The subscript $\Sigma$ has been added to remind us that  $K_{\Sigma}$ depends on $\Sigma$, but not $y$ or $\hat x$.
 
@@ -399,7 +403,7 @@ Our updated prediction is the density $N(\hat x_{new}, \Sigma_{new})$ where
 \end{aligned}
 ```
 
-* The density $p_{new}(x) = N(\hat x_{new}, \Sigma_{new})$ is called the *predictive distribution*
+* The density $p_{new}(x) = N(\hat x_{new}, \Sigma_{new})$ is called the **predictive distribution**
 
 The predictive distribution is the new density shown in the following figure, where
 the update has used parameters.
@@ -743,7 +747,7 @@ plt.show()
 As discussed {ref}`above <kalman_convergence>`, if the shock sequence $\{w_t\}$ is not degenerate, then it is not in general possible to predict $x_t$ without error at time $t-1$ (and this would be the case even if we could observe $x_{t-1}$).
 
 Let's now compare the prediction $\hat x_t$ made by the Kalman filter
-against a competitor who **is** allowed to observe $x_{t-1}$.
+against a competitor who *is* allowed to observe $x_{t-1}$.
 
 This competitor will use the conditional expectation $\mathbb E[ x_t
 \,|\, x_{t-1}]$, which in this case is $A x_{t-1}$.
