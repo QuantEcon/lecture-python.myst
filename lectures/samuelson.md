@@ -4,11 +4,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.16.7
 kernelspec:
-  name: python3
   display_name: Python 3 (ipykernel)
   language: python
+  name: python3
 ---
 
 ```{raw} jupyter
@@ -1140,10 +1140,10 @@ class Samuelson():
                 label = rf'$\lambda_{i+1} = {sam.roots[i].real:.2f} {operator[i]} {sam.roots[i].imag:.2f}i$'
             else:
                 label = rf'$\lambda_{i+1} = {sam.roots[i].real:.2f}$'
-            ax.scatter(0, 0, 0, label=label) # dummy to add to legend
+            ax.scatter(0, 0, s=0, label=label) # dummy to add to legend
 
         # Add ρ pair to plot
-        ax.scatter(self.ρ1, self.ρ2, 100, 'red', '+',
+        ax.scatter(self.ρ1, self.ρ2, s=100, c='red', marker='+',
             label=r'$(\ \rho_1, \ \rho_2 \ )$', zorder=5)
 
         plt.legend(fontsize=12, loc=3)
