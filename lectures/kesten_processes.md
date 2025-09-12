@@ -36,6 +36,14 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install --upgrade quantecon yfinance
 ```
 
+Later in the exercise, we will use JAX to optimize our code
+
+```{code-cell} ipython3
+:tags: [no-execute]
+
+!pip install --upgrade jax
+```
+
 ## Overview
 
 Previously in {doc}`intro:ar1_processes`, we learned about linear scalar-valued stochastic processes (AR(1) models).
@@ -58,15 +66,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import quantecon as qe
 import yfinance as yf
-```
-
-The following two lines are only added to avoid a `FutureWarning` caused by
-compatibility issues between pandas and matplotlib.
-
-```{code-cell} ipython3
-from pandas.plotting import register_matplotlib_converters
-
-register_matplotlib_converters()
 ```
 
 Additional technical background related to this lecture can be found in the
@@ -344,7 +343,7 @@ def kesten_ts(ts_length=100):
     for t in range(ts_length - 1):
         a = np.exp(μ + σ * np.random.randn())
         b = np.exp(np.random.randn())
-        x[t + 1] = a * x[t] + b
+        x[t+1] = a * x[t] + b
     return x
 
 
@@ -502,7 +501,7 @@ In what sense is this true (or false)?
 The empirical findings are that
 
 1. small firms grow faster than large firms  and
-1. the growth rate of small firms is more volatile than that of large firms.
+2. the growth rate of small firms is more volatile than that of large firms.
 
 Also, Gibrat's law is generally found to be a reasonable approximation for
 large firms than for small firms
@@ -730,6 +729,17 @@ generate_single_draw = jax.jit(generate_single_draw, static_argnums=(8,))
 ```
 
 ```{code-cell} ipython3
+# Use vmap to vectorize over the first argument (key)
+in_axes = [None] * 10
+in_axes[0] = 0
+
+vectorized_single_draw = vmap(
+    generate_single_draw,
+    in_axes=in_axes,
+)
+```
+
+```{code-cell} ipython3
 @jit
 def generate_draws(
     key=random.PRNGKey(123),
@@ -751,12 +761,6 @@ def generate_draws(
     """
     # Create M different random keys for parallel execution
     keys = random.split(key, M)
-
-    # Use vmap to parallelize over the M dimension
-    vectorized_single_draw = vmap(
-        generate_single_draw,
-        in_axes=(0, None, None, None, None, None, None, None, None, None),
-    )
 
     draws = vectorized_single_draw(
         keys, μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar, T, s_init
