@@ -28,7 +28,8 @@ kernelspec:
 ```{contents} Contents
 :depth: 2
 ```
-
+```{include} _admonition/gpu.md
+```
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
@@ -284,11 +285,13 @@ where
 Here $\Sigma G' (G \Sigma G' + R)^{-1}$ is the matrix of population regression coefficients of the hidden object $x - \hat{x}$ on the surprise $y - G \hat{x}$.
 
 We can verify it by computing
-```{math}
+$$
+\begin{aligned}
 \mathrm{Cov}(x - \hat{x}, y - G \hat{x})\mathrm{Var}(y - G \hat{x})^{-1}
-= \mathrm{Cov}(x - \hat{x}, G x + v - G \hat{x})\mathrm{Var}(G x + v  - G \hat{x})^{-1}
-= \Sigma G'(G \Sigma G' + R)^{-1}
-```
+&= \mathrm{Cov}(x - \hat{x}, G x + v - G \hat{x})\mathrm{Var}(G x + v  - G \hat{x})^{-1}\\
+&= \Sigma G'(G \Sigma G' + R)^{-1}
+\end{aligned}
+$$
 
 This new density $p(x \,|\, y) = N(\hat{x}^F, \Sigma^F)$ is shown in the next figure via contour lines and the color map.
 
@@ -623,13 +626,6 @@ Your figure should -- modulo randomness -- look something like this
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: |
-      First 5 densities when θ=10.0
-    name: fig_5_density
----
 # Parameters
 θ = 10  # Constant value of state x_t
 A, C, G, H = 1, 0, 1, 1
@@ -656,6 +652,7 @@ for i in range(N):
     ax.plot(xgrid, norm.pdf(xgrid, loc=m, scale=jnp.sqrt(v)), label=f'$t={i}$')
     kalman.update(y[i])
 
+ax.set_title("First 5 densities when θ=10.0")
 ax.legend(loc='upper left')
 plt.show()
 ```
@@ -695,13 +692,6 @@ Your figure should show error erratically declining something like this
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: |
-      Probability differences
-    name: fig_convergence
----
 ϵ = 0.1
 θ = 10  # Constant value of state x_t
 A, C, G, H = 1, 0, 1, 1
@@ -734,6 +724,8 @@ ax.set_ylim(0, 1)
 ax.set_xlim(0, T)
 ax.plot(range(T), z)
 ax.fill_between(range(T), jnp.zeros(T), z, color="blue", alpha=0.2)
+
+ax.set_title("Probability differences")
 plt.show()
 ```
 
@@ -807,13 +799,6 @@ Observe how, after an initial learning period, the Kalman filter performs quite 
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: |
-      Kalman filter vs conditional expectation
-    name: fig_compare
----
 # Define A, C, G, H
 G = jnp.eye(2)
 H = jnp.sqrt(0.5) * G
@@ -863,6 +848,7 @@ ax.plot(range(1, T), e1, 'k-', lw=2, alpha=0.6,
 ax.plot(range(1, T), e2, 'g-', lw=2, alpha=0.6,
         label='Conditional expectation error')
 ax.legend()
+ax.set_title("Kalman filter vs conditional expectation")
 plt.show()
 ```
 
