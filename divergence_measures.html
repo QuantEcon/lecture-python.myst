@@ -326,13 +326,13 @@ Entropy <span class="math notranslate nohighlight">\(H(f)\)</span> for the unifo
 \]</div>
 <p>The following two  concepts are widely used to compare two distributions <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p><strong>Cross-Entropy:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-97bddb93-8c86-4747-be48-ca3700e6fe32">
-<span class="eqno">(21.1)<a class="headerlink" href="#equation-97bddb93-8c86-4747-be48-ca3700e6fe32" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9b9bc071-a3b3-445c-a9db-86c0060be07b">
+<span class="eqno">(21.1)<a class="headerlink" href="#equation-9b9bc071-a3b3-445c-a9db-86c0060be07b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 H(f,g) = -\sum_{i} f_i \log g_i
 \end{equation}\]</div>
 <p><strong>Kullback-Leibler (KL) Divergence:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-bbe00453-725e-4e65-b04a-0896ac813377">
-<span class="eqno">(21.2)<a class="headerlink" href="#equation-bbe00453-725e-4e65-b04a-0896ac813377" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ecd2419e-7044-4155-bb82-4a4340486d5d">
+<span class="eqno">(21.2)<a class="headerlink" href="#equation-ecd2419e-7044-4155-bb82-4a4340486d5d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 \end{equation}\]</div>
 <p>These concepts are related by the following equality.</p>
@@ -341,8 +341,8 @@ D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 D_{KL}(f \parallel g) = H(f,g) - H(f)
 \]</div>
 <p>To prove <a class="reference internal" href="#equation-eq-klcross">(21.3)</a>, note that</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9b839b76-ef55-490c-a833-94dab69996aa">
-<span class="eqno">(21.4)<a class="headerlink" href="#equation-9b839b76-ef55-490c-a833-94dab69996aa" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-cd2f06d8-38d1-4843-92e1-7bb0feda0553">
+<span class="eqno">(21.4)<a class="headerlink" href="#equation-cd2f06d8-38d1-4843-92e1-7bb0feda0553" title="Permalink to this equation">#</a></span>\[\begin{align}
 D_{KL}(f \parallel g) &amp;= \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right] \\
 &amp;= \sum_{i} f_i \left[\log f_i - \log g_i\right] \\
 &amp;= \sum_{i} f_i \log f_i - \sum_{i} f_i \log g_i \\
@@ -364,6 +364,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 \quad \text{where} \quad
 \Gamma(p) := \int_{0}^{\infty} x^{p-1} e^{-x} dx
 \]</div>
+<p>We introduce two Beta distributions <span class="math notranslate nohighlight">\(f(x)\)</span> and <span class="math notranslate nohighlight">\(g(x)\)</span>, which we will use to illustrate the different divergence measures.</p>
 <p>Let’s define parameters and density functions in Python</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -715,8 +716,8 @@ Optimal ϕ = 0.5969
     <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)),</span>
     <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)),</span>  
     <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)),</span>  
-    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
-    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">))</span>
+    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)),</span>
+    <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -772,7 +773,7 @@ Optimal ϕ = 0.5969
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/2a8575cc5d9ea257a526f174f9301a8273d87b6ab5e440ae75006892d634097d.png" src="_images/2a8575cc5d9ea257a526f174f9301a8273d87b6ab5e440ae75006892d634097d.png" />
+<img alt="_images/fd7a700b19f3bd1a333cc24c0e11a9317a7928f0263b7c0ac55b4f0172b996ef.png" src="_images/fd7a700b19f3bd1a333cc24c0e11a9317a7928f0263b7c0ac55b4f0172b996ef.png" />
 </div>
 </div>
 </section>
@@ -1019,7 +1020,7 @@ Optimal ϕ = 0.5969
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_var.html">
-   24. Likelihood Processes for VAR Models
+   24. Likelihood Processes For VAR Models
   </a>
  </li>
  <li class="toctree-l1">

@@ -176,10 +176,10 @@
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">22.1. Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">22.2. Likelihood Ratio Process</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-g">22.3. Nature Permanently Draws from Density g</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#peculiar-property">22.4. Peculiar Property</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-f">22.5. Nature Permanently Draws from Density f</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-test">22.6. Likelihood Ratio Test</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-g">22.3. Nature permanently draws from density g</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#peculiar-property">22.4. Peculiar property</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-f">22.5. Nature permanently draws from density f</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-test">22.6. Likelihood ratio test</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-third-distribution-h">22.6.1. A third distribution <span class="math notranslate nohighlight">\(h\)</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-helpful-formula">22.6.2. A helpful formula</a></li>
 </ul>
@@ -195,7 +195,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulations">22.8.2. Simulations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-lectures">22.9. Related Lectures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-lectures">22.9. Related lectures</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">22.10. Exercises</a></li>
 </ul>
                             <p class="logo">
@@ -262,18 +262,60 @@
 <ul>
 <li><p><a class="reference internal" href="#overview" id="id6">Overview</a></p></li>
 <li><p><a class="reference internal" href="#id1" id="id7">Likelihood Ratio Process</a></p></li>
-<li><p><a class="reference internal" href="#nature-permanently-draws-from-density-g" id="id8">Nature Permanently Draws from Density g</a></p></li>
-<li><p><a class="reference internal" href="#peculiar-property" id="id9">Peculiar Property</a></p></li>
-<li><p><a class="reference internal" href="#nature-permanently-draws-from-density-f" id="id10">Nature Permanently Draws from Density f</a></p></li>
-<li><p><a class="reference internal" href="#likelihood-ratio-test" id="id11">Likelihood Ratio Test</a></p></li>
+<li><p><a class="reference internal" href="#nature-permanently-draws-from-density-g" id="id8">Nature permanently draws from density g</a></p></li>
+<li><p><a class="reference internal" href="#peculiar-property" id="id9">Peculiar property</a></p></li>
+<li><p><a class="reference internal" href="#nature-permanently-draws-from-density-f" id="id10">Nature permanently draws from density f</a></p></li>
+<li><p><a class="reference internal" href="#likelihood-ratio-test" id="id11">Likelihood ratio test</a></p></li>
 <li><p><a class="reference internal" href="#hypothesis-testing-and-classification" id="id12">Hypothesis testing and classification</a></p></li>
 <li><p><a class="reference internal" href="#markov-chains" id="id13">Markov chains</a></p></li>
-<li><p><a class="reference internal" href="#related-lectures" id="id14">Related Lectures</a></p></li>
+<li><p><a class="reference internal" href="#related-lectures" id="id14">Related lectures</a></p></li>
 <li><p><a class="reference internal" href="#exercises" id="id15">Exercises</a></p></li>
 </ul>
 </li>
 </ul>
 </nav>
+<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>quantecon
+</pre></div>
+</div>
+</div>
+<details class="admonition hide below-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.10.1-py3-none-any.whl.metadata (5.3 kB)
+Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
+Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
+Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
+Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
+Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.10.1
+</pre></div>
+</div>
+</div>
+</details>
+</div>
 <section id="overview">
 <h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">22.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture describes likelihood ratio processes and some of their uses.</p>
@@ -425,7 +467,7 @@ probability distributions, for example, a sequence of IID draws from <span class
 </div>
 </section>
 <section id="nature-permanently-draws-from-density-g">
-<span id="nature-likeli"></span><h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">22.3. </span>Nature Permanently Draws from Density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Link to this heading">#</a></h2>
+<span id="nature-likeli"></span><h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">22.3. </span>Nature permanently draws from density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Link to this heading">#</a></h2>
 <p>We first simulate the likelihood ratio process when nature permanently
 draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <div class="cell docutils container">
@@ -439,7 +481,7 @@ draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/55ccaf515bebd278ea205a389133a2451d3c8bde90d58b66239b151a82f107ab.png" src="_images/55ccaf515bebd278ea205a389133a2451d3c8bde90d58b66239b151a82f107ab.png" />
+<img alt="_images/c9382797cab2b9644d0813bd2639e314f8c65cc0211215f9eec7c52ead182b1d.png" src="_images/c9382797cab2b9644d0813bd2639e314f8c65cc0211215f9eec7c52ead182b1d.png" />
 </div>
 </div>
 <p>Evidently, as sample length <span class="math notranslate nohighlight">\(T\)</span> grows, most probability mass
@@ -456,7 +498,7 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8515250ae80f2fff05cd8af660c54f16f86ac72e8d6b9221d1636bf95b58aeaf.png" src="_images/8515250ae80f2fff05cd8af660c54f16f86ac72e8d6b9221d1636bf95b58aeaf.png" />
+<img alt="_images/650e43358d4f9bea8721447ecafb7f383bcfcbc5366e4d092ad509a95d1bdf45.png" src="_images/650e43358d4f9bea8721447ecafb7f383bcfcbc5366e4d092ad509a95d1bdf45.png" />
 </div>
 </div>
 <p>Despite the evident convergence of most probability mass to a
@@ -499,7 +541,7 @@ E\left[L\left(w^{t}\right)\bigm|q=g\right]  &amp;=E\left[L\left(w^{t-1}\right)\e
 <span class="math notranslate nohighlight">\(t \geq 1\)</span>.</p>
 </section>
 <section id="peculiar-property">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">22.4. </span>Peculiar Property</a><a class="headerlink" href="#peculiar-property" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">22.4. </span>Peculiar property</a><a class="headerlink" href="#peculiar-property" title="Link to this heading">#</a></h2>
 <p>How can <span class="math notranslate nohighlight">\(E\left[L\left(w^{t}\right)\bigm|q=g\right]=1\)</span> possibly be true when most probability mass of the likelihood
 ratio process is piling up near <span class="math notranslate nohighlight">\(0\)</span> as
 <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>?</p>
@@ -529,7 +571,7 @@ paths.</p>
 <p>There we describe an alternative way to compute the mean of a likelihood ratio by computing the mean of a <em>different</em> random variable by sampling from a <em>different</em> probability distribution.</p>
 </section>
 <section id="nature-permanently-draws-from-density-f">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">22.5. </span>Nature Permanently Draws from Density f</a><a class="headerlink" href="#nature-permanently-draws-from-density-f" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">22.5. </span>Nature permanently draws from density f</a><a class="headerlink" href="#nature-permanently-draws-from-density-f" title="Link to this heading">#</a></h2>
 <p>Now suppose that before time <span class="math notranslate nohighlight">\(0\)</span> nature permanently decided to draw repeatedly from density <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <p>While the mean of the likelihood ratio <span class="math notranslate nohighlight">\(\ell \left(w_{t}\right)\)</span> under density
 <span class="math notranslate nohighlight">\(g\)</span> is <span class="math notranslate nohighlight">\(1\)</span>, its mean under the density <span class="math notranslate nohighlight">\(f\)</span> exceeds one.</p>
@@ -567,7 +609,7 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5e1571fd27abd7688c0b52f33de856b5b18372a3510a594a86fc02d11aec6b24.png" src="_images/5e1571fd27abd7688c0b52f33de856b5b18372a3510a594a86fc02d11aec6b24.png" />
+<img alt="_images/727913cae17db05e857505ac3a951134413d0cdbda6760655b930c7b9d3cb814.png" src="_images/727913cae17db05e857505ac3a951134413d0cdbda6760655b930c7b9d3cb814.png" />
 </div>
 </div>
 <p>We also plot the probability that <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> falls into
@@ -581,12 +623,12 @@ fast probability mass diverges to <span class="math notranslate nohighlight">\(+
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/642142b2c6fd356f0b475ddeccd70193ffebf04370060f19e8e962a8b74f1759.png" src="_images/642142b2c6fd356f0b475ddeccd70193ffebf04370060f19e8e962a8b74f1759.png" />
+<img alt="_images/537b763d08a2a7336ead4e218572d04209f99310cfded9e4674b51ec92341924.png" src="_images/537b763d08a2a7336ead4e218572d04209f99310cfded9e4674b51ec92341924.png" />
 </div>
 </div>
 </section>
 <section id="likelihood-ratio-test">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">22.6. </span>Likelihood Ratio Test</a><a class="headerlink" href="#likelihood-ratio-test" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">22.6. </span>Likelihood ratio test</a><a class="headerlink" href="#likelihood-ratio-test" title="Link to this heading">#</a></h2>
 <p>We now describe how to employ the machinery
 of Neyman and Pearson <span id="id3">[<a class="reference internal" href="zreferences.html#id263" title="J. Neyman and E. S Pearson. On the problem of the most efficient tests of statistical hypotheses. Phil. Trans. R. Soc. Lond. A. 231 (694–706), pages 289–337, 1933.">Neyman and Pearson, 1933</a>]</span> to test the hypothesis that history <span class="math notranslate nohighlight">\(w^t\)</span> is generated by repeated
 IID draws from density <span class="math notranslate nohighlight">\(f\)</span>.</p>
@@ -723,7 +765,7 @@ is what makes it possible eventually to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8228767a8364021687f47ffe047ff472dcbe5b16c93fa12771f54fdd3b497342.png" src="_images/8228767a8364021687f47ffe047ff472dcbe5b16c93fa12771f54fdd3b497342.png" />
+<img alt="_images/a5c4070bc84a1a33644b17dd02fbba71f502d32ce17166d7345bb87339f120d5.png" src="_images/a5c4070bc84a1a33644b17dd02fbba71f502d32ce17166d7345bb87339f120d5.png" />
 </div>
 </div>
 <p>In the above graphs,</p>
@@ -781,7 +823,7 @@ they are integrals of <span class="math notranslate nohighlight">\(\log L_t\)</s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d96be9f58345d261e2ac714ad018e6805a57d3d39b23c3e0c0c9a791d2d015f0.png" src="_images/d96be9f58345d261e2ac714ad018e6805a57d3d39b23c3e0c0c9a791d2d015f0.png" />
+<img alt="_images/d638d68099b3d7e7b56631050e30927857e97c062b6fa3c0dd812678ff6e0d2f.png" src="_images/d638d68099b3d7e7b56631050e30927857e97c062b6fa3c0dd812678ff6e0d2f.png" />
 </div>
 </div>
 <p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>, the threshold <span class="math notranslate nohighlight">\(c\)</span> uniquely pins down probabilities
@@ -824,7 +866,7 @@ sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c410fd462f9aa6f6fad4a8139ae79aba8000d4b5e2c35e73aaba1cbc64d0bdd2.png" src="_images/c410fd462f9aa6f6fad4a8139ae79aba8000d4b5e2c35e73aaba1cbc64d0bdd2.png" />
+<img alt="_images/d030cf066cced556fd0211df55767ed816f0b3314bb09d2b42e6feab7647c0ca.png" src="_images/d030cf066cced556fd0211df55767ed816f0b3314bb09d2b42e6feab7647c0ca.png" />
 </div>
 </div>
 <p>Notice that as <span class="math notranslate nohighlight">\(t\)</span> increases, we are assured a larger probability
@@ -871,7 +913,7 @@ target probability of detection, for example, <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/dbd780ad3cd2da0818b7210a875a07e5365a9246f0743051dfafc06b89f275a6.png" src="_images/dbd780ad3cd2da0818b7210a875a07e5365a9246f0743051dfafc06b89f275a6.png" />
+<img alt="_images/c57a6e1c4de27ba519f53c63ac6de5faec8226a5c2b99d0f148ac339dc82ce68.png" src="_images/c57a6e1c4de27ba519f53c63ac6de5faec8226a5c2b99d0f148ac339dc82ce68.png" />
 </div>
 </div>
 <p>The United States Navy evidently used a procedure like this to select a sample size <span class="math notranslate nohighlight">\(t\)</span> for doing quality
@@ -1041,7 +1083,7 @@ K_{g} = D_{KL}\bigl(h\|g\bigr) = KL(h, g)
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/becda877ea92f88317bad463a2bdeb40b077b5312e7c1bf955b70ca2939f09f0.png" src="_images/becda877ea92f88317bad463a2bdeb40b077b5312e7c1bf955b70ca2939f09f0.png" />
+<img alt="_images/e72c23e682d429505547319fdb065c129874ed266d2713b77eb3840d2f03c34b.png" src="_images/e72c23e682d429505547319fdb065c129874ed266d2713b77eb3840d2f03c34b.png" />
 </div>
 </div>
 <p>Note that</p>
@@ -1165,7 +1207,7 @@ p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T.
 <span class="eqno">(22.2)<a class="headerlink" href="#equation-eq-detectionerrorprob" title="Link to this equation">#</a></span>\[ 
 p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
 \]</div>
-<p>Now let’s simulate timing protocol 1 and 2 and compute the error probabilities</p>
+<p>Now let’s simulate timing protocol 1 and compute the error probabilities</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_protocol_1_errors</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">,</span> <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">,</span> 
@@ -1198,35 +1240,11 @@ p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
         <span class="s1">&#39;L_cumulative&#39;</span><span class="p">:</span> <span class="n">L_cumulative</span><span class="p">,</span>
         <span class="s1">&#39;true_models&#39;</span><span class="p">:</span> <span class="n">true_models</span>
     <span class="p">}</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_protocol_2_errors</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">,</span> <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">,</span>
-                              <span class="n">F_params</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">G_params</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute error probabilities for Protocol 2.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sequences</span><span class="p">,</span> <span class="n">true_models</span> <span class="o">=</span> <span class="n">protocol_2</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> 
-                        <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">,</span> <span class="n">F_params</span><span class="p">,</span> <span class="n">G_params</span><span class="p">)</span>
-    <span class="n">l_ratios</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_likelihood_ratios</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">)</span>
-    
-    <span class="n">T_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    
-    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T_max</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T_max</span><span class="p">):</span>
-        <span class="n">predictions</span> <span class="o">=</span> <span class="p">(</span><span class="n">l_ratios</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">actual</span> <span class="o">=</span> <span class="n">true_models</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span>
-        <span class="n">accuracy</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">predictions</span> <span class="o">==</span> <span class="n">actual</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s1">&#39;T_range&#39;</span><span class="p">:</span> <span class="n">T_range</span><span class="p">,</span>
-        <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span>
-        <span class="s1">&#39;l_ratios&#39;</span><span class="p">:</span> <span class="n">l_ratios</span><span class="p">,</span>
-        <span class="s1">&#39;true_models&#39;</span><span class="p">:</span> <span class="n">true_models</span>
-    <span class="p">}</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>The following code visualizes the error probabilities for timing protocol 1 and 2</p>
+<p>The following code visualizes the error probabilities for timing protocol 1</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1268,44 +1286,6 @@ p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
     
     <span class="k">return</span> <span class="n">result</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">analyze_protocol_2</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">,</span> <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">,</span> 
-                      <span class="n">theory_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">F_params</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">G_params</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Analyze Protocol 2.&quot;&quot;&quot;</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">compute_protocol_2_errors</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">,</span> 
-                                      <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">,</span> <span class="n">F_params</span><span class="p">,</span> <span class="n">G_params</span><span class="p">)</span>
-    
-    <span class="c1"># Plot results</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;T_range&#39;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> 
-            <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;empirical accuracy&#39;</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="n">theory_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">theory_error</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> 
-                   <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;theoretical accuracy = </span><span class="si">{</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">theory_error</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    
-    <span class="k">return</span> <span class="n">result</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">compare_protocols</span><span class="p">(</span><span class="n">result1</span><span class="p">,</span> <span class="n">result2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare results from both protocols.&quot;&quot;&quot;</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-    
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result1</span><span class="p">[</span><span class="s1">&#39;T_range&#39;</span><span class="p">],</span> <span class="n">result1</span><span class="p">[</span><span class="s1">&#39;error_prob&#39;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
-            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Protocol 1 (Model Selection)&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result2</span><span class="p">[</span><span class="s1">&#39;T_range&#39;</span><span class="p">],</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">result2</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> 
-            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
-            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Protocol 2 (classification)&#39;</span><span class="p">)</span>
-    
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$T$&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;error probability&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
 <span class="c1"># Analyze Protocol 1</span>
 <span class="n">π_minus_1</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">T_max</span> <span class="o">=</span> <span class="mi">30</span>
@@ -1318,11 +1298,11 @@ p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/4050950ff4a54005f5e7f326b1385bd7515cb8dd14e59e46fc1569c9d882a2b5.png" src="_images/4050950ff4a54005f5e7f326b1385bd7515cb8dd14e59e46fc1569c9d882a2b5.png" />
+<img alt="_images/09de37d2ae1ffa87f4498d876d38b28d05293292113b77b0ac3f8ab7f1f526b1.png" src="_images/09de37d2ae1ffa87f4498d876d38b28d05293292113b77b0ac3f8ab7f1f526b1.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>At T=30:
-α_30 = 0.0048
-β_30 = 0.0016
-Model selection error probability = 0.0032
+α_30 = 0.0034
+β_30 = 0.0032
+Model selection error probability = 0.0033
 </pre></div>
 </div>
 </div>
@@ -1347,6 +1327,36 @@ w_t  &amp; \ {\rm is \ from \ } g  \ {\rm if \ } l_t \leq 1 .
 p(\textrm{misclassification}) = {1 \over 2} (\tilde \alpha_t + \tilde \beta_t) 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\tilde \alpha_t = {\rm Prob}(l_t &lt; 1 \mid f)\)</span> and <span class="math notranslate nohighlight">\(\tilde \beta_t = {\rm Prob}(l_t \geq 1 \mid g)\)</span>.</p>
+<p>Now let’s write some code to simulate it</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_protocol_2_errors</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">,</span> <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">,</span>
+                              <span class="n">F_params</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">G_params</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute error probabilities for Protocol 2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sequences</span><span class="p">,</span> <span class="n">true_models</span> <span class="o">=</span> <span class="n">protocol_2</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> 
+                        <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">,</span> <span class="n">F_params</span><span class="p">,</span> <span class="n">G_params</span><span class="p">)</span>
+    <span class="n">l_ratios</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_likelihood_ratios</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">)</span>
+    
+    <span class="n">T_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T_max</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T_max</span><span class="p">):</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="p">(</span><span class="n">l_ratios</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">actual</span> <span class="o">=</span> <span class="n">true_models</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span>
+        <span class="n">accuracy</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">predictions</span> <span class="o">==</span> <span class="n">actual</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;T_range&#39;</span><span class="p">:</span> <span class="n">T_range</span><span class="p">,</span>
+        <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span>
+        <span class="s1">&#39;l_ratios&#39;</span><span class="p">:</span> <span class="n">l_ratios</span><span class="p">,</span>
+        <span class="s1">&#39;true_models&#39;</span><span class="p">:</span> <span class="n">true_models</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Since for each <span class="math notranslate nohighlight">\(t\)</span>, the decision boundary is the same, the decision boundary can be computed as</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1405,11 +1415,11 @@ p(\textrm{misclassification}) = {1 \over 2} (\tilde \alpha_t + \tilde \beta_t)
 <img alt="_images/059d2493da5ff691511951e5392ad40c9d7048ba75a96c6b601f16b349acea74.png" src="_images/059d2493da5ff691511951e5392ad40c9d7048ba75a96c6b601f16b349acea74.png" />
 </div>
 </div>
-<p>To the left of the green vertical line <span class="math notranslate nohighlight">\(g &lt; f\)</span>, so <span class="math notranslate nohighlight">\(l_t &lt; 1\)</span>; therefore a <span class="math notranslate nohighlight">\(w_t\)</span> that falls to the left of the green line is classified as a type <span class="math notranslate nohighlight">\(g\)</span> individual.</p>
+<p>To the left of the green vertical line <span class="math notranslate nohighlight">\(g &lt; f\)</span>, so <span class="math notranslate nohighlight">\(l_t &gt; 1\)</span>; therefore a <span class="math notranslate nohighlight">\(w_t\)</span> that falls to the left of the green line is classified as a type <span class="math notranslate nohighlight">\(f\)</span> individual.</p>
 <ul class="simple">
-<li><p>The shaded orange area equals <span class="math notranslate nohighlight">\(\beta\)</span> – the probability of classifying someone as a type <span class="math notranslate nohighlight">\(g\)</span> individual when it is really a type <span class="math notranslate nohighlight">\(f\)</span> individual.</p></li>
+<li><p>The shaded red area equals <span class="math notranslate nohighlight">\(\beta\)</span> – the probability of classifying someone as a type <span class="math notranslate nohighlight">\(g\)</span> individual when it is really a type <span class="math notranslate nohighlight">\(f\)</span> individual.</p></li>
 </ul>
-<p>To the right of the green vertical line <span class="math notranslate nohighlight">\(g &gt; f\)</span>, so <span class="math notranslate nohighlight">\(l_t &gt;1 \)</span>; therefore a <span class="math notranslate nohighlight">\(w_t\)</span> that falls to the right of the green line is classified as a type <span class="math notranslate nohighlight">\(f\)</span> individual.</p>
+<p>To the right of the green vertical line <span class="math notranslate nohighlight">\(g &gt; f\)</span>, so <span class="math notranslate nohighlight">\(l_t &lt; 1\)</span>; therefore a <span class="math notranslate nohighlight">\(w_t\)</span> that falls to the right of the green line is classified as a type <span class="math notranslate nohighlight">\(g\)</span> individual.</p>
 <ul class="simple">
 <li><p>The shaded blue area equals <span class="math notranslate nohighlight">\(\alpha\)</span> – the probability of classifying someone as a type <span class="math notranslate nohighlight">\(f\)</span> when it is really a type <span class="math notranslate nohighlight">\(g\)</span> individual.</p></li>
 </ul>
@@ -1449,26 +1459,63 @@ theoretical classification error probability = 0.3294
 <p>In the next cell, we also compare the theoretical classification accuracy to the empirical classification accuracy</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Analyze Protocol 2</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">analyze_protocol_2</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">,</span> <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">,</span> 
+                      <span class="n">theory_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">F_params</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">G_params</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Analyze Protocol 2.&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">compute_protocol_2_errors</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">,</span> 
+                                      <span class="n">f_func</span><span class="p">,</span> <span class="n">g_func</span><span class="p">,</span> <span class="n">F_params</span><span class="p">,</span> <span class="n">G_params</span><span class="p">)</span>
+    
+    <span class="c1"># Plot results</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;T_range&#39;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> 
+            <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;empirical accuracy&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">theory_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">theory_error</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> 
+                   <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;theoretical accuracy = </span><span class="si">{</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">theory_error</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="c1"># Analyze Protocol 2</span>
 <span class="n">result_p2</span> <span class="o">=</span> <span class="n">analyze_protocol_2</span><span class="p">(</span><span class="n">π_minus_1</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">N_simulations</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> 
                               <span class="n">theory_error</span><span class="p">,</span> <span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">),</span> <span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d764cfe3fd99545d63c8ecc17841c2329430d9bcbe24ec301c67264556657b6a.png" src="_images/d764cfe3fd99545d63c8ecc17841c2329430d9bcbe24ec301c67264556657b6a.png" />
+<img alt="_images/811f07080186ef624ccf87fb7f8feb26827dded48e41499b3964453dccecae7f.png" src="_images/811f07080186ef624ccf87fb7f8feb26827dded48e41499b3964453dccecae7f.png" />
 </div>
 </div>
 <p>Let’s watch decisions made by  the two timing protocols as more and more observations accrue.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare both protocols</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compare_protocols</span><span class="p">(</span><span class="n">result1</span><span class="p">,</span> <span class="n">result2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare results from both protocols.&quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result1</span><span class="p">[</span><span class="s1">&#39;T_range&#39;</span><span class="p">],</span> <span class="n">result1</span><span class="p">[</span><span class="s1">&#39;error_prob&#39;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Protocol 1 (Model Selection)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result2</span><span class="p">[</span><span class="s1">&#39;T_range&#39;</span><span class="p">],</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">result2</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> 
+            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Protocol 2 (classification)&#39;</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$T$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;error probability&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
 <span class="n">compare_protocols</span><span class="p">(</span><span class="n">result_p1</span><span class="p">,</span> <span class="n">result_p2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/909f4b8cbf6cea6b3ab0e2fe44679eaf31bd148f635453df6e2bc40ffbab4114.png" src="_images/909f4b8cbf6cea6b3ab0e2fe44679eaf31bd148f635453df6e2bc40ffbab4114.png" />
+<img alt="_images/4f13bc423ed023acc0ad5c6b13c8883873a3963623f85b2788342e1c17aece85.png" src="_images/4f13bc423ed023acc0ad5c6b13c8883873a3963623f85b2788342e1c17aece85.png" />
 </div>
 </div>
 <p>From the figure above, we can see:</p>
@@ -1559,7 +1606,7 @@ Optimal ϕ = 0.5969
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7b95f482e7cd7166f6ae841eb2da024632294315988f722c8ed852fba6cffbac.png" src="_images/7b95f482e7cd7166f6ae841eb2da024632294315988f722c8ed852fba6cffbac.png" />
+<img alt="_images/4e53493584a9cbe52645a2a7d733c023dcf83a9691e652f5edb0f2aeb3563c24.png" src="_images/4e53493584a9cbe52645a2a7d733c023dcf83a9691e652f5edb0f2aeb3563c24.png" />
 </div>
 </div>
 <p>Evidently, <span class="math notranslate nohighlight">\(e^{-C(f,g)T}\)</span> is an upper bound on the error rate.</p>
@@ -1720,7 +1767,7 @@ compute how it covaries with the model selection error probability.</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/7474e401144b29ef519bb41d9de59f8844892e4eb685f9705308a31ae0b2475c.png" src="_images/7474e401144b29ef519bb41d9de59f8844892e4eb685f9705308a31ae0b2475c.png" />
+<img alt="_images/7f588edb457050eca8dda734af24bac849fad9728ce975c87de473a914b2652c.png" src="_images/7f588edb457050eca8dda734af24bac849fad9728ce975c87de473a914b2652c.png" />
 </div>
 </div>
 <p>Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability.</p>
@@ -1966,13 +2013,13 @@ KL divergence rate h(f, g): 0.0588
 KL divergence rate h(g, f): 0.0563
 </pre></div>
 </div>
-<img alt="_images/05321d79d8c6c3aafbe6ff93de5b7fa653d70e5b86c0897b3976964ef579c783.png" src="_images/05321d79d8c6c3aafbe6ff93de5b7fa653d70e5b86c0897b3976964ef579c783.png" />
+<img alt="_images/c27e8daa9833338c92eca902ee8780c2ac8212ab08949c1d72cf675746185b15.png" src="_images/c27e8daa9833338c92eca902ee8780c2ac8212ab08949c1d72cf675746185b15.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="related-lectures">
-<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">22.9. </span>Related Lectures</a><a class="headerlink" href="#related-lectures" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">22.9. </span>Related lectures</a><a class="headerlink" href="#related-lectures" title="Link to this heading">#</a></h2>
 <p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a>
 and as applied in <a class="reference internal" href="odu.html"><span class="doc">Job Search VII: Search with Learning</span></a>.</p>
 <p>Likelihood ratio processes are central to  Lawrence Blume and David Easley’s answer to their question ‘‘If you’re so smart, why aren’t you rich?’’ <span id="id4">[<a class="reference internal" href="zreferences.html#id9" title="Lawrence Blume and David Easley. If you're so smart, why aren't you rich? belief selection in complete and incomplete markets. Econometrica, 74(4):929–966, 2006.">Blume and Easley, 2006</a>]</span>, the subject of the lecture<a class="reference internal" href="likelihood_ratio_process_2.html"><span class="doc">Heterogeneous Beliefs and Financial Markets</span></a>.</p>
@@ -2284,7 +2331,7 @@ E_h[\log L_t] = t \cdot (K_g - K_f) \to -\infty \text{ as } t \to \infty
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_var.html">
-   24. Likelihood Processes for VAR Models
+   24. Likelihood Processes For VAR Models
   </a>
  </li>
  <li class="toctree-l1">
