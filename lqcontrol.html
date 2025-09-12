@@ -327,14 +327,14 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>These themes appear repeatedly below.</p>
 <p>Mathematically, LQ control problems are closely related to <a class="reference internal" href="kalman.html"><span class="doc">the Kalman filter</span></a></p>
 <ul class="simple">
-<li><p>Recursive formulations of linear-quadratic control problems and Kalman filtering problems both involve matrix <a class="reference external" href="https://en.wikipedia.org/wiki/Riccati_equation">Riccati equations</a>.</p></li>
-<li><p>Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example<a class="reference external" href="https://python-advanced.quantecon.org/lu_tricks.html">Classical Control with Linear Algebra</a> and <a class="reference external" href="https://python-advanced.quantecon.org/classical_filtering.html">Classical Prediction and Filtering With Linear Algebra</a>).</p></li>
+<li><p>Recursive formulations of linear-quadratic control problems and Kalman filtering problems both involve matrix <strong>Riccati equations</strong>.</p></li>
+<li><p>Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example <a class="reference external" href="https://python-advanced.quantecon.org/lu_tricks.html">this lecture</a> and <a class="reference external" href="https://python-advanced.quantecon.org/classical_filtering.html">this lecture</a>).</p></li>
 </ul>
 <p>In reading what follows, it will be useful to have some familiarity with</p>
 <ul class="simple">
 <li><p>matrix manipulations</p></li>
 <li><p>vectors of random variables</p></li>
-<li><p>dynamic programming and the Bellman equation (see for example <a class="reference external" href="https://intro.quantecon.org/short_path.html" title="(in Project name not set)"><span class="xref std std-doc">Shortest Paths</span></a> and <a class="reference internal" href="optgrowth.html"><span class="doc">Optimal Growth</span></a>)</p></li>
+<li><p>dynamic programming and the Bellman equation (see for example <a class="reference external" href="https://intro.quantecon.org/short_path.html" title="(in Project name not set)"><span class="xref std std-doc">this lecture</span></a> and <a class="reference internal" href="optgrowth.html"><span class="doc">this lecture</span></a>)</p></li>
 </ul>
 <p>For additional reading on LQ control, see, for example,</p>
 <ul class="simple">
@@ -368,7 +368,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>Here</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(u_t\)</span> is a “control” vector, incorporating choices available to a decision-maker confronting the current state <span class="math notranslate nohighlight">\(x_t\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\{w_t\}\)</span> is a sequence of uncorrelated zero mean shock process satisfying <span class="math notranslate nohighlight">\(\mathbb E w_t w_t^\top = I\)</span>, where the right-hand side is the identity matrix</p></li>
+<li><p><span class="math notranslate nohighlight">\(\{w_t\}\)</span> is an uncorrelated zero mean shock process satisfying <span class="math notranslate nohighlight">\(\mathbb E w_t w_t' = I\)</span>, where the right-hand side is the identity matrix</p></li>
 </ul>
 <p>Regarding the dimensions</p>
 <ul class="simple">
@@ -385,8 +385,8 @@ a_{t+1} + c_t = (1 + r) a_t + y_t
 \]</div>
 <p>Here <span class="math notranslate nohighlight">\(a_t\)</span> is assets, <span class="math notranslate nohighlight">\(r\)</span> is a fixed interest rate, <span class="math notranslate nohighlight">\(c_t\)</span> is
 current consumption, and <span class="math notranslate nohighlight">\(y_t\)</span> is current non-financial income.</p>
-<p>If we suppose that <span class="math notranslate nohighlight">\(\{y_t\}\)</span> is serially uncorrelated and <span class="math notranslate nohighlight">\(N(0,
-\sigma^2)\)</span>, then, taking <span class="math notranslate nohighlight">\(\{w_t\}\)</span> to be standard normal, we can write
+<p>If we suppose that <span class="math notranslate nohighlight">\(\{ y_t \}\)</span> is serially uncorrelated and <span class="math notranslate nohighlight">\(N(0,
+\sigma^2)\)</span>, then, taking <span class="math notranslate nohighlight">\(\{ w_t \}\)</span> to be standard normal, we can write
 the system as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -489,8 +489,7 @@ C :=
 <h3><span class="section-number">63.2.2. </span>Preferences<a class="headerlink" href="#preferences" title="Link to this heading">#</a></h3>
 <p>In the LQ model, the aim is to minimize flow of losses, where time-<span class="math notranslate nohighlight">\(t\)</span> loss is given by the quadratic expression</p>
 <div class="math notranslate nohighlight" id="equation-lq-pref-flow">
-<span class="eqno">(63.5)<a class="headerlink" href="#equation-lq-pref-flow" title="Link to this equation">#</a></span>\[x_t^\top R x_t + u_t^\top Q u_t\]</div>
-<p>Where the entries in matrices <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> are chosen to match the specific problem that is being studied.</p>
+<span class="eqno">(63.5)<a class="headerlink" href="#equation-lq-pref-flow" title="Link to this equation">#</a></span>\[x_t' R x_t + u_t' Q u_t\]</div>
 <p>Here</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(R\)</span> is assumed to be <span class="math notranslate nohighlight">\(n \times n\)</span>, symmetric and nonnegative definite.</p></li>
@@ -500,17 +499,13 @@ C :=
 <p class="admonition-title">Note</p>
 <p>In fact, for many economic problems, the definiteness conditions on <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> can be relaxed.  It is sufficient that certain submatrices of <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> be nonnegative definite. See <span id="id4">[<a class="reference internal" href="zreferences.html#id178" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">Hansen and Sargent, 2008</a>]</span> for details.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The use of <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> notations may differ depending on the source. Some authors use <span class="math notranslate nohighlight">\(Q\)</span> to be the matrix associated with the state variables and <span class="math notranslate nohighlight">\(R\)</span> with the control variables.</p>
-</div>
 <section id="id5">
 <h4><span class="section-number">63.2.2.1. </span>Example 1<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
 <p>A very simple example that satisfies these assumptions is to take <span class="math notranslate nohighlight">\(R\)</span>
 and <span class="math notranslate nohighlight">\(Q\)</span> to be identity matrices so that current loss is</p>
 <div class="math notranslate nohighlight">
 \[
-x_t^\top I x_t + u_t^\top I u_t = \| x_t \|^2 + \| u_t \|^2
+x_t' I x_t + u_t' I u_t = \| x_t \|^2 + \| u_t \|^2
 \]</div>
 <p>Thus, for both the state and the control, loss is measured as squared distance from the origin.</p>
 <p>(In fact, the general case <a class="reference internal" href="#equation-lq-pref-flow">(63.5)</a> can also be understood in this
@@ -529,7 +524,7 @@ as</p>
 and <span class="math notranslate nohighlight">\(Q=1\)</span> yields preferences</p>
 <div class="math notranslate nohighlight">
 \[
-x_t^\top R x_t + u_t^\top Q u_t = u_t^2 = (c_t - \bar c)^2
+x_t' R x_t + u_t' Q u_t = u_t^2 = (c_t - \bar c)^2
 \]</div>
 <p>Under this specification, the household’s current loss is the squared deviation of consumption from the ideal level <span class="math notranslate nohighlight">\(\bar c\)</span>.</p>
 </section>
@@ -545,16 +540,16 @@ x_t^\top R x_t + u_t^\top Q u_t = u_t^2 = (c_t - \bar c)^2
 <div class="math notranslate nohighlight" id="equation-lq-object">
 <span class="eqno">(63.6)<a class="headerlink" href="#equation-lq-object" title="Link to this equation">#</a></span>\[\mathbb E \,
 \left\{
-    \sum_{t=0}^{T-1} \beta^t (x_t^\top R x_t + u_t^\top Q u_t) + \beta^T x_T^\top R_f x_T
+    \sum_{t=0}^{T-1} \beta^t (x_t' R x_t + u_t' Q u_t) + \beta^T x_T' R_f x_T
 \right\}\]</div>
 <p>subject to the law of motion <a class="reference internal" href="#equation-lq-lom">(63.1)</a> and initial state <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
 <p>The new objects introduced here are <span class="math notranslate nohighlight">\(\beta\)</span> and the matrix <span class="math notranslate nohighlight">\(R_f\)</span>.</p>
-<p>The scalar <span class="math notranslate nohighlight">\(\beta\)</span> is the discount factor, while <span class="math notranslate nohighlight">\(x^\top R_f x\)</span> gives terminal loss associated with state <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>The scalar <span class="math notranslate nohighlight">\(\beta\)</span> is the discount factor, while <span class="math notranslate nohighlight">\(x' R_f x\)</span> gives terminal loss associated with state <span class="math notranslate nohighlight">\(x\)</span>.</p>
 <p>Comments:</p>
 <ul class="simple">
 <li><p>We assume <span class="math notranslate nohighlight">\(R_f\)</span> to be <span class="math notranslate nohighlight">\(n \times n\)</span>, symmetric and nonnegative definite.</p></li>
 <li><p>We allow <span class="math notranslate nohighlight">\(\beta = 1\)</span>, and hence include the undiscounted case.</p></li>
-<li><p><span class="math notranslate nohighlight">\(x_0\)</span> may itself be random, in which case we require it to be independent of the shock sequence <span class="math notranslate nohighlight">\(\{w_1, \ldots, w_T\}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_0\)</span> may itself be random, in which case we require it to be independent of the shock sequence <span class="math notranslate nohighlight">\(w_1, \ldots, w_T\)</span>.</p></li>
 </ul>
 </section>
 <section id="information">
@@ -583,8 +578,8 @@ so, for the purposes of intuition, you can read that last phrase as “for some 
 <section id="solution">
 <h3><span class="section-number">63.3.3. </span>Solution<a class="headerlink" href="#solution" title="Link to this heading">#</a></h3>
 <p>To solve the finite horizon LQ problem we can use a dynamic programming
-strategy based on backward induction that is conceptually similar to the approach adopted in <a class="reference external" href="https://intro.quantecon.org/short_path.html" title="(in Project name not set)"><span class="xref std std-doc">Shortest Paths</span></a>.</p>
-<p>For reasons that will soon become clear, we first introduce the notation <span class="math notranslate nohighlight">\(J_T(x) = x^\top R_f x\)</span>.</p>
+strategy based on backward induction that is conceptually similar to the approach adopted in <a class="reference external" href="https://intro.quantecon.org/short_path.html" title="(in Project name not set)"><span class="xref std std-doc">this lecture</span></a>.</p>
+<p>For reasons that will soon become clear, we first introduce the notation <span class="math notranslate nohighlight">\(J_T(x) = x' R_f x\)</span>.</p>
 <p>Now consider the problem of the decision-maker in the second to last period.</p>
 <p>In particular, let the time be <span class="math notranslate nohighlight">\(T-1\)</span>, and suppose that the
 state is <span class="math notranslate nohighlight">\(x_{T-1}\)</span>.</p>
@@ -593,21 +588,20 @@ solves</p>
 <div class="math notranslate nohighlight">
 \[
 \min_u \{
-x_{T-1}^\top R x_{T-1} + u^\top Q u + \beta \,
+x_{T-1}' R x_{T-1} + u' Q u + \beta \,
 \mathbb E J_T(A x_{T-1} + B u + C w_T)
 \}
 \]</div>
-<p>We use <span class="math notranslate nohighlight">\(u\)</span> instead of <span class="math notranslate nohighlight">\(u_{T-1}\)</span> here to simplify notation.</p>
 <p>At this stage, it is convenient to define the function</p>
 <div class="math notranslate nohighlight" id="equation-lq-lsm">
 <span class="eqno">(63.7)<a class="headerlink" href="#equation-lq-lsm" title="Link to this equation">#</a></span>\[J_{T-1} (x) =
 \min_u \{
-x^\top R x + u^\top Q u + \beta \,
+x' R x + u' Q u + \beta \,
 \mathbb E J_T(A x + B u + C w_T)
 \}\]</div>
 <p>The function <span class="math notranslate nohighlight">\(J_{T-1}\)</span> will be called the <span class="math notranslate nohighlight">\(T-1\)</span> value function, and <span class="math notranslate nohighlight">\(J_{T-1}(x)\)</span> can be thought of as representing total “loss-to-go” from state <span class="math notranslate nohighlight">\(x\)</span> at time <span class="math notranslate nohighlight">\(T-1\)</span> when the decision-maker behaves optimally.</p>
 <p>Now let’s step back to <span class="math notranslate nohighlight">\(T-2\)</span>.</p>
-<p>For a decision-maker at <span class="math notranslate nohighlight">\(T-2\)</span>, the value <span class="math notranslate nohighlight">\(J_{T-1}(x)\)</span> plays a role analogous to that played by the terminal loss <span class="math notranslate nohighlight">\(J_T(x) = x^\top R_f x\)</span> for the decision-maker at <span class="math notranslate nohighlight">\(T-1\)</span>.</p>
+<p>For a decision-maker at <span class="math notranslate nohighlight">\(T-2\)</span>, the value <span class="math notranslate nohighlight">\(J_{T-1}(x)\)</span> plays a role analogous to that played by the terminal loss <span class="math notranslate nohighlight">\(J_T(x) = x' R_f x\)</span> for the decision-maker at <span class="math notranslate nohighlight">\(T-1\)</span>.</p>
 <p>That is, <span class="math notranslate nohighlight">\(J_{T-1}(x)\)</span> summarizes the future loss associated with moving to state <span class="math notranslate nohighlight">\(x\)</span>.</p>
 <p>The decision-maker chooses her control <span class="math notranslate nohighlight">\(u\)</span> to trade off current loss against future loss, where</p>
 <ul class="simple">
@@ -619,7 +613,7 @@ x^\top R x + u^\top Q u + \beta \,
 \[
 \min_u
 \{
-x_{T-2}^\top R x_{T-2} + u^\top Q u + \beta \,
+x_{T-2}' R x_{T-2} + u' Q u + \beta \,
 \mathbb E J_{T-1}(Ax_{T-2} + B u + C w_{T-1})
 \}
 \]</div>
@@ -629,7 +623,7 @@ x_{T-2}^\top R x_{T-2} + u^\top Q u + \beta \,
 J_{T-2} (x)
 = \min_u
 \{
-x^\top R x + u^\top Q u + \beta \,
+x' R x + u' Q u + \beta \,
 \mathbb E J_{T-1}(Ax + B u + C w_{T-1})
 \}
 \]</div>
@@ -640,60 +634,60 @@ x^\top R x + u^\top Q u + \beta \,
 J_{t-1} (x)
 = \min_u
 \{
-x^\top R x + u^\top Q u + \beta \,
+x' R x + u' Q u + \beta \,
 \mathbb E J_{t}(Ax + B u + C w_t)
 \}
 \quad \text{and} \quad
-J_T(x) = x^\top R_f x
+J_T(x) = x' R_f x
 \]</div>
 <p>The first equality is the Bellman equation from dynamic programming theory specialized to the finite horizon LQ problem.</p>
 <p>Now that we have <span class="math notranslate nohighlight">\(\{J_0, \ldots, J_T\}\)</span>, we can obtain the optimal controls.</p>
 <p>As a first step, let’s find out what the value functions look like.</p>
-<p>It turns out that every <span class="math notranslate nohighlight">\(J_t\)</span> has the form <span class="math notranslate nohighlight">\(J_t(x) = x^\top P_t x + d_t\)</span> where <span class="math notranslate nohighlight">\(P_t\)</span> is a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix and <span class="math notranslate nohighlight">\(d_t\)</span> is a constant.</p>
+<p>It turns out that every <span class="math notranslate nohighlight">\(J_t\)</span> has the form <span class="math notranslate nohighlight">\(J_t(x) = x' P_t x + d_t\)</span> where <span class="math notranslate nohighlight">\(P_t\)</span> is a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix and <span class="math notranslate nohighlight">\(d_t\)</span> is a constant.</p>
 <p>We can show this by induction, starting from <span class="math notranslate nohighlight">\(P_T := R_f\)</span> and <span class="math notranslate nohighlight">\(d_T = 0\)</span>.</p>
 <p>Using this notation, <a class="reference internal" href="#equation-lq-lsm">(63.7)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-lq-fswb">
 <span class="eqno">(63.8)<a class="headerlink" href="#equation-lq-fswb" title="Link to this equation">#</a></span>\[J_{T-1} (x) =
 \min_u \{
-x^\top R x + u^\top Q u + \beta \,
-\mathbb E (A x + B u + C w_T)^\top P_T (A x + B u + C w_T)
+x' R x + u' Q u + \beta \,
+\mathbb E (A x + B u + C w_T)' P_T (A x + B u + C w_T)
 \}\]</div>
 <p>To obtain the minimizer, we can take the derivative of the r.h.s. with respect to <span class="math notranslate nohighlight">\(u\)</span> and set it equal to zero.</p>
 <p>Applying the relevant rules of <a class="reference internal" href="linear_algebra.html#la-mcalc"><span class="std std-ref">matrix calculus</span></a>, this gives</p>
 <div class="math notranslate nohighlight" id="equation-lq-oc0">
-<span class="eqno">(63.9)<a class="headerlink" href="#equation-lq-oc0" title="Link to this equation">#</a></span>\[u  = - (Q + \beta B^\top P_T B)^{-1} \beta B^\top P_T A x\]</div>
+<span class="eqno">(63.9)<a class="headerlink" href="#equation-lq-oc0" title="Link to this equation">#</a></span>\[u  = - (Q + \beta B' P_T B)^{-1} \beta B' P_T A x\]</div>
 <p>Plugging this back into <a class="reference internal" href="#equation-lq-fswb">(63.8)</a> and rearranging yields</p>
 <div class="math notranslate nohighlight">
 \[
-J_{T-1} (x) = x^\top P_{T-1} x + d_{T-1}
+J_{T-1} (x) = x' P_{T-1} x + d_{T-1}
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-lq-finr">
-<span class="eqno">(63.10)<a class="headerlink" href="#equation-lq-finr" title="Link to this equation">#</a></span>\[P_{T-1} = R - \beta^2 A^\top P_T B (Q + \beta B^\top P_T B)^{-1} B^\top P_T A +
-\beta A^\top P_T A\]</div>
+<span class="eqno">(63.10)<a class="headerlink" href="#equation-lq-finr" title="Link to this equation">#</a></span>\[P_{T-1} = R - \beta^2 A' P_T B (Q + \beta B' P_T B)^{-1} B' P_T A +
+\beta A' P_T A\]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-lq-finrd">
-<span class="eqno">(63.11)<a class="headerlink" href="#equation-lq-finrd" title="Link to this equation">#</a></span>\[d_{T-1} := \beta \mathop{\mathrm{trace}}(C^\top P_T C)\]</div>
+<span class="eqno">(63.11)<a class="headerlink" href="#equation-lq-finrd" title="Link to this equation">#</a></span>\[d_{T-1} := \beta \mathop{\mathrm{trace}}(C' P_T C)\]</div>
 <p>(The algebra is a good exercise — we’ll leave it up to you.)</p>
-<p>If we continue working backwards in this manner, it soon becomes clear that <span class="math notranslate nohighlight">\(J_t (x) = x^\top P_t x + d_t\)</span> as claimed, where <span class="math notranslate nohighlight">\(P_t\)</span> and <span class="math notranslate nohighlight">\(d_t\)</span> satisfy the recursions</p>
+<p>If we continue working backwards in this manner, it soon becomes clear that <span class="math notranslate nohighlight">\(J_t (x) = x' P_t x + d_t\)</span> as claimed, where <span class="math notranslate nohighlight">\(\{P_t\}\)</span> and <span class="math notranslate nohighlight">\(\{d_t\}\)</span> satisfy the recursions</p>
 <div class="math notranslate nohighlight" id="equation-lq-pr">
-<span class="eqno">(63.12)<a class="headerlink" href="#equation-lq-pr" title="Link to this equation">#</a></span>\[P_{t-1} = R - \beta^2 A^\top P_t B (Q + \beta B^\top P_t B)^{-1} B^\top P_t A +
-\beta A^\top P_t A
+<span class="eqno">(63.12)<a class="headerlink" href="#equation-lq-pr" title="Link to this equation">#</a></span>\[P_{t-1} = R - \beta^2 A' P_t B (Q + \beta B' P_t B)^{-1} B' P_t A +
+\beta A' P_t A
 \quad \text{with } \quad
 P_T = R_f\]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-lq-dd">
-<span class="eqno">(63.13)<a class="headerlink" href="#equation-lq-dd" title="Link to this equation">#</a></span>\[d_{t-1} = \beta (d_t + \mathop{\mathrm{trace}}(C^\top P_t C))
+<span class="eqno">(63.13)<a class="headerlink" href="#equation-lq-dd" title="Link to this equation">#</a></span>\[d_{t-1} = \beta (d_t + \mathop{\mathrm{trace}}(C' P_t C))
 \quad \text{with } \quad
 d_T = 0\]</div>
 <p>Recalling <a class="reference internal" href="#equation-lq-oc0">(63.9)</a>, the minimizers from these backward steps are</p>
 <div class="math notranslate nohighlight" id="equation-lq-oc">
 <span class="eqno">(63.14)<a class="headerlink" href="#equation-lq-oc" title="Link to this equation">#</a></span>\[u_t  = - F_t x_t
 \quad \text{where} \quad
-F_t := (Q + \beta B^\top P_{t+1} B)^{-1} \beta B^\top P_{t+1} A\]</div>
+F_t := (Q + \beta B' P_{t+1} B)^{-1} \beta B' P_{t+1} A\]</div>
 <p>These are the linear optimal control policies we <a class="reference internal" href="#lq-cp"><span class="std std-ref">discussed above</span></a>.</p>
 <p>In particular,  the sequence of controls given by <a class="reference internal" href="#equation-lq-oc">(63.14)</a> and <a class="reference internal" href="#equation-lq-lom">(63.1)</a> solves our finite horizon LQ problem.</p>
-<p>Rephrasing this more precisely, the sequence <span class="math notranslate nohighlight">\(\{u_0, \ldots, u_{T-1}\}\)</span> given by</p>
+<p>Rephrasing this more precisely, the sequence <span class="math notranslate nohighlight">\(u_0, \ldots, u_{T-1}\)</span> given by</p>
 <div class="math notranslate nohighlight" id="equation-lq-xud">
 <span class="eqno">(63.15)<a class="headerlink" href="#equation-lq-xud" title="Link to this equation">#</a></span>\[u_t = - F_t x_t
 \quad \text{with} \quad
@@ -754,7 +748,7 @@ based on a consumer’s preference for an intertemporally smooth consumption str
 <p>(Without such a constraint, the optimal choice is to choose <span class="math notranslate nohighlight">\(c_t = \bar c\)</span> in each period, letting assets adjust accordingly.)</p>
 <p>As before we set <span class="math notranslate nohighlight">\(y_t = \sigma w_{t+1} + \mu\)</span> and <span class="math notranslate nohighlight">\(u_t := c_t - \bar c\)</span>, after which the constraint can be written as in <a class="reference internal" href="#equation-lq-lomwc">(63.2)</a>.</p>
 <p>We saw how this constraint could be manipulated into the LQ formulation <span class="math notranslate nohighlight">\(x_{t+1} =
-Ax_t + Bu_t + Cw_{t+1}\)</span> by setting <span class="math notranslate nohighlight">\(x_t = (a_t \; 1)^\top\)</span> and using the definitions in <a class="reference internal" href="#equation-lq-lowmc2">(63.4)</a>.</p>
+Ax_t + Bu_t + Cw_{t+1}\)</span> by setting <span class="math notranslate nohighlight">\(x_t = (a_t \; 1)'\)</span> and using the definitions in <a class="reference internal" href="#equation-lq-lowmc2">(63.4)</a>.</p>
 <p>To match with this state and control, the objective function <a class="reference internal" href="#equation-lq-pio">(63.16)</a> can
 be written in the form of <a class="reference internal" href="#equation-lq-object">(63.6)</a> by choosing</p>
 <div class="math notranslate nohighlight">
@@ -762,20 +756,24 @@ be written in the form of <a class="reference internal" href="#equation-lq-objec
 Q := 1,
 \quad
 R :=
-\begin{bmatrix} 
+\left(
+\begin{array}{cc}
 0 &amp; 0 \\
 0 &amp; 0
-\end{bmatrix},
+\end{array}
+\right),
 \quad \text{and} \quad
 R_f :=
-\begin{bmatrix} 
+\left(
+\begin{array}{cc}
 q &amp; 0 \\
 0 &amp; 0
-\end{bmatrix}
+\end{array}
+\right)
 \end{split}\]</div>
 <p>Now that the problem is expressed in LQ form, we can proceed to the solution
 by applying <a class="reference internal" href="#equation-lq-pr">(63.12)</a> and <a class="reference internal" href="#equation-lq-oc">(63.14)</a>.</p>
-<p>After generating shocks <span class="math notranslate nohighlight">\(\{w_1, \ldots, w_T\}\)</span>, the dynamics for assets and
+<p>After generating shocks <span class="math notranslate nohighlight">\(w_1, \ldots, w_T\)</span>, the dynamics for assets and
 consumption can be simulated via <a class="reference internal" href="#equation-lq-xud">(63.15)</a>.</p>
 <p>The following figure was computed using <span class="math notranslate nohighlight">\(r = 0.05, \beta = 1 / (1+ r),
 \bar c = 2,  \mu = 1, \sigma = 0.25, T = 45\)</span> and <span class="math notranslate nohighlight">\(q = 10^6\)</span>.</p>
@@ -784,7 +782,7 @@ consumption can be simulated via <a class="reference internal" href="#equation-l
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Model parameters</span>
 <span class="n">r</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="n">β</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span>
+<span class="n">β</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span>
 <span class="n">T</span> <span class="o">=</span> <span class="mi">45</span>
 <span class="n">c_bar</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">σ</span> <span class="o">=</span> <span class="mf">0.25</span>
@@ -823,14 +821,14 @@ consumption can be simulated via <a class="reference internal" href="#equation-l
 <span class="n">legend_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bbox_to_anchor&#39;</span><span class="p">:</span> <span class="n">bbox</span><span class="p">,</span> <span class="s1">&#39;loc&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;expand&#39;</span><span class="p">}</span>
 <span class="n">p_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lw&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}</span>
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">income</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;non-financial income&quot;</span><span class="p">,</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">income</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;non-financial income&quot;</span><span class="p">,</span>
             <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">c</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;consumption&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">)),</span> <span class="n">c</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;consumption&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">income</span> <span class="o">-</span> <span class="n">μ</span><span class="p">),</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">income</span> <span class="o">-</span> <span class="n">μ</span><span class="p">),</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="s2">&quot;cumulative unanticipated income&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">assets</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;assets&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">assets</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;assets&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
@@ -842,7 +840,7 @@ consumption can be simulated via <a class="reference internal" href="#equation-l
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/90527b952c6a594ae11dd56c39c3672267d116f5562a1656d636ed568f6c9558.png" src="_images/90527b952c6a594ae11dd56c39c3672267d116f5562a1656d636ed568f6c9558.png" />
+<img alt="_images/1f965c76fd6e20aef0219440192c6a57762e7b00ac4d0bb912537880484c00aa.png" src="_images/1f965c76fd6e20aef0219440192c6a57762e7b00ac4d0bb912537880484c00aa.png" />
 </div>
 </div>
 <p>The top panel shows the time path of consumption <span class="math notranslate nohighlight">\(c_t\)</span> and income <span class="math notranslate nohighlight">\(y_t\)</span> in the simulation.</p>
@@ -885,14 +883,14 @@ relatively more weight on later consumption values.</p>
 <span class="n">legend_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bbox_to_anchor&#39;</span><span class="p">:</span> <span class="n">bbox</span><span class="p">,</span> <span class="s1">&#39;loc&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;expand&#39;</span><span class="p">}</span>
 <span class="n">p_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lw&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}</span>
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">income</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;non-financial income&quot;</span><span class="p">,</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">income</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;non-financial income&quot;</span><span class="p">,</span>
              <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">c</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;consumption&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">)),</span> <span class="n">c</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;consumption&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">income</span> <span class="o">-</span> <span class="n">μ</span><span class="p">),</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">income</span> <span class="o">-</span> <span class="n">μ</span><span class="p">),</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span>
              <span class="n">label</span><span class="o">=</span><span class="s2">&quot;cumulative unanticipated income&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">assets</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;assets&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">assets</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;assets&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">p_args</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
@@ -904,7 +902,7 @@ relatively more weight on later consumption values.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/65cb52e22cc99df113ecd520436e1fdba1236c262ab0adf05285dcb5fdf6ecf8.png" src="_images/65cb52e22cc99df113ecd520436e1fdba1236c262ab0adf05285dcb5fdf6ecf8.png" />
+<img alt="_images/8d52114bfb61101559a6f72dfd1bfcb276970f404188c8402082d981e06365eb.png" src="_images/8d52114bfb61101559a6f72dfd1bfcb276970f404188c8402082d981e06365eb.png" />
 </div>
 </div>
 <p>We now have a slowly rising consumption stream and a hump-shaped build-up
@@ -926,25 +924,25 @@ of assets in the middle periods to fund rising consumption.</p>
 </section>
 <section id="adding-a-cross-product-term">
 <span id="lq-cpt"></span><h3><span class="section-number">63.5.2. </span>Adding a Cross-Product Term<a class="headerlink" href="#adding-a-cross-product-term" title="Link to this heading">#</a></h3>
-<p>In some LQ problems, preferences include a cross-product term <span class="math notranslate nohighlight">\(u_t^\top N x_t\)</span>, so that the objective function becomes</p>
+<p>In some LQ problems, preferences include a cross-product term <span class="math notranslate nohighlight">\(u_t' N x_t\)</span>, so that the objective function becomes</p>
 <div class="math notranslate nohighlight" id="equation-lq-object-cp">
 <span class="eqno">(63.17)<a class="headerlink" href="#equation-lq-object-cp" title="Link to this equation">#</a></span>\[\mathbb E \,
 \left\{
-    \sum_{t=0}^{T-1} \beta^t (x_t^\top R x_t + u_t^\top Q u_t + 2 u_t^\top N x_t) + \beta^T x_T^\top R_f x_T
+    \sum_{t=0}^{T-1} \beta^t (x_t' R x_t + u_t' Q u_t + 2 u_t' N x_t) + \beta^T x_T' R_f x_T
 \right\}\]</div>
 <p>Our results extend to this case in a straightforward way.</p>
 <p>The sequence <span class="math notranslate nohighlight">\(\{P_t\}\)</span> from <a class="reference internal" href="#equation-lq-pr">(63.12)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-lq-pr-cp">
-<span class="eqno">(63.18)<a class="headerlink" href="#equation-lq-pr-cp" title="Link to this equation">#</a></span>\[P_{t-1} = R - (\beta B^\top P_t A + N)^\top
-(Q + \beta B^\top P_t B)^{-1} (\beta B^\top P_t A + N) +
-\beta A^\top P_t A
+<span class="eqno">(63.18)<a class="headerlink" href="#equation-lq-pr-cp" title="Link to this equation">#</a></span>\[P_{t-1} = R - (\beta B' P_t A + N)'
+(Q + \beta B' P_t B)^{-1} (\beta B' P_t A + N) +
+\beta A' P_t A
 \quad \text{with } \quad
 P_T = R_f\]</div>
 <p>The policies in <a class="reference internal" href="#equation-lq-oc">(63.14)</a> are modified to</p>
 <div class="math notranslate nohighlight" id="equation-lq-oc-cp">
 <span class="eqno">(63.19)<a class="headerlink" href="#equation-lq-oc-cp" title="Link to this equation">#</a></span>\[u_t  = - F_t x_t
 \quad \text{where} \quad
-F_t := (Q + \beta B^\top P_{t+1} B)^{-1} (\beta B^\top P_{t+1} A + N)\]</div>
+F_t := (Q + \beta B' P_{t+1} B)^{-1} (\beta B' P_{t+1} A + N)\]</div>
 <p>The sequence <span class="math notranslate nohighlight">\(\{d_t\}\)</span> is unchanged from <a class="reference internal" href="#equation-lq-dd">(63.13)</a>.</p>
 <p>We leave interested readers to confirm these results (the calculations are long but not overly difficult).</p>
 </section>
@@ -955,7 +953,7 @@ objective function given by</p>
 <div class="math notranslate nohighlight" id="equation-lq-object-ih">
 <span class="eqno">(63.20)<a class="headerlink" href="#equation-lq-object-ih" title="Link to this equation">#</a></span>\[\mathbb E \,
 \left\{
-    \sum_{t=0}^{\infty} \beta^t (x_t^\top R x_t + u_t^\top Q u_t + 2 u_t^\top N x_t)
+    \sum_{t=0}^{\infty} \beta^t (x_t' R x_t + u_t' Q u_t + 2 u_t' N x_t)
 \right\}\]</div>
 <p>In the infinite horizon case, optimal policies can depend on time
 only if time itself is a component of the  state vector <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
@@ -967,9 +965,9 @@ same infinite horizon at every stage, with only the current state changing.</p>
 <p>The stationary matrix <span class="math notranslate nohighlight">\(P\)</span> is the solution to the
 <a class="reference external" href="https://en.wikipedia.org/wiki/Algebraic_Riccati_equation">discrete-time algebraic Riccati equation</a>.</p>
 <div class="math notranslate nohighlight" id="equation-lq-pr-ih">
-<span id="riccati-equation"></span><span class="eqno">(63.21)<a class="headerlink" href="#equation-lq-pr-ih" title="Link to this equation">#</a></span>\[P = R - (\beta B^\top P A + N)^\top
-(Q + \beta B^\top P B)^{-1} (\beta B^\top P A + N) +
-\beta A^\top P A\]</div>
+<span id="riccati-equation"></span><span class="eqno">(63.21)<a class="headerlink" href="#equation-lq-pr-ih" title="Link to this equation">#</a></span>\[P = R - (\beta B' P A + N)'
+(Q + \beta B' P B)^{-1} (\beta B' P A + N) +
+\beta A' P A\]</div>
 <p>Equation <a class="reference internal" href="#equation-lq-pr-ih">(63.21)</a> is also called the <em>LQ Bellman equation</em>, and the map
 that sends a given <span class="math notranslate nohighlight">\(P\)</span> into the right-hand side of <a class="reference internal" href="#equation-lq-pr-ih">(63.21)</a> is
 called the <em>LQ Bellman operator</em>.</p>
@@ -977,11 +975,11 @@ called the <em>LQ Bellman operator</em>.</p>
 <div class="math notranslate nohighlight" id="equation-lq-oc-ih">
 <span class="eqno">(63.22)<a class="headerlink" href="#equation-lq-oc-ih" title="Link to this equation">#</a></span>\[u  = - F x
 \quad \text{where} \quad
-F = (Q + \beta B^\top P B)^{-1} (\beta B^\top P A + N)\]</div>
+F = (Q + \beta B' P B)^{-1} (\beta B' P A + N)\]</div>
 <p>The sequence <span class="math notranslate nohighlight">\(\{d_t\}\)</span> from <a class="reference internal" href="#equation-lq-dd">(63.13)</a> is replaced by the constant value</p>
 <div class="math notranslate nohighlight" id="equation-lq-dd-ih">
 <span class="eqno">(63.23)<a class="headerlink" href="#equation-lq-dd-ih" title="Link to this equation">#</a></span>\[d
-:= \mathop{\mathrm{trace}}(C^\top P C) \frac{\beta}{1 - \beta}\]</div>
+:= \mathop{\mathrm{trace}}(C' P C) \frac{\beta}{1 - \beta}\]</div>
 <p>The state evolves according to the time-homogeneous process <span class="math notranslate nohighlight">\(x_{t+1} = (A - BF) x_t + C w_{t+1}\)</span>.</p>
 <p>An example infinite horizon problem is treated <a class="reference internal" href="#lqc-mwac"><span class="std std-ref">below</span></a>.</p>
 </section>
@@ -1023,36 +1021,44 @@ has been made, the remaining specifications fall into place relatively easily.</
 <p>Thus, for the dynamics we set</p>
 <div class="math notranslate nohighlight" id="equation-lq-lowmc3">
 <span class="eqno">(63.26)<a class="headerlink" href="#equation-lq-lowmc3" title="Link to this equation">#</a></span>\[\begin{split}x_t :=
-\begin{bmatrix} 
+\left(
+\begin{array}{c}
 a_t \\
 1 \\
 t \\
 t^2
-\end{bmatrix},
+\end{array}
+\right),
 \quad
 A :=
-\begin{bmatrix} 
+\left(
+\begin{array}{cccc}
 1 + r &amp; -\bar c &amp; m_1 &amp; m_2 \\
 0     &amp; 1       &amp; 0   &amp; 0   \\
 0     &amp; 1       &amp; 1   &amp; 0   \\
 0     &amp; 1       &amp; 2   &amp; 1
-\end{bmatrix},
+\end{array}
+\right),
 \quad
 B :=
-\begin{bmatrix} 
+\left(
+\begin{array}{c}
 -1 \\
 0 \\
 0 \\
 0
-\end{bmatrix},
+\end{array}
+\right),
 \quad
 C :=
-\begin{bmatrix} 
+\left(
+\begin{array}{c}
 \sigma \\
 0 \\
 0 \\
 0
-\end{bmatrix}\end{split}\]</div>
+\end{array}
+\right)\end{split}\]</div>
 <p>If you expand the expression <span class="math notranslate nohighlight">\(x_{t+1} = A x_t + B u_t + C w_{t+1}\)</span> using
 this specification, you will find that assets follow <a class="reference internal" href="#equation-lq-hib">(63.25)</a> as desired
 and that the other state variables also update appropriately.</p>
@@ -1061,20 +1067,24 @@ and that the other state variables also update appropriately.</p>
 <span class="eqno">(63.27)<a class="headerlink" href="#equation-lq-4sp" title="Link to this equation">#</a></span>\[\begin{split}Q := 1,
 \quad
 R :=
-\begin{bmatrix} 
+\left(
+\begin{array}{cccc}
 0 &amp; 0 &amp; 0 &amp; 0 \\
 0 &amp; 0 &amp; 0 &amp; 0 \\
 0 &amp; 0 &amp; 0 &amp; 0 \\
 0 &amp; 0 &amp; 0 &amp; 0
-\end{bmatrix}
+\end{array}
+\right)
 \quad \text{and} \quad
 R_f :=
-\begin{bmatrix} 
+\left(
+\begin{array}{cccc}
 q &amp; 0 &amp; 0 &amp; 0 \\
 0 &amp; 0 &amp; 0 &amp; 0 \\
 0 &amp; 0 &amp; 0 &amp; 0 \\
 0 &amp; 0 &amp; 0 &amp; 0
-\end{bmatrix}\end{split}\]</div>
+\end{array}
+\right)\end{split}\]</div>
 <p>The next figure shows a simulation of consumption and assets computed using
 the <code class="docutils literal notranslate"><span class="pre">compute_sequence</span></code> method of <code class="docutils literal notranslate"><span class="pre">lqcontrol.py</span></code> with initial assets set to zero.</p>
 <figure class="align-default" id="solution-lqc-ex1-fig">
@@ -1192,7 +1202,7 @@ monopolist will choose output to maximize current profit in each period.</p>
 </figure>
 <p>To produce these figures we converted the monopolist problem into an LQ problem.</p>
 <p>The key to this conversion is to choose the right state — which can be a bit of an art.</p>
-<p>Here we take <span class="math notranslate nohighlight">\(x_t = (\bar q_t \;\, q_t \;\, 1)^\top\)</span>, while the control is chosen as <span class="math notranslate nohighlight">\(u_t = q_{t+1} - q_t\)</span>.</p>
+<p>Here we take <span class="math notranslate nohighlight">\(x_t = (\bar q_t \;\, q_t \;\, 1)'\)</span>, while the control is chosen as <span class="math notranslate nohighlight">\(u_t = q_{t+1} - q_t\)</span>.</p>
 <p>We also manipulated the profit function slightly.</p>
 <p>In <a class="reference internal" href="#equation-lq-object-mp">(63.29)</a>, current profits are <span class="math notranslate nohighlight">\(\pi_t := p_t q_t - c q_t - \gamma (q_{t+1} - q_t)^2\)</span>.</p>
 <p>Let’s now replace <span class="math notranslate nohighlight">\(\pi_t\)</span> in <a class="reference internal" href="#equation-lq-object-mp">(63.29)</a> with <span class="math notranslate nohighlight">\(\hat \pi_t := \pi_t - a_1 \bar q_t^2\)</span>.</p>
@@ -1229,7 +1239,7 @@ can be found by writing down the dynamics of each element of the state.</p>
 <p>The parameters are <span class="math notranslate nohighlight">\(r = 0.05, \beta = 1 / (1 + r), \bar c = 1.5,  \mu = 2, \sigma = 0.15, T = 50\)</span> and <span class="math notranslate nohighlight">\(q = 10^4\)</span>.</p>
 </section>
 </div>
-<div class="solution dropdown admonition" id="lqc_ex1_solution">
+<div class="solution dropdown admonition" id="lqcontrol-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lqc_ex1"> Exercise 63.1</a></p>
 <section id="solution-content">
@@ -1319,7 +1329,7 @@ y_t = m_1 t + m_2 t^2 + \sigma w_{t+1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5c2d8fc444a64fc180d329c04da1b4c31febad1c500a69bd7f993ea5b892e6d3.png" src="_images/5c2d8fc444a64fc180d329c04da1b4c31febad1c500a69bd7f993ea5b892e6d3.png" />
+<img alt="_images/b1399498bc451d7422a1d3fd61e2b00340049bce4b66d6d1b15b2e6692237b14.png" src="_images/b1399498bc451d7422a1d3fd61e2b00340049bce4b66d6d1b15b2e6692237b14.png" />
 </div>
 </div>
 </section>
@@ -1349,7 +1359,7 @@ together the simulations from these two separate models.</p>
 </div>
 </section>
 </div>
-<div class="solution dropdown admonition" id="lqc_ex2_solution">
+<div class="solution dropdown admonition" id="lqcontrol-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lqc_ex2"> Exercise 63.2</a></p>
 <section id="solution-content">
@@ -1460,7 +1470,7 @@ the lecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/468852f1755a9fbe894420a9485c6d4d40009b69349fb2314a3d4ce3633a8c26.png" src="_images/468852f1755a9fbe894420a9485c6d4d40009b69349fb2314a3d4ce3633a8c26.png" />
+<img alt="_images/75ed93cf63f5b3381fdf6d8b67abb582e10bbafb1a2d80eb58932e8a90c52d8e.png" src="_images/75ed93cf63f5b3381fdf6d8b67abb582e10bbafb1a2d80eb58932e8a90c52d8e.png" />
 </div>
 </div>
 </section>
@@ -1475,13 +1485,13 @@ the lecture.</p>
 (see figures).</p>
 </section>
 </div>
-<div class="solution dropdown admonition" id="lqc_ex3_solution">
+<div class="solution dropdown admonition" id="lqcontrol-solution-5">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lqc_ex3"> Exercise 63.3</a></p>
 <section id="solution-content">
 <p>The first task is to find the matrices <span class="math notranslate nohighlight">\(A, B, C, Q, R\)</span> that define
 the LQ problem.</p>
-<p>Recall that <span class="math notranslate nohighlight">\(x_t = (\bar q_t \;\, q_t \;\, 1)^\top\)</span>, while
+<p>Recall that <span class="math notranslate nohighlight">\(x_t = (\bar q_t \;\, q_t \;\, 1)'\)</span>, while
 <span class="math notranslate nohighlight">\(u_t = q_{t+1} - q_t\)</span>.</p>
 <p>Letting <span class="math notranslate nohighlight">\(m_0 := (a_0 - c) / 2a_1\)</span> and <span class="math notranslate nohighlight">\(m_1 := 1 / 2 a_1\)</span>, we
 can write <span class="math notranslate nohighlight">\(\bar q_t = m_0 + m_1 d_t\)</span>, and then, with some
@@ -1567,7 +1577,7 @@ function, which we repeat here for convenience:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0983ff6353e89aeb34c30590f7239caa7579e70d163c92798bf1794d27cebc6f.png" src="_images/0983ff6353e89aeb34c30590f7239caa7579e70d163c92798bf1794d27cebc6f.png" />
+<img alt="_images/194719b6844d25e338d74dc216628cd5bc2dbc11d801e6c7747ad2600749ed0c.png" src="_images/194719b6844d25e338d74dc216628cd5bc2dbc11d801e6c7747ad2600749ed0c.png" />
 </div>
 </div>
 </section>
