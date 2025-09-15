@@ -1151,10 +1151,6 @@ Here is how we map the Samuelson model into an instance of a
 `LinearStateSpace` class
 
 ```{code-cell} ipython3
-"""This script maps the Samuelson model in the the
-``LinearStateSpace`` class
-"""
-
 α = 0.8
 β = 0.9
 ρ1 = α + β
@@ -1286,7 +1282,7 @@ class SamuelsonLSS(LinearStateSpace):
                 ) = self.stationary_distributions()
                 self.μ_0 = self.μ_x
                 self.Σ_0 = self.Σ_x
-                
+
             # Handle case where stationary distribution doesn't exist
             except ValueError:
                 print("Stationary distribution does not exist")
