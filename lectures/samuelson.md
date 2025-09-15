@@ -662,7 +662,7 @@ def plot_y(function=None):
 The following function calculates roots of the characteristic polynomial
 using high school algebra.
 
-(We'll calculate the roots in other ways later)
+(We'll calculate the roots in other ways later using `analyze_roots`.)
 
 The function also plots a $Y_t$ starting from initial conditions
 that we set
@@ -673,29 +673,45 @@ def y_nonstochastic(y_0=100, y_1=80, α=0.92, β=0.5, γ=10, n=80):
     This function calculates the roots of the characteristic polynomial
     by hand and returns a path of y_t starting from initial conditions
     """
+    roots = []
 
-    y_series, analysis = simulate_samuelson(y_0, y_1, α, β, γ, n, 0, None, 42)
-    
-    print(f"ρ_1 is {analysis['rho1']:.2f}")
-    print(f"ρ_2 is {analysis['rho2']:.2f}")
-    
-    roots = analysis['roots']
-    if len(roots) == 1:
+    ρ1 = α + β
+    ρ2 = -β
+
+    print(f"ρ_1 is {ρ1:.2f}")
+    print(f"ρ_2 is {ρ2:.2f}")
+
+    discriminant = ρ1**2 + 4 * ρ2
+
+    if discriminant == 0:
+        roots.append(-ρ1 / 2)
         print("Single real root: ")
-        print(f"{roots[0]:.2f}")
-    elif analysis['is_complex']:
-        print("Two complex roots: ")
-        print(" ".join(f"{r.real:.2f}{r.imag:+.2f}j" for r in roots))
-    else:
+        print("".join(f"{r:.2f}" for r in roots))
+    elif discriminant > 0:
+        roots.append((-ρ1 + sqrt(discriminant).real) / 2)
+        roots.append((-ρ1 - sqrt(discriminant).real) / 2)
         print("Two real roots: ")
         print(" ".join(f"{r:.2f}" for r in roots))
-    
-    if analysis['is_stable']:
+    else:
+        roots.append((-ρ1 + sqrt(discriminant)) / 2)
+        roots.append((-ρ1 - sqrt(discriminant)) / 2)
+        print("Two complex roots: ")
+        print(" ".join(f"{r.real:.2f}{r.imag:+.2f}j" for r in roots))
+
+    if all(abs(root) < 1 for root in roots):
         print("Absolute values of roots are less than one")
     else:
         print("Absolute values of roots are not less than one")
-    
-    return y_series
+
+    def transition(x, t):
+        return ρ1 * x[t - 1] + ρ2 * x[t - 2] + γ
+
+    y_t = [y_0, y_1]
+
+    for t in range(2, n):
+        y_t.append(transition(y_t, t))
+
+    return y_t
 
 
 plot_y(y_nonstochastic())
