@@ -22,8 +22,6 @@ kernelspec:
 
 # The Aiyagari Model
 
-EDIT
-
 ```{contents} Contents
 :depth: 2
 ```
