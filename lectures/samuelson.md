@@ -533,31 +533,113 @@ point implied by the setting of $(\alpha,\beta)$.
 
 ```{code-cell} ipython3
 def categorize_solution(ρ1, ρ2):
-    """This function takes values of ρ1 and ρ2 and uses them
-    to classify the type of solution
     """
-
+    This function takes values of ρ1 and ρ2 and uses them
+    to classify the type of solution.
+    """
     discriminant = ρ1**2 + 4 * ρ2
     if ρ2 > 1 + ρ1 or ρ2 < -1:
-        print("Explosive oscillations")
+        return "Explosive oscillations"
     elif ρ1 + ρ2 > 1:
-        print("Explosive growth")
+        return "Explosive growth"
     elif discriminant < 0:
-        print(
-            "Roots are complex with modulus less than one; \
-therefore damped oscillations"
-        )
+        return "Damped oscillations"
     else:
-        print(
-            "Roots are real and absolute values are less than one; \
-therefore get smooth convergence to a steady state"
-        )
+        return "Steady state convergence"
+
+def analyze_roots(α, β, verbose=True):
+    """
+    Unified function to calculate roots and analyze their properties.
+    """
+    ρ1 = α + β
+    ρ2 = -β
+    
+    # Compute characteristic polynomial roots
+    roots = np.roots([1, -ρ1, -ρ2])
+    
+    # Classify solution type
+    solution_type = categorize_solution(ρ1, ρ2)
+    
+    # Determine root properties
+    is_complex = all(isinstance(root, complex) for root in roots)
+    is_stable = all(abs(root) < 1 for root in roots)
+    
+    if verbose:
+        print(f"ρ1 = {ρ1:.2f}, ρ2 = {ρ2:.2f}")
+        print(f"Roots: {[f'{root:.2f}' for root in roots]}")
+        print(f"Root type: {'Complex' if is_complex else 'Real'}")
+        print(f"Stability: {'Stable' if is_stable else 'Unstable'}")
+        print(f"Solution type: {solution_type}")
+    
+    return {
+        'roots': roots,
+        'rho1': ρ1,
+        'rho2': ρ2,
+        'is_complex': is_complex,
+        'is_stable': is_stable,
+        'solution_type': solution_type
+    }
 ```
 
-To test the categorize_solution function,
+We also write a unified simulation function that can handle both 
+non-stochastic and stochastic versions of the model.
+
+It allows for government spending paths of a few simple forms which
+we specify via a dictionary `g_params`
 
 ```{code-cell} ipython3
-categorize_solution(1.3, -0.4)
+def simulate_samuelson(
+    y_0, y_1, α, β, γ=10, n=100, σ=0, g_params=None, seed=0
+):
+    """
+    Unified simulation function for Samuelson model.
+    
+    Parameters:
+    g_params: dict with keys 'g', 'g_t', 'duration' for government spending
+    seed: random seed for reproducible results
+    """
+    analysis = analyze_roots(α, β, verbose=False)
+    ρ1, ρ2 = analysis['rho1'], analysis['rho2']
+    
+    # Initialize time series
+    y_t = [y_0, y_1]
+    
+    # Generate shocks if stochastic
+    if σ > 0:
+        np.random.seed(seed)
+        ϵ = np.random.normal(0, 1, n)
+    
+    # Simulate forward
+    for t in range(2, n):
+
+        # Determine government spending
+        g = 0
+        if g_params:
+            g_val, g_t_val = g_params.get('g', 0), g_params.get('g_t', 0)
+            duration = g_params.get('duration', None)
+            if duration == 'permanent' and t >= g_t_val:
+                g = g_val
+            elif duration == 'one-off' and t == g_t_val:
+                g = g_val
+            elif duration is None:
+                g = g_val
+        
+        # Calculate next value
+        y_next = ρ1 * y_t[t-1] + ρ2 * y_t[t-2] + γ + g
+        if σ > 0:
+            y_next += σ * ϵ[t]
+        
+        y_t.append(y_next)
+    
+    return y_t, analysis
+```
+
+We will use this function to run simulations of the model.
+
+But before doing that, let's test the analysis function
+
+```{code-cell} ipython3
+analysis = analyze_roots(α=1.3, β=0.4)
 ```
 
 ### Function for plotting paths
@@ -570,9 +652,8 @@ def plot_y(function=None):
 
     plt.subplots(figsize=(10, 6))
     plt.plot(function)
-    plt.xlabel("Time $t$")
-    plt.ylabel("$Y_t$", rotation=0)
-    plt.grid()
+    plt.xlabel("$t$")
+    plt.ylabel("$Y_t$")
     plt.show()
 ```
 
@@ -587,56 +668,34 @@ The function also plots a $Y_t$ starting from initial conditions
 that we set
 
 ```{code-cell} ipython3
-# This is a 'manual' method
-
-
 def y_nonstochastic(y_0=100, y_1=80, α=0.92, β=0.5, γ=10, n=80):
-    """Takes values of parameters and computes the roots of characteristic
-    polynomial. It tells whether they are real or complex and whether they
-    are less than unity in absolute value.It also computes a simulation of
-    length n starting from the two given initial conditions for national
-    income
+    """
+    This function calculates the roots of the characteristic polynomial
+    by hand and returns a path of y_t starting from initial conditions
     """
 
-    roots = []
-
-    ρ1 = α + β
-    ρ2 = -β
-
-    print(f"ρ_1 is {ρ1:.2f}")
-    print(f"ρ_2 is {ρ2:.2f}")
-
-    discriminant = ρ1**2 + 4 * ρ2
-
-    if discriminant == 0:
-        roots.append(-ρ1 / 2)
+    y_series, analysis = simulate_samuelson(y_0, y_1, α, β, γ, n, 0, None, 42)
+    
+    print(f"ρ_1 is {analysis['rho1']:.2f}")
+    print(f"ρ_2 is {analysis['rho2']:.2f}")
+    
+    roots = analysis['roots']
+    if len(roots) == 1:
         print("Single real root: ")
-        print("".join(f"{r:.2f}" for r in roots))
-    elif discriminant > 0:
-        roots.append((-ρ1 + sqrt(discriminant).real) / 2)
-        roots.append((-ρ1 - sqrt(discriminant).real) / 2)
-        print("Two real roots: ")
-        print(" ".join(f"{r:.2f}" for r in roots))
-    else:
-        roots.append((-ρ1 + sqrt(discriminant)) / 2)
-        roots.append((-ρ1 - sqrt(discriminant)) / 2)
+        print(f"{roots[0]:.2f}")
+    elif analysis['is_complex']:
         print("Two complex roots: ")
         print(" ".join(f"{r.real:.2f}{r.imag:+.2f}j" for r in roots))
-
-    if all(abs(root) < 1 for root in roots):
+    else:
+        print("Two real roots: ")
+        print(" ".join(f"{r:.2f}" for r in roots))
+    
+    if analysis['is_stable']:
         print("Absolute values of roots are less than one")
     else:
         print("Absolute values of roots are not less than one")
-
-    def transition(x, t):
-        return ρ1 * x[t - 1] + ρ2 * x[t - 2] + γ
-
-    y_t = [y_0, y_1]
-
-    for t in range(2, n):
-        y_t.append(transition(y_t, t))
-
-    return y_t
+    
+    return y_series
 
 
 plot_y(y_nonstochastic())
@@ -663,39 +722,46 @@ def f(r, ϕ):
     and creates ρ1 and ρ2 of characteristic polynomial for which
     r exp(j ϕ) and r exp(- j ϕ) are complex roots.
 
-    Returns the multiplier coefficient $\alpha$ and the accelerator coefficient $\beta$
+    Returns the multiplier coefficient $\alpha$
+    and the accelerator coefficient $\beta$
     that verifies those roots.
     """
-    g1 = cmath.rect(r, ϕ)  # Generate two complex roots
+    # Create complex conjugate pair from polar coordinates
+    g1 = cmath.rect(r, ϕ)
     g2 = cmath.rect(r, -ϕ)
-    ρ1 = g1 + g2  # Implied ρ1, ρ2
+
+    # Calculate corresponding ρ1, ρ2 parameters
+    ρ1 = g1 + g2
     ρ2 = -g1 * g2
-    β = -ρ2  # Reverse-engineer a and b that validate these
+
+    # Derive α and β coefficients from ρ parameters
+    β = -ρ2
     α = ρ1 - β
     return ρ1, ρ2, α, β
 ```
 
-Now let's use the function in an example. Here are the example parameters:
+Now let's use the function in an example. 
+
+Here are the example parameters
 
 ```{code-cell} ipython3
 r = 0.95
-period = 10  # Length of cycle in units of time
+
+# Cycle period in time units
+period = 10
 ϕ = 2 * math.pi / period
 
-## Apply the function
+# Apply the reverse-engineering function
 ρ1, ρ2, α, β = f(r, ϕ)
 
 print(f"α, β = {α:.2f}, {β:.2f}")
 print(f"ρ1, ρ2 = {ρ1:.2f}, {ρ2:.2f}")
 ```
 
+The real parts of the roots are
+
 ```{code-cell} ipython3
-## Print the real components of ρ1 and ρ2
-
-ρ1 = ρ1.real
-ρ2 = ρ2.real
-
-print(f"ρ1 = {ρ1:.2f}, ρ2 = {ρ2:.2f}")
+print(f"ρ1 = {ρ1.real:.2f}, ρ2 = {ρ2.real:.2f}")
 ```
 
 ### Root finding using numpy
@@ -711,56 +777,26 @@ p2 = cmath.polar(r2)
 
 print(f"r, ϕ = {r:.2f}, {ϕ:.2f}")
 print(f"p1, p2 = ({p1[0]:.2f}, {p1[1]:.2f}), ({p2[0]:.2f}, {p2[1]:.2f})")
-# print(f"g1, g2 = {g1:.2f}, {g2:.2f}")
 
 print(f"α, β = {α:.2f}, {β:.2f}")
 print(f"ρ1, ρ2 = {ρ1:.2f}, {ρ2:.2f}")
 ```
 
 ```{code-cell} ipython3
-##=== This method uses numpy to calculate roots ===#
-
-
 def y_nonstochastic(y_0=100, y_1=80, α=0.9, β=0.8, γ=10, n=80):
-    """Rather than computing the roots of the characteristic
-    polynomial by hand as we did earlier, this function
-    enlists numpy to do the work for us
+    """
+    This function enlists numpy to calculate the roots of the characteristic
+    polynomial.
     """
 
-    # Useful constants
-    ρ1 = α + β
-    ρ2 = -β
-
-    categorize_solution(ρ1, ρ2)
-
-    # Find roots of polynomial
-    roots = np.roots([1, -ρ1, -ρ2])
-    print(f"Roots are {roots}")
-
-    # Check if real or complex
-    if all(isinstance(root, complex) for root in roots):
-        print("Roots are complex")
-    else:
-        print("Roots are real")
-
-    # Check if roots are less than one
-    if all(abs(root) < 1 for root in roots):
-        print("Roots are less than one")
-    else:
-        print("Roots are not less than one")
-
-    # Define transition equation
-    def transition(x, t):
-        return ρ1 * x[t - 1] + ρ2 * x[t - 2] + γ
-
-    # Set initial conditions
-    y_t = [y_0, y_1]
-
-    # Generate y_t series
-    for t in range(2, n):
-        y_t.append(transition(y_t, t))
-
-    return y_t
+    y_series, analysis = simulate_samuelson(y_0, y_1, α, β, γ, n, 0, None, 42)
+    
+    print(f"Solution type: {analysis['solution_type']}")
+    print(f"Roots are {analysis['roots']}")
+    print(f"Root type: {'Complex' if analysis['is_complex'] else 'Real'}")
+    print(f"Stability: {'Stable' if analysis['is_stable'] else 'Unstable'}")
+    
+    return y_series
 
 
 plot_y(y_nonstochastic())
@@ -779,14 +815,14 @@ r = 1  # Generates undamped, nonexplosive cycles
 period = 10  # Length of cycle in units of time
 ϕ = 2 * math.pi / period
 
-## Apply the reverse-engineering function f
+# Apply the reverse-engineering function f
 ρ1, ρ2, α, β = f(r, ϕ)
 
-# Drop the imaginary part so that it is a valid input into y_nonstochastic
+# Extract real parts for numerical computation
 α = α.real
 β = β.real
 
-print(f"a, b = {α:.2f}, {β:.2f}")
+print(f"α, β = {α:.2f}, {β:.2f}")
 
 ytemp = y_nonstochastic(α=α, β=β, y_0=20, y_1=30)
 plot_y(ytemp)
@@ -823,55 +859,27 @@ demand
 
 ```{code-cell} ipython3
 def y_stochastic(y_0=0, y_1=0, α=0.8, β=0.2, γ=10, n=100, σ=5):
-    """This function takes parameters of a stochastic version of
-    the model and proceeds to analyze the roots of the characteristic
-    polynomial and also generate a simulation.
+    """
+    This function takes parameters of a stochastic version of
+    the model, analyzes the roots of the characteristic
+    polynomial and generates a simulation.
     """
 
-    # Useful constants
-    ρ1 = α + β
-    ρ2 = -β
-
-    # Categorize solution
-    categorize_solution(ρ1, ρ2)
-
-    # Find roots of polynomial
-    roots = np.roots([1, -ρ1, -ρ2])
-    print(f"Roots are {[f'{root:.2f}' for root in roots]}")
-
-    # Check if real or complex
-    if all(isinstance(root, complex) for root in roots):
-        print("Roots are complex")
-    else:
-        print("Roots are real")
-
-    # Check if roots are less than one
-    if all(abs(root) < 1 for root in roots):
-        print("Roots are less than one")
-    else:
-        print("Roots are not less than one")
-
-    # Generate shocks
-    ϵ = np.random.normal(0, 1, n)
-
-    # Define transition equation
-    def transition(x, t):
-        return ρ1 * x[t - 1] + ρ2 * x[t - 2] + γ + σ * ϵ[t]
-
-    # Set initial conditions
-    y_t = [y_0, y_1]
-
-    # Generate y_t series
-    for t in range(2, n):
-        y_t.append(transition(y_t, t))
-
-    return y_t
+    y_series, analysis = simulate_samuelson(y_0, y_1, α, β, γ, n, σ, None, 42)
+    
+    print(f"Solution type: {analysis['solution_type']}")
+    print(f"Roots are {[f'{root:.2f}' for root in analysis['roots']]}")
+    print(f"Root type: {'Complex' if analysis['is_complex'] else 'Real'}")
+    print(f"Stability: {'Stable' if analysis['is_stable'] else 'Unstable'}")
+    
+    return y_series
 
 
 plot_y(y_stochastic())
 ```
 
-Let's do a simulation in which there are shocks and the characteristic polynomial has complex roots
+Let's do a simulation in which there are shocks and the characteristic
+polynomial has complex roots
 
 ```{code-cell} ipython3
 r = 0.97
@@ -882,11 +890,11 @@ period = 10  # Length of cycle in units of time
 # Apply the reverse-engineering function f
 ρ1, ρ2, α, β = f(r, ϕ)
 
-# Drop the imaginary part so that it is a valid input into y_nonstochastic
+# Extract real parts for numerical computation
 α = α.real
 β = β.real
 
-print(f"a, b = {α:.2f}, {β:.2f}")
+print(f"α, β = {α:.2f}, {β:.2f}")
 plot_y(y_stochastic(y_0=40, y_1=42, α=α, β=β, σ=2, n=100))
 ```
 
@@ -897,78 +905,27 @@ in government expenditures
 
 ```{code-cell} ipython3
 def y_stochastic_g(
-    y_0=20, y_1=20, α=0.8, β=0.2, γ=10, n=100, σ=2, g=0, g_t=0, duration="permanent"
+    y_0=20, y_1=20, α=0.8, β=0.2, γ=10,
+    n=100, σ=2, g=0, g_t=0, duration="permanent"
 ):
-    """This program computes a response to a permanent increase
+    """
+    This program computes a response to a permanent increase
     in government expenditures that occurs at time 20
     """
 
-    # Useful constants
-    ρ1 = α + β
-    ρ2 = -β
-
-    # Categorize solution
-    categorize_solution(ρ1, ρ2)
-
-    # Find roots of polynomial
-    roots = np.roots([1, -ρ1, -ρ2])
-    print(roots)
-
-    # Check if real or complex
-    if all(isinstance(root, complex) for root in roots):
-        print("Roots are complex")
-    else:
-        print("Roots are real")
-
-    # Check if roots are less than one
-    if all(abs(root) < 1 for root in roots):
-        print("Roots are less than one")
-    else:
-        print("Roots are not less than one")
-
-    # Generate shocks
-    ϵ = np.random.normal(0, 1, n)
-
-    def transition(x, t, g):
-
-        # Non-stochastic - separated to avoid generating random series
-        # when not needed
-        if σ == 0:
-            return ρ1 * x[t - 1] + ρ2 * x[t - 2] + γ + g
-
-        # Stochastic
-        else:
-            ϵ = np.random.normal(0, 1, n)
-            return ρ1 * x[t - 1] + ρ2 * x[t - 2] + γ + g + σ * ϵ[t]
-
-    # Create list and set initial conditions
-    y_t = [y_0, y_1]
-
-    # Generate y_t series
-    for t in range(2, n):
-
-        # No government spending
-        if g == 0:
-            y_t.append(transition(y_t, t))
-
-        # Government spending (no shock)
-        elif g != 0 and duration == None:
-            y_t.append(transition(y_t, t))
-
-        # Permanent government spending shock
-        elif duration == "permanent":
-            if t < g_t:
-                y_t.append(transition(y_t, t, g=0))
-            else:
-                y_t.append(transition(y_t, t, g=g))
-
-        # One-off government spending shock
-        elif duration == "one-off":
-            if t == g_t:
-                y_t.append(transition(y_t, t, g=g))
-            else:
-                y_t.append(transition(y_t, t, g=0))
-    return y_t
+    g_params = (
+        {'g': g, 'g_t': g_t, 'duration': duration} if g != 0 else None
+    )
+    y_series, analysis = simulate_samuelson(
+        y_0, y_1, α, β, γ, n, σ, g_params, 42
+    )
+    
+    print(f"Solution type: {analysis['solution_type']}")
+    print(f"Roots: {analysis['roots']}")
+    print(f"Root type: {'Complex' if analysis['is_complex'] else 'Real'}")
+    print(f"Stability: {'Stable' if analysis['is_stable'] else 'Unstable'}")
+    
+    return y_series
 ```
 
 A permanent government spending shock can be simulated as follows
@@ -992,15 +949,18 @@ for the Samuelson model
 
 ```{code-cell} ipython3
 class Samuelson:
-    """This class represents the Samuelson model, otherwise known as the
-    multiple-accelerator model. The model combines the Keynesian multiplier
+    """
+    This class represents the Samuelson model, otherwise known as the
+    multiplier-accelerator model. 
+    The model combines the Keynesian multiplier
     with the accelerator theory of investment.
 
-    The path of output is governed by a linear second-order difference equation
+    The path of output is governed by a linear 
+    second-order difference equation
 
     .. math::
 
-        Y_t =  $\alpha$ (1 + $\beta$) Y_{t-1} - $\alpha$ $\beta$ Y_{t-2}
+        Y_t = \alpha (1 + \beta) Y_{t-1} - \alpha \beta Y_{t-2}
 
     Parameters
     ----------
@@ -1029,82 +989,38 @@ class Samuelson:
     """
 
     def __init__(
-        self, y_0=100, y_1=50, α=1.3, β=0.2, γ=10, n=100, σ=0, g=0, g_t=0, duration=None
+        self, y_0=100, y_1=50,
+        α=1.3, β=0.2, γ=10, n=100, σ=0, g=0, g_t=0, duration=None
     ):
 
         self.y_0, self.y_1, self.α, self.β = y_0, y_1, α, β
         self.n, self.g, self.g_t, self.duration = n, g, g_t, duration
         self.γ, self.σ = γ, σ
-        self.ρ1 = α + β
-        self.ρ2 = -β
-        self.roots = np.roots([1, -self.ρ1, -self.ρ2])
+        
+        # Use unified analysis function
+        self.analysis = analyze_roots(α, β, verbose=False)
+        self.ρ1, self.ρ2 = self.analysis['rho1'], self.analysis['rho2']
+        self.roots = self.analysis['roots']
 
     def root_type(self):
-        if all(isinstance(root, complex) for root in self.roots):
-            return "Complex conjugate"
-        elif len(self.roots) > 1:
-            return "Double real"
-        else:
-            return "Single real"
+        return "Complex conjugate" if self.analysis['is_complex'] else "Real"
 
     def root_less_than_one(self):
-        if all(abs(root) < 1 for root in self.roots):
-            return True
+        return self.analysis['is_stable']
 
     def solution_type(self):
-        ρ1, ρ2 = self.ρ1, self.ρ2
-        discriminant = ρ1**2 + 4 * ρ2
-        if ρ2 >= 1 + ρ1 or ρ2 <= -1:
-            return "Explosive oscillations"
-        elif ρ1 + ρ2 >= 1:
-            return "Explosive growth"
-        elif discriminant < 0:
-            return "Damped oscillations"
-        else:
-            return "Steady state"
+        return self.analysis['solution_type']
 
-    def _transition(self, x, t, g):
-
-        # Non-stochastic - separated to avoid generating random series
-        # when not needed
-        if self.σ == 0:
-            return self.ρ1 * x[t - 1] + self.ρ2 * x[t - 2] + self.γ + g
-
-        # Stochastic
-        else:
-            ϵ = np.random.normal(0, 1, self.n)
-            return self.ρ1 * x[t - 1] + self.ρ2 * x[t - 2] + self.γ + g + self.σ * ϵ[t]
-
-    def generate_series(self):
-
-        # Create list and set initial conditions
-        y_t = [self.y_0, self.y_1]
-
-        # Generate y_t series
-        for t in range(2, self.n):
-
-            # No government spending
-            if self.g == 0:
-                y_t.append(self._transition(y_t, t))
-
-            # Government spending (no shock)
-            elif self.g != 0 and self.duration == None:
-                y_t.append(self._transition(y_t, t))
-
-            # Permanent government spending shock
-            elif self.duration == "permanent":
-                if t < self.g_t:
-                    y_t.append(self._transition(y_t, t, g=0))
-                else:
-                    y_t.append(self._transition(y_t, t, g=self.g))
-
-            # One-off government spending shock
-            elif self.duration == "one-off":
-                if t == self.g_t:
-                    y_t.append(self._transition(y_t, t, g=self.g))
-                else:
-                    y_t.append(self._transition(y_t, t, g=0))
-        return y_t
+    def generate_series(self, seed=0):
+        g_params = (
+            {'g': self.g, 'g_t': self.g_t, 'duration': self.duration} 
+            if self.g != 0 else None
+        )
+        y_series, _ = simulate_samuelson(
+            self.y_0, self.y_1, self.α, self.β, self.γ, 
+            self.n, self.σ, g_params, seed
+        )
+        return y_series
 
     def summary(self):
         print("Summary\n" + "-" * 50)
@@ -1132,17 +1048,18 @@ class Samuelson:
                 + str(self.g_t)
             )
 
-    def plot(self):
+    def plot(self, seed=0):
         fig, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(self.generate_series())
-        ax.set(xlabel="Iteration", xlim=(0, self.n))
+        ax.plot(self.generate_series(seed))
+        ax.set(xlabel="iteration", xlim=(0, self.n))
         ax.set_ylabel("$Y_t$", rotation=0)
-        ax.grid()
 
-        # Add parameter values to plot
-        paramstr = f"$α={self.α:.2f}$ \n $β={self.β:.2f}$ \n \
-        $\\gamma={self.γ:.2f}$ \n $\\sigma={self.σ:.2f}$ \n \
-        $\\rho_1={self.ρ1:.2f}$ \n $\\rho_2={self.ρ2:.2f}$"
+        # Display model parameters on the plot
+        paramstr = (
+            f"$α={self.α:.2f}$ \n $β={self.β:.2f}$ \n "
+            f"$\\gamma={self.γ:.2f}$ \n $\\sigma={self.σ:.2f}$ \n "
+            f"$\\rho_1={self.ρ1:.2f}$ \n $\\rho_2={self.ρ2:.2f}$"
+        )
         props = dict(fc="white", pad=10, alpha=0.5)
         ax.text(
             0.87,
@@ -1158,30 +1075,38 @@ class Samuelson:
 
     def param_plot(self):
 
-        # Uses the param_plot() function defined earlier (it is then able
-        # to be used standalone or as part of the model)
 
         fig = param_plot()
         ax = fig.gca()
 
-        # Add λ values to legend
+        # Display eigenvalues in the legend
         for i, root in enumerate(self.roots):
             if isinstance(root, complex):
-                # Need to fill operator for positive as string is split apart
-                operator = ["+", ""]
-                label = rf"$\lambda_{i+1} = {sam.roots[i].real:.2f} {operator[i]} {sam.roots[i].imag:.2f}i$"
-            else:
-                label = rf"$\lambda_{i+1} = {sam.roots[i].real:.2f}$"
-            ax.scatter(0, 0, s=0, label=label)  # dummy to add to legend
 
-        # Add ρ pair to plot
+                # Handle sign formatting for complex number display
+                operator = ["+", ""]
+                root_real = self.roots[i].real
+                root_imag = self.roots[i].imag
+                label = (
+                    rf"$\lambda_{i+1} = {root_real:.2f}"
+                    rf"{operator[i]} {root_imag:.2f}i$"
+                )
+            else:
+                label = rf"$\lambda_{i+1} = {self.roots[i].real:.2f}$"
+
+            # Add invisible point for legend entry
+            ax.scatter(
+                0, 0, s=0, label=label
+            )
+
+        # Mark current parameter values on the stability diagram
         ax.scatter(
             self.ρ1,
             self.ρ2,
             s=100,
             c="red",
             marker="+",
-            label=r"$(\ \rho_1, \ \rho_2 \ )$",
+            label=r"$(\rho_1, \rho_2)$",
             zorder=5,
         )
 
@@ -1242,14 +1167,14 @@ n = 100
 A = [[1, 0, 0], [γ + g, ρ1, ρ2], [0, 1, 0]]
 
 G = [
-    [γ + g, ρ1, ρ2],  # this is Y_{t+1}
-    [γ, α, 0],  # this is C_{t+1}
-    [0, β, -β],
-]  # this is I_{t+1}
+    [γ + g, ρ1, ρ2],  # Y_{t+1}
+    [γ, α, 0],        # C_{t+1}
+    [0, β, -β],       # I_{t+1}
+]
 
 μ_0 = [1, 100, 50]
 C = np.zeros((3, 1))
-C[1] = σ  # stochastic
+C[1] = σ  # Shock variance
 
 sam_t = LinearStateSpace(A, C, G, mu_0=μ_0)
 
@@ -1261,9 +1186,8 @@ colors = ["darkblue", "red", "purple"]
 for ax, series, title, color in zip(axes, y, titles, colors):
     ax.plot(series, color=color)
     ax.set(title=title, xlim=(0, n))
-    ax.grid()
 
-axes[-1].set_xlabel("Iteration")
+axes[-1].set_xlabel("iteration")
 
 plt.show()
 ```
@@ -1308,71 +1232,89 @@ class SamuelsonLSS(LinearStateSpace):
         self.y_0, self.y_1, self.g = y_0, y_1, g
         self.γ, self.σ = γ, σ
 
-        # Define intial conditions
-        self.μ_0 = [1, y_0, y_1]
+        # Set initial state vector
+        self.initial_μ = [1, y_0, y_1]
 
         self.ρ1 = α + β
         self.ρ2 = -β
 
-        # Define transition matrix
+        # Construct state transition matrix
         self.A = [[1, 0, 0], [γ + g, self.ρ1, self.ρ2], [0, 1, 0]]
 
-        # Define output matrix
+        # Construct observation matrix
         self.G = [
-            [γ + g, self.ρ1, self.ρ2],  # this is Y_{t+1}
-            [γ, α, 0],  # this is C_{t+1}
-            [0, β, -β],
-        ]  # this is I_{t+1}
+            [γ + g, self.ρ1, self.ρ2],  # Y_{t+1}
+            [γ, α, 0],                  # C_{t+1}
+            [0, β, -β],                 # I_{t+1}
+        ]  
 
         self.C = np.zeros((3, 1))
-        self.C[1] = σ  # stochastic
+        self.C[1] = σ  # Shock variance
 
-        # Initialize LSS with parameters from Samuelson model
-        LinearStateSpace.__init__(self, self.A, self.C, self.G, mu_0=self.μ_0)
+        # Initialize the LinearStateSpace instance
+        LinearStateSpace.__init__(
+            self, self.A, self.C, self.G, mu_0=self.initial_μ
+        )
 
-    def plot_simulation(self, ts_length=100, stationary=True):
+    # Create unicode aliases for mu_0 and Sigma_0 in the parent class
+    @property
+    def μ_0(self):
+        return self.mu_0
+    
+    @μ_0.setter
+    def μ_0(self, value):
+        self.mu_0 = value
+    
+    @property
+    def Σ_0(self):
+        return self.Sigma_0
+    
+    @Σ_0.setter
+    def Σ_0(self, value):
+        self.Sigma_0 = value
 
-        # Temporarily store original parameters
-        temp_mu = self.mu_0
-        temp_Sigma = self.Sigma_0
+    def plot_simulation(self, ts_length=100, stationary=True, seed=0):
 
-        # Set distribution parameters equal to their stationary
-        # values for simulation
+        # Store original distribution parameters
+        temp_μ = self.μ_0
+        temp_Σ = self.Σ_0
+
+        # Use stationary distribution for simulation
         if stationary == True:
             try:
-                self.mu_x, self.mu_y, self.Sigma_x, self.Sigma_y, self.Sigma_yx = (
-                    self.stationary_distributions()
-                )
-                self.mu_0 = self.mu_x
-                self.Sigma_0 = self.Sigma_x
-            # Exception where no convergence achieved when
-            # calculating stationary distributions
+                (self.μ_x, self.μ_y, self.Σ_x, self.Σ_y, self.Σ_yx
+                ) = self.stationary_distributions()
+                self.μ_0 = self.μ_x
+                self.Σ_0 = self.Σ_x
+                
+            # Handle case where stationary distribution doesn't exist
             except ValueError:
                 print("Stationary distribution does not exist")
 
+        np.random.seed(seed)
         x, y = self.simulate(ts_length)
 
         fig, axes = plt.subplots(3, 1, sharex=True, figsize=(12, 8))
-        titles = ["Output ($Y_t$)", "Consumption ($C_t$)", "Investment ($I_t$)"]
+        titles = ["Output ($Y_t$)", 
+                  "Consumption ($C_t$)", 
+                  "Investment ($I_t$)"]
         colors = ["darkblue", "red", "purple"]
         for ax, series, title, color in zip(axes, y, titles, colors):
             ax.plot(series, color=color)
             ax.set(title=title, xlim=(0, n))
-            ax.grid()
 
-        axes[-1].set_xlabel("Iteration")
+        axes[-1].set_xlabel("iteration")
+        plt.show()
 
-        # Reset distribution parameters to their initial values
-        self.mu_0 = temp_mu
-        self.Sigma_0 = temp_Sigma
-
-        return fig
+        # Restore original distribution parameters
+        self.μ_0 = temp_μ
+        self.Σ_0 = temp_Σ
 
     def plot_irf(self, j=5):
 
         x, y = self.impulse_response(j)
 
-        # Reshape into 3 x j matrix for plotting purposes
+        # Reshape impulse responses for plotting
         yimf = np.array(y).flatten().reshape(j + 1, 3).T
 
         fig, axes = plt.subplots(3, 1, sharex=True, figsize=(12, 8))
@@ -1382,12 +1324,10 @@ class SamuelsonLSS(LinearStateSpace):
             ax.plot(series, color=color)
             ax.set(xlim=(0, j))
             ax.set_ylabel(label, rotation=0, fontsize=14, labelpad=10)
-            ax.grid()
 
-        axes[0].set_title("Impulse Response Functions")
-        axes[-1].set_xlabel("Iteration")
-
-        return fig
+        axes[0].set_title("Impulse response functions")
+        axes[-1].set_xlabel("iteration")
+        plt.show()
 
     def multipliers(self, j=5):
         x, y = self.impulse_response(j)
