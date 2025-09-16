@@ -335,7 +335,7 @@ def compute_unemployment_duration(model,
         return jnp.interp(z, z_grid, f_star)
 
     @jax.jit
-    def draw_tau(key, t_max=10_000):
+    def draw_τ(key, t_max=10_000):
         def cond_fun(state):
             z, t, unemployed, key = state
             return jnp.logical_and(unemployed, t < t_max)
@@ -373,7 +373,7 @@ def compute_unemployment_duration(model,
     keys = jr.split(key, num_reps)
     
     # Vectorize over simulations
-    τ_vals = jax.vmap(draw_tau)(keys)
+    τ_vals = jax.vmap(draw_τ)(keys)
     
     return jnp.mean(τ_vals)
 ```
