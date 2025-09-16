@@ -238,9 +238,6 @@ jobs:
               echo "🎯 Preview page: ${deploy_url}/${{ github.event.inputs.preview_page }}"
             fi
           fi
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       - name: Post PR Comment with Preview Links
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v8
