@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
 kernelspec:
   name: python3
   display_name: Python 3 (ipykernel)
@@ -37,18 +37,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-```{admonition} GPU acceleration
-:class: warning
-
-This lecture uses JAX for hardware acceleration and automatic differentiation.
-
-For faster execution, consider running this lecture on a GPU.
-
-You can access free GPUs on [Google Colab](https://colab.research.google.com/) by selecting "Runtime → Change runtime type → Hardware accelerator → GPU" from the menu.
-
-To install JAX with GPU support locally, please consult the [JAX installation guide](https://jax.readthedocs.io/en/latest/installation.html).
-```
-
 ## Overview
 
 Next, we study a computational problem concerning career and job choices.
@@ -63,7 +51,7 @@ We begin with some imports:
 import matplotlib.pyplot as plt
 import jax.numpy as jnp
 import jax
-import quantecon as qe
+import jax.random as jr 
 from typing import NamedTuple
 from quantecon.distributions import BetaBinomial
 from scipy.special import binom, beta
@@ -391,7 +379,7 @@ In particular, modulo randomness, reproduce the following figure (where the hori
 
 ```{hint}
 :class: dropdown
-To generate the draws from the distributions $F$ and $G$, use `quantecon.random.draw()`.
+To generate the draws from the distributions $F$ and $G$, use `quantecon.jr.draw()`.
 ```
 
 ```{exercise-end}
@@ -410,41 +398,51 @@ $(\theta_i, \epsilon_j)$ = either 1, 2 or 3; meaning 'stay put',
 
 ```{code-cell} ipython3
 model = create_career_worker_problem()
-F = np.array(jnp.cumsum(model.F_probs))
-G = np.array(jnp.cumsum(model.G_probs))
+F = jnp.cumsum(jnp.asarray(model.F_probs))
+G = jnp.cumsum(jnp.asarray(model.G_probs))
 v_star = solve_model(model)
-greedy_star = get_greedy_policy(model, v_star)
+greedy_star = jnp.asarray(get_greedy_policy(model, v_star))
 
-def gen_path(optimal_policy, F, G, model, t=20):
-    i = j = 0
-    θ_index = []
-    ε_index = []
-    for t in range(t):
-        if optimal_policy[i, j] == 1:       # Stay put
+def draw_from_cdf(key, cdf):
+    u = jr.uniform(key)
+    return jnp.searchsorted(cdf, u, side="left")
+
+def gen_path(optimal_policy, F, G, model, t=20, key=None):
+    if key is None:
+        key = jr.PRNGKey(0)
+    i = 0
+    j = 0
+    theta_idx = []
+    eps_idx = []
+    for _ in range(t):
+        a = optimal_policy[i, j]
+        key, k1, k2 = jr.split(key, 3)
+        if a == 1:                # Stay put
             pass
+        elif a == 2:              # New job
+            j = draw_from_cdf(k1, G)
+        else:                     # New life
+            i = draw_from_cdf(k1, F)
+            j = draw_from_cdf(k2, G)
+        theta_idx.append(i)
+        eps_idx.append(j)
 
-        elif optimal_policy[i, j] == 2:     # New job
-            j = qe.random.draw(G)
+    theta_idx = jnp.array(theta_idx, dtype=jnp.int32)
+    eps_idx   = jnp.array(eps_idx,   dtype=jnp.int32)
+    return model.θ[theta_idx], model.ε[eps_idx], key
 
-        else:                            # New life
-            i, j = qe.random.draw(F), qe.random.draw(G)
-        θ_index.append(i)
-        ε_index.append(j)
-
-    # Convert lists to JAX arrays for indexing
-    θ_indices = jnp.array(θ_index)
-    ε_indices = jnp.array(ε_index)
-    return model.θ[θ_indices], model.ε[ε_indices]
-
-
+key = jr.PRNGKey(42)
 fig, axes = plt.subplots(2, 1, figsize=(10, 8))
+
 for ax in axes:
-    θ_path, ε_path = gen_path(greedy_star, F, G, model)
+    key, subkey = jr.split(key)
+    θ_path, ε_path, _ = gen_path(greedy_star, F, G, model, key=subkey)
     ax.plot(ε_path, label='ε')
     ax.plot(θ_path, label='θ')
     ax.set_ylim(0, 6)
+    ax.legend(loc='upper right')
 
-plt.legend()
+plt.tight_layout()
 plt.show()
 ```
 
@@ -486,28 +484,33 @@ The median for the original parameterization can be computed as follows
 
 ```{code-cell} ipython3
 model = create_career_worker_problem()
-F = np.array(jnp.cumsum(model.F_probs))
-G = np.array(jnp.cumsum(model.G_probs))
+F = jnp.cumsum(jnp.asarray(model.F_probs))
+G = jnp.cumsum(jnp.asarray(model.G_probs))
 v_star = solve_model(model)
-greedy_star = get_greedy_policy(model, v_star)
+greedy_star = jnp.asarray(get_greedy_policy(model, v_star))
 
-def passage_time(optimal_policy, F, G):
-    t = 0
-    i = j = 0
-    while True:
-        if optimal_policy[i, j] == 1:    # Stay put
-            return t
-        elif optimal_policy[i, j] == 2:  # New job
-            j = qe.random.draw(G)
-        else:                            # New life
-            i, j  = qe.random.draw(F), qe.random.draw(G)
-        t += 1
+def passage_time(optimal_policy, F, G, key):
+    def cond(state):
+        i, j, t, key = state
+        return optimal_policy[i, j] != 1
 
-def median_time(optimal_policy, F, G, M=25000):
-    samples = []
-    for i in range(M):
-        samples.append(passage_time(optimal_policy, F, G))
-    return jnp.median(jnp.array(samples))
+    def body(state):
+        i, j, t, key = state
+        a = optimal_policy[i, j]
+        key, k1, k2 = jr.split(key, 3)
+        new_j = draw_from_cdf(k1, G)
+        new_i = draw_from_cdf(k2, F)
+        i = jnp.where(a == 3, new_i, i)
+        j = jnp.where((a == 2) | (a == 3), new_j, j)
+        return i, j, t + 1, key
+
+    i, j, t, _ = jax.lax.while_loop(cond, body, (0, 0, 0, key))
+    return t
+
+def median_time(optimal_policy, F, G, M=25000, seed=0):
+    keys = jr.split(jr.PRNGKey(seed), M)
+    times = jax.vmap(lambda k: passage_time(optimal_policy, F, G, k))(keys)
+    return jnp.median(times)
 
 median_time(greedy_star, F, G)
 ```
