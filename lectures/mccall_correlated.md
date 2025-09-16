@@ -240,7 +240,7 @@ Here's a function to compute an approximation to the fixed point of $Q$.
 @jax.jit  
 def compute_fixed_point(model, tol=1e-4, max_iter=1000):
     """
-    Compute an approximation to the fixed point of Q using JAX while_loop.
+    Compute an approximation to the fixed point of Q.
     """
     
     def cond_fun(state):
@@ -303,7 +303,8 @@ for c in c_vals:
     model = create_job_search_model(c=c)
     f_star = compute_fixed_point(model)
     res_wage_function = jnp.exp(f_star * (1 - model.β))
-    ax.plot(model.z_grid, res_wage_function, label=rf"$\bar w$ at $c = {c}$")
+    ax.plot(model.z_grid, res_wage_function, 
+                label=rf"$\bar w$ at $c = {c}$")
 
 ax.set(xlabel="$z$", ylabel="wage")
 ax.legend()
@@ -323,7 +324,7 @@ For simplicity we’ll fix the initial state at $z_t = 0$.
 def compute_unemployment_duration(model, 
                         key=jr.PRNGKey(1234), num_reps=100_000):
     """
-    Compute expected unemployment duration using JAX.
+    Compute expected unemployment duration.
     """
     f_star = compute_fixed_point(model)
     μ, s, d = model.μ, model.s, model.d
