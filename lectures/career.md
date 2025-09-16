@@ -410,8 +410,8 @@ $(\theta_i, \epsilon_j)$ = either 1, 2 or 3; meaning 'stay put',
 
 ```{code-cell} ipython3
 model = create_career_worker_problem()
-F = jnp.cumsum(model.F_probs)
-G = jnp.cumsum(model.G_probs)
+F = np.array(jnp.cumsum(model.F_probs))
+G = np.array(jnp.cumsum(model.G_probs))
 v_star = solve_model(model)
 greedy_star = get_greedy_policy(model, v_star)
 
@@ -486,8 +486,8 @@ The median for the original parameterization can be computed as follows
 
 ```{code-cell} ipython3
 model = create_career_worker_problem()
-F = jnp.cumsum(model.F_probs)
-G = jnp.cumsum(model.G_probs)
+F = np.array(jnp.cumsum(model.F_probs))
+G = np.array(jnp.cumsum(model.G_probs))
 v_star = solve_model(model)
 greedy_star = get_greedy_policy(model, v_star)
 
