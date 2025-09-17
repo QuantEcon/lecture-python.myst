@@ -742,7 +742,7 @@ vectorized_single_draw = vmap(
 ```{code-cell} ipython3
 @jit
 def generate_draws(
-    key=random.PRNGKey(123),
+    seed=0,
     μ_a=-0.5,
     σ_a=0.1,
     μ_b=0.0,
@@ -760,6 +760,7 @@ def generate_draws(
         Array of M draws
     """
     # Create M different random keys for parallel execution
+    key = random.PRNGKey(seed)
     keys = random.split(key, M)
 
     draws = vectorized_single_draw(
