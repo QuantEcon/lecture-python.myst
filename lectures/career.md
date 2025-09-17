@@ -4,11 +4,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.16.6
 kernelspec:
-  name: python3
   display_name: Python 3 (ipykernel)
   language: python
+  name: python3
 ---
 
 (career)=
@@ -34,7 +34,15 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon
+!pip install --upgrade quantecon
+```
+
+We also need to install JAX to run this lecture
+
+```{code-cell} ipython3
+:tags: [skip-execution]
+
+!pip install -U jax
 ```
 
 ## Overview
@@ -51,7 +59,7 @@ We begin with some imports:
 import matplotlib.pyplot as plt
 import jax.numpy as jnp
 import jax
-import jax.random as jr 
+import jax.random as jr
 from typing import NamedTuple
 from quantecon.distributions import BetaBinomial
 from scipy.special import binom, beta
@@ -59,7 +67,7 @@ from mpl_toolkits.mplot3d.axes3d import Axes3D
 from matplotlib import cm
 ```
 
-### Model Features
+### Model features
 
 * Career and job within career both chosen to maximize expected discounted wage flow.
 * Infinite horizon dynamic programming with two state variables.
@@ -71,7 +79,7 @@ In what follows we distinguish between a career and a job, where
 * a *career* is understood to be a general field encompassing many possible jobs, and
 * a *job*  is understood to be a position with a particular firm
 
-For workers, wages can be decomposed into the contribution of job and career
+For workers, wages can be decomposed into the contributions of job and career
 
 * $w_t = \theta_t + \epsilon_t$, where
   * $\theta_t$ is the contribution of career at time $t$
@@ -134,14 +142,14 @@ Evidently $I$, $II$ and $III$ correspond to "stay put", "new job" and "new life"
 As in {cite}`Ljungqvist2012`, section 6.5, we will focus on a discrete version of the model, parameterized as follows:
 
 * both $\theta$ and $\epsilon$ take values in the set
-  `np.linspace(0, B, grid_size)` --- an even grid of points between
+  `jnp.linspace(0, B, grid_size)` --- an even grid of points between
   $0$ and $B$ inclusive
 * `grid_size = 50`
 * `B = 5`
 * `β = 0.95`
 
 The distributions $F$ and $G$ are discrete distributions
-generating draws from the grid points `np.linspace(0, B, grid_size)`.
+generating draws from the grid points `jnp.linspace(0, B, grid_size)`.
 
 A very useful family of discrete distributions is the Beta-binomial family,
 with probability mass function
@@ -229,6 +237,21 @@ $I$, $II$ and $III$ are as given in {eq}`eyes`.
 
 ```{code-cell} ipython3
 @jax.jit
+def Q(θ_grid, ε_grid, β, v, F_probs, G_probs, F_mean, G_mean):
+    # Option 1: Stay put
+    v1 = θ_grid + ε_grid + β * v
+
+    # Option 2: New job (keep θ, new ε)
+    ev_new_job = jnp.dot(v, G_probs)  # Expected value for each θ
+    v2 = θ_grid + G_mean + β * ev_new_job[:, jnp.newaxis]
+
+    # Option 3: New life (new θ and new ε)
+    ev_new_life = jnp.dot(F_probs, jnp.dot(v, G_probs))
+    v3 = jnp.full_like(v, G_mean + F_mean + β * ev_new_life)
+
+    return v1, v2, v3
+
+@jax.jit
 def bellman_operator(model, v):
     """
     The Bellman operator for the career choice model.
@@ -237,22 +260,10 @@ def bellman_operator(model, v):
     F_probs, G_probs = model.F_probs, model.G_probs
     F_mean, G_mean = model.F_mean, model.G_mean
 
-    # Vectorized computation
-    # Broadcasting θ and ε to create all combinations
-    θ_grid, ε_grid = jnp.meshgrid(θ, ε, indexing='ij')
-
-    # Option 1: Stay put
-    v1 = θ_grid + ε_grid + β * v
-
-    # Option 2: New job (keep θ, new ε)
-    # For each θ[i], compute expected value over new ε
-    ev_new_job = jnp.dot(v, G_probs)  # Expected value for each θ
-    v2 = θ_grid + G_mean + β * ev_new_job[:, jnp.newaxis]
-
-    # Option 3: New life (new θ and new ε)
-    # Expected value over both θ and ε
-    ev_new_life = jnp.dot(F_probs, jnp.dot(v, G_probs))
-    v3 = jnp.full_like(v, G_mean + F_mean + β * ev_new_life)
+    v1, v2, v3 = Q(
+        *jnp.meshgrid(θ, ε, indexing='ij'),
+        β, v, F_probs, G_probs, F_mean, G_mean
+    )
 
     return jnp.maximum(jnp.maximum(v1, v2), v3)
 
@@ -266,20 +277,10 @@ def get_greedy_policy(model, v):
     F_probs, G_probs = model.F_probs, model.G_probs
     F_mean, G_mean = model.F_mean, model.G_mean
 
-    # Vectorized computation
-    # Broadcasting θ and ε to create all combinations
-    θ_grid, ε_grid = jnp.meshgrid(θ, ε, indexing='ij')
-
-    # Option 1: Stay put
-    v1 = θ_grid + ε_grid + β * v
-
-    # Option 2: New job (keep θ, new ε)
-    ev_new_job = jnp.dot(v, G_probs)  # Expected value for each θ
-    v2 = θ_grid + G_mean + β * ev_new_job[:, jnp.newaxis]
-
-    # Option 3: New life (new θ and new ε)
-    ev_new_life = jnp.dot(F_probs, jnp.dot(v, G_probs))
-    v3 = jnp.full_like(v, G_mean + F_mean + β * ev_new_life)
+    v1, v2, v3 = Q(
+        *jnp.meshgrid(θ, ε, indexing='ij'),
+        β, v, F_probs, G_probs, F_mean, G_mean
+    )
 
     # Stack the value arrays and find argmax along first axis
     values = jnp.stack([v1, v2, v3], axis=0)
