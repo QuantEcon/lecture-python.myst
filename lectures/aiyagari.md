@@ -26,12 +26,10 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's included in base Anaconda, we need to install JAX.
+In addition to what's included in base Anaconda, we need to install JAX
 
 ```{code-cell} ipython3
-:tags: [skip-execution]
-
-!pip install --upgrade jax
+!pip install quantecon jax
 ```
 
 ## Overview
@@ -58,7 +56,7 @@ The Aiyagari model has been used to investigate many topics, including
 We use the following imports:
 
 ```{code-cell} ipython3
-import time
+import quantecon as qe
 import matplotlib.pyplot as plt
 import numpy as np
 import jax
@@ -450,7 +448,9 @@ print(f"Interest rate: {r}, Wage: {w}")
 ```
 
 ```{code-cell} ipython3
-%time σ_star = howard_policy_iteration(household, prices, verbose=True)
+with qe.Timer():
+    σ_star = howard_policy_iteration(
+        household, prices, verbose=True).block_until_ready()
 ```
 
 The next plot shows asset accumulation policies at different values of the exogenous state
@@ -624,10 +624,10 @@ def compute_equilibrium(firm, household,
 firm = create_firm()
 household = create_household()
 print("\nComputing equilibrium capital stock")
-start = time.time()
-K_star, n = compute_equilibrium(firm, household, K0=6.0)
-elapsed = time.time() - start
-print(f"Computed equilibrium {K_star:.5} in {n} iterations and {elapsed} seconds")
+with qe.Timer():
+    K_star, n = compute_equilibrium(
+        firm, household, K0=6.0).block_until_ready()
+print(f"Computed equilibrium {K_star:.5} in {n} iterations")
 ```
 
 This convergence is not very fast, given how quickly we can solve the household problem.
@@ -715,10 +715,10 @@ def compute_equilibrium_bisect(firm, household, a=1.0, b=20.0):
 firm = create_firm()
 household = create_household()
 print("\nComputing equilibrium capital stock using bisection")
-start = time.time()
-K_star = compute_equilibrium_bisect(firm, household)
-elapsed = time.time() - start
-print(f"Computed equilibrium capital stock {K_star:.5} in {elapsed} seconds")
+with qe.Timer():
+    K_star = compute_equilibrium_bisect(
+        firm, household).block_until_ready()
+print(f"Computed equilibrium capital stock {K_star:.5}")
 ```
 
 The bisection method is faster than the damped iteration scheme.
