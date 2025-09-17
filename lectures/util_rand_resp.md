@@ -588,7 +588,7 @@ However, under a utilitarian approach there should exist other survey designs th
 
 In particular, respondents will choose to answer truthfully if the relative advantage from lying is eliminated.
 
-We can use Python to show that the optimal model design corresponds to point $Q$ in {numref}`fig-optimal-design`:
+We can use Python to show that the optimal model design
 
 ```{code-cell} ipython3
 def f(x):
@@ -650,6 +650,8 @@ plt.text(optimal_x + 0.02, optimal_y + 0.005, f"Optimal Design\n({optimal_x:.3f}
 plt.legend(loc='upper right', fontsize='medium')
 plt.show()
 ```
+
+Here the optimal model design corresponds to point $Q$ in {numref}`fig-optimal-design`.
 
 ### Method of {cite:t}`greenberg1977respondent`
 
