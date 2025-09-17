@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -47,10 +49,20 @@ While our Markov environment and many of the concepts we consider are related to
 Let's start with some imports
 
 ```{code-cell} ipython3
+import jupyter_black
+jupyter_black.load(line_length=79)
+```
+
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import jit, float64, prange
-from numba.experimental import jitclass
+from typing import NamedTuple
+import jax
+import jax.numpy as jnp
+from jax import random
+
+# from numba import jit, float64, prange
+# from numba.experimental import jitclass
 ```
 
 ## Sample Paths
@@ -83,64 +95,91 @@ and standard normal.
 
 Here's a class that stores parameters and generates time paths for inventory.
 
-```{code-cell} python3
-firm_data = [
-   ('s', float64),          # restock trigger level
-   ('S', float64),          # capacity
-   ('mu', float64),         # shock location parameter
-   ('sigma', float64)       # shock scale parameter
-]
+```{code-cell} ipython3
+class Firm(NamedTuple):
+    s: int  # restock trigger level
+    S: int  # capacity
+    μ: float  # shock location parameter
+    σ: float  # shock scale parameter
+```
 
+```{code-cell} ipython3
+@jax.jit
+def sim_inventory_path(firm, x_init, random_keys):
+    """
+    Simulate inventory path.
 
-@jitclass(firm_data)
-class Firm:
+    Args:
+        firm: Firm object
+        x_init: Initial inventory level
+        sim_length: Length of simulation
+        key: JAX random key
 
-    def __init__(self, s=10, S=100, mu=1.0, sigma=0.5):
+    Returns:
+        Array of inventory levels over time
+    """
 
-        self.s, self.S, self.mu, self.sigma = s, S, mu, sigma
+    def update_step(carry, key_t):
+        """
+        Single update step
 
-    def update(self, x):
-        "Update the state from t to t+1 given current state x."
+        Args:
+            carry: Current inventory level (x)
+            key_t: Random key for this time step
 
-        Z = np.random.randn()
-        D = np.exp(self.mu + self.sigma * Z)
-        if x <= self.s:
-            return max(self.S - D, 0)
-        else:
-            return max(x - D, 0)
+        Returns:
+            (new_x, new_x): Updated inventory level (returned twice for scan)
+        """
+        x = carry
 
-    def sim_inventory_path(self, x_init, sim_length):
+        # Generate random demand
+        Z = random.normal(key_t)
+        D = jnp.exp(firm.μ + firm.σ * Z)
 
-        X = np.empty(sim_length)
-        X[0] = x_init
+        # Update inventory based on (s, S) policy
+        new_x = jax.lax.cond(
+            x <= firm.s,
+            lambda: jnp.maximum(
+                firm.S - D, 0.0
+            ),  # Reorder to S, then subtract demand
+            lambda: jnp.maximum(x - D, 0.0),  # Just subtract demand
+        )
 
-        for t in range(sim_length-1):
-            X[t+1] = self.update(X[t])
-        return X
+        return new_x, new_x
+
+    # Use scan to iterate through time steps
+    final_x, X_path = jax.lax.scan(update_step, x_init, random_keys)
+
+    # Prepend initial value
+    X = jnp.concatenate([jnp.array([x_init]), X_path])
+
+    return X
+```
+
+```{code-cell} ipython3
+firm = Firm(s=10, S=100, μ=1.0, σ=0.5)
+```
+
+```{code-cell} ipython3
+sim_length = 100
+x_init = 50
+keys = random.split(random.PRNGKey(21), sim_length - 1)
+X = sim_inventory_path(firm, x_init, keys)
 ```
 
 Let's run a first simulation, of a single path:
 
 ```{code-cell} ipython3
-firm = Firm()
-
 s, S = firm.s, firm.S
-sim_length = 100
-x_init = 50
-
-X = firm.sim_inventory_path(x_init, sim_length)
 
 fig, ax = plt.subplots()
-bbox = (0., 1.02, 1., .102)
-legend_args = {'ncol': 3,
-               'bbox_to_anchor': bbox,
-               'loc': 3,
-               'mode': 'expand'}
+bbox = (0.0, 1.02, 1.0, 0.102)
+legend_args = {"ncol": 3, "bbox_to_anchor": bbox, "loc": 3, "mode": "expand"}
 
 ax.plot(X, label="inventory")
-ax.plot(np.full(sim_length, s), 'k--', label="$s$")
-ax.plot(np.full(sim_length, S), 'k-', label="$S$")
-ax.set_ylim(0, S+10)
+ax.plot(jnp.full(sim_length, s), "k--", label="$s$")
+ax.plot(jnp.full(sim_length, S), "k-", label="$S$")
+ax.set_ylim(0, S + 10)
 ax.set_xlabel("time")
 ax.legend(**legend_args)
 
@@ -151,17 +190,18 @@ Now let's simulate multiple paths in order to build a more complete picture of
 the probabilities of different outcomes:
 
 ```{code-cell} ipython3
-sim_length=200
+sim_length = 200
 fig, ax = plt.subplots()
 
-ax.plot(np.full(sim_length, s), 'k--', label="$s$")
-ax.plot(np.full(sim_length, S), 'k-', label="$S$")
-ax.set_ylim(0, S+10)
+ax.plot(jnp.full(sim_length, s), "k--", label="$s$")
+ax.plot(jnp.full(sim_length, S), "k-", label="$S$")
+ax.set_ylim(0, S + 10)
 ax.legend(**legend_args)
 
 for i in range(400):
-    X = firm.sim_inventory_path(x_init, sim_length)
-    ax.plot(X, 'b', alpha=0.2, lw=0.5)
+    keys = random.split(random.PRNGKey(i), sim_length - 1)
+    X = sim_inventory_path(firm, x_init, keys)
+    ax.plot(X, "b", alpha=0.2, lw=0.5)
 
 plt.show()
 ```
@@ -192,27 +232,30 @@ for ax in axes:
 ax = axes[0]
 
 ax.set_ylim(ymin, ymax)
-ax.set_ylabel('$X_t$', fontsize=16)
+ax.set_ylabel("$X_t$", fontsize=16)
 ax.vlines((T,), -1.5, 1.5)
 
 ax.set_xticks((T,))
-ax.set_xticklabels((r'$T$',))
+ax.set_xticklabels((r"$T$",))
 
-sample = np.empty(M)
+sample = []
 for m in range(M):
-    X = firm.sim_inventory_path(x_init, 2 * T)
-    ax.plot(X, 'b-', lw=1, alpha=0.5)
-    ax.plot((T,), (X[T+1],), 'ko', alpha=0.5)
-    sample[m] = X[T+1]
+    keys = random.split(random.PRNGKey(m), sim_length - 1)
+    X = sim_inventory_path(firm, x_init, keys)
+    ax.plot(X, "b-", lw=1, alpha=0.5)
+    ax.plot((T,), (X[T + 1],), "ko", alpha=0.5)
+    sample.append(X[T + 1])
 
 axes[1].set_ylim(ymin, ymax)
 
-axes[1].hist(sample,
-             bins=16,
-             density=True,
-             orientation='horizontal',
-             histtype='bar',
-             alpha=0.5)
+axes[1].hist(
+    sample,
+    bins=16,
+    density=True,
+    orientation="horizontal",
+    histtype="bar",
+    alpha=0.5,
+)
 
 plt.show()
 ```
@@ -225,16 +268,13 @@ M = 50_000
 
 fig, ax = plt.subplots()
 
-sample = np.empty(M)
+sample = []
 for m in range(M):
-    X = firm.sim_inventory_path(x_init, T+1)
-    sample[m] = X[T]
+    keys = random.split(random.PRNGKey(m), T)
+    X = sim_inventory_path(firm, x_init, keys)
+    sample.append(X[T])
 
-ax.hist(sample,
-         bins=36,
-         density=True,
-         histtype='bar',
-         alpha=0.75)
+ax.hist(sample, bins=36, density=True, histtype="bar", alpha=0.75)
 
 plt.show()
 ```
@@ -255,14 +295,15 @@ We will use a kernel density estimator from [scikit-learn](https://scikit-learn.
 ```{code-cell} ipython3
 from sklearn.neighbors import KernelDensity
 
-def plot_kde(sample, ax, label=''):
 
+def plot_kde(sample, ax, label=""):
+    sample = jnp.array(sample)
     xmin, xmax = 0.9 * min(sample), 1.1 * max(sample)
-    xgrid = np.linspace(xmin, xmax, 200)
-    kde = KernelDensity(kernel='gaussian').fit(sample[:, None])
+    xgrid = jnp.linspace(xmin, xmax, 200)
+    kde = KernelDensity(kernel="gaussian").fit(sample[:, None])
     log_dens = kde.score_samples(xgrid[:, None])
 
-    ax.plot(xgrid, np.exp(log_dens), label=label)
+    ax.plot(xgrid, jnp.exp(log_dens), label=label)
 ```
 
 ```{code-cell} ipython3
@@ -313,25 +354,85 @@ code efficiently.
 This meant writing a specialized function rather than using the class above.
 
 ```{code-cell} ipython3
-s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
+# s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
 
-@jit(parallel=True)
-def shift_firms_forward(current_inventory_levels, num_periods):
+# @jit(parallel=True)
+# def shift_firms_forward(current_inventory_levels, num_periods):
 
+#     num_firms = len(current_inventory_levels)
+#     new_inventory_levels = np.empty(num_firms)
+
+#     for f in prange(num_firms):
+#         x = current_inventory_levels[f]
+#         for t in range(num_periods):
+#             Z = np.random.randn()
+#             D = np.exp(mu + sigma * Z)
+#             if x <= s:
+#                 x = max(S - D, 0)
+#             else:
+#                 x = max(x - D, 0)
+#         new_inventory_levels[f] = x
+
+#     return new_inventory_levels
+```
+
+```{code-cell} ipython3
+def shift_firms_forward(firm: Firm, current_inventory_levels, num_periods: int, key: random.PRNGKey):
+    """
+    Shift multiple firms forward by num_periods using JAX vectorization.
+    
+    Args:
+        firm: Firm dataclass with parameters s, S, mu, sigma
+        current_inventory_levels: Array of current inventory levels for each firm
+        num_periods: Number of periods to simulate forward
+        key: JAX random key
+        
+    Returns:
+        Array of new inventory levels after num_periods
+    """
+    
+    def simulate_single_firm(x_init, firm_key):
+        """
+        Simulate a single firm forward by num_periods.
+        
+        Args:
+            x_init: Initial inventory level for this firm
+            firm_key: Random key for this firm
+            
+        Returns:
+            Final inventory level after num_periods
+        """
+        
+        def update_step(x, period_key):
+            """Single period update step."""
+            Z = random.normal(period_key)
+            D = jnp.exp(firm.mu + firm.sigma * Z)
+            
+            new_x = jax.lax.cond(
+                x <= firm.s,
+                lambda: jnp.maximum(firm.S - D, 0.0),
+                lambda: jnp.maximum(x - D, 0.0)
+            )
+            return new_x, None  # Return None for scan accumulator (we don't need it)
+        
+        # Generate keys for each period
+        period_keys = random.split(firm_key, num_periods)
+        
+        # Simulate forward num_periods
+        final_x, _ = jax.lax.scan(update_step, x_init, period_keys)
+        
+        return final_x
+    
+    # Generate independent random keys for each firm
     num_firms = len(current_inventory_levels)
-    new_inventory_levels = np.empty(num_firms)
-
-    for f in prange(num_firms):
-        x = current_inventory_levels[f]
-        for t in range(num_periods):
-            Z = np.random.randn()
-            D = np.exp(mu + sigma * Z)
-            if x <= s:
-                x = max(S - D, 0)
-            else:
-                x = max(x - D, 0)
-        new_inventory_levels[f] = x
-
+    firm_keys = random.split(key, num_firms)
+    
+    # Vectorize over all firms using vmap
+    vectorized_simulate = jax.vmap(simulate_single_firm, in_axes=(0, 0))
+    
+    # Run simulation for all firms in parallel
+    new_inventory_levels = vectorized_simulate(current_inventory_levels, firm_keys)
+    
     return new_inventory_levels
 ```
 
@@ -395,6 +496,7 @@ specialized function rather than using the class above.
 We will also use parallelization across firms.
 
 ```{code-cell} ipython3
+# TODO: Update this to JAX
 @jit(parallel=True)
 def compute_freq(sim_length=50, x_init=70, num_firms=1_000_000):
 
