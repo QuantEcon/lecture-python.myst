@@ -36,7 +36,7 @@ import matplotlib.pyplot as plt
 from math import gamma
 ```
 
-## Mathematical Expectation of Likelihood Ratio
+## Mathematical expectation of likelihood ratio
 
 In {doc}`this lecture <likelihood_ratio_process>`, we studied a likelihood ratio $\ell \left(\omega_t\right)$
 
@@ -57,11 +57,10 @@ $$
 Our goal is to approximate the mathematical expectation $E \left[ L\left(\omega^t\right) \right]$ well.
 
 In {doc}`this lecture <likelihood_ratio_process>`, we showed that  $E \left[ L\left(\omega^t\right) \right]$  equals $1$ for all $t$.
+
 We want to check out how well this holds if we replace $E$ by with  sample averages from simulations.
 
-This turns out to be easier said than done because for
-Beta distributions assumed above, $L\left(\omega^t\right)$ has
-a very skewed distribution with a very long tail as $t \rightarrow \infty$.
+This turns out to be easier said than done because for Beta distributions assumed above, $L\left(\omega^t\right)$ has a very skewed distribution with a very long tail as $t \rightarrow \infty$.
 
 This property makes it difficult  efficiently and accurately to estimate the mean by standard Monte Carlo simulation methods.
 
@@ -156,7 +155,7 @@ $$
 E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\omega = \int_\Omega \ell(\omega) \frac{g(\omega)}{h(\omega)} h(\omega) d\omega = E^h\left[\ell\left(\omega\right) \frac{g(\omega)}{h(\omega)}\right]
 $$
 
-## Selecting a Sampling Distribution
+## Selecting a sampling distribution
 
 Since we must use an $h$ that has larger mass in parts of the distribution to which  $g$ puts low mass, we use $h=Beta(0.5, 0.5)$ as our importance distribution.
 
@@ -178,7 +177,7 @@ plt.ylim([0., 3.])
 plt.show()
 ```
 
-## Approximating a Cumulative Likelihood Ratio
+## Approximating a cumulative likelihood ratio
 
 We now study how to use importance sampling to approximate
 ${E} \left[L(\omega^t)\right] = \left[\prod_{i=1}^T \ell \left(\omega_i\right)\right]$.
@@ -233,7 +232,7 @@ For our importance sampling estimate, we set $q = h$.
 estimate(g_a, g_b, h_a, h_b, T=1, N=10000)
 ```
 
-Evidently, even at T=1, our importance sampling  estimate is closer to $1$ than is the Monte Carlo estimate.
+Evidently, even at $T=1$, our importance sampling  estimate is closer to $1$ than is the Monte Carlo estimate.
 
 Bigger differences arise when computing expectations over longer sequences, $E_0\left[L\left(\omega^t\right)\right]$.
 
@@ -248,7 +247,17 @@ estimate(g_a, g_b, g_a, g_b, T=10, N=10000)
 estimate(g_a, g_b, h_a, h_b, T=10, N=10000)
 ```
 
-## Distribution of  Sample Mean
+The Monte Carlo method underestimates because the likelihood ratio $L(\omega^T) = \prod_{t=1}^T \frac{f(\omega_t)}{g(\omega_t)}$ has a highly skewed distribution under $g$.
+
+Most samples from $g$ produce small likelihood ratios, while the true mean requires occasional very large values that are rarely sampled.
+
+In our case, since $g(\omega) \to 0$ as $\omega \to 0$ while $f(\omega)$ remains constant, the Monte Carlo procedure undersamples precisely where the likelihood ratio $\frac{f(\omega)}{g(\omega)}$ is largest.
+
+As $T$ increases, this problem worsens exponentially, making standard Monte Carlo increasingly unreliable.
+
+Importance sampling with $q = h$ fixes this by sampling more uniformly from regions important to both $f$ and $g$.
+
+## Distribution of sample mean
 
 We next study the bias and efficiency of the Monte Carlo and importance sampling approaches.
 
@@ -323,7 +332,7 @@ The simulation exercises above show that the importance sampling estimates are u
 
 Evidently, the bias increases with increases in $T$.
 
-## Choosing a  Sampling Distribution
+## Choosing a sampling distribution
 
 +++
 
@@ -331,9 +340,7 @@ Above, we arbitraily chose $h = Beta(0.5,0.5)$ as the importance distribution.
 
 Is there an optimal importance distribution?
 
-In our particular case, since we  know in advance that $E_0 \left[ L\left(\omega^t\right) \right] = 1$.
-
-We can use that knowledge to our advantage.
+In our particular case, since we  know in advance that $E_0 \left[ L\left(\omega^t\right) \right] = 1$, we can use that knowledge to our advantage.
 
 Thus, suppose that we simply use  $h = f$.
 
@@ -364,10 +371,10 @@ b_list = [0.5, 1.2, 5.]
 ```{code-cell} ipython3
 w_range = np.linspace(1e-5, 1-1e-5, 1000)
 
-plt.plot(w_range, g(w_range), label=f'p=Beta({g_a}, {g_b})')
-plt.plot(w_range, p(w_range, a_list[0], b_list[0]), label=f'g=Beta({a_list[0]}, {b_list[0]})')
-plt.plot(w_range, p(w_range, a_list[1], b_list[1]), label=f'g=Beta({a_list[1]}, {b_list[1]})')
-plt.plot(w_range, p(w_range, a_list[2], b_list[2]), label=f'g=Beta({a_list[2]}, {b_list[2]})')
+plt.plot(w_range, g(w_range), label=f'g=Beta({g_a}, {g_b})')
+plt.plot(w_range, p(w_range, a_list[0], b_list[0]), label=f'$h_1$=Beta({a_list[0]},{b_list[0]})')
+plt.plot(w_range, p(w_range, a_list[1], b_list[1]), label=f'$h_2$=Beta({a_list[1]},{b_list[1]})')
+plt.plot(w_range, p(w_range, a_list[2], b_list[2]), label=f'$h_3$=Beta({a_list[2]},{b_list[2]})')
 plt.title('real data generating process $g$ and importance distribution $h$')
 plt.legend()
 plt.ylim([0., 3.])
