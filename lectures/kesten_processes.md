@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.16.6
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -39,7 +39,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 Later in the exercise, we will use JAX to optimize our code
 
 ```{code-cell} ipython3
-:tags: [no-execute]
+:tags: [skip-execution] 
 
 !pip install --upgrade jax
 ```
