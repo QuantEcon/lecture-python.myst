@@ -20,17 +20,11 @@ import numpy as np
 ## Overview
 
 
-{doc}`This QuantEcon lecture <rand_resp>` describes randomized response surveys in the tradition of Warner {cite}`warner1965randomized` that are designed  to protect  respondents' privacy.
+{doc}`This QuantEcon lecture <rand_resp>` describes randomized response surveys in the tradition of Warner {cite}`warner1965randomized` that are designed to protect respondents' privacy.
 
+Lars Ljungqvist {cite}`ljungqvist1993unified` analyzed how a respondent's decision about whether to answer truthfully depends on **expected utility**.
 
-Lars Ljungqvist {cite}`ljungqvist1993unified`  analyzed how a respondent's decision about whether to answer truthfully depends on  **expected utility**.
-
-
-
-The lecture tells how Ljungqvist  used his  framework to shed light on alternative randomized response survey techniques
-proposed, for example, by {cite}`lanke1975choice`, {cite}`lanke1976degree`, {cite}`leysieffer1976respondent`,
-{cite}`anderson1976estimation`, {cite}`fligner1977comparison`, {cite}`greenberg1977respondent`,
-{cite}`greenberg1969unrelated`.
+The lecture tells how Ljungqvist used his framework to shed light on alternative randomized response survey techniques proposed, for example, by {cite}`lanke1975choice`, {cite}`lanke1976degree`, {cite}`leysieffer1976respondent`, {cite}`anderson1976estimation`, {cite}`fligner1977comparison`, {cite}`greenberg1977respondent`, {cite}`greenberg1969unrelated`.
 
 
 
@@ -57,9 +51,9 @@ $$ (eq:util-rand-one)
 
 ## Zoo of Concepts
 
-At this point we describe some concepts proposed by various researchers
+At this point we describe some concepts proposed by various researchers.
 
-###  Leysieffer and Warner(1976)
+### {cite:t}`leysieffer1976randomized`
 
 The response $r$ is regarded as jeopardizing with respect to $A$ or $A^{'}$ if
 
@@ -77,7 +71,9 @@ $$
 \frac{\text{Pr}(A|r)}{\text{Pr}(A^{'}|r)}\times \frac{(1-\pi_A)}{\pi_A} = \frac{\text{Pr}(r|A)}{\text{Pr}(r|A^{'})}
 $$ (eq:util-rand-three)
 
-If this expression is greater (less) than unity, it follows that $r$ is jeopardizing with respect to $A$($A^{'}$). Then, the natural measure of jeopardy will be:
+If this expression is greater (less) than unity, it follows that $r$ is jeopardizing with respect to $A$($A^{'}$). 
+
+Then, the natural measure of jeopardy will be:
 
 $$
 \begin{aligned}
@@ -116,21 +112,21 @@ $$
 \text{Pr}(A|\text{no})=0
 $$
 
-###  Lanke(1976)
+### {cite:t}`lanke1976degree`
 
-Lanke (1975) {cite}`lanke1975choice` argued that "it is membership in Group A that people may want to hide, not membership in the complementary Group A'."
+{cite:t}`lanke1975choice` argued that "it is membership in Group A that people may want to hide, not membership in the complementary Group A'."
 
-For that reason, Lanke (1976) {cite}`lanke1976degree` argued  that an appropriate measure of protection is to minimize
+For that reason, {cite:t}`lanke1976degree` argued  that an appropriate measure of protection is to minimize
 
 $$
 \max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
 $$ (eq:util-rand-five-a)
 
-Holding this measure constant, he explained under what conditions the smallest variance of the estimate was achieved with the unrelated question model or Warner's (1965) original model.
+Holding this measure constant, he explained under what conditions the smallest variance of the estimate was achieved with the unrelated question model or {cite:t}`warner1965randomized` original model.
 
-### 2.3 Fligner, Policello, and Singh
+### {cite:t}`fligner1977comparison`
 
-Fligner, Policello, and Singh reached similar conclusion as Lanke (1976). {cite}`fligner1977comparison`
+{cite:t}`fligner1977comparison` reached similar conclusion as {cite:t}`lanke1976degree`.
 
 They measured "private protection" as
 
@@ -139,11 +135,9 @@ $$
 $$ (eq:util-rand-six)
 
 
-### 2.4 Greenberg, Kuebler, Abernathy, and Horvitz (1977)
+### {cite:t}`greenberg1977respondent`
 
-{cite}`greenberg1977respondent`
-
-Greenberg, Kuebler, Abernathy, and Horvitz (1977) stressed the importance of examining the risk to respondents who do not belong to $A$ as well as the risk to those who do belong to the sensitive group.
+{cite:t}`greenberg1977respondent` stressed the importance of examining the risk to respondents who do not belong to $A$ as well as the risk to those who do belong to the sensitive group.
 
 They defined the hazard for an individual in $A$ as the probability that he or she is perceived as belonging to $A$:
 
@@ -157,7 +151,7 @@ $$
 \text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A^{'}) \times \text{Pr}(A|\text{no})
 $$ (eq:util-rand-seven-b)
 
-Greenberg et al. (1977) also considered an alternative related measure of hazard that "is likely to be closer to the actual concern felt by a respondent."
+{cite:t}`greenberg1977respondent` also considered an alternative related measure of hazard that "is likely to be closer to the actual concern felt by a respondent."
 
 The "limited hazard" for an individual in $A$ and $A^{'}$ is
 
@@ -194,9 +188,9 @@ Given $r_i$ and complete privacy,  the individual's utility  is higher if $r_i$ 
 
 In terms of a respondent's expected utility as a function of $ \text{Pr}(A|r_i)$ and $r_i$
 
-- The higher is $ \text{Pr}(A|r_i)$, the lower isindividual $i$'s  expected utility.
+- The higher is $ \text{Pr}(A|r_i)$, the lower is individual $i$'s expected utility.
 
-- expected utility is higher if $r_i$ represents a truthful answer rather than a lie
+- Expected utility is higher if $r_i$ represents a truthful answer rather than a lie.
 
 Define:
 
@@ -243,7 +237,7 @@ Constraint {eq}`eq:util-rand-ten-b` holds for sure.
 
 Consequently,  constraint {eq}`eq:util-rand-ten-a` becomes the single necessary condition for individual $i$  always to answer truthfully.
 
-At equality, constraint $(10.\text{a})$ determines   conditional probabilities that make the individual indifferent between telling the truth and lying when the correct answer is "yes":
+At equality, constraint {eq}`eq:util-rand-ten-a` determines   conditional probabilities that make the individual indifferent between telling the truth and lying when the correct answer is "yes":
 
 $$
 U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)= U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
@@ -267,13 +261,22 @@ The source of the positive relationship is:
 
 We can deduce two things about the truth border:
 
-- The truth border divides the space of conditional probabilities into two subsets: "truth telling" and "lying". Thus, sufficient  privacy elicits a truthful answer, whereas insufficient privacy results in a lie. The truth border depends on a respondent's utility function.
+- The truth border divides the space of conditional probabilities into two subsets: "truth telling" and "lying". 
+
+  - Thus, sufficient  privacy elicits a truthful answer, whereas insufficient privacy results in a lie. The truth border depends on a respondent's utility function.
 
 - Assumptions in {eq}`eq:util-rand-nine-a` and {eq}`eq:util-rand-nine-a` are  sufficient only to guarantee a positive slope of the truth border. The truth border can have either a concave or a convex shape.
 
 We can draw some truth borders with the following Python code:
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Three types of truth border
+    name: fig-truth-borders
+---
 x1 = np.arange(0, 1, 0.001)
 y1 = x1 - 0.4
 x2 = np.arange(0.4**2, 1, 0.001)
@@ -297,11 +300,8 @@ plt.text(0.42, 0.3, "Truth Telling", fontdict={'size':28, 'style':'italic'})
 plt.text(0.8, 0.1, "Lying", fontdict={'size':28, 'style':'italic'})
 
 plt.legend(loc=0, fontsize='large')
-plt.title('Figure 1.1')
 plt.show()
 ```
-
-Figure 1.1 three types of truth border.
 
 
 Without loss of generality, we consider the truth border:
@@ -310,9 +310,16 @@ $$
 U_i(\text{Pr}(A|r_i),\phi_i)=-\text{Pr}(A|r_i)+f(\phi_i)
 $$
 
-and plot the "truth telling" and "lying area" of individual $i$ in Figure 1.2:
+and plot the "truth telling" and "lying area" of individual $i$ in {numref}`fig-truth-lying-areas`:
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Truth telling and lying areas of individual $i$
+    name: fig-truth-lying-areas
+---
 x1 = np.arange(0, 1, 0.001)
 y1 = x1 - 0.4
 z1 = x1
@@ -331,7 +338,6 @@ plt.text(0.5, 0.4, "Truth Telling", fontdict={'size':28, 'style':'italic'})
 plt.text(0.8, 0.2, "Lying", fontdict={'size':28, 'style':'italic'})
 
 plt.legend(loc=0, fontsize='large')
-plt.title('Figure 1.2')
 plt.show()
 ```
 
@@ -376,31 +382,31 @@ From expression {eq}`eq:util-rand-thirteen`, {eq}`eq:util-rand-fourteen-a` and {
 
 We use Python code to draw iso-variance curves.
 
-The pairs of conditional probabilities can be attained using Warner's (1965) model.
+The pairs of conditional probabilities can be attained using {cite:t}`warner1965randomized` model.
 
 Note that:
 
 - Any point on the iso-variance curves can be attained with the unrelated question model as long as the statistician can completely control the model design.
 
-- Warner's (1965) original randomized response model is less  flexible than the unrelated question model.
+- {cite:t}`warner1965randomized` original randomized response model is less  flexible than the unrelated question model.
 
 ```{code-cell} ipython3
 class Iso_Variance:
-    def __init__(self, pi, n):
-        self.pi = pi
+    def __init__(self, π, n):
+        self.π = π
         self.n = n
 
     def plotting_iso_variance_curve(self):
-        pi = self.pi
+        π = self.π
         n = self.n
 
         nv = np.array([0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7])
         x = np.arange(0, 1, 0.001)
-        x0 = np.arange(pi, 1, 0.001)
-        x2 = np.arange(0, pi, 0.001)
-        y1 = [pi for i in x0]
-        y2 = [pi for i in x2]
-        y0 = 1 / (1 + (x0 * (1 - pi)**2) / ((1 - x0) * pi**2))
+        x0 = np.arange(π, 1, 0.001)
+        x2 = np.arange(0, π, 0.001)
+        y1 = [π for i in x0]
+        y2 = [π for i in x2]
+        y0 = 1 / (1 + (x0 * (1 - π)**2) / ((1 - x0) * π**2))
 
         plt.figure(figsize=(12, 10))
         plt.plot(x0, y0, 'm-', label='Warner')
@@ -408,7 +414,7 @@ class Iso_Variance:
         plt.plot(x0, y1,'c:', linewidth=2)
         plt.plot(y2, x2, 'c:', linewidth=2)
         for i in range(len(nv)):
-            y = pi - (pi**2 * (1 - pi)**2) / (n * (nv[i] / n) * (x0 - pi + 1e-8))
+            y = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
             plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
         plt.xlim([0, 1])
         plt.ylim([0, 0.5])
@@ -417,7 +423,6 @@ class Iso_Variance:
         plt.legend(loc=0, fontsize='large')
         plt.text(0.32, 0.28, "High Var", fontdict={'size':15, 'style':'italic'})
         plt.text(0.91, 0.01, "Low Var", fontdict={'size':15, 'style':'italic'})
-        plt.title('Figure 2')
         plt.show()
 ```
 
@@ -433,10 +438,17 @@ Suppose the parameters of the iso-variance model follow those in Ljungqvist {cit
 
 - $n=100$
 
-Then we can plot the iso-variance curve in Figure 2:
+Then we can plot the iso-variance curve in {numref}`fig-iso-variance`:
 
 ```{code-cell} ipython3
-var = Iso_Variance(pi=0.3, n=100)
+---
+mystnb:
+  figure:
+    caption: |
+      Iso-variance curves for randomized response survey design
+    name: fig-iso-variance
+---
+var = Iso_Variance(π=0.3, n=100)
 var.plotting_iso_variance_curve()
 ```
 
@@ -476,29 +488,37 @@ We can use a utilitarian approach to analyze some  privacy measures.
 
 We'll enlist Python Code to help us.
 
-###  Analysis of Method of Lanke's (1976)
+### Analysis of Method of {cite:t}`lanke1976degree`
 
-Lanke (1976) recommends a privacy  protection criterion that minimizes:
+{cite:t}`lanke1976degree` recommends a privacy  protection criterion that minimizes:
 
 $$
 \max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
 $$ (eq:util-rand-five-b)
 
-Following Lanke's suggestion, the statistician should find the highest possible $\text{ Pr}(A|\text{yes})$ consistent with truth telling while $\text{ Pr}(A|\text{no})$ is fixed at 0. The variance is then minimized at point $X$ in Figure 3.
+Following Lanke's suggestion, the statistician should find the highest possible $\text{ Pr}(A|\text{yes})$ consistent with truth telling while $\text{ Pr}(A|\text{no})$ is fixed at 0. The variance is then minimized at point $X$ in {numref}`fig-lanke-analysis`.
 
-However, we can see that in Figure 3, point $Z$ offers a smaller variance that still allows cooperation of the respondents, and it is achievable following our discussion of the truth border in Part III:
+However, we can see that in {numref}`fig-lanke-analysis`, point $Z$ offers a smaller variance that still allows cooperation of the respondents, and it is achievable following our discussion of the truth border in Part III:
 
 ```{code-cell} ipython3
-pi = 0.3
+---
+mystnb:
+  figure:
+    caption: |
+      Analysis of Lanke's privacy protection method showing optimal design points
+    name: fig-lanke-analysis
+---
+
+π = 0.3
 n = 100
 nv = [0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7]
 x = np.arange(0, 1, 0.001)
 y = x - 0.4
 z = x
-x0 = np.arange(pi, 1, 0.001)
-x2 = np.arange(0, pi, 0.001)
-y1 = [pi for i in x0]
-y2 = [pi for i in x2]
+x0 = np.arange(π, 1, 0.001)
+x2 = np.arange(0, π, 0.001)
+y1 = [π for i in x0]
+y2 = [π for i in x2]
 
 plt.figure(figsize=(12, 10))
 plt.plot(x, x, 'c:', linewidth=2)
@@ -508,7 +528,7 @@ plt.plot(x, y, 'r-', label='Truth Border')
 plt.fill_between(x, y, z, facecolor='blue', alpha=0.05, label='truth telling')
 plt.fill_between(x, 0, y, facecolor='green', alpha=0.05, label='lying')
 for i in range(len(nv)):
-    y = pi - (pi**2 * (1 - pi)**2) / (n * (nv[i] / n) * (x0 - pi + 1e-8))
+    y = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
     plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
 
 
@@ -522,13 +542,12 @@ plt.text(0.45, 0.35, "Truth Telling", fontdict={'size':28, 'style':'italic'})
 plt.text(0.85, 0.35, "Lying",fontdict = {'size':28, 'style':'italic'})
 plt.text(0.515, 0.095, "Optimal Design", fontdict={'size':16,'color':'b'})
 plt.legend(loc=0, fontsize='large')
-plt.title('Figure 3')
 plt.show()
 ```
 
-### Method of Leysieffer and Warner (1976)
+### Method of {cite:t}`leysieffer1976randomized`
 
-Leysieffer and Warner (1976) recommend a  two-dimensional measure of jeopardy that reduces to a single dimension when there is no jeopardy in a 'no' answer", which means that
+{cite:t}`leysieffer1976randomized` recommend a two-dimensional measure of jeopardy that reduces to a single dimension when there is no jeopardy in a 'no' answer, which means that
 
 
 $$
@@ -543,11 +562,11 @@ $$
 
 This is  not an optimal  choice under a utilitarian approach.
 
-### Analysis on the Method of Chaudhuri and Mukerjee's (1988)
+### Analysis on the Method of {cite:t}`chaudhuri1988randomized`
 
-{cite}`Chadhuri_Mukerjee_88`
+{cite}`Chadhuri_Mukerjee_88` argued that the individual may find that since "yes" may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond "no". 
 
-Chaudhuri and Mukerjee (1988) argued that the individual may find that since "yes" may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond "no". In this situation, the truth border is such that individuals choose to lie whenever the truthful answer is "yes" and
+In this situation, the truth border is such that individuals choose to lie whenever the truthful answer is "yes" and
 
 $$
 \text{Pr}(A|\text{no})=0
@@ -569,7 +588,7 @@ However, under a utilitarian approach there should exist other survey designs th
 
 In particular, respondents will choose to answer truthfully if the relative advantage from lying is eliminated.
 
-We can use Python to show that the optimal model design corresponds to point Q in Figure 4:
+We can use Python to show that the optimal model design corresponds to point $Q$ in {numref}`fig-optimal-design`:
 
 ```{code-cell} ipython3
 def f(x):
@@ -580,47 +599,61 @@ def f(x):
 ```
 
 ```{code-cell} ipython3
-pi = 0.3
+---
+mystnb:
+  figure:
+    caption: |
+      Optimal survey design under utilitarian approach showing computed point $Q$
+    name: fig-optimal-design
+---
+
+π = 0.3
 n = 100
+
 nv = [0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7]
 x = np.arange(0, 1, 0.001)
-y = [f(i) for i in x]
+y = [truth_border_function(i, π) for i in x]
 z = x
-x0 = np.arange(pi, 1, 0.001)
-x2 = np.arange(0, pi, 0.001)
-y1 = [pi for i in x0]
-y2 = [pi for i in x2]
-x3 = np.arange(0.16, 1, 0.001)
-y3 = (pow(x3, 0.5) - 0.4)**2
+x0 = np.arange(π, 1, 0.001)
+x2 = np.arange(0, π, 0.001)
+y1 = [π for i in x0]
+y2 = [π for i in x2]
+
+# Calculate truth border more precisely
+threshold = π * (1 - π) / (1 - 2 * π)**2
+x3 = np.arange(threshold, 1, 0.001)
+y3 = [(xi**0.5 - (1 - π)**0.5)**2 for xi in x3]
 
 plt.figure(figsize=(12, 10))
 plt.plot(x, x, 'c:', linewidth=2)
 plt.plot(x0, y1,'c:', linewidth=2)
 plt.plot(y2, x2,'c:', linewidth=2)
-plt.plot(x3, y3,'b-', label='Truth Border')
+plt.plot(x3, y3,'b-', linewidth=2, label='Truth Border')
 plt.fill_between(x, y, z, facecolor='blue', alpha=0.05, label='Truth telling')
-plt.fill_between(x3, 0, y3,facecolor='green', alpha=0.05, label='Lying')
+plt.fill_between(x3, 0, y3, facecolor='green', alpha=0.05, label='Lying')
+
+# Plot iso-variance curves
 for i in range(len(nv)):
-    y = pi - (pi**2 * (1 - pi)**2) / (n * (nv[i] / n) * (x0 - pi + 1e-8))
-    plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
-plt.scatter(0.61, 0.146, c='r', marker='*', label='Z', s=150)
+    y_var = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
+    plt.plot(x0, y_var, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
+
+# Plot the calculated optimal point
+plt.scatter(optimal_x, optimal_y, c='r', marker='*', label='Q (computed)', s=150)
 plt.xlim([0, 1])
 plt.ylim([0, 0.5])
 plt.xlabel('Pr(A|yes)')
 plt.ylabel('Pr(A|no)')
 plt.text(0.45, 0.35, "Truth Telling", fontdict={'size':28, 'style':'italic'})
 plt.text(0.8, 0.1, "Lying", fontdict={'size':28, 'style':'italic'})
-plt.text(0.63, 0.141, "Optimal Design", fontdict={'size':16,'color':'r'})
-plt.legend(loc=0, fontsize='large')
-plt.title('Figure 4')
+plt.text(optimal_x + 0.02, optimal_y + 0.005, f"Optimal Design\n({optimal_x:.3f}, {optimal_y:.3f})", 
+         fontdict={'size':12,'color':'r'})
+plt.legend(loc='upper right', fontsize='medium')
 plt.show()
 ```
 
-### Method of Greenberg et al. (1977)
+### Method of {cite:t}`greenberg1977respondent`
 
- {cite}`greenberg1977respondent`
-
-Greenberg et al. (1977) defined the hazard for an individual in $A$ as the probability that he or she is perceived as belonging to $A$:
+{cite:t}`greenberg1977respondent` defined the hazard for an individual in $A$ as the probability that he or she is perceived as belonging to $A$:
 
 $$
 \text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A)\times \text{Pr}(A|\text{no})
@@ -646,7 +679,7 @@ $$
 \text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
 $$ (eq:util-rand-eight-bb)
 
-According to Greenberg et al. (1977), a respondent commits himself or herself to answer truthfully on the basis of a probability in {eq}`eq:util-rand-seven-aa` or {eq}`eq:util-rand-eight-aa` **before** randomly selecting the question to be answered.
+According to {cite:t}`greenberg1977respondent`, a respondent commits himself or herself to answer truthfully on the basis of a probability in {eq}`eq:util-rand-seven-aa` or {eq}`eq:util-rand-eight-aa` **before** randomly selecting the question to be answered.
 
 Suppose that the appropriate privacy measure is captured by the notion of "limited hazard" in {eq}`eq:util-rand-eight-aa` and {eq}`eq:util-rand-eight-bb`.
 
