@@ -609,45 +609,37 @@ mystnb:
 
 π = 0.3
 n = 100
-
 nv = [0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7]
 x = np.arange(0, 1, 0.001)
-y = [truth_border_function(i, π) for i in x]
+y = x - 0.4
 z = x
 x0 = np.arange(π, 1, 0.001)
 x2 = np.arange(0, π, 0.001)
 y1 = [π for i in x0]
 y2 = [π for i in x2]
 
-# Calculate truth border more precisely
-threshold = π * (1 - π) / (1 - 2 * π)**2
-x3 = np.arange(threshold, 1, 0.001)
-y3 = [(xi**0.5 - (1 - π)**0.5)**2 for xi in x3]
-
 plt.figure(figsize=(12, 10))
 plt.plot(x, x, 'c:', linewidth=2)
-plt.plot(x0, y1,'c:', linewidth=2)
-plt.plot(y2, x2,'c:', linewidth=2)
-plt.plot(x3, y3,'b-', linewidth=2, label='Truth Border')
-plt.fill_between(x, y, z, facecolor='blue', alpha=0.05, label='Truth telling')
-plt.fill_between(x3, 0, y3, facecolor='green', alpha=0.05, label='Lying')
-
-# Plot iso-variance curves
+plt.plot(x0, y1, 'c:', linewidth=2)
+plt.plot(y2, x2, 'c:', linewidth=2)
+plt.plot(x, y, 'r-', label='Truth Border')
+plt.fill_between(x, y, z, facecolor='blue', alpha=0.05, label='truth telling')
+plt.fill_between(x, 0, y, facecolor='green', alpha=0.05, label='lying')
 for i in range(len(nv)):
-    y_var = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
-    plt.plot(x0, y_var, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
+    y = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
+    plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
 
-# Plot the calculated optimal point
-plt.scatter(optimal_x, optimal_y, c='r', marker='*', label='Q (computed)', s=150)
+
+plt.scatter(0.498, 0.1, c='b', marker='*', label='Q', s=150)
+plt.scatter(0.4, 0, c='y', label='X', s=150)
 plt.xlim([0, 1])
 plt.ylim([0, 0.5])
 plt.xlabel('Pr(A|yes)')
 plt.ylabel('Pr(A|no)')
 plt.text(0.45, 0.35, "Truth Telling", fontdict={'size':28, 'style':'italic'})
-plt.text(0.8, 0.1, "Lying", fontdict={'size':28, 'style':'italic'})
-plt.text(optimal_x + 0.02, optimal_y + 0.005, f"Optimal Design\n({optimal_x:.3f}, {optimal_y:.3f})", 
-         fontdict={'size':12,'color':'r'})
-plt.legend(loc='upper right', fontsize='medium')
+plt.text(0.85, 0.35, "Lying",fontdict = {'size':28, 'style':'italic'})
+plt.text(0.515, 0.095, "Optimal Design", fontdict={'size':16,'color':'b'})
+plt.legend(loc=0, fontsize='large')
 plt.show()
 ```
 
