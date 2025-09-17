@@ -50,6 +50,9 @@ import jax.numpy as jnp
 import jax.random as jr
 import scipy.stats as stats
 from typing import NamedTuple
+
+# Set JAX to use CPU
+jax.config.update('jax_platform_name', 'cpu')
 ```
 
 ### Model features
