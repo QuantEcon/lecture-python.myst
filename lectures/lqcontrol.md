@@ -48,7 +48,7 @@ Moreover, while the linear-quadratic structure is restrictive, it is in fact far
 
 These themes appear repeatedly below.
 
-Mathematically, LQ control problems are closely related to {doc}`the Kalman filter <kalman>`
+Mathematically, LQ control problems are closely related to {doc}`<kalman>`
 
 * Recursive formulations of linear-quadratic control problems and Kalman filtering problems both involve matrix [Riccati equations](https://en.wikipedia.org/wiki/Riccati_equation).
 * Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example[Classical Control with Linear Algebra](https://python-advanced.quantecon.org/lu_tricks.html) and [Classical Prediction and Filtering With Linear Algebra](https://python-advanced.quantecon.org/classical_filtering.html)).
@@ -57,7 +57,7 @@ In reading what follows, it will be useful to have some familiarity with
 
 * matrix manipulations
 * vectors of random variables
-* dynamic programming and the Bellman equation (see for example {doc}`Shortest Paths <intro:short_path>` and {doc}`Optimal Growth <optgrowth>`)
+* dynamic programming and the Bellman equation (see for example {doc}`<intro:short_path>` and {doc}`<optgrowth>`)
 
 For additional reading on LQ control, see, for example,
 
@@ -166,37 +166,27 @@ In particular, if we write
 ```{math}
 :label: lq_lowmc
 
-\left(
-\begin{array}{c}
+\begin{bmatrix}
 a_{t+1} \\
 1
-\end{array}
-\right) =
-\left(
-\begin{array}{cc}
+\end{bmatrix} =
+\begin{bmatrix}
 1 + r & -\bar c + \mu \\
 0     & 1
-\end{array}
-\right)
-\left(
-\begin{array}{c}
+\end{bmatrix}
+\begin{bmatrix}
 a_t \\
 1
-\end{array}
-\right) +
-\left(
-\begin{array}{c}
+\end{bmatrix}
+\begin{bmatrix}
 -1 \\
 0
-\end{array}
-\right)
+\end{bmatrix}
 u_t +
-\left(
-\begin{array}{c}
+\begin{bmatrix}
 \sigma \\
 0
-\end{array}
-\right)
+\end{bmatrix}
 w_{t+1}
 ```
 
@@ -375,7 +365,7 @@ What's special about the LQ case is that -- as we shall soon see ---  the optima
 ### Solution
 
 To solve the finite horizon LQ problem we can use a dynamic programming
-strategy based on backward induction that is conceptually similar to the approach adopted in {doc}`Shortest Paths <intro:short_path>`.
+strategy based on backward induction that is conceptually similar to the approach adopted in {doc}`<intro:short_path>`.
 
 For reasons that will soon become clear, we first introduce the notation $J_T(x) = x^\top R_f x$.
 
