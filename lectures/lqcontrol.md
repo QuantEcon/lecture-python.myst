@@ -48,16 +48,16 @@ Moreover, while the linear-quadratic structure is restrictive, it is in fact far
 
 These themes appear repeatedly below.
 
-Mathematically, LQ control problems are closely related to {doc}`<kalman>`
+Mathematically, LQ control problems are closely related to {doc}`kalman`
 
 * Recursive formulations of linear-quadratic control problems and Kalman filtering problems both involve matrix [Riccati equations](https://en.wikipedia.org/wiki/Riccati_equation).
-* Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example [Classical Control with Linear Algebra](https://python-advanced.quantecon.org/lu_tricks.html) and [Classical Prediction and Filtering With Linear Algebra](https://python-advanced.quantecon.org/classical_filtering.html)).
+* Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example {doc}`advanced:lu_tricks` and {doc}`advanced:classical_filtering`).
 
 In reading what follows, it will be useful to have some familiarity with
 
 * matrix manipulations
 * vectors of random variables
-* dynamic programming and the Bellman equation (see for example {doc}`<intro:short_path>` and {doc}`<optgrowth>`)
+* dynamic programming and the Bellman equation (see for example {doc}`intro:short_path` and {doc}`optgrowth`)
 
 For additional reading on LQ control, see, for example,
 
@@ -365,7 +365,7 @@ What's special about the LQ case is that -- as we shall soon see ---  the optima
 ### Solution
 
 To solve the finite horizon LQ problem we can use a dynamic programming
-strategy based on backward induction that is conceptually similar to the approach adopted in {doc}`<intro:short_path>`.
+strategy based on backward induction that is conceptually similar to the approach adopted in {doc}`intro:short_path`.
 
 For reasons that will soon become clear, we first introduce the notation $J_T(x) = x^\top R_f x$.
 
