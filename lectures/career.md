@@ -65,6 +65,9 @@ from quantecon.distributions import BetaBinomial
 from scipy.special import binom, beta
 from mpl_toolkits.mplot3d.axes3d import Axes3D
 from matplotlib import cm
+
+# Set JAX to use CPU
+jax.config.update('jax_platform_name', 'cpu')
 ```
 
 ### Model features
