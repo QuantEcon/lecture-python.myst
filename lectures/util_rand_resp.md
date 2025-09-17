@@ -53,7 +53,7 @@ $$ (eq:util-rand-one)
 
 At this point we describe some concepts proposed by various researchers.
 
-### {cite:t}`leysieffer1976randomized`
+### {cite:t}`leysieffer1976respondent`
 
 The response $r$ is regarded as jeopardizing with respect to $A$ or $A^{'}$ if
 
@@ -545,9 +545,9 @@ plt.legend(loc=0, fontsize='large')
 plt.show()
 ```
 
-### Method of {cite:t}`leysieffer1976randomized`
+### Method of {cite:t}`leysieffer1976respondent`
 
-{cite:t}`leysieffer1976randomized` recommend a two-dimensional measure of jeopardy that reduces to a single dimension when there is no jeopardy in a 'no' answer, which means that
+{cite:t}`leysieffer1976respondent` recommend a two-dimensional measure of jeopardy that reduces to a single dimension when there is no jeopardy in a 'no' answer, which means that
 
 
 $$
@@ -562,7 +562,7 @@ $$
 
 This is  not an optimal  choice under a utilitarian approach.
 
-### Analysis on the Method of {cite:t}`chaudhuri1988randomized`
+### Analysis on the Method of {cite:t}`Chadhuri_Mukerjee_88`
 
 {cite}`Chadhuri_Mukerjee_88` argued that the individual may find that since "yes" may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond "no". 
 
