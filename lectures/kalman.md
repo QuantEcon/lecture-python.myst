@@ -57,15 +57,15 @@ Required knowledge: Familiarity with matrix manipulations, multivariate normal d
 We'll need the following imports:
 
 ```{code-cell} ipython3
-import matplotlib.pyplot as plt
-from scipy import linalg
 import jax
 import jax.numpy as jnp
+import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-from quantecon import Kalman, LinearStateSpace
+from scipy import linalg
 from scipy.stats import norm
 from scipy.integrate import quad
 from scipy.linalg import eigvals
+from quantecon import Kalman, LinearStateSpace
 ```
 
 ## The Basic Idea
@@ -100,7 +100,7 @@ p = N(\hat{x}, \Sigma)
 ```
 
 where $\hat{x}$ is the mean of the distribution and $\Sigma$ is a
-$2 \times 2$ covariance matrix.  In our simulations, we will suppose that
+$2 \times 2$ covariance matrix. In our simulations, we will suppose that
 
 ```{math}
 :label: kalman_dhxs
@@ -201,7 +201,7 @@ plt.show()
 
 We are now presented with some good news and some bad news.
 
-The good news is that the missile has been located by our sensors, which report that the current location is $y = (2.3, -1.9)^top$.
+The good news is that the missile has been located by our sensors, which report that the current location is $y = (2.3, -1.9)\top$.
 
 The next figure shows the original prior $p(x)$ and the new reported
 location $y$.
@@ -285,9 +285,10 @@ where
 Here $\Sigma G' (G \Sigma G' + R)^{-1}$ is the matrix of population regression coefficients of the hidden object $x - \hat{x}$ on the surprise $y - G \hat{x}$.
 
 We can verify it by computing
+
 $$
 \begin{aligned}
-\mathrm{Cov}(x - \hat{x}, y - G \hat{x})\mathrm{Var}(y - G \hat{x})^{-1}
+&\mathrm{Cov}(x - \hat{x}, y - G \hat{x})\mathrm{Var}(y - G \hat{x})^{-1} \\
 &= \mathrm{Cov}(x - \hat{x}, G x + v - G \hat{x})\mathrm{Var}(G x + v  - G \hat{x})^{-1}\\
 &= \Sigma G'(G \Sigma G' + R)^{-1}
 \end{aligned}
@@ -295,7 +296,7 @@ $$
 
 This new density $p(x \,|\, y) = N(\hat{x}^F, \Sigma^F)$ is shown in the next figure via contour lines and the color map.
 
-The original density is left in as contour lines for comparison
+The original density is left in as contour lines for comparison.
 
 ```{code-cell} ipython3
 ---
@@ -409,7 +410,7 @@ Our updated prediction is the density $N(\hat x_{new}, \Sigma_{new})$ where
 * The density $p_{new}(x) = N(\hat x_{new}, \Sigma_{new})$ is called the **predictive distribution**
 
 The predictive distribution is the new density shown in the following figure, where
-the update has used parameters.
+the update has used the following parameters:
 
 $$
 A
@@ -487,7 +488,7 @@ Swapping notation $p_t(x)$ for $p(x)$ and $p_{t+1}(x)$ for $p_{new}(x)$, the ful
 
 1. Start the current period with prior $p_t(x) = N(\hat x_t, \Sigma_t)$.
 1. Observe current measurement $y_t$.
-1. Compute the filtering distribution $p_t(x \,|\, y) = N(\hat x_t^F, \Sigma_t^F)$ from $p_t(x)$ and $y_t$, applying Bayes rule and the conditional distribution {eq}`kl_measurement_model`.
+1. Compute the filtering distribution $p_t(x \,|\, y) = N(\hat x_t^F, \Sigma_t^F)$ from $p_t(x)$ and $y_t$, applying Bayes' rule and the conditional distribution {eq}`kl_measurement_model`.
 1. Compute the predictive distribution $p_{t+1}(x) = N(\hat x_{t+1}, \Sigma_{t+1})$ from the filtering distribution and {eq}`kl_xdynam`.
 1. Increment $t$ by one and go to step 1.
 
@@ -637,7 +638,7 @@ kalman = Kalman(ss, x_hat_0, Σ_0)
 
 # Draw observations of y from state space model
 N = 5
-seed = 1234 # Set random seed
+seed = 1234  # Set random seed
 x, y = ss.simulate(N, seed)
 y = y.flatten()
 
@@ -707,7 +708,7 @@ x, y = ss.simulate(T, seed)
 y = y.flatten()
 
 for t in range(T):
-    # Record the current predicted mean and variance and plot their densities
+    # Record the current predicted mean and variance
     m, v = kalman.x_hat.item(), kalman.Sigma.item()
 
     # Wrap parameters
@@ -836,7 +837,7 @@ e1 = jnp.empty(T-1)
 e2 = jnp.empty(T-1)
 
 for t in range(1, T):
-    kn.update(y[:,t])
+    kn.update(y[:, t])
     diff1 = x[:, t] - kn.x_hat.flatten()
     diff2 = x[:, t] - A @ x[:, t-1]
     e1 = e1.at[t-1].set(diff1 @ diff1)
