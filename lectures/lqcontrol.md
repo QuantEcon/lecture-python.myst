@@ -51,7 +51,7 @@ These themes appear repeatedly below.
 Mathematically, LQ control problems are closely related to {doc}`<kalman>`
 
 * Recursive formulations of linear-quadratic control problems and Kalman filtering problems both involve matrix [Riccati equations](https://en.wikipedia.org/wiki/Riccati_equation).
-* Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example[Classical Control with Linear Algebra](https://python-advanced.quantecon.org/lu_tricks.html) and [Classical Prediction and Filtering With Linear Algebra](https://python-advanced.quantecon.org/classical_filtering.html)).
+* Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example [Classical Control with Linear Algebra](https://python-advanced.quantecon.org/lu_tricks.html) and [Classical Prediction and Filtering With Linear Algebra](https://python-advanced.quantecon.org/classical_filtering.html)).
 
 In reading what follows, it will be useful to have some familiarity with
 
