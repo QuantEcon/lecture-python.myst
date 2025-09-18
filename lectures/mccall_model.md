@@ -823,7 +823,10 @@ def compute_R_element(c, β):
 
 # Create meshgrid and vectorize computation
 c_grid, β_grid = jnp.meshgrid(c_vals, β_vals, indexing='ij')
-compute_R_vectorized = jax.vmap(jax.vmap(compute_R_element, in_axes=(None, 0)), in_axes=(0, None))
+compute_R_vectorized = jax.vmap(
+    jax.vmap(compute_R_element, 
+    in_axes=(None, 0)), 
+    in_axes=(0, None))
 R = compute_R_vectorized(c_vals, β_vals)
 ```
 
