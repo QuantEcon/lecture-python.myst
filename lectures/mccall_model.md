@@ -676,7 +676,7 @@ def compute_stopping_time(w_bar, key):
     return t_final
 
 @jax.jit
-def compute_mean_stopping_time(w_bar, num_reps=100000, seed=1234):
+def compute_mean_stopping_time(w_bar, num_reps=100000, seed=0):
     key = jax.random.PRNGKey(seed)
     keys = jax.random.split(key, num_reps)
     obs = jax.vmap(compute_stopping_time, in_axes=(None, 0))(w_bar, keys)
