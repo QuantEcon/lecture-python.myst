@@ -34,14 +34,8 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 :tags: [hide-output]
 
 !pip install --upgrade quantecon yfinance
-```
-
-Later in the exercise, we will use JAX to optimize our code
-
-```{code-cell} ipython3
-:tags: [skip-execution] 
-
-!pip install --upgrade jax
+# Later in the exercise, we will use JAX to optimize our code
+!pip install jax
 ```
 
 ## Overview
