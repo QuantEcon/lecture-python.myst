@@ -21,7 +21,7 @@ In addition to what's included in base Anaconda, we need to install the followin
 ```{code-cell} ipython3
 :tags: [no-execute, hide-output]
 
-!pip install numpyro
+!pip install numpyro jax
 ```
 
 We'll begin with some Python imports.
