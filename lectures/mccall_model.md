@@ -777,7 +777,7 @@ class McCallModelContinuous(NamedTuple):
     μ: float            # location parameter in lognormal distribution
     w_draws: jnp.ndarray  # draws of wages for Monte Carlo
 
-def create_mccall_continuous(c=25, β=0.99, σ=0.5, μ=2.5, mc_size=1000, seed=1234):
+def create_mccall_continuous(c=25, β=0.99, σ=0.5, μ=2.5, mc_size=1000, seed=0):
     key = jax.random.PRNGKey(seed)
     s = jax.random.normal(key, (mc_size,))
     w_draws = jnp.exp(μ + σ * s)
