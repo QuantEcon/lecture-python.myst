@@ -378,8 +378,8 @@ Default parameter values are embedded in the class.
 
 ```{code-cell} python3
 class McCallModel(NamedTuple):
-    c: float = 25           # unemployment compensation
-    β: float = 0.99         # discount factor  
+    c: float = 25               # unemployment compensation
+    β: float = 0.99             # discount factor  
     w: jnp.ndarray = w_default  # array of wage values, w[i] = wage at state i
     q: jnp.ndarray = q_default  # array of probabilities
 
