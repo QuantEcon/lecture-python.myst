@@ -30,7 +30,7 @@ kernelspec:
 ```
 
 In this quantecon lecture {doc}`A First Look at the Kalman filter <kalman>`, we used
-a Kalman filter to estimate  locations of a rocket. 
+a Kalman filter to estimate locations of a rocket. 
 
 In this lecture,  we'll use the Kalman filter to 
 infer a worker's human capital and the  effort that the worker devotes to accumulating 
@@ -38,7 +38,7 @@ human capital, neither of which the firm observes directly.
 
 The firm learns about those things only by observing a history of the output that the worker generates for the firm, and from understanding how that output depends on the worker's human capital and how human capital evolves as a function of the worker's effort. 
 
-We'll posit a rule that expresses how the much  firm pays the worker each period  as a function of the firm's information each period.
+We'll posit a rule that expresses how much the firm pays the worker each period as a function of the firm's information each period.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
@@ -53,8 +53,11 @@ To conduct simulations, we bring in these imports, as in {doc}`A First Look at t
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
+import jax
+import jax.numpy as jnp
 from quantecon import Kalman, LinearStateSpace
 from collections import namedtuple
+from typing import NamedTuple
 from scipy.stats import multivariate_normal
 import matplotlib as mpl
 mpl.rcParams['text.usetex'] = True
@@ -71,7 +74,7 @@ The workers'  output  is  described by the following dynamic process:
 :label: worker_model
 
 \begin{aligned}
-h_{t+1} &= \alpha h_t + \beta u_t + c w_{t+1}, \quad c_{t+1} \sim {\mathcal N}(0,1) \\
+h_{t+1} &= \alpha h_t + \beta u_t + c w_{t+1}, \quad w_{t+1} \sim {\mathcal N}(0,1) \\
 u_{t+1} & = u_t \\
 y_t & = g h_t + v_t , \quad v_t \sim {\mathcal N} (0, R)
 \end{aligned}
@@ -85,7 +88,7 @@ Here
 * $h_0 \sim {\mathcal N}(\hat h_0, \sigma_{h,0})$
 * $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$
 
-Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_h, \sigma_u$.
+Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_{h,0}, \sigma_{u,0}$.
 
 At time $0$, a firm has hired the worker.
 
@@ -129,8 +132,17 @@ Write system [](worker_model) in the state-space form
 
 ```{math}
 \begin{aligned}
-\begin{bmatrix} h_{t+1} \cr u_{t+1} \end{bmatrix} &= \begin{bmatrix} \alpha & \beta \cr 0 & 1 \end{bmatrix}\begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + \begin{bmatrix} c \cr 0 \end{bmatrix} w_{t+1} \cr
-y_t & = \begin{bmatrix} g & 0 \end{bmatrix} \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + v_t
+    \begin{bmatrix} h_{t+1} \cr u_{t+1} \end{bmatrix} 
+    &= 
+    \begin{bmatrix} \alpha & \beta \cr 0 & 1 \end{bmatrix}
+    \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} 
+    + 
+    \begin{bmatrix} c \cr 0 \end{bmatrix} 
+    w_{t+1} \cr
+    y_t & = 
+    \begin{bmatrix} g & 0 \end{bmatrix} 
+    \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} 
+    + v_t
 \end{aligned}
 ```
 
@@ -151,67 +163,87 @@ where
 x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
 \hat x_0  = \begin{bmatrix} \hat h_0 \cr \hat u_0 \end{bmatrix} , \quad
 \Sigma_0  = \begin{bmatrix} \sigma_{h,0} & 0 \cr
-                     0 & \sigma_{u,0} \end{bmatrix}
+                            0 & \sigma_{u,0} \end{bmatrix}
 ```
 
-To compute the firm's wage setting policy, we first we create a `namedtuple` to store the parameters of the model
+To compute the firm's wage setting policy, we first we create a `NamedTuple` to store the parameters of the model
 
 ```{code-cell} ipython3
-WorkerModel = namedtuple("WorkerModel", 
-                ('A', 'C', 'G', 'R', 'xhat_0', 'Σ_0'))
+class WorkerModel(NamedTuple):
+    """
+    Parameters for the worker model state-space representation.
+    
+    A : jax.Array
+        Transition matrix of state variables
+    C : jax.Array  
+        Parameter of the state shock 
+    G : jax.Array
+        Parameter of state variables in observation equation
+    R : jax.Array
+        Coefficient of observation shock
+    xhat_0 : jax.Array
+        Initial state estimate
+    Σ_0 : jax.Array
+        Initial covariance matrix
+    """
+    A: jax.Array
+    C: jax.Array
+    G: jax.Array
+    R: jax.Array
+    xhat_0: jax.Array
+    Σ_0: jax.Array
 
 def create_worker(α=.8, β=.2, c=.2,
                   R=.5, g=1.0, hhat_0=4, uhat_0=4, 
                   σ_h=4, σ_u=4):
     
-    A = np.array([[α, β], 
+    A = jnp.array([[α, β], 
                   [0, 1]])
-    C = np.array([[c], 
+    C = jnp.array([[c], 
                   [0]])
-    G = np.array([g, 1])
+    G = jnp.array([g, 0])
+    R = jnp.array(R)
 
     # Define initial state and covariance matrix
-    xhat_0 = np.array([[hhat_0], 
+    xhat_0 = jnp.array([[hhat_0], 
                        [uhat_0]])
     
-    Σ_0 = np.array([[σ_h, 0],
+    Σ_0 = jnp.array([[σ_h, 0],
                     [0, σ_u]])
     
     return WorkerModel(A=A, C=C, G=G, R=R, xhat_0=xhat_0, Σ_0=Σ_0)
 ```
 
-Please note how the `WorkerModel` namedtuple creates all of the objects required to compute an associated
-state-space representation {eq}`ssrepresent`.
+Please note how the `WorkerModel` namedtuple creates all of the objects required to compute an associated state-space representation {eq}`ssrepresent`.
 
-This is handy, because in order to  simulate a history $\{y_t, h_t\}$ for a worker, we'll want to form 
- state space system for him/her by using the [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
+This is handy, because in order to  simulate a history $\{y_t, h_t\}$ for a worker, we'll want to form state space system for him/her by using the [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
 
 ```{code-cell} ipython3
+# TODO write it into a function
 # Define A, C, G, R, xhat_0, Σ_0
 worker = create_worker()
 A, C, G, R = worker.A, worker.C, worker.G, worker.R
 xhat_0, Σ_0 = worker.xhat_0, worker.Σ_0
 
 # Create a LinearStateSpace object
-ss = LinearStateSpace(A, C, G, np.sqrt(R), 
-        mu_0=xhat_0, Sigma_0=np.zeros((2,2)))
+ss = LinearStateSpace(A, C, G, jnp.sqrt(R), 
+        mu_0=xhat_0, Sigma_0=Σ_0)
 
 T = 100
-x, y = ss.simulate(T)
+seed = 1234
+x, y = ss.simulate(T, seed)
 y = y.flatten()
 
 h_0, u_0 = x[0, 0], x[1, 0]
 ```
 
-Next, to  compute the firm's policy for setting the log wage based on the information it has about the worker,
-we  use the Kalman filter described in this quantecon lecture {doc}`A First Look at the Kalman filter <kalman>`.
+Next, to compute the firm's policy for setting the log wage based on the information it has about the worker, we use the Kalman filter described in this quantecon lecture {doc}`A First Look at the Kalman filter <kalman>`.
 
 In particular, we want to compute all of the objects in an "innovation representation".
 
 ## An Innovations Representation
 
-We have all the objects in hand required to form an innovations representation for the output
-process $\{y_t\}_{t=0}^T$ for a worker.
+We have all the objects in hand required to form an innovations representation for the output process $\{y_t\}_{t=0}^T$ for a worker.
 
 Let's code that up now.
 
@@ -227,30 +259,30 @@ where $K_t$ is the Kalman gain matrix at time $t$.
 We accomplish this in the following code that  uses the [`Kalman`](https://quanteconpy.readthedocs.io/en/latest/tools/kalman.html) class.
 
 ```{code-cell} ipython3
+# TODO check the names of variables
 kalman = Kalman(ss, xhat_0, Σ_0)
-Σ_t = np.zeros((*Σ_0.shape, T-1))
-y_hat_t = np.zeros(T-1)
-x_hat_t = np.zeros((2, T-1))
+Σ_t = jnp.zeros((*Σ_0.shape, T-1))
+y_hat_t = jnp.zeros(T-1)
+x_hat_t = jnp.zeros((2, T-1))
 
 for t in range(1, T):
     kalman.update(y[t])
     x_hat, Σ = kalman.x_hat, kalman.Sigma
-    Σ_t[:, :, t-1] = Σ
-    x_hat_t[:, t-1] = x_hat.reshape(-1)
-    [y_hat_t[t-1]] = worker.G @ x_hat
+    Σ_t = Σ_t.at[:, :, t-1].set(Σ)
+    x_hat_t = x_hat_t.at[:, t-1].set(x_hat.reshape(-1))
+    y_hat_t = y_hat_t.at[t-1].set((worker.G @ x_hat).item())
 
-x_hat_t = np.concatenate((x[:, 1][:, np.newaxis], 
-                    x_hat_t), axis=1)
-Σ_t = np.concatenate((worker.Σ_0[:, :, np.newaxis], 
-                    Σ_t), axis=2)
+# Add the initial
+x_hat_t = jnp.concatenate((xhat_0, x_hat_t), axis=1)
+Σ_t = jnp.concatenate((worker.Σ_0[:, :, np.newaxis], Σ_t), axis=2)
 u_hat_t = x_hat_t[1, :]
 ```
 
-For a draw of $h_0, u_0$,  we plot $E y_t = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
+For a draw of $h_0, u_0$,  we plot $E[y_t] = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
 
-We also plot $E [u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
+We also plot $\hat u_t = E [u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
-We can  watch as the  firm's inference  $E [u_0 | y^{t-1}]$ of the worker's work ethic converges toward the hidden   $u_0$, which is not directly observed by the firm.
+We can  watch as the  firm's inference  $E [u_0 | y^{t-1}]$ of the worker's work ethic converges toward the hidden  $u_0$, which is not directly observed by the firm.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(1, 2)
