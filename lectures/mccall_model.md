@@ -34,11 +34,11 @@ and the pros and cons as they themselves see them." -- Robert E. Lucas, Jr.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ---
 tags: [hide-output]
 ---
-!pip install quantecon
+!pip install quantecon jax
 ```
 
 ## Overview
@@ -64,6 +64,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import jax
 import jax.numpy as jnp
+import jax.random as jr
 from typing import NamedTuple
 import quantecon as qe
 from quantecon.distributions import BetaBinomial
@@ -367,7 +368,6 @@ plt.show()
 
 We are going to use JAX to accelerate our code.
 
-* JAX provides automatic differentiation and JIT compilation capabilities.
 * We'll use NamedTuple for our model class to maintain immutability, which works well with JAX's functional programming paradigm.
 
 Here's a class that stores the data and computes the values of state-action pairs,
@@ -455,7 +455,7 @@ def compute_reservation_wage(mcm, max_iter=500, tol=1e-6):
     # Simplify names
     c, β, w, q = mcm.c, mcm.β, mcm.w, mcm.q
     
-    # == First compute the value function == #
+    # First compute the value function
     n = len(w)
     v = w / (1 - β)  # initial guess
     
@@ -474,7 +474,7 @@ def compute_reservation_wage(mcm, max_iter=500, tol=1e-6):
     initial_state = (v, 0, tol + 1)
     v_final, _, _ = jax.lax.while_loop(cond_fun, body_fun, initial_state)
     
-    # == Now compute the reservation wage == #
+    # Now compute the reservation wage
     return (1 - β) * (c + β * (v_final @ q))
 ```
 
@@ -606,7 +606,7 @@ def compute_reservation_wage_two(mcm, max_iter=500, tol=1e-5):
     # Simplify names
     c, β, w, q = mcm.c, mcm.β, mcm.w, mcm.q
     
-    # == First compute h == #
+    # First compute h
     h = (w @ q) / (1 - β)
     
     def body_fun(state):
@@ -623,7 +623,7 @@ def compute_reservation_wage_two(mcm, max_iter=500, tol=1e-5):
     initial_state = (h, 0, tol + 1)
     h_final, _, _ = jax.lax.while_loop(cond_fun, body_fun, initial_state)
     
-    # == Now compute the reservation wage == #
+    # Now compute the reservation wage
     return (1 - β) * h_final
 ```
 
@@ -660,8 +660,8 @@ cdf = jnp.cumsum(q_default)
 def compute_stopping_time(w_bar, key):
     def body_fun(state):
         t, key, done = state
-        key, subkey = jax.random.split(key)
-        u = jax.random.uniform(subkey)
+        key, subkey = jr.split(key)
+        u = jr.uniform(subkey)
         w = w_default[jnp.searchsorted(cdf, u)]
         done = w >= w_bar
         t = jnp.where(done, t, t + 1)
@@ -676,9 +676,9 @@ def compute_stopping_time(w_bar, key):
     return t_final
 
 @jax.jit
-def compute_mean_stopping_time(w_bar, num_reps=100000, seed=0):
-    key = jax.random.PRNGKey(seed)
-    keys = jax.random.split(key, num_reps)
+def compute_mean_stopping_time(w_bar, num_reps=100000, seed=1234):
+    key = jr.PRNGKey(seed)
+    keys = jr.split(key, num_reps)
     obs = jax.vmap(compute_stopping_time, in_axes=(None, 0))(w_bar, keys)
     return jnp.mean(obs)
 
@@ -777,9 +777,9 @@ class McCallModelContinuous(NamedTuple):
     μ: float              # location parameter in lognormal distribution
     w_draws: jnp.ndarray  # draws of wages for Monte Carlo
 
-def create_mccall_continuous(c=25, β=0.99, σ=0.5, μ=2.5, mc_size=1000, seed=0):
-    key = jax.random.PRNGKey(seed)
-    s = jax.random.normal(key, (mc_size,))
+def create_mccall_continuous(c=25, β=0.99, σ=0.5, μ=2.5, mc_size=1000, seed=1234):
+    key = jr.PRNGKey(seed)
+    s = jr.normal(key, (mc_size,))
     w_draws = jnp.exp(μ + σ * s)
     return McCallModelContinuous(c=c, β=β, σ=σ, μ=μ, w_draws=w_draws)
 
@@ -803,7 +803,7 @@ def compute_reservation_wage_continuous(mcmc, max_iter=500, tol=1e-5):
     initial_state = (h, 0, tol + 1)
     h_final, _, _ = jax.lax.while_loop(cond_fun, body_fun, initial_state)
     
-    # == Now compute the reservation wage == #
+    # Now compute the reservation wage
     return (1 - β) * h_final
 ```
 
