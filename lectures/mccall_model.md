@@ -370,11 +370,7 @@ We are going to use JAX to accelerate our code.
 
 * We'll use NamedTuple for our model class to maintain immutability, which works well with JAX's functional programming paradigm.
 
-Here's a class that stores the data and computes the values of state-action pairs,
-i.e. the value in the maximum bracket on the right hand side of the Bellman equation {eq}`odu_pv2p`,
-given the current state and an arbitrary feasible action.
-
-Default parameter values are embedded in the class.
+Here's a class that stores the model parameters with default values, and a separate function that computes the values of state-action pairs (i.e., the value in the maximum bracket on the right hand side of the Bellman equation {eq}`odu_pv2p`).
 
 ```{code-cell} python3
 class McCallModel(NamedTuple):
