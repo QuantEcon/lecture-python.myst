@@ -253,7 +253,7 @@ def rate_steady_state(model, tol=1e-6):
     return x
 
 
-@partial(jax.jit, static_argnums=(2,))
+@partial(jax.jit, static_argnames=['T'])
 def simulate_stock_path(model, X0, T):
     """
     Simulates the sequence of employment and unemployment stocks.
@@ -268,7 +268,7 @@ def simulate_stock_path(model, X0, T):
     _, X_path = jax.lax.scan(update_X, X0, jnp.arange(T))
     return X_path
 
-@partial(jax.jit, static_argnums=(2,))
+@partial(jax.jit, static_argnames=['T'])
 def simulate_rate_path(model, x0, T):
     """
     Simulates the sequence of employment and unemployment rates.
@@ -467,7 +467,7 @@ We can investigate this by simulating the Markov chain.
 Let's plot the path of the sample averages over 5,000 periods
 
 ```{code-cell} ipython3
-@partial(jax.jit, static_argnums=(1,))
+@partial(jax.jit, static_argnames=['T'])
 def simulate_markov_chain(P, T, init_state, key):
     """Simulate a Markov chain."""
     def step(carry, key):
