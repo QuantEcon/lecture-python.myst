@@ -34,15 +34,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ```{code-cell} ipython
 :tags: [hide-output]
 
-!pip install quantecon
-```
-
-We also need to install JAX if you haven't done so already:
-
-```{code-cell} ipython3
-:tags: [skip-execution]
-
-!pip install --upgrade jax
+!pip install quantecon jax
 ```
 
 ## Overview
@@ -905,7 +897,7 @@ This approach has several advantages:
 2. Functions can be JIT-compiled for better performance
 
 In this exercise, your task is to:
-1. Update parameters by creating a new instance of the model with the desired parameters (`α=0.02, λ=0.3`).
+1. Update parameters by creating a new instance of the model with the parameters (`α=0.02, λ=0.3`).
 2. Use JAX's `vmap` to compute steady states for different parameter values
 3. Plot how the steady-state unemployment rate varies with the job finding rate $\lambda$
 ```
@@ -938,7 +930,7 @@ plt.show()
 base_model = create_lake_model()
 print(f"Base model α: {base_model.α}")
 
-# Update multiple parameters at once
+# New model
 new_model = create_lake_model(α=0.02, λ=0.3)
 print(f"New model α: {new_model.α}, λ: {new_model.λ}")
 
