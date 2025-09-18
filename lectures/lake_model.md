@@ -85,7 +85,7 @@ Before working through what follows, we recommend you read the
 
 You will also need some basic {doc}`linear algebra <linear_algebra>` and probability.
 
-## The Model
+## The model
 
 The economy is inhabited by a very large number of ex-ante identical workers.
 
@@ -215,7 +215,7 @@ To do this we're going to use a class that we'll call `LakeModel` that stores th
 ```{code-cell} ipython3
 class LakeModel(NamedTuple):
     """
-    Parameters for the Lake Model
+    Parameters for the lake model
     """
     λ: float
     α: float
@@ -355,10 +355,6 @@ Let's look at the convergence of the unemployment and employment rates to steady
 
 ```{code-cell} ipython3
 lm = create_lake_model()
-e_0 = 0.92     # Initial employment rate
-u_0 = 1 - e_0  # Initial unemployment rate
-T = 50         # Simulation length
-
 xbar = rate_steady_state(lm)
 
 fig, axes = plt.subplots(2, 1, figsize=(10, 8))
@@ -631,7 +627,7 @@ def u(c, σ=2.0):
 
 class McCallModel(NamedTuple):
     """
-    Stores the parameters and functions associated with a given model.
+    Stores the parameters for the McCall search model
     """
     α: float            # Job separation rate
     β: float            # Discount rate
@@ -645,7 +641,7 @@ class McCallModel(NamedTuple):
 def create_mccall_model(α=0.2, β=0.98, γ=0.7, c=6.0, σ=2.0, 
                             w_vec=None, p_vec=None):
     """
-    Create a McCallModel with default wage distribution if not provided.
+    Create a McCallModel.
     """
     if w_vec is None:
         n = 60  # Number of possible outcomes for wage
