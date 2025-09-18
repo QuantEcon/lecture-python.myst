@@ -344,7 +344,7 @@ Our default for $q$, the distribution of the state process, will be
 
 ```{code-cell} python3
 n, a, b = 50, 200, 100                        # default parameters
-q_default = jnp.array(BetaBinomial(n, a, b).pdf())  # default choice of q as JAX array
+q_default = jnp.array(BetaBinomial(n, a, b).pdf())
 ```
 
 Our default set of values for wages will be
