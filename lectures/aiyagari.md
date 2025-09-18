@@ -625,8 +625,7 @@ firm = create_firm()
 household = create_household()
 print("\nComputing equilibrium capital stock")
 with qe.Timer():
-    K_star, n = compute_equilibrium(
-        firm, household, K0=6.0).block_until_ready()
+    K_star, n = compute_equilibrium(firm, household, K0=6.0)
 print(f"Computed equilibrium {K_star:.5} in {n} iterations")
 ```
 
@@ -716,8 +715,7 @@ firm = create_firm()
 household = create_household()
 print("\nComputing equilibrium capital stock using bisection")
 with qe.Timer():
-    K_star = compute_equilibrium_bisect(
-        firm, household).block_until_ready()
+    K_star = compute_equilibrium_bisect(firm, household)
 print(f"Computed equilibrium capital stock {K_star:.5}")
 ```
 
