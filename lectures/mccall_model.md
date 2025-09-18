@@ -771,10 +771,10 @@ Here is one solution:
 
 ```{code-cell} python3
 class McCallModelContinuous(NamedTuple):
-    c: float            # unemployment compensation
-    β: float            # discount factor
-    σ: float            # scale parameter in lognormal distribution
-    μ: float            # location parameter in lognormal distribution
+    c: float              # unemployment compensation
+    β: float              # discount factor
+    σ: float              # scale parameter in lognormal distribution
+    μ: float              # location parameter in lognormal distribution
     w_draws: jnp.ndarray  # draws of wages for Monte Carlo
 
 def create_mccall_continuous(c=25, β=0.99, σ=0.5, μ=2.5, mc_size=1000, seed=0):
