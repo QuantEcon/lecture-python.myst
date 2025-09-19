@@ -131,15 +131,14 @@ To illustrate the issue, we'll begin by choosing an initial $y_0$ that is far ou
 
 ```{code-cell} ipython3
 def ar1_simulate(ρ, σ, y0, T, key):
-    ε = random.normal(key, shape=(T,)) * σ
-
-    def scan_fn(y_prev, ε_t):
-        y_t = ρ * y_prev + ε_t
-        return y_t, y_t
-
-    _, y = lax.scan(scan_fn, y0, ε)
-
-    return y
+  y = [y0]
+  ε = random.normal(key, (T,)) * σ
+  
+  for t in range(T):
+    y_next = ρ * y[-1] + ε[t]
+    y.append(y_next)
+  
+  return jnp.array(y)
 
 σ = 1.0
 ρ = 0.5
