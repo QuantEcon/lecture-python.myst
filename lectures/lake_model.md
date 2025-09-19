@@ -4,11 +4,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
 kernelspec:
-  name: python3
   display_name: Python 3 (ipykernel)
   language: python
+  name: python3
 ---
 
 (lake_model)=
@@ -31,7 +31,7 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 :tags: [hide-output]
 
 !pip install quantecon jax
@@ -217,22 +217,17 @@ class LakeModel(NamedTuple):
     """
     Parameters for the lake model
     """
-    λ: float
-    α: float
-    b: float
-    d: float
-
-
-def create_lake_model(λ=0.283, α=0.013, b=0.0124, d=0.00822):
-    """Create a LakeModel with default parameters."""
-    return LakeModel(λ=λ, α=α, b=b, d=d)
+    λ: float = 0.283
+    α: float = 0.013
+    b: float = 0.0124
+    d: float = 0.00822
 ```
 
 Now we can compute the matrices, simulate the dynamics, and find the steady state
 
 ```{code-cell} ipython3
 @jax.jit
-def compute_matrices(model):
+def compute_matrices(model: LakeModel):
     """Compute the transition matrices A and A_hat for the model."""
     λ, α, b, d = model.λ, model.α, model.b, model.d
     g = b - d
@@ -243,7 +238,7 @@ def compute_matrices(model):
 
 
 @jax.jit
-def rate_steady_state(model, tol=1e-6):
+def rate_steady_state(model: LakeModel, tol=1e-6):
     r"""
     Finds the steady state of the system :math:`x_{t+1} = \hat A x_{t}`
     """
@@ -254,7 +249,7 @@ def rate_steady_state(model, tol=1e-6):
 
 
 @partial(jax.jit, static_argnames=['T'])
-def simulate_stock_path(model, X0, T):
+def simulate_stock_path(model: LakeModel, X0, T):
     """
     Simulates the sequence of employment and unemployment stocks.
     """
@@ -269,7 +264,7 @@ def simulate_stock_path(model, X0, T):
     return X_path
 
 @partial(jax.jit, static_argnames=['T'])
-def simulate_rate_path(model, x0, T):
+def simulate_rate_path(model: LakeModel, x0, T):
     """
     Simulates the sequence of employment and unemployment rates.
     """
@@ -283,17 +278,18 @@ def simulate_rate_path(model, x0, T):
     return x_path
 ```
 
-We create two instances using the create function, one with $α=0.013$ and another with $α=0.03$
+We create two instances, one with $α=0.013$ and another with $α=0.03$
 
 ```{code-cell} ipython3
-lm = create_lake_model()
+lm = LakeModel()
+lm_new = LakeModel(α=0.03)
+
 print(f"Default α: {lm.α}")
 A, A_hat, g = compute_matrices(lm)
 print(f"A matrix:\n{A}")
 ```
 
 ```{code-cell} ipython3
-lm_new = create_lake_model(α=0.03)
 A_new, A_hat_new, g_new = compute_matrices(lm_new)
 print(f"New α: {lm_new.α}")
 print(f"New A matrix:\n{A_new}")
@@ -304,7 +300,6 @@ print(f"New A matrix:\n{A_new}")
 Let's run a simulation under the default parameters (see above) starting from $X_0 = (12, 138)$.
 
 ```{code-cell} ipython3
-lm = create_lake_model()
 N_0 = 150      # Population
 e_0 = 0.92     # Initial employment rate
 u_0 = 1 - e_0  # Initial unemployment rate
@@ -345,7 +340,6 @@ We also have $x_t \to \bar x$ as $t \to \infty$ provided that the remaining eige
 This is the case for our default parameters:
 
 ```{code-cell} ipython3
-lm = create_lake_model()
 A, A_hat, g = compute_matrices(lm)
 e, f = jnp.linalg.eigvals(A_hat)
 print(f"Eigenvalue magnitudes: {abs(e):.4f}, {abs(f):.4f}")
@@ -354,7 +348,6 @@ print(f"Eigenvalue magnitudes: {abs(e):.4f}, {abs(f):.4f}")
 Let's look at the convergence of the unemployment and employment rates to steady state levels (dashed red line)
 
 ```{code-cell} ipython3
-lm = create_lake_model()
 xbar = rate_steady_state(lm)
 
 fig, axes = plt.subplots(2, 1, figsize=(10, 8))
@@ -464,28 +457,27 @@ Let's plot the path of the sample averages over 5,000 periods
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=['T'])
-def simulate_markov_chain(P, T, init_state, key):
+def simulate_markov_chain(P, T: int, init_state, key):
     """Simulate a Markov chain."""
-    def step(carry, key):
-        state = carry
+    def step(state, key):
         probs = P[state]
         state_new = jax.random.choice(key, 
                             a=jnp.arange(len(probs)), p=probs)
-        return state_new, state_new
+        return state_new, state
     
     keys = jax.random.split(key, T)
     _, states = jax.lax.scan(step, init_state, keys)
     return states
 
-lm = create_lake_model(d=0, b=0)
+lm_markov = LakeModel(d=0, b=0)
 T = 5000  # Simulation length
 
-α, λ = lm.α, lm.λ
+α, λ = lm_markov.α, lm_markov.λ
 
 P = jnp.array([[1 - λ,        λ],
               [    α,    1 - α]])
 
-xbar = rate_steady_state(lm)
+xbar = rate_steady_state(lm_markov)
 
 # Simulate the Markov chain
 key = jax.random.PRNGKey(42)
@@ -596,8 +588,31 @@ where the notation $V$ and $U$ is as defined in the {doc}`McCall search model le
 
 The wage offer distribution will be a discretized version of the lognormal distribution $LN(\log(20),1)$, as shown in the next figure
 
-```{figure} /_static/lecture_specific/lake_model/lake_distribution_wages.png
+```{code-cell} ipython3
+def create_wage_distribution(max_wage: float, 
+                             wage_grid_size: int, 
+                             log_wage_mean: float):
+    """Create wage distribution"""
+    w_vec_temp = jnp.linspace(1e-8, max_wage, 
+                                wage_grid_size + 1)
+    cdf = stats.norm.cdf(jnp.log(w_vec_temp), 
+                            loc=jnp.log(log_wage_mean), scale=1)
+    pdf = cdf[1:] - cdf[:-1]
+    p_vec = pdf / pdf.sum()
+    w_vec = (w_vec_temp[1:] + w_vec_temp[:-1]) / 2
+    return w_vec, p_vec
 
+w_vec, p_vec = create_wage_distribution(170, 200, 20)
+
+# Plot the wage distribution
+fig, ax = plt.subplots()
+
+ax.plot(w_vec, p_vec)
+ax.set_xlabel('wages')
+ax.set_ylabel('probability')
+
+plt.tight_layout()
+plt.show()
 ```
 
 We take a period to be a month.
@@ -639,7 +654,7 @@ class McCallModel(NamedTuple):
 
 
 def create_mccall_model(α=0.2, β=0.98, γ=0.7, c=6.0, σ=2.0, 
-                            w_vec=None, p_vec=None):
+                            w_vec=None, p_vec=None) -> McCallModel:
     """
     Create a McCallModel.
     """
@@ -655,7 +670,7 @@ def create_mccall_model(α=0.2, β=0.98, γ=0.7, c=6.0, σ=2.0,
 
 
 @jax.jit
-def update_bellman(mcm, V, U):
+def update_bellman(mcm: McCallModel, V, U):
     """
     Update the Bellman equations.
     """
@@ -669,7 +684,7 @@ def update_bellman(mcm, V, U):
 
 
 @jax.jit
-def solve_mccall_model(mcm, tol=1e-5, max_iter=2000):
+def solve_mccall_model(mcm: McCallModel, tol=1e-5, max_iter=2000):
     """
     Iterates to convergence on the Bellman equations.
     """
@@ -698,35 +713,6 @@ def solve_mccall_model(mcm, tol=1e-5, max_iter=2000):
     return V_final, U_final
 ```
 
-The second piece of code is used to compute the reservation wage:
-
-```{code-cell} ipython3
-:tags: [output_scroll]
-
-@jax.jit
-def compute_reservation_wage(mcm, return_values=False):
-    """
-    Computes the reservation wage of an instance of the McCall model
-    by finding the smallest w such that V(w) > U.
-
-    If V(w) > U for all w, then the reservation wage w_bar is set to
-    the lowest wage in mcm.w_vec.
-
-    If v(w) < U for all w, then w_bar is set to inf.
-    """
-    V, U = solve_mccall_model(mcm)
-    w_idx = jnp.searchsorted(V - U, 0)
-    
-    w_bar = jnp.where(w_idx == len(V), jnp.inf, mcm.w_vec[w_idx])
-    
-    return jax.lax.cond(
-        return_values,
-        lambda _: (w_bar, V, U),
-        lambda _: w_bar,
-        None
-    )
-```
-
 Now let's compute and plot welfare, employment, unemployment, and tax revenue as a
 function of the unemployment compensation rate
 
@@ -748,7 +734,7 @@ def create_economy_params(α=0.013, b=0.0124, d=0.00822,
                           β=0.98, γ=1.0, σ=2.0,
                           log_wage_mean=20, 
                           wage_grid_size=200, 
-                          max_wage=170):
+                          max_wage=170) -> EconomyParameters:
     """Create economy parameters with default values"""
     α_q = (1-(1-α)**3)   # Convert monthly to quarterly
     return EconomyParameters(α=α, α_q=α_q, b=b, d=d, β=β, γ=γ, σ=σ,
@@ -756,20 +742,10 @@ def create_economy_params(α=0.013, b=0.0124, d=0.00822,
                            wage_grid_size=wage_grid_size, 
                            max_wage=max_wage)
 
-def create_wage_distribution(params):
-    """Create wage distribution from parameters"""
-    w_vec_temp = jnp.linspace(1e-8, params.max_wage, 
-                                params.wage_grid_size + 1)
-    cdf = stats.norm.cdf(jnp.log(w_vec_temp), 
-                            loc=jnp.log(params.log_wage_mean), scale=1)
-    pdf = cdf[1:] - cdf[:-1]
-    p_vec = pdf / pdf.sum()
-    w_vec = (w_vec_temp[1:] + w_vec_temp[:-1]) / 2
-    return w_vec, p_vec
-
 
 @jax.jit
-def compute_optimal_quantities(c, τ, params, w_vec, p_vec):
+def compute_optimal_quantities(c, τ, 
+                    params: EconomyParameters, w_vec, p_vec):
     """
     Compute the reservation wage, job finding rate and value functions
     of the workers given c and τ.
@@ -793,7 +769,8 @@ def compute_optimal_quantities(c, τ, params, w_vec, p_vec):
 
 
 @jax.jit
-def compute_steady_state_quantities(c, τ, params, w_vec, p_vec):
+def compute_steady_state_quantities(c, τ, 
+                    params: EconomyParameters, w_vec, p_vec):
     """
     Compute the steady state unemployment rate given c and τ using optimal
     quantities from the McCall model and computing corresponding steady
@@ -803,7 +780,7 @@ def compute_steady_state_quantities(c, τ, params, w_vec, p_vec):
                                         params, w_vec, p_vec)
     
     # Compute steady state employment and unemployment rates
-    lm = create_lake_model(α=params.α_q, λ=λ, b=params.b, d=params.d)
+    lm = LakeModel(α=params.α_q, λ=λ, b=params.b, d=params.d)
     x = rate_steady_state(lm)
     u, e = x
     
@@ -815,9 +792,10 @@ def compute_steady_state_quantities(c, τ, params, w_vec, p_vec):
     return e, u, welfare
 
 
-def find_balanced_budget_tax(c, params, w_vec, p_vec):
+def find_balanced_budget_tax(c, params: EconomyParameters, 
+                             w_vec, p_vec):
     """
-    Find the tax level that will induce a balanced budget using bisection.
+    Find the tax level that will induce a balanced budget
     """
     def steady_state_budget(t):
         e, u, w = compute_steady_state_quantities(c, t, 
@@ -845,7 +823,9 @@ def find_balanced_budget_tax(c, params, w_vec, p_vec):
 
 # Create economy parameters and wage distribution
 params = create_economy_params()
-w_vec, p_vec = create_wage_distribution(params)
+w_vec, p_vec = create_wage_distribution(params.max_wage, 
+                                        params.wage_grid_size, 
+                                        params.log_wage_mean)
 
 # Levels of unemployment insurance we wish to study
 c_vec = jnp.linspace(5, 140, 60)
@@ -908,7 +888,7 @@ Here is one solution
 @jax.jit
 def compute_unemployment_rate(λ_val):
     """Computes steady-state unemployment for a given λ"""
-    model = create_lake_model(λ=λ_val)
+    model = LakeModel(λ=λ_val)
     steady_state = rate_steady_state(model)
     return steady_state[0]
 
@@ -923,16 +903,15 @@ ax.set_xlabel(r'$\lambda$')
 ax.set_ylabel('steady-state unemployment rate')
 plt.show()
 
-base_model = create_lake_model()
-print(f"Base model α: {base_model.α}")
+lm_base = LakeModel()
+lm_ex1 = LakeModel(α=0.02, λ=0.3)
 
-# New model
-new_model = create_lake_model(α=0.02, λ=0.3)
-print(f"New model α: {new_model.α}, λ: {new_model.λ}")
+print(f"Base model α: {lm_base.α}")
+print(f"New model α: {lm_ex1.α}, λ: {lm_ex1.λ}")
 
 # Compute steady states for both
-base_steady_state = rate_steady_state(base_model)
-new_steady_state = rate_steady_state(new_model)
+base_steady_state = rate_steady_state(lm_base)
+new_steady_state = rate_steady_state(lm_ex1)
 
 print(f"Base unemployment rate: {base_steady_state[0]:.4f}")
 print(f"New unemployment rate: {new_steady_state[0]:.4f}")
@@ -977,7 +956,7 @@ We begin by constructing the model with default parameters and finding the
 initial steady state
 
 ```{code-cell} ipython3
-lm_initial = create_lake_model()
+lm_initial = LakeModel()
 x0 = rate_steady_state(lm_initial)
 print(f"Initial Steady State: {x0}")
 ```
@@ -992,12 +971,12 @@ T = 50
 New legislation changes $\lambda$ to $0.2$
 
 ```{code-cell} ipython3
-lm_new = create_lake_model(λ=0.2)
-xbar = rate_steady_state(lm_new)  # new steady state
+lm_ex2 = LakeModel(λ=0.2)
+xbar = rate_steady_state(lm_ex2)  # new steady state
 
 # Simulate paths
-X_path = simulate_stock_path(lm_new, x0 * N0, T)
-x_path = simulate_rate_path(lm_new, x0, T)
+X_path = simulate_stock_path(lm_ex2, x0 * N0, T)
+x_path = simulate_rate_path(lm_ex2, x0, T)
 print(f"New Steady State: {xbar}")
 ```
 
@@ -1070,7 +1049,7 @@ Let's start off at the baseline parameterization and record the steady
 state
 
 ```{code-cell} ipython3
-lm_baseline = create_lake_model()
+lm_baseline = LakeModel()
 x0 = rate_steady_state(lm_baseline)
 N0 = 100
 T = 50
@@ -1086,7 +1065,7 @@ T_hat = 20
 Let's increase $b$ to the new value and simulate for 20 periods
 
 ```{code-cell} ipython3
-lm_high_b = create_lake_model(b=b_hat)
+lm_high_b = LakeModel(b=b_hat)
 
 # Simulate stocks and rates for first 20 periods
 X_path1 = simulate_stock_path(lm_high_b, x0 * N0, T_hat)
@@ -1098,11 +1077,9 @@ after 20 periods for the new initial conditions, we simulate for the
 additional 30 periods
 
 ```{code-cell} ipython3
-lm_normal_b = create_lake_model()
-
 # Use final state from period 20 as initial condition
-X_path2 = simulate_stock_path(lm_normal_b, X_path1[-1, :], T-T_hat)
-x_path2 = simulate_rate_path(lm_normal_b, x_path1[-1, :], T-T_hat)
+X_path2 = simulate_stock_path(lm_baseline, X_path1[-1, :], T-T_hat)
+x_path2 = simulate_rate_path(lm_baseline, x_path1[-1, :], T-T_hat)
 ```
 
 Finally, we combine these two paths and plot
