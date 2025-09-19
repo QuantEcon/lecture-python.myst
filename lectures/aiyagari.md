@@ -29,6 +29,8 @@ kernelspec:
 In addition to what's included in base Anaconda, we need to install JAX
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon jax
 ```
 
