@@ -93,9 +93,11 @@ At time $t$, our agent has two choices:
 The agent is infinitely lived and aims to maximize the expected discounted
 sum of earnings
 
-$$
-\mathbb{E} \sum_{t=0}^{\infty} \beta^t y_t
-$$
+```{math}
+:label: obj_model
+
+{\mathbb E} \sum_{t=0}^\infty \beta^t u(y_t)
+```
 
 The constant $\beta$ lies in $(0, 1)$ and is called a **discount factor**.
 
@@ -140,7 +142,7 @@ $w \in \mathbb{W}$.
 In particular, the agent has wage offer $w$ in hand.
 
 More precisely, $v^*(w)$ denotes the value of the objective function
-{eq}`objective` when an agent in this situation makes *optimal* decisions now
+{eq}`obj_model` when an agent in this situation makes *optimal* decisions now
 and at all future points in time.
 
 Of course $v^*(w)$ is not trivial to calculate because we don't yet know
