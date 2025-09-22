@@ -223,7 +223,48 @@ class LakeModel(NamedTuple):
     d: float = 0.00822
 ```
 
-Now we can compute the matrices, simulate the dynamics, and find the steady state
+We will also use a specialized function to generate time series in an efficient
+JAX-compatible manner.
+
+(Iteratively generating time series is somewhat nontrivial in JAX because arrays
+are immutable.)
+
+```{code-cell} ipython3
+@partial(jax.jit, static_argnames=['f', 'num_steps'])
+def generate_path(f, initial_state, num_steps, **kwargs):
+    """
+    Generate a time series by repeatedly applying an update rule.
+
+    Given a map f, initial state x_0, and a set of model parameter θ, this
+    function computes and returns the sequence {x_t}_{t=0}^{T-1} when
+
+        x_{t+1} = f(x_t, t, θ) 
+
+    Args:
+        f: Update function mapping (x_t, t, θ) -> x_{t+1}
+        initial_state: Initial state x_0
+        num_steps: Number of time steps T to simulate
+        **kwargs: Optional extra arguments passed to f
+
+    Returns:
+        Array of shape (T, dim(x)) containing the time series path
+        [x_0, x_1, x_2, ..., x_{T-1}]
+    """
+
+    def update_wrapper(state, t):
+        """
+        Wrapper function that adapts f for use with JAX scan.
+        """
+        next_state = f(state, t, **kwargs)
+        return next_state, state
+
+    _, path = jax.lax.scan(update_wrapper,
+                    initial_state, jnp.arange(num_steps))
+    return path
+```
+
+
+Now we can compute the matrices and simulate the dynamics.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -236,53 +277,6 @@ def compute_matrices(model: LakeModel):
     A_hat = A / (1 + g)
     return A, A_hat, g
 
-
-@jax.jit
-def rate_steady_state(model: LakeModel, tol=1e-6):
-    r"""
-    Finds the steady state of the system :math:`x_{t+1} = \hat A x_{t}`
-    """
-    A, A_hat, g = compute_matrices(model)
-    x = jnp.array([A_hat[0, 1], A_hat[1, 0]])
-    x = x / x.sum()
-    return x
-
-
-@partial(jax.jit, static_argnames=['update_fn', 'num_steps'])
-def generate_path(update_fn, initial_state, num_steps, **kwargs):
-    """
-    Generate a time series by repeatedly applying an update rule.
-
-    Fix an update function f, initial state x_0, 
-    and a set of model parameter θ, this function computes
-    the sequence {x_t}_{t=0}^{T-1} where:
-
-        x_{t+1} = f(x_t, t, θ)
-
-    for t = 0, 1, ..., T-1.
-
-    Args:
-        update_fn: Update function f that takes
-        (x_t, t, θ) -> x_{t+1}
-        initial_state: Initial state x_0
-        num_steps: Number of time steps T to simulate
-        **kwargs: Function arguments passed to update_fn
-
-    Returns:
-        Array of shape (T, dim(x)) containing the time series path
-        [x_0, x_1, x_2, ..., x_{T-1}]
-    """
-    def update_wrapper(state, t):
-        """
-        Wrapper function that adapts the single-return
-        update_fn for use with JAX scan.
-        """
-        next_state = update_fn(state, t, **kwargs)
-        return next_state, state
-
-    _, path = jax.lax.scan(update_wrapper,
-                    initial_state, jnp.arange(num_steps))
-    return path
 
 @jax.jit
 def stock_update(current_stocks, time_step, model):
@@ -306,17 +300,17 @@ def rate_update(current_rates, time_step, model):
 We create two instances, one with $α=0.013$ and another with $α=0.03$
 
 ```{code-cell} ipython3
-lm = LakeModel()
-lm_new = LakeModel(α=0.03)
+model = LakeModel()
+model_new = LakeModel(α=0.03)
 
-print(f"Default α: {lm.α}")
-A, A_hat, g = compute_matrices(lm)
+print(f"Default α: {model.α}")
+A, A_hat, g = compute_matrices(model)
 print(f"A matrix:\n{A}")
 ```
 
 ```{code-cell} ipython3
-A_new, A_hat_new, g_new = compute_matrices(lm_new)
-print(f"New α: {lm_new.α}")
+A_new, A_hat_new, g_new = compute_matrices(model_new)
+print(f"New α: {model_new.α}")
 print(f"New A matrix:\n{A_new}")
 ```
 
@@ -335,7 +329,7 @@ E_0 = e_0 * N_0
 
 fig, axes = plt.subplots(3, 1, figsize=(10, 8))
 X_0 = jnp.array([U_0, E_0])
-X_path = generate_path(stock_update, X_0, T, model=lm)
+X_path = generate_path(stock_update, X_0, T, model=model)
 
 axes[0].plot(X_path[:, 0], lw=2)
 axes[0].set_title('unemployment')
@@ -360,30 +354,46 @@ there exists an $\bar x$  such that
 
 This equation tells us that a steady state level $\bar x$ is an eigenvector of $\hat A$ associated with a unit eigenvalue.
 
-We also have $x_t \to \bar x$ as $t \to \infty$ provided that the remaining eigenvalue of $\hat A$ has modulus less than 1.
+The following function can be used to compute the steady state.
+
+```{code-cell} ipython3
+@jax.jit
+def rate_steady_state(model: LakeModel, tol=1e-6):
+    r"""
+    Finds the steady state of the system :math:`x_{t+1} = \hat A x_{t}`
+    """
+    A, A_hat, g = compute_matrices(model)
+    x = jnp.array([A_hat[0, 1], A_hat[1, 0]])
+    x = x / x.sum()
+    return x
+```
+
+
+We also have $x_t \to \bar x$ as $t \to \infty$ provided that the remaining
+eigenvalue of $\hat A$ has modulus less than 1.
 
 This is the case for our default parameters:
 
 ```{code-cell} ipython3
-A, A_hat, g = compute_matrices(lm)
+A, A_hat, g = compute_matrices(model)
 e, f = jnp.linalg.eigvals(A_hat)
-print(f"Eigenvalue magnitudes: {abs(e):.4f}, {abs(f):.4f}")
+print(f"Eigenvalue magnitudes: {abs(e):.2f}, {abs(f):.2f}")
 ```
 
-Let's look at the convergence of the unemployment and employment rates to steady state levels (dashed red line)
+Let's look at the convergence of the unemployment and employment rates to steady state levels (dashed black line)
 
 ```{code-cell} ipython3
-xbar = rate_steady_state(lm)
+xbar = rate_steady_state(model)
 
 fig, axes = plt.subplots(2, 1, figsize=(10, 8))
 x_0 = jnp.array([u_0, e_0])
-x_path = generate_path(rate_update, x_0, T, model=lm)
+x_path = generate_path(rate_update, x_0, T, model=model)
 
 titles = ['unemployment rate', 'employment rate']
 
 for i, title in enumerate(titles):
     axes[i].plot(x_path[:, i], lw=2, alpha=0.5)
-    axes[i].hlines(xbar[i], 0, T, 'r', '--')
+    axes[i].hlines(xbar[i], 0, T, 'black', '--')
     axes[i].set_title(title)
 
 plt.tight_layout()
@@ -492,15 +502,15 @@ def markov_update(state, t, P, keys):
                         p=probs)
     return state_new
 
-lm_markov = LakeModel(d=0, b=0)
+model_markov = LakeModel(d=0, b=0)
 T = 5000  # Simulation length
 
-α, λ = lm_markov.α, lm_markov.λ
+α, λ = model_markov.α, model_markov.λ
 
 P = jnp.array([[1 - λ,        λ],
               [    α,    1 - α]])
 
-xbar = rate_steady_state(lm_markov)
+xbar = rate_steady_state(model_markov)
 
 # Simulate the Markov chain
 key = jax.random.PRNGKey(0)
@@ -694,7 +704,7 @@ def create_mccall_model(α=0.2, β=0.98, γ=0.7, c=6.0, σ=2.0,
 
 
 @jax.jit
-def update_bellman(mcm: McCallModel, V, U):
+def bellman(mcm: McCallModel, V, U):
     """
     Update the Bellman equations.
     """
@@ -718,7 +728,7 @@ def solve_mccall_model(mcm: McCallModel, tol=1e-5, max_iter=2000):
     
     def body_fun(state):
         V, U, i, error = state
-        V_new, U_new = update_bellman(mcm, V, U)
+        V_new, U_new = bellman(mcm, V, U)
         error_1 = jnp.max(jnp.abs(V_new - V))
         error_2 = jnp.abs(U_new - U)
         error_new = jnp.maximum(error_1, error_2)
@@ -804,8 +814,8 @@ def compute_steady_state_quantities(c, τ,
                                         params, w_vec, p_vec)
     
     # Compute steady state employment and unemployment rates
-    lm = LakeModel(α=params.α_q, λ=λ, b=params.b, d=params.d)
-    x = rate_steady_state(lm)
+    model = LakeModel(α=params.α_q, λ=λ, b=params.b, d=params.d)
+    x = rate_steady_state(model)
     u, e = x
     
     # Compute steady state welfare
@@ -888,7 +898,7 @@ The level that maximizes steady state welfare is approximately 62.
 ## Exercises
 
 ```{exercise}
-:label: lm_ex1
+:label: model_ex1
 
 In the JAX implementation of the Lake Model, we use a `NamedTuple` for parameters and separate functions for computations.
 
@@ -902,7 +912,7 @@ In this exercise, your task is to:
 3. Plot how the steady-state unemployment rate varies with the job finding rate $\lambda$
 ```
 
-```{solution-start} lm_ex1
+```{solution-start} model_ex1
 :class: dropdown
 ```
 
@@ -927,15 +937,15 @@ ax.set_xlabel(r'$\lambda$')
 ax.set_ylabel('steady-state unemployment rate')
 plt.show()
 
-lm_base = LakeModel()
-lm_ex1 = LakeModel(α=0.02, λ=0.3)
+model_base = LakeModel()
+model_ex1 = LakeModel(α=0.02, λ=0.3)
 
-print(f"Base model α: {lm_base.α}")
-print(f"New model α: {lm_ex1.α}, λ: {lm_ex1.λ}")
+print(f"Base model α: {model_base.α}")
+print(f"New model α: {model_ex1.α}, λ: {model_ex1.λ}")
 
 # Compute steady states for both
-base_steady_state = rate_steady_state(lm_base)
-new_steady_state = rate_steady_state(lm_ex1)
+base_steady_state = rate_steady_state(model_base)
+new_steady_state = rate_steady_state(model_ex1)
 
 print(f"Base unemployment rate: {base_steady_state[0]:.4f}")
 print(f"New unemployment rate: {new_steady_state[0]:.4f}")
@@ -945,7 +955,7 @@ print(f"New unemployment rate: {new_steady_state[0]:.4f}")
 ```
 
 ```{exercise-start}
-:label: lm_ex2
+:label: model_ex2
 ```
 
 Consider an economy with an initial stock of workers $N_0 = 100$ at the
@@ -972,7 +982,7 @@ What is the new steady state level of employment?
 ```
 
 
-```{solution-start} lm_ex2
+```{solution-start} model_ex2
 :class: dropdown
 ```
 
@@ -980,8 +990,8 @@ We begin by constructing the model with default parameters and finding the
 initial steady state
 
 ```{code-cell} ipython3
-lm_initial = LakeModel()
-x0 = rate_steady_state(lm_initial)
+model_initial = LakeModel()
+x0 = rate_steady_state(model_initial)
 print(f"Initial Steady State: {x0}")
 ```
 
@@ -995,12 +1005,12 @@ T = 50
 New legislation changes $\lambda$ to $0.2$
 
 ```{code-cell} ipython3
-lm_ex2 = LakeModel(λ=0.2)
-xbar = rate_steady_state(lm_ex2)  # new steady state
+model_ex2 = LakeModel(λ=0.2)
+xbar = rate_steady_state(model_ex2)  # new steady state
 
 # Simulate paths
-X_path = generate_path(stock_update, x0 * N0, T, model=lm_ex2)
-x_path = generate_path(rate_update, x0, T, model=lm_ex2)
+X_path = generate_path(stock_update, x0 * N0, T, model=model_ex2)
+x_path = generate_path(rate_update, x0, T, model=model_ex2)
 print(f"New Steady State: {xbar}")
 ```
 
@@ -1046,7 +1056,7 @@ steady state levels.
 
 
 ```{exercise}
-:label: lm_ex3
+:label: model_ex3
 
 Consider an economy with an initial stock of workers $N_0 = 100$ at the
 steady state level of employment in the baseline parameterization.
@@ -1060,7 +1070,7 @@ Plot the transition dynamics for the rates.
 How long does the economy take to return to its original steady state?
 ```
 
-```{solution-start} lm_ex3
+```{solution-start} model_ex3
 :class: dropdown
 ```
 
@@ -1073,8 +1083,8 @@ Let's start off at the baseline parameterization and record the steady
 state
 
 ```{code-cell} ipython3
-lm_baseline = LakeModel()
-x0 = rate_steady_state(lm_baseline)
+model_baseline = LakeModel()
+x0 = rate_steady_state(model_baseline)
 N0 = 100
 T = 50
 ```
@@ -1089,11 +1099,11 @@ T_hat = 20
 Let's increase $b$ to the new value and simulate for 20 periods
 
 ```{code-cell} ipython3
-lm_high_b = LakeModel(b=b_hat)
+model_high_b = LakeModel(b=b_hat)
 
 # Simulate stocks and rates for first 20 periods
-X_path1 = generate_path(stock_update, x0 * N0, T_hat, model=lm_high_b)
-x_path1 = generate_path(rate_update, x0, T_hat, model=lm_high_b)
+X_path1 = generate_path(stock_update, x0 * N0, T_hat, model=model_high_b)
+x_path1 = generate_path(rate_update, x0, T_hat, model=model_high_b)
 ```
 
 Now we reset $b$ to the original value and then, using the state
@@ -1103,9 +1113,9 @@ additional 30 periods
 ```{code-cell} ipython3
 # Use final state from period 20 as initial condition
 X_path2 = generate_path(stock_update, X_path1[-1, :], T-T_hat, 
-                            model=lm_baseline)
+                            model=model_baseline)
 x_path2 = generate_path(rate_update, x_path1[-1, :], T-T_hat, 
-                            model=lm_baseline)
+                            model=model_baseline)
 ```
 
 Finally, we combine these two paths and plot
