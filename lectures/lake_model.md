@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -248,34 +248,59 @@ def rate_steady_state(model: LakeModel, tol=1e-6):
     return x
 
 
-@partial(jax.jit, static_argnames=['T'])
-def simulate_stock_path(model: LakeModel, X0, T):
+@partial(jax.jit, static_argnames=['update_fn', 'num_steps'])
+def generate_path(update_fn, initial_state, num_steps, **kwargs):
     """
-    Simulates the sequence of employment and unemployment stocks.
-    """
-    A, A_hat, g = compute_matrices(model)
-    
-    def update_X(X, _):
-        X_new = A @ X
-        return X_new, X
-    
-    X0 = jnp.atleast_1d(X0)
-    _, X_path = jax.lax.scan(update_X, X0, jnp.arange(T))
-    return X_path
+    Generate a time series by repeatedly applying an update rule.
 
-@partial(jax.jit, static_argnames=['T'])
-def simulate_rate_path(model: LakeModel, x0, T):
+    Fix an update function f, initial state x_0, 
+    and a set of model parameter θ, this function computes
+    the sequence {x_t}_{t=0}^{T-1} where:
+
+        x_{t+1} = f(x_t, t, θ)
+
+    for t = 0, 1, ..., T-1.
+
+    Args:
+        update_fn: Update function f that takes
+        (x_t, t, θ) -> x_{t+1}
+        initial_state: Initial state x_0
+        num_steps: Number of time steps T to simulate
+        **kwargs: Function arguments passed to update_fn
+
+    Returns:
+        Array of shape (T, dim(x)) containing the time series path
+        [x_0, x_1, x_2, ..., x_{T-1}]
     """
-    Simulates the sequence of employment and unemployment rates.
+    def update_wrapper(state, t):
+        """
+        Wrapper function that adapts the single-return
+        update_fn for use with JAX scan.
+        """
+        next_state = update_fn(state, t, **kwargs)
+        return next_state, state
+
+    _, path = jax.lax.scan(update_wrapper,
+                    initial_state, jnp.arange(num_steps))
+    return path
+
+@jax.jit
+def stock_update(current_stocks, time_step, model):
+    """
+    Apply transition matrix to get next period's stocks.
     """
     A, A_hat, g = compute_matrices(model)
-    
-    def update_x(x, _):
-        x_new = A_hat @ x
-        return x_new, x
-    
-    _, x_path = jax.lax.scan(update_x, x0, jnp.arange(T))
-    return x_path
+    next_stocks = A @ current_stocks
+    return next_stocks
+
+@jax.jit
+def rate_update(current_rates, time_step, model):
+    """
+    Apply normalized transition matrix for next period's rates.
+    """
+    A, A_hat, g = compute_matrices(model)
+    next_rates = A_hat @ current_rates
+    return next_rates
 ```
 
 We create two instances, one with $α=0.013$ and another with $α=0.03$
@@ -310,7 +335,7 @@ E_0 = e_0 * N_0
 
 fig, axes = plt.subplots(3, 1, figsize=(10, 8))
 X_0 = jnp.array([U_0, E_0])
-X_path = simulate_stock_path(lm, X_0, T)
+X_path = generate_path(stock_update, X_0, T, model=lm)
 
 axes[0].plot(X_path[:, 0], lw=2)
 axes[0].set_title('unemployment')
@@ -352,7 +377,7 @@ xbar = rate_steady_state(lm)
 
 fig, axes = plt.subplots(2, 1, figsize=(10, 8))
 x_0 = jnp.array([u_0, e_0])
-x_path = simulate_rate_path(lm, x_0, T)
+x_path = generate_path(rate_update, x_0, T, model=lm)
 
 titles = ['unemployment rate', 'employment rate']
 
@@ -456,18 +481,16 @@ We can investigate this by simulating the Markov chain.
 Let's plot the path of the sample averages over 5,000 periods
 
 ```{code-cell} ipython3
-@partial(jax.jit, static_argnames=['T'])
-def simulate_markov_chain(P, T: int, init_state, key):
-    """Simulate a Markov chain."""
-    def step(state, key):
-        probs = P[state]
-        state_new = jax.random.choice(key, 
-                            a=jnp.arange(len(probs)), p=probs)
-        return state_new, state
-    
-    keys = jax.random.split(key, T)
-    _, states = jax.lax.scan(step, init_state, keys)
-    return states
+@jax.jit
+def markov_update(state, t, P, keys):
+    """
+    Sample next state from transition probabilities.
+    """
+    probs = P[state]
+    state_new = jax.random.choice(keys[t],
+                        a=jnp.arange(len(probs)),
+                        p=probs)
+    return state_new
 
 lm_markov = LakeModel(d=0, b=0)
 T = 5000  # Simulation length
@@ -480,8 +503,9 @@ P = jnp.array([[1 - λ,        λ],
 xbar = rate_steady_state(lm_markov)
 
 # Simulate the Markov chain
-key = jax.random.PRNGKey(42)
-s_path = simulate_markov_chain(P, T, 1, key)
+key = jax.random.PRNGKey(0)
+keys = jax.random.split(key, T)
+s_path = generate_path(markov_update, 1, T, P=P, keys=keys)
 
 fig, axes = plt.subplots(2, 1, figsize=(10, 8))
 s_bar_e = jnp.cumsum(s_path) / jnp.arange(1, T+1)
@@ -975,8 +999,8 @@ lm_ex2 = LakeModel(λ=0.2)
 xbar = rate_steady_state(lm_ex2)  # new steady state
 
 # Simulate paths
-X_path = simulate_stock_path(lm_ex2, x0 * N0, T)
-x_path = simulate_rate_path(lm_ex2, x0, T)
+X_path = generate_path(stock_update, x0 * N0, T, model=lm_ex2)
+x_path = generate_path(rate_update, x0, T, model=lm_ex2)
 print(f"New Steady State: {xbar}")
 ```
 
@@ -1068,8 +1092,8 @@ Let's increase $b$ to the new value and simulate for 20 periods
 lm_high_b = LakeModel(b=b_hat)
 
 # Simulate stocks and rates for first 20 periods
-X_path1 = simulate_stock_path(lm_high_b, x0 * N0, T_hat)
-x_path1 = simulate_rate_path(lm_high_b, x0, T_hat)
+X_path1 = generate_path(stock_update, x0 * N0, T_hat, model=lm_high_b)
+x_path1 = generate_path(rate_update, x0, T_hat, model=lm_high_b)
 ```
 
 Now we reset $b$ to the original value and then, using the state
@@ -1078,8 +1102,10 @@ additional 30 periods
 
 ```{code-cell} ipython3
 # Use final state from period 20 as initial condition
-X_path2 = simulate_stock_path(lm_baseline, X_path1[-1, :], T-T_hat)
-x_path2 = simulate_rate_path(lm_baseline, x_path1[-1, :], T-T_hat)
+X_path2 = generate_path(stock_update, X_path1[-1, :], T-T_hat, 
+                            model=lm_baseline)
+x_path2 = generate_path(rate_update, x_path1[-1, :], T-T_hat, 
+                            model=lm_baseline)
 ```
 
 Finally, we combine these two paths and plot
@@ -1087,6 +1113,7 @@ Finally, we combine these two paths and plot
 ```{code-cell} ipython3
 # Combine paths
 X_path = jnp.vstack([X_path1, X_path2[1:]])
+x_path = jnp.vstack([x_path1, x_path2[1:]])
 
 fig, axes = plt.subplots(3, 1, figsize=[10, 9])
 
