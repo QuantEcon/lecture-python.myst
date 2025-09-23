@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -247,7 +247,7 @@ def generate_path(f, initial_state, num_steps, **kwargs):
         **kwargs: Optional extra arguments passed to f
 
     Returns:
-        Array of shape (T, dim(x)) containing the time series path
+        Array of shape (dim(x), T) containing the time series path
         [x_0, x_1, x_2, ..., x_{T-1}]
     """
 
@@ -260,9 +260,8 @@ def generate_path(f, initial_state, num_steps, **kwargs):
 
     _, path = jax.lax.scan(update_wrapper,
                     initial_state, jnp.arange(num_steps))
-    return path
+    return path.T
 ```
-
 
 Now we can compute the matrices and simulate the dynamics.
 
@@ -331,13 +330,13 @@ fig, axes = plt.subplots(3, 1, figsize=(10, 8))
 X_0 = jnp.array([U_0, E_0])
 X_path = generate_path(stock_update, X_0, T, model=model)
 
-axes[0].plot(X_path[:, 0], lw=2)
+axes[0].plot(X_path[0, :], lw=2)
 axes[0].set_title('unemployment')
 
-axes[1].plot(X_path[:, 1], lw=2)
+axes[1].plot(X_path[1, :], lw=2)
 axes[1].set_title('employment')
 
-axes[2].plot(X_path.sum(1), lw=2)
+axes[2].plot(X_path.sum(0), lw=2)
 axes[2].set_title('labor force')
 
 plt.tight_layout()
@@ -358,16 +357,26 @@ The following function can be used to compute the steady state.
 
 ```{code-cell} ipython3
 @jax.jit
-def rate_steady_state(model: LakeModel, tol=1e-6):
+def rate_steady_state(model: LakeModel):
     r"""
     Finds the steady state of the system :math:`x_{t+1} = \hat A x_{t}`
+    by computing the eigenvector corresponding to the unit eigenvalue.
     """
     A, A_hat, g = compute_matrices(model)
-    x = jnp.array([A_hat[0, 1], A_hat[1, 0]])
-    x = x / x.sum()
-    return x
-```
+    eigenvals, eigenvec = jnp.linalg.eig(A_hat)
+    
+    # Find the eigenvector corresponding to eigenvalue 1
+    unit_idx = jnp.argmin(jnp.abs(eigenvals - 1.0))
 
+    # Get the corresponding eigenvector
+    steady_state = jnp.real(eigenvec[:, unit_idx])
+    
+    # Normalize to ensure positive values and sum to 1
+    steady_state = jnp.abs(steady_state)
+    steady_state = steady_state / jnp.sum(steady_state)
+    
+    return steady_state
+```
 
 We also have $x_t \to \bar x$ as $t \to \infty$ provided that the remaining
 eigenvalue of $\hat A$ has modulus less than 1.
@@ -392,7 +401,7 @@ x_path = generate_path(rate_update, x_0, T, model=model)
 titles = ['unemployment rate', 'employment rate']
 
 for i, title in enumerate(titles):
-    axes[i].plot(x_path[:, i], lw=2, alpha=0.5)
+    axes[i].plot(x_path[i, :], lw=2, alpha=0.5)
     axes[i].hlines(xbar[i], 0, T, 'black', '--')
     axes[i].set_title(title)
 
@@ -815,8 +824,7 @@ def compute_steady_state_quantities(c, τ,
     
     # Compute steady state employment and unemployment rates
     model = LakeModel(α=params.α_q, λ=λ, b=params.b, d=params.d)
-    x = rate_steady_state(model)
-    u, e = x
+    u, e = rate_steady_state(model)
     
     # Compute steady state welfare
     mask = (w_vec - τ > w_bar)
@@ -1019,13 +1027,13 @@ Now plot stocks
 ```{code-cell} ipython3
 fig, axes = plt.subplots(3, 1, figsize=[10, 9])
 
-axes[0].plot(X_path[:, 0])
+axes[0].plot(X_path[0, :])
 axes[0].set_title('unemployment')
 
-axes[1].plot(X_path[:, 1])
+axes[1].plot(X_path[1, :])
 axes[1].set_title('employment')
 
-axes[2].plot(X_path.sum(1))
+axes[2].plot(X_path.sum(0))
 axes[2].set_title('labor force')
 
 plt.tight_layout()
@@ -1040,7 +1048,7 @@ fig, axes = plt.subplots(2, 1, figsize=(10, 8))
 titles = ['unemployment rate', 'employment rate']
 
 for i, title in enumerate(titles):
-    axes[i].plot(x_path[:, i])
+    axes[i].plot(x_path[i, :])
     axes[i].hlines(xbar[i], 0, T, 'r', '--')
     axes[i].set_title(title)
 
@@ -1112,9 +1120,9 @@ additional 30 periods
 
 ```{code-cell} ipython3
 # Use final state from period 20 as initial condition
-X_path2 = generate_path(stock_update, X_path1[-1, :], T-T_hat, 
+X_path2 = generate_path(stock_update, X_path1[:, -1], T-T_hat, 
                             model=model_baseline)
-x_path2 = generate_path(rate_update, x_path1[-1, :], T-T_hat, 
+x_path2 = generate_path(rate_update, x_path1[:, -1], T-T_hat, 
                             model=model_baseline)
 ```
 
@@ -1122,18 +1130,18 @@ Finally, we combine these two paths and plot
 
 ```{code-cell} ipython3
 # Combine paths
-X_path = jnp.vstack([X_path1, X_path2[1:]])
-x_path = jnp.vstack([x_path1, x_path2[1:]])
+X_path = jnp.hstack([X_path1, X_path2[:, 1:]])
+x_path = jnp.hstack([x_path1, x_path2[:, 1:]])
 
 fig, axes = plt.subplots(3, 1, figsize=[10, 9])
 
-axes[0].plot(X_path[:, 0])
+axes[0].plot(X_path[0, :])
 axes[0].set_title('unemployment')
 
-axes[1].plot(X_path[:, 1])
+axes[1].plot(X_path[1, :])
 axes[1].set_title('employment')
 
-axes[2].plot(X_path.sum(1))
+axes[2].plot(X_path.sum(0))
 axes[2].set_title('labor force')
 
 plt.tight_layout()
@@ -1148,7 +1156,7 @@ fig, axes = plt.subplots(2, 1, figsize=[10, 6])
 titles = ['unemployment rate', 'employment rate']
 
 for i, title in enumerate(titles):
-    axes[i].plot(x_path[:, i])
+    axes[i].plot(x_path[i, :])
     axes[i].hlines(x0[i], 0, T, 'r', '--')
     axes[i].set_title(title)
 
