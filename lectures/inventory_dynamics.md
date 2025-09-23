@@ -30,7 +30,7 @@ kernelspec:
 
 ## Overview
 
-In this lecture we will study the time path of inventories for firms that
+In this lecture, we will study the time path of inventories for firms that
 follow so-called s-S inventory dynamics.
 
 Such firms
@@ -38,11 +38,11 @@ Such firms
 1. wait until inventory falls below some level $s$ and then
 2. order sufficient quantities to bring their inventory back up to capacity $S$.
 
-These kinds of policies are common in practice and also optimal in certain circumstances.
+These kinds of policies are common in practice and are also optimal in certain circumstances.
 
 A review of early literature and some macroeconomic implications can be found in {cite}`caplin1985variability`.
 
-Here our main aim is to learn more about simulation, time series and Markov dynamics.
+Here, our main aim is to learn more about simulation, time series, and Markov dynamics.
 
 While our Markov environment and many of the concepts we consider are related to those found in our lecture {doc}`<finite_markov>`, the state space is a continuum in the current application.
 
@@ -56,7 +56,7 @@ import jax.numpy as jnp
 from jax import random
 ```
 
-## Sample Paths
+## Sample paths
 
 Consider a firm with inventory $X_t$.
 
@@ -186,7 +186,7 @@ for i in range(400):
 plt.show()
 ```
 
-## Marginal Distributions
+## Marginal distributions
 
 Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some
 fixed $T$.
