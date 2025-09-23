@@ -334,7 +334,7 @@ plot_path(ar1, initial_path, future_path, ax)
 plt.show()
 ```
 
-As functions of forecast horizon, the coverage intervals have shapes like those described in [Permanent Income II: LQ Techniques](perm_income_cons)
+As functions of forecast horizon, the coverage intervals have shapes like those described in {doc}`perm_income_cons`
 
 ## Predictive Distributions of Path Properties
 
