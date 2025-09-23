@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -60,7 +60,6 @@ We use the following imports:
 ```{code-cell} ipython3
 import quantecon as qe
 import matplotlib.pyplot as plt
-import numpy as np
 import jax
 import jax.numpy as jnp
 from typing import NamedTuple
@@ -84,7 +83,6 @@ def compute_stationary(P):
     A = I - jnp.transpose(P) + O
     return jnp.linalg.solve(A, jnp.ones(n))
 ```
-
 
 ### References
 
@@ -269,18 +267,12 @@ For now we assume that $u(c) = \log(c)$
 u = jnp.log
 ```
 
-Here's a namedtuple that stores the wage rate and interest rate, as well as a function that creates a price namedtuple with default values
+Here's a namedtuple that stores the wage rate and interest rate with default values
 
 ```{code-cell} ipython3
 class Prices(NamedTuple):
-    r: float  # Interest rate
-    w: float  # Wages
-
-def create_prices(r=0.01, w=1.0):
-    """
-    Create a Prices namedtuple that stores wage and interest rate.
-    """
-    return Prices(r=r, w=w)
+    r: float = 0.01  # Interest rate
+    w: float = 1.0   # Wages
 ```
 
 Now we set up a vectorized version of the right-hand side of the Bellman equation (before maximization), which is a 3D array representing
@@ -443,7 +435,7 @@ As a first example of what we can do, let's compute and plot an optimal accumula
 ```{code-cell} ipython3
 # Create an instance of Household
 household = create_household()
-prices = create_prices()
+prices = Prices()
 
 r, w = prices
 print(f"Interest rate: {r}, Wage: {w}")
@@ -573,7 +565,7 @@ def G(K, firm, household):
 
     # Generate a household object with these prices, compute
     # aggregate capital.
-    prices = create_prices(r=r, w=w)
+    prices = Prices(r=r, w=w)
     σ_star = howard_policy_iteration(household, prices)
     return capital_supply(σ_star, household)
 ```
@@ -584,7 +576,8 @@ Let's inspect visually as a first pass
 num_points = 50
 firm = create_firm()
 household = create_household()
-k_vals = np.linspace(4, 12, num_points)
+k_min, k_max = 4, 12
+k_vals = [k_min + i * (k_max - k_min) / (num_points - 1) for i in range(num_points)]
 out = [G(k, firm, household) for k in k_vals]
 
 fig, ax = plt.subplots(figsize=(11, 8))
@@ -651,7 +644,7 @@ def prices_to_capital_stock(household, r, firm):
     Map prices to the induced level of capital stock.
     """
     w = r_to_w(r, firm)
-    prices = create_prices(r=r, w=w)
+    prices = Prices(r=r, w=w)
 
     # Compute the optimal policy
     σ_star = howard_policy_iteration(household, prices)
@@ -661,18 +654,20 @@ def prices_to_capital_stock(household, r, firm):
 
 # Create a grid of r values to compute demand and supply of capital
 num_points = 20
-r_vals = np.linspace(0.005, 0.04, num_points)
+r_min, r_max = 0.005, 0.04
+r_vals = [r_min + i * (r_max - r_min) / (num_points - 1) for i in range(num_points)]
 
 # Compute supply of capital
-k_vals = np.empty(num_points)
-for i, r in enumerate(r_vals):
-    k_vals[i] = prices_to_capital_stock(household, r, firm)
+k_vals = []
+for r in r_vals:
+    k_vals.append(prices_to_capital_stock(household, r, firm))
 
 # Plot against demand for capital by firms
 fig, ax = plt.subplots(figsize=(11, 8))
 ax.plot(k_vals, r_vals, lw=2, alpha=0.6, 
         label='supply of capital')
-ax.plot(k_vals, r_given_k(k_vals, firm), lw=2, alpha=0.6, 
+ax.plot(k_vals, r_given_k(
+        jnp.array(k_vals), firm), lw=2, alpha=0.6, 
         label='demand for capital')
 
 # Add marker at equilibrium
@@ -685,7 +680,6 @@ ax.legend(loc='upper right')
 
 plt.show()
 ```
-
 
 ## Exercises
 
@@ -737,8 +731,10 @@ Use the following values of $\beta$ and plot the relationship you find.
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-β_vals = np.linspace(0.94, 0.98, 20)
+β_min, β_max, num_β = 0.94, 0.98, 20
+β_vals = [β_min + i * (β_max - β_min) / (num_β - 1) for i in range(num_β)]
 ```
+
 ```{exercise-end}
 ```
 
@@ -747,14 +743,14 @@ Use the following values of $\beta$ and plot the relationship you find.
 ```
 
 ```{code-cell} ipython3
-K_vals = np.empty_like(β_vals)
+K_vals = []
 K = 6.0  # initial guess
 
-for i, β in enumerate(β_vals):
+for β in β_vals:
     household = create_household(β=β)
     K = compute_equilibrium_bisect(firm, household, 0.5 * K, 1.5 * K)
     print(f"Computed equilibrium {K:.4} at β = {β}")
-    K_vals[i] = K
+    K_vals.append(K)
 
 fig, ax = plt.subplots()
 ax.plot(β_vals, K_vals, ms=2)
