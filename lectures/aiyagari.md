@@ -576,9 +576,7 @@ Let's inspect visually as a first pass
 num_points = 50
 firm = create_firm()
 household = create_household()
-k_min, k_max = 4, 12
-k_vals = [k_min + i * (k_max - k_min) / (num_points - 1) 
-                                    for i in range(num_points)]
+k_vals = jnp.linspace(4, 12, num_points)
 out = [G(k, firm, household) for k in k_vals]
 
 fig, ax = plt.subplots(figsize=(11, 8))
@@ -655,9 +653,7 @@ def prices_to_capital_stock(household, r, firm):
 
 # Create a grid of r values to compute demand and supply of capital
 num_points = 20
-r_min, r_max = 0.005, 0.04
-r_vals = [r_min + i * (r_max - r_min) / (num_points - 1) 
-                            for i in range(num_points)]
+r_vals = jnp.linspace(0.005, 0.04, num_points)
 
 # Compute supply of capital
 k_vals = []
@@ -733,9 +729,7 @@ Use the following values of $\beta$ and plot the relationship you find.
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-β_min, β_max, num_β = 0.94, 0.98, 20
-β_vals = [β_min + i * (β_max - β_min) / (num_β - 1) 
-                                        for i in range(num_β)]
+β_vals = jnp.linspace(0.94, 0.98, 20)
 ```
 
 ```{exercise-end}
