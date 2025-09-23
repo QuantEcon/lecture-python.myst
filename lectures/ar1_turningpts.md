@@ -158,20 +158,8 @@ class AR1(NamedTuple):
     ρ: float
     σ: float
     y0: float
-    T0: int
-    T1: int
-
-
-def make_ar1(ρ: float, σ: float, y0: float, T0: int = 100, T1: int = 100):
-    """
-    Factory function to create an AR1 instance with default values for T0 and T1.
-    
-    Returns
-    -------
-    AR1
-        AR1 named tuple containing the specified parameters.
-    """
-    return AR1(ρ=ρ, σ=σ, y0=y0, T0=T0, T1=T1)
+    T0: int = 100
+    T1: int = 100
 ```
 
 Using the `AR1` class, we can simulate paths more conveniently. The following function simulates an initial path with $T0$ length.
@@ -334,7 +322,7 @@ mystnb:
     caption: "Initial and predictive future paths \n"
     name: fig_path
 ---
-ar1 = make_ar1(ρ=0.9, σ=1, y0=10)
+ar1 = AR1(ρ=0.9, σ=1, y0=10)
 
 # Simulate
 initial_path = AR1_simulate_past(ar1)
@@ -346,9 +334,7 @@ plot_path(ar1, initial_path, future_path, ax)
 plt.show()
 ```
 
-As functions of forecast horizon, the coverage intervals have shapes like those described in 
-https://python.quantecon.org/perm_income_cons.html
-
+As functions of forecast horizon, the coverage intervals have shapes like those described in [Permanent Income II: LQ Techniques](perm_income_cons)
 
 ## Predictive Distributions of Path Properties
 
@@ -644,16 +630,24 @@ def plot_Wecker(ar1: AR1, initial_path, ax, N=1000):
     future_path = AR1_simulate_future(ar1, y_T0, N=N)
     plot_path(ar1, initial_path, future_path, ax[0, 0])
 
+    next_reces = jnp.zeros(N)
+    severe_rec = jnp.zeros(N)
+    min_val_8q = jnp.zeros(N)
+    next_up_turn = jnp.zeros(N)
+    next_down_turn = jnp.zeros(N)
+
     # Simulate future paths and compute statistics
-    def step(carry, n):
+    for n in range(N):
         future_temp = future_path[n, :]
-        (next_reces, severe_rec, min_val_8q, next_up_turn, next_down_turn
+        (next_reces_val, severe_rec_val, min_val_8q_val, 
+        next_up_turn_val, next_down_turn_val
          ) = compute_path_statistics(initial_path, future_temp)
     
-        return carry, (next_reces, severe_rec, min_val_8q, next_up_turn, next_down_turn)
-    
-    _, (next_reces, severe_rec, min_val_8q, next_up_turn, next_down_turn
-        ) = lax.scan(step, None, jnp.arange(N))
+        next_reces = next_reces.at[n].set(next_reces_val)
+        severe_rec = severe_rec.at[n].set(severe_rec_val)
+        min_val_8q = min_val_8q.at[n].set(min_val_8q_val)
+        next_up_turn = next_up_turn.at[n].set(next_up_turn_val)
+        next_down_turn = next_down_turn.at[n].set(next_down_turn_val)
     
     # Plot path statistics
     plot_path_stats(next_reces, severe_rec, min_val_8q, 
@@ -695,20 +689,28 @@ def plot_extended_Wecker(
     σ_sample = post_samples['σ'][index]
 
     # Compute path statistics
+    next_reces = jnp.zeros(N)
+    severe_rec = jnp.zeros(N)
+    min_val_8q = jnp.zeros(N)
+    next_up_turn = jnp.zeros(N)
+    next_down_turn = jnp.zeros(N)
+
     subkeys = random.split(key, num=N)
     
-    def step(carry, n):
-        ar1_n = make_ar1(ρ=ρ_sample[n], σ=σ_sample[n], y0=y0, T1=T1)
+    for n in range(N):
+        ar1_n = AR1(ρ=ρ_sample[n], σ=σ_sample[n], y0=y0, T1=T1)
         future_temp = AR1_simulate_future(
             ar1_n, y_T0, N=1, key=subkeys[n]
             ).reshape(-1)
-        (next_reces, severe_rec, min_val_8q, next_up_turn, next_down_turn
+        (next_reces_val, severe_rec_val, min_val_8q_val, 
+        next_up_turn_val, next_down_turn_val
          ) = compute_path_statistics(initial_path, future_temp)
-        return carry, (future_temp, next_reces, severe_rec, 
-                       min_val_8q, next_up_turn, next_down_turn)
 
-    _, (future_path, next_reces, severe_rec, min_val_8q, next_up_turn, next_down_turn
-        ) = jax.lax.scan(step, None, jnp.arange(N))
+        next_reces = next_reces.at[n].set(next_reces_val)
+        severe_rec = severe_rec.at[n].set(severe_rec_val)
+        min_val_8q = min_val_8q.at[n].set(min_val_8q_val)
+        next_up_turn = next_up_turn.at[n].set(next_up_turn_val)
+        next_down_turn = next_down_turn.at[n].set(next_down_turn_val)
 
     # Plot simulated initial and future paths
     plot_path(ar1, initial_path, future_path, ax[0, 0])
