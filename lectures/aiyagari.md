@@ -165,16 +165,10 @@ These parameters are stored in the following namedtuple:
 
 ```{code-cell} ipython3
 class Firm(NamedTuple):
-    A: float   # Total factor productivity
-    N: float   # Total labor supply
-    α: float   # Capital share
-    δ: float   # Depreciation rate
-
-def create_firm(A=1.0, N=1.0, α=0.33, δ=0.05):
-    """
-    Create a Firm namedtuple that stores firm data.
-    """
-    return Firm(A=A, N=N, α=α, δ=δ)
+    A: float = 1.0    # Total factor productivity
+    N: float = 1.0    # Total labor supply
+    α: float = 0.33   # Capital share
+    δ: float = 0.05   # Depreciation rate
 ```
 
 From the first-order condition with respect to capital, the firm's inverse demand for capital is
@@ -574,7 +568,7 @@ Let's inspect visually as a first pass
 
 ```{code-cell} ipython3
 num_points = 50
-firm = create_firm()
+firm = Firm()
 household = create_household()
 k_vals = jnp.linspace(4, 12, num_points)
 out = [G(k, firm, household) for k in k_vals]
@@ -615,7 +609,7 @@ def compute_equilibrium(firm, household,
 ```
 
 ```{code-cell} ipython3
-firm = create_firm()
+firm = Firm()
 household = create_household()
 print("\nComputing equilibrium capital stock")
 with qe.Timer():
@@ -705,7 +699,7 @@ def compute_equilibrium_bisect(firm, household, a=1.0, b=20.0):
     K = bisect(lambda k: k - G(k, firm, household), a, b, xtol=1e-4)
     return K
 
-firm = create_firm()
+firm = Firm()
 household = create_household()
 print("\nComputing equilibrium capital stock using bisection")
 with qe.Timer():
