@@ -44,7 +44,7 @@ A review of early literature and some macroeconomic implications can be found in
 
 Here, our main aim is to learn more about simulation, time series, and Markov dynamics.
 
-While our Markov environment and many of the concepts we consider are related to those found in our lecture {doc}`<finite_markov>`, the state space is a continuum in the current application.
+While our Markov environment and many of the concepts we consider are related to those found in our lecture {doc}`finite_markov`, the state space is a continuum in the current application.
 
 Let's start with some imports
 
