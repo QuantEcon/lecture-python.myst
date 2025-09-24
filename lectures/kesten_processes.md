@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.6
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -56,13 +56,52 @@ Let's start with some imports:
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-import numpy as np
 import quantecon as qe
 import yfinance as yf
+import jax
+import jax.numpy as jnp
+from jax import random, vmap, jit
+from functools import partial
+from typing import NamedTuple
 ```
 
 Additional technical background related to this lecture can be found in the
 monograph by {cite}`buraczewski2016stochastic`.
+
+We will use the following general-purpose function for generating time series paths
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+@partial(jax.jit, static_argnames=['f', 'num_steps'])
+def generate_path(f, initial_state, num_steps, model, key):
+    """
+    Generate a time series by repeatedly applying an update rule.
+    Given a map f, initial state x_0, and model parameters θ, this
+    function computes and returns the sequence {x_t}_{t=0}^{T-1} when
+        x_{t+1} = f(x_t, t, θ)
+    Args:
+        f: Update function mapping (x_t, t, model, key) -> x_{t+1}
+        initial_state: Initial state x_0
+        num_steps: Number of time steps T to simulate
+        model: Model parameters
+        key: Random key for reproducible randomness
+    Returns:
+        Array of shape (dim(x), T) containing the time series path
+        [x_0, x_1, x_2, ..., x_{T-1}]
+    """
+    def update_wrapper(carry, t):
+        """Wrapper function that adapts f for use with JAX scan."""
+        state, subkey = carry
+        subkey, new_subkey = random.split(subkey)
+        next_state = f(state, t, model, new_subkey)
+        return (next_state, subkey), state
+
+    # Initial carry: (initial_state, key)
+    init_carry = (initial_state, key)
+    _, path = jax.lax.scan(update_wrapper, init_carry, jnp.arange(num_steps))
+    return path.T
+```
 
 ## Kesten processes
 
@@ -327,26 +366,49 @@ This leads to spikes in the time series, which fill out the extreme right hand t
 The spikes in the time series are visible in the following simulation, which generates of 10 paths when $a_t$ and $b_t$ are lognormal.
 
 ```{code-cell} ipython3
-μ = -0.5
-σ = 1.0
+class KestenModel(NamedTuple):
+    """Parameters for Kesten process X_{t+1} = a_{t+1} X_t + η_{t+1}"""
+    μ: float = -0.5        # location parameter for log(a_t)
+    σ: float = 1.0         # scale parameter for log(a_t)
 
 
-def kesten_ts(ts_length=100):
-    x = np.zeros(ts_length)
-    for t in range(ts_length - 1):
-        a = np.exp(μ + σ * np.random.randn())
-        b = np.exp(np.random.randn())
-        x[t+1] = a * x[t] + b
-    return x
+@jax.jit
+def kesten_update(current_x, time_step, model, key):
+    """
+    Update function for Kesten process: X_{t+1} = a_{t+1} X_t + η_{t+1}
+    """
+    # Split key for random number generation
+    key_a, key_η = random.split(key, 2)
 
+    # Generate random shocks
+    shock_a = random.normal(key_a)
+    shock_η = random.normal(key_η)
+
+    # Compute a_t and η_t
+    a = jnp.exp(model.μ + model.σ * shock_a)
+    η = jnp.exp(shock_η)
+
+    # Kesten process update
+    next_x = a * current_x + η
+
+    return next_x
 
 fig, ax = plt.subplots()
 
 num_paths = 10
-np.random.seed(12)
+model = KestenModel()
 
 for i in range(num_paths):
-    ax.plot(kesten_ts())
+    key = random.PRNGKey(i)
+
+    path = generate_path(
+        kesten_update,
+        initial_state=0.0,
+        num_steps=100,
+        model=model,
+        key=key
+    )
+    ax.plot(path)
 
 ax.set(xlabel="time", ylabel="$X_t$")
 plt.show()
@@ -446,31 +508,55 @@ While the time path differs, you should see bursts of high volatility.
 Here is one solution:
 
 ```{code-cell} ipython3
-α_0 = 1e-5
-α_1 = 0.1
-β = 0.9
+class GARCHModel(NamedTuple):
+    """Parameters for GARCH(1,1) volatility model"""
+    α_0: float = 1e-5          # constant term
+    α_1: float = 0.1           # coefficient on lagged squared shock
+    β: float = 0.9             # coefficient on lagged volatility
 
 years = 15
 days = years * 250
 
+@jax.jit
+def garch_update(current_state, time_step, model, key):
+    """Update function for GARCH(1,1) volatility and returns"""
+    σ2_current, r_previous = current_state
 
-def garch_ts(ts_length=days):
-    σ2 = 0
-    r = np.zeros(ts_length)
-    for t in range(ts_length - 1):
-        ξ = np.random.randn()
-        σ2 = α_0 + σ2 * (α_1 * ξ**2 + β)
-        r[t] = np.sqrt(σ2) * np.random.randn()
-    return r
+    # Split key for random number generation
+    key_xi, key_zeta = random.split(key, 2)
 
+    # Generate random shocks
+    ξ = random.normal(key_xi)
+    ζ = random.normal(key_zeta)
+
+    # Update volatility
+    σ2_next = model.α_0 + σ2_current * (model.α_1 * ξ**2 + model.β)
+
+    # Generate return
+    r_current = jnp.sqrt(σ2_current) * ζ
+
+    return jnp.array([σ2_next, r_current])
 
 fig, ax = plt.subplots()
 
-np.random.seed(12)
+key = random.PRNGKey(0)
+model = GARCHModel()
 
-ax.plot(garch_ts(), alpha=0.7)
+# Initial state
+initial_state = jnp.array([0.0, 0.0])
 
-ax.set(xlabel="time", ylabel="$\\sigma_t^2$")
+path = generate_path(
+    garch_update,
+    initial_state=initial_state,
+    num_steps=days,
+    model=model,
+    key=key
+)
+
+# Extract and plot returns
+ax.plot(path[1, :], alpha=0.7)
+
+ax.set(xlabel="time", ylabel="returns")
 plt.show()
 ```
 
@@ -667,108 +753,93 @@ s_init = 1.0  # initial condition for each firm
 :class: dropdown
 ```
 
-Here's one solution.
-First we generate the observations:
+Here's one solution using the `generate_path` framework.
+
+First, we define the firm productivity update function:
 
 ```{code-cell} ipython3
-import jax
-import jax.numpy as jnp
-from jax import random, vmap, jit
+@jax.jit
+def firm_product_update(current_product, time_step, model, key):
+    """
+    Update firm productivity according to entry/exit dynamics.
 
+    If productivity is below threshold: firm exits and is replaced by new entrant
+    If productivity is above threshold: productivity evolves as Kesten process
+    """
+    # Split key for random number generation
+    key_a, key_η, key_e = random.split(key, 3)
 
-def generate_single_draw(key, μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar, T, s_init):
-    """Generate a single draw using JAX's scan for the time loop."""
+    # Generate random shocks
+    shock_a = random.normal(key_a)
+    shock_η = random.normal(key_η)
+    shock_e = random.normal(key_e)
 
-    def step_fn(carry, t):
-        s, subkey = carry
-        subkey, new_subkey = random.split(subkey)
+    # Calculate potential new productivity values
+    # If firm exits (s_t < s_bar): replaced by new entrant
+    product_entrant = jnp.exp(model.μ_e + model.σ_e * shock_e)
 
-        # Generate random normal samples
-        rand_normal = random.normal(new_subkey)
+    # If firm continues (s_t >= s_bar): Kesten process dynamics
+    a = jnp.exp(model.μ_a + model.σ_a * shock_a)
+    η = jnp.exp(model.μ_b + model.σ_b * shock_η)
+    product_incumbent = a * current_product + η
 
-        # Conditional logic using jnp.where
-        # If s < s_bar: new_s = exp(μ_e + σ_e * randn())
-        # Else: new_s = a * s + b
-        # where a = exp(μ_a + σ_a * randn()), b = exp(μ_b + σ_b * randn())
+    # Apply entry/exit rule
+    new_product = jnp.where(
+        current_product < model.s_bar,
+        product_entrant,
+        product_incumbent
+    )
 
-        # For the else branch, we need two random numbers
-        subkey, key1, key2 = random.split(subkey, 3)
-        rand_a = random.normal(key1)
-        rand_b = random.normal(key2)
-
-        # Calculate both possible new values
-        new_s_under_bar = jnp.exp(μ_e + σ_e * rand_normal)
-
-        a = jnp.exp(μ_a + σ_a * rand_a)
-        b = jnp.exp(μ_b + σ_b * rand_b)
-        new_s_over_bar = a * s + b
-
-        # Choose based on condition
-        new_s = jnp.where(s < s_bar, new_s_under_bar, new_s_over_bar)
-
-        return (new_s, subkey), new_s
-
-    # Initial state: (s_init, key)
-    init_carry = (s_init, key)
-
-    # Run the scan
-    final_carry, _ = jax.lax.scan(step_fn, init_carry, jnp.arange(T))
-
-    # Return final s value
-    return final_carry[0]
-
-
-generate_single_draw = jax.jit(generate_single_draw, static_argnums=(8,))
+    return new_product
 ```
 
-```{code-cell} ipython3
-# Use vmap to vectorize over the first argument (key)
-in_axes = [None] * 10
-in_axes[0] = 0
+Now we define a model container for parameters
 
-vectorized_single_draw = vmap(
-    generate_single_draw,
-    in_axes=in_axes,
-)
+```{code-cell} ipython3
+class FirmDynamicsModel(NamedTuple):
+    """Parameters for firm dynamics with entry/exit"""
+    μ_a: float = -0.5          # location parameter for log(a_t)
+    σ_a: float = 0.1           # scale parameter for log(a_t)
+    μ_b: float = 0.0           # location parameter for log(η_t)
+    σ_b: float = 0.5           # scale parameter for log(η_t)
+    μ_e: float = 0.0           # location parameter for log(e_t)
+    σ_e: float = 0.5           # scale parameter for log(e_t)
+    s_bar: float = 1.0         # exit threshold
 ```
 
+Now we generate multiple firm trajectories in parallel
+
 ```{code-cell} ipython3
-@jit
-def generate_draws(
-    seed=0,
-    μ_a=-0.5,
-    σ_a=0.1,
-    μ_b=0.0,
-    σ_b=0.5,
-    μ_e=0.0,
-    σ_e=0.5,
-    s_bar=1.0,
-    T=500,
-    M=1_000_000,
-    s_init=1.0,
-):
-    """
-    JAX-jit version of the generate_draws function.
-    Returns:
-        Array of M draws
-    """
-    # Create M different random keys for parallel execution
+def generate_firm_distribution(model, 
+                        seed=0, M=1_000_000, T=500, s_init=1.0):
+    """Generate distribution of firm productivities after T periods."""
+
+    # Create random keys for each firm
     key = random.PRNGKey(seed)
     keys = random.split(key, M)
 
-    draws = vectorized_single_draw(
-        keys, μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar, T, s_init
-    )
+    @jax.jit
+    def single_firm_path(firm_key):
+        # Generate path and return final productivity
+        path = generate_path(
+            firm_product_update,
+            initial_state=s_init,
+            num_steps=T,
+            model=model,
+            key=firm_key
+        )
+        return path[-1] 
 
-    return draws
+    # Apply to all firms in parallel
+    product_dist = vmap(single_firm_path)(keys)
+
+    return product_dist
+
+# Generate the data
+data = generate_firm_distribution(FirmDynamicsModel())
 ```
 
-```{code-cell} ipython3
-# Generate the observations
-data = generate_draws()
-```
-
-Now we produce the rank-size plot:
+Let's produce the rank-size plot
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
