@@ -81,7 +81,7 @@ The "linear" part of LQ is a linear law of motion for the state, while the "quad
 
 Let's begin with the former, move on to the latter, and then put them together into an optimization problem.
 
-### The Law of Motion
+### The law of motion
 
 Let $x_t$ be a vector describing the state of some economic system.
 
@@ -292,14 +292,14 @@ $$
 
 Under this specification, the household's current loss is the squared deviation of consumption from the ideal level $\bar c$.
 
-## Optimality -- Finite Horizon
+## Optimality -- finite horizon
 
 ```{index} single: LQ Control; Optimality (Finite Horizon)
 ```
 
 Let's now be precise about the optimization problem we wish to consider, and look at how to solve it.
 
-### The Objective
+### The objective
 
 We will begin with the finite horizon case, with terminal time $T \in \mathbb N$.
 
@@ -573,7 +573,7 @@ are wrapped in a class  called `LQ`, which includes
     * `compute_sequence` ---- simulates the dynamics of $x_t, u_t, w_t$ given $x_0$ and assuming standard normal shocks
 
 (lq_mfpa)=
-### An Application
+### An application
 
 Early Keynesian models assumed that households have a constant marginal
 propensity to consume from current income.
@@ -773,11 +773,11 @@ of assets in the middle periods to fund rising consumption.
 
 However, the essential features are the same: consumption is smooth relative to income, and assets are strongly positively correlated with cumulative unanticipated income.
 
-## Extensions and Comments
+## Extensions and comments
 
 Let's now consider a number of standard extensions to the LQ problem treated above.
 
-### Time-Varying Parameters
+### Time-varying parameters
 
 In some settings, it can be desirable to allow $A, B, C, R$ and $Q$ to depend on $t$.
 
@@ -792,7 +792,7 @@ One illustration is given {ref}`below <lq_nsi>`.
 For further examples and a more systematic treatment, see {cite}`HansenSargent2013`, section 2.4.
 
 (lq_cpt)=
-### Adding a Cross-Product Term
+### Adding a cross-product term
 
 In some LQ problems, preferences include a cross-product term $u_t^\top N x_t$, so that the objective function becomes
 
@@ -834,7 +834,7 @@ The sequence $\{d_t\}$ is unchanged from {eq}`lq_dd`.
 We leave interested readers to confirm these results (the calculations are long but not overly difficult).
 
 (lq_ih)=
-### Infinite Horizon
+### Infinite horizon
 
 ```{index} single: LQ Control; Infinite Horizon
 ```
@@ -902,7 +902,7 @@ The state evolves according to the time-homogeneous process $x_{t+1} = (A - BF) 
 An example infinite horizon problem is treated {ref}`below <lqc_mwac>`.
 
 (lq_cert_eq)=
-### Certainty Equivalence
+### Certainty equivalence
 
 Linear quadratic control problems of the class discussed above have the property of *certainty equivalence*.
 
@@ -912,10 +912,10 @@ This can be confirmed by inspecting {eq}`lq_oc_ih` or {eq}`lq_oc_cp`.
 
 It follows that we can ignore uncertainty when solving for optimal behavior, and plug it back in when examining optimal state dynamics.
 
-## Further Applications
+## Further applications
 
 (lq_nsi)=
-### Application 1: Age-Dependent Income Process
+### Application 1: Age-dependent income process
 
 {ref}`Previously <lq_mfpa>` we studied a permanent income model that generated consumption smoothing.
 
@@ -1042,7 +1042,7 @@ The asset path exhibits dynamics consistent with standard life cycle theory.
 {ref}`lqc_ex1` gives the full set of parameters used here and asks you to replicate the figure.
 
 (lq_nsi2)=
-### Application 2: A Permanent Income Model with Retirement
+### Application 2: A permanent income model with retirement
 
 In the {ref}`previous application <lq_nsi>`, we generated income dynamics with an inverted U shape using polynomials and placed them in an LQ framework.
 
@@ -1116,7 +1116,7 @@ in life followed by later saving.
 Assets peak at retirement and subsequently decline.
 
 (lqc_mwac)=
-### Application 3: Monopoly with Adjustment Costs
+### Application 3: Monopoly with adjustment costs
 
 Consider a monopolist facing stochastic inverse demand function
 
