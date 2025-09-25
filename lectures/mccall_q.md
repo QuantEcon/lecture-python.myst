@@ -491,124 +491,155 @@ The first column of the Q-table represents the value associated with rejecting t
 We use `numba` compilation to accelerate computations.
 
 ```{code-cell} ipython3
-params=[
-    ('c', float64),            # unemployment compensation
-    ('β', float64),            # discount factor
-    ('w', float64[:]),         # array of wage values, w[i] = wage at state i
-    ('q', float64[:]),         # array of probabilities
-    ('eps', float64),          # for epsilon greedy algorithm
-    ('δ', float64),            # Q-table threshold
-    ('lr', float64),           # the learning rate α
-    ('T', int64),              # maximum periods of accepting
-    ('quit_allowed', int64)    # whether quit is allowed after accepting the wage offer
-]
-
-@jitclass(params)
-class Qlearning_McCall:
-    def __init__(self, c=25, β=0.99, w=w_default, q=q_default, eps=0.1,
-                 δ=1e-5, lr=0.5, T=10000, quit_allowed=0):
-
-        self.c, self.β = c, β
-        self.w, self.q = w, q
-        self.eps, self.δ, self.lr, self.T = eps, δ, lr, T
-        self.quit_allowed = quit_allowed
+class QlearningMcCall(NamedTuple):
+    c: float                  # unemployment compensation
+    β: float                  # discount factor
+    w: jnp.ndarray            # array of wage values, w[i] = wage at state i
+    q: jnp.ndarray            # array of probabilities
+    eps: float                # for epsilon greedy algorithm
+    δ: float                  # Q-table threshold
+    lr: float                  # the learning rate α
+    T: int                    # maximum periods of accepting
+    quit_allowed: int          # whether quit is allowed after accepting the wage offer
 
 
-    def draw_offer_index(self):
-        """
-        Draw a state index from the wage distribution.
-        """
+def create_qlearning_mccall(c=25,
+                            β=0.99,
+                            w=w_default,
+                            q=q_default,
+                            eps=0.1,
+                            δ=1e-5,
+                            lr=0.5,
+                            T=10000,
+                            quit_allowed=0):
+    return QlearningMcCall(c=c,
+                           β=β,
+                           w=w,
+                           q=q,
+                           eps=eps,
+                           δ=δ,
+                           lr=lr,
+                           T=T,
+                           quit_allowed=quit_allowed)
 
-        q = self.q
-        return np.searchsorted(np.cumsum(q), np.random.random(), side="right")
 
-    def temp_diff(self, qtable, state, accept):
-        """
-        Compute the TD associated with state and action.
-        """
+@jax.jit
+def draw_offer_index(model, key):
+    """
+    Draw a state index from the wage distribution.
+    """
+    q = model.q
+    random_val = jax.random.uniform(key)
+    return jnp.searchsorted(jnp.cumsum(q), random_val, side="right")
 
-        c, β, w = self.c, self.β, self.w
 
-        if accept==0:
-            state_next = self.draw_offer_index()
-            TD = c + β*np.max(qtable[state_next, :]) - qtable[state, accept]
-        else:
-            state_next = state
-            if self.quit_allowed == 0:
-                TD = w[state_next] + β*np.max(qtable[state_next, :]) - qtable[state, accept]
-            else:
-                TD = w[state_next] + β*qtable[state_next, 1] - qtable[state, accept]
+@jax.jit
+def temp_diff(model, qtable, state, accept, key):
+    """
+    Compute the TD associated with state and action.
+    """
+    c, β, w = model.c, model.β, model.w
 
+    def reject_case():
+        state_next = draw_offer_index(model, key)
+        TD = c + β * jnp.max(qtable[state_next, :]) - qtable[state, accept]
         return TD, state_next
 
-    def run_one_epoch(self, qtable, max_times=20000):
-        """
-        Run an "epoch".
-        """
+    def accept_case():
+        state_next = state
+        TD = jnp.where(model.quit_allowed == 0,
+                       w[state_next] + β * jnp.max(qtable[state_next, :]) - qtable[state, accept],
+                       w[state_next] + β * qtable[state_next, 1] - qtable[state, accept])
+        return TD, state_next
 
-        c, β, w = self.c, self.β, self.w
-        eps, δ, lr, T = self.eps, self.δ, self.lr, self.T
+    return jax.lax.cond(accept == 0, reject_case, accept_case)
 
-        s0 = self.draw_offer_index()
-        s = s0
-        accept_count = 0
 
-        for t in range(max_times):
+@jax.jit
+def run_one_epoch(model, qtable, key, max_times=20000):
+    """Run an "epoch"."""
+    eps, δ, lr, T = model.eps, model.δ, model.lr, model.T
 
-            # choose action
-            accept = np.argmax(qtable[s, :])
-            if np.random.random()<=eps:
-                accept = 1 - accept
+    # Split keys for multiple random operations
+    key, subkey1, subkey2 = jax.random.split(key, 3)
 
-            if accept == 1:
-                accept_count += 1
-            else:
-                accept_count = 0
+    # Initial state
+    s0 = draw_offer_index(model, subkey1)
 
-            TD, s_next = self.temp_diff(qtable, s, accept)
+    def body_fun(state):
+        qtable, s, accept_count, t, key = state
 
-            # update qtable
-            qtable_new = qtable.copy()
-            qtable_new[s, accept] = qtable[s, accept] + lr*TD
+        # Split key for this iteration's random operations
+        key, action_key, td_key = jax.random.split(key, 3)
 
-            if np.max(np.abs(qtable_new-qtable))<=δ:
-                break
+        # Choose action (epsilon-greedy)
+        accept = jnp.argmax(qtable[s, :])
+        random_val = jax.random.uniform(action_key)
+        accept = jnp.where(random_val <= eps, 1 - accept, accept)
 
-            if accept_count == T:
-                break
+        # Update accept count
+        accept_count = jnp.where(accept == 1, accept_count + 1, 0)
 
-            s, qtable = s_next, qtable_new
+        # Compute temporal difference
+        TD, s_next = temp_diff(model, qtable, s, accept, td_key)
 
-        return qtable_new
+        # Update qtable
+        qtable_new = qtable.at[s, accept].add(lr * TD)
 
-@jit
-def run_epochs(N, qlmc, qtable):
+        # Calculate error
+        error = jnp.max(jnp.abs(qtable_new - qtable))
+
+        return qtable_new, s_next, accept_count, t + 1, key
+
+    def cond_fun(state):
+        qtable, s, accept_count, t, key = state
+        # for first interaction, just continue since error is large
+        # for subsequent interactions, compute actual error
+        error = jnp.where(t==0, δ + 1, jnp.max(jnp.abs(qtable - state[0])))
+
+        continue_condition = (error > δ) & (accept_count < T) & (t < max_times)
+        return continue_condition
+
+    # Initial state: (qtable, state, accept_count, iteration, key)
+    init_state = (qtable, s0, 0, 0, subkey2)
+    final_qtable, final_s, final_accept_count, final_t, final_key = jax.lax.while_loop(
+        cond_fun, body_fun, init_state
+    )
+
+    return final_qtable
+
+
+def run_epochs(N, qlmc, qtable, key):
     """
     Run epochs N times with qtable from the last iteration each time.
     """
-
     for n in range(N):
-        if n%(N/10)==0:
+        if n % (N // 10) == 0:
             print(f"Progress: EPOCHs = {n}")
-        new_qtable = qlmc.run_one_epoch(qtable)
-        qtable = new_qtable
+
+        # Split key for this epoch
+        key, subkey = jax.random.split(key)
+        qtable = run_one_epoch(qlmc, qtable, subkey)
 
     return qtable
 
+
 def valfunc_from_qtable(qtable):
-    return np.max(qtable, axis=1)
+    return jnp.max(qtable, axis=1)
+
 
 def compute_error(valfunc, valfunc_VFI):
-    return np.mean(np.abs(valfunc-valfunc_VFI))
+    return jnp.mean(jnp.abs(valfunc - valfunc_VFI))
 ```
 
 ```{code-cell} ipython3
 # create an instance of Qlearning_McCall
-qlmc = Qlearning_McCall()
+qlmc = create_qlearning_mccall()
 
 # run
-qtable0 = np.zeros((len(w_default), 2))
-qtable = run_epochs(20000, qlmc, qtable0)
+qtable0 = jnp.zeros((len(w_default), 2))
+key, subkey = jax.random.split(key)
+qtable = run_epochs(20000, qlmc, qtable0, subkey)
 ```
 
 ```{code-cell} ipython3
@@ -641,7 +672,7 @@ n, a, b = 30, 200, 100                        # default parameters
 q_new = BetaBinomial(n, a, b).pdf()           # default choice of q
 
 w_min, w_max = 10, 60
-w_new = np.linspace(w_min, w_max, n+1)
+w_new = jnp.linspace(w_min, w_max, n+1)
 
 
 # plot distribution of wage offer
@@ -651,47 +682,47 @@ ax.set_xlabel('wages')
 ax.set_ylabel('probabilities')
 
 plt.show()
-
-# VFI
-mcm = McCallModel(w=w_new, q=q_new)
-valfunc_VFI, flag = mcm.VFI()
 ```
 
 ```{code-cell} ipython3
-mcm = McCallModel(w=w_new, q=q_new)
-valfunc_VFI, flag = mcm.VFI()
+# VFI
+mcm = create_mccall_model(w=w_new, q=q_new)
+valfunc_VFI, flag = VFI(mcm)
 valfunc_VFI
 ```
 
 ```{code-cell} ipython3
-def plot_epochs(epochs_to_plot, quit_allowed=1):
-    "Plot value function implied by outcomes of an increasing number of epochs."
-    qlmc_new = Qlearning_McCall(w=w_new, q=q_new, quit_allowed=quit_allowed)
-    qtable = np.zeros((len(w_new),2))
-    epochs_to_plot = np.asarray(epochs_to_plot)
-    # plot
-    fig, ax = plt.subplots(figsize=(10,6))
-    ax.plot(w_new, valfunc_VFI, '-o', label='VFI')
+def plot_epochs(epochs_to_plot, quit_allowed=1, key=None):
+      "Plot value function implied by outcomes of an increasing number of epochs."
+      if key is None:
+          key = jax.random.PRNGKey(42)  # Default key if none provided
 
-    max_epochs = np.max(epochs_to_plot)
-    # iterate on epoch numbers
-    for n in range(max_epochs + 1):
-        if n%(max_epochs/10)==0:
-            print(f"Progress: EPOCHs = {n}")
-        if n in epochs_to_plot:
-            valfunc_qlr = valfunc_from_qtable(qtable)
-            error = compute_error(valfunc_qlr, valfunc_VFI)
+      qlmc_new = create_qlearning_mccall(w=w_new, q=q_new, quit_allowed=quit_allowed)
+      qtable = jnp.zeros((len(w_new),2))
+      epochs_to_plot = jnp.asarray(epochs_to_plot)
+      # plot
+      fig, ax = plt.subplots(figsize=(10,6))
+      ax.plot(w_new, valfunc_VFI, '-o', label='VFI')
 
-            ax.plot(w_new, valfunc_qlr, '-o', label=f'QL:epochs={n}, mean error={error}')
+      max_epochs = int(jnp.max(epochs_to_plot))  # Convert to Python int
+      # iterate on epoch numbers
+      for n in range(max_epochs + 1):
+          if n%(max_epochs/10)==0:
+              print(f"Progress: EPOCHs = {n}")
+          if n in epochs_to_plot:
+              valfunc_qlr = valfunc_from_qtable(qtable)
+              error = compute_error(valfunc_qlr, valfunc_VFI)
 
+              ax.plot(w_new, valfunc_qlr, '-o', label=f'QL:epochs={n}, mean error={error}')
 
-        new_qtable = qlmc_new.run_one_epoch(qtable)
-        qtable = new_qtable
+          # Split key for this epoch
+          key, subkey = jax.random.split(key)
+          qtable = run_one_epoch(qlmc_new, qtable, subkey)
 
-    ax.set_xlabel('wages')
-    ax.set_ylabel('optimal value')
-    ax.legend(loc='lower right')
-    plt.show()
+      ax.set_xlabel('wages')
+      ax.set_ylabel('optimal value')
+      ax.legend(loc='lower right')
+      plt.show()
 ```
 
 ```{code-cell} ipython3
