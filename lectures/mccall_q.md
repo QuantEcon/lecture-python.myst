@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.17.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -67,19 +67,22 @@ As usual, let's  import some Python modules.
 
 ```{code-cell} ipython3
 :tags: [hide-output]
+
 !pip install quantecon
 ```
 
 ```{code-cell} ipython3
-import numpy as np
-
-from numba import jit, float64, int64
-from numba.experimental import jitclass
+import jax
+import jax.numpy as jnp
+import matplotlib.pyplot as plt
+from typing import NamedTuple
 from quantecon.distributions import BetaBinomial
 
-import matplotlib.pyplot as plt
+# set random key for reproducibility
+key = jax.random.PRNGKey(123)
 
-np.random.seed(123)
+# set jax to use CPU
+jax.config.update('jax_platform_name', 'cpu')
 ```
 
 ## Review of McCall Model
