@@ -133,7 +133,7 @@ n, a, b = 10, 200, 100                        # default parameters
 q_default = BetaBinomial(n, a, b).pdf()       # default choice of q
 
 w_min, w_max = 10, 60
-w_default = np.linspace(w_min, w_max, n+1)
+w_default = jnp.linspace(w_min, w_max, n+1)
 
 # plot distribution of wage offer
 fig, ax = plt.subplots(figsize=(10,6))
@@ -149,81 +149,78 @@ Next we'll compute the worker's optimal value function by iterating to convergen
 Then we'll plot various iterates on the Bellman operator.
 
 ```{code-cell} ipython3
-mccall_data = [
-    ('c', float64),      # unemployment compensation
-    ('β', float64),      # discount factor
-    ('w', float64[::1]),  # array of wage values, w[i] = wage at state i
-    ('q', float64[::1])   # array of probabilities
-]
+class McCallModel(NamedTuple):
+      c: float              # unemployment compensation
+      β: float              # discount factor
+      w: jnp.ndarray        # array of wage values, w[i] = wage at state i
+      q: jnp.ndarray        # array of probabilities
 
+def create_mccall_model(c=25, β=0.99, w=w_default, q=q_default):
+      return McCallModel(c=c, β=β, w=w, q=q)
 
-@jitclass(mccall_data)
-class McCallModel:
+@jax.jit
+def state_action_values(model, i, v):
+      """The values of state-action pairs."""
+      # Unpack model parameters
+      c, β, w, q = model.c, model.β, model.w, model.q
+      # Evaluate value for each state-action pair
+      # Consider action = accept or reject the current offer
+      accept = w[i] / (1 - β)
+      reject = c + β * (v @ q)
+      return jnp.array([accept, reject])
 
-    def __init__(self, c=25, β=0.99, w=w_default, q=q_default):
+@jax.jit
+def VFI(model, eps=1e-5, max_iter=500):
+      """Find the optimal value function."""
+      n = len(model.w)
+      v_init = model.w / (1 - model.β)
 
-        self.c, self.β = c, β
-        self.w, self.q = w, q
+      def body_fun(state):
+          v, i, error = state
+          v_next = jnp.empty_like(v)
 
-    def state_action_values(self, i, v):
-        """
-        The values of state-action pairs.
-        """
-        # Simplify names
-        c, β, w, q = self.c, self.β, self.w, self.q
-        # Evaluate value for each state-action pair
-        # Consider action = accept or reject the current offer
-        accept = w[i] / (1 - β)
-        reject = c + β * (v @ q)
+          # Update all elements of v_next
+          for j in range(n):
+              v_next = v_next.at[j].set(jnp.max(state_action_values(model, j, v)))
 
-        return np.array([accept, reject])
+          error = jnp.max(jnp.abs(v_next - v))
+          return v_next, i + 1, error
 
-    def VFI(self, eps=1e-5, max_iter=500):
-        """
-        Find the optimal value function.
-        """
+      def cond_fun(state):
+          v, i, error = state
+          return (error > eps) & (i < max_iter)
 
-        n = len(self.w)
-        v = self.w / (1 - self.β)
-        v_next = np.empty_like(v)
-        flag=0
+      # Initial state: (v, iteration, error)
+      init_state = (v_init, 0, eps + 1)
+      final_v, final_i, final_error = jax.lax.while_loop(cond_fun, body_fun, init_state)
 
-        for i in range(max_iter):
-            for j in range(n):
-                v_next[j] = np.max(self.state_action_values(j, v))
-
-            if np.max(np.abs(v_next - v))<=eps:
-                flag=1
-                break
-            v[:] = v_next
-
-        return v, flag
+      flag = jnp.where(final_error <= eps, 1, 0)
+      return final_v, flag
 
 def plot_value_function_seq(mcm, ax, num_plots=8):
-    """
-    Plot a sequence of value functions.
+      """
+      Plot a sequence of value functions.
 
-        * mcm is an instance of McCallModel
-        * ax is an axes object that implements a plot method.
+          * mcm is an instance of McCallModel
+          * ax is an axes object that implements a plot method.
 
-    """
+      """
+      n = len(mcm.w)
+      v = mcm.w / (1 - mcm.β)
+      v_next = jnp.empty_like(v)
+      for i in range(num_plots):
+          ax.plot(mcm.w, v, '-', alpha=0.4, label=f"iterate {i}")
+          # Update guess
+          for j in range(n):  # changed variable name to avoid conflict
+              v_next = v_next.at[j].set(jnp.max(state_action_values(mcm, j, v)))
+          v = v_next # handling immutability
 
-    n = len(mcm.w)
-    v = mcm.w / (1 - mcm.β)
-    v_next = np.empty_like(v)
-    for i in range(num_plots):
-        ax.plot(mcm.w, v, '-', alpha=0.4, label=f"iterate {i}")
-        # Update guess
-        for i in range(n):
-            v_next[i] = np.max(mcm.state_action_values(i, v))
-        v[:] = v_next  # copy contents into v
-
-    ax.legend(loc='lower right')
+      ax.legend(loc='lower right')
 ```
 
 ```{code-cell} ipython3
-mcm = McCallModel()
-valfunc_VFI, flag = mcm.VFI()
+mcm = create_mccall_model()
+valfunc_VFI, flag = VFI(mcm)
 
 fig, ax = plt.subplots(figsize=(10,6))
 ax.set_xlabel('wage')
