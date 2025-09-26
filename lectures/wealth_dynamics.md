@@ -271,7 +271,7 @@ class WealthDynamics(NamedTuple):
     w_hat: float = 1.0    # savings parameter
     s_0: float = 0.75     # savings parameter
     c_y: float = 1.0      # labor income parameter
-    μ_y: float = 1.0      # labor income parameter  
+    μ_y: float = 1.0      # labor income parameter
     σ_y: float = 0.2      # labor income parameter
     c_r: float = 0.05     # rate of return parameter
     μ_r: float = 0.1      # rate of return parameter
@@ -484,7 +484,7 @@ for μ_r in μ_r_vals:
     
     model, z_mean, z_var, y_mean, R_mean = create_wealth_dynamics_model(μ_r=μ_r)
     gv, (f_vals, l_vals) = generate_lorenz_and_gini(model, z_mean, z_var, y_mean, key=subkey)
-    ax.plot(f_vals, l_vals, label=fr'$\psi^*$ at $\mu_r = {μ_r:0.2}$')
+    ax.plot(f_vals, l_vals, label=fr'$\mu_r = {μ_r:0.3f}$')
     gini_vals.append(gv)
 
 ax.plot(f_vals, f_vals, label='equality')
@@ -531,7 +531,7 @@ for σ_r in σ_r_vals:
     
     model, z_mean, z_var, y_mean, R_mean = create_wealth_dynamics_model(σ_r=σ_r)
     gv, (f_vals, l_vals) = generate_lorenz_and_gini(model, z_mean, z_var, y_mean, key=subkey)
-    ax.plot(f_vals, l_vals, label=fr'$\psi^*$ at $\sigma_r = {σ_r:0.2}$')
+    ax.plot(f_vals, l_vals, label=fr'$\sigma_r = {σ_r:0.2f}$')
     gini_vals.append(gv)
 
 ax.plot(f_vals, f_vals, label='equality')
