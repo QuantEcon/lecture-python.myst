@@ -59,7 +59,7 @@ It also gives us a way to quantify such concentration, in terms of the tail inde
 
 One question of interest is whether or not we can replicate Pareto tails from a relatively simple model.
 
-### A Note on Assumptions
+### A note on assumptions
 
 The evolution of wealth for any given household depends on their
 savings behavior.
@@ -190,7 +190,7 @@ plt.show()
 
 The simulation shows that the fit is good.
 
-## A Model of Wealth Dynamics
+## A model of wealth dynamics
 
 Having discussed inequality measures, let us now turn to wealth dynamics.
 
@@ -415,7 +415,7 @@ aggregate state is known.
 Let's try simulating the model at different parameter values and investigate
 the implications for the wealth distribution.
 
-### Time Series
+### Time series
 
 Let's look at the wealth dynamics of an individual household.
 
@@ -435,7 +435,7 @@ Notice the large spikes in wealth over time.
 
 Such spikes are similar to what we observed in time series when {doc}`we studied Kesten processes <kesten_processes>`.
 
-### Inequality Measures
+### Inequality measures
 
 Let's look at how inequality varies with returns on financial assets.
 
