@@ -361,32 +361,9 @@ def update_states(wdy, w, z, key):
     return wp, zp, key
 ```
 
-We will use a general function for generating time series in an efficient JAX-compatible manner.
+We will use a specialized function to generate time series in an efficient JAX-compatible manner.
 
 ```{code-cell} ipython3
-@partial(jax.jit, static_argnames=['n'])
-def generate_path(f, initial_state, n, key, **kwargs):
-    """
-    Generate a time series by repeatedly applying an update rule.
-    
-    Args:
-        f: Update function with signature (state, t, key, **kwargs) -> (new_state, new_key)
-        initial_state: Initial state
-        n: Number of time steps to simulate
-        key: Initial JAX random key
-        **kwargs: Extra arguments passed to f
-        
-    Returns:
-        Array of shape (dim(state), n) containing the time series path
-    """
-    def update_wrapper(carry, t):
-        state, key = carry
-        new_state, new_key = f(state, t, key, **kwargs)
-        return (new_state, new_key), state
-    
-    _, path = jax.lax.scan(update_wrapper, (initial_state, key), jnp.arange(n))
-    return path
-
 def wealth_time_series_step(state, t, key, wdy):
     """
     Single time step for wealth time series simulation.
@@ -404,7 +381,7 @@ def wealth_time_series_step(state, t, key, wdy):
     wp, zp, new_key = update_states(wdy, w, z, key)
     return ((wp, zp), new_key)
 
-@jax.jit
+@partial(jax.jit, static_argnames=['n'])
 def wealth_time_series(wdy, w_0, n, key):
     """
     Generate a single time series of length n for wealth given
@@ -424,9 +401,13 @@ def wealth_time_series(wdy, w_0, n, key):
     """
     key, subkey = jax.random.split(key)
     z_0 = wdy.z_mean + jnp.sqrt(wdy.z_var) * jax.random.normal(subkey)
-    initial_state = (w_0, z_0)
     
-    path = generate_path(wealth_time_series_step, initial_state, n, key, wdy=wdy)
+    def update_wrapper(carry, t):
+        state, key = carry
+        new_state, new_key = wealth_time_series_step(state, t, key, wdy)
+        return (new_state, new_key), state
+    
+    _, path = jax.lax.scan(update_wrapper, ((w_0, z_0), key), jnp.arange(n))
     return path[0]  # Return only wealth component
 ```
 
@@ -435,7 +416,7 @@ Now here's function to simulate a cross section of households forward in time.
 Note the use of JAX vectorization to speed up computation.
 
 ```{code-cell} ipython3
-@jax.jit
+@partial(jax.jit, static_argnames=['shift_length'])
 def update_cross_section(wdy, w_distribution, shift_length=500, key=None):
     """
     Shifts a cross-section of households forward in time using JAX vectorization.
@@ -463,7 +444,7 @@ def update_cross_section(wdy, w_distribution, shift_length=500, key=None):
     z_init = (wdy.z_mean + 
               jnp.sqrt(wdy.z_var) * jax.random.normal(subkey, (num_households,)))
     
-    # Create initial state array
+    # Create initial state array [wealth, z]
     initial_states = jnp.column_stack([w_distribution, z_init])
     
     def update_household(carry, t):
@@ -473,9 +454,12 @@ def update_cross_section(wdy, w_distribution, shift_length=500, key=None):
         subkeys = jnp.array(subkeys)
         
         # Vectorized update for all households
-        new_states = jax.vmap(lambda state, k: update_states(wdy, state[0], state[1], k)[:2])(
-            states, subkeys)
-        new_states = jnp.array(new_states)
+        def single_household_update(state, k):
+            w, z = state
+            wp, zp, _ = update_states(wdy, w, z, k)  # Ignore returned key
+            return jnp.array([wp, zp])
+        
+        new_states = jax.vmap(single_household_update)(states, subkeys)
         
         return (new_states, key), None
     
@@ -538,7 +522,9 @@ def generate_lorenz_and_gini(wdy, num_households=100_000, T=500, key=None):
     ψ_0 = jnp.full(num_households, wdy.y_mean)
     
     ψ_star = update_cross_section(wdy, ψ_0, shift_length=T, key=key)
-    return qe.gini_coefficient(ψ_star), qe.lorenz_curve(ψ_star)
+    # Convert JAX array to numpy for quantecon functions
+    ψ_star_np = np.array(ψ_star)
+    return qe.gini_coefficient(ψ_star_np), qe.lorenz_curve(ψ_star_np)
 ```
 
 Now we investigate how the Lorenz curves associated with the wealth distribution change as return to savings varies.
@@ -549,7 +535,7 @@ If you are running this yourself, note that it will take one or two minutes to e
 
 This is unavoidable because we are executing a CPU intensive task.
 
-In fact the code, which is JIT compiled and parallelized, runs extremely fast relative to the number of computations.
+In fact the code, which is JIT compiled by JAX and vectorized, runs extremely fast relative to the number of computations.
 
 ```{code-cell} ipython3
 %%time
@@ -575,7 +561,7 @@ We will look at this again via the Gini coefficient immediately below, but
 first consider the following image of our system resources when the code above
 is executing:
 
-Since the code is both efficiently JIT compiled and fully parallelized, it's
+Since the code is both efficiently JIT compiled by JAX and fully vectorized, it's
 close to impossible to make this sequence of tasks run faster without changing
 hardware.
 
@@ -729,7 +715,9 @@ Now let's see the rank-size plot:
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 
-rank_data, size_data = qe.rank_size(ψ_star, c=0.001)
+# Convert JAX array to numpy for quantecon functions
+ψ_star_np = np.array(ψ_star)
+rank_data, size_data = qe.rank_size(ψ_star_np, c=0.001)
 ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5)
 ax.set_xlabel("log rank")
 ax.set_ylabel("log size")
