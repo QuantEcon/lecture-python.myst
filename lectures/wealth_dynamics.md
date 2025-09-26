@@ -604,8 +604,9 @@ generate a rank-size plot.
 
 If you like, you can use the function `rank_size` from the `quantecon` library (documentation [here](https://quanteconpy.readthedocs.io/en/latest/tools/inequality.html#quantecon.inequality.rank_size)).
 
-In viewing the plot, remember that Pareto tails generate a straight line.  Is
-this what you see?
+In viewing the plot, remember that Pareto tails generate a straight line.
+
+Is this what you see?
 
 For sample size and initial conditions, use
 
