@@ -1,0 +1,575 @@
+# QuantEcon Style Guide Rules Database
+# Structured YAML format for programmatic access
+
+metadata:
+  title: "QuantEcon Style Guide Rules Database"
+  version: "2.0"
+  last_updated: "2025-09-15"
+  total_rules: 51
+  categories: 10
+  source_documents:
+    - "quantecon_review_instructions.md"
+    - "https://manual.quantecon.org"
+
+rule_categories:
+  - writing
+  - titles
+  - formatting
+  - mathematics
+  - code
+  - jax
+  - exercises
+  - references
+  - index
+  - binary_packages
+  - environment
+
+priority_levels:
+  critical: "Rules that cause build failures or break functionality"
+  mandatory: "Rules that must be followed for consistency"
+  best_practice: "Recommended approaches for quality"
+  preference: "Style choices when options exist"
+
+rules:
+  # Writing Rules
+  qe-writing-001:
+    title: "Clarity and Brevity"
+    category: "writing"
+    type: "general_principle"
+    priority: "best_practice"
+    rule: "Keep writing clear and short. The value of the lecture = (importance and clarity of information) ÷ (number of words)."
+    
+  qe-writing-002:
+    title: "One-Sentence Paragraphs"
+    category: "writing"
+    type: "mandatory"
+    priority: "critical"
+    rule: "Use one sentence paragraphs only. Each paragraph must contain exactly one sentence."
+    status: "Critical requirement"
+    
+  qe-writing-003:
+    title: "Short Sentences"
+    category: "writing"
+    type: "best_practice"
+    priority: "best_practice"
+    rule: "Keep those one-sentence paragraphs short and clear. Avoid complex, multi-clause sentences when possible."
+    
+  qe-writing-004:
+    title: "Logical Flow"
+    category: "writing"
+    type: "best_practice"
+    priority: "best_practice"
+    rule: "Ensure logical flow without jumps. Choose carefully what to pay attention to and minimize distractions."
+    
+  qe-writing-005:
+    title: "Simplicity Preference"
+    category: "writing"
+    type: "preference"
+    priority: "preference"
+    rule: "If you have a choice between two reasonable options, always pick the simplest one."
+    
+  qe-writing-006:
+    title: "Capitalization - General"
+    category: "writing"
+    type: "capitalization"
+    priority: "best_practice"
+    rule: "Don't capitalize words unless you need to (proper nouns, beginning of sentences, or as specified in rules below)."
+    
+  qe-writing-007:
+    title: "Mathematical Symbol Choice"
+    category: "writing"
+    type: "symbol_preference"
+    priority: "preference"
+    rule: "Use 𝒫 instead of P when you have the option to choose freely in mathematical notation."
+    
+  qe-writing-008:
+    title: "Visual Presentation"
+    category: "writing"
+    type: "formatting"
+    priority: "best_practice"
+    rule: "Good lectures look good and use colors and layout to emphasize ideas. Ensure proper formatting for readability."
+
+  # Title Rules
+  qe-title-001:
+    title: "Lecture Titles"
+    category: "titles"
+    type: "capitalization"
+    priority: "mandatory"
+    rule: "Capitalize ALL words in lecture titles."
+    examples:
+      correct: "How it Works: Data, Variables and Names"
+      incorrect: "How it works: data, variables and names"
+      
+  qe-title-002:
+    title: "Section/Subsection Headings"
+    category: "titles"
+    type: "capitalization"
+    priority: "mandatory"
+    rule: "Capitalize ONLY the first word and proper nouns in all other headings (sections, subsections, etc.)."
+    examples:
+      correct: 
+        - "Binary packages with Python frontends"
+        - "Adding a new reference to QuantEcon"
+      incorrect: "Binary Packages with Python Frontends"
+
+  # Formatting Rules
+  qe-format-001:
+    title: "Definitions"
+    category: "formatting"
+    type: "text_emphasis"
+    priority: "mandatory"
+    rule: "Use **bold** for definitions."
+    example: "A **closed set** is a set whose complement is open."
+    
+  qe-format-002:
+    title: "Emphasis"
+    category: "formatting"
+    type: "text_emphasis"
+    priority: "mandatory"
+    rule: "Use *italic* for emphasis."
+    example: "All consumers have *identical* endowments."
+    
+  qe-format-003:
+    title: "Jupyter Book Theme"
+    category: "formatting"
+    type: "technical_requirement"
+    priority: "best_practice"
+    rule: "Lectures are powered by Jupyter Book with the theme quantecon-book-theme. Adhere to conventions for best results."
+
+  # Mathematical Notation Rules
+  qe-math-001:
+    title: "Transpose Notation"
+    category: "mathematics"
+    type: "mandatory"
+    priority: "mandatory"
+    rule: "Use `\\top` (renders as ⊤) to represent the transpose of a vector or matrix."
+    examples:
+      correct: "A⊤ using `\\top`"
+      incorrect: 
+        - "A'"
+        - "AT"
+        - "A^T"
+        
+  qe-math-002:
+    title: "Vectors/Matrices of Ones"
+    category: "mathematics"
+    type: "notation_standard"
+    priority: "mandatory"
+    rule: "Use `\\mathbb{1}` (renders as 𝟙) to represent a vector or matrix of ones. Always explain it in the lecture."
+    example: "Let 𝟙 be an n × 1 vector of ones..."
+    
+  qe-math-003:
+    title: "Matrix Brackets"
+    category: "mathematics"
+    type: "mandatory"
+    priority: "mandatory"
+    rule: "Matrices ALWAYS use square brackets with `\\begin{bmatrix}...\\end{bmatrix}`."
+    forbidden: "Never use parentheses `\\begin{pmatrix}` for matrices"
+    
+  qe-math-004:
+    title: "No Bold Face"
+    category: "mathematics"
+    type: "formatting_restriction"
+    priority: "mandatory"
+    rule: "Do NOT use bold face for either matrices or vectors."
+    examples:
+      incorrect: ["**A**", "**x**"]
+      correct: ["A", "x"]
+      
+  qe-math-005:
+    title: "Sequence Notation"
+    category: "mathematics"
+    type: "notation_standard"
+    priority: "mandatory"
+    rule: "Sequences use curly brackets: `\\{x_t\\}_{t=0}^{\\infty}`"
+    examples:
+      incorrect: ["(x_t)", "[x_t]"]
+      
+  qe-math-006:
+    title: "Aligned Environment"
+    category: "mathematics"
+    type: "critical"
+    priority: "critical"
+    rule: "Use `\\begin{aligned}...\\end{aligned}` when inside a `$$` math environment."
+    note: "Prevents LaTeX build failure"
+    forbidden: "Never use `\\begin{align}` inside `$$`"
+    
+  qe-math-007:
+    title: "Equation Numbering"
+    category: "mathematics"
+    type: "technical_requirement"
+    priority: "mandatory"
+    rule: "Do NOT use `\\tag` for manual equation numbering. Use built-in equation numbering with `$$ equation $$ (label)` format."
+    reference_syntax: "Use `{eq}\\`label\\`` for referencing"
+
+  # Code Style Rules
+  qe-code-001:
+    title: "PEP8 Compliance"
+    category: "code"
+    type: "style_standard"
+    priority: "best_practice"
+    rule: "Follow PEP8 unless there's a good reason to do otherwise (e.g., to match mathematical notation)."
+    
+  qe-code-002:
+    title: "Matrix Capitalization"
+    category: "code"
+    type: "exception_to_pep8"
+    priority: "best_practice"
+    rule: "It's acceptable to use capitals for matrices to match mathematical notation."
+    
+  qe-code-003:
+    title: "Operator Spacing"
+    category: "code"
+    type: "formatting"
+    priority: "best_practice"
+    rule: "Operators are typically surrounded by spaces: `a * b`, `a + b`. Exception: Write `a**b` for exponentiation (no spaces)."
+    
+  qe-code-004:
+    title: "Unicode Greek Letters"
+    category: "code"
+    type: "mandatory"
+    priority: "mandatory"
+    rule: "Prefer Unicode symbols for Greek letters commonly used in economics."
+    mappings:
+      α: "alpha"
+      β: "beta"
+      γ: "gamma"
+      δ: "delta"
+      ε: "epsilon"
+      σ: "sigma"
+      θ: "theta"
+      ρ: "rho"
+      
+  qe-code-005:
+    title: "Package Installation"
+    category: "code"
+    type: "technical_requirement"
+    priority: "mandatory"
+    rule: "QuantEcon lectures should run in a base Anaconda installation. Any non-Anaconda packages must be installed at the top of the lecture. Use `tags: [hide-output]` when output is not central."
+    example: "!pip install quantecon yfinance --quiet"
+    exceptions:
+      - "Hardware-specific configuration (e.g., GPU computing)"
+      - "Additional system software via apt or binary sources"
+    guiding_principle: "Base Anaconda installation compatibility"
+    
+  qe-code-006:
+    title: "Performance Timing"
+    category: "code"
+    type: "performance"
+    priority: "mandatory"
+    rule: "Use modern `qe.Timer()` context manager, NOT manual timing patterns."
+    examples:
+      correct: "with qe.Timer(): result = computation()"
+      incorrect: "Using `time.time()` manually or `tic/tac/toc` functions"
+    advanced_usage:
+      - "Custom messages: `with qe.Timer('Computing eigenvalues', unit='milliseconds'):`"
+      - "Silent mode: `timer = qe.Timer(silent=True); with timer: ...; elapsed = timer.elapsed`"
+      - "Precision control: `with qe.Timer('Operation', precision=8):`"
+      
+  qe-code-007:
+    title: "Timer Context Manager Features"
+    category: "code"
+    type: "performance_measurement"
+    priority: "best_practice"
+    rule: "Leverage Timer context manager's advanced features for different use cases."
+    features:
+      - "Basic timing with automatic output"
+      - "Custom messages and units (milliseconds, microseconds)"
+      - "Silent mode for performance comparisons"
+      - "Precision control for output"
+      - "Exception safety (works correctly when exceptions occur)"
+      
+  qe-code-008:
+    title: "Legacy Timing Migration"
+    category: "code"
+    type: "migration_requirement"
+    priority: "best_practice"
+    rule: "Replace legacy `tic/tac/toc` patterns with `qe.Timer()` context manager."
+    examples:
+      legacy: "tic(); computation(); toc()"
+      modern: "with qe.Timer(): computation()"
+    note: "Legacy functions remain for backward compatibility but should not be used in new code"
+
+  # Environment Rules
+  qe-env-001:
+    title: "QuantEcon Environment Setup"
+    category: "environment"
+    type: "configuration_requirement"
+    priority: "critical"
+    rule: "Use the official QuantEcon environment.yml file for consistent development environment setup."
+    location: "https://raw.githubusercontent.com/QuantEcon/.github/main/environment.yml"
+    commands:
+      setup: "conda env create -f environment.yml"
+      activate: "conda activate quantecon"
+      
+  qe-env-002:
+    title: "Apple M1/M2 Additional Setup"
+    category: "environment"
+    type: "platform_specific_requirement"
+    priority: "critical"
+    rule: "For Apple arm64 processors (M1/M2), additional setup steps are required before environment creation."
+    prerequisites:
+      - "Install M1/M2 version of Anaconda Python"
+      - "Install homebrew"
+      - "Run `brew install cbc pkg-config`"
+      
+  qe-env-003:
+    title: "Environment Management"
+    category: "environment"
+    type: "maintenance_procedure"
+    priority: "best_practice"
+    rule: "Use proper conda environment management commands for updates and maintenance."
+    commands:
+      update: "conda env update --file environment.yml --prune"
+      remove: "conda env remove -n quantecon"
+      fresh_install: "Remove then recreate environment"
+
+  # JAX-Specific Rules
+  qe-jax-001:
+    title: "No JAX Installation"
+    category: "jax"
+    type: "installation_restriction"
+    priority: "mandatory"
+    rule: "Do NOT install JAX at the top of lectures. It may install `jax[cpu]` which is not optimal."
+    
+  qe-jax-002:
+    title: "GPU Admonition"
+    category: "jax"
+    type: "documentation_requirement"
+    priority: "mandatory"
+    rule: "When using JAX with GPU, include the standard GPU admonition warning about hardware acceleration."
+    template: "Use the specific admonition block with `:class: warning` that mentions hardware acceleration, Google Colab, and local GPU installation options"
+    content_requirements:
+      - "References to free GPUs on Google Colab"
+      - "Runtime environment setup instructions"
+      - "Local GPU installation instructions"
+      
+  qe-jax-003:
+    title: "Functional Programming - No Mutation"
+    category: "jax"
+    type: "mandatory"
+    priority: "mandatory"
+    rule: "Functions should NOT modify their inputs. Return new data instead."
+    examples:
+      incorrect: "state[0] += shock"
+      correct: "state.at[0].add(shock)"
+      
+  qe-jax-004:
+    title: "Pure Functions"
+    category: "jax"
+    type: "programming_principle"
+    priority: "mandatory"
+    rule: "Functions should be deterministic with no side effects."
+    
+  qe-jax-005:
+    title: "Model Structure Pattern"
+    category: "jax"
+    type: "architecture_pattern"
+    priority: "best_practice"
+    rule: "Replace classes with: 1) NamedTuple for storing primitives, 2) Factory functions for creating instances, 3) Collections of pure functions for computations."
+    
+  qe-jax-006:
+    title: "No jitclass"
+    category: "jax"
+    type: "replacement_rule"
+    priority: "mandatory"
+    rule: "Eliminate `jitclass` - use simple `NamedTuple` instead."
+    
+  qe-jax-007:
+    title: "NumPy to JAX Conversion"
+    category: "jax"
+    type: "migration_rule"
+    priority: "mandatory"
+    rule: "Convert NumPy patterns to JAX equivalents."
+    conversions:
+      import: 
+        correct: "import jax.numpy as jnp"
+        incorrect: "numpy as np"
+      array_creation:
+        correct: "jnp.zeros(10)"
+        incorrect: "np.zeros(10)"
+      functional_updates:
+        correct: "arr.at[0].set(5)"
+        incorrect: "arr[0] = 5"
+        
+  qe-jax-008:
+    title: "Loop Patterns"
+    category: "jax"
+    type: "performance_optimization"
+    priority: "best_practice"
+    rule: "Replace explicit loops with JAX constructs."
+    options:
+      - "Use `jax.lax.scan` when collecting intermediate results"
+      - "Use `jax.lax.fori_loop` for simple fixed-iteration loops"
+      - "Use `jax.lax.while_loop` for conditional loops"
+      
+  qe-jax-009:
+    title: "Random Number Generation"
+    category: "jax"
+    type: "random_number_handling"
+    priority: "mandatory"
+    rule: "Use JAX random with explicit key management."
+    example: |
+      import jax.random as jr
+      key = jr.PRNGKey(42)
+      shocks = jr.normal(key, (100,))
+      
+  qe-jax-010:
+    title: "JAX Transformations"
+    category: "jax"
+    type: "optimization"
+    priority: "best_practice"
+    rule: "Leverage JAX transformations for performance and functionality."
+    options:
+      - "Use `@jax.jit` for compilation"
+      - "Use `vmap` for vectorization"
+      - "Use `grad` for automatic differentiation"
+
+  # Exercise Rules
+  qe-exercise-001:
+    title: "Gated Syntax Usage"
+    category: "exercises"
+    type: "technical_requirement"
+    priority: "mandatory"
+    rule: "Use gated syntax (`exercise-start`/`exercise-end`) whenever exercise uses executable code cells or nested directives."
+    
+  qe-exercise-002:
+    title: "Solution Dropdown"
+    category: "exercises"
+    type: "ui_convention"
+    priority: "best_practice"
+    rule: "Use `:class: dropdown` for solutions by default."
+    
+  qe-exercise-003:
+    title: "Exercise-Solution Pairing"
+    category: "exercises"
+    type: "mandatory"
+    priority: "critical"
+    rule: "Each exercise admonition MUST be paired with a solution admonition."
+    
+  qe-exercise-004:
+    title: "PDF Compatibility"
+    category: "exercises"
+    type: "technical_requirement"
+    priority: "mandatory"
+    rule: "For PDF builds, use `image` directive (not `figure` directive) when inside another directive like exercise."
+    
+  qe-exercise-005:
+    title: "Nested Directives - Tick Count"
+    category: "exercises"
+    type: "syntax_requirement"
+    priority: "mandatory"
+    rule: "When using tick count management (for non-exercise directives): Inner directive uses 3 ticks (```), Outer directive uses 4 ticks (````)."
+    
+  qe-exercise-006:
+    title: "Directive Support"
+    category: "exercises"
+    type: "technical_specification"
+    priority: "mandatory"
+    rule: "Different directive types support different syntax methods."
+    details:
+      exercise_solution: "Support both tick count AND gated syntax"
+      prf_directives: "Only tick count management (proof, theorem, etc.)"
+      standard_myst: "Only tick count management"
+
+  # Reference Rules
+  qe-ref-001:
+    title: "Citations"
+    category: "references"
+    type: "citation_format"
+    priority: "mandatory"
+    rule: "Use the cite role: `{cite}\\`bibtex-label\\``"
+    example: "`{cite}\\`StokeyLucas1989\\``"
+    
+  qe-ref-002:
+    title: "Adding References"
+    category: "references"
+    type: "file_management"
+    priority: "mandatory"
+    rule: "New references must be added to `<repo>/lectures/_static/quant-econ.bib`"
+    
+  qe-ref-003:
+    title: "Internal Links"
+    category: "references"
+    type: "linking_convention"
+    priority: "best_practice"
+    rule: "For same lecture series: Use standard markdown links `[text](filename)`. Leave text blank to use page title."
+    example: "`[](figures)`"
+    
+  qe-ref-004:
+    title: "Cross-Series Links"
+    category: "references"
+    type: "cross_reference"
+    priority: "best_practice"
+    rule: "For different lecture series: Use `{doc}` links with intersphinx."
+    example: "`{doc}\\`intro:linear_equations\\``"
+
+  # Index Rules
+  qe-index-001:
+    title: "Inline Index Entries"
+    category: "index"
+    type: "simple_indexing"
+    priority: "best_practice"
+    rule: "Use `:index:` for unchanged keywords."
+    example: "`{index}\\`bellman equation\\``"
+    
+  qe-index-002:
+    title: "Index Directives"
+    category: "index"
+    type: "complex_indexing"
+    priority: "best_practice"
+    rule: "Use directives for complex arrangements or nested entries."
+    example: "```{index} single: Dynamic Programming; Bellman Equation"
+    
+  qe-index-003:
+    title: "Case Sensitivity"
+    category: "index"
+    type: "consistency_requirement"
+    priority: "best_practice"
+    rule: "Index items are case sensitive - maintain consistency."
+
+  # Binary Package Rules
+  qe-binary-001:
+    title: "graphviz Package"
+    category: "binary_packages"
+    type: "installation_procedure"
+    priority: "best_practice"
+    rule: "If using graphviz: 1) Install with `pip install graphviz` at lecture top, 2) Check `.github/workflows/ci.yml` for preview builds, 3) Add note admonition about local installation requirements."
+    context: "graphviz is a Python interface to local graphviz installation for rendering DOT source code"
+    
+  qe-binary-002:
+    title: "Binary Package Documentation"
+    category: "binary_packages"
+    type: "documentation_requirement"
+    priority: "best_practice"
+    rule: "When using binary packages with Python frontends, add explanatory note admonitions about local installation requirements."
+    purpose: "Helps users understand additional system-level dependencies"
+
+# Rule Application Template
+rule_application:
+  format: "According to [rule-id] ([Rule Category] Rule #[Number]): '[exact rule text]' - Current: '[current text]' should be '[proposed text]' because [reason]."
+  example: "According to qe-title-002 (Title Rule #2): 'Capitalize ONLY the first word and proper nouns in all other headings' - Current: 'The Algorithm' should be 'The algorithm' because 'Algorithm' is not a proper noun."
+
+# Priority Classifications
+critical_rules:
+  - qe-writing-002  # One-sentence paragraphs
+  - qe-math-006     # Aligned environment
+  - qe-exercise-003 # Exercise-solution pairing
+  - qe-env-001      # QuantEcon environment setup
+
+mandatory_rules:
+  - qe-code-004     # Unicode Greek letters
+  - qe-math-001     # Transpose notation
+  - qe-math-003     # Matrix brackets
+  - qe-jax-003      # No mutation in JAX
+  - qe-code-005     # Base Anaconda compatibility
+
+best_practice_rules:
+  - qe-writing-001  # Clarity and brevity
+  - qe-writing-003  # Short sentences
+  - qe-code-006     # Performance timing
+  - qe-jax-008      # Loop patterns
+
+preference_rules:
+  - qe-writing-005  # Simplicity preference
+  - qe-writing-007  # Mathematical symbol choice
