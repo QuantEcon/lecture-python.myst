@@ -9,6 +9,7 @@ kernelspec:
   name: python3
 ---
 
+(wealth_dynamics)=
 ```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
@@ -18,6 +19,15 @@ kernelspec:
 ```
 
 # Wealth Distribution Dynamics
+
+```{index} single: Wealth Distribution
+```
+
+```{index} single: Inequality; Gini Coefficient
+```
+
+```{index} single: Inequality; Lorenz Curve
+```
 
 ```{contents} Contents
 :depth: 2
@@ -29,7 +39,7 @@ A version of this lecture using [JAX](https://github.com/jax-ml/jax) is {doc}`av
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ---
 tags: [hide-output]
 ---
@@ -88,6 +98,9 @@ Before we investigate wealth dynamics, we briefly review some measures of
 inequality.
 
 ### Lorenz Curves
+
+```{index} single: Lorenz Curve
+```
 
 One popular graphical measure of inequality is the [Lorenz curve](https://en.wikipedia.org/wiki/Lorenz_curve).
 
@@ -151,6 +164,9 @@ You can see that, as the tail parameter of the Pareto distribution increases, in
 This is to be expected, because a higher tail index implies less weight in the tail of the Pareto distribution.
 
 ### The Gini Coefficient
+
+```{index} single: Gini Coefficient
+```
 
 The definition and interpretation of the Gini coefficient can be found on the corresponding [Wikipedia page](https://en.wikipedia.org/wiki/Gini_coefficient).
 
@@ -246,7 +262,7 @@ s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}
 where $s_0$ is a positive constant.
 
 Thus, for $w < \hat w$, the household saves nothing. For
-$w \geq \bar w$, the household saves a fraction $s_0$ of
+$w \geq \hat w$, the household saves a fraction $s_0$ of
 their wealth.
 
 We are using something akin to a fixed savings rate model, while
@@ -262,7 +278,7 @@ wealth_dynamics_data = [
     ('w_hat',  float64),    # savings parameter
     ('s_0',    float64),    # savings parameter
     ('c_y',    float64),    # labor income parameter
-    ('μ_y',    float64),    # labor income paraemter
+    ('μ_y',    float64),    # labor income parameter
     ('σ_y',    float64),    # labor income parameter
     ('c_r',    float64),    # rate of return parameter
     ('μ_r',    float64),    # rate of return parameter
@@ -346,7 +362,7 @@ class WealthDynamics:
         return wp, zp
 ```
 
-Here's function to simulate the time series of wealth for in individual households.
+Here's a function to simulate the time series of wealth for individual households.
 
 ```{code-cell} ipython3
 
@@ -373,7 +389,7 @@ def wealth_time_series(wdy, w_0, n):
     return w
 ```
 
-Now here's function to simulate a cross section of households forward in time.
+Now here's a function to simulate a cross section of households forward in time.
 
 Note the use of parallelization to speed up computation.
 
