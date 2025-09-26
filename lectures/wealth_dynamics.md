@@ -27,6 +27,16 @@ kernelspec:
 A version of this lecture using [JAX](https://github.com/jax-ml/jax) is {doc}`available here <jax:wealth_dynamics>`
 ```
 
+```{admonition} GPU
+:class: warning
+
+This lecture includes implementation using JAX and can be accelerated with GPUs.
+
+For Google Colab users, to enable GPU, go to Runtime → Change runtime type → Hardware accelerator → GPU.
+
+For local users, see the [JAX installation guide](https://github.com/google/jax#installation) for local GPU installation instructions.
+```
+
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython
@@ -45,8 +55,7 @@ focus on
 * measures of inequality such as the Lorenz curve and Gini coefficient, and
 * how inequality is affected by the properties of wage income and returns on assets.
 
-One interesting property of the wealth distribution we discuss is Pareto
-tails.
+One interesting property of the wealth distribution we discuss is {index}`Pareto tails`.
 
 The wealth distribution in many countries exhibits a Pareto tail
 
@@ -59,7 +68,7 @@ It also gives us a way to quantify such concentration, in terms of the tail inde
 
 One question of interest is whether or not we can replicate Pareto tails from a relatively simple model.
 
-### A Note on Assumptions
+### A note on assumptions
 
 The evolution of wealth for any given household depends on their
 savings behavior.
@@ -78,18 +87,20 @@ We will use the following imports.
 import matplotlib.pyplot as plt
 import numpy as np
 import quantecon as qe
-from numba import jit, float64, prange
-from numba.experimental import jitclass
+import jax
+import jax.numpy as jnp
+import jax.random as jr
+from collections import namedtuple
 ```
 
-## Lorenz Curves and the Gini Coefficient
+## Lorenz curves and the Gini coefficient
 
 Before we investigate wealth dynamics, we briefly review some measures of
 inequality.
 
-### Lorenz Curves
+### Lorenz curves
 
-One popular graphical measure of inequality is the [Lorenz curve](https://en.wikipedia.org/wiki/Lorenz_curve).
+One popular graphical measure of inequality is the {index}`Lorenz curve`.
 
 The package [QuantEcon.py](https://github.com/QuantEcon/QuantEcon.py), already imported above, contains a function to compute Lorenz curves.
 
@@ -150,7 +161,7 @@ You can see that, as the tail parameter of the Pareto distribution increases, in
 
 This is to be expected, because a higher tail index implies less weight in the tail of the Pareto distribution.
 
-### The Gini Coefficient
+### The Gini coefficient
 
 The definition and interpretation of the Gini coefficient can be found on the corresponding [Wikipedia page](https://en.wikipedia.org/wiki/Gini_coefficient).
 
@@ -190,7 +201,7 @@ plt.show()
 
 The simulation shows that the fit is good.
 
-## A Model of Wealth Dynamics
+## A model of wealth dynamics
 
 Having discussed inequality measures, let us now turn to wealth dynamics.
 
@@ -254,104 +265,96 @@ acknowledging that low wealth households tend to save very little.
 
 ## Implementation
 
-Here's some type information to help Numba.
+We use a NamedTuple to store the model parameters.
 
 ```{code-cell} ipython3
-
-wealth_dynamics_data = [
-    ('w_hat',  float64),    # savings parameter
-    ('s_0',    float64),    # savings parameter
-    ('c_y',    float64),    # labor income parameter
-    ('μ_y',    float64),    # labor income paraemter
-    ('σ_y',    float64),    # labor income parameter
-    ('c_r',    float64),    # rate of return parameter
-    ('μ_r',    float64),    # rate of return parameter
-    ('σ_r',    float64),    # rate of return parameter
-    ('a',      float64),    # aggregate shock parameter
-    ('b',      float64),    # aggregate shock parameter
-    ('σ_z',    float64),    # aggregate shock parameter
-    ('z_mean', float64),    # mean of z process
-    ('z_var', float64),     # variance of z process
-    ('y_mean', float64),    # mean of y process
-    ('R_mean', float64)     # mean of R process
-]
+# Create a namedtuple to hold model parameters
+WealthDynamics = namedtuple('WealthDynamics', [
+    'w_hat',   # savings parameter
+    's_0',     # savings parameter
+    'c_y',     # labor income parameter
+    'μ_y',     # labor income parameter
+    'σ_y',     # labor income parameter
+    'c_r',     # rate of return parameter
+    'μ_r',     # rate of return parameter
+    'σ_r',     # rate of return parameter
+    'a',       # aggregate shock parameter
+    'b',       # aggregate shock parameter
+    'σ_z',     # aggregate shock parameter
+    'z_mean',  # mean of z process
+    'z_var',   # variance of z process
+    'y_mean',  # mean of y process
+    'R_mean'   # mean of R process
+])
 ```
 
-Here's a class that stores instance data and implements methods that update
-the aggregate state and household wealth.
+Here's a factory function to create WealthDynamics instances with computed
+stationary moments and stability checks.
 
 ```{code-cell} ipython3
-
-@jitclass(wealth_dynamics_data)
-class WealthDynamics:
-
-    def __init__(self,
-                 w_hat=1.0,
-                 s_0=0.75,
-                 c_y=1.0,
-                 μ_y=1.0,
-                 σ_y=0.2,
-                 c_r=0.05,
-                 μ_r=0.1,
-                 σ_r=0.5,
-                 a=0.5,
-                 b=0.0,
-                 σ_z=0.1):
-
-        self.w_hat, self.s_0 = w_hat, s_0
-        self.c_y, self.μ_y, self.σ_y = c_y, μ_y, σ_y
-        self.c_r, self.μ_r, self.σ_r = c_r, μ_r, σ_r
-        self.a, self.b, self.σ_z = a, b, σ_z
-
-        # Record stationary moments
-        self.z_mean = b / (1 - a)
-        self.z_var = σ_z**2 / (1 - a**2)
-        exp_z_mean = np.exp(self.z_mean + self.z_var / 2)
-        self.R_mean = c_r * exp_z_mean + np.exp(μ_r + σ_r**2 / 2)
-        self.y_mean = c_y * exp_z_mean + np.exp(μ_y + σ_y**2 / 2)
-
-        # Test a stability condition that ensures wealth does not diverge
-        # to infinity.
-        α = self.R_mean * self.s_0
-        if α >= 1:
-            raise ValueError("Stability condition failed.")
-
-    def parameters(self):
-        """
-        Collect and return parameters.
-        """
-        parameters = (self.w_hat, self.s_0,
-                      self.c_y, self.μ_y, self.σ_y,
-                      self.c_r, self.μ_r, self.σ_r,
-                      self.a, self.b, self.σ_z)
-        return parameters
-
-    def update_states(self, w, z):
-        """
-        Update one period, given current wealth w and persistent
-        state z.
-        """
-
-        # Simplify names
-        params = self.parameters()
-        w_hat, s_0, c_y, μ_y, σ_y, c_r, μ_r, σ_r, a, b, σ_z = params
-        zp = a * z + b + σ_z * np.random.randn()
-
-        # Update wealth
-        y = c_y * np.exp(zp) + np.exp(μ_y + σ_y * np.random.randn())
-        wp = y
-        if w >= w_hat:
-            R = c_r * np.exp(zp) + np.exp(μ_r + σ_r * np.random.randn())
-            wp += R * s_0 * w
-        return wp, zp
+def create_wealth_dynamics(w_hat=1.0,
+                          s_0=0.75,
+                          c_y=1.0,
+                          μ_y=1.0,
+                          σ_y=0.2,
+                          c_r=0.05,
+                          μ_r=0.1,
+                          σ_r=0.5,
+                          a=0.5,
+                          b=0.0,
+                          σ_z=0.1):
+    """
+    Factory function to create a WealthDynamics instance.
+    """
+    # Record stationary moments
+    z_mean = b / (1 - a)
+    z_var = σ_z**2 / (1 - a**2)
+    exp_z_mean = jnp.exp(z_mean + z_var / 2)
+    R_mean = c_r * exp_z_mean + jnp.exp(μ_r + σ_r**2 / 2)
+    y_mean = c_y * exp_z_mean + jnp.exp(μ_y + σ_y**2 / 2)
+    
+    # Test stability condition
+    α = R_mean * s_0
+    if α >= 1:
+        raise ValueError("Stability condition failed.")
+    
+    return WealthDynamics(
+        w_hat=w_hat, s_0=s_0, c_y=c_y, μ_y=μ_y, σ_y=σ_y,
+        c_r=c_r, μ_r=μ_r, σ_r=σ_r, a=a, b=b, σ_z=σ_z,
+        z_mean=z_mean, z_var=z_var, y_mean=y_mean, R_mean=R_mean
+    )
 ```
 
-Here's function to simulate the time series of wealth for in individual households.
+Here are pure functions for updating wealth dynamics.
 
 ```{code-cell} ipython3
+def update_states(wdy, w, z, key):
+    """
+    Update one period, given current wealth w and persistent state z.
+    Returns new wealth and new persistent state.
+    """
+    key1, key2, key3 = jr.split(key, 3)
+    
+    # Update persistent state
+    zp = wdy.a * z + wdy.b + wdy.σ_z * jr.normal(key1)
+    
+    # Generate income
+    y = wdy.c_y * jnp.exp(zp) + jnp.exp(wdy.μ_y + wdy.σ_y * jr.normal(key2))
+    
+    # Update wealth
+    wp = y
+    wp = jnp.where(w >= wdy.w_hat,
+                   wp + (wdy.c_r * jnp.exp(zp) + 
+                         jnp.exp(wdy.μ_r + wdy.σ_r * jr.normal(key3))) * wdy.s_0 * w,
+                   wp)
+    
+    return wp, zp
+```
 
-@jit
-def wealth_time_series(wdy, w_0, n):
+Here's a function to simulate the time series of wealth for individual households.
+
+```{code-cell} ipython3
+def wealth_time_series(wdy, w_0, n, key):
     """
     Generate a single time series of length n for wealth given
     initial value w_0.
@@ -362,48 +365,81 @@ def wealth_time_series(wdy, w_0, n):
         * wdy: an instance of WealthDynamics
         * w_0: scalar
         * n: int
-
-
+        * key: PRNGKey for random number generation
     """
-    z = wdy.z_mean + np.sqrt(wdy.z_var) * np.random.randn()
-    w = np.empty(n)
-    w[0] = w_0
-    for t in range(n-1):
-        w[t+1], z = wdy.update_states(w[t], z)
-    return w
+    
+    def scan_fn(carry, x):
+        w, z, key = carry
+        key, subkey = jr.split(key)
+        w_new, z_new = update_states(wdy, w, z, subkey)
+        return (w_new, z_new, key), w_new
+    
+    # Initialize
+    key1, key2 = jr.split(key)
+    z_0 = wdy.z_mean + jnp.sqrt(wdy.z_var) * jr.normal(key1)
+    
+    # Use scan to generate time series
+    _, w_series = jax.lax.scan(scan_fn, (w_0, z_0, key2), jnp.arange(n-1))
+    
+    # Prepend initial value
+    return jnp.concatenate([jnp.array([w_0]), w_series])
+
+# JIT compile for performance
+wealth_time_series = jax.jit(wealth_time_series)
 ```
 
-Now here's function to simulate a cross section of households forward in time.
+Now here's a function to simulate a cross section of households forward in time.
 
-Note the use of parallelization to speed up computation.
+Note the use of vectorization for parallel computation.
 
 ```{code-cell} ipython3
-
-@jit(parallel=True)
-def update_cross_section(wdy, w_distribution, shift_length=500):
+def update_cross_section(wdy, w_distribution, shift_length=500, key=None):
     """
-    Shifts a cross-section of household forward in time
+    Shifts a cross-section of households forward in time
 
     * wdy: an instance of WealthDynamics
     * w_distribution: array_like, represents current cross-section
+    * shift_length: number of periods to simulate forward
+    * key: PRNGKey for random number generation
 
     Takes a current distribution of wealth values as w_distribution
     and updates each w_t in w_distribution to w_{t+j}, where
     j = shift_length.
 
     Returns the new distribution.
-
     """
-    new_distribution = np.empty_like(w_distribution)
+    if key is None:
+        key = jr.PRNGKey(42)
+    
+    num_households = len(w_distribution)
+    
+    def update_single_household(w_0, key):
+        """Update a single household's wealth over shift_length periods"""
+        
+        def scan_fn(carry, x):
+            w, z, subkey = carry
+            subkey, new_key = jr.split(subkey)
+            w_new, z_new = update_states(wdy, w, z, new_key)
+            return (w_new, z_new, subkey), None
+        
+        # Initialize household's persistent state
+        init_key, sim_key = jr.split(key)
+        z_0 = wdy.z_mean + jnp.sqrt(wdy.z_var) * jr.normal(init_key)
+        
+        # Simulate forward
+        (final_w, _, _), _ = jax.lax.scan(
+            scan_fn, (w_0, z_0, sim_key), jnp.arange(shift_length)
+        )
+        return final_w
+    
+    # Vectorize over households
+    keys = jr.split(key, num_households)
+    update_household_vec = jax.vmap(update_single_household)
+    
+    return update_household_vec(w_distribution, keys)
 
-    # Update each household
-    for i in prange(len(new_distribution)):
-        z = wdy.z_mean + np.sqrt(wdy.z_var) * np.random.randn()
-        w = w_distribution[i]
-        for t in range(shift_length-1):
-            w, z = wdy.update_states(w, z)
-        new_distribution[i] = w
-    return new_distribution
+# JIT compile for performance
+update_cross_section = jax.jit(update_cross_section, static_argnums=(2,))
 ```
 
 Parallelization is very effective in the function above because the time path
@@ -415,14 +451,15 @@ aggregate state is known.
 Let's try simulating the model at different parameter values and investigate
 the implications for the wealth distribution.
 
-### Time Series
+### Time series
 
 Let's look at the wealth dynamics of an individual household.
 
 ```{code-cell} ipython3
-wdy = WealthDynamics()
+wdy = create_wealth_dynamics()
 ts_length = 200
-w = wealth_time_series(wdy, wdy.y_mean, ts_length)
+key = jr.PRNGKey(42)
+w = wealth_time_series(wdy, wdy.y_mean, ts_length, key)
 ```
 
 ```{code-cell} ipython3
@@ -435,7 +472,7 @@ Notice the large spikes in wealth over time.
 
 Such spikes are similar to what we observed in time series when {doc}`we studied Kesten processes <kesten_processes>`.
 
-### Inequality Measures
+### Inequality measures
 
 Let's look at how inequality varies with returns on financial assets.
 
@@ -443,16 +480,20 @@ The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.
 
 ```{code-cell} ipython3
-def generate_lorenz_and_gini(wdy, num_households=100_000, T=500):
+def generate_lorenz_and_gini(wdy, num_households=100_000, T=500, key=None):
     """
     Generate the Lorenz curve data and gini coefficient corresponding to a
-    WealthDynamics mode by simulating num_households forward to time T.
+    WealthDynamics model by simulating num_households forward to time T.
     """
-    ψ_0 = np.full(num_households, wdy.y_mean)
-    z_0 = wdy.z_mean
-
-    ψ_star = update_cross_section(wdy, ψ_0, shift_length=T)
-    return qe.gini_coefficient(ψ_star), qe.lorenz_curve(ψ_star)
+    if key is None:
+        key = jr.PRNGKey(42)
+    
+    ψ_0 = jnp.full(num_households, wdy.y_mean)
+    ψ_star = update_cross_section(wdy, ψ_0, shift_length=T, key=key)
+    
+    # Convert to numpy for QuantEcon functions
+    ψ_star_np = np.array(ψ_star)
+    return qe.gini_coefficient(ψ_star_np), qe.lorenz_curve(ψ_star_np)
 ```
 
 Now we investigate how the Lorenz curves associated with the wealth distribution change as return to savings varies.
@@ -466,21 +507,22 @@ This is unavoidable because we are executing a CPU intensive task.
 In fact the code, which is JIT compiled and parallelized, runs extremely fast relative to the number of computations.
 
 ```{code-cell} ipython3
-%%time
+with qe.Timer():
+    fig, ax = plt.subplots()
+    μ_r_vals = (0.0, 0.025, 0.05)
+    gini_vals = []
+    key = jr.PRNGKey(42)
 
-fig, ax = plt.subplots()
-μ_r_vals = (0.0, 0.025, 0.05)
-gini_vals = []
+    for i, μ_r in enumerate(μ_r_vals):
+        wdy = create_wealth_dynamics(μ_r=μ_r)
+        key, subkey = jr.split(key)
+        gv, (f_vals, l_vals) = generate_lorenz_and_gini(wdy, key=subkey)
+        ax.plot(f_vals, l_vals, label=fr'$\psi^*$ at $\mu_r = {μ_r:0.2}$')
+        gini_vals.append(gv)
 
-for μ_r in μ_r_vals:
-    wdy = WealthDynamics(μ_r=μ_r)
-    gv, (f_vals, l_vals) = generate_lorenz_and_gini(wdy)
-    ax.plot(f_vals, l_vals, label=fr'$\psi^*$ at $\mu_r = {μ_r:0.2}$')
-    gini_vals.append(gv)
-
-ax.plot(f_vals, f_vals, label='equality')
-ax.legend(loc="upper left")
-plt.show()
+    ax.plot(f_vals, f_vals, label='equality')
+    ax.legend(loc="upper left")
+    plt.show()
 ```
 
 The Lorenz curve shifts downwards as returns on financial income rise, indicating a rise in inequality.
@@ -511,21 +553,22 @@ volatility term $\sigma_r$ in financial returns.
 
 
 ```{code-cell} ipython3
-%%time
+with qe.Timer():
+    fig, ax = plt.subplots()
+    σ_r_vals = (0.35, 0.45, 0.52)
+    gini_vals = []
+    key = jr.PRNGKey(42)
 
-fig, ax = plt.subplots()
-σ_r_vals = (0.35, 0.45, 0.52)
-gini_vals = []
+    for σ_r in σ_r_vals:
+        wdy = create_wealth_dynamics(σ_r=σ_r)
+        key, subkey = jr.split(key)
+        gv, (f_vals, l_vals) = generate_lorenz_and_gini(wdy, key=subkey)
+        ax.plot(f_vals, l_vals, label=fr'$\psi^*$ at $\sigma_r = {σ_r:0.2}$')
+        gini_vals.append(gv)
 
-for σ_r in σ_r_vals:
-    wdy = WealthDynamics(σ_r=σ_r)
-    gv, (f_vals, l_vals) = generate_lorenz_and_gini(wdy)
-    ax.plot(f_vals, l_vals, label=fr'$\psi^*$ at $\sigma_r = {σ_r:0.2}$')
-    gini_vals.append(gv)
-
-ax.plot(f_vals, f_vals, label='equality')
-ax.legend(loc="upper left")
-plt.show()
+    ax.plot(f_vals, f_vals, label='equality')
+    ax.legend(loc="upper left")
+    plt.show()
 ```
 
 We see that greater volatility has the effect of increasing inequality in this model.
@@ -614,9 +657,10 @@ For sample size and initial conditions, use
 
 ```{code-cell} ipython3
 num_households = 250_000
-T = 500                                      # shift forward T periods
-ψ_0 = np.full(num_households, wdy.y_mean)   # initial distribution
-z_0 = wdy.z_mean
+T = 500                                        # shift forward T periods
+wdy = create_wealth_dynamics()
+ψ_0 = jnp.full(num_households, wdy.y_mean)    # initial distribution
+key = jr.PRNGKey(42)
 ```
 
 ```{exercise-end}
@@ -631,11 +675,11 @@ First let's generate the distribution:
 ```{code-cell} ipython3
 num_households = 250_000
 T = 500  # how far to shift forward in time
-wdy = WealthDynamics()
-ψ_0 = np.full(num_households, wdy.y_mean)
-z_0 = wdy.z_mean
+wdy = create_wealth_dynamics()
+ψ_0 = jnp.full(num_households, wdy.y_mean)
+key = jr.PRNGKey(42)
 
-ψ_star = update_cross_section(wdy, ψ_0, shift_length=T)
+ψ_star = update_cross_section(wdy, ψ_0, shift_length=T, key=key)
 ```
 
 Now let's see the rank-size plot:
@@ -643,7 +687,9 @@ Now let's see the rank-size plot:
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 
-rank_data, size_data = qe.rank_size(ψ_star, c=0.001)
+# Convert to numpy for QuantEcon function
+ψ_star_np = np.array(ψ_star)
+rank_data, size_data = qe.rank_size(ψ_star_np, c=0.001)
 ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5)
 ax.set_xlabel("log rank")
 ax.set_ylabel("log size")
