@@ -248,7 +248,7 @@ wealth_dynamics_data = [
     ('w_hat',  float64),    # savings parameter
     ('s_0',    float64),    # savings parameter
     ('c_y',    float64),    # labor income parameter
-    ('μ_y',    float64),    # labor income paraemter
+    ('μ_y',    float64),    # labor income parameter
     ('σ_y',    float64),    # labor income parameter
     ('c_r',    float64),    # rate of return parameter
     ('μ_r',    float64),    # rate of return parameter
