@@ -59,7 +59,7 @@ It also gives us a way to quantify such concentration, in terms of the tail inde
 
 One question of interest is whether or not we can replicate Pareto tails from a relatively simple model.
 
-### A Note on Assumptions
+### A note on assumptions
 
 The evolution of wealth for any given household depends on their
 savings behavior.
@@ -82,12 +82,12 @@ from numba import jit, float64, prange
 from numba.experimental import jitclass
 ```
 
-## Lorenz Curves and the Gini Coefficient
+## Lorenz curves and the Gini coefficient
 
 Before we investigate wealth dynamics, we briefly review some measures of
 inequality.
 
-### Lorenz Curves
+### Lorenz curves
 
 One popular graphical measure of inequality is the [Lorenz curve](https://en.wikipedia.org/wiki/Lorenz_curve).
 
@@ -150,7 +150,7 @@ You can see that, as the tail parameter of the Pareto distribution increases, in
 
 This is to be expected, because a higher tail index implies less weight in the tail of the Pareto distribution.
 
-### The Gini Coefficient
+### The Gini coefficient
 
 The definition and interpretation of the Gini coefficient can be found on the corresponding [Wikipedia page](https://en.wikipedia.org/wiki/Gini_coefficient).
 
@@ -190,7 +190,7 @@ plt.show()
 
 The simulation shows that the fit is good.
 
-## A Model of Wealth Dynamics
+## A model of wealth dynamics
 
 Having discussed inequality measures, let us now turn to wealth dynamics.
 
@@ -415,7 +415,7 @@ aggregate state is known.
 Let's try simulating the model at different parameter values and investigate
 the implications for the wealth distribution.
 
-### Time Series
+### Time series
 
 Let's look at the wealth dynamics of an individual household.
 
@@ -435,7 +435,7 @@ Notice the large spikes in wealth over time.
 
 Such spikes are similar to what we observed in time series when {doc}`we studied Kesten processes <kesten_processes>`.
 
-### Inequality Measures
+### Inequality measures
 
 Let's look at how inequality varies with returns on financial assets.
 
