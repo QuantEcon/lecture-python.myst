@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.3
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -721,7 +721,8 @@ def plot_epochs(epochs_to_plot, quit_allowed=1, key=None):
 
       ax.set_xlabel('wages')
       ax.set_ylabel('optimal value')
-      ax.legend(loc='lower right')
+      ax.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
+      plt.subplots_adjust(bottom=0.2)
       plt.show()
 ```
 
