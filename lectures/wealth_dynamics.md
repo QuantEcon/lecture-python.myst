@@ -378,14 +378,14 @@ def wealth_time_series(wdy, w_0, n, key):
     key1, key2 = jr.split(key)
     z_0 = wdy.z_mean + jnp.sqrt(wdy.z_var) * jr.normal(key1)
     
-    # Use scan to generate time series
-    _, w_series = jax.lax.scan(scan_fn, (w_0, z_0, key2), jnp.arange(n-1))
+    # Use scan to generate time series - use None array for xs since we don't need the input
+    _, w_series = jax.lax.scan(scan_fn, (w_0, z_0, key2), None, length=n-1)
     
     # Prepend initial value
     return jnp.concatenate([jnp.array([w_0]), w_series])
 
-# JIT compile for performance
-wealth_time_series = jax.jit(wealth_time_series)
+# JIT compile for performance with static argument
+wealth_time_series = jax.jit(wealth_time_series, static_argnums=(2,))
 ```
 
 Now here's a function to simulate a cross section of households forward in time.
@@ -428,7 +428,7 @@ def update_cross_section(wdy, w_distribution, shift_length=500, key=None):
         
         # Simulate forward
         (final_w, _, _), _ = jax.lax.scan(
-            scan_fn, (w_0, z_0, sim_key), jnp.arange(shift_length)
+            scan_fn, (w_0, z_0, sim_key), None, length=shift_length
         )
         return final_w
     
