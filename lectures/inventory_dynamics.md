@@ -49,11 +49,12 @@ While our Markov environment and many of the concepts we consider are related to
 Let's start with some imports
 
 ```{code-cell} ipython3
-import matplotlib.pyplot as plt
 from typing import NamedTuple
 import jax
 import jax.numpy as jnp
 from jax import random
+import matplotlib.pyplot as plt
+from sklearn.neighbors import KernelDensity
 ```
 
 ## Sample paths
@@ -103,7 +104,7 @@ def sim_inventory_path(firm, x_init, random_keys):
     Args:
         firm: Firm object
         x_init: Initial inventory level
-        random_keys: Array of JAX random keys
+        random_keys: Array of JAX random keys of length sim_length - 1.
 
     Returns:
         Array of inventory levels over time
@@ -143,6 +144,7 @@ firm = Firm(s=10, S=100, μ=1.0, σ=0.5)
 ```{code-cell} ipython3
 sim_length = 100
 x_init = 50
+# Generate `sim_length-1` keys as `x_init` will be first array element
 keys = random.split(random.PRNGKey(21), sim_length - 1)
 X = sim_inventory_path(firm, x_init, keys)
 ```
@@ -179,6 +181,7 @@ ax.set_ylim(0, S + 10)
 ax.legend(**legend_args)
 
 for i in range(400):
+    # Generate `sim_length-1` keys as `x_init` will be first array element
     keys = random.split(random.PRNGKey(i), sim_length - 1)
     X = sim_inventory_path(firm, x_init, keys)
     ax.plot(X, "b", alpha=0.2, lw=0.5)
@@ -254,6 +257,8 @@ for m in range(M):
     X = sim_inventory_path(firm, x_init, keys)
     sample.append(X[T])
 
+# Convert to JAX array
+sample = jnp.array(sample)
 ax.hist(sample, bins=36, density=True, histtype="bar", alpha=0.75)
 
 plt.show()
@@ -273,11 +278,7 @@ They are preferable to histograms when the distribution being estimated is likel
 We will use a kernel density estimator from [scikit-learn](https://scikit-learn.org/stable/)
 
 ```{code-cell} ipython3
-from sklearn.neighbors import KernelDensity
-
-
 def plot_kde(sample, ax, label=""):
-    sample = jnp.array(sample)
     xmin, xmax = 0.9 * min(sample), 1.1 * max(sample)
     xgrid = jnp.linspace(xmin, xmax, 200)
     kde = KernelDensity(kernel="gaussian").fit(sample[:, None])
@@ -399,7 +400,7 @@ X = jnp.full(num_firms, x_init)
 
 current_date = 0
 for d in first_diffs:
-    X = shift_firms_forward(firm, X, d, random.PRNGKey(d))
+    X = shift_firms_forward(firm, X, d, random.PRNGKey(current_date + 1))
     current_date += d
     plot_kde(X, ax, label=f"t = {current_date}")
 
