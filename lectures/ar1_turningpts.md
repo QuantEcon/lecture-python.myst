@@ -33,7 +33,7 @@ We consider two sorts of statistics:
 
 - sample path properties that are defined as non-linear functions of future values $\{y_{t+j}\}_{j \geq 1}$ at time $t$
 
-**Sample path properties** are things like "time to next turning point" or "time to next recession".
+**Sample path properties** are things like time to next turning point or time to next recession.
 
 To investigate sample path properties we'll use a simulation procedure recommended by Wecker {cite}`wecker1979predicting`.
 
@@ -98,18 +98,18 @@ Predictive distribution {eq}`ar1-tp-eq3` assumes that parameters $(\rho,\sigma)$
 
 Predictive distribution {eq}`ar1-tp-eq4` assumes that parameters $(\rho,\sigma)$ are uncertain, but have known probability distribution $\pi_t(\rho,\sigma | y^t )$.
 
-We also want to compute some  predictive distributions of "sample path statistics" that might  include, for example
+We also want to compute some  predictive distributions of sample path statistics that might  include, for example
 
-- the time until the next "recession",
+- the time until the next recession,
 - the minimum value of $Y$ over the next 8 periods,
-- "severe recession", and
+- severe recession, and
 - the time until the next turning point (positive or negative).
 
 To accomplish that for situations in which we are uncertain about parameter values, we shall extend Wecker's {cite}`wecker1979predicting` approach in the following way.
 
 - first simulate an initial path of length $T_0$;
 - for a given prior, draw a sample of size $N$ from the posterior joint distribution of parameters $\left(\rho,\sigma\right)$ after observing the initial path;
-- for each draw $n=0,1,...,N$, simulate a "future path" of length $T_1$ with parameters $\left(\rho_n,\sigma_n\right)$ and compute our three "sample path statistics";
+- for each draw $n=0,1,...,N$, simulate a future path of length $T_1$ with parameters $\left(\rho_n,\sigma_n\right)$ and compute our three sample path statistics;
 - finally, plot the desired statistics from the $N$ samples as an empirical distribution.
 
 ## Implementation
@@ -195,7 +195,7 @@ He studied two special  prospective path properties of a given series $\{y_t\}$.
 
 The first was **time until the next turning point**.
 
-* he defined a **"turning point"** to be the date of the  second of two successive declines in  $y$. 
+* he defined a **turning point** to be the date of the  second of two successive declines in  $y$. 
 
 To examine this statistic, let $Z$ be an indicator process
 
@@ -412,7 +412,7 @@ on the true  parameters associated with the data-generating model.
 ```{code-cell} ipython3
 def plot_Wecker(initial_path, N, ax):
     """
-    Plot the predictive distributions from "pure" Wecker's method.
+    Plot the predictive distributions from pure Wecker's method.
     """
     # Store outcomes
     next_reces = np.zeros(N)
@@ -472,7 +472,7 @@ plt.show()
 
 ## Extended Wecker Method
 
-Now we apply we apply our  "extended" Wecker method based on  predictive densities of $y$ defined by
+Now we apply we apply our  extended Wecker method based on  predictive densities of $y$ defined by
 {eq}`ar1-tp-eq4` that acknowledge posterior uncertainty in the parameters $\rho, \sigma$.
 
 To approximate  the intergration on the right side of {eq}`ar1-tp-eq4`, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model {eq}`ar1-tp-eq1`.

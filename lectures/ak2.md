@@ -894,7 +894,7 @@ with the properties that
 * given the price system and government fiscal policy,  consumption plans are optimal
 * the government budget constraints are satisfied for all $t$
 
-An equilibrium transition path can be computed  by "guessing and verifying" some endogenous sequences.
+An equilibrium transition path can be computed  by *guessing and verifying* some endogenous sequences.
 
 In our {ref}`exp-tax-cut` example, sequences $\{D_t\}_{t=0}^{T}$ and $\{G_t\}_{t=0}^{T}$ are exogenous. 
 
@@ -908,7 +908,7 @@ We can solve for sequences of other equilibrium sequences following the steps be
 4. update the guesses for prices and tax rates with the values implied by the equilibrium conditions
 5. iterate until convergence
 
-Let's implement this "guess and verify" approach
+Let's implement this *guess and verify* approach
 
 We start by defining the Cobb-Douglas utility function
 
@@ -1128,7 +1128,7 @@ We can initialize an instance of class `AK2` with model parameters $\{\alpha, \b
 ak2 = AK2(α, β)
 ```
 
-We first examine that the "guess and verify" method leads to the same numerical results as we obtain with the closed form solution when lump sum taxes are muted
+We first examine that the *guess and verify* method leads to the same numerical results as we obtain with the closed form solution when lump sum taxes are muted
 
 ```{code-cell} ipython3
 δy_seq = np.ones(T+2) * 0.
@@ -1171,7 +1171,7 @@ quant_seq4, price_seq4, policy_seq4 = ak2.simulate(T, init_ss,
                                                    D_pol=D_pol, G_pol=G_pol)
 ```
 
-Note how   "crowding out"  has been  mitigated.
+Note how   *crowding out*  has been  mitigated.
 
 ```{code-cell} ipython3
 fig, axs = plt.subplots(3, 3, figsize=(14, 10))

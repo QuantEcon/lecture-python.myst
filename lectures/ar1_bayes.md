@@ -409,7 +409,7 @@ mcmc2.print_summary()
 Look what happened to the posterior!
 
 It has moved far from the true values of the parameters used to generate the data because of how Bayes' Law (i.e., conditional probability)
-is telling `numpyro` to explain what it interprets as  "explosive" observations early in the sample.
+is telling `numpyro` to explain what it interprets as  *explosive* observations early in the sample.
 
 Bayes' Law is able to generate a plausible likelihood for the first observation by driving $\rho \rightarrow 1$ and $\sigma \uparrow$ in order to raise the variance of the stationary distribution.
 
