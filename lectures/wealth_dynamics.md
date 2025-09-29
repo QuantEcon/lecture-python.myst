@@ -146,7 +146,7 @@ This is to be expected, because a higher tail index implies less weight in the t
 
 The definition and interpretation of the **Gini coefficient** can be found on the corresponding [Wikipedia page](https://en.wikipedia.org/wiki/Gini_coefficient).
 
-A value of 0 indicates perfect equality (corresponding the case where the Lorenz curve matches the 45 degree line) and a value of 1 indicates complete inequality (all wealth held by the richest household).
+A value of 0 indicates perfect equality (corresponding to the case where the Lorenz curve matches the 45 degree line) and a value of 1 indicates complete inequality (all wealth held by the richest household).
 
 The [QuantEcon.py](https://github.com/QuantEcon/QuantEcon.py) library contains a function to calculate the Gini coefficient.
 
@@ -234,7 +234,7 @@ where $s_0$ is a positive constant.
 
 Thus, for $w < \hat w$, the household saves nothing.
 
-For $w \geq \bar w$, the household saves a fraction $s_0$ of their wealth.
+For $w \geq \hat w$, the household saves a fraction $s_0$ of their wealth.
 
 We are using something akin to a *fixed savings rate model*, while acknowledging that low wealth households tend to save very little.
 
@@ -263,8 +263,7 @@ wealth_dynamics_data = [
 ]
 ```
 
-Here's a class that stores instance data and implements methods that update
-the aggregate state and household wealth.
+Here's a class that stores instance data and implements methods that update the aggregate state and household wealth.
 
 ```{code-cell} ipython3
 
@@ -368,7 +367,7 @@ Note the use of parallelization to speed up computation.
 @jit(parallel=True)
 def update_cross_section(wdy, w_distribution, shift_length=500):
     """
-    Shifts a cross-section of household forward in time
+    Shifts a cross-section of households forward in time
 
     * wdy: an instance of WealthDynamics
     * w_distribution: array_like, represents current cross-section
@@ -427,8 +426,8 @@ The next function generates a cross section and then computes the Lorenz curve a
 ```{code-cell} ipython3
 def generate_lorenz_and_gini(wdy, num_households=100_000, T=500):
     """
-    Generate the Lorenz curve data and gini coefficient corresponding to a
-    WealthDynamics mode by simulating num_households forward to time T.
+    Generate the Lorenz curve data and Gini coefficient corresponding to a
+    WealthDynamics model by simulating num_households forward to time T.
     """
     ψ_0 = np.full(num_households, wdy.y_mean)
     z_0 = wdy.z_mean
@@ -437,7 +436,7 @@ def generate_lorenz_and_gini(wdy, num_households=100_000, T=500):
     return qe.gini_coefficient(ψ_star), qe.lorenz_curve(ψ_star)
 ```
 
-Now we investigate how the Lorenz curves associated with the wealth distribution change as return to savings varies.
+Now we investigate how the Lorenz curves associated with the wealth distribution change as returns on savings vary.
 
 The code below plots Lorenz curves for three different values of $μ_r$.
 
@@ -475,7 +474,7 @@ Now let's check the Gini coefficient.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.plot(μ_r_vals, gini_vals, label='gini coefficient')
+ax.plot(μ_r_vals, gini_vals, label='Gini coefficient')
 ax.set_xlabel(r"$μ_r$")
 ax.legend()
 plt.show()
@@ -521,7 +520,7 @@ In particular, generate a plot of the Gini coefficient against the tail index us
 
 For the values of the tail index, use `a_vals = np.linspace(1, 10, 25)`.
 
-Use sample of size 1,000 for each $a$ and the sampling method for generating Pareto draws employed in the discussion of Lorenz curves for the Pareto distribution.
+Use a sample of size 1,000 for each $a$ and the sampling method for generating Pareto draws employed in the discussion of Lorenz curves for the Pareto distribution.
 
 To the extent that you can, interpret the monotone relationship between the Gini index and $a$.
 ```
