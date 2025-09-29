@@ -148,10 +148,10 @@ f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
 ```
 
-`"{code-cell} ipython3
+```{code-cell} ipython3
 @jit
 def simulate(a, b, T=50, N=500):
-    "'
+    '''
     Generate N sets of T observations of the likelihood ratio,
     return as N x T matrix.
     '''
