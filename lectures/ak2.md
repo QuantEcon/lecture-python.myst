@@ -226,7 +226,7 @@ r_t & = \alpha K_t^\alpha L_t^{1-\alpha}
 \end{aligned}
 $$  (eq:firmfonc)
 
-Output can  be consumed either by old people or young people; or sold to young people who use it  to augment the capital stock;  or  sold to  the government for  uses that do not generate utility for the people in the model  (i.e., ``it is thrown into the ocean'').  
+Output can  be consumed either by old people or young people; or sold to young people who use it  to augment the capital stock;  or  sold to  the government for  uses that do not generate utility for the people in the model  (i.e., "it is thrown into the ocean").  
 
 
 The firm  thus sells output to old people, young people, and the government.
