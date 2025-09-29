@@ -71,13 +71,13 @@ We'll describe the following concepts that are brick and mortar for neural netwo
 
 ## A Deep (but not Wide) Artificial Neural Network
 
-We describe a  "deep" neural network of "width" one.  
+We describe a  *deep* neural network of *width* one.  
 
 **Deep** means that the network composes a large number of functions organized into nodes of a graph.
 
 **Width** refers to the number of right hand  side variables on the right hand side of the function being approximated.
 
-Setting "width" to one means that the network    composes just univariate functions.
+Setting *width* to one means that the network    composes just univariate functions.
 
 Let $x \in \mathbb{R}$ be a scalar and $y \in \mathbb{R}$ be another scalar.
 
@@ -134,9 +134,9 @@ $$
 f(x)\approx\hat{f}(x)=h_{N}\circ l_{N}\circ h_{N-1}\circ l_{1}\circ\cdots\circ h_{1}\circ l_{1}(x)
 $$
 
-If $N >1$, we call the right side a "deep" neural net.
+If $N >1$, we call the right side a *deep* neural net.
 
-The larger is the integer $N$, the "deeper" is the neural net.
+The larger is the integer $N$, the *deeper* is the neural net.
 
 Evidently,  if we know  the parameters $\{w_i, b_i\}_{i=1}^N$, then we can compute
 $\hat f(x)$ for a given $x = \tilde x$ by iterating on the recursion
