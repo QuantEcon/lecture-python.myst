@@ -29,7 +29,7 @@ kernelspec:
 ## Overview
 
 A likelihood ratio process lies behind Lawrence Blume and David Easley's answer to their question
-''If you're so smart, why aren't you rich?'' {cite}`blume2006if`.  
+"If you're so smart, why aren't you rich?" {cite}`blume2006if`.  
 
 Blume and Easley constructed formal models to study how differences of opinions about probabilities governing risky income processes would influence outcomes and be reflected in prices of stocks, bonds, and insurance policies that individuals use to share and hedge risks.
 
@@ -148,10 +148,10 @@ f = jit(lambda x: p(x, F_a, F_b))
 g = jit(lambda x: p(x, G_a, G_b))
 ```
 
-```{code-cell} ipython3
+`"{code-cell} ipython3
 @jit
 def simulate(a, b, T=50, N=500):
-    '''
+    "'
     Generate N sets of T observations of the likelihood ratio,
     return as N x T matrix.
     '''
@@ -294,7 +294,7 @@ $$ (eq:welfareW)
 
 where $\lambda \in [0,1]$ is a Pareto weight that tells how much the planner likes agent $1$ and $1 - \lambda$ is a Pareto weight that tells how much the social planner likes agent $2$.  
 
-Setting $\lambda = .5$ expresses ''egalitarian'' social preferences. 
+Setting $\lambda = .5$ expresses "egalitarian" social preferences. 
 
 Notice how social welfare criterion {eq}`eq:welfareW` takes into account both agents' preferences as represented by formula {eq}`eq:objectiveagenti`.
 
@@ -369,7 +369,7 @@ values of the likelihood ratio process $l_t(s^t)$:
 
 $$l_\infty (s^\infty) = 0; \quad c_\infty^1 = 0$$
 
-* In the above case, agent 2 is ''smarter'' than agent 1, and agent 1's share of the aggregate endowment converges to zero.
+* In the above case, agent 2 is "smarter" than agent 1, and agent 1's share of the aggregate endowment converges to zero.
 
 
 
