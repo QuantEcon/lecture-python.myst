@@ -73,6 +73,7 @@ Let's start with some imports:
 import matplotlib.pyplot as plt
 import numpy as np
 from quantecon import LQ
+from typing import NamedTuple
 ```
 
 ## Introduction
@@ -642,62 +643,88 @@ The following figure was computed using $r = 0.05, \beta = 1 / (1+ r),
 The shocks $\{w_t\}$ were taken to be IID and standard normal.
 
 ```{code-cell} python3
-# Model parameters
-r = 0.05
-β = 1 / (1 + r)
-T = 45
-c_bar = 2
-σ = 0.25
-μ = 1
-q = 1e6
+class LQModel(NamedTuple):
+    r: float              # interest rate
+    β: float              # discount factor
+    T: int                # time horizon
+    c_bar: float          # target consumption level
+    σ: float              # income shock standard deviation
+    μ: float              # mean income level
+    q: float              # terminal penalty weight
+    Q: float              # control penalty matrix
+    R: np.ndarray         # state penalty matrix
+    Rf: np.ndarray        # terminal state penalty matrix
+    A: np.ndarray         # state transition matrix
+    B: np.ndarray         # control matrix
+    C: np.ndarray         # shock matrix
 
-# Formulate as an LQ problem
-Q = 1
-R = np.zeros((2, 2))
-Rf = np.zeros((2, 2))
-Rf[0, 0] = q
-A = [[1 + r, -c_bar + μ],
-    [0,              1]]
-B = [[-1],
-    [ 0]]
-C = [[σ],
-    [0]]
 
-# Compute solutions and simulate
-lq = LQ(Q, R, A, B, C, beta=β, T=T, Rf=Rf)
-x0 = (0, 1)
-xp, up, wp = lq.compute_sequence(x0)
+def create_lq_model(r=0.05,
+                    T=45,
+                    c_bar=2,
+                    σ=0.25,
+                    μ=1,
+                    q=1e6):
+    β = 1 / (1 + r)
+    
+    # Formulate as an LQ problem
+    Q = 1
+    R = np.zeros((2, 2))
+    Rf = np.zeros((2, 2))
+    Rf[0, 0] = q
+    A = np.array([[1 + r, -c_bar + μ],
+                  [0,      1]])
+    B = np.array([[-1],
+                  [ 0]])
+    C = np.array([[σ],
+                  [0]])
+    
+    return LQModel(r=r, β=β, T=T, c_bar=c_bar, σ=σ, μ=μ, 
+                   q=q, Q=Q, R=R, Rf=Rf, A=A, B=B, C=C)
 
-# Convert back to assets, consumption and income
-assets = xp[0, :]           # a_t
-c = up.flatten() + c_bar    # c_t
-income = σ * wp[0, 1:] + μ  # y_t
+def simulate_and_plot(model):
+    # Unpack model
+    r, β, T, c_bar, σ, μ, q, Q, R, Rf, A, B, C = model
+    
+    # Compute solutions and simulate
+    lq = LQ(Q, R, A, B, C, beta=β, T=T, Rf=Rf)
+    x0 = (0, 1)
+    xp, up, wp = lq.compute_sequence(x0)
+    
+    # Convert back to assets, consumption and income
+    assets = xp[0, :]           # a_t
+    c = up.flatten() + c_bar    # c_t
+    income = σ * wp[0, 1:] + μ  # y_t
+    
+    # Plot results
+    n_rows = 2
+    fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
+    
+    plt.subplots_adjust(hspace=0.5)
+    
+    bbox = (0., 1.02, 1., .102)
+    legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
+    p_args = {'lw': 2, 'alpha': 0.7}
+    
+    axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
+                **p_args)
+    axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
+    
+    axes[1].plot(range(1, T+1), np.cumsum(income - μ), 'r-',
+                label="cumulative unanticipated income", **p_args)
+    axes[1].plot(range(T+1), assets, 'b-', label="assets", **p_args)
+    axes[1].plot(range(T), np.zeros(T), 'k-')
+    
+    for ax in axes:
+        ax.grid()
+        ax.set_xlabel('Time')
+        ax.legend(ncol=2, **legend_args)
+    
+    plt.show()
 
-# Plot results
-n_rows = 2
-fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
-
-plt.subplots_adjust(hspace=0.5)
-
-bbox = (0., 1.02, 1., .102)
-legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
-p_args = {'lw': 2, 'alpha': 0.7}
-
-axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
-            **p_args)
-axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
-
-axes[1].plot(range(1, T+1), np.cumsum(income - μ), 'r-',
-            label="cumulative unanticipated income", **p_args)
-axes[1].plot(range(T+1), assets, 'b-', label="assets", **p_args)
-axes[1].plot(range(T), np.zeros(T), 'k-')
-
-for ax in axes:
-    ax.grid()
-    ax.set_xlabel('Time')
-    ax.legend(ncol=2, **legend_args)
-
-plt.show()
+# Create model instance and simulate
+model = create_lq_model()
+simulate_and_plot(model)
 ```
 
 The top panel shows the time path of consumption $c_t$ and income $y_t$ in the simulation.
@@ -731,41 +758,49 @@ relatively more weight on later consumption values.
 ---
 tags: [output_scroll]
 ---
-# Compute solutions and simulate
-lq = LQ(Q, R, A, B, C, beta=0.96, T=T, Rf=Rf)
-x0 = (0, 1)
-xp, up, wp = lq.compute_sequence(x0)
+def simulate_and_plot_patient(model, β_override=0.96):
+    # Unpack model but use different β
+    r, _, T, c_bar, σ, μ, q, Q, R, Rf, A, B, C = model
+    β = β_override
+    
+    # Compute solutions and simulate
+    lq = LQ(Q, R, A, B, C, beta=β, T=T, Rf=Rf)
+    x0 = (0, 1)
+    xp, up, wp = lq.compute_sequence(x0)
+    
+    # Convert back to assets, consumption and income
+    assets = xp[0, :]           # a_t
+    c = up.flatten() + c_bar    # c_t
+    income = σ * wp[0, 1:] + μ  # y_t
+    
+    # Plot results
+    n_rows = 2
+    fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
+    
+    plt.subplots_adjust(hspace=0.5)
+    
+    bbox = (0., 1.02, 1., .102)
+    legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
+    p_args = {'lw': 2, 'alpha': 0.7}
+    
+    axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
+                 **p_args)
+    axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
+    
+    axes[1].plot(range(1, T+1), np.cumsum(income - μ), 'r-',
+                label="cumulative unanticipated income", **p_args)
+    axes[1].plot(range(T+1), assets, 'b-', label="assets", **p_args)
+    axes[1].plot(range(T), np.zeros(T), 'k-')
+    
+    for ax in axes:
+        ax.grid()
+        ax.set_xlabel('Time')
+        ax.legend(ncol=2, **legend_args)
+    
+    plt.show()
 
-# Convert back to assets, consumption and income
-assets = xp[0, :]           # a_t
-c = up.flatten() + c_bar    # c_t
-income = σ * wp[0, 1:] + μ  # y_t
-
-# Plot results
-n_rows = 2
-fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
-
-plt.subplots_adjust(hspace=0.5)
-
-bbox = (0., 1.02, 1., .102)
-legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
-p_args = {'lw': 2, 'alpha': 0.7}
-
-axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
-             **p_args)
-axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
-
-axes[1].plot(range(1, T+1), np.cumsum(income - μ), 'r-',
-             label="cumulative unanticipated income", **p_args)
-axes[1].plot(range(T+1), assets, 'b-', label="assets", **p_args)
-axes[1].plot(range(T), np.zeros(T), 'k-')
-
-for ax in axes:
-    ax.grid()
-    ax.set_xlabel('Time')
-    ax.legend(ncol=2, **legend_args)
-
-plt.show()
+# Use same model but with β = 0.96
+simulate_and_plot_patient(model, β_override=0.96)
 ```
 
 We now have a slowly rising consumption stream and a hump-shaped build-up
@@ -1269,70 +1304,87 @@ $p(t) = m_1 t + m_2 t^2$ has an inverted U shape with
 - $p(T) = 0$
 
 ```{code-cell} python3
-# Model parameters
-r = 0.05
-β = 1/(1 + r)
-T = 50
-c_bar = 1.5
-σ = 0.15
-μ = 2
-q = 1e4
-m1 = T * (μ/(T/2)**2)
-m2 = -(μ/(T/2)**2)
+class PolynomialIncomeModel(NamedTuple):
+    r: float
+    β: float
+    T: int
+    c_bar: float
+    σ: float
+    μ: float
+    q: float
+    m1: float
+    m2: float
+    Q: float
+    R: np.ndarray
+    Rf: np.ndarray
+    A: np.ndarray
+    B: np.ndarray
+    C: np.ndarray
 
-# Formulate as an LQ problem
-Q = 1
-R = np.zeros((4, 4))
-Rf = np.zeros((4, 4))
-Rf[0, 0] = q
-A = [[1 + r, -c_bar, m1, m2],
-     [0,          1,  0,  0],
-     [0,          1,  1,  0],
-     [0,          1,  2,  1]]
-B = [[-1],
-     [ 0],
-     [ 0],
-     [ 0]]
-C = [[σ],
-     [0],
-     [0],
-     [0]]
+def create_polynomial_model(r=0.05, T=50, c_bar=1.5, σ=0.15, μ=2, q=1e4):
+    β = 1/(1 + r)
+    m1 = T * (μ/(T/2)**2)
+    m2 = -(μ/(T/2)**2)
+    
+    # Formulate as an LQ problem
+    Q = 1
+    R = np.zeros((4, 4))
+    Rf = np.zeros((4, 4))
+    Rf[0, 0] = q
+    A = [[1 + r, -c_bar, m1, m2],
+         [0,          1,  0,  0],
+         [0,          1,  1,  0],
+         [0,          1,  2,  1]]
+    B = [[-1], [0], [0], [0]]
+    C = [[σ], [0], [0], [0]]
+    
+    return PolynomialIncomeModel(
+        r=r, β=β, T=T, c_bar=c_bar, σ=σ, μ=μ, q=q,
+        m1=m1, m2=m2, Q=Q, R=R, Rf=Rf, A=A, B=B, C=C
+    )
 
-# Compute solutions and simulate
-lq = LQ(Q, R, A, B, C, beta=β, T=T, Rf=Rf)
-x0 = (0, 1, 0, 0)
-xp, up, wp = lq.compute_sequence(x0)
+def simulate_and_plot_polynomial(model):
+    # Unpack model
+    r, β, T, c_bar, σ, μ, q, m1, m2, Q, R, Rf, A, B, C = model
+    
+    # Compute solutions and simulate
+    lq = LQ(Q, R, A, B, C, beta=β, T=T, Rf=Rf)
+    x0 = (0, 1, 0, 0)
+    xp, up, wp = lq.compute_sequence(x0)
+    
+    # Convert results back to assets, consumption and income
+    ap = xp[0, :]               # Assets
+    c = up.flatten() + c_bar    # Consumption
+    time = np.arange(1, T+1)
+    income = σ * wp[0, 1:] + m1 * time + m2 * time**2  # Income
+    
+    # Plot results
+    n_rows = 2
+    fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
+    
+    plt.subplots_adjust(hspace=0.5)
+    
+    bbox = (0., 1.02, 1., .102)
+    legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
+    p_args = {'lw': 2, 'alpha': 0.7}
+    
+    axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
+                **p_args)
+    axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
+    
+    axes[1].plot(range(T+1), ap.flatten(), 'b-', label="assets", **p_args)
+    axes[1].plot(range(T+1), np.zeros(T+1), 'k-')
+    
+    for ax in axes:
+        ax.grid()
+        ax.set_xlabel('Time')
+        ax.legend(ncol=2, **legend_args)
+    
+    plt.show()
 
-# Convert results back to assets, consumption and income
-ap = xp[0, :]               # Assets
-c = up.flatten() + c_bar    # Consumption
-time = np.arange(1, T+1)
-income = σ * wp[0, 1:] + m1 * time + m2 * time**2  # Income
-
-
-# Plot results
-n_rows = 2
-fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
-
-plt.subplots_adjust(hspace=0.5)
-
-bbox = (0., 1.02, 1., .102)
-legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
-p_args = {'lw': 2, 'alpha': 0.7}
-
-axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
-            **p_args)
-axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
-
-axes[1].plot(range(T+1), ap.flatten(), 'b-', label="assets", **p_args)
-axes[1].plot(range(T+1), np.zeros(T+1), 'k-')
-
-for ax in axes:
-    ax.grid()
-    ax.set_xlabel('Time')
-    ax.legend(ncol=2, **legend_args)
-
-plt.show()
+# Create and simulate polynomial income model
+poly_model = create_polynomial_model()
+simulate_and_plot_polynomial(poly_model)
 ```
 
 ```{solution-end}
@@ -1386,103 +1438,108 @@ The model is solved by combining two LQ programming problems as described in
 the lecture.
 
 ```{code-cell} python3
-# Model parameters
-r = 0.05
-β = 1/(1 + r)
-T = 60
-K = 40
-c_bar = 4
-σ = 0.35
-μ = 4
-q = 1e4
-s = 1
-m1 = 2 * μ/K
-m2 = -μ/K**2
+class RetirementModel(NamedTuple):
+    r: float
+    β: float
+    T: int
+    K: int
+    c_bar: float
+    σ: float
+    μ: float
+    q: float
+    s: float
+    m1: float
+    m2: float
 
-# Formulate LQ problem 1 (retirement)
-Q = 1
-R = np.zeros((4, 4))
-Rf = np.zeros((4, 4))
-Rf[0, 0] = q
-A = [[1 + r, s - c_bar, 0, 0],
-     [0,             1, 0, 0],
-     [0,             1, 1, 0],
-     [0,             1, 2, 1]]
-B = [[-1],
-     [ 0],
-     [ 0],
-     [ 0]]
-C = [[0],
-     [0],
-     [0],
-     [0]]
+def create_retirement_model(r=0.05, T=60, K=40, c_bar=4, σ=0.35, μ=4, q=1e4, s=1):
+    β = 1/(1 + r)
+    m1 = 2 * μ/K
+    m2 = -μ/K**2
+    
+    return RetirementModel(
+        r=r, β=β, T=T, K=K, c_bar=c_bar, σ=σ, μ=μ, q=q, s=s, m1=m1, m2=m2
+    )
 
-# Initialize LQ instance for retired agent
-lq_retired = LQ(Q, R, A, B, C, beta=β, T=T-K, Rf=Rf)
-# Iterate back to start of retirement, record final value function
-for i in range(T-K):
-    lq_retired.update_values()
-Rf2 = lq_retired.P
+def simulate_and_plot_retirement(model):
+    # Unpack model
+    r, β, T, K, c_bar, σ, μ, q, s, m1, m2 = model
+    
+    # Formulate LQ problem 1 (retirement)
+    Q = 1
+    R = np.zeros((4, 4))
+    Rf = np.zeros((4, 4))
+    Rf[0, 0] = q
+    A = [[1 + r, s - c_bar, 0, 0],
+         [0,             1, 0, 0],
+         [0,             1, 1, 0],
+         [0,             1, 2, 1]]
+    B = [[-1], [0], [0], [0]]
+    C = [[0], [0], [0], [0]]
+    
+    # Initialize LQ instance for retired agent
+    lq_retired = LQ(Q, R, A, B, C, beta=β, T=T-K, Rf=Rf)
+    # Iterate back to start of retirement, record final value function
+    for i in range(T-K):
+        lq_retired.update_values()
+    Rf2 = lq_retired.P
+    
+    # Formulate LQ problem 2 (working life)
+    R = np.zeros((4, 4))
+    A = [[1 + r, -c_bar, m1, m2],
+         [0,          1,  0,  0],
+         [0,          1,  1,  0],
+         [0,          1,  2,  1]]
+    B = [[-1], [0], [0], [0]]
+    C = [[σ], [0], [0], [0]]
+    
+    # Set up working life LQ instance with terminal Rf from lq_retired
+    lq_working = LQ(Q, R, A, B, C, beta=β, T=K, Rf=Rf2)
+    
+    # Simulate working state / control paths
+    x0 = (0, 1, 0, 0)
+    xp_w, up_w, wp_w = lq_working.compute_sequence(x0)
+    # Simulate retirement paths (note the initial condition)
+    xp_r, up_r, wp_r = lq_retired.compute_sequence(xp_w[:, K])
+    
+    # Convert results back to assets, consumption and income
+    xp = np.column_stack((xp_w, xp_r[:, 1:]))
+    assets = xp[0, :]                  # Assets
+    
+    up = np.column_stack((up_w, up_r))
+    c = up.flatten() + c_bar           # Consumption
+    
+    time = np.arange(1, K+1)
+    income_w = σ * wp_w[0, 1:K+1] + m1 * time + m2 * time**2  # Income
+    income_r = np.full(T-K, s)
+    income = np.concatenate((income_w, income_r))
+    
+    # Plot results
+    n_rows = 2
+    fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
+    
+    plt.subplots_adjust(hspace=0.5)
+    
+    bbox = (0., 1.02, 1., .102)
+    legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
+    p_args = {'lw': 2, 'alpha': 0.7}
+    
+    axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
+                **p_args)
+    axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
+    
+    axes[1].plot(range(T+1), assets, 'b-', label="assets", **p_args)
+    axes[1].plot(range(T+1), np.zeros(T+1), 'k-')
+    
+    for ax in axes:
+        ax.grid()
+        ax.set_xlabel('Time')
+        ax.legend(ncol=2, **legend_args)
+    
+    plt.show()
 
-# Formulate LQ problem 2 (working life)
-R = np.zeros((4, 4))
-A = [[1 + r, -c_bar, m1, m2],
-     [0,          1,  0,  0],
-     [0,          1,  1,  0],
-     [0,          1,  2,  1]]
-B = [[-1],
-     [ 0],
-     [ 0],
-     [ 0]]
-C = [[σ],
-     [0],
-     [0],
-     [0]]
-
-# Set up working life LQ instance with terminal Rf from lq_retired
-lq_working = LQ(Q, R, A, B, C, beta=β, T=K, Rf=Rf2)
-
-# Simulate working state / control paths
-x0 = (0, 1, 0, 0)
-xp_w, up_w, wp_w = lq_working.compute_sequence(x0)
-# Simulate retirement paths (note the initial condition)
-xp_r, up_r, wp_r = lq_retired.compute_sequence(xp_w[:, K])
-
-# Convert results back to assets, consumption and income
-xp = np.column_stack((xp_w, xp_r[:, 1:]))
-assets = xp[0, :]                  # Assets
-
-up = np.column_stack((up_w, up_r))
-c = up.flatten() + c_bar           # Consumption
-
-time = np.arange(1, K+1)
-income_w = σ * wp_w[0, 1:K+1] + m1 * time + m2 * time**2  # Income
-income_r = np.full(T-K, s)
-income = np.concatenate((income_w, income_r))
-
-# Plot results
-n_rows = 2
-fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
-
-plt.subplots_adjust(hspace=0.5)
-
-bbox = (0., 1.02, 1., .102)
-legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
-p_args = {'lw': 2, 'alpha': 0.7}
-
-axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
-            **p_args)
-axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
-
-axes[1].plot(range(T+1), assets, 'b-', label="assets", **p_args)
-axes[1].plot(range(T+1), np.zeros(T+1), 'k-')
-
-for ax in axes:
-    ax.grid()
-    ax.set_xlabel('Time')
-    ax.legend(ncol=2, **legend_args)
-
-plt.show()
+# Create and simulate retirement model
+retirement_model = create_retirement_model()
+simulate_and_plot_retirement(retirement_model)
 ```
 
 ```{solution-end}
@@ -1539,60 +1596,75 @@ $$
 Our solution code is
 
 ```{code-cell} python3
-# Model parameters
-a0 = 5
-a1 = 0.5
-σ = 0.15
-ρ = 0.9
-γ = 1
-β = 0.95
-c = 2
-T = 120
+class MonopolistModel(NamedTuple):
+    a0: float
+    a1: float
+    σ: float
+    ρ: float
+    γ: float
+    β: float
+    c: float
+    T: int
+    m0: float
+    m1: float
+    Q: float
+    R: np.ndarray
+    A: np.ndarray
+    B: np.ndarray
+    C: np.ndarray
 
-# Useful constants
-m0 = (a0-c)/(2 * a1)
-m1 = 1/(2 * a1)
+def create_monopolist_model(a0=5, a1=0.5, σ=0.15, ρ=0.9, γ=1, β=0.95, c=2, T=120):
+    # Useful constants
+    m0 = (a0-c)/(2 * a1)
+    m1 = 1/(2 * a1)
+    
+    # Formulate LQ problem
+    Q = γ
+    R = [[ a1, -a1,  0],
+         [-a1,  a1,  0],
+         [  0,   0,  0]]
+    A = [[ρ, 0, m0 * (1 - ρ)],
+         [0, 1,            0],
+         [0, 0,            1]]
+    B = [[0], [1], [0]]
+    C = [[m1 * σ], [0], [0]]
+    
+    return MonopolistModel(
+        a0=a0, a1=a1, σ=σ, ρ=ρ, γ=γ, β=β, c=c, T=T,
+        m0=m0, m1=m1, Q=Q, R=R, A=A, B=B, C=C
+    )
 
-# Formulate LQ problem
-Q = γ
-R = [[ a1, -a1,  0],
-     [-a1,  a1,  0],
-     [  0,   0,  0]]
-A = [[ρ, 0, m0 * (1 - ρ)],
-     [0, 1,            0],
-     [0, 0,            1]]
+def simulate_and_plot_monopolist(model):
+    # Unpack model
+    a0, a1, σ, ρ, γ, β, c, T, m0, m1, Q, R, A, B, C = model
+    
+    lq = LQ(Q, R, A, B, C=C, beta=β)
+    
+    # Simulate state / control paths
+    x0 = (m0, 2, 1)
+    xp, up, wp = lq.compute_sequence(x0, ts_length=150)
+    q_bar = xp[0, :]
+    q = xp[1, :]
+    
+    # Plot simulation results
+    fig, ax = plt.subplots(figsize=(10, 6.5))
+    
+    bbox = (0., 1.01, 1., .101)
+    legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
+    p_args = {'lw': 2, 'alpha': 0.6}
+    
+    time = range(len(q))
+    ax.set(xlabel='Time', xlim=(0, max(time)))
+    ax.plot(time, q_bar, 'k-', lw=2, alpha=0.6, label=r'$\bar q_t$')
+    ax.plot(time, q, 'b-', lw=2, alpha=0.6, label='$q_t$')
+    ax.legend(ncol=2, **legend_args)
+    s = fr'dynamics with $\gamma = {γ}$'
+    ax.text(max(time) * 0.6, 1 * q_bar.max(), s, fontsize=14)
+    plt.show()
 
-B = [[0],
-     [1],
-     [0]]
-C = [[m1 * σ],
-     [     0],
-     [     0]]
-
-lq = LQ(Q, R, A, B, C=C, beta=β)
-
-# Simulate state / control paths
-x0 = (m0, 2, 1)
-xp, up, wp = lq.compute_sequence(x0, ts_length=150)
-q_bar = xp[0, :]
-q = xp[1, :]
-
-# Plot simulation results
-fig, ax = plt.subplots(figsize=(10, 6.5))
-
-# Some fancy plotting stuff -- simplify if you prefer
-bbox = (0., 1.01, 1., .101)
-legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
-p_args = {'lw': 2, 'alpha': 0.6}
-
-time = range(len(q))
-ax.set(xlabel='Time', xlim=(0, max(time)))
-ax.plot(time, q_bar, 'k-', lw=2, alpha=0.6, label=r'$\bar q_t$')
-ax.plot(time, q, 'b-', lw=2, alpha=0.6, label='$q_t$')
-ax.legend(ncol=2, **legend_args)
-s = fr'dynamics with $\gamma = {γ}$'
-ax.text(max(time) * 0.6, 1 * q_bar.max(), s, fontsize=14)
-plt.show()
+# Create and simulate monopolist model
+monopolist_model = create_monopolist_model()
+simulate_and_plot_monopolist(monopolist_model)
 ```
 
 ```{solution-end}
