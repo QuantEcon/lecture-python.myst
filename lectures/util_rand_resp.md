@@ -30,7 +30,7 @@ The lecture tells how Ljungqvist used his framework to shed light on alternative
 
 ## Privacy Measures
 
-We consider randomized response models with only  two possible answers, "yes" and "no."
+We consider randomized response models with only two possible answers, "yes" and "no."
 
 The design determines probabilities
 
@@ -49,7 +49,7 @@ $$
 $$ (eq:util-rand-one)
 
 
-## Zoo of Concepts
+## Zoo of concepts
 
 At this point we describe some concepts proposed by various researchers.
 
@@ -100,7 +100,7 @@ An efficient randomized response model is, therefore, any model that attains the
 
 As a special example, Leysieffer and Warner considered "a problem in which there is no jeopardy in a no answer"; that is, $g(\text{no}|A^{'})$ can be of unlimited magnitude.
 
-Evidently, an  optimal design must have
+Evidently, an optimal design must have
 
 $$
 \text{Pr}(\text{yes}|A)=1
@@ -116,7 +116,7 @@ $$
 
 {cite:t}`lanke1975choice` argued that "it is membership in Group A that people may want to hide, not membership in the complementary Group A'."
 
-For that reason, {cite:t}`lanke1976degree` argued  that an appropriate measure of protection is to minimize
+For that reason, {cite:t}`lanke1976degree` argued that an appropriate measure of protection is to minimize
 
 $$
 \max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
@@ -167,24 +167,25 @@ $$ (eq:util-rand-eight-b)
 
 This measure is just the first term in {eq}`eq:util-rand-seven-a`, i.e., the probability that an individual answers "yes" and is perceived to belong to $A$.
 
-##  Respondent's Expected Utility
+## Respondent's expected utility
 
-### Truth Border
+### Truth border
 
-Key  assumptions  that underlie a randomized response technique for estimating the  fraction of a population that belongs to  $A$ are:
+Key assumptions that underlie a randomized response technique for estimating the fraction of a population that belongs to $A$ are:
 
 - **Assumption 1**: Respondents feel discomfort from being thought of as belonging to $A$.
 
-- **Assumption 2**: Respondents prefer to answer questions truthfully than to lie, so long as the cost of doing so is not too high. The cost is taken to be the discomfort in 1.
+- **Assumption 2**: Respondents prefer to answer questions truthfully than to lie, so long as the cost of doing so is not too high.
+
+  - The cost is taken to be the discomfort in 1.
 
 Let $r_i$ denote individual $i$'s response to the randomized question.
 
 $r_i$ can only take values "yes" or "no".
 
-For a given  design of a randomized response interview and a given belief about the fraction of  the population
-that belongs to $A$, the respondent's  answer is associated with a conditional probability $ \text{Pr}(A|r_i)$ that the individual belongs to $A$.
+For a given design of a randomized response interview and a given belief about the fraction of the population that belongs to $A$, the respondent's answer is associated with a conditional probability $\text{Pr}(A|r_i)$ that the individual belongs to $A$.
 
-Given $r_i$ and complete privacy,  the individual's utility  is higher if $r_i$ represents a truthful answer rather than a lie.
+Given $r_i$ and complete privacy, the individual's utility is higher if $r_i$ represents a truthful answer rather than a lie.
 
 In terms of a respondent's expected utility as a function of $ \text{Pr}(A|r_i)$ and $r_i$
 
@@ -207,19 +208,19 @@ $$ (eq:util-rand-nine-a)
 and
 
 $$
-U_i\left(\text{Pr}(A|r_i),\text{truth}\right)>U_i\left(\text{Pr}(A|r_i),\text{lie}\right)  , \text{ for } \text{Pr}(A|r_i) \in [0,1]
+U_i\left(\text{Pr}(A|r_i),\text{truth}\right)>U_i\left(\text{Pr}(A|r_i),\text{lie}\right), \text{ for } \text{Pr}(A|r_i) \in [0,1]
 $$ (eq:util-rand-nine-b)
 
-Suppose now that  correct answer for individual $i$ is "yes".
+Suppose now that correct answer for individual $i$ is "yes".
 
-Individual $i$ would  choose to answer truthfully if
+Individual $i$ would choose to answer truthfully if
 
 $$
 U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
 $$ (eq:util-rand-ten-a)
 
 
-If the correct  answer is "no", individual $i$ would volunteer the correct answer only if
+If the correct answer is "no", individual $i$ would volunteer the correct answer only if
 
 $$
 U_i\left(\text{Pr}(A|\text{no}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{yes}),\text{lie}\right)
@@ -235,15 +236,15 @@ so that a "yes" answer increases the odds that an individual belongs to $A$.
 
 Constraint {eq}`eq:util-rand-ten-b` holds for sure.
 
-Consequently,  constraint {eq}`eq:util-rand-ten-a` becomes the single necessary condition for individual $i$  always to answer truthfully.
+Consequently, constraint {eq}`eq:util-rand-ten-a` becomes the single necessary condition for individual $i$ always to answer truthfully.
 
-At equality, constraint {eq}`eq:util-rand-ten-a` determines   conditional probabilities that make the individual indifferent between telling the truth and lying when the correct answer is "yes":
+At equality, constraint {eq}`eq:util-rand-ten-a` determines conditional probabilities that make the individual indifferent between telling the truth and lying when the correct answer is "yes":
 
 $$
 U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)= U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
 $$ (eq:util-rand-eleven)
 
-Equation {eq}`eq:util-rand-eleven` defines a  "truth border".
+Equation {eq}`eq:util-rand-eleven` defines a "truth border".
 
 Differentiating {eq}`eq:util-rand-eleven` with respect to the conditional probabilities shows that the truth border has a positive slope in the space of conditional probabilities:
 
@@ -255,17 +256,25 @@ The source of the positive relationship is:
 
 -  The individual is willing to volunteer a truthful "yes" answer so long as the utility from doing so (i.e., the left side of {eq}`eq:util-rand-eleven`) is at least as high as the utility of lying on the right side of {eq}`eq:util-rand-eleven`.
 
-- Suppose now that $\text{Pr}(A|\text{yes})$ increases. That reduces the utility of telling the truth. To preserve indifference between a truthful answer and a lie, $\text{Pr}(A|\text{no})$ must increase to reduce the utility of lying.
+- Suppose now that $\text{Pr}(A|\text{yes})$ increases.
 
-###  Drawing a  Truth Border
+  - This reduces the utility of telling the truth.
+
+  - To preserve indifference between a truthful answer and a lie, $\text{Pr}(A|\text{no})$ must increase to reduce the utility of lying.
+
+### Drawing a truth border
 
 We can deduce two things about the truth border:
 
 - The truth border divides the space of conditional probabilities into two subsets: "truth telling" and "lying". 
 
-  - Thus, sufficient  privacy elicits a truthful answer, whereas insufficient privacy results in a lie. The truth border depends on a respondent's utility function.
+  - Thus, sufficient privacy elicits a truthful answer, whereas insufficient privacy results in a lie.
 
-- Assumptions in {eq}`eq:util-rand-nine-a` and {eq}`eq:util-rand-nine-a` are  sufficient only to guarantee a positive slope of the truth border. The truth border can have either a concave or a convex shape.
+  - The truth border depends on a respondent's utility function.
+
+- Assumptions in {eq}`eq:util-rand-nine-a` and {eq}`eq:util-rand-nine-a` are sufficient only to guarantee a positive slope of the truth border.
+
+The truth border can have either a concave or a convex shape.
 
 We can draw some truth borders with the following Python code:
 
@@ -341,9 +350,9 @@ plt.legend(loc=0, fontsize='large')
 plt.show()
 ```
 
-## Utilitarian View of Survey Design
+## Utilitarian view of survey design
 
-### Iso-variance Curves
+### Iso-variance curves
 
 A statistician's objective is
 
@@ -378,7 +387,7 @@ From expression {eq}`eq:util-rand-thirteen`, {eq}`eq:util-rand-fourteen-a` and {
 
 - Iso-variance curves are always upward-sloping and concave.
 
-### Drawing  Iso-variance Curves
+### Drawing iso-variance curves
 
 We use Python code to draw iso-variance curves.
 
@@ -452,7 +461,7 @@ var = Iso_Variance(π=0.3, n=100)
 var.plotting_iso_variance_curve()
 ```
 
-### Optimal Survey
+### Optimal survey
 
 A point on an iso-variance curves can be attained with the unrelated question design.
 
@@ -476,19 +485,27 @@ Here are some comments about the model design:
 
 - An  equilibrium of the optimal design model is a Nash equilibrium of a noncooperative game.
 
-- Assumption {eq}`eq:util-rand-nine-b` is sufficient to guarantee  existence of an optimal model design. By choosing $\text{ Pr}(A|\text{yes})$ and $\text{ Pr}(A|\text{no})$ sufficiently close to each other, all respondents will find it optimal to answer truthfully. The closer are these probabilities, the higher the variance of the estimator becomes.
+- Assumption {eq}`eq:util-rand-nine-b` is sufficient to guarantee existence of an optimal model design.
 
-- If  respondents experience a large enough increase in expected utility from telling the truth, then there is no need to use a randomized response model. The smallest possible variance of the estimate is then obtained at $\text{ Pr}(A|\text{yes})=1$ and $\text{ Pr}(A|\text{no})=0$ ; that is, when respondents answer truthfully to direct questioning.
+  - By choosing $\text{ Pr}(A|\text{yes})$ and $\text{ Pr}(A|\text{no})$ sufficiently close to each other, all respondents will find it optimal to answer truthfully.
 
-- A more general design problem would be to minimize some weighted sum of the estimator's variance and bias. It would be optimal to accept some lies from the most "reluctant" respondents.
+  - The closer are these probabilities, the higher the variance of the estimator becomes.
 
-## Criticisms of Proposed Privacy Measures
+- If respondents experience a large enough increase in expected utility from telling the truth, then there is no need to use a randomized response model.
+
+The smallest possible variance of the estimate is then obtained at $\text{ Pr}(A|\text{yes})=1$ and $\text{ Pr}(A|\text{no})=0$; that is, when respondents answer truthfully to direct questioning.
+
+- A more general design problem would be to minimize some weighted sum of the estimator's variance and bias.
+
+  - It would be optimal to accept some lies from the most "reluctant" respondents.
+
+## Criticisms of proposed privacy measures
 
 We can use a utilitarian approach to analyze some privacy measures.
 
 We'll enlist Python Code to help us.
 
-### Analysis of Method of Lanke (1976)
+### Analysis of method of Lanke (1976)
 
 {cite:t}`lanke1976degree` recommends a privacy  protection criterion that minimizes:
 
@@ -496,7 +513,9 @@ $$
 \max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
 $$ (eq:util-rand-five-b)
 
-Following Lanke's suggestion, the statistician should find the highest possible $\text{ Pr}(A|\text{yes})$ consistent with truth telling while $\text{ Pr}(A|\text{no})$ is fixed at 0. The variance is then minimized at point $X$ in {numref}`fig-lanke-analysis`.
+Following Lanke's suggestion, the statistician should find the highest possible $\text{ Pr}(A|\text{yes})$ consistent with truth telling while $\text{ Pr}(A|\text{no})$ is fixed at 0.
+
+The variance is then minimized at point $X$ in {numref}`fig-lanke-analysis`.
 
 However, as shown in {numref}`fig-lanke-analysis`, point $Z$ offers a smaller variance that still allows cooperation of the respondents, and it is achievable following our earlier discussion of the truth border:
 
@@ -562,7 +581,7 @@ $$
 
 This is not an optimal choice under a utilitarian approach.
 
-### Analysis on the Method of Chadhuri and Mukerjee (1988)
+### Analysis on the method of Chadhuri and Mukerjee (1988)
 
 {cite}`Chadhuri_Mukerjee_88` argued that the individual may find that since "yes" may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond "no". 
 
@@ -697,7 +716,7 @@ If the individuals are willing to volunteer this information, it seems that the 
 
 It ignores the fact that respondents retain the option of lying until they have seen the question to be answered.
 
-## Concluding Remarks
+## Concluding remarks
 
 
 The justifications for a randomized response procedure are that
