@@ -262,7 +262,7 @@ So there is something to learn from the past about the future.
 ## Exchangeability
 
 While the sequence $W_0, W_1, \ldots$ is not IID, it can be verified that it is
-**exchangeable**, which means that the   joint distributions $h(W_0, W_1)$ and $h(W_1, W_0)$ of the ''re-ordered'' sequences
+**exchangeable**, which means that the   joint distributions $h(W_0, W_1)$ and $h(W_1, W_0)$ of the "re-ordered" sequences
 satisfy
 
 $$
