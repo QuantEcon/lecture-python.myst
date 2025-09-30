@@ -53,7 +53,7 @@ $$ (eq:util-rand-one)
 
 At this point we describe some concepts proposed by various researchers.
 
-### {cite:t}`leysieffer1976respondent`
+### Leysieffer and Warner (1976)
 
 The response $r$ is regarded as jeopardizing with respect to $A$ or $A^{'}$ if
 
@@ -112,7 +112,7 @@ $$
 \text{Pr}(A|\text{no})=0
 $$
 
-### {cite:t}`lanke1976degree`
+### Lanke (1976)
 
 {cite:t}`lanke1975choice` argued that "it is membership in Group A that people may want to hide, not membership in the complementary Group A'."
 
@@ -124,7 +124,7 @@ $$ (eq:util-rand-five-a)
 
 Holding this measure constant, he explained under what conditions the smallest variance of the estimate was achieved with the unrelated question model or {cite:t}`warner1965randomized` original model.
 
-### {cite:t}`fligner1977comparison`
+### Fligner et al. (1977)
 
 {cite:t}`fligner1977comparison` reached similar conclusion as {cite:t}`lanke1976degree`.
 
@@ -135,7 +135,7 @@ $$
 $$ (eq:util-rand-six)
 
 
-### {cite:t}`greenberg1977respondent`
+### Greenberg et al. (1977)
 
 {cite:t}`greenberg1977respondent` stressed the importance of examining the risk to respondents who do not belong to $A$ as well as the risk to those who do belong to the sensitive group.
 
@@ -484,11 +484,11 @@ Here are some comments about the model design:
 
 ## Criticisms of Proposed Privacy Measures
 
-We can use a utilitarian approach to analyze some  privacy measures.
+We can use a utilitarian approach to analyze some privacy measures.
 
 We'll enlist Python Code to help us.
 
-### Analysis of Method of {cite:t}`lanke1976degree`
+### Analysis of Method of Lanke (1976)
 
 {cite:t}`lanke1976degree` recommends a privacy  protection criterion that minimizes:
 
@@ -498,7 +498,7 @@ $$ (eq:util-rand-five-b)
 
 Following Lanke's suggestion, the statistician should find the highest possible $\text{ Pr}(A|\text{yes})$ consistent with truth telling while $\text{ Pr}(A|\text{no})$ is fixed at 0. The variance is then minimized at point $X$ in {numref}`fig-lanke-analysis`.
 
-However, we can see that in {numref}`fig-lanke-analysis`, point $Z$ offers a smaller variance that still allows cooperation of the respondents, and it is achievable following our discussion of the truth border in Part III:
+However, as shown in {numref}`fig-lanke-analysis`, point $Z$ offers a smaller variance that still allows cooperation of the respondents, and it is achievable following our earlier discussion of the truth border:
 
 ```{code-cell} ipython3
 ---
@@ -545,7 +545,7 @@ plt.legend(loc=0, fontsize='large')
 plt.show()
 ```
 
-### Method of {cite:t}`leysieffer1976respondent`
+### Method of Leysieffer and Warner (1976)
 
 {cite:t}`leysieffer1976respondent` recommend a two-dimensional measure of jeopardy that reduces to a single dimension when there is no jeopardy in a 'no' answer, which means that
 
@@ -560,9 +560,9 @@ $$
 \text{Pr}(A|\text{no})=0
 $$
 
-This is  not an optimal  choice under a utilitarian approach.
+This is not an optimal choice under a utilitarian approach.
 
-### Analysis on the Method of {cite:t}`Chadhuri_Mukerjee_88`
+### Analysis on the Method of Chadhuri and Mukerjee (1988)
 
 {cite}`Chadhuri_Mukerjee_88` argued that the individual may find that since "yes" may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond "no". 
 
@@ -574,13 +574,13 @@ $$
 
 Here the gain from lying is too high for someone to volunteer a "yes" answer.
 
-This  means that
+This means that
 
 $$
 U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)< U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
 $$
 
-in any situation always.
+always holds in any situation.
 
 As a result, there is no attainable model design.
 
@@ -588,7 +588,7 @@ However, under a utilitarian approach there should exist other survey designs th
 
 In particular, respondents will choose to answer truthfully if the relative advantage from lying is eliminated.
 
-We can use Python to show that the optimal model design
+We can use Python to show the optimal model design
 
 ```{code-cell} ipython3
 def f(x):
@@ -645,7 +645,7 @@ plt.show()
 
 Here the optimal model design corresponds to point $Q$ in {numref}`fig-optimal-design`.
 
-### Method of {cite:t}`greenberg1977respondent`
+### Method of Greenberg et al. (1977)
 
 {cite:t}`greenberg1977respondent` defined the hazard for an individual in $A$ as the probability that he or she is perceived as belonging to $A$:
 
@@ -691,7 +691,7 @@ and it follows that:
 
 Even though this hazard can be set arbitrarily close to 0, an individual in $A$ will completely reveal his or her identity whenever truthfully answering the sensitive question.
 
-However, under utilitarian framework, it is obviously contradictory.
+However, under a utilitarian framework, this is obviously contradictory.
 
 If the individuals are willing to volunteer this information, it seems that the randomized response design was not necessary in the first place.
 
@@ -710,10 +710,10 @@ If a privacy measure is not completely consistent with the rational behavior of 
 
 A utilitarian approach provides a systematic way to model respondents' behavior under the assumption that they maximize their expected utilities.
 
-In  a utilitarian analysis:
+In a utilitarian analysis:
 
 - A truth border divides the space of conditional probabilities of being perceived as belonging to the sensitive group, $\text{Pr}(A|\text{yes})$ and $\text{Pr}(A|\text{no})$, into the truth-telling region and the lying region.
 
 - The optimal model design is obtained at the point where the truth border touches the lowest possible iso-variance curve.
 
-A practical implication of the  analysis of {cite}`ljungqvist1993unified` is that uncertainty about respondents' demands for privacy can be acknowledged by **choosing $\text{Pr}(A|\text{yes})$ and $\text{Pr}(A|\text{no})$ sufficiently close to each other**.
+A practical implication of the analysis of {cite}`ljungqvist1993unified` is that uncertainty about respondents' demands for privacy can be acknowledged by **choosing $\text{Pr}(A|\text{yes})$ and $\text{Pr}(A|\text{no})$ sufficiently close to each other**.
