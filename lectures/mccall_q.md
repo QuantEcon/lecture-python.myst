@@ -602,7 +602,7 @@ def run_epochs(N, qlmc, qtable, key):
     Run epochs N times with qtable from the last iteration each time.
     """
     for n in range(N):
-        if n % (N // 10) == 0:
+        if n % max(1, N // 10) == 0:
             print(f"Progress: EPOCHs = {n}")
 
         # Split key for this epoch
