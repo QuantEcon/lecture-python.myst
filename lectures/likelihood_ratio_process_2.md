@@ -29,7 +29,7 @@ kernelspec:
 ## Overview
 
 A likelihood ratio process lies behind Lawrence Blume and David Easley's answer to their question
-''If you're so smart, why aren't you rich?'' {cite}`blume2006if`.  
+"If you're so smart, why aren't you rich?" {cite}`blume2006if`.  
 
 Blume and Easley constructed formal models to study how differences of opinions about probabilities governing risky income processes would influence outcomes and be reflected in prices of stocks, bonds, and insurance policies that individuals use to share and hedge risks.
 
@@ -65,7 +65,7 @@ from math import gamma
 from scipy.integrate import quad
 ```
 
-## Review: Likelihood Ratio Processes
+## Review: likelihood ratio processes
 
 We'll begin by reminding ourselves definitions and properties of likelihood ratio processes.  
 
@@ -166,7 +166,7 @@ def simulate(a, b, T=50, N=500):
     return l_arr
 ```
 
-## Blume and Easley's Setting
+## Blume and Easley's setting
 
 Let the random variable $s_t \in (0,1)$ at time $t =0, 1, 2, \ldots$ be distributed according to the same Beta distribution with parameters 
 $\theta = \{\theta_1, \theta_2\}$.
@@ -195,7 +195,7 @@ $$c^1(s_t) = y_t^1 = s_t. $$
 
 But in our model, agent 1 is not alone.
 
-## Nature and Agents' Beliefs
+## Nature and agents' beliefs
 
 Nature draws i.i.d. sequences $\{s_t\}_{t=0}^\infty$ from $\pi_t(s^t)$.
 
@@ -239,7 +239,7 @@ $$
 c_t^1 + c_t^2 = 1 .
 $$
 
-## A Socialist Risk-Sharing Arrangement
+## A socialist risk-sharing arrangement
 
 In order to share risks, a benevolent social planner  dictates a history-dependent consumption allocation that takes the form of a sequence of functions 
 
@@ -260,7 +260,7 @@ To design a socially optimal allocation, the social planner wants to know what a
 As for the endowment sequences, agent $i$ believes that nature draws i.i.d. sequences from joint densities 
 
 $$
-\pi_t^i(s^t) = \pi(s_t)^i \pi^i(s_{t-1}) \cdots \pi^i(s_0)
+\pi_t^i(s^t) = \pi^i(s_t) \pi^i(s_{t-1}) \cdots \pi^i(s_0)
 $$ 
 
 As for attitudes toward bearing risks, agent $i$ has a one-period utility function
@@ -269,7 +269,7 @@ $$
 u(c_t^i) = \ln (c_t^i)
 $$
 
-with marginal utility of consumption in period $i$
+with marginal utility of consumption in period $t$
 
 $$
 u'(c_t^i) = \frac{1}{c_t^i}
@@ -284,7 +284,7 @@ $$ (eq:objectiveagenti)
 where $\delta \in (0,1)$ is an intertemporal discount factor, and $u(\cdot)$ is a strictly increasing, concave one-period utility function.
 
 
-## Social Planner's Allocation Problem
+## Social planner's allocation problem
 
 The benevolent dictator has all the information it requires to choose a consumption allocation that maximizes the social welfare criterion 
 
@@ -294,7 +294,7 @@ $$ (eq:welfareW)
 
 where $\lambda \in [0,1]$ is a Pareto weight that tells how much the planner likes agent $1$ and $1 - \lambda$ is a Pareto weight that tells how much the social planner likes agent $2$.  
 
-Setting $\lambda = .5$ expresses ''egalitarian'' social preferences. 
+Setting $\lambda = .5$ expresses "egalitarian" social preferences. 
 
 Notice how social welfare criterion {eq}`eq:welfareW` takes into account both agents' preferences as represented by formula {eq}`eq:objectiveagenti`.
 
@@ -303,17 +303,13 @@ This means that the social planner knows and respects
 * each agent's one period utility function $u(\cdot) = \ln(\cdot)$
 * each agent $i$'s probability model $\{\pi_t^i(s^t)\}_{t=0}^\infty$
 
-Consequently, we anticipate that these objects will appear in the social planner's rule for allocating the aggregate endowment each period. 
-
+Consequently, we anticipate that these objects will appear in the social planner's rule for allocating the aggregate endowment each period.
 
 First-order necessary conditions for maximizing welfare criterion {eq}`eq:welfareW` subject to the feasibility constraint {eq}`eq:feasibility` are 
 
 $$\frac{\pi_t^2(s^t)}{\pi_t^1(s^t)} \frac{(1/c_t^2(s^t))}{(1/c_t^1(s^t))} = \frac{\lambda}{1-\lambda}$$
 
 which can be rearranged to become
-
-
-
 
 $$
 \frac{c_t^1(s^t)}{c_t^2(s^t)} = \frac{\lambda}{1-\lambda} l_t(s^t)
@@ -361,7 +357,7 @@ $$
 
 
 
-## If You're So Smart, $\ldots$ 
+## If you're so smart, $\ldots$ 
 
 
 Let's compute some values of limiting allocations {eq}`eq:allocationrule1` for some interesting possible limiting
@@ -373,7 +369,7 @@ values of the likelihood ratio process $l_t(s^t)$:
 
 $$l_\infty (s^\infty) = 0; \quad c_\infty^1 = 0$$
 
-* In the above case, agent 2 is ''smarter'' than agent 1, and agent 1's share of the aggregate endowment converges to zero.
+* In the above case, agent 2 is "smarter" than agent 1, and agent 1's share of the aggregate endowment converges to zero.
 
 
 
@@ -400,7 +396,7 @@ Doing this will allow us to connect our analysis with an argument of {cite}`alch
 
 
 
-## Competitive Equilibrium Prices 
+## Competitive equilibrium prices 
 
 Two fundamental welfare theorems for general equilibrium models lead us to anticipate that there is  a connection between the allocation that solves the social planning problem we have been studying and the allocation in a  **competitive equilibrium**  with complete markets in history-contingent commodities.
 
@@ -525,6 +521,9 @@ According to formula {eq}`eq:pformulafinal`, we have the following possible limi
 * when $l_\infty = 0$, $c_\infty^1 = 0 $ and tails of competitive equilibrium prices reflect agent $2$'s probability model $\pi_t^2(s^t)$ according to $p_t(s^t) \propto \delta^t \pi_t^2(s^t) $
 * when $l_\infty = \infty$, $c_\infty^1 = 1 $ and tails of competitive equilibrium prices reflect agent $1$'s probability model $\pi_t^1(s^t)$ according to $p_t(s^t) \propto \delta^t \pi_t^1(s^t) $
 * for small $t$'s, competitive equilibrium prices reflect both agents' probability models.  
+
+We leave the verification of the shadow prices to the reader since it follows from 
+the same reasoning.
 
 ## Simulations 
 
@@ -821,7 +820,7 @@ This ties in nicely with {eq}`eq:kl_likelihood_link`.
 
 
 
-## Related Lectures
+## Related lectures
 
 Complete markets models with homogeneous beliefs, a kind often used in macroeconomics and finance,  are studied in this quantecon lecture {doc}`ge_arrow`.
 
@@ -830,11 +829,6 @@ Complete markets models with homogeneous beliefs, a kind often used in macroecon
 Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes` and as applied in {doc}`odu`.
 
 Likelihood ratio processes appear again in {doc}`advanced:additive_functionals`. 
-
-
-
-{doc}`ge_arrow`
-
 
 
 

@@ -276,7 +276,7 @@ $$
 
 This is designed to express the event
 
-- ``after one or two decrease(s), $Y$ will grow for two consecutive quarters'' 
+- "after one or two decrease(s), $Y$ will grow for two consecutive quarters" 
 
 Following {cite}`wecker1979predicting`, we can use simulations to calculate  probabilities of $P_t$ and $N_t$ for each period $t$. 
 

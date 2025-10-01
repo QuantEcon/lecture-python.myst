@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# Likelihood Processes for VAR Models
+# Likelihood Processes For VAR Models
 
 ```{contents} Contents
 :depth: 2
@@ -156,11 +156,11 @@ Given the Gaussian structure, the conditional distribution $f(x_{t+1} | x_t)$ is
 - Mean: $A x_t$
 - Covariance: $CC'$
 
-The log conditional density is:
+The log conditional density is
 
 $$
 \log f(x_{t+1} | x_t) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(CC') - \frac{1}{2} (x_{t+1} - A x_t)' (CC')^{-1} (x_{t+1} - A x_t)
-$$
+$$ (eq:cond_den)
 
 ```{code-cell} ipython3
 def log_likelihood_transition(x_next, x_curr, model):
@@ -234,7 +234,26 @@ def simulate_var(model, T, N_paths=1):
 
 ## Likelihood ratio process
 
-Now let's compute likelihood ratio processes for comparing two VAR models
+Now let's compute likelihood ratio processes for comparing two VAR models.
+
+For a VAR model with state vector $x_t$, the log likelihood ratio at time $t$ is
+
+$$
+\ell_t = \log \frac{p_f(x_t | x_{t-1})}{p_g(x_t | x_{t-1})}
+$$
+
+where $p_f$ and $p_g$ are the conditional densities under models $f$ and $g$ respectively.
+
+The cumulative log likelihood ratio process is
+
+$$
+L_t = \sum_{s=1}^{t} \ell_s = \sum_{s=1}^{t} \log \frac{p_f(x_s | x_{s-1})}{p_g(x_s | x_{s-1})}
+$$
+
+where $p_f(x_t | x_{t-1})$ and $p_g(x_t | x_{t-1})$ are given by their respective conditional densities defined in {eq}`eq:cond_den`.
+
+
+Let's write those equations in Python
 
 ```{code-cell} ipython3
 def compute_likelihood_ratio_var(paths, model_f, model_g):
@@ -271,7 +290,7 @@ def compute_likelihood_ratio_var(paths, model_f, model_g):
     return log_L_ratios if N_paths > 1 else log_L_ratios[0]
 ```
 
-## Example 1: Two AR(1) processes
+## Example 1: two AR(1) processes
 
 Let's start with a simple example comparing two univariate AR(1) processes with $A_f = 0.8$, $A_g = 0.5$, and $C_f = 0.3$, $C_g = 0.4$
 
@@ -314,7 +333,7 @@ plt.show()
 
 As we expected, the likelihood ratio processes goes to $+\infty$ as $T$ increases, indicating that model $f$ is chosen correctly by our algorithm.
 
-## Example 2: Bivariate VAR models
+## Example 2: bivariate VAR models
 
 Now let's consider an example with bivariate VAR models with 
 
