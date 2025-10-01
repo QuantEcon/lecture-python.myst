@@ -79,7 +79,7 @@ from typing import NamedTuple
 from quantecon.distributions import BetaBinomial
 
 # set random key for reproducibility
-key = jax.random.PRNGKey(123)
+key = jax.random.PRNGKey(0)
 
 # set jax to use CPU
 jax.config.update('jax_platform_name', 'cpu')
