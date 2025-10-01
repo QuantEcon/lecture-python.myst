@@ -495,37 +495,16 @@ The first column of the Q-table represents the value associated with rejecting t
 We use JAX compilation to accelerate computations.
 
 ```{code-cell} ipython3
-class QlearningMcCall(NamedTuple):
-    c: float                  # unemployment compensation
-    β: float                  # discount factor
-    w: jnp.ndarray            # array of wage values, w[i] = wage at state i
-    q: jnp.ndarray            # array of probabilities
-    ε: float                # for ε greedy algorithm
-    δ: float                  # Q-table threshold
-    lr: float                  # the learning rate α
-    T: int                    # maximum periods of accepting
-    quit_allowed: int          # whether quit is allowed after accepting the wage offer
-
-
-def create_qlearning_mccall(c=25,
-                            β=0.99,
-                            w=w_default,
-                            q=q_default,
-                            ε=0.1,
-                            δ=1e-5,
-                            lr=0.5,
-                            T=10000,
-                            quit_allowed=0):
-    return QlearningMcCall(c=c,
-                           β=β,
-                           w=w,
-                           q=q,
-                           ε=ε,
-                           δ=δ,
-                           lr=lr,
-                           T=T,
-                           quit_allowed=quit_allowed)
-
+class QLearningMcCall(NamedTuple):
+      c: float = 25                           # unemployment compensation
+      β: float = 0.99                         # discount factor
+      w: jnp.ndarray = w_default              # array of wage values, w[i] = wage at state i
+      q: jnp.ndarray = q_default              # array of probabilities
+      ε: float = 0.1                          # for ε greedy algorithm
+      δ: float = 1e-5                         # Q-table threshold
+      lr: float = 0.5                         # the learning rate α
+      T: int = 10000                          # maximum periods of accepting
+      quit_allowed: int = 0                   # whether quit is allowed after accepting the wage offer
 
 @jax.jit
 def draw_offer_index(model, key):
@@ -546,15 +525,15 @@ def temp_diff(model, qtable, state, accept, key):
 
     def reject_case():
         state_next = draw_offer_index(model, key)
-        TD = c + β * jnp.max(qtable[state_next, :]) - qtable[state, accept]
-        return TD, state_next
+        td = c + β * jnp.max(qtable[state_next, :]) - qtable[state, accept]
+        return td, state_next
 
     def accept_case():
         state_next = state
-        TD = jnp.where(model.quit_allowed == 0,
+        td = jnp.where(model.quit_allowed == 0,
                        w[state_next] + β * jnp.max(qtable[state_next, :]) - qtable[state, accept],
                        w[state_next] + β * qtable[state_next, 1] - qtable[state, accept])
-        return TD, state_next
+        return td, state_next
 
     return jax.lax.cond(accept == 0, reject_case, accept_case)
 
@@ -585,10 +564,10 @@ def run_one_epoch(model, qtable, key, max_times=20000):
         accept_count = jnp.where(accept == 1, accept_count + 1, 0)
 
         # Compute temporal difference
-        TD, s_next = temp_diff(model, qtable, s, accept, td_key)
+        td, s_next = temp_diff(model, qtable, s, accept, td_key)
 
         # Update qtable
-        qtable_new = qtable.at[s, accept].add(lr * TD)
+        qtable_new = qtable.at[s, accept].add(lr * td)
 
         # Calculate error
         error = jnp.max(jnp.abs(qtable_new - qtable))
@@ -637,7 +616,7 @@ def compute_error(valfunc, valfunc_VFI):
 ```
 
 ```{code-cell} ipython3
-# create an instance of Qlearning_McCall
+# create an instance of QLearningMcCall
 qlmc = create_qlearning_mccall()
 
 # run
@@ -689,7 +668,7 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
-# VFI
+# vfi
 mcm = create_mccall_model(w=w_new, q=q_new)
 valfunc_VFI, converged = vfi(mcm)
 valfunc_VFI
