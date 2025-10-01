@@ -266,7 +266,7 @@ parameter such as $c$ or $L_0$ on $A$ or $B$.
 
 Let $J(\pi)$ be the total loss for a decision-maker with current belief $\pi$ who chooses optimally.
 
-With some thought, you will agree that $J$ should satisfy the Bellman equation
+Principles of **dynamic programming** teach  us that an optimal loss function  $J$ satisfies the following  the Bellman functional  equation
 
 ```{math}
 :label: new1
@@ -340,7 +340,7 @@ $$
 Our aim is to compute the cost function $J$ as well as  the associated cutoffs $A$
 and $B$.
 
-To make our computations manageable, using {eq}`optdec`, we can write the continuation cost $h(\pi)$ as
+To help make our computations more manageable,  we can use {eq}`optdec` to  write the continuation cost $h(\pi)$ as
 
 ```{math}
 :label: optdec2
