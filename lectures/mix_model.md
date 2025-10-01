@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -114,7 +114,7 @@ In this lecture, we'll learn about
 
 * how nature can *mix* between two distributions $f$ and $g$ to create a new distribution $h$.
 
-* The Kullback-Leibler statistical divergence <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence> that governs statistical learning under an incorrect statistical model
+* The [Kullback-Leibler statistical divergence](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) that governs statistical learning under an incorrect statistical model
 
 * A useful Python function `numpy.searchsorted` that,  in conjunction with a uniform random number generator, can be used to sample from an arbitrary distribution
 
@@ -229,7 +229,7 @@ Here is pseudo code for a direct "method 1" for drawing from our compound lotter
   * put the first two steps in a big loop and do them for each realization of $w$
 
 
-Our second method uses a uniform distribution and the following fact that we also described and used in the quantecon lecture <https://python.quantecon.org/prob_matrix.html>:
+Our second method uses a uniform distribution and the following fact that we also described and used in the [quantecon lecture on elementary probability with matrices](https://python.quantecon.org/prob_matrix.html):
 
  * If a random variable $X$ has c.d.f. $F$, then a random variable $F^{-1}(U)$ also has c.d.f. $F$, where $U$ is a uniform random variable on $[0,1]$.
 
@@ -240,14 +240,12 @@ a uniform distribution on $[0,1]$ and computing $F^{-1}(U)$.
 We'll  use this  fact
 in conjunction with the `numpy.searchsorted` command to sample from $H$ directly.
 
-See <https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html> for the
-`searchsorted` function.
+See the [numpy.searchsorted documentation](https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html) for details on the `searchsorted` function.
 
 See the [Mr. P Solver video on Monte Carlo simulation](https://www.google.com/search?q=Mr.+P+Solver+video+on+Monte+Carlo+simulation&oq=Mr.+P+Solver+video+on+Monte+Carlo+simulation) to see other applications of this powerful trick.
 
 In the Python code below, we'll use both of our methods and confirm that each of them does a good job of sampling
 from our target mixture distribution.
-
 
 ```{code-cell} ipython3
 @jit
@@ -582,7 +580,6 @@ recorded on the $x$ axis.
 
 Thus, the graph below confirms how a minimum  KL divergence governs what our type 1 agent eventually learns.
 
-
 ```{code-cell} ipython3
 α_arr_x = α_arr[(α_arr<discretion)|(α_arr>discretion)]
 π_lim_arr = π_lim_v(α_arr_x)
@@ -648,7 +645,7 @@ $$
 We'll use numpyro  to approximate this equation.
 
 We'll create  graphs of the posterior $\pi_t(\alpha)$ as
-$t \rightarrow +\infty$ corresponding to ones presented in the quantecon lecture <https://python.quantecon.org/bayes_nonconj.html>.
+$t \rightarrow +\infty$ corresponding to ones presented in the [quantecon lecture on Bayesian nonconjugate priors](https://python.quantecon.org/bayes_nonconj.html).
 
 We anticipate that a posterior  distribution will collapse around  the true $\alpha$ as
 $t \rightarrow + \infty$.
@@ -684,7 +681,6 @@ def MCMC_run(ws):
 The following code generates the graph below that displays Bayesian posteriors for $\alpha$ at various history lengths.
 
 ```{code-cell} ipython3
-
 fig, ax = plt.subplots(figsize=(10, 6))
 
 for i in range(len(sizes)):
