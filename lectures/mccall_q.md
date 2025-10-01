@@ -530,9 +530,13 @@ def temp_diff(model, qtable, state, accept, key):
 
     def accept_case():
         state_next = state
+        value_if_no_quit = (w[state_next] + β * jnp.max(qtable[state_next, :])
+                              - qtable[state, accept])
+        value_if_quit = (w[state_next] + β * qtable[state_next, 1]
+                           - qtable[state, accept])
         td = jnp.where(model.quit_allowed == 0,
-                       w[state_next] + β * jnp.max(qtable[state_next, :]) - qtable[state, accept],
-                       w[state_next] + β * qtable[state_next, 1] - qtable[state, accept])
+                         value_if_no_quit,
+                         value_if_quit)
         return td, state_next
 
     return jax.lax.cond(accept == 0, reject_case, accept_case)
