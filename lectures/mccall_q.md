@@ -225,7 +225,7 @@ def plot_value_function_seq(mcm, ax, num_plots=8):
 
 ```{code-cell} ipython3
 mcm = create_mccall_model()
-valfunc_VFI, converged = vfi(mcm)
+valfunc_vfi, converged = vfi(mcm)
 
 fig, ax = plt.subplots(figsize=(10,6))
 ax.set_xlabel('wage')
@@ -241,7 +241,7 @@ This  is the approximation to the McCall worker's value function that is produce
 We'll use this value function as a benchmark later after we have done some Q-learning.
 
 ```{code-cell} ipython3
-print(valfunc_VFI)
+print(valfunc_vfi)
 ```
 
 ## Implied quality function  $Q$
@@ -616,8 +616,8 @@ def valfunc_from_qtable(qtable):
     return jnp.max(qtable, axis=1)
 
 
-def compute_error(valfunc, valfunc_VFI):
-    return jnp.mean(jnp.abs(valfunc - valfunc_VFI))
+def compute_error(valfunc, valfunc_vfi):
+    return jnp.mean(jnp.abs(valfunc - valfunc_vfi))
 ```
 
 ```{code-cell} ipython3
@@ -644,7 +644,7 @@ print(valfunc_qlr)
 ```{code-cell} ipython3
 # plot
 fig, ax = plt.subplots(figsize=(10,6))
-ax.plot(w_default, valfunc_VFI, '-o', label='VFI')
+ax.plot(w_default, valfunc_vfi, '-o', label='VFI')
 ax.plot(w_default, valfunc_qlr, '-o', label='QL')
 ax.set_xlabel('wages')
 ax.set_ylabel('optimal value')
@@ -675,8 +675,8 @@ plt.show()
 ```{code-cell} ipython3
 # vfi
 mcm = create_mccall_model(w=w_new, q=q_new)
-valfunc_VFI, converged = vfi(mcm)
-valfunc_VFI
+valfunc_vfi, converged = vfi(mcm)
+valfunc_vfi
 ```
 
 ```{code-cell} ipython3
@@ -688,7 +688,7 @@ def plot_epochs(epochs_to_plot, quit_allowed=1, key=key):
       epochs_to_plot = jnp.asarray(epochs_to_plot)
       # plot
       fig, ax = plt.subplots(figsize=(10,6))
-      ax.plot(w_new, valfunc_VFI, '-o', label='VFI')
+      ax.plot(w_new, valfunc_vfi, '-o', label='VFI')
 
       max_epochs = int(jnp.max(epochs_to_plot))  # Convert to Python int
       # iterate on epoch numbers
@@ -697,7 +697,7 @@ def plot_epochs(epochs_to_plot, quit_allowed=1, key=key):
               print(f"Progress: EPOCHs = {n}")
           if n in epochs_to_plot:
               valfunc_qlr = valfunc_from_qtable(qtable)
-              error = compute_error(valfunc_qlr, valfunc_VFI)
+              error = compute_error(valfunc_qlr, valfunc_vfi)
 
               ax.plot(w_new, valfunc_qlr, '-o', label=f'QL:epochs={n}, mean error={error}')
 
