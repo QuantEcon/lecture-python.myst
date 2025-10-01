@@ -694,7 +694,7 @@ def plot_epochs(epochs_to_plot, quit_allowed=1, key=None):
       max_epochs = int(jnp.max(epochs_to_plot))  # Convert to Python int
       # iterate on epoch numbers
       for n in range(max_epochs + 1):
-          if n%(max_epochs/10)==0:
+          if n % max(1, max_epochs // 10) == 0:
               print(f"Progress: EPOCHs = {n}")
           if n in epochs_to_plot:
               valfunc_qlr = valfunc_from_qtable(qtable)
