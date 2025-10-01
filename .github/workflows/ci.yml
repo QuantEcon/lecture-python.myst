@@ -11,6 +11,9 @@ on:
 jobs:
   preview:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v5
         with:
@@ -79,6 +82,14 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
+      - name: Check for Python warnings
+        uses: QuantEcon/action-check-warnings@v1.0.0
+        with:
+          html-path: './_build/html'
+          fail-on-warning: 'false'
+          create-issue: 'true'
+          issue-title: 'Python warnings found in code output'
+          notify: 'mmcky,HumphreyYang'
       - name: Upload Execution Reports (HTML)
         uses: actions/upload-artifact@v4
         if: failure()
