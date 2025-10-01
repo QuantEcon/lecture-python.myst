@@ -214,10 +214,11 @@ def plot_value_function_seq(mcm, ax, num_plots=8):
       v_next = jnp.empty_like(v)
       for i in range(num_plots):
           ax.plot(mcm.w, v, '-', alpha=0.4, label=f"iterate {i}")
-          # Update guess
-          for j in range(n): 
-              v_next = v_next.at[j].set(jnp.max(state_action_values(mcm, j, v)))
-          v = v_next # handling immutability
+
+          indices = jnp.arange(n)
+          v_next = jax.vmap(
+            lambda j: jnp.max(state_action_values(mcm, j, v)))(indices)
+          v = v_next
 
       ax.legend(loc='lower right')
 ```
