@@ -215,7 +215,7 @@ def plot_value_function_seq(mcm, ax, num_plots=8):
       for i in range(num_plots):
           ax.plot(mcm.w, v, '-', alpha=0.4, label=f"iterate {i}")
           # Update guess
-          for j in range(n):  # changed variable name to avoid conflict
+          for j in range(n): 
               v_next = v_next.at[j].set(jnp.max(state_action_values(mcm, j, v)))
           v = v_next # handling immutability
 
