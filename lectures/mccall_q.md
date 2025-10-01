@@ -500,7 +500,7 @@ class QlearningMcCall(NamedTuple):
     β: float                  # discount factor
     w: jnp.ndarray            # array of wage values, w[i] = wage at state i
     q: jnp.ndarray            # array of probabilities
-    eps: float                # for epsilon greedy algorithm
+    ε: float                # for ε greedy algorithm
     δ: float                  # Q-table threshold
     lr: float                  # the learning rate α
     T: int                    # maximum periods of accepting
@@ -511,7 +511,7 @@ def create_qlearning_mccall(c=25,
                             β=0.99,
                             w=w_default,
                             q=q_default,
-                            eps=0.1,
+                            ε=0.1,
                             δ=1e-5,
                             lr=0.5,
                             T=10000,
@@ -520,7 +520,7 @@ def create_qlearning_mccall(c=25,
                            β=β,
                            w=w,
                            q=q,
-                           eps=eps,
+                           ε=ε,
                            δ=δ,
                            lr=lr,
                            T=T,
@@ -562,7 +562,7 @@ def temp_diff(model, qtable, state, accept, key):
 @jax.jit
 def run_one_epoch(model, qtable, key, max_times=20000):
     """Run an "epoch"."""
-    eps, δ, lr, T = model.eps, model.δ, model.lr, model.T
+    ε, δ, lr, T = model.ε, model.δ, model.lr, model.T
 
     # Split keys for multiple random operations
     key, subkey1, subkey2 = jax.random.split(key, 3)
@@ -576,10 +576,10 @@ def run_one_epoch(model, qtable, key, max_times=20000):
         # Split key for this iteration's random operations
         key, action_key, td_key = jax.random.split(key, 3)
 
-        # Choose action (epsilon-greedy)
+        # Choose action (ε-greedy)
         accept = jnp.argmax(qtable[s, :])
         random_val = jax.random.uniform(action_key)
-        accept = jnp.where(random_val <= eps, 1 - accept, accept)
+        accept = jnp.where(random_val <= ε, 1 - accept, accept)
 
         # Update accept count
         accept_count = jnp.where(accept == 1, accept_count + 1, 0)
