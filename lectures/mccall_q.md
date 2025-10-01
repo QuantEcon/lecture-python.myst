@@ -124,7 +124,7 @@ $$
 
 Let's use  Python   code from {doc}`this quantecon lecture <mccall_model>`.
 
-We use a Python method called `VFI` to compute the optimal value function using value function iterations.
+We use a Python method called `vfi` to compute the optimal value function using value function iterations.
 
 We construct an assumed distribution  of wages and plot it with the following Python code
 
@@ -170,32 +170,36 @@ def state_action_values(model, i, v):
       return jnp.array([accept, reject])
 
 @jax.jit
-def VFI(model, eps=1e-5, max_iter=500):
-      """Find the optimal value function."""
-      n = len(model.w)
-      v_init = model.w / (1 - model.β)
+def update(model, v):
+    n = model.w.shape[0]
 
-      def body_fun(state):
-          v, i, error = state
-          v_next = jnp.empty_like(v)
+    def v_at_state(i):
+        sa = state_action_values(model, i, v)
+        return jnp.max(sa)
 
-          # Update all elements of v_next
-          for j in range(n):
-              v_next = v_next.at[j].set(jnp.max(state_action_values(model, j, v)))
+    indices = jnp.arange(n)
+    v_new = jax.vmap(v_at_state)(indices)
+    return v_new
 
-          error = jnp.max(jnp.abs(v_next - v))
-          return v_next, i + 1, error
+@jax.jit
+def vfi(model, tol=1e-5, max_iter=500):
 
-      def cond_fun(state):
-          v, i, error = state
-          return (error > eps) & (i < max_iter)
+    v0 = model.w / (1.0 - model.β)
 
-      # Initial state: (v, iteration, error)
-      init_state = (v_init, 0, eps + 1)
-      final_v, final_i, final_error = jax.lax.while_loop(cond_fun, body_fun, init_state)
+    def body_fun(state):
+        v, i, err = state
+        v_new = update(model, v)
+        err_new = jnp.max(jnp.abs(v_new - v))
+        return v_new, i + 1, err_new
 
-      flag = jnp.where(final_error <= eps, 1, 0)
-      return final_v, flag
+    def cond_fun(state):
+        _, i, err = state
+        return (err > tol) & (i < max_iter)
+
+    init_state = (v0, 0, tol + 1.0)
+    v_final, iters, err = jax.lax.while_loop(cond_fun, body_fun, init_state)
+    converged = jnp.where(err <= tol, 1, 0)
+    return v_final, converged
 
 def plot_value_function_seq(mcm, ax, num_plots=8):
       """
@@ -220,7 +224,7 @@ def plot_value_function_seq(mcm, ax, num_plots=8):
 
 ```{code-cell} ipython3
 mcm = create_mccall_model()
-valfunc_VFI, flag = VFI(mcm)
+valfunc_VFI, converged = vfi(mcm)
 
 fig, ax = plt.subplots(figsize=(10,6))
 ax.set_xlabel('wage')
@@ -687,7 +691,7 @@ plt.show()
 ```{code-cell} ipython3
 # VFI
 mcm = create_mccall_model(w=w_new, q=q_new)
-valfunc_VFI, flag = VFI(mcm)
+valfunc_VFI, converged = vfi(mcm)
 valfunc_VFI
 ```
 
