@@ -504,7 +504,7 @@ class QLearningMcCall(NamedTuple):
       δ: float = 1e-5                         # Q-table threshold
       lr: float = 0.5                         # the learning rate α
       T: int = 10000                          # maximum periods of accepting
-      quit_allowed: int = 0                   # whether quit is allowed after accepting the wage offer
+      quit_allowed: int = 0                   # whether quit is allowed
 
 @jax.jit
 def draw_offer_index(model, key):
