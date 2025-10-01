@@ -680,10 +680,8 @@ valfunc_VFI
 ```
 
 ```{code-cell} ipython3
-def plot_epochs(epochs_to_plot, quit_allowed=1, key=None):
+def plot_epochs(epochs_to_plot, quit_allowed=1, key=key):
       "Plot value function implied by outcomes of an increasing number of epochs."
-      if key is None:
-          key = jax.random.PRNGKey(42)  # Default key if none provided
 
       qlmc_new = create_qlearning_mccall(w=w_new, q=q_new, quit_allowed=quit_allowed)
       qtable = jnp.zeros((len(w_new),2))
@@ -715,7 +713,7 @@ def plot_epochs(epochs_to_plot, quit_allowed=1, key=None):
 ```
 
 ```{code-cell} ipython3
-plot_epochs(epochs_to_plot=[100, 1000, 10000, 100000, 200000])
+plot_epochs(epochs_to_plot=[100, 1000, 10000, 100000, 200000], key=key)
 ```
 
 The above graphs indicates that
@@ -761,7 +759,7 @@ But if we increase the number of epochs/episodes, we can observe that the error 
 We illustrate these possibilities with the following code and graph.
 
 ```{code-cell} ipython3
-plot_epochs(epochs_to_plot=[100, 1000, 10000, 100000, 200000], quit_allowed=0)
+plot_epochs(epochs_to_plot=[100, 1000, 10000, 100000, 200000], quit_allowed=0, key=key)
 ```
 
 ## Possible extensions
