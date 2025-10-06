@@ -622,7 +622,7 @@ def compute_error(valfunc, valfunc_vfi):
 
 ```{code-cell} ipython3
 # create an instance of QLearningMcCall
-qlmc = create_qlearning_mccall()
+qlmc = QLearningMcCall()
 
 # run
 qtable0 = jnp.zeros((len(w_default), 2))
@@ -683,7 +683,7 @@ valfunc_vfi
 def plot_epochs(epochs_to_plot, quit_allowed=1, key=key):
       "Plot value function implied by outcomes of an increasing number of epochs."
 
-      qlmc_new = create_qlearning_mccall(w=w_new, q=q_new, quit_allowed=quit_allowed)
+      qlmc_new = QLearningMcCall(w=w_new, q=q_new, quit_allowed=quit_allowed)
       qtable = jnp.zeros((len(w_new),2))
       epochs_to_plot = jnp.asarray(epochs_to_plot)
       # plot
