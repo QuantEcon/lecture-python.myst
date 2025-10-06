@@ -174,9 +174,12 @@ def update(model, v):
     n = model.w.shape[0]
 
     def v_at_state(i):
+        # compute state-action values
         sa = state_action_values(model, i, v)
+        # apply max operator
         return jnp.max(sa)
 
+    # vectorize over all states
     indices = jnp.arange(n)
     v_new = jax.vmap(v_at_state)(indices)
     return v_new
@@ -196,6 +199,7 @@ def vfi(model, tol=1e-5, max_iter=500):
         _, i, err = state
         return (err > tol) & (i < max_iter)
 
+    # iterate until convergence
     init_state = (v0, 0, tol + 1.0)
     v_final, iters, err = jax.lax.while_loop(cond_fun, body_fun, init_state)
     converged = jnp.where(err <= tol, 1, 0)
