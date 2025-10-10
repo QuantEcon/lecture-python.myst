@@ -68,7 +68,7 @@ mpl.rcParams['text.latex.preamble'] = r'\usepackage{{amsmath}}'
 
 A representative worker is permanently employed at a firm.
 
-The workers'  output  is  described by the following dynamic process:
+The worker's output is described by the following dynamic process:
 
 ```{math}
 :label: worker_model
@@ -166,7 +166,7 @@ x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
                             0 & \sigma_{u,0} \end{bmatrix}
 ```
 
-To compute the firm's wage setting policy, we first we create a `NamedTuple` to store the parameters of the model
+To compute the firm's wage-setting policy, we first create a `NamedTuple` to store the parameters of the model
 
 ```{code-cell} ipython3
 class WorkerModel(NamedTuple):
@@ -202,7 +202,7 @@ def create_worker(α=.8, β=.2, c=.2,
 
 Please note how the `WorkerModel` namedtuple creates all of the objects required to compute an associated state-space representation {eq}`ssrepresent`.
 
-This is handy, because in order to  simulate a history $\{y_t, h_t\}$ for a worker, we'll want to form state space system for him/her by using the [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
+This is handy, because in order to simulate a history $\{y_t, h_t\}$ for a worker, we'll want to form a state space system for him/her by using the [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
 
 ```{code-cell} ipython3
 # Define A, C, G, R, μ_0, Σ_0
@@ -241,9 +241,9 @@ y_{t} & = G \hat x_t + a_t
 where $K_t$ is the Kalman gain matrix at time $t$.
 
 
-We accomplish this in the following code that  uses the [`Kalman`](https://quanteconpy.readthedocs.io/en/latest/tools/kalman.html) class.
+We accomplish this in the following code that uses the [`Kalman`](https://quanteconpy.readthedocs.io/en/latest/tools/kalman.html) class.
 
-Suppose the belief of firm coincides with the real distribution of $x_0$.
+Suppose the belief of the firm coincides with the real distribution of $x_0$.
 
 ```{code-cell} ipython3
 x_hat_0, Σ_hat_0 = worker.μ_0, worker.Σ_0
@@ -259,7 +259,6 @@ for t in range(1, T):
     # x_hat_t = E(x_t | y^{t-1})
     x_hat = x_hat.at[:, t].set(x_hat_t.reshape(-1))
     Σ_hat = Σ_hat.at[:, :, t].set(Σ_hat_t)
-    y_hat = y_hat.at[t].set((worker.G @ x_hat_t).item())
 
 # Add the initial
 x_hat = x_hat.at[:, 0].set(x_hat_0.reshape(-1))
@@ -270,11 +269,11 @@ y_hat = worker.G @ x_hat
 u_hat = x_hat[1, :]
 ```
 
-For a draw of $h_0, u_0$,  we plot $E[y_t | y^{t-1}] = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
+For a draw of $h_0, u_0$, we plot $E[y_t | y^{t-1}] = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
 
-We also plot $\hat u_t = E [u_t | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
+We also plot $\hat u_t = E [u_t | y^{t-1}]$, which is the firm's inference about a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
-We can  watch as the  firm's inference  $E [u_t | y^{t-1}]$ of the worker's work ethic converges toward the hidden  $u_0$, which is not directly observed by the firm.
+We can watch as the firm's inference $E [u_t | y^{t-1}]$ of the worker's work ethic converges toward the hidden $u_0$, which is not directly observed by the firm.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(1, 2)
@@ -309,9 +308,9 @@ print(Σ_hat[:, :, 0])
 print(Σ_hat[:, :, -1])
 ```
 
-Evidently,  entries in the conditional covariance matrix become smaller over time.
+Evidently, entries in the conditional covariance matrix become smaller over time.
 
-It is enlightening to  portray how  conditional covariance matrices $\Sigma_t$ evolve by plotting confidence ellipsoides around $E [x_t |y^{t-1}] $ at various $t$'s.
+It is enlightening to portray how conditional covariance matrices $\Sigma_t$ evolve by plotting confidence ellipsoids around $E [x_t |y^{t-1}] $ at various $t$'s.
 
 ```{code-cell} ipython3
 # Create a grid of points for contour plotting
@@ -341,9 +340,9 @@ for i, t in enumerate(np.linspace(0, T-1, 3, dtype=int)):
     axs[i].set_xlabel(r'$h_{{{}}}$'.format(str(t+1)))
     axs[i].set_ylabel(r'$u_{{{}}}$'.format(str(t+1)))
     
-    cov_latex = r'$\Sigma_{{{}}}= \begin{{bmatrix}} {:.2f} & {:.2f} \\ {:.2f} & {:.2f} \end{{bmatrix}}$'.format(
-        t+1, cov[0, 0], cov[0, 1], cov[1, 0], cov[1, 1]
-    )
+    cov_latex = (r'$\Sigma_{{{}}}= \begin{{bmatrix}} {:.2f} & {:.2f} \\ '
+                 r'{:.2f} & {:.2f} \end{{bmatrix}}$'.format(
+                     t+1, cov[0, 0], cov[0, 1], cov[1, 0], cov[1, 1]))
     axs[i].text(0.33, -0.15, cov_latex, transform=axs[i].transAxes)
 
     
@@ -463,7 +462,7 @@ Here is an example.
 
 ```{code-cell} ipython3
 # We can set these parameters when creating a worker -- just like classes!
-hard_working_worker =  create_worker(α=.4, β=.8, 
+hard_working_worker = create_worker(α=.4, β=.8, 
                         μ_h=7.0, μ_u=100, σ_h=2.5, σ_u=3.2)
 
 print(hard_working_worker)
@@ -517,8 +516,9 @@ def simulate_workers(worker, T, ax, ss_μ=None, ss_Σ=None,
     y_hat = G @ x_hat
     u_hat = x_hat[1, :]
 
-    if diff :
-        title = ('Difference between inferred and true work ethic over time' if title is None else title)
+    if diff:
+        title = ('Difference between inferred and true work ethic over time'
+                 if title is None else title)
         
         ax.plot(u_hat - u_0, alpha=.5)
         ax.axhline(y=0, color='grey', linestyle='dashed')
