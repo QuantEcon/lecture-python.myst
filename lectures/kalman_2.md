@@ -85,10 +85,10 @@ Here
 * $h_t$ is the logarithm of human capital at time $t$
 * $u_t$ is the logarithm of the worker's effort at accumulating human capital at $t$ 
 * $y_t$ is the logarithm of the worker's output at time $t$
-* $h_0 \sim {\mathcal N}(\hat h_0, \sigma_{h,0})$
-* $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$
+* $h_0 \sim {\mathcal N}(\mu_{h, 0}, \sigma_{h,0})$
+* $u_0 \sim {\mathcal N}(\mu_{u, 0}, \sigma_{u,0})$
 
-Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_{h,0}, \sigma_{u,0}$.
+Parameters of the model are $\alpha, \beta, c, R, g, \mu_{h, 0}, \mu_{u, 0}, \sigma_{h,0}, \sigma_{u,0}$.
 
 At time $0$, a firm has hired the worker.
 
@@ -153,7 +153,7 @@ which is equivalent with
 \begin{aligned} 
 x_{t+1} & = A x_t + C w_{t+1} \cr
 y_t & = G x_t + v_t \cr
-x_0 & \sim {\mathcal N}(\hat x_0, \Sigma_0) 
+x_0 & \sim {\mathcal N}(\mu_0, \Sigma_0) 
 \end{aligned}
 ```
 
@@ -161,7 +161,7 @@ where
 
 ```{math}
 x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
-\hat x_0  = \begin{bmatrix} \hat h_0 \cr \hat u_0 \end{bmatrix} , \quad
+\mu_0  = \begin{bmatrix} \mu_{h ,0} \cr \mu_{u, 0} \end{bmatrix} , \quad
 \Sigma_0  = \begin{bmatrix} \sigma_{h,0} & 0 \cr
                             0 & \sigma_{u,0} \end{bmatrix}
 ```
@@ -170,48 +170,34 @@ To compute the firm's wage setting policy, we first we create a `NamedTuple` to 
 
 ```{code-cell} ipython3
 class WorkerModel(NamedTuple):
-    """
-    Parameters for the worker model state-space representation.
-    
-    A : jax.Array
-        Transition matrix of state variables
-    C : jax.Array  
-        Parameter of the state shock 
-    G : jax.Array
-        Parameter of state variables in observation equation
-    R : jax.Array
-        Coefficient of observation shock
-    xhat_0 : jax.Array
-        Initial state estimate
-    Σ_0 : jax.Array
-        Initial covariance matrix
-    """
+
     A: jax.Array
     C: jax.Array
     G: jax.Array
     R: jax.Array
-    xhat_0: jax.Array
+    μ_0: jax.Array
     Σ_0: jax.Array
 
+
 def create_worker(α=.8, β=.2, c=.2,
-                  R=.5, g=1.0, hhat_0=4, uhat_0=4, 
+                  R=.5, g=1.0, μ_h=4, μ_u=4, 
                   σ_h=4, σ_u=4):
     
     A = jnp.array([[α, β], 
-                  [0, 1]])
+                   [0, 1]])
     C = jnp.array([[c], 
-                  [0]])
+                   [0]])
     G = jnp.array([g, 0])
     R = jnp.array(R)
 
     # Define initial state and covariance matrix
-    xhat_0 = jnp.array([[hhat_0], 
-                       [uhat_0]])
+    μ_0 = jnp.array([[μ_h], 
+                     [μ_u]])
     
     Σ_0 = jnp.array([[σ_h, 0],
-                    [0, σ_u]])
+                     [0, σ_u]])
     
-    return WorkerModel(A=A, C=C, G=G, R=R, xhat_0=xhat_0, Σ_0=Σ_0)
+    return WorkerModel(A=A, C=C, G=G, R=R, μ_0=μ_0, Σ_0=Σ_0)
 ```
 
 Please note how the `WorkerModel` namedtuple creates all of the objects required to compute an associated state-space representation {eq}`ssrepresent`.
@@ -219,15 +205,14 @@ Please note how the `WorkerModel` namedtuple creates all of the objects required
 This is handy, because in order to  simulate a history $\{y_t, h_t\}$ for a worker, we'll want to form state space system for him/her by using the [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
 
 ```{code-cell} ipython3
-# TODO write it into a function
-# Define A, C, G, R, xhat_0, Σ_0
+# Define A, C, G, R, μ_0, Σ_0
 worker = create_worker()
 A, C, G, R = worker.A, worker.C, worker.G, worker.R
-xhat_0, Σ_0 = worker.xhat_0, worker.Σ_0
+μ_0, Σ_0 = worker.μ_0, worker.Σ_0
 
 # Create a LinearStateSpace object
 ss = LinearStateSpace(A, C, G, jnp.sqrt(R), 
-        mu_0=xhat_0, Sigma_0=Σ_0)
+                    mu_0=μ_0, Sigma_0=Σ_0)
 
 T = 100
 seed = 1234
@@ -258,42 +243,49 @@ where $K_t$ is the Kalman gain matrix at time $t$.
 
 We accomplish this in the following code that  uses the [`Kalman`](https://quanteconpy.readthedocs.io/en/latest/tools/kalman.html) class.
 
-```{code-cell} ipython3
-# TODO check the names of variables
-kalman = Kalman(ss, xhat_0, Σ_0)
-Σ_t = jnp.zeros((*Σ_0.shape, T-1))
-y_hat_t = jnp.zeros(T-1)
-x_hat_t = jnp.zeros((2, T-1))
+Suppose the belief of firm coincides with the real distribution of $x_0$.
 
+```{code-cell} ipython3
+x_hat_0, Σ_hat_0 = worker.μ_0, worker.Σ_0
+kalman = Kalman(ss, x_hat_0, Σ_hat_0)
+
+x_hat = jnp.zeros((2, T))
+Σ_hat = jnp.zeros((*Σ_0.shape, T))
+
+# The data y[T] isn't used because we aren't making prediction about T+1
 for t in range(1, T):
-    kalman.update(y[t])
-    x_hat, Σ = kalman.x_hat, kalman.Sigma
-    Σ_t = Σ_t.at[:, :, t-1].set(Σ)
-    x_hat_t = x_hat_t.at[:, t-1].set(x_hat.reshape(-1))
-    y_hat_t = y_hat_t.at[t-1].set((worker.G @ x_hat).item())
+    kalman.update(y[t-1])
+    x_hat_t, Σ_hat_t = kalman.x_hat, kalman.Sigma
+    # x_hat_t = E(x_t | y^{t-1})
+    x_hat = x_hat.at[:, t].set(x_hat_t.reshape(-1))
+    Σ_hat = Σ_hat.at[:, :, t].set(Σ_hat_t)
+    y_hat = y_hat.at[t].set((worker.G @ x_hat_t).item())
 
 # Add the initial
-x_hat_t = jnp.concatenate((xhat_0, x_hat_t), axis=1)
-Σ_t = jnp.concatenate((worker.Σ_0[:, :, np.newaxis], Σ_t), axis=2)
-u_hat_t = x_hat_t[1, :]
+x_hat = x_hat.at[:, 0].set(x_hat_0.reshape(-1))
+Σ_hat = Σ_hat.at[:, :, 0].set(Σ_hat_0)
+
+# Compute other variables
+y_hat = worker.G @ x_hat
+u_hat = x_hat[1, :]
 ```
 
-For a draw of $h_0, u_0$,  we plot $E[y_t] = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
+For a draw of $h_0, u_0$,  we plot $E[y_t | y^{t-1}] = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
 
-We also plot $\hat u_t = E [u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
+We also plot $\hat u_t = E [u_t | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
-We can  watch as the  firm's inference  $E [u_0 | y^{t-1}]$ of the worker's work ethic converges toward the hidden  $u_0$, which is not directly observed by the firm.
+We can  watch as the  firm's inference  $E [u_t | y^{t-1}]$ of the worker's work ethic converges toward the hidden  $u_0$, which is not directly observed by the firm.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(1, 2)
 
-ax[0].plot(y_hat_t, label=r'$E[y_t| y^{t-1}]$')
+ax[0].plot(y_hat, label=r'$E[y_t| y^{t-1}]$')
 ax[0].set_xlabel('Time')
-ax[0].set_ylabel(r'$E[y_t]$')
-ax[0].set_title(r'$E[y_t]$ over time')
+ax[0].set_ylabel(r'$E[y_t | y^{t-1}]$')
+ax[0].set_title(r'$E[y_t | y^{t-1}]$ over time')
 ax[0].legend()
 
-ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
+ax[1].plot(u_hat, label=r'$E[u_t|y^{t-1}]$')
 ax[1].axhline(y=u_0, color='grey', 
             linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
 ax[1].set_xlabel('Time')
@@ -310,11 +302,11 @@ plt.show()
 Let's look at  $\Sigma_0$ and $\Sigma_T$ in order to see how much the firm learns about the hidden state during the horizon we have set.
 
 ```{code-cell} ipython3
-print(Σ_t[:, :, 0])
+print(Σ_hat[:, :, 0])
 ```
 
 ```{code-cell} ipython3
-print(Σ_t[:, :, -1])
+print(Σ_hat[:, :, -1])
 ```
 
 Evidently,  entries in the conditional covariance matrix become smaller over time.
@@ -323,11 +315,11 @@ It is enlightening to  portray how  conditional covariance matrices $\Sigma_t$ e
 
 ```{code-cell} ipython3
 # Create a grid of points for contour plotting
-h_range = np.linspace(x_hat_t[0, :].min()-0.5*Σ_t[0, 0, 1], 
-                      x_hat_t[0, :].max()+0.5*Σ_t[0, 0, 1], 100)
-u_range = np.linspace(x_hat_t[1, :].min()-0.5*Σ_t[1, 1, 1], 
-                      x_hat_t[1, :].max()+0.5*Σ_t[1, 1, 1], 100)
-h, u = np.meshgrid(h_range, u_range)
+h_range = jnp.linspace(x_hat[0, :].min()-0.5*Σ_hat[0, 0, 1], 
+                      x_hat[0, :].max()+0.5*Σ_hat[0, 0, 1], 100)
+u_range = jnp.linspace(x_hat[1, :].min()-0.5*Σ_hat[1, 1, 1], 
+                      x_hat[1, :].max()+0.5*Σ_hat[1, 1, 1], 100)
+h, u = jnp.meshgrid(h_range, u_range)
 
 # Create a figure with subplots for each time step
 fig, axs = plt.subplots(1, 3, figsize=(12, 7))
@@ -335,8 +327,8 @@ fig, axs = plt.subplots(1, 3, figsize=(12, 7))
 # Iterate through each time step
 for i, t in enumerate(np.linspace(0, T-1, 3, dtype=int)):
     # Create a multivariate normal distribution with x_hat and Σ at time step t
-    mu = x_hat_t[:, t]
-    cov = Σ_t[:, :, t]
+    mu = x_hat[:, t]
+    cov = Σ_hat[:, :, t]
     mvn = multivariate_normal(mean=mu, cov=cov)
     
     # Evaluate the multivariate normal PDF on the grid
@@ -370,16 +362,17 @@ Here is one way to do this.
 
 ```{code-cell} ipython3
 # For example, we might want h_0 = 0 and u_0 = 4
-mu_0 = np.array([0.0, 4.0])
+ss_μ_0 = jnp.array([0.0, 4.0])
 
 # Create a LinearStateSpace object with Sigma_0 as a matrix of zeros
-ss_example = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=mu_0, 
+ss_example = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=ss_μ_0, 
                               # This line forces exact h_0=0 and u_0=4
                               Sigma_0=np.zeros((2, 2))
                              )
 
 T = 100
-x, y = ss_example.simulate(T)
+seed = 1234
+x, y = ss_example.simulate(T, seed)
 y = y.flatten()
 
 # Now h_0=0 and u_0=4
@@ -390,23 +383,26 @@ print('u_0 =', u_0)
 
 Another way to accomplish the same goal is to use the following code.
 
+However, in this way we assume the underlying distribution of $x_0$ has the mean $\mu_0 = (0, 4)\top$.
+
 ```{code-cell} ipython3
 # If we want to set the initial 
-# h_0 = hhat_0 = 0 and u_0 = uhhat_0 = 4.0:
-worker = create_worker(hhat_0=0.0, uhat_0=4.0)
+# h_0 = μ_h = 0 and u_0 = μ_u = 4.0:
+worker = create_worker(μ_h=0.0, μ_u=4.0)
 
 ss_example = LinearStateSpace(A, C, G, np.sqrt(R), 
-                              # This line takes h_0=hhat_0 and u_0=uhhat_0
-                              mu_0=worker.xhat_0,
-                              # This line forces exact h_0=hhat_0 and u_0=uhhat_0
+                              # This line takes h_0=μ_h and u_0=μ_u
+                              mu_0=worker.μ_0,
+                              # This line forces exact h_0=μ_h and u_0=μ_u
                               Sigma_0=np.zeros((2, 2))
                              )
 
 T = 100
-x, y = ss_example.simulate(T)
+seed = 1234
+x, y = ss_example.simulate(T, seed)
 y = y.flatten()
 
-# Now h_0 and u_0 will be exactly hhat_0
+# Now h_0 and u_0 will be exactly μ_0
 h_0, u_0 = x[0, 0], x[1, 0]
 print('h_0 =', h_0)
 print('u_0 =', u_0)
@@ -415,32 +411,40 @@ print('u_0 =', u_0)
 For this worker, let's generate a plot like the one above.
 
 ```{code-cell} ipython3
-# First we compute the Kalman filter with initial xhat_0 and Σ_0 
-kalman = Kalman(ss, xhat_0, Σ_0)
-Σ_t = []
-y_hat_t = np.zeros(T-1)
-u_hat_t = np.zeros(T-1)
+# First we compute the Kalman filter with initial x_hat_0 and Σ_hat_0 
+x_hat_0, Σ_hat_0 = worker.μ_0, worker.Σ_0
+kalman = Kalman(ss, x_hat_0, Σ_hat_0)
+
+x_hat = jnp.zeros((2, T))
+Σ_hat = jnp.zeros((*Σ_0.shape, T))
 
 # Then we iteratively update the Kalman filter class using 
 # observation y based on the linear state model above:
 for t in range(1, T):
-    kalman.update(y[t])
-    x_hat, Σ = kalman.x_hat, kalman.Sigma
-    Σ_t.append(Σ)
-    [y_hat_t[t-1]] = worker.G @ x_hat
-    [u_hat_t[t-1]] = x_hat[1]
+    kalman.update(y[t-1])
+    x_hat_t, Σ_hat_t = kalman.x_hat, kalman.Sigma
 
+    x_hat = x_hat.at[:, t].set(x_hat_t.reshape(-1))
+    Σ_hat = Σ_hat.at[:, :, t].set(Σ_hat_t)
 
-# Generate plots for y_hat_t and u_hat_t
+# Add the initial
+x_hat = x_hat.at[:, 0].set(x_hat_0.reshape(-1))
+Σ_hat = Σ_hat.at[:, :, 0].set(Σ_hat_0)
+
+# Compute other variables
+y_hat = worker.G @ x_hat
+u_hat = x_hat[1, :]
+
+# Generate plots for y_hat and u_hat
 fig, ax = plt.subplots(1, 2)
 
-ax[0].plot(y_hat_t, label=r'$E[y_t| y^{t-1}]$')
+ax[0].plot(y_hat, label=r'$E[y_t| y^{t-1}]$')
 ax[0].set_xlabel('Time')
-ax[0].set_ylabel(r'$E[y_t]$')
-ax[0].set_title(r'$E[y_t]$ over time')
+ax[0].set_ylabel(r'$E[y_t | y^{t-1}]$')
+ax[0].set_title(r'$E[y_t | y^{t-1}]$ over time')
 ax[0].legend()
 
-ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
+ax[1].plot(u_hat, label=r'$E[u_t|y^{t-1}]$')
 ax[1].axhline(y=u_0, color='grey', 
             linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
 ax[1].set_xlabel('Time')
@@ -460,7 +464,7 @@ Here is an example.
 ```{code-cell} ipython3
 # We can set these parameters when creating a worker -- just like classes!
 hard_working_worker =  create_worker(α=.4, β=.8, 
-                        hhat_0=7.0, uhat_0=100, σ_h=2.5, σ_u=3.2)
+                        μ_h=7.0, μ_u=100, σ_h=2.5, σ_u=3.2)
 
 print(hard_working_worker)
 ```
@@ -474,43 +478,49 @@ This shows that the filter is gradually teaching the worker and firm about the w
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None, 
-                    diff=True, name=None, title=None):
+def simulate_workers(worker, T, ax, ss_μ=None, ss_Σ=None, 
+                    diff=True, name=None, title=None, seed=1234):
     A, C, G, R = worker.A, worker.C, worker.G, worker.R
-    xhat_0, Σ_0 = worker.xhat_0, worker.Σ_0
+    μ_0, Σ_0 = worker.μ_0, worker.Σ_0
     
-    if mu_0 is None:
-        mu_0 = xhat_0
-    if Sigma_0 is None:
-        Sigma_0 = worker.Σ_0
+    if ss_μ is None:
+        ss_μ = μ_0
+    if ss_Σ is None:
+        ss_Σ = Σ_0
         
-    ss = LinearStateSpace(A, C, G, np.sqrt(R), 
-                        mu_0=mu_0, Sigma_0=Sigma_0)
+    ss = LinearStateSpace(A, C, G, jnp.sqrt(R), 
+                        mu_0=ss_μ, Sigma_0=ss_Σ)
 
-    x, y = ss.simulate(T)
+    x, y = ss.simulate(T, seed)
     y = y.flatten()
 
     u_0 = x[1, 0]
     
     # Compute Kalman filter
-    kalman = Kalman(ss, xhat_0, Σ_0)
-    Σ_t = []
-    
-    y_hat_t = np.zeros(T)
-    u_hat_t = np.zeros(T)
+    x_hat_0, Σ_hat_0 = μ_0, Σ_0
+    kalman = Kalman(ss, x_hat_0, Σ_hat_0)
+    Σ_hat = jnp.zeros((*Σ_0.shape, T))
+    x_hat = jnp.zeros((2, T))
 
-    for i in range(T):
-        kalman.update(y[i])
-        x_hat, Σ = kalman.x_hat, kalman.Sigma
-        Σ_t.append(Σ)
-        y_hat_t[i] = (worker.G @ x_hat).item()
-        u_hat_t[i] = x_hat[1].item()
+    for t in range(1, T):
+        kalman.update(y[t-1])
+        x_hat_t, Σ_hat_t = kalman.x_hat, kalman.Sigma
+
+        x_hat = x_hat.at[:, t].set(x_hat_t.reshape(-1))
+        Σ_hat = Σ_hat.at[:, :, t].set(Σ_hat_t)
+
+    # Add the initial
+    x_hat = x_hat.at[:, 0].set(x_hat_0.reshape(-1))
+    Σ_hat = Σ_hat.at[:, :, 0].set(Σ_hat_0)
+
+    # Compute other variables
+    y_hat = G @ x_hat
+    u_hat = x_hat[1, :]
 
     if diff :
-        title = ('Difference between inferred and true work ethic over time' 
-                 if title is None else title)
+        title = ('Difference between inferred and true work ethic over time' if title is None else title)
         
-        ax.plot(u_hat_t - u_0, alpha=.5)
+        ax.plot(u_hat - u_0, alpha=.5)
         ax.axhline(y=0, color='grey', linestyle='dashed')
         ax.set_xlabel('Time')
         ax.set_ylabel(r'$E[u_t|y^{t-1}] - u_0$')
@@ -522,7 +532,7 @@ def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None,
         title = ('Inferred work ethic over time' 
                 if title is None else title)
         
-        u_hat_plot = ax.plot(u_hat_t, label=label_line)
+        u_hat_plot = ax.plot(u_hat, label=label_line)
         ax.axhline(y=u_0, color=u_hat_plot[0].get_color(), 
                     linestyle='dashed', alpha=0.5)
         ax.set_xlabel('Time')
@@ -536,8 +546,8 @@ T = 50
 fig, ax = plt.subplots(figsize=(7, 7))
 
 for i in range(num_workers):
-    worker = create_worker(uhat_0=4+2*i)
-    simulate_workers(worker, T, ax)
+    worker = create_worker(μ_u=4+2*i)
+    simulate_workers(worker, T, ax, seed=1234+i)
 ax.set_ylim(ymin=-2, ymax=2)
 plt.show()
 ```
@@ -548,15 +558,16 @@ plt.show()
 T = 50
 fig, ax = plt.subplots(figsize=(7, 7))
 
-uhat_0s = [2, -2, 1]
+μ_us = [2, -2, 1]
 αs = [0.2, 0.3, 0.5]
 βs = [0.1, 0.9, 0.3]
 
-for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
-    worker = create_worker(uhat_0=uhat_0, α=α, β=β)
+for i, (μ_u, α, β) in enumerate(zip(μ_us, αs, βs)):
+    worker = create_worker(μ_u=μ_u, α=α, β=β)
     simulate_workers(worker, T, ax,
                     # By setting diff=False, it will give u_t
-                    diff=False, name=r'$u_{{{}, t}}$'.format(i))
+                    diff=False, name=r'$u_{{{}, t}}$'.format(i),
+                    seed=1234+i)
 
 ax.legend(bbox_to_anchor=(1, 0.5))
 plt.show()
@@ -568,19 +579,20 @@ plt.show()
 T = 50
 fig, ax = plt.subplots(figsize=(7, 7))
 
-# These two lines set u_0=1 and h_0=2 for all workers
-mu_0 = np.array([[1],
-                 [2]])
-Sigma_0 = np.zeros((2,2))
+# These two lines set the generated u_0=1 and h_0=2 for all workers
+ss_μ = jnp.array([[1],
+                  [2]])
+ss_Σ = jnp.zeros((2,2))
 
-uhat_0s = [2, -2, 1]
+μ_us = [2, -2, 1]
 αs = [0.2, 0.3, 0.5]
 βs = [0.1, 0.9, 0.3]
 
-for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
-    worker = create_worker(uhat_0=uhat_0, α=α, β=β)
-    simulate_workers(worker, T, ax, mu_0=mu_0, Sigma_0=Sigma_0, 
-                     diff=False, name=r'$u_{{{}, t}}$'.format(i))
+for i, (μ_u, α, β) in enumerate(zip(μ_us, αs, βs)):
+    worker = create_worker(μ_u=μ_u, α=α, β=β)
+    simulate_workers(worker, T, ax, ss_μ=ss_μ, ss_Σ=ss_Σ, 
+                     diff=False, name=r'$u_{{{}, t}}$'.format(i),
+                     seed=1234+i)
     
 # This controls the boundary of plots
 ax.set_ylim(ymin=-3, ymax=3)
@@ -594,20 +606,20 @@ plt.show()
 T = 50
 fig, ax = plt.subplots(figsize=(7, 7))
 
-mu_0_1 = np.array([[1],
-                 [100]])
-mu_0_2 = np.array([[1],
-                 [30]])
-Sigma_0 = np.zeros((2,2))
+ss_μ_1 = np.array([[1],
+                   [100]])
+ss_μ_2 = np.array([[1],
+                   [30]])
+ss_Σ = np.zeros((2,2))
 
-uhat_0s = 100
+μ_us = 100
 αs = 0.5
 βs = 0.3
 
-worker = create_worker(uhat_0=uhat_0, α=α, β=β)
-simulate_workers(worker, T, ax, mu_0=mu_0_1, Sigma_0=Sigma_0, 
+worker = create_worker(μ_u=μ_us, α=α, β=β)
+simulate_workers(worker, T, ax, ss_μ=ss_μ_1, ss_Σ=ss_Σ, 
                  diff=False, name=r'Hard-working worker')
-simulate_workers(worker, T, ax, mu_0=mu_0_2, Sigma_0=Sigma_0, 
+simulate_workers(worker, T, ax, ss_μ=ss_μ_2, ss_Σ=ss_Σ, 
                  diff=False, 
                  title='A hard-working worker and a less hard-working worker',
                  name=r'Normal worker')
