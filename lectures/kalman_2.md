@@ -28,7 +28,15 @@ kernelspec:
 ```{contents} Contents
 :depth: 2
 ```
+```{admonition} GPU
+:class: warning
 
+This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming.
+
+Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
+
+Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax) for installing JAX with GPU support. If you would like to install JAX running on the `cpu` only you can use `pip install jax[cpu]`
+```
 In this quantecon lecture {doc}`A First Look at the Kalman filter <kalman>`, we used
 a Kalman filter to estimate locations of a rocket. 
 
@@ -226,7 +234,7 @@ Next, to compute the firm's policy for setting the log wage based on the informa
 
 In particular, we want to compute all of the objects in an "innovation representation".
 
-## An Innovations Representation
+## An Innovations representation
 
 We have all the objects in hand required to form an innovations representation for the output process $\{y_t\}_{t=0}^T$ for a worker.
 
@@ -276,6 +284,13 @@ We also plot $\hat u_t = E [u_t | y^{t-1}]$, which is the firm's inference about
 We can watch as the firm's inference $E [u_t | y^{t-1}]$ of the worker's work ethic converges toward the hidden $u_0$, which is not directly observed by the firm.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Inferred variables using Kalman filter
+    name: fig_infer
+---
 fig, ax = plt.subplots(1, 2)
 
 ax[0].plot(y_hat, label=r'$E[y_t| y^{t-1}]$')
@@ -296,7 +311,7 @@ fig.tight_layout()
 plt.show()
 ```
 
-## Some Computational Experiments
+## Some computational experiments
 
 Let's look at  $\Sigma_0$ and $\Sigma_T$ in order to see how much the firm learns about the hidden state during the horizon we have set.
 
@@ -313,6 +328,13 @@ Evidently, entries in the conditional covariance matrix become smaller over time
 It is enlightening to portray how conditional covariance matrices $\Sigma_t$ evolve by plotting confidence ellipsoids around $E [x_t |y^{t-1}] $ at various $t$'s.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Confidence ellipsoid over updating
+    name: fig_ellipsoid
+---
 # Create a grid of points for contour plotting
 h_range = jnp.linspace(x_hat[0, :].min()-0.5*Σ_hat[0, 0, 1], 
                       x_hat[0, :].max()+0.5*Σ_hat[0, 0, 1], 100)
@@ -410,6 +432,13 @@ print('u_0 =', u_0)
 For this worker, let's generate a plot like the one above.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Inferred variables with fixing initial
+    name: fig_infer_fix
+---
 # First we compute the Kalman filter with initial x_hat_0 and Σ_hat_0 
 x_hat_0, Σ_hat_0 = worker.μ_0, worker.Σ_0
 kalman = Kalman(ss, x_hat_0, Σ_hat_0)
@@ -517,30 +546,30 @@ def simulate_workers(worker, T, ax, ss_μ=None, ss_Σ=None,
     u_hat = x_hat[1, :]
 
     if diff:
-        title = ('Difference between inferred and true work ethic over time'
-                 if title is None else title)
-        
         ax.plot(u_hat - u_0, alpha=.5)
         ax.axhline(y=0, color='grey', linestyle='dashed')
         ax.set_xlabel('Time')
         ax.set_ylabel(r'$E[u_t|y^{t-1}] - u_0$')
-        ax.set_title(title)
         
     else:
         label_line = (r'$E[u_t|y^{t-1}]$' if name is None 
                       else name)
-        title = ('Inferred work ethic over time' 
-                if title is None else title)
         
         u_hat_plot = ax.plot(u_hat, label=label_line)
         ax.axhline(y=u_0, color=u_hat_plot[0].get_color(), 
                     linestyle='dashed', alpha=0.5)
         ax.set_xlabel('Time')
         ax.set_ylabel(r'$E[u_t|y^{t-1}]$')
-        ax.set_title(title)
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Difference between inferred and true ethic
+    name: fig_diff
+---
 num_workers = 3
 T = 50
 fig, ax = plt.subplots(figsize=(7, 7))
@@ -553,6 +582,13 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Inferred work ethic over time
+    name: fig_ethic
+---
 # We can also generate plots of u_t:
 
 T = 50
@@ -574,6 +610,13 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Inferred ethic with fixed initial
+    name: fig_ethic_fix
+---
 # We can also use exact u_0=1 and h_0=2 for all workers
 
 T = 50
@@ -601,6 +644,13 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Inferred ethic with two fixed initial
+    name: fig_ethic_two
+---
 # We can generate a plot for only one of the workers:
 
 T = 50
@@ -629,7 +679,7 @@ ax.legend(bbox_to_anchor=(1, 0.5))
 plt.show()
 ```
 
-## Future Extensions
+## Future extensions
 
 We can do lots of enlightening experiments by creating new types of workers and letting the firm 
 learn about their hidden (to the firm) states by observing just their output histories.
