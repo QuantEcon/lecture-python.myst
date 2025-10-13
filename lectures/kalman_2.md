@@ -104,7 +104,7 @@ The worker is permanently attached to the firm and so works for the same  firm a
 
 At the beginning of time $0$, the firm observes neither the worker's innate initial human capital $h_0$ nor its hard-wired permanent effort level $u_0$.
 
-The firm believes that $u_0$ for a particular worker is drawn from a Gaussian probability distribution, and so is  described by $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$.
+The firm believes that $u_0$ for a particular worker is drawn from a Gaussian probability distribution, and so is  described by $u_0 \sim {\mathcal N}(\mu_{u, 0}, \sigma_{u,0})$.
 
 The $h_t$ part of a worker's "type" moves over time, but the effort component of the worker's  type is  $u_t = u_0$.
 
@@ -127,7 +127,7 @@ $$
 and at time $0$ pays the  worker a log wage equal to  the unconditional mean of $y_0$:
 
 $$
-w_0 = g \hat h_0
+w_0 = g \mu_{h, 0}
 $$
 
 In using this payment rule, the firm is taking into account that the worker's log output today is partly due
@@ -251,10 +251,8 @@ where $K_t$ is the Kalman gain matrix at time $t$.
 
 We accomplish this in the following code that uses the [`Kalman`](https://quanteconpy.readthedocs.io/en/latest/tools/kalman.html) class.
 
-Suppose the belief of the firm coincides with the real distribution of $x_0$.
-
 ```{code-cell} ipython3
-x_hat_0, Σ_hat_0 = worker.μ_0, worker.Σ_0
+x_hat_0, Σ_hat_0 = worker.μ_0, worker.Σ_0 # First guess of the firm
 kalman = Kalman(ss, x_hat_0, Σ_hat_0)
 
 x_hat = jnp.zeros((2, T))
