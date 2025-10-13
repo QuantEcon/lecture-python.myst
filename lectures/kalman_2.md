@@ -64,7 +64,6 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 from quantecon import Kalman, LinearStateSpace
-from collections import namedtuple
 from typing import NamedTuple
 from scipy.stats import multivariate_normal
 import matplotlib as mpl
