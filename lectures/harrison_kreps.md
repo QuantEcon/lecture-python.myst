@@ -614,15 +614,33 @@ with **permanently optimistic** investors - this is due to the marginal investor
 ```{solution-end}
 ```
 
-## Learning and speculation
+## Learning 
 
-This section connects Harrison–Kreps pricing with a learning model due to {cite:t}`Morris1996`.
+This section describe how {cite:t}`Morris1996` modified the  Harrison–Kreps{cite}`HarrKreps1978` model.
 
-Morris shows how heterogeneous Bayesian learning about a risky asset's dividend probability creates speculative trade and price bubbles, even when all traders are rational and observe the same dividend history.
+Harrison and Kreps assumed dogmatic traders with hard-wired beliefs.
 
-In this model, traders have heterogeneous priors over the dividend probability.
+Morris replaced them with traders who use Bayes' Law to update their beliefs about prospective dividends.  
 
-The risky asset pays i.i.d. dividends $d_{t+1} \in \{0,1\}$ with unknown success probability $\theta \in (0,1)$.
+In Morris's model, all traders share the same manifold of statistical model for prospective dividends.
+
+All observe the same dividend histories.
+
+All  use Bayes' Law.
+
+But they might have different initial prior distributions over the parameter that indexes a common manifold of statistical models. 
+
+
+By endowing agents with different prior distributions over a parameter describing the distribution of prospective dividends, Morris builds in heterogenous beliefs.  
+
+Along identical histories of dividends, traders have different posterior distributions for prospective dividends.
+
+Those differences set the stage for possible   speculation and price bubbles.
+
+### The setting
+
+
+The risky asset pays i.i.d. dividends $d_{t+1} \in \{0,1\}$ with unknown  probability $\theta \in (0,1)$ that the dividend equals $1$.
 
 There is a finite set $\mathcal{I}$ of risk-neutral traders.
 
