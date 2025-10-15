@@ -284,7 +284,7 @@
 </ul>
 <p>As prerequisites for this lecture, we recommend two quantecon lectures:</p>
 <ol class="arabic simple">
-<li><p><a class="reference external" href="https://python-advanced.quantecon.org/discrete_dp.html" title="(in Python)"><span>Discrete State Dynamic Programming</span></a></p></li>
+<li><p><a class="reference external" href="https://python-advanced.quantecon.org/discrete_dp.html" title="(in Project name not set)"><span>Discrete State Dynamic Programming</span></a></p></li>
 <li><p><a class="reference internal" href="ak2.html"><span class="doc">Transitions in an Overlapping Generations Model</span></a></p></li>
 </ol>
 <p>as well as the optional reading <a class="reference internal" href="aiyagari.html"><span class="doc">The Aiyagari Model</span></a></p>
@@ -297,11 +297,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax.scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jsp</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
@@ -497,7 +492,7 @@ c \geq 0
 </section>
 <section id="implementation">
 <h2><span class="section-number">75.10. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
-<p>Using tools in  <a class="reference external" href="https://python-advanced.quantecon.org/discrete_dp.html" title="(in Python)"><span>Discrete State Dynamic Programming</span></a>, we solve our model by combining value function iteration with equilibrium price determination.</p>
+<p>Using tools in  <a class="reference external" href="https://python-advanced.quantecon.org/discrete_dp.html" title="(in Project name not set)"><span>Discrete State Dynamic Programming</span></a>, we solve our model by combining value function iteration with equilibrium price determination.</p>
 <p>A sensible  approach is  to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.</p>
 <p>For a candidate sequence  of prices interest rates <span class="math notranslate nohighlight">\(r_t\)</span> and wages <span class="math notranslate nohighlight">\(w_t\)</span>, we can solve individual households’ dynamic programming problems using either value function iteration or policy iteration to obtain optimal policy functions.</p>
 <p>We then deduce associated stationary joint probability distributions of asset holdings and idiosyncratic labor efficiency units for each age cohort.</p>
@@ -804,7 +799,7 @@ c \geq 0
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 843 μs, sys: 943 μs, total: 1.79 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.83 ms, sys: 0 ns, total: 1.83 ms
 Wall time: 49 ms
 </pre></div>
 </div>
@@ -855,8 +850,8 @@ Wall time: 49 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 40.1 ms, sys: 0 ns, total: 40.1 ms
-Wall time: 54.9 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 41.6 ms, sys: 980 μs, total: 42.6 ms
+Wall time: 55.6 ms
 </pre></div>
 </div>
 </div>
@@ -1077,8 +1072,8 @@ distributions of assets at different ages.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 643 ms, sys: 24.5 ms, total: 667 ms
-Wall time: 731 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 660 ms, sys: 21.9 ms, total: 681 ms
+Wall time: 745 ms
 </pre></div>
 </div>
 </div>
