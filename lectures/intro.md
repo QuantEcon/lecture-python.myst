@@ -13,7 +13,5 @@ kernelspec:
 
 This website presents a set of lectures on quantitative economic modeling.
 
-Here is a new section that needs translating.
-
 ```{tableofcontents}
 ```
