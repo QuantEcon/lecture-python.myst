@@ -337,7 +337,8 @@ Trader 1 is the global optimist, so the normalized price equals trader 1's funda
 
 ```{code-cell} ipython3
 β = 0.75
-price_go, μ1_go, μ2_go = price_learning_two_agents((2,1), (1,2), β=β, T=150)
+price_go, μ1_go, μ2_go = price_learning_two_agents(
+        (2,1), (1,2), β=β, T=150)
 
 perpetuity_1 = (β / (1 - β)) * μ1_go(0, 0)
 perpetuity_2 = (β / (1 - β)) * μ2_go(0, 0)
@@ -357,7 +358,8 @@ These produce crossing posteriors, so there is no global optimist and the price 
 
 ```{code-cell} ipython3
 β = .75
-price_ps, μ1_ps, μ2_ps = price_learning_two_agents((1,1), (0.5,0.5), β=β, T=200)
+price_ps, μ1_ps, μ2_ps = price_learning_two_agents(
+                                (1,1), (0.5,0.5), β=β, T=200)
 
 price_00 = price_ps[0,0]
 μ1_00 = μ1_ps(0,0)
@@ -487,7 +489,8 @@ Let's verify using the code below
 ```{code-cell} ipython3
 dominant = None
 for i in range(len(priors)):
-    is_dom = all(priors[i][0] >= priors[j][0] and priors[i][1] <= priors[j][1]
+    is_dom = all(
+        priors[i][0] >= priors[j][0] and priors[i][1] <= priors[j][1]
                  for j in range(len(priors)) if i != j)
     if is_dom:
         dominant = i
