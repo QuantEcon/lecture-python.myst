@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.17.3
 kernelspec:
   name: python3
   display_name: Python 3 (ipykernel)
@@ -57,6 +57,8 @@ import numpy as np
 import quantecon as qe
 import scipy.linalg as la
 import matplotlib.pyplot as plt
+import math
+from functools import lru_cache
 ```
 
 ### References
@@ -666,7 +668,9 @@ where $a_i, b_i > 0$ are the prior parameters.
 The definition of Beta distribution can be found in {doc}`divergence_measures`.
 ```
 
-Suppose trader $i$ observes a history of $t$ periods in which a total of $s$ dividends are paid (i.e., $s$ successes and $t-s$ failures). By Bayes' rule, the posterior density over $\theta$ is:
+Suppose trader $i$ observes a history of $t$ periods in which a total of $s$ dividends are paid (i.e., $s$ successes and $t-s$ failures). 
+
+By Bayes' rule, the posterior density over $\theta$ is:
 
 $$
 \pi_i(\theta \mid s, t) = \frac{\theta^s (1-\theta)^{t-s} \pi_i(\theta)}{\int_0^1 \theta^s (1-\theta)^{t-s} \pi_i(\theta) d\theta}
@@ -788,7 +792,7 @@ We now focus on the case with two traders having priors $(a_1,b_1)$ and $(a_2,b_
 Trader 1 **rate-dominates** trader 2 if:
 
 $$
-a_1 \ge a_2 \quad \text{and} \quad b_1 \le b_2
+a_1 \geq a_2 \quad \text{and} \quad b_1 \leq b_2
 $$
 ```
 
@@ -797,7 +801,7 @@ $$
 
 For two traders with Beta priors:
 
-1. If trader 1 rate-dominates trader 2, then trader 1 is a **global optimist**: $\mu_1(s,t) \ge \mu_2(s,t)$ for all histories $(s,t)$
+1. If trader 1 rate-dominates trader 2, then trader 1 is a **global optimist**: $\mu_1(s,t) \geq \mu_2(s,t)$ for all histories $(s,t)$
 2. In this case, $p(s,t,r) = \mu_1(s,t)$ for all $(s,t,r)$. There is **no speculative premium**
 ```
 
@@ -960,11 +964,9 @@ print("Initial normalized premium at r=0.05 (%):",
       np.round(100 * (p0 / mu0 - 1.0), 2))
 ```
 
-Since no trader is a global optimist. 
-
 In the first figure, we can see:
 
-- The resale option pushes the normalized price $p*(0,0,r)$ above fundamentals (0.5) for any finite $r$. 
+- The resale option pushes the normalized price $p*(0,0,r)$ above fundamentals $(0.5)$ for any finite $r$. 
 
 - As $r$ increases ($\beta$ decreases), the option value fades and $p*(0,0,r) \to 0.5$. 
 
@@ -1027,10 +1029,9 @@ From the trader valuation, we can see that the asset price is above all trader's
 
 Morris tells us that rate dominance exists in this case.
 
-Let's verify using the code below:
+Let's verify using the code below
 
 ```{code-cell} ipython3
-# Check for rate dominance
 dominant = None
 for i in range(len(priors)):
     is_dom = all(priors[i][0] >= priors[j][0] and priors[i][1] <= priors[j][1]
@@ -1120,5 +1121,119 @@ for priors, description in test_cases:
 
 ```{solution-end}
 ```
+
+#### Extension: fixed-point iteration
+
+In this case, we explore if we can compute the learning model can 
+be computated via pure fixed-point iteration without introducing a terminal date $T$ or referencing calendar time $t$. 
+
+That is, we want to compute the infinite-horizon price $p(s,t,r)$ at a given starting posterior without truncating the horizon.
+
+Different from the previous sections, the state is just the vector of posterior parameters, which evolve deterministically with success/failure data.
+
+Let the state be $x = ((a_1,b_1),\ldots,(a_N,b_N))$. 
+
+After a success, posteriors update to $x^+ = ((a_1+1,b_1),\ldots,(a_N+1,b_N))$; after a failure, to $x^- = ((a_1,b_1+1),\ldots,(a_N,b_N+1))$. 
+
+Define
+
+$$
+(T f)(x) = \beta \max_{1\leq i\leq N} \Big[ \mu_i(x) \{1 + f(x^+)\} + (1-\mu_i(x))  f(x^-) \Big],
+$$
+
+where $\mu_i(x) = \dfrac{a_i}{a_i+b_i}$. For $\beta\in(0,1)$, $T$ is a contraction on bounded functions and has a unique fixed point $f^*$.
+
+To evaluate $f^*(x_0)$ at a given starting posterior $x_0$, we use truncated expansion $f^{(n)}$ with base $f^{(0)}\equiv 0$ and the recursive definition $f^{(n+1)} = T f^{(n)}$. 
+
+A simple tail bound shows
+
+$$
+\|f^* - f^{(n)}\|_\infty \leq \frac{\beta^{n}}{1-\beta},
+$$
+
+so choosing $n$ with $\beta^{n}/(1-\beta) \leq \varepsilon$ yields an $\varepsilon$-accurate value at $x_0$ without any terminal boundary. 
+
+The computation below uses memoization over the posterior-parameter state to avoid redundant work.
+
+```{code-cell} ipython3
+def hk_required_depth(β=0.75, tol=1e-8):
+    """Smallest n with β^n/(1-β) <= tol."""
+    num = math.log(max(tol * (1.0 - β), 1e-300))
+    den = math.log(β)
+    n = math.ceil(num / den)
+    return max(0, n)
+
+def hk_price_fixedpoint(priors, β=0.75, tol=1e-8, normalized=False):
+    """
+    Compute infinite-horizon HK price at starting posteriors `priors` via
+    truncated fixed-point iteration f^{(n)} with tail bound β^n/(1-β) <= tol.
+    """
+
+    start = tuple((float(a), float(b)) for (a, b) in priors)
+    N = len(start)
+    n = hk_required_depth(β=β, tol=tol)
+
+    def step_success(state):
+        return tuple((a + 1.0, b) for (a, b) in state)
+    def step_failure(state):
+        return tuple((a, b + 1.0) for (a, b) in state)
+
+    @lru_cache(maxsize=None)
+    def V(state, depth):
+        if depth <= 0:
+            return 0.0
+
+        # Compute continuation values once per state
+        s_succ = step_success(state)
+        s_fail = step_failure(state)
+        v_succ = V(s_succ, depth - 1)
+        v_fail = V(s_fail, depth - 1)
+        
+        # Posterior means for each trader at this state
+        cont_max = -np.inf
+        for i in range(N):
+            a_i, b_i = state[i]
+            μ_i = a_i / (a_i + b_i)
+            cont_i = μ_i * (1.0 + v_succ) + (1.0 - μ_i) * v_fail
+            if cont_i > cont_max:
+                cont_max = cont_i
+        return β * cont_max
+
+    val = V(start, n)
+    tail = (β**n) / (1.0 - β)
+    if normalized:
+        r = (1.0 - β) / β
+        val = r * val
+        tail = r * tail
+    info = {"depth": n, "tail_bound": tail}
+    return val, info
+
+# Quick comparison: two traders
+β = 0.75
+priors_2 = [(1, 1), (0.5, 0.5)]
+v_fp, info_fp = hk_price_fixedpoint(priors_2, β=β, tol=1e-10)
+print("Two agent crossing:\n price(0,0) =", np.round(v_fp, 8), 
+        "depth:", info_fp["depth"], 
+        "tail<=", info_fp["tail_bound"])
+
+# N-trader example
+priors_3 = [(1,1), (0.5,0.5), (3,2)]
+v3_fp, info3_fp = hk_price_fixedpoint(priors_3, β=β, tol=1e-10)
+print("Three agent:\n price(0,0) =", np.round(v3_fp, 8), 
+        "depth:", info3_fp["depth"],
+        "tail<=", info3_fp["tail_bound"])
+```
+
+We can also recover each of the two-trader examples above.
+
+```{code-cell} ipython3
+round(hk_price_fixedpoint([(1, 1)], β=β, tol=1e-10)[0], 3)
+```
+
+```{code-cell} ipython3
+round(hk_price_fixedpoint([(0.5, 0.5)], β=β, tol=1e-10)[0], 3)
+```
+
+This approach matches the original Harrison–Kreps scheme as it iterates the fixed-point operator on the belief state directly.
 
 [^f1]: By assuming that both types of agents always have "deep enough pockets" to purchase all of the asset, the model takes wealth dynamics off the table. The Harrison-Kreps model generates high trading volume when the state changes either from 0 to 1 or from 1 to 0.
