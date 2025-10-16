@@ -56,8 +56,6 @@ Let's start with some standard imports:
 import numpy as np
 import quantecon as qe
 import scipy.linalg as la
-import matplotlib.pyplot as plt
-import math
 ```
 
 ### References
