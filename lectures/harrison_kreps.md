@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.3
+    jupytext_version: 1.17.1
 kernelspec:
   name: python3
   display_name: Python 3 (ipykernel)
@@ -58,7 +58,6 @@ import quantecon as qe
 import scipy.linalg as la
 import matplotlib.pyplot as plt
 import math
-from functools import lru_cache
 ```
 
 ### References
@@ -618,13 +617,13 @@ with **permanently optimistic** investors - this is due to the marginal investor
 
 ## Learning 
 
-This section describe how {cite:t}`Morris1996` modified the  Harrison–Kreps{cite}`HarrKreps1978` model.
+This section describes how {cite:t}`Morris1996` modified the  Harrison–Kreps{cite}`HarrKreps1978` model.
 
 Harrison and Kreps assumed dogmatic traders with hard-wired beliefs.
 
 Morris replaced them with traders who use Bayes' Law to update their beliefs about prospective dividends.  
 
-In Morris's model, all traders share the same manifold of statistical model for prospective dividends.
+In Morris's model, all traders share the same manifold of statistical models for prospective dividends.
 
 All observe the same dividend histories.
 
@@ -633,7 +632,7 @@ All  use Bayes' Law.
 But they might have different initial prior distributions over the parameter that indexes a common manifold of statistical models. 
 
 
-By endowing agents with different prior distributions over a parameter describing the distribution of prospective dividends, Morris builds in heterogenous beliefs.  
+By endowing agents with different prior distributions over a parameter describing the distribution of prospective dividends, Morris builds in heterogeneous beliefs.  
 
 Along identical histories of dividends, traders have different posterior distributions for prospective dividends.
 
@@ -876,7 +875,8 @@ def price_learning_two_agents(prior1, prior2, β=.75, T=200):
     return price_array, μ1_fun, μ2_fun
 ```
 
-#### Case A: global optimist (no premium)
+(hk_go)=
+#### Case A: global optimist (no premium) 
 
 Pick priors with rate dominance, e.g., trader 1: $\text{Beta}(a_1,b_1)=(2,1)$ and trader 2: $(a_2,b_2)=(1,2)$. 
 
@@ -1025,9 +1025,9 @@ for i, (mu, perp) in enumerate(zip(mu_vals, perp_vals), 1):
     print(f"  Trader {i} = {np.round(perp, 6)}")
 ```
 
-From the trader valuation, we can see that the asset price is above all trader's valuation.
+From the trader valuation, we can see that the asset price is above all traders' valuations.
 
-Morris tells us that rate dominance exists in this case.
+Morris tells us that no rate dominance exists in this case.
 
 Let's verify using the code below
 
@@ -1046,7 +1046,7 @@ else:
     print(f"\nNo global optimist and speculative premium exists")
 ```
 
-Indeed, there is global optimist and speculative premium exists.
+Indeed, there is no global optimist and a speculative premium exists.
 
 ```{exercise-start}
 :label: hk_ex3
@@ -1121,119 +1121,5 @@ for priors, description in test_cases:
 
 ```{solution-end}
 ```
-
-#### Extension: fixed-point iteration
-
-In this case, we explore if we can compute the learning model can 
-be computated via pure fixed-point iteration without introducing a terminal date $T$ or referencing calendar time $t$. 
-
-That is, we want to compute the infinite-horizon price $p(s,t,r)$ at a given starting posterior without truncating the horizon.
-
-Different from the previous sections, the state is just the vector of posterior parameters, which evolve deterministically with success/failure data.
-
-Let the state be $x = ((a_1,b_1),\ldots,(a_N,b_N))$. 
-
-After a success, posteriors update to $x^+ = ((a_1+1,b_1),\ldots,(a_N+1,b_N))$; after a failure, to $x^- = ((a_1,b_1+1),\ldots,(a_N,b_N+1))$. 
-
-Define
-
-$$
-(T f)(x) = \beta \max_{1\leq i\leq N} \Big[ \mu_i(x) \{1 + f(x^+)\} + (1-\mu_i(x))  f(x^-) \Big],
-$$
-
-where $\mu_i(x) = \dfrac{a_i}{a_i+b_i}$. For $\beta\in(0,1)$, $T$ is a contraction on bounded functions and has a unique fixed point $f^*$.
-
-To evaluate $f^*(x_0)$ at a given starting posterior $x_0$, we use truncated expansion $f^{(n)}$ with base $f^{(0)}\equiv 0$ and the recursive definition $f^{(n+1)} = T f^{(n)}$. 
-
-A simple tail bound shows
-
-$$
-\|f^* - f^{(n)}\|_\infty \leq \frac{\beta^{n}}{1-\beta},
-$$
-
-so choosing $n$ with $\beta^{n}/(1-\beta) \leq \varepsilon$ yields an $\varepsilon$-accurate value at $x_0$ without any terminal boundary. 
-
-The computation below uses memoization over the posterior-parameter state to avoid redundant work.
-
-```{code-cell} ipython3
-def hk_required_depth(β=0.75, tol=1e-8):
-    """Smallest n with β^n/(1-β) <= tol."""
-    num = math.log(max(tol * (1.0 - β), 1e-300))
-    den = math.log(β)
-    n = math.ceil(num / den)
-    return max(0, n)
-
-def hk_price_fixedpoint(priors, β=0.75, tol=1e-8, normalized=False):
-    """
-    Compute infinite-horizon HK price at starting posteriors `priors` via
-    truncated fixed-point iteration f^{(n)} with tail bound β^n/(1-β) <= tol.
-    """
-
-    start = tuple((float(a), float(b)) for (a, b) in priors)
-    N = len(start)
-    n = hk_required_depth(β=β, tol=tol)
-
-    def step_success(state):
-        return tuple((a + 1.0, b) for (a, b) in state)
-    def step_failure(state):
-        return tuple((a, b + 1.0) for (a, b) in state)
-
-    @lru_cache(maxsize=None)
-    def V(state, depth):
-        if depth <= 0:
-            return 0.0
-
-        # Compute continuation values once per state
-        s_succ = step_success(state)
-        s_fail = step_failure(state)
-        v_succ = V(s_succ, depth - 1)
-        v_fail = V(s_fail, depth - 1)
-        
-        # Posterior means for each trader at this state
-        cont_max = -np.inf
-        for i in range(N):
-            a_i, b_i = state[i]
-            μ_i = a_i / (a_i + b_i)
-            cont_i = μ_i * (1.0 + v_succ) + (1.0 - μ_i) * v_fail
-            if cont_i > cont_max:
-                cont_max = cont_i
-        return β * cont_max
-
-    val = V(start, n)
-    tail = (β**n) / (1.0 - β)
-    if normalized:
-        r = (1.0 - β) / β
-        val = r * val
-        tail = r * tail
-    info = {"depth": n, "tail_bound": tail}
-    return val, info
-
-# Quick comparison: two traders
-β = 0.75
-priors_2 = [(1, 1), (0.5, 0.5)]
-v_fp, info_fp = hk_price_fixedpoint(priors_2, β=β, tol=1e-10)
-print("Two agent crossing:\n price(0,0) =", np.round(v_fp, 8), 
-        "depth:", info_fp["depth"], 
-        "tail<=", info_fp["tail_bound"])
-
-# N-trader example
-priors_3 = [(1,1), (0.5,0.5), (3,2)]
-v3_fp, info3_fp = hk_price_fixedpoint(priors_3, β=β, tol=1e-10)
-print("Three agent:\n price(0,0) =", np.round(v3_fp, 8), 
-        "depth:", info3_fp["depth"],
-        "tail<=", info3_fp["tail_bound"])
-```
-
-We can also recover each of the two-trader examples above.
-
-```{code-cell} ipython3
-round(hk_price_fixedpoint([(1, 1)], β=β, tol=1e-10)[0], 3)
-```
-
-```{code-cell} ipython3
-round(hk_price_fixedpoint([(0.5, 0.5)], β=β, tol=1e-10)[0], 3)
-```
-
-This approach matches the original Harrison–Kreps scheme as it iterates the fixed-point operator on the belief state directly.
 
 [^f1]: By assuming that both types of agents always have "deep enough pockets" to purchase all of the asset, the model takes wealth dynamics off the table. The Harrison-Kreps model generates high trading volume when the state changes either from 0 to 1 or from 1 to 0.
