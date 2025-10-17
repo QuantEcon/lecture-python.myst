@@ -1725,7 +1725,7 @@ markov_results = analyze_markov_chains(P_f, P_g)
 Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes`
 and as applied in {doc}`odu`.
 
-Likelihood ratio processes are central to  Lawrence Blume and David Easley's answer to their question ''If you're so smart, why aren't you rich?'' {cite}`blume2006if`, the subject of the lecture{doc}`likelihood_ratio_process_2`.
+Likelihood ratio processes are central to  Lawrence Blume and David Easley's answer to their question "If you're so smart, why aren't you rich?" {cite}`blume2006if`, the subject of the lecture{doc}`likelihood_ratio_process_2`.
 
 Likelihood ratio processes also appear  in {doc}`advanced:additive_functionals`, which contains another illustration of the **peculiar property** of likelihood ratio processes described above.
 
