@@ -29,14 +29,6 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's in Anaconda, this lecture uses following libraries:
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install quantecon
-```
-
 ## Overview
 
 This lecture describes a model of {cite:t}`Morris1996` that extends the Harrison–Kreps model {cite}`HarrKreps1978` of speculative asset pricing.
@@ -134,7 +126,7 @@ $$
 where $a_i, b_i > 0$ are the prior parameters.
 
 ```{note}
-The definition of Beta distribution can be found in {doc}`divergence_measures`.
+The definition of the Beta distribution can be found in {doc}`divergence_measures`.
 ```
 
 Suppose trader $i$ observes a history of $t$ periods in which a total of $s$ dividends are paid 
@@ -392,9 +384,9 @@ print("Valuation of trader 1 at (0, 0) =", perpetuity_1)
 print("Valuation of trader 2 at (0, 0) =", perpetuity_2)
 ```
 
-The resulting premium reflects the option value of reselling to whichever trader becomes temporarily more optimistic as data arrive. 
+The resulting premium reflects the option value of reselling to whichever trader becomes temporarily more optimistic as data arrive.
 
-Under this setting we reproduce the two key figures reported in {cite:t}`Morris1996`
+Under this setting, we reproduce the two key figures reported in {cite:t}`Morris1996`
 
 ```{code-cell} ipython3
 def normalized_price_two_agents(prior1, prior2, r, T=250):
@@ -508,7 +500,7 @@ We can see that the asset price is above all traders' valuations.
 
 Morris tells us that no rate dominance exists in this case.
 
-Let's verify using the code below
+Let's verify this using the code below
 
 ```{code-cell} ipython3
 dominant = None
