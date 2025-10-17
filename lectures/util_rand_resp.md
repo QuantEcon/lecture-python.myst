@@ -175,13 +175,16 @@ This measure is just the first term in {eq}`eq:util-rand-seven-a`, i.e., the pro
 
 ### Truth border
 
-Key assumptions that underlie a randomized response technique for estimating the fraction of a population that belongs to $A$ are:
+Key assumptions that underlie a randomized response technique for estimating the fraction of a population that belongs to $A$ are
 
-- **Assumption 1**: Respondents feel discomfort from being thought of as belonging to $A$.
+```{prf:assumption}
 
-- **Assumption 2**: Respondents prefer to answer questions truthfully than to lie, so long as the cost of doing so is not too high.
+- *Assumption 1*: Respondents feel discomfort from being thought of as belonging to $A$.
+
+- *Assumption 2*: Respondents prefer to answer questions truthfully than to lie, so long as the cost of doing so is not too high.
 
   - The cost is taken to be the discomfort in 1.
+```
 
 Let $r_i$ denote individual $i$'s response to the randomized question.
 
@@ -789,4 +792,4 @@ In a utilitarian analysis:
 
 - The optimal model design is obtained at the point where the truth border touches the lowest possible iso-variance curve.
 
-A practical implication of the analysis of {cite}`ljungqvist1993unified` is that uncertainty about respondents' demands for privacy can be acknowledged by **choosing $\text{Pr}(A|\text{yes})$ and $\text{Pr}(A|\text{no})$ sufficiently close to each other**.
+A practical implication of the analysis of {cite}`ljungqvist1993unified` is that uncertainty about respondents' demands for privacy can be acknowledged by *choosing $\text{Pr}(A|\text{yes})$ and $\text{Pr}(A|\text{no})$ sufficiently close to each other*.
