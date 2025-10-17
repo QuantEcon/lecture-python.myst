@@ -85,7 +85,7 @@ jobs:
           EOF
       - name: Create Issue on Execution Failure
         if: failure()
-        uses: peter-evans/create-issue-from-file@v5
+        uses: peter-evans/create-issue-from-file@v6
         with:
           title: "Weekly Colab Execution Check Failed - ${{ github.run_id }}"
           content-filepath: execution-failure-report.md
