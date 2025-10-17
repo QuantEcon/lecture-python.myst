@@ -81,7 +81,7 @@ We first take a look at the density functions `f` and `g` .
 class ImpSampleParams(NamedTuple):
     F_a: float = 1.0    # Beta parameters for f
     F_b: float = 1.0
-    G_a: float = 3.0    # Beta parameters for g  
+    G_a: float = 3.0    # Beta parameters for g
     G_b: float = 1.2
 
 params = ImpSampleParams()
@@ -89,8 +89,10 @@ params = ImpSampleParams()
 @jax.jit
 def beta_pdf(w, a, b):
     """Beta probability density function."""
-    log_beta_const = gammaln(a) + gammaln(b) - gammaln(a + b)
-    log_pdf = (a - 1) * jnp.log(w) + (b - 1) * jnp.log(1 - w) - log_beta_const
+    log_beta_const = (gammaln(a) + gammaln(b) -
+                      gammaln(a + b))
+    log_pdf = ((a - 1) * jnp.log(w) + (b - 1) *
+               jnp.log(1 - w) - log_beta_const)
     return jnp.exp(log_pdf)
 
 @jax.jit
@@ -194,8 +196,10 @@ mystnb:
 ---
 w_range = jnp.linspace(1e-5, 1-1e-5, 1000)
 
-plt.plot(w_range, g(w_range), label=f'g=Beta({g_a}, {g_b})')
-plt.plot(w_range, beta_pdf(w_range, 0.5, 0.5), label=f'h=Beta({h_a}, {h_b})')
+plt.plot(w_range, g(w_range),
+         label=f'g=Beta({g_a}, {g_b})')
+plt.plot(w_range, beta_pdf(w_range, 0.5, 0.5),
+         label=f'h=Beta({h_a}, {h_b})')
 plt.legend()
 plt.ylim([0., 3.])
 plt.show()
@@ -230,18 +234,18 @@ def estimate_single_path(key, p_a, p_b, q_a, q_b, T):
         L, weight, key_state = carry
         key_state, subkey = jr.split(key_state)
         w = jr.beta(subkey, q_a, q_b)
-        
+
         # Compute likelihood ratio using f/g functions
         likelihood_ratio = f(w) / g(w)
         L = L * likelihood_ratio
-        
+
         # Importance sampling weight with beta_pdf
         p_w = beta_pdf(w, p_a, p_b)
         q_w = beta_pdf(w, q_a, q_b)
         weight = weight * (p_w / q_w)
-        
+
         return (L, weight, key_state)
-    
+
     # Use fori_loop for dynamic T values
     final_L, final_weight, _ = jax.lax.fori_loop(
         0, T, loop_body, (1.0, 1.0, key)
@@ -252,13 +256,13 @@ def estimate_single_path(key, p_a, p_b, q_a, q_b, T):
 def estimate(key, p_a, p_b, q_a, q_b, T=1, N=10000):
     """Estimation of a batch of sample paths."""
     keys = jr.split(key, N)
-    
+
     # Use vmap for vectorized computation
     estimates = jax.vmap(
-        estimate_single_path, 
+        estimate_single_path,
         in_axes=(0, *[None]*5)
     )(keys, p_a, p_b, q_a, q_b, T)
-    
+
     return jnp.mean(estimates)
 ```
 
@@ -313,21 +317,24 @@ The code  below produces distributions of estimates using both Monte Carlo and i
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=['N_simu', 'N_samples'])
-def simulate(key, p_a, p_b, q_a, q_b, N_simu, T=1, N_samples=1000):
+def simulate(key, p_a, p_b, q_a, q_b, N_simu, T=1,
+             N_samples=1000):
     """Simulation for both Monte Carlo and importance sampling."""
     keys = jr.split(key, 2 * N_simu)
     keys_p = keys[:N_simu]
     keys_q = keys[N_simu:]
-    
+
     def run_monte_carlo(key_batch):
-        return estimate(key_batch, p_a, p_b, p_a, p_b, T, N_samples)
-    
+        return estimate(key_batch, p_a, p_b, p_a, p_b, T,
+                        N_samples)
+
     def run_importance_sampling(key_batch):
-        return estimate(key_batch, p_a, p_b, q_a, q_b, T, N_samples)
-    
+        return estimate(key_batch, p_a, p_b, q_a, q_b, T,
+                        N_samples)
+
     μ_L_p = jax.vmap(run_monte_carlo)(keys_p)
     μ_L_q = jax.vmap(run_importance_sampling)(keys_q)
-    
+
     return μ_L_p, μ_L_q
 ```
 
@@ -358,25 +365,31 @@ Next, we present distributions of estimates for $\hat{E} \left[L\left(\omega^t\r
 ```{code-cell} ipython3
 T_values = [1, 5, 10, 20]
 
-def simulate_multiple_T(key, p_a, p_b, q_a, q_b, N_simu, T_list, N_samples=1000):
+def simulate_multiple_T(key, p_a, p_b, q_a, q_b, N_simu,
+                        T_list, N_samples=1000):
     """Simulation for multiple T values."""
     n_T = len(T_list)
     keys = jr.split(key, n_T)
-    
+
     results = []
     for i, T in enumerate(T_list):
-        result = simulate(keys[i], p_a, p_b, q_a, q_b, N_simu, T, N_samples)
+        result = simulate(keys[i],
+                          p_a, p_b, q_a, q_b, N_simu, T,
+                          N_samples)
         results.append(result)
 
     # Stack results into arrays for consistency
     μ_L_p_all = jnp.stack([r[0] for r in results])
     μ_L_q_all = jnp.stack([r[1] for r in results])
-    
+
     return μ_L_p_all, μ_L_q_all
 
 # Run all simulations at once
 key, subkey = jr.split(key)
-all_results = simulate_multiple_T(subkey, g_a, g_b, h_a, h_b, N_simu, T_values, N_samples=1000)
+all_results = simulate_multiple_T(subkey,
+                                  g_a, g_b, h_a, h_b,
+                                  N_simu, T_values,
+                                  N_samples=1000)
 
 # Extract results
 μ_L_p_all, μ_L_q_all = all_results
@@ -387,25 +400,36 @@ fig, axs = plt.subplots(2, 2, figsize=(14, 10))
 for i, t in enumerate(T_values):
     row = i // 2
     col = i % 2
-    
+
     # Get results for this T value
     μ_L_p = μ_L_p_all[i]
     μ_L_q = μ_L_q_all[i]
-    
-    μ_hat_p, μ_hat_q = jnp.nanmean(μ_L_p), jnp.nanmean(μ_L_q)
-    σ_hat_p, σ_hat_q = jnp.nanvar(μ_L_p), jnp.nanvar(μ_L_q)
+
+    μ_hat_p = jnp.nanmean(μ_L_p)
+    μ_hat_q = jnp.nanmean(μ_L_q)
+    σ_hat_p = jnp.nanvar(μ_L_p)
+    σ_hat_q = jnp.nanvar(μ_L_q)
 
     axs[row, col].set_xlabel('$μ_L$')
     axs[row, col].set_ylabel('frequency')
     axs[row, col].set_title(f'$T$={t}')
-    n_p, bins_p, _ = axs[row, col].hist(μ_L_p, bins=μ_range, color='r', alpha=0.5, label='$g$ generating')
-    n_q, bins_q, _ = axs[row, col].hist(μ_L_q, bins=μ_range, color='b', alpha=0.5, label='$h$ generating')
+    n_p, bins_p, _ = axs[row, col].hist(
+        μ_L_p, bins=μ_range,
+        color='r', alpha=0.5, label='$g$ generating')
+    n_q, bins_q, _ = axs[row, col].hist(
+        μ_L_q, bins=μ_range,
+        color='b', alpha=0.5, label='$h$ generating')
     axs[row, col].legend(loc=4)
 
-    for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p, σ_hat_p],
-                                  [n_q, bins_q, μ_hat_q, σ_hat_q]]:
+    for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p,
+                                    σ_hat_p],
+                                   [n_q, bins_q, μ_hat_q,
+                                    σ_hat_q]]:
         idx = jnp.argmax(n)
-        axs[row, col].text(bins[idx], n[idx], r'$\hat{μ}$='+f'{μ_hat:.4g}'+r', $\hat{σ}=$'+f'{σ_hat:.4g}')
+        axs[row, col].text(
+            bins[idx], n[idx],
+            r'$\hat{μ}$=' + f'{μ_hat:.4g}' +
+            r', $\hat{σ}=$' + f'{σ_hat:.4g}')
 
 plt.show()
 ```
@@ -434,7 +458,8 @@ $$
 
 ```{code-cell} ipython3
 key, subkey = jr.split(key)
-μ_L_p, μ_L_q = simulate(subkey, g_a, g_b, params.F_a, params.F_b, N_simu)
+μ_L_p, μ_L_q = simulate(subkey, g_a, g_b, params.F_a,
+                         params.F_b, N_simu)
 ```
 
 ```{code-cell} ipython3
@@ -454,10 +479,14 @@ b_list = [0.5, 1.2, 5.]
 ```{code-cell} ipython3
 w_range = jnp.linspace(1e-5, 1-1e-5, 1000)
 
-plt.plot(w_range, g(w_range), label=f'g=Beta({g_a}, {g_b})')
-plt.plot(w_range, beta_pdf(w_range, a_list[0], b_list[0]), label=f'$h_1$=Beta({a_list[0]},{b_list[0]})')
-plt.plot(w_range, beta_pdf(w_range, a_list[1], b_list[1]), label=f'$h_2$=Beta({a_list[1]},{b_list[1]})')
-plt.plot(w_range, beta_pdf(w_range, a_list[2], b_list[2]), label=f'$h_3$=Beta({a_list[2]},{b_list[2]})')
+plt.plot(w_range, g(w_range),
+         label=f'g=Beta({g_a}, {g_b})')
+plt.plot(w_range, beta_pdf(w_range, a_list[0], b_list[0]),
+         label=f'$h_1$=Beta({a_list[0]},{b_list[0]})')
+plt.plot(w_range, beta_pdf(w_range, a_list[1], b_list[1]),
+         label=f'$h_2$=Beta({a_list[1]},{b_list[1]})')
+plt.plot(w_range, beta_pdf(w_range, a_list[2], b_list[2]),
+         label=f'$h_3$=Beta({a_list[2]},{b_list[2]})')
 plt.legend()
 plt.ylim([0., 3.])
 plt.show()
@@ -488,30 +517,44 @@ h_b = b_list[1]
 
 T_values_h2 = [1, 20]
 key, subkey = jr.split(key)
-all_results_h2 = simulate_multiple_T(subkey, g_a, g_b, h_a, h_b, N_simu, T_values_h2, N_samples=1000)
+all_results_h2 = simulate_multiple_T(subkey,
+                                     g_a, g_b, h_a, h_b,
+                                     N_simu, T_values_h2,
+                                     N_samples=1000)
 μ_L_p_all_h2, μ_L_q_all_h2 = all_results_h2
 
-fig, axs = plt.subplots(1,2, figsize=(14, 10))
+fig, axs = plt.subplots(1, 2, figsize=(14, 10))
 μ_range = jnp.linspace(0, 2, 100)
 
 for i, t in enumerate(T_values_h2):
     μ_L_p = μ_L_p_all_h2[i]
     μ_L_q = μ_L_q_all_h2[i]
-    
-    μ_hat_p, μ_hat_q = jnp.nanmean(μ_L_p), jnp.nanmean(μ_L_q)
-    σ_hat_p, σ_hat_q = jnp.nanvar(μ_L_p), jnp.nanvar(μ_L_q)
+
+    μ_hat_p = jnp.nanmean(μ_L_p)
+    μ_hat_q = jnp.nanmean(μ_L_q)
+    σ_hat_p = jnp.nanvar(μ_L_p)
+    σ_hat_q = jnp.nanvar(μ_L_q)
 
     axs[i].set_xlabel('$μ_L$')
     axs[i].set_ylabel('frequency')
     axs[i].set_title(f'$T$={t}')
-    n_p, bins_p, _ = axs[i].hist(μ_L_p, bins=μ_range, color='r', alpha=0.5, label='$g$ generating')
-    n_q, bins_q, _ = axs[i].hist(μ_L_q, bins=μ_range, color='b', alpha=0.5, label='$h_2$ generating')
+    n_p, bins_p, _ = axs[i].hist(
+        μ_L_p, bins=μ_range,
+        color='r', alpha=0.5, label='$g$ generating')
+    n_q, bins_q, _ = axs[i].hist(
+        μ_L_q, bins=μ_range,
+        color='b', alpha=0.5, label='$h_2$ generating')
     axs[i].legend(loc=4)
 
-    for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p, σ_hat_p],
-                                  [n_q, bins_q, μ_hat_q, σ_hat_q]]:
+    for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p,
+                                    σ_hat_p],
+                                   [n_q, bins_q, μ_hat_q,
+                                    σ_hat_q]]:
         idx = jnp.argmax(n)
-        axs[i].text(bins[idx], n[idx], r'$\hat{μ}$='+f'{μ_hat:.4g}'+r', $\hat{σ}=$'+f'{σ_hat:.4g}')
+        axs[i].text(
+            bins[idx], n[idx],
+            r'$\hat{μ}$=' + f'{μ_hat:.4g}' +
+            r', $\hat{σ}=$' + f'{σ_hat:.4g}')
 
 plt.show()
 ```
@@ -526,27 +569,41 @@ h_b = b_list[2]
 
 T_list = [1, 20]
 key, subkey = jr.split(key)
-results = simulate_multiple_T(subkey, g_a, g_b, h_a, h_b, N_simu, T_list, N_samples=1000)
+results = simulate_multiple_T(subkey,
+                              g_a, g_b, h_a, h_b,
+                              N_simu, T_list,
+                              N_samples=1000)
 
 fig, axs = plt.subplots(1, 2, figsize=(14, 10))
 μ_range = jnp.linspace(0, 2, 100)
 
 for i, t in enumerate(T_list):
     μ_L_p, μ_L_q = results[i]
-    μ_hat_p, μ_hat_q = jnp.nanmean(μ_L_p), jnp.nanmean(μ_L_q)
-    σ_hat_p, σ_hat_q = jnp.nanvar(μ_L_p), jnp.nanvar(μ_L_q)
+    μ_hat_p = jnp.nanmean(μ_L_p)
+    μ_hat_q = jnp.nanmean(μ_L_q)
+    σ_hat_p = jnp.nanvar(μ_L_p)
+    σ_hat_q = jnp.nanvar(μ_L_q)
 
     axs[i].set_xlabel('$μ_L$')
     axs[i].set_ylabel('frequency')
     axs[i].set_title(f'$T$={t}')
-    n_p, bins_p, _ = axs[i].hist(μ_L_p, bins=μ_range, color='r', alpha=0.5, label='$g$ generating')
-    n_q, bins_q, _ = axs[i].hist(μ_L_q, bins=μ_range, color='b', alpha=0.5, label='$h_3$ generating')
+    n_p, bins_p, _ = axs[i].hist(
+        μ_L_p, bins=μ_range,
+        color='r', alpha=0.5, label='$g$ generating')
+    n_q, bins_q, _ = axs[i].hist(
+        μ_L_q, bins=μ_range,
+        color='b', alpha=0.5, label='$h_3$ generating')
     axs[i].legend(loc=4)
 
-    for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p, σ_hat_p],
-                                  [n_q, bins_q, μ_hat_q, σ_hat_q]]:
+    for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p,
+                                    σ_hat_p],
+                                   [n_q, bins_q, μ_hat_q,
+                                    σ_hat_q]]:
         idx = jnp.argmax(n)
-        axs[i].text(bins[idx], n[idx], r'$\hat{μ}$='+f'{μ_hat:.4g}'+r', $\hat{σ}=$'+f'{σ_hat:.4g}')
+        axs[i].text(
+            bins[idx], n[idx],
+            r'$\hat{μ}$=' + f'{μ_hat:.4g}' +
+            r', $\hat{σ}=$' + f'{σ_hat:.4g}')
 
 plt.show()
 ```
