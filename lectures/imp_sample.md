@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.6
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -19,7 +19,7 @@ kernelspec:
 
 ## Overview
 
-In  {doc}`this lecture <likelihood_ratio_process>` we described a peculiar property of a likelihood ratio process, namely, that its mean equals one for all $t \geq 0$ despite its converging to zero almost surely.
+In  {doc}`likelihood_ratio_process` we described a peculiar property of a likelihood ratio process, namely, that its mean equals one for all $t \geq 0$ despite its converging to zero almost surely.
 
 While it is easy to verify that peculiar property analytically (i.e., in population), it is challenging to use a computer simulation to verify it via an application of a law of large numbers that entails studying sample averages of repeated simulations.
 
@@ -37,11 +37,14 @@ import matplotlib.pyplot as plt
 from jax.scipy.special import gammaln
 from typing import NamedTuple
 from functools import partial
+
+# Set JAX to use 64-bit floats
+jax.config.update("jax_enable_x64", True)
 ```
 
 ## Mathematical expectation of likelihood ratio
 
-In {doc}`this lecture <likelihood_ratio_process>`, we studied a likelihood ratio $\ell \left(\omega_t\right)$
+In {doc}`likelihood_ratio_process`, we studied a likelihood ratio $\ell \left(\omega_t\right)$
 
 $$
 \ell \left( \omega_t \right) = \frac{f\left(\omega_t\right)}{g\left(\omega_t\right)}
@@ -59,7 +62,7 @@ $$
 
 Our goal is to approximate the mathematical expectation $E \left[ L\left(\omega^t\right) \right]$ well.
 
-In {doc}`this lecture <likelihood_ratio_process>`, we showed that  $E \left[ L\left(\omega^t\right) \right]$  equals $1$ for all $t$.
+In {doc}`likelihood_ratio_process`, we showed that  $E \left[ L\left(\omega^t\right) \right]$  equals $1$ for all $t$.
 
 We want to check out how well this holds if we replace $E$ with sample averages from simulations.
 
@@ -183,11 +186,16 @@ key = jr.PRNGKey(0)
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: 'Real data generating process $g$ and importance distribution $h$'
+    name: fig_imp_real
+---
 w_range = jnp.linspace(1e-5, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range), label=f'g=Beta({g_a}, {g_b})')
 plt.plot(w_range, beta_pdf(w_range, 0.5, 0.5), label=f'h=Beta({h_a}, {h_b})')
-plt.title('real data generating process $g$ and importance distribution $h$')
 plt.legend()
 plt.ylim([0., 3.])
 plt.show()
@@ -450,7 +458,6 @@ plt.plot(w_range, g(w_range), label=f'g=Beta({g_a}, {g_b})')
 plt.plot(w_range, beta_pdf(w_range, a_list[0], b_list[0]), label=f'$h_1$=Beta({a_list[0]},{b_list[0]})')
 plt.plot(w_range, beta_pdf(w_range, a_list[1], b_list[1]), label=f'$h_2$=Beta({a_list[1]},{b_list[1]})')
 plt.plot(w_range, beta_pdf(w_range, a_list[2], b_list[2]), label=f'$h_3$=Beta({a_list[2]},{b_list[2]})')
-plt.title('real data generating process $g$ and importance distribution $h$')
 plt.legend()
 plt.ylim([0., 3.])
 plt.show()
