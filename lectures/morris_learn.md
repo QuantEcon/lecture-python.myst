@@ -39,23 +39,26 @@ In addition to what's in Anaconda, this lecture uses following libraries:
 
 ## Overview
 
-This lecture describes a model of {cite:t}`Morris1996` that extends the 
-{cite:t}`HarrKreps1978` model of speculative asset pricing (see {doc}`harrison_kreps`).
+This lecture describes a model of {cite:t}`Morris1996` that extends the Harrison–Kreps model {cite}`HarrKreps1978` of speculative asset pricing.
 
-The Harrison-Kreps model features heterogeneous beliefs but assumes that investors have hard-wired beliefs about asset fundamentals.
+The model determines the price of a dividend-yielding asset that is traded by risk-neutral investors who have heterogeneous beliefs.
 
-Morris replaced the fixed beliefs with Bayesian learning, where traders update their beliefs using Bayes' Law as new dividend data arrive.
+The Harrison-Kreps model features heterogeneous beliefs but assumes that traders have dogmatic, hard-wired beliefs about asset fundamentals.
+
+Morris replaced dogmatic beliefs with *Bayesian learning*: traders who use Bayes' Law to update their beliefs about prospective dividends as new dividend data arrive.
 
 Key features of Morris's model:
 
-* All traders share the same statistical model (manifold) for prospective dividends
+* All traders share the same manifold of statistical models for prospective dividends
 * All observe the same dividend histories
 * All use Bayes' Law to update beliefs
-* Traders have different *prior distributions* over parameters of the dividend process
+* But they have different initial *prior distributions* over the parameter that indexes the common statistical model
 
-This heterogeneity in priors leads to heterogeneous *posterior beliefs* even though all traders observe identical data.
+By endowing agents with different prior distributions over a parameter describing the distribution of prospective dividends, Morris builds in heterogeneous beliefs.
 
-These differences create opportunities for speculation and potential price bubbles.
+Along identical histories of dividends, traders have different *posterior distributions* for prospective dividends.
+
+Those differences set the stage for possible speculation and price bubbles.
 
 Let's start with some standard imports:
 
@@ -70,41 +73,55 @@ Prior to reading the following, you might like to review our lectures on
 * {doc}`Likelihood ratio processes <likelihood_ratio_process>`
 * {doc}`Bayesian versus frequentist statistics <likelihood_bayes>`
 
-This section describes how {cite:t}`Morris1996` modified the  Harrison–Kreps{cite}`HarrKreps1978` model.
 
-Harrison and Kreps assumed dogmatic traders with hard-wired beliefs.
+## Structure of the model
 
-Morris replaced them with traders who use Bayes' Law to update their beliefs about prospective dividends.  
+There is a fixed supply of shares of an asset.
 
-In Morris's model, all traders share the same manifold of statistical models for prospective dividends.
+Each share entitles its owner to a stream of *binary* i.i.d. dividends $\{d_t\}$ where
 
-All observe the same dividend histories.
+$$
+d_{t+1} \in \{0,1\}
+$$
 
-All  use Bayes' Law.
+The dividend equals $1$ with unknown probability $\theta \in (0,1)$ and equals $0$ with probability $1-\theta$.
 
-But they might have different initial prior distributions over the parameter that indexes a common manifold of statistical models. 
+Unlike Harrison-Kreps where traders have hard-wired beliefs about a Markov transition matrix, in Morris's model:
 
+* The true dividend probability $\theta$ is unknown
+* Traders have *prior beliefs* about $\theta$
+* Traders observe dividend realizations and update beliefs via Bayes' Law
 
-By endowing agents with different prior distributions over a parameter describing the distribution of prospective dividends, Morris builds in heterogeneous beliefs.  
+There is a finite set $\mathcal{I}$ of *risk-neutral* traders.
 
-Along identical histories of dividends, traders have different posterior distributions for prospective dividends.
+All traders have the same discount factor $\beta \in (0,1)$, which is related to the risk-free interest rate $r$ by $\beta = 1/(1+r)$.
 
-Those differences set the stage for possible   speculation and price bubbles.
-
-## The setting
-
-
-The risky asset pays i.i.d. dividends $d_{t+1} \in \{0,1\}$ with unknown  probability $\theta \in (0,1)$ that the dividend equals $1$.
-
-There is a finite set $\mathcal{I}$ of risk-neutral traders.
+### Trading and constraints
 
 Traders buy and sell the risky asset in competitive markets each period $t = 0, 1, 2, \ldots$ after dividends are paid.
 
-Traders face a short-sale constraint: they cannot sell the risky asset short.
+As in Harrison-Kreps:
 
-All traders have sufficient wealth to purchase the risky asset as in the previous sections.
+* The stock is traded *ex dividend*
+* An owner of a share at the end of time $t$ is entitled to the dividend at time $t+1$
+* An owner also has the right to sell the share at time $t+1$
 
-All traders observe the full dividend history $(d_1, d_2, \ldots, d_t)$ and update beliefs by Bayes' rule, but they have heterogeneous priors over $\theta$.
+*Short sales are prohibited*.
+
+This matters because it limits how pessimists can express their opinions:
+
+* They *can* express themselves by selling their shares
+* They *cannot* express themselves more loudly by borrowing shares and selling them
+
+All traders have sufficient wealth to purchase the risky asset.
+
+## Information and beliefs
+
+All traders observe the full dividend history $(d_1, d_2, \ldots, d_t)$ and update beliefs by Bayes' rule.
+
+However, they have *heterogeneous priors* over the unknown dividend probability $\theta$.
+
+This heterogeneity in priors, combined with the same observed data, produces heterogeneous posterior beliefs.
 
 ### Beta prior specification
 
@@ -120,7 +137,8 @@ where $a_i, b_i > 0$ are the prior parameters.
 The definition of Beta distribution can be found in {doc}`divergence_measures`.
 ```
 
-Suppose trader $i$ observes a history of $t$ periods in which a total of $s$ dividends are paid (i.e., $s$ successes and $t-s$ failures). 
+Suppose trader $i$ observes a history of $t$ periods in which a total of $s$ dividends are paid 
+(i.e., $s$ successes with dividend and $t-s$ failures without dividend). 
 
 By Bayes' rule, the posterior density over $\theta$ is:
 
@@ -150,6 +168,8 @@ This is the probability trader $i$ assigns to receiving a dividend next period, 
 ## Market prices with learning
 
 Fundamental valuations reflect the expected value to each trader of holding the asset *forever*. 
+
+Equilibrium prices are determined by the most optimistic trader with the highest valuation at each history.
 
 However, in a market where the asset can be resold, traders take into account the possibility of selling at a price higher than their fundamental valuation in some future state.
 
@@ -226,10 +246,10 @@ $$
 p(s,t,r) > \mu_i(s,t) \quad \text{for all } i \in \mathcal{I}
 $$
 
-The **speculative premium** for trader $i$ is:
+The **speculative premium** is defined as:
 
 $$
-p(s,t,r) - \mu_i(s,t) > 0
+p(s,t,r) - \mu^*(s,t) > 0
 $$
 ```
 
@@ -254,7 +274,7 @@ $$
 For two traders with Beta priors:
 
 1. If trader 1 rate-dominates trader 2, then trader 1 is a **global optimist**: $\mu_1(s,t) \geq \mu_2(s,t)$ for all histories $(s,t)$
-2. In this case, $p(s,t,r) = \mu_1(s,t)$ for all $(s,t,r)$. There is **no speculative premium**
+2. In this case where $p(s,t,r) = \mu_1(s,t)$ for all $(s,t,r)$, there is *no speculative premium*.
 ```
 
 When neither trader rate-dominates the other, the identity of the most optimistic trader can switch with dividend data.
@@ -338,7 +358,7 @@ Trader 1 is the global optimist, so the normalized price equals trader 1's funda
 ```{code-cell} ipython3
 β = 0.75
 price_go, μ1_go, μ2_go = price_learning_two_agents(
-        (2,1), (1,2), β=β, T=150)
+        (2,1), (1,2), β=β, T=200)
 
 perpetuity_1 = (β / (1 - β)) * μ1_go(0, 0)
 perpetuity_2 = (β / (1 - β)) * μ2_go(0, 0)
@@ -357,7 +377,6 @@ Now assume trader 1 has $\text{Beta}(1,1)$, trader 2 has $\text{Beta}(1/2,1/2)$.
 These produce crossing posteriors, so there is no global optimist and the price exceeds both fundamentals early on.
 
 ```{code-cell} ipython3
-β = .75
 price_ps, μ1_ps, μ2_ps = price_learning_two_agents(
                                 (1,1), (0.5,0.5), β=β, T=200)
 
@@ -392,12 +411,24 @@ p00 = np.array([normalized_price_two_agents(
                 for r in r_grid])
 
 plt.figure(figsize=(6,4))
-plt.plot(r_grid, p00, 'k-')
+plt.plot(r_grid, p00)
 plt.xlabel('r')
 plt.ylabel(r'$p^*(0,0,r)$')
-plt.title('Figure I: Normalized Price vs Interest Rate')
+plt.axhline(0.5, color='C1', linestyle='--')
+plt.title('Figure I: normalized price vs interest rate')
 plt.show()
+```
 
+In the first figure, we can see:
+
+- The resale option pushes the normalized price $p^*(0,0,r)$ above fundamentals $(0.5)$ for any finite $r$. 
+
+- As $r$ increases ($\beta$ decreases), the option value fades and $p^*(0,0,r) \to 0.5$. 
+
+- At $r = 0.05$ the premium is about $8–9\%$, consistent with Morris (1996, Section IV).
+
+
+```{code-cell} ipython3
 # Figure II: p*(t/2,t,0.05) as a function of t
 r = 0.05
 T = 60
@@ -407,10 +438,11 @@ s_vals = t_vals // 2
 y = np.array([p_mat[s, t] for s, t in zip(s_vals, t_vals)])
 
 plt.figure(figsize=(6,4))
-plt.plot(t_vals, y, 'k-')
+plt.plot(t_vals, y)
 plt.xlabel('t')
 plt.ylabel(r'$p^*(t/2,t,0.05)$')
-plt.title('Figure II: Normalized Price vs Time (r=0.05)')
+plt.axhline(0.5, color='C1', linestyle='--')
+plt.title('Figure II: normalized price vs time (r=0.05)')
 plt.show()
 
 p0 = p_mat[0,0]
@@ -418,14 +450,6 @@ mu0 = 0.5
 print("Initial normalized premium at r=0.05 (%):",
       np.round(100 * (p0 / mu0 - 1.0), 2))
 ```
-
-In the first figure, we can see:
-
-- The resale option pushes the normalized price $p*(0,0,r)$ above fundamentals $(0.5)$ for any finite $r$. 
-
-- As $r$ increases ($\beta$ decreases), the option value fades and $p*(0,0,r) \to 0.5$. 
-
-- At $r = 0.05$ the premium is about $8–9\%$, consistent with Morris (1996, Section IV).
 
 In the second figure, we can see:
 
@@ -480,7 +504,7 @@ for i, (mu, perp) in enumerate(zip(mu_vals, perp_vals), 1):
     print(f"  Trader {i} = {np.round(perp, 6)}")
 ```
 
-From the trader valuation, we can see that the asset price is above all traders' valuations.
+We can see that the asset price is above all traders' valuations.
 
 Morris tells us that no rate dominance exists in this case.
 
@@ -512,7 +536,7 @@ Indeed, there is no global optimist and a speculative premium exists.
 
 Morris {cite}`Morris1996` provides a sharp characterization of when speculative bubbles arise.
 
-The key condition is that there is no **global optimist*.
+The key condition is that there is no *global optimist*.
 
 In this exercise, you will verify this condition for the following sets of traders with Beta priors:
 
