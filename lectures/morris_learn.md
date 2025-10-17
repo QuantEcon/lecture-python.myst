@@ -31,22 +31,31 @@ kernelspec:
 
 ## Overview
 
-This lecture describes a model of {cite:t}`Morris1996` that extends the Harrison–Kreps model {cite}`HarrKreps1978` of speculative asset pricing.
+This lecture describes how {cite:t}`Morris1996`  extends the Harrison–Kreps model {cite}`HarrKreps1978` of speculative asset pricing.
 
 The model determines the price of a dividend-yielding asset that is traded by risk-neutral investors who have heterogeneous beliefs.
 
-The Harrison-Kreps model features heterogeneous beliefs but assumes that traders have dogmatic, hard-wired beliefs about asset fundamentals.
+The Harrison-Kreps model  assumes that the traders have dogmatic, hard-wired beliefs about the asset's payout stream, i.e., its dividend stream or  ''fundamentals''.
 
-Morris replaced dogmatic beliefs with *Bayesian learning*: traders who use Bayes' Law to update their beliefs about prospective dividends as new dividend data arrive.
+Morris replaced dogmatic beliefs about the dividend stream with non-dogmatic  traders who use Bayes' Law to update their beliefs about prospective dividends as new dividend data arrive.
 
-Key features of Morris's model:
+```{note}
+But notice below that the traders don't use data on past prices of the asset to update their beliefs about the 
+dividend process.
+```
+
+Key features of Morris's model include:
 
 * All traders share the same manifold of statistical models for prospective dividends
 * All observe the same dividend histories
 * All use Bayes' Law to update beliefs
-* But they have different initial *prior distributions* over the parameter that indexes the common statistical model
+* Traders  have different initial *prior distributions* over a parameter that indexes the common statistical model
 
-By endowing agents with different prior distributions over a parameter describing the distribution of prospective dividends, Morris builds in heterogeneous beliefs.
+By endowing agents with different prior distributions over that  parameter, Morris builds his model of  heterogeneous beliefs.
+
+```{note}
+Morris has thereby set things up so that we anticipate that after long enough histories, traders eventually agree about the tail of the asset's dividend stream.
+```
 
 Along identical histories of dividends, traders have different *posterior distributions* for prospective dividends.
 
@@ -59,7 +68,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 ```
 
-Prior to reading the following, you might like to review our lectures on
+Prior to reading this lecture, you might want  to review the following quantecon lectures:
 
 * {doc}`Harrison-Kreps model <harrison_kreps>`
 * {doc}`Likelihood ratio processes <likelihood_ratio_process>`
@@ -76,9 +85,9 @@ $$
 d_{t+1} \in \{0,1\}
 $$
 
-The dividend equals $1$ with unknown probability $\theta \in (0,1)$ and equals $0$ with probability $1-\theta$.
+The dividend at time $t$ equals $1$ with unknown probability $\theta \in (0,1)$ and equals $0$ with probability $1-\theta$.
 
-Unlike Harrison-Kreps where traders have hard-wired beliefs about a Markov transition matrix, in Morris's model:
+Unlike {cite}`HarrKreps1978` where traders have hard-wired beliefs about a Markov transition matrix, in Morris's model:
 
 * The true dividend probability $\theta$ is unknown
 * Traders have *prior beliefs* about $\theta$
@@ -86,7 +95,9 @@ Unlike Harrison-Kreps where traders have hard-wired beliefs about a Markov trans
 
 There is a finite set $\mathcal{I}$ of *risk-neutral* traders.
 
-All traders have the same discount factor $\beta \in (0,1)$, which is related to the risk-free interest rate $r$ by $\beta = 1/(1+r)$.
+All traders have the same discount factor $\beta \in (0,1)$.
+
+* you can think of $\beta$ as being related to a net risk-free interest rate $r$ by $\beta = 1/(1+r)$.
 
 ### Trading and constraints
 
@@ -94,9 +105,9 @@ Traders buy and sell the risky asset in competitive markets each period $t = 0, 
 
 As in Harrison-Kreps:
 
-* The stock is traded *ex dividend*
+* The asset is traded *ex dividend*
 * An owner of a share at the end of time $t$ is entitled to the dividend at time $t+1$
-* An owner also has the right to sell the share at time $t+1$
+* An owner of a share  at the end of period $t$ also has the right to sell the share at time $t+1$ after having received the dividend at time $t+1$.
 
 *Short sales are prohibited*.
 
@@ -109,9 +120,11 @@ All traders have sufficient wealth to purchase the risky asset.
 
 ## Information and beliefs
 
-All traders observe the full dividend history $(d_1, d_2, \ldots, d_t)$ and update beliefs by Bayes' rule.
+All traders observe the same dividend history $(d_1, d_2, \ldots, d_t)$.
 
-However, they have *heterogeneous priors* over the unknown dividend probability $\theta$.
+Based on that information flow, all update beliefs by Bayes' rule.
+
+However, traders have *heterogeneous priors* over the unknown dividend probability $\theta$.
 
 This heterogeneity in priors, combined with the same observed data, produces heterogeneous posterior beliefs.
 
@@ -126,7 +139,7 @@ $$
 where $a_i, b_i > 0$ are the prior parameters.
 
 ```{note}
-The definition of the Beta distribution can be found in {doc}`divergence_measures`.
+The definition of the Beta distribution can be found in this quantecon lecture {doc}`divergence_measures`.
 ```
 
 Suppose trader $i$ observes a history of $t$ periods in which a total of $s$ dividends are paid 
@@ -155,15 +168,22 @@ $$
 
 Morris refers to $\mu_i(s,t)$ as trader $i$'s **fundamental valuation** of the asset after history $(s,t)$. 
 
-This is the probability trader $i$ assigns to receiving a dividend next period, which reflects their updated belief about $\theta$.
+This is the probability trader $i$ assigns to receiving a dividend next period.
+
+It embeds trader $i$'s updated belief about $\theta$.
 
 ## Market prices with learning
 
-Fundamental valuations reflect the expected value to each trader of holding the asset *forever*. 
+Fundamental valuations equal  expected present values of dividends that our heterogenous  traders
+attach to the option  of holding the asset *forever*. 
 
-Equilibrium prices are determined by the most optimistic trader with the highest valuation at each history.
+The equilibrium price process is  determined by the condition that the asset is held at time $t$ by the  trader with who attaches the   highest valuation to the asset at time $t$.
 
-However, in a market where the asset can be resold, traders take into account the possibility of selling at a price higher than their fundamental valuation in some future state.
+An owner of the asset has option to sell it  after receiving that period's  dividend.
+
+Traders take that into account.
+
+That opens the  the possibility that at time $t$ a trader will be willing to pay more for the asset than the trader's fundamental valuation.
 
 ```{prf:definition} Most Optimistic Valuation
 :label: most_optimistic_valuation
@@ -193,16 +213,16 @@ The equilibrium price equals the highest expected discounted return among all tr
 ```{prf:definition} Normalized Price
 :label: normalized_price
 
-The normalized price is defined as:
+Define the  normalized price  as:
 
 $$
 p(s,t,r) = r \tilde{p}(s,t,r)
 $$
 
-Since the current dollar price of the riskless asset is $1/r$, this represents the price of the risky asset in terms of the riskless asset.
+Since the current ''dollar'' price of the riskless asset is $1/r$, this represents the price of the risky asset in terms of the riskless asset.
 ```
 
-Substituting into the equilibrium condition gives:
+Substituting  the preceding formula into the equilibrium condition gives:
 
 $$
 p(s,t,r) = \frac{r}{1+r} \mu^*(s,t) + \frac{1}{1+r} 
@@ -216,7 +236,7 @@ p(s,t,r) = \mu^*(s,t) + \frac{r}{1+r}
 \Bigl[ \mu^*(s,t) p(s+1,t+1,r) + (1 - \mu^*(s,t)) p(s,t+1,r) - \mu^*(s,t) \Bigr]
 $$
 
-Following Harrison and Kreps, a price scheme satisfying the equilibrium condition can be computed recursively.
+Following Harrison and Kreps, a price function that  satisfies the equilibrium condition can be computed recursively.
 
 Set $p^0(s,t,r) = 0$ for all $(s,t,r)$, and define $p^{n+1}(s,t,r)$ by:
 
@@ -238,7 +258,7 @@ $$
 p(s,t,r) > \mu_i(s,t) \quad \text{for all } i \in \mathcal{I}
 $$
 
-The **speculative premium** is defined as:
+Define the  **speculative premium** as:
 
 $$
 p(s,t,r) - \mu^*(s,t) > 0
@@ -248,7 +268,7 @@ $$
 
 ## Two Traders
 
-We now focus on the case with two traders having priors $(a_1,b_1)$ and $(a_2,b_2)$.
+We now focus on an example with two traders with priors $(a_1,b_1)$ and $(a_2,b_2)$.
 
 ```{prf:definition} Rate Dominance (Beta Priors)
 :label: rate_dominance_beta
@@ -269,20 +289,19 @@ For two traders with Beta priors:
 2. In this case where $p(s,t,r) = \mu_1(s,t)$ for all $(s,t,r)$, there is *no speculative premium*.
 ```
 
-When neither trader rate-dominates the other, the identity of the most optimistic trader can switch with dividend data.
+When neither trader rate-dominates the other, the identity of the most optimistic trader can switch as  dividends accrue.
 
-In this perpetual switching case, the price strictly exceeds both traders' fundamental valuations before learning converges:
+Along a history in which   perpetual switching occurs, the price of the asset strictly exceeds both traders' fundamental valuations so long as traders continue to disagree:
 
 $$
 p(s,t,r) > \max\{\mu_1(s,t), \mu_2(s,t)\}
 $$
 
-This is consistent with our discussion about the expectation of future resale opportunities 
-creating a speculative premium.
+Thus, along such a history, there is a persistent  speculative premium.
 
 ### Implementation
 
-For computational tractability, we work with a finite horizon $T$ and solve by backward induction.
+For computational tractability, let's work with a finite horizon $T$ and solve by backward induction.
 
 We use the discount factor parameterization $\beta = 1/(1+r)$ and compute dollar prices $\tilde{p}(s,t)$ via:
 
@@ -290,7 +309,7 @@ $$
 \tilde{p}(s,t) = \beta \max_{i\in\{1,2\}} \Bigl[ \mu_i(s,t) \{1 + \tilde{p}(s+1,t+1)\} + (1-\mu_i(s,t)) \tilde{p}(s,t+1) \Bigr]
 $$
 
-The terminal condition $\tilde{p}(s,T)$ is set equal to the perpetuity value under the most optimistic belief.
+We set the  terminal price $\tilde{p}(s,T)$ equal to the perpetuity value under the most optimistic belief.
 
 ```{code-cell} ipython3
 def posterior_mean(a, b, s, t):
@@ -384,9 +403,9 @@ print("Valuation of trader 1 at (0, 0) =", perpetuity_1)
 print("Valuation of trader 2 at (0, 0) =", perpetuity_2)
 ```
 
-The resulting premium reflects the option value of reselling to whichever trader becomes temporarily more optimistic as data arrive.
+The resulting premium reflects the option value of reselling to whichever trader becomes temporarily more optimistic as dividends arrive sequentially.
 
-Under this setting, we reproduce the two key figures reported in {cite:t}`Morris1996`
+Within  this setting, we can  reproduce  two key figures reported in {cite:t}`Morris1996`
 
 ```{code-cell} ipython3
 def normalized_price_two_agents(prior1, prior2, r, T=250):
@@ -411,7 +430,7 @@ plt.title('Figure I: normalized price vs interest rate')
 plt.show()
 ```
 
-In the first figure, we can see:
+In the first figure, notice that:
 
 - The resale option pushes the normalized price $p^*(0,0,r)$ above fundamentals $(0.5)$ for any finite $r$. 
 
@@ -443,14 +462,14 @@ print("Initial normalized premium at r=0.05 (%):",
       np.round(100 * (p0 / mu0 - 1.0), 2))
 ```
 
-In the second figure, we can see:
+In the second figure, notice that :
 
 - Along the symmetric path $s = t/2$, both traders’ fundamentals equal $0.5$ at every $t$, yet the price starts above $0.5$ and declines toward $0.5$ as learning reduces disagreement and the resale option loses value. 
 
 
 ### General N–trader extension
 
-The same recursion extends to any finite set of Beta priors $\{(a_i,b_i)\}_{i=1}^N$ by taking the max over $i$ each period.
+The same recursion extends to any finite set of Beta priors $\{(a_i,b_i)\}_{i=1}^N$ by taking a max over $i$ each period.
 
 ```{code-cell} ipython3
 def price_learning(priors, β=.75, T=200):
@@ -496,7 +515,7 @@ for i, (mu, perp) in enumerate(zip(mu_vals, perp_vals), 1):
     print(f"  Trader {i} = {np.round(perp, 6)}")
 ```
 
-We can see that the asset price is above all traders' valuations.
+Note  that the asset price is above all traders' valuations.
 
 Morris tells us that no rate dominance exists in this case.
 
@@ -520,7 +539,7 @@ else:
 
 Indeed, there is no global optimist and a speculative premium exists.
 
-## Exercises
+## Exercise
 
 ```{exercise-start}
 :label: hk_ex3
