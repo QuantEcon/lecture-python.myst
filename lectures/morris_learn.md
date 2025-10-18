@@ -31,13 +31,13 @@ kernelspec:
 
 ## Overview
 
-This lecture describes how {cite:t}`Morris1996`  extends the Harrison–Kreps model {cite}`HarrKreps1978` of speculative asset pricing.
+This lecture describes how {cite:t}`Morris1996` extends the Harrison–Kreps model {cite}`HarrKreps1978` of speculative asset pricing.
 
 The model determines the price of a dividend-yielding asset that is traded by risk-neutral investors who have heterogeneous beliefs.
 
-The Harrison-Kreps model  assumes that the traders have dogmatic, hard-wired beliefs about the asset's payout stream, i.e., its dividend stream or  ''fundamentals''.
+The Harrison-Kreps model assumes that the traders have dogmatic, hard-wired beliefs about the asset's payout stream, i.e., its dividend stream or "fundamentals".
 
-Morris replaced dogmatic beliefs about the dividend stream with non-dogmatic  traders who use Bayes' Law to update their beliefs about prospective dividends as new dividend data arrive.
+Morris replaced dogmatic beliefs about the dividend stream with non-dogmatic traders who use Bayes' Law to update their beliefs about prospective dividends as new dividend data arrive.
 
 ```{note}
 But notice below that the traders don't use data on past prices of the asset to update their beliefs about the 
@@ -49,9 +49,9 @@ Key features of Morris's model include:
 * All traders share the same manifold of statistical models for prospective dividends
 * All observe the same dividend histories
 * All use Bayes' Law to update beliefs
-* Traders  have different initial *prior distributions* over a parameter that indexes the common statistical model
+* Traders have different initial *prior distributions* over a parameter that indexes the common statistical model
 
-By endowing agents with different prior distributions over that  parameter, Morris builds his model of  heterogeneous beliefs.
+By endowing agents with different prior distributions over that parameter, Morris builds his model of heterogeneous beliefs.
 
 ```{note}
 Morris has thereby set things up so that we anticipate that after long enough histories, traders eventually agree about the tail of the asset's dividend stream.
@@ -68,7 +68,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 ```
 
-Prior to reading this lecture, you might want  to review the following quantecon lectures:
+Prior to reading this lecture, you might want to review the following quantecon lectures:
 
 * {doc}`Harrison-Kreps model <harrison_kreps>`
 * {doc}`Likelihood ratio processes <likelihood_ratio_process>`
@@ -97,7 +97,7 @@ There is a finite set $\mathcal{I}$ of *risk-neutral* traders.
 
 All traders have the same discount factor $\beta \in (0,1)$.
 
-* you can think of $\beta$ as being related to a net risk-free interest rate $r$ by $\beta = 1/(1+r)$.
+* You can think of $\beta$ as being related to a net risk-free interest rate $r$ by $\beta = 1/(1+r)$.
 
 ### Trading and constraints
 
@@ -107,7 +107,7 @@ As in Harrison-Kreps:
 
 * The asset is traded *ex dividend*
 * An owner of a share at the end of time $t$ is entitled to the dividend at time $t+1$
-* An owner of a share  at the end of period $t$ also has the right to sell the share at time $t+1$ after having received the dividend at time $t+1$.
+* An owner of a share at the end of period $t$ also has the right to sell the share at time $t+1$ after having received the dividend at time $t+1$.
 
 *Short sales are prohibited*.
 
@@ -174,16 +174,16 @@ It embeds trader $i$'s updated belief about $\theta$.
 
 ## Market prices with learning
 
-Fundamental valuations equal  expected present values of dividends that our heterogenous  traders
-attach to the option  of holding the asset *forever*. 
+Fundamental valuations equal expected present values of dividends that our heterogeneous traders
+attach to the option of holding the asset *forever*. 
 
-The equilibrium price process is  determined by the condition that the asset is held at time $t$ by the  trader with who attaches the   highest valuation to the asset at time $t$.
+The equilibrium price process is determined by the condition that the asset is held at time $t$ by the trader who attaches the highest valuation to the asset at time $t$.
 
-An owner of the asset has option to sell it  after receiving that period's  dividend.
+An owner of the asset has the option to sell it after receiving that period's dividend.
 
 Traders take that into account.
 
-That opens the  the possibility that at time $t$ a trader will be willing to pay more for the asset than the trader's fundamental valuation.
+That opens the possibility that at time $t$ a trader will be willing to pay more for the asset than the trader's fundamental valuation.
 
 ```{prf:definition} Most Optimistic Valuation
 :label: most_optimistic_valuation
@@ -213,16 +213,16 @@ The equilibrium price equals the highest expected discounted return among all tr
 ```{prf:definition} Normalized Price
 :label: normalized_price
 
-Define the  normalized price  as:
+Define the normalized price as:
 
 $$
 p(s,t,r) = r \tilde{p}(s,t,r)
 $$
 
-Since the current ''dollar'' price of the riskless asset is $1/r$, this represents the price of the risky asset in terms of the riskless asset.
+Since the current "dollar" price of the riskless asset is $1/r$, this represents the price of the risky asset in terms of the riskless asset.
 ```
 
-Substituting  the preceding formula into the equilibrium condition gives:
+Substituting the preceding formula into the equilibrium condition gives:
 
 $$
 p(s,t,r) = \frac{r}{1+r} \mu^*(s,t) + \frac{1}{1+r} 
@@ -236,7 +236,7 @@ p(s,t,r) = \mu^*(s,t) + \frac{r}{1+r}
 \Bigl[ \mu^*(s,t) p(s+1,t+1,r) + (1 - \mu^*(s,t)) p(s,t+1,r) - \mu^*(s,t) \Bigr]
 $$
 
-Following Harrison and Kreps, a price function that  satisfies the equilibrium condition can be computed recursively.
+Following Harrison and Kreps, a price function that satisfies the equilibrium condition can be computed recursively.
 
 Set $p^0(s,t,r) = 0$ for all $(s,t,r)$, and define $p^{n+1}(s,t,r)$ by:
 
@@ -258,7 +258,7 @@ $$
 p(s,t,r) > \mu_i(s,t) \quad \text{for all } i \in \mathcal{I}
 $$
 
-Define the  **speculative premium** as:
+Define the **speculative premium** as:
 
 $$
 p(s,t,r) - \mu^*(s,t) > 0
@@ -289,15 +289,15 @@ For two traders with Beta priors:
 2. In this case where $p(s,t,r) = \mu_1(s,t)$ for all $(s,t,r)$, there is *no speculative premium*.
 ```
 
-When neither trader rate-dominates the other, the identity of the most optimistic trader can switch as  dividends accrue.
+When neither trader rate-dominates the other, the identity of the most optimistic trader can switch as dividends accrue.
 
-Along a history in which   perpetual switching occurs, the price of the asset strictly exceeds both traders' fundamental valuations so long as traders continue to disagree:
+Along a history in which perpetual switching occurs, the price of the asset strictly exceeds both traders' fundamental valuations so long as traders continue to disagree:
 
 $$
 p(s,t,r) > \max\{\mu_1(s,t), \mu_2(s,t)\}
 $$
 
-Thus, along such a history, there is a persistent  speculative premium.
+Thus, along such a history, there is a persistent speculative premium.
 
 ### Implementation
 
@@ -309,7 +309,7 @@ $$
 \tilde{p}(s,t) = \beta \max_{i\in\{1,2\}} \Bigl[ \mu_i(s,t) \{1 + \tilde{p}(s+1,t+1)\} + (1-\mu_i(s,t)) \tilde{p}(s,t+1) \Bigr]
 $$
 
-We set the  terminal price $\tilde{p}(s,T)$ equal to the perpetuity value under the most optimistic belief.
+We set the terminal price $\tilde{p}(s,T)$ equal to the perpetuity value under the most optimistic belief.
 
 ```{code-cell} ipython3
 def posterior_mean(a, b, s, t):
@@ -405,7 +405,7 @@ print("Valuation of trader 2 at (0, 0) =", perpetuity_2)
 
 The resulting premium reflects the option value of reselling to whichever trader becomes temporarily more optimistic as dividends arrive sequentially.
 
-Within  this setting, we can  reproduce  two key figures reported in {cite:t}`Morris1996`
+Within this setting, we can reproduce two key figures reported in {cite:t}`Morris1996`
 
 ```{code-cell} ipython3
 def normalized_price_two_agents(prior1, prior2, r, T=250):
@@ -462,7 +462,7 @@ print("Initial normalized premium at r=0.05 (%):",
       np.round(100 * (p0 / mu0 - 1.0), 2))
 ```
 
-In the second figure, notice that :
+In the second figure, notice that:
 
 - Along the symmetric path $s = t/2$, both traders’ fundamentals equal $0.5$ at every $t$, yet the price starts above $0.5$ and declines toward $0.5$ as learning reduces disagreement and the resale option loses value. 
 
@@ -515,7 +515,7 @@ for i, (mu, perp) in enumerate(zip(mu_vals, perp_vals), 1):
     print(f"  Trader {i} = {np.round(perp, 6)}")
 ```
 
-Note  that the asset price is above all traders' valuations.
+Note that the asset price is above all traders' valuations.
 
 Morris tells us that no rate dominance exists in this case.
 
