@@ -31,35 +31,35 @@ kernelspec:
 
 ## Overview
 
-This lecture describes how {cite:t}`Morris1996` extends the Harrison–Kreps model {cite}`HarrKreps1978` of speculative asset pricing.
+This lecture describes how {cite:t}`Morris1996` extended the Harrison–Kreps model {cite}`HarrKreps1978` of speculative asset pricing.
 
-The model determines the price of a dividend-yielding asset that is traded by risk-neutral investors who have heterogeneous beliefs.
+Like Harrison and Kreps's model, Harris's model determines the price of a dividend-yielding asset that is traded by risk-neutral investors who have heterogeneous beliefs.
 
 The Harrison-Kreps model assumes that the traders have dogmatic, hard-wired beliefs about the asset's payout stream, i.e., its dividend stream or "fundamentals".
 
-Morris replaced dogmatic beliefs about the dividend stream with non-dogmatic traders who use Bayes' Law to update their beliefs about prospective dividends as new dividend data arrive.
+Morris replaced Harrison and Kreps's traders with  hard-wired beliefs about the dividend stream with traders who use Bayes' Law to update their beliefs about prospective dividends as new dividend data arrive.
 
 ```{note}
-But notice below that the traders don't use data on past prices of the asset to update their beliefs about the 
+But Morris's traders don't use data on past prices of the asset to update their beliefs about the 
 dividend process.
 ```
 
 Key features of Morris's model include:
 
-* All traders share the same manifold of statistical models for prospective dividends
-* All observe the same dividend histories
-* All use Bayes' Law to update beliefs
-* Traders have different initial *prior distributions* over a parameter that indexes the common statistical model
-
-By endowing agents with different prior distributions over that parameter, Morris builds his model of heterogeneous beliefs.
+* All traders share a manifold of statistical models for prospective dividends
+* The manifold of statistical models is characterized by a single parameter
+* All traders observe the same dividend histories
+* All traders use Bayes' Law to update beliefs
+* Traders have different initial *prior distributions* over the parameter that indexes the common statistical model
+* Until traders'  *posterior distributions* over that parameter eventually merge, traders disagree about the  predictive density over prospective dividends and therefore about the expected present value of dividend streams, which  trader regards as the  *fundamental value* of the asset
 
 ```{note}
-Morris has thereby set things up so that we anticipate that after long enough histories, traders eventually agree about the tail of the asset's dividend stream.
+Morris has thereby set things up so that after long enough histories, traders eventually agree about the tail of the asset's dividend stream.
 ```
 
-Along identical histories of dividends, traders have different *posterior distributions* for prospective dividends.
+Thus, although traders have identical *information*, i.e., histories of information, they  have different *posterior distributions* for prospective dividends.
 
-Those differences set the stage for possible speculation and price bubbles.
+Just as in the hard-wired beliefs model of Harrison and Kreps, those differences set the stage for the emergence of an environment in which investors  engange in *speculative behavior* in the sense that sometimes  they place a  value on the asset that exceeds what they regard as its fundamental value, i.e., the present value of its prospective dividend stream. 
 
 Let's start with some standard imports:
 
@@ -99,7 +99,12 @@ All traders have the same discount factor $\beta \in (0,1)$.
 
 * You can think of $\beta$ as being related to a net risk-free interest rate $r$ by $\beta = 1/(1+r)$.
 
-### Trading and constraints
+Owning the asset at the end of period $t$ entitles the owner to divdends at time $t+1, t+2, \ldots$.  
+
+Because the dividend process is i.i.d.,  trader $i$ thinks that  the fundamental value of the asset is the capitalized value of the dividend stream, namely,  $\sum_{j=1}^\infty \beta^j \hat \theta_i 
+= \frac{\hat \theta_i}{r}$, where $\hat \theta_i$ is the mean of the  trader's posterior distribution over $\theta$.
+
+### Possible trades
 
 Traders buy and sell the risky asset in competitive markets each period $t = 0, 1, 2, \ldots$ after dividends are paid.
 
@@ -122,13 +127,64 @@ All traders have sufficient wealth to purchase the risky asset.
 
 All traders observe the same dividend history $(d_1, d_2, \ldots, d_t)$.
 
-Based on that information flow, all update beliefs by Bayes' rule.
+Based on that information flow, all traders their subjective distribution over $\theta$ by applying Bayes' rule.
 
 However, traders have *heterogeneous priors* over the unknown dividend probability $\theta$.
 
-This heterogeneity in priors, combined with the same observed data, produces heterogeneous posterior beliefs.
+This heterogeneity in priors produces heterogeneous posterior beliefs.
 
-### Beta prior specification
+## Source of heterogeneous priors
+
+Imputing different statistical models to agents inside a model is controversial.
+
+Many  game theorists and rational expectations applied economists think it is a bad idea.
+
+While they often construct models in which agents have different *information*, they prefer to assume that all agents inside the model
+share the same statistical model -- i.e., the same joint probability distribution over the random processes being modeled.  
+
+For a statistician or an economic theorist, a statistical model is joint probability distribution that is characeterized  by a known parameter vector.
+
+When working with  a *manifold* of statistical models swept out  by  parameters, say $\theta$ in a known set $\Theta$, economic theorists 
+reduce that manifold of models to a single model by imputing to all agents inside the model the same prior probability distribution over $\theta$.
+
+This is called the *Harsanyi Doctrine* or *Common Priors Doctrine*.
+
+
+
+{cite}`harsanyi1967games`,  {cite}`harsanyi1968games`,  {cite}`harsanyi1968games3` argued that if two rational agents have
+the same information and the same reasoning capabilities, they should have same joint probability distribution over outcomes of interest. 
+He wanted to interpret disagreements as coming from different  information sets,  not from different statistical models. 
+
+
+
+
+
+Notice how {cite}`HarrKreps1978` had also abandoned Harsanyi common statistical model assumption when they  hard-wired dogmatic disparate beliefs.
+
+{cite:t}`Morris1996` evidently abandons the Harsanyi approach only partly -- he retains the assumption that agents share the same 
+manifold of statistical model.  
+
+Morris's agents simply express their initial ignorance parameter differently -- they have different priors. 
+
+
+Morris defends his assumption by alluding to an application that concerns him, namely, the observations about apparent ''mispricing'' of initial public offerings presented by {cite}`miller1977risk`.
+
+This is a situation in which agents have access to  little or no data about a project and want to be open to changing their opinions as data flow in.
+
+Morris motivates his diverse-priors assumption by noting that there are two *different* ways to express ''maximal ignorance'' about the parameter of a Bernoulli distribution
+
+ * a uniform distribution on $[0, 1]$
+ * a Jeffrey's prior {cite}`jeffreys1946invariant` that is invariant to reparameterization; this has the form of a Beta distribution with parameters 
+   $.5, .5$
+
+Is one of these priors more rational than the other?
+
+Morris thinks not. 
+
+
+
+
+## Beta priors 
 
 For tractability, assume trader $i$ has a Beta prior over the dividend probability 
 
@@ -139,7 +195,7 @@ $$
 where $a_i, b_i > 0$ are the prior parameters.
 
 ```{note}
-The definition of the Beta distribution can be found in this quantecon lecture {doc}`divergence_measures`.
+The  Beta distribution also appears in these  quantecon lectures {doc}`divergence_measures`,  {doc}`likelihood_ratio_process`,  {doc}`odu`.
 ```
 
 Suppose trader $i$ observes a history of $t$ periods in which a total of $s$ dividends are paid 
@@ -154,9 +210,7 @@ $$
 where $\pi_i(\theta)$ is trader $i$'s prior density.
 
 ```{note}
-The Beta distribution is the conjugate prior for the Binomial likelihood. 
-
-When the prior is $\text{Beta}(a_i, b_i)$ and we observe $s$ successes in $t$ trials, the posterior is $\text{Beta}(a_i+s, b_i+t-s)$.
+The Beta distribution is the conjugate prior for the Binomial likelihood. This means that when the prior is $\text{Beta}(a_i, b_i)$ and we observe $s$ successes in $t$ trials, the posterior is $\text{Beta}(a_i+s, b_i+t-s)$.
 ```
 
 The posterior mean (or expected dividend probability) is:
@@ -183,7 +237,7 @@ An owner of the asset has the option to sell it after receiving that period's di
 
 Traders take that into account.
 
-That opens the possibility that at time $t$ a trader will be willing to pay more for the asset than the trader's fundamental valuation.
+That opens the possibility that  a trader will be willing to pay more for the asset than that trader's fundamental valuation.
 
 ```{prf:definition} Most Optimistic Valuation
 :label: most_optimistic_valuation
@@ -236,7 +290,7 @@ p(s,t,r) = \mu^*(s,t) + \frac{r}{1+r}
 \Bigl[ \mu^*(s,t) p(s+1,t+1,r) + (1 - \mu^*(s,t)) p(s,t+1,r) - \mu^*(s,t) \Bigr]
 $$
 
-Following Harrison and Kreps, a price function that satisfies the equilibrium condition can be computed recursively.
+A price function that satisfies the equilibrium condition can be computed recursively.
 
 Set $p^0(s,t,r) = 0$ for all $(s,t,r)$, and define $p^{n+1}(s,t,r)$ by:
 
@@ -268,7 +322,7 @@ $$
 
 ## Two Traders
 
-We now focus on an example with two traders with priors $(a_1,b_1)$ and $(a_2,b_2)$.
+We now focus on an example with two traders with Beta  priors with parameters $(a_1,b_1)$ and $(a_2,b_2)$.
 
 ```{prf:definition} Rate Dominance (Beta Priors)
 :label: rate_dominance_beta
@@ -302,6 +356,11 @@ Thus, along such a history, there is a persistent speculative premium.
 ### Implementation
 
 For computational tractability, let's work with a finite horizon $T$ and solve by backward induction.
+
+```{note}
+{cite:t}`Morris1996` page 1122 provides an argument that the limit as $T\rightarrow + \infty$ of such finite-horizon economies provides a useful
+selection algorithm that excludes additional equilibria that involve a Ponzi-scheme price component that Morris dismisses as fragile. 
+```
 
 We use the discount factor parameterization $\beta = 1/(1+r)$ and compute dollar prices $\tilde{p}(s,t)$ via:
 
@@ -538,6 +597,12 @@ else:
 ```
 
 Indeed, there is no global optimist and a speculative premium exists.
+
+## Concluding remarks
+
+{cite:t}`Morris1996` uses his model to interpret a ''hot issue'' anomaly described by {cite}`miller1977risk` according to which opening market prices of initial public offerings seem higher than values  prices that emerge later.  
+
+
 
 ## Exercise
 
