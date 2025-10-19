@@ -33,7 +33,7 @@ kernelspec:
 
 This lecture describes how {cite:t}`Morris1996` extended the Harrison–Kreps model {cite}`HarrKreps1978` of speculative asset pricing.
 
-Like Harrison and Kreps's model, Harris's model determines the price of a dividend-yielding asset that is traded by risk-neutral investors who have heterogeneous beliefs.
+Like Harrison and Kreps's model, Morris's model determines the price of a dividend-yielding asset that is traded by risk-neutral investors who have heterogeneous beliefs.
 
 The Harrison-Kreps model assumes that the traders have dogmatic, hard-wired beliefs about the asset's payout stream, i.e., its dividend stream or "fundamentals".
 
@@ -59,7 +59,7 @@ Morris has thereby set things up so that after long enough histories, traders ev
 
 Thus, although traders have identical *information*, i.e., histories of information, they  have different *posterior distributions* for prospective dividends.
 
-Just as in the hard-wired beliefs model of Harrison and Kreps, those differences set the stage for the emergence of an environment in which investors  engange in *speculative behavior* in the sense that sometimes  they place a  value on the asset that exceeds what they regard as its fundamental value, i.e., the present value of its prospective dividend stream. 
+Just as in the hard-wired beliefs model of Harrison and Kreps, those differences set the stage for the emergence of an environment in which investors  engage in *speculative behavior* in the sense that sometimes  they place a  value on the asset that exceeds what they regard as its fundamental value, i.e., the present value of its prospective dividend stream. 
 
 Let's start with some standard imports:
 
@@ -99,7 +99,7 @@ All traders have the same discount factor $\beta \in (0,1)$.
 
 * You can think of $\beta$ as being related to a net risk-free interest rate $r$ by $\beta = 1/(1+r)$.
 
-Owning the asset at the end of period $t$ entitles the owner to divdends at time $t+1, t+2, \ldots$.  
+Owning the asset at the end of period $t$ entitles the owner to dividends at time $t+1, t+2, \ldots$.  
 
 Because the dividend process is i.i.d.,  trader $i$ thinks that  the fundamental value of the asset is the capitalized value of the dividend stream, namely,  $\sum_{j=1}^\infty \beta^j \hat \theta_i 
 = \frac{\hat \theta_i}{r}$, where $\hat \theta_i$ is the mean of the  trader's posterior distribution over $\theta$.
@@ -127,7 +127,7 @@ All traders have sufficient wealth to purchase the risky asset.
 
 All traders observe the same dividend history $(d_1, d_2, \ldots, d_t)$.
 
-Based on that information flow, all traders their subjective distribution over $\theta$ by applying Bayes' rule.
+Based on that information flow, all traders update their subjective distribution over $\theta$ by applying Bayes' rule.
 
 However, traders have *heterogeneous priors* over the unknown dividend probability $\theta$.
 
@@ -142,7 +142,7 @@ Many  game theorists and rational expectations applied economists think it is a 
 While they often construct models in which agents have different *information*, they prefer to assume that all agents inside the model
 share the same statistical model -- i.e., the same joint probability distribution over the random processes being modeled.  
 
-For a statistician or an economic theorist, a statistical model is joint probability distribution that is characeterized  by a known parameter vector.
+For a statistician or an economic theorist, a statistical model is joint probability distribution that is characterized  by a known parameter vector.
 
 When working with  a *manifold* of statistical models swept out  by  parameters, say $\theta$ in a known set $\Theta$, economic theorists 
 reduce that manifold of models to a single model by imputing to all agents inside the model the same prior probability distribution over $\theta$.
