@@ -35,31 +35,36 @@ This lecture describes how {cite:t}`Morris1996` extended the Harrison–Kreps mo
 
 Like Harrison and Kreps's model, Morris's model determines the price of a dividend-yielding asset that is traded by risk-neutral investors who have heterogeneous beliefs.
 
-The Harrison-Kreps model assumes that the traders have dogmatic, hard-wired beliefs about the asset's payout stream, i.e., its dividend stream or "fundamentals".
+The Harrison-Kreps model assumes that the traders have dogmatic, hard-wired beliefs about the asset's dividend stream.
 
 Morris replaced Harrison and Kreps's traders with  hard-wired beliefs about the dividend stream with traders who use Bayes' Law to update their beliefs about prospective dividends as new dividend data arrive.
 
 ```{note}
-But Morris's traders don't use data on past prices of the asset to update their beliefs about the 
+Morris's traders don't use data on past prices of the asset to update their beliefs about the 
 dividend process.
 ```
 
-Key features of Morris's model include:
+Key features of the environment in Morris's model include:
 
 * All traders share a manifold of statistical models for prospective dividends
-* The manifold of statistical models is characterized by a single parameter
-* All traders observe the same dividend histories
+* A single parameter indexes the manifold of statistical models 
+* All traders observe the same dividend history
 * All traders use Bayes' Law to update beliefs
-* Traders have different initial *prior distributions* over the parameter that indexes the common statistical model
-* Until traders'  *posterior distributions* over that parameter eventually merge, traders disagree about the  predictive density over prospective dividends and therefore about the expected present value of dividend streams, which  trader regards as the  *fundamental value* of the asset
+* Traders have different initial *prior distributions* over the parameter
+* Traders'  *posterior distributions* over the parameter eventually merge
+* Before their posterior distributions merge,  traders disagree about the  predictive density over prospective dividends 
+    * therefore they disagree  about the value of the asset
 
-```{note}
-Morris has thereby set things up so that after long enough histories, traders eventually agree about the tail of the asset's dividend stream.
-```
+Just as in the hard-wired beliefs model of Harrison and Kreps, those differences of opinion induce  investors to  engage in *speculative behavior* in the following sense:
 
-Thus, although traders have identical *information*, i.e., histories of information, they  have different *posterior distributions* for prospective dividends.
+ * sometimes   they  value on the asset more than  what they regard as its fundamental value, i.e., the present value of its prospective dividend stream 
 
-Just as in the hard-wired beliefs model of Harrison and Kreps, those differences set the stage for the emergence of an environment in which investors  engage in *speculative behavior* in the sense that sometimes  they place a  value on the asset that exceeds what they regard as its fundamental value, i.e., the present value of its prospective dividend stream. 
+
+Prior to reading this lecture, you might want to review the following quantecon lectures:
+
+* {doc}`Harrison-Kreps model <harrison_kreps>`
+* {doc}`Likelihood ratio processes <likelihood_ratio_process>`
+* {doc}`Bayesian versus frequentist statistics <likelihood_bayes>`
 
 Let's start with some standard imports:
 
@@ -68,11 +73,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 ```
 
-Prior to reading this lecture, you might want to review the following quantecon lectures:
-
-* {doc}`Harrison-Kreps model <harrison_kreps>`
-* {doc}`Likelihood ratio processes <likelihood_ratio_process>`
-* {doc}`Bayesian versus frequentist statistics <likelihood_bayes>`
 
 
 ## Structure of the model
@@ -119,17 +119,17 @@ As in Harrison-Kreps:
 This matters because it limits how pessimists can express their opinions:
 
 * They *can* express themselves by selling their shares
-* They *cannot* express themselves more loudly by borrowing shares and selling them
+* They *cannot* express themselves more emphatically by borrowing shares and immediately selling them
 
 All traders have sufficient wealth to purchase the risky asset.
 
 ## Information and beliefs
 
-All traders observe the same dividend history $(d_1, d_2, \ldots, d_t)$.
+At time $t \geq 1$, all traders observe  $(d_1, d_2, \ldots, d_t)$.
 
-Based on that information flow, all traders update their subjective distribution over $\theta$ by applying Bayes' rule.
+All traders update their subjective distribution over $\theta$ by applying Bayes' rule.
 
-However, traders have *heterogeneous priors* over the unknown dividend probability $\theta$.
+Traders have *heterogeneous priors* over the unknown dividend probability $\theta$.
 
 This heterogeneity in priors produces heterogeneous posterior beliefs.
 
@@ -139,39 +139,42 @@ Imputing different statistical models to agents inside a model is controversial.
 
 Many  game theorists and rational expectations applied economists think it is a bad idea.
 
-While they often construct models in which agents have different *information*, they prefer to assume that all agents inside the model
-share the same statistical model -- i.e., the same joint probability distribution over the random processes being modeled.  
+While these economists often construct models in which agents have different *information*, they prefer to assume that all of the agents inside their model always share the same statistical model -- i.e., the same joint probability distribution over the random processes being modeled.  
 
 For a statistician or an economic theorist, a statistical model is joint probability distribution that is characterized  by a known parameter vector.
 
 When working with  a *manifold* of statistical models swept out  by  parameters, say $\theta$ in a known set $\Theta$, economic theorists 
-reduce that manifold of models to a single model by imputing to all agents inside the model the same prior probability distribution over $\theta$.
+reduce the manifold of models to a single model by imputing to all agents inside the model the same prior probability distribution over $\theta$.
 
-This is called the *Harsanyi Doctrine* or *Common Priors Doctrine*.
+Proceeding in this way amounts to adhering to what is  called the *Harsanyi Doctrine* or *Common Priors Doctrine*.
 
 
 
 {cite}`harsanyi1967games`,  {cite}`harsanyi1968games`,  {cite}`harsanyi1968games3` argued that if two rational agents have
-the same information and the same reasoning capabilities, they should have same joint probability distribution over outcomes of interest. 
-He wanted to interpret disagreements as coming from different  information sets,  not from different statistical models. 
+the same information and the same reasoning capabilities, they should have same joint probability distribution over outcomes of interest.
+
+Harsanyi interpreted disagreements as arising from different  information sets,  not from different statistical models. 
 
 
+Notice how {cite}`HarrKreps1978` departed from the  Harsanyi common statistical model assumption when they  hard-wired dogmatic disparate beliefs.
 
+{cite:t}`Morris1996` evidently abandons the Harsanyi doctrine more blightly than Harrison and Kreps had. 
 
-
-Notice how {cite}`HarrKreps1978` had also abandoned Harsanyi common statistical model assumption when they  hard-wired dogmatic disparate beliefs.
-
-{cite:t}`Morris1996` evidently abandons the Harsanyi approach only partly -- he retains the assumption that agents share the same 
-manifold of statistical model.  
+  * he does assume that agents share the same manifold of statistical models, but $\ldots$
+  * he assumes that they have different intial prior distributions over the parameter that indexed the manifold of statistical models  
 
 Morris's agents simply express their initial ignorance parameter differently -- they have different priors. 
 
 
-Morris defends his assumption by alluding to an application that concerns him, namely, the observations about apparent ''mispricing'' of initial public offerings presented by {cite}`miller1977risk`.
+Morris defends his assumption by alluding to an application that concerns him, namely,  apparent ''mispricing'' of initial public offerings presented by {cite}`miller1977risk`.
 
-This is a situation in which agents have access to  little or no data about a project and want to be open to changing their opinions as data flow in.
+Miller described  a situation in which agents have access to  little or no data about a project.
 
-Morris motivates his diverse-priors assumption by noting that there are two *different* ways to express ''maximal ignorance'' about the parameter of a Bernoulli distribution
+Morris wanted his traders to be open to changing their opinions as information about the parameter  arrives.
+
+Morris noted that knowledgeable statisticians have been known to disagree about an appropriate prior.
+
+For example, he noted  that there are two *different* ways to express ''maximal ignorance'' about the parameter of a Bernoulli distribution
 
  * a uniform distribution on $[0, 1]$
  * a Jeffrey's prior {cite}`jeffreys1946invariant` that is invariant to reparameterization; this has the form of a Beta distribution with parameters 
@@ -358,7 +361,7 @@ Thus, along such a history, there is a persistent speculative premium.
 For computational tractability, let's work with a finite horizon $T$ and solve by backward induction.
 
 ```{note}
-{cite:t}`Morris1996` page 1122 provides an argument that the limit as $T\rightarrow + \infty$ of such finite-horizon economies provides a useful
+On page 1122, {cite:t}`Morris1996`  provides an argument that the limit as $T\rightarrow + \infty$ of such finite-horizon economies provides a useful
 selection algorithm that excludes additional equilibria that involve a Ponzi-scheme price component that Morris dismisses as fragile. 
 ```
 
