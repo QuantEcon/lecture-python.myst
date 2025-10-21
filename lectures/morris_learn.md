@@ -365,7 +365,7 @@ On page 1122, {cite:t}`Morris1996`  provides an argument that the limit as $T\ri
 selection algorithm that excludes additional equilibria that involve a Ponzi-scheme price component that Morris dismisses as fragile. 
 ```
 
-We use the discount factor parameterization $\beta = 1/(1+r)$ and compute dollar prices $\tilde{p}(s,t)$ via:
+Following {prf:ref}`equilibrium_asset_price`, we use the discount factor parameterization $\beta = 1/(1+r)$ and compute dollar prices $\tilde{p}(s,t)$ via:
 
 $$
 \tilde{p}(s,t) = \beta \max_{i\in\{1,2\}} \Bigl[ \mu_i(s,t) \{1 + \tilde{p}(s+1,t+1)\} + (1-\mu_i(s,t)) \tilde{p}(s,t+1) \Bigr]
@@ -471,7 +471,7 @@ Within this setting, we can reproduce two key figures reported in {cite:t}`Morri
 
 ```{code-cell} ipython3
 def normalized_price_two_agents(prior1, prior2, r, T=250):
-    """Return p(s,t,r) = r · \tilde p(s,t,r) for two traders."""
+    """Return p(s,t,r) = r \tilde p(s,t,r) for two traders."""
     β = 1.0 / (1.0 + r)
     price_array, *_ = price_learning_two_agents(prior1, prior2, β=β, T=T)
     return r * price_array
@@ -483,12 +483,12 @@ p00 = np.array([normalized_price_two_agents(
                 priors[0], priors[1], r, T=300)[0,0]
                 for r in r_grid])
 
-plt.figure(figsize=(6,4))
-plt.plot(r_grid, p00)
-plt.xlabel('r')
-plt.ylabel(r'$p^*(0,0,r)$')
-plt.axhline(0.5, color='C1', linestyle='--')
-plt.title('Figure I: normalized price vs interest rate')
+fig, ax = plt.subplots()
+ax.plot(r_grid, p00)
+ax.set_xlabel(r'$r$')
+ax.set_ylabel(r'$p^*(0,0,r)$')
+ax.axhline(0.5, color='C1', linestyle='--')
+ax.set_title('Figure I: normalized price vs interest rate')
 plt.show()
 ```
 
@@ -510,18 +510,18 @@ t_vals = np.arange(0, 54, 2)
 s_vals = t_vals // 2
 y = np.array([p_mat[s, t] for s, t in zip(s_vals, t_vals)])
 
-plt.figure(figsize=(6,4))
-plt.plot(t_vals, y)
-plt.xlabel('t')
-plt.ylabel(r'$p^*(t/2,t,0.05)$')
-plt.axhline(0.5, color='C1', linestyle='--')
-plt.title('Figure II: normalized price vs time (r=0.05)')
+fig, ax = plt.subplots()
+ax.plot(t_vals, y)
+ax.set_xlabel(r'$t$')
+ax.set_ylabel(r'$p^*(t/2,t,0.05)$')
+ax.axhline(0.5, color='C1', linestyle='--')
+ax.set_title('Figure II: normalized price vs time (r=0.05)')
 plt.show()
 
 p0 = p_mat[0,0]
-mu0 = 0.5  
+μ0 = 0.5  
 print("Initial normalized premium at r=0.05 (%):",
-      np.round(100 * (p0 / mu0 - 1.0), 2))
+      np.round(100 * (p0 / μ0 - 1.0), 2))
 ```
 
 In the second figure, notice that:
@@ -534,7 +534,7 @@ In the second figure, notice that:
 The same recursion extends to any finite set of Beta priors $\{(a_i,b_i)\}_{i=1}^N$ by taking a max over $i$ each period.
 
 ```{code-cell} ipython3
-def price_learning(priors, β=.75, T=200):
+def price_learning(priors, β=0.75, T=200):
     """
     N-trader version with heterogeneous Beta priors.
     """
@@ -562,18 +562,18 @@ def price_learning(priors, β=.75, T=200):
 
     return price_array
 
-β = .75
+β = 0.75
 priors = [(1,1), (0.5,0.5), (3,2)]
 price_N = price_learning(priors, β=β, T=150)
 
 # Compute valuations for each trader at (0,0)
-mu_vals = [posterior_mean(a, b, 0, 0) for a, b in priors]
-perp_vals = [(β / (1 - β)) * mu for mu in mu_vals]
+μ_vals = [posterior_mean(a, b, 0, 0) for a, b in priors]
+perp_vals = [(β / (1 - β)) * μ for μ in μ_vals]
 
 print("Three-trader example at (s,t)=(0,0):")
 print(f"Price at (0,0) = {np.round(price_N[0,0], 6)}")
 print(f"\nTrader valuations:")
-for i, (mu, perp) in enumerate(zip(mu_vals, perp_vals), 1):
+for i, (μ, perp) in enumerate(zip(μ_vals, perp_vals), 1):
     print(f"  Trader {i} = {np.round(perp, 6)}")
 ```
 
