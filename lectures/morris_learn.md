@@ -46,8 +46,8 @@ dividend process.
 
 Key features of the environment in Morris's model include:
 
-* All traders share a [manifold](https://en.wikipedia.org/wiki/Manifold) of statistical models for prospective dividends
-* A single parameter indexes the manifold of statistical models 
+* All traders share a set  of statistical models for prospective dividends
+* A single parameter indexes the set of statistical models 
 * All traders observe the same dividend history
 * All traders use Bayes' Law to update beliefs
 * Traders have different initial *prior distributions* over the parameter
@@ -57,7 +57,7 @@ Key features of the environment in Morris's model include:
 
 Just as in the hard-wired beliefs model of Harrison and Kreps, those differences of opinion induce  investors to  engage in *speculative behavior* in the following sense:
 
- * sometimes   they  value on the asset more than  what they regard as its fundamental value, i.e., the present value of its prospective dividend stream 
+ * sometimes   they are willing to pay more for the asset what they think is its ''fundamental'' value, i.e., the expected discounted value of its prospective dividend stream 
 
 
 Prior to reading this lecture, you might want to review the following quantecon lectures:
@@ -139,48 +139,52 @@ Imputing different statistical models to agents inside a model is controversial.
 
 Many  game theorists and rational expectations applied economists think it is a bad idea.
 
-While these economists often construct models in which agents have different *information*, they prefer to assume that all of the agents inside their model always share the same statistical model -- i.e., the same joint probability distribution over the random processes being modeled.  
+While these economists often construct models in which agents have different *information*, they prefer to assume that all of the agents inside their model always share the same statistical model -- i.e., the same joint probability distribution over the random process being modeled.  
 
-For a statistician or an economic theorist, a statistical model is joint probability distribution that is characterized  by a known parameter vector.
+For a statistician or an economic theorist, a statistical model is a joint probability distribution that is characterized  by a known parameter vector.
 
-When working with  a *manifold* of statistical models swept out  by  parameters, say $\theta$ in a known set $\Theta$, economic theorists 
-reduce the manifold of models to a single model by imputing to all agents inside the model the same prior probability distribution over $\theta$.
+When working with  a *set* of statistical models swept out  by  parameters, say $\theta$ in a known set $\Theta$, economic theorists 
+reduce the set of models to a single model by imputing to all agents inside the model the same prior probability distribution over $\theta$.
 
-Proceeding in this way amounts to adhering to what is  called the *Harsanyi Doctrine* or *Common Priors Doctrine*.
+
+```{note}
+A set of statistical models that has a particular geometric structure is called a [manifold](https://en.wikipedia.org/wiki/Manifold)  of statistical models. Morris endows traders with a shared  manifold of statistical models.
+```
+
+Proceeding in this way adheres to  the *Harsanyi Common Priors Doctrine*.
 
 
 
 {cite}`harsanyi1967games`,  {cite}`harsanyi1968games`,  {cite}`harsanyi1968games3` argued that if two rational agents have
-the same information and the same reasoning capabilities, they should have same joint probability distribution over outcomes of interest.
+the same information and the same reasoning capabilities, they will have the same joint probability distribution over outcomes of interest.
 
-Harsanyi interpreted disagreements as arising from different  information sets,  not from different statistical models. 
-
-
-Notice how {cite}`HarrKreps1978` departed from the  Harsanyi common statistical model assumption when they  hard-wired dogmatic disparate beliefs.
-
-{cite:t}`Morris1996` evidently abandons the Harsanyi doctrine more blightly than Harrison and Kreps had. 
-
-  * he does assume that agents share the same manifold of statistical models, but $\ldots$
-  * he assumes that they have different intial prior distributions over the parameter that indexed the manifold of statistical models  
-
-Morris's agents simply express their initial ignorance parameter differently -- they have different priors. 
+Harsanyi interpreted disagreements about prospective outcomes  as arising from differences in agents'  information sets,  not  differences in their  statistical models. 
 
 
-Morris defends his assumption by alluding to an application that concerns him, namely,  apparent ''mispricing'' of initial public offerings presented by {cite}`miller1977risk`.
+Evidently,  {cite}`HarrKreps1978` departed from the  Harsanyi common statistical model assumption when they  hard-wired dogmatic disparate beliefs.
 
-Miller described  a situation in which agents have access to  little or no data about a project.
+{cite:t}`Morris1996`  abandons the Harsanyi doctrine less completely  than Harrison and Kreps had. 
+
+  * Morris does assume that agents share the same set of statistical models, but $\ldots$
+  * Morris assumes that they have different initial prior distributions over the parameter that indexes the  models  
+
+Morris's agents  express their initial ignorance about the parameter differently -- they have different priors. 
+
+
+Morris defends his assumption by alluding to the apparent ''mispricing'' of initial public offerings presented by {cite}`miller1977risk`.
+
+Miller described  a situation in which agents have access to  little or no data about a new enterprise.
 
 Morris wanted his traders to be open to changing their opinions as information about the parameter  arrives.
 
-Morris noted that knowledgeable statisticians have been known to disagree about an appropriate prior.
+Knowledgeable statisticians have been known to disagree about an appropriate prior.
 
-For example, he noted  that there are two *different* ways to express ''maximal ignorance'' about the parameter of a Bernoulli distribution
+For example, Morris described   *different* respectable ways to express ''maximal ignorance'' about the parameter of a Bernoulli distribution
 
  * a uniform distribution on $[0, 1]$
- * a Jeffrey's prior {cite}`jeffreys1946invariant` that is invariant to reparameterization; this has the form of a Beta distribution with parameters 
-   $.5, .5$
+ * a Jeffreys prior {cite}`jeffreys1946invariant` that is invariant to reparameterization; in the present situation, the Jeffreys prior takes the form of a Beta distribution with parameters  $.5, .5$
 
-Is one of these priors more rational than the other?
+Is one of these priors more ''rational'' than the other?
 
 Morris thinks not. 
 
@@ -526,7 +530,7 @@ print("Initial normalized premium at r=0.05 (%):",
 
 In the second figure, notice that:
 
-- Along the symmetric path $s = t/2$, both traders’ fundamentals equal $0.5$ at every $t$, yet the price starts above $0.5$ and declines toward $0.5$ as learning reduces disagreement and the resale option loses value. 
+- Along the symmetric path $s = t/2$, both traders’ fundamental valuations equal $0.5$ at every $t$, yet the price starts above $0.5$ and declines toward $0.5$ as learning reduces disagreement and the resale option loses value. 
 
 
 ### General N–trader extension
