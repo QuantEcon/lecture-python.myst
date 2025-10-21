@@ -424,13 +424,14 @@ def evaluate_largest(v_hat, array, order=1):
 
 We can check the accuracy of our `evaluate_largest` method by comparing it with an analytical solution.
 
-We find that despite small discrepancy, the evaluate_largest method functions well.
-
-Furthermore, if we take a very large number of auctions, say 1 million, the discrepancy disappears.
+We find that the evaluate_largest method functions well.
 
 ```{code-cell} ipython3
 v_grid = np.linspace(0.3,1,8)
 bid_analytical = b_star(v_grid,N)
+
+# Redraw valuations
+v = np.random.uniform(0, 1, (N, R))
 bid_simulated = [evaluate_largest(ii, v) for ii in v_grid]
 
 fig, ax = plt.subplots(figsize=(6, 4))
