@@ -46,7 +46,7 @@ dividend process.
 
 Key features of the environment in Morris's model include:
 
-* All traders share a manifold of statistical models for prospective dividends
+* All traders share a [manifold](https://en.wikipedia.org/wiki/Manifold) of statistical models for prospective dividends
 * A single parameter indexes the manifold of statistical models 
 * All traders observe the same dividend history
 * All traders use Bayes' Law to update beliefs
