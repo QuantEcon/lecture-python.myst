@@ -324,6 +324,13 @@ The next figure shows a simulation, where
 * $g_t = \exp(X_t)$, so that $\ln g_t = X_t$ is the growth rate.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      State, growth, and dividend simulation
+    name: fig_markov_sim
+---
 n = 7
 mc = qe.tauchen(n, 0.96, 0.25)
 sim_length = 80
@@ -414,6 +421,13 @@ As before, we'll generate $\{X_t\}$  as a {ref}`discretized AR1 process <fm_ex3>
 Here's the code, including a test of the spectral radius condition
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Price-dividend ratio risk-neutral case
+    name: fig_pdv_neutral
+---
 n = 25  # Size of state space
 β = 0.9
 mc = qe.tauchen(n, 0.96, 0.02)
@@ -633,6 +647,13 @@ Here's a plot of $v$ as a function of the state for several values of $\gamma$,
 with a positively correlated Markov process and $g(x) = \exp(x)$
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Lucas tree prices for varying risk aversion
+    name: fig_lucas_gamma
+---
 γs = [1.2, 1.4, 1.6, 1.8, 2.0]
 ap = create_ap_model()
 states = ap.mc.state_values
@@ -644,7 +665,6 @@ for γ in γs:
     v = tree_price(tem_ap)
     ax.plot(states, v, lw=2, alpha=0.6, label=rf"$\gamma = {γ}$")
 
-ax.set_title('Price-dividend ratio as a function of the state')
 ax.set_ylabel("price-dividend ratio")
 ax.set_xlabel("state")
 ax.legend(loc='upper right')
@@ -887,6 +907,13 @@ def call_option(ap, ζ, p_s, ϵ=1e-7):
 Here's a plot of $w$ compared to the consol price when $P_S = 40$
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Consol price and call option value
+    name: fig_consol_call
+---
 ap = create_ap_model(β=0.9)
 ζ = 1.0
 strike_price = 40
@@ -1055,6 +1082,13 @@ call_option(apm, ζ, p_s)
 Let's show the last two functions as a plot
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Consol and call option exercise two comparison
+    name: fig_ex2_prices
+---
 fig, ax = plt.subplots()
 ax.plot(s, consol_price(apm, ζ), label='consol')
 ax.plot(s, call_option(apm, ζ, p_s), label='call option')
@@ -1141,7 +1175,14 @@ def finite_horizon_call_option(ap, ζ, p_s, k):
 
 Now let's compute the option values at `k=5` and `k=25`
 
-```{code-cell} python3
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Finite horizon call option values
+    name: fig_ex3_finite
+---
 fig, ax = plt.subplots()
 for k in [5, 25]:
     w = finite_horizon_call_option(apm, ζ, p_s, k)
