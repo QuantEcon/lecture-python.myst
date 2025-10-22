@@ -35,6 +35,16 @@ kernelspec:
 "Asset pricing is all about covariances" -- Lars Peter Hansen
 ```
 
+```{admonition} GPU
+:class: warning
+
+This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming.
+
+Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
+
+Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax) for installing JAX with GPU support. If you would like to install JAX running on the `cpu` only you can use `pip install jax[cpu]`
+```
+
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython
@@ -976,10 +986,12 @@ $$
 
 Consider the following primitives
 
-```{code-cell} python3
+```{code-cell} ipython3
 n = 5  # Size of State Space
-P = np.full((n, n), 0.0125)
-P[range(n), range(n)] += 1 - P.sum(1)
+P = jnp.full((n, n), 0.0125)
+P = P.at[jnp.arange(n), jnp.arange(n)].set(
+    P[jnp.arange(n), jnp.arange(n)] + 1 - P.sum(1)
+    )
 # State values of the Markov chain
 s = np.array([0.95, 0.975, 1.0, 1.025, 1.05])
 γ = 2.0
@@ -1004,11 +1016,13 @@ Do the same for
 
 First, let's enter the parameters:
 
-```{code-cell} python3
+```{code-cell} ipython3
 n = 5
-P = np.full((n, n), 0.0125)
-P[range(n), range(n)] += 1 - P.sum(1)
-s = np.array([0.95, 0.975, 1.0, 1.025, 1.05])  # State values
+P = jnp.full((n, n), 0.0125)
+P = P.at[jnp.arange(n), jnp.arange(n)].set(
+    P[jnp.arange(n), jnp.arange(n)] + 1 - P.sum(1)
+    )
+s = jnp.array([0.95, 0.975, 1.0, 1.025, 1.05])  # State values
 mc = qe.MarkovChain(P, state_values=s)
 
 γ = 2.0
@@ -1020,27 +1034,27 @@ p_s = 150.0
 Next, we'll create an instance of `AssetPriceModel` to feed into the
 functions
 
-```{code-cell} python3
-apm = AssetPriceModel(β=β, mc=mc, γ=γ, g=lambda x: x)
+```{code-cell} ipython3
+apm = create_ap_model(mc=mc, g=lambda x: x, β=β, γ=γ)
 ```
 
 Now we just need to call the relevant functions on the data:
 
-```{code-cell} python3
+```{code-cell} ipython3
 tree_price(apm)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 consol_price(apm, ζ)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 call_option(apm, ζ, p_s)
 ```
 
 Let's show the last two functions as a plot
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(s, consol_price(apm, ζ), label='consol')
 ax.plot(s, call_option(apm, ζ, p_s), label='call option')
@@ -1101,7 +1115,7 @@ Is one higher than the other?  Can you give intuition?
 
 Here's a suitable function:
 
-```{code-cell} python3
+```{code-cell} ipython3
 def finite_horizon_call_option(ap, ζ, p_s, k):
     """
     Computes k period option value.
@@ -1111,15 +1125,16 @@ def finite_horizon_call_option(ap, ζ, p_s, k):
     M = P * ap.g(y)**(- γ)
 
     # Make sure that a unique solution exists
-    ap.test_stability(M)
-
+    test_stability(M, β)
 
     # Compute option price
     p = consol_price(ap, ζ)
-    w = np.zeros(ap.n)
-    for i in range(k):
+    def step(i, w):
         # Maximize across columns
-        w = np.maximum(β * M @ w, p - p_s)
+        w = jnp.maximum(β * M @ w, p - p_s)
+        return w
+    
+    w = jax.lax.fori_loop(0, k, step, jnp.zeros(ap.n))
 
     return w
 ```
