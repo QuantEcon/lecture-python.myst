@@ -309,7 +309,7 @@ as the expected surprisal</p>
 \[
 H(f) = \sum_i f_i \log\left(\frac{1}{f_i}\right).  
 \]</div>
-<p>Claude Shannon <span id="id1">[<a class="reference internal" href="zreferences.html#id4" title="Claude E Shannon. A mathematical theory of communication. The Bell system technical journal, 27(3):379–423, 1948.">Shannon, 1948</a>]</span> called <span class="math notranslate nohighlight">\(H(f)\)</span> the <strong>entropy</strong> of distribution <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>Claude Shannon <span id="id1">[<a class="reference internal" href="zreferences.html#id9" title="Claude E Shannon. A mathematical theory of communication. The Bell system technical journal, 27(3):379–423, 1948.">Shannon, 1948</a>]</span> called <span class="math notranslate nohighlight">\(H(f)\)</span> the <strong>entropy</strong> of distribution <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>By maximizing <span class="math notranslate nohighlight">\(H(f)\)</span> with respect to <span class="math notranslate nohighlight">\(\{f_1, f_2, \ldots, f_n\}\)</span> subject to <span class="math notranslate nohighlight">\(\sum_i f_i = 1\)</span>, we can verify that the distribution
@@ -319,20 +319,20 @@ f_i = \frac{1}{n} .
 \)</span>
 Entropy <span class="math notranslate nohighlight">\(H(f)\)</span> for the uniform distribution evidently equals <span class="math notranslate nohighlight">\(- \log(n)\)</span>.</p>
 </div>
-<p>Kullback and Leibler <span id="id2">[<a class="reference internal" href="zreferences.html#id5" title="Solomon Kullback and Richard A Leibler. On information and sufficiency. The Annals of Mathematical Statistics, 22(1):79–86, 1951.">Kullback and Leibler, 1951</a>]</span> define the amount of information that a single draw of <span class="math notranslate nohighlight">\(x\)</span> provides for distinguishing <span class="math notranslate nohighlight">\(f\)</span> from <span class="math notranslate nohighlight">\(g\)</span>  as the log likelihood ratio</p>
+<p>Kullback and Leibler <span id="id2">[<a class="reference internal" href="zreferences.html#id10" title="Solomon Kullback and Richard A Leibler. On information and sufficiency. The Annals of Mathematical Statistics, 22(1):79–86, 1951.">Kullback and Leibler, 1951</a>]</span> define the amount of information that a single draw of <span class="math notranslate nohighlight">\(x\)</span> provides for distinguishing <span class="math notranslate nohighlight">\(f\)</span> from <span class="math notranslate nohighlight">\(g\)</span>  as the log likelihood ratio</p>
 <div class="math notranslate nohighlight">
 \[
 \log \frac{f(x)}{g(x)}
 \]</div>
 <p>The following two  concepts are widely used to compare two distributions <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p><strong>Cross-Entropy:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-a03cc75e-dddd-482d-901e-cf014bbe1f5c">
-<span class="eqno">(21.1)<a class="headerlink" href="#equation-a03cc75e-dddd-482d-901e-cf014bbe1f5c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-71499c3c-0df3-4c5e-a9d1-3fc60f492ccf">
+<span class="eqno">(21.1)<a class="headerlink" href="#equation-71499c3c-0df3-4c5e-a9d1-3fc60f492ccf" title="Permalink to this equation">#</a></span>\[\begin{equation}
 H(f,g) = -\sum_{i} f_i \log g_i
 \end{equation}\]</div>
 <p><strong>Kullback-Leibler (KL) Divergence:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-50b4f6bc-704b-4479-91fc-8a3f8be0ee50">
-<span class="eqno">(21.2)<a class="headerlink" href="#equation-50b4f6bc-704b-4479-91fc-8a3f8be0ee50" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-462366f7-bb43-4627-b877-386d0a3e824e">
+<span class="eqno">(21.2)<a class="headerlink" href="#equation-462366f7-bb43-4627-b877-386d0a3e824e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 \end{equation}\]</div>
 <p>These concepts are related by the following equality.</p>
@@ -341,8 +341,8 @@ D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 D_{KL}(f \parallel g) = H(f,g) - H(f)
 \]</div>
 <p>To prove <a class="reference internal" href="#equation-eq-klcross">(21.3)</a>, note that</p>
-<div class="amsmath math notranslate nohighlight" id="equation-750fdde9-abfd-451c-8dca-963c06a21d5a">
-<span class="eqno">(21.4)<a class="headerlink" href="#equation-750fdde9-abfd-451c-8dca-963c06a21d5a" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-765ab1b8-4d39-40d1-a31c-5e7bb0ab20ba">
+<span class="eqno">(21.4)<a class="headerlink" href="#equation-765ab1b8-4d39-40d1-a31c-5e7bb0ab20ba" title="Permalink to this equation">#</a></span>\[\begin{align}
 D_{KL}(f \parallel g) &amp;= \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right] \\
 &amp;= \sum_{i} f_i \left[\log f_i - \log g_i\right] \\
 &amp;= \sum_{i} f_i \log f_i - \sum_{i} f_i \log g_i \\
@@ -1342,6 +1342,11 @@ Optimal ϕ = 0.5969
    78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="morris_learn.html">
+   79. Speculative Behavior with Bayesian Learning
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1351,17 +1356,17 @@ Optimal ϕ = 0.5969
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   79. Pandas for Panel Data
+   80. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   80. Linear Regression in Python
+   81. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   81. Maximum Likelihood Estimation
+   82. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1373,12 +1378,12 @@ Optimal ϕ = 0.5969
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   82. First-Price and Second-Price Auctions
+   83. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   83. Multiple Good Allocation Mechanisms
+   84. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1390,17 +1395,17 @@ Optimal ϕ = 0.5969
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   84. Troubleshooting
+   85. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   85. References
+   86. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   86. Execution Statistics
+   87. Execution Statistics
   </a>
  </li>
 </ul>

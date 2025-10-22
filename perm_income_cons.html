@@ -290,9 +290,7 @@ Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
 Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
 Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
+Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
 Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
@@ -306,14 +304,14 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <section id="overview">
 <h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">67.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture continues our analysis of the linear-quadratic (LQ) permanent income model of savings and consumption.</p>
-<p>As we saw in our <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a> on this topic, Robert Hall <span id="id1">[<a class="reference internal" href="zreferences.html#id173" title="Robert E Hall. Stochastic Implications of the Life Cycle-Permanent Income Hypothesis: Theory and Evidence. Journal of Political Economy, 86(6):971–987, 1978.">Hall, 1978</a>]</span> used the LQ permanent income model to restrict and interpret intertemporal comovements of nondurable consumption, nonfinancial income, and financial wealth.</p>
+<p>As we saw in our <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a> on this topic, Robert Hall <span id="id1">[<a class="reference internal" href="zreferences.html#id179" title="Robert E Hall. Stochastic Implications of the Life Cycle-Permanent Income Hypothesis: Theory and Evidence. Journal of Political Economy, 86(6):971–987, 1978.">Hall, 1978</a>]</span> used the LQ permanent income model to restrict and interpret intertemporal comovements of nondurable consumption, nonfinancial income, and financial wealth.</p>
 <p>For example, we saw how the model asserts that for any covariance stationary process for nonfinancial income</p>
 <ul class="simple">
 <li><p>consumption is a random walk</p></li>
 <li><p>financial wealth has a unit root and is cointegrated with consumption</p></li>
 </ul>
 <p>Other applications use the same LQ framework.</p>
-<p>For example, a model isomorphic to the LQ permanent income model has been used by Robert Barro <span id="id2">[<a class="reference internal" href="zreferences.html#id157" title="Robert J Barro. On the Determination of the Public Debt. Journal of Political Economy, 87(5):940–971, 1979.">Barro, 1979</a>]</span> to interpret intertemporal comovements of a government’s tax collections, its  expenditures net of debt service, and its public debt.</p>
+<p>For example, a model isomorphic to the LQ permanent income model has been used by Robert Barro <span id="id2">[<a class="reference internal" href="zreferences.html#id163" title="Robert J Barro. On the Determination of the Public Debt. Journal of Political Economy, 87(5):940–971, 1979.">Barro, 1979</a>]</span> to interpret intertemporal comovements of a government’s tax collections, its  expenditures net of debt service, and its public debt.</p>
 <p>This isomorphism means that in analyzing the LQ permanent income model, we are in effect also analyzing  the Barro tax smoothing model.</p>
 <p>It is just a matter of appropriately relabeling the variables in Hall’s model.</p>
 <p>In this lecture, we’ll</p>
@@ -323,7 +321,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <li><p>apply <a class="reference external" href="https://quantecon.org/quantecon-py">QuantEcon</a>’s <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class to characterize statistical features of the consumer’s optimal consumption and borrowing plans.</p></li>
 </ul>
 <p>We’ll then use these characterizations to construct a simple model of cross-section wealth and
-consumption dynamics in the spirit of Truman Bewley <span id="id3">[<a class="reference internal" href="zreferences.html#id121" title="Truman F Bewley. Stationary monetary equilibrium with a continuum of independently fluctuating consumers. In Werner Hildenbran and Andreu Mas-Colell, editors, Contributions to Mathematical Economics in Honor of Gerard Debreu, pages 27-102. North-Holland, Amsterdam, 1986.">Bewley, 1986</a>]</span>.</p>
+consumption dynamics in the spirit of Truman Bewley <span id="id3">[<a class="reference internal" href="zreferences.html#id126" title="Truman F Bewley. Stationary monetary equilibrium with a continuum of independently fluctuating consumers. In Werner Hildenbran and Andreu Mas-Colell, editors, Contributions to Mathematical Economics in Honor of Gerard Debreu, pages 27-102. North-Holland, Amsterdam, 1986.">Bewley, 1986</a>]</span>.</p>
 <p>(Later we’ll study other Bewley models—see <a class="reference internal" href="aiyagari.html"><span class="doc">this lecture</span></a>.)</p>
 <p>The model will prove useful for illustrating concepts such as</p>
 <ul class="simple">
@@ -373,7 +371,7 @@ subject to the sequence of budget constraints</p>
 <section id="digression-on-a-useful-isomorphism">
 <h3><span class="section-number">67.2.1. </span>Digression on a Useful Isomorphism<a class="headerlink" href="#digression-on-a-useful-isomorphism" title="Link to this heading">#</a></h3>
 <p>The LQ permanent income model of consumption is mathematically isomorphic with a version of
-Barro’s <span id="id4">[<a class="reference internal" href="zreferences.html#id157" title="Robert J Barro. On the Determination of the Public Debt. Journal of Political Economy, 87(5):940–971, 1979.">Barro, 1979</a>]</span> model of tax smoothing.</p>
+Barro’s <span id="id4">[<a class="reference internal" href="zreferences.html#id163" title="Robert J Barro. On the Determination of the Public Debt. Journal of Political Economy, 87(5):940–971, 1979.">Barro, 1979</a>]</span> model of tax smoothing.</p>
 <p>In the LQ permanent income model</p>
 <ul class="simple">
 <li><p>the household faces an exogenous process of nonfinancial income</p></li>
@@ -728,7 +726,7 @@ income problem we used a different solution method.</p>
 </section>
 <section id="two-example-economies">
 <h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">67.5. </span>Two Example Economies</a><a class="headerlink" href="#two-example-economies" title="Link to this heading">#</a></h2>
-<p>In the spirit of Bewley models <span id="id5">[<a class="reference internal" href="zreferences.html#id121" title="Truman F Bewley. Stationary monetary equilibrium with a continuum of independently fluctuating consumers. In Werner Hildenbran and Andreu Mas-Colell, editors, Contributions to Mathematical Economics in Honor of Gerard Debreu, pages 27-102. North-Holland, Amsterdam, 1986.">Bewley, 1986</a>]</span>, we’ll generate panels of consumers.</p>
+<p>In the spirit of Bewley models <span id="id5">[<a class="reference internal" href="zreferences.html#id126" title="Truman F Bewley. Stationary monetary equilibrium with a continuum of independently fluctuating consumers. In Werner Hildenbran and Andreu Mas-Colell, editors, Contributions to Mathematical Economics in Honor of Gerard Debreu, pages 27-102. North-Holland, Amsterdam, 1986.">Bewley, 1986</a>]</span>, we’ll generate panels of consumers.</p>
 <p>The examples differ only in  the initial states with which we endow the consumers.</p>
 <p>All other parameter values are kept the same in the two examples</p>
 <ul class="simple">
@@ -896,7 +894,7 @@ graph as the population distribution.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ee7d6256fac2fb91c6c2df9c9ddb8b2c373e3a56abb53febd9b5050bc079fd35.png" src="_images/ee7d6256fac2fb91c6c2df9c9ddb8b2c373e3a56abb53febd9b5050bc079fd35.png" />
+<img alt="_images/77916a7bcef7189bb7f80864e3a3a4da7ffce6f1ea322a9d37b8dc1e11f34d9f.png" src="_images/77916a7bcef7189bb7f80864e3a3a4da7ffce6f1ea322a9d37b8dc1e11f34d9f.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -909,7 +907,7 @@ graph as the population distribution.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f6e10283d0bfa2f58d9d2a413c0bb82bff429a93d865e0d9b73b04d01c6f7c82.png" src="_images/f6e10283d0bfa2f58d9d2a413c0bb82bff429a93d865e0d9b73b04d01c6f7c82.png" />
+<img alt="_images/d27e453e10dac6830ec7664618138292353c5df1f19ebe1ae97d72a27a9d7339.png" src="_images/d27e453e10dac6830ec7664618138292353c5df1f19ebe1ae97d72a27a9d7339.png" />
 </div>
 </div>
 <p>Here is what is going on in the above graphs.</p>
@@ -975,7 +973,7 @@ behavior early in the sample.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/46cc9fe06b6e0f0d6a038699e18a780f635c1d96604eb0171bbf3f6432f12a56.png" src="_images/46cc9fe06b6e0f0d6a038699e18a780f635c1d96604eb0171bbf3f6432f12a56.png" />
+<img alt="_images/fd65b4a13dd72fa2332c5fd4928fe988dc0d8c334054912e9f973c06484225fd.png" src="_images/fd65b4a13dd72fa2332c5fd4928fe988dc0d8c334054912e9f973c06484225fd.png" />
 </div>
 </div>
 </section>
@@ -992,7 +990,7 @@ anticipation of rising incomes.</p>
 steady state in which there is an excess aggregate supply of risk-free
 loans at a gross interest rate of <span class="math notranslate nohighlight">\(R\)</span>.</p>
 <p>This excess supply is filled by “foreigner lenders” willing to make those loans.</p>
-<p>We can use virtually the same code to rig a “poor man’s Bewley <span id="id6">[<a class="reference internal" href="zreferences.html#id121" title="Truman F Bewley. Stationary monetary equilibrium with a continuum of independently fluctuating consumers. In Werner Hildenbran and Andreu Mas-Colell, editors, Contributions to Mathematical Economics in Honor of Gerard Debreu, pages 27-102. North-Holland, Amsterdam, 1986.">Bewley, 1986</a>]</span> model” in the following way</p>
+<p>We can use virtually the same code to rig a “poor man’s Bewley <span id="id6">[<a class="reference internal" href="zreferences.html#id126" title="Truman F Bewley. Stationary monetary equilibrium with a continuum of independently fluctuating consumers. In Werner Hildenbran and Andreu Mas-Colell, editors, Contributions to Mathematical Economics in Honor of Gerard Debreu, pages 27-102. North-Holland, Amsterdam, 1986.">Bewley, 1986</a>]</span> model” in the following way</p>
 <ul class="simple">
 <li><p>as before, we start everyone at <span class="math notranslate nohighlight">\(b_0 = 0\)</span>.</p></li>
 <li><p>But instead of starting everyone at <span class="math notranslate nohighlight">\(y_{-1} = y_{-2} = 0\)</span>, we
@@ -1020,7 +1018,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/71e241f929a9a79ad18fb499454dc32cce9293be0220e266d55ab10f2b6c21c5.png" src="_images/71e241f929a9a79ad18fb499454dc32cce9293be0220e266d55ab10f2b6c21c5.png" />
+<img alt="_images/47b26311c64b4777ac8fc9658ce61e4402b4a744d806ddf951affb454bd22ba6.png" src="_images/47b26311c64b4777ac8fc9658ce61e4402b4a744d806ddf951affb454bd22ba6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1033,7 +1031,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6c694f394e7b83d5b9ae7a40f62fe4d5a68752e68f5a410de7d4e88ba3019179.png" src="_images/6c694f394e7b83d5b9ae7a40f62fe4d5a68752e68f5a410de7d4e88ba3019179.png" />
+<img alt="_images/5dac10b037f6c11c7bc8023569473555b74d12bed3b2fb939a0f59de245c706d.png" src="_images/5dac10b037f6c11c7bc8023569473555b74d12bed3b2fb939a0f59de245c706d.png" />
 </div>
 </div>
 <p>The graphs confirm the following outcomes:</p>
@@ -1055,7 +1053,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e2ac3138f9bda238d5e0aab6f1e609dd16b2b5df63c0aa445012a0558ab8ef76.png" src="_images/e2ac3138f9bda238d5e0aab6f1e609dd16b2b5df63c0aa445012a0558ab8ef76.png" />
+<img alt="_images/efaf916c65111d9954df37fe18f0f3366c4e98c608efeebc42c00343cb88f24a.png" src="_images/efaf916c65111d9954df37fe18f0f3366c4e98c608efeebc42c00343cb88f24a.png" />
 </div>
 </div>
 </section>
@@ -1579,6 +1577,11 @@ with each other at a gross risk-free interest rate of
    78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="morris_learn.html">
+   79. Speculative Behavior with Bayesian Learning
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1588,17 +1591,17 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   79. Pandas for Panel Data
+   80. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   80. Linear Regression in Python
+   81. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   81. Maximum Likelihood Estimation
+   82. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1610,12 +1613,12 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   82. First-Price and Second-Price Auctions
+   83. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   83. Multiple Good Allocation Mechanisms
+   84. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1627,17 +1630,17 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   84. Troubleshooting
+   85. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   85. References
+   86. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   86. Execution Statistics
+   87. Execution Statistics
   </a>
  </li>
 </ul>

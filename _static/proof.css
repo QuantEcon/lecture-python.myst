@@ -2,14 +2,29 @@
 * Variables *
 *********************************************/
 :root {
-  --note-title-color: rgba(68,138,255,.1);
+  --theorem-border-color: rgba(68,138,255,.1);
+  --axiom-border-color: #ffc107;
+  --criterion-border-color: #fd7e14;
+  --lemma-border-color: #36cf03;
+  --definition-border-color: #007bff;
+  --remark-border-color: #79ff6f;
+  --conjecture-border-color: #775f15;
+  --corollary-border-color: #c500c1;
+  --example-border-color: #f9377b;
+  --property-border-color: #fdf914;
+  --obseration-border-color: #7707ff;
+  --proposition-border-color: #4f7aa8;
+  --assumption-border-color: #07fffb;
+
+  /* --note-title-color: rgba(68,138,255,.1);
   --note-border-color: #007bff;
   --warning-title-color: rgba(220,53,69,.1);
   --warning-border-color: #dc3545;
   --hint-title-color: rgba(255,193,7,.2);
   --hint-border-color: #ffc107;
   --caution-title-color: rgba(253,126,20,.1);
-  --caution-border-color: #fd7e14;
+  --caution-border-color: #fd7e14; */
+
   --grey-title-color: rgba(204,204,204,.2);
   --grey-border-color: #ccc;
 }
@@ -19,7 +34,7 @@
 *********************************************/
 
 /* Remove content box */
-div.proof p.admonition-title::before {
+div.proof > .admonition-title::before {
 	content: none;
 }
 
@@ -36,96 +51,96 @@ div#proof{
 * Theorem *
 *********************************************/
 div.theorem {
-	border-color: var(--note-border-color);
-	background-color: var(--note-title-color);
+	border-color: var(--theorem-border-color);
+	background-color: none;
 }
 
-div.theorem p.admonition-title {
-	background-color: var(--note-title-color);
+div.theorem > .admonition-title {
+	background-color: transparent;
 }
 
 /*********************************************
 * Axiom *
 *********************************************/
 div.axiom {
-	border-color: var(--hint-border-color);
-	background-color: var(--hint-title-color);
+	border-color: var(--axiom-border-color);
+	background-color: none;
 }
 
-div.axiom p.admonition-title {
-	background-color: var(--hint-title-color);
+div.axiom > .admonition-title {
+	background-color: transparent;
 }
 
 /*********************************************
 * Criterion *
 *********************************************/
 div.criterion {
-	border-color: var(--caution-border-color);
-	background-color: var(--caution-title-color);
+	border-color: var(--criterion-border-color);
+	background-color: none;
 }
 
-div.criterion p.admonition-title {
-	background-color: var(--caution-title-color);
+div.criterion > .admonition-title {
+	background-color: transparent;
 }
 
 /*********************************************
 * Lemma *
 *********************************************/
 div.lemma {
-	border-color: var(--hint-border-color);
-	background-color: var(--hint-title-color);
+	border-color: var(--lemma-border-color);
+	background-color: none;
 }
 
-div.lemma p.admonition-title {
-	background-color: var(--hint-title-color);
+div.lemma > .admonition-title {
+	background-color: transparent;
 }
 
 /*********************************************
 * Definition *
 *********************************************/
 div.definition {
-	border-color: var(--note-border-color);
-	background-color: var(--note-title-color);
+	border-color: var(--definition-border-color);
+	background-color: none;
 }
 
-div.definition p.admonition-title {
-	background-color: var(--note-title-color);
+div.definition > .admonition-title {
+	background-color: transparent;
 }
 
 /*********************************************
 * Remark *
 *********************************************/
 div.remark {
-	border-color: var(--warning-border-color);
-	background-color: var(--warning-title-color);
+	border-color: var(--remark-border-color);
+	background-color: none;
 }
 
-div.remark p.admonition-title {
-	background-color: var(--warning-title-color);
+div.remark > .admonition-title {
+	background-color: transparent;
 }
 
 /*********************************************
 * Conjecture *
 *********************************************/
 div.conjecture {
-	border-color: var(--hint-border-color);
-	background-color: var(--hint-title-color);
+	border-color: var(--conjecture-border-color);
+	background-color: none;
 }
 
-div.conjecture p.admonition-title {
-	background-color: var(--hint-title-color);
+div.conjecture > .admonition-title {
+	background-color: transparent;
 }
 
 /*********************************************
 * Corollary *
 *********************************************/
 div.corollary {
-	border-color: var(--caution-border-color);
-	background-color: var(--caution-title-color);
+	border-color: var(--corollary-border-color);
+	background-color: none;
 }
 
-div.corollary p.admonition-title {
-	background-color: var(--caution-title-color);
+div.corollary > .admonition-title {
+	background-color: transparent;
 }
 
 /*********************************************
@@ -136,7 +151,7 @@ div.algorithm {
 	background-color: none;
 }
 
-div.algorithm p.admonition-title {
+div.algorithm > .admonition-title {
 	background-color: transparent;
 	border-top: .15rem solid var(--grey-border-color);
 	border-bottom: .15rem solid var(--grey-border-color);
@@ -151,11 +166,11 @@ div.algorithm div.section {
 * Example *
 *********************************************/
 div.example {
-	border-color: var(--hint-border-color);
+	border-color: var(--example-border-color);
 	background-color: none;
 }
 
-div.example p.admonition-title {
+div.example > .admonition-title {
 	background-color: transparent;
 }
 
@@ -163,45 +178,45 @@ div.example p.admonition-title {
 * Property *
 *********************************************/
 div.property {
-	border-color: var(--caution-border-color);
-	background-color: var(--caution-title-color);
+	border-color: var(--property-border-color);
+	background-color: none;
 }
 
-div.property p.admonition-title {
-	background-color: var(--caution-title-color);
+div.property > .admonition-title {
+	background-color: transparent;
 }
 
 /*********************************************
 * Observation *
 *********************************************/
 div.observation {
-	border-color: var(--hint-border-color);
-	background-color: var(--hint-title-color);
+	border-color: var(--observation-border-color);
+	background-color: none;
 }
 
-div.observation p.admonition-title {
-	background-color: var(--hint-title-color);
+div.observation > .admonition-title {
+	background-color: transparent;
 }
 
 /*********************************************
 * Proposition *
 *********************************************/
 div.proposition {
-	border-color: var(--note-border-color);
-	background-color: var(--note-title-color);
+	border-color: var(--proposition-border-color);
+	background-color: none;
 }
 
-div.proposition p.admonition-title {
-	background-color: var(--note-title-color);
+div.proposition > .admonition-title {
+	background-color: transparent;
 }
 /*********************************************
 * Assumption *
 *********************************************/
 div.assumption {
-	border-color: var(--hint-border-color);
-	background-color: var(--hint-title-color);
+	border-color: var(--assumption-border-color);
+	background-color: none;
 }
 
-div.assumption p.admonition-title {
-	background-color: var(--hint-title-color);
+div.assumption > .admonition-title {
+	background-color: transparent;
 }

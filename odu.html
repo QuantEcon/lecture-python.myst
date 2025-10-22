@@ -298,9 +298,7 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading interpolation-2.2.7-py3-none-any.whl.metadata (913 bytes)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.59.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from interpolation) (0.61.0)
+Requirement already satisfied: numba&gt;=0.59.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from interpolation) (0.61.0)
 Requirement already satisfied: scipy&lt;2.0,&gt;=1.10 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from interpolation) (1.15.3)
 Requirement already satisfied: numpy&lt;2.5,&gt;=1.23.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from scipy&lt;2.0,&gt;=1.10-&gt;interpolation) (2.1.3)
 Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.59.1-&gt;interpolation) (0.44.0)
@@ -319,7 +317,7 @@ Downloading interpolation-2.2.7-py3-none-any.whl (80 kB)
 <section id="overview">
 <h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">49.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In this lecture, we consider an extension of the <a class="reference external" href="https://python.quantecon.org/mccall_model.html">previously studied</a> job search model of McCall
-<span id="id1">[<a class="reference internal" href="zreferences.html#id202" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span>.</p>
+<span id="id1">[<a class="reference internal" href="zreferences.html#id208" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span>.</p>
 <p>We’ll build on a model of Bayesian learning discussed in <a class="reference external" href="https://python.quantecon.org/exchangeable.html">this lecture</a> on the topic of exchangeability and its relationship to
 the concept of IID (identically and independently distributed) random variables and to  Bayesian updating.</p>
 <p>In the McCall model, an unemployed worker decides when to accept a
@@ -333,7 +331,7 @@ permanent job at a specific fixed wage, given</p>
 must be learned.</p>
 <ul class="simple">
 <li><p>The following is based on the presentation in
-<span id="id2">[<a class="reference internal" href="zreferences.html#id194" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 6.6.</p></li>
+<span id="id2">[<a class="reference internal" href="zreferences.html#id200" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 6.6.</p></li>
 </ul>
 <p>Let’s start with some imports</p>
 <div class="cell docutils container">
@@ -362,7 +360,7 @@ control.</p></li>
 <section id="model">
 <h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">49.2. </span>Model</a><a class="headerlink" href="#model" title="Link to this heading">#</a></h2>
 <p>Let’s first review the basic McCall model
-<span id="id3">[<a class="reference internal" href="zreferences.html#id202" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span> and then add the variation we
+<span id="id3">[<a class="reference internal" href="zreferences.html#id208" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span> and then add the variation we
 want to consider.</p>
 <section id="the-basic-mccall-model">
 <h3><span class="section-number">49.2.1. </span>The Basic McCall Model<a class="headerlink" href="#the-basic-mccall-model" title="Link to this heading">#</a></h3>
@@ -392,7 +390,7 @@ yet to decide whether to accept or reject the offer.</p>
 <section id="offer-distribution-unknown">
 <h3><span class="section-number">49.2.2. </span>Offer Distribution Unknown<a class="headerlink" href="#offer-distribution-unknown" title="Link to this heading">#</a></h3>
 <p>Now let’s extend the model by considering the variation presented in
-<span id="id4">[<a class="reference internal" href="zreferences.html#id194" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 6.6.</p>
+<span id="id4">[<a class="reference internal" href="zreferences.html#id200" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 6.6.</p>
 <p>The model is as above, apart from the fact that</p>
 <ul class="simple">
 <li><p>the density <span class="math notranslate nohighlight">\(q\)</span> is unknown</p></li>
@@ -460,7 +458,7 @@ rewards.</p>
 </section>
 <section id="parameterization">
 <h3><span class="section-number">49.2.3. </span>Parameterization<a class="headerlink" href="#parameterization" title="Link to this heading">#</a></h3>
-<p>Following section 6.6 of <span id="id5">[<a class="reference internal" href="zreferences.html#id194" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>,
+<p>Following section 6.6 of <span id="id5">[<a class="reference internal" href="zreferences.html#id200" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>,
 our baseline parameterization will be</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\operatorname{Beta}(1, 1)\)</span></p></li>
@@ -713,28 +711,28 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6043744443406567.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.606291995994237.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.09370657086425638.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.1025155001271969.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.019847907805683462.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.022041381981960484.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.004397463572638927.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.005222452804948929.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0009744493637082741.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0012568846462421845.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.00021613989147262203.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.0003025628614423681.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 33 iterations.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 34 iterations.
 </pre></div>
 </div>
-<img alt="_images/4ab27c0fe46e8fb807462c912a1e9b24f7c7f377902bf29a05be5860c3a7877d.png" src="_images/4ab27c0fe46e8fb807462c912a1e9b24f7c7f377902bf29a05be5860c3a7877d.png" />
+<img alt="_images/18f5c9b4acbdf8ea8264be87df0a0afb206d7425ac12473cb6485c698a5640c9.png" src="_images/18f5c9b4acbdf8ea8264be87df0a0afb206d7425ac12473cb6485c698a5640c9.png" />
 </div>
 </div>
 <p>We will also plot the optimal policy</p>
@@ -756,7 +754,7 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/32145ad940c39a30054934b0ccdc9be6a1fc00d5e8030bb9ec54fe2155e6f882.png" src="_images/32145ad940c39a30054934b0ccdc9be6a1fc00d5e8030bb9ec54fe2155e6f882.png" />
+<img alt="_images/728a1087535d8b3e9ec5151b2c149c8476bf0f52e6253f5833a7cf2718d82802.png" src="_images/728a1087535d8b3e9ec5151b2c149c8476bf0f52e6253f5833a7cf2718d82802.png" />
 </div>
 </div>
 <p>The results fit well with our intuition from section <a class="reference internal" href="#looking-forward"><span class="std std-ref">looking
@@ -1009,16 +1007,16 @@ fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.022234710562695992.
-Error at iteration 10 is 0.007557906721182173.
-Error at iteration 15 is 0.001964711160459154.
-Error at iteration 20 is 0.00044289857455936943.
-Error at iteration 25 is 9.747920520708497e-05.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.022862161787032598.
+Error at iteration 10 is 0.0075053251104993945.
+Error at iteration 15 is 0.0018040350862604804.
+Error at iteration 20 is 0.00039574683650911435.
+Error at iteration 25 is 8.598060775610872e-05.
 
 Converged in 25 iterations.
 </pre></div>
 </div>
-<img alt="_images/a8606f3443d5ffb195cbe2274b29995c11f3b9867c49214b5152e95e4def54f7.png" src="_images/a8606f3443d5ffb195cbe2274b29995c11f3b9867c49214b5152e95e4def54f7.png" />
+<img alt="_images/a155cc24ad7cd14ea8b91581a8efc941f1c1294e4324c9c65499a636e1e6464e.png" src="_images/a155cc24ad7cd14ea8b91581a8efc941f1c1294e4324c9c65499a636e1e6464e.png" />
 </div>
 </div>
 </section>
@@ -1109,7 +1107,7 @@ too optimistic and turn down too many jobs.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/25b6f347f364a984ea26a18f35c703b0557ca0253ec2ef0775c596f136fe200d.png" src="_images/25b6f347f364a984ea26a18f35c703b0557ca0253ec2ef0775c596f136fe200d.png" />
+<img alt="_images/820d246da406a448eae7859a13daccd42a9c933b85eb79c50a57309f34a4492f.png" src="_images/820d246da406a448eae7859a13daccd42a9c933b85eb79c50a57309f34a4492f.png" />
 </div>
 </div>
 </section>
@@ -1371,8 +1369,8 @@ unemployment verifies our conjecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3e9143c62c457e1cc0b23fc20958e9e7ee2dfac9962d50b52fc7984095954634.png" src="_images/3e9143c62c457e1cc0b23fc20958e9e7ee2dfac9962d50b52fc7984095954634.png" />
-<img alt="_images/6ef3c6f8737f32d92d98da66832dcd0d875fc6b5b42f5c9a38fc8b3a44210f39.png" src="_images/6ef3c6f8737f32d92d98da66832dcd0d875fc6b5b42f5c9a38fc8b3a44210f39.png" />
+<img alt="_images/e682e62eceb8b090ab31765eb2d9da74533088013ae5c167cda35592f3bd79ff.png" src="_images/e682e62eceb8b090ab31765eb2d9da74533088013ae5c167cda35592f3bd79ff.png" />
+<img alt="_images/f527e193278051dfc23910647915318380f4b443bbd30c328c1de83955835d3e.png" src="_images/f527e193278051dfc23910647915318380f4b443bbd30c328c1de83955835d3e.png" />
 </div>
 </div>
 </section>
@@ -1392,8 +1390,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/156ec410b2730edfb440bae0e13ff3df218f98d6f1518a50fe0e4be3778c3ce8.png" src="_images/156ec410b2730edfb440bae0e13ff3df218f98d6f1518a50fe0e4be3778c3ce8.png" />
-<img alt="_images/280f76bf3a8fab3f02ece64035d7fa7528870b5d0462e64877dda5aac3d6506a.png" src="_images/280f76bf3a8fab3f02ece64035d7fa7528870b5d0462e64877dda5aac3d6506a.png" />
+<img alt="_images/1f8a12bc520c2a34ac68965a702a16eeee8dff8a088d0e005ad440375946946b.png" src="_images/1f8a12bc520c2a34ac68965a702a16eeee8dff8a088d0e005ad440375946946b.png" />
+<img alt="_images/e9f79d9ec33711cb3ddea6683b986a19f08073d105ab3b086053d1f7d763526f.png" src="_images/e9f79d9ec33711cb3ddea6683b986a19f08073d105ab3b086053d1f7d763526f.png" />
 </div>
 </div>
 </section>
@@ -1410,8 +1408,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c6f2f93d0ede1954e82cdbfe9182f2a0ac1d6e48ce59e9233d53240ae4c1382e.png" src="_images/c6f2f93d0ede1954e82cdbfe9182f2a0ac1d6e48ce59e9233d53240ae4c1382e.png" />
-<img alt="_images/294ec365768d74a787f4169f1b1d78622d8417fb323e123be2dc02bfc4d0bb24.png" src="_images/294ec365768d74a787f4169f1b1d78622d8417fb323e123be2dc02bfc4d0bb24.png" />
+<img alt="_images/81e4ca303942ff1d38486c50340bc1c38f8ff0fd5c2043d21bda9644aeb2a41f.png" src="_images/81e4ca303942ff1d38486c50340bc1c38f8ff0fd5c2043d21bda9644aeb2a41f.png" />
+<img alt="_images/0e3e56d73080e56d1186f7664c4a1ba16fe6c2276dc48bdd33e62f5b8c98089e.png" src="_images/0e3e56d73080e56d1186f7664c4a1ba16fe6c2276dc48bdd33e62f5b8c98089e.png" />
 </div>
 </div>
 </section>
@@ -1438,8 +1436,8 @@ when he eventually chooses to accept a wage offer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/67626b6f6d43839bdd586a38ff2de191fa288d7804f573821d4ca5789a7bc4aa.png" src="_images/67626b6f6d43839bdd586a38ff2de191fa288d7804f573821d4ca5789a7bc4aa.png" />
-<img alt="_images/c9ddd8471fe1ddd7c3abd589ef7ce48ea6af4f235e562f1d9e238730df6bb6e6.png" src="_images/c9ddd8471fe1ddd7c3abd589ef7ce48ea6af4f235e562f1d9e238730df6bb6e6.png" />
+<img alt="_images/461ff47557378292c1f4d86e26bf7942fd02c9a5e0f5a4bdea52818443d9b384.png" src="_images/461ff47557378292c1f4d86e26bf7942fd02c9a5e0f5a4bdea52818443d9b384.png" />
+<img alt="_images/5c06d1037a433a06eac1818524db67156f34e21077a5fa70cbdad21b6ca505e9.png" src="_images/5c06d1037a433a06eac1818524db67156f34e21077a5fa70cbdad21b6ca505e9.png" />
 </div>
 </div>
 </section>
@@ -1455,8 +1453,8 @@ after having acquired less information about the wage distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/01bf8ac3cc8678fdcc10f4bcc8d56a232d15aa174340d2dc2022e6d768aee2b7.png" src="_images/01bf8ac3cc8678fdcc10f4bcc8d56a232d15aa174340d2dc2022e6d768aee2b7.png" />
-<img alt="_images/427973812d65cd2d27c6bbd95fce62c9ca570bf1c60f1f95a3477584ee668d68.png" src="_images/427973812d65cd2d27c6bbd95fce62c9ca570bf1c60f1f95a3477584ee668d68.png" />
+<img alt="_images/d41a29a7ef6208f71471b3db32b34e58f85d1ea3c72f1be5ea47bdc081a9fadb.png" src="_images/d41a29a7ef6208f71471b3db32b34e58f85d1ea3c72f1be5ea47bdc081a9fadb.png" />
+<img alt="_images/3fe633693054e0079ef77a67d1da554dd4fc9a1e65ba26c15cd3bf55344ea15d.png" src="_images/3fe633693054e0079ef77a67d1da554dd4fc9a1e65ba26c15cd3bf55344ea15d.png" />
 </div>
 </div>
 </section>
@@ -1980,6 +1978,11 @@ after having acquired less information about the wage distribution.</p>
    78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="morris_learn.html">
+   79. Speculative Behavior with Bayesian Learning
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1989,17 +1992,17 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   79. Pandas for Panel Data
+   80. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   80. Linear Regression in Python
+   81. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   81. Maximum Likelihood Estimation
+   82. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2011,12 +2014,12 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   82. First-Price and Second-Price Auctions
+   83. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   83. Multiple Good Allocation Mechanisms
+   84. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2028,17 +2031,17 @@ after having acquired less information about the wage distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   84. Troubleshooting
+   85. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   85. References
+   86. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   86. Execution Statistics
+   87. Execution Statistics
   </a>
  </li>
 </ul>

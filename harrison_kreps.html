@@ -124,7 +124,7 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="79. Pandas for Panel Data" href="pandas_panel.html" />
+    <link rel="next" title="79. Speculative Behavior with Bayesian Learning" href="morris_learn.html" />
     <link rel="prev" title="77. Competitive Equilibria with Arrow Securities" href="ge_arrow.html" />
 
 <!-- Normal Meta Tags -->
@@ -197,7 +197,6 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-interpretation">78.3.5. Further Interpretation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">78.4. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -264,7 +263,6 @@
 <li><p><a class="reference internal" href="#overview" id="id6">Overview</a></p></li>
 <li><p><a class="reference internal" href="#structure-of-the-model" id="id7">Structure of the Model</a></p></li>
 <li><p><a class="reference internal" href="#solving-the-model" id="id8">Solving the Model</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id9">Exercises</a></p></li>
 </ul>
 </li>
 </ul>
@@ -286,9 +284,7 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.10.1-py3-none-any.whl.metadata (5.3 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
+Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
 Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
@@ -313,7 +309,7 @@ Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
 </div>
 <section id="overview">
 <h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">78.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>This lecture describes a version of a model of Harrison and Kreps <span id="id1">[<a class="reference internal" href="zreferences.html#id138" title="J. Michael Harrison and David M. Kreps. Speculative investor behavior in a stock market with heterogeneous expectations. The Quarterly Journal of Economics, 92(2):323-336, 1978.">Harrison and Kreps, 1978</a>]</span>.</p>
+<p>This lecture describes a version of a model of Harrison and Kreps <span id="id1">[<a class="reference internal" href="zreferences.html#id143" title="J. Michael Harrison and David M. Kreps. Speculative investor behavior in a stock market with heterogeneous expectations. The Quarterly Journal of Economics, 92(2):323-336, 1978.">Harrison and Kreps, 1978</a>]</span>.</p>
 <p>The model determines the price of a dividend-yielding asset that is traded by two types of self-interested investors.</p>
 <p>The model features</p>
 <ul class="simple">
@@ -429,7 +425,7 @@ P_b =
 <h3><span class="section-number">78.2.1. </span>Ownership Rights<a class="headerlink" href="#ownership-rights" title="Link to this heading">#</a></h3>
 <p>An owner of the asset at the end of time <span class="math notranslate nohighlight">\(t\)</span> is entitled to the dividend at time <span class="math notranslate nohighlight">\(t+1\)</span> and also has the right to sell the asset at time <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
 <p>Both types of investors are risk-neutral and both have the same fixed discount factor <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span>.</p>
-<p>In our numerical example, we’ll set <span class="math notranslate nohighlight">\(\beta = .75\)</span>, just as Harrison and Kreps <span id="id2">[<a class="reference internal" href="zreferences.html#id138" title="J. Michael Harrison and David M. Kreps. Speculative investor behavior in a stock market with heterogeneous expectations. The Quarterly Journal of Economics, 92(2):323-336, 1978.">Harrison and Kreps, 1978</a>]</span> did.</p>
+<p>In our numerical example, we’ll set <span class="math notranslate nohighlight">\(\beta = .75\)</span>, just as Harrison and Kreps <span id="id2">[<a class="reference internal" href="zreferences.html#id143" title="J. Michael Harrison and David M. Kreps. Speculative investor behavior in a stock market with heterogeneous expectations. The Quarterly Journal of Economics, 92(2):323-336, 1978.">Harrison and Kreps, 1978</a>]</span> did.</p>
 <p>We’ll eventually study the consequences of two alternative assumptions about the number of shares <span class="math notranslate nohighlight">\(A\)</span> relative to the resources that our two types of investors can invest in the stock.</p>
 <ol class="arabic simple">
 <li><p>Both types of investors have enough resources (either wealth or the capacity to borrow) so that they can purchase the entire available stock of the asset <a class="footnote-reference brackets" href="#f1" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p></li>
@@ -700,8 +696,8 @@ worth.</p>
 <span class="eqno">(78.5)<a class="headerlink" href="#equation-harrkrep4" title="Link to this equation">#</a></span>\[\check p(s)
 = \beta \min
 \left\{
-    P_a(s,1)  \check  p(0) + P_a(s,1) ( 1 +   \check  p(1)) ,\;
-    P_b(s,1)  \check p(0) + P_b(s,1) ( 1 + \check p(1))
+    P_a(s,0)  \check  p(0) + P_a(s,1) ( 1 +   \check  p(1)) ,\;
+    P_b(s,0)  \check p(0) + P_b(s,1) ( 1 + \check p(1))
 \right\}\]</div>
 <p>and the marginal investor who prices the asset is always the one that values it <em>less</em> highly than does the other type.</p>
 <p>Now the marginal investor is always the (temporarily) pessimistic type.</p>
@@ -742,7 +738,7 @@ worth.</p>
 </section>
 <section id="further-interpretation">
 <h3><span class="section-number">78.3.5. </span>Further Interpretation<a class="headerlink" href="#further-interpretation" title="Link to this heading">#</a></h3>
-<p>Jose Scheinkman <span id="id4">[<a class="reference internal" href="zreferences.html#id137" title="Jose A. Scheinkman. Speculation, Trading, and Bubbles. Columbia University Press, New York, 2014.">Scheinkman, 2014</a>]</span> interprets the Harrison-Kreps model as a model of a bubble — a situation in which an asset price exceeds what every investor thinks is merited by his or her beliefs about the value of the asset’s underlying dividend stream.</p>
+<p>Jose Scheinkman <span id="id4">[<a class="reference internal" href="zreferences.html#id142" title="Jose A. Scheinkman. Speculation, Trading, and Bubbles. Columbia University Press, New York, 2014.">Scheinkman, 2014</a>]</span> interprets the Harrison-Kreps model as a model of a bubble — a situation in which an asset price exceeds what every investor thinks is merited by his or her beliefs about the value of the asset’s underlying dividend stream.</p>
 <p>Scheinkman stresses these features of the Harrison-Kreps model:</p>
 <ul class="simple">
 <li><p>High volume occurs when the Harrison-Kreps pricing formula <a class="reference internal" href="#equation-hakr2">(78.3)</a> prevails.</p></li>
@@ -756,10 +752,6 @@ worth.</p>
 </ul>
 <p>Scheinkman extracts insights about the effects of financial regulations on bubbles.</p>
 <p>He emphasizes how limiting short sales and limiting leverage have opposite effects.</p>
-</section>
-</section>
-<section id="exercises">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">78.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="hk_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 78.1 </span></p>
@@ -930,6 +922,7 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <p>By assuming that both types of agents always have “deep enough pockets” to purchase all of the asset, the model takes wealth dynamics off the table. The Harrison-Kreps model generates high trading volume when the state changes either from 0 to 1 or from 1 to 0.</p>
 </aside>
 </aside>
+</section>
 </section>
 </section>
 
@@ -1450,6 +1443,11 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
    78. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="morris_learn.html">
+   79. Speculative Behavior with Bayesian Learning
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1459,17 +1457,17 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   79. Pandas for Panel Data
+   80. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   80. Linear Regression in Python
+   81. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   81. Maximum Likelihood Estimation
+   82. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1481,12 +1479,12 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   82. First-Price and Second-Price Auctions
+   83. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   83. Multiple Good Allocation Mechanisms
+   84. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1498,17 +1496,17 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   84. Troubleshooting
+   85. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   85. References
+   86. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   86. Execution Statistics
+   87. Execution Statistics
   </a>
  </li>
 </ul>
