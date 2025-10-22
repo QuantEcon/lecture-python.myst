@@ -57,7 +57,7 @@ Key features of the environment in Morris's model include:
 
 Just as in the hard-wired beliefs model of Harrison and Kreps, those differences of opinion induce  investors to  engage in *speculative behavior* in the following sense:
 
- * sometimes   they are willing to pay more for the asset what they think is its ''fundamental'' value, i.e., the expected discounted value of its prospective dividend stream 
+ * sometimes they are willing to pay more for the asset than what they think is its "fundamental" value, i.e., the expected discounted value of its prospective dividend stream 
 
 
 Prior to reading this lecture, you might want to review the following quantecon lectures:
@@ -474,6 +474,12 @@ The resulting premium reflects the option value of reselling to whichever trader
 Within this setting, we can reproduce two key figures reported in {cite:t}`Morris1996`
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Normalized price against interest rate
+    name: fig-normalized-price-interest
+---
 def normalized_price_two_agents(prior1, prior2, r, T=250):
     """Return p(s,t,r) = r \tilde p(s,t,r) for two traders."""
     β = 1.0 / (1.0 + r)
@@ -488,11 +494,10 @@ p00 = np.array([normalized_price_two_agents(
                 for r in r_grid])
 
 fig, ax = plt.subplots()
-ax.plot(r_grid, p00)
+ax.plot(r_grid, p00, lw=2)
 ax.set_xlabel(r'$r$')
 ax.set_ylabel(r'$p^*(0,0,r)$')
 ax.axhline(0.5, color='C1', linestyle='--')
-ax.set_title('Figure I: normalized price vs interest rate')
 plt.show()
 ```
 
@@ -506,24 +511,29 @@ In the first figure, notice that:
 
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Normalized price against time
+    name: fig-normalized-price-time
+---
 # Figure II: p*(t/2,t,0.05) as a function of t
 r = 0.05
 T = 60
 p_mat = normalized_price_two_agents(priors[0], priors[1], r, T=T)
-t_vals = np.arange(0, 54, 2) 
+t_vals = np.arange(0, 54, 2)
 s_vals = t_vals // 2
 y = np.array([p_mat[s, t] for s, t in zip(s_vals, t_vals)])
 
 fig, ax = plt.subplots()
-ax.plot(t_vals, y)
+ax.plot(t_vals, y, lw=2)
 ax.set_xlabel(r'$t$')
 ax.set_ylabel(r'$p^*(t/2,t,0.05)$')
 ax.axhline(0.5, color='C1', linestyle='--')
-ax.set_title('Figure II: normalized price vs time (r=0.05)')
 plt.show()
 
 p0 = p_mat[0,0]
-μ0 = 0.5  
+μ0 = 0.5
 print("Initial normalized premium at r=0.05 (%):",
       np.round(100 * (p0 / μ0 - 1.0), 2))
 ```
