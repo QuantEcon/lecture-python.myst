@@ -1082,13 +1082,6 @@ call_option(apm, ζ, p_s)
 Let's show the last two functions as a plot
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: |
-      Consol and call option exercise two comparison
-    name: fig_ex2_prices
----
 fig, ax = plt.subplots()
 ax.plot(s, consol_price(apm, ζ), label='consol')
 ax.plot(s, call_option(apm, ζ, p_s), label='call option')
@@ -1176,13 +1169,6 @@ def finite_horizon_call_option(ap, ζ, p_s, k):
 Now let's compute the option values at `k=5` and `k=25`
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: |
-      Finite horizon call option values
-    name: fig_ex3_finite
----
 fig, ax = plt.subplots()
 for k in [5, 25]:
     w = finite_horizon_call_option(apm, ζ, p_s, k)
