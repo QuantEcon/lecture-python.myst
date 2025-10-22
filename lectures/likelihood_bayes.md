@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-(likelihood_ratio_process)=
+(likelihood_bayes)=
 ```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
@@ -26,11 +26,11 @@ kernelspec:
 
 ## Overview
 
-This lecture describes the role that **likelihood ratio processes** play in  **Bayesian learning**.
+This lecture describes the role that *likelihood ratio processes* play in *Bayesian learning*.
 
-As in {doc}`this lecture <likelihood_ratio_process>`, we'll use a simple statistical setting from {doc}`this lecture <exchangeable>`.
+As in {doc}`likelihood_ratio_process`, we'll use a simple statistical setting from {doc}`exchangeable`.
 
-We'll focus on how a likelihood ratio process and a **prior** probability determine a **posterior** probability.
+We'll focus on how a likelihood ratio process and a *prior* probability determine a *posterior* probability.
 
 We'll derive a convenient recursion for today's posterior as a function of yesterday's posterior and
 today's multiplicative increment to a likelihood process.
@@ -38,13 +38,12 @@ today's multiplicative increment to a likelihood process.
 We'll also present a useful generalization of that formula that represents today's posterior in terms of an initial prior and
 today's realization of the likelihood ratio process.
 
-We'll study how, at least  in our setting, a Bayesian eventually learns the probability distribution that generates the data, an outcome that
-rests on the asymptotic behavior of likelihood ratio processes studied in {doc}`this lecture <likelihood_ratio_process>`.
+We'll study how, at least in our setting, a Bayesian eventually learns the probability distribution that generates the data, an outcome that
+rests on the asymptotic behavior of likelihood ratio processes studied in {doc}`likelihood_ratio_process`.
 
-We'll also drill down into the psychology of our Bayesian learner and study dynamics  under his subjective beliefs.
+We'll also drill down into the psychology of our Bayesian learner and study dynamics under his subjective beliefs.
 
-This lecture provides technical results that underly outcomes to be studied in {doc}`this lecture <odu>`
-and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
+This lecture provides technical results that underlie outcomes to be studied in {doc}`odu`, {doc}`wald_friedman`, and {doc}`navy_captain`.
 
 We'll begin by loading some Python modules.
 
@@ -68,9 +67,9 @@ def set_seed():
 set_seed()
 ```
 
-## The Setting
+## The setting
 
-We begin by reviewing the setting in {doc}`this lecture <likelihood_ratio_process>`, which we adopt here too.
+We begin by reviewing the setting in {doc}`likelihood_ratio_process`, which we adopt here too.
 
 A nonnegative random variable $W$ has one of two probability density functions, either
 $f$ or $g$.
@@ -95,7 +94,7 @@ from either $f$ or $g$.
 We want to use these observations to infer whether nature chose $f$ or
 $g$.
 
-A **likelihood ratio process** is a useful tool for this task.
+A likelihood ratio process is a useful tool for this task.
 
 To begin, we define the key component of a likelihood ratio process, namely, the time $t$ likelihood ratio  as the random variable
 
@@ -110,7 +109,7 @@ That means that under the $g$ density,  $\ell (w_t)=
 \frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}$
 is evidently a nonnegative  random variable with mean $1$.
 
-A **likelihood ratio process** for sequence
+A likelihood ratio process for sequence
 $\left\{ w_{t}\right\} _{t=1}^{\infty}$ is defined as
 
 $$
@@ -140,7 +139,7 @@ The likelihood ratio and its logarithm are key tools for making
 inferences using a classic frequentist approach due to Neyman and
 Pearson {cite}`Neyman_Pearson`.
 
-We'll again deploy the following Python code from {doc}`this lecture <likelihood_ratio_process>` that
+We'll again deploy the following Python code from {doc}`likelihood_ratio_process` that
 evaluates $f$ and $g$ as two different
 beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence $w^t$ from *some*
@@ -154,7 +153,7 @@ G_a, G_b = 3, 1.2
 @vectorize
 def p(x, a, b):
     r = gamma(a + b) / (gamma(a) * gamma(b))
-    return r * x** (a-1) * (1 - x) ** (b-1)
+    return r * x**(a-1) * (1 - x)**(b-1)
 
 # The two density functions.
 f = jit(lambda x: p(x, F_a, F_b))
@@ -167,7 +166,6 @@ def simulate(a, b, T=50, N=500):
     '''
     Generate N sets of T observations of the likelihood ratio,
     return as N x T matrix.
-
     '''
 
     l_arr = np.empty((N, T))
@@ -193,13 +191,13 @@ l_arr_f = simulate(F_a, F_b, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
 
-## Likelihood Ratio Processes and Bayes’ Law
+## Likelihood ratio processes and Bayes’ law
 
-Let $\pi_0 \in [0,1]$ be a Bayesian statistician's prior probability that nature generates $w^t$ as a sequence of i.i.d. draws from
+Let $\pi_0 \in [0,1]$ be a Bayesian statistician's prior probability that nature generates $w^t$ as a sequence of IID draws from
 distribution $f$.
 
-* here "probability" is to be interpreted as a way to summarize or express a  subjective opinion
-* it does **not** mean an anticipated relative frequency as sample size grows without limit 
+* here "probability" is to be interpreted as a way to summarize or express a subjective opinion
+* it does *not* mean an anticipated relative frequency as sample size grows without limit 
 
 Let $\pi_{t+1}$ be a Bayesian posterior probability defined as
 
@@ -208,9 +206,9 @@ $$
 $$ (eq:defbayesposterior)
 
 The likelihood ratio process is a principal actor in the formula that governs the evolution
-of the posterior probability $\pi_t$, an instance of **Bayes' Law**.
+of the posterior probability $\pi_t$, an instance of *Bayes’ law*.
 
-Let's derive a couple of formulas for $\pi_{t+1}$, one in terms of likelihood ratio $l(w_t)$, the other in terms of
+Let's derive a couple of formulas for $\pi_{t+1}$, one in terms of likelihood ratio $\ell(w_t)$, the other in terms of
 $L(w^t)$.
 
 To begin, we use the notational conventions  
@@ -311,7 +309,7 @@ Dividing both  the numerator and the denominator on the right side of the  equat
 ```{math}
 :label: eq_recur1
 
-\pi_{t+1}=\frac{\pi_{t} l_t(w_{t+1})}{\pi_{t} l_t(w_{t+1})+1-\pi_{t}}
+\pi_{t+1}=\frac{\pi_{t} \ell(w_{t+1})}{\pi_{t} \ell(w_{t+1})+1-\pi_{t}}
 ```
 
 with $\pi_{0}$ being a Bayesian prior probability that $q = f$,
@@ -339,7 +337,7 @@ As $t \rightarrow + \infty$, the likelihood ratio process dominates the initial 
 limiting behavior of $\pi_t$.
 
 
-To illustrate this insight, below we will plot  graphs showing **one** simulated
+To illustrate this insight, below we will plot graphs showing *one* simulated
 path of the  likelihood ratio process $L_t$ along with two paths of
 $\pi_t$ that are associated with the *same* realization of the likelihood ratio process but *different* initial prior probabilities $\pi_{0}$.
 
@@ -363,19 +361,25 @@ for t in range(T):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Posterior paths and log likelihood
+    name: fig-posterior-lratio-f
+---
 fig, ax1 = plt.subplots()
 
 for i in range(2):
-    ax1.plot(range(T+1), π_seq_f[i, :], label=fr"$\pi_0$={π_seq_f[i, 0]}")
+    ax1.plot(range(T+1), π_seq_f[i, :], 
+    label=fr"$\pi_0$={π_seq_f[i, 0]}", lw=2)
 
 ax1.set_ylabel(r"$\pi_t$")
-ax1.set_xlabel("t")
+ax1.set_xlabel(r"$t$")
 ax1.legend()
-ax1.set_title("when f governs data")
 
 ax2 = ax1.twinx()
-ax2.plot(range(1, T+1), np.log(l_seq_f[0, :]), '--', color='b')
-ax2.set_ylabel("$log(L(w^{t}))$")
+ax2.plot(range(1, T+1), np.log(l_seq_f[0, :]), '--', color='b', lw=2)
+ax2.set_ylabel(r"$\log(L(w^{t}))$")
 
 plt.show()
 ```
@@ -397,19 +401,25 @@ for t in range(T):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Posterior paths and log likelihood
+    name: fig-posterior-lratio-g
+---
 fig, ax1 = plt.subplots()
 
 for i in range(2):
-    ax1.plot(range(T+1), π_seq_g[i, :], label=fr"$\pi_0$={π_seq_g[i, 0]}")
+    ax1.plot(range(T+1), π_seq_g[i, :], 
+        label=fr"$\pi_0$={π_seq_g[i, 0]}", lw=2)
 
 ax1.set_ylabel(r"$\pi_t$")
-ax1.set_xlabel("t")
+ax1.set_xlabel(r"$t$")
 ax1.legend()
-ax1.set_title("when g governs data")
 
 ax2 = ax1.twinx()
-ax2.plot(range(1, T+1), np.log(l_seq_g[0, :]), '--', color='b')
-ax2.set_ylabel("$log(L(w^{t}))$")
+ax2.plot(range(1, T+1), np.log(l_seq_g[0, :]), '--', color='b', lw=2)
+ax2.set_ylabel(r"$\log(L(w^{t}))$")
 
 plt.show()
 ```
@@ -439,25 +449,25 @@ $f$.
 Let's study how the posterior probability $\pi_t = {\rm Prob}(q=f|w^{t}) $ behaves when nature generates the
 history $w^t = \{w_1, w_2, \dots, w_t\}$ under a different timing protocol.
 
-Until now we assumed that before time $1$ nature somehow chose to draw $w^t$ as an iid sequence from **either** $f$ **or** $g$.  
+Until now we assumed that before time $1$ nature somehow chose to draw $w^t$ as an IID sequence from either $f$ or $g$.
 
-Nature's decision about whether to draw from $f$ or $g$ was thus **permanent**. 
+Nature's decision about whether to draw from $f$ or $g$ was thus *permanent*.
 
-We now assume a different timing protocol in which before **each period** $t =1, 2, \ldots$ nature
+We now assume a different timing protocol in which before *each period* $t =1, 2, \ldots$ nature
 
 *  flips an $x$-weighted coin,  then   
 *  draws from $f$ if it has drawn a "head"
 *  draws from $g$ if it has drawn a "tail".
 
-Under this timing protocol, nature  draws permanently from **neither** $f$ **nor** $g$, so a statistician who thinks that nature is drawing
-i.i.d. draws **permanently** from one of them is mistaken. 
+Under this timing protocol, nature draws permanently from *neither* $f$ *nor* $g$, so a statistician who thinks that nature is drawing
+IID draws *permanently* from one of them is mistaken.
 
-* in truth, nature actually draws **permanently** from an $x$-mixture of $f$ and $g$ -- a distribution that is neither $f$ nor $g$ when
+* in truth, nature actually draws *permanently* from an $x$-mixture of $f$ and $g$ — a distribution that is neither $f$ nor $g$ when
 $x \in (0,1)$
 
 
 
-Thus, the  Bayesian prior $\pi_0$ and the sequence of posterior probabilities described by equation {eq}`eq_Bayeslaw1033` should **not** be interpreted as the statistician's opinion about the mixing parameter  $x$ under the alternative timing protocol in which nature draws from an $x$-mixture of $f$ and $g$.  
+Thus, the Bayesian prior $\pi_0$ and the sequence of posterior probabilities described by equation {eq}`eq_Bayeslaw1033` should *not* be interpreted as the statistician's opinion about the mixing parameter $x$ under the alternative timing protocol in which nature draws from an $x$-mixture of $f$ and $g$.
 
 This is clear when we remember  the definition of $\pi_t$ in equation {eq}`eq:defbayesposterior`, which for convenience we repeat here:
 
@@ -467,11 +477,11 @@ $$
 
 
 
-Let's write some Python code to study how $\pi_t$ behaves when nature actually generates data as i.i.d. draws from  neither $f$ nor from $g$
-but instead as i.i.d. draws from an $x$-mixture of two beta distributions.  
+Let's write some Python code to study how $\pi_t$ behaves when nature actually generates data as IID draws from neither $f$ nor from $g$
+but instead as IID draws from an $x$-mixture of two beta distributions.  
 
 ```{note}
-This is a situation in which the statistician's model is misspecified, so we should anticipate that a Kullback-Liebler divergence with respect to an $x$-mixture distribution will shape outcomes.
+This is a situation in which the statistician's model is misspecified, so we should anticipate that a Kullback–Leibler divergence with respect to an $x$-mixture distribution will shape outcomes.
 ``` 
 
 We can study how $\pi_t$ would behave for various values of nature's mixing probability $x$.
@@ -522,6 +532,12 @@ Let's study how the posterior probability  $\pi_t$ that nature permanently draws
 an $x$-mixture of $f$ and $g$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Posterior under mixture model
+    name: fig-posterior-mixture
+---
 fig, ax = plt.subplots(figsize=(10, 6))
 T_plot = 200
 
@@ -546,7 +562,7 @@ ax.legend()
 plt.show()
 ```
 
-Evidently,  $\pi_t$ converges  to 1. 
+Evidently, $\pi_t$ converges to 1.
 
 This indicates that the model concludes that the data is generated by $f$.
 
@@ -554,7 +570,7 @@ Why does this happen?
 
 Given $x = 0.5$, the data generating process is a mixture of $f$ and $g$: $m(w) = \frac{1}{2}f(w) + \frac{1}{2}g(w)$.
 
-Let's check the [KL divergence](rel_entropy) of the mixture distribution $m$ from both $f$ and $g$.
+Let's check the {ref}`KL divergence <rel_entropy>` of the mixture distribution $m$ from both $f$ and $g$.
 
 ```{code-cell} ipython3
 def compute_KL(f, g):
@@ -607,12 +623,12 @@ This topic is taken up in {doc}`mix_model`.
 We explore how to learn the true mixing parameter $x$ in the exercise 
 of {doc}`mix_model`.
 
-## Behavior of  Posterior Probability $\{\pi_t\}$  Under  Subjective Probability Distribution
+## Behavior of posterior probability $\{\pi_t\}$ under subjective probability distribution
 
 We'll end this lecture by briefly studying what our Bayesian learner expects to learn under the
-subjective beliefs $\pi_t$ cranked out by Bayes' law.
+subjective beliefs $\pi_t$ cranked out by Bayes’ law.
 
-This will provide us with some perspective  on our application of  Bayes's law as a theory of learning.
+This will provide us with some perspective on our application of Bayes’ law as a theory of learning.
 
 As we shall see, at each time $t$, the Bayesian learner knows that he will be surprised.
 
@@ -629,19 +645,19 @@ We'll review and reiterate and rearrange some formulas that we have encountered 
 The worker's initial beliefs induce a joint probability distribution
  over a potentially infinite sequence of draws $w_0, w_1, \ldots $.
 
-Bayes' law is simply an application of  laws of
+Bayes’ law is simply an application of laws of
  probability to compute the conditional distribution of the $t$th draw $w_t$ conditional on $[w_0, \ldots, w_{t-1}]$.
 
-After our worker puts a subjective probability $\pi_{-1}$ on nature having selected distribution $F$, we have in effect assumed from the start that the   decision maker **knows** the joint distribution  for the process $\{w_t\}_{t=0}$.
+After our worker puts a subjective probability $\pi_{-1}$ on nature having selected distribution $F$, we have in effect assumed from the start that the decision maker *knows* the joint distribution for the process $\{w_t\}_{t=0}$.
 
 We assume that the worker also knows the laws of probability theory.
 
-A respectable view is that Bayes' law is less a theory of learning than a statement  about the consequences of information inflows for a decision maker who thinks he knows the truth (i.e., a joint probability distribution) from the beginning.
+A respectable view is that Bayes’ law is less a theory of learning than a statement about the consequences of information inflows for a decision maker who thinks he knows the truth (i.e., a joint probability distribution) from the beginning.
 
 
 ### Mechanical details again
 
-At time $0$ **before** drawing a wage offer, the worker attaches probability $\pi_{-1} \in (0,1)$ to the distribution being $F$.
+At time $0$ *before* drawing a wage offer, the worker attaches probability $\pi_{-1} \in (0,1)$ to the distribution being $F$.
 
 Before drawing a wage at time $0$, the  worker thus believes that the density of $w_0$
 is
@@ -652,7 +668,7 @@ $$
 
 Let $a \in \{ f, g\} $ be an index that indicates whether  nature chose permanently to draw from distribution $f$ or from distribution $g$.
 
-After drawing $w_0$, the worker uses Bayes' law to deduce that
+After drawing $w_0$, the worker uses Bayes’ law to deduce that
 the posterior  probability $\pi_0 = {\rm Prob}({a = f | w_0}) $
 that the density is $f(w)$ is
 
@@ -673,7 +689,7 @@ or
 
 
 $$
-\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
+\pi_t=\frac{\pi_{t-1} \ell(w_t)}{\pi_{t-1} \ell(w_t)+1-\pi_{t-1}}
 $$
 
 
@@ -694,9 +710,9 @@ E(\pi_t | \pi_{t-1}) & = \int \Bigl[  { \pi_{t-1} f(w) \over \pi_{t-1} f(w) + (1
 \end{aligned}
 $$
 
-so that the process $\pi_t$ is a **martingale**.
+so that the process $\pi_t$ is a *martingale*.
 
-Indeed, it is a **bounded martingale** because each $\pi_t$, being a probability,
+Indeed, it is a *bounded martingale* because each $\pi_t$, being a probability,
 is between $0$ and $1$.
 
 
@@ -704,10 +720,10 @@ In the first line in the above string of equalities, the term in the first set o
 is just $\pi_t$ as a function of $w_{t}$, while the term in the second set of brackets is the density of $w_{t}$ conditional
 on $w_{t-1}, \ldots , w_0$ or equivalently conditional on the *sufficient statistic* $\pi_{t-1}$ for $w_{t-1}, \ldots , w_0$.
 
-Notice that here we are computing $E(\pi_t | \pi_{t-1})$ under the **subjective** density described in the second
+Notice that here we are computing $E(\pi_t | \pi_{t-1})$ under the *subjective* density described in the second
 term in brackets.
 
-Because $\{\pi_t\}$ is a bounded martingale sequence, it follows from the **martingale convergence theorem** that $\pi_t$ converges almost surely to a random variable in $[0,1]$.
+Because $\{\pi_t\}$ is a bounded martingale sequence, it follows from the *martingale convergence theorem* that $\pi_t$ converges almost surely to a random variable in $[0,1]$.
 
 Practically, this means that  probability one is  attached to   sample paths
  $\{\pi_t\}_{t=0}^\infty$ that  converge.
@@ -771,7 +787,7 @@ Applying the above formula to $\pi_\infty$, we obtain
 
 $$
 E_{-1} \pi_\infty(\omega) = \pi_{-1}
-$$
+$$ (eq:expect_pi_infty)
 
 where the mathematical expectation $E_{-1}$ here is taken with respect to the probability
 measure ${\textrm{Prob}(\Omega)}$.
@@ -789,7 +805,7 @@ E_{-1} \pi_\infty(\omega) = \lambda \cdot 1 + (1-\lambda) \cdot 0 = \lambda
 $$
 
 
-Combining this equation with equation (20), we deduce that
+Combining this equation with equation {eq}`eq:expect_pi_infty`, we deduce that
 the probability that ${\textrm{Prob}(\Omega)}$ attaches to
 $\pi_\infty(\omega)$ being $1$ must be $\pi_{-1}$.
 
@@ -837,7 +853,9 @@ def martingale_simulate(π0, N=5000, T=200):
 def fraction_0_1(π0, N, T, decimals):
 
     π_path, w_path = martingale_simulate(π0, N=N, T=T)
-    values, counts = np.unique(np.round(π_path[:,-1], decimals=decimals), return_counts=True)
+    values, counts = np.unique(
+        np.round(π_path[:,-1], decimals=decimals), 
+        return_counts=True)
     return values, counts
 
 def create_table(π0s, N=10000, T=500, decimals=2):
@@ -861,9 +879,9 @@ T = 200
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 for i in range(100):
-    ax.plot(range(T+1), π_path[i, :])
+    ax.plot(range(T+1), π_path[i, :], lw=2)
 
-ax.set_xlabel('$t$')
+ax.set_xlabel('time')
 ax.set_ylabel(r'$\pi_t$')
 plt.show()
 ```
@@ -930,23 +948,25 @@ $w_t$'s and the $\pi_t$ sequences that gave rise to them.
 Notice that one of the paths involves systematically higher $w_t$'s, outcomes that push $\pi_t$ upward.
 
 The luck of the draw early in a simulation pushes the subjective distribution to draw from
-$F$ more frequently along a sample path, and this pushes $\pi_t$ toward $0$.
+$F$ more frequently along a sample path, and this pushes $\pi_t$ toward $1$.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 for i, j in enumerate([10, 100]):
-    ax.plot(range(T+1), π_path[j,:], color=colors[i], label=fr'$\pi$_path, {j}-th simulation')
-    ax.plot(range(1,T+1), w_path[j,:], color=colors[i], label=fr'$w$_path, {j}-th simulation', alpha=0.3)
+    ax.plot(range(T+1), π_path[j,:], color=colors[i], 
+    label=fr'$\pi$_path, {j}-th simulation', lw=2)
+    ax.plot(range(1,T+1), w_path[j,:], color=colors[i], 
+    label=fr'$w$_path, {j}-th simulation', alpha=0.3, lw=2)
 
 ax.legend(loc='upper right')
-ax.set_xlabel('$t$')
+ax.set_xlabel('time')
 ax.set_ylabel(r'$\pi_t$')
 ax2 = ax.twinx()
-ax2.set_ylabel("$w_t$")
+ax2.set_ylabel(r"$w_t$")
 plt.show()
 ```
 
-##  Initial Prior is Verified by Paths Drawn from Subjective Conditional Densities
+## Initial prior is verified by paths drawn from subjective conditional densities
 
 
 
@@ -962,7 +982,7 @@ The second column reports the fraction of $N = 10000$ simulations for which $\pi
 The third column reports the fraction of $N = 10000$ simulations for which $\pi_{t}$  had converged to $1$ at the terminal date $T=500$ for each simulation.
 
 ```{code-cell} ipython3
-# create table
+# Create table
 table = create_table(list(np.linspace(0,1,11)), N=10000, T=500)
 table
 ```
@@ -970,7 +990,7 @@ table
 The fraction of simulations for which $\pi_{t}$  had converged to $1$ is indeed always  close  to $\pi_{-1}$, as anticipated.
 
 
-## Drilling Down a Little Bit
+## Drilling down a little bit
 
 To understand how the local dynamics of $\pi_t$ behaves, it is enlightening to consult the  variance of $\pi_{t}$ conditional on $\pi_{t-1}$.
 
@@ -989,27 +1009,27 @@ Then we'll plot it.
 
 ```{code-cell} ipython3
 @jit
-def compute_cond_var(pi, mc_size=int(1e6)):
-    # create monte carlo draws
+def compute_cond_var(π, mc_size=int(1e6)):
+    # Create monte carlo draws
     mc_draws = np.zeros(mc_size)
 
     for i in prange(mc_size):
-        if np.random.rand() <= pi:
+        if np.random.rand() <= π:
             mc_draws[i] = np.random.beta(F_a, F_b)
         else:
             mc_draws[i] = np.random.beta(G_a, G_b)
 
-    dev = pi*f(mc_draws)/(pi*f(mc_draws) + (1-pi)*g(mc_draws)) - pi
+    dev = π*f(mc_draws)/(π*f(mc_draws) + (1-π)*g(mc_draws)) - π
     return np.mean(dev**2)
 
-pi_array = np.linspace(0, 1, 40)
+π_array = np.linspace(0, 1, 40)
 cond_var_array = []
 
-for pi in pi_array:
-    cond_var_array.append(compute_cond_var(pi))
+for π in π_array:
+    cond_var_array.append(compute_cond_var(π))
 
 fig, ax = plt.subplots()
-ax.plot(pi_array, cond_var_array)
+ax.plot(π_array, cond_var_array, lw=2)
 ax.set_xlabel(r'$\pi_{t-1}$')
 ax.set_ylabel(r'$\sigma^{2}(\pi_{t}\vert \pi_{t-1})$')
 plt.show()
@@ -1021,7 +1041,7 @@ Notice how the conditional variance approaches $0$ for $\pi_{t-1}$ near  either 
 
 The conditional variance is nearly zero only when the agent  is almost sure that $w_t$ is drawn from $F$,  or is almost sure it is drawn from $G$.
 
-## Related Lectures
+## Related lectures
 
 This lecture has been devoted to building some useful infrastructure that will help us understand inferences that are the foundations of
-results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
+results described in {doc}`odu`, {doc}`wald_friedman`, and {doc}`navy_captain`.
