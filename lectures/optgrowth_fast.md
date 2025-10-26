@@ -65,6 +65,8 @@ import jax
 import jax.numpy as jnp
 from typing import NamedTuple
 import quantecon as qe
+
+jax.config.update("jax_enable_x64", True)
 ```
 
 ## The model
@@ -97,7 +99,7 @@ As before, we will be able to compare with the true solutions
 We store primitives in a `NamedTuple` built for JAX and create a factory function to generate instances.
 
 ```{code-cell} python3
-class OptimalGrowthModelJAX(NamedTuple):
+class OptimalGrowthModel(NamedTuple):
     α: float               # production parameter
     β: float               # discount factor
     μ: float               # shock location parameter
@@ -118,7 +120,7 @@ def create_optgrowth_model(α=0.4,
                            shock_size=250,
                            c_grid_size=200,
                            seed=0):
-    """Factory function to create an OptimalGrowthModelJAX instance."""
+    """Factory function to create an OptimalGrowthModel instance."""
 
     key = jax.random.PRNGKey(seed)
     y_grid = jnp.linspace(1e-5, grid_max, grid_size)
@@ -127,7 +129,7 @@ def create_optgrowth_model(α=0.4,
 
     # Avoid endpoints 0 and 1 to keep feasibility and positivity.
     c_grid_frac = jnp.linspace(1e-6, 1.0 - 1e-6, c_grid_size)
-    return OptimalGrowthModelJAX(α=α, β=β, μ=μ, s=s, γ=γ,
+    return OptimalGrowthModel(α=α, β=β, μ=μ, s=s, γ=γ,
                                  y_grid=y_grid, shocks=shocks,
                                  c_grid_frac=c_grid_frac)
 ```
