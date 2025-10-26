@@ -3,10 +3,12 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.1
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 (optgrowth_fast)=
@@ -26,10 +28,9 @@ kernelspec:
 
 In addition to what is in Anaconda, this lecture needs an extra package.
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon jax
 ```
 
@@ -58,15 +59,13 @@ accelerate our code.
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
 import jax
 import jax.numpy as jnp
 from typing import NamedTuple
 import quantecon as qe
-
-jax.config.update("jax_platform_name", "cpu")
 ```
 
 ## The model
@@ -90,15 +89,17 @@ The algorithm is unchanged, but the implementation uses JAX.
 
 As before, we will be able to compare with the true solutions
 
-```{code-cell} python3
+```{code-cell} ipython3
 :load: _static/lecture_specific/optgrowth/cd_analytical.py
+
+
 ```
 
 ## Computation
 
 We store primitives in a `NamedTuple` built for JAX and create a factory function to generate instances.
 
-```{code-cell} python3
+```{code-cell} ipython3
 class OptimalGrowthModel(NamedTuple):
     α: float               # production parameter
     β: float               # discount factor
@@ -127,7 +128,7 @@ def create_optgrowth_model(α=0.4,
     z = jax.random.normal(key, (shock_size,))
     shocks = jnp.exp(μ + s * z)
 
-    # Avoid endpoints 0 and 1 to keep feasibility and positivity.
+    # Avoid endpoints 0 and 1 to keep feasibility and positivity
     c_grid_frac = jnp.linspace(1e-6, 1.0 - 1e-6, c_grid_size)
     return OptimalGrowthModel(α=α, β=β, μ=μ, s=s, γ=γ,
                                  y_grid=y_grid, shocks=shocks,
@@ -136,10 +137,10 @@ def create_optgrowth_model(α=0.4,
 
 We now implement the CRRA utility function, the Bellman operator and the value function iteration loop using JAX
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jax.jit
 def u(c, γ):
-    # CRRA utility with log at γ = 1.
+    # CRRA utility with log at γ = 1
     return jnp.where(jnp.isclose(γ, 1.0), 
             jnp.log(c), (c**(1.0 - γ) - 1.0) / (1.0 - γ))
 
@@ -147,39 +148,39 @@ def u(c, γ):
 @jax.jit
 def T(v, model):
     """
-    Bellman operator returning greedy policy and updated value.
+    Bellman operator returning greedy policy and updated value
     """
     α, β, γ, shocks = model.α, model.β, model.γ, model.shocks
     y_grid, c_grid_frac = model.y_grid, model.c_grid_frac
 
-    # Interpolant for value function on the state grid.
+    # Interpolant for value function on the state grid
     vf = lambda x: jnp.interp(x, y_grid, v)
 
     def solve_state(y):
-        # Candidate consumptions scaled by income.
+        # Candidate consumptions scaled by income
         c = c_grid_frac * y
 
-        # Next income for each c and each shock.
+        # Next income for each c and each shock
         k = jnp.maximum(y - c, 1e-12)
         y_next = (k**α)[:, None] * shocks[None, :]
 
-        # Expected continuation value via Monte Carlo.
+        # Expected continuation value via Monte Carlo
         v_next = vf(y_next.reshape(-1)).reshape(
                 c.shape[0], shocks.shape[0]).mean(axis=1)
 
-        # Objective on the consumption grid.
+        # Objective on the consumption grid
         obj = u(c, γ) + β * v_next
 
-        # Maximize over c-grid.
+        # Maximize over c-grid
         idx = jnp.argmax(obj)
 
         c_star = c[idx]
         v_val = obj[idx]
         return c_star, v_val
 
-    # Vectorize across states.
-    c_star_vec, v_new_vec = jax.vmap(solve_state)(y_grid)
-    return c_star_vec, v_new_vec
+    # Vectorize across states
+    c_star, v_new = jax.vmap(solve_state)(y_grid)
+    return c_star, v_new
 
 
 @jax.jit
@@ -205,7 +206,7 @@ def vfi(model, tol=1e-4, max_iter=1_000):
 
 Let us compute the approximate solution at the default parameters
 
-```{code-cell} python3
+```{code-cell} ipython3
 og = create_optgrowth_model()
 
 with qe.Timer(unit="milliseconds"):
@@ -214,7 +215,7 @@ with qe.Timer(unit="milliseconds"):
 
 Here is a plot of the resulting policy, compared with the true policy:
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 
 ax.plot(og.y_grid, v_greedy, lw=2, alpha=0.8, 
@@ -232,7 +233,7 @@ the algorithm.
 
 The maximal absolute deviation between the two policies is
 
-```{code-cell} python3
+```{code-cell} ipython3
 np.max(np.abs(np.asarray(v_greedy) 
             - np.asarray((1 - og.α * og.β) * og.y_grid)))
 ```
@@ -264,7 +265,8 @@ Here is the timing.
 ```{code-cell} ipython3
 with qe.Timer(unit="milliseconds"):
     for _ in range(20):
-        v = T(v, og)[1].block_until_ready()
+        _, v = T(v, og)
+    v.block_until_ready()
 ```
 
 Compared with our {ref}`timing <og_ex2>` for the non-compiled version of
@@ -301,20 +303,20 @@ Compare execution time as well.
 
 Here is the CRRA variant using the same code path
 
-```{code-cell} python3
+```{code-cell} ipython3
 og_crra = create_optgrowth_model(γ=1.5)
 ```
 
 Let's solve and time the model
 
-```{code-cell} python3
+```{code-cell} ipython3
 with qe.Timer(unit="milliseconds"):
     v_greedy = vfi(og_crra)[0].block_until_ready()
 ```
 
 Here is a plot of the resulting policy
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 
 ax.plot(og_crra.y_grid, v_greedy, lw=2, alpha=0.6, 
@@ -371,7 +373,7 @@ Replicate the figure modulo randomness.
 
 Here is one solution.
 
-```{code-cell} python3
+```{code-cell} ipython3
 import jax.random as jr
 
 def simulate_og(σ_func, og_model, y0=0.1, ts_length=100, seed=0):
@@ -386,7 +388,7 @@ def simulate_og(σ_func, og_model, y0=0.1, ts_length=100, seed=0):
     return y
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 
 for β in (0.8, 0.9, 0.98):
