@@ -43,7 +43,7 @@ We'll use the following concepts and tools:
 * Fourier transforms and inverse Fourier transforms as efficient ways of computing convolutions of sequences
 
 ```{seealso}
-For more on Fourier transforms, see {doc}`Circulant Matrices <eig_circulant>` as well as {doc}`Covariance Stationary Processes <arma>` and {doc}`Estimation of Spectra <estspec>`.
+For more on Fourier transforms, see {doc}`Circulant Matrices <eig_circulant>` as well as {doc}`Covariance Stationary Processes <advanced:arma>` and {doc}`Estimation of Spectra <advanced:estspec>`.
 ```
 
 {cite:t}`Ardron_2018` and {cite:t}`Greenfield_Sargent_1993` applied these methods to approximate failure probabilities of safety systems in nuclear facilities.
@@ -328,7 +328,7 @@ Let's define the Fourier transform and the inverse Fourier transform first
 The **Fourier transform** of a sequence $\{x_t\}_{t=0}^{T-1}$ is
 
 ```{math}
-:label: fourier_transform
+:label: eq:ft1
 
 x(\omega_j) = \sum_{t=0}^{T-1} x_t \exp(-i \omega_j t)
 ```
@@ -338,7 +338,7 @@ where $\omega_j = \frac{2\pi j}{T}$ for $j = 0, 1, \ldots, T-1$.
 The **inverse Fourier transform** of the sequence $\{x(\omega_j)\}_{j=0}^{T-1}$ is
 
 ```{math}
-:label: inverse_fourier_transform
+:label: eq:ift1
 
 x_t = T^{-1} \sum_{j=0}^{T-1} x(\omega_j) \exp(i \omega_j t)
 ```
@@ -488,7 +488,7 @@ $$
 or
 
 ```{math}
-:label: system_failure_prob
+:label: eq:probtop
 
 P(F) \approx \sum_{i=1}^n P(A_i)
 ```
