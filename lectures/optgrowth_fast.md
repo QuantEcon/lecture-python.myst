@@ -237,12 +237,14 @@ np.max(np.abs(np.asarray(v_greedy)
 
 ## Exercises
 
-```{exercise}
+```{exercise-start}
 :label: ogfast_ex1
+```
 
 Time how long it takes to iterate with the Bellman operator 20 times, starting from initial condition $v(y) = u(y)$.
 
 Use the default parameterization.
+```{exercise-end}
 ```
 
 ```{solution-start} ogfast_ex1
@@ -269,9 +271,9 @@ value function iteration, the JIT-compiled code is usually an order of magnitude
 ```{solution-end}
 ```
 
-```{exercise}
+```{exercise-start}
 :label: ogfast_ex2
-
+```
 Modify the optimal growth model to use the CRRA utility specification.
 
 $$
@@ -287,6 +289,7 @@ Compute an estimate of the optimal policy and plot it.
 Compare visually with the same plot from the {ref}`analogous exercise <og_ex1>` in the first optimal growth lecture.
 
 Compare execution time as well.
+```{exercise-end}
 ```
 
 
