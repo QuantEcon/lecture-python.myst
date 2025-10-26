@@ -66,7 +66,7 @@ import jax.numpy as jnp
 from typing import NamedTuple
 import quantecon as qe
 
-jax.config.update("jax_enable_x64", True)
+jax.config.update("jax_platform_name", "cpu")
 ```
 
 ## The model
