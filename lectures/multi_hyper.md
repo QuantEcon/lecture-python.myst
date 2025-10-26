@@ -216,7 +216,7 @@ def moments(urn, n):
 
 
 def simulate(urn, n, size=1, seed=0):
-    """Simulate multivariate hypergeometric draws efficiently."""
+    """Simulate multivariate hypergeometric draws."""
     K_arr, c = urn.K, urn.c
     n = int(n)
     size = int(size)
@@ -226,7 +226,7 @@ def simulate(urn, n, size=1, seed=0):
         return jnp.zeros((0, c), dtype=jnp.int32)
 
     def draw_once(key):
-        """Generate one draw via a lax.scan loop (JIT friendly)."""
+        """Generate one draw via a lax.scan loop."""
         counts0 = jnp.zeros(c, dtype=jnp.int32)
 
         def body_fn(carry, _):
