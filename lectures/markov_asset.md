@@ -88,6 +88,7 @@ import quantecon as qe
 import jax
 import jax.numpy as jnp
 from jax.numpy.linalg import eigvals, solve
+from jax.experimental import checkify
 from typing import NamedTuple
 ```
 
@@ -567,6 +568,20 @@ We will define a function tree_price to compute $v$ given parameters stored in
 the class AssetPriceModel
 
 ```{code-cell} ipython3
+class MarkovChain(NamedTuple):
+    """
+    A class that stores the primitives of a Markov chain.
+    Parameters
+    ----------
+    P : jnp.ndarray
+        Transition matrix
+    state_values : jnp.ndarray
+        The values associated with each state
+    """
+    P: jnp.ndarray
+    state_values: jnp.ndarray
+
+
 class AssetPriceModel(NamedTuple):
     """
     A class that stores the primitives of the asset pricing model.
@@ -584,34 +599,42 @@ class AssetPriceModel(NamedTuple):
     n: int
         The number of states
     """
-    mc: qe.MarkovChain
+    mc: MarkovChain
     g: callable
     β: float
     γ: float
     n: int
     
 
-def create_ap_model(mc=None, g=jnp.exp, β=0.96, γ=2.0):
-    """Create an AssetPriceModel class"""
-    if mc is None:
-        n, ρ, σ = 25, 0.9, 0.02
-        mc = qe.tauchen(n, ρ, σ)
-    else:
-        mc = mc
-        n = mc.P.shape[0]
+def create_ap_model(g=jnp.exp, β=0.96, γ=2.0):
+    """Create an AssetPriceModel class using standard Markov chain."""
+    n, ρ, σ = 25, 0.9, 0.02
+    qe_mc = qe.tauchen(n, ρ, σ)
+    P = jnp.array(qe_mc.P)
+    state_values = jnp.array(qe_mc.state_values)
+    mc = MarkovChain(P=P, state_values=state_values)
 
     return AssetPriceModel(mc=mc, g=g, β=β, γ=γ, n=n)
 
 
-def test_stability(Q, β):
-    """
-    Stability test for a given matrix Q.
-    """
-    sr = np.max(np.abs(eigvals(Q)))
-    if not sr < 1 / β:
-        msg = f"Spectral radius condition failed with radius = {sr}"
-        raise ValueError(msg)
+def create_customized_ap_model(mc: MarkovChain, g=jnp.exp, β=0.96, γ=2.0):
+    """Create an AssetPriceModel class using a customized Markov chain."""
+    n = mc.P.shape[0]
+    return AssetPriceModel(mc=mc, g=g, β=β, γ=γ, n=n)
 
+
+def test_stability(Q, β):
+    """Stability test for a given matrix Q."""
+    sr = jnp.max(jnp.abs(eigvals(Q)))
+    checkify.check(
+        sr < 1 / β, 
+        "Spectral radius condition failed with radius = {sr}", sr=sr
+        )
+    return sr
+
+
+# Wrap the check function to be JIT-safe
+test_stability = checkify.checkify(test_stability, errors=checkify.user_checks)
 
 def tree_price(ap):
     """
@@ -633,7 +656,8 @@ def tree_price(ap):
     J = P * ap.g(y)**(1 - γ)
 
     # Make sure that a unique solution exists
-    test_stability(J, β)
+    err, out = test_stability(J, β)
+    err.throw()
 
     # Compute v
     I = jnp.identity(ap.n)
@@ -661,7 +685,7 @@ states = ap.mc.state_values
 fig, ax = plt.subplots()
 
 for γ in γs:
-    tem_ap = create_ap_model(mc=ap.mc, g=ap.g, β=ap.β, γ=γ)
+    tem_ap = create_customized_ap_model(mc=ap.mc, β=ap.β, γ=γ)
     v = tree_price(tem_ap)
     ax.plot(states, v, lw=2, alpha=0.6, label=rf"$\gamma = {γ}$")
 
@@ -767,7 +791,8 @@ def consol_price(ap, ζ):
     M = P * ap.g(y)**(- γ)
 
     # Make sure that a unique solution exists
-    test_stability(M, β)
+    err, _ = test_stability(M, β)
+    err.throw()
 
     # Compute price
     I = jnp.identity(ap.n)
@@ -879,7 +904,8 @@ def call_option(ap, ζ, p_s, ϵ=1e-7):
     M = P * ap.g(y)**(- γ)
 
     # Make sure that a unique consol price exists
-    test_stability(M, β)
+    err, _ = test_stability(M, β)
+    err.throw()
 
     # Compute option price
     p = consol_price(ap, ζ)
@@ -887,7 +913,7 @@ def call_option(ap, ζ, p_s, ϵ=1e-7):
     error = ϵ + 1
 
     def step(state):
-        w, error = state
+        w, _ = state
         # Maximize across columns
         w_new = jnp.maximum(β * M @ w, p - p_s)
         # Find maximal difference of each component and update
@@ -1062,7 +1088,7 @@ Next, we'll create an instance of `AssetPriceModel` to feed into the
 functions
 
 ```{code-cell} ipython3
-apm = create_ap_model(mc=mc, g=lambda x: x, β=β, γ=γ)
+apm = create_customized_ap_model(mc=mc, g=lambda x: x, β=β, γ=γ)
 ```
 
 Now we just need to call the relevant functions on the data:
@@ -1152,7 +1178,8 @@ def finite_horizon_call_option(ap, ζ, p_s, k):
     M = P * ap.g(y)**(- γ)
 
     # Make sure that a unique solution exists
-    test_stability(M, β)
+    err, _ = test_stability(M, β)
+    err.throw()
 
     # Compute option price
     p = consol_price(ap, ζ)
