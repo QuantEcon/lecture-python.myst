@@ -185,7 +185,7 @@ It is useful to regard equation {eq}`lteeqs102`   as a generalization of equatio
 
 Equation {eq}`lteeqs102` asserts that the covariance of the stochastic discount factor with the one period payout $d_{t+1} + p_{t+1}$ is an important determinant of the price $p_t$.
 
-We give examples of some models of stochastic discount factors that have been proposed later in this lecture and also in a [later lecture](https://python-advanced.quantecon.org/lucas_model.html).
+We give examples of some models of stochastic discount factors that have been proposed later in this lecture and also in a {doc}`later lecture<advanced:lucas_model>`.
 
 ### The price-dividend ratio
 
@@ -496,7 +496,7 @@ m_{t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)}
 
 where $u$ is a concave utility function and $c_t$ is time $t$ consumption of a representative consumer.
 
-(A derivation of this expression is given in a [later lecture](https://python-advanced.quantecon.org/lucas_model.html))
+(A derivation of this expression is given in a {doc}`later lecture<advanced:lucas_model>`)
 
 Assume the existence of an endowment that follows growth process {eq}`mass_fmce`.
 
