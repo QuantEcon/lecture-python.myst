@@ -76,7 +76,7 @@ $f$ or $g$.
 
 Before the beginning of time, nature once and for all decides whether she will draw a sequence of IID draws from $f$ or from $g$.
 
-We will sometimes let $q$ be the density that nature chose once and for all, so
+We let $q$ be the density that nature chose once and for all, so
 that $q$ is either $f$ or $g$, permanently.
 
 Nature knows which density it permanently draws from, but we the observers do not.
@@ -584,7 +584,7 @@ def compute_KL(f, g):
 
 def compute_div_m(f, g):
     """
-    Compute Jensen-Shannon divergence
+    Compute KL(m, f) and KL(m, g)
     """
     def m(w):
         return 0.5 * (f(w) + g(w))
@@ -602,7 +602,7 @@ Since $KL(m, f) < KL(m, g)$, $f$ is "closer" to the mixture distribution $m$.
 Hence by our discussion on KL divergence and likelihood ratio process in 
 {doc}`likelihood_ratio_process`, $\log(L_t) \to \infty$ as $t \to \infty$.
 
-Now looking back to the key equation {eq}`eq_Bayeslaw1033`. 
+Now look back at the key equation {eq}`eq_Bayeslaw1033`. 
 
 Consider the function 
 
@@ -734,12 +734,12 @@ Thus, let $\{\pi_t(\omega)\}_{t=0}^\infty$ denote a particular sample path index
 \in \Omega$.
 
 We can think of nature as drawing an $\omega \in \Omega$ from a probability distribution
-${\textrm{Prob}} \Omega$ and then generating a single realization (or _simulation_) $\{\pi_t(\omega)\}_{t=0}^\infty$ of the process.
+${\textrm{Prob}}(\Omega)$ and then generating a single realization (or _simulation_) $\{\pi_t(\omega)\}_{t=0}^\infty$ of the process.
 
 The limit points of  $\{\pi_t(\omega)\}_{t=0}^\infty$ as $t \rightarrow +\infty$ are realizations of a random variable that  is swept out as we sample $\omega$ from $\Omega$ and construct repeated draws of $\{\pi_t(\omega)\}_{t=0}^\infty$.
 
 
-By staring at law of motion {eq}`eq_recur1` or {eq}`eq:like44` , we can figure out some things about the probability distribution of the limit points
+By staring at the law of motion {eq}`eq_recur1` or {eq}`eq:like44`, we can figure out some things about the probability distribution of the limit points
 
 
 
@@ -765,8 +765,8 @@ $$
 $$
 
 
-Thus, for some realizations, $\lim_{\rightarrow + \infty} \pi_t(\omega) =1$
-while for other realizations,  $\lim_{\rightarrow + \infty} \pi_t(\omega) =0$.
+Thus, for some realizations, $\lim_{t \rightarrow + \infty} \pi_t(\omega) =1$
+while for other realizations,  $\lim_{t \rightarrow + \infty} \pi_t(\omega) =0$.
 
 Now let's remember that $\{\pi_t\}_{t=0}^\infty$ is a martingale and apply the law of iterated expectations.
 
@@ -888,7 +888,7 @@ plt.show()
 
 The above graph indicates that
 
-* each of paths converges
+* each of the paths converges
 
 * some of the paths converge to $1$
 
@@ -913,7 +913,7 @@ Evidently, by $t = 199$, $\pi_t$ has converged to either $0$ or $1$.
 
 The fraction of paths that have converged to $1$ is $.5$
 
-The fractions of paths that have converged to $0$ is also $.5$.
+The fraction of paths that have converged to $0$ is also $.5$.
 
 Does the fraction $.5$ ring a bell?
 
@@ -954,9 +954,9 @@ $F$ more frequently along a sample path, and this pushes $\pi_t$ toward $1$.
 fig, ax = plt.subplots()
 for i, j in enumerate([10, 100]):
     ax.plot(range(T+1), π_path[j,:], color=colors[i], 
-    label=fr'$\pi$_path, {j}-th simulation', lw=2)
+    label=fr'$\{\pi_t\}$, {j}-th simulation', lw=2)
     ax.plot(range(1,T+1), w_path[j,:], color=colors[i], 
-    label=fr'$w$_path, {j}-th simulation', alpha=0.3, lw=2)
+    label=fr'$\{w_t\}$, {j}-th simulation', alpha=0.3, lw=2)
 
 ax.legend(loc='upper right')
 ax.set_xlabel('time')
@@ -1001,7 +1001,7 @@ $$
  \Bigl[ \pi_{t-1} f(w) + (1-\pi_{t-1})g(w) \Bigr]  d w
 $$
 
-We can use  a Monte Carlo simulation to approximate this conditional variance.
+We can use a Monte Carlo simulation to approximate this conditional variance.
 
 We approximate it for  a grid of points $\pi_{t-1} \in [0,1]$.
 
@@ -1010,7 +1010,7 @@ Then we'll plot it.
 ```{code-cell} ipython3
 @jit
 def compute_cond_var(π, mc_size=int(1e6)):
-    # Create monte carlo draws
+    # Create Monte Carlo draws
     mc_draws = np.zeros(mc_size)
 
     for i in prange(mc_size):

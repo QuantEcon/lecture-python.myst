@@ -73,7 +73,7 @@ $f$ or $g$.
 Before the beginning of time, nature once and for all decides whether she will draw a sequence of IID draws from either
 $f$ or $g$.
 
-We will sometimes let $q$ be the density that nature chose once and for all, so
+We let $q$ be the density that nature chose once and for all, so
 that $q$ is either $f$ or $g$, permanently.
 
 Nature knows which density it permanently draws from, but we the observers do not.
