@@ -65,7 +65,6 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 import jax.random as jr
-import jax.scipy.optimize as jsp
 from typing import NamedTuple
 import quantecon as qe
 ```
@@ -425,7 +424,8 @@ for β in (0.8, 0.9, 0.98):
     og_temp = create_optgrowth_model(β=β, s=0.05)
     c_greedy_temp, _ = vfi(og_temp)
 
-    σ_func = lambda x: np.interp(x, og_temp.y_grid, np.asarray(c_greedy_temp))
+    σ_func = lambda x: np.interp(x, og_temp.y_grid, 
+                            np.asarray(c_greedy_temp))
     y = simulate_og(σ_func, og_temp)
     ax.plot(y, lw=2, alpha=0.6, label=rf'$\beta = {β}$')
 
