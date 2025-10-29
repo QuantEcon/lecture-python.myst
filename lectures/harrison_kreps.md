@@ -3,10 +3,12 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.1
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 (harrison_kreps)=
@@ -29,10 +31,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture uses following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -51,7 +52,7 @@ The model features
 
 Let's start with some standard imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import numpy as np
 import quantecon as qe
 import scipy.linalg as la
@@ -131,7 +132,7 @@ But in state $1$,  a type $a$ investor is more pessimistic  about next period's 
 
 The stationary (i.e., invariant) distributions of these two matrices can be calculated as follows:
 
-```{code-cell} python3
+```{code-cell} ipython3
 qa = np.array([[1/2, 1/2], [2/3, 1/3]])
 qb = np.array([[2/3, 1/3], [1/4, 3/4]])
 mca = qe.MarkovChain(qa)
@@ -139,7 +140,7 @@ mcb = qe.MarkovChain(qb)
 mca.stationary_distributions
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 mcb.stationary_distributions
 ```
 
@@ -270,7 +271,7 @@ The first two rows of the table report $p_a(s)$ and $p_b(s)$.
 
 Here's a function that can be used to compute these values
 
-```{code-cell} python3
+```{code-cell} ipython3
 def price_single_beliefs(transition, dividend_payoff, β=.75):
     """
     Function to Solve Single Beliefs
@@ -399,7 +400,7 @@ Investors of type $a$ want to sell the asset in state $1$ while investors of typ
 
 Here's code to solve for $\bar p$, $\hat p_a$ and $\hat p_b$ using the iterative method described above
 
-```{code-cell} python3
+```{code-cell} ipython3
 def price_optimistic_beliefs(transitions, dividend_payoff, β=.75,
                             max_iter=50000, tol=1e-16):
     """
@@ -414,7 +415,7 @@ def price_optimistic_beliefs(transitions, dividend_payoff, β=.75,
         p_old = p_new
         p_new = β * np.max([q @ p_old
                             + q @ dividend_payoff for q in transitions],
-                            1)
+                            axis=0)
 
         # If we succeed in converging, break out of for loop
         if np.max(np.sqrt((p_new - p_old)**2)) < tol:
@@ -422,7 +423,7 @@ def price_optimistic_beliefs(transitions, dividend_payoff, β=.75,
 
     ptwiddle = β * np.min([q @ p_old
                           + q @ dividend_payoff for q in transitions],
-                          1)
+                          axis=0)
 
     phat_a = np.array([p_new[0], ptwiddle[1]])
     phat_b = np.array([ptwiddle[0], p_new[1]])
@@ -444,8 +445,8 @@ Instead of equation {eq}`hakr2`, the equilibrium price satisfies
 \check p(s)
 = \beta \min
 \left\{
-    P_a(s,1)  \check  p(0) + P_a(s,1) ( 1 +   \check  p(1)) ,\;
-    P_b(s,1)  \check p(0) + P_b(s,1) ( 1 + \check p(1))
+    P_a(s,0)  \check  p(0) + P_a(s,1) ( 1 +   \check  p(1)) ,\;
+    P_b(s,0)  \check p(0) + P_b(s,1) ( 1 + \check p(1))
 \right\}
 ```
 
@@ -467,7 +468,7 @@ Constraints on short sales prevent that.
 
 Here's code to solve for $\check p$ using iteration
 
-```{code-cell} python3
+```{code-cell} ipython3
 def price_pessimistic_beliefs(transitions, dividend_payoff, β=.75,
                             max_iter=50000, tol=1e-16):
     """
@@ -482,7 +483,7 @@ def price_pessimistic_beliefs(transitions, dividend_payoff, β=.75,
         p_old = p_new
         p_new = β * np.min([q @ p_old
                             + q @ dividend_payoff for q in transitions],
-                           1)
+                           axis=0)
 
         # If we succeed in converging, break out of for loop
         if np.max(np.sqrt((p_new - p_old)**2)) < tol:
@@ -511,8 +512,6 @@ Scheinkman takes this as a strength of the model because he observes high volume
 Scheinkman extracts insights about the effects of financial regulations on bubbles.
 
 He emphasizes how limiting short sales and limiting leverage have opposite effects.
-
-## Exercises
 
 ```{exercise-start}
 :label: hk_ex1
@@ -570,7 +569,7 @@ We'll use these transition matrices when we present our solution of exercise 1 b
 First, we will obtain equilibrium price vectors with homogeneous beliefs, including when all
 investors are optimistic or pessimistic.
 
-```{code-cell} python3
+```{code-cell} ipython3
 qa = np.array([[1/2, 1/2], [2/3, 1/3]])    # Type a transition matrix
 qb = np.array([[2/3, 1/3], [1/4, 3/4]])    # Type b transition matrix
 # Optimistic investor transition matrix
@@ -595,7 +594,7 @@ for transition, label in zip(transitions, labels):
 We will use the price_optimistic_beliefs function to find the price under
 heterogeneous beliefs.
 
-```{code-cell} python3
+```{code-cell} ipython3
 opt_beliefs = price_optimistic_beliefs([qa, qb], dividendreturn)
 labels = ['p_optimistic', 'p_hat_a', 'p_hat_b']
 
