@@ -953,10 +953,10 @@ $F$ more frequently along a sample path, and this pushes $\pi_t$ toward $1$.
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 for i, j in enumerate([10, 100]):
-    ax.plot(range(T+1), π_path[j,:], color=colors[i], 
-    label=fr'$\{\pi_t\}$, {j}-th simulation', lw=2)
-    ax.plot(range(1,T+1), w_path[j,:], color=colors[i], 
-    label=fr'$\{w_t\}$, {j}-th simulation', alpha=0.3, lw=2)
+    ax.plot(range(T+1), π_path[j,:], color=colors[i],
+    label=fr'${{\pi_t}}$, {j}-th simulation', lw=2)
+    ax.plot(range(1,T+1), w_path[j,:], color=colors[i],
+    label=fr'${{w_t}}$, {j}-th simulation', alpha=0.3, lw=2)
 
 ax.legend(loc='upper right')
 ax.set_xlabel('time')
