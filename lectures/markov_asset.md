@@ -63,7 +63,7 @@ An asset is a claim on one or more future payoffs.
 
 The spot price of an asset depends primarily on
 
-* the anticipated  income stream
+* the anticipated income stream
 * attitudes about risk
 * rates of time preference
 
@@ -75,7 +75,7 @@ We also look at creating and pricing *derivative* assets that repackage income s
 
 Key tools for the lecture are
 
-* Markov processses
+* Markov processes
 * formulas for predicting future values of functions of a Markov state
 * a formula for predicting the discounted sum of future values of a Markov state
 
@@ -83,7 +83,6 @@ Let's start with some imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
-import numpy as np
 import quantecon as qe
 import jax
 import jax.numpy as jnp
@@ -151,7 +150,7 @@ for some  **stochastic discount factor** $m_{t+1}$.
 
 Here the fixed discount factor $\beta$ in {eq}`rnapex` has been replaced by the random variable $m_{t+1}$.
 
-How anticipated future payoffs are evaluated  now depends on statistical properties of $m_{t+1}$.
+How anticipated future payoffs are evaluated now depends on statistical properties of $m_{t+1}$.
 
 The stochastic discount factor can be specified to capture the idea that assets that tend to have good payoffs in bad states of the world are valued more highly than other assets whose payoffs don't behave that way.
 
@@ -177,12 +176,12 @@ If we apply this definition to the asset pricing equation {eq}`lteeqs0` we obtai
 p_t = {\mathbb E}_t m_{t+1} {\mathbb E}_t (d_{t+1} + p_{t+1}) + {\rm cov}_t (m_{t+1}, d_{t+1}+ p_{t+1})
 ```
 
-It is useful to regard equation {eq}`lteeqs102`   as a generalization of equation {eq}`rnapex`
+It is useful to regard equation {eq}`lteeqs102` as a generalization of equation {eq}`rnapex`
 
-* In equation {eq}`rnapex`, the stochastic discount factor $m_{t+1} = \beta$,  a constant.
+* In equation {eq}`rnapex`, the stochastic discount factor $m_{t+1} = \beta$, a constant.
 * In equation {eq}`rnapex`, the covariance term ${\rm cov}_t (m_{t+1}, d_{t+1}+ p_{t+1})$ is zero because $m_{t+1} = \beta$.
 * In equation {eq}`rnapex`, ${\mathbb E}_t m_{t+1}$ can be interpreted as the reciprocal of the one-period risk-free gross interest rate.
-* When  $m_{t+1}$  covaries more negatively with the payout $p_{t+1} + d_{t+1}$, the price of the asset is lower.
+* When $m_{t+1}$ covaries more negatively with the payout $p_{t+1} + d_{t+1}$, the price of the asset is lower.
 
 Equation {eq}`lteeqs102` asserts that the covariance of the stochastic discount factor with the one period payout $d_{t+1} + p_{t+1}$ is an important determinant of the price $p_t$.
 
@@ -213,9 +212,9 @@ The answer to this question depends on
 1. the process we specify for dividends
 1. the stochastic discount factor and how it correlates with dividends
 
-For now we'll study  the risk-neutral case in which  the stochastic discount factor is constant.
+For now we'll study the risk-neutral case in which the stochastic discount factor is constant.
 
-We'll  focus on how an asset  price depends on a dividend process.
+We'll focus on how an asset price depends on a dividend process.
 
 ### Example 1: constant dividends
 
@@ -340,7 +339,7 @@ x_series = mc.simulate(sim_length, init=jnp.median(mc.state_values))
 g_series = jnp.exp(x_series)
 d_series = jnp.cumprod(g_series) # Assumes d_0 = 1
 
-series = [x_series, g_series, d_series, np.log(d_series)]
+series = [x_series, g_series, d_series, jnp.log(d_series)]
 labels = ['$X_t$', '$g_t$', '$d_t$', r'$\log \, d_t$']
 
 fig, axes = plt.subplots(2, 2)
@@ -564,8 +563,8 @@ Assuming that the spectral radius of $J$ is strictly less than $\beta^{-1}$, thi
 v = (I - \beta J)^{-1} \beta  J {\mathbb 1}
 ```
 
-We will define a function tree_price to compute $v$ given parameters stored in
-the class AssetPriceModel
+We will define a function `tree_price` to compute $v$ given parameters stored in
+the class `AssetPriceModel`
 
 ```{code-cell} ipython3
 class MarkovChain(NamedTuple):
@@ -578,8 +577,8 @@ class MarkovChain(NamedTuple):
     state_values : jnp.ndarray
         The values associated with each state
     """
-    P: jnp.ndarray
-    state_values: jnp.ndarray
+    P: jax.Array
+    state_values: jax.Array
 
 
 class AssetPriceModel(NamedTuple):
@@ -590,20 +589,17 @@ class AssetPriceModel(NamedTuple):
     ----------
     mc : MarkovChain
         Contains the transition matrix and set of state values
-    g : callable
-        The function mapping states to growth rates
+    G : jax.Array
+        The vector form of the function mapping states to growth rates
     β : float
         Discount factor
     γ : float
         Coefficient of risk aversion
-    n: int
-        The number of states
     """
     mc: MarkovChain
-    g: callable
+    G: jax.Array
     β: float
     γ: float
-    n: int
     
 
 def create_ap_model(g=jnp.exp, β=0.96, γ=2.0):
@@ -612,15 +608,16 @@ def create_ap_model(g=jnp.exp, β=0.96, γ=2.0):
     qe_mc = qe.tauchen(n, ρ, σ)
     P = jnp.array(qe_mc.P)
     state_values = jnp.array(qe_mc.state_values)
+    G = g(state_values)
     mc = MarkovChain(P=P, state_values=state_values)
 
-    return AssetPriceModel(mc=mc, g=g, β=β, γ=γ, n=n)
+    return AssetPriceModel(mc=mc, G=G, β=β, γ=γ)
 
 
 def create_customized_ap_model(mc: MarkovChain, g=jnp.exp, β=0.96, γ=2.0):
     """Create an AssetPriceModel class using a customized Markov chain."""
-    n = mc.P.shape[0]
-    return AssetPriceModel(mc=mc, g=g, β=β, γ=γ, n=n)
+    G = g(mc.state_values)
+    return AssetPriceModel(mc=mc, G=G, β=β, γ=γ)
 
 
 def test_stability(Q, β):
@@ -632,9 +629,6 @@ def test_stability(Q, β):
         )
     return sr
 
-
-# Wrap the check function to be JIT-safe
-test_stability = checkify.checkify(test_stability, errors=checkify.user_checks)
 
 def tree_price(ap):
     """
@@ -649,22 +643,24 @@ def tree_price(ap):
     -------
     v : array_like(float)
         Lucas tree price-dividend ratio
-
     """
     # Simplify names, set up matrices
-    β, γ, P, y = ap.β, ap.γ, ap.mc.P, ap.mc.state_values
-    J = P * ap.g(y)**(1 - γ)
+    β, γ, P, G = ap.β, ap.γ, ap.mc.P, ap.G
+    J = P * G**(1 - γ)
 
     # Make sure that a unique solution exists
-    err, out = test_stability(J, β)
-    err.throw()
+    test_stability(J, β)
 
     # Compute v
-    I = jnp.identity(ap.n)
-    Ones = jnp.ones(ap.n)
+    n = J.shape[0]
+    I = jnp.identity(n)
+    Ones = jnp.ones(n)
     v = solve(I - β * J, β * J @ Ones)
 
     return v
+
+# Wrap the function to be safely jitted
+tree_price_jit = jax.jit(checkify.checkify(tree_price))
 ```
 
 Here's a plot of $v$ as a function of the state for several values of $\gamma$,
@@ -685,8 +681,12 @@ states = ap.mc.state_values
 fig, ax = plt.subplots()
 
 for γ in γs:
-    tem_ap = create_customized_ap_model(mc=ap.mc, β=ap.β, γ=γ)
-    v = tree_price(tem_ap)
+    tem_ap = create_customized_ap_model(ap.mc, γ=γ)
+    # checkify returns a tuple
+    # err indicates whether errors happened
+    err, v = tree_price_jit(tem_ap)
+    # Stop if errors raised
+    err.throw()
     ax.plot(states, v, lw=2, alpha=0.6, label=rf"$\gamma = {γ}$")
 
 ax.set_ylabel("price-dividend ratio")
@@ -766,7 +766,7 @@ yields the solution
 p = (I - \beta M)^{-1} \beta M \zeta {\mathbb 1}
 ```
 
-The above is implemented in the function consol_price.
+The above is implemented in the function `consol_price`.
 
 ```{code-cell} ipython3
 def consol_price(ap, ζ):
@@ -787,19 +787,22 @@ def consol_price(ap, ζ):
         Console bond prices
     """
     # Simplify names, set up matrices
-    β, γ, P, y = ap.β, ap.γ, ap.mc.P, ap.mc.state_values
-    M = P * ap.g(y)**(- γ)
+    β, γ, P, G = ap.β, ap.γ, ap.mc.P, ap.G
+    M = P * G**(- γ)
 
     # Make sure that a unique solution exists
-    err, _ = test_stability(M, β)
-    err.throw()
+    test_stability(M, β)
 
     # Compute price
-    I = jnp.identity(ap.n)
-    Ones = jnp.ones(ap.n)
+    n = M.shape[0]
+    I = jnp.identity(n)
+    Ones = jnp.ones(n)
     p = solve(I - β * M, β * ζ * M @ Ones)
 
     return p
+
+# Wrap the function to be safely jitted
+consol_price_jit = jax.jit(checkify.checkify(consol_price))
 ```
 
 ### Pricing an Option to Purchase the Consol
@@ -870,9 +873,9 @@ T w
 = \max \{ \beta M w,\; p - p_S {\mathbb 1} \}
 $$
 
-Start at some initial $w$ and iterate with $T$ to convergence .
+Start at some initial $w$ and iterate with $T$ to convergence.
 
-We can find the solution with the following function call_option
+We can find the solution with the following function `call_option`
 
 ```{code-cell} ipython3
 def call_option(ap, ζ, p_s, ϵ=1e-7):
@@ -900,16 +903,17 @@ def call_option(ap, ζ, p_s, ϵ=1e-7):
 
     """
     # Simplify names, set up matrices
-    β, γ, P, y = ap.β, ap.γ, ap.mc.P, ap.mc.state_values
-    M = P * ap.g(y)**(- γ)
+    β, γ, P, G = ap.β, ap.γ, ap.mc.P, ap.G
+    M = P * G**(- γ)
 
     # Make sure that a unique consol price exists
-    err, _ = test_stability(M, β)
-    err.throw()
+    test_stability(M, β)
 
     # Compute option price
     p = consol_price(ap, ζ)
-    w = jnp.zeros(ap.n)
+    err.throw()
+    n = M.shape[0]
+    w = jnp.zeros(n)
     error = ϵ + 1
 
     def step(state):
@@ -928,6 +932,8 @@ def call_option(ap, ζ, p_s, ϵ=1e-7):
     final_w, _ = jax.lax.while_loop(cond, step, (w, error))
 
     return final_w
+
+call_option_jit = jax.jit(checkify.checkify(call_option))
 ```
 
 Here's a plot of $w$ compared to the consol price when $P_S = 40$
@@ -945,8 +951,10 @@ ap = create_ap_model(β=0.9)
 strike_price = 40
 
 x = ap.mc.state_values
-p = consol_price(ap, ζ)
-w = call_option(ap, ζ, strike_price)
+err, p = consol_price_jit(ap, ζ)
+err.throw()
+err, w = call_option_jit(ap, ζ, strike_price)
+err.throw()
 
 fig, ax = plt.subplots()
 ax.plot(x, p, 'b-', lw=2, label='consol price')
@@ -1046,7 +1054,7 @@ P = P.at[jnp.arange(n), jnp.arange(n)].set(
     P[jnp.arange(n), jnp.arange(n)] + 1 - P.sum(1)
     )
 # State values of the Markov chain
-s = np.array([0.95, 0.975, 1.0, 1.025, 1.05])
+s = jnp.array([0.95, 0.975, 1.0, 1.025, 1.05])
 γ = 2.0
 β = 0.94
 ```
@@ -1076,7 +1084,7 @@ P = P.at[jnp.arange(n), jnp.arange(n)].set(
     P[jnp.arange(n), jnp.arange(n)] + 1 - P.sum(1)
     )
 s = jnp.array([0.95, 0.975, 1.0, 1.025, 1.05])  # State values
-mc = qe.MarkovChain(P, state_values=s)
+mc = MarkovChain(P=P, state_values=s)
 
 γ = 2.0
 β = 0.94
@@ -1094,23 +1102,29 @@ apm = create_customized_ap_model(mc=mc, g=lambda x: x, β=β, γ=γ)
 Now we just need to call the relevant functions on the data:
 
 ```{code-cell} ipython3
-tree_price(apm)
+err, v = tree_price_jit(apm)
+err.throw()
+print(v)
 ```
 
 ```{code-cell} ipython3
-consol_price(apm, ζ)
+err, p = consol_price_jit(apm, ζ)
+err.throw()
+print(p)
 ```
 
 ```{code-cell} ipython3
-call_option(apm, ζ, p_s)
+err, w = call_option_jit(apm, ζ, p_s)
+err.throw()
+print(w)
 ```
 
 Let's show the last two functions as a plot
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.plot(s, consol_price(apm, ζ), label='consol')
-ax.plot(s, call_option(apm, ζ, p_s), label='call option')
+ax.plot(s, p, label='consol')
+ax.plot(s, w, label='call option')
 ax.legend()
 plt.show()
 ```
@@ -1169,28 +1183,32 @@ Is one higher than the other?  Can you give intuition?
 Here's a suitable function:
 
 ```{code-cell} ipython3
-def finite_horizon_call_option(ap, ζ, p_s, k):
+def finite_call_option(ap, ζ, p_s, k):
     """
     Computes k period option value.
     """
     # Simplify names, set up matrices
-    β, γ, P, y = ap.β, ap.γ, ap.mc.P, ap.mc.state_values
-    M = P * ap.g(y)**(- γ)
+    β, γ, P, G = ap.β, ap.γ, ap.mc.P, ap.G
+    M = P * G**(- γ)
 
     # Make sure that a unique solution exists
-    err, _ = test_stability(M, β)
-    err.throw()
+    test_stability(M, β)
 
     # Compute option price
     p = consol_price(ap, ζ)
+    n = M.shape[0]
     def step(i, w):
         # Maximize across columns
         w = jnp.maximum(β * M @ w, p - p_s)
         return w
     
-    w = jax.lax.fori_loop(0, k, step, jnp.zeros(ap.n))
+    w = jax.lax.fori_loop(0, k, step, jnp.zeros(n))
 
     return w
+
+finite_call_option_jit = jax.jit(
+    checkify.checkify(finite_call_option)
+    )
 ```
 
 Now let's compute the option values at `k=5` and `k=25`
@@ -1198,7 +1216,8 @@ Now let's compute the option values at `k=5` and `k=25`
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 for k in [5, 25]:
-    w = finite_horizon_call_option(apm, ζ, p_s, k)
+    err, w = finite_call_option_jit(apm, ζ, p_s, k)
+    err.throw()
     ax.plot(s, w, label=rf'$k = {k}$')
 ax.legend()
 plt.show()
