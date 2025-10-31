@@ -64,7 +64,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import jax
 import jax.numpy as jnp
-import jax.random as jr
 from typing import NamedTuple
 import quantecon as qe
 from quantecon.distributions import BetaBinomial
@@ -116,7 +115,7 @@ The worker faces a trade-off:
 * Waiting too long for a good offer is costly, since the future is discounted.
 * Accepting too early is costly, since better offers might arrive in the future.
 
-To decide optimally in the face of this trade-off, we use dynamic programming.
+To decide optimally in the face of this trade-off, we use [dynamic programming](https://dp.quantecon.org/).
 
 Dynamic programming can be thought of as a two-step procedure that
 
@@ -139,7 +138,7 @@ To this end, let $v^*(w)$ be the total lifetime *value* accruing to an
 unemployed worker who enters the current period unemployed when the wage is
 $w \in \mathbb{W}$.
 
-In particular, the agent has wage offer $w$ in hand.
+(In particular, the agent has wage offer $w$ in hand and can accept or reject it.)
 
 More precisely, $v^*(w)$ denotes the value of the objective function
 {eq}`obj_model` when an agent in this situation makes *optimal* decisions now
@@ -167,7 +166,7 @@ v^*(w)
 
 for every possible $w$  in $\mathbb{W}$.
 
-This important equation is a version of the **Bellman equation**, which is
+This is a version of the **Bellman equation**, which is
 ubiquitous in economic dynamics and other fields involving planning over time.
 
 The intuition behind it is as follows:
@@ -178,9 +177,12 @@ $$
     \frac{w}{1 - \beta} = w + \beta w + \beta^2 w + \cdots
 $$
 
-* the second term inside the max operation is the **continuation value**, which is the lifetime payoff from rejecting the current offer and then behaving optimally in all subsequent periods
+* the second term inside the max operation is the continuation value, which is
+  the lifetime payoff from rejecting the current offer and then behaving
+  optimally in all subsequent periods
 
-If we optimize and pick the best of these two options, we obtain maximal lifetime value from today, given current offer $w$.
+If we optimize and pick the best of these two options, we obtain maximal
+lifetime value from today, given current offer $w$.
 
 But this is precisely $v^*(w)$, which is the left-hand side of {eq}`odu_pv`.
 
@@ -197,7 +199,7 @@ All we have to do is select the maximal choice on the right-hand side of {eq}`od
 The optimal action is best thought of as a **policy**, which is, in general, a map from
 states to actions.
 
-Given *any* $w$, we can read off the corresponding best choice (accept or
+Given any $w$, we can read off the corresponding best choice (accept or
 reject) by picking the max on the right-hand side of {eq}`odu_pv`.
 
 Thus, we have a map from $\mathbb W$ to $\{0, 1\}$, with 1 meaning accept and 0 meaning reject.
@@ -228,7 +230,7 @@ where
     \bar w := (1 - \beta) \left\{ c + \beta \sum_{w'} v^*(w') q (w') \right\}
 ```
 
-Here $\bar w$ (called the *reservation wage*) is a constant depending on
+Here $\bar w$ (called the **reservation wage**) is a constant depending on
 $\beta, c$ and the wage distribution.
 
 The agent should accept if and only if the current wage offer exceeds the reservation wage.
@@ -238,8 +240,7 @@ In view of {eq}`reswage`, we can compute this reservation wage if we can compute
 
 ## Computing the Optimal Policy: Take 1
 
-To put the above ideas into action, we need to compute the value function at
-each possible state $w \in \mathbb W$.
+To put the above ideas into action, we need to compute the value function at each $w \in \mathbb W$.
 
 To simplify notation, let's set
 
@@ -249,8 +250,7 @@ $$
     v^*(i) := v^*(w_i)
 $$
 
-The value function is then represented by the vector
-$v^* = (v^*(i))_{i=1}^n$.
+The value function is then represented by the vector $v^* = (v^*(i))_{i=1}^n$.
 
 In view of {eq}`odu_pv`, this vector satisfies the nonlinear system of equations
 
@@ -302,8 +302,7 @@ The theory below elaborates on this point.
 
 What's the mathematics behind these ideas?
 
-First, one defines a mapping $T$ from $\mathbb R^n$ to
-itself via
+First, one defines a mapping $T$ from $\mathbb R^n$ to itself via
 
 ```{math}
 :label: odu_pv3
@@ -320,11 +319,9 @@ itself via
 (A new vector $Tv$ is obtained from given vector $v$ by evaluating
 the r.h.s. at each $i$.)
 
-The element $v_k$ in the sequence $\{v_k\}$ of successive
-approximations corresponds to $T^k v$.
+The element $v_k$ in the sequence $\{v_k\}$ of successive approximations corresponds to $T^k v$.
 
-* This is $T$ applied $k$ times, starting at the initial guess
-  $v$
+* This is $T$ applied $k$ times, starting at the initial guess $v$
 
 One can show that the conditions of the [Banach fixed point theorem](https://en.wikipedia.org/wiki/Banach_fixed-point_theorem) are
 satisfied by $T$ on $\mathbb R^n$.
@@ -333,12 +330,11 @@ One implication is that $T$ has a unique fixed point in $\mathbb R^n$.
 
 * That is, a unique vector $\bar v$ such that $T \bar v = \bar v$.
 
-Moreover, it's immediate from the definition of $T$ that this fixed
-point is $v^*$.
+Moreover, it's immediate from the definition of $T$ that this fixed point is $v^*$.
 
 A second implication of the  Banach contraction mapping theorem is that
-$\{ T^k v \}$ converges to the fixed point $v^*$ regardless of
-$v$.
+$\{ T^k v \}$ converges to the fixed point $v^*$ regardless of $v$.
+
 
 ### Implementation
 
@@ -368,11 +364,11 @@ ax.set_ylabel('probabilities')
 plt.show()
 ```
 
-We are going to use JAX to accelerate our code.
+We will use [JAX](https://python-programming.quantecon.org/jax_intro.html) to write our code.
 
-* We'll use NamedTuple for our model class to maintain immutability, which works well with JAX's functional programming paradigm.
+We'll use `NamedTuple` for our model class to maintain immutability, which works well with JAX's functional programming paradigm.
 
-Here's a class that stores the model parameters with default values, and a separate function that computes the values of state-action pairs (i.e., the value in the maximum bracket on the right hand side of the Bellman equation {eq}`odu_pv2p`).
+Here's a class that stores the model parameters with default values.
 
 ```{code-cell} python3
 class McCallModel(NamedTuple):
@@ -380,7 +376,12 @@ class McCallModel(NamedTuple):
     β: float = 0.99             # discount factor  
     w: jnp.ndarray = w_default  # array of wage values, w[i] = wage at state i
     q: jnp.ndarray = q_default  # array of probabilities
+```
 
+Here is a function that computes the
+value in the maximum bracket on the right hand side of the Bellman equation {eq}`odu_pv2p`.
+
+```{code-cell} python3
 @jax.jit
 def state_action_values(model, i, v):
     """
@@ -658,8 +659,8 @@ cdf = jnp.cumsum(q_default)
 def compute_stopping_time(w_bar, key):
     def body_fun(state):
         t, key, done = state
-        key, subkey = jr.split(key)
-        u = jr.uniform(subkey)
+        key, subkey = jax.random.split(key)
+        u = jax.random.uniform(subkey)
         w = w_default[jnp.searchsorted(cdf, u)]
         done = w >= w_bar
         t = jnp.where(done, t, t + 1)
@@ -675,8 +676,8 @@ def compute_stopping_time(w_bar, key):
 
 @jax.jit
 def compute_mean_stopping_time(w_bar, num_reps=100000, seed=1234):
-    key = jr.PRNGKey(seed)
-    keys = jr.split(key, num_reps)
+    key = jax.random.PRNGKey(seed)
+    keys = jax.random.split(key, num_reps)
     obs = jax.vmap(compute_stopping_time, in_axes=(None, 0))(w_bar, keys)
     return jnp.mean(obs)
 
@@ -776,8 +777,8 @@ class McCallModelContinuous(NamedTuple):
     w_draws: jnp.ndarray  # draws of wages for Monte Carlo
 
 def create_mccall_continuous(c=25, β=0.99, σ=0.5, μ=2.5, mc_size=1000, seed=1234):
-    key = jr.PRNGKey(seed)
-    s = jr.normal(key, (mc_size,))
+    key = jax.random.PRNGKey(seed)
+    s = jax.random.normal(key, (mc_size,))
     w_draws = jnp.exp(μ + σ * s)
     return McCallModelContinuous(c=c, β=β, σ=σ, μ=μ, w_draws=w_draws)
 
