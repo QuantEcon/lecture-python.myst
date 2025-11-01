@@ -114,8 +114,8 @@ def benchmark(num_trials=5, num_reps=100000):
 
     # Warm-up runs
     print("Warming up...")
-    _ = compute_mean_stopping_time_numba(w_bar, num_reps=1000)
-    _ = compute_mean_stopping_time_jax(w_bar, num_reps=1000).block_until_ready()
+    _ = compute_mean_stopping_time_numba(w_bar, num_reps=num_reps)
+    _ = compute_mean_stopping_time_jax(w_bar, num_reps=num_reps).block_until_ready()
     print("Warm-up complete.\n")
 
     results = {}
