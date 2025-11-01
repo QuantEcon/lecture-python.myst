@@ -4,11 +4,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 (mccall)=
@@ -651,7 +651,10 @@ Plot mean unemployment duration as a function of $c$ in `c_vals`.
 Here's a solution using Numba.
 
 ```{code-cell} ipython3
-cdf = np.cumsum(q_default)
+# Convert JAX arrays to NumPy arrays for use with Numba
+q_default_np = np.array(q_default)
+w_default_np = np.array(w_default)
+cdf = np.cumsum(q_default_np)
 
 @numba.jit
 def compute_stopping_time(w_bar, seed=1234):
@@ -660,7 +663,7 @@ def compute_stopping_time(w_bar, seed=1234):
     t = 1
     while True:
         # Generate a wage draw
-        w = w_default[qe.random.draw(cdf)]
+        w = w_default_np[qe.random.draw(cdf)]
         # Stop when the draw is above the reservation wage
         if w >= w_bar:
             stopping_time = t
@@ -681,7 +684,8 @@ stop_times = np.empty_like(c_vals)
 for i, c in enumerate(c_vals):
     mcm = McCallModel(c=c)
     w_bar = compute_reservation_wage_two(mcm)
-    stop_times[i] = compute_mean_stopping_time(w_bar)
+    # Convert JAX scalar to Python float
+    stop_times[i] = compute_mean_stopping_time(float(w_bar))
 
 fig, ax = plt.subplots()
 
@@ -690,9 +694,7 @@ ax.set(xlabel="unemployment compensation", ylabel="months")
 ax.legend()
 
 plt.show()
-
 ```
-
 
 And here's a solution using JAX.
 
