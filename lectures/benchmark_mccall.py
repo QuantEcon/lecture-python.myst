@@ -84,6 +84,8 @@ def compute_stopping_time_jax(w_bar, key):
     t_final, _, _ = jax.lax.while_loop(cond, update, initial_state)
     return t_final
 
+from functools import partial
+@partial(jax.jit, static_argnames=['num_reps'])
 def compute_mean_stopping_time_jax(w_bar, num_reps=100000, seed=1234):
     key = jax.random.PRNGKey(seed)
     keys = jax.random.split(key, num_reps)
@@ -99,7 +101,7 @@ def benchmark_numba():
     # Warmup
     mcm = McCallModel(c=25.0)
     w_bar = compute_reservation_wage_two(mcm)
-    _ = compute_mean_stopping_time_numba(float(w_bar), num_reps=1000)
+    _ = compute_mean_stopping_time_numba(float(w_bar), num_reps=10000)
 
     # Actual benchmark
     start = time.time()
@@ -113,19 +115,22 @@ def benchmark_numba():
 
 def benchmark_jax():
     c_vals = jnp.linspace(10, 40, 25)
-    stop_times = np.empty_like(c_vals)
+    stop_times = jnp.zeros_like(c_vals)
 
     # Warmup - compile the functions
     model = McCallModel(c=25.0)
     w_bar = compute_reservation_wage_two(model)
-    _ = compute_mean_stopping_time_jax(w_bar, num_reps=1000).block_until_ready()
+    _ = compute_mean_stopping_time_jax(
+            w_bar, num_reps=10000).block_until_ready()
 
     # Actual benchmark
     start = time.time()
     for i, c in enumerate(c_vals):
         model = McCallModel(c=c)
         w_bar = compute_reservation_wage_two(model)
-        stop_times[i] = compute_mean_stopping_time_jax(w_bar).block_until_ready()
+        stop_times = stop_times.at[i].set(compute_mean_stopping_time_jax(
+            w_bar, num_reps=10000).block_until_ready())
+        
     end = time.time()
 
     return end - start, stop_times
