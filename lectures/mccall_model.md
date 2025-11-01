@@ -63,6 +63,7 @@ Let's start with some imports:
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
+import numba
 import jax
 import jax.numpy as jnp
 from typing import NamedTuple
@@ -502,8 +503,7 @@ def compute_res_wage_jitted(model, v_init, max_iter=500, tol=1e-6):
     return v, res_wage
 ```
 
-Now we'll use a layered vmap structure to replicate nested for loops and
-efficiently compute the reservation wage at each $c, \beta$ pair.
+Now we compute the reservation wage at each $c, \beta$ pair.
 
 ```{code-cell} ipython3
 grid_size = 25
@@ -533,16 +533,14 @@ ax.ticklabel_format(useOffset=False)
 plt.show()
 ```
 
-As expected, the reservation wage increases both with patience and with
-unemployment compensation.
+As expected, the reservation wage increases with both patience and unemployment compensation.
 
 (mm_op2)=
 ## Computing an Optimal Policy: Take 2
 
-The approach to dynamic programming just described is standard and
-broadly applicable.
+The approach to dynamic programming just described is standard and broadly applicable.
 
-But for our McCall search model there's also an easier way that  circumvents the
+But for our McCall search model there's also an easier way that circumvents the
 need to compute the value function.
 
 Let $h$ denote the continuation value:
@@ -559,8 +557,8 @@ h
 The Bellman equation can now be written as
 
 $$
-v^*(s')
-= \max \left\{ \frac{w(s')}{1 - \beta}, \, h \right\}
+    v^*(s')
+    = \max \left\{ \frac{w(s')}{1 - \beta}, \, h \right\}
 $$
 
 Substituting this last equation into {eq}`j1` gives
@@ -650,7 +648,53 @@ Plot mean unemployment duration as a function of $c$ in `c_vals`.
 :class: dropdown
 ```
 
-Here's one solution
+Here's a solution using Numba.
+
+```{code-cell} ipython3
+cdf = np.cumsum(q_default)
+
+@numba.jit
+def compute_stopping_time(w_bar, seed=1234):
+
+    np.random.seed(seed)
+    t = 1
+    while True:
+        # Generate a wage draw
+        w = w_default[qe.random.draw(cdf)]
+        # Stop when the draw is above the reservation wage
+        if w >= w_bar:
+            stopping_time = t
+            break
+        else:
+            t += 1
+    return stopping_time
+
+@numba.jit
+def compute_mean_stopping_time(w_bar, num_reps=100000):
+    obs = np.empty(num_reps)
+    for i in range(num_reps):
+        obs[i] = compute_stopping_time(w_bar, seed=i)
+    return obs.mean()
+
+c_vals = np.linspace(10, 40, 25)
+stop_times = np.empty_like(c_vals)
+for i, c in enumerate(c_vals):
+    mcm = McCallModel(c=c)
+    w_bar = compute_reservation_wage_two(mcm)
+    stop_times[i] = compute_mean_stopping_time(w_bar)
+
+fig, ax = plt.subplots()
+
+ax.plot(c_vals, stop_times, label="mean unemployment duration")
+ax.set(xlabel="unemployment compensation", ylabel="months")
+ax.legend()
+
+plt.show()
+
+```
+
+
+And here's a solution using JAX.
 
 ```{code-cell} ipython3
 cdf = jnp.cumsum(q_default)
@@ -675,11 +719,11 @@ def compute_stopping_time(w_bar, key):
     t_final, _, _ = jax.lax.while_loop(cond, update, initial_state)
     return t_final
 
-@jax.jit
 def compute_mean_stopping_time(w_bar, num_reps=100000, seed=1234):
     key = jax.random.PRNGKey(seed)
     keys = jax.random.split(key, num_reps)
-    obs = jax.vmap(compute_stopping_time, in_axes=(None, 0))(w_bar, keys)
+    compute_fn = jax.jit(jax.vmap(compute_stopping_time, in_axes=(None, 0)))
+    obs = compute_fn(w_bar, keys)
     return jnp.mean(obs)
 
 
