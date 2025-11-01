@@ -4,11 +4,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.17.2
 kernelspec:
-  name: python3
   display_name: Python 3 (ipykernel)
   language: python
+  name: python3
 ---
 
 (mccall)=
@@ -67,6 +67,7 @@ import numba
 import jax
 import jax.numpy as jnp
 from typing import NamedTuple
+from functools import partial
 import quantecon as qe
 from quantecon.distributions import BetaBinomial
 ```
@@ -383,8 +384,7 @@ class McCallModel(NamedTuple):
 We implement the Bellman operator $T$ from {eq}`odu_pv3` as follows
 
 ```{code-cell} ipython3
-def T(model, v):
-    # Unpack
+def T(model: McCallModel, v: jnp.ndarray):
     c, β, w, q = model
     accept = w / (1 - β)
     reject = c + β * v @ q
@@ -396,49 +396,39 @@ in the sequence $\{ T^k v \}$.
 
 We will start from guess $v$ given by $v(i) = w(i) / (1 - β)$, which is the value of accepting at every given wage.
 
-Here's a function to implement this:
-
-```{code-cell} ipython3
-def plot_value_function_seq(model, ax, num_plots=6):
-    """
-    Plot a sequence of value functions.
-
-        * model is an instance of McCallModel
-        * ax is an axes object that implements a plot method.
-
-    """
-    # Set up
-    c, β, w, q = model
-    v = w / (1 - β)
-    # Iterate
-    for i in range(num_plots):
-        ax.plot(w, v, '-', alpha=0.6, lw=2, label=f"iterate {i}")
-        v = T(model, v)
-    ax.legend(loc='lower right')
-```
-
-Now let's create an instance of `McCallModel` and watch iterations  $T^k v$ converge from below:
-
 ```{code-cell} ipython3
 model = McCallModel()
-
+c, β, w, q = model
+v = w / (1 - β)   # Initial condition
 fig, ax = plt.subplots()
+
+num_plots = 6
+for i in range(num_plots):
+    ax.plot(w, v, '-', alpha=0.6, lw=2, label=f"iterate {i}")
+    v = T(model, v)
+
+ax.legend(loc='lower right')
 ax.set_xlabel('wage')
 ax.set_ylabel('value')
-plot_value_function_seq(model, ax)
 plt.show()
 ```
 
 You can see that convergence is occurring: successive iterates are getting closer together.
 
-Here's a more serious iteration effort to compute the limit, which continues until measured deviation between successive iterates is below tol.
+Here's a more serious iteration effort to compute the limit, which continues
+until measured deviation between successive iterates is below tol.
 
 Once we obtain a good approximation to the limit, we will use it to calculate
 the reservation wage.
 
 ```{code-cell} ipython3
-def compute_reservation_wage(model, v_init, max_iter=500, tol=1e-6):
-    # Set up
+def compute_reservation_wage(
+        model: McCallModel,   # instance containing default parameters
+        v_init: jnp.ndarray,  # initial condition for iteration
+        tol: float=1e-6,      # error tolerance
+        max_iter: int=500,    # maximum number of iterations for loop
+    ):
+    "Computes the reservation wage in the McCall job search model."
     c, β, w, q = model
     i = 0
     error = tol + 1 
@@ -472,13 +462,18 @@ parameters.
 In particular, let's look at what happens when we change $\beta$ and
 $c$.
 
-As a first step, we'll create a more efficient, jit-complied version of the
-function that computes the reservation wage
+As a first step, given that we'll use it many times, let's create a more
+efficient, jit-complied version of the function that computes the reservation
+wage:
 
 ```{code-cell} ipython3
 @jax.jit
-def compute_res_wage_jitted(model, v_init, max_iter=500, tol=1e-6):
-    # Set up
+def compute_res_wage_jitted(
+        model: McCallModel,   # instance containing default parameters
+        v_init: jnp.ndarray,  # initial condition for iteration
+        tol: float=1e-6,      # error tolerance
+        max_iter: int=500,    # maximum number of iterations for loop
+    ):
     c, β, w, q = model
     i = 0
     error = tol + 1 
@@ -548,10 +543,7 @@ Let $h$ denote the continuation value:
 ```{math}
 :label: j1
 
-h
-= c + \beta
-    \sum_{s'} v^*(s') q (s')
-\quad
+    h = c + \beta \sum_{s'} v^*(s') q (s')
 ```
 
 The Bellman equation can now be written as
@@ -566,13 +558,11 @@ Substituting this last equation into {eq}`j1` gives
 ```{math}
 :label: j2
 
-h
-= c + \beta
-    \sum_{s' \in \mathbb S}
-    \max \left\{
-        \frac{w(s')}{1 - \beta}, h
-    \right\}  q (s')
-\quad
+    h = c + \beta
+        \sum_{s' \in \mathbb S}
+        \max \left\{
+            \frac{w(s')}{1 - \beta}, h
+        \right\}  q (s')
 ```
 
 This is a nonlinear equation that we can solve for $h$.
@@ -606,21 +596,35 @@ The big difference here, however, is that we're iterating on a scalar $h$, rathe
 Here's an implementation:
 
 ```{code-cell} ipython3
-def compute_reservation_wage_two(model, max_iter=500, tol=1e-5):
-    # Set up
-    c, β, w, q = model.c, model.β, model.w, model.q
-    h = (w @ q) / (1 - β)
+@jax.jit
+def compute_reservation_wage_two(
+        model: McCallModel,   # instance containing default parameters
+        tol: float=1e-5,      # error tolerance
+        max_iter: int=500,    # maximum number of iterations for loop
+    ):
+    c, β, w, q = model
+    h = (w @ q) / (1 - β)  # initial condition
     i = 0
     error = tol + 1
+    initial_loop_state = i, h, error
 
-    while i < max_iter and error > tol:
+    def cond(loop_state):
+        i, h, error = loop_state
+        return jnp.logical_and(i < max_iter, error > tol)
+
+    def update(loop_state):
+        i, h, error = loop_state
         s = jnp.maximum(w / (1 - β), h)
         h_next = c + β * (s @ q)
         error = jnp.abs(h_next - h)
-        h = h_next
-        i += 1 
+        i_next = i + 1
+        new_loop_state = i_next, h_next, error
+        return new_loop_state
 
-    # Now compute the reservation wage
+    final_state = jax.lax.while_loop(cond, update, initial_loop_state)
+    i, h, error = final_state
+
+    # Compute and return the reservation wage
     return (1 - β) * h
 ```
 
@@ -672,10 +676,10 @@ def compute_stopping_time(w_bar, seed=1234):
             t += 1
     return stopping_time
 
-@numba.jit
+@numba.jit(parallel=True)
 def compute_mean_stopping_time(w_bar, num_reps=100000):
     obs = np.empty(num_reps)
-    for i in range(num_reps):
+    for i in numba.prange(num_reps):
         obs[i] = compute_stopping_time(w_bar, seed=i)
     return obs.mean()
 
@@ -684,7 +688,6 @@ stop_times = np.empty_like(c_vals)
 for i, c in enumerate(c_vals):
     mcm = McCallModel(c=c)
     w_bar = compute_reservation_wage_two(mcm)
-    # Convert JAX scalar to Python float
     stop_times[i] = compute_mean_stopping_time(float(w_bar))
 
 fig, ax = plt.subplots()
@@ -703,39 +706,58 @@ cdf = jnp.cumsum(q_default)
 
 @jax.jit
 def compute_stopping_time(w_bar, key):
-
-    def update(state):
-        t, key, done = state
+    """
+    Optimized version with better state management.
+    Key improvement: Check acceptance condition before incrementing t,
+    avoiding redundant jnp.where operation.
+    """
+    def update(loop_state):
+        t, key, accept = loop_state
         key, subkey = jax.random.split(key)
         u = jax.random.uniform(subkey)
         w = w_default[jnp.searchsorted(cdf, u)]
-        done = w >= w_bar
-        t = jnp.where(done, t, t + 1)
-        return t, key, done
-    
-    def cond(state):
-        t, _, done = state
-        return jnp.logical_not(done)
-    
-    initial_state = (1, key, False)
-    t_final, _, _ = jax.lax.while_loop(cond, update, initial_state)
+        accept = w >= w_bar
+        t = t + 1
+        return t, key, accept
+
+    def cond(loop_state):
+        _, _, accept = loop_state
+        return jnp.logical_not(accept)
+
+    initial_loop_state = (0, key, False)
+    t_final, _, _ = jax.lax.while_loop(cond, update, initial_loop_state)
     return t_final
 
+
+@partial(jax.jit, static_argnames=('num_reps',))
 def compute_mean_stopping_time(w_bar, num_reps=100000, seed=1234):
+    """
+    Generate a mean stopping time over `num_reps` repetitions by repeatedly
+    drawing from `compute_stopping_time`.
+
+    """
+    # Generate a key for each MC replication
     key = jax.random.PRNGKey(seed)
     keys = jax.random.split(key, num_reps)
-    compute_fn = jax.jit(jax.vmap(compute_stopping_time, in_axes=(None, 0)))
+    # Vectorize compute_stopping_time and evaluate across keys
+    # Note: No need for extra jax.jit here, already jitted
+    compute_fn = jax.vmap(compute_stopping_time, in_axes=(None, 0))
     obs = compute_fn(w_bar, keys)
+    # Return mean stopping time
     return jnp.mean(obs)
 
 
 c_vals = jnp.linspace(10, 40, 25)
-stop_times = np.empty_like(c_vals)
 
-for i, c in enumerate(c_vals):
+# Optimized version using vmap
+def compute_stop_time_for_c(c):
+    """Compute mean stopping time for a given compensation value c."""
     model = McCallModel(c=c)
     w_bar = compute_reservation_wage_two(model)
-    stop_times[i] = compute_mean_stopping_time(w_bar)
+    return compute_mean_stopping_time(w_bar)
+
+# Vectorize across all c values
+stop_times = jax.vmap(compute_stop_time_for_c)(c_vals)
 
 fig, ax = plt.subplots()
 
