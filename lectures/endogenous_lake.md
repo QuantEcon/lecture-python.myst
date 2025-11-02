@@ -144,7 +144,9 @@ $$
 
 where the notation $V$ and $U$ is as defined in the {doc}`McCall search model lecture <mccall_model>`.
 
-The wage offer distribution will be a discretized version of the lognormal distribution $LN(\log(20),1)$, as shown in the next figure
+The wage offer distribution will be a discretized version of the lognormal distribution $LN(\log(20),1)$.
+
+We first define a function to create a discretized wage distribution:
 
 ```{code-cell} ipython3
 def create_wage_distribution(max_wage: float,
@@ -159,29 +161,28 @@ def create_wage_distribution(max_wage: float,
     p_vec = pdf / pdf.sum()
     w_vec = (w_vec_temp[1:] + w_vec_temp[:-1]) / 2
     return w_vec, p_vec
+```
 
+Let's create a wage distribution and visualize it:
+
+```{code-cell} ipython3
 w_vec, p_vec = create_wage_distribution(170, 200, 20)
 
-# Plot the wage distribution
 fig, ax = plt.subplots()
-
 ax.plot(w_vec, p_vec)
 ax.set_xlabel('wages')
 ax.set_ylabel('probability')
-
 plt.tight_layout()
 plt.show()
 ```
 
 ### Fiscal policy code
 
-We will make use of techniques from the {doc}`McCall model lecture <mccall_model>`
+We will make use of techniques from the {doc}`McCall model lecture <mccall_model>`.
 
-The first piece of code implements value function iteration
+First, we define the utility function and the McCall model data structure:
 
 ```{code-cell} ipython3
-:tags: [output_scroll]
-
 @jax.jit
 def u(c, σ=2.0):
     return jnp.where(c > 0, (c**(1 - σ) - 1) / (1 - σ), -10e6)
@@ -214,8 +215,11 @@ def create_mccall_model(α=0.2, β=0.98, γ=0.7, c=6.0, σ=2.0,
         dist = BetaBinomial(n-1, a, b)
         p_vec = jnp.array(dist.pdf())
     return McCallModel(α=α, β=β, γ=γ, c=c, σ=σ, w_vec=w_vec, p_vec=p_vec)
+```
 
+Next, we implement the Bellman equation operator:
 
+```{code-cell} ipython3
 @jax.jit
 def bellman(mcm: McCallModel, V, U):
     """
@@ -228,8 +232,11 @@ def bellman(mcm: McCallModel, V, U):
     U_new = u(c, σ) + β * (1 - γ) * U + β * γ * (jnp.maximum(U, V) @ p_vec)
 
     return V_new, U_new
+```
 
+Now we define the value function iteration solver:
 
+```{code-cell} ipython3
 @jax.jit
 def solve_mccall_model(mcm: McCallModel, tol=1e-5, max_iter=2000):
     """
@@ -260,7 +267,7 @@ def solve_mccall_model(mcm: McCallModel, tol=1e-5, max_iter=2000):
     return V_final, U_final
 ```
 
-We also need to import the lake model functions from the previous lecture.
+We also need the lake model functions from the previous lecture to compute steady state unemployment rates:
 
 ```{code-cell} ipython3
 class LakeModel(NamedTuple):
@@ -331,8 +338,11 @@ def rate_steady_state(model: LakeModel) -> jnp.ndarray:
     return steady_state
 ```
 
-Now let's compute and plot welfare, employment, unemployment, and tax revenue as a
-function of the unemployment compensation rate
+### Computing optimal unemployment insurance
+
+Now we set up the infrastructure to compute optimal unemployment insurance levels.
+
+First, we define a container for the economy's parameters:
 
 ```{code-cell} ipython3
 class EconomyParameters(NamedTuple):
@@ -359,8 +369,11 @@ def create_economy_params(α=0.013, b=0.0124, d=0.00822,
                            log_wage_mean=log_wage_mean,
                            wage_grid_size=wage_grid_size,
                            max_wage=max_wage)
+```
 
+Next, we define a function that computes optimal worker behavior given policy parameters:
 
+```{code-cell} ipython3
 @jax.jit
 def compute_optimal_quantities(c, τ,
                     params: EconomyParameters, w_vec, p_vec):
@@ -384,8 +397,11 @@ def compute_optimal_quantities(c, τ,
 
     λ = params.γ * jnp.sum(p_vec * (w_vec - τ > w_bar))
     return w_bar, λ, V, U
+```
 
+This function computes the steady state outcomes given unemployment insurance and tax levels:
 
+```{code-cell} ipython3
 @jax.jit
 def compute_steady_state_quantities(c, τ,
                     params: EconomyParameters, w_vec, p_vec):
@@ -407,8 +423,11 @@ def compute_steady_state_quantities(c, τ,
     welfare = e * w + u * U
 
     return e, u, welfare
+```
 
+We need a function to find the tax rate that balances the government budget:
 
+```{code-cell} ipython3
 def find_balanced_budget_tax(c, params: EconomyParameters,
                              w_vec, p_vec):
     """
@@ -436,8 +455,11 @@ def find_balanced_budget_tax(c, params: EconomyParameters,
             t_high = t_mid
 
     return t_mid
+```
 
+Now we compute how employment, unemployment, taxes, and welfare vary with the unemployment compensation rate:
 
+```{code-cell} ipython3
 # Create economy parameters and wage distribution
 params = create_economy_params()
 w_vec, p_vec = create_wage_distribution(params.max_wage,
@@ -460,7 +482,11 @@ for c in c_vec:
     unempl_vec.append(u_rate)
     empl_vec.append(e_rate)
     welfare_vec.append(welfare)
+```
 
+Let's visualize the results:
+
+```{code-cell} ipython3
 fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 
 plots = [unempl_vec, empl_vec, tax_vec, welfare_vec]
