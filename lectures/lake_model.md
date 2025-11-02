@@ -197,14 +197,14 @@ $$
 we can also write this as
 
 $$
-x_{t+1} = \hat A x_t
+x_{t+1} = R x_t
 \quad \text{where} \quad
-\hat A := \frac{1}{1 + g} A
+R := \frac{1}{1 + g} A
 $$
 
 You can check that $e_t + u_t = 1$ implies that $e_{t+1}+u_{t+1} = 1$.
 
-This follows from the fact that the columns of $\hat A$ sum to 1.
+This follows from the fact that the columns of $R$ sum to 1.
 
 ## Implementation
 
@@ -221,6 +221,50 @@ class LakeModel(NamedTuple):
     α: float = 0.013
     b: float = 0.0124
     d: float = 0.00822
+    A: jnp.ndarray = None
+    R: jnp.ndarray = None
+    g: float = None
+
+
+def create_lake_model(λ: float = 0.283,
+                      α: float = 0.013,
+                      b: float = 0.0124,
+                      d: float = 0.00822) -> LakeModel:
+    """
+    Create a LakeModel instance with default parameters.
+
+    Computes and stores the transition matrices A and R,
+    and the labor force growth rate g.
+
+    Parameters
+    ----------
+    λ : float, optional
+        Job finding rate (default: 0.283)
+    α : float, optional
+        Job separation rate (default: 0.013)
+    b : float, optional
+        Entry rate into labor force (default: 0.0124)
+    d : float, optional
+        Exit rate from labor force (default: 0.00822)
+
+    Returns
+    -------
+    LakeModel
+        A LakeModel instance with computed matrices A, R, and growth rate g
+    """
+    # Compute growth rate
+    g = b - d
+
+    # Compute transition matrix A
+    A = jnp.array([
+        [(1-d) * (1-λ) + b, (1-d) * α + b],
+        [(1-d) * λ,         (1-d) * (1-α)]
+    ])
+
+    # Compute normalized transition matrix R
+    R = A / (1 + g)
+
+    return LakeModel(λ=λ, α=α, b=b, d=d, A=A, R=R, g=g)
 ```
 
 We will also use a specialized function to generate time series in an efficient
@@ -235,13 +279,13 @@ def generate_path(f, initial_state, num_steps, **kwargs):
     """
     Generate a time series by repeatedly applying an update rule.
 
-    Given a map f, initial state x_0, and a set of model parameter θ, this
+    Given a map f, initial state x_0, and model parameters, this
     function computes and returns the sequence {x_t}_{t=0}^{T-1} when
 
-        x_{t+1} = f(x_t, t, θ) 
+        x_{t+1} = f(x_t, **kwargs)
 
     Args:
-        f: Update function mapping (x_t, t, θ) -> x_{t+1}
+        f: Update function mapping (x_t, **kwargs) -> x_{t+1}
         initial_state: Initial state x_0
         num_steps: Number of time steps T to simulate
         **kwargs: Optional extra arguments passed to f
@@ -255,7 +299,7 @@ def generate_path(f, initial_state, num_steps, **kwargs):
         """
         Wrapper function that adapts f for use with JAX scan.
         """
-        next_state = f(state, t, **kwargs)
+        next_state = f(state, **kwargs)
         return next_state, state
 
     _, path = jax.lax.scan(update_wrapper,
@@ -263,51 +307,35 @@ def generate_path(f, initial_state, num_steps, **kwargs):
     return path.T
 ```
 
-Now we can compute the matrices and simulate the dynamics.
+Now we can simulate the dynamics.
 
 ```{code-cell} ipython3
-def compute_matrices(model: LakeModel):
-    """Compute the transition matrices A and A_hat for the model."""
-    λ, α, b, d = model.λ, model.α, model.b, model.d
-    g = b - d
-    A = jnp.array([[(1-d) * (1-λ) + b,      (1 - d) * α + b],
-                   [        (1-d) * λ,      (1 - d) * (1 - α)]])
-    A_hat = A / (1 + g)
-    return A, A_hat, g
+def stock_update(X: jnp.ndarray, model: LakeModel) -> jnp.ndarray:
+    """Apply transition matrix to get next period's stocks."""
+    λ, α, b, d, A, R, g = model
+    return A @ X
 
-
-def stock_update(current_stocks, time_step, model):
-    """
-    Apply transition matrix to get next period's stocks.
-    """
-    A, A_hat, g = compute_matrices(model)
-    next_stocks = A @ current_stocks
-    return next_stocks
-
-def rate_update(current_rates, time_step, model):
-    """
-    Apply normalized transition matrix for next period's rates.
-    """
-    A, A_hat, g = compute_matrices(model)
-    next_rates = A_hat @ current_rates
-    return next_rates
+def rate_update(x: jnp.ndarray, model: LakeModel) -> jnp.ndarray:
+    """Apply normalized transition matrix for next period's rates."""
+    λ, α, b, d, A, R, g = model
+    return R @ x
 ```
 
 We create two instances, one with $α=0.013$ and another with $α=0.03$
 
 ```{code-cell} ipython3
-model = LakeModel()
-model_new = LakeModel(α=0.03)
+model = create_lake_model()
+model_new = create_lake_model(α=0.03)
 
 print(f"Default α: {model.α}")
-A, A_hat, g = compute_matrices(model)
-print(f"A matrix:\n{A}")
+print(f"A matrix:\n{model.A}")
+print(f"R matrix:\n{model.R}")
 ```
 
 ```{code-cell} ipython3
-A_new, A_hat_new, g_new = compute_matrices(model_new)
 print(f"New α: {model_new.α}")
-print(f"New A matrix:\n{A_new}")
+print(f"New A matrix:\n{model_new.A}")
+print(f"New R matrix:\n{model_new.R}")
 ```
 
 ### Aggregate dynamics
@@ -343,44 +371,49 @@ The aggregates $E_t$ and $U_t$ don't converge because their sum $E_t + U_t$ grow
 On the other hand, the vector of employment and unemployment rates $x_t$ can be in a steady state $\bar x$ if
 there exists an $\bar x$  such that
 
-* $\bar x = \hat A \bar x$
+* $\bar x = R \bar x$
 * the components satisfy $\bar e + \bar u = 1$
 
-This equation tells us that a steady state level $\bar x$ is an eigenvector of $\hat A$ associated with a unit eigenvalue.
+This equation tells us that a steady state level $\bar x$ is an eigenvector of $R$ associated with a unit eigenvalue.
 
 The following function can be used to compute the steady state.
 
 ```{code-cell} ipython3
 @jax.jit
-def rate_steady_state(model: LakeModel):
+def rate_steady_state(model: LakeModel) -> jnp.ndarray:
     r"""
-    Finds the steady state of the system :math:`x_{t+1} = \hat A x_{t}`
-    by computing the eigenvector corresponding to the unit eigenvalue.
+    Finds the steady state of the system :math:`x_{t+1} = R x_{t}`
+    by computing the eigenvector corresponding to the largest eigenvalue.
+
+    By the Perron-Frobenius theorem, since :math:`R` is a non-negative
+    matrix with columns summing to 1 (a stochastic matrix), the largest
+    eigenvalue equals 1 and the corresponding eigenvector gives the steady state.
     """
-    A, A_hat, g = compute_matrices(model)
-    eigenvals, eigenvec = jnp.linalg.eig(A_hat)
-    
-    # Find the eigenvector corresponding to eigenvalue 1
-    unit_idx = jnp.argmin(jnp.abs(eigenvals - 1.0))
+    λ, α, b, d, A, R, g = model
+    eigenvals, eigenvec = jnp.linalg.eig(R)
+
+    # Find the eigenvector corresponding to the largest eigenvalue
+    # (which is 1 for a stochastic matrix by Perron-Frobenius theorem)
+    max_idx = jnp.argmax(jnp.abs(eigenvals))
 
     # Get the corresponding eigenvector
-    steady_state = jnp.real(eigenvec[:, unit_idx])
-    
+    steady_state = jnp.real(eigenvec[:, max_idx])
+
     # Normalize to ensure positive values and sum to 1
     steady_state = jnp.abs(steady_state)
     steady_state = steady_state / jnp.sum(steady_state)
-    
+
     return steady_state
 ```
 
 We also have $x_t \to \bar x$ as $t \to \infty$ provided that the remaining
-eigenvalue of $\hat A$ has modulus less than 1.
+eigenvalue of $R$ has modulus less than 1.
 
 This is the case for our default parameters:
 
 ```{code-cell} ipython3
-A, A_hat, g = compute_matrices(model)
-e, f = jnp.linalg.eigvals(A_hat)
+model = create_lake_model()
+e, f = jnp.linalg.eigvals(model.R)
 print(f"Eigenvalue magnitudes: {abs(e):.2f}, {abs(f):.2f}")
 ```
 
@@ -420,7 +453,7 @@ Here is one solution
 @jax.jit
 def compute_unemployment_rate(λ_val):
     """Computes steady-state unemployment for a given λ"""
-    model = LakeModel(λ=λ_val)
+    model = create_lake_model(λ=λ_val)
     steady_state = rate_steady_state(model)
     return steady_state[0]
 
@@ -517,7 +550,7 @@ $$
 
 with probability one.
 
-Inspection tells us that $P$ is exactly the transpose of $\hat A$ under the assumption $b=d=0$.
+Inspection tells us that $P$ is exactly the transpose of $R$ under the assumption $b=d=0$.
 
 Thus, the percentages of time that an infinitely lived worker spends employed and unemployed equal the fractions of workers employed and unemployed in the steady state distribution.
 
@@ -530,17 +563,17 @@ We can investigate this by simulating the Markov chain.
 Let's plot the path of the sample averages over 5,000 periods
 
 ```{code-cell} ipython3
-def markov_update(state, t, P, keys):
+def markov_update(state, P, key):
     """
     Sample next state from transition probabilities.
     """
     probs = P[state]
-    state_new = jax.random.choice(keys[t],
+    state_new = jax.random.choice(key,
                         a=jnp.arange(len(probs)),
                         p=probs)
     return state_new
 
-model_markov = LakeModel(d=0, b=0)
+model_markov = create_lake_model(d=0, b=0)
 T = 5000  # Simulation length
 
 α, λ = model_markov.α, model_markov.λ
@@ -550,10 +583,21 @@ P = jnp.array([[1 - λ,        λ],
 
 xbar = rate_steady_state(model_markov)
 
-# Simulate the Markov chain
+# Simulate the Markov chain - we need a different approach for random updates
 key = jax.random.PRNGKey(0)
-keys = jax.random.split(key, T)
-s_path = generate_path(markov_update, 1, T, P=P, keys=keys)
+
+def simulate_markov(P, initial_state, T, key):
+    """Simulate Markov chain for T periods"""
+    keys = jax.random.split(key, T)
+
+    def scan_fn(state, key):
+        next_state = markov_update(state, P, key)
+        return next_state, state
+
+    _, path = jax.lax.scan(scan_fn, initial_state, keys)
+    return path
+
+s_path = simulate_markov(P, 1, T, key)
 
 fig, axes = plt.subplots(2, 1, figsize=(10, 8))
 s_bar_e = jnp.cumsum(s_path) / jnp.arange(1, T+1)
@@ -841,25 +885,25 @@ def compute_optimal_quantities(c, τ,
 
 
 @jax.jit
-def compute_steady_state_quantities(c, τ, 
+def compute_steady_state_quantities(c, τ,
                     params: EconomyParameters, w_vec, p_vec):
     """
     Compute the steady state unemployment rate given c and τ using optimal
     quantities from the McCall model and computing corresponding steady
     state quantities
     """
-    w_bar, λ, V, U = compute_optimal_quantities(c, τ, 
+    w_bar, λ, V, U = compute_optimal_quantities(c, τ,
                                         params, w_vec, p_vec)
-    
+
     # Compute steady state employment and unemployment rates
-    model = LakeModel(α=params.α_q, λ=λ, b=params.b, d=params.d)
+    model = create_lake_model(λ=λ, α=params.α_q, b=params.b, d=params.d)
     u, e = rate_steady_state(model)
-    
+
     # Compute steady state welfare
     mask = (w_vec - τ > w_bar)
     w = jnp.sum(V * p_vec * mask) / jnp.sum(p_vec * mask)
     welfare = e * w + u * U
-    
+
     return e, u, welfare
 
 
@@ -970,7 +1014,7 @@ We begin by constructing the model with default parameters and finding the
 initial steady state
 
 ```{code-cell} ipython3
-model_initial = LakeModel()
+model_initial = create_lake_model()
 x0 = rate_steady_state(model_initial)
 print(f"Initial Steady State: {x0}")
 ```
@@ -985,7 +1029,7 @@ T = 50
 New legislation changes $\lambda$ to $0.2$
 
 ```{code-cell} ipython3
-model_ex2 = LakeModel(λ=0.2)
+model_ex2 = create_lake_model(λ=0.2)
 xbar = rate_steady_state(model_ex2)  # new steady state
 
 # Simulate paths
@@ -1063,7 +1107,7 @@ Let's start off at the baseline parameterization and record the steady
 state
 
 ```{code-cell} ipython3
-model_baseline = LakeModel()
+model_baseline = create_lake_model()
 x0 = rate_steady_state(model_baseline)
 N0 = 100
 T = 50
@@ -1079,7 +1123,7 @@ T_hat = 20
 Let's increase $b$ to the new value and simulate for 20 periods
 
 ```{code-cell} ipython3
-model_high_b = LakeModel(b=b_hat)
+model_high_b = create_lake_model(b=b_hat)
 
 # Simulate stocks and rates for first 20 periods
 X_path1 = generate_path(stock_update, x0 * N0, T_hat, model=model_high_b)
