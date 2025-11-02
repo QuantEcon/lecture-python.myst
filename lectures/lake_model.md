@@ -108,13 +108,6 @@ We want to derive the dynamics of the following aggregates:
 * $U_t$, the total number of unemployed workers at $t$
 * $N_t$, the number of workers in the labor force at $t$
 
-We also want to know the values of the following objects:
-
-* The employment rate $e_t := E_t/N_t$.
-* The unemployment rate $u_t := U_t/N_t$.
-
-(Here and below, capital letters represent aggregates and lowercase letters represent rates)
-
 ### Laws of motion for stock variables
 
 We begin by constructing laws of motion for the aggregate variables $E_t,U_t, N_t$.
@@ -166,6 +159,13 @@ This law tells us how total employment and unemployment evolve over time.
 ### Laws of motion for rates
 
 Now let's derive the law of motion for rates.
+
+We want to track the values of the following objects:
+
+* The employment rate $e_t := E_t/N_t$.
+* The unemployment rate $u_t := U_t/N_t$.
+
+(Here and below, capital letters represent aggregates and lowercase letters represent rates)
 
 To get these we can divide both sides of $X_{t+1} = A X_t$ by  $N_{t+1}$ to get
 
@@ -266,7 +266,6 @@ def generate_path(f, initial_state, num_steps, **kwargs):
 Now we can compute the matrices and simulate the dynamics.
 
 ```{code-cell} ipython3
-@jax.jit
 def compute_matrices(model: LakeModel):
     """Compute the transition matrices A and A_hat for the model."""
     λ, α, b, d = model.λ, model.α, model.b, model.d
@@ -277,7 +276,6 @@ def compute_matrices(model: LakeModel):
     return A, A_hat, g
 
 
-@jax.jit
 def stock_update(current_stocks, time_step, model):
     """
     Apply transition matrix to get next period's stocks.
@@ -286,7 +284,6 @@ def stock_update(current_stocks, time_step, model):
     next_stocks = A @ current_stocks
     return next_stocks
 
-@jax.jit
 def rate_update(current_rates, time_step, model):
     """
     Apply normalized transition matrix for next period's rates.
@@ -330,14 +327,12 @@ fig, axes = plt.subplots(3, 1, figsize=(10, 8))
 X_0 = jnp.array([U_0, E_0])
 X_path = generate_path(stock_update, X_0, T, model=model)
 
-axes[0].plot(X_path[0, :], lw=2)
-axes[0].set_title('unemployment')
+titles = ['unemployment', 'employment', 'labor force']
+data = [X_path[0, :], X_path[1, :], X_path.sum(0)]
 
-axes[1].plot(X_path[1, :], lw=2)
-axes[1].set_title('employment')
-
-axes[2].plot(X_path.sum(0), lw=2)
-axes[2].set_title('labor force')
+for ax, title, series in zip(axes, titles, data):
+    ax.plot(series, lw=2)
+    ax.set_title(title)
 
 plt.tight_layout()
 plt.show()
@@ -407,6 +402,41 @@ for i, title in enumerate(titles):
 
 plt.tight_layout()
 plt.show()
+```
+
+```{exercise}
+:label: model_ex1
+
+Use JAX's `vmap` to compute steady-state unemployment rates for a range of job finding rates $\lambda$ (from 0.1 to 0.5), and plot the relationship.
+```
+
+```{solution-start} model_ex1
+:class: dropdown
+```
+
+Here is one solution
+
+```{code-cell} ipython3
+@jax.jit
+def compute_unemployment_rate(λ_val):
+    """Computes steady-state unemployment for a given λ"""
+    model = LakeModel(λ=λ_val)
+    steady_state = rate_steady_state(model)
+    return steady_state[0]
+
+# Use vmap to compute for multiple λ values
+λ_values = jnp.linspace(0.1, 0.5, 50)
+unemployment_rates = jax.vmap(compute_unemployment_rate)(λ_values)
+
+# Plot the results
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot(λ_values, unemployment_rates, lw=2)
+ax.set_xlabel(r'$\lambda$')
+ax.set_ylabel('steady-state unemployment rate')
+plt.show()
+```
+
+```{solution-end}
 ```
 
 (dynamics_workers)=
@@ -500,7 +530,6 @@ We can investigate this by simulating the Markov chain.
 Let's plot the path of the sample averages over 5,000 periods
 
 ```{code-cell} ipython3
-@jax.jit
 def markov_update(state, t, P, keys):
     """
     Sample next state from transition probabilities.
@@ -535,14 +564,14 @@ titles = ['percent of time unemployed', 'percent of time employed']
 
 for i, plot in enumerate(to_plot):
     axes[i].plot(plot, lw=2, alpha=0.5)
-    axes[i].hlines(xbar[i], 0, T, 'r', '--')
+    axes[i].hlines(xbar[i], 0, T, linestyles='--')
     axes[i].set_title(titles[i])
 
 plt.tight_layout()
 plt.show()
 ```
 
-The stationary probabilities are given by the dashed red line.
+The stationary probabilities are given by the dashed line.
 
 In this case it takes much of the sample for these two objects to converge.
 
@@ -905,63 +934,6 @@ The level that maximizes steady state welfare is approximately 62.
 
 ## Exercises
 
-```{exercise}
-:label: model_ex1
-
-In the JAX implementation of the Lake Model, we use a `NamedTuple` for parameters and separate functions for computations.
-
-This approach has several advantages:
-1. It's immutable, which aligns with JAX's functional programming paradigm
-2. Functions can be JIT-compiled for better performance
-
-In this exercise, your task is to:
-1. Update parameters by creating a new instance of the model with the parameters (`α=0.02, λ=0.3`).
-2. Use JAX's `vmap` to compute steady states for different parameter values
-3. Plot how the steady-state unemployment rate varies with the job finding rate $\lambda$
-```
-
-```{solution-start} model_ex1
-:class: dropdown
-```
-
-Here is one solution
-
-```{code-cell} ipython3
-@jax.jit
-def compute_unemployment_rate(λ_val):
-    """Computes steady-state unemployment for a given λ"""
-    model = LakeModel(λ=λ_val)
-    steady_state = rate_steady_state(model)
-    return steady_state[0]
-
-# Use vmap to compute for multiple λ values
-λ_values = jnp.linspace(0.1, 0.5, 50)
-unemployment_rates = jax.vmap(compute_unemployment_rate)(λ_values)
-
-# Plot the results
-fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(λ_values, unemployment_rates, lw=2)
-ax.set_xlabel(r'$\lambda$')
-ax.set_ylabel('steady-state unemployment rate')
-plt.show()
-
-model_base = LakeModel()
-model_ex1 = LakeModel(α=0.02, λ=0.3)
-
-print(f"Base model α: {model_base.α}")
-print(f"New model α: {model_ex1.α}, λ: {model_ex1.λ}")
-
-# Compute steady states for both
-base_steady_state = rate_steady_state(model_base)
-new_steady_state = rate_steady_state(model_ex1)
-
-print(f"Base unemployment rate: {base_steady_state[0]:.4f}")
-print(f"New unemployment rate: {new_steady_state[0]:.4f}")
-```
-
-```{solution-end}
-```
-
 ```{exercise-start}
 :label: model_ex2
 ```
@@ -1049,7 +1021,7 @@ titles = ['unemployment rate', 'employment rate']
 
 for i, title in enumerate(titles):
     axes[i].plot(x_path[i, :])
-    axes[i].hlines(xbar[i], 0, T, 'r', '--')
+    axes[i].hlines(xbar[i], 0, T, linestyles='--')
     axes[i].set_title(title)
 
 plt.tight_layout()
@@ -1157,7 +1129,7 @@ titles = ['unemployment rate', 'employment rate']
 
 for i, title in enumerate(titles):
     axes[i].plot(x_path[i, :])
-    axes[i].hlines(x0[i], 0, T, 'r', '--')
+    axes[i].hlines(x0[i], 0, T, linestyles='--')
     axes[i].set_title(title)
 
 plt.tight_layout()
