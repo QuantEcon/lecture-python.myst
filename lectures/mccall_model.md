@@ -543,14 +543,14 @@ Let $h$ denote the continuation value:
 ```{math}
 :label: j1
 
-    h = c + \beta \sum_{s'} v^*(s') q (s')
+    h = c + \beta \sum_{w'} v^*(w') q (w')
 ```
 
 The Bellman equation can now be written as
 
 $$
-    v^*(s')
-    = \max \left\{ \frac{w(s')}{1 - \beta}, \, h \right\}
+    v^*(w')
+    = \max \left\{ \frac{w'}{1 - \beta}, \, h \right\}
 $$
 
 Substituting this last equation into {eq}`j1` gives
@@ -559,10 +559,10 @@ Substituting this last equation into {eq}`j1` gives
 :label: j2
 
     h = c + \beta
-        \sum_{s' \in \mathbb S}
+        \sum_{w' \in \mathbb W}
         \max \left\{
-            \frac{w(s')}{1 - \beta}, h
-        \right\}  q (s')
+            \frac{w'}{1 - \beta}, h
+        \right\}  q (w')
 ```
 
 This is a nonlinear equation that we can solve for $h$.
@@ -578,10 +578,10 @@ Step 2: compute the update $h'$ via
 
 h'
 = c + \beta
-    \sum_{s' \in \mathbb S}
+    \sum_{w' \in \mathbb W}
     \max \left\{
-        \frac{w(s')}{1 - \beta}, h
-    \right\}  q (s')
+        \frac{w'}{1 - \beta}, h
+    \right\}  q (w')
 \quad
 ```
 
@@ -662,12 +662,15 @@ cdf = np.cumsum(q_default_np)
 
 @numba.jit
 def compute_stopping_time(w_bar, seed=1234):
-
+    """
+    Compute stopping time by drawing wages until one exceeds w_bar.
+    """
     np.random.seed(seed)
     t = 1
     while True:
         # Generate a wage draw
         w = w_default_np[qe.random.draw(cdf)]
+
         # Stop when the draw is above the reservation wage
         if w >= w_bar:
             stopping_time = t
@@ -678,6 +681,10 @@ def compute_stopping_time(w_bar, seed=1234):
 
 @numba.jit(parallel=True)
 def compute_mean_stopping_time(w_bar, num_reps=100000):
+    """
+    Generate a mean stopping time over `num_reps` repetitions by
+    drawing from `compute_stopping_time`.
+    """
     obs = np.empty(num_reps)
     for i in numba.prange(num_reps):
         obs[i] = compute_stopping_time(w_bar, seed=i)
@@ -707,9 +714,7 @@ cdf = jnp.cumsum(q_default)
 @jax.jit
 def compute_stopping_time(w_bar, key):
     """
-    Optimized version with better state management.
-    Key improvement: Check acceptance condition before incrementing t,
-    avoiding redundant jnp.where operation.
+    Compute stopping time by drawing wages until one exceeds `w_bar`.
     """
     def update(loop_state):
         t, key, accept = loop_state
@@ -732,24 +737,22 @@ def compute_stopping_time(w_bar, key):
 @partial(jax.jit, static_argnames=('num_reps',))
 def compute_mean_stopping_time(w_bar, num_reps=100000, seed=1234):
     """
-    Generate a mean stopping time over `num_reps` repetitions by repeatedly
+    Generate a mean stopping time over `num_reps` repetitions by
     drawing from `compute_stopping_time`.
-
     """
     # Generate a key for each MC replication
     key = jax.random.PRNGKey(seed)
     keys = jax.random.split(key, num_reps)
+
     # Vectorize compute_stopping_time and evaluate across keys
-    # Note: No need for extra jax.jit here, already jitted
     compute_fn = jax.vmap(compute_stopping_time, in_axes=(None, 0))
     obs = compute_fn(w_bar, keys)
+
     # Return mean stopping time
     return jnp.mean(obs)
 
-
 c_vals = jnp.linspace(10, 40, 25)
 
-# Optimized version using vmap
 def compute_stop_time_for_c(c):
     """Compute mean stopping time for a given compensation value c."""
     model = McCallModel(c=c)
@@ -767,6 +770,8 @@ ax.legend()
 
 plt.show()
 ```
+
+At least for our hardware, Numba is faster on the CPU while JAX is faster on the GPU.
 
 ```{solution-end}
 ```
