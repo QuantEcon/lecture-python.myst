@@ -503,3 +503,66 @@ plt.show()
 Welfare first increases and then decreases as unemployment benefits rise.
 
 The level that maximizes steady state welfare is approximately 62.
+
+## Exercises
+
+```{exercise}
+:label: endogenous_lake_ex1
+
+How does the welfare-maximizing level of unemployment compensation $c$ change with the job separation rate $\alpha$?
+
+Compute and plot the optimal $c$ (the value that maximizes welfare) for a range of separation rates $\alpha$ from 0.01 to 0.025.
+
+For each $\alpha$ value, find the optimal $c$ by computing welfare across the range of $c$ values and selecting the maximum.
+```
+
+```{solution-start} endogenous_lake_ex1
+:class: dropdown
+```
+
+Here is one solution:
+
+```{code-cell} ipython3
+# Range of separation rates to explore
+α_values = jnp.linspace(0.01, 0.025, 15)
+
+# We'll store the optimal c for each α
+optimal_c_values = []
+
+for α_val in α_values:
+    # Create economy parameters with this α
+    params_α = create_economy_params(α=α_val)
+
+    # Create wage distribution
+    w_vec_α, p_vec_α = create_wage_distribution(params_α.max_wage,
+                                                  params_α.wage_grid_size,
+                                                  params_α.log_wage_mean)
+
+    # Compute welfare for each c value
+    welfare_values = []
+    for c in c_vec:
+        t = find_balanced_budget_tax(c, params_α, w_vec_α, p_vec_α)
+        e_rate, u_rate, welfare = compute_steady_state_quantities(c, t, params_α,
+                                                                    w_vec_α, p_vec_α)
+        welfare_values.append(welfare)
+
+    # Find the c that maximizes welfare
+    max_idx = jnp.argmax(jnp.array(welfare_values))
+    optimal_c = c_vec[max_idx]
+    optimal_c_values.append(optimal_c)
+
+# Plot the relationship
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot(α_values, optimal_c_values, lw=2, marker='o')
+ax.set_xlabel(r'Separation rate $\alpha$')
+ax.set_ylabel('Optimal unemployment compensation $c$')
+ax.set_title('How optimal unemployment insurance varies with job separation rate')
+ax.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
+
+We see that as the separation rate increases (workers lose their jobs more frequently), the welfare-maximizing level of unemployment compensation also increases. This makes intuitive sense: when job loss is more common, more generous unemployment insurance becomes more valuable for smoothing consumption and maintaining worker welfare.
+
+```{solution-end}
+```
