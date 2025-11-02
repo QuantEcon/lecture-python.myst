@@ -210,47 +210,36 @@ This follows from the fact that the columns of $R$ sum to 1.
 
 Let's code up these equations.
 
-To do this we're going to use a class that we'll call `LakeModel` that stores the primitives $\alpha, \lambda, b, d$
+### Model
+
+To begin, we set up a class called `LakeModel` that stores the primitives $\alpha, \lambda, b, d$.
 
 ```{code-cell} ipython3
 class LakeModel(NamedTuple):
     """
     Parameters for the lake model
     """
-    λ: float = 0.283
-    α: float = 0.013
-    b: float = 0.0124
-    d: float = 0.00822
-    A: jnp.ndarray = None
-    R: jnp.ndarray = None
-    g: float = None
+    λ: float
+    α: float
+    b: float
+    d: float
+    A: jnp.ndarray 
+    R: jnp.ndarray
+    g: float
 
 
-def create_lake_model(λ: float = 0.283,
-                      α: float = 0.013,
-                      b: float = 0.0124,
-                      d: float = 0.00822) -> LakeModel:
+def create_lake_model(
+        λ: float = 0.283,     # job finding rate
+        α: float = 0.013,     # separation rate
+        b: float = 0.0124,    # birth rate
+        d: float = 0.00822    # death rate
+    ) -> LakeModel:
     """
     Create a LakeModel instance with default parameters.
 
     Computes and stores the transition matrices A and R,
     and the labor force growth rate g.
 
-    Parameters
-    ----------
-    λ : float, optional
-        Job finding rate (default: 0.283)
-    α : float, optional
-        Job separation rate (default: 0.013)
-    b : float, optional
-        Entry rate into labor force (default: 0.0124)
-    d : float, optional
-        Exit rate from labor force (default: 0.00822)
-
-    Returns
-    -------
-    LakeModel
-        A LakeModel instance with computed matrices A, R, and growth rate g
     """
     # Compute growth rate
     g = b - d
@@ -267,11 +256,33 @@ def create_lake_model(λ: float = 0.283,
     return LakeModel(λ=λ, α=α, b=b, d=d, A=A, R=R, g=g)
 ```
 
+As an experiment, let's create two instances, one with $α=0.013$ and another with $α=0.03$
+
+```{code-cell} ipython3
+model = create_lake_model()
+print(f"Default α: {model.α}")
+print(f"A matrix:\n{model.A}")
+print(f"R matrix:\n{model.R}")
+```
+
+```{code-cell} ipython3
+model_new = create_lake_model(α=0.03)
+print(f"New α: {model_new.α}")
+print(f"New A matrix:\n{model_new.A}")
+print(f"New R matrix:\n{model_new.R}")
+```
+
+### Code for dynamics
+
 We will also use a specialized function to generate time series in an efficient
 JAX-compatible manner.
 
-(Iteratively generating time series is somewhat nontrivial in JAX because arrays
-are immutable.)
+Iteratively generating time series is somewhat nontrivial in JAX because arrays
+are immutable.
+
+Here we use `lax.scan`, which allows the function to be jit-compiled.
+
+Readers who prefer to skip the details can safely continue reading after the function definition.
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=['f', 'num_steps'])
@@ -307,7 +318,7 @@ def generate_path(f, initial_state, num_steps, **kwargs):
     return path.T
 ```
 
-Now we can simulate the dynamics.
+Here are functions to update $X_t$ and $x_t$.
 
 ```{code-cell} ipython3
 def stock_update(X: jnp.ndarray, model: LakeModel) -> jnp.ndarray:
@@ -321,26 +332,12 @@ def rate_update(x: jnp.ndarray, model: LakeModel) -> jnp.ndarray:
     return R @ x
 ```
 
-We create two instances, one with $α=0.013$ and another with $α=0.03$
-
-```{code-cell} ipython3
-model = create_lake_model()
-model_new = create_lake_model(α=0.03)
-
-print(f"Default α: {model.α}")
-print(f"A matrix:\n{model.A}")
-print(f"R matrix:\n{model.R}")
-```
-
-```{code-cell} ipython3
-print(f"New α: {model_new.α}")
-print(f"New A matrix:\n{model_new.A}")
-print(f"New R matrix:\n{model_new.R}")
-```
 
 ### Aggregate dynamics
 
-Let's run a simulation under the default parameters (see above) starting from $X_0 = (12, 138)$.
+Let's run a simulation under the default parameters starting from $X_0 = (12, 138)$.
+
+We will plot the sequences $\{E_t\}$, $\{U_t\}$ and $\{N_t\}$.
 
 ```{code-cell} ipython3
 N_0 = 150      # Population
@@ -351,22 +348,25 @@ T = 50         # Simulation length
 U_0 = u_0 * N_0
 E_0 = e_0 * N_0
 
-fig, axes = plt.subplots(3, 1, figsize=(10, 8))
+# Generate X path
 X_0 = jnp.array([U_0, E_0])
 X_path = generate_path(stock_update, X_0, T, model=model)
 
+# Plot
+fig, axes = plt.subplots(3, 1, figsize=(10, 8))
 titles = ['unemployment', 'employment', 'labor force']
 data = [X_path[0, :], X_path[1, :], X_path.sum(0)]
-
 for ax, title, series in zip(axes, titles, data):
     ax.plot(series, lw=2)
     ax.set_title(title)
-
 plt.tight_layout()
 plt.show()
 ```
 
 The aggregates $E_t$ and $U_t$ don't converge because their sum $E_t + U_t$ grows at rate $g$.
+
+
+### Rate dynamics
 
 On the other hand, the vector of employment and unemployment rates $x_t$ can be in a steady state $\bar x$ if
 there exists an $\bar x$  such that
