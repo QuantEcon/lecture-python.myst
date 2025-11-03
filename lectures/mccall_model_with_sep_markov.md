@@ -86,13 +86,13 @@ When unemployed and receiving wage offer $w$, the agent chooses between:
 
 ## Bellman Equations
 
-The unemployed worker's value function satisfies:
+The unemployed worker's value function satisfies the Bellman equation
 
 $$
     v_u(w) = \max\{v_e(w), c + \beta \sum_{w'} v_u(w') P(w,w')\}
 $$
 
-The employed worker's value function satisfies:
+The employed worker's value function satisfies the Bellman equation
 
 $$
     v_e(w) = 
@@ -107,7 +107,10 @@ $$
 
 We use the following approach to solve this problem.
 
-1. Solve the employed value function analytically:
+(As usual, for a function $h$ we set $(Ph)(w) = \sum_{w'} h(w') P(w,w')$.)
+
+1. Use the employed worker's Bellman equation to express $v_e$ in terms of
+   $Pv_u$:
 
 $$
     v_e(w) = 
@@ -170,19 +173,12 @@ def successive_approx(
     return x_final
 ```
 
-Let's set up a `Model` class to store information needed to solve the model.
+
+Next let's set up a `Model` class to store information needed to solve the model.
 
 We include `P_cumsum`, the row-wise cumulative sum of the transition matrix, to
-optimize the simulation.
+optimize the simulation -- the details are explained below.
 
-When simulating the Markov chain, we need to draw from the distribution in each
-row of $P$ many times.
-
-Rather than computing the cumulative sum repeatedly during simulation, we
-precompute it once and store it in the model.
-
-This converts millions of O(n) cumsum operations into a single precomputation,
-significantly speeding up large-scale simulations.
 
 ```{code-cell} ipython3
 class Model(NamedTuple):
@@ -348,14 +344,18 @@ Can you provide an intuitive economic story behind the outcome that you see in t
 
 Now let's simulate the employment dynamics of a single agent under the optimal policy.
 
-The function `update_agent` advances the agent's state by one period.
+Note that, when simulating the Markov chain for wage offers, we need to draw from the distribution in each
+row of $P$ many times.
 
-To draw from the Markov chain transition probabilities, we use the inverse
+To do this, we use the inverse
 transform method: draw a uniform random variable and find where it falls in the
 cumulative distribution.
 
 This is implemented via `jnp.searchsorted` on the precomputed cumulative sum
 `P_cumsum`, which is much faster than recomputing the cumulative sum each time.
+
+The function `update_agent` advances the agent's state by one period.
+
 
 ```{code-cell} ipython3
 @jit
@@ -372,7 +372,9 @@ def update_agent(key, is_employed, wage_idx, model, σ):
 
     key1, key2 = jax.random.split(key)
     # Use precomputed cumulative sum for efficient sampling
-    new_wage_idx = jnp.searchsorted(P_cumsum[wage_idx, :], jax.random.uniform(key1))
+    new_wage_idx = jnp.searchsorted(
+        P_cumsum[wage_idx, :], jax.random.uniform(key1)
+    )
     separation_occurs = jax.random.uniform(key2) < α
     accepts = σ[wage_idx]
 
@@ -487,11 +489,15 @@ plt.show()
 
 The simulation helps to visualize outcomes associated with this model.
 
-The agent follows a reservation wage strategy and there are clear cycles between unemployment and employment spells
+The agent follows a reservation wage strategy.
 
-The model captures key features of labor market dynamics
-with job separation, showing how workers optimally balance the trade-off between
-accepting current offers versus waiting for better opportunities.
+Often the agent loses her job and immediately takes another job at a different
+wage.
+
+This is because she uses the wage $w$ from her last job to draw a new wage offer
+via $P(w, \cdot)$, and positive correlation means that a high current $w$ is
+often leads a high new draw.
+
 
 
 ## The Ergodic Property
@@ -499,15 +505,16 @@ accepting current offers versus waiting for better opportunities.
 Below we examine cross-sectional unemployment.
 
 In particular, we will look at the unemployment rate in a cross-sectional
-simulation and compare it to the time-average unemployment rate, which is the fraction of time an agent spends unemployed over a long time series.
+simulation and compare it to the time-average unemployment rate, which is the
+fraction of time an agent spends unemployed over a long time series.
 
 We will see that these two values are approximately equal -- if fact they are
 exactly equal in the limit.
 
 The reason is that the process $(s_t, w_t)$, where
 
-- $s_t \in \{\text{employed}, \text{unemployed}\}$ is the employment status and
-- $w_t \in \{1, 2, \ldots, n\}$ is the wage 
+- $s_t$ is the employment status and
+- $w_t$ is the wage 
 
 is Markovian, since the next pair depends only on the current pair and iid
 randomness, and ergodic. 
@@ -533,17 +540,16 @@ $$
     \lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^{T} \mathbb{1}\{s_t = \text{unemployed}\} = \sum_{w=1}^{n} \pi(\text{unemployed}, w)
 $$
 
-This holds regardless of initial conditions—whether an agent starts employed or unemployed, they converge to the same long-run distribution.
+This holds regardless of initial conditions -- provided that we burn in the
+cross-sectional distribution (run it forward in time from a given initial cross
+section in order to remove the influence of that initial condition).
 
 As a result, we can study steady-state unemployment either by:
 
 - Following one agent for a long time (time average), or
 - Observing many agents at a single point in time (cross-sectional average)
 
-Both approaches yield the same steady-state unemployment rate.
-
-Often the second approach is better for our purposes, since it's far easier to
-parallelize.
+Often the second approach is better for our purposes, since it's easier to parallelize.
 
 
 ## Cross-Sectional Analysis
@@ -566,7 +572,8 @@ def _simulate_cross_section_compiled(
         n_agents: int,
         T: int
     ):
-    """JIT-compiled core simulation loop using lax.scan."""
+    """JIT-compiled core simulation loop using lax.scan.
+    Returns only the final employment state to save memory."""
     n, w_vals, P, P_cumsum, β, c, α = model
 
     # Initialize arrays
@@ -576,12 +583,9 @@ def _simulate_cross_section_compiled(
     def scan_fn(loop_state, t):
         key, is_employed, wage_indices = loop_state
 
-        # Record employment status for this time step
-        employment_status = is_employed
-
-        # Shift loop state forwards
-        key, *agent_keys = jax.random.split(key, n_agents + 1)
-        agent_keys = jnp.array(agent_keys)
+        # Shift loop state forwards - more efficient key generation
+        key, subkey = jax.random.split(key)
+        agent_keys = jax.random.split(subkey, n_agents)
 
         is_employed, wage_indices = update_agents_vmap(
             agent_keys, is_employed, wage_indices, model, σ
@@ -589,19 +593,18 @@ def _simulate_cross_section_compiled(
 
         # Pack results and return
         new_loop_state = key, is_employed, wage_indices
-        return new_loop_state, employment_status
+        return new_loop_state, None
 
     # Run simulation using scan
     initial_loop_state = (key, is_employed, wage_indices)
 
-    final_loop_state, employment_matrix = lax.scan(
+    final_loop_state, _ = lax.scan(
         scan_fn, initial_loop_state, jnp.arange(T)
     )
 
-    # Transpose to get (n_agents, T) shape
-    employment_matrix = employment_matrix.T
-
-    return employment_matrix
+    # Return only final employment state
+    _, final_is_employed, _ = final_loop_state
+    return final_is_employed
 
 
 def simulate_cross_section(
@@ -609,9 +612,9 @@ def simulate_cross_section(
         n_agents: int = 100_000,
         T: int = 200,
         seed: int = 42
-    ) -> tuple[jnp.ndarray, jnp.ndarray]:
+    ) -> float:
     """
-    Simulate employment paths for many agents simultaneously.
+    Simulate employment paths for many agents and return final unemployment rate.
 
     Parameters:
     - model: Model instance with parameters
@@ -620,60 +623,58 @@ def simulate_cross_section(
     - seed: Random seed for reproducibility
 
     Returns:
-    - unemployment_rates: Fraction of agents unemployed at each period
-    - employment_matrix: n_agents x T matrix of employment status
+    - unemployment_rate: Fraction of agents unemployed at time T
     """
     key = jax.random.PRNGKey(seed)
 
     # Solve for optimal policy
     v_star, σ_star = vfi(model)
-    
+
     # Run JIT-compiled simulation
-    employment_matrix = _simulate_cross_section_compiled(
+    final_employment = _simulate_cross_section_compiled(
         key, model, σ_star, n_agents, T
     )
-    
-    # Calculate unemployment rate at each period
-    unemployment_rates = 1 - jnp.mean(employment_matrix, axis=0)
 
-    return unemployment_rates, employment_matrix
+    # Calculate unemployment rate at final period
+    unemployment_rate = 1 - jnp.mean(final_employment)
+
+    return unemployment_rate
 ```
 
 ```{code-cell} ipython3
-def plot_cross_sectional_unemployment(model: Model):
+def plot_cross_sectional_unemployment(model: Model, t_snapshot: int = 200,
+                                     n_agents: int = 20_000):
     """
-    Generate cross-sectional unemployment rate plot for a given model.
+    Generate histogram of cross-sectional unemployment at a specific time.
 
     Parameters:
     - model: Model instance with parameters
+    - t_snapshot: Time period at which to take the cross-sectional snapshot
+    - n_agents: Number of agents to simulate
     """
-    unemployment_rates, employment_matrix = simulate_cross_section(model)
+    # Get final employment state directly
+    key = jax.random.PRNGKey(42)
+    v_star, σ_star = vfi(model)
+    final_employment = _simulate_cross_section_compiled(
+        key, model, σ_star, n_agents, t_snapshot
+    )
 
-    fig, ax = plt.subplots(figsize=(8, 4))
+    # Calculate unemployment rate
+    unemployment_rate = 1 - jnp.mean(final_employment)
 
-    # Plot unemployment rate over time
-    ax.plot(unemployment_rates, 'b-', alpha=0.8, linewidth=1.5,
-            label=f'Cross-sectional unemployment rate (c={model.c})')
+    fig, ax = plt.subplots(figsize=(8, 5))
 
-    # Add shaded region for ±1 standard deviation
-    window_size = 50
-    rolling_std = jnp.array([
-        jnp.std(unemployment_rates[max(0, t-window_size):t+1])
-        for t in range(len(unemployment_rates))
-    ])
+    # Plot histogram as density (bars sum to 1)
+    weights = jnp.ones_like(final_employment) / len(final_employment)
+    ax.hist(final_employment, bins=[-0.5, 0.5, 1.5],
+            alpha=0.7, color='blue', edgecolor='black',
+            density=True, weights=weights)
 
-    ax.fill_between(range(len(unemployment_rates)),
-                    unemployment_rates - rolling_std,
-                    unemployment_rates + rolling_std,
-                    alpha=0.2, color='blue',
-                    label='±1 rolling std')
-
-    ax.set_xlabel('time')
-    ax.set_ylabel('unemployment rate')
-    ax.set_title(f'Cross-sectional unemployment rate (c={model.c})')
-    ax.grid(alpha=0.4)
-    ax.set_ylim(0, 1)
-    ax.legend()
+    ax.set_xlabel('employment status (0=unemployed, 1=employed)')
+    ax.set_ylabel('density')
+    ax.set_title(f'Cross-sectional distribution at t={t_snapshot}, ' +
+                 f'unemployment rate = {unemployment_rate:.3f}')
+    ax.set_xticks([0, 1])
 
     plt.tight_layout()
     plt.show()
@@ -681,6 +682,21 @@ def plot_cross_sectional_unemployment(model: Model):
 
 ```{code-cell} ipython3
 model = create_js_with_sep_model()
+cross_sectional_unemp = simulate_cross_section(
+    model, n_agents=20_000, T=200
+)
+
+time_avg_unemp = jnp.mean(unemployed_indicator)
+print(f"Time-average unemployment rate (single agent): "
+      f"{time_avg_unemp:.4f}")
+print(f"Cross-sectional unemployment rate (at t=200): "
+      f"{cross_sectional_unemp:.4f}")
+print(f"Difference: {abs(time_avg_unemp - cross_sectional_unemp):.4f}")
+```
+
+Now let's visualize the cross-sectional distribution:
+
+```{code-cell} ipython3
 plot_cross_sectional_unemployment(model)
 ```
 
@@ -714,14 +730,16 @@ c_values = 1.0, 0.8, 0.6, 0.4, 0.2
 rates = []
 for c in c_values:
     model = create_js_with_sep_model(c=c)
-    unemployment_rates, employment_matrix = simulate_cross_section(model)
-    rates.append(unemployment_rates[-1])
+    unemployment_rate = simulate_cross_section(model)
+    rates.append(unemployment_rate)
 
 fig, ax = plt.subplots()
 ax.plot(
     c_values, rates, alpha=0.8,
-    linewidth=1.5, label=f'Unemployment rate at c={c}'
+    linewidth=1.5, label='Steady-state unemployment rate'
 )
+ax.set_xlabel('unemployment compensation (c)')
+ax.set_ylabel('unemployment rate')
 ax.legend(frameon=False)
 plt.show()
 ```
