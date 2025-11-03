@@ -70,7 +70,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3bd9fcddbe64f63e07c8604843d1cc622a07b430" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=4890ae55f4d5f196460e99a17085458eb1f4c2f0" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +95,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=06ebc90d5139b434c2742937a4ef3b185cb93e2f"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -185,7 +185,10 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">69.3. Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-dynamics">69.3.1. Aggregate dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model">69.3.1. Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-for-dynamics">69.3.2. Code for dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-dynamics">69.3.3. Aggregate dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rate-dynamics">69.3.4. Rate dynamics</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamics-of-an-individual-worker">69.4. Dynamics of an individual worker</a><ul class="nav section-nav flex-column">
@@ -211,7 +214,7 @@
                                 
                             </p>
 
-                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/en/stable/">Jupyter Book</a></p>
 
                         </nav>
 
@@ -287,7 +290,10 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.10.1-py3-none-any.whl.metadata (5.3 kB)
 Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.6.2)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
@@ -303,6 +309,15 @@ Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/env
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.10.1
 </pre></div>
 </div>
 </div>
@@ -370,12 +385,6 @@ and out of unemployment and employment are exogenous.</p>
 <li><p><span class="math notranslate nohighlight">\(U_t\)</span>, the total number of unemployed workers at <span class="math notranslate nohighlight">\(t\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(N_t\)</span>, the number of workers in the labor force at <span class="math notranslate nohighlight">\(t\)</span></p></li>
 </ul>
-<p>We also want to know the values of the following objects:</p>
-<ul class="simple">
-<li><p>The employment rate <span class="math notranslate nohighlight">\(e_t := E_t/N_t\)</span>.</p></li>
-<li><p>The unemployment rate <span class="math notranslate nohighlight">\(u_t := U_t/N_t\)</span>.</p></li>
-</ul>
-<p>(Here and below, capital letters represent aggregates and lowercase letters represent rates)</p>
 </section>
 <section id="laws-of-motion-for-stock-variables">
 <h3><span class="section-number">69.2.2. </span>Laws of motion for stock variables<a class="headerlink" href="#laws-of-motion-for-stock-variables" title="Link to this heading">#</a></h3>
@@ -422,6 +431,12 @@ A :=
 <section id="laws-of-motion-for-rates">
 <h3><span class="section-number">69.2.3. </span>Laws of motion for rates<a class="headerlink" href="#laws-of-motion-for-rates" title="Link to this heading">#</a></h3>
 <p>Now let’s derive the law of motion for rates.</p>
+<p>We want to track the values of the following objects:</p>
+<ul class="simple">
+<li><p>The employment rate <span class="math notranslate nohighlight">\(e_t := E_t/N_t\)</span>.</p></li>
+<li><p>The unemployment rate <span class="math notranslate nohighlight">\(u_t := U_t/N_t\)</span>.</p></li>
+</ul>
+<p>(Here and below, capital letters represent aggregates and lowercase letters represent rates)</p>
 <p>To get these we can divide both sides of <span class="math notranslate nohighlight">\(X_{t+1} = A X_t\)</span> by  <span class="math notranslate nohighlight">\(N_{t+1}\)</span> to get</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -450,36 +465,117 @@ x_t :=
 <p>we can also write this as</p>
 <div class="math notranslate nohighlight">
 \[
-x_{t+1} = \hat A x_t
+x_{t+1} = R x_t
 \quad \text{where} \quad
-\hat A := \frac{1}{1 + g} A
+R := \frac{1}{1 + g} A
 \]</div>
 <p>You can check that <span class="math notranslate nohighlight">\(e_t + u_t = 1\)</span> implies that <span class="math notranslate nohighlight">\(e_{t+1}+u_{t+1} = 1\)</span>.</p>
-<p>This follows from the fact that the columns of <span class="math notranslate nohighlight">\(\hat A\)</span> sum to 1.</p>
+<p>This follows from the fact that the columns of <span class="math notranslate nohighlight">\(R\)</span> sum to 1.</p>
 </section>
 </section>
 <section id="implementation">
 <h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">69.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>Let’s code up these equations.</p>
-<p>To do this we’re going to use a class that we’ll call <code class="docutils literal notranslate"><span class="pre">LakeModel</span></code> that stores the primitives <span class="math notranslate nohighlight">\(\alpha, \lambda, b, d\)</span></p>
+<section id="model">
+<h3><span class="section-number">69.3.1. </span>Model<a class="headerlink" href="#model" title="Link to this heading">#</a></h3>
+<p>To begin, we set up a class called <code class="docutils literal notranslate"><span class="pre">LakeModel</span></code> that stores the primitives <span class="math notranslate nohighlight">\(\alpha, \lambda, b, d\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">LakeModel</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parameters for the lake model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">λ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.283</span>
-    <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.013</span>
-    <span class="n">b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0124</span>
-    <span class="n">d</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.00822</span>
+    <span class="n">λ</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">α</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">d</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">A</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span> 
+    <span class="n">R</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">g</span><span class="p">:</span> <span class="nb">float</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_lake_model</span><span class="p">(</span>
+        <span class="n">λ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.283</span><span class="p">,</span>     <span class="c1"># job finding rate</span>
+        <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.013</span><span class="p">,</span>     <span class="c1"># separation rate</span>
+        <span class="n">b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0124</span><span class="p">,</span>    <span class="c1"># birth rate</span>
+        <span class="n">d</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.00822</span>    <span class="c1"># death rate</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LakeModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a LakeModel instance with default parameters.</span>
+
+<span class="sd">    Computes and stores the transition matrices A and R,</span>
+<span class="sd">    and the labor force growth rate g.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Compute growth rate</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">d</span>
+
+    <span class="c1"># Compute transition matrix A</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">λ</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">α</span> <span class="o">+</span> <span class="n">b</span><span class="p">],</span>
+        <span class="p">[(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">λ</span><span class="p">,</span>         <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)]</span>
+    <span class="p">])</span>
+
+    <span class="c1"># Compute normalized transition matrix R</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">A</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">g</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">LakeModel</span><span class="p">(</span><span class="n">λ</span><span class="o">=</span><span class="n">λ</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="n">g</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>As an experiment, let’s create two instances, one with <span class="math notranslate nohighlight">\(α=0.013\)</span> and another with <span class="math notranslate nohighlight">\(α=0.03\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Default α: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">α</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A matrix:</span><span class="se">\n</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">A</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R matrix:</span><span class="se">\n</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Default α: 0.013
+A matrix:
+[[0.7235063  0.02529314]
+ [0.28067374 0.97888684]]
+R matrix:
+[[0.7204946  0.02518786]
+ [0.27950543 0.97481215]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_new</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New α: </span><span class="si">{</span><span class="n">model_new</span><span class="o">.</span><span class="n">α</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New A matrix:</span><span class="se">\n</span><span class="si">{</span><span class="n">model_new</span><span class="o">.</span><span class="n">A</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New R matrix:</span><span class="se">\n</span><span class="si">{</span><span class="n">model_new</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>New α: 0.03
+New A matrix:
+[[0.7235063  0.0421534 ]
+ [0.28067374 0.9620266 ]]
+New R matrix:
+[[0.7204946  0.04197793]
+ [0.27950543 0.9580221 ]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="code-for-dynamics">
+<h3><span class="section-number">69.3.2. </span>Code for dynamics<a class="headerlink" href="#code-for-dynamics" title="Link to this heading">#</a></h3>
 <p>We will also use a specialized function to generate time series in an efficient
 JAX-compatible manner.</p>
-<p>(Iteratively generating time series is somewhat nontrivial in JAX because arrays
-are immutable.)</p>
+<p>Iteratively generating time series is somewhat nontrivial in JAX because arrays
+are immutable.</p>
+<p>Here we use <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code>, which allows the function to be jit-compiled.</p>
+<p>Readers who prefer to skip the details can safely continue reading after the function definition.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;num_steps&#39;</span><span class="p">])</span>
@@ -487,13 +583,13 @@ are immutable.)</p>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a time series by repeatedly applying an update rule.</span>
 
-<span class="sd">    Given a map f, initial state x_0, and a set of model parameter θ, this</span>
+<span class="sd">    Given a map f, initial state x_0, and model parameters, this</span>
 <span class="sd">    function computes and returns the sequence {x_t}_{t=0}^{T-1} when</span>
 
-<span class="sd">        x_{t+1} = f(x_t, t, θ) </span>
+<span class="sd">        x_{t+1} = f(x_t, **kwargs)</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        f: Update function mapping (x_t, t, θ) -&gt; x_{t+1}</span>
+<span class="sd">        f: Update function mapping (x_t, **kwargs) -&gt; x_{t+1}</span>
 <span class="sd">        initial_state: Initial state x_0</span>
 <span class="sd">        num_steps: Number of time steps T to simulate</span>
 <span class="sd">        **kwargs: Optional extra arguments passed to f</span>
@@ -507,7 +603,7 @@ are immutable.)</p>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Wrapper function that adapts f for use with JAX scan.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">next_state</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">next_state</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">state</span>
 
     <span class="n">_</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">update_wrapper</span><span class="p">,</span>
@@ -517,84 +613,27 @@ are immutable.)</p>
 </div>
 </div>
 </div>
-<p>Now we can compute the matrices and simulate the dynamics.</p>
+<p>Here are functions to update <span class="math notranslate nohighlight">\(X_t\)</span> and <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_matrices</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">LakeModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the transition matrices A and A_hat for the model.&quot;&quot;&quot;</span>
-    <span class="n">λ</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">λ</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">d</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">d</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">λ</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span>      <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">α</span> <span class="o">+</span> <span class="n">b</span><span class="p">],</span>
-                   <span class="p">[</span>        <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">λ</span><span class="p">,</span>      <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)]])</span>
-    <span class="n">A_hat</span> <span class="o">=</span> <span class="n">A</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">g</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">A_hat</span><span class="p">,</span> <span class="n">g</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">stock_update</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">LakeModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply transition matrix to get next period&#39;s stocks.&quot;&quot;&quot;</span>
+    <span class="n">λ</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">@</span> <span class="n">X</span>
 
-
-<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">stock_update</span><span class="p">(</span><span class="n">current_stocks</span><span class="p">,</span> <span class="n">time_step</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Apply transition matrix to get next period&#39;s stocks.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">A</span><span class="p">,</span> <span class="n">A_hat</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">compute_matrices</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-    <span class="n">next_stocks</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">current_stocks</span>
-    <span class="k">return</span> <span class="n">next_stocks</span>
-
-<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">rate_update</span><span class="p">(</span><span class="n">current_rates</span><span class="p">,</span> <span class="n">time_step</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Apply normalized transition matrix for next period&#39;s rates.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">A</span><span class="p">,</span> <span class="n">A_hat</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">compute_matrices</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-    <span class="n">next_rates</span> <span class="o">=</span> <span class="n">A_hat</span> <span class="o">@</span> <span class="n">current_rates</span>
-    <span class="k">return</span> <span class="n">next_rates</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rate_update</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">LakeModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply normalized transition matrix for next period&#39;s rates.&quot;&quot;&quot;</span>
+    <span class="n">λ</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="k">return</span> <span class="n">R</span> <span class="o">@</span> <span class="n">x</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We create two instances, one with <span class="math notranslate nohighlight">\(α=0.013\)</span> and another with <span class="math notranslate nohighlight">\(α=0.03\)</span></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">()</span>
-<span class="n">model_new</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Default α: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">α</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">A</span><span class="p">,</span> <span class="n">A_hat</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">compute_matrices</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A matrix:</span><span class="se">\n</span><span class="si">{</span><span class="n">A</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Default α: 0.013
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A matrix:
-[[0.7235062  0.02529314]
- [0.28067374 0.97888684]]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_new</span><span class="p">,</span> <span class="n">A_hat_new</span><span class="p">,</span> <span class="n">g_new</span> <span class="o">=</span> <span class="n">compute_matrices</span><span class="p">(</span><span class="n">model_new</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New α: </span><span class="si">{</span><span class="n">model_new</span><span class="o">.</span><span class="n">α</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New A matrix:</span><span class="se">\n</span><span class="si">{</span><span class="n">A_new</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>New α: 0.03
-New A matrix:
-[[0.7235062  0.0421534 ]
- [0.28067374 0.9620266 ]]
-</pre></div>
-</div>
-</div>
-</div>
+</section>
 <section id="aggregate-dynamics">
-<h3><span class="section-number">69.3.1. </span>Aggregate dynamics<a class="headerlink" href="#aggregate-dynamics" title="Link to this heading">#</a></h3>
-<p>Let’s run a simulation under the default parameters (see above) starting from <span class="math notranslate nohighlight">\(X_0 = (12, 138)\)</span>.</p>
+<h3><span class="section-number">69.3.3. </span>Aggregate dynamics<a class="headerlink" href="#aggregate-dynamics" title="Link to this heading">#</a></h3>
+<p>Let’s run a simulation under the default parameters starting from <span class="math notranslate nohighlight">\(X_0 = (12, 138)\)</span>.</p>
+<p>We will plot the sequences <span class="math notranslate nohighlight">\(\{E_t\}\)</span>, <span class="math notranslate nohighlight">\(\{U_t\}\)</span> and <span class="math notranslate nohighlight">\(\{N_t\}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_0</span> <span class="o">=</span> <span class="mi">150</span>      <span class="c1"># Population</span>
@@ -605,70 +644,76 @@ New A matrix:
 <span class="n">U_0</span> <span class="o">=</span> <span class="n">u_0</span> <span class="o">*</span> <span class="n">N_0</span>
 <span class="n">E_0</span> <span class="o">=</span> <span class="n">e_0</span> <span class="o">*</span> <span class="n">N_0</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="c1"># Generate X path</span>
 <span class="n">X_0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">U_0</span><span class="p">,</span> <span class="n">E_0</span><span class="p">])</span>
 <span class="n">X_path</span> <span class="o">=</span> <span class="n">generate_path</span><span class="p">(</span><span class="n">stock_update</span><span class="p">,</span> <span class="n">X_0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_path</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;unemployment&#39;</span><span class="p">)</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_path</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;employment&#39;</span><span class="p">)</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_path</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;labor force&#39;</span><span class="p">)</span>
-
+<span class="c1"># Plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;unemployment&#39;</span><span class="p">,</span> <span class="s1">&#39;employment&#39;</span><span class="p">,</span> <span class="s1">&#39;labor force&#39;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">X_path</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">X_path</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">X_path</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/298a70d06ffcb2ad53681ca07156bfc42dcb751b553a33a92259557351b64b9e.png" src="_images/298a70d06ffcb2ad53681ca07156bfc42dcb751b553a33a92259557351b64b9e.png" />
+<img alt="_images/c45d5953bd4cda38f6fe985f52b9828f064de9eaecb74d61b750b0f693605577.png" src="_images/c45d5953bd4cda38f6fe985f52b9828f064de9eaecb74d61b750b0f693605577.png" />
 </div>
 </div>
 <p>The aggregates <span class="math notranslate nohighlight">\(E_t\)</span> and <span class="math notranslate nohighlight">\(U_t\)</span> don’t converge because their sum <span class="math notranslate nohighlight">\(E_t + U_t\)</span> grows at rate <span class="math notranslate nohighlight">\(g\)</span>.</p>
+</section>
+<section id="rate-dynamics">
+<h3><span class="section-number">69.3.4. </span>Rate dynamics<a class="headerlink" href="#rate-dynamics" title="Link to this heading">#</a></h3>
 <p>On the other hand, the vector of employment and unemployment rates <span class="math notranslate nohighlight">\(x_t\)</span> can be in a steady state <span class="math notranslate nohighlight">\(\bar x\)</span> if
 there exists an <span class="math notranslate nohighlight">\(\bar x\)</span>  such that</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\bar x = \hat A \bar x\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\bar x = R \bar x\)</span></p></li>
 <li><p>the components satisfy <span class="math notranslate nohighlight">\(\bar e + \bar u = 1\)</span></p></li>
 </ul>
-<p>This equation tells us that a steady state level <span class="math notranslate nohighlight">\(\bar x\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\hat A\)</span> associated with a unit eigenvalue.</p>
+<p>This equation tells us that a steady state level <span class="math notranslate nohighlight">\(\bar x\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(R\)</span> associated with a unit eigenvalue.</p>
 <p>The following function can be used to compute the steady state.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">rate_steady_state</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">LakeModel</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rate_steady_state</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">LakeModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Finds the steady state of the system :math:`x_{t+1} = \hat A x_{t}`</span>
-<span class="sd">    by computing the eigenvector corresponding to the unit eigenvalue.</span>
+<span class="sd">    Finds the steady state of the system :math:`x_{t+1} = R x_{t}`</span>
+<span class="sd">    by computing the eigenvector corresponding to the largest eigenvalue.</span>
+
+<span class="sd">    By the Perron-Frobenius theorem, since :math:`R` is a non-negative</span>
+<span class="sd">    matrix with columns summing to 1 (a stochastic matrix), the largest</span>
+<span class="sd">    eigenvalue equals 1 and the corresponding eigenvector gives the steady state.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">A</span><span class="p">,</span> <span class="n">A_hat</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">compute_matrices</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-    <span class="n">eigenvals</span><span class="p">,</span> <span class="n">eigenvec</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">A_hat</span><span class="p">)</span>
-    
-    <span class="c1"># Find the eigenvector corresponding to eigenvalue 1</span>
-    <span class="n">unit_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eigenvals</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span>
+    <span class="n">λ</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">eigenvals</span><span class="p">,</span> <span class="n">eigenvec</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+
+    <span class="c1"># Find the eigenvector corresponding to the largest eigenvalue</span>
+    <span class="c1"># (which is 1 for a stochastic matrix by Perron-Frobenius theorem)</span>
+    <span class="n">max_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eigenvals</span><span class="p">))</span>
 
     <span class="c1"># Get the corresponding eigenvector</span>
-    <span class="n">steady_state</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">eigenvec</span><span class="p">[:,</span> <span class="n">unit_idx</span><span class="p">])</span>
-    
+    <span class="n">steady_state</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">eigenvec</span><span class="p">[:,</span> <span class="n">max_idx</span><span class="p">])</span>
+
     <span class="c1"># Normalize to ensure positive values and sum to 1</span>
     <span class="n">steady_state</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">steady_state</span><span class="p">)</span>
     <span class="n">steady_state</span> <span class="o">=</span> <span class="n">steady_state</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">steady_state</span><span class="p">)</span>
-    
+
     <span class="k">return</span> <span class="n">steady_state</span>
 </pre></div>
 </div>
 </div>
 </div>
 <p>We also have <span class="math notranslate nohighlight">\(x_t \to \bar x\)</span> as <span class="math notranslate nohighlight">\(t \to \infty\)</span> provided that the remaining
-eigenvalue of <span class="math notranslate nohighlight">\(\hat A\)</span> has modulus less than 1.</p>
+eigenvalue of <span class="math notranslate nohighlight">\(R\)</span> has modulus less than 1.</p>
 <p>This is the case for our default parameters:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="p">,</span> <span class="n">A_hat</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">compute_matrices</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-<span class="n">e</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">A_hat</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">()</span>
+<span class="n">e</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Eigenvalue magnitudes: </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -701,8 +746,48 @@ eigenvalue of <span class="math notranslate nohighlight">\(\hat A\)</span> has m
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ce3579224586a36a2d3d4cdee646586904ce0e582c5d079936279a5c61208fdd.png" src="_images/ce3579224586a36a2d3d4cdee646586904ce0e582c5d079936279a5c61208fdd.png" />
+<img alt="_images/403f18b16f148523fa2ad8014485220631de634808d02fb7f10a9be7a8c2461e.png" src="_images/403f18b16f148523fa2ad8014485220631de634808d02fb7f10a9be7a8c2461e.png" />
 </div>
+</div>
+<div class="exercise admonition" id="model_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 69.1 </span></p>
+<section id="exercise-content">
+<p>Use JAX’s <code class="docutils literal notranslate"><span class="pre">vmap</span></code> to compute steady-state unemployment rates for a range of job finding rates <span class="math notranslate nohighlight">\(\lambda\)</span> (from 0.1 to 0.5), and plot the relationship.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="lake_model-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#model_ex1"> Exercise 69.1</a></p>
+<section id="solution-content">
+<p>Here is one solution</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_unemployment_rate</span><span class="p">(</span><span class="n">λ_val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes steady-state unemployment for a given λ&quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">(</span><span class="n">λ</span><span class="o">=</span><span class="n">λ_val</span><span class="p">)</span>
+    <span class="n">steady_state</span> <span class="o">=</span> <span class="n">rate_steady_state</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">steady_state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Use vmap to compute for multiple λ values</span>
+<span class="n">λ_values</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">unemployment_rates</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_unemployment_rate</span><span class="p">)(</span><span class="n">λ_values</span><span class="p">)</span>
+
+<span class="c1"># Plot the results</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">λ_values</span><span class="p">,</span> <span class="n">unemployment_rates</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\lambda$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;steady-state unemployment rate&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6016e7babd66928806fb197e8d574df9c0c4f52ef8be40d4620b63511468fe6e.png" src="_images/6016e7babd66928806fb197e8d574df9c0c4f52ef8be40d4620b63511468fe6e.png" />
+</div>
+</div>
+</section>
 </div>
 </section>
 </section>
@@ -766,7 +851,7 @@ the dismissal rate and falls with the job finding rate.</p>
 \lim_{T \to \infty} \bar s_{e, T} = \psi^*[1]
 \]</div>
 <p>with probability one.</p>
-<p>Inspection tells us that <span class="math notranslate nohighlight">\(P\)</span> is exactly the transpose of <span class="math notranslate nohighlight">\(\hat A\)</span> under the assumption <span class="math notranslate nohighlight">\(b=d=0\)</span>.</p>
+<p>Inspection tells us that <span class="math notranslate nohighlight">\(P\)</span> is exactly the transpose of <span class="math notranslate nohighlight">\(R\)</span> under the assumption <span class="math notranslate nohighlight">\(b=d=0\)</span>.</p>
 <p>Thus, the percentages of time that an infinitely lived worker spends employed and unemployed equal the fractions of workers employed and unemployed in the steady state distribution.</p>
 </section>
 <section id="convergence-rate">
@@ -776,18 +861,17 @@ the dismissal rate and falls with the job finding rate.</p>
 <p>Let’s plot the path of the sample averages over 5,000 periods</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">markov_update</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">markov_update</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sample next state from transition probabilities.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">probs</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="n">state</span><span class="p">]</span>
-    <span class="n">state_new</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="n">t</span><span class="p">],</span>
+    <span class="n">state_new</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">key</span><span class="p">,</span>
                         <span class="n">a</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">probs</span><span class="p">)),</span>
                         <span class="n">p</span><span class="o">=</span><span class="n">probs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">state_new</span>
 
-<span class="n">model_markov</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">model_markov</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">T</span> <span class="o">=</span> <span class="mi">5000</span>  <span class="c1"># Simulation length</span>
 
 <span class="n">α</span><span class="p">,</span> <span class="n">λ</span> <span class="o">=</span> <span class="n">model_markov</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="n">model_markov</span><span class="o">.</span><span class="n">λ</span>
@@ -797,10 +881,21 @@ the dismissal rate and falls with the job finding rate.</p>
 
 <span class="n">xbar</span> <span class="o">=</span> <span class="n">rate_steady_state</span><span class="p">(</span><span class="n">model_markov</span><span class="p">)</span>
 
-<span class="c1"># Simulate the Markov chain</span>
+<span class="c1"># Simulate the Markov chain - we need a different approach for random updates</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
-<span class="n">s_path</span> <span class="o">=</span> <span class="n">generate_path</span><span class="p">(</span><span class="n">markov_update</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_markov</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate Markov chain for T periods&quot;&quot;&quot;</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">scan_fn</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">next_state</span> <span class="o">=</span> <span class="n">markov_update</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">state</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">scan_fn</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path</span>
+
+<span class="n">s_path</span> <span class="o">=</span> <span class="n">simulate_markov</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">s_bar_e</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">s_path</span><span class="p">)</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
@@ -811,7 +906,7 @@ the dismissal rate and falls with the job finding rate.</p>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">plot</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">to_plot</span><span class="p">):</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">xbar</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">xbar</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -820,10 +915,10 @@ the dismissal rate and falls with the job finding rate.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6abdebd411ee8d63e1b78942adfecc82eb461de8a7351152a8169b334c03ac0b.png" src="_images/6abdebd411ee8d63e1b78942adfecc82eb461de8a7351152a8169b334c03ac0b.png" />
+<img alt="_images/97d581683a3a1da2283a6b88ac73c601add5bf89fad52cc271d6c77949c4b71d.png" src="_images/97d581683a3a1da2283a6b88ac73c601add5bf89fad52cc271d6c77949c4b71d.png" />
 </div>
 </div>
-<p>The stationary probabilities are given by the dashed red line.</p>
+<p>The stationary probabilities are given by the dashed line.</p>
 <p>In this case it takes much of the sample for these two objects to converge.</p>
 <p>This is largely due to the high persistence in the Markov chain.</p>
 </section>
@@ -1074,25 +1169,25 @@ function of the unemployment compensation rate</p>
 
 
 <span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_steady_state_quantities</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">τ</span><span class="p">,</span> 
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_steady_state_quantities</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">τ</span><span class="p">,</span>
                     <span class="n">params</span><span class="p">:</span> <span class="n">EconomyParameters</span><span class="p">,</span> <span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the steady state unemployment rate given c and τ using optimal</span>
 <span class="sd">    quantities from the McCall model and computing corresponding steady</span>
 <span class="sd">    state quantities</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">w_bar</span><span class="p">,</span> <span class="n">λ</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">compute_optimal_quantities</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">τ</span><span class="p">,</span> 
+    <span class="n">w_bar</span><span class="p">,</span> <span class="n">λ</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">compute_optimal_quantities</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">τ</span><span class="p">,</span>
                                         <span class="n">params</span><span class="p">,</span> <span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span><span class="p">)</span>
-    
+
     <span class="c1"># Compute steady state employment and unemployment rates</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">α_q</span><span class="p">,</span> <span class="n">λ</span><span class="o">=</span><span class="n">λ</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">(</span><span class="n">λ</span><span class="o">=</span><span class="n">λ</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">α_q</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
     <span class="n">u</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">rate_steady_state</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-    
+
     <span class="c1"># Compute steady state welfare</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">w_vec</span> <span class="o">-</span> <span class="n">τ</span> <span class="o">&gt;</span> <span class="n">w_bar</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">V</span> <span class="o">*</span> <span class="n">p_vec</span> <span class="o">*</span> <span class="n">mask</span><span class="p">)</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p_vec</span> <span class="o">*</span> <span class="n">mask</span><span class="p">)</span>
     <span class="n">welfare</span> <span class="o">=</span> <span class="n">e</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">U</span>
-    
+
     <span class="k">return</span> <span class="n">e</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">welfare</span>
 
 
@@ -1172,76 +1267,6 @@ function of the unemployment compensation rate</p>
 </section>
 <section id="exercises">
 <h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">69.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
-<div class="exercise admonition" id="model_ex1">
-
-<p class="admonition-title"><span class="caption-number">Exercise 69.1 </span></p>
-<section id="exercise-content">
-<p>In the JAX implementation of the Lake Model, we use a <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code> for parameters and separate functions for computations.</p>
-<p>This approach has several advantages:</p>
-<ol class="arabic simple">
-<li><p>It’s immutable, which aligns with JAX’s functional programming paradigm</p></li>
-<li><p>Functions can be JIT-compiled for better performance</p></li>
-</ol>
-<p>In this exercise, your task is to:</p>
-<ol class="arabic simple">
-<li><p>Update parameters by creating a new instance of the model with the parameters (<code class="docutils literal notranslate"><span class="pre">α=0.02,</span> <span class="pre">λ=0.3</span></code>).</p></li>
-<li><p>Use JAX’s <code class="docutils literal notranslate"><span class="pre">vmap</span></code> to compute steady states for different parameter values</p></li>
-<li><p>Plot how the steady-state unemployment rate varies with the job finding rate <span class="math notranslate nohighlight">\(\lambda\)</span></p></li>
-</ol>
-</section>
-</div>
-<div class="solution dropdown admonition" id="lake_model-solution-1">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#model_ex1"> Exercise 69.1</a></p>
-<section id="solution-content">
-<p>Here is one solution</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_unemployment_rate</span><span class="p">(</span><span class="n">λ_val</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes steady-state unemployment for a given λ&quot;&quot;&quot;</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">(</span><span class="n">λ</span><span class="o">=</span><span class="n">λ_val</span><span class="p">)</span>
-    <span class="n">steady_state</span> <span class="o">=</span> <span class="n">rate_steady_state</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">steady_state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="c1"># Use vmap to compute for multiple λ values</span>
-<span class="n">λ_values</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
-<span class="n">unemployment_rates</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_unemployment_rate</span><span class="p">)(</span><span class="n">λ_values</span><span class="p">)</span>
-
-<span class="c1"># Plot the results</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">λ_values</span><span class="p">,</span> <span class="n">unemployment_rates</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\lambda$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;steady-state unemployment rate&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="n">model_base</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">()</span>
-<span class="n">model_ex1</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">λ</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Base model α: </span><span class="si">{</span><span class="n">model_base</span><span class="o">.</span><span class="n">α</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New model α: </span><span class="si">{</span><span class="n">model_ex1</span><span class="o">.</span><span class="n">α</span><span class="si">}</span><span class="s2">, λ: </span><span class="si">{</span><span class="n">model_ex1</span><span class="o">.</span><span class="n">λ</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Compute steady states for both</span>
-<span class="n">base_steady_state</span> <span class="o">=</span> <span class="n">rate_steady_state</span><span class="p">(</span><span class="n">model_base</span><span class="p">)</span>
-<span class="n">new_steady_state</span> <span class="o">=</span> <span class="n">rate_steady_state</span><span class="p">(</span><span class="n">model_ex1</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Base unemployment rate: </span><span class="si">{</span><span class="n">base_steady_state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New unemployment rate: </span><span class="si">{</span><span class="n">new_steady_state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/6016e7babd66928806fb197e8d574df9c0c4f52ef8be40d4620b63511468fe6e.png" src="_images/6016e7babd66928806fb197e8d574df9c0c4f52ef8be40d4620b63511468fe6e.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Base model α: 0.013
-New model α: 0.02, λ: 0.3
-Base unemployment rate: 0.0827
-New unemployment rate: 0.0978
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-</div>
 <div class="exercise admonition" id="model_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 69.2 </span></p>
@@ -1270,7 +1295,7 @@ steady state level of employment in the baseline parameterization</p>
 initial steady state</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_initial</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_initial</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">()</span>
 <span class="n">x0</span> <span class="o">=</span> <span class="n">rate_steady_state</span><span class="p">(</span><span class="n">model_initial</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Initial Steady State: </span><span class="si">{</span><span class="n">x0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1294,7 +1319,7 @@ initial steady state</p>
 <p>New legislation changes <span class="math notranslate nohighlight">\(\lambda\)</span> to <span class="math notranslate nohighlight">\(0.2\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_ex2</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">(</span><span class="n">λ</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_ex2</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">(</span><span class="n">λ</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="n">xbar</span> <span class="o">=</span> <span class="n">rate_steady_state</span><span class="p">(</span><span class="n">model_ex2</span><span class="p">)</span>  <span class="c1"># new steady state</span>
 
 <span class="c1"># Simulate paths</span>
@@ -1330,7 +1355,7 @@ initial steady state</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/46c760275cd55c50ba4deac5077971f5661387d70332ac19aad3a58776390e39.png" src="_images/46c760275cd55c50ba4deac5077971f5661387d70332ac19aad3a58776390e39.png" />
+<img alt="_images/28649935f71473db497b447997a4c36637adca59e3e90545531e0c2f6426d56a.png" src="_images/28649935f71473db497b447997a4c36637adca59e3e90545531e0c2f6426d56a.png" />
 </div>
 </div>
 <p>And how the rates evolve</p>
@@ -1342,7 +1367,7 @@ initial steady state</p>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">titles</span><span class="p">):</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_path</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">xbar</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">xbar</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -1351,7 +1376,7 @@ initial steady state</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9b461f6d9f1c02eaa415dfe5490cd91d741c552a12bcc5f0e6cb63ca8dee1063.png" src="_images/9b461f6d9f1c02eaa415dfe5490cd91d741c552a12bcc5f0e6cb63ca8dee1063.png" />
+<img alt="_images/8923455927013ebe3002ff5f23b544ea1b3030ad624429f1e0310c2d9e6c897c.png" src="_images/8923455927013ebe3002ff5f23b544ea1b3030ad624429f1e0310c2d9e6c897c.png" />
 </div>
 </div>
 <p>We see that it takes 20 periods for the economy to converge to its new
@@ -1381,7 +1406,7 @@ the labor market and then later returning to the original levels.</p>
 state</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_baseline</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_baseline</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">()</span>
 <span class="n">x0</span> <span class="o">=</span> <span class="n">rate_steady_state</span><span class="p">(</span><span class="n">model_baseline</span><span class="p">)</span>
 <span class="n">N0</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">T</span> <span class="o">=</span> <span class="mi">50</span>
@@ -1401,7 +1426,7 @@ state</p>
 <p>Let’s increase <span class="math notranslate nohighlight">\(b\)</span> to the new value and simulate for 20 periods</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_high_b</span> <span class="o">=</span> <span class="n">LakeModel</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="n">b_hat</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_high_b</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="n">b_hat</span><span class="p">)</span>
 
 <span class="c1"># Simulate stocks and rates for first 20 periods</span>
 <span class="n">X_path1</span> <span class="o">=</span> <span class="n">generate_path</span><span class="p">(</span><span class="n">stock_update</span><span class="p">,</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">N0</span><span class="p">,</span> <span class="n">T_hat</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model_high_b</span><span class="p">)</span>
@@ -1448,7 +1473,7 @@ additional 30 periods</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f09da36c7284d638c1b1434bcd1003236e95d02a9ab2879fbc7fd3f8b09f0b20.png" src="_images/f09da36c7284d638c1b1434bcd1003236e95d02a9ab2879fbc7fd3f8b09f0b20.png" />
+<img alt="_images/f7cb551dc36a7e69a3cd29c494a603395213ae0c65346bb65a0964733b212fd7.png" src="_images/f7cb551dc36a7e69a3cd29c494a603395213ae0c65346bb65a0964733b212fd7.png" />
 </div>
 </div>
 <p>And the rates</p>
@@ -1460,7 +1485,7 @@ additional 30 periods</p>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">titles</span><span class="p">):</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_path</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -1469,7 +1494,7 @@ additional 30 periods</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7f2a45966a8e3a4504956a0b3df3f9fc3d1393b33452f561ab319a1a32c76b65.png" src="_images/7f2a45966a8e3a4504956a0b3df3f9fc3d1393b33452f561ab319a1a32c76b65.png" />
+<img alt="_images/fb6f871981a0256be6f34864b92f1700e1b94761d8ded54c8bc182b8e0cdcf19.png" src="_images/fb6f871981a0256be6f34864b92f1700e1b94761d8ded54c8bc182b8e0cdcf19.png" />
 </div>
 </div>
 </section>
