@@ -494,6 +494,53 @@ with job separation, showing how workers optimally balance the trade-off between
 accepting current offers versus waiting for better opportunities.
 
 
+## The Ergodic Property
+
+Before we examine cross-sectional unemployment, it's important to understand why
+the time-average unemployment rate (fraction of time spent unemployed) equals the
+cross-sectional unemployment rate (fraction of agents unemployed at any given time).
+
+The employment dynamics in this model are governed by a **joint Markov chain** $(s_t, w_t)$ where:
+
+- $s_t \in \{\text{employed}, \text{unemployed}\}$ is the employment status
+- $w_t \in \{1, 2, \ldots, n\}$ is the wage index (current offer if unemployed, current wage if employed)
+
+This joint process is Markovian because:
+
+- The wage process $\{w_t\}$ evolves according to the transition matrix $P$ (independent of employment status)
+- Employment status transitions depend only on the current state $(s_t, w_t)$ and the reservation wage policy $\sigma$
+
+The joint chain $(s_t, w_t)$ has two crucial properties:
+
+1. **Irreducibility**: From any (status, wage) pair, an agent can eventually reach any other (status, wage) pair. This holds because:
+   - Unemployed agents can become employed by accepting offers
+   - Employed agents can become unemployed through separation (probability $\alpha$)
+   - The wage process can transition between all wage states (assuming $P$ is irreducible)
+
+2. **Aperiodicity**: At any time, there's positive probability of remaining in the current state, so there's no cyclical pattern forcing returns at fixed intervals.
+
+These properties ensure the chain is **ergodic** with a unique stationary distribution $\pi$ over states $(s, w)$.
+
+For an ergodic Markov chain, the **Ergodic Theorem** guarantees:
+
+**Time average = Ensemble average**
+
+The fraction of time a single agent spends unemployed (across all wage states) converges to the cross-sectional unemployment rate:
+
+$$
+\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^{T} \mathbb{1}\{s_t = \text{unemployed}\} = \sum_{w=1}^{n} \pi(\text{unemployed}, w)
+$$
+
+This holds regardless of initial conditions—whether an agent starts employed or unemployed, they converge to the same long-run distribution.
+
+This is why we can study steady-state unemployment either by:
+
+- Following one agent for a long time (time average), or
+- Observing many agents at a single point in time (cross-sectional average)
+
+Both approaches yield the same steady-state unemployment rate.
+
+
 ## Cross-Sectional Analysis
 
 Now let's simulate many agents simultaneously to examine the cross-sectional unemployment rate:
@@ -641,17 +688,21 @@ model_low_c = create_js_with_sep_model(c=0.5)
 plot_cross_sectional_unemployment(model_low_c)
 ```
 
-## Exercise
+## Exercises
+
+```{exercise-start}
+:label: mmwsm_ex1
+```
 
 Create a plot that shows how the steady state cross-sectional unemployment rate
 changes with unemployment compensation.
 
-```{code-cell} ipython3
-for _ in range(20):
-    print('Solution below!')
+```{exercise-end}
 ```
 
-## Solution
+```{solution-start} mmwsm_ex1
+:class: dropdown
+```
 
 ```{code-cell} ipython3
 c_values = 1.0, 0.8, 0.6, 0.4, 0.2
@@ -663,10 +714,13 @@ for c in c_values:
 
 fig, ax = plt.subplots()
 ax.plot(
-    c_values, rates, alpha=0.8, 
+    c_values, rates, alpha=0.8,
     linewidth=1.5, label=f'Unemployment rate at c={c}'
 )
 ax.legend(frameon=False)
 plt.show()
+```
+
+```{solution-end}
 ```
 
