@@ -101,13 +101,13 @@ threshold w*.
 
 In addition to what's in Anaconda, this lecture will need the QE library:
 
-```python
+```{code-cell} ipython3
 #!pip install quantecon  # Uncomment if necessary
 ```
 
 We use the following imports:
 
-```python
+```{code-cell} ipython3
 from quantecon.markov import tauchen
 import jax.numpy as jnp
 import jax
@@ -119,7 +119,7 @@ from functools import partial
 
 First, we implement the successive approximation algorithm:
 
-```python
+```{code-cell} ipython3
 @partial(jit, static_argnums=(0,))
 def successive_approx(
         T,                         # Operator (callable) - marked as static
@@ -148,7 +148,7 @@ def successive_approx(
 
 Let's set up a `Model` class to store information needed to solve the model:
 
-```python
+```{code-cell} ipython3
 class Model(NamedTuple):
     n: int
     w_vals: jnp.ndarray
@@ -160,7 +160,7 @@ class Model(NamedTuple):
 
 The function below holds default values and creates a `Model` instance:
 
-```python
+```{code-cell} ipython3
 def create_js_with_sep_model(
         n: int = 200,          # wage grid size
         ρ: float = 0.9,        # wage persistence
@@ -177,7 +177,7 @@ def create_js_with_sep_model(
 
 Here's the Bellman operator for the unemployed worker's value function:
 
-```python
+```{code-cell} ipython3
 @jit
 def T(v: jnp.ndarray, model: Model) -> jnp.ndarray:
     """The Bellman operator for the value of being unemployed."""
@@ -191,7 +191,7 @@ def T(v: jnp.ndarray, model: Model) -> jnp.ndarray:
 The next function computes the optimal policy under the assumption that v is
 the value function:
 
-```python
+```{code-cell} ipython3
 @jit
 def get_greedy(v: jnp.ndarray, model: Model) -> jnp.ndarray:
     """Get a v-greedy policy."""
@@ -205,7 +205,7 @@ def get_greedy(v: jnp.ndarray, model: Model) -> jnp.ndarray:
 
 Here's a routine for value function iteration:
 
-```python
+```{code-cell} ipython3
 def vfi(model: Model):
     """Solve by VFI."""
     v_init = jnp.zeros(model.w_vals.shape)
@@ -240,7 +240,7 @@ def get_reservation_wage(σ: jnp.ndarray, model: Model) -> float:
 
 Let's solve the model and plot the results:
 
-```python
+```{code-cell} ipython3
 model = create_js_with_sep_model()
 n, w_vals, P, β, c, α = model
 v_star, σ_star = vfi(model)
@@ -266,7 +266,7 @@ plt.show()
 
 Let's examine how reservation wages change with the separation rate α:
 
-```python
+```{code-cell} ipython3
 α_vals: jnp.ndarray = jnp.linspace(0.0, 1.0, 10)
 
 w_star_vec = jnp.empty_like(α_vals)
@@ -289,7 +289,7 @@ plt.show()
 
 Now let's simulate the employment dynamics of a single agent under the optimal policy:
 
-```python
+```{code-cell} ipython3
 @jit
 def weighted_choice(key, probs):
     """JAX-compatible weighted random choice."""
@@ -324,7 +324,7 @@ def update_agent(key, is_employed, wage_idx, model, σ_star):
     return final_employment, final_wage
 ```
 
-```python
+```{code-cell} ipython3
 def simulate_employment_path(
         model: Model,     # Model details
         T: int = 2_000,   # Simulation length
@@ -360,7 +360,7 @@ def simulate_employment_path(
 
 Let's create a comprehensive plot of the employment simulation:
 
-```python
+```{code-cell} ipython3
 model = create_js_with_sep_model()
 
 # Calculate reservation wage for plotting
@@ -426,14 +426,14 @@ The model successfully captures the essential features of labor market dynamics 
 
 Now let's simulate many agents simultaneously to examine the cross-sectional unemployment rate:
 
-```python
+```{code-cell} ipython3
 # Create vectorized version of update_agent
 update_agents_vmap = jax.vmap(
     update_agent, in_axes=(0, 0, 0, None, None)
 )
 ```
 
-```python
+```{code-cell} ipython3
 @partial(jit, static_argnums=(3, 4))
 def _simulate_cross_section_compiled(
         key: jnp.ndarray,
@@ -515,7 +515,7 @@ def simulate_cross_section(
     return unemployment_rates, employment_matrix
 ```
 
-```python
+```{code-cell} ipython3
 def plot_cross_sectional_unemployment(model: Model):
     """
     Generate cross-sectional unemployment rate plot for a given model.
@@ -555,7 +555,7 @@ def plot_cross_sectional_unemployment(model: Model):
     plt.show()
 ```
 
-```python
+```{code-cell} ipython3
 model = create_js_with_sep_model()
 plot_cross_sectional_unemployment(model)
 ```
@@ -564,7 +564,7 @@ plot_cross_sectional_unemployment(model)
 
 Let's examine how the cross-sectional unemployment rate changes with lower unemployment compensation:
 
-```python
+```{code-cell} ipython3
 model_low_c = create_js_with_sep_model(c=0.5)
 plot_cross_sectional_unemployment(model_low_c)
 ```
@@ -574,14 +574,14 @@ plot_cross_sectional_unemployment(model_low_c)
 Create a plot that shows how the steady state cross-sectional unemployment rate
 changes with unemployment compensation.
 
-```python
+```{code-cell} ipython3
 for _ in range(20):
     print('Solution below!')
 ```
 
 ## Solution
 
-```python
+```{code-cell} ipython3
 c_values = 1.0, 0.8, 0.6, 0.4, 0.2
 rates = []
 for c in c_values:
@@ -598,6 +598,6 @@ ax.legend(frameon=False)
 plt.show()
 ```
 
-```python
+```{code-cell} ipython3
 
 ```
