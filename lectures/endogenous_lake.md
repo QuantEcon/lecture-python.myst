@@ -41,15 +41,14 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 
 This lecture is a continuation of the {doc}`lake model lecture <lake_model>`.
 
-We strongly recommend you read that lecture first before proceeding with this one.
+We recommend you read that lecture first before proceeding with this one.
 
-In the previous lecture, we studied a lake model of unemployment and employment where the transition rates between states were exogenous parameters.
+In the previous lecture, we studied a lake model of unemployment and employment
+where the transition rates between states were exogenous parameters.
 
 In this lecture, we extend the model by making the job finding rate endogenous.
 
 Specifically, the transition rate from unemployment to employment will be determined by the McCall search model {cite}`McCall1970`.
-
-All details relevant to the following discussion can be found in {doc}`our treatment <mccall_model>` of that model.
 
 Let's start with some imports:
 
@@ -63,107 +62,56 @@ from functools import partial
 import jax.scipy.stats as stats
 ```
 
-## Endogenous job finding rate
 
-We now make the hiring rate endogenous.
 
-The transition rate from unemployment to employment will be determined by the McCall search model {cite}`McCall1970`.
 
-All details relevant to the following discussion can be found in {doc}`our treatment <mccall_model>` of that model.
+## Set Up
+
+The basic structure of the model will be as discussed in the {doc}`lake model lecture <lake_model>`.
+
+The only difference is that the hiring rate is endogenous, determined by the
+decisions of optimizing agents inhabiting a McCall search model {cite}`McCall1970` with
+IID wage offers and job separation at rate $\alpha$.
+
 
 ### Reservation wage
 
-The most important thing to remember about the model is that optimal decisions
-are characterized by a reservation wage $\bar w$
+In the model, the optimal policy is characterized by a reservation wage $\bar w$
 
 * If the wage offer $w$ in hand is greater than or equal to $\bar w$, then the worker accepts.
 * Otherwise, the worker rejects.
 
-As we saw in {doc}`our discussion of the model <mccall_model>`, the reservation wage depends on the wage offer distribution and the parameters
+The reservation wage depends on the wage offer distribution and the parameters
 
 * $\alpha$, the separation rate
 * $\beta$, the discount factor
 * $\gamma$, the offer arrival rate
 * $c$, unemployment compensation
 
-### Linking the McCall search model to the lake model
-
-Suppose that all workers inside a lake model behave according to the McCall search model.
-
-The exogenous probability of leaving employment remains $\alpha$.
-
-But their optimal decision rules determine the probability $\lambda$ of leaving unemployment.
-
-This is now
-
-```{math}
-:label: lake_lamda
-
-\lambda
-= \gamma \mathbb P \{ w_t \geq \bar w\}
-= \gamma \sum_{w' \geq \bar w} p(w')
-```
-
-### Fiscal policy
-
-We can use the McCall search version of the Lake Model to find an optimal level of unemployment insurance.
-
-We assume that the government sets unemployment compensation $c$.
-
-The government imposes a lump-sum tax $\tau$ sufficient to finance total unemployment payments.
-
-To attain a balanced budget at a steady state, taxes, the steady state unemployment rate $u$, and the unemployment compensation rate must satisfy
-
-$$
-\tau = u c
-$$
-
-The lump-sum tax applies to everyone, including unemployed workers.
-
-Thus, the post-tax income of an employed worker with wage $w$ is $w - \tau$.
-
-The post-tax income of an unemployed worker is $c - \tau$.
-
-For each specification $(c, \tau)$ of government policy, we can solve for the worker's optimal reservation wage.
-
-This determines $\lambda$ via {eq}`lake_lamda` evaluated at post tax wages, which in turn determines a steady state unemployment rate $u(c, \tau)$.
-
-For a given level of unemployment benefit $c$, we can solve for a tax that balances the budget in the steady state
-
-$$
-\tau = u(c, \tau) c
-$$
-
-To evaluate alternative government tax-unemployment compensation pairs, we require a welfare criterion.
-
-We use a steady state welfare criterion
-
-$$
-W := e \,  {\mathbb E} [V \, | \,  \text{employed}] + u \,  U
-$$
-
-where the notation $V$ and $U$ is as defined in the {doc}`McCall search model lecture <mccall_model>`.
 
 The wage offer distribution will be a discretized version of the lognormal distribution $LN(\log(20),1)$.
 
 We first define a function to create a discretized wage distribution:
 
 ```{code-cell} ipython3
-def create_wage_distribution(max_wage: float,
-                             wage_grid_size: int,
-                             log_wage_mean: float):
-    """Create wage distribution"""
-    w_vec_temp = jnp.linspace(1e-8, max_wage,
-                                wage_grid_size + 1)
-    cdf = stats.norm.cdf(jnp.log(w_vec_temp),
-                            loc=jnp.log(log_wage_mean), scale=1)
+def create_wage_distribution(
+        max_wage: float,
+        wage_grid_size: int,
+        log_wage_mean: float
+    ):
+    w_vec_temp = jnp.linspace(
+        1e-8, max_wage, wage_grid_size + 1
+    )
+    cdf = stats.norm.cdf(
+        jnp.log(w_vec_temp), loc=jnp.log(log_wage_mean), scale=1
+    )
     pdf = cdf[1:] - cdf[:-1]
     p_vec = pdf / pdf.sum()
     w_vec = (w_vec_temp[1:] + w_vec_temp[:-1]) / 2
     return w_vec, p_vec
 ```
 
-Let's create a wage distribution and visualize it:
+To illustrate the code, let's create a wage distribution and visualize it:
 
 ```{code-cell} ipython3
 w_vec, p_vec = create_wage_distribution(170, 200, 20)
@@ -176,14 +124,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-### Fiscal policy code
 
-We will make use of techniques from the {doc}`McCall model lecture <mccall_model>`.
-
-First, we define the utility function and the McCall model data structure:
+Now we define the utility function and the McCall model data structure:
 
 ```{code-cell} ipython3
-@jax.jit
 def u(c, σ=2.0):
     return jnp.where(c > 0, (c**(1 - σ) - 1) / (1 - σ), -10e6)
 
@@ -201,27 +145,27 @@ class McCallModel(NamedTuple):
     p_vec: jnp.ndarray  # Probabilities over w_vec
 
 
-def create_mccall_model(α=0.2, β=0.98, γ=0.7, c=6.0, σ=2.0,
-                            w_vec=None, p_vec=None) -> McCallModel:
-    """
-    Create a McCallModel.
-    """
+def create_mccall_model(
+        α=0.2, β=0.98, γ=0.7, c=6.0, σ=2.0,
+        w_vec=None, 
+        p_vec=None
+    ) -> McCallModel:
     if w_vec is None:
         n = 60  # Number of possible outcomes for wage
-
         # Wages between 10 and 20
         w_vec = jnp.linspace(10, 20, n)
         a, b = 600, 400  # Shape parameters
         dist = BetaBinomial(n-1, a, b)
         p_vec = jnp.array(dist.pdf())
-    return McCallModel(α=α, β=β, γ=γ, c=c, σ=σ, w_vec=w_vec, p_vec=p_vec)
+    return McCallModel(
+        α=α, β=β, γ=γ, c=c, σ=σ, w_vec=w_vec, p_vec=p_vec
+    )
 ```
 
-Next, we implement the Bellman equation operator:
+Next, we implement the Bellman operator
 
 ```{code-cell} ipython3
-@jax.jit
-def bellman(mcm: McCallModel, V, U):
+def T(mcm: McCallModel, V, U):
     """
     Update the Bellman equations.
     """
@@ -234,7 +178,9 @@ def bellman(mcm: McCallModel, V, U):
     return V_new, U_new
 ```
 
-Now we define the value function iteration solver:
+Now we define the value function iteration solver.
+
+We'll use a compiled while loop for extra speed.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -248,7 +194,7 @@ def solve_mccall_model(mcm: McCallModel, tol=1e-5, max_iter=2000):
 
     def body_fun(state):
         V, U, i, error = state
-        V_new, U_new = bellman(mcm, V, U)
+        V_new, U_new = T(mcm, V, U)
         error_1 = jnp.max(jnp.abs(V_new - V))
         error_2 = jnp.abs(U_new - U)
         error_new = jnp.maximum(error_1, error_2)
@@ -262,10 +208,14 @@ def solve_mccall_model(mcm: McCallModel, tol=1e-5, max_iter=2000):
 
     init_state = (V_init, U_init, i_init, error_init)
     V_final, U_final, _, _ = jax.lax.while_loop(
-                                cond_fun, body_fun, init_state)
-
+        cond_fun, body_fun, init_state
+    )
     return V_final, U_final
 ```
+
+
+
+### Lake model code
 
 We also need the lake model functions from the previous lecture to compute steady state unemployment rates:
 
@@ -337,6 +287,82 @@ def rate_steady_state(model: LakeModel) -> jnp.ndarray:
 
     return steady_state
 ```
+
+
+### Linking the McCall search model to the lake model
+
+Suppose that all workers inside a lake model behave according to the McCall search model.
+
+The exogenous probability of leaving employment remains $\alpha$.
+
+But their optimal decision rules determine the probability $\lambda$ of leaving unemployment.
+
+This is now
+
+```{math}
+:label: lake_lamda
+
+\lambda
+= \gamma \mathbb P \{ w_t \geq \bar w\}
+= \gamma \sum_{w' \geq \bar w} p(w')
+```
+
+Here
+
+* $\bar w$ is the reservation wage determined by the parameters and
+* $p$ is the wage offer distribution.
+
+
+
+## Fiscal policy
+
+In this section, we will put the lake model to work, examining outcomes
+associated with different levels of unemployment compensation.
+
+Our aim is to find an optimal level of unemployment insurance.
+
+We assume that the government sets unemployment compensation $c$.
+
+The government imposes a lump-sum tax $\tau$ sufficient to finance total
+unemployment payments.
+
+To attain a balanced budget at a steady state, taxes, the steady state
+unemployment rate $u$, and the unemployment compensation rate must satisfy
+
+$$
+    \tau = u c
+$$
+
+The lump-sum tax applies to everyone, including unemployed workers.
+
+* The post-tax income of an employed worker with wage $w$ is $w - \tau$.
+* The post-tax income of an unemployed worker is $c - \tau$.
+
+For each specification $(c, \tau)$ of government policy, we can solve for the
+worker's optimal reservation wage.
+
+This determines $\lambda$ via {eq}`lake_lamda` evaluated at post tax wages,
+which in turn determines a steady state unemployment rate $u(c, \tau)$.
+
+For a given level of unemployment benefit $c$, we can solve for a tax that balances the budget in the steady state
+
+$$
+    \tau = u(c, \tau) c
+$$
+
+To evaluate alternative government tax-unemployment compensation pairs, we require a welfare criterion.
+
+We use a steady state welfare criterion
+
+$$
+    W := e \,  {\mathbb E} [V \, | \,  \text{employed}] + u \,  U
+$$
+
+where the notation $V$ and $U$ is as defined above and the expectation is at the
+steady state.
+
+
+
 
 ### Computing optimal unemployment insurance
 
