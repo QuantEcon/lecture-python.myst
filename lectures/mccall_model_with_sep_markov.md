@@ -496,49 +496,54 @@ accepting current offers versus waiting for better opportunities.
 
 ## The Ergodic Property
 
-Before we examine cross-sectional unemployment, it's important to understand why
-the time-average unemployment rate (fraction of time spent unemployed) equals the
-cross-sectional unemployment rate (fraction of agents unemployed at any given time).
+Below we examine cross-sectional unemployment.
 
-The employment dynamics in this model are governed by a **joint Markov chain** $(s_t, w_t)$ where:
+In particular, we will look at the unemployment rate in a cross-sectional
+simulation and compare it to the time-average unemployment rate, which is the fraction of time an agent spends unemployed over a long time series.
 
-- $s_t \in \{\text{employed}, \text{unemployed}\}$ is the employment status
-- $w_t \in \{1, 2, \ldots, n\}$ is the wage index (current offer if unemployed, current wage if employed)
+We will see that these two values are approximately equal -- if fact they are
+exactly equal in the limit.
 
-This joint process is Markovian because:
+The reason is that the process $(s_t, w_t)$, where
 
-- The wage process $\{w_t\}$ evolves according to the transition matrix $P$ (independent of employment status)
-- Employment status transitions depend only on the current state $(s_t, w_t)$ and the reservation wage policy $\sigma$
+- $s_t \in \{\text{employed}, \text{unemployed}\}$ is the employment status and
+- $w_t \in \{1, 2, \ldots, n\}$ is the wage 
 
-The joint chain $(s_t, w_t)$ has two crucial properties:
+is Markovian, since the next pair depends only on the current pair and iid
+randomness, and ergodic. 
 
-1. **Irreducibility**: From any (status, wage) pair, an agent can eventually reach any other (status, wage) pair. This holds because:
-   - Unemployed agents can become employed by accepting offers
-   - Employed agents can become unemployed through separation (probability $\alpha$)
-   - The wage process can transition between all wage states (assuming $P$ is irreducible)
+Ergodicity holds as a result of irreducibility.
 
-2. **Aperiodicity**: At any time, there's positive probability of remaining in the current state, so there's no cyclical pattern forcing returns at fixed intervals.
+Indeed, from any (status, wage) pair, an agent can eventually reach any other (status, wage) pair.
 
-These properties ensure the chain is **ergodic** with a unique stationary distribution $\pi$ over states $(s, w)$.
+This holds because:
 
-For an ergodic Markov chain, the **Ergodic Theorem** guarantees:
+- Unemployed agents can become employed by accepting offers
+- Employed agents can become unemployed through separation (probability $\alpha$)
+- The wage process can transition between all wage states (because $P$ is itself irreducible)
 
-**Time average = Ensemble average**
+These properties ensure the chain is ergodic with a unique stationary distribution $\pi$ over states $(s, w)$.
 
-The fraction of time a single agent spends unemployed (across all wage states) converges to the cross-sectional unemployment rate:
+For an ergodic Markov chain, the ergodic theorem guarantees that time averages = ensemble averages.
+
+In particular, the fraction of time a single agent spends unemployed (across all
+wage states) converges to the cross-sectional unemployment rate:
 
 $$
-\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^{T} \mathbb{1}\{s_t = \text{unemployed}\} = \sum_{w=1}^{n} \pi(\text{unemployed}, w)
+    \lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^{T} \mathbb{1}\{s_t = \text{unemployed}\} = \sum_{w=1}^{n} \pi(\text{unemployed}, w)
 $$
 
 This holds regardless of initial conditions—whether an agent starts employed or unemployed, they converge to the same long-run distribution.
 
-This is why we can study steady-state unemployment either by:
+As a result, we can study steady-state unemployment either by:
 
 - Following one agent for a long time (time average), or
 - Observing many agents at a single point in time (cross-sectional average)
 
 Both approaches yield the same steady-state unemployment rate.
+
+Often the second approach is better for our purposes, since it's far easier to
+parallelize.
 
 
 ## Cross-Sectional Analysis
