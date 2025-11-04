@@ -332,7 +332,7 @@ mcm = create_mccall_model(w_vec=w_vec, p_vec=p_vec)
 V, U = solve_mccall_model(mcm)
 w_idx = jnp.searchsorted(V - U, 0)
 w_bar = jnp.where(w_idx == len(V), jnp.inf, mcm.w_vec[w_idx])
-λ = γ * jnp.sum(p_vec * (w_vec > w_bar))
+λ = mcm.γ * jnp.sum(p_vec * (w_vec > w_bar))
 print(f"Job finding rate at default paramters ={λ}.")
 ```
 
