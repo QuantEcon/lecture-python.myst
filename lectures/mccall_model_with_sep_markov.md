@@ -554,7 +554,9 @@ Often the second approach is better for our purposes, since it's easier to paral
 
 ## Cross-Sectional Analysis
 
-Now let's simulate many agents simultaneously to examine the cross-sectional unemployment rate:
+Now let's simulate many agents simultaneously to examine the cross-sectional unemployment rate.
+
+We first create a vectorized version of `update_agent` to efficiently update all agents in parallel:
 
 ```{code-cell} ipython3
 # Create vectorized version of update_agent
@@ -562,6 +564,8 @@ update_agents_vmap = jax.vmap(
     update_agent, in_axes=(0, 0, 0, None, None)
 )
 ```
+
+Next we define the core simulation function, which uses `lax.fori_loop` to efficiently iterate many agents forward in time:
 
 ```{code-cell} ipython3
 @partial(jit, static_argnums=(3, 4))
@@ -572,7 +576,7 @@ def _simulate_cross_section_compiled(
         n_agents: int,
         T: int
     ):
-    """JIT-compiled core simulation loop using lax.scan.
+    """JIT-compiled core simulation loop using lax.fori_loop.
     Returns only the final employment state to save memory."""
     n, w_vals, P, P_cumsum, β, c, α = model
 
@@ -580,7 +584,7 @@ def _simulate_cross_section_compiled(
     wage_indices = jnp.zeros(n_agents, dtype=jnp.int32)
     is_employed = jnp.zeros(n_agents, dtype=jnp.int32)
 
-    def scan_fn(loop_state, t):
+    def update(t, loop_state):
         key, is_employed, wage_indices = loop_state
 
         # Shift loop state forwards - more efficient key generation
@@ -591,16 +595,11 @@ def _simulate_cross_section_compiled(
             agent_keys, is_employed, wage_indices, model, σ
         )
 
-        # Pack results and return
-        new_loop_state = key, is_employed, wage_indices
-        return new_loop_state, None
+        return key, is_employed, wage_indices
 
-    # Run simulation using scan
+    # Run simulation using fori_loop
     initial_loop_state = (key, is_employed, wage_indices)
-
-    final_loop_state, _ = lax.scan(
-        scan_fn, initial_loop_state, jnp.arange(T)
-    )
+    final_loop_state = lax.fori_loop(0, T, update, initial_loop_state)
 
     # Return only final employment state
     _, final_is_employed, _ = final_loop_state
@@ -641,6 +640,8 @@ def simulate_cross_section(
     return unemployment_rate
 ```
 
+This function generates a histogram showing the distribution of employment status across many agents:
+
 ```{code-cell} ipython3
 def plot_cross_sectional_unemployment(model: Model, t_snapshot: int = 200,
                                      n_agents: int = 20_000):
@@ -679,6 +680,8 @@ def plot_cross_sectional_unemployment(model: Model, t_snapshot: int = 200,
     plt.tight_layout()
     plt.show()
 ```
+
+Now let's compare the time-average unemployment rate (from a single agent's long simulation) with the cross-sectional unemployment rate (from many agents at a single point in time):
 
 ```{code-cell} ipython3
 model = create_js_with_sep_model()
@@ -724,6 +727,8 @@ changes with unemployment compensation.
 ```{solution-start} mmwsm_ex1
 :class: dropdown
 ```
+
+We compute the steady-state unemployment rate for different values of unemployment compensation:
 
 ```{code-cell} ipython3
 c_values = 1.0, 0.8, 0.6, 0.4, 0.2
