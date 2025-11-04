@@ -486,7 +486,7 @@ def compute_steady_state_quantities(
     model = create_lake_model(λ=λ, α=economy.α, b=economy.b, d=economy.d)
 
     # Compute steady state employment and unemployment rates from this lake
-    model.
+    # model.
     u, e = rate_steady_state(model)
 
     # Compute expected lifetime value conditional on being employed.
