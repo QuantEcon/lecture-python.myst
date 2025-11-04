@@ -88,10 +88,10 @@ The reservation wage depends on the wage offer distribution and the parameters
 * $\gamma$, the offer arrival rate
 * $c$, unemployment compensation
 
+The wage offer distribution will be a discretized version of a lognormal distribution.
 
-The wage offer distribution will be a discretized version of the lognormal distribution $LN(\log(20),1)$.
+We first define a function to create such a discrete distribution.
 
-We first define a function to create a discretized wage distribution:
 
 ```{code-cell} ipython3
 def create_wage_distribution(
@@ -99,9 +99,12 @@ def create_wage_distribution(
         wage_grid_size: int,
         log_wage_mean: float
     ):
-    w_vec_temp = jnp.linspace(
-        1e-8, max_wage, wage_grid_size + 1
-    )
+    """
+    Creates a discretized version of a lognormal density LN(log(m),1), where 
+    m is log_wage_mean.
+
+    """
+    w_vec_temp = jnp.linspace(1e-8, max_wage, wage_grid_size + 1)
     cdf = stats.norm.cdf(
         jnp.log(w_vec_temp), loc=jnp.log(log_wage_mean), scale=1
     )
@@ -111,7 +114,9 @@ def create_wage_distribution(
     return w_vec, p_vec
 ```
 
-To illustrate the code, let's create a wage distribution and visualize it:
+
+The cell below creates a discretized $LN(\log(20),1)$ wage distribution and
+plots it.
 
 ```{code-cell} ipython3
 w_vec, p_vec = create_wage_distribution(170, 200, 20)
@@ -125,7 +130,12 @@ plt.show()
 ```
 
 
-Now we define the utility function and the McCall model data structure:
+Now we organize the code for solving the McCall model, given a set of parameters.
+
+For background on the model and our solution method, see the {doc}`lecture on the McCall model with separation <mccall_model_with_separation>`
+
+Our first step is to define the utility function and the McCall model data structure.
+
 
 ```{code-cell} ipython3
 def u(c, σ=2.0):
@@ -188,11 +198,11 @@ def solve_mccall_model(mcm: McCallModel, tol=1e-5, max_iter=2000):
     """
     Iterates to convergence on the Bellman equations.
     """
-    def cond_fun(state):
+    def cond(state):
         V, U, i, error = state
         return jnp.logical_and(error > tol, i < max_iter)
 
-    def body_fun(state):
+    def update(state):
         V, U, i, error = state
         V_new, U_new = T(mcm, V, U)
         error_1 = jnp.max(jnp.abs(V_new - V))
@@ -208,7 +218,7 @@ def solve_mccall_model(mcm: McCallModel, tol=1e-5, max_iter=2000):
 
     init_state = (V_init, U_init, i_init, error_init)
     V_final, U_final, _, _ = jax.lax.while_loop(
-        cond_fun, body_fun, init_state
+        cond, update, init_state
     )
     return V_final, U_final
 ```
@@ -312,6 +322,20 @@ Here
 * $\bar w$ is the reservation wage determined by the parameters and
 * $p$ is the wage offer distribution.
 
+Wage offers across the population of workers are independent draws from $p$.
+
+Here we calculate $\lambda$ at the default parameters:
+
+
+```{code-cell} ipython3
+mcm = create_mccall_model(w_vec=w_vec, p_vec=p_vec)
+V, U = solve_mccall_model(mcm)
+w_idx = jnp.searchsorted(V - U, 0)
+w_bar = jnp.where(w_idx == len(V), jnp.inf, mcm.w_vec[w_idx])
+λ = γ * jnp.sum(p_vec * (w_vec > w_bar))
+print(f"Job finding rate at default paramters ={λ}.")
+```
+
 
 
 ## Fiscal policy
@@ -371,10 +395,9 @@ Now we set up the infrastructure to compute optimal unemployment insurance level
 First, we define a container for the economy's parameters:
 
 ```{code-cell} ipython3
-class EconomyParameters(NamedTuple):
+class Economy(NamedTuple):
     """Parameters for the economy"""
     α: float
-    α_q: float  # Quarterly (α is monthly)
     b: float
     d: float
     β: float
@@ -384,14 +407,20 @@ class EconomyParameters(NamedTuple):
     wage_grid_size: int
     max_wage: float
 
-def create_economy_params(α=0.013, b=0.0124, d=0.00822,
-                          β=0.98, γ=1.0, σ=2.0,
-                          log_wage_mean=20,
-                          wage_grid_size=200,
-                          max_wage=170) -> EconomyParameters:
-    """Create economy parameters with default values"""
-    α_q = (1-(1-α)**3)   # Convert monthly to quarterly
-    return EconomyParameters(α=α, α_q=α_q, b=b, d=d, β=β, γ=γ, σ=σ,
+def create_economy(
+        α=0.013, 
+        b=0.0124, 
+        d=0.00822,
+        β=0.98, 
+        γ=1.0, 
+        σ=2.0,
+        log_wage_mean=20,
+        wage_grid_size=200,
+        max_wage=170
+    ) -> Economy:
+    """
+    Create an economy with a set of default values"""
+    return Economy(α=α, b=b, d=d, β=β, γ=γ, σ=σ,
                            log_wage_mean=log_wage_mean,
                            wage_grid_size=wage_grid_size,
                            max_wage=max_wage)
@@ -401,51 +430,69 @@ Next, we define a function that computes optimal worker behavior given policy pa
 
 ```{code-cell} ipython3
 @jax.jit
-def compute_optimal_quantities(c, τ,
-                    params: EconomyParameters, w_vec, p_vec):
+def compute_optimal_quantities(
+        c: float, 
+        τ: float, 
+        economy: Economy, 
+        w_vec: jnp.array, 
+        p_vec: jnp.array
+    ):
     """
     Compute the reservation wage, job finding rate and value functions
     of the workers given c and τ.
+
     """
     mcm = create_mccall_model(
-        α=params.α_q,
-        β=params.β,
-        γ=params.γ,
+        α=economy.α,
+        β=economy.β,
+        γ=economy.γ,
         c=c-τ,          # Post tax compensation
-        σ=params.σ,
+        σ=economy.σ,
         w_vec=w_vec-τ,  # Post tax wages
         p_vec=p_vec
     )
 
+    # Compute reservation wage under given parameters
     V, U = solve_mccall_model(mcm)
     w_idx = jnp.searchsorted(V - U, 0)
     w_bar = jnp.where(w_idx == len(V), jnp.inf, mcm.w_vec[w_idx])
 
-    λ = params.γ * jnp.sum(p_vec * (w_vec - τ > w_bar))
+    # Compute job finding rate
+    λ = economy.γ * jnp.sum(p_vec * (w_vec - τ > w_bar))
+
     return w_bar, λ, V, U
 ```
+
 
 This function computes the steady state outcomes given unemployment insurance and tax levels:
 
 ```{code-cell} ipython3
 @jax.jit
-def compute_steady_state_quantities(c, τ,
-                    params: EconomyParameters, w_vec, p_vec):
+def compute_steady_state_quantities(
+        c, τ, economy: Economy, w_vec, p_vec
+    ):
     """
     Compute the steady state unemployment rate given c and τ using optimal
     quantities from the McCall model and computing corresponding steady
     state quantities
-    """
-    w_bar, λ, V, U = compute_optimal_quantities(c, τ,
-                                        params, w_vec, p_vec)
 
-    # Compute steady state employment and unemployment rates
-    model = create_lake_model(λ=λ, α=params.α_q, b=params.b, d=params.d)
+    """
+
+    # Find optimal values and policies by solving the McCall model, as well
+    # as the corresponding job finding rate.
+    w_bar, λ, V, U = compute_optimal_quantities(c, τ, economy, w_vec, p_vec)
+
+    # Set up a lake model using the given parameters and the job finding rate.
+    model = create_lake_model(λ=λ, α=economy.α, b=economy.b, d=economy.d)
+
+    # Compute steady state employment and unemployment rates from this lake
+    model.
     u, e = rate_steady_state(model)
 
-    # Compute steady state welfare
+    # Compute expected lifetime value conditional on being employed.
     mask = (w_vec - τ > w_bar)
     w = jnp.sum(V * p_vec * mask) / jnp.sum(p_vec * mask)
+    # Compute steady state welfare.
     welfare = e * w + u * U
 
     return e, u, welfare
@@ -454,25 +501,30 @@ def compute_steady_state_quantities(c, τ,
 We need a function to find the tax rate that balances the government budget:
 
 ```{code-cell} ipython3
-def find_balanced_budget_tax(c, params: EconomyParameters,
-                             w_vec, p_vec):
+def find_balanced_budget_tax(c, economy: Economy, w_vec, p_vec):
     """
-    Find the tax level that will induce a balanced budget
+    Find the tax rate that will induce a balanced budget given unemployment
+    compensation c.
+
     """
+
     def steady_state_budget(t):
-        e, u, w = compute_steady_state_quantities(c, t,
-                                            params, w_vec, p_vec)
+        """
+        For given tax rate t, compute the budget surplus.
+
+        """
+        e, u, w = compute_steady_state_quantities(c, t, economy, w_vec, p_vec)
         return t - u * c
 
-    # Use a simple bisection method
+    # Use a simple bisection method to find the tax rate that balances the
+    # budget (but setting the surplus to zero
+
     t_low, t_high = 0.0, 0.9 * c
     tol = 1e-6
     max_iter = 100
-
     for i in range(max_iter):
         t_mid = (t_low + t_high) / 2
         budget = steady_state_budget(t_mid)
-
         if abs(budget) < tol:
             return t_mid
         elif budget < 0:
@@ -486,14 +538,14 @@ def find_balanced_budget_tax(c, params: EconomyParameters,
 Now we compute how employment, unemployment, taxes, and welfare vary with the unemployment compensation rate:
 
 ```{code-cell} ipython3
-# Create economy parameters and wage distribution
-params = create_economy_params()
-w_vec, p_vec = create_wage_distribution(params.max_wage,
-                                        params.wage_grid_size,
-                                        params.log_wage_mean)
+# Create economy and wage distribution
+economy = create_economy()
+w_vec, p_vec = create_wage_distribution(
+    economy.max_wage, economy.wage_grid_size, economy.log_wage_mean
+)
 
 # Levels of unemployment insurance we wish to study
-c_vec = jnp.linspace(5, 140, 60)
+c_vec = jnp.linspace(5, 140, 40)
 
 tax_vec = []
 unempl_vec = []
@@ -501,9 +553,10 @@ empl_vec = []
 welfare_vec = []
 
 for c in c_vec:
-    t = find_balanced_budget_tax(c, params, w_vec, p_vec)
-    e_rate, u_rate, welfare = compute_steady_state_quantities(c, t, params,
-                                        w_vec, p_vec)
+    t = find_balanced_budget_tax(c, economy, w_vec, p_vec)
+    e_rate, u_rate, welfare = compute_steady_state_quantities(
+        c, t, economy, w_vec, p_vec
+    )
     tax_vec.append(t)
     unempl_vec.append(u_rate)
     empl_vec.append(e_rate)
@@ -535,11 +588,14 @@ The level that maximizes steady state welfare is approximately 62.
 ```{exercise}
 :label: endogenous_lake_ex1
 
-How does the welfare-maximizing level of unemployment compensation $c$ change with the job separation rate $\alpha$?
+How does the welfare-maximizing level of unemployment compensation $c$ change
+with the job separation rate $\alpha$?
 
-Compute and plot the optimal $c$ (the value that maximizes welfare) for a range of separation rates $\alpha$ from 0.01 to 0.025.
+Compute and plot the optimal $c$ (the value that maximizes welfare) for a range
+of separation rates $\alpha$ from 0.01 to 0.04.
 
-For each $\alpha$ value, find the optimal $c$ by computing welfare across the range of $c$ values and selecting the maximum.
+For each $\alpha$ value, find the optimal $c$ by computing welfare across the
+range of $c$ values and selecting the maximum.
 ```
 
 ```{solution-start} endogenous_lake_ex1
@@ -549,32 +605,46 @@ For each $\alpha$ value, find the optimal $c$ by computing welfare across the ra
 Here is one solution:
 
 ```{code-cell} ipython3
-# Range of separation rates to explore
-α_values = jnp.linspace(0.01, 0.025, 15)
+# Range of separation rates to explore (wider range, fewer points)
+α_values = jnp.linspace(0.01, 0.04, 8)
 
 # We'll store the optimal c for each α
 optimal_c_values = []
 
+# Use a finer grid for c values to get better resolution
+c_vec_fine = jnp.linspace(5, 140, 150)
+
 for α_val in α_values:
     # Create economy parameters with this α
-    params_α = create_economy_params(α=α_val)
+    params_α = create_economy(α=α_val)
 
     # Create wage distribution
-    w_vec_α, p_vec_α = create_wage_distribution(params_α.max_wage,
-                                                  params_α.wage_grid_size,
-                                                  params_α.log_wage_mean)
+    w_vec_α, p_vec_α = create_wage_distribution(
+        params_α.max_wage, params_α.wage_grid_size, params_α.log_wage_mean
+    )
 
     # Compute welfare for each c value
     welfare_values = []
-    for c in c_vec:
+    for c in c_vec_fine:
         t = find_balanced_budget_tax(c, params_α, w_vec_α, p_vec_α)
-        e_rate, u_rate, welfare = compute_steady_state_quantities(c, t, params_α,
-                                                                    w_vec_α, p_vec_α)
+        e_rate, u_rate, welfare = compute_steady_state_quantities(
+            c, t, params_α, w_vec_α, p_vec_α
+        )
         welfare_values.append(welfare)
 
-    # Find the c that maximizes welfare
-    max_idx = jnp.argmax(jnp.array(welfare_values))
-    optimal_c = c_vec[max_idx]
+    # The welfare function is very flat near its maximum.
+    # Using argmax on a single point can be unstable due to numerical noise.
+    # Instead, we find all c values within 99.9% of maximum welfare and
+    # compute their weighted average (centroid). This gives a more stable
+    # estimate of the optimal unemployment compensation level.
+    welfare_array = jnp.array(welfare_values)
+    max_welfare = jnp.max(welfare_array)
+    threshold = 0.999 * max_welfare
+    near_optimal_mask = welfare_array >= threshold
+
+    # Compute weighted average of c values in the near-optimal region
+    optimal_c = jnp.sum(c_vec_fine * near_optimal_mask * welfare_array) / \
+                jnp.sum(near_optimal_mask * welfare_array)
     optimal_c_values.append(optimal_c)
 
 # Plot the relationship
@@ -588,7 +658,14 @@ plt.tight_layout()
 plt.show()
 ```
 
-We see that as the separation rate increases (workers lose their jobs more frequently), the welfare-maximizing level of unemployment compensation also increases. This makes intuitive sense: when job loss is more common, more generous unemployment insurance becomes more valuable for smoothing consumption and maintaining worker welfare.
+We see that as the separation rate increases (workers lose their jobs more
+frequently), the welfare-maximizing level of unemployment compensation
+decreases.
+
+This occurs because higher separation rates increase steady-state unemployment,
+which raises the tax burden needed to finance unemployment benefits. The
+optimal policy balances insurance against distortionary taxation.
+
 
 ```{solution-end}
 ```
