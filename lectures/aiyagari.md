@@ -686,7 +686,7 @@ plt.show()
 
 In this lecture, we used value function iteration to solve the household problem.
 
-An alternative is Howard policy iteration (HPI), which is discussed in detail in {doc}`opt_savings_2`.
+An alternative is Howard policy iteration (HPI), which is discussed in detail in [Dynamic Programming](https://dp.quantecon.org/).
 
 HPI can be faster than VFI for some problems because it uses fewer but more computationally intensive iterations.
 
