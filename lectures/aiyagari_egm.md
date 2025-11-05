@@ -211,7 +211,7 @@ class Household(NamedTuple):
 def create_household(β=0.96,                      # Discount factor
                      Π=[[0.9, 0.1], [0.1, 0.9]],  # Markov chain
                      z_grid=[0.1, 1.0],           # Exogenous states
-                     a_min=1e-10, a_max=20,       # Asset grid
+                     a_min=1e-10, a_max=50,       # Asset grid
                      a_size=200):
     """
     Create a Household namedtuple with custom grids.
@@ -590,6 +590,9 @@ def simulate_assets_efficient(σ, household, prices,
         income = w * z_current + (1 + r) * assets
 
         # Interpolate consumption policy
+        # Note: np.interp extrapolates using boundary values, which can cause
+        # issues if assets go far outside the grid. The grid should be large
+        # enough to cover the range of assets in equilibrium.
         consumption = np.array([
             np.interp(assets[i], a_grid_np, σ_np[:, z_indices[i]])
             for i in range(num_households)
@@ -597,7 +600,11 @@ def simulate_assets_efficient(σ, household, prices,
 
         # Update assets
         assets = income - consumption
-        assets = np.maximum(assets, a_grid_np[0])
+        assets = np.maximum(assets, a_grid_np[0])  # Enforce borrowing constraint
+
+        # Clip assets to grid maximum to prevent extrapolation issues
+        # In equilibrium, assets should stay within the grid if a_max is large enough
+        assets = np.minimum(assets, a_grid_np[-1])
 
     return np.mean(assets)
 ```
