@@ -231,7 +231,7 @@ Below we provide code to solve the household problem, taking $r$ and $w$ as fixe
 
 ### Primitives and operators
 
-We will solve the household problem using Howard policy iteration (see Ch 5 of [Dynamic Programming](https://dp.quantecon.org/)).
+We will solve the household problem using value function iteration.
 
 First we set up a `NamedTuple` to store the parameters that define a household asset accumulation problem, as well as the grids used to solve it
 
