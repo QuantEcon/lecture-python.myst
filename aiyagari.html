@@ -292,13 +292,13 @@ Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/en
 Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (3.4.0)
 Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
 Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
+Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
@@ -338,6 +338,11 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
@@ -496,7 +501,7 @@ the equilibrium wage rate as a function of <span class="math notranslate nohighl
 <p>Below we provide code to solve the household problem, taking <span class="math notranslate nohighlight">\(r\)</span> and <span class="math notranslate nohighlight">\(w\)</span> as fixed.</p>
 <section id="primitives-and-operators">
 <h3><span class="section-number">76.3.1. </span>Primitives and operators<a class="headerlink" href="#primitives-and-operators" title="Link to this heading">#</a></h3>
-<p>We will solve the household problem using Howard policy iteration (see Ch 5 of <a class="reference external" href="https://dp.quantecon.org/">Dynamic Programming</a>).</p>
+<p>We will solve the household problem using value function iteration.</p>
 <p>First we set up a <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code> to store the parameters that define a household asset accumulation problem, as well as the grids used to solve it</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -509,8 +514,8 @@ the equilibrium wage rate as a function of <span class="math notranslate nohighl
 <span class="k">def</span><span class="w"> </span><span class="nf">create_household</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>                      <span class="c1"># Discount factor</span>
                      <span class="n">Π</span><span class="o">=</span><span class="p">[[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]],</span>  <span class="c1"># Markov chain</span>
                      <span class="n">z_grid</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>           <span class="c1"># Exogenous states</span>
-                     <span class="n">a_min</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>       <span class="c1"># Asset grid</span>
-                     <span class="n">a_size</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+                     <span class="n">a_min</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="mf">12.5</span><span class="p">,</span>     <span class="c1"># Asset grid</span>
+                     <span class="n">a_size</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a Household namedtuple with custom grids.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -547,8 +552,7 @@ B(a, z, a') = u(wz + (1+r)a - a') + \beta \sum_{z'} v(a', z') \Pi(z, z')
 <p>for all <span class="math notranslate nohighlight">\((a, z, a')\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
     <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
     <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
@@ -574,10 +578,9 @@ B(a, z, a') = u(wz + (1+r)a - a') + \beta \sum_{z'} v(a', z') \Pi(z, z')
 <p>The next function computes greedy policies</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes a v-greedy policy σ, returned as a set of indices. If </span>
+<span class="sd">    Computes a v-greedy policy σ, returned as a set of indices. If</span>
 <span class="sd">    σ[i, j] equals ip, then a_grid[ip] is the maximizer at i, j.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># argmax over ap</span>
@@ -586,117 +589,47 @@ B(a, z, a') = u(wz + (1+r)a - a') + \beta \sum_{z'} v(a', z') \Pi(z, z')
 </div>
 </div>
 </div>
-<p>The following function computes the array <span class="math notranslate nohighlight">\(r_{\sigma}\)</span> which gives current rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span></p>
+<p>We define the Bellman operator <span class="math notranslate nohighlight">\(T\)</span>, which takes a value function <span class="math notranslate nohighlight">\(v\)</span> and returns <span class="math notranslate nohighlight">\(Tv\)</span> as given in the Bellman equation</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute current rewards at each i, j under policy σ. In particular,</span>
-
-<span class="sd">        r_σ[i, j] = u((1 + r)a[i] + wz[j] - a&#39;[ip])</span>
-
-<span class="sd">    when ip = σ[i, j].</span>
+<span class="sd">    The Bellman operator. Takes a value function v and returns Tv.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Unpack</span>
-    <span class="n">β</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
-    <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
-    <span class="n">r</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">prices</span>
-
-    <span class="c1"># Compute r_σ[i, j]</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="p">(</span><span class="n">a_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
-    <span class="n">ap</span> <span class="o">=</span> <span class="n">a_grid</span><span class="p">[</span><span class="n">σ</span><span class="p">]</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">w</span> <span class="o">*</span> <span class="n">z</span> <span class="o">-</span> <span class="n">ap</span>
-    <span class="n">r_σ</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">r_σ</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>The value <span class="math notranslate nohighlight">\(v_{\sigma}\)</span> of a policy <span class="math notranslate nohighlight">\(\sigma\)</span> is defined as</p>
-<div class="math notranslate nohighlight">
-\[
-v_{\sigma} = (I - \beta P_{\sigma})^{-1} r_{\sigma}
-\]</div>
-<p>(See Ch 5 of <a class="reference external" href="https://dp.quantecon.org/">Dynamic Programming</a> for notation and background on Howard policy iteration.)</p>
-<p>To compute this vector, we set up the linear map <span class="math notranslate nohighlight">\(v \rightarrow R_{\sigma} v\)</span>, where <span class="math notranslate nohighlight">\(R_{\sigma} := I - \beta P_{\sigma}\)</span>.</p>
-<p>This map can be expressed as</p>
-<div class="math notranslate nohighlight">
-\[
-(R_{\sigma} v)(a, z) = v(a, z) - \beta \sum_{z'} v(\sigma(a, z), z') \Pi(z, z')
-\]</div>
-<p>(Notice that <span class="math notranslate nohighlight">\(R_\sigma\)</span> is expressed as a linear operator rather than a matrix—this is much easier and cleaner to code, and also exploits sparsity.)</p>
+<p>Here’s value function iteration, which repeatedly applies the Bellman operator until convergence</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">R_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
-    <span class="c1"># Unpack</span>
-    <span class="n">β</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
-    <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
-
-    <span class="c1"># Set up the array v[σ[i, j], jp]</span>
-    <span class="n">zp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">z_size</span><span class="p">)</span>
-    <span class="n">zp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">zp_idx</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
-    <span class="n">σ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="p">(</span><span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">V</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">σ</span><span class="p">,</span> <span class="n">zp_idx</span><span class="p">]</span>
-    
-    <span class="c1"># Expand Π[j, jp] to Π[i, j, jp]</span>
-    <span class="n">Π</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Π</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
-    
-    <span class="c1"># Compute and return v[i, j] - β Σ_jp v[σ[i, j], jp] * Π[j, jp]</span>
-    <span class="k">return</span> <span class="n">v</span> <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">V</span> <span class="o">*</span> <span class="n">Π</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The next function computes the lifetime value of a given policy</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">value_function_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get the lifetime value of policy σ by computing</span>
-
-<span class="sd">        v_σ = R_σ^{-1} r_σ</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">r_σ</span> <span class="o">=</span> <span class="n">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
-    
-    <span class="c1"># Reduce R_σ to a function in v</span>
-    <span class="n">_R_σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">R_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">)</span>
-
-    <span class="c1"># Compute v_σ = R_σ^{-1} r_σ using an iterative routine.</span>
-    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">bicgstab</span><span class="p">(</span><span class="n">_R_σ</span><span class="p">,</span> <span class="n">r_σ</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here’s the Howard policy iteration</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">howard_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span>
-                            <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Howard policy iteration routine.</span>
+<span class="sd">    Implements value function iteration using a compiled JAX loop.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
     <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
-    <span class="n">σ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-    
-    <span class="n">v_σ</span> <span class="o">=</span> <span class="n">get_value</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
-        <span class="n">σ_new</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
-        <span class="n">v_σ_new</span> <span class="o">=</span> <span class="n">get_value</span><span class="p">(</span><span class="n">σ_new</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_σ_new</span> <span class="o">-</span> <span class="n">v_σ</span><span class="p">))</span>
-        <span class="n">σ</span> <span class="o">=</span> <span class="n">σ_new</span>
-        <span class="n">v_σ</span> <span class="o">=</span> <span class="n">v_σ_new</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> with error </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">σ</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">condition_function</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">,</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">v_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_new</span> <span class="o">-</span> <span class="n">v</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">v_new</span><span class="p">,</span> <span class="n">error</span>
+
+    <span class="c1"># Initial loop state</span>
+    <span class="n">v_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
+    <span class="n">loop_state_init</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Run the fixed point iteration</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">condition_function</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">loop_state_init</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -722,26 +655,12 @@ v_{\sigma} = (I - \beta P_{\sigma})^{-1} r_{\sigma}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">qe</span><span class="o">.</span><span class="n">Timer</span><span class="p">():</span>
-    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">howard_policy_iteration</span><span class="p">(</span>
-        <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">value_function_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1 with error 11.366831579022996.
-iteration 2 with error 9.574522771860245.
-iteration 3 with error 3.9654760004604777.
-iteration 4 with error 1.1207075306313232.
-iteration 5 with error 0.2524013153055833.
-iteration 6 with error 0.12172293662906064.
-iteration 7 with error 0.043395682867316765.
-iteration 8 with error 0.012132319676439351.
-iteration 9 with error 0.005822155404443308.
-iteration 10 with error 0.002863165320343697.
-iteration 11 with error 0.0016657175376657563.
-iteration 12 with error 0.0004143776102245589.
-iteration 13 with error 0.0.
-0.97 seconds elapsed
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.38 seconds elapsed
 </pre></div>
 </div>
 </div>
@@ -765,7 +684,7 @@ iteration 13 with error 0.0.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c10bda12f982d54b6f3cab43a5f6e79c1d5dde5ceffcb038bbf0f0272a787683.png" src="_images/c10bda12f982d54b6f3cab43a5f6e79c1d5dde5ceffcb038bbf0f0272a787683.png" />
+<img alt="_images/42ec0532db77182fe79091f24672725540601d318db10b8f87043f9a81434db7.png" src="_images/42ec0532db77182fe79091f24672725540601d318db10b8f87043f9a81434db7.png" />
 </div>
 </div>
 <p>The plot shows asset accumulation policies at different values of the exogenous state.</p>
@@ -824,7 +743,7 @@ iteration 13 with error 0.0.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8157f87c59d61694dbc88a5b4818e6c907d4a246bfbe55ae8fc652eeedca367e.png" src="_images/8157f87c59d61694dbc88a5b4818e6c907d4a246bfbe55ae8fc652eeedca367e.png" />
+<img alt="_images/95db049fbcccc24eb178e92e20c5c9b40fb69eaa7abe440e732d52092fdcc59e.png" src="_images/95db049fbcccc24eb178e92e20c5c9b40fb69eaa7abe440e732d52092fdcc59e.png" />
 </div>
 </div>
 <p>The distribution should sum to one:</p>
@@ -883,7 +802,7 @@ K_{n + 1} = G(K_n)
     <span class="c1"># Generate a household object with these prices, compute</span>
     <span class="c1"># aggregate capital.</span>
     <span class="n">prices</span> <span class="o">=</span> <span class="n">Prices</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
-    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">howard_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
+    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">value_function_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">capital_supply</span><span class="p">(</span><span class="n">σ_star</span><span class="p">,</span> <span class="n">household</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -908,7 +827,7 @@ K_{n + 1} = G(K_n)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ac5ceef7fb00b201f792bd4056f164476b9d270f232a835a9d6feb354370c3d6.png" src="_images/ac5ceef7fb00b201f792bd4056f164476b9d270f232a835a9d6feb354370c3d6.png" />
+<img alt="_images/8c9d045888287c5dd84a50ab1675db42241501fc8badd2f4983d0d824a76d520.png" src="_images/8c9d045888287c5dd84a50ab1675db42241501fc8badd2f4983d0d824a76d520.png" />
 </div>
 </div>
 <p>Now let’s compute the equilibrium.</p>
@@ -953,8 +872,8 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>36.11 seconds elapsed
-Computed equilibrium 8.0918 in 176 iterations
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.78 seconds elapsed
+Computed equilibrium 7.4095 in 259 iterations
 </pre></div>
 </div>
 </div>
@@ -978,8 +897,8 @@ Computed equilibrium 8.0918 in 176 iterations
     <span class="n">prices</span> <span class="o">=</span> <span class="n">Prices</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
 
     <span class="c1"># Compute the optimal policy</span>
-    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">howard_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
-    
+    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">value_function_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
+
     <span class="c1"># Compute capital supply</span>
     <span class="k">return</span> <span class="n">capital_supply</span><span class="p">(</span><span class="n">σ_star</span><span class="p">,</span> <span class="n">household</span><span class="p">)</span>
 
@@ -1013,7 +932,7 @@ Computed equilibrium 8.0918 in 176 iterations
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/82ced25d48d3da217c5ee5e5e1d383f036869b6c393077fcc77b67e44b713273.png" src="_images/82ced25d48d3da217c5ee5e5e1d383f036869b6c393077fcc77b67e44b713273.png" />
+<img alt="_images/fc56d7dc3cf1f570e8d84a32f4eb8324f5cf3e40644efd80bbd83824d205b102.png" src="_images/fc56d7dc3cf1f570e8d84a32f4eb8324f5cf3e40644efd80bbd83824d205b102.png" />
 </div>
 </div>
 </section>
@@ -1055,10 +974,8 @@ Computed equilibrium 8.0918 in 176 iterations
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock using bisection
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.85 seconds elapsed
-Computed equilibrium capital stock 8.0938
+0.14 seconds elapsed
+Computed equilibrium capital stock 7.4178
 </pre></div>
 </div>
 </div>
@@ -1105,69 +1022,246 @@ Computed equilibrium capital stock 8.0938
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 6.006 at β = 0.94
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 5.897 at β = 0.94
+Computed equilibrium 6.052 at β = 0.9421052631578948
+Computed equilibrium 6.202 at β = 0.9442105263157894
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 6.186 at β = 0.9421052631578948
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 6.36 at β = 0.9463157894736841
+Computed equilibrium 6.524 at β = 0.9484210526315789
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 6.379 at β = 0.9442105263157894
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 6.679 at β = 0.9505263157894737
+Computed equilibrium 6.85 at β = 0.9526315789473683
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 6.577 at β = 0.9463157894736841
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 7.008 at β = 0.9547368421052631
+Computed equilibrium 7.16 at β = 0.9568421052631579
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 6.786 at β = 0.9484210526315789
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 7.325 at β = 0.9589473684210527
+Computed equilibrium 7.486 at β = 0.9610526315789474
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 7.005 at β = 0.9505263157894737
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 7.657 at β = 0.963157894736842
+Computed equilibrium 7.81 at β = 0.9652631578947368
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 7.226 at β = 0.9526315789473683
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 7.967 at β = 0.9673684210526317
+Computed equilibrium 8.142 at β = 0.9694736842105263
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 7.461 at β = 0.9547368421052631
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.302 at β = 0.971578947368421
+Computed equilibrium 8.463 at β = 0.9736842105263158
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 7.709 at β = 0.9568421052631579
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.616 at β = 0.9757894736842105
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 7.966 at β = 0.9589473684210527
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.773 at β = 0.9778947368421053
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.231 at β = 0.9610526315789474
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.948 at β = 0.98
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.499 at β = 0.963157894736842
+<img alt="_images/ed7f34760c13df940ffdd2674c0e95213ddfb4fa08f67c972b7d4e4cac2df89a.png" src="_images/ed7f34760c13df940ffdd2674c0e95213ddfb4fa08f67c972b7d4e4cac2df89a.png" />
+</div>
+</div>
+</section>
+</div>
+<div class="exercise admonition" id="aiyagari_ex3">
+
+<p class="admonition-title"><span class="caption-number">Exercise 76.3 </span></p>
+<section id="exercise-content">
+<p>In this lecture, we used value function iteration to solve the household problem.</p>
+<p>An alternative is Howard policy iteration (HPI), which is discussed in detail in <a class="reference external" href="https://dp.quantecon.org/">Dynamic Programming</a>.</p>
+<p>HPI can be faster than VFI for some problems because it uses fewer but more computationally intensive iterations.</p>
+<p>Your task is to implement Howard policy iteration and compare the results with value function iteration.</p>
+<p><strong>Key concepts you’ll need:</strong></p>
+<p>Howard policy iteration requires computing the value <span class="math notranslate nohighlight">\(v_{\sigma}\)</span> of a policy <span class="math notranslate nohighlight">\(\sigma\)</span>, defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+v_{\sigma} = (I - \beta P_{\sigma})^{-1} r_{\sigma}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(r_{\sigma}\)</span> is the reward vector under policy <span class="math notranslate nohighlight">\(\sigma\)</span>, and <span class="math notranslate nohighlight">\(P_{\sigma}\)</span> is the transition matrix induced by <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<p>To solve this, you’ll need to:</p>
+<ol class="arabic simple">
+<li><p>Compute current rewards <span class="math notranslate nohighlight">\(r_{\sigma}(a, z) = u((1 + r)a + wz - \sigma(a, z))\)</span></p></li>
+<li><p>Set up the linear operator <span class="math notranslate nohighlight">\(R_{\sigma}\)</span> where <span class="math notranslate nohighlight">\((R_{\sigma} v)(a, z) = v(a, z) - \beta \sum_{z'} v(\sigma(a, z), z') \Pi(z, z')\)</span></p></li>
+<li><p>Solve <span class="math notranslate nohighlight">\(v_{\sigma} = R_{\sigma}^{-1} r_{\sigma}\)</span> using <code class="docutils literal notranslate"><span class="pre">jax.scipy.sparse.linalg.bicgstab</span></code></p></li>
+</ol>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">get_greedy</span></code> function that’s already defined in this lecture.</p>
+<p>Implement the following Howard policy iteration routine:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">howard_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span>
+                            <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Howard policy iteration routine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Your code here</span>
+    <span class="k">pass</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.787 at β = 0.9652631578947368
+<p>Once implemented, compute the equilibrium capital stock using HPI and verify that it produces approximately the same result as VFI at the default parameter values.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="aiyagari-solution-5">
+
+<p class="admonition-title">Solution</p>
+<section id="solution-content">
+<p>First, we need to implement the helper functions for Howard policy iteration.</p>
+<p>The following function computes the array <span class="math notranslate nohighlight">\(r_{\sigma}\)</span> which gives current rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute current rewards at each i, j under policy σ. In particular,</span>
+
+<span class="sd">        r_σ[i, j] = u((1 + r)a[i] + wz[j] - a&#39;[ip])</span>
+
+<span class="sd">    when ip = σ[i, j].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack</span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
+    <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">prices</span>
+
+    <span class="c1"># Compute r_σ[i, j]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="p">(</span><span class="n">a_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
+    <span class="n">ap</span> <span class="o">=</span> <span class="n">a_grid</span><span class="p">[</span><span class="n">σ</span><span class="p">]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">w</span> <span class="o">*</span> <span class="n">z</span> <span class="o">-</span> <span class="n">ap</span>
+    <span class="n">r_σ</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">r_σ</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 9.076 at β = 0.9673684210526317
+</div>
+</div>
+<p>The linear operator <span class="math notranslate nohighlight">\(R_{\sigma}\)</span> is defined as:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">R_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
+    <span class="c1"># Unpack</span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
+    <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
+
+    <span class="c1"># Set up the array v[σ[i, j], jp]</span>
+    <span class="n">zp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">z_size</span><span class="p">)</span>
+    <span class="n">zp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">zp_idx</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
+    <span class="n">σ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="p">(</span><span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">σ</span><span class="p">,</span> <span class="n">zp_idx</span><span class="p">]</span>
+
+    <span class="c1"># Expand Π[j, jp] to Π[i, j, jp]</span>
+    <span class="n">Π</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Π</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
+
+    <span class="c1"># Compute and return v[i, j] - β Σ_jp v[σ[i, j], jp] * Π[j, jp]</span>
+    <span class="k">return</span> <span class="n">v</span> <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">V</span> <span class="o">*</span> <span class="n">Π</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 9.378 at β = 0.9694736842105263
+</div>
+</div>
+<p>The next function computes the lifetime value of a given policy:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the lifetime value of policy σ by computing</span>
+
+<span class="sd">        v_σ = R_σ^{-1} r_σ</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r_σ</span> <span class="o">=</span> <span class="n">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
+
+    <span class="c1"># Reduce R_σ to a function in v</span>
+    <span class="n">_R_σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">R_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">)</span>
+
+    <span class="c1"># Compute v_σ = R_σ^{-1} r_σ using an iterative routine.</span>
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">bicgstab</span><span class="p">(</span><span class="n">_R_σ</span><span class="p">,</span> <span class="n">r_σ</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 9.687 at β = 0.971578947368421
+</div>
+</div>
+<p>Now we can implement Howard policy iteration:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">howard_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Howard policy iteration routine using a compiled JAX loop.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
+    <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">condition_function</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">v_σ</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">,</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">v_σ</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">σ_new</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
+        <span class="n">v_σ_new</span> <span class="o">=</span> <span class="n">get_value</span><span class="p">(</span><span class="n">σ_new</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_σ_new</span> <span class="o">-</span> <span class="n">v_σ</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">σ_new</span><span class="p">,</span> <span class="n">v_σ_new</span><span class="p">,</span> <span class="n">error</span>
+
+    <span class="c1"># Initial loop state</span>
+    <span class="n">σ_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">v_σ_init</span> <span class="o">=</span> <span class="n">get_value</span><span class="p">(</span><span class="n">σ_init</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
+    <span class="n">loop_state_init</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">,</span> <span class="n">v_σ_init</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Run the fixed point iteration</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">v_σ</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">condition_function</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">loop_state_init</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">σ</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 10.0 at β = 0.9736842105263158
+</div>
+</div>
+<p>Now let’s create a modified version of the G function that uses HPI:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">G_hpi</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
+    <span class="c1"># Get prices r, w associated with K</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">r_given_k</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">r_to_w</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">firm</span><span class="p">)</span>
+
+    <span class="c1"># Generate prices and compute aggregate capital using HPI.</span>
+    <span class="n">prices</span> <span class="o">=</span> <span class="n">Prices</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">howard_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">capital_supply</span><span class="p">(</span><span class="n">σ_star</span><span class="p">,</span> <span class="n">household</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 10.34 at β = 0.9757894736842105
+</div>
+</div>
+<p>And compute the equilibrium using HPI:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_equilibrium_bisect_hpi</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">20.0</span><span class="p">):</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span> <span class="o">-</span> <span class="n">G_hpi</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">),</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">K</span>
+
+<span class="n">firm</span> <span class="o">=</span> <span class="n">Firm</span><span class="p">()</span>
+<span class="n">household</span> <span class="o">=</span> <span class="n">create_household</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Computing equilibrium capital stock using HPI&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">qe</span><span class="o">.</span><span class="n">Timer</span><span class="p">():</span>
+    <span class="n">K_star_hpi</span> <span class="o">=</span> <span class="n">compute_equilibrium_bisect_hpi</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computed equilibrium capital stock with HPI: </span><span class="si">{</span><span class="n">K_star_hpi</span><span class="si">:</span><span class="s2">.5</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Previous equilibrium capital stock with VFI: </span><span class="si">{</span><span class="n">K_star</span><span class="si">:</span><span class="s2">.5</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Difference: </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">K_star_hpi</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">K_star</span><span class="p">)</span><span class="si">:</span><span class="s2">.6</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 10.67 at β = 0.9778947368421053
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock using HPI
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 11.0 at β = 0.98
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.16 seconds elapsed
+Computed equilibrium capital stock with HPI: 7.4172
+Previous equilibrium capital stock with VFI: 7.4178
+Difference: 0.000579834
 </pre></div>
 </div>
-<img alt="_images/e4f8005fcf617afc281fb285e6e5b6454ddd203537db72e34e1bd8d32b289119.png" src="_images/e4f8005fcf617afc281fb285e6e5b6454ddd203537db72e34e1bd8d32b289119.png" />
 </div>
 </div>
+<p>The results show that both methods produce approximately the same equilibrium, confirming that HPI is a valid alternative to VFI.</p>
 </section>
 </div>
 </section>
