@@ -310,7 +310,7 @@ But their optimal decision rules determine the probability $\lambda$ of leaving 
 This is now
 
 ```{math}
-:label: lake_lamda
+:label: endogenous_lake_lambda
 
 \lambda
 = \gamma \mathbb P \{ w_t \geq \bar w\}
@@ -365,7 +365,7 @@ The lump-sum tax applies to everyone, including unemployed workers.
 For each specification $(c, \tau)$ of government policy, we can solve for the
 worker's optimal reservation wage.
 
-This determines $\lambda$ via {eq}`lake_lamda` evaluated at post tax wages,
+This determines $\lambda$ via {eq}`endogenous_lake_lambda` evaluated at post tax wages,
 which in turn determines a steady state unemployment rate $u(c, \tau)$.
 
 For a given level of unemployment benefit $c$, we can solve for a tax that balances the budget in the steady state
