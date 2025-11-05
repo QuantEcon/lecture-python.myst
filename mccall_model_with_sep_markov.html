@@ -1,0 +1,1811 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>44. Job Search with Separation and Markov Wages &#8212; Intermediate Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=4890ae55f4d5f196460e99a17085458eb1f4c2f0" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=4c010e0d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=06ebc90d5139b434c2742937a4ef3b185cb93e2f"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'mccall_model_with_sep_markov';</script>
+    <link rel="canonical" href="https://python.quantecon.org/mccall_model_with_sep_markov.html" />
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="45. Job Search III: Fitted Value Function Iteration" href="mccall_fitted_vfi.html" />
+    <link rel="prev" title="43. Job Search II: Search and Separation" href="mccall_model_with_separation.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Job Search with Separation and Markov Wages"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Job Search with Separation and Markov Wages" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/mccall_model_with_sep_markov.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+<!-- Override QuantEcon theme colors -->
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=mccall_model_with_sep_markov>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">44.1. Model Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-problem">44.2. Decision Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-functions">44.3. Value Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bellman-equations">44.4. Bellman Equations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-approach">44.5. Computational Approach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">44.6. Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-solution">44.7. Computing the Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity-analysis">44.8. Sensitivity Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#employment-simulation">44.9. Employment Simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-ergodic-property">44.10. The Ergodic Property</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-analysis">44.11. Cross-Sectional Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-analysis-with-lower-unemployment-compensation-c-0-5">44.12. Cross-Sectional Analysis with Lower Unemployment Compensation (c=0.5)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">44.13. Exercises</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/en/stable/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">Job Search with Separation and Markov Wages</p>
+
+                    </div>
+                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="job-search-with-separation-and-markov-wages">
+<h1><a class="toc-backref" href="#id1" role="doc-backlink"><span class="section-number">44. </span>Job Search with Separation and Markov Wages</a><a class="headerlink" href="#job-search-with-separation-and-markov-wages" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
+<span id="index-0"></span><p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#job-search-with-separation-and-markov-wages" id="id1">Job Search with Separation and Markov Wages</a></p>
+<ul>
+<li><p><a class="reference internal" href="#model-setup" id="id2">Model Setup</a></p></li>
+<li><p><a class="reference internal" href="#decision-problem" id="id3">Decision Problem</a></p></li>
+<li><p><a class="reference internal" href="#value-functions" id="id4">Value Functions</a></p></li>
+<li><p><a class="reference internal" href="#bellman-equations" id="id5">Bellman Equations</a></p></li>
+<li><p><a class="reference internal" href="#computational-approach" id="id6">Computational Approach</a></p></li>
+<li><p><a class="reference internal" href="#code" id="id7">Code</a></p></li>
+<li><p><a class="reference internal" href="#computing-the-solution" id="id8">Computing the Solution</a></p></li>
+<li><p><a class="reference internal" href="#sensitivity-analysis" id="id9">Sensitivity Analysis</a></p></li>
+<li><p><a class="reference internal" href="#employment-simulation" id="id10">Employment Simulation</a></p></li>
+<li><p><a class="reference internal" href="#the-ergodic-property" id="id11">The Ergodic Property</a></p></li>
+<li><p><a class="reference internal" href="#cross-sectional-analysis" id="id12">Cross-Sectional Analysis</a></p></li>
+<li><p><a class="reference internal" href="#cross-sectional-analysis-with-lower-unemployment-compensation-c-0-5" id="id13">Cross-Sectional Analysis with Lower Unemployment Compensation (c=0.5)</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id14">Exercises</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>This lecture builds on the job search model with separation presented in the
+<a class="reference internal" href="mccall_model_with_separation.html"><span class="doc">previous lecture</span></a>.</p>
+<p>The key difference is that wage offers now follow a <strong>Markov chain</strong> rather than
+being independent and identically distributed (IID).</p>
+<p>This modification adds persistence to the wage offer process, meaning that
+today’s wage offer provides information about tomorrow’s offer.</p>
+<p>This feature makes the model more realistic, as labor market conditions tend to
+exhibit serial correlation over time.</p>
+<p>In addition to what’s in Anaconda, this lecture will need the following
+libraries</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon<span class="w"> </span>jax
+</pre></div>
+</div>
+</div>
+<details class="admonition hide below-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.6.2)
+Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
+Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
+Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
+Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
+Requirement already satisfied: jaxlib&lt;=0.6.2,&gt;=0.6.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.6.2)
+Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.5.3)
+Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (3.4.0)
+Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>We use the following imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">quantecon.markov</span><span class="w"> </span><span class="kn">import</span> <span class="n">tauchen</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">lax</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="model-setup">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">44.1. </span>Model Setup</a><a class="headerlink" href="#model-setup" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Each unemployed agent receives a wage offer <span class="math notranslate nohighlight">\(w\)</span> from a finite set</p></li>
+<li><p>Wage offers follow a Markov chain with transition matrix <span class="math notranslate nohighlight">\(P\)</span></p></li>
+<li><p>Jobs terminate with probability <span class="math notranslate nohighlight">\(\alpha\)</span> each period (separation rate)</p></li>
+<li><p>Unemployed workers receive compensation <span class="math notranslate nohighlight">\(c\)</span> per period</p></li>
+<li><p>Future payoffs are discounted by factor <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span></p></li>
+</ul>
+</section>
+<section id="decision-problem">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">44.2. </span>Decision Problem</a><a class="headerlink" href="#decision-problem" title="Link to this heading">#</a></h2>
+<p>When unemployed and receiving wage offer <span class="math notranslate nohighlight">\(w\)</span>, the agent chooses between:</p>
+<ol class="arabic simple">
+<li><p>Accept offer <span class="math notranslate nohighlight">\(w\)</span>: Become employed at wage <span class="math notranslate nohighlight">\(w\)</span></p></li>
+<li><p>Reject offer: Remain unemployed, receive <span class="math notranslate nohighlight">\(c\)</span>, get new offer next period</p></li>
+</ol>
+</section>
+<section id="value-functions">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">44.3. </span>Value Functions</a><a class="headerlink" href="#value-functions" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>let <span class="math notranslate nohighlight">\(v_u(w)\)</span> be the value of being unemployed when current wage offer is <span class="math notranslate nohighlight">\(w\)</span></p></li>
+<li><p>let <span class="math notranslate nohighlight">\(v_e(w)\)</span> be the value of being employed at wage <span class="math notranslate nohighlight">\(w\)</span></p></li>
+</ul>
+</section>
+<section id="bellman-equations">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">44.4. </span>Bellman Equations</a><a class="headerlink" href="#bellman-equations" title="Link to this heading">#</a></h2>
+<p>The unemployed worker’s value function satisfies the Bellman equation</p>
+<div class="math notranslate nohighlight">
+\[
+    v_u(w) = \max\{v_e(w), c + \beta \sum_{w'} v_u(w') P(w,w')\}
+\]</div>
+<p>The employed worker’s value function satisfies the Bellman equation</p>
+<div class="math notranslate nohighlight">
+\[
+    v_e(w) = 
+    w + \beta
+    \left[
+        \alpha \sum_{w'} v_u(w') P(w,w') + (1-\alpha) v_e(w)
+    \right]
+\]</div>
+</section>
+<section id="computational-approach">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">44.5. </span>Computational Approach</a><a class="headerlink" href="#computational-approach" title="Link to this heading">#</a></h2>
+<p>We use the following approach to solve this problem.</p>
+<p>(As usual, for a function <span class="math notranslate nohighlight">\(h\)</span> we set <span class="math notranslate nohighlight">\((Ph)(w) = \sum_{w'} h(w') P(w,w')\)</span>.)</p>
+<ol class="arabic simple">
+<li><p>Use the employed worker’s Bellman equation to express <span class="math notranslate nohighlight">\(v_e\)</span> in terms of
+<span class="math notranslate nohighlight">\(Pv_u\)</span>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+    v_e(w) = 
+    \frac{1}{1-\beta(1-\alpha)} \cdot (w + \alpha\beta(Pv_u)(w))
+\]</div>
+<ol class="arabic simple" start="2">
+<li><p>Substitute into the unemployed agent’s Bellman equation to get:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+    v_u(w) = 
+    \max
+    \left\{
+        \frac{1}{1-\beta(1-\alpha)} \cdot (w + \alpha\beta(Pv_u)(w)),
+        c + \beta(Pv_u)(w)
+    \right\}
+\]</div>
+<ol class="arabic simple" start="3">
+<li><p>Use value function iteration to solve for <span class="math notranslate nohighlight">\(v_u\)</span></p></li>
+<li><p>Compute optimal policy: accept if <span class="math notranslate nohighlight">\(v_e(w) ≥ c + β(Pv_u)(w)\)</span></p></li>
+</ol>
+<p>The optimal policy turns out to be a reservation wage strategy: accept all wages above some threshold.</p>
+</section>
+<section id="code">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">44.6. </span>Code</a><a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
+<p>First, we implement the successive approximation algorithm.</p>
+<p>This algorithm takes an operator <span class="math notranslate nohighlight">\(T\)</span> and an initial condition and iterates until
+convergence.</p>
+<p>We will use it for value function iteration.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">successive_approx</span><span class="p">(</span>
+        <span class="n">T</span><span class="p">,</span>                         <span class="c1"># Operator (callable) - marked as static</span>
+        <span class="n">x_0</span><span class="p">,</span>                       <span class="c1"># Initial condition</span>
+        <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>   <span class="c1"># Error tolerance</span>
+        <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100_000</span><span class="p">,</span>   <span class="c1"># Max iteration bound</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the approximate fixed point of T via successive</span>
+<span class="sd">    approximation using lax.while_loop.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">cond_fn</span><span class="p">(</span><span class="n">carry</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">carry</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">k</span> <span class="o">&lt;=</span> <span class="n">max_iter</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">body_fn</span><span class="p">(</span><span class="n">carry</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">carry</span>
+        <span class="n">x_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">initial_carry</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_0</span><span class="p">,</span> <span class="n">tolerance</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">x_final</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">cond_fn</span><span class="p">,</span> <span class="n">body_fn</span><span class="p">,</span> <span class="n">initial_carry</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">x_final</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next let’s set up a <code class="docutils literal notranslate"><span class="pre">Model</span></code> class to store information needed to solve the model.</p>
+<p>We include <code class="docutils literal notranslate"><span class="pre">P_cumsum</span></code>, the row-wise cumulative sum of the transition matrix, to
+optimize the simulation – the details are explained below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">w_vals</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">P</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">P_cumsum</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>  <span class="c1"># Cumulative sum of P for efficient sampling</span>
+    <span class="n">β</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">α</span><span class="p">:</span> <span class="nb">float</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The function below holds default values and creates a <code class="docutils literal notranslate"><span class="pre">Model</span></code> instance:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_js_with_sep_model</span><span class="p">(</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>          <span class="c1"># wage grid size</span>
+        <span class="n">ρ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>        <span class="c1"># wage persistence</span>
+        <span class="n">ν</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>        <span class="c1"># wage volatility</span>
+        <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span><span class="p">,</span>       <span class="c1"># discount factor</span>
+        <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>       <span class="c1"># separation rate</span>
+        <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>         <span class="c1"># unemployment compensation</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates an instance of the job search model with separation.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mc</span> <span class="o">=</span> <span class="n">tauchen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">ν</span><span class="p">)</span>
+    <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span><span class="p">)),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">P_cumsum</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P_cumsum</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s the Bellman operator for the unemployed worker’s value function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Bellman operator for the value of being unemployed.&quot;&quot;&quot;</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P_cumsum</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">))</span>
+    <span class="n">accept</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_vals</span> <span class="o">+</span> <span class="n">α</span> <span class="o">*</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">reject</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">accept</span><span class="p">,</span> <span class="n">reject</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The next function computes the optimal policy under the assumption that <span class="math notranslate nohighlight">\(v\)</span> is
+the value function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a v-greedy policy.&quot;&quot;&quot;</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P_cumsum</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">))</span>
+    <span class="n">accept</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_vals</span> <span class="o">+</span> <span class="n">α</span> <span class="o">*</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">reject</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span>
+    <span class="n">σ</span> <span class="o">=</span> <span class="n">accept</span> <span class="o">&gt;=</span> <span class="n">reject</span>
+    <span class="k">return</span> <span class="n">σ</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a routine for value function iteration, as well as a second routine that
+computes the reservation wage.</p>
+<p>The second routine requires a policy function, which we will typically obtain by
+applying the <code class="docutils literal notranslate"><span class="pre">vfi</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Solve by VFI.&quot;&quot;&quot;</span>
+    <span class="n">v_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w_vals</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">v_star</span> <span class="o">=</span> <span class="n">successive_approx</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="n">v_init</span><span class="p">)</span>
+    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_star</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_reservation_wage</span><span class="p">(</span><span class="n">σ</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the reservation wage from a given policy.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - σ: Policy array where σ[i] = True means accept wage w_vals[i]</span>
+<span class="sd">    - model: Model instance containing wage values</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - Reservation wage (lowest wage for which policy indicates acceptance)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P_cumsum</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span>
+
+    <span class="c1"># Find all wage indices where policy indicates acceptance</span>
+    <span class="n">accept_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">σ</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">accept_indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">inf</span>  <span class="c1"># Agent never accepts any wage</span>
+
+    <span class="c1"># Return the lowest wage that is accepted</span>
+    <span class="k">return</span> <span class="n">w_vals</span><span class="p">[</span><span class="n">accept_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="computing-the-solution">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">44.7. </span>Computing the Solution</a><a class="headerlink" href="#computing-the-solution" title="Link to this heading">#</a></h2>
+<p>Let’s solve the model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_js_with_sep_model</span><span class="p">()</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P_cumsum</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span>
+<span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we compute some related quantities, including the reservation wage.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">))</span>
+<span class="n">accept</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_vals</span> <span class="o">+</span> <span class="n">α</span> <span class="o">*</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v_star</span><span class="p">)</span>
+<span class="n">h_star</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v_star</span>
+<span class="n">w_star</span> <span class="o">=</span> <span class="n">get_reservation_wage</span><span class="p">(</span><span class="n">σ_star</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot our results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_vals</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;continuation value&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_vals</span><span class="p">,</span> <span class="n">accept</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;stopping value&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_vals</span><span class="p">,</span> <span class="n">v_star</span><span class="p">,</span> <span class="s2">&quot;k-&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$v_u^*(w)$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$w$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/58c2a4ee01eb8d0b07237bd2ef0d64e899e351cf8b51841225111eacb67b2f3b.png" src="_images/58c2a4ee01eb8d0b07237bd2ef0d64e899e351cf8b51841225111eacb67b2f3b.png" />
+</div>
+</div>
+</section>
+<section id="sensitivity-analysis">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">44.8. </span>Sensitivity Analysis</a><a class="headerlink" href="#sensitivity-analysis" title="Link to this heading">#</a></h2>
+<p>Let’s examine how reservation wages change with the separation rate.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α_vals</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">w_star_vec</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">α_vals</span><span class="p">)</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i_α</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">α_vals</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">create_js_with_sep_model</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">)</span>
+    <span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">w_star</span> <span class="o">=</span> <span class="n">get_reservation_wage</span><span class="p">(</span><span class="n">σ_star</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="n">w_star_vec</span> <span class="o">=</span> <span class="n">w_star_vec</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i_α</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">w_star</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_vals</span><span class="p">,</span> <span class="n">w_star_vec</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;reservation wage&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\alpha$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$w$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/dd55eb2f9e877e947f8abd833f8b90b55a1b5eee9a577d517399450431ff23b9.png" src="_images/dd55eb2f9e877e947f8abd833f8b90b55a1b5eee9a577d517399450431ff23b9.png" />
+</div>
+</div>
+<p>Can you provide an intuitive economic story behind the outcome that you see in this figure?</p>
+</section>
+<section id="employment-simulation">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">44.9. </span>Employment Simulation</a><a class="headerlink" href="#employment-simulation" title="Link to this heading">#</a></h2>
+<p>Now let’s simulate the employment dynamics of a single agent under the optimal policy.</p>
+<p>Note that, when simulating the Markov chain for wage offers, we need to draw from the distribution in each
+row of <span class="math notranslate nohighlight">\(P\)</span> many times.</p>
+<p>To do this, we use the inverse
+transform method: draw a uniform random variable and find where it falls in the
+cumulative distribution.</p>
+<p>This is implemented via <code class="docutils literal notranslate"><span class="pre">jnp.searchsorted</span></code> on the precomputed cumulative sum
+<code class="docutils literal notranslate"><span class="pre">P_cumsum</span></code>, which is much faster than recomputing the cumulative sum each time.</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">update_agent</span></code> advances the agent’s state by one period.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_agent</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">is_employed</span><span class="p">,</span> <span class="n">wage_idx</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">σ</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates an agent by one period.  Updates their employment status and their</span>
+<span class="sd">    current wage (stored by index).</span>
+
+<span class="sd">    Agents who lose their job that pays wage w receive a new draw in the next</span>
+<span class="sd">    period via the probabilites in P(w, .)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P_cumsum</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span>
+
+    <span class="n">key1</span><span class="p">,</span> <span class="n">key2</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="c1"># Use precomputed cumulative sum for efficient sampling</span>
+    <span class="n">new_wage_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
+        <span class="n">P_cumsum</span><span class="p">[</span><span class="n">wage_idx</span><span class="p">,</span> <span class="p">:],</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">separation_occurs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">α</span>
+    <span class="n">accepts</span> <span class="o">=</span> <span class="n">σ</span><span class="p">[</span><span class="n">wage_idx</span><span class="p">]</span>
+
+    <span class="c1"># If employed: status = 1 if no separation, 0 if separation</span>
+    <span class="c1"># If unemployed: status = 1 if accepts, 0 if rejects</span>
+    <span class="n">final_employment</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">is_employed</span><span class="p">,</span>
+        <span class="mi">1</span> <span class="o">-</span> <span class="n">separation_occurs</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span>  <span class="c1"># employed path</span>
+        <span class="n">accepts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>                 <span class="c1"># unemployed path</span>
+    <span class="p">)</span>
+
+    <span class="c1"># If employed: wage = current if no separation, new if separation</span>
+    <span class="c1"># If unemployed: wage = current if accepts, new if rejects</span>
+    <span class="n">final_wage</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">is_employed</span><span class="p">,</span>
+        <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">separation_occurs</span><span class="p">,</span> <span class="n">new_wage_idx</span><span class="p">,</span> <span class="n">wage_idx</span><span class="p">),</span>  <span class="c1"># employed path</span>
+        <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">accepts</span><span class="p">,</span> <span class="n">wage_idx</span><span class="p">,</span> <span class="n">new_wage_idx</span><span class="p">)</span>             <span class="c1"># unemployed path</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">final_employment</span><span class="p">,</span> <span class="n">final_wage</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a function to simulate the employment path of a single agent.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_employment_path</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>     <span class="c1"># Model details</span>
+        <span class="n">σ</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>   <span class="c1"># Policy (accept/reject for each wage)</span>
+        <span class="n">T</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2_000</span><span class="p">,</span>   <span class="c1"># Simulation length</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span>    <span class="c1"># Set seed for simulation</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate employment path for T periods starting from unemployment.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="c1"># Unpack model</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P_cumsum</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span>
+
+    <span class="c1"># Initial conditions</span>
+    <span class="n">is_employed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">wage_idx</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">wage_path_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">employment_status_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">wage_path_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_vals</span><span class="p">[</span><span class="n">wage_idx</span><span class="p">])</span>
+        <span class="n">employment_status_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">is_employed</span><span class="p">)</span>
+
+        <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">is_employed</span><span class="p">,</span> <span class="n">wage_idx</span> <span class="o">=</span> <span class="n">update_agent</span><span class="p">(</span>
+            <span class="n">subkey</span><span class="p">,</span> <span class="n">is_employed</span><span class="p">,</span> <span class="n">wage_idx</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">σ</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">wage_path_list</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">employment_status_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s create a comprehensive plot of the employment simulation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_js_with_sep_model</span><span class="p">()</span>
+
+<span class="c1"># Calculate reservation wage for plotting</span>
+<span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">w_star</span> <span class="o">=</span> <span class="n">get_reservation_wage</span><span class="p">(</span><span class="n">σ_star</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+<span class="n">wage_path</span><span class="p">,</span> <span class="n">employment_status</span> <span class="o">=</span> <span class="n">simulate_employment_path</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Plot employment status</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">employment_status</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+    <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">employment_status</span><span class="p">)),</span> <span class="n">employment_status</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span>
+<span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;employment status&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Employment path (0=unemployed, 1=employed)&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+
+<span class="c1"># Plot wage path with employment status coloring</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wage_path</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">w_star</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Reservation wage: </span><span class="si">{</span><span class="n">w_star</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;wage&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Wage path (actual and offers)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="c1"># Plot cumulative fraction of time unemployed</span>
+<span class="n">unemployed_indicator</span> <span class="o">=</span> <span class="p">(</span><span class="n">employment_status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">cumulative_unemployment</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">jnp</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">unemployed_indicator</span><span class="p">)</span> <span class="o">/</span>
+    <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">employment_status</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cumulative_unemployment</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">unemployed_indicator</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Final rate: </span><span class="si">{</span><span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">unemployed_indicator</span><span class="p">)</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;cumulative unemployment rate&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Cumulative fraction of time spent unemployed&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/bf29f8aa99b36f66cb455af7d94cae7b2b1aa3f0bde6df03d8ecab80aac7c157.png" src="_images/bf29f8aa99b36f66cb455af7d94cae7b2b1aa3f0bde6df03d8ecab80aac7c157.png" />
+</div>
+</div>
+<p>The simulation helps to visualize outcomes associated with this model.</p>
+<p>The agent follows a reservation wage strategy.</p>
+<p>Often the agent loses her job and immediately takes another job at a different
+wage.</p>
+<p>This is because she uses the wage <span class="math notranslate nohighlight">\(w\)</span> from her last job to draw a new wage offer
+via <span class="math notranslate nohighlight">\(P(w, \cdot)\)</span>, and positive correlation means that a high current <span class="math notranslate nohighlight">\(w\)</span> is
+often leads a high new draw.</p>
+</section>
+<section id="the-ergodic-property">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">44.10. </span>The Ergodic Property</a><a class="headerlink" href="#the-ergodic-property" title="Link to this heading">#</a></h2>
+<p>Below we examine cross-sectional unemployment.</p>
+<p>In particular, we will look at the unemployment rate in a cross-sectional
+simulation and compare it to the time-average unemployment rate, which is the
+fraction of time an agent spends unemployed over a long time series.</p>
+<p>We will see that these two values are approximately equal – if fact they are
+exactly equal in the limit.</p>
+<p>The reason is that the process <span class="math notranslate nohighlight">\((s_t, w_t)\)</span>, where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(s_t\)</span> is the employment status and</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_t\)</span> is the wage</p></li>
+</ul>
+<p>is Markovian, since the next pair depends only on the current pair and iid
+randomness, and ergodic.</p>
+<p>Ergodicity holds as a result of irreducibility.</p>
+<p>Indeed, from any (status, wage) pair, an agent can eventually reach any other (status, wage) pair.</p>
+<p>This holds because:</p>
+<ul class="simple">
+<li><p>Unemployed agents can become employed by accepting offers</p></li>
+<li><p>Employed agents can become unemployed through separation (probability <span class="math notranslate nohighlight">\(\alpha\)</span>)</p></li>
+<li><p>The wage process can transition between all wage states (because <span class="math notranslate nohighlight">\(P\)</span> is itself irreducible)</p></li>
+</ul>
+<p>These properties ensure the chain is ergodic with a unique stationary distribution <span class="math notranslate nohighlight">\(\pi\)</span> over states <span class="math notranslate nohighlight">\((s, w)\)</span>.</p>
+<p>For an ergodic Markov chain, the ergodic theorem guarantees that time averages = ensemble averages.</p>
+<p>In particular, the fraction of time a single agent spends unemployed (across all
+wage states) converges to the cross-sectional unemployment rate:</p>
+<div class="math notranslate nohighlight">
+\[
+    \lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^{T} \mathbb{1}\{s_t = \text{unemployed}\} = \sum_{w=1}^{n} \pi(\text{unemployed}, w)
+\]</div>
+<p>This holds regardless of initial conditions – provided that we burn in the
+cross-sectional distribution (run it forward in time from a given initial cross
+section in order to remove the influence of that initial condition).</p>
+<p>As a result, we can study steady-state unemployment either by:</p>
+<ul class="simple">
+<li><p>Following one agent for a long time (time average), or</p></li>
+<li><p>Observing many agents at a single point in time (cross-sectional average)</p></li>
+</ul>
+<p>Often the second approach is better for our purposes, since it’s easier to parallelize.</p>
+</section>
+<section id="cross-sectional-analysis">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">44.11. </span>Cross-Sectional Analysis</a><a class="headerlink" href="#cross-sectional-analysis" title="Link to this heading">#</a></h2>
+<p>Now let’s simulate many agents simultaneously to examine the cross-sectional unemployment rate.</p>
+<p>We first create a vectorized version of <code class="docutils literal notranslate"><span class="pre">update_agent</span></code> to efficiently update all agents in parallel:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create vectorized version of update_agent</span>
+<span class="n">update_agents_vmap</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span>
+    <span class="n">update_agent</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we define the core simulation function, which uses <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> to efficiently iterate many agents forward in time:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_simulate_cross_section_compiled</span><span class="p">(</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
+        <span class="n">σ</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">n_agents</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">T</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;JIT-compiled core simulation loop using lax.fori_loop.</span>
+<span class="sd">    Returns only the final employment state to save memory.&quot;&quot;&quot;</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P_cumsum</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span>
+
+    <span class="c1"># Initialize arrays</span>
+    <span class="n">wage_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_agents</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="n">is_employed</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_agents</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">is_employed</span><span class="p">,</span> <span class="n">wage_indices</span> <span class="o">=</span> <span class="n">loop_state</span>
+
+        <span class="c1"># Shift loop state forwards - more efficient key generation</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">agent_keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">)</span>
+
+        <span class="n">is_employed</span><span class="p">,</span> <span class="n">wage_indices</span> <span class="o">=</span> <span class="n">update_agents_vmap</span><span class="p">(</span>
+            <span class="n">agent_keys</span><span class="p">,</span> <span class="n">is_employed</span><span class="p">,</span> <span class="n">wage_indices</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">σ</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">is_employed</span><span class="p">,</span> <span class="n">wage_indices</span>
+
+    <span class="c1"># Run simulation using fori_loop</span>
+    <span class="n">initial_loop_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">is_employed</span><span class="p">,</span> <span class="n">wage_indices</span><span class="p">)</span>
+    <span class="n">final_loop_state</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">initial_loop_state</span><span class="p">)</span>
+
+    <span class="c1"># Return only final employment state</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">final_is_employed</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">final_loop_state</span>
+    <span class="k">return</span> <span class="n">final_is_employed</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_cross_section</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
+        <span class="n">n_agents</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100_000</span><span class="p">,</span>
+        <span class="n">T</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate employment paths for many agents and return final unemployment rate.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - model: Model instance with parameters</span>
+<span class="sd">    - n_agents: Number of agents to simulate</span>
+<span class="sd">    - T: Number of periods to simulate</span>
+<span class="sd">    - seed: Random seed for reproducibility</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - unemployment_rate: Fraction of agents unemployed at time T</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="c1"># Solve for optimal policy</span>
+    <span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># Run JIT-compiled simulation</span>
+    <span class="n">final_employment</span> <span class="o">=</span> <span class="n">_simulate_cross_section_compiled</span><span class="p">(</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">,</span> <span class="n">T</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Calculate unemployment rate at final period</span>
+    <span class="n">unemployment_rate</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">final_employment</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">unemployment_rate</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function generates a histogram showing the distribution of employment status across many agents:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_cross_sectional_unemployment</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span> <span class="n">t_snapshot</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+                                     <span class="n">n_agents</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20_000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate histogram of cross-sectional unemployment at a specific time.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - model: Model instance with parameters</span>
+<span class="sd">    - t_snapshot: Time period at which to take the cross-sectional snapshot</span>
+<span class="sd">    - n_agents: Number of agents to simulate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get final employment state directly</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+    <span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">final_employment</span> <span class="o">=</span> <span class="n">_simulate_cross_section_compiled</span><span class="p">(</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">,</span> <span class="n">t_snapshot</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Calculate unemployment rate</span>
+    <span class="n">unemployment_rate</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">final_employment</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+    <span class="c1"># Plot histogram as density (bars sum to 1)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">final_employment</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">final_employment</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">final_employment</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+            <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;employment status (0=unemployed, 1=employed)&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;density&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cross-sectional distribution at t=</span><span class="si">{</span><span class="n">t_snapshot</span><span class="si">}</span><span class="s1">, &#39;</span> <span class="o">+</span>
+                 <span class="sa">f</span><span class="s1">&#39;unemployment rate = </span><span class="si">{</span><span class="n">unemployment_rate</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s compare the time-average unemployment rate (from a single agent’s long simulation) with the cross-sectional unemployment rate (from many agents at a single point in time):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_js_with_sep_model</span><span class="p">()</span>
+<span class="n">cross_sectional_unemp</span> <span class="o">=</span> <span class="n">simulate_cross_section</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">n_agents</span><span class="o">=</span><span class="mi">20_000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">200</span>
+<span class="p">)</span>
+
+<span class="n">time_avg_unemp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">unemployed_indicator</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time-average unemployment rate (single agent): &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_avg_unemp</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cross-sectional unemployment rate (at t=200): &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cross_sectional_unemp</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Difference: </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">time_avg_unemp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">cross_sectional_unemp</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time-average unemployment rate (single agent): 0.2215
+Cross-sectional unemployment rate (at t=200): 0.2257
+Difference: 0.0042
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s visualize the cross-sectional distribution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_cross_sectional_unemployment</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/22f085e38b32a1e9415d5ebce45801424aabb847a4d8f99366657de471a4e870.png" src="_images/22f085e38b32a1e9415d5ebce45801424aabb847a4d8f99366657de471a4e870.png" />
+</div>
+</div>
+</section>
+<section id="cross-sectional-analysis-with-lower-unemployment-compensation-c-0-5">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">44.12. </span>Cross-Sectional Analysis with Lower Unemployment Compensation (c=0.5)</a><a class="headerlink" href="#cross-sectional-analysis-with-lower-unemployment-compensation-c-0-5" title="Link to this heading">#</a></h2>
+<p>Let’s examine how the cross-sectional unemployment rate changes with lower unemployment compensation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_low_c</span> <span class="o">=</span> <span class="n">create_js_with_sep_model</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plot_cross_sectional_unemployment</span><span class="p">(</span><span class="n">model_low_c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2c3b5c869b8b5dc7c74bf2d8031d0e482b2a95bc26fd07cb07b5d124bf77701c.png" src="_images/2c3b5c869b8b5dc7c74bf2d8031d0e482b2a95bc26fd07cb07b5d124bf77701c.png" />
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">44.13. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<div class="exercise admonition" id="mmwsm_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 44.1 </span></p>
+<section id="exercise-content">
+<p>Create a plot that shows how the steady state cross-sectional unemployment rate
+changes with unemployment compensation.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="mccall_model_with_sep_markov-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#mmwsm_ex1"> Exercise 44.1</a></p>
+<section id="solution-content">
+<p>We compute the steady-state unemployment rate for different values of unemployment compensation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c_values</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span>
+<span class="n">rates</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">c_values</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">create_js_with_sep_model</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">unemployment_rate</span> <span class="o">=</span> <span class="n">simulate_cross_section</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">rates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unemployment_rate</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">c_values</span><span class="p">,</span> <span class="n">rates</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Steady-state unemployment rate&#39;</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;unemployment compensation (c)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;unemployment rate&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/e444b3570c69e53d575dfb2d72c86331f5797d4e678c6293733db26c889bbbab.png" src="_images/e444b3570c69e53d575dfb2d72c86331f5797d4e678c6293733db26c889bbbab.png" />
+</div>
+</div>
+</section>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   1. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   2. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   3. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   4. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   5. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="var_dmd.html">
+   6. VARs and DMDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   7. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="stats_examples.html">
+   9. Some Probability Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   14. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   16. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   17. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   18. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   19. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   20. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="divergence_measures.html">
+   21. Statistical Divergence Measures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   22. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process_2.html">
+   23. Heterogeneous Beliefs and Financial Markets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_var.html">
+   24. Likelihood Processes For VAR Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   25. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   26. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   27. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   28. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   29. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   30. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   31. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   32. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   33. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   34. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   35. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   36. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   37. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   38. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   39. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   40. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   41. Another Look at the Kalman Filter
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   42. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   43. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   44. Job Search with Separation and Markov Wages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   45. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   46. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   47. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   48. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   49. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   50. Job Search VII: Search with Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Capital
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   51. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   52. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   53. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal_2.html">
+   54. Two-Country Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   55. Transitions in an Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   56. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   57. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   58. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   59. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   60. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   61. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   62. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   63. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   64. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   65. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   66. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   67. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   68. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   69. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   70. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="endogenous_lake.html">
+   71. Lake Model with an Endogenous Job Finding Rate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   72. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   73. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   74. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   75. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   76. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   77. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   78. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   79. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   80. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="morris_learn.html">
+   81. Speculative Behavior with Bayesian Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   82. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   83. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   84. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   85. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   86. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   87. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   88. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   89. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/mccall_model_with_sep_markov.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/mccall_model_with_sep_markov.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/mccall_model_with_sep_markov.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/mccall_model_with_sep_markov.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/mccall_model_with_sep_markov.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "mccall_model_with_sep_markov";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/mccall_model_with_sep_markov.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>

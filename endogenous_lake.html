@@ -1,0 +1,1701 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>71. Lake Model with an Endogenous Job Finding Rate &#8212; Intermediate Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=4890ae55f4d5f196460e99a17085458eb1f4c2f0" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=4c010e0d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=06ebc90d5139b434c2742937a4ef3b185cb93e2f"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'endogenous_lake';</script>
+    <link rel="canonical" href="https://python.quantecon.org/endogenous_lake.html" />
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="72. Rational Expectations Equilibrium" href="rational_expectations.html" />
+    <link rel="prev" title="70. A Lake Model of Employment and Unemployment" href="lake_model.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Lake Model with an Endogenous Job Finding Rate"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Lake Model with an Endogenous Job Finding Rate" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/endogenous_lake.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+<!-- Override QuantEcon theme colors -->
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=endogenous_lake>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">71.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">71.2. Set Up</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservation-wage">71.2.1. Reservation wage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lake-model-code">71.2.2. Lake model code</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linking-the-mccall-search-model-to-the-lake-model">71.2.3. Linking the McCall search model to the lake model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fiscal-policy">71.3. Fiscal policy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-optimal-unemployment-insurance">71.3.1. Computing optimal unemployment insurance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">71.4. Exercises</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/en/stable/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">Lake Model with an Endogenous Job Finding Rate</p>
+
+                    </div>
+                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="lake-model-with-an-endogenous-job-finding-rate">
+<h1><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">71. </span>Lake Model with an Endogenous Job Finding Rate</a><a class="headerlink" href="#lake-model-with-an-endogenous-job-finding-rate" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
+<span id="index-0"></span><p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#lake-model-with-an-endogenous-job-finding-rate" id="id3">Lake Model with an Endogenous Job Finding Rate</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id4">Overview</a></p></li>
+<li><p><a class="reference internal" href="#set-up" id="id5">Set Up</a></p></li>
+<li><p><a class="reference internal" href="#fiscal-policy" id="id6">Fiscal policy</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id7">Exercises</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon<span class="w"> </span>jax
+</pre></div>
+</div>
+</div>
+<details class="admonition hide below-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.10.1-py3-none-any.whl.metadata (5.3 kB)
+Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.6.2)
+Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
+Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
+Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
+Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
+Requirement already satisfied: jaxlib&lt;=0.6.2,&gt;=0.6.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.6.2)
+Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.5.3)
+Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (3.4.0)
+Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.10.1
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="overview">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">71.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>This lecture is a continuation of the <a class="reference internal" href="lake_model.html"><span class="doc">lake model lecture</span></a>.</p>
+<p>We recommend you read that lecture first before proceeding with this one.</p>
+<p>In the previous lecture, we studied a lake model of unemployment and employment
+where the transition rates between states were exogenous parameters.</p>
+<p>In this lecture, we extend the model by making the job finding rate endogenous.</p>
+<p>Specifically, the transition rate from unemployment to employment will be determined by the McCall search model <span id="id1">[<a class="reference internal" href="zreferences.html#id208" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span>.</p>
+<p>Let’s start with some imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">quantecon.distributions</span><span class="w"> </span><span class="kn">import</span> <span class="n">BetaBinomial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="set-up">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">71.2. </span>Set Up</a><a class="headerlink" href="#set-up" title="Link to this heading">#</a></h2>
+<p>The basic structure of the model will be as discussed in the <a class="reference internal" href="lake_model.html"><span class="doc">lake model lecture</span></a>.</p>
+<p>The only difference is that the hiring rate is endogenous, determined by the
+decisions of optimizing agents inhabiting a McCall search model <span id="id2">[<a class="reference internal" href="zreferences.html#id208" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span> with
+IID wage offers and job separation at rate <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<section id="reservation-wage">
+<h3><span class="section-number">71.2.1. </span>Reservation wage<a class="headerlink" href="#reservation-wage" title="Link to this heading">#</a></h3>
+<p>In the model, the optimal policy is characterized by a reservation wage <span class="math notranslate nohighlight">\(\bar w\)</span></p>
+<ul class="simple">
+<li><p>If the wage offer <span class="math notranslate nohighlight">\(w\)</span> in hand is greater than or equal to <span class="math notranslate nohighlight">\(\bar w\)</span>, then the worker accepts.</p></li>
+<li><p>Otherwise, the worker rejects.</p></li>
+</ul>
+<p>The reservation wage depends on the wage offer distribution and the parameters</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span>, the separation rate</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta\)</span>, the discount factor</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma\)</span>, the offer arrival rate</p></li>
+<li><p><span class="math notranslate nohighlight">\(c\)</span>, unemployment compensation</p></li>
+</ul>
+<p>The wage offer distribution will be a discretized version of a lognormal distribution.</p>
+<p>We first define a function to create such a discrete distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_wage_distribution</span><span class="p">(</span>
+        <span class="n">max_wage</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">wage_grid_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">log_wage_mean</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a discretized version of a lognormal density LN(log(m),1), where </span>
+<span class="sd">    m is log_wage_mean.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w_vec_temp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">max_wage</span><span class="p">,</span> <span class="n">wage_grid_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">cdf</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span>
+        <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w_vec_temp</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">log_wage_mean</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="n">pdf</span> <span class="o">=</span> <span class="n">cdf</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">cdf</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">p_vec</span> <span class="o">=</span> <span class="n">pdf</span> <span class="o">/</span> <span class="n">pdf</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">w_vec</span> <span class="o">=</span> <span class="p">(</span><span class="n">w_vec_temp</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">w_vec_temp</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The cell below creates a discretized <span class="math notranslate nohighlight">\(LN(\log(20),1)\)</span> wage distribution and
+plots it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span> <span class="o">=</span> <span class="n">create_wage_distribution</span><span class="p">(</span><span class="mi">170</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;wages&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/809faeb6ea17699bc857841081eef393c1cc77a04cd9f2300f03cf7a94924272.png" src="_images/809faeb6ea17699bc857841081eef393c1cc77a04cd9f2300f03cf7a94924272.png" />
+</div>
+</div>
+<p>Now we organize the code for solving the McCall model, given a set of parameters.</p>
+<p>For background on the model and our solution method, see the <a class="reference internal" href="mccall_model_with_separation.html"><span class="doc">lecture on the McCall model with separation</span></a></p>
+<p>Our first step is to define the utility function and the McCall model data structure.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">σ</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">σ</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">σ</span><span class="p">),</span> <span class="o">-</span><span class="mf">10e6</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">McCallModel</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stores the parameters for the McCall search model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">α</span><span class="p">:</span> <span class="nb">float</span>            <span class="c1"># Job separation rate</span>
+    <span class="n">β</span><span class="p">:</span> <span class="nb">float</span>            <span class="c1"># Discount rate</span>
+    <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span>            <span class="c1"># Job offer rate</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">float</span>            <span class="c1"># Unemployment compensation</span>
+    <span class="n">σ</span><span class="p">:</span> <span class="nb">float</span>            <span class="c1"># Utility parameter</span>
+    <span class="n">w_vec</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>  <span class="c1"># Possible wage values</span>
+    <span class="n">p_vec</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>  <span class="c1"># Probabilities over w_vec</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_mccall_model</span><span class="p">(</span>
+        <span class="n">α</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span> <span class="n">σ</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">w_vec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+        <span class="n">p_vec</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">McCallModel</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">w_vec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">60</span>  <span class="c1"># Number of possible outcomes for wage</span>
+        <span class="c1"># Wages between 10 and 20</span>
+        <span class="n">w_vec</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">400</span>  <span class="c1"># Shape parameters</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">BetaBinomial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">p_vec</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">pdf</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">McCallModel</span><span class="p">(</span>
+        <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">σ</span><span class="o">=</span><span class="n">σ</span><span class="p">,</span> <span class="n">w_vec</span><span class="o">=</span><span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span><span class="o">=</span><span class="n">p_vec</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we implement the Bellman operator</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">mcm</span><span class="p">:</span> <span class="n">McCallModel</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update the Bellman equations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">mcm</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="n">mcm</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">mcm</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="n">mcm</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">mcm</span><span class="o">.</span><span class="n">σ</span>
+    <span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span> <span class="o">=</span> <span class="n">mcm</span><span class="o">.</span><span class="n">w_vec</span><span class="p">,</span> <span class="n">mcm</span><span class="o">.</span><span class="n">p_vec</span>
+
+    <span class="n">V_new</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">w_vec</span><span class="p">,</span> <span class="n">σ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">V</span> <span class="o">+</span> <span class="n">α</span> <span class="o">*</span> <span class="n">U</span><span class="p">)</span>
+    <span class="n">U_new</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">σ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">U</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">γ</span> <span class="o">*</span> <span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">@</span> <span class="n">p_vec</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">V_new</span><span class="p">,</span> <span class="n">U_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we define the value function iteration solver.</p>
+<p>We’ll use a compiled while loop for extra speed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_mccall_model</span><span class="p">(</span><span class="n">mcm</span><span class="p">:</span> <span class="n">McCallModel</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterates to convergence on the Bellman equations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cond</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="n">V</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">,</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="n">V</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="n">V_new</span><span class="p">,</span> <span class="n">U_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">mcm</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span>
+        <span class="n">error_1</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V_new</span> <span class="o">-</span> <span class="n">V</span><span class="p">))</span>
+        <span class="n">error_2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">U_new</span> <span class="o">-</span> <span class="n">U</span><span class="p">)</span>
+        <span class="n">error_new</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">error_1</span><span class="p">,</span> <span class="n">error_2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">V_new</span><span class="p">,</span> <span class="n">U_new</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">error_new</span>
+
+    <span class="c1"># Initial state</span>
+    <span class="n">V_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">w_vec</span><span class="p">))</span>
+    <span class="n">U_init</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">i_init</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error_init</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">init_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">V_init</span><span class="p">,</span> <span class="n">U_init</span><span class="p">,</span> <span class="n">i_init</span><span class="p">,</span> <span class="n">error_init</span><span class="p">)</span>
+    <span class="n">V_final</span><span class="p">,</span> <span class="n">U_final</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span>
+        <span class="n">cond</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">init_state</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">V_final</span><span class="p">,</span> <span class="n">U_final</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="lake-model-code">
+<h3><span class="section-number">71.2.2. </span>Lake model code<a class="headerlink" href="#lake-model-code" title="Link to this heading">#</a></h3>
+<p>We also need the lake model functions from the previous lecture to compute steady state unemployment rates:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">LakeModel</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parameters for the lake model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">λ</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">α</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">d</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">A</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">R</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">g</span><span class="p">:</span> <span class="nb">float</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_lake_model</span><span class="p">(</span>
+        <span class="n">λ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.283</span><span class="p">,</span>     <span class="c1"># job finding rate</span>
+        <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.013</span><span class="p">,</span>     <span class="c1"># separation rate</span>
+        <span class="n">b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0124</span><span class="p">,</span>    <span class="c1"># birth rate</span>
+        <span class="n">d</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.00822</span>    <span class="c1"># death rate</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LakeModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a LakeModel instance with default parameters.</span>
+
+<span class="sd">    Computes and stores the transition matrices A and R,</span>
+<span class="sd">    and the labor force growth rate g.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Compute growth rate</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">d</span>
+
+    <span class="c1"># Compute transition matrix A</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">λ</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">α</span> <span class="o">+</span> <span class="n">b</span><span class="p">],</span>
+        <span class="p">[(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">λ</span><span class="p">,</span>         <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)]</span>
+    <span class="p">])</span>
+
+    <span class="c1"># Compute normalized transition matrix R</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">A</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">g</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">LakeModel</span><span class="p">(</span><span class="n">λ</span><span class="o">=</span><span class="n">λ</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="n">g</span><span class="p">)</span>
+
+
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rate_steady_state</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">LakeModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the steady state of the system :math:`x_{t+1} = R x_{t}`</span>
+<span class="sd">    by computing the eigenvector corresponding to the largest eigenvalue.</span>
+
+<span class="sd">    By the Perron-Frobenius theorem, since :math:`R` is a non-negative</span>
+<span class="sd">    matrix with columns summing to 1 (a stochastic matrix), the largest</span>
+<span class="sd">    eigenvalue equals 1 and the corresponding eigenvector gives the steady state.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">λ</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">eigenvals</span><span class="p">,</span> <span class="n">eigenvec</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+
+    <span class="c1"># Find the eigenvector corresponding to the largest eigenvalue</span>
+    <span class="c1"># (which is 1 for a stochastic matrix by Perron-Frobenius theorem)</span>
+    <span class="n">max_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eigenvals</span><span class="p">))</span>
+
+    <span class="c1"># Get the corresponding eigenvector</span>
+    <span class="n">steady_state</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">eigenvec</span><span class="p">[:,</span> <span class="n">max_idx</span><span class="p">])</span>
+
+    <span class="c1"># Normalize to ensure positive values and sum to 1</span>
+    <span class="n">steady_state</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">steady_state</span><span class="p">)</span>
+    <span class="n">steady_state</span> <span class="o">=</span> <span class="n">steady_state</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">steady_state</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">steady_state</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="linking-the-mccall-search-model-to-the-lake-model">
+<h3><span class="section-number">71.2.3. </span>Linking the McCall search model to the lake model<a class="headerlink" href="#linking-the-mccall-search-model-to-the-lake-model" title="Link to this heading">#</a></h3>
+<p>Suppose that all workers inside a lake model behave according to the McCall search model.</p>
+<p>The exogenous probability of leaving employment remains <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<p>But their optimal decision rules determine the probability <span class="math notranslate nohighlight">\(\lambda\)</span> of leaving unemployment.</p>
+<p>This is now</p>
+<div class="math notranslate nohighlight" id="equation-endogenous-lake-lambda">
+<span class="eqno">(71.1)<a class="headerlink" href="#equation-endogenous-lake-lambda" title="Link to this equation">#</a></span>\[\lambda
+= \gamma \mathbb P \{ w_t \geq \bar w\}
+= \gamma \sum_{w' \geq \bar w} p(w')\]</div>
+<p>Here</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\bar w\)</span> is the reservation wage determined by the parameters and</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> is the wage offer distribution.</p></li>
+</ul>
+<p>Wage offers across the population of workers are independent draws from <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<p>Here we calculate <span class="math notranslate nohighlight">\(\lambda\)</span> at the default parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mcm</span> <span class="o">=</span> <span class="n">create_mccall_model</span><span class="p">(</span><span class="n">w_vec</span><span class="o">=</span><span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span><span class="o">=</span><span class="n">p_vec</span><span class="p">)</span>
+<span class="n">V</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">solve_mccall_model</span><span class="p">(</span><span class="n">mcm</span><span class="p">)</span>
+<span class="n">w_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">V</span> <span class="o">-</span> <span class="n">U</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">w_bar</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">w_idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">V</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">mcm</span><span class="o">.</span><span class="n">w_vec</span><span class="p">[</span><span class="n">w_idx</span><span class="p">])</span>
+<span class="n">λ</span> <span class="o">=</span> <span class="n">mcm</span><span class="o">.</span><span class="n">γ</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p_vec</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_vec</span> <span class="o">&gt;</span> <span class="n">w_bar</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Job finding rate at default paramters =</span><span class="si">{</span><span class="n">λ</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Job finding rate at default paramters =0.4510621726512909.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="fiscal-policy">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">71.3. </span>Fiscal policy</a><a class="headerlink" href="#fiscal-policy" title="Link to this heading">#</a></h2>
+<p>In this section, we will put the lake model to work, examining outcomes
+associated with different levels of unemployment compensation.</p>
+<p>Our aim is to find an optimal level of unemployment insurance.</p>
+<p>We assume that the government sets unemployment compensation <span class="math notranslate nohighlight">\(c\)</span>.</p>
+<p>The government imposes a lump-sum tax <span class="math notranslate nohighlight">\(\tau\)</span> sufficient to finance total
+unemployment payments.</p>
+<p>To attain a balanced budget at a steady state, taxes, the steady state
+unemployment rate <span class="math notranslate nohighlight">\(u\)</span>, and the unemployment compensation rate must satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+    \tau = u c
+\]</div>
+<p>The lump-sum tax applies to everyone, including unemployed workers.</p>
+<ul class="simple">
+<li><p>The post-tax income of an employed worker with wage <span class="math notranslate nohighlight">\(w\)</span> is <span class="math notranslate nohighlight">\(w - \tau\)</span>.</p></li>
+<li><p>The post-tax income of an unemployed worker is <span class="math notranslate nohighlight">\(c - \tau\)</span>.</p></li>
+</ul>
+<p>For each specification <span class="math notranslate nohighlight">\((c, \tau)\)</span> of government policy, we can solve for the
+worker’s optimal reservation wage.</p>
+<p>This determines <span class="math notranslate nohighlight">\(\lambda\)</span> via <a class="reference internal" href="#equation-endogenous-lake-lambda">(71.1)</a> evaluated at post tax wages,
+which in turn determines a steady state unemployment rate <span class="math notranslate nohighlight">\(u(c, \tau)\)</span>.</p>
+<p>For a given level of unemployment benefit <span class="math notranslate nohighlight">\(c\)</span>, we can solve for a tax that balances the budget in the steady state</p>
+<div class="math notranslate nohighlight">
+\[
+    \tau = u(c, \tau) c
+\]</div>
+<p>To evaluate alternative government tax-unemployment compensation pairs, we require a welfare criterion.</p>
+<p>We use a steady state welfare criterion</p>
+<div class="math notranslate nohighlight">
+\[
+    W := e \,  {\mathbb E} [V \, | \,  \text{employed}] + u \,  U
+\]</div>
+<p>where the notation <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(U\)</span> is as defined above and the expectation is at the
+steady state.</p>
+<section id="computing-optimal-unemployment-insurance">
+<h3><span class="section-number">71.3.1. </span>Computing optimal unemployment insurance<a class="headerlink" href="#computing-optimal-unemployment-insurance" title="Link to this heading">#</a></h3>
+<p>Now we set up the infrastructure to compute optimal unemployment insurance levels.</p>
+<p>First, we define a container for the economy’s parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Economy</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters for the economy&quot;&quot;&quot;</span>
+    <span class="n">α</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">d</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">β</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">σ</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">log_wage_mean</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">wage_grid_size</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">max_wage</span><span class="p">:</span> <span class="nb">float</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_economy</span><span class="p">(</span>
+        <span class="n">α</span><span class="o">=</span><span class="mf">0.013</span><span class="p">,</span> 
+        <span class="n">b</span><span class="o">=</span><span class="mf">0.0124</span><span class="p">,</span> 
+        <span class="n">d</span><span class="o">=</span><span class="mf">0.00822</span><span class="p">,</span>
+        <span class="n">β</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> 
+        <span class="n">γ</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> 
+        <span class="n">σ</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">log_wage_mean</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">wage_grid_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">max_wage</span><span class="o">=</span><span class="mi">170</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Economy</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an economy with a set of default values&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Economy</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">,</span> <span class="n">σ</span><span class="o">=</span><span class="n">σ</span><span class="p">,</span>
+                           <span class="n">log_wage_mean</span><span class="o">=</span><span class="n">log_wage_mean</span><span class="p">,</span>
+                           <span class="n">wage_grid_size</span><span class="o">=</span><span class="n">wage_grid_size</span><span class="p">,</span>
+                           <span class="n">max_wage</span><span class="o">=</span><span class="n">max_wage</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we define a function that computes optimal worker behavior given policy parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_optimal_quantities</span><span class="p">(</span>
+        <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">τ</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> 
+        <span class="n">economy</span><span class="p">:</span> <span class="n">Economy</span><span class="p">,</span> 
+        <span class="n">w_vec</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> 
+        <span class="n">p_vec</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the reservation wage, job finding rate and value functions</span>
+<span class="sd">    of the workers given c and τ.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mcm</span> <span class="o">=</span> <span class="n">create_mccall_model</span><span class="p">(</span>
+        <span class="n">α</span><span class="o">=</span><span class="n">economy</span><span class="o">.</span><span class="n">α</span><span class="p">,</span>
+        <span class="n">β</span><span class="o">=</span><span class="n">economy</span><span class="o">.</span><span class="n">β</span><span class="p">,</span>
+        <span class="n">γ</span><span class="o">=</span><span class="n">economy</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span>
+        <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="o">-</span><span class="n">τ</span><span class="p">,</span>          <span class="c1"># Post tax compensation</span>
+        <span class="n">σ</span><span class="o">=</span><span class="n">economy</span><span class="o">.</span><span class="n">σ</span><span class="p">,</span>
+        <span class="n">w_vec</span><span class="o">=</span><span class="n">w_vec</span><span class="o">-</span><span class="n">τ</span><span class="p">,</span>  <span class="c1"># Post tax wages</span>
+        <span class="n">p_vec</span><span class="o">=</span><span class="n">p_vec</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Compute reservation wage under given parameters</span>
+    <span class="n">V</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">solve_mccall_model</span><span class="p">(</span><span class="n">mcm</span><span class="p">)</span>
+    <span class="n">w_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">V</span> <span class="o">-</span> <span class="n">U</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">w_idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">V</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">mcm</span><span class="o">.</span><span class="n">w_vec</span><span class="p">[</span><span class="n">w_idx</span><span class="p">])</span>
+
+    <span class="c1"># Compute job finding rate</span>
+    <span class="n">λ</span> <span class="o">=</span> <span class="n">economy</span><span class="o">.</span><span class="n">γ</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p_vec</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_vec</span> <span class="o">-</span> <span class="n">τ</span> <span class="o">&gt;</span> <span class="n">w_bar</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">λ</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">U</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function computes the steady state outcomes given unemployment insurance and tax levels:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_steady_state_quantities</span><span class="p">(</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">τ</span><span class="p">,</span> <span class="n">economy</span><span class="p">:</span> <span class="n">Economy</span><span class="p">,</span> <span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the steady state unemployment rate given c and τ using optimal</span>
+<span class="sd">    quantities from the McCall model and computing corresponding steady</span>
+<span class="sd">    state quantities</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Find optimal values and policies by solving the McCall model, as well</span>
+    <span class="c1"># as the corresponding job finding rate.</span>
+    <span class="n">w_bar</span><span class="p">,</span> <span class="n">λ</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">compute_optimal_quantities</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">τ</span><span class="p">,</span> <span class="n">economy</span><span class="p">,</span> <span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span><span class="p">)</span>
+
+    <span class="c1"># Set up a lake model using the given parameters and the job finding rate.</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">create_lake_model</span><span class="p">(</span><span class="n">λ</span><span class="o">=</span><span class="n">λ</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">economy</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">economy</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">economy</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
+
+    <span class="c1"># Compute steady state employment and unemployment rates from this lake</span>
+    <span class="c1"># model.</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">rate_steady_state</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># Compute expected lifetime value conditional on being employed.</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">w_vec</span> <span class="o">-</span> <span class="n">τ</span> <span class="o">&gt;</span> <span class="n">w_bar</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">V</span> <span class="o">*</span> <span class="n">p_vec</span> <span class="o">*</span> <span class="n">mask</span><span class="p">)</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p_vec</span> <span class="o">*</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="c1"># Compute steady state welfare.</span>
+    <span class="n">welfare</span> <span class="o">=</span> <span class="n">e</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">U</span>
+
+    <span class="k">return</span> <span class="n">e</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">welfare</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We need a function to find the tax rate that balances the government budget:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">find_balanced_budget_tax</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">economy</span><span class="p">:</span> <span class="n">Economy</span><span class="p">,</span> <span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the tax rate that will induce a balanced budget given unemployment</span>
+<span class="sd">    compensation c.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">steady_state_budget</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For given tax rate t, compute the budget surplus.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">e</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">compute_steady_state_quantities</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">economy</span><span class="p">,</span> <span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span> <span class="o">-</span> <span class="n">u</span> <span class="o">*</span> <span class="n">c</span>
+
+    <span class="c1"># Use a simple bisection method to find the tax rate that balances the</span>
+    <span class="c1"># budget (but setting the surplus to zero</span>
+
+    <span class="n">t_low</span><span class="p">,</span> <span class="n">t_high</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">c</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-6</span>
+    <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">t_mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_low</span> <span class="o">+</span> <span class="n">t_high</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">budget</span> <span class="o">=</span> <span class="n">steady_state_budget</span><span class="p">(</span><span class="n">t_mid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">budget</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">t_mid</span>
+        <span class="k">elif</span> <span class="n">budget</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">t_low</span> <span class="o">=</span> <span class="n">t_mid</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t_high</span> <span class="o">=</span> <span class="n">t_mid</span>
+
+    <span class="k">return</span> <span class="n">t_mid</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we compute how employment, unemployment, taxes, and welfare vary with the unemployment compensation rate:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create economy and wage distribution</span>
+<span class="n">economy</span> <span class="o">=</span> <span class="n">create_economy</span><span class="p">()</span>
+<span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span> <span class="o">=</span> <span class="n">create_wage_distribution</span><span class="p">(</span>
+    <span class="n">economy</span><span class="o">.</span><span class="n">max_wage</span><span class="p">,</span> <span class="n">economy</span><span class="o">.</span><span class="n">wage_grid_size</span><span class="p">,</span> <span class="n">economy</span><span class="o">.</span><span class="n">log_wage_mean</span>
+<span class="p">)</span>
+
+<span class="c1"># Levels of unemployment insurance we wish to study</span>
+<span class="n">c_vec</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+
+<span class="n">tax_vec</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">unempl_vec</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">empl_vec</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">welfare_vec</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">c_vec</span><span class="p">:</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">find_balanced_budget_tax</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">economy</span><span class="p">,</span> <span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span><span class="p">)</span>
+    <span class="n">e_rate</span><span class="p">,</span> <span class="n">u_rate</span><span class="p">,</span> <span class="n">welfare</span> <span class="o">=</span> <span class="n">compute_steady_state_quantities</span><span class="p">(</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">economy</span><span class="p">,</span> <span class="n">w_vec</span><span class="p">,</span> <span class="n">p_vec</span>
+    <span class="p">)</span>
+    <span class="n">tax_vec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">unempl_vec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u_rate</span><span class="p">)</span>
+    <span class="n">empl_vec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e_rate</span><span class="p">)</span>
+    <span class="n">welfare_vec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">welfare</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s visualize the results:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">unempl_vec</span><span class="p">,</span> <span class="n">empl_vec</span><span class="p">,</span> <span class="n">tax_vec</span><span class="p">,</span> <span class="n">welfare_vec</span><span class="p">]</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;unemployment&#39;</span><span class="p">,</span> <span class="s1">&#39;employment&#39;</span><span class="p">,</span> <span class="s1">&#39;tax&#39;</span><span class="p">,</span> <span class="s1">&#39;welfare&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">plot</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">plots</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c_vec</span><span class="p">,</span> <span class="n">plot</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5807b1822d395f63cd79b147154d448ed0e670a0a3142c7544ca6675cc59623d.png" src="_images/5807b1822d395f63cd79b147154d448ed0e670a0a3142c7544ca6675cc59623d.png" />
+</div>
+</div>
+<p>Welfare first increases and then decreases as unemployment benefits rise.</p>
+<p>The level that maximizes steady state welfare is approximately 62.</p>
+</section>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">71.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<div class="exercise admonition" id="endogenous_lake_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 71.1 </span></p>
+<section id="exercise-content">
+<p>How does the welfare-maximizing level of unemployment compensation <span class="math notranslate nohighlight">\(c\)</span> change
+with the job separation rate <span class="math notranslate nohighlight">\(\alpha\)</span>?</p>
+<p>Compute and plot the optimal <span class="math notranslate nohighlight">\(c\)</span> (the value that maximizes welfare) for a range
+of separation rates <span class="math notranslate nohighlight">\(\alpha\)</span> from 0.01 to 0.04.</p>
+<p>For each <span class="math notranslate nohighlight">\(\alpha\)</span> value, find the optimal <span class="math notranslate nohighlight">\(c\)</span> by computing welfare across the
+range of <span class="math notranslate nohighlight">\(c\)</span> values and selecting the maximum.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="endogenous_lake-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#endogenous_lake_ex1"> Exercise 71.1</a></p>
+<section id="solution-content">
+<p>Here is one solution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Range of separation rates to explore (wider range, fewer points)</span>
+<span class="n">α_values</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># We&#39;ll store the optimal c for each α</span>
+<span class="n">optimal_c_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Use a finer grid for c values to get better resolution</span>
+<span class="n">c_vec_fine</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">α_val</span> <span class="ow">in</span> <span class="n">α_values</span><span class="p">:</span>
+    <span class="c1"># Create economy parameters with this α</span>
+    <span class="n">params_α</span> <span class="o">=</span> <span class="n">create_economy</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="n">α_val</span><span class="p">)</span>
+
+    <span class="c1"># Create wage distribution</span>
+    <span class="n">w_vec_α</span><span class="p">,</span> <span class="n">p_vec_α</span> <span class="o">=</span> <span class="n">create_wage_distribution</span><span class="p">(</span>
+        <span class="n">params_α</span><span class="o">.</span><span class="n">max_wage</span><span class="p">,</span> <span class="n">params_α</span><span class="o">.</span><span class="n">wage_grid_size</span><span class="p">,</span> <span class="n">params_α</span><span class="o">.</span><span class="n">log_wage_mean</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Compute welfare for each c value</span>
+    <span class="n">welfare_values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">c_vec_fine</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">find_balanced_budget_tax</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">params_α</span><span class="p">,</span> <span class="n">w_vec_α</span><span class="p">,</span> <span class="n">p_vec_α</span><span class="p">)</span>
+        <span class="n">e_rate</span><span class="p">,</span> <span class="n">u_rate</span><span class="p">,</span> <span class="n">welfare</span> <span class="o">=</span> <span class="n">compute_steady_state_quantities</span><span class="p">(</span>
+            <span class="n">c</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">params_α</span><span class="p">,</span> <span class="n">w_vec_α</span><span class="p">,</span> <span class="n">p_vec_α</span>
+        <span class="p">)</span>
+        <span class="n">welfare_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">welfare</span><span class="p">)</span>
+
+    <span class="c1"># The welfare function is very flat near its maximum.</span>
+    <span class="c1"># Using argmax on a single point can be unstable due to numerical noise.</span>
+    <span class="c1"># Instead, we find all c values within 99.9% of maximum welfare and</span>
+    <span class="c1"># compute their weighted average (centroid). This gives a more stable</span>
+    <span class="c1"># estimate of the optimal unemployment compensation level.</span>
+    <span class="n">welfare_array</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">welfare_values</span><span class="p">)</span>
+    <span class="n">max_welfare</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">welfare_array</span><span class="p">)</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.999</span> <span class="o">*</span> <span class="n">max_welfare</span>
+    <span class="n">near_optimal_mask</span> <span class="o">=</span> <span class="n">welfare_array</span> <span class="o">&gt;=</span> <span class="n">threshold</span>
+
+    <span class="c1"># Compute weighted average of c values in the near-optimal region</span>
+    <span class="n">optimal_c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">c_vec_fine</span> <span class="o">*</span> <span class="n">near_optimal_mask</span> <span class="o">*</span> <span class="n">welfare_array</span><span class="p">)</span> <span class="o">/</span> \
+                <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">near_optimal_mask</span> <span class="o">*</span> <span class="n">welfare_array</span><span class="p">)</span>
+    <span class="n">optimal_c_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">optimal_c</span><span class="p">)</span>
+
+<span class="c1"># Plot the relationship</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_values</span><span class="p">,</span> <span class="n">optimal_c_values</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Separation rate $\alpha$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Optimal unemployment compensation $c$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;How optimal unemployment insurance varies with job separation rate&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/1b1f8bda5c38cbf1f471348a67e01c6a52245d5ba3b916e7f3ef50f3b59f5d11.png" src="_images/1b1f8bda5c38cbf1f471348a67e01c6a52245d5ba3b916e7f3ef50f3b59f5d11.png" />
+</div>
+</div>
+<p>We see that as the separation rate increases (workers lose their jobs more
+frequently), the welfare-maximizing level of unemployment compensation
+decreases.</p>
+<p>This occurs because higher separation rates increase steady-state unemployment,
+which raises the tax burden needed to finance unemployment benefits. The
+optimal policy balances insurance against distortionary taxation.</p>
+</section>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   1. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   2. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   3. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   4. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   5. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="var_dmd.html">
+   6. VARs and DMDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   7. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="stats_examples.html">
+   9. Some Probability Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   14. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   16. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   17. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   18. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   19. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   20. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="divergence_measures.html">
+   21. Statistical Divergence Measures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   22. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process_2.html">
+   23. Heterogeneous Beliefs and Financial Markets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_var.html">
+   24. Likelihood Processes For VAR Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   25. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   26. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   27. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   28. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   29. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   30. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   31. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   32. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   33. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   34. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   35. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   36. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   37. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   38. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   39. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   40. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   41. Another Look at the Kalman Filter
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   42. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   43. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_sep_markov.html">
+   44. Job Search with Separation and Markov Wages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   45. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   46. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   47. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   48. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   49. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   50. Job Search VII: Search with Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Capital
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   51. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   52. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   53. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal_2.html">
+   54. Two-Country Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   55. Transitions in an Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   56. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   57. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   58. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   59. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   60. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   61. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   62. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   63. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   64. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   65. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   66. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   67. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   68. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   69. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   70. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   71. Lake Model with an Endogenous Job Finding Rate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   72. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   73. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   74. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   75. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   76. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   77. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   78. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   79. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   80. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="morris_learn.html">
+   81. Speculative Behavior with Bayesian Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   82. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   83. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   84. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   85. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   86. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   87. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   88. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   89. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/endogenous_lake.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/endogenous_lake.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/endogenous_lake.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/endogenous_lake.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/endogenous_lake.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "endogenous_lake";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/endogenous_lake.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>
