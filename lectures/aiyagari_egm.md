@@ -290,32 +290,31 @@ def K_egm(σ, household, prices):
     # Allocate memory for new consumption
     σ_new = jnp.zeros((a_size, z_size))
 
-    # For each current asset level and employment state
+    # For each current employment state
     for j in range(z_size):
-        # Compute expectation of u'(c_{t+1}) for each asset choice a'
-        # E[u'(c_{t+1}) | a'] = sum_z' Π[j, j'] * u'(σ[i, j'])
+        # Step 1: Use a_grid as exogenous grid for tomorrow's assets (a')
+        # Compute expectation: E[u'(c(a', z')) | z=z_j]
         Eu_prime = jnp.zeros(a_size)
         for jp in range(z_size):
             Eu_prime += Π[j, jp] * u_prime(σ[:, jp])
 
-        # Apply Euler equation: u'(c) = β(1+r) E[u'(c_{t+1})]
-        c = u_prime_inv(β * (1 + r) * Eu_prime)
+        # Step 2: Get consumption on endogenous grid using Euler equation
+        c_endo = u_prime_inv(β * (1 + r) * Eu_prime)
 
-        # Endogenous grid: y = c + a
-        y = c + a_grid
+        # Step 3: Compute endogenous asset grid for today
+        # From budget constraint: a' = (1+r)a + wz - c
+        # Solving for a: a = (c + a' - wz) / (1+r)
+        a_endo = (c_endo + a_grid - w * z_grid[j]) / (1 + r)
 
-        # Interpolate back to exogenous grid
-        # For each asset level a in a_grid, find consumption
+        # Step 4: Interpolate back to exogenous asset grid
+        # Handle borrowing constraint
         for i, a in enumerate(a_grid):
-            # Current income is wage * employment state + (1+r) * assets
-            income = w * z_grid[j] + (1 + r) * a
-
-            # If income is below minimum y, consume all income
-            if income <= y[0]:
-                σ_new = σ_new.at[i, j].set(income)
+            if a < a_endo[0]:
+                # Below minimum of endogenous grid - consume all income
+                σ_new = σ_new.at[i, j].set(w * z_grid[j] + (1 + r) * a - a_grid[0])
             else:
-                # Interpolate to find optimal consumption
-                σ_new = σ_new.at[i, j].set(jnp.interp(income, y, c))
+                # Interpolate
+                σ_new = σ_new.at[i, j].set(jnp.interp(a, a_endo, c_endo))
 
     return σ_new
 ```
@@ -333,28 +332,34 @@ def K_egm_jit(σ, household, prices):
     a_size, z_size = len(a_grid), len(z_grid)
     r, w = prices
 
-    # Compute expectation: E[u'(c_{t+1})]
-    # Shape: (a_size, z_size) where [i,j] is E_j[u'(σ[i, :])]
-    Eu_prime = Π @ u_prime(σ).T  # (z_size, a_size)
-    Eu_prime = Eu_prime.T  # (a_size, z_size)
+    # Compute expectation: E[u'(c(a', z')) | z]
+    # Eu_prime[i, j] = sum_jp Π[j, jp] * u'(σ[i, jp])
+    Eu_prime = (Π @ u_prime(σ).T).T  # (a_size, z_size)
 
-    # Apply inverse Euler equation to get consumption on endogenous grid
+    # Apply Euler equation to get consumption on endogenous grid
     c_endo = u_prime_inv(β * (1 + r) * Eu_prime)  # (a_size, z_size)
 
-    # Endogenous income grid
-    y_endo = c_endo + a_grid[:, None]  # (a_size, z_size)
-
-    # Exogenous income grid
-    a_mesh = a_grid[:, None]  # (a_size, 1)
-    z_mesh = z_grid[None, :]  # (1, z_size)
-    y_exo = w * z_mesh + (1 + r) * a_mesh  # (a_size, z_size)
+    # Compute endogenous asset grid: a = (c + a' - wz) / (1+r)
+    # a_endo[i, j] is today's assets when tomorrow's assets are a_grid[i]
+    # and today's employment is z_grid[j]
+    a_endo = (c_endo + a_grid[:, None] - w * z_grid[None, :]) / (1 + r)
 
     # Interpolate back to exogenous grid
-    σ_new = jax.vmap(
-        lambda j: jnp.interp(y_exo[:, j], y_endo[:, j], c_endo[:, j])
-    )(jnp.arange(z_size))
+    # For each employment state j, interpolate from (a_endo[:, j], c_endo[:, j])
+    # to get consumption at exogenous grid points a_grid
 
-    return σ_new.T
+    def interpolate_policy(j):
+        # Handle borrowing constraint
+        # If a < min(a_endo), consume everything except minimum savings
+        return jnp.where(
+            a_grid < a_endo[0, j],
+            w * z_grid[j] + (1 + r) * a_grid - a_grid[0],
+            jnp.interp(a_grid, a_endo[:, j], c_endo[:, j])
+        )
+
+    σ_new = jax.vmap(interpolate_policy)(jnp.arange(z_size))
+
+    return σ_new.T  # (a_size, z_size)
 ```
 
 ### Solving the household problem
