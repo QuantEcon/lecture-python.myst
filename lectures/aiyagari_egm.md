@@ -26,7 +26,7 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's included in base Anaconda, we need to install JAX
+In addition to what's included in base Anaconda, we need to install QuantEcon's Python library and JAX.
 
 ```{code-cell} ipython3
 :tags: [hide-output]
@@ -41,12 +41,14 @@ This lecture combines two important computational methods in macroeconomics:
 1. The **Aiyagari model** {cite}`Aiyagari1994` - a heterogeneous agent model with incomplete markets
 2. The **endogenous grid method** (EGM) {cite}`Carroll2006` - an efficient algorithm for solving dynamic programming problems
 
-In the {doc}`standard Aiyagari lecture <aiyagari>`, we solved the household problem using Howard policy iteration (a value function iteration variant) and computed aggregate capital using the stationary distribution of the finite Markov chain.
+In the {doc}`standard Aiyagari lecture <aiyagari>`, we solved the household problem using discretization and value function iteration.
+
+We then computed aggregate capital at a given set of prices using the stationary distribution of the finite Markov chain.
 
 In this lecture, we take a different approach:
 
-* We use the **endogenous grid method** to solve the household problem via the Euler equation, avoiding costly root-finding operations
-* We compute aggregate capital by **simulation** rather than calculating the stationary distribution analytically
+1. We use the **endogenous grid method** to solve the household problem via the Euler equation and linear interpolation.
+2. We compute aggregate capital by **simulation** rather than an algebraic technique (which only works for the finite case).
 
 These modifications make the solution method faster and more flexible, especially when dealing with more complex models.
 
@@ -54,9 +56,11 @@ These modifications make the solution method faster and more flexible, especiall
 
 The primary references for this lecture are:
 
+* our {doc}`previous Aiyagari lecture <aiyagari>` for the key ideas
 * {cite}`Aiyagari1994` for the economic model
 * {cite}`Carroll2006` for the endogenous grid method
 * Chapter 18 of {cite}`Ljungqvist2012` for textbook treatment
+
 
 ### Preliminaries
 
@@ -81,6 +85,8 @@ jax.config.update("jax_enable_x64", True)
 
 ## The Economy
 
+The economy consists of households and a representative firm.
+
 ### Households
 
 Infinitely lived households face idiosyncratic income shocks and a borrowing constraint.
@@ -88,17 +94,17 @@ Infinitely lived households face idiosyncratic income shocks and a borrowing con
 The savings problem faced by a typical household is
 
 $$
-\max \mathbb E \sum_{t=0}^{\infty} \beta^t u(c_t)
+    \max \mathbb E \sum_{t=0}^{\infty} \beta^t u(c_t)
 $$
 
 subject to
 
 $$
-a_{t+1} + c_t \leq w z_t + (1 + r) a_t
-\quad
-c_t \geq 0,
-\quad \text{and} \quad
-a_t \geq -B
+    a_{t+1} + c_t \leq w z_t + (1 + r) a_t
+    \quad
+    c_t \geq 0,
+    \quad \text{and} \quad
+    a_t \geq -B
 $$
 
 where
@@ -106,25 +112,29 @@ where
 * $c_t$ is current consumption
 * $a_t$ is assets
 * $z_t$ is an exogenous component of labor income (stochastic employment status)
-* $w$ is a wage rate
-* $r$ is a net interest rate
+* $w$ is the wage rate
+* $r$ is the interest rate
 * $B$ is the maximum amount that the agent is allowed to borrow
 
 The exogenous process $\{z_t\}$ follows a finite state Markov chain with stochastic matrix $\Pi$.
 
-The Euler equation for this problem is
+Optimal interior consumption choices satisfy the Euler equation 
 
 $$
-u'(c_t) = \beta \mathbb{E}_t [(1 + r) u'(c_{t+1})]
+    u'(c) = \beta \mathbb{E_z} [(1 + r) u'(c')]
 $$
 
-or, in terms of assets,
+(We use $'$ symbols for both derivatives and future values, which is not ideal but convenient and common.)
+
+In terms of assets, this is
 
 $$
-u'(w z_t + (1 + r) a_t - a_{t+1}) = \beta (1 + r) \sum_{z'} \Pi(z_t, z') u'(w z' + (1 + r) a_{t+1} - a'(a_{t+1}, z'))
+    u'(w z + (1 + r) a - a') 
+    = \beta (1 + r) \sum_{z'} u'(w z' + (1 + r) a' - s(a', z')) \Pi(z, z') 
 $$
 
-where $a'(a, z)$ is the optimal savings policy function.
+where $s$ is the optimal savings policy function.
+
 
 ### Firms
 
