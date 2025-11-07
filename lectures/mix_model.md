@@ -240,7 +240,7 @@ a uniform distribution on $[0,1]$ and computing $F^{-1}(U)$.
 We'll use this fact
 in conjunction with the `numpy.searchsorted` command to sample from $H$ directly.
 
-See the [numpy.searchsorted documentation](https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html) for details on the `searchsorted` function.
+See the [`numpy.searchsorted` documentation](https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html) for details on the `searchsorted` function.
 
 See the [Mr. P Solver video on Monte Carlo simulation](https://www.google.com/search?q=Mr.+P+Solver+video+on+Monte+Carlo+simulation&oq=Mr.+P+Solver+video+on+Monte+Carlo+simulation) to see other applications of this powerful trick.
 
