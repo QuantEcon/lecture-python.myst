@@ -229,7 +229,7 @@ Here is pseudo code for a direct "method 1" for drawing from our compound lotter
   * put the first two steps in a big loop and do them for each realization of $w$
 
 
-Our second method uses a uniform distribution and the following fact that we also described and used in the [quantecon lecture on elementary probability with matrices](https://python.quantecon.org/prob_matrix.html):
+Our second method uses a uniform distribution and the following fact that we also described and used in {doc}`prob_matrix`:
 
  * If a random variable $X$ has c.d.f. $F$, then a random variable $F^{-1}(U)$ also has c.d.f. $F$, where $U$ is a uniform random variable on $[0,1]$.
 
