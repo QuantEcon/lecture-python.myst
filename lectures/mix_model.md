@@ -645,7 +645,7 @@ $$
 We'll use numpyro to approximate this equation.
 
 We'll create graphs of the posterior $\pi_t(\alpha)$ as
-$t \rightarrow +\infty$ corresponding to ones presented in the [quantecon lecture on Bayesian nonconjugate priors](https://python.quantecon.org/bayes_nonconj.html).
+$t \rightarrow +\infty$ corresponding to ones presented in {doc}`bayes_nonconj`.
 
 We anticipate that a posterior distribution will collapse around the true $\alpha$ as
 $t \rightarrow + \infty$.
