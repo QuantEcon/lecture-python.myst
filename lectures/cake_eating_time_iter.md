@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`Optimal Growth III: Time Iteration <single: Optimal Growth III: Time Iteration>`
+# {index}`Cake Eating IV: Time Iteration <single: Cake Eating IV: Time Iteration>`
 
 ```{contents} Contents
 :depth: 2
@@ -34,28 +34,27 @@ tags: [hide-output]
 
 ## Overview
 
-In this lecture, we'll continue our {doc}`earlier <optgrowth>` study of the stochastic optimal growth model.
+In this lecture, we introduce the core idea of **time iteration**: iterating on
+a guess of the optimal policy using the Euler equation.
 
-In that lecture, we solved the associated dynamic programming
-problem using value function iteration.
+This approach differs from the value function iteration we used in
+{doc}`Cake Eating III <cake_eating_stochastic>`, where we iterated on the value function itself.
 
-The beauty of this technique is its broad applicability.
+Time iteration exploits the structure of the Euler equation to find the optimal
+policy directly, rather than computing the value function as an intermediate step.
 
-With numerical problems, however, we can often attain higher efficiency in
-specific applications by deriving methods that are carefully tailored to the
-application at hand.
+The key advantage is computational efficiency: by working directly with the
+policy function, we can often solve problems faster than with value function iteration.
 
-The stochastic optimal growth model has plenty of structure to exploit for
-this purpose, especially when we adopt some concavity and smoothness
-assumptions over primitives.
+However, time iteration is not the most efficient Euler equation-based method
+available.
 
-We'll use this structure to obtain an Euler equation based method.
+In {doc}`Cake Eating V <cake_eating_egm>`, we'll introduce the **endogenous
+grid method** (EGM), which provides an even more efficient way to solve the
+problem.
 
-This will be an extension of the time iteration method considered
-in our elementary lecture on {doc}`cake eating <cake_eating_numerical>`.
-
-In a {doc}`subsequent lecture <egm_policy_iter>`, we'll see that time
-iteration can be further adjusted to obtain even more efficiency.
+For now, our goal is to understand the basic mechanics of time iteration and
+how it leverages the Euler equation.
 
 Let's start with some imports:
 
@@ -69,9 +68,9 @@ from numba import jit
 ## The Euler Equation
 
 Our first step is to derive the Euler equation, which is a generalization of
-the Euler equation we obtained in the {doc}`lecture on cake eating <cake_eating_problem>`.
+the Euler equation we obtained in {doc}`Cake Eating I <cake_eating>`.
 
-We take the model set out in {doc}`the stochastic growth model lecture <optgrowth>` and add the following assumptions:
+We take the model set out in {doc}`Cake Eating III <cake_eating_stochastic>` and add the following assumptions:
 
 1. $u$ and $f$ are continuously differentiable and strictly concave
 1. $f(0) = 0$
@@ -85,28 +84,28 @@ Recall the Bellman equation
 ```{math}
 :label: cpi_fpb30
 
-v^*(y) = \max_{0 \leq c \leq y}
+v^*(x) = \max_{0 \leq c \leq x}
     \left\{
-        u(c) + \beta \int v^*(f(y - c) z) \phi(dz)
+        u(c) + \beta \int v^*(f(x - c) z) \phi(dz)
     \right\}
 \quad \text{for all} \quad
-y \in \mathbb R_+
+x \in \mathbb R_+
 ```
 
 Let the optimal consumption policy be denoted by $\sigma^*$.
 
-We know that $\sigma^*$ is a $v^*$-greedy policy so that $\sigma^*(y)$ is the maximizer in {eq}`cpi_fpb30`.
+We know that $\sigma^*$ is a $v^*$-greedy policy so that $\sigma^*(x)$ is the maximizer in {eq}`cpi_fpb30`.
 
 The conditions above imply that
 
-* $\sigma^*$ is the unique optimal policy for the stochastic optimal growth model
-* the optimal policy is continuous, strictly increasing and also **interior**, in the sense that $0 < \sigma^*(y) < y$ for all strictly positive $y$, and
+* $\sigma^*$ is the unique optimal policy for the stochastic cake eating problem
+* the optimal policy is continuous, strictly increasing and also **interior**, in the sense that $0 < \sigma^*(x) < x$ for all strictly positive $x$, and
 * the value function is strictly concave and continuously differentiable, with
 
 ```{math}
 :label: cpi_env
 
-(v^*)'(y) = u' (\sigma^*(y) ) := (u' \circ \sigma^*)(y)
+(v^*)'(x) = u' (\sigma^*(x) ) := (u' \circ \sigma^*)(x)
 ```
 
 The last result is called the **envelope condition** due to its relationship with the [envelope theorem](https://en.wikipedia.org/wiki/Envelope_theorem).
@@ -115,13 +114,13 @@ To see why {eq}`cpi_env` holds, write the Bellman equation in the equivalent
 form
 
 $$
-v^*(y) = \max_{0 \leq k \leq y}
+v^*(x) = \max_{0 \leq k \leq x}
     \left\{
-        u(y-k) + \beta \int v^*(f(k) z) \phi(dz)
+        u(x-k) + \beta \int v^*(f(k) z) \phi(dz)
     \right\},
 $$
 
-Differentiating with respect to $y$,  and then evaluating at the optimum yields {eq}`cpi_env`.
+Differentiating with respect to $x$,  and then evaluating at the optimum yields {eq}`cpi_env`.
 
 (Section 12.1 of [EDTC](https://johnstachurski.net/edtc.html) contains full proofs of these results, and closely related discussions can be found in many other texts.)
 
@@ -132,7 +131,7 @@ with {eq}`cpi_fpb30`, which is
 ```{math}
 :label: cpi_foc
 
-u'(\sigma^*(y)) = \beta \int (v^*)'(f(y - \sigma^*(y)) z) f'(y - \sigma^*(y)) z \phi(dz)
+u'(\sigma^*(x)) = \beta \int (v^*)'(f(x - \sigma^*(x)) z) f'(x - \sigma^*(x)) z \phi(dz)
 ```
 
 Combining {eq}`cpi_env` and the first-order condition {eq}`cpi_foc` gives the **Euler equation**
@@ -140,8 +139,8 @@ Combining {eq}`cpi_env` and the first-order condition {eq}`cpi_foc` gives the **
 ```{math}
 :label: cpi_euler
 
-(u'\circ \sigma^*)(y)
-= \beta \int (u'\circ \sigma^*)(f(y - \sigma^*(y)) z) f'(y - \sigma^*(y)) z \phi(dz)
+(u'\circ \sigma^*)(x)
+= \beta \int (u'\circ \sigma^*)(f(x - \sigma^*(x)) z) f'(x - \sigma^*(x)) z \phi(dz)
 ```
 
 We can think of the Euler equation as a functional equation
@@ -149,8 +148,8 @@ We can think of the Euler equation as a functional equation
 ```{math}
 :label: cpi_euler_func
 
-(u'\circ \sigma)(y)
-= \beta \int (u'\circ \sigma)(f(y - \sigma(y)) z) f'(y - \sigma(y)) z \phi(dz)
+(u'\circ \sigma)(x)
+= \beta \int (u'\circ \sigma)(f(x - \sigma(x)) z) f'(x - \sigma(x)) z \phi(dz)
 ```
 
 over interior consumption policies $\sigma$, one solution of which is the optimal policy $\sigma^*$.
@@ -164,9 +163,9 @@ Recall the Bellman operator
 ```{math}
 :label: fcbell20_coleman
 
-Tv(y) := \max_{0 \leq c \leq y}
+Tv(x) := \max_{0 \leq c \leq x}
 \left\{
-    u(c) + \beta \int v(f(y - c) z) \phi(dz)
+    u(c) + \beta \int v(f(x - c) z) \phi(dz)
 \right\}
 ```
 
@@ -180,13 +179,13 @@ that are continuous, strictly increasing and interior.
 Henceforth we denote this set of policies by $\mathscr P$
 
 1. The operator $K$ takes as its argument a $\sigma \in \mathscr P$ and
-1. returns a new function $K\sigma$,  where $K\sigma(y)$ is the $c \in (0, y)$ that solves.
+1. returns a new function $K\sigma$,  where $K\sigma(x)$ is the $c \in (0, x)$ that solves.
 
 ```{math}
 :label: cpi_coledef
 
 u'(c)
-= \beta \int (u' \circ \sigma) (f(y - c) z ) f'(y - c) z \phi(dz)
+= \beta \int (u' \circ \sigma) (f(x - c) z ) f'(x - c) z \phi(dz)
 ```
 
 We call this operator the **Coleman-Reffett operator** to acknowledge the work of
@@ -201,34 +200,34 @@ equation {eq}`cpi_euler_func`.
 
 In particular, the optimal policy $\sigma^*$ is a fixed point.
 
-Indeed, for fixed $y$, the value $K\sigma^*(y)$ is the $c$ that
+Indeed, for fixed $x$, the value $K\sigma^*(x)$ is the $c$ that
 solves
 
 $$
 u'(c)
-= \beta \int (u' \circ \sigma^*) (f(y - c) z ) f'(y - c) z \phi(dz)
+= \beta \int (u' \circ \sigma^*) (f(x - c) z ) f'(x - c) z \phi(dz)
 $$
 
-In view of the Euler equation, this is exactly $\sigma^*(y)$.
+In view of the Euler equation, this is exactly $\sigma^*(x)$.
 
 ### Is the Coleman-Reffett Operator Well Defined?
 
-In particular, is there always a unique $c \in (0, y)$ that solves
+In particular, is there always a unique $c \in (0, x)$ that solves
 {eq}`cpi_coledef`?
 
 The answer is yes, under our assumptions.
 
 For any $\sigma \in \mathscr P$, the right side of {eq}`cpi_coledef`
 
-* is continuous and strictly increasing in $c$ on $(0, y)$
-* diverges to $+\infty$ as $c \uparrow y$
+* is continuous and strictly increasing in $c$ on $(0, x)$
+* diverges to $+\infty$ as $c \uparrow x$
 
 The left side of {eq}`cpi_coledef`
 
-* is continuous and strictly decreasing in $c$ on $(0, y)$
+* is continuous and strictly decreasing in $c$ on $(0, x)$
 * diverges to $+\infty$ as $c \downarrow 0$
 
-Sketching these curves and using the information above will convince you that they cross exactly once as $c$ ranges over $(0, y)$.
+Sketching these curves and using the information above will convince you that they cross exactly once as $c$ ranges over $(0, x)$.
 
 With a bit more analysis, one can show in addition that $K \sigma \in \mathscr P$
 whenever $\sigma \in \mathscr P$.
@@ -253,7 +252,7 @@ Examples are given below.
 
 ## Implementation
 
-As in our {doc}`previous study <optgrowth_fast>`, we continue to assume that
+As in {doc}`Cake Eating III <cake_eating_stochastic>`, we continue to assume that
 
 * $u(c) = \ln c$
 * $f(k) = k^{\alpha}$
@@ -270,11 +269,48 @@ means iterating with the operator $K$.
 
 For this we need access to the functions $u'$ and $f, f'$.
 
-These are available in a class called `OptimalGrowthModel` that we
-constructed in an {doc}`earlier lecture <optgrowth_fast>`.
+We use the same `Model` structure from {doc}`Cake Eating III <cake_eating_stochastic>`.
 
 ```{code-cell} python3
-:load: _static/lecture_specific/optgrowth_fast/ogm.py
+from typing import NamedTuple, Callable
+
+class Model(NamedTuple):
+    u: Callable        # utility function
+    f: Callable        # production function
+    β: float           # discount factor
+    μ: float           # shock location parameter
+    s: float           # shock scale parameter
+    grid: np.ndarray   # state grid
+    shocks: np.ndarray # shock draws
+    α: float = 0.4     # production function parameter
+    u_prime: Callable = None        # derivative of utility
+    f_prime: Callable = None        # derivative of production
+
+
+def create_model(u: Callable,
+                 f: Callable,
+                 β: float = 0.96,
+                 μ: float = 0.0,
+                 s: float = 0.1,
+                 grid_max: float = 4.0,
+                 grid_size: int = 120,
+                 shock_size: int = 250,
+                 seed: int = 1234,
+                 α: float = 0.4,
+                 u_prime: Callable = None,
+                 f_prime: Callable = None) -> Model:
+    """
+    Creates an instance of the cake eating model.
+    """
+    # Set up grid
+    grid = np.linspace(1e-4, grid_max, grid_size)
+
+    # Store shocks (with a seed, so results are reproducible)
+    np.random.seed(seed)
+    shocks = np.exp(μ + s * np.random.randn(shock_size))
+
+    return Model(u=u, f=f, β=β, μ=μ, s=s, grid=grid, shocks=shocks,
+                 α=α, u_prime=u_prime, f_prime=f_prime)
 ```
 
 Now we implement a method called `euler_diff`, which returns
@@ -282,26 +318,26 @@ Now we implement a method called `euler_diff`, which returns
 ```{math}
 :label: euler_diff
 
-u'(c) - \beta \int (u' \circ \sigma) (f(y - c) z ) f'(y - c) z \phi(dz)
+u'(c) - \beta \int (u' \circ \sigma) (f(x - c) z ) f'(x - c) z \phi(dz)
 ```
 
 ```{code-cell} ipython
 @jit
-def euler_diff(c, σ, y, og):
+def euler_diff(c: float, σ: np.ndarray, x: float, model: Model) -> float:
     """
     Set up a function such that the root with respect to c,
-    given y and σ, is equal to Kσ(y).
+    given x and σ, is equal to Kσ(x).
 
     """
 
-    β, shocks, grid = og.β, og.shocks, og.grid
-    f, f_prime, u_prime = og.f, og.f_prime, og.u_prime
+    β, shocks, grid = model.β, model.shocks, model.grid
+    f, f_prime, u_prime = model.f, model.f_prime, model.u_prime
 
     # First turn σ into a function via interpolation
     σ_func = lambda x: np.interp(x, grid, σ)
 
     # Now set up the function we need to find the root of.
-    vals = u_prime(σ_func(f(y - c) * shocks)) * f_prime(y - c) * shocks
+    vals = u_prime(σ_func(f(x - c) * shocks)) * f_prime(x - c) * shocks
     return u_prime(c) - β * np.mean(vals)
 ```
 
@@ -309,27 +345,27 @@ The function `euler_diff` evaluates integrals by Monte Carlo and
 approximates functions using linear interpolation.
 
 We will use a root-finding algorithm to solve {eq}`euler_diff` for $c$ given
-state $y$ and $σ$, the current guess of the policy.
+state $x$ and $σ$, the current guess of the policy.
 
 Here's the operator $K$, that implements the root-finding step.
 
 ```{code-cell} ipython3
 @jit
-def K(σ, og):
+def K(σ: np.ndarray, model: Model) -> np.ndarray:
     """
     The Coleman-Reffett operator
 
-     Here og is an instance of OptimalGrowthModel.
+     Here model is an instance of Model.
     """
 
-    β = og.β
-    f, f_prime, u_prime = og.f, og.f_prime, og.u_prime
-    grid, shocks = og.grid, og.shocks
+    β = model.β
+    f, f_prime, u_prime = model.f, model.f_prime, model.u_prime
+    grid, shocks = model.grid, model.shocks
 
     σ_new = np.empty_like(σ)
-    for i, y in enumerate(grid):
-        # Solve for optimal c at y
-        c_star = brentq(euler_diff, 1e-10, y-1e-10, args=(σ, y, og))[0]
+    for i, x in enumerate(grid):
+        # Solve for optimal c at x
+        c_star = brentq(euler_diff, 1e-10, x-1e-10, args=(σ, x, model))[0]
         σ_new[i] = c_star
 
     return σ_new
@@ -337,25 +373,32 @@ def K(σ, og):
 
 ### Testing
 
-Let's generate an instance and plot some iterates of $K$, starting from $σ(y) = y$.
+Let's generate an instance and plot some iterates of $K$, starting from $σ(x) = x$.
 
 ```{code-cell} python3
-og = OptimalGrowthModel()
-grid = og.grid
+# Define utility and production functions with derivatives
+α = 0.4
+u = lambda c: np.log(c)
+u_prime = lambda c: 1 / c
+f = lambda k: k**α
+f_prime = lambda k: α * k**(α - 1)
+
+model = create_model(u=u, f=f, α=α, u_prime=u_prime, f_prime=f_prime)
+grid = model.grid
 
 n = 15
 σ = grid.copy()  # Set initial condition
 
 fig, ax = plt.subplots()
-lb = r'initial condition $\sigma(y) = y$'
+lb = r'initial condition $\sigma(x) = x$'
 ax.plot(grid, σ, color=plt.cm.jet(0), alpha=0.6, label=lb)
 
 for i in range(n):
-    σ = K(σ, og)
+    σ = K(σ, model)
     ax.plot(grid, σ, color=plt.cm.jet(i / n), alpha=0.6)
 
 # Update one more time and plot the last iterate in black
-σ = K(σ, og)
+σ = K(σ, model)
 ax.plot(grid, σ, color='k', alpha=0.8, label='last iterate')
 
 ax.legend()
@@ -364,21 +407,44 @@ plt.show()
 ```
 
 We see that the iteration process converges quickly to a limit
-that resembles the solution we obtained in {doc}`the previous lecture <optgrowth_fast>`.
+that resembles the solution we obtained in {doc}`Cake Eating III <cake_eating_stochastic>`.
 
 Here is a function called `solve_model_time_iter` that takes an instance of
-`OptimalGrowthModel` and returns an approximation to the optimal policy,
+`Model` and returns an approximation to the optimal policy,
 using time iteration.
 
 ```{code-cell} python3
-:load: _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
+def solve_model_time_iter(model: Model,
+                          σ_init: np.ndarray,
+                          tol: float = 1e-5,
+                          max_iter: int = 1000,
+                          verbose: bool = True) -> np.ndarray:
+    """
+    Solve the model using time iteration.
+    """
+    σ = σ_init
+    error = tol + 1
+    i = 0
+
+    while error > tol and i < max_iter:
+        σ_new = K(σ, model)
+        error = np.max(np.abs(σ_new - σ))
+        σ = σ_new
+        i += 1
+        if verbose:
+            print(f"Iteration {i}, error = {error}")
+
+    if i == max_iter:
+        print("Warning: maximum iterations reached")
+
+    return σ
 ```
 
 Let's call it:
 
 ```{code-cell} python3
-σ_init = np.copy(og.grid)
-σ = solve_model_time_iter(og, σ_init)
+σ_init = np.copy(model.grid)
+σ = solve_model_time_iter(model, σ_init)
 ```
 
 Here is a plot of the resulting policy, compared with the true policy:
@@ -386,10 +452,10 @@ Here is a plot of the resulting policy, compared with the true policy:
 ```{code-cell} python3
 fig, ax = plt.subplots()
 
-ax.plot(og.grid, σ, lw=2,
+ax.plot(model.grid, σ, lw=2,
         alpha=0.8, label='approximate policy function')
 
-ax.plot(og.grid, σ_star(og.grid, og.α, og.β), 'k--',
+ax.plot(model.grid, σ_star(model.grid, model.α, model.β), 'k--',
         lw=2, alpha=0.8, label='true policy function')
 
 ax.legend()
@@ -401,27 +467,27 @@ Again, the fit is excellent.
 The maximal absolute deviation between the two policies is
 
 ```{code-cell} python3
-np.max(np.abs(σ - σ_star(og.grid, og.α, og.β)))
+np.max(np.abs(σ - σ_star(model.grid, model.α, model.β)))
 ```
 
 How long does it take to converge?
 
 ```{code-cell} python3
 %%timeit -n 3 -r 1
-σ = solve_model_time_iter(og, σ_init, verbose=False)
+σ = solve_model_time_iter(model, σ_init, verbose=False)
 ```
 
-Convergence is very fast, even compared to our {doc}`JIT-compiled value function iteration <optgrowth_fast>`.
+Convergence is very fast, even compared to the JIT-compiled value function iteration we used in {doc}`Cake Eating III <cake_eating_stochastic>`.
 
 Overall, we find that time iteration provides a very high degree of efficiency
-and accuracy, at least for this model.
+and accuracy for the stochastic cake eating problem.
 
 ## Exercises
 
 ```{exercise}
 :label: cpi_ex1
 
-Solve the model with CRRA utility
+Solve the stochastic cake eating problem with CRRA utility
 
 $$
 u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
@@ -436,28 +502,33 @@ Compute and plot the optimal policy.
 :class: dropdown
 ```
 
-We use the class `OptimalGrowthModel_CRRA` from our {doc}`VFI lecture <optgrowth_fast>`.
+We define the CRRA utility function and its derivative.
 
 ```{code-cell} python3
-:load: _static/lecture_specific/optgrowth_fast/ogm_crra.py
-```
+γ = 1.5
 
-Let's create an instance:
+def u_crra(c):
+    return c**(1 - γ) / (1 - γ)
 
-```{code-cell} python3
-og_crra = OptimalGrowthModel_CRRA()
+def u_prime_crra(c):
+    return c**(-γ)
+
+# Use same production function as before
+model_crra = create_model(u=u_crra, f=f, α=α,
+                          u_prime=u_prime_crra, f_prime=f_prime)
 ```
 
 Now we solve and plot the policy:
 
 ```{code-cell} python3
 %%time
-σ = solve_model_time_iter(og_crra, σ_init)
+σ_init = np.copy(model_crra.grid)
+σ = solve_model_time_iter(model_crra, σ_init)
 
 
 fig, ax = plt.subplots()
 
-ax.plot(og.grid, σ, lw=2,
+ax.plot(model_crra.grid, σ, lw=2,
         alpha=0.8, label='approximate policy function')
 
 ax.legend()

@@ -1,5 +1,5 @@
 
-def v_star(y, α, β, μ):
+def v_star(x, α, β, μ):
     """
     True value function
     """
@@ -7,11 +7,11 @@ def v_star(y, α, β, μ):
     c2 = (μ + α * np.log(α * β)) / (1 - α)
     c3 = 1 / (1 - β)
     c4 = 1 / (1 - α * β)
-    return c1 + c2 * (c3 - c4) + c4 * np.log(y)
+    return c1 + c2 * (c3 - c4) + c4 * np.log(x)
 
-def σ_star(y, α, β):
+def σ_star(x, α, β):
     """
     True optimal policy
     """
-    return (1 - α * β) * y
+    return (1 - α * β) * x
 
