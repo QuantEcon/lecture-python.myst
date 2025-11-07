@@ -60,7 +60,7 @@ However, in the setting of this lecture, that rule imputes to the agent an incor
 
 The reason is that now the wage sequence is actually described by a different statistical model.
 
-Thus, we change the {doc}`quantecon lecture <likelihood_bayes>` specification in the following way.
+Thus, we change the specification in {doc}`likelihood_bayes` in the following way.
 
 Now, **each period** $t \geq 0$, nature flips a possibly unfair coin that comes up $f$ with probability $\alpha$
 and $g$ with probability $1 -\alpha$.
