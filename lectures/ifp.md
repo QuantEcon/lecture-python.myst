@@ -42,7 +42,7 @@ This is an essential sub-problem for many representative macroeconomic models
 * {cite}`Huggett1993`
 * etc.
 
-It is related to the decision problem in the {doc}`stochastic optimal growth model <optgrowth>` and yet differs in important ways.
+It is related to the decision problem in the {doc}`cake eating model <cake_eating_stochastic>` and yet differs in important ways.
 
 For example, the choice problem for the agent includes an additive income term that leads to an occasionally binding constraint.
 
@@ -50,8 +50,8 @@ Moreover, in this and the following lectures, we will inject more realistic
 features such as correlated shocks.
 
 To solve the model we will use Euler equation based time iteration, which proved
-to be {doc}`fast and accurate <coleman_policy_iter>` in our investigation of
-the {doc}`stochastic optimal growth model <optgrowth>`.
+to be {doc}`fast and accurate <cake_eating_time_iter>` in our investigation of
+the {doc}`cake eating model <cake_eating_stochastic>`.
 
 Time iteration is globally convergent under mild assumptions, even when utility is unbounded (both above and below).
 
@@ -472,7 +472,31 @@ The following function iterates to convergence and returns the approximate
 optimal policy.
 
 ```{code-cell} python3
-:load: _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
+def solve_model_time_iter(model,    # Class with model information
+                          σ,        # Initial condition
+                          tol=1e-4,
+                          max_iter=1000,
+                          verbose=True,
+                          print_skip=25):
+
+    # Set up loop
+    i = 0
+    error = tol + 1
+
+    while i < max_iter and error > tol:
+        σ_new = K(σ, model)
+        error = np.max(np.abs(σ - σ_new))
+        i += 1
+        if verbose and i % print_skip == 0:
+            print(f"Error at iteration {i} is {error}.")
+        σ = σ_new
+
+    if error > tol:
+        print("Failed to converge!")
+    elif verbose:
+        print(f"\nConverged in {i} iterations.")
+
+    return σ_new
 ```
 
 Let's carry this out using the default parameters of the `IFP` class:

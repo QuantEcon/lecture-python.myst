@@ -17,7 +17,7 @@ kernelspec:
 
 ## Overview
 
-In this lecture we continue the study of {doc}`the cake eating problem <cake_eating_problem>`.
+In this lecture we continue the study of {doc}`the cake eating problem <cake_eating>`.
 
 The aim of this lecture is to solve the problem using numerical
 methods.
@@ -44,7 +44,7 @@ from scipy.optimize import minimize_scalar, bisect
 
 ## Reviewing the Model
 
-You might like to {doc}`review the details <cake_eating_problem>` before we start.
+You might like to {doc}`review the details <cake_eating>` before we start.
 
 Recall in particular that the Bellman equation is
 
@@ -349,7 +349,7 @@ steep near the lower boundary, and hence hard to approximate.
 
 Let's see how this plays out in terms of computing the optimal policy.
 
-In the {doc}`first lecture on cake eating <cake_eating_problem>`, the optimal
+In the {doc}`first lecture on cake eating <cake_eating>`, the optimal
 consumption policy was shown to be
 
 $$

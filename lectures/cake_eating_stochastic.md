@@ -27,7 +27,7 @@ kernelspec:
 ## Overview
 
 In this lecture, we continue our study of the cake eating problem, building on
-{doc}`Cake Eating I <cake_eating_problem>` and {doc}`Cake Eating II <cake_eating_numerical>`.
+{doc}`Cake Eating I <cake_eating>` and {doc}`Cake Eating II <cake_eating_numerical>`.
 
 The key difference from the previous lectures is that the cake size now evolves
 stochastically.
@@ -440,10 +440,6 @@ flexibility.
 Both of these things are helpful, but they do cost us some speed --- as you
 will see when you run the code.
 
-{doc}`Later <optgrowth_fast>` we will sacrifice some of this clarity and
-flexibility in order to accelerate our code with just-in-time (JIT)
-compilation.
-
 The algorithm we will use is fitted value function iteration, which was
 described in earlier lectures {doc}`the McCall model <mccall_fitted_vfi>` and
 {doc}`cake eating <cake_eating_numerical>`.
@@ -823,7 +819,7 @@ utility specification.
 
 Setting $\gamma = 1.5$, compute and plot an estimate of the optimal policy.
 
-Time how long this function takes to run, so you can compare it to faster code developed in the {doc}`next lecture <optgrowth_fast>`.
+Time how long this function takes to run.
 ```
 
 ```{solution-start} og_ex1
@@ -871,7 +867,6 @@ Time how long it takes to iterate with the Bellman operator
 
 Use the model specification in the previous exercise.
 
-(As before, we will compare this number with that for the faster code developed in the {doc}`next lecture <optgrowth_fast>`.)
 ```
 
 ```{solution-start} og_ex2
