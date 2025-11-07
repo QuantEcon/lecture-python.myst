@@ -296,7 +296,7 @@ We'll now study what our type 1 agent learns
 
 Remember that our type 1 agent uses the wrong statistical model, thinking that nature mixed between $f$ and $g$ once and for all at time $-1$.
 
-The type 1 agent thus uses the learning algorithm studied in {doc}`this quantecon lecture <likelihood_bayes>`.
+The type 1 agent thus uses the learning algorithm studied in {doc}`likelihood_bayes`.
 
 We'll briefly review that learning algorithm now.
 
