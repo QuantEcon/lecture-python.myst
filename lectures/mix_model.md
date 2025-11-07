@@ -53,7 +53,7 @@ random sequence $\{W_t\}_{t=0}^\infty$.
 We studied how the agent would then use the laws of conditional probability and an observed history $w^t =\{w_s\}_{s=0}^t$ to form
 
 $$
-\pi_t = E [ \textrm{nature chose distribution} f | w^t] , \quad t = 0, 1, 2, \ldots
+\pi_t = E [ \textrm{nature chose distribution } f | w^t] , \quad t = 0, 1, 2, \ldots
 $$
 
 However, in the setting of this lecture, that rule imputes to the agent an incorrect model.
