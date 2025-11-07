@@ -535,8 +535,8 @@ def create_model(u: Callable,
     return Model(u=u, f=f, β=β, μ=μ, s=s, grid=grid, shocks=shocks)
 
 
-def state_action_value(model: Model,
-                       c: float,
+def state_action_value(c: float,
+                       model: Model,
                        x: float,
                        v_array: np.ndarray) -> float:
     """
@@ -632,7 +632,21 @@ whether our code works for this particular case.
 In Python, the functions above can be expressed as:
 
 ```{code-cell} python3
-:load: _static/lecture_specific/optgrowth/cd_analytical.py
+def v_star(x, α, β, μ):
+    """
+    True value function
+    """
+    c1 = np.log(1 - α * β) / (1 - β)
+    c2 = (μ + α * np.log(α * β)) / (1 - α)
+    c3 = 1 / (1 - β)
+    c4 = 1 / (1 - α * β)
+    return c1 + c2 * (c3 - c4) + c4 * np.log(x)
+
+def σ_star(x, α, β):
+    """
+    True optimal policy
+    """
+    return (1 - α * β) * x
 ```
 
 Next let's create an instance of the model with the above primitives and assign it to the variable `model`.
@@ -709,7 +723,35 @@ We can write a function that iterates until the difference is below a particular
 tolerance level.
 
 ```{code-cell} python3
-:load: _static/lecture_specific/optgrowth/solve_model.py
+def solve_model(og,
+                tol=1e-4,
+                max_iter=1000,
+                verbose=True,
+                print_skip=25):
+    """
+    Solve model by iterating with the Bellman operator.
+
+    """
+
+    # Set up loop
+    v = og.u(og.grid)  # Initial condition
+    i = 0
+    error = tol + 1
+
+    while i < max_iter and error > tol:
+        v_greedy, v_new = T(v, og)
+        error = np.max(np.abs(v - v_new))
+        i += 1
+        if verbose and i % print_skip == 0:
+            print(f"Error at iteration {i} is {error}.")
+        v = v_new
+
+    if error > tol:
+        print("Failed to converge!")
+    elif verbose:
+        print(f"\nConverged in {i} iterations.")
+
+    return v_greedy, v_new
 ```
 
 Let's use this function to compute an approximate solution at the defaults.

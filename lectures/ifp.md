@@ -516,7 +516,14 @@ We know that, in this case, the value function and optimal consumption policy
 are given by
 
 ```{code-cell} python3
-:load: _static/lecture_specific/cake_eating_numerical/analytical.py
+def c_star(x, β, γ):
+
+    return (1 - β ** (1/γ)) * x
+
+
+def v_star(x, β, γ):
+
+    return (1 - β**(1 / γ))**(-γ) * (x**(1-γ) / (1-γ))
 ```
 
 Let's see if we match up:

@@ -44,7 +44,6 @@ Let's start with some standard imports:
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import jit
 ```
 
 ## Key Idea
@@ -147,7 +146,21 @@ where
 This will allow us to make comparisons with the analytical solutions
 
 ```{code-cell} python3
-:load: _static/lecture_specific/optgrowth/cd_analytical.py
+def v_star(x, α, β, μ):
+    """
+    True value function
+    """
+    c1 = np.log(1 - α * β) / (1 - β)
+    c2 = (μ + α * np.log(α * β)) / (1 - α)
+    c3 = 1 / (1 - β)
+    c4 = 1 / (1 - α * β)
+    return c1 + c2 * (c3 - c4) + c4 * np.log(x)
+
+def σ_star(x, α, β):
+    """
+    True optimal policy
+    """
+    return (1 - α * β) * x
 ```
 
 We reuse the `Model` structure from {doc}`Cake Eating IV <cake_eating_time_iter>`.
@@ -201,7 +214,6 @@ def create_model(u: Callable,
 Here's an implementation of $K$ using EGM as described above.
 
 ```{code-cell} python3
-@jit
 def K(σ_array: np.ndarray, model: Model) -> np.ndarray:
     """
     The Coleman-Reffett operator using EGM

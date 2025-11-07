@@ -61,8 +61,7 @@ Let's start with some imports:
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
-from quantecon.optimize import brentq
-from numba import jit
+from scipy.optimize import brentq
 ```
 
 ## The Euler Equation
@@ -261,7 +260,21 @@ As in {doc}`Cake Eating III <cake_eating_stochastic>`, we continue to assume tha
 This will allow us to compare our results to the analytical solutions
 
 ```{code-cell} python3
-:load: _static/lecture_specific/optgrowth/cd_analytical.py
+def v_star(x, α, β, μ):
+    """
+    True value function
+    """
+    c1 = np.log(1 - α * β) / (1 - β)
+    c2 = (μ + α * np.log(α * β)) / (1 - α)
+    c3 = 1 / (1 - β)
+    c4 = 1 / (1 - α * β)
+    return c1 + c2 * (c3 - c4) + c4 * np.log(x)
+
+def σ_star(x, α, β):
+    """
+    True optimal policy
+    """
+    return (1 - α * β) * x
 ```
 
 As discussed above, our plan is to solve the model using time iteration, which
@@ -322,7 +335,6 @@ u'(c) - \beta \int (u' \circ \sigma) (f(x - c) z ) f'(x - c) z \phi(dz)
 ```
 
 ```{code-cell} ipython
-@jit
 def euler_diff(c: float, σ: np.ndarray, x: float, model: Model) -> float:
     """
     Set up a function such that the root with respect to c,
@@ -350,7 +362,6 @@ state $x$ and $σ$, the current guess of the policy.
 Here's the operator $K$, that implements the root-finding step.
 
 ```{code-cell} ipython3
-@jit
 def K(σ: np.ndarray, model: Model) -> np.ndarray:
     """
     The Coleman-Reffett operator
@@ -365,7 +376,7 @@ def K(σ: np.ndarray, model: Model) -> np.ndarray:
     σ_new = np.empty_like(σ)
     for i, x in enumerate(grid):
         # Solve for optimal c at x
-        c_star = brentq(euler_diff, 1e-10, x-1e-10, args=(σ, x, model))[0]
+        c_star = brentq(euler_diff, 1e-10, x-1e-10, args=(σ, x, model))
         σ_new[i] = c_star
 
     return σ_new
