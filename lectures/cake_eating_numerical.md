@@ -34,12 +34,23 @@ simple problem.
 Since we know the analytical solution, this will allow us to assess the
 accuracy of alternative numerical methods.
 
+
+```{note}
+The code below aims for clarity rather than maximum efficiency.
+
+In the lectures below we will explore best practice for speed and efficiency.
+
+Let's put these algorithm and code optimizations to one side for now.
+```
+
 We will use the following imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import minimize_scalar, bisect
+from collections import namedtuple
+from typing import NamedTuple
 ```
 
 ## Reviewing the Model
@@ -81,11 +92,11 @@ This is a form of **successive approximation**, and was discussed in our {doc}`l
 
 The basic idea is:
 
-1. Take an arbitary intial guess of $v$.
+1. Take an arbitrary initial guess of $v$.
 1. Obtain an update $w$ defined by
 
    $$
-   w(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
+       w(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
    $$
 
 1. Stop if $w$ is approximately equal to $v$, otherwise set
@@ -164,80 +175,79 @@ def maximize(g, a, b, args):
     return maximizer, maximum
 ```
 
-We'll store the parameters $\beta$ and $\gamma$ in a
-class called `CakeEating`.
-
-The same class will also provide a method called `state_action_value` that
-returns the value of a consumption choice given a particular state and guess
-of $v$.
+We'll store the parameters $\beta$ and $\gamma$ and the grid in a
+`NamedTuple` called `Model`.
 
 ```{code-cell} python3
-class CakeEating:
+# Create model data structure
+Model = namedtuple('Model', ('β', 'γ', 'x_grid'))
 
-    def __init__(self,
-                 β=0.96,           # discount factor
-                 γ=1.5,            # degree of relative risk aversion
-                 x_grid_min=1e-3,  # exclude zero for numerical stability
-                 x_grid_max=2.5,   # size of cake
-                 x_grid_size=120):
+def create_cake_eating_model(β=0.96,           # discount factor
+                              γ=1.5,            # degree of relative risk aversion
+                              x_grid_min=1e-3,  # exclude zero for numerical stability
+                              x_grid_max=2.5,   # size of cake
+                              x_grid_size=120):
+    """
+    Creates an instance of the cake eating model.
+    """
+    x_grid = np.linspace(x_grid_min, x_grid_max, x_grid_size)
+    return Model(β=β, γ=γ, x_grid=x_grid)
+```
 
-        self.β, self.γ = β, γ
+Now we define utility functions that operate on the model:
 
-        # Set up grid
-        self.x_grid = np.linspace(x_grid_min, x_grid_max, x_grid_size)
+```{code-cell} python3
+def u(c, γ):
+    """
+    Utility function.
+    """
+    if γ == 1:
+        return np.log(c)
+    else:
+        return (c ** (1 - γ)) / (1 - γ)
 
-    # Utility function
-    def u(self, c):
+def u_prime(c, γ):
+    """
+    First derivative of utility function.
+    """
+    return c ** (-γ)
 
-        γ = self.γ
+def state_action_value(c, x, v_array, model):
+    """
+    Right hand side of the Bellman equation given x and c.
+    """
+    β, γ, x_grid = model.β, model.γ, model.x_grid
+    v = lambda x: np.interp(x, x_grid, v_array)
 
-        if γ == 1:
-            return np.log(c)
-        else:
-            return (c ** (1 - γ)) / (1 - γ)
-
-    # first derivative of utility function
-    def u_prime(self, c):
-
-        return c ** (-self.γ)
-
-    def state_action_value(self, c, x, v_array):
-        """
-        Right hand side of the Bellman equation given x and c.
-        """
-
-        u, β = self.u, self.β
-        v = lambda x: np.interp(x, self.x_grid, v_array)
-
-        return u(c) + β * v(x - c)
+    return u(c, γ) + β * v(x - c)
 ```
 
 We now define the Bellman operation:
 
 ```{code-cell} python3
-def T(v, ce):
+def T(v, model):
     """
     The Bellman operator.  Updates the guess of the value function.
 
-    * ce is an instance of CakeEating
+    * model is an instance of Model
     * v is an array representing a guess of the value function
 
     """
     v_new = np.empty_like(v)
 
-    for i, x in enumerate(ce.x_grid):
+    for i, x in enumerate(model.x_grid):
         # Maximize RHS of Bellman equation at state x
-        v_new[i] = maximize(ce.state_action_value, 1e-10, x, (x, v))[1]
+        v_new[i] = maximize(state_action_value, 1e-10, x, (x, v, model))[1]
 
     return v_new
 ```
 
 After defining the Bellman operator, we are ready to solve the model.
 
-Let's start by creating a `CakeEating` instance using the default parameterization.
+Let's start by creating a model using the default parameterization.
 
 ```{code-cell} python3
-ce = CakeEating()
+model = create_cake_eating_model()
 ```
 
 Now let's see the iteration of the value function in action.
@@ -246,9 +256,9 @@ We start from guess $v$ given by $v(x) = u(x)$ for every
 $x$ grid point.
 
 ```{code-cell} python3
-x_grid = ce.x_grid
-v = ce.u(x_grid)       # Initial guess
-n = 12                 # Number of iterations
+x_grid = model.x_grid
+v = u(x_grid, model.γ)  # Initial guess
+n = 12                  # Number of iterations
 
 fig, ax = plt.subplots()
 
@@ -256,7 +266,7 @@ ax.plot(x_grid, v, color=plt.cm.jet(0),
         lw=2, alpha=0.6, label='Initial guess')
 
 for i in range(n):
-    v = T(v, ce)  # Apply the Bellman operator
+    v = T(v, model)  # Apply the Bellman operator
     ax.plot(x_grid, v, color=plt.cm.jet(i / n), lw=2, alpha=0.6)
 
 ax.legend()
@@ -272,19 +282,19 @@ To do this more systematically, we introduce a wrapper function called
 satisfied.
 
 ```{code-cell} python3
-def compute_value_function(ce,
+def compute_value_function(model,
                            tol=1e-4,
                            max_iter=1000,
                            verbose=True,
                            print_skip=25):
 
     # Set up loop
-    v = np.zeros(len(ce.x_grid)) # Initial guess
+    v = np.zeros(len(model.x_grid)) # Initial guess
     i = 0
     error = tol + 1
 
     while i < max_iter and error > tol:
-        v_new = T(v, ce)
+        v_new = T(v, model)
 
         error = np.max(np.abs(v - v_new))
         i += 1
@@ -305,7 +315,7 @@ def compute_value_function(ce,
 Now let's call it, noting that it takes a little while to run.
 
 ```{code-cell} python3
-v = compute_value_function(ce)
+v = compute_value_function(model)
 ```
 
 Now we can plot and see what the converged value function looks like.
@@ -324,7 +334,7 @@ plt.show()
 Next let's compare it to the analytical solution.
 
 ```{code-cell} python3
-v_analytical = v_star(ce.x_grid, ce.β, ce.γ)
+v_analytical = v_star(model.x_grid, model.β, model.γ)
 ```
 
 ```{code-cell} python3
@@ -345,15 +355,29 @@ less so near the lower boundary.
 The reason is that the utility function and hence value function is very
 steep near the lower boundary, and hence hard to approximate.
 
+```{note}
+One way to fix this issue is to use a nonlinear grid, with more points in the
+neighborhood of zero.
+
+Instead of pursuing this idea, however, we will turn our attention to 
+working with policy functions.
+
+We will see that value function iteration can be avoided by iterating on a guess
+of the policy function instead.  
+
+These ideas will be explored over the next few lectures.
+```
+
+
 ### Policy Function
 
-Let's see how this plays out in terms of computing the optimal policy.
+Let's try computing the optimal policy.
 
 In the {doc}`first lecture on cake eating <cake_eating>`, the optimal
 consumption policy was shown to be
 
 $$
-\sigma^*(x) = \left(1-\beta^{1/\gamma} \right) x
+    \sigma^*(x) = \left(1-\beta^{1/\gamma} \right) x
 $$
 
 Let's see if our numerical results lead to something similar.
@@ -372,21 +396,21 @@ above.
 Here's the function:
 
 ```{code-cell} python3
-def σ(ce, v):
+def σ(model, v):
     """
     The optimal policy function. Given the value function,
     it finds optimal consumption in each state.
 
-    * ce is an instance of CakeEating
+    * model is an instance of Model
     * v is a value function array
 
     """
     c = np.empty_like(v)
 
-    for i in range(len(ce.x_grid)):
-        x = ce.x_grid[i]
+    for i in range(len(model.x_grid)):
+        x = model.x_grid[i]
         # Maximize RHS of Bellman equation at state x
-        c[i] = maximize(ce.state_action_value, 1e-10, x, (x, v))[0]
+        c[i] = maximize(state_action_value, 1e-10, x, (x, v, model))[0]
 
     return c
 ```
@@ -394,19 +418,19 @@ def σ(ce, v):
 Now let's pass the approximate value function and compute optimal consumption:
 
 ```{code-cell} python3
-c = σ(ce, v)
+c = σ(model, v)
 ```
 
 (pol_an)=
 Let's plot this next to the true analytical solution
 
 ```{code-cell} python3
-c_analytical = c_star(ce.x_grid, ce.β, ce.γ)
+c_analytical = c_star(model.x_grid, model.β, model.γ)
 
 fig, ax = plt.subplots()
 
-ax.plot(ce.x_grid, c_analytical, label='analytical')
-ax.plot(ce.x_grid, c, label='numerical')
+ax.plot(model.x_grid, c_analytical, label='analytical')
+ax.plot(model.x_grid, c, label='numerical')
 ax.set_ylabel(r'$\sigma(x)$')
 ax.set_xlabel('$x$')
 ax.legend()
@@ -426,53 +450,6 @@ possibility of faster compute time and, at the same time, more accuracy.
 
 We explore this next.
 
-## Time Iteration
-
-Now let's look at a different strategy to compute the optimal policy.
-
-Recall that the optimal policy satisfies the Euler equation
-
-```{math}
-:label: euler-cen
-
-u' (\sigma(x)) = \beta u' ( \sigma(x - \sigma(x)))
-\quad \text{for all } x > 0
-```
-
-Computationally, we can start with any initial guess of
-$\sigma_0$ and now choose $c$ to solve
-
-$$
-u^{\prime}( c ) = \beta u^{\prime} (\sigma_0(x - c))
-$$
-
-Choosing $c$ to satisfy this equation at all $x > 0$ produces a function of $x$.
-
-Call this new function $\sigma_1$, treat it as the new guess and
-repeat.
-
-This is called **time iteration**.
-
-As with value function iteration, we can view the update step as action of an
-operator, this time denoted by $K$.
-
-* In particular, $K\sigma$ is the policy updated from $\sigma$
-  using the procedure just described.
-* We will use this terminology in the exercises below.
-
-The main advantage of time iteration relative to value function iteration is that it operates in policy space rather than value function space.
-
-This is helpful because the policy function has less curvature, and hence is easier to approximate.
-
-In the exercises you are asked to implement time iteration and compare it to
-value function iteration.
-
-You should find that the method is faster and more accurate.
-
-This is due to
-
-1. the curvature issue mentioned just above  and
-1. the fact that we are using more information --- in this case, the first order conditions.
 
 ## Exercises
 
@@ -501,51 +478,97 @@ Try to reuse as much code as possible.
 :class: dropdown
 ```
 
-We need to create a class to hold our primitives and return the right hand side of the Bellman equation.
+We need to create an extended version of our model and state-action value function.
 
-We will use [inheritance](https://en.wikipedia.org/wiki/Inheritance_%28object-oriented_programming%29) to maximize code reuse.
+We'll create a new `NamedTuple` for the extended cake model and a helper function.
 
 ```{code-cell} python3
-class OptimalGrowth(CakeEating):
+# Create extended cake model data structure
+class ExtendedModel(NamedTuple):
+    β: float
+    γ: float
+    α: float
+    x_grid: np.ndarray
+
+def create_extended_model(β=0.96,           # discount factor
+                          γ=1.5,            # degree of relative risk aversion
+                          α=0.4,            # productivity parameter
+                          x_grid_min=1e-3,  # exclude zero for numerical stability
+                          x_grid_max=2.5,   # size of cake
+                          x_grid_size=120):
     """
-    A subclass of CakeEating that adds the parameter α and overrides
-    the state_action_value method.
+    Creates an instance of the extended cake eating model.
     """
+    x_grid = np.linspace(x_grid_min, x_grid_max, x_grid_size)
+    return ExtendedModel(β=β, γ=γ, α=α, x_grid=x_grid)
 
-    def __init__(self,
-                 β=0.96,           # discount factor
-                 γ=1.5,            # degree of relative risk aversion
-                 α=0.4,            # productivity parameter
-                 x_grid_min=1e-3,  # exclude zero for numerical stability
-                 x_grid_max=2.5,   # size of cake
-                 x_grid_size=120):
+def extended_state_action_value(c, x, v_array, model):
+    """
+    Right hand side of the Bellman equation for the extended cake model given x and c.
+    """
+    β, γ, α, x_grid = model.β, model.γ, model.α, model.x_grid
+    v = lambda x: np.interp(x, x_grid, v_array)
 
-        self.α = α
-        CakeEating.__init__(self, β, γ, x_grid_min, x_grid_max, x_grid_size)
-
-    def state_action_value(self, c, x, v_array):
-        """
-        Right hand side of the Bellman equation given x and c.
-        """
-
-        u, β, α = self.u, self.β, self.α
-        v = lambda x: np.interp(x, self.x_grid, v_array)
-
-        return u(c) + β * v((x - c)**α)
+    return u(c, γ) + β * v((x - c)**α)
 ```
 
+We also need a modified Bellman operator:
+
 ```{code-cell} python3
-og = OptimalGrowth()
+def T_extended(v, model):
+    """
+    The Bellman operator for the extended cake model.
+    """
+    v_new = np.empty_like(v)
+
+    for i, x in enumerate(model.x_grid):
+        # Maximize RHS of Bellman equation at state x
+        v_new[i] = maximize(extended_state_action_value, 1e-10, x, (x, v, model))[1]
+
+    return v_new
+```
+
+Now create the model:
+
+```{code-cell} python3
+model = create_extended_model()
 ```
 
 Here's the computed value function.
 
 ```{code-cell} python3
-v = compute_value_function(og, verbose=False)
+def compute_value_function_extended(model,
+                                    tol=1e-4,
+                                    max_iter=1000,
+                                    verbose=True,
+                                    print_skip=25):
+    """
+    Compute value function for extended cake model.
+    """
+    v = np.zeros(len(model.x_grid))
+    i = 0
+    error = tol + 1
+
+    while i < max_iter and error > tol:
+        v_new = T_extended(v, model)
+        error = np.max(np.abs(v - v_new))
+        i += 1
+        if verbose and i % print_skip == 0:
+            print(f"Error at iteration {i} is {error}.")
+        v = v_new
+
+    if error > tol:
+        print("Failed to converge!")
+    elif verbose:
+        print(f"\nConverged in {i} iterations.")
+
+    return v_new
+
+v = compute_value_function_extended(model, verbose=False)
 
 fig, ax = plt.subplots()
 
-ax.plot(x_grid, v, lw=2, alpha=0.6)
+ax.plot(model.x_grid, v, lw=2, alpha=0.6)
 ax.set_ylabel('value', fontsize=12)
 ax.set_xlabel('state $x$', fontsize=12)
 
@@ -556,12 +579,28 @@ Here's the computed policy, combined with the solution we derived above for
 the standard cake eating case $\alpha=1$.
 
 ```{code-cell} python3
-c_new = σ(og, v)
+def σ_extended(model, v):
+    """
+    The optimal policy function for the extended cake model.
+    """
+    c = np.empty_like(v)
+
+    for i in range(len(model.x_grid)):
+        x = model.x_grid[i]
+        c[i] = maximize(extended_state_action_value, 1e-10, x, (x, v, model))[0]
+
+    return c
+
+c_new = σ_extended(model, v)
+
+# Get the baseline model for comparison
+baseline_model = create_cake_eating_model()
+c_analytical = c_star(baseline_model.x_grid, baseline_model.β, baseline_model.γ)
 
 fig, ax = plt.subplots()
 
-ax.plot(ce.x_grid, c_analytical, label=r'$\alpha=1$ solution')
-ax.plot(ce.x_grid, c_new, label=fr'$\alpha={og.α}$ solution')
+ax.plot(baseline_model.x_grid, c_analytical, label=r'$\alpha=1$ solution')
+ax.plot(model.x_grid, c_new, label=fr'$\alpha={model.α}$ solution')
 
 ax.set_ylabel('consumption', fontsize=12)
 ax.set_xlabel('$x$', fontsize=12)
@@ -576,103 +615,3 @@ Consumption is higher when $\alpha < 1$ because, at least for large $x$, the ret
 ```{solution-end}
 ```
 
-
-```{exercise}
-:label: cen_ex2
-
-Implement time iteration, returning to the original case (i.e., dropping the
-modification in the exercise above).
-```
-
-
-```{solution-start} cen_ex2
-:class: dropdown
-```
-
-Here's one way to implement time iteration.
-
-```{code-cell} python3
-def K(σ_array, ce):
-    """
-    The policy function operator. Given the policy function,
-    it updates the optimal consumption using Euler equation.
-
-    * σ_array is an array of policy function values on the grid
-    * ce is an instance of CakeEating
-
-    """
-
-    u_prime, β, x_grid = ce.u_prime, ce.β, ce.x_grid
-    σ_new = np.empty_like(σ_array)
-
-    σ = lambda x: np.interp(x, x_grid, σ_array)
-
-    def euler_diff(c, x):
-        return u_prime(c) - β * u_prime(σ(x - c))
-
-    for i, x in enumerate(x_grid):
-
-        # handle small x separately --- helps numerical stability
-        if x < 1e-12:
-            σ_new[i] = 0.0
-
-        # handle other x
-        else:
-            σ_new[i] = bisect(euler_diff, 1e-10, x - 1e-10, x)
-
-    return σ_new
-```
-
-```{code-cell} python3
-def iterate_euler_equation(ce,
-                           max_iter=500,
-                           tol=1e-5,
-                           verbose=True,
-                           print_skip=25):
-
-    x_grid = ce.x_grid
-
-    σ = np.copy(x_grid)        # initial guess
-
-    i = 0
-    error = tol + 1
-    while i < max_iter and error > tol:
-
-        σ_new = K(σ, ce)
-
-        error = np.max(np.abs(σ_new - σ))
-        i += 1
-
-        if verbose and i % print_skip == 0:
-            print(f"Error at iteration {i} is {error}.")
-
-        σ = σ_new
-
-    if error > tol:
-        print("Failed to converge!")
-    elif verbose:
-        print(f"\nConverged in {i} iterations.")
-
-    return σ
-```
-
-```{code-cell} python3
-ce = CakeEating(x_grid_min=0.0)
-c_euler = iterate_euler_equation(ce)
-```
-
-```{code-cell} python3
-fig, ax = plt.subplots()
-
-ax.plot(ce.x_grid, c_analytical, label='analytical solution')
-ax.plot(ce.x_grid, c_euler, label='time iteration solution')
-
-ax.set_ylabel('consumption')
-ax.set_xlabel('$x$')
-ax.legend(fontsize=12)
-
-plt.show()
-```
-
-```{solution-end}
-```
