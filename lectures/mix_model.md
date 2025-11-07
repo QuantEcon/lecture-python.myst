@@ -31,7 +31,7 @@ We discuss two ways to create a compound lottery and their consequences.
 
 A compound lottery can be said to create a _mixture distribution_.
 
-Our two ways of constructing a compound lottery will differ in their **timing**.
+Our two ways of constructing a compound lottery will differ in their *timing*.
 
 * in one, mixing between two possible probability distributions will occur once and all at the beginning of time
 
