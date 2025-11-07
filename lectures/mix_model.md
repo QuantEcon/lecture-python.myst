@@ -629,7 +629,7 @@ $$
 but does not know $\alpha$.
 
 We'll assume that the agent starts out with a prior probability $\pi_0(\alpha)$ on
-$\alpha \in (0,1)$ where the prior has one of the forms that we deployed in {doc}`this quantecon lecture <bayes_nonconj>`.
+$\alpha \in (0,1)$ where the prior has one of the forms that we deployed in {doc}`bayes_nonconj`.
 
 
 We'll fire up `numpyro` and apply it to the present situation.
