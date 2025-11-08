@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# Job Search IV: Correlated Wage Offers
+# Job Search V: Correlated Wage Offers
 
 ```{contents} Contents
 :depth: 2
@@ -26,11 +26,11 @@ kernelspec:
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython
----
-tags: [hide-output]
----
-!pip install quantecon
+:tags: [hide-output]
+
+!pip install quantecon jax
 ```
+
 
 ## Overview
 
@@ -47,14 +47,14 @@ We will use the following imports:
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-import numpy as np
+import jax
+import jax.numpy as jnp
+import jax.random as jr
 import quantecon as qe
-from numpy.random import randn
-from numba import jit, prange, float64
-from numba.experimental import jitclass
+from typing import NamedTuple
 ```
 
-## The Model
+## The model
 
 Wages at each point in time are given by
 
@@ -89,11 +89,11 @@ v^*(w, z) =
     \right\}
 $$
 
-In this express, $u$ is a utility function and $\mathbb E_z$ is expectation of next period variables given current $z$.
+In this expression, $u$ is a utility function and $\mathbb E_z$ is expectation of next period variables given current $z$.
 
 The variable $z$ enters as a state in the Bellman equation because its current value helps predict future wages.
 
-### A Simplification
+### A simplification
 
 There is a way that we can reduce dimensionality in this problem, which greatly accelerates computation.
 
@@ -163,145 +163,125 @@ These points are interpolated into a function as required, using piecewise linea
 
 The integral in the definition of $Qf$ is calculated by Monte Carlo.
 
-The following list helps Numba by providing some type information about the data we will work with.
+Here's a `NamedTuple` that stores the model parameters and data.
 
-```{code-cell} python3
-job_search_data = [
-     ('μ', float64),             # transient shock log mean
-     ('s', float64),             # transient shock log variance
-     ('d', float64),             # shift coefficient of persistent state
-     ('ρ', float64),             # correlation coefficient of persistent state
-     ('σ', float64),             # state volatility
-     ('β', float64),             # discount factor
-     ('c', float64),             # unemployment compensation
-     ('z_grid', float64[:]),     # grid over the state space
-     ('e_draws', float64[:,:])   # Monte Carlo draws for integration
-]
-```
-
-Here's a class that stores the data and the right hand side of the Bellman equation.
-
-Default parameter values are embedded in the class.
+Default parameter values are embedded in the model.
 
 ```{code-cell} ipython3
-@jitclass(job_search_data)
-class JobSearch:
+class JobSearchModel(NamedTuple):
+    μ: float     # transient shock log mean
+    s: float     # transient shock log variance  
+    d: float     # shift coefficient of persistent state
+    ρ: float     # correlation coefficient of persistent state
+    σ: float     # state volatility
+    β: float     # discount factor
+    c: float     # unemployment compensation
+    z_grid: jnp.ndarray 
+    e_draws: jnp.ndarray
 
-    def __init__(self,
-                 μ=0.0,       # transient shock log mean
-                 s=1.0,       # transient shock log variance
-                 d=0.0,       # shift coefficient of persistent state
-                 ρ=0.9,       # correlation coefficient of persistent state
-                 σ=0.1,       # state volatility
-                 β=0.98,      # discount factor
-                 c=5,         # unemployment compensation
-                 mc_size=1000,
-                 grid_size=100):
+def create_job_search_model(μ=0.0, s=1.0, d=0.0, ρ=0.9, σ=0.1, β=0.98, c=5.0, 
+                           mc_size=1000, grid_size=100, key=jr.PRNGKey(1234)):
+    """
+    Create a JobSearchModel with computed grid and draws.
+    """
+    # Set up grid
+    z_mean = d / (1 - ρ)
+    z_sd = σ / jnp.sqrt(1 - ρ**2)
+    k = 3  # std devs from mean
+    a, b = z_mean - k * z_sd, z_mean + k * z_sd
+    z_grid = jnp.linspace(a, b, grid_size)
 
-        self.μ, self.s, self.d,  = μ, s, d,
-        self.ρ, self.σ, self.β, self.c = ρ, σ, β, c
+    # Draw and store shocks
+    e_draws = jr.normal(key, (2, mc_size))
 
-        # Set up grid
-        z_mean = d / (1 - ρ)
-        z_sd = σ / np.sqrt(1 - ρ**2)
-        k = 3  # std devs from mean
-        a, b = z_mean - k * z_sd, z_mean + k * z_sd
-        self.z_grid = np.linspace(a, b, grid_size)
-
-        # Draw and store shocks
-        np.random.seed(1234)
-        self.e_draws = randn(2, mc_size)
-
-    def parameters(self):
-        """
-        Return all parameters as a tuple.
-        """
-        return self.μ, self.s, self.d, \
-                self.ρ, self.σ, self.β, self.c
+    return JobSearchModel(μ=μ, s=s, d=d, ρ=ρ, σ=σ, β=β, c=c, 
+                         z_grid=z_grid, e_draws=e_draws)
 ```
 
 Next we implement the $Q$ operator.
 
 ```{code-cell} ipython3
-@jit(parallel=True)
-def Q(js, f_in, f_out):
+def Q(model, f_in):
     """
     Apply the operator Q.
 
-        * js is an instance of JobSearch
-        * f_in and f_out are arrays that represent f and Qf respectively
+        * model is an instance of JobSearchModel
+        * f_in is an array that represents f
+        * returns Qf
 
     """
+    μ, s, d = model.μ, model.s, model.d
+    ρ, σ, β, c = model.ρ, model.σ, model.β, model.c
+    z_grid, e_draws = model.z_grid, model.e_draws
+    M = e_draws.shape[1]
 
-    μ, s, d, ρ, σ, β, c = js.parameters()
-    M = js.e_draws.shape[1]
-
-    for i in prange(len(js.z_grid)):
-        z = js.z_grid[i]
-        expectation = 0.0
-        for m in range(M):
-            e1, e2 = js.e_draws[:, m]
+    def compute_expectation(z):
+        def evaluate_shock(e):
+            e1, e2 = e[0], e[1]
             z_next = d + ρ * z + σ * e1
-            go_val = np.interp(z_next, js.z_grid, f_in)  # f(z')
-            y_next = np.exp(μ + s * e2)                  # y' draw
-            w_next = np.exp(z_next) + y_next             # w' draw
-            stop_val = np.log(w_next) / (1 - β)
-            expectation += max(stop_val, go_val)
-        expectation = expectation / M
-        f_out[i] = np.log(c) + β * expectation
+            go_val = jnp.interp(z_next, z_grid, f_in)  # f(z')
+            y_next = jnp.exp(μ + s * e2)               # y' draw
+            w_next = jnp.exp(z_next) + y_next          # w' draw
+            stop_val = jnp.log(w_next) / (1 - β)
+            return jnp.maximum(stop_val, go_val)
+        
+        expectations = jax.vmap(evaluate_shock)(e_draws.T)
+        return jnp.mean(expectations)
+
+    expectations = jax.vmap(compute_expectation)(z_grid)
+    f_out = jnp.log(c) + β * expectations
+    return f_out
 ```
 
 Here's a function to compute an approximation to the fixed point of $Q$.
 
 ```{code-cell} ipython3
-def compute_fixed_point(js,
-                        use_parallel=True,
-                        tol=1e-4,
-                        max_iter=1000,
-                        verbose=True,
-                        print_skip=25):
-
-    f_init = np.full(len(js.z_grid), np.log(js.c))
-    f_out = np.empty_like(f_init)
-
-    # Set up loop
-    f_in = f_init
-    i = 0
-    error = tol + 1
-
-    while i < max_iter and error > tol:
-        Q(js, f_in, f_out)
-        error = np.max(np.abs(f_in - f_out))
-        i += 1
-        if verbose and i % print_skip == 0:
-            print(f"Error at iteration {i} is {error}.")
-        f_in[:] = f_out
-
-    if error > tol:
-        print("Failed to converge!")
-    elif verbose:
-        print(f"\nConverged in {i} iterations.")
-
-    return f_out
+@jax.jit  
+def compute_fixed_point(model, tol=1e-4, max_iter=1000):
+    """
+    Compute an approximation to the fixed point of Q.
+    """
+    
+    def cond_fun(loop_state):
+        f, i, error = loop_state
+        return jnp.logical_and(error > tol, i < max_iter)
+    
+    def body_fun(loop_state):
+        f, i, error = loop_state
+        f_new = Q(model, f)
+        error_new = jnp.max(jnp.abs(f_new - f))
+        return f_new, i + 1, error_new
+    
+    # Initial state
+    f_init = jnp.full(len(model.z_grid), jnp.log(model.c))
+    init_state = (f_init, 0, tol + 1)
+    
+    # Run iteration
+    f_final, iterations, final_error = jax.lax.while_loop(
+        cond_fun, body_fun, init_state
+    )
+    
+    return f_final
 ```
 
 Let's try generating an instance and solving the model.
 
 ```{code-cell} ipython3
-js = JobSearch()
+model = create_job_search_model()
 
-qe.tic()
-f_star = compute_fixed_point(js, verbose=True)
-qe.toc()
+with qe.Timer():
+    f_star = compute_fixed_point(model).block_until_ready()
 ```
 
 Next we will compute and plot the reservation wage function defined in {eq}`corr_mcm_barw`.
 
 ```{code-cell} ipython3
-res_wage_function = np.exp(f_star * (1 - js.β))
+res_wage_function = jnp.exp(f_star * (1 - model.β))
 
 fig, ax = plt.subplots()
-ax.plot(js.z_grid, res_wage_function, label="reservation wage given $z$")
+ax.plot(
+    model.z_grid, res_wage_function, label="reservation wage given $z$"
+)
 ax.set(xlabel="$z$", ylabel="wage")
 ax.legend()
 plt.show()
@@ -321,10 +301,11 @@ c_vals = 1, 2, 3
 fig, ax = plt.subplots()
 
 for c in c_vals:
-    js = JobSearch(c=c)
-    f_star = compute_fixed_point(js, verbose=False)
-    res_wage_function = np.exp(f_star * (1 - js.β))
-    ax.plot(js.z_grid, res_wage_function, label=rf"$\bar w$ at $c = {c}$")
+    model = create_job_search_model(c=c)
+    f_star = compute_fixed_point(model)
+    res_wage_function = jnp.exp(f_star * (1 - model.β))
+    ax.plot(model.z_grid, res_wage_function, 
+                label=rf"$\bar w$ at $c = {c}$")
 
 ax.set(xlabel="$z$", ylabel="wage")
 ax.legend()
@@ -334,64 +315,83 @@ plt.show()
 As expected, higher unemployment compensation shifts the reservation wage up
 at all state values.
 
-## Unemployment Duration
+## Unemployment duration
 
 Next we study how mean unemployment duration varies with unemployment compensation.
 
 For simplicity we’ll fix the initial state at $z_t = 0$.
 
 ```{code-cell} ipython3
-def compute_unemployment_duration(js, seed=1234):
+def compute_unemployment_duration(
+        model, key=jr.PRNGKey(1234), num_reps=100_000
+    ):
+    """
+    Compute expected unemployment duration.
 
-    f_star = compute_fixed_point(js, verbose=False)
-    μ, s, d, ρ, σ, β, c = js.parameters()
-    z_grid = js.z_grid
-    np.random.seed(seed)
+    """
+    f_star = compute_fixed_point(model)
+    μ, s, d = model.μ, model.s, model.d
+    ρ, σ, β, c = model.ρ, model.σ, model.β, model.c
+    z_grid = model.z_grid
 
-    @jit
+    @jax.jit
     def f_star_function(z):
-        return np.interp(z, z_grid, f_star)
+        return jnp.interp(z, z_grid, f_star)
 
-    @jit
-    def draw_tau(t_max=10_000):
-        z = 0
-        t = 0
+    @jax.jit
+    def draw_τ(key, t_max=10_000):
+        def cond_fun(loop_state):
+            z, t, unemployed, key = loop_state
+            return jnp.logical_and(unemployed, t < t_max)
+        
+        def body_fun(loop_state):
+            z, t, unemployed, key = loop_state
+            key1, key2, key = jr.split(key, 3)
+            
+            # Draw current wage
+            y = jnp.exp(μ + s * jr.normal(key1))
+            w = jnp.exp(z) + y
+            res_wage = jnp.exp(f_star_function(z) * (1 - β))
+            
+            # Check if optimal to stop
+            accept = w >= res_wage
+            τ = jnp.where(accept, t, t_max)
+            
+            # Update state if not accepting
+            z_new = jnp.where(accept, z, 
+                                ρ * z + d + σ * jr.normal(key2))
+            t_new = t + 1
+            unemployed_new = jnp.logical_not(accept)
+            
+            return z_new, t_new, unemployed_new, key
+        
+        # Initial loop_state: (z, t, unemployed, key)
+        init_state = (0.0, 0, True, key)
+        z_final, t_final, unemployed_final, _ = jax.lax.while_loop(
+            cond_fun, body_fun, init_state)
+        
+        # Return final time if job found, otherwise t_max
+        return jnp.where(unemployed_final, t_max, t_final)
 
-        unemployed = True
-        while unemployed and t < t_max:
-            # draw current wage
-            y = np.exp(μ + s * np.random.randn())
-            w = np.exp(z) + y
-            res_wage = np.exp(f_star_function(z) * (1 - β))
-            # if optimal to stop, record t
-            if w >= res_wage:
-                unemployed = False
-                τ = t
-            # else increment data and state
-            else:
-                z = ρ * z + d + σ * np.random.randn()
-                t += 1
-        return τ
-
-    @jit(parallel=True)
-    def compute_expected_tau(num_reps=100_000):
-        sum_value = 0
-        for i in prange(num_reps):
-            sum_value += draw_tau()
-        return sum_value / num_reps
-
-    return compute_expected_tau()
+    # Generate keys for all simulations
+    keys = jr.split(key, num_reps)
+    
+    # Vectorize over simulations
+    τ_vals = jax.vmap(draw_τ)(keys)
+    
+    return jnp.mean(τ_vals)
 ```
 
 Let's test this out with some possible values for unemployment compensation.
 
 ```{code-cell} ipython3
-c_vals = np.linspace(1.0, 10.0, 8)
-durations = np.empty_like(c_vals)
+c_vals = jnp.linspace(1.0, 10.0, 8)
+durations = []
 for i, c in enumerate(c_vals):
-    js = JobSearch(c=c)
-    τ = compute_unemployment_duration(js)
-    durations[i] = τ
+    model = create_job_search_model(c=c)
+    τ = compute_unemployment_duration(model, num_reps=10_000)
+    durations.append(τ)
+durations = jnp.array(durations)
 ```
 
 Here is a plot of the results.
@@ -426,12 +426,13 @@ Investigate how mean unemployment duration varies with the discount factor $\bet
 Here is one solution
 
 ```{code-cell} ipython3
-beta_vals = np.linspace(0.94, 0.99, 8)
-durations = np.empty_like(beta_vals)
+beta_vals = jnp.linspace(0.94, 0.99, 8)
+durations = []
 for i, β in enumerate(beta_vals):
-    js = JobSearch(β=β)
-    τ = compute_unemployment_duration(js)
-    durations[i] = τ
+    model = create_job_search_model(β=β)
+    τ = compute_unemployment_duration(model, num_reps=10_000)
+    durations.append(τ)
+durations = jnp.array(durations)
 ```
 
 ```{code-cell} ipython3

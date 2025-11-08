@@ -18,7 +18,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`Job Search VI: On-the-Job Search <single: Job Search VI: On-the-Job Search>`
+# {index}`Job Search VII: On-the-Job Search <single: Job Search VII: On-the-Job Search>`
 
 ```{index} single: Models; On-the-Job Search
 ```

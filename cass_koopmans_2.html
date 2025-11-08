@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>52. Cass-Koopmans Competitive Equilibrium &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>66. Cass-Koopmans Competitive Equilibrium &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -124,8 +124,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="53. Cass-Koopmans Model with Distorting Taxes" href="cass_fiscal.html" />
-    <link rel="prev" title="51. Cass-Koopmans Model" href="cass_koopmans_1.html" />
+    <link rel="next" title="67. Cass-Koopmans Model with Distorting Taxes" href="cass_fiscal.html" />
+    <link rel="prev" title="65. Cass-Koopmans Model" href="cass_koopmans_1.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -174,35 +174,35 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">52.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-of-cass-koopmans-model">52.2. Review of Cass-Koopmans Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#planning-problem">52.2.1. Planning Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">66.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-of-cass-koopmans-model">66.2. Review of Cass-Koopmans Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#planning-problem">66.2.1. Planning Problem</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#competitive-equilibrium">52.3. Competitive Equilibrium</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#market-structure">52.4. Market Structure</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prices">52.4.1. Prices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#competitive-equilibrium">66.3. Competitive Equilibrium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#market-structure">66.4. Market Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prices">66.4.1. Prices</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#firm-problem">52.5. Firm Problem</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-profit-conditions">52.5.1. Zero Profit Conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#firm-problem">66.5. Firm Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-profit-conditions">66.5.1. Zero Profit Conditions</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#household-problem">52.6. Household Problem</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">52.6.1. Definitions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#household-problem">66.6. Household Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">66.6.1. Definitions</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-a-competitive-equilibrium">52.7. Computing a Competitive Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guess-for-price-system">52.7.1. Guess for Price System</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verification-procedure">52.7.2. Verification Procedure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#households-lagrangian">52.7.3. Household’s Lagrangian</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#representative-firms-problem">52.7.4. Representative Firm’s Problem</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#varying-curvature">52.7.4.1. Varying Curvature</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-a-competitive-equilibrium">66.7. Computing a Competitive Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guess-for-price-system">66.7.1. Guess for Price System</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verification-procedure">66.7.2. Verification Procedure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#households-lagrangian">66.7.3. Household’s Lagrangian</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#representative-firms-problem">66.7.4. Representative Firm’s Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#varying-curvature">66.7.4.1. Varying Curvature</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yield-curves-and-hicks-arrow-prices">52.8. Yield Curves and Hicks-Arrow Prices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#yield-curves-and-hicks-arrow-prices">66.8. Yield Curves and Hicks-Arrow Prices</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -260,7 +260,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="cass-koopmans-competitive-equilibrium">
-<h1><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">52. </span>Cass-Koopmans Competitive Equilibrium</a><a class="headerlink" href="#cass-koopmans-competitive-equilibrium" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">66. </span>Cass-Koopmans Competitive Equilibrium</a><a class="headerlink" href="#cass-koopmans-competitive-equilibrium" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -279,7 +279,7 @@
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">52.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">66.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture continues our analysis in this  lecture
 <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a> about the  model that Tjalling Koopmans <span id="id1">[<a class="reference internal" href="zreferences.html#id104" title="Tjalling C. Koopmans. On the concept of optimal economic growth. In Tjalling C. Koopmans, editor, The Economic Approach to Development Planning, pages 225-287. Chicago, 1965.">Koopmans, 1965</a>]</span>
 and David Cass <span id="id2">[<a class="reference internal" href="zreferences.html#id105" title="David Cass. Optimum growth in an aggregative model of capital accumulation. Review of Economic Studies, 32(3):233-240, 1965.">Cass, 1965</a>]</span> used to study optimal capital accumulation.</p>
@@ -334,7 +334,7 @@ decisions</p></li>
 </div>
 </section>
 <section id="review-of-cass-koopmans-model">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">52.2. </span>Review of Cass-Koopmans Model</a><a class="headerlink" href="#review-of-cass-koopmans-model" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">66.2. </span>Review of Cass-Koopmans Model</a><a class="headerlink" href="#review-of-cass-koopmans-model" title="Link to this heading">#</a></h2>
 <p>The physical setting is identical with that in <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a>.</p>
 <p>Time is discrete and takes values <span class="math notranslate nohighlight">\(t = 0, 1 , \ldots, T\)</span>.</p>
 <p>Output of a single good can either be consumed or invested in physical capital.</p>
@@ -370,14 +370,14 @@ C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t \quad \text{for all } t \in \{0, 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\delta \in (0,1)\)</span> is a depreciation rate of capital.</p>
 <section id="planning-problem">
-<h3><span class="section-number">52.2.1. </span>Planning Problem<a class="headerlink" href="#planning-problem" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">66.2.1. </span>Planning Problem<a class="headerlink" href="#planning-problem" title="Link to this heading">#</a></h3>
 <p>In this lecture <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a>, we studied a problem in which a planner chooses an allocation <span class="math notranslate nohighlight">\(\{\vec{C},\vec{K}\}\)</span> to
-maximize <a class="reference internal" href="cass_koopmans_1.html#equation-utility-functional">(51.2)</a> subject to <a class="reference internal" href="cass_koopmans_1.html#equation-allocation">(51.5)</a>.</p>
+maximize <a class="reference internal" href="cass_koopmans_1.html#equation-utility-functional">(65.2)</a> subject to <a class="reference internal" href="cass_koopmans_1.html#equation-allocation">(65.5)</a>.</p>
 <p>The allocation that solves the planning problem reappears in a competitive equilibrium, as we shall see below.</p>
 </section>
 </section>
 <section id="competitive-equilibrium">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">52.3. </span>Competitive Equilibrium</a><a class="headerlink" href="#competitive-equilibrium" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">66.3. </span>Competitive Equilibrium</a><a class="headerlink" href="#competitive-equilibrium" title="Link to this heading">#</a></h2>
 <p>We now study a decentralized version of the  economy.</p>
 <p>It shares  the same
 technology and preference structure as the planned economy studied in this lecture <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a>.</p>
@@ -418,7 +418,7 @@ identical representative firms.</p>
 </div>
 </section>
 <section id="market-structure">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">52.4. </span>Market Structure</a><a class="headerlink" href="#market-structure" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">66.4. </span>Market Structure</a><a class="headerlink" href="#market-structure" title="Link to this heading">#</a></h2>
 <p>The representative household and the representative firm are both price takers.</p>
 <p>The household owns both factors of production, namely, labor and physical capital.</p>
 <p>Each period, the firm rents both factors from the household.</p>
@@ -426,7 +426,7 @@ identical representative firms.</p>
 household  trades date <span class="math notranslate nohighlight">\(0\)</span> goods for goods at
 all other dates <span class="math notranslate nohighlight">\(t=1, 2, \ldots, T\)</span>.</p>
 <section id="prices">
-<h3><span class="section-number">52.4.1. </span>Prices<a class="headerlink" href="#prices" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">66.4.1. </span>Prices<a class="headerlink" href="#prices" title="Link to this heading">#</a></h3>
 <p>There are  sequences of prices
 <span class="math notranslate nohighlight">\(\{w_t,\eta_t\}_{t=0}^T= \{\vec{w}, \vec{\eta} \}\)</span>
 where</p>
@@ -450,7 +450,7 @@ named after the 1972 economics Nobel prize winners.</p>
 </section>
 </section>
 <section id="firm-problem">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">52.5. </span>Firm Problem</a><a class="headerlink" href="#firm-problem" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">66.5. </span>Firm Problem</a><a class="headerlink" href="#firm-problem" title="Link to this heading">#</a></h2>
 <p>At time <span class="math notranslate nohighlight">\(t\)</span> a representative firm hires labor
 <span class="math notranslate nohighlight">\(\tilde n_t\)</span> and capital <span class="math notranslate nohighlight">\(\tilde k_t\)</span>.</p>
 <p>The firm’s profits at time <span class="math notranslate nohighlight">\(t\)</span> are</p>
@@ -466,7 +466,7 @@ and <span class="math notranslate nohighlight">\(\eta_t\)</span> is the rental r
 F(\tilde k_t, \tilde n_t) = A \tilde k_t^\alpha \tilde n_t^{1-\alpha}
 \]</div>
 <section id="zero-profit-conditions">
-<h3><span class="section-number">52.5.1. </span>Zero Profit Conditions<a class="headerlink" href="#zero-profit-conditions" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">66.5.1. </span>Zero Profit Conditions<a class="headerlink" href="#zero-profit-conditions" title="Link to this heading">#</a></h3>
 <p>Zero-profits conditions for capital and labor are</p>
 <div class="math notranslate nohighlight">
 \[
@@ -474,7 +474,7 @@ F_k(\tilde k_t, \tilde n_t) =\eta_t
 \]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-zero-profits">
-<span class="eqno">(52.1)<a class="headerlink" href="#equation-zero-profits" title="Link to this equation">#</a></span>\[F_n(\tilde k_t, \tilde n_t) =w_t\]</div>
+<span class="eqno">(66.1)<a class="headerlink" href="#equation-zero-profits" title="Link to this equation">#</a></span>\[F_n(\tilde k_t, \tilde n_t) =w_t\]</div>
 <p>These conditions emerge from a no-arbitrage requirement.</p>
 <p>To describe this no-arbitrage profits  reasoning, we begin by applying a theorem of
 Euler about linearly homogenous functions.</p>
@@ -526,7 +526,7 @@ the firm would want to set  <span class="math notranslate nohighlight">\(\tilde 
 </section>
 </section>
 <section id="household-problem">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">52.6. </span>Household Problem</a><a class="headerlink" href="#household-problem" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">66.6. </span>Household Problem</a><a class="headerlink" href="#household-problem" title="Link to this heading">#</a></h2>
 <p>A representative household lives at <span class="math notranslate nohighlight">\(t=0,1,\dots, T\)</span>.</p>
 <p>At <span class="math notranslate nohighlight">\(t\)</span>, the household rents <span class="math notranslate nohighlight">\(1\)</span> unit of labor
 and <span class="math notranslate nohighlight">\(k_t\)</span> units of capital to a firm and receives income</p>
@@ -579,7 +579,7 @@ demands must be zero:</p>
 <li><p><span class="math notranslate nohighlight">\(q_t^0\)</span> is measured in units of a numeraire  per unit of the time <span class="math notranslate nohighlight">\(t\)</span> good</p></li>
 </ul>
 <section id="definitions">
-<h3><span class="section-number">52.6.1. </span>Definitions<a class="headerlink" href="#definitions" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">66.6.1. </span>Definitions<a class="headerlink" href="#definitions" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>A <strong>price system</strong> is a sequence
 <span class="math notranslate nohighlight">\(\{q_t^0,\eta_t,w_t\}_{t=0}^T= \{\vec{q}, \vec{\eta}, \vec{w}\}\)</span>.</p></li>
@@ -600,7 +600,7 @@ problem.</p></li>
 </section>
 </section>
 <section id="computing-a-competitive-equilibrium">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">52.7. </span>Computing a Competitive Equilibrium</a><a class="headerlink" href="#computing-a-competitive-equilibrium" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">66.7. </span>Computing a Competitive Equilibrium</a><a class="headerlink" href="#computing-a-competitive-equilibrium" title="Link to this heading">#</a></h2>
 <p>We compute a competitive equilibrium by using a <strong>guess and
 verify</strong> approach.</p>
 <ul class="simple">
@@ -610,7 +610,7 @@ verify</strong> approach.</p>
 the firm choose the same allocation.</p></li>
 </ul>
 <section id="guess-for-price-system">
-<h3><span class="section-number">52.7.1. </span>Guess for Price System<a class="headerlink" href="#guess-for-price-system" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">66.7.1. </span>Guess for Price System<a class="headerlink" href="#guess-for-price-system" title="Link to this heading">#</a></h3>
 <p>In this lecture <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a>, we  computed an allocation <span class="math notranslate nohighlight">\(\{\vec{C}, \vec{K}, \vec{N}\}\)</span>
 that solves a planning problem.</p>
 <p>We use that allocation to construct a guess for the equilibrium
@@ -630,14 +630,14 @@ and  <a class="reference external" href="https://python-advanced.quantecon.org/d
 </ul>
 <p>Thus, we guess that for <span class="math notranslate nohighlight">\(t=0,\dots,T\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-price">
-<span class="eqno">(52.2)<a class="headerlink" href="#equation-eq-price" title="Link to this equation">#</a></span>\[q_t^0 = \beta^t u'(C_t) \]</div>
+<span class="eqno">(66.2)<a class="headerlink" href="#equation-eq-price" title="Link to this equation">#</a></span>\[q_t^0 = \beta^t u'(C_t) \]</div>
 <div class="math notranslate nohighlight" id="equation-eq-price2">
-<span class="eqno">(52.3)<a class="headerlink" href="#equation-eq-price2" title="Link to this equation">#</a></span>\[w_t = f(K_t) -K_t f'(K_t)\]</div>
+<span class="eqno">(66.3)<a class="headerlink" href="#equation-eq-price2" title="Link to this equation">#</a></span>\[w_t = f(K_t) -K_t f'(K_t)\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-price3">
-<span class="eqno">(52.4)<a class="headerlink" href="#equation-eq-price3" title="Link to this equation">#</a></span>\[\eta_t = f'(K_t)\]</div>
+<span class="eqno">(66.4)<a class="headerlink" href="#equation-eq-price3" title="Link to this equation">#</a></span>\[\eta_t = f'(K_t)\]</div>
 <p>At these prices, let  capital chosen by the household be</p>
 <div class="math notranslate nohighlight" id="equation-eq-pr4">
-<span class="eqno">(52.5)<a class="headerlink" href="#equation-eq-pr4" title="Link to this equation">#</a></span>\[k^*_t(\vec {q}, \vec{w}, \vec{\eta)} , \quad t \geq 0\]</div>
+<span class="eqno">(66.5)<a class="headerlink" href="#equation-eq-pr4" title="Link to this equation">#</a></span>\[k^*_t(\vec {q}, \vec{w}, \vec{\eta)} , \quad t \geq 0\]</div>
 <p>and let the allocation chosen by the firm be</p>
 <div class="math notranslate nohighlight">
 \[
@@ -647,9 +647,9 @@ and  <a class="reference external" href="https://python-advanced.quantecon.org/d
 <p>If our guess for the equilibrium price system is correct, then it
 must occur that</p>
 <div class="math notranslate nohighlight" id="equation-ge1">
-<span class="eqno">(52.6)<a class="headerlink" href="#equation-ge1" title="Link to this equation">#</a></span>\[k_t^*  = \tilde k_t^*\]</div>
+<span class="eqno">(66.6)<a class="headerlink" href="#equation-ge1" title="Link to this equation">#</a></span>\[k_t^*  = \tilde k_t^*\]</div>
 <div class="math notranslate nohighlight" id="equation-ge2">
-<span class="eqno">(52.7)<a class="headerlink" href="#equation-ge2" title="Link to this equation">#</a></span>\[1   = \tilde n_t^*\]</div>
+<span class="eqno">(66.7)<a class="headerlink" href="#equation-ge2" title="Link to this equation">#</a></span>\[1   = \tilde n_t^*\]</div>
 <div class="math notranslate nohighlight">
 \[
 c_t^* + k_{t+1}^* - (1-\delta) k_t^*  = F(\tilde k_t^*, \tilde n_t^*)
@@ -658,10 +658,10 @@ c_t^* + k_{t+1}^* - (1-\delta) k_t^*  = F(\tilde k_t^*, \tilde n_t^*)
 by the household and the firm both equal the allocation that solves
 the planning problem:</p>
 <div class="math notranslate nohighlight" id="equation-eq-pl">
-<span class="eqno">(52.8)<a class="headerlink" href="#equation-eq-pl" title="Link to this equation">#</a></span>\[k^*_t = \tilde k^*_t=K_t, \tilde n_t=1, c^*_t=C_t\]</div>
+<span class="eqno">(66.8)<a class="headerlink" href="#equation-eq-pl" title="Link to this equation">#</a></span>\[k^*_t = \tilde k^*_t=K_t, \tilde n_t=1, c^*_t=C_t\]</div>
 </section>
 <section id="verification-procedure">
-<h3><span class="section-number">52.7.2. </span>Verification Procedure<a class="headerlink" href="#verification-procedure" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">66.7.2. </span>Verification Procedure<a class="headerlink" href="#verification-procedure" title="Link to this heading">#</a></h3>
 <p>Our approach is firsts to stare at first-order necessary conditions for
 optimization problems of the household and the firm.</p>
 <p>At the price system we have guessed, we’ll then verify that both sets of first-order
@@ -669,7 +669,7 @@ conditions are satisfied at the allocation that solves the planning
 problem.</p>
 </section>
 <section id="households-lagrangian">
-<h3><span class="section-number">52.7.3. </span>Household’s Lagrangian<a class="headerlink" href="#households-lagrangian" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">66.7.3. </span>Household’s Lagrangian<a class="headerlink" href="#households-lagrangian" title="Link to this heading">#</a></h3>
 <p>To solve the household’s problem, we formulate the Lagrangian</p>
 <div class="math notranslate nohighlight">
 \[
@@ -683,26 +683,26 @@ problem.</p>
 \]</div>
 <p>First-order conditions are</p>
 <div class="math notranslate nohighlight" id="equation-cond1">
-<span class="eqno">(52.9)<a class="headerlink" href="#equation-cond1" title="Link to this equation">#</a></span>\[c_t: \quad \beta^t u'(c_t)-\lambda q_t^0=0 \quad  t=0,1,\dots,T\]</div>
+<span class="eqno">(66.9)<a class="headerlink" href="#equation-cond1" title="Link to this equation">#</a></span>\[c_t: \quad \beta^t u'(c_t)-\lambda q_t^0=0 \quad  t=0,1,\dots,T\]</div>
 <div class="math notranslate nohighlight" id="equation-cond2">
-<span class="eqno">(52.10)<a class="headerlink" href="#equation-cond2" title="Link to this equation">#</a></span>\[k_t: \quad -\lambda q_t^0 \left[(1-\delta)+\eta_t \right]+\lambda q^0_{t-1}=0 \quad  t=1,2,\dots,T+1\]</div>
+<span class="eqno">(66.10)<a class="headerlink" href="#equation-cond2" title="Link to this equation">#</a></span>\[k_t: \quad -\lambda q_t^0 \left[(1-\delta)+\eta_t \right]+\lambda q^0_{t-1}=0 \quad  t=1,2,\dots,T+1\]</div>
 <div class="math notranslate nohighlight" id="equation-cond3">
-<span class="eqno">(52.11)<a class="headerlink" href="#equation-cond3" title="Link to this equation">#</a></span>\[\lambda:  \quad \left(\sum_{t=0}^T q_t^0\left(c_t + \left(k_{t+1}-(1-\delta) k_t\right) -w_t -\eta_t k_t\right)\right) \leq 0\]</div>
+<span class="eqno">(66.11)<a class="headerlink" href="#equation-cond3" title="Link to this equation">#</a></span>\[\lambda:  \quad \left(\sum_{t=0}^T q_t^0\left(c_t + \left(k_{t+1}-(1-\delta) k_t\right) -w_t -\eta_t k_t\right)\right) \leq 0\]</div>
 <div class="math notranslate nohighlight" id="equation-cond4">
-<span class="eqno">(52.12)<a class="headerlink" href="#equation-cond4" title="Link to this equation">#</a></span>\[k_{T+1}: \quad -\lambda q_0^{T+1} \leq 0, \ \leq 0 \text{ if } k_{T+1}=0; \ =0 \text{ if } k_{T+1}&gt;0\]</div>
+<span class="eqno">(66.12)<a class="headerlink" href="#equation-cond4" title="Link to this equation">#</a></span>\[k_{T+1}: \quad -\lambda q_0^{T+1} \leq 0, \ \leq 0 \text{ if } k_{T+1}=0; \ =0 \text{ if } k_{T+1}&gt;0\]</div>
 <p>Now we plug in our guesses of prices and do some algebra in the hope of recovering all first-order necessary conditions
-<a class="reference internal" href="cass_koopmans_1.html#equation-constraint1">(51.9)</a>-<a class="reference internal" href="cass_koopmans_1.html#equation-constraint4">(51.12)</a> for the planning problem from this lecture <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a>.</p>
-<p>Combining <a class="reference internal" href="#equation-cond1">(52.9)</a> and <a class="reference internal" href="#equation-eq-price">(52.2)</a>, we get:</p>
+<a class="reference internal" href="cass_koopmans_1.html#equation-constraint1">(65.9)</a>-<a class="reference internal" href="cass_koopmans_1.html#equation-constraint4">(65.12)</a> for the planning problem from this lecture <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a>.</p>
+<p>Combining <a class="reference internal" href="#equation-cond1">(66.9)</a> and <a class="reference internal" href="#equation-eq-price">(66.2)</a>, we get:</p>
 <div class="math notranslate nohighlight">
 \[
 u'(C_t) = \mu_t
 \]</div>
-<p>which is <a class="reference internal" href="cass_koopmans_1.html#equation-constraint1">(51.9)</a>.</p>
-<p>Combining <a class="reference internal" href="#equation-cond2">(52.10)</a>, <a class="reference internal" href="#equation-eq-price">(52.2)</a>, and
-<a class="reference internal" href="#equation-eq-price3">(52.4)</a>, we get:</p>
+<p>which is <a class="reference internal" href="cass_koopmans_1.html#equation-constraint1">(65.9)</a>.</p>
+<p>Combining <a class="reference internal" href="#equation-cond2">(66.10)</a>, <a class="reference internal" href="#equation-eq-price">(66.2)</a>, and
+<a class="reference internal" href="#equation-eq-price3">(66.4)</a>, we get:</p>
 <div class="math notranslate nohighlight" id="equation-co-re">
-<span class="eqno">(52.13)<a class="headerlink" href="#equation-co-re" title="Link to this equation">#</a></span>\[-\lambda \beta^t \mu_t\left[(1-\delta) +f'(K_t)\right] +\lambda \beta^{t-1}\mu_{t-1}=0\]</div>
-<p>Rewriting <a class="reference internal" href="#equation-co-re">(52.13)</a> by dividing by <span class="math notranslate nohighlight">\(\lambda\)</span> on
+<span class="eqno">(66.13)<a class="headerlink" href="#equation-co-re" title="Link to this equation">#</a></span>\[-\lambda \beta^t \mu_t\left[(1-\delta) +f'(K_t)\right] +\lambda \beta^{t-1}\mu_{t-1}=0\]</div>
+<p>Rewriting <a class="reference internal" href="#equation-co-re">(66.13)</a> by dividing by <span class="math notranslate nohighlight">\(\lambda\)</span> on
 both sides (which is nonzero since  u’&gt;0) we get:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -713,10 +713,10 @@ both sides (which is nonzero since  u’&gt;0) we get:</p>
 \[
 \beta \mu_t [(1-\delta+f'(K_t)] = \mu_{t-1}
 \]</div>
-<p>which is <a class="reference internal" href="cass_koopmans_1.html#equation-constraint2">(51.10)</a>.</p>
-<p>Combining <a class="reference internal" href="#equation-cond3">(52.11)</a>, <a class="reference internal" href="#equation-eq-price">(52.2)</a>, <a class="reference internal" href="#equation-eq-price2">(52.3)</a>
-and <a class="reference internal" href="#equation-eq-price3">(52.4)</a> after multiplying both sides of
-<a class="reference internal" href="#equation-cond3">(52.11)</a> by <span class="math notranslate nohighlight">\(\lambda\)</span>, we get</p>
+<p>which is <a class="reference internal" href="cass_koopmans_1.html#equation-constraint2">(65.10)</a>.</p>
+<p>Combining <a class="reference internal" href="#equation-cond3">(66.11)</a>, <a class="reference internal" href="#equation-eq-price">(66.2)</a>, <a class="reference internal" href="#equation-eq-price2">(66.3)</a>
+and <a class="reference internal" href="#equation-eq-price3">(66.4)</a> after multiplying both sides of
+<a class="reference internal" href="#equation-cond3">(66.11)</a> by <span class="math notranslate nohighlight">\(\lambda\)</span>, we get</p>
 <div class="math notranslate nohighlight">
 \[
 \sum_{t=0}^T \beta^t \mu_{t} \left(C_t+ (K_{t+1} -(1-\delta)K_t)-f(K_t)+K_t f'(K_t)-f'(K_t)K_t\right) \leq 0
@@ -731,8 +731,8 @@ and <a class="reference internal" href="#equation-eq-price3">(52.4)</a> after mu
 \[
 C_t+K_{t+1}-(1-\delta)K_t -F(K_t,1)=0 \quad  \text{ for all }t \text{ in } \{0, 1, \ldots, T\}
 \]</div>
-<p>which is <a class="reference internal" href="cass_koopmans_1.html#equation-constraint3">(51.11)</a>.</p>
-<p>Combining <a class="reference internal" href="#equation-cond4">(52.12)</a> and <a class="reference internal" href="#equation-eq-price">(52.2)</a>, we get:</p>
+<p>which is <a class="reference internal" href="cass_koopmans_1.html#equation-constraint3">(65.11)</a>.</p>
+<p>Combining <a class="reference internal" href="#equation-cond4">(66.12)</a> and <a class="reference internal" href="#equation-eq-price">(66.2)</a>, we get:</p>
 <div class="math notranslate nohighlight">
 \[
 -\beta^{T+1} \mu_{T+1} \leq 0
@@ -742,33 +742,33 @@ C_t+K_{t+1}-(1-\delta)K_t -F(K_t,1)=0 \quad  \text{ for all }t \text{ in } \{0, 
 \[
 -\mu_{T+1} \leq 0
 \]</div>
-<p>which is  <a class="reference internal" href="cass_koopmans_1.html#equation-constraint4">(51.12)</a> for the  planning problem.</p>
+<p>which is  <a class="reference internal" href="cass_koopmans_1.html#equation-constraint4">(65.12)</a> for the  planning problem.</p>
 <p>Thus, at our guess of the equilibrium price system, the allocation
 that solves the planning problem also solves the problem faced by a
 representative household living in a competitive equilibrium.</p>
 </section>
 <section id="representative-firms-problem">
-<h3><span class="section-number">52.7.4. </span>Representative Firm’s Problem<a class="headerlink" href="#representative-firms-problem" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">66.7.4. </span>Representative Firm’s Problem<a class="headerlink" href="#representative-firms-problem" title="Link to this heading">#</a></h3>
 <p>We now turn to  the problem faced by a firm in a competitive
 equilibrium:</p>
-<p>If we plug <a class="reference internal" href="#equation-eq-pl">(52.8)</a> into <a class="reference internal" href="#equation-zero-profits">(52.1)</a> for all t, we
+<p>If we plug <a class="reference internal" href="#equation-eq-pl">(66.8)</a> into <a class="reference internal" href="#equation-zero-profits">(66.1)</a> for all t, we
 get</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\partial F(K_t, 1)}{\partial K_t} = f'(K_t) = \eta_t
 \]</div>
-<p>which is <a class="reference internal" href="#equation-eq-price3">(52.4)</a>.</p>
-<p>If we now plug <a class="reference internal" href="#equation-eq-pl">(52.8)</a> into <a class="reference internal" href="#equation-zero-profits">(52.1)</a> for all t, we
+<p>which is <a class="reference internal" href="#equation-eq-price3">(66.4)</a>.</p>
+<p>If we now plug <a class="reference internal" href="#equation-eq-pl">(66.8)</a> into <a class="reference internal" href="#equation-zero-profits">(66.1)</a> for all t, we
 get:</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\partial F(\tilde K_t, 1)}{\partial \tilde L_t} = f(K_t)-f'(K_t)K_t=w_t
 \]</div>
-<p>which is exactly <a class="reference internal" href="#equation-eq-pr4">(52.5)</a>.</p>
+<p>which is exactly <a class="reference internal" href="#equation-eq-pr4">(66.5)</a>.</p>
 <p>Thus, at our guess for the equilibrium price system, the allocation
 that solves the planning problem also solves the problem faced by a firm
 within a competitive equilibrium.</p>
-<p>By <a class="reference internal" href="#equation-ge1">(52.6)</a> and <a class="reference internal" href="#equation-ge2">(52.7)</a> this allocation is
+<p>By <a class="reference internal" href="#equation-ge1">(66.6)</a> and <a class="reference internal" href="#equation-ge2">(66.7)</a> this allocation is
 identical to the one that solves the consumer’s problem.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1014,7 +1014,7 @@ the characterize an economy.</p>
 </div>
 </div>
 <section id="varying-curvature">
-<h4><span class="section-number">52.7.4.1. </span>Varying Curvature<a class="headerlink" href="#varying-curvature" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">66.7.4.1. </span>Varying Curvature<a class="headerlink" href="#varying-curvature" title="Link to this heading">#</a></h4>
 <p>Now we see how our results change if we keep <span class="math notranslate nohighlight">\(T\)</span> constant, but allow
 the curvature parameter, <span class="math notranslate nohighlight">\(\gamma\)</span> to vary, starting
 with <span class="math notranslate nohighlight">\(K_0\)</span> below the steady state.</p>
@@ -1064,7 +1064,7 @@ resulting in faster convergence  to a steady state allocation.</p>
 </section>
 </section>
 <section id="yield-curves-and-hicks-arrow-prices">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">52.8. </span>Yield Curves and Hicks-Arrow Prices</a><a class="headerlink" href="#yield-curves-and-hicks-arrow-prices" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">66.8. </span>Yield Curves and Hicks-Arrow Prices</a><a class="headerlink" href="#yield-curves-and-hicks-arrow-prices" title="Link to this heading">#</a></h2>
 <p>We return to  Hicks-Arrow prices and  calculate how they are related to  <strong>yields</strong>  on loans of alternative maturities.</p>
 <p>This will let us plot a <strong>yield curve</strong> that graphs   yields  on bonds of  maturities <span class="math notranslate nohighlight">\(j=1, 2, \ldots\)</span> against <span class="math notranslate nohighlight">\(j=1,2, \ldots\)</span>.</p>
 <p>We use the following formulas.</p>
@@ -1462,109 +1462,84 @@ years, and define a new function for <span class="math notranslate nohighlight">
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   44. Job Search with Separation and Markov Wages
+   44. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   45. Job Search III: Fitted Value Function Iteration
+   45. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   46. Job Search IV: Correlated Wage Offers
+   46. Job Search V: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   47. Job Search V: Modeling Career Choice
+   47. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   48. Job Search VI: On-the-Job Search
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="mccall_q.html">
-   49. Job Search VII: A McCall Worker Q-Learns
+   48. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   50. Job Search VII: Search with Learning
+   49. Job Search VIII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   50. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Capital
+  Household Problems
  </span>
 </p>
-<ul class="current nav bd-sidenav nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   51. Cass-Koopmans Model
-  </a>
- </li>
- <li class="toctree-l1 current active active">
-  <a class="current reference internal" href="#">
-   52. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_fiscal.html">
-   53. Cass-Koopmans Model with Distorting Taxes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_fiscal_2.html">
-   54. Two-Country Model with Distorting Taxes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ak2.html">
-   55. Transitions in an Overlapping Generations Model
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cake_eating_problem.html">
-   56. Cake Eating I: Introduction to Optimal Saving
+  <a class="reference internal" href="cake_eating.html">
+   51. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   57. Cake Eating II: Numerical Methods
+   52. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="optgrowth.html">
-   58. Optimal Growth I: The Stochastic Optimal Growth Model
+  <a class="reference internal" href="cake_eating_stochastic.html">
+   53. Cake Eating III: Stochastic Dynamics
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="optgrowth_fast.html">
-   59. Optimal Growth II: Accelerating the Code with Numba
+  <a class="reference internal" href="cake_eating_time_iter.html">
+   54. Cake Eating IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="coleman_policy_iter.html">
-   60. Optimal Growth III: Time Iteration
+  <a class="reference internal" href="cake_eating_egm.html">
+   55. Cake Eating V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="egm_policy_iter.html">
-   61. Optimal Growth IV: The Endogenous Grid Method
+  <a class="reference internal" href="cake_eating_egm_jax.html">
+   56. Cake Eating VI: EGM with JAX
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   62. The Income Fluctuation Problem I: Basic Model
+   57. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   63. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   58. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1576,32 +1551,64 @@ years, and define a new function for <span class="math notranslate nohighlight">
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   64. LQ Control: Foundations
+   59. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   65. Lagrangian for LQ Control
+   60. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   66. Eliminating Cross Products
+   61. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   67. The Permanent Income Model
+   62. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   68. Permanent Income II: LQ Techniques
+   63. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   69. Production Smoothing via Inventories
+   64. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Optimal Growth
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   65. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   66. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   67. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal_2.html">
+   68. Two-Country Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   69. Transitions in an Overlapping Generations Model
   </a>
  </li>
 </ul>

@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# Job Search III: Fitted Value Function Iteration
+# Job Search IV: Fitted Value Function Iteration
 
 ```{contents} Contents
 :depth: 2
