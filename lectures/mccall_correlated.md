@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# Job Search IV: Correlated Wage Offers
+# Job Search V: Correlated Wage Offers
 
 ```{contents} Contents
 :depth: 2
