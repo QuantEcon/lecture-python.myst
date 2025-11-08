@@ -37,19 +37,18 @@ We'll also use JAX's `vmap` function to fully vectorize the Coleman-Reffett oper
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-from typing import NamedTuple
-
 import matplotlib.pyplot as plt
 import jax
 import jax.numpy as jnp
 import quantecon as qe
+from typing import NamedTuple
 ```
 
 ## Implementation
 
-For details on the endogenous grid method, please see {doc}`cake_eating_egm`.
+For details on the savings problem and the endogenous grid method (EGM), please see {doc}`cake_eating_egm`.
 
-Here we focus on the JAX implementation.
+Here we focus on the JAX implementation of EGM.
 
 We use the same setting as in {doc}`cake_eating_egm`:
 
@@ -222,16 +221,17 @@ ax.legend()
 plt.show()
 ```
 
-The fit is excellent.
+The fit is very good.
 
 ```{code-cell} python3
-print(f"Maximum absolute deviation: {jnp.max(jnp.abs(σ - σ_star(x, model.α, model.β))):.6e}")
+max_dev = jnp.max(jnp.abs(σ - σ_star(x, model.α, model.β)))
+print(f"Maximum absolute deviation: {max_dev:.7}")
 ```
 
 The JAX implementation is very fast thanks to JIT compilation and vectorization.
 
 ```{code-cell} python3
-with qe.Timer():
+with qe.Timer(precision=8):
     σ = solve_model_time_iter(model, σ_init).block_until_ready()
 ```
 
@@ -250,7 +250,7 @@ This speed comes from:
 Solve the stochastic cake eating problem with CRRA utility
 
 $$
-u(c) = \frac{c^{1 - \gamma} - 1}{1 - \gamma}
+    u(c) = \frac{c^{1 - \gamma} - 1}{1 - \gamma}
 $$
 
 Compare the optimal policies for values of $\gamma$ approaching 1 from above (e.g., 1.05, 1.1, 1.2).
@@ -375,8 +375,6 @@ ax.set_title('Optimal policies: CRRA utility approaching log case')
 plt.show()
 ```
 
-Since the endogenous grids are similar for $\gamma$ values close to 1, the policies overlap nicely.
-
 Note that the plots for $\gamma > 1$ do not cover the entire x-axis range shown.
 
 This is because the endogenous grid $x = k + \sigma(k)$ depends on the consumption policy, which varies with $\gamma$.
@@ -386,7 +384,7 @@ Let's check the maximum deviation between the log utility case ($\gamma = 1.0$) 
 ```{code-cell} python3
 for γ in [1.05, 1.1, 1.2]:
     max_diff = jnp.max(jnp.abs(policies[1.0] - policies[γ]))
-    print(f"Max difference between γ=1.0 and γ={γ}: {max_diff:.6e}")
+    print(f"Max difference between γ=1.0 and γ={γ}: {max_diff:.6}")
 ```
 
 As expected, the differences decrease as $\gamma$ approaches 1 from above, confirming convergence.
