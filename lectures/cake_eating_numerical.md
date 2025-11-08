@@ -49,7 +49,6 @@ We will use the following imports:
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import minimize_scalar, bisect
-from collections import namedtuple
 from typing import NamedTuple
 ```
 
@@ -180,7 +179,10 @@ We'll store the parameters $\beta$ and $\gamma$ and the grid in a
 
 ```{code-cell} python3
 # Create model data structure
-Model = namedtuple('Model', ('β', 'γ', 'x_grid'))
+class Model(NamedTuple):
+    β: float
+    γ: float
+    x_grid: np.ndarray
 
 def create_cake_eating_model(β=0.96,           # discount factor
                               γ=1.5,            # degree of relative risk aversion
@@ -448,7 +450,7 @@ However, both changes will lead to a longer compute time.
 Another possibility is to use an alternative algorithm, which offers the
 possibility of faster compute time and, at the same time, more accuracy.
 
-We explore this next.
+We explore this {doc}`soon <cake_eating_time_iter>`.
 
 
 ## Exercises
