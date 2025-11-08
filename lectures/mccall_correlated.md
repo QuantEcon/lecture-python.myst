@@ -201,7 +201,6 @@ def create_job_search_model(μ=0.0, s=1.0, d=0.0, ρ=0.9, σ=0.1, β=0.98, c=5.0
 Next we implement the $Q$ operator.
 
 ```{code-cell} ipython3
-@jax.jit
 def Q(model, f_in):
     """
     Apply the operator Q.
@@ -243,12 +242,12 @@ def compute_fixed_point(model, tol=1e-4, max_iter=1000):
     Compute an approximation to the fixed point of Q.
     """
     
-    def cond_fun(state):
-        f, i, error = state
+    def cond_fun(loop_state):
+        f, i, error = loop_state
         return jnp.logical_and(error > tol, i < max_iter)
     
-    def body_fun(state):
-        f, i, error = state
+    def body_fun(loop_state):
+        f, i, error = loop_state
         f_new = Q(model, f)
         error_new = jnp.max(jnp.abs(f_new - f))
         return f_new, i + 1, error_new
@@ -259,7 +258,8 @@ def compute_fixed_point(model, tol=1e-4, max_iter=1000):
     
     # Run iteration
     f_final, iterations, final_error = jax.lax.while_loop(
-        cond_fun, body_fun, init_state)
+        cond_fun, body_fun, init_state
+    )
     
     return f_final
 ```
@@ -279,8 +279,9 @@ Next we will compute and plot the reservation wage function defined in {eq}`corr
 res_wage_function = jnp.exp(f_star * (1 - model.β))
 
 fig, ax = plt.subplots()
-ax.plot(model.z_grid, res_wage_function, 
-            label="reservation wage given $z$")
+ax.plot(
+    model.z_grid, res_wage_function, label="reservation wage given $z$"
+)
 ax.set(xlabel="$z$", ylabel="wage")
 ax.legend()
 plt.show()
@@ -321,10 +322,12 @@ Next we study how mean unemployment duration varies with unemployment compensati
 For simplicity we’ll fix the initial state at $z_t = 0$.
 
 ```{code-cell} ipython3
-def compute_unemployment_duration(model, 
-                        key=jr.PRNGKey(1234), num_reps=100_000):
+def compute_unemployment_duration(
+        model, key=jr.PRNGKey(1234), num_reps=100_000
+    ):
     """
     Compute expected unemployment duration.
+
     """
     f_star = compute_fixed_point(model)
     μ, s, d = model.μ, model.s, model.d
@@ -337,12 +340,12 @@ def compute_unemployment_duration(model,
 
     @jax.jit
     def draw_τ(key, t_max=10_000):
-        def cond_fun(state):
-            z, t, unemployed, key = state
+        def cond_fun(loop_state):
+            z, t, unemployed, key = loop_state
             return jnp.logical_and(unemployed, t < t_max)
         
-        def body_fun(state):
-            z, t, unemployed, key = state
+        def body_fun(loop_state):
+            z, t, unemployed, key = loop_state
             key1, key2, key = jr.split(key, 3)
             
             # Draw current wage
@@ -362,7 +365,7 @@ def compute_unemployment_duration(model,
             
             return z_new, t_new, unemployed_new, key
         
-        # Initial state: (z, t, unemployed, key)
+        # Initial loop_state: (z, t, unemployed, key)
         init_state = (0.0, 0, True, key)
         z_final, t_final, unemployed_final, _ = jax.lax.while_loop(
             cond_fun, body_fun, init_state)
