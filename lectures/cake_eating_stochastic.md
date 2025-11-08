@@ -37,25 +37,42 @@ We can think of this cake as a harvest that regrows if we save some seeds.
 Specifically, if we save (invest) part of today's cake, it grows into next
 period's cake according to a stochastic production process.
 
-This extension introduces several new elements:
+```{note}
+The term "cake eating" is not such a good fit now that we have a stochastic and
+potentially growing state.
+
+Nonetheless, we'll continue to refer to cake eating to maintain flow from the
+previous lectures.
+
+Soon we'll move to more ambitious optimal savings/consumption problems and adopt
+new terminology.
+
+This lecture serves as a bridge between cake eating and the more ambitious
+problems.
+```
+
+The extensions in this lecture introduce several new elements:
 
 * nonlinear returns to saving, through a production function, and
 * stochastic returns, due to shocks to production.
 
 Despite these additions, the model remains relatively tractable.
 
-We solve the model using dynamic programming and value function iteration (VFI).
+As a first pass, we will solve the model using dynamic programming and value function iteration (VFI).
 
-This lecture is connected to stochastic dynamic optimization theory, although we do not
-consider multiple agents at this point.
+```{note}
+In later lectures we'll explore more efficient methods for this class of problems.
 
-It serves as a bridge between the simple deterministic cake eating
-problem and more sophisticated stochastic consumption-saving models studied in
+At the same time, VFI is foundational and globally convergent.
 
-* {cite}`StokeyLucas1989`, chapter 2
-* {cite}`Ljungqvist2012`, section 3.1
-* [EDTC](https://johnstachurski.net/edtc.html), chapter 1
-* {cite}`Sundaram1996`, chapter 12
+Hence we want to be sure we can use this method too.
+```
+
+More information on this savings problem can be found in
+
+* {cite}`Ljungqvist2012`, Section 3.1
+* [EDTC](https://johnstachurski.net/edtc.html), Chapter 1
+* {cite}`Sundaram1996`, Chapter 12
 
 Let's start with some imports:
 
@@ -281,9 +298,8 @@ The term $\int v(f(x - c) z) \phi(dz)$ can be understood as the expected next pe
 * the state is $x$
 * consumption is set to $c$
 
-As shown in [EDTC](https://johnstachurski.net/edtc.html), theorem 10.1.11 and a range of other texts
-
-> *The value function* $v^*$ *satisfies the Bellman equation*
+As shown in [EDTC](https://johnstachurski.net/edtc.html), theorem 10.1.11 and a range of other texts,
+the value function $v^*$ satisfies the Bellman equation.
 
 In other words, {eq}`fpb30` holds when $v=v^*$.
 
@@ -420,12 +436,17 @@ In practice economists often work with unbounded utility functions --- and so wi
 
 In the unbounded setting, various optimality theories exist.
 
-Unfortunately, they tend to be case-specific, as opposed to valid for a large range of applications.
-
 Nevertheless, their main conclusions are usually in line with those stated for
 the bounded case just above (as long as we drop the word "bounded").
 
-Consult,  for example, section 12.2 of [EDTC](https://johnstachurski.net/edtc.html), {cite}`Kamihigashi2012` or {cite}`MV2010`.
+```{note}
+
+Consult the following references for more on the unbounded case:
+
+* The lecture {doc}`ifp_advanced`.
+* Section 12.2 of [EDTC](https://johnstachurski.net/edtc.html).
+```
+
 
 ## Computation
 
@@ -819,7 +840,6 @@ utility specification.
 
 Setting $\gamma = 1.5$, compute and plot an estimate of the optimal policy.
 
-Time how long this function takes to run.
 ```
 
 ```{solution-start} og_ex1
@@ -859,36 +879,3 @@ plt.show()
 ```{solution-end}
 ```
 
-```{exercise}
-:label: og_ex2
-
-Time how long it takes to iterate with the Bellman operator
-20 times, starting from initial condition $v(x) = u(x)$.
-
-Use the model specification in the previous exercise.
-
-```
-
-```{solution-start} og_ex2
-:class: dropdown
-```
-
-Let's set up:
-
-```{code-cell} ipython3
-model = create_model(u=u_crra, f=fcd)
-v = model.u(model.grid)
-```
-
-Here's the timing:
-
-```{code-cell} ipython3
-%%time
-
-for i in range(20):
-    v_greedy, v_new = T(v, model)
-    v = v_new
-```
-
-```{solution-end}
-```
