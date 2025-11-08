@@ -251,7 +251,7 @@ convergence (as measured by the distance $\rho$).
 ### Using an Endogenous Grid
 
 In the study of that model we found that it was possible to further
-accelerate time iteration via the {doc}`endogenous grid method <egm_policy_iter>`.
+accelerate time iteration via the {doc}`endogenous grid method <cake_eating_egm>`.
 
 We will use the same method here.
 
