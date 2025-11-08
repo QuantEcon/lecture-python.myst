@@ -22,7 +22,7 @@ kernelspec:
 
 
 
-# Job Search with Separation and Markov Wages
+# Job Search III: Search with Separation and Markov Wages
 
 ```{index} single: An Introduction to Job Search
 ```
