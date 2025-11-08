@@ -44,6 +44,7 @@ Let's start with some standard imports:
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
+import quantecon as qe
 ```
 
 ## Key Idea
@@ -169,17 +170,17 @@ We reuse the `Model` structure from {doc}`Cake Eating IV <cake_eating_time_iter>
 from typing import NamedTuple, Callable
 
 class Model(NamedTuple):
-    u: Callable        # utility function
-    f: Callable        # production function
-    β: float           # discount factor
-    μ: float           # shock location parameter
-    s: float           # shock scale parameter
-    grid: np.ndarray   # state grid
-    shocks: np.ndarray # shock draws
-    α: float = 0.4     # production function parameter
-    u_prime: Callable = None        # derivative of utility
-    f_prime: Callable = None        # derivative of production
-    u_prime_inv: Callable = None    # inverse of u_prime
+    u: Callable           # utility function
+    f: Callable           # production function
+    β: float              # discount factor
+    μ: float              # shock location parameter
+    s: float              # shock scale parameter
+    grid: np.ndarray      # state grid
+    shocks: np.ndarray    # shock draws
+    α: float              # production function parameter
+    u_prime: Callable     # derivative of utility
+    f_prime: Callable     # derivative of production
+    u_prime_inv: Callable # inverse of u_prime
 
 
 def create_model(u: Callable,
@@ -322,16 +323,13 @@ The maximal absolute deviation between the two policies is
 np.max(np.abs(σ - σ_star(x, model.α, model.β)))
 ```
 
-How long does it take to converge?
+Here's the execution time:
 
 ```{code-cell} python3
-%%timeit -n 3 -r 1
-σ = solve_model_time_iter(model, σ_init, verbose=False)
+with qe.Timer():
+    σ = solve_model_time_iter(model, σ_init, verbose=False)
 ```
 
-Relative to time iteration, which was already found to be highly efficient, EGM
-has managed to shave off still more run time without compromising accuracy.
+EGM is faster than time iteration because it avoids numerical root-finding.
 
-This is due to the lack of a numerical root-finding step.
-
-We can now solve the stochastic cake eating problem at given parameters extremely fast.
+Instead, we invert the marginal utility function directly, which is much more efficient.

@@ -62,6 +62,7 @@ Let's start with some imports:
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import brentq
+from typing import NamedTuple, Callable
 ```
 
 ## The Euler Equation
@@ -285,8 +286,6 @@ For this we need access to the functions $u'$ and $f, f'$.
 We use the same `Model` structure from {doc}`Cake Eating III <cake_eating_stochastic>`.
 
 ```{code-cell} python3
-from typing import NamedTuple, Callable
-
 class Model(NamedTuple):
     u: Callable        # utility function
     f: Callable        # production function
@@ -481,17 +480,13 @@ The maximal absolute deviation between the two policies is
 np.max(np.abs(σ - σ_star(model.grid, model.α, model.β)))
 ```
 
-How long does it take to converge?
+Time iteration runs faster than value function iteration, as discussed in {doc}`cake_eating_stochastic`.
 
-```{code-cell} python3
-%%timeit -n 3 -r 1
-σ = solve_model_time_iter(model, σ_init, verbose=False)
-```
+This is because time iteration exploits differentiability and the first order conditions, while value function iteration does not use this available structure.
 
-Convergence is very fast, even compared to the JIT-compiled value function iteration we used in {doc}`Cake Eating III <cake_eating_stochastic>`.
+At the same time, there is a variation of time iteration that runs even faster.
 
-Overall, we find that time iteration provides a very high degree of efficiency
-and accuracy for the stochastic cake eating problem.
+This is the endogenous grid method, which we will introduce in {doc}`cake_eating_egm`.
 
 ## Exercises
 
