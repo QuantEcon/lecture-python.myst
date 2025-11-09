@@ -353,10 +353,11 @@ u_prime_inv = lambda c, γ: c**(-1/γ)
 ```{code-cell} python3
 def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     """
-    The Coleman-Reffett operator for the IFP model using the Endogenous Grid Method.
+    The Coleman-Reffett operator for the IFP model using the
+    Endogenous Grid Method.
 
-    This operator implements one iteration of the EGM algorithm to update the
-    consumption policy function.
+    This operator implements one iteration of the EGM algorithm to
+    update the consumption policy function.
 
     Parameters
     ----------
@@ -374,8 +375,10 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     Algorithm
     ---------
     The EGM works backwards from next period:
-    1. Given σ(a', z'), compute current consumption c that satisfies Euler equation
-    2. Compute the endogenous current asset level a that leads to (c, a')
+    1. Given σ(a', z'), compute current consumption c that
+       satisfies Euler equation
+    2. Compute the endogenous current asset level a that leads
+       to (c, a')
     3. Interpolate back to exogenous grid to get σ_new(a, z)
     """
     R, β, γ, Π, z_grid, asset_grid = ifp
@@ -386,7 +389,8 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
         """
         Compute updated consumption policy for income state z_j.
 
-        The asset_grid here represents a' (next period assets), not current assets.
+        The asset_grid here represents a' (next period assets),
+        not current assets.
         """
 
         # Step 1: Compute expected marginal utility of consumption tomorrow
@@ -396,12 +400,14 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
         # where the expectation is over tomorrow's income state z'
         # conditional on today's income state z_j
 
-        u_prime_vals = u_prime(σ, γ)  # u'(σ(a', z')) for all (a', z')
-                                       # Shape: (n_a, n_z) where n_a is # of a' values
+        # u'(σ(a', z')) for all (a', z')
+        # Shape: (n_a, n_z) where n_a is # of a' values
+        u_prime_vals = u_prime(σ, γ)
 
-        expected_marginal = u_prime_vals @ Π[j, :]  # Matrix multiply to get expectation
-                                                      # Π[j, :] are transition probs from z_j
-                                                      # Result shape: (n_a,) - one value per a'
+        # Matrix multiply to get expectation
+        # Π[j, :] are transition probs from z_j
+        # Result shape: (n_a,) - one value per a'
+        expected_marginal = u_prime_vals @ Π[j, :]
 
         # Step 2: Use Euler equation to find today's consumption
         # -------------------------------------------------------
@@ -418,13 +424,14 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
         # --------------------------------------------------
         # The budget constraint is: a_{t+1} + c_t = R * a_t + Y_t
         # Rearranging: a_t = (a_{t+1} + c_t - Y_t) / R
-        # For each (a'_i, c_i) pair, find the current asset level a^e_i that
-        # makes this budget constraint hold
+        # For each (a'_i, c_i) pair, find the current asset
+        # level a^e_i that makes this budget constraint hold
 
+        # asset_grid[i] is a'_i, c_vals[i] is c_i
+        # y(z_grid[j]) is income today
+        # a_endogenous[i] is the current asset level that
+        # leads to this (c_i, a'_i) pair. Shape: (n_a,)
         a_endogenous = (1/R) * (asset_grid + c_vals - y(z_grid[j]))
-        # asset_grid[i] is a'_i, c_vals[i] is c_i, y(z_grid[j]) is income today
-        # a_endogenous[i] is the current asset level that leads to this (c_i, a'_i) pair
-        # Shape: (n_a,)
 
         # Step 4: Interpolate back to exogenous grid
         # -------------------------------------------
@@ -547,7 +554,9 @@ R, β, γ, Π, z_grid, asset_grid = ifp_cake_eating
 
 fig, ax = plt.subplots()
 ax.plot(asset_grid, σ_star[:, 0], label='numerical')
-ax.plot(asset_grid, c_star(asset_grid, ifp_cake_eating.β, ifp_cake_eating.γ), '--', label='analytical')
+ax.plot(asset_grid,
+        c_star(asset_grid, ifp_cake_eating.β, ifp_cake_eating.γ),
+        '--', label='analytical')
 ax.set(xlabel='assets', ylabel='consumption')
 ax.legend()
 plt.show()
@@ -581,13 +590,15 @@ Your figure should show that higher interest rates boost savings and suppress co
 Here's one solution:
 
 ```{code-cell} python3
-r_vals = np.linspace(0, 0.04, 2.0)
+r_vals = np.linspace(0, 0.04, 4)
 
 fig, ax = plt.subplots()
 for r_val in r_vals:
-    ifp = IFP(r=r_val)
+    ifp = create_ifp(r=r_val)
+    R, β, γ, Π, z_grid, asset_grid = ifp
+    σ_init = R * asset_grid[:, None] + y(z_grid)
     σ_star = solve_model(ifp, σ_init)
-    ax.plot(ifp.asset_grid, σ_star[:, 0], label=f'$r = {r_val:.3f}$')
+    ax.plot(asset_grid, σ_star[:, 0], label=f'$r = {r_val:.3f}$')
 
 ax.set(xlabel='asset level', ylabel='consumption (low income)')
 ax.legend()
@@ -608,11 +619,11 @@ default parameters.
 The following figure is a 45 degree diagram showing the law of motion for assets when consumption is optimal
 
 ```{code-cell} python3
-ifp = IFP()
-
+ifp = create_ifp()
+R, β, γ, Π, z_grid, asset_grid = ifp
+σ_init = R * asset_grid[:, None] + y(z_grid)
 σ_star = solve_model(ifp, σ_init)
-a = ifp.asset_grid
-R = ifp.R
+a = asset_grid
 
 fig, ax = plt.subplots()
 for z, lb in zip((0, 1), ('low income', 'high income')):
@@ -663,36 +674,39 @@ Your task is to generate such a histogram.
 First we write a function to compute a long asset series.
 
 ```{code-cell} python3
-def compute_asset_series(ifp, T=500_000, seed=1234):
+def compute_asset_series(ifp, σ_init, T=500_000, seed=1234):
     """
     Simulates a time series of length T for assets, given optimal
     savings behavior.
 
     ifp is an instance of IFP
     """
-    P, y, R = ifp.P, ifp.y, ifp.R  # Simplify names
+    R, β, γ, Π, z_grid, asset_grid = ifp
 
     # Solve for the optimal policy
-    σ_star = solve_model_time_iter(ifp, σ_init, verbose=False)
-    σ = lambda a, z: np.interp(a, ifp.asset_grid, σ_star[:, z])
+    σ_star = solve_model(ifp, σ_init)
+    σ = lambda a, z: np.interp(a, asset_grid, σ_star[:, z])
 
     # Simulate the exogeneous state process
-    mc = MarkovChain(P)
+    mc = MarkovChain(Π)
     z_seq = mc.simulate(T, random_state=seed)
 
     # Simulate the asset path
     a = np.zeros(T+1)
     for t in range(T):
-        z = z_seq[t]
-        a[t+1] = R * (a[t] - σ(a[t], z)) + y[z]
+        z_idx = z_seq[t]
+        z_val = z_grid[z_idx]
+        a[t+1] = R * a[t] + y(z_val) - σ(a[t], z_idx)
     return a
 ```
 
 Now we call the function, generate the series and then histogram it:
 
 ```{code-cell} python3
-ifp = IFP()
-a = compute_asset_series(ifp)
+ifp = create_ifp()
+R, β, γ, Π, z_grid, asset_grid = ifp
+σ_init = R * asset_grid[:, None] + y(z_grid)
+a = compute_asset_series(ifp, σ_init)
 
 fig, ax = plt.subplots()
 ax.hist(a, bins=20, alpha=0.5, density=True)
@@ -750,8 +764,10 @@ fig, ax = plt.subplots()
 asset_mean = []
 for r in r_vals:
     print(f'Solving model at r = {r}')
-    ifp = IFP(r=r)
-    mean = np.mean(compute_asset_series(ifp, T=250_000))
+    ifp = create_ifp(r=r)
+    R, β, γ, Π, z_grid, asset_grid = ifp
+    σ_init = R * asset_grid[:, None] + y(z_grid)
+    mean = np.mean(compute_asset_series(ifp, σ_init, T=250_000))
     asset_mean.append(mean)
 ax.plot(asset_mean, r_vals)
 
