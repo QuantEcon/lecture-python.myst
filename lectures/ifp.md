@@ -58,7 +58,9 @@ We'll need the following imports:
 import matplotlib.pyplot as plt
 import numpy as np
 from quantecon import MarkovChain
+import jax
 import jax.numpy as jnp
+from typing import NamedTuple
 ```
 
 ### References
@@ -306,13 +308,12 @@ Here we build a class called `IFP` that stores the model primitives.
 
 ```{code-cell} python3
 class IFP(NamedTuple):
-    R: float,               # Interest rate 1 + r
-    β: float,               # Discount factor
-    γ: float,               # Preference parameter
-    Π: jnp.array            # Markov matrix
-    z_grid: jnp.array       # Markov state values for Z_t
-    asset_grid: jnp.array   # Exogenous asset grid 
-]
+    R: float               # Interest rate 1 + r
+    β: float               # Discount factor
+    γ: float               # Preference parameter
+    Π: jnp.ndarray         # Markov matrix
+    z_grid: jnp.ndarray    # Markov state values for Z_t
+    asset_grid: jnp.ndarray   # Exogenous asset grid
 
 def create_ifp(r=0.01,
                β=0.96,
@@ -323,11 +324,12 @@ def create_ifp(r=0.01,
                asset_grid_max=16,
                asset_grid_size=50):
 
-    assert self.R * self.β < 1, "Stability condition violated."
-    
     asset_grid = jnp.linspace(0, asset_grid_max, asset_grid_size)
     Π, z_grid = jnp.array(Π), jnp.array(z_grid)
     R = 1 + r
+
+    assert R * β < 1, "Stability condition violated."
+
     return IFP(R=R, β=β, γ=γ, Π=Π, z_grid=z_grid, asset_grid=asset_grid)
 
 # Set y(z) = exp(z)
@@ -351,29 +353,111 @@ u_prime_inv = lambda c, γ: c**(-1/γ)
 ```{code-cell} python3
 def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     """
-    The Coleman-Reffett operator for the IFP model using EGM
+    The Coleman-Reffett operator for the IFP model using the Endogenous Grid Method.
 
+    This operator implements one iteration of the EGM algorithm to update the
+    consumption policy function.
+
+    Parameters
+    ----------
+    σ : jnp.ndarray, shape (n_a, n_z)
+        Current guess of consumption policy where σ[i, j] is consumption
+        when assets = asset_grid[i] and income state = z_grid[j]
+    ifp : IFP
+        Model parameters
+
+    Returns
+    -------
+    σ_new : jnp.ndarray, shape (n_a, n_z)
+        Updated consumption policy
+
+    Algorithm
+    ---------
+    The EGM works backwards from next period:
+    1. Given σ(a', z'), compute current consumption c that satisfies Euler equation
+    2. Compute the endogenous current asset level a that leads to (c, a')
+    3. Interpolate back to exogenous grid to get σ_new(a, z)
     """
     R, β, γ, Π, z_grid, asset_grid = ifp
+    n_a = len(asset_grid)
+    n_z = len(z_grid)
 
-    # Determine endogenous grid associated with consumption choices in σ_array
-    ae = (1/R) (σ_array + a_grid - y(z_grid))
+    def compute_c_for_state(j):
+        """
+        Compute updated consumption policy for income state z_j.
 
-    # Linear interpolation of policy using endogenous grid.  
-    def σ_interp(ap):
-        return [jnp.interp(ap, ae[:, j], σ[:, j]) for j in range(len(z_grid))]
+        The asset_grid here represents a' (next period assets), not current assets.
+        """
 
-    # Define function to compute consumption at a single grid pair (a'_i, z_j)
-    def compute_c(i, j):
-        ap = ae[i]
-        rhs = jnp.sum( u_prime(σ_interp(ap)) * Π[j, :] )
-        return u_prime_inv(β * R * rhs)
+        # Step 1: Compute expected marginal utility of consumption tomorrow
+        # ----------------------------------------------------------------
+        # For each level of a' (next period assets), compute:
+        # E_j[u'(c_{t+1})] = Σ_{z'} u'(σ(a', z')) * Π(z_j, z')
+        # where the expectation is over tomorrow's income state z'
+        # conditional on today's income state z_j
 
-    # Vectorize over grid using vmap
-    compute_c_vectorized = jax.vmap(compute_c)
-    next_σ_array = compute_c_vectorized(asset_grid, z_grid)
+        u_prime_vals = u_prime(σ, γ)  # u'(σ(a', z')) for all (a', z')
+                                       # Shape: (n_a, n_z) where n_a is # of a' values
 
-    return next_σ_array
+        expected_marginal = u_prime_vals @ Π[j, :]  # Matrix multiply to get expectation
+                                                      # Π[j, :] are transition probs from z_j
+                                                      # Result shape: (n_a,) - one value per a'
+
+        # Step 2: Use Euler equation to find today's consumption
+        # -------------------------------------------------------
+        # The Euler equation is: u'(c_t) = β R E_t[u'(c_{t+1})]
+        # Inverting: c_t = (u')^{-1}(β R E_t[u'(c_{t+1})])
+        # This gives consumption today (c_ij) for each next period asset a'_i
+
+        c_vals = u_prime_inv(β * R * expected_marginal, γ)
+        # c_vals[i] is consumption today that's optimal when planning to
+        # have a'_i assets tomorrow, given income state z_j today
+        # Shape: (n_a,)
+
+        # Step 3: Compute endogenous grid of current assets
+        # --------------------------------------------------
+        # The budget constraint is: a_{t+1} + c_t = R * a_t + Y_t
+        # Rearranging: a_t = (a_{t+1} + c_t - Y_t) / R
+        # For each (a'_i, c_i) pair, find the current asset level a^e_i that
+        # makes this budget constraint hold
+
+        a_endogenous = (1/R) * (asset_grid + c_vals - y(z_grid[j]))
+        # asset_grid[i] is a'_i, c_vals[i] is c_i, y(z_grid[j]) is income today
+        # a_endogenous[i] is the current asset level that leads to this (c_i, a'_i) pair
+        # Shape: (n_a,)
+
+        # Step 4: Interpolate back to exogenous grid
+        # -------------------------------------------
+        # We now have consumption as a function of the *endogenous* grid a^e
+        # But we need it on the *exogenous* grid (asset_grid)
+        # Use linear interpolation: σ_new(a) ≈ c(a) where a ∈ asset_grid
+
+        σ_new = jnp.interp(asset_grid, a_endogenous, c_vals)
+        # For each point in asset_grid, interpolate to find consumption
+        # Shape: (n_a,)
+
+        # Step 5: Handle borrowing constraint
+        # ------------------------------------
+        # For asset levels below the minimum endogenous grid point,
+        # the household is constrained and consumes all available resources
+        # c = R*a + y(z) (save nothing)
+
+        σ_new = jnp.where(asset_grid < a_endogenous[0],
+                          R * asset_grid + y(z_grid[j]),
+                          σ_new)
+        # When a < a_endogenous[0], set c = R*a + y (consume everything)
+
+        return σ_new  # Shape: (n_a,)
+
+    # Vectorize computation over all income states using vmap
+    # --------------------------------------------------------
+    # Instead of a Python loop over j, use JAX's vmap for efficiency
+    # This computes compute_c_for_state(j) for all j in parallel
+
+    σ_new = jax.vmap(compute_c_for_state)(jnp.arange(n_z))
+    # Result shape: (n_z, n_a) - one row per income state
+
+    return σ_new.T  # Transpose to get (n_a, n_z) to match input format
 ```
 
 
@@ -395,7 +479,7 @@ def solve_model(ifp: IFP,
 
     def body(loop_state):
         i, σ, error = loop_state
-        σ_new = K(σ, model)
+        σ_new = K(σ, ifp)
         error = jnp.max(jnp.abs(σ_new - σ))
         return i + 1, σ_new, error
 
@@ -413,9 +497,9 @@ def solve_model(ifp: IFP,
 Let's road test the EGM code.
 
 ```{code-cell} python3
-ifp = IFP()
+ifp = create_ifp()
 R, β, γ, Π, z_grid, asset_grid = ifp
-σ_init = R * a_grid + z_grid
+σ_init = R * asset_grid[:, None] + y(z_grid)
 σ_star = solve_model(ifp, σ_init)
 ```
 
@@ -424,8 +508,8 @@ Here's a plot of the optimal policy for each $z$ state
 
 ```{code-cell} python3
 fig, ax = plt.subplots()
-ax.plot(a_grid, σ_star[:, 0], label='bad state')
-ax.plot(a_grid, σ_star[:, 1], label='good state')
+ax.plot(asset_grid, σ_star[:, 0], label='bad state')
+ax.plot(asset_grid, σ_star[:, 1], label='good state')
 ax.set(xlabel='assets', ylabel='consumption')
 ax.legend()
 plt.show()
@@ -456,14 +540,14 @@ def v_star(x, β, γ):
 Let's see if we match up:
 
 ```{code-cell} python3
-ifp_cake_eating = IFP(r=0.0, z_grid=(-jnp.inf, -jnp.inf))
+ifp_cake_eating = create_ifp(r=0.0, z_grid=(-jnp.inf, -jnp.inf))
 R, β, γ, Π, z_grid, asset_grid = ifp_cake_eating
-σ_init = R * a_grid + z_grid
-σ_star = solve_model_time_iter(ifp_cake_eating, σ_init)
+σ_init = R * asset_grid[:, None] + y(z_grid)
+σ_star = solve_model(ifp_cake_eating, σ_init)
 
 fig, ax = plt.subplots()
-ax.plot(a_grid, σ_star[:, 0], label='numerical')
-ax.plot(a_grid, c_star(a_grid, ifp.β, ifp.γ), '--', label='analytical')
+ax.plot(asset_grid, σ_star[:, 0], label='numerical')
+ax.plot(asset_grid, c_star(asset_grid, ifp_cake_eating.β, ifp_cake_eating.γ), '--', label='analytical')
 ax.set(xlabel='assets', ylabel='consumption')
 ax.legend()
 plt.show()
