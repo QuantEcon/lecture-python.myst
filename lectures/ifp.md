@@ -114,7 +114,7 @@ The timing here is as follows:
 
 Non-capital income $Y_t$ is given by $Y_t = y(Z_t)$, where
 
-* $\{Z_t\}$ is an exogeneous state process and
+* $\{Z_t\}$ is an exogenous state process and
 * $y$ is a given function taking values in $\mathbb{R}_+$.
 
 As is common in the literature, we take $\{Z_t\}$ to be a finite state
@@ -258,7 +258,7 @@ We aim to find a fixed point $\sigma$ of {eq}`eqeul1`.
 
 To do so we use the EGM.
 
-We begin with an exogeneous grid $G = \{a'_0, \ldots, a'_{m-1}\}$ with $a'_0 = 0$.
+We begin with an exogenous grid $G = \{a'_0, \ldots, a'_{m-1}\}$ with $a'_0 = 0$.
 
 Fix a current guess of the policy function $\sigma$. 
 
@@ -306,42 +306,41 @@ $$
 
 Here we build a class called `IFP` that stores the model primitives.
 
-```{code-cell} python3
+```{code-cell} ipython
 class IFP(NamedTuple):
-    R: float               # Interest rate 1 + r
-    β: float               # Discount factor
-    γ: float               # Preference parameter
-    Π: jnp.ndarray         # Markov matrix
-    z_grid: jnp.ndarray    # Markov state values for Z_t
+    R: float                  # Gross interest rate R = 1 + r
+    β: float                  # Discount factor
+    γ: float                  # Preference parameter
+    Π: jnp.ndarray            # Markov matrix for exogenous shock
+    z_grid: jnp.ndarray       # Markov state values for Z_t
     asset_grid: jnp.ndarray   # Exogenous asset grid
 
+
 def create_ifp(r=0.01,
-               β=0.96,
+               β=0.98,
                γ=1.5,
                Π=((0.6, 0.4),
-                 (0.05, 0.95)),
-               z_grid=(0.0, 0.1),
-               asset_grid_max=16,
+                  (0.05, 0.95)),
+               z_grid=(0.0, 0.2),
+               asset_grid_max=40,
                asset_grid_size=50):
 
     asset_grid = jnp.linspace(0, asset_grid_max, asset_grid_size)
     Π, z_grid = jnp.array(Π), jnp.array(z_grid)
     R = 1 + r
-
     assert R * β < 1, "Stability condition violated."
-
     return IFP(R=R, β=β, γ=γ, Π=Π, z_grid=z_grid, asset_grid=asset_grid)
 
 # Set y(z) = exp(z)
 y = jnp.exp
 ```
 
-The exogeneous state process $\{Z_t\}$ defaults to a two-state Markov chain
+The exogenous state process $\{Z_t\}$ defaults to a two-state Markov chain
 with transition matrix $\Pi$.
 
 We define utility globally:
 
-```{code-cell} python3
+```{code-cell} ipython
 # Define utility function derivatives
 u_prime = lambda c, γ: c**(-γ)
 u_prime_inv = lambda c, γ: c**(-1/γ)
@@ -350,7 +349,7 @@ u_prime_inv = lambda c, γ: c**(-1/γ)
 
 ### Solver
 
-```{code-cell} python3
+```{code-cell} ipython
 def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     """
     The Coleman-Reffett operator for the IFP model using the
@@ -362,7 +361,7 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     Parameters
     ----------
     σ : jnp.ndarray, shape (n_a, n_z)
-        Current guess of consumption policy where σ[i, j] is consumption
+        Current guess of consumption policy, σ[i, j] is consumption
         when assets = asset_grid[i] and income state = z_grid[j]
     ifp : IFP
         Model parameters
@@ -389,87 +388,44 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
         """
         Compute updated consumption policy for income state z_j.
 
-        The asset_grid here represents a' (next period assets),
-        not current assets.
+        The asset_grid here represents a' (next period assets).
+
         """
 
-        # Step 1: Compute expected marginal utility of consumption tomorrow
-        # ----------------------------------------------------------------
-        # For each level of a' (next period assets), compute:
-        # E_j[u'(c_{t+1})] = Σ_{z'} u'(σ(a', z')) * Π(z_j, z')
-        # where the expectation is over tomorrow's income state z'
-        # conditional on today's income state z_j
-
-        # u'(σ(a', z')) for all (a', z')
-        # Shape: (n_a, n_z) where n_a is # of a' values
+        # Compute u'(σ(a', z')) for all (a', z')
         u_prime_vals = u_prime(σ, γ)
 
-        # Matrix multiply to get expectation
-        # Π[j, :] are transition probs from z_j
-        # Result shape: (n_a,) - one value per a'
+        # Calculate the sum Σ_{z'} u'(σ(a', z')) * Π(z_j, z') at each a'
         expected_marginal = u_prime_vals @ Π[j, :]
 
-        # Step 2: Use Euler equation to find today's consumption
-        # -------------------------------------------------------
-        # The Euler equation is: u'(c_t) = β R E_t[u'(c_{t+1})]
-        # Inverting: c_t = (u')^{-1}(β R E_t[u'(c_{t+1})])
-        # This gives consumption today (c_ij) for each next period asset a'_i
-
+        # Use Euler equation to find today's consumption
         c_vals = u_prime_inv(β * R * expected_marginal, γ)
-        # c_vals[i] is consumption today that's optimal when planning to
-        # have a'_i assets tomorrow, given income state z_j today
-        # Shape: (n_a,)
 
-        # Step 3: Compute endogenous grid of current assets
-        # --------------------------------------------------
-        # The budget constraint is: a_{t+1} + c_t = R * a_t + Y_t
-        # Rearranging: a_t = (a_{t+1} + c_t - Y_t) / R
-        # For each (a'_i, c_i) pair, find the current asset
-        # level a^e_i that makes this budget constraint hold
-
-        # asset_grid[i] is a'_i, c_vals[i] is c_i
-        # y(z_grid[j]) is income today
-        # a_endogenous[i] is the current asset level that
-        # leads to this (c_i, a'_i) pair. Shape: (n_a,)
+        # Compute endogenous grid of current assets using the 
         a_endogenous = (1/R) * (asset_grid + c_vals - y(z_grid[j]))
 
-        # Step 4: Interpolate back to exogenous grid
-        # -------------------------------------------
-        # We now have consumption as a function of the *endogenous* grid a^e
-        # But we need it on the *exogenous* grid (asset_grid)
-        # Use linear interpolation: σ_new(a) ≈ c(a) where a ∈ asset_grid
-
+        # Interpolate back to exogenous grid
         σ_new = jnp.interp(asset_grid, a_endogenous, c_vals)
-        # For each point in asset_grid, interpolate to find consumption
-        # Shape: (n_a,)
 
-        # Step 5: Handle borrowing constraint
-        # ------------------------------------
         # For asset levels below the minimum endogenous grid point,
-        # the household is constrained and consumes all available resources
-        # c = R*a + y(z) (save nothing)
+        # the household is constrained and c = R*a + y(z) 
 
         σ_new = jnp.where(asset_grid < a_endogenous[0],
                           R * asset_grid + y(z_grid[j]),
                           σ_new)
-        # When a < a_endogenous[0], set c = R*a + y (consume everything)
 
-        return σ_new  # Shape: (n_a,)
+        return σ_new  #  Consumption over the asset grid given z[j]
 
-    # Vectorize computation over all income states using vmap
-    # --------------------------------------------------------
-    # Instead of a Python loop over j, use JAX's vmap for efficiency
-    # This computes compute_c_for_state(j) for all j in parallel
-
+    # Vectorize computation over all exogenous states using vmap
+    # Resulting shape is (n_z, n_a), so one row per income state
     σ_new = jax.vmap(compute_c_for_state)(jnp.arange(n_z))
-    # Result shape: (n_z, n_a) - one row per income state
 
-    return σ_new.T  # Transpose to get (n_a, n_z) to match input format
+    return σ_new.T  # Transpose to get (n_a, n_z) 
 ```
 
 
 
-```{code-cell} python3
+```{code-cell} ipython
 @jax.jit
 def solve_model(ifp: IFP,
                 σ_init: jnp.ndarray,
@@ -503,7 +459,7 @@ def solve_model(ifp: IFP,
 
 Let's road test the EGM code.
 
-```{code-cell} python3
+```{code-cell} ipython
 ifp = create_ifp()
 R, β, γ, Π, z_grid, asset_grid = ifp
 σ_init = R * asset_grid[:, None] + y(z_grid)
@@ -513,7 +469,7 @@ R, β, γ, Π, z_grid, asset_grid = ifp
 Here's a plot of the optimal policy for each $z$ state
 
 
-```{code-cell} python3
+```{code-cell} ipython
 fig, ax = plt.subplots()
 ax.plot(asset_grid, σ_star[:, 0], label='bad state')
 ax.plot(asset_grid, σ_star[:, 1], label='good state')
@@ -535,7 +491,7 @@ In this case, our income fluctuation problem is just a CRRA cake eating problem.
 
 Then the value function and optimal consumption policy are given by
 
-```{code-cell} python3
+```{code-cell} ipython
 def c_star(x, β, γ):
     return (1 - β ** (1/γ)) * x
 
@@ -546,7 +502,7 @@ def v_star(x, β, γ):
 
 Let's see if we match up:
 
-```{code-cell} python3
+```{code-cell} ipython
 ifp_cake_eating = create_ifp(r=0.0, z_grid=(-jnp.inf, -jnp.inf))
 R, β, γ, Π, z_grid, asset_grid = ifp_cake_eating
 σ_init = R * asset_grid[:, None] + y(z_grid)
@@ -589,8 +545,9 @@ Your figure should show that higher interest rates boost savings and suppress co
 
 Here's one solution:
 
-```{code-cell} python3
-r_vals = np.linspace(0, 0.04, 4)
+```{code-cell} ipython
+# With β=0.98, we need R*β < 1, so r < 0.0204
+r_vals = np.linspace(0, 0.015, 4)
 
 fig, ax = plt.subplots()
 for r_val in r_vals:
@@ -618,7 +575,7 @@ default parameters.
 
 The following figure is a 45 degree diagram showing the law of motion for assets when consumption is optimal
 
-```{code-cell} python3
+```{code-cell} ipython
 ifp = create_ifp()
 R, β, γ, Π, z_grid, asset_grid = ifp
 σ_init = R * asset_grid[:, None] + y(z_grid)
@@ -639,7 +596,7 @@ plt.show()
 The unbroken lines show the update function for assets at each $z$, which is
 
 $$
-a \mapsto R (a - \sigma^*(a, z)) + y(z)
+    a \mapsto R (a - \sigma^*(a, z)) + y(z)
 $$
 
 The dashed line is the 45 degree line.
@@ -671,45 +628,68 @@ Your task is to generate such a histogram.
 :class: dropdown
 ```
 
-First we write a function to compute a long asset series.
+First we write a function to simulate many households in parallel using JAX.
 
-```{code-cell} python3
-def compute_asset_series(ifp, σ_init, T=500_000, seed=1234):
+```{code-cell} ipython
+def compute_asset_stationary(ifp, σ_star, num_households=50_000, T=500, seed=1234):
     """
-    Simulates a time series of length T for assets, given optimal
-    savings behavior.
+    Simulates num_households households for T periods to approximate
+    the stationary distribution of assets.
+
+    By ergodicity, simulating many households for moderate time is equivalent
+    to simulating one household for very long time, but parallelizes better.
 
     ifp is an instance of IFP
+    σ_star is the optimal consumption policy
     """
     R, β, γ, Π, z_grid, asset_grid = ifp
+    n_z = len(z_grid)
 
-    # Solve for the optimal policy
-    σ_star = solve_model(ifp, σ_init)
-    σ = lambda a, z: np.interp(a, asset_grid, σ_star[:, z])
+    # Create interpolation function for consumption policy
+    σ_interp = lambda a, z_idx: jnp.interp(a, asset_grid, σ_star[:, z_idx])
 
-    # Simulate the exogeneous state process
-    mc = MarkovChain(Π)
-    z_seq = mc.simulate(T, random_state=seed)
+    # Simulate one household forward
+    def simulate_one_household(key):
+        # Random initial state (both z and a)
+        key1, key2, key3 = jax.random.split(key, 3)
+        z_idx = jax.random.choice(key1, n_z)
+        # Start with random assets drawn uniformly from [0, asset_grid_max/2]
+        a = jax.random.uniform(key3, minval=0.0, maxval=asset_grid[-1]/2)
 
-    # Simulate the asset path
-    a = np.zeros(T+1)
-    for t in range(T):
-        z_idx = z_seq[t]
-        z_val = z_grid[z_idx]
-        a[t+1] = R * a[t] + y(z_val) - σ(a[t], z_idx)
-    return a
+        # Simulate forward T periods
+        def step(state, key_t):
+            a_current, z_current = state
+            # Draw next shock
+            z_next = jax.random.choice(key_t, n_z, p=Π[z_current])
+            # Update assets
+            z_val = z_grid[z_next]
+            c = σ_interp(a_current, z_next)
+            a_next = R * a_current + y(z_val) - c
+            return (a_next, z_next), None
+
+        keys = jax.random.split(key2, T)
+        (a_final, _), _ = jax.lax.scan(step, (a, z_idx), keys)
+        return a_final
+
+    # Vectorize over many households
+    key = jax.random.PRNGKey(seed)
+    keys = jax.random.split(key, num_households)
+    assets = jax.vmap(simulate_one_household)(keys)
+
+    return np.array(assets)
 ```
 
-Now we call the function, generate the series and then histogram it:
+Now we call the function, generate the asset distribution and histogram it:
 
-```{code-cell} python3
+```{code-cell} ipython
 ifp = create_ifp()
 R, β, γ, Π, z_grid, asset_grid = ifp
 σ_init = R * asset_grid[:, None] + y(z_grid)
-a = compute_asset_series(ifp, σ_init)
+σ_star = solve_model(ifp, σ_init)
+assets = compute_asset_stationary(ifp, σ_star)
 
 fig, ax = plt.subplots()
-ax.hist(a, bins=20, alpha=0.5, density=True)
+ax.hist(assets, bins=20, alpha=0.5, density=True)
 ax.set(xlabel='assets')
 plt.show()
 ```
@@ -723,6 +703,8 @@ more realistic features to the model.
 
 ```{solution-end}
 ```
+
+
 
 ```{exercise-start}
 :label: ifp_ex3
@@ -756,9 +738,10 @@ stationary distribution given the interest rate.
 
 Here's one solution
 
-```{code-cell} python3
+```{code-cell} ipython
 M = 25
-r_vals = np.linspace(0, 0.02, M)
+# With β=0.98, we need R*β < 1, so R < 1/0.98 ≈ 1.0204, thus r < 0.0204
+r_vals = np.linspace(0, 0.015, M)
 fig, ax = plt.subplots()
 
 asset_mean = []
@@ -767,11 +750,14 @@ for r in r_vals:
     ifp = create_ifp(r=r)
     R, β, γ, Π, z_grid, asset_grid = ifp
     σ_init = R * asset_grid[:, None] + y(z_grid)
-    mean = np.mean(compute_asset_series(ifp, σ_init, T=250_000))
+    σ_star = solve_model(ifp, σ_init)
+    assets = compute_asset_stationary(ifp, σ_star, num_households=10_000, T=500)
+    mean = np.mean(assets)
     asset_mean.append(mean)
-ax.plot(asset_mean, r_vals)
+    print(f'  Mean assets: {mean:.4f}')
+ax.plot(r_vals, asset_mean)
 
-ax.set(xlabel='capital', ylabel='interest rate')
+ax.set(xlabel='interest rate', ylabel='capital')
 
 plt.show()
 ```
