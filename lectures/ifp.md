@@ -46,33 +46,29 @@ It is related to the decision problem in the {doc}`cake eating model <cake_eatin
 
 For example, the choice problem for the agent includes an additive income term that leads to an occasionally binding constraint.
 
-Moreover, in this and the following lectures, we will inject more realistic
-features such as correlated shocks.
+Moreover, shocks affecting the budget constraint are correlated, forcing us to
+track an extra state variable.
 
-To solve the model we will use Euler equation based time iteration, which proved
-to be {doc}`fast and accurate <cake_eating_time_iter>` in our investigation of
-the {doc}`cake eating model <cake_eating_stochastic>`.
+To solve the model we will use the endogenous grid method, which we found to be {doc}`fast and accurate <cake_eating_egm_jax>` in our investigation of cake eating.
 
-Time iteration is globally convergent under mild assumptions, even when utility is unbounded (both above and below).
 
 We'll need the following imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
 import numpy as np
-from quantecon.optimize import brentq
-from numba import jit, float64
-from numba.experimental import jitclass
 from quantecon import MarkovChain
+import jax.numpy as jnp
 ```
 
 ### References
 
-Our presentation is a simplified version of {cite}`ma2020income`.
+We skip most technical details but they can be found in {cite}`ma2020income`.
 
 Other references include {cite}`Deaton1991`, {cite}`DenHaan2010`,
 {cite}`Kuhn2013`, {cite}`Rabault2002`,  {cite}`Reiter2009`  and
 {cite}`SchechtmanEscudero1977`.
+
 
 ## The Optimal Savings Problem
 
@@ -94,7 +90,7 @@ subject to
 ```{math}
 :label: eqst
 
-a_{t+1} \leq  R(a_t - c_t)  + Y_{t+1},
+a_{t+1} + c_t \leq  R a_t + Y_t
 \quad c_t \geq 0,
 \quad a_t \geq 0
 \quad t = 0, 1, \ldots
@@ -110,28 +106,27 @@ Here
 
 The timing here is as follows:
 
-1. At the start of period $t$, the household chooses consumption
-   $c_t$.
-1. Labor is supplied by the household throughout the period and labor income
-   $Y_{t+1}$ is received at the end of period $t$.
-1. Financial income $R(a_t - c_t)$ is received at the end of period $t$.
+1. At the start of period $t$, the household observes labor income $Y_t$ and financial assets $R a_t$ .
+1. The household chooses current consumption $c_t$.
 1. Time shifts to $t+1$ and the process repeats.
 
 Non-capital income $Y_t$ is given by $Y_t = y(Z_t)$, where
-$\{Z_t\}$ is an exogeneous state process.
+
+* $\{Z_t\}$ is an exogeneous state process and
+* $y$ is a given function taking values in $\mathbb{R}_+$.
 
 As is common in the literature, we take $\{Z_t\}$ to be a finite state
-Markov chain taking values in $\mathsf Z$ with Markov matrix $P$.
+Markov chain taking values in $\mathsf Z$ with Markov matrix $\Pi$.
 
 We further assume that
 
 1. $\beta R < 1$
 1. $u$ is smooth, strictly increasing and strictly concave with $\lim_{c \to 0} u'(c) = \infty$ and $\lim_{c \to \infty} u'(c) = 0$
+1. $y(z) = \exp(z)$ 
 
-The asset space is $\mathbb R_+$ and the state is the pair $(a,z)
-\in \mathsf S := \mathbb R_+ \times \mathsf Z$.
+The asset space is $\mathbb R_+$ and the state is the pair $(a,z) \in \mathsf S := \mathbb R_+ \times \mathsf Z$.
 
-A *feasible consumption path* from $(a,z) \in \mathsf S$ is a consumption
+A **feasible consumption path** from $(a,z) \in \mathsf S$ is a consumption
 sequence $\{c_t\}$ such that $\{c_t\}$ and its induced asset path $\{a_t\}$ satisfy
 
 1. $(a_0, z_0) = (a, z)$
@@ -147,9 +142,11 @@ be contingent only on the current state.
 
 Optimality is defined below.
 
+
+
 ### Value Function and Euler Equation
 
-The *value function* $V \colon \mathsf S \to \mathbb{R}$ is defined by
+The **value function** $V \colon \mathsf S \to \mathbb{R}$ is defined by
 
 ```{math}
 :label: eqvf
@@ -162,15 +159,14 @@ V(a, z) := \max \, \mathbb{E}
 
 where the maximization is overall feasible consumption paths from $(a,z)$.
 
-An *optimal consumption path* from $(a,z)$ is a feasible consumption path from $(a,z)$ that attains the supremum in {eq}`eqvf`.
+An **optimal consumption path** from $(a,z)$ is a feasible consumption path from $(a,z)$ that attains the supremum in {eq}`eqvf`.
 
 To pin down such paths we can use a version of the Euler equation, which in the present setting is
 
 ```{math}
 :label: ee00
 
-u' (c_t)
-\geq \beta R \,  \mathbb{E}_t  u'(c_{t+1})
+    u' (c_t) \geq \beta R \,  \mathbb{E}_t  u'(c_{t+1})
 ```
 
 and
@@ -178,9 +174,9 @@ and
 ```{math}
 :label: ee01
 
-c_t < a_t
-\; \implies \;
-u' (c_t) = \beta R \,  \mathbb{E}_t  u'(c_{t+1})
+    c_t < a_t
+    \; \implies \;
+    u' (c_t) = \beta R \,  \mathbb{E}_t  u'(c_{t+1})
 ```
 
 When $c_t = a_t$ we obviously have $u'(c_t) = u'(a_t)$,
@@ -192,17 +188,6 @@ can occur because $c_t$ cannot increase sufficiently to attain equality.
 (The lower boundary case $c_t = 0$ never arises at the optimum because
 $u'(0) = \infty$.)
 
-With some thought, one can show that {eq}`ee00` and {eq}`ee01` are
-equivalent to
-
-```{math}
-:label: eqeul0
-
-u' (c_t)
-= \max \left\{
-    \beta R \,  \mathbb{E}_t  u'(c_{t+1})  \,,\;  u'(a_t)
-\right\}
-```
 
 ### Optimality Results
 
@@ -218,16 +203,16 @@ As shown in {cite}`ma2020income`,
 \lim_{t \to \infty} \beta^t \, \mathbb{E} \, [ u'(c_t) a_{t+1} ] = 0
 ```
 
-Moreover, there exists an *optimal consumption function*
+Moreover, there exists an **optimal consumption policy**
 $\sigma^* \colon \mathsf S \to \mathbb R_+$ such that the path
 from $(a,z)$ generated by
 
 $$
-(a_0, z_0) = (a, z),
-\quad
-c_t = \sigma^*(a_t, Z_t)
-\quad \text{and} \quad
-a_{t+1} = R (a_t - c_t) + Y_{t+1}
+    (a_0, z_0) = (a, z),
+    \quad
+    c_t = \sigma^*(a_t, Z_t)
+    \quad \text{and} \quad
+    a_{t+1} = R (a_t - c_t) + Y_{t+1}
 $$
 
 satisfies both {eq}`eqeul0` and {eq}`eqtv`, and hence is the unique optimal
@@ -241,113 +226,67 @@ Thus, to solve the optimization problem, we need to compute the policy $\sigma^*
 ```{index} single: Optimal Savings; Computation
 ```
 
-There are two standard ways to solve for $\sigma^*$
+We solve for the optimal consumption policy using time iteration and the
+endogenous grid method.
 
-1. time iteration using the Euler equality and
-1. value function iteration.
+Readers unfamiliar with the endogenous grid method should review the discussion
+in {doc}`cake_eating_egm`.
 
-Our investigation of the cake eating problem and stochastic optimal growth
-model suggests that time iteration will be faster and more accurate.
+### Solution Method
 
-This is the approach that we apply below.
+We rewrite {eq}`ee01` to make it a statement about functions rather than
+random variables:
 
-### Time Iteration
-
-We can rewrite {eq}`eqeul0` to make it a statement about functions rather than
-random variables.
-
-In particular, consider the functional equation
 
 ```{math}
 :label: eqeul1
 
-(u' \circ \sigma)  (a, z)
-= \max \left\{
-\beta R \, \mathbb E_z (u' \circ \sigma)
-    [R (a - \sigma(a, z)) + \hat Y, \, \hat Z]
-\, , \;
-     u'(a)
-     \right\}
+    (u' \circ \sigma)  (a, z)
+    = \beta R \, \sum_{z'}  (u' \circ \sigma)
+            [R a + y(z) - \sigma(a, z)), \, z'] \Pi(z, z')
 ```
 
-where
+Here
 
-* $(u' \circ \sigma)(s) := u'(\sigma(s))$.
-* $\mathbb E_z$ conditions on current state $z$ and $\hat X$
-  indicates next period value of random variable $X$ and
+* $(u' \circ \sigma)(s) := u'(\sigma(s))$,
+* primes indicate next period states (as well as derivatives), and
 * $\sigma$ is the unknown function.
 
-We need a suitable class of candidate solutions for the optimal consumption
-policy.
+We aim to find a fixed point $\sigma$ of {eq}`eqeul1`.
 
-The right way to pick such a class is to consider what properties the solution
-is likely to have, in order to restrict the search space and ensure that
-iteration is well behaved.
+To do so we use the EGM.
 
-To this end, let $\mathscr C$ be the space of continuous functions $\sigma \colon \mathbf S \to \mathbb R$ such that $\sigma$ is increasing in the first argument, $0 < \sigma(a,z) \leq a$ for all $(a,z) \in \mathbf S$, and
+We begin with an exogeneous grid $G = \{a'_0, \ldots, a'_{m-1}\}$ with $a'_0 = 0$.
 
-```{math}
-:label: ifpC4
+Fix a current guess of the policy function $\sigma$. 
 
-\sup_{(a,z) \in \mathbf S}
-\left| (u' \circ \sigma)(a,z) - u'(a) \right| < \infty
-```
-
-This will be our candidate class.
-
-In addition, let $K \colon \mathscr{C} \to \mathscr{C}$ be defined as
-follows.
-
-For given $\sigma \in \mathscr{C}$, the value $K \sigma (a,z)$ is the unique $c \in [0, a]$ that solves
-
-```{math}
-:label: eqsifc
-
-u'(c)
-= \max \left\{
-           \beta R \, \mathbb E_z (u' \circ \sigma) \,
-           [R (a - c) + \hat Y, \, \hat Z]
-           \, , \;
-           u'(a)
-     \right\}
-```
-
-We refer to $K$ as the Coleman--Reffett operator.
-
-The operator $K$ is constructed so that fixed points of $K$
-coincide with solutions to the functional equation {eq}`eqeul1`.
-
-It is shown in {cite}`ma2020income` that the unique optimal policy can be
-computed by picking any $\sigma \in \mathscr{C}$ and iterating with the
-operator $K$ defined in {eq}`eqsifc`.
-
-### Some Technical Details
-
-The proof of the last statement is somewhat technical but here is a quick
-summary:
-
-It is shown in {cite}`ma2020income` that $K$ is a contraction mapping on
-$\mathscr{C}$ under the metric
+For each $a'_i$ and $z_j$ we set
 
 $$
-\rho(c, d) := \| \, u' \circ \sigma_1 - u' \circ \sigma_2 \, \|
-    := \sup_{s \in S} | \, u'(\sigma_1(s))  - u'(\sigma_2(s)) \, |
- \qquad \quad (\sigma_1, \sigma_2 \in \mathscr{C})
+    c_{ij} = (u')^{-1}
+        \left[
+            \beta R \, \sum_{z'}  
+            u' [ \sigma(a'_i, z') ] \Pi(z_j, z')
+        \right]
 $$
 
-which evaluates the maximal difference in terms of marginal utility.
+and then $a^e_{ij}$ as the current asset level $a_t$ that solves the budget constraint
+$a'_{ij} + c_{ij} =  R a_t + y(z_j)$.  
 
-(The benefit of this measure of distance is that, while elements of $\mathscr C$ are not generally bounded, $\rho$ is always finite under our assumptions.)
+That is,
 
-It is also shown that the metric $\rho$ is complete on $\mathscr{C}$.
+$$
+    a^e_{ij} = \frac{1}{R} [a'_{ij} + c_{ij} - y(z_j)].  
+$$
 
-In consequence, $K$ has a unique fixed point $\sigma^* \in \mathscr{C}$ and $K^n c \to \sigma^*$ as $n \to \infty$ for any $\sigma \in \mathscr{C}$.
+Our next guess policy function, which we write as $K\sigma$, is the linear interpolation of
+$(a^e_{ij}, c_{ij})$ over $i$, for each $j$.
 
-By the definition of $K$, the fixed points of $K$ in $\mathscr{C}$ coincide with the solutions to {eq}`eqeul1` in $\mathscr{C}$.
+(The number of one dimensional linear interpolations is equal to `len(z_grid)`.)
 
-As a consequence, the path $\{c_t\}$ generated from $(a_0,z_0) \in
-S$ using policy function $\sigma^*$ is the unique optimal path from
-$(a_0,z_0) \in S$.
+For $a < a^e_{ij}$ we use the budget constraint to set $(K \sigma)(a, z_j) = Ra + y(z_j)$.
+
+
 
 ## Implementation
 
@@ -357,175 +296,142 @@ $(a_0,z_0) \in S$.
 We use the CRRA utility specification
 
 $$
-u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
+    u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 $$
 
-The exogeneous state process $\{Z_t\}$ defaults to a two-state Markov chain
-with state space $\{0, 1\}$ and transition matrix $P$.
+
+### Set Up
 
 Here we build a class called `IFP` that stores the model primitives.
 
 ```{code-cell} python3
-ifp_data = [
-    ('R', float64),              # Interest rate 1 + r
-    ('β', float64),              # Discount factor
-    ('γ', float64),              # Preference parameter
-    ('P', float64[:, :]),        # Markov matrix for binary Z_t
-    ('y', float64[:]),           # Income is Y_t = y[Z_t]
-    ('asset_grid', float64[:])   # Grid (array)
+class IFP(NamedTuple):
+    R: float,               # Interest rate 1 + r
+    β: float,               # Discount factor
+    γ: float,               # Preference parameter
+    Π: jnp.array            # Markov matrix
+    z_grid: jnp.array       # Markov state values for Z_t
+    asset_grid: jnp.array   # Exogenous asset grid 
 ]
 
-@jitclass(ifp_data)
-class IFP:
+def create_ifp(r=0.01,
+               β=0.96,
+               γ=1.5,
+               Π=((0.6, 0.4),
+                 (0.05, 0.95)),
+               z_grid=(0.0, 0.1),
+               asset_grid_max=16,
+               asset_grid_size=50):
 
-    def __init__(self,
-                 r=0.01,
-                 β=0.96,
-                 γ=1.5,
-                 P=((0.6, 0.4),
-                    (0.05, 0.95)),
-                 y=(0.0, 2.0),
-                 grid_max=16,
-                 grid_size=50):
+    assert self.R * self.β < 1, "Stability condition violated."
+    
+    asset_grid = jnp.linspace(0, asset_grid_max, asset_grid_size)
+    Π, z_grid = jnp.array(Π), jnp.array(z_grid)
+    R = 1 + r
+    return IFP(R=R, β=β, γ=γ, Π=Π, z_grid=z_grid, asset_grid=asset_grid)
 
-        self.R = 1 + r
-        self.β, self.γ = β, γ
-        self.P, self.y = np.array(P), np.array(y)
-        self.asset_grid = np.linspace(0, grid_max, grid_size)
-
-        # Recall that we need R β < 1 for convergence.
-        assert self.R * self.β < 1, "Stability condition violated."
-
-    def u_prime(self, c):
-        return c**(-self.γ)
+# Set y(z) = exp(z)
+y = jnp.exp
 ```
 
-Next we provide a function to compute the difference
+The exogeneous state process $\{Z_t\}$ defaults to a two-state Markov chain
+with transition matrix $\Pi$.
 
-```{math}
-:label: euler_diff_eq
-
-u'(c) - \max \left\{
-           \beta R \, \mathbb E_z (u' \circ \sigma) \,
-           [R (a - c) + \hat Y, \, \hat Z]
-           \, , \;
-           u'(a)
-     \right\}
-```
+We define utility globally:
 
 ```{code-cell} python3
-@jit
-def euler_diff(c, a, z, σ_vals, ifp):
-    """
-    The difference between the left- and right-hand side
-    of the Euler Equation, given current policy σ.
-
-        * c is the consumption choice
-        * (a, z) is the state, with z in {0, 1}
-        * σ_vals is a policy represented as a matrix.
-        * ifp is an instance of IFP
-
-    """
-
-    # Simplify names
-    R, P, y, β, γ  = ifp.R, ifp.P, ifp.y, ifp.β, ifp.γ
-    asset_grid, u_prime = ifp.asset_grid, ifp.u_prime
-    n = len(P)
-
-    # Convert policy into a function by linear interpolation
-    def σ(a, z):
-        return np.interp(a, asset_grid, σ_vals[:, z])
-
-    # Calculate the expectation conditional on current z
-    expect = 0.0
-    for z_hat in range(n):
-        expect += u_prime(σ(R * (a - c) + y[z_hat], z_hat)) * P[z, z_hat]
-
-    return u_prime(c) - max(β * R * expect, u_prime(a))
+# Define utility function derivatives
+u_prime = lambda c, γ: c**(-γ)
+u_prime_inv = lambda c, γ: c**(-1/γ)
 ```
 
-Note that we use linear interpolation along the asset grid to approximate the
-policy function.
 
-The next step is to obtain the root of the Euler difference.
+### Solver
 
 ```{code-cell} python3
-@jit
-def K(σ, ifp):
+def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     """
-    The operator K.
+    The Coleman-Reffett operator for the IFP model using EGM
 
     """
-    σ_new = np.empty_like(σ)
-    for i, a in enumerate(ifp.asset_grid):
-        for z in (0, 1):
-            result = brentq(euler_diff, 1e-8, a, args=(a, z, σ, ifp))
-            σ_new[i, z] = result.root
+    R, β, γ, Π, z_grid, asset_grid = ifp
 
-    return σ_new
+    # Determine endogenous grid associated with consumption choices in σ_array
+    ae = (1/R) (σ_array + a_grid - y(z_grid))
+
+    # Linear interpolation of policy using endogenous grid.  
+    def σ_interp(ap):
+        return [jnp.interp(ap, ae[:, j], σ[:, j]) for j in range(len(z_grid))]
+
+    # Define function to compute consumption at a single grid pair (a'_i, z_j)
+    def compute_c(i, j):
+        ap = ae[i]
+        rhs = jnp.sum( u_prime(σ_interp(ap)) * Π[j, :] )
+        return u_prime_inv(β * R * rhs)
+
+    # Vectorize over grid using vmap
+    compute_c_vectorized = jax.vmap(compute_c)
+    next_σ_array = compute_c_vectorized(asset_grid, z_grid)
+
+    return next_σ_array
 ```
 
-With the operator $K$ in hand, we can choose an initial condition and
-start to iterate.
 
-The following function iterates to convergence and returns the approximate
-optimal policy.
 
 ```{code-cell} python3
-def solve_model_time_iter(model,    # Class with model information
-                          σ,        # Initial condition
-                          tol=1e-4,
-                          max_iter=1000,
-                          verbose=True,
-                          print_skip=25):
+@jax.jit
+def solve_model(ifp: IFP,
+                σ_init: jnp.ndarray,
+                tol: float = 1e-5,
+                max_iter: int = 1000) -> jnp.ndarray:
+    """
+    Solve the model using time iteration with EGM.
 
-    # Set up loop
-    i = 0
-    error = tol + 1
+    """
 
-    while i < max_iter and error > tol:
+    def condition(loop_state):
+        i, σ, error = loop_state
+        return (error > tol) & (i < max_iter)
+
+    def body(loop_state):
+        i, σ, error = loop_state
         σ_new = K(σ, model)
-        error = np.max(np.abs(σ - σ_new))
-        i += 1
-        if verbose and i % print_skip == 0:
-            print(f"Error at iteration {i} is {error}.")
-        σ = σ_new
+        error = jnp.max(jnp.abs(σ_new - σ))
+        return i + 1, σ_new, error
 
-    if error > tol:
-        print("Failed to converge!")
-    elif verbose:
-        print(f"\nConverged in {i} iterations.")
+    # Initialize loop state
+    initial_state = (0, σ_init, tol + 1)
 
-    return σ_new
+    # Run the loop
+    i, σ, error = jax.lax.while_loop(condition, body, initial_state)
+
+    return σ
 ```
 
-Let's carry this out using the default parameters of the `IFP` class:
+### Test run
+
+Let's road test the EGM code.
 
 ```{code-cell} python3
 ifp = IFP()
-
-# Set up initial consumption policy of consuming all assets at all z
-z_size = len(ifp.P)
-a_grid = ifp.asset_grid
-a_size = len(a_grid)
-σ_init = np.repeat(a_grid.reshape(a_size, 1), z_size, axis=1)
-
-σ_star = solve_model_time_iter(ifp, σ_init)
+R, β, γ, Π, z_grid, asset_grid = ifp
+σ_init = R * a_grid + z_grid
+σ_star = solve_model(ifp, σ_init)
 ```
 
-Here's a plot of the resulting policy for each exogeneous state $z$.
+Here's a plot of the optimal policy for each $z$ state
+
 
 ```{code-cell} python3
 fig, ax = plt.subplots()
-for z in range(z_size):
-    label = rf'$\sigma^*(\cdot, {z})$'
-    ax.plot(a_grid, σ_star[:, z], label=label)
+ax.plot(a_grid, σ_star[:, 0], label='bad state')
+ax.plot(a_grid, σ_star[:, 1], label='good state')
 ax.set(xlabel='assets', ylabel='consumption')
 ax.legend()
 plt.show()
 ```
 
-The following exercises walk you through several applications where policy functions are computed.
+
 
 ### A Sanity Check
 
@@ -534,40 +440,38 @@ One way to check our results is to
 * set labor income to zero in each state and
 * set the gross interest rate $R$ to unity.
 
-In this case, our income fluctuation problem is just a cake eating problem.
+In this case, our income fluctuation problem is just a CRRA cake eating problem.
 
-We know that, in this case, the value function and optimal consumption policy
-are given by
+Then the value function and optimal consumption policy are given by
 
 ```{code-cell} python3
 def c_star(x, β, γ):
-
     return (1 - β ** (1/γ)) * x
 
 
 def v_star(x, β, γ):
-
     return (1 - β**(1 / γ))**(-γ) * (x**(1-γ) / (1-γ))
 ```
 
 Let's see if we match up:
 
 ```{code-cell} python3
-ifp_cake_eating = IFP(r=0.0, y=(0.0, 0.0))
-
+ifp_cake_eating = IFP(r=0.0, z_grid=(-jnp.inf, -jnp.inf))
+R, β, γ, Π, z_grid, asset_grid = ifp_cake_eating
+σ_init = R * a_grid + z_grid
 σ_star = solve_model_time_iter(ifp_cake_eating, σ_init)
 
 fig, ax = plt.subplots()
 ax.plot(a_grid, σ_star[:, 0], label='numerical')
 ax.plot(a_grid, c_star(a_grid, ifp.β, ifp.γ), '--', label='analytical')
-
 ax.set(xlabel='assets', ylabel='consumption')
 ax.legend()
-
 plt.show()
 ```
 
-Success!
+
+This looks pretty good.
+
 
 ## Exercises
 
@@ -577,17 +481,11 @@ Success!
 
 Let's consider how the interest rate affects consumption.
 
-Reproduce the following figure, which shows (approximately) optimal consumption policies for different interest rates
+* Step `r` through `np.linspace(0, 0.04, 4)`.
+* Other than `r`, hold all parameters at their default values.
+* Plot consumption against assets for income shock fixed at the smallest value.
 
-```{image} /_static/lecture_specific/ifp/ifp_policies.png
-:align: center
-```
-
-* Other than `r`, all parameters are at their default values.
-* `r` steps through `np.linspace(0, 0.04, 4)`.
-* Consumption is plotted against assets for income shock fixed at the smallest value.
-
-The figure shows that higher interest rates boost savings and hence suppress consumption.
+Your figure should show that higher interest rates boost savings and suppress consumption.
 
 ```{exercise-end}
 ```
@@ -599,12 +497,12 @@ The figure shows that higher interest rates boost savings and hence suppress con
 Here's one solution:
 
 ```{code-cell} python3
-r_vals = np.linspace(0, 0.04, 4)
+r_vals = np.linspace(0, 0.04, 2.0)
 
 fig, ax = plt.subplots()
 for r_val in r_vals:
     ifp = IFP(r=r_val)
-    σ_star = solve_model_time_iter(ifp, σ_init, verbose=False)
+    σ_star = solve_model(ifp, σ_init)
     ax.plot(ifp.asset_grid, σ_star[:, 0], label=f'$r = {r_val:.3f}$')
 
 ax.set(xlabel='asset level', ylabel='consumption (low income)')
@@ -628,13 +526,13 @@ The following figure is a 45 degree diagram showing the law of motion for assets
 ```{code-cell} python3
 ifp = IFP()
 
-σ_star = solve_model_time_iter(ifp, σ_init, verbose=False)
+σ_star = solve_model(ifp, σ_init)
 a = ifp.asset_grid
-R, y = ifp.R, ifp.y
+R = ifp.R
 
 fig, ax = plt.subplots()
 for z, lb in zip((0, 1), ('low income', 'high income')):
-    ax.plot(a, R * (a - σ_star[:, z]) + y[z] , label=lb)
+    ax.plot(a, R * (a - σ_star[:, z]) + y(z) , label=lb)
 
 ax.plot(a, a, 'k--')
 ax.set(xlabel='current assets', ylabel='next period assets')
