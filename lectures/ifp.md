@@ -349,6 +349,14 @@ u_prime_inv = lambda c, γ: c**(-1/γ)
 
 ### Solver
 
+Here is the operator $K$ that transforms current guess $\sigma$ into next period
+guess $K\sigma$.
+
+We understand $\sigma$ is an array of shape $(n_a, n_z)$, where $n_a$ and $n_z$
+are the respective grid sizes.
+
+The value `σ[i,j]` corresponds to $\sigma(a'_i, z_j)$.
+
 ```{code-cell} ipython3
 def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     """
@@ -358,33 +366,21 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     This operator implements one iteration of the EGM algorithm to
     update the consumption policy function.
 
-    Parameters
-    ----------
-    σ : jnp.ndarray, shape (n_a, n_z)
-        Current guess of consumption policy, σ[i, j] is consumption
-        when assets = asset_grid[i] and income state = z_grid[j]
-    ifp : IFP
-        Model parameters
-
-    Returns
-    -------
-    σ_new : jnp.ndarray, shape (n_a, n_z)
-        Updated consumption policy
-
     Algorithm
     ---------
     The EGM works backwards from next period:
     1. Given σ(a', z'), compute current consumption c that
        satisfies Euler equation
-    2. Compute the endogenous current asset level a that leads
+    2. Compute the endogenous current asset level a^e that leads
        to (c, a')
-    3. Interpolate back to exogenous grid to get σ_new(a, z)
+    3. Interpolate back to exogenous grid to get σ_new(a', z')
+
     """
     R, β, γ, Π, z_grid, asset_grid = ifp
     n_a = len(asset_grid)
     n_z = len(z_grid)
 
-    def compute_c_for_state(j):
+    def compute_c_for_fixed_income_state(j):
         """
         Compute updated consumption policy for income state z_j.
 
@@ -416,9 +412,9 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
 
         return σ_new  #  Consumption over the asset grid given z[j]
 
-    # Vectorize computation over all exogenous states using vmap
-    # Resulting shape is (n_z, n_a), so one row per income state
-    σ_new = jax.vmap(compute_c_for_state)(jnp.arange(n_z))
+    # Compute consumption over all income states using vmap
+    c_vmap = jax.vmap(compute_c_for_fixed_income_state)
+    σ_new = c_vmap(jnp.arange(n_z)) # Shape (n_z, n_a), one row per income state
 
     return σ_new.T  # Transpose to get (n_a, n_z) 
 ```
@@ -444,11 +440,9 @@ def solve_model(ifp: IFP,
         error = jnp.max(jnp.abs(σ_new - σ))
         return i + 1, σ_new, error
 
-    # Initialize loop state
     initial_state = (0, σ_init, tol + 1)
-
-    # Run the loop
-    i, σ, error = jax.lax.while_loop(condition, body, initial_state)
+    final_loop_state = jax.lax.while_loop(condition, body, initial_state)
+    i, σ, error = final_loop_state
 
     return σ
 ```
@@ -474,6 +468,45 @@ ax.set(xlabel='assets', ylabel='consumption')
 ax.legend()
 plt.show()
 ```
+
+To begin to understand the long run asset levels held by households under the default parameters, let's look at the
+45 degree diagram showing the law of motion for assets under the optimal consumption policy.
+
+```{code-cell} ipython3
+ifp = create_ifp()
+R, β, γ, Π, z_grid, asset_grid = ifp
+σ_init = R * asset_grid[:, None] + y(z_grid)
+σ_star = solve_model(ifp, σ_init)
+a = asset_grid
+
+fig, ax = plt.subplots()
+for z, lb in zip((0, 1), ('low income', 'high income')):
+    ax.plot(a, R * (a - σ_star[:, z]) + y(z) , label=lb)
+
+ax.plot(a, a, 'k--')
+ax.set(xlabel='current assets', ylabel='next period assets')
+
+ax.legend()
+plt.show()
+```
+
+The unbroken lines show the update function for assets at each $z$, which is
+
+$$
+    a \mapsto R (a - \sigma^*(a, z)) + y(z)
+$$
+
+The dashed line is the 45 degree line.
+
+The figure suggests that the dynamics will be stable --- assets do not diverge
+even in the highest state.
+
+In fact there is a unique stationary distribution of assets that we can calculate by simulation -- we examine this below.
+
+* Can be proved via theorem 2 of {cite}`HopenhaynPrescott1992`.
+* It represents the long run dispersion of assets across households when households have idiosyncratic shocks.
+
+
 
 ### A Sanity Check
 
@@ -524,11 +557,12 @@ This looks pretty good.
 
 Let's consider how the interest rate affects consumption.
 
-* Step `r` through `np.linspace(0, 0.04, 4)`.
+* Step `r` through `np.linspace(0, 0.016, 4)`.
 * Other than `r`, hold all parameters at their default values.
 * Plot consumption against assets for income shock fixed at the smallest value.
 
-Your figure should show that higher interest rates boost savings and suppress consumption.
+Your figure should show that, for this model, higher interest rates boost
+suppress consumption (because they encourage more savings).
 
 ```{exercise-end}
 ```
@@ -541,7 +575,7 @@ Here's one solution:
 
 ```{code-cell} ipython3
 # With β=0.98, we need R*β < 1, so r < 0.0204
-r_vals = np.linspace(0, 0.015, 4)
+r_vals = np.linspace(0, 0.016, 4)
 
 fig, ax = plt.subplots()
 for r_val in r_vals:
@@ -564,56 +598,12 @@ plt.show()
 :label: ifp_ex2
 ```
 
-Now let's consider the long run asset levels held by households under the
-default parameters.
+Let's approximate the stationary distribution by simulation.
 
-The following figure is a 45 degree diagram showing the law of motion for assets when consumption is optimal
+Run a large number of households forward for $T$ periods and then histogram the
+cross-sectional distribution of assets.
 
-```{code-cell} ipython3
-ifp = create_ifp()
-R, β, γ, Π, z_grid, asset_grid = ifp
-σ_init = R * asset_grid[:, None] + y(z_grid)
-σ_star = solve_model(ifp, σ_init)
-a = asset_grid
-
-fig, ax = plt.subplots()
-for z, lb in zip((0, 1), ('low income', 'high income')):
-    ax.plot(a, R * (a - σ_star[:, z]) + y(z) , label=lb)
-
-ax.plot(a, a, 'k--')
-ax.set(xlabel='current assets', ylabel='next period assets')
-
-ax.legend()
-plt.show()
-```
-
-The unbroken lines show the update function for assets at each $z$, which is
-
-$$
-    a \mapsto R (a - \sigma^*(a, z)) + y(z)
-$$
-
-The dashed line is the 45 degree line.
-
-We can see from the figure that the dynamics will be stable --- assets do not
-diverge even in the highest state.
-
-In fact there is a unique stationary distribution of assets that we can calculate by simulation
-
-* Can be proved via theorem 2 of {cite}`HopenhaynPrescott1992`.
-* It represents the long run dispersion of assets across households when households have idiosyncratic shocks.
-
-Ergodicity is valid here, so stationary probabilities can be calculated by averaging over a single long time series.
-
-Hence to approximate the stationary distribution we can simulate a long time
-series for assets and histogram it.
-
-Your task is to generate such a histogram.
-
-* Use a single time series $\{a_t\}$ of length 500,000.
-* Given the length of this time series, the initial condition $(a_0,
-  z_0)$ will not matter.
-* You might find it helpful to use the `MarkovChain` class from `quantecon`.
+Set `num_households=50_000, T=500`.
 
 ```{exercise-end}
 ```
