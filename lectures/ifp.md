@@ -3,6 +3,8 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3
   language: python
@@ -25,10 +27,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -54,7 +55,7 @@ To solve the model we will use the endogenous grid method, which we found to be 
 
 We'll need the following imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
 from quantecon import MarkovChain
@@ -197,7 +198,7 @@ As shown in {cite}`ma2020income`,
 
 1. For each $(a,z) \in \mathsf S$, a unique optimal consumption path from $(a,z)$ exists
 1. This path is the unique feasible path from $(a,z)$ satisfying the
-   Euler equality {eq}`eqeul0` and the transversality condition
+   Euler equations {eq}`ee00`-{eq}`ee01` and the transversality condition
 
 ```{math}
 :label: eqtv
@@ -217,7 +218,7 @@ $$
     a_{t+1} = R (a_t - c_t) + Y_{t+1}
 $$
 
-satisfies both {eq}`eqeul0` and {eq}`eqtv`, and hence is the unique optimal
+satisfies both the Euler equations {eq}`ee00`-{eq}`ee01` and {eq}`eqtv`, and hence is the unique optimal
 path from $(a,z)$.
 
 Thus, to solve the optimization problem, we need to compute the policy $\sigma^*$.
@@ -306,7 +307,7 @@ $$
 
 Here we build a class called `IFP` that stores the model primitives.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 class IFP(NamedTuple):
     R: float                  # Gross interest rate R = 1 + r
     β: float                  # Discount factor
@@ -340,16 +341,15 @@ with transition matrix $\Pi$.
 
 We define utility globally:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 # Define utility function derivatives
 u_prime = lambda c, γ: c**(-γ)
 u_prime_inv = lambda c, γ: c**(-1/γ)
 ```
 
-
 ### Solver
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     """
     The Coleman-Reffett operator for the IFP model using the
@@ -423,9 +423,7 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     return σ_new.T  # Transpose to get (n_a, n_z) 
 ```
 
-
-
-```{code-cell} ipython
+```{code-cell} ipython3
 @jax.jit
 def solve_model(ifp: IFP,
                 σ_init: jnp.ndarray,
@@ -459,7 +457,7 @@ def solve_model(ifp: IFP,
 
 Let's road test the EGM code.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ifp = create_ifp()
 R, β, γ, Π, z_grid, asset_grid = ifp
 σ_init = R * asset_grid[:, None] + y(z_grid)
@@ -468,8 +466,7 @@ R, β, γ, Π, z_grid, asset_grid = ifp
 
 Here's a plot of the optimal policy for each $z$ state
 
-
-```{code-cell} ipython
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(asset_grid, σ_star[:, 0], label='bad state')
 ax.plot(asset_grid, σ_star[:, 1], label='good state')
@@ -477,8 +474,6 @@ ax.set(xlabel='assets', ylabel='consumption')
 ax.legend()
 plt.show()
 ```
-
-
 
 ### A Sanity Check
 
@@ -491,7 +486,7 @@ In this case, our income fluctuation problem is just a CRRA cake eating problem.
 
 Then the value function and optimal consumption policy are given by
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def c_star(x, β, γ):
     return (1 - β ** (1/γ)) * x
 
@@ -502,7 +497,7 @@ def v_star(x, β, γ):
 
 Let's see if we match up:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ifp_cake_eating = create_ifp(r=0.0, z_grid=(-jnp.inf, -jnp.inf))
 R, β, γ, Π, z_grid, asset_grid = ifp_cake_eating
 σ_init = R * asset_grid[:, None] + y(z_grid)
@@ -517,7 +512,6 @@ ax.set(xlabel='assets', ylabel='consumption')
 ax.legend()
 plt.show()
 ```
-
 
 This looks pretty good.
 
@@ -545,7 +539,7 @@ Your figure should show that higher interest rates boost savings and suppress co
 
 Here's one solution:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 # With β=0.98, we need R*β < 1, so r < 0.0204
 r_vals = np.linspace(0, 0.015, 4)
 
@@ -575,7 +569,7 @@ default parameters.
 
 The following figure is a 45 degree diagram showing the law of motion for assets when consumption is optimal
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ifp = create_ifp()
 R, β, γ, Π, z_grid, asset_grid = ifp
 σ_init = R * asset_grid[:, None] + y(z_grid)
@@ -630,7 +624,7 @@ Your task is to generate such a histogram.
 
 First we write a function to simulate many households in parallel using JAX.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def compute_asset_stationary(ifp, σ_star, num_households=50_000, T=500, seed=1234):
     """
     Simulates num_households households for T periods to approximate
@@ -681,7 +675,7 @@ def compute_asset_stationary(ifp, σ_star, num_households=50_000, T=500, seed=12
 
 Now we call the function, generate the asset distribution and histogram it:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ifp = create_ifp()
 R, β, γ, Π, z_grid, asset_grid = ifp
 σ_init = R * asset_grid[:, None] + y(z_grid)
@@ -738,7 +732,7 @@ stationary distribution given the interest rate.
 
 Here's one solution
 
-```{code-cell} ipython
+```{code-cell} ipython3
 M = 25
 # With β=0.98, we need R*β < 1, so R < 1/0.98 ≈ 1.0204, thus r < 0.0204
 r_vals = np.linspace(0, 0.015, M)
