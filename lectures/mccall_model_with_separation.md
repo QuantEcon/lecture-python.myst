@@ -319,7 +319,6 @@ This helps to tidy up the code and provides an object that's easy to pass to fun
 The default utility function is a CRRA utility function
 
 ```{code-cell} ipython3
-@jax.jit
 def u(c, σ=2.0):
     return (c**(1 - σ) - 1) / (1 - σ)
 ```
@@ -353,7 +352,6 @@ We then return the current iterate as an approximate solution.
 First, we define a function to compute $v_e$ from $d$:
 
 ```{code-cell} ipython3
-@jax.jit
 def compute_v_e(model, d):
     " Compute v_e from d using the closed-form expression. "
     α, β, w = model.α, model.β, model.w
@@ -363,7 +361,6 @@ def compute_v_e(model, d):
 Now we implement the iteration on $d$ only:
 
 ```{code-cell} ipython3
-@jax.jit
 def update_d(model, d):
     " One update of the scalar d. "
     α, β, c, w, q = model.α, model.β, model.c, model.w, model.q
