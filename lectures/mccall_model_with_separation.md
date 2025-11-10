@@ -135,9 +135,7 @@ Our first aim is to obtain these functions.
 
 ### The Bellman Equations
 
-Suppose for now that the worker can calculate the functions $v_e$ and $v_u$ and use them in his decision making.
-
-Then $v_e$ and $v_u$  should satisfy
+The functions $v_e$ and $v_u$ must satisfy
 
 ```{math}
 :label: bell1_mccall
