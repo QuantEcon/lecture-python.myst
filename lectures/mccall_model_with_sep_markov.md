@@ -49,7 +49,7 @@ libraries
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon jax
+!pip install quantecon
 ```
 
 We use the following imports:
