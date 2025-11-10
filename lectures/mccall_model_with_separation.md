@@ -224,13 +224,39 @@ v_e(w) = u(w) + \beta
     \right]
 ```
 
+### Simplifying to a Single Equation
+
+We can simplify further by solving {eq}`bell01_mccall` for $v_e$ as a function of $d$.
+
+Rearranging {eq}`bell01_mccall` gives
+
+$$
+v_e(w) - \beta(1-\alpha)v_e(w) = u(w) + \beta\alpha d
+$$
+
+or
+
+```{math}
+:label: v_e_closed
+
+v_e(w) = \frac{u(w) + \beta\alpha d}{1 - \beta(1-\alpha)}
+```
+
+Substituting this into {eq}`bell02_mccall` yields
+
+```{math}
+:label: bell_scalar
+
+d = \sum_{w' \in \mathbb W} \max \left\{ \frac{u(w') + \beta\alpha d}{1 - \beta(1-\alpha)}, \,  u(c) + \beta d \right\} q(w')
+```
+
+This is a single scalar equation in $d$.
 
 ### The Reservation Wage
 
-Suppose we can use {eq}`bell02_mccall` and {eq}`bell01_mccall` to solve for
-$d$ and $v_e$.
+Suppose we can use {eq}`bell_scalar` to solve for $d$.
 
-(We will do this soon.)
+Once we have $d$, we can obtain $v_e$ from {eq}`v_e_closed`.
 
 We can then determine optimal behavior for the worker.
 
@@ -254,36 +280,32 @@ $$
 We'll use the same iterative approach to solving the Bellman equations that we
 adopted in the {doc}`first job search lecture <mccall_model>`.
 
-Here this amounts to
+Since we have reduced the problem to a single scalar equation {eq}`bell_scalar`,
+we only need to iterate on $d$.
 
-1. make guesses for $d$ and $v_e$
-1. plug these guesses into the right-hand sides of {eq}`bell02_mccall` and {eq}`bell01_mccall`
-1. update the left-hand sides from this rule and then repeat
-
-In other words, we are iterating using the rules
+The iteration rule is
 
 ```{math}
-:label: bell1001
+:label: bell_iter
 
 d_{n+1} = \sum_{w' \in \mathbb W}
-    \max \left\{ v_{e,n}(w'), \,  u(c) + \beta d_n \right\} q(w')
+    \max \left\{ \frac{u(w') + \beta\alpha d_n}{1 - \beta(1-\alpha)}, \,  u(c) + \beta d_n \right\} q(w')
 ```
+
+starting from some initial condition $d_0$.
+
+Once convergence is achieved, we can compute $v_e$ from {eq}`v_e_closed`:
 
 ```{math}
-:label: bell2001
+:label: bell_v_e_final
 
-v_{e,n+1}(w) = u(w) + \beta
-    \left[
-        (1-\alpha)v_{e,n}(w) + \alpha d_n
-    \right]
+v_e(w) = \frac{u(w) + \beta\alpha d}{1 - \beta(1-\alpha)}
 ```
 
-starting from some initial conditions $d_0, v_{e,0}$.
+This approach is simpler than iterating on both $d$ and $v_e$ simultaneously, as
+we now only need to track a single scalar value.
 
-As before, the system always converges to the true solutions---in this case,
-the $v_e$ and $d$ that solve {eq}`bell02_mccall` and {eq}`bell01_mccall`.
-
-(A proof can be obtained via the Banach contraction mapping theorem.)
+(Convergence can be established via the Banach contraction mapping theorem.)
 
 ## Implementation
 
@@ -328,40 +350,52 @@ Now we iterate until successive realizations are closer together than some small
 
 We then return the current iterate as an approximate solution.
 
+First, we define a function to compute $v_e$ from $d$:
+
 ```{code-cell} ipython3
 @jax.jit
-def update(model, v_e, d):
-    " One update on the Bellman equations. "
+def compute_v_e(model, d):
+    " Compute v_e from d using the closed-form expression. "
+    α, β, w = model.α, model.β, model.w
+    return (u(w) + β * α * d) / (1 - β * (1 - α))
+```
+
+Now we implement the iteration on $d$ only:
+
+```{code-cell} ipython3
+@jax.jit
+def update_d(model, d):
+    " One update of the scalar d. "
     α, β, c, w, q = model.α, model.β, model.c, model.w, model.q
-    v_e_new = u(w) + β * ((1 - α) * v_e + α * d)
+    v_e = compute_v_e(model, d)
     d_new = jnp.maximum(v_e, u(c) + β * d) @ q
-    return v_e_new, d_new
+    return d_new
 
 @jax.jit
 def solve_model(model, tol=1e-5, max_iter=2000):
     " Iterates to convergence on the Bellman equations. "
 
     def cond_fun(state):
-        v_e, d, i, error = state
+        d, i, error = state
         return jnp.logical_and(error > tol, i < max_iter)
 
     def body_fun(state):
-        v_e, d, i, error = state
-        v_e_new, d_new = update(model, v_e, d)
-        error_1 = jnp.max(jnp.abs(v_e_new - v_e))
-        error_2 = jnp.abs(d_new - d)
-        error_new = jnp.maximum(error_1, error_2)
-        return v_e_new, d_new, i + 1, error_new
+        d, i, error = state
+        d_new = update_d(model, d)
+        error_new = jnp.abs(d_new - d)
+        return d_new, i + 1, error_new
 
-    # Initial state: (v_e, d, i, error)
-    v_e_init = jnp.ones_like(model.w)
+    # Initial state: (d, i, error)
     d_init = 1.0
     i_init = 0
     error_init = tol + 1
 
-    init_state = (v_e_init, d_init, i_init, error_init)
+    init_state = (d_init, i_init, error_init)
     final_state = jax.lax.while_loop(cond_fun, body_fun, init_state)
-    v_e_final, d_final, _, _ = final_state
+    d_final, _, _ = final_state
+
+    # Compute v_e from the converged d
+    v_e_final = compute_v_e(model, d_final)
 
     return v_e_final, d_final
 ```
