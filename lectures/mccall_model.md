@@ -484,8 +484,12 @@ print(res_wage)
 Now that we know how to compute the reservation wage, let's see how it varies with
 parameters.
 
+Here we compare the reservation wage at two values of $\beta$.
+
+The reservation wages will be plotted alongside the wage offer distribution, so
+that we can get a sense of what fraction of offers will be accepted.
+
 ```{code-cell} ipython3
-# Plot wage distribution with reservation wages before and after changing beta
 fig, ax = plt.subplots()
 
 # Get the default color cycle
@@ -493,18 +497,24 @@ prop_cycle = plt.rcParams['axes.prop_cycle']
 colors = prop_cycle.by_key()['color']
 
 # Plot the wage offer distribution
-ax.plot(w, q, '-o', alpha=0.6, label='wage offer distribution', color=colors[0])
+ax.plot(w, q, '-', alpha=0.6, lw=2,
+        label='wage offer distribution', 
+        color=colors[0])
 
 # Compute reservation wage with default beta
 model_default = McCallModel()
 v_init = model_default.w / (1 - model_default.β)
-v_default, res_wage_default = compute_reservation_wage(model_default, v_init)
+v_default, res_wage_default = compute_reservation_wage(
+    model_default, v_init
+)
 
 # Compute reservation wage with lower beta
 β_new = 0.96
 model_low_beta = McCallModel(β=β_new)
 v_init_low = model_low_beta.w / (1 - model_low_beta.β)
-v_low, res_wage_low = compute_reservation_wage(model_low_beta, v_init_low)
+v_low, res_wage_low = compute_reservation_wage(
+    model_low_beta, v_init_low
+)
 
 # Plot vertical lines for reservation wages
 ax.axvline(x=res_wage_default, color=colors[1], lw=2,
@@ -518,6 +528,10 @@ ax.tick_params(axis='both', which='major', labelsize=11)
 ax.legend(loc='upper left', frameon=False, fontsize=11)
 plt.show()
 ```
+
+We see that the reservation wage is higher when $\beta$ is higher.
+
+This is not surprising, since higher $\beta$ is associated with more patience.
 
 Now let's look more systematically at what happens when we change $\beta$ and $c$.
 
@@ -655,7 +669,6 @@ The big difference here, however, is that we're iterating on a scalar $h$, rathe
 Here's an implementation:
 
 ```{code-cell} ipython3
-@jax.jit
 def compute_reservation_wage_two(
         model: McCallModel,   # instance containing default parameters
         tol: float=1e-5,      # error tolerance
@@ -770,7 +783,6 @@ And here's a solution using JAX.
 ```{code-cell} ipython3
 cdf = jnp.cumsum(q_default)
 
-@jax.jit
 def compute_stopping_time(w_bar, key):
     """
     Compute stopping time by drawing wages until one exceeds `w_bar`.
@@ -793,7 +805,6 @@ def compute_stopping_time(w_bar, key):
     return t_final
 
 
-@partial(jax.jit, static_argnames=('num_reps',))
 def compute_mean_stopping_time(w_bar, num_reps=100000, seed=1234):
     """
     Generate a mean stopping time over `num_reps` repetitions by
@@ -812,6 +823,7 @@ def compute_mean_stopping_time(w_bar, num_reps=100000, seed=1234):
 
 c_vals = jnp.linspace(10, 40, 25)
 
+@jax.jit
 def compute_stop_time_for_c(c):
     """Compute mean stopping time for a given compensation value c."""
     model = McCallModel(c=c)
