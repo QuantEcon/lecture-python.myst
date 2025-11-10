@@ -4,11 +4,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.17.2
 kernelspec:
-  name: python3
   display_name: Python 3 (ipykernel)
   language: python
+  name: python3
 ---
 
 (mccall_with_sep)=
@@ -89,34 +89,25 @@ introducing a utility function $u$.
 
 It satisfies $u'> 0$ and $u'' < 0$.
 
-### The Wage Process
-
-For now we will drop the separation of state process and wage process that we
-maintained for the {doc}`baseline model <mccall_model>`.
-
-In particular, we simply suppose that wage offers $\{ w_t \}$ are IID with common distribution $q$.
+Wage offers $\{ w_t \}$ are IID with common distribution $q$.
 
 The set of possible wage values is denoted by $\mathbb W$.
-
-(Later we will go back to having a separate state process $\{s_t\}$
-driving random outcomes, since this formulation is usually convenient in more sophisticated
-models.)
 
 ### Timing and Decisions
 
 At the start of each period, the agent can be either
 
 * unemployed or
-* employed at some existing wage level $w_e$.
+* employed at some existing wage level $w$.
 
 At the start of a given period, the current wage offer $w_t$ is observed.
 
-If currently *employed*, the worker
+If currently employed, the worker
 
-1. receives utility $u(w_e)$ and
+1. receives utility $u(w)$ and
 1. is fired with some (small) probability $\alpha$.
 
-If currently *unemployed*, the worker either accepts or rejects the current offer $w_t$.
+If currently unemployed, the worker either accepts or rejects the current offer $w_t$.
 
 If he accepts, then he begins work immediately at wage $w_t$.
 
@@ -134,8 +125,8 @@ We drop time subscripts in what follows and primes denote next period values.
 
 Let
 
-* $v(w_e)$ be total lifetime value accruing to a worker who enters the current period *employed* with existing wage $w_e$
-* $h(w)$ be total lifetime value accruing to a worker who who enters the current period *unemployed* and receives
+* $v_e(w)$ be total lifetime value accruing to a worker who enters the current period *employed* with existing wage $w$
+* $v_u(w)$ be total lifetime value accruing to a worker who who enters the current period *unemployed* and receives
   wage offer $w$.
 
 Here *value* means the value of the objective function {eq}`objective` when the worker makes optimal decisions at all future points in time.
@@ -144,16 +135,16 @@ Our first aim is to obtain these functions.
 
 ### The Bellman Equations
 
-Suppose for now that the worker can calculate the functions $v$ and $h$ and use them in his decision making.
+Suppose for now that the worker can calculate the functions $v_e$ and $v_u$ and use them in his decision making.
 
-Then $v$ and $h$  should satisfy
+Then $v_e$ and $v_u$  should satisfy
 
 ```{math}
 :label: bell1_mccall
 
-v(w_e) = u(w_e) + \beta
+v_e(w) = u(w) + \beta
     \left[
-        (1-\alpha)v(w_e) + \alpha \sum_{w' \in \mathbb W} h(w') q(w')
+        (1-\alpha)v_e(w) + \alpha \sum_{w' \in \mathbb W} v_u(w') q(w')
     \right]
 ```
 
@@ -162,25 +153,25 @@ and
 ```{math}
 :label: bell2_mccall
 
-h(w) = \max \left\{ v(w), \,  u(c) + \beta \sum_{w' \in \mathbb W} h(w') q(w') \right\}
+v_u(w) = \max \left\{ v_e(w), \,  u(c) + \beta \sum_{w' \in \mathbb W} v_u(w') q(w') \right\}
 ```
 
-Equation {eq}`bell1_mccall` expresses the value of being employed at wage $w_e$ in terms of
+Equation {eq}`bell1_mccall` expresses the value of being employed at wage $w$ in terms of
 
-* current reward $u(w_e)$ plus
+* current reward $u(w)$ plus
 * discounted expected reward tomorrow, given the $\alpha$ probability of being fired
 
 Equation {eq}`bell2_mccall` expresses the value of being unemployed with offer
 $w$ in hand as a maximum over the value of two options: accept or reject
 the current offer.
 
-Accepting transitions the worker to employment and hence yields reward $v(w)$.
+Accepting transitions the worker to employment and hence yields reward $v_e(w)$.
 
 Rejecting leads to unemployment compensation and unemployment tomorrow.
 
 Equations {eq}`bell1_mccall` and {eq}`bell2_mccall` are the Bellman equations for this model.
 
-They provide enough information to solve for both $v$ and $h$.
+They provide enough information to solve for both $v_e$ and $v_u$.
 
 (ast_mcm)=
 ### A Simplifying Transformation
@@ -196,7 +187,7 @@ First, let
 ```{math}
 :label: defd_mm
 
-d := \sum_{w' \in \mathbb W} h(w') q(w')
+d := \sum_{w' \in \mathbb W} v_u(w') q(w')
 ```
 
 be the expected value of unemployment tomorrow.
@@ -204,14 +195,14 @@ be the expected value of unemployment tomorrow.
 We can now write {eq}`bell2_mccall` as
 
 $$
-h(w) = \max \left\{ v(w), \,  u(c) + \beta d \right\}
+v_u(w) = \max \left\{ v_e(w), \,  u(c) + \beta d \right\}
 $$
 
 or, shifting time forward one period
 
 $$
-\sum_{w' \in \mathbb W} h(w') q(w')
- = \sum_{w' \in \mathbb W} \max \left\{ v(w'), \,  u(c) + \beta d \right\} q(w')
+\sum_{w' \in \mathbb W} v_u(w') q(w')
+ = \sum_{w' \in \mathbb W} \max \left\{ v_e(w'), \,  u(c) + \beta d \right\} q(w')
 $$
 
 Using {eq}`defd_mm` again now gives
@@ -219,7 +210,7 @@ Using {eq}`defd_mm` again now gives
 ```{math}
 :label: bell02_mccall
 
-d = \sum_{w' \in \mathbb W} \max \left\{ v(w'), \,  u(c) + \beta d \right\} q(w')
+d = \sum_{w' \in \mathbb W} \max \left\{ v_e(w'), \,  u(c) + \beta d \right\} q(w')
 ```
 
 Finally, {eq}`bell1_mccall` can now be rewritten as
@@ -227,37 +218,61 @@ Finally, {eq}`bell1_mccall` can now be rewritten as
 ```{math}
 :label: bell01_mccall
 
-v(w) = u(w) + \beta
+v_e(w) = u(w) + \beta
     \left[
-        (1-\alpha)v(w) + \alpha d
+        (1-\alpha)v_e(w) + \alpha d
     \right]
 ```
 
-In the last expression, we wrote $w_e$ as $w$ to make the notation
-simpler.
+### Simplifying to a Single Equation
+
+We can simplify further by solving {eq}`bell01_mccall` for $v_e$ as a function of $d$.
+
+Rearranging {eq}`bell01_mccall` gives
+
+$$
+v_e(w) - \beta(1-\alpha)v_e(w) = u(w) + \beta\alpha d
+$$
+
+or
+
+```{math}
+:label: v_e_closed
+
+v_e(w) = \frac{u(w) + \beta\alpha d}{1 - \beta(1-\alpha)}
+```
+
+Substituting this into {eq}`bell02_mccall` yields
+
+```{math}
+:label: bell_scalar
+
+d = \sum_{w' \in \mathbb W} \max \left\{ \frac{u(w') + \beta\alpha d}{1 - \beta(1-\alpha)}, \,  u(c) + \beta d \right\} q(w')
+```
+
+This is a single scalar equation in $d$.
 
 ### The Reservation Wage
 
-Suppose we can use {eq}`bell02_mccall` and {eq}`bell01_mccall` to solve for
-$d$ and $v$.
+Suppose we can use {eq}`bell_scalar` to solve for $d$.
 
-(We will do this soon.)
+Once we have $d$, we can obtain $v_e$ from {eq}`v_e_closed`.
 
 We can then determine optimal behavior for the worker.
 
 From {eq}`bell2_mccall`, we see that an unemployed agent accepts current offer
-$w$ if $v(w) \geq  u(c) + \beta d$.
+$w$ if $v_e(w) \geq  u(c) + \beta d$.
 
 This means precisely that the value of accepting is higher than the expected value of rejecting.
 
-It is clear that $v$ is (at least weakly) increasing in $w$, since the agent is never made worse off by a higher wage offer.
+It is clear that $v_e$ is (at least weakly) increasing in $w$, since the agent is never made worse off by a higher wage offer.
 
 Hence, we can express the optimal choice as accepting wage offer $w$ if and only if
 
 $$
 w \geq \bar w
 \quad \text{where} \quad
-\bar w \text{ solves } v(\bar w) =  u(c) + \beta d
+\bar w \text{ solves } v_e(\bar w) =  u(c) + \beta d
 $$
 
 ### Solving the Bellman Equations
@@ -265,36 +280,32 @@ $$
 We'll use the same iterative approach to solving the Bellman equations that we
 adopted in the {doc}`first job search lecture <mccall_model>`.
 
-Here this amounts to
+Since we have reduced the problem to a single scalar equation {eq}`bell_scalar`,
+we only need to iterate on $d$.
 
-1. make guesses for $d$ and $v$
-1. plug these guesses into the right-hand sides of {eq}`bell02_mccall` and {eq}`bell01_mccall`
-1. update the left-hand sides from this rule and then repeat
-
-In other words, we are iterating using the rules
+The iteration rule is
 
 ```{math}
-:label: bell1001
+:label: bell_iter
 
 d_{n+1} = \sum_{w' \in \mathbb W}
-    \max \left\{ v_n(w'), \,  u(c) + \beta d_n \right\} q(w')
+    \max \left\{ \frac{u(w') + \beta\alpha d_n}{1 - \beta(1-\alpha)}, \,  u(c) + \beta d_n \right\} q(w')
 ```
+
+starting from some initial condition $d_0$.
+
+Once convergence is achieved, we can compute $v_e$ from {eq}`v_e_closed`:
 
 ```{math}
-:label: bell2001
+:label: bell_v_e_final
 
-v_{n+1}(w) = u(w) + \beta
-    \left[
-        (1-\alpha)v_n(w) + \alpha d_n
-    \right]
+v_e(w) = \frac{u(w) + \beta\alpha d}{1 - \beta(1-\alpha)}
 ```
 
-starting from some initial conditions $d_0, v_0$.
+This approach is simpler than iterating on both $d$ and $v_e$ simultaneously, as
+we now only need to track a single scalar value.
 
-As before, the system always converges to the true solutions---in this case,
-the $v$ and $d$ that solve {eq}`bell02_mccall` and {eq}`bell01_mccall`.
-
-(A proof can be obtained via the Banach contraction mapping theorem.)
+(Convergence can be established via the Banach contraction mapping theorem.)
 
 ## Implementation
 
@@ -308,7 +319,6 @@ This helps to tidy up the code and provides an object that's easy to pass to fun
 The default utility function is a CRRA utility function
 
 ```{code-cell} ipython3
-@jax.jit
 def u(c, σ=2.0):
     return (c**(1 - σ) - 1) / (1 - σ)
 ```
@@ -324,57 +334,67 @@ dist = BetaBinomial(n-1, a, b)          # distribution
 q_default = jnp.array(dist.pdf())       # probabilities as a JAX array
 ```
 
-Here's our jitted class for the McCall model with separation.
+Here's our model class for the McCall model with separation.
 
 ```{code-cell} ipython3
 class Model(NamedTuple):
-  α: float = 0.2              # job separation rate
-  β: float = 0.98             # discount factor
-  c: float = 6.0              # unemployment compensation
-  w: jnp.ndarray = w_default  # wage outcome space
-  q: jnp.ndarray = q_default  # probabilities over wage offers
+    α: float = 0.2              # job separation rate
+    β: float = 0.98             # discount factor
+    c: float = 6.0              # unemployment compensation
+    w: jnp.ndarray = w_default  # wage outcome space
+    q: jnp.ndarray = q_default  # probabilities over wage offers
 ```
 
 Now we iterate until successive realizations are closer together than some small tolerance level.
 
 We then return the current iterate as an approximate solution.
 
+First, we define a function to compute $v_e$ from $d$:
+
 ```{code-cell} ipython3
-@jax.jit
-def update(model, v, d):
-    " One update on the Bellman equations. "
+def compute_v_e(model, d):
+    " Compute v_e from d using the closed-form expression. "
+    α, β, w = model.α, model.β, model.w
+    return (u(w) + β * α * d) / (1 - β * (1 - α))
+```
+
+Now we implement the iteration on $d$ only:
+
+```{code-cell} ipython3
+def update_d(model, d):
+    " One update of the scalar d. "
     α, β, c, w, q = model.α, model.β, model.c, model.w, model.q
-    v_new = u(w) + β * ((1 - α) * v + α * d)
-    d_new = jnp.maximum(v, u(c) + β * d) @ q
-    return v_new, d_new
+    v_e = compute_v_e(model, d)
+    d_new = jnp.maximum(v_e, u(c) + β * d) @ q
+    return d_new
 
 @jax.jit
 def solve_model(model, tol=1e-5, max_iter=2000):
     " Iterates to convergence on the Bellman equations. "
-    
+
     def cond_fun(state):
-        v, d, i, error = state
+        d, i, error = state
         return jnp.logical_and(error > tol, i < max_iter)
-    
+
     def body_fun(state):
-        v, d, i, error = state
-        v_new, d_new = update(model, v, d)
-        error_1 = jnp.max(jnp.abs(v_new - v))
-        error_2 = jnp.abs(d_new - d)
-        error_new = jnp.maximum(error_1, error_2)
-        return v_new, d_new, i + 1, error_new
-    
-    # Initial state: (v, d, i, error)
-    v_init = jnp.ones_like(model.w)
+        d, i, error = state
+        d_new = update_d(model, d)
+        error_new = jnp.abs(d_new - d)
+        return d_new, i + 1, error_new
+
+    # Initial state: (d, i, error)
     d_init = 1.0
     i_init = 0
     error_init = tol + 1
-    
-    init_state = (v_init, d_init, i_init, error_init)
+
+    init_state = (d_init, i_init, error_init)
     final_state = jax.lax.while_loop(cond_fun, body_fun, init_state)
-    v_final, d_final, _, _ = final_state
-    
-    return v_final, d_final
+    d_final, _, _ = final_state
+
+    # Compute v_e from the converged d
+    v_e_final = compute_v_e(model, d_final)
+
+    return v_e_final, d_final
 ```
 
 ### The Reservation Wage: First Pass
@@ -382,28 +402,28 @@ def solve_model(model, tol=1e-5, max_iter=2000):
 The optimal choice of the agent is summarized by the reservation wage.
 
 As discussed above, the reservation wage is the $\bar w$ that solves
-$v(\bar w) = h$ where $h := u(c) + \beta d$ is the continuation
+$v_e(\bar w) = v_u^*$ where $v_u^* := u(c) + \beta d$ is the continuation
 value.
 
-Let's compare $v$ and $h$ to see what they look like.
+Let's compare $v_e$ and $v_u^*$ to see what they look like.
 
 We'll use the default parameterizations found in the code above.
 
 ```{code-cell} ipython3
 model = Model()
-v, d = solve_model(model)
-h = u(model.c) + model.β * d
+v_e, d = solve_model(model)
+v_u_star = u(model.c) + model.β * d
 
 fig, ax = plt.subplots()
-ax.plot(model.w, v, 'b-', lw=2, alpha=0.7, label='$v$')
-ax.plot(model.w, [h] * len(model.w),
-        'g-', lw=2, alpha=0.7, label='$h$')
+ax.plot(model.w, v_e, 'b-', lw=2, alpha=0.7, label='$v_e$')
+ax.plot(model.w, [v_u_star] * len(model.w),
+        'g-', lw=2, alpha=0.7, label='$v_u^*$')
 ax.set_xlim(min(model.w), max(model.w))
 ax.legend()
 plt.show()
 ```
 
-The value $v$ is increasing because higher $w$ generates a higher wage flow conditional on staying employed.
+The value $v_e$ is increasing because higher $w$ generates a higher wage flow conditional on staying employed.
 
 ### The Reservation Wage: Computation
 
@@ -415,13 +435,13 @@ and returns the associated reservation wage.
 def compute_reservation_wage(model):
     """
     Computes the reservation wage of an instance of the McCall model
-    by finding the smallest w such that v(w) >= h. If no such w exists, then
+    by finding the smallest w such that v_e(w) >= v_u^*. If no such w exists, then
     w_bar is set to np.inf.
     """
-    
-    v, d = solve_model(model)
-    h = u(model.c) + model.β * d
-    i = jnp.searchsorted(v, h, side='left')
+
+    v_e, d = solve_model(model)
+    v_u_star = u(model.c) + model.β * d
+    i = jnp.searchsorted(v_e, v_u_star, side='left')
     w_bar = jnp.where(i >= len(model.w), jnp.inf, model.w[i])
     return w_bar
 ```
