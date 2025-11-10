@@ -335,15 +335,15 @@ dist = BetaBinomial(n-1, a, b)          # distribution
 q_default = jnp.array(dist.pdf())       # probabilities as a JAX array
 ```
 
-Here's our jitted class for the McCall model with separation.
+Here's our model class for the McCall model with separation.
 
 ```{code-cell} ipython3
 class Model(NamedTuple):
-  α: float = 0.2              # job separation rate
-  β: float = 0.98             # discount factor
-  c: float = 6.0              # unemployment compensation
-  w: jnp.ndarray = w_default  # wage outcome space
-  q: jnp.ndarray = q_default  # probabilities over wage offers
+    α: float = 0.2              # job separation rate
+    β: float = 0.98             # discount factor
+    c: float = 6.0              # unemployment compensation
+    w: jnp.ndarray = w_default  # wage outcome space
+    q: jnp.ndarray = q_default  # probabilities over wage offers
 ```
 
 Now we iterate until successive realizations are closer together than some small tolerance level.
