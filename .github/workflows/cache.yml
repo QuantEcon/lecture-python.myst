@@ -20,12 +20,11 @@ jobs:
           python-version: "3.13"
           environment-file: environment.yml
           activate-environment: quantecon
-      - name: Install JAX, Numpyro, PyTorch
+      - name: Install JAX and Numpyro
         shell: bash -l {0}
         run: |
-          pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
           pip install --upgrade "jax[cuda12-local]==0.6.2"
-          pip install numpyro  
+          pip install numpyro
           python scripts/test-jax-install.py
       - name: Check nvidia drivers
         shell: bash -l {0}
