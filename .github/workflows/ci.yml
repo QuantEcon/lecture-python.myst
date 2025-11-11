@@ -31,9 +31,9 @@ jobs:
       - name: Install JAX, Numpyro, PyTorch
         shell: bash -l {0}
         run: |
-          pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
-          pip install pyro-ppl
-          pip install --upgrade "jax[cuda12]"
+          # pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+          # pip install pyro-ppl
+          pip install "jax[cuda12-local]==0.6.2"
           pip install numpyro pyro-ppl
           python scripts/test-jax-install.py
       - name: Check nvidia Drivers
