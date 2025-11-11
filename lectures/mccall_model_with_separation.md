@@ -62,6 +62,7 @@ import jax
 import jax.numpy as jnp
 from typing import NamedTuple
 from quantecon.distributions import BetaBinomial
+from myst_nb import glue
 ```
 
 ## The Model
@@ -347,8 +348,8 @@ This helps to tidy up the code and provides an object that's easy to pass to fun
 The default utility function is a CRRA utility function
 
 ```{code-cell} ipython3
-def u(c, σ=2.0):
-    return (c**(1 - σ) - 1) / (1 - σ)
+def u(c, γ):
+    return (c**(1 - γ) - 1) / (1 - γ)
 ```
 
 Also, here's a default wage distribution, based around the BetaBinomial
@@ -368,6 +369,7 @@ Here's our model class for the McCall model with separation.
 class Model(NamedTuple):
     α: float = 0.2              # job separation rate
     β: float = 0.98             # discount factor
+    γ: float = 2.0              # utility parameter (CRRA)
     c: float = 6.0              # unemployment compensation
     w: jnp.ndarray = w_default  # wage outcome space
     q: jnp.ndarray = q_default  # probabilities over wage offers
@@ -382,8 +384,8 @@ First, we define a function to compute $v_e$ from $h$:
 ```{code-cell} ipython3
 def compute_v_e(model, h):
     " Compute v_e from h using the closed-form expression. "
-    α, β, c, w = model.α, model.β, model.c, model.w
-    return (u(w) + α * (h - u(c))) / (1 - β * (1 - α))
+    α, β, γ, c, w, q = model
+    return (u(w, γ) + α * (h - u(c, γ))) / (1 - β * (1 - α))
 ```
 
 Now we implement the iteration on $h$ only:
@@ -391,9 +393,9 @@ Now we implement the iteration on $h$ only:
 ```{code-cell} ipython3
 def update_h(model, h):
     " One update of the scalar h. "
-    α, β, c, w, q = model.α, model.β, model.c, model.w, model.q
+    α, β, γ, c, w, q = model
     v_e = compute_v_e(model, h)
-    h_new = u(c) + β * (jnp.maximum(v_e, h) @ q)
+    h_new = u(c, γ) + β * (jnp.maximum(v_e, h) @ q)
     return h_new
 ```
 
@@ -414,8 +416,8 @@ def solve_model(model, tol=1e-5, max_iter=2000):
         error_new = jnp.abs(h_new - h)
         return h_new, i + 1, error_new
 
-    # Initialize 
-    h_init = u(model.c) / (1 - model.β)
+    # Initialize
+    h_init = u(model.c, model.γ) / (1 - model.β)
     i_init = 0
     error_init = tol + 1
     init_state = (h_init, i_init, error_init)
@@ -494,7 +496,8 @@ First, let's look at how $\bar w$ varies with unemployment compensation.
 In the figure below, we use the default parameters in the `Model` class, apart from
 c (which takes the values given on the horizontal axis)
 
-```{figure} /_static/lecture_specific/mccall_model_with_separation/mccall_resw_c.png
+```{glue:figure} mccall_resw_c
+:figwidth: 600px
 
 ```
 
@@ -509,7 +512,8 @@ Next, let's investigate how $\bar w$ varies with the discount factor.
 The next figure plots the reservation wage associated with different values of
 $\beta$
 
-```{figure} /_static/lecture_specific/mccall_model_with_separation/mccall_resw_beta.png
+```{glue:figure} mccall_resw_beta
+:figwidth: 600px
 
 ```
 
@@ -521,7 +525,8 @@ Finally, let's look at how $\bar w$ varies with the job separation rate $\alpha$
 
 Higher $\alpha$ translates to a greater chance that a worker will face termination in each period once employed.
 
-```{figure} /_static/lecture_specific/mccall_model_with_separation/mccall_resw_alpha.png
+```{glue:figure} mccall_resw_alpha
+:figwidth: 600px
 
 ```
 
@@ -569,6 +574,7 @@ fig, ax = plt.subplots()
 ax.set(xlabel='unemployment compensation', ylabel='reservation wage')
 ax.plot(c_vals, w_bar_vals, label=r'$\bar w$ as a function of $c$')
 ax.legend()
+glue("mccall_resw_c", fig, display=False)
 plt.show()
 ```
 
@@ -586,6 +592,7 @@ fig, ax = plt.subplots()
 ax.set(xlabel='discount factor', ylabel='reservation wage')
 ax.plot(β_vals, w_bar_vals, label=r'$\bar w$ as a function of $\beta$')
 ax.legend()
+glue("mccall_resw_beta", fig, display=False)
 plt.show()
 ```
 
@@ -603,6 +610,7 @@ fig, ax = plt.subplots()
 ax.set(xlabel='separation rate', ylabel='reservation wage')
 ax.plot(α_vals, w_bar_vals, label=r'$\bar w$ as a function of $\alpha$')
 ax.legend()
+glue("mccall_resw_alpha", fig, display=False)
 plt.show()
 ```
 
