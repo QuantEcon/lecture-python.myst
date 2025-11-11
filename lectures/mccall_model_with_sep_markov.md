@@ -509,7 +509,7 @@ This holds because:
 
 These properties ensure the chain is ergodic with a unique stationary distribution $\pi$ over states $(s, w)$.
 
-For an ergodic Markov chain, the ergodic theorem guarantees that time averages = ensemble averages.
+For an ergodic Markov chain, the ergodic theorem guarantees that time averages = cross-sectional averages.
 
 In particular, the fraction of time a single agent spends unemployed (across all
 wage states) converges to the cross-sectional unemployment rate:
@@ -661,7 +661,12 @@ def plot_cross_sectional_unemployment(model: Model, t_snapshot: int = 200,
     plt.show()
 ```
 
-Now let's compare the time-average unemployment rate (from a single agent's long simulation) with the cross-sectional unemployment rate (from many agents at a single point in time):
+Now let's compare the time-average unemployment rate (from a single agent's long simulation) with the cross-sectional unemployment rate (from many agents at a single point in time).
+
+We claimed above that these numbers will be approximately equal in large
+samples, due to ergodicity.
+
+Let's see if that's true.
 
 ```{code-cell} ipython3
 model = create_js_with_sep_model()
@@ -677,20 +682,23 @@ print(f"Cross-sectional unemployment rate (at t=200): "
 print(f"Difference: {abs(time_avg_unemp - cross_sectional_unemp):.4f}")
 ```
 
+Indeed, they are very close.
+
 Now let's visualize the cross-sectional distribution:
 
 ```{code-cell} ipython3
 plot_cross_sectional_unemployment(model)
 ```
 
-## Cross-Sectional Analysis with Lower Unemployment Compensation (c=0.5)
+## Lower Unemployment Compensation (c=0.5)
 
-Let's examine how the cross-sectional unemployment rate changes with lower unemployment compensation:
+What happens to the cross-sectional unemployment rate with lower unemployment compensation?
 
 ```{code-cell} ipython3
 model_low_c = create_js_with_sep_model(c=0.5)
 plot_cross_sectional_unemployment(model_low_c)
 ```
+
 
 ## Exercises
 
@@ -698,7 +706,7 @@ plot_cross_sectional_unemployment(model_low_c)
 :label: mmwsm_ex1
 ```
 
-Create a plot that shows how the steady state cross-sectional unemployment rate
+Create a plot that investigates more carefully how the steady state cross-sectional unemployment rate
 changes with unemployment compensation.
 
 ```{exercise-end}
