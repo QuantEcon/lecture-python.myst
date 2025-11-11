@@ -318,8 +318,7 @@ $$
 We'll use the same iterative approach to solving the Bellman equations that we
 adopted in the {doc}`first job search lecture <mccall_model>`.
 
-Since we have reduced the problem to a single scalar equation {eq}`bell_scalar`,
-we only need to iterate on $h$.
+In this case we only need to iterate on the single scalar equation {eq}`bell_scalar`.
 
 The iteration rule is
 
@@ -332,18 +331,9 @@ h_{n+1} = u(c) + \beta \sum_{w' \in \mathbb W}
 
 starting from some initial condition $h_0$.
 
-Once convergence is achieved, we can compute $v_e$ from {eq}`v_e_closed`:
+Once convergence is achieved, we can compute $v_e$ from {eq}`v_e_closed`.
 
-```{math}
-:label: bell_v_e_final
-
-v_e(w) = \frac{u(w) + \alpha(h - u(c))}{1 - \beta(1-\alpha)}
-```
-
-This approach is simpler than iterating on both $h$ and $v_e$ simultaneously, as
-we now only need to track a single scalar value.
-
-(Convergence can be established via the Banach contraction mapping theorem.)
+(It is possible to prove that {eq}`bell_iter` converges via the Banach contraction mapping theorem.)
 
 ## Implementation
 
@@ -405,28 +395,32 @@ def update_h(model, h):
     v_e = compute_v_e(model, h)
     h_new = u(c) + β * (jnp.maximum(v_e, h) @ q)
     return h_new
+```
 
+Using this iteration rule, we can write our model solver.
+
+```{code-cell} ipython3
 @jax.jit
 def solve_model(model, tol=1e-5, max_iter=2000):
     " Iterates to convergence on the Bellman equations. "
 
-    def cond_fun(state):
-        h, i, error = state
+    def cond(loop_state):
+        h, i, error = loop_state
         return jnp.logical_and(error > tol, i < max_iter)
 
-    def body_fun(state):
-        h, i, error = state
+    def update(loop_state):
+        h, i, error = loop_state
         h_new = update_h(model, h)
         error_new = jnp.abs(h_new - h)
         return h_new, i + 1, error_new
 
-    # Initial state: (h, i, error)
+    # Initialize 
     h_init = u(model.c) / (1 - model.β)
     i_init = 0
     error_init = tol + 1
-
     init_state = (h_init, i_init, error_init)
-    final_state = jax.lax.while_loop(cond_fun, body_fun, init_state)
+
+    final_state = jax.lax.while_loop(cond, update, init_state)
     h_final, _, _ = final_state
 
     # Compute v_e from the converged h
@@ -461,7 +455,11 @@ plt.show()
 
 The value $v_e$ is increasing because higher $w$ generates a higher wage flow conditional on staying employed.
 
-### The Reservation Wage: Computation
+
+The reservation wage is the $w$ where these lines meet.
+
+
+### Computing the Reservation Wage
 
 Here's a function `compute_reservation_wage` that takes an instance of `Model`
 and returns the associated reservation wage.
@@ -482,6 +480,8 @@ def compute_reservation_wage(model):
 ```
 
 Next we will investigate how the reservation wage varies with parameters.
+
+
 
 ## Impact of Parameters
 
