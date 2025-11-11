@@ -1,14 +1,16 @@
 ---
-jupytext:
-  text_representation:
-    extension: .md
-    format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.17.2
-kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
-  name: python3
+jupyter:
+  jupytext:
+    default_lexer: ipython3
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.17.2
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
 ---
 
 (mccall_with_sep_markov)=
@@ -89,14 +91,14 @@ When unemployed and receiving wage offer $w$, the agent chooses between:
 The unemployed worker's value function satisfies the Bellman equation
 
 $$
-    v_u(w) = \max\{v_e(w), c + \beta \sum_{w'} v_u(w') P(w,w')\}
+    v_u(w) = \max\{v_e(w), u(c) + \beta \sum_{w'} v_u(w') P(w,w')\}
 $$
 
 The employed worker's value function satisfies the Bellman equation
 
 $$
     v_e(w) = 
-    w + \beta
+    u(w) + \beta
     \left[
         \alpha \sum_{w'} v_u(w') P(w,w') + (1-\alpha) v_e(w)
     \right]
@@ -114,7 +116,7 @@ We use the following approach to solve this problem.
 
 $$
     v_e(w) = 
-    \frac{1}{1-\beta(1-\alpha)} \cdot (w + \alpha\beta(Pv_u)(w))
+    \frac{1}{1-\beta(1-\alpha)} \cdot (u(w) + \alpha\beta(Pv_u)(w))
 $$
 
 2. Substitute into the unemployed agent's Bellman equation to get:
@@ -124,19 +126,26 @@ $$
     v_u(w) = 
     \max
     \left\{
-        \frac{1}{1-\beta(1-\alpha)} \cdot (w + \alpha\beta(Pv_u)(w)),
-        c + \beta(Pv_u)(w)
+        \frac{1}{1-\beta(1-\alpha)} \cdot (u(w) + \alpha\beta(Pv_u)(w)),
+        u(c) + \beta(Pv_u)(w)
     \right\}
 $$
 
 3. Use value function iteration to solve for $v_u$
 
-4. Compute optimal policy: accept if $v_e(w) ≥ c + β(Pv_u)(w)$
+4. Compute optimal policy: accept if $v_e(w) ≥ u(c) + β(Pv_u)(w)$
 
 The optimal policy turns out to be a reservation wage strategy: accept all wages above some threshold.
 
 
 ## Code
+
+The default utility function is a CRRA utility function
+
+```{code-cell} ipython3
+def u(c, γ):
+    return (c**(1 - γ) - 1) / (1 - γ)
+```
 
 Let's set up a `Model` class to store information needed to solve the model.
 
@@ -152,9 +161,15 @@ class Model(NamedTuple):
     β: float
     c: float
     α: float
+    γ: float
 ```
 
 The function below holds default values and creates a `Model` instance:
+
+The wage offer process will be formed as the exponential of the discretization of an AR1 process.
+
+* discretize a Gaussian AR1 process of the form $X' = \rho X + \nu Z'$ 
+* take the exponential of the resulting process
 
 ```{code-cell} ipython3
 def create_js_with_sep_model(
@@ -163,7 +178,8 @@ def create_js_with_sep_model(
         ν: float = 0.2,        # wage volatility
         β: float = 0.96,       # discount factor
         α: float = 0.05,       # separation rate
-        c: float = 1.0         # unemployment compensation
+        c: float = 1.0,        # unemployment compensation
+        γ: float = 1.5         # utility parameter
     ) -> Model:
     """
     Creates an instance of the job search model with separation.
@@ -172,7 +188,7 @@ def create_js_with_sep_model(
     mc = tauchen(n, ρ, ν)
     w_vals, P = jnp.exp(jnp.array(mc.state_values)), jnp.array(mc.P)
     P_cumsum = jnp.cumsum(P, axis=1)
-    return Model(n, w_vals, P, P_cumsum, β, c, α)
+    return Model(n, w_vals, P, P_cumsum, β, c, α, γ)
 ```
 
 Here's the Bellman operator for the unemployed worker's value function:
@@ -180,10 +196,10 @@ Here's the Bellman operator for the unemployed worker's value function:
 ```{code-cell} ipython3
 def T(v: jnp.ndarray, model: Model) -> jnp.ndarray:
     """The Bellman operator for the value of being unemployed."""
-    n, w_vals, P, P_cumsum, β, c, α = model
+    n, w_vals, P, P_cumsum, β, c, α, γ = model
     d = 1 / (1 - β * (1 - α))
-    accept = d * (w_vals + α * β * P @ v)
-    reject = c + β * P @ v
+    accept = d * (u(w_vals, γ) + α * β * P @ v)
+    reject = u(c, γ) + β * P @ v
     return jnp.maximum(accept, reject)
 ```
 
@@ -193,10 +209,10 @@ the value function:
 ```{code-cell} ipython3
 def get_greedy(v: jnp.ndarray, model: Model) -> jnp.ndarray:
     """Get a v-greedy policy."""
-    n, w_vals, P, P_cumsum, β, c, α = model
+    n, w_vals, P, P_cumsum, β, c, α, γ = model
     d = 1 / (1 - β * (1 - α))
-    accept = d * (w_vals + α * β * P @ v)
-    reject = c + β * P @ v
+    accept = d * (u(w_vals, γ) + α * β * P @ v)
+    reject = u(c, γ) + β * P @ v
     σ = accept >= reject
     return σ
 ```
@@ -247,7 +263,7 @@ def get_reservation_wage(σ: jnp.ndarray, model: Model) -> float:
     Returns:
     - Reservation wage (lowest wage for which policy indicates acceptance)
     """
-    n, w_vals, P, P_cumsum, β, c, α = model
+    n, w_vals, P, P_cumsum, β, c, α, γ = model
 
     # Find the first index where policy indicates acceptance
     # σ is a boolean array, argmax returns the first True value
@@ -264,7 +280,7 @@ Let's solve the model:
 
 ```{code-cell} ipython3
 model = create_js_with_sep_model()
-n, w_vals, P, P_cumsum, β, c, α = model
+n, w_vals, P, P_cumsum, β, c, α, γ = model
 v_star = vfi(model)
 σ_star = get_greedy(v_star, model)
 ```
@@ -273,8 +289,8 @@ Next we compute some related quantities, including the reservation wage.
 
 ```{code-cell} ipython3
 d = 1 / (1 - β * (1 - α))
-accept = d * (w_vals + α * β * P @ v_star)
-h_star = c + β * P @ v_star
+accept = d * (u(w_vals, γ) + α * β * P @ v_star)
+h_star = u(c, γ) + β * P @ v_star
 w_star = get_reservation_wage(σ_star, model)
 ```
 
@@ -346,7 +362,7 @@ def update_agent(key, is_employed, wage_idx, model, σ):
     period via the probabilites in P(w, .)
 
     """
-    n, w_vals, P, P_cumsum, β, c, α = model
+    n, w_vals, P, P_cumsum, β, c, α, γ = model
 
     key1, key2 = jax.random.split(key)
     # Use precomputed cumulative sum for efficient sampling
@@ -390,7 +406,7 @@ def simulate_employment_path(
     """
     key = jax.random.PRNGKey(seed)
     # Unpack model
-    n, w_vals, P, P_cumsum, β, c, α = model
+    n, w_vals, P, P_cumsum, β, c, α, γ = model
 
     # Initial conditions
     is_employed = 0
@@ -556,7 +572,7 @@ def _simulate_cross_section_compiled(
     ):
     """JIT-compiled core simulation loop using lax.fori_loop.
     Returns only the final employment state to save memory."""
-    n, w_vals, P, P_cumsum, β, c, α = model
+    n, w_vals, P, P_cumsum, β, c, α, γ = model
 
     # Initialize arrays
     wage_indices = jnp.zeros(n_agents, dtype=jnp.int32)
@@ -698,7 +714,6 @@ What happens to the cross-sectional unemployment rate with lower unemployment co
 model_low_c = create_js_with_sep_model(c=0.5)
 plot_cross_sectional_unemployment(model_low_c)
 ```
-
 
 ## Exercises
 
