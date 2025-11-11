@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -31,21 +31,21 @@ We discuss two ways to create a compound lottery and their consequences.
 
 A compound lottery can be said to create a _mixture distribution_.
 
-Our two ways of constructing a compound lottery will differ in their **timing**.
+Our two ways of constructing a compound lottery will differ in their *timing*.
 
-* in one, mixing between two possible probability distributions  will occur once and all at the beginning of time
+* in one, mixing between two possible probability distributions will occur once and all at the beginning of time
 
 * in the other, mixing between the same two possible probability distributions will occur each period
 
 The statistical setting is close but not identical to the problem studied in that quantecon lecture.
 
-In that lecture, there were two  i.i.d. processes that could possibly govern successive draws of a non-negative random variable $W$.
+In that lecture, there were two i.i.d. processes that could possibly govern successive draws of a non-negative random variable $W$.
 
-Nature decided  once and for all whether to make  a sequence of IID draws from either $ f $ or from $ g $.
+Nature decided once and for all whether to make a sequence of IID draws from either $ f $ or from $ g $.
 
-That lecture studied an agent who knew both $f$ and $g$ but  did not know which distribution nature chose at time $-1$.
+That lecture studied an agent who knew both $f$ and $g$ but did not know which distribution nature chose at time $-1$.
 
-The agent represented that ignorance  by assuming that nature had chosen  $f$ or $g$ by  flipping an unfair coin that put probability  $\pi_{-1}$ on probability distribution $f$.
+The agent represented that ignorance by assuming that nature had chosen $f$ or $g$ by flipping an unfair coin that put probability $\pi_{-1}$ on probability distribution $f$.
 
 That assumption allowed the agent to construct a subjective joint probability distribution over the
 random sequence $\{W_t\}_{t=0}^\infty$.
@@ -53,14 +53,14 @@ random sequence $\{W_t\}_{t=0}^\infty$.
 We studied how the agent would then use the laws of conditional probability and an observed history $w^t =\{w_s\}_{s=0}^t$ to form
 
 $$
-\pi_t = E [ \textrm{nature chose distribution}  f | w^t] , \quad  t = 0, 1, 2, \ldots
+\pi_t = E [ \textrm{nature chose distribution } f | w^t] , \quad t = 0, 1, 2, \ldots
 $$
 
-However, in the  setting of this lecture, that rule imputes to the agent an incorrect model.
+However, in the setting of this lecture, that rule imputes to the agent an incorrect model.
 
-The reason is that  now the wage sequence is actually described by a different statistical model.
+The reason is that now the wage sequence is actually described by a different statistical model.
 
-Thus, we change the {doc}`quantecon lecture <likelihood_bayes>` specification in the following way.
+Thus, we change the specification in {doc}`likelihood_bayes` in the following way.
 
 Now, **each period** $t \geq 0$, nature flips a possibly unfair coin that comes up $f$ with probability $\alpha$
 and $g$ with probability $1 -\alpha$.
@@ -71,17 +71,17 @@ $$
 H(w) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
 $$
 
-We'll study two agents  who try to learn about the wage process, but who use different  statistical models.
+We'll study two agents who try to learn about the wage process, but who use different statistical models.
 
 Both types of agent know $f$ and $g$ but neither knows $\alpha$.
 
-Our first type of agent erroneously thinks that at time $-1$ nature once and for all chose $f$ or $g$ and thereafter
+Our first type of agent erroneously thinks that at time $-1$, nature once and for all chose $f$ or $g$ and thereafter
 permanently draws from that distribution.
 
 Our second type of agent knows, correctly, that nature mixes $f$ and $g$ with mixing probability $\alpha \in (0,1)$
 each period, though the agent doesn't know the mixing parameter.
 
-Our first type of agent applies the learning algorithm described in {doc}`this  quantecon lecture <likelihood_bayes>`.
+Our first type of agent applies the learning algorithm described in {doc}`likelihood_bayes`.
 
 In the context of the statistical model that prevailed in that lecture, that was a good learning algorithm and it enabled the Bayesian learner
 eventually to learn the distribution that nature had drawn at time $-1$.
@@ -93,7 +93,7 @@ But in the present context, our type 1 decision maker's model is incorrect becau
 generates the data is neither $f$ nor $g$ and so is beyond the support of the models that the agent thinks are
 possible.
 
-Nevertheless, we'll see that our first type of agent muddles through and eventually learns something  interesting and useful, even though it is not *true*.
+Nevertheless, we'll see that our first type of agent muddles through and eventually learns something interesting and useful, even though it is not *true*.
 
 Instead, it turns out that our type 1 agent who is armed with a wrong statistical model ends up learning whichever probability distribution, $f$ or $g$,
 is in a special sense *closest* to the $h$ that actually generates the data.
@@ -103,7 +103,7 @@ We'll tell the sense in which it is closest.
 Our second type of agent understands that nature mixes between $f$ and $g$ each period with a fixed mixing
 probability $\alpha$.
 
-But  the agent doesn't know $\alpha$.
+But the agent doesn't know $\alpha$.
 
 The agent sets out to learn $\alpha$ using Bayes' law applied to his model.
 
@@ -114,9 +114,9 @@ In this lecture, we'll learn about
 
 * how nature can *mix* between two distributions $f$ and $g$ to create a new distribution $h$.
 
-* The Kullback-Leibler statistical divergence <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence> that governs statistical learning under an incorrect statistical model
+* The [Kullback-Leibler statistical divergence](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) that governs statistical learning under an incorrect statistical model
 
-* A useful Python function `numpy.searchsorted` that,  in conjunction with a uniform random number generator, can be used to sample from an arbitrary distribution
+* A useful Python function `numpy.searchsorted` that, in conjunction with a uniform random number generator, can be used to sample from an arbitrary distribution
 
 As usual, we'll start by importing some Python tools.
 
@@ -161,7 +161,7 @@ G_a, G_b = 3, 1.2
 @vectorize
 def p(x, a, b):
     r = gamma(a + b) / (gamma(a) * gamma(b))
-    return r * x** (a-1) * (1 - x) ** (b-1)
+    return r * x**(a-1) * (1 - x)**(b-1)
 
 # The two density functions.
 f = jit(lambda x: p(x, F_a, F_b))
@@ -206,9 +206,9 @@ l_arr_f = simulate(F_a, F_b, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
 
-## Sampling from  Compound Lottery $H$
+## Sampling from compound lottery $H$
 
-We implement two methods  to draw samples from
+We implement two methods to draw samples from
 our mixture model $\alpha F + (1-\alpha) G$.
 
 We'll generate samples using each of them and verify that they match well.
@@ -229,7 +229,7 @@ Here is pseudo code for a direct "method 1" for drawing from our compound lotter
   * put the first two steps in a big loop and do them for each realization of $w$
 
 
-Our second method uses a uniform distribution and the following fact that we also described and used in the quantecon lecture <https://python.quantecon.org/prob_matrix.html>:
+Our second method uses a uniform distribution and the following fact that we also described and used in {doc}`prob_matrix`:
 
  * If a random variable $X$ has c.d.f. $F$, then a random variable $F^{-1}(U)$ also has c.d.f. $F$, where $U$ is a uniform random variable on $[0,1]$.
 
@@ -237,17 +237,15 @@ In other words, if $X \sim F(x)$ we can generate a random sample from $F$ by dra
 a uniform distribution on $[0,1]$ and computing $F^{-1}(U)$.
 
 
-We'll  use this  fact
+We'll use this fact
 in conjunction with the `numpy.searchsorted` command to sample from $H$ directly.
 
-See <https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html> for the
-`searchsorted` function.
+See the [`numpy.searchsorted` documentation](https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html) for details on the `searchsorted` function.
 
 See the [Mr. P Solver video on Monte Carlo simulation](https://www.google.com/search?q=Mr.+P+Solver+video+on+Monte+Carlo+simulation&oq=Mr.+P+Solver+video+on+Monte+Carlo+simulation) to see other applications of this powerful trick.
 
 In the Python code below, we'll use both of our methods and confirm that each of them does a good job of sampling
 from our target mixture distribution.
-
 
 ```{code-cell} ipython3
 @jit
@@ -265,7 +263,7 @@ def draw_lottery(p, N):
 def draw_lottery_MC(p, N):
     "Draw from the compound lottery using the Monte Carlo trick."
 
-    xs = np.linspace(1e-8,1-(1e-8),10000)
+    xs = np.linspace(1e-8, 1-(1e-8), 10000)
     CDF = p*sp.beta.cdf(xs, F_a, F_b) + (1-p)*sp.beta.cdf(xs, G_a, G_b)
 
     Us = np.random.rand(N)
@@ -292,13 +290,13 @@ plt.legend()
 plt.show()
 ```
 
-## Type 1 Agent
+## Type 1 agent
 
 We'll now study what our type 1 agent learns
 
 Remember that our type 1 agent uses the wrong statistical model, thinking that nature mixed between $f$ and $g$ once and for all at time $-1$.
 
-The type 1 agent thus uses the learning algorithm studied in {doc}`this  quantecon lecture <likelihood_bayes>`.
+The type 1 agent thus uses the learning algorithm studied in {doc}`likelihood_bayes`.
 
 We'll briefly review that learning algorithm now.
 
@@ -308,8 +306,8 @@ $$
 \pi_t = {\rm Prob}(q=f|w^t)
 $$
 
-The likelihood ratio process plays a principal role  in the formula that governs the evolution
-of the posterior probability $ \pi_t $, an instance of **Bayes’ Law**.
+The likelihood ratio process plays a principal role in the formula that governs the evolution
+of the posterior probability $ \pi_t $, an instance of **Bayes' Law**.
 
 Bayes’ law implies that $ \{\pi_t\} $ obeys the recursion
 
@@ -336,8 +334,8 @@ def update(π, l):
     return π
 ```
 
-Formula {eq}`eq:recur1` can be generalized  by iterating on it and thereby deriving an
-expression for  the time $ t $ posterior $ \pi_{t+1} $ as a function
+Formula {eq}`eq:recur1` can be generalized by iterating on it and thereby deriving an
+expression for the time $ t $ posterior $ \pi_{t+1} $ as a function
 of the time $ 0 $ prior $ \pi_0 $ and the likelihood ratio process
 $ L(w^{t+1}) $ at time $ t $.
 
@@ -383,7 +381,7 @@ $ L\left(w^{t+1}\right)>0 $, we can verify that
 $ \pi_{t+1}\in\left(0,1\right) $.
 
 After rearranging the preceding equation, we can express $ \pi_{t+1} $ as a
-function of  $ L\left(w^{t+1}\right) $, the  likelihood ratio process at $ t+1 $,
+function of $ L\left(w^{t+1}\right) $, the likelihood ratio process at $ t+1 $,
 and the initial prior $ \pi_{0} $
 
 $$
@@ -395,7 +393,7 @@ Formula {eq}`eq:bayeslaw103` generalizes formula {eq}`eq:recur1`.
 Formula {eq}`eq:bayeslaw103` can be regarded as a one step revision of prior probability $ \pi_0 $ after seeing
 the batch of data $ \left\{ w_{i}\right\} _{i=1}^{t+1} $.
 
-## What a type 1 Agent Learns when Mixture $H$ Generates Data
+## What a type 1 agent learns when mixture $H$ generates data
 
 We now study what happens when the mixture distribution $h;\alpha$ truly generated the data each period.
 
@@ -442,7 +440,7 @@ def plot_π_seq(α, π1=0.2, π2=0.8, T=200):
     for i in range(2):
         ax1.plot(range(T+1), π_seq_mixed[i, :], label=rf"$\pi_0$={π_seq_mixed[i, 0]}")
 
-    ax1.plot(np.nan, np.nan,  '--', color='b', label='Log likelihood ratio process')
+    ax1.plot(np.nan, np.nan, '--', color='b', label='Log likelihood ratio process')
     ax1.set_ylabel(r"$\pi_t$")
     ax1.set_xlabel("t")
     ax1.legend()
@@ -471,9 +469,9 @@ plot_π_seq(α = 0.2)
 
 Evidently, $\alpha$ is having a big effect on the destination of $\pi_t$ as $t \rightarrow + \infty$
 
-## Kullback-Leibler Divergence Governs Limit of $\pi_t$
+## Kullback-Leibler divergence governs limit of $\pi_t$
 
-To understand what determines whether the limit point of  $\pi_t$ is  $0$ or $1$  and how the answer depends on the true value of the mixing probability  $\alpha \in (0,1) $ that generates
+To understand what determines whether the limit point of $\pi_t$ is $0$ or $1$ and how the answer depends on the true value of the mixing probability $\alpha \in (0,1)$ that generates
 
 $$ h(w) \equiv h(w | \alpha) = \alpha f(w) + (1-\alpha) g(w) $$
 
@@ -492,13 +490,13 @@ $$
 We shall plot both of these functions against $\alpha$ as we use $\alpha$ to vary
 $h(w) = h(w|\alpha)$.
 
-The limit of $\pi_t$ is  determined by
+The limit of $\pi_t$ is determined by
 
 $$ \min_{f,g} \{KL_g, KL_f\} $$
 
 The only possible limits are $0$ and $1$.
 
-As $t \rightarrow +\infty$, $\pi_t$ goes to one if and only if  $KL_f < KL_g$
+As $t \rightarrow +\infty$, $\pi_t$ goes to one if and only if $KL_f < KL_g$
 
 ```{code-cell} ipython3
 @vectorize
@@ -568,7 +566,7 @@ ax.legend(loc='upper right')
 plt.show()
 ```
 
-Let's compute an $\alpha$ for which  the KL divergence  between $h$ and $g$ is the same as that between $h$ and $f$.
+Let's compute an $\alpha$ for which the KL divergence between $h$ and $g$ is the same as that between $h$ and $f$.
 
 ```{code-cell} ipython3
 # where KL_f = KL_g
@@ -580,8 +578,7 @@ We can compute and plot the convergence point $\pi_{\infty}$ for each $\alpha$ t
 The blue circles show the limiting values of $\pi_t$ that simulations discover for different values of $\alpha$
 recorded on the $x$ axis.
 
-Thus, the graph below confirms how a minimum  KL divergence governs what our type 1 agent eventually learns.
-
+Thus, the graph below confirms how a minimum KL divergence governs what our type 1 agent eventually learns.
 
 ```{code-cell} ipython3
 α_arr_x = α_arr[(α_arr<discretion)|(α_arr>discretion)]
@@ -612,17 +609,17 @@ plt.show()
 Evidently, our type 1 learner who applies Bayes' law to his misspecified set of statistical models eventually learns an approximating model that is as close as possible to the true model, as measured by its
 Kullback-Leibler divergence:
 
-- When $\alpha$ is small, $KL_g < KL_f$ meaning the divergence of $g$ from $h$ is smaller than that of $f$ and so the limit point of $\pi_t$ is close to $0$.
+- When $\alpha$ is small, $KL_g < KL_f$, meaning the divergence of $g$ from $h$ is smaller than that of $f$ and so the limit point of $\pi_t$ is close to $0$.
 
-- When $\alpha$ is large, $KL_f < KL_g$ meaning the divergence of $f$ from $h$ is smaller than that of $g$ and so the limit point of $\pi_t$ is close to $1$.
+- When $\alpha$ is large, $KL_f < KL_g$, meaning the divergence of $f$ from $h$ is smaller than that of $g$ and so the limit point of $\pi_t$ is close to $1$.
 
-## Type 2 Agent
+## Type 2 agent
 
 We now describe how our type 2 agent formulates his learning problem and what he eventually learns.
 
 Our type 2 agent understands the correct statistical model but does not know $\alpha$.
 
-We apply Bayes law to deduce an algorithm for  learning $\alpha$ under the assumption
+We apply Bayes law to deduce an algorithm for learning $\alpha$ under the assumption
 that the agent knows that
 
 $$
@@ -631,11 +628,11 @@ $$
 
 but does not know $\alpha$.
 
-We'll assume that the person starts out with a prior probability $\pi_0(\alpha)$ on
-$\alpha \in (0,1)$ where the prior has one of the forms that we deployed in {doc}`this quantecon lecture <bayes_nonconj>`.
+We'll assume that the agent starts out with a prior probability $\pi_0(\alpha)$ on
+$\alpha \in (0,1)$ where the prior has one of the forms that we deployed in {doc}`bayes_nonconj`.
 
 
-We'll fire up `numpyro` and  apply it  to the present situation.
+We'll fire up `numpyro` and apply it to the present situation.
 
 Bayes' law now takes the form
 
@@ -645,12 +642,12 @@ $$
        { \int h(w_{t+1} | \hat \alpha) \pi_t(\hat \alpha) d \hat \alpha }
 $$
 
-We'll use numpyro  to approximate this equation.
+We'll use numpyro to approximate this equation.
 
-We'll create  graphs of the posterior $\pi_t(\alpha)$ as
-$t \rightarrow +\infty$ corresponding to ones presented in the quantecon lecture <https://python.quantecon.org/bayes_nonconj.html>.
+We'll create graphs of the posterior $\pi_t(\alpha)$ as
+$t \rightarrow +\infty$ corresponding to ones presented in {doc}`bayes_nonconj`.
 
-We anticipate that a posterior  distribution will collapse around  the true $\alpha$ as
+We anticipate that a posterior distribution will collapse around the true $\alpha$ as
 $t \rightarrow + \infty$.
 
 Let us try a uniform prior first.
@@ -684,7 +681,6 @@ def MCMC_run(ws):
 The following code generates the graph below that displays Bayesian posteriors for $\alpha$ at various history lengths.
 
 ```{code-cell} ipython3
-
 fig, ax = plt.subplots(figsize=(10, 6))
 
 for i in range(len(sizes)):
@@ -699,18 +695,18 @@ ax.set_xlabel(r'$\alpha$')
 plt.show()
 ```
 
-Evidently,  the Bayesian posterior  narrows in on the true value  $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.
+Evidently, the Bayesian posterior narrows in on the true value $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.
 
-## Concluding Remarks
+## Concluding remarks
 
-Our type 1 person  deploys an incorrect statistical  model.
+Our type 1 agent deploys an incorrect statistical model.
 
 He believes
 that either $f$ or $g$ generated the $w$ process, but just doesn't know which one.
 
 That is wrong because nature is actually mixing each period with mixing probability $\alpha$.
 
-Our type 1 agent  eventually believes that either $f$ or $g$ generated the $w$ sequence, the outcome being determined by the model, either $f$ or $g$, whose  KL divergence relative to $h$ is smaller.
+Our type 1 agent eventually believes that either $f$ or $g$ generated the $w$ sequence, the outcome being determined by the model, either $f$ or $g$, whose KL divergence relative to $h$ is smaller.
 
 Our type 2 agent has a different statistical model, one that is correctly specified.
 
@@ -718,11 +714,11 @@ He knows the parametric form of the statistical model but not the mixing paramet
 
 He knows that he does not know it.
 
-But by using Bayes' law in conjunction with his statistical model and a history of data,  he eventually acquires a more and more accurate inference about $\alpha$.
+But by using Bayes' law in conjunction with his statistical model and a history of data, he eventually acquires a more and more accurate inference about $\alpha$.
 
-This little laboratory  exhibits some important general principles that govern outcomes of Bayesian learning of misspecified models.
+This little laboratory exhibits some important general principles that govern outcomes of Bayesian learning of misspecified models.
 
-Thus, the  following situation prevails quite generally in empirical work.
+Thus, the following situation prevails quite generally in empirical work.
 
 A scientist approaches the data with a manifold $S$ of statistical models $ s (X | \theta)$ , where $s$ is a probability distribution over a random vector $X$, $\theta \in \Theta$
 is a vector of parameters, and $\Theta$ indexes the manifold of models.
@@ -730,9 +726,9 @@ is a vector of parameters, and $\Theta$ indexes the manifold of models.
 The scientist with observations that he interprets as realizations $x$ of the random vector $X$ wants to solve an **inverse problem** of somehow _inverting_
 $s(x | \theta)$ to infer $\theta$ from $x$.
 
-But the scientist's model is misspecified, being only an approximation to an unknown  model $h$ that nature uses to generate $X$.
+But the scientist's model is misspecified, being only an approximation to an unknown model $h$ that nature uses to generate $X$.
 
-If the scientist uses Bayes' law or a related  likelihood-based  method to infer $\theta$, it occurs quite generally that for large sample sizes the inverse problem infers a  $\theta$ that minimizes  the KL divergence of the scientist's model $s$ relative to nature's   model $h$.
+If the scientist uses Bayes' law or a related likelihood-based method to infer $\theta$, it occurs quite generally that for large sample sizes the inverse problem infers a $\theta$ that minimizes the KL divergence of the scientist's model $s$ relative to nature's model $h$.
 
 
 ## Exercises
