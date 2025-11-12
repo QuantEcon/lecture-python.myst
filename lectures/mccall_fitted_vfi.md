@@ -96,7 +96,9 @@ The model is the same as in the {doc}`discrete case <mccall_model_with_sep_marko
 
 In the {doc}`discrete case <mccall_model_with_sep_markov>`, we ended up iterating on the Bellman operator
 
-$$
+```{math}
+:label: bell2mcmc
+
     (Tv_u)(w) =
     \max
     \left\{
@@ -106,7 +108,7 @@ $$
         \right),
         u(c) + \beta(Pv_u)(w)
     \right\}
-$$
+```
 
 where
 
