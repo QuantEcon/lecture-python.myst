@@ -651,17 +651,18 @@ distribution:</p>
 and returns the associated reservation wage.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_reservation_wage</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_reservation_wage</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the reservation wage of an instance of the McCall model</span>
-<span class="sd">    by finding the smallest w such that v_e(w) &gt;= h. If no such w exists, then</span>
-<span class="sd">    w_bar is set to np.inf.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    by finding the smallest w such that v_e(w) &gt;= h. </span>
 
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Find the first i such that v_e(w_i) &gt;= h and return w[i]</span>
+    <span class="c1"># If no such w exists, then w_bar is set to np.inf</span>
     <span class="n">v_e</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">v_e</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">accept</span> <span class="o">=</span> <span class="n">v_e</span> <span class="o">&gt;=</span> <span class="n">h</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">accept</span><span class="p">)</span>   <span class="c1"># take first accept index</span>
+    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">accept</span><span class="p">),</span> <span class="n">model</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">w_bar</span>
 </pre></div>
 </div>

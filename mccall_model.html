@@ -694,12 +694,13 @@ that we can get a sense of what fraction of offers will be accepted.</p>
 
 <span class="c1"># Plot the wage offer distribution</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;wage offer distribution&#39;</span><span class="p">,</span> 
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;wage offer distribution&#39;</span><span class="p">,</span>
         <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="c1"># Compute reservation wage with default beta</span>
 <span class="n">model_default</span> <span class="o">=</span> <span class="n">McCallModel</span><span class="p">()</span>
-<span class="n">v_init</span> <span class="o">=</span> <span class="n">model_default</span><span class="o">.</span><span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">model_default</span><span class="o">.</span><span class="n">β</span><span class="p">)</span>
+<span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">model_default</span>
+<span class="n">v_init</span> <span class="o">=</span> <span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>
 <span class="n">v_default</span><span class="p">,</span> <span class="n">res_wage_default</span> <span class="o">=</span> <span class="n">compute_reservation_wage</span><span class="p">(</span>
     <span class="n">model_default</span><span class="p">,</span> <span class="n">v_init</span>
 <span class="p">)</span>
@@ -707,14 +708,15 @@ that we can get a sense of what fraction of offers will be accepted.</p>
 <span class="c1"># Compute reservation wage with lower beta</span>
 <span class="n">β_new</span> <span class="o">=</span> <span class="mf">0.96</span>
 <span class="n">model_low_beta</span> <span class="o">=</span> <span class="n">McCallModel</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="n">β_new</span><span class="p">)</span>
-<span class="n">v_init_low</span> <span class="o">=</span> <span class="n">model_low_beta</span><span class="o">.</span><span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">model_low_beta</span><span class="o">.</span><span class="n">β</span><span class="p">)</span>
+<span class="n">c</span><span class="p">,</span> <span class="n">β_low</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">model_low_beta</span>
+<span class="n">v_init_low</span> <span class="o">=</span> <span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β_low</span><span class="p">)</span>
 <span class="n">v_low</span><span class="p">,</span> <span class="n">res_wage_low</span> <span class="o">=</span> <span class="n">compute_reservation_wage</span><span class="p">(</span>
     <span class="n">model_low_beta</span><span class="p">,</span> <span class="n">v_init_low</span>
 <span class="p">)</span>
 
 <span class="c1"># Plot vertical lines for reservation wages</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">res_wage_default</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;reservation wage (β=</span><span class="si">{</span><span class="n">model_default</span><span class="o">.</span><span class="n">β</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;reservation wage (β=</span><span class="si">{</span><span class="n">β</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">res_wage_low</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;reservation wage (β=</span><span class="si">{</span><span class="n">β_new</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
 
@@ -818,24 +820,46 @@ need to compute the value function.</p>
 <div class="math notranslate nohighlight" id="equation-j1">
 <span class="eqno">(42.8)<a class="headerlink" href="#equation-j1" title="Link to this equation">#</a></span>\[    h = c + \beta \sum_{w'} v^*(w') q (w')\]</div>
 <p>The Bellman equation can now be written as</p>
+<div class="math notranslate nohighlight" id="equation-j1b">
+<span class="eqno">(42.9)<a class="headerlink" href="#equation-j1b" title="Link to this equation">#</a></span>\[    v^*(w')
+    = \max \left\{ \frac{w'}{1 - \beta}, \, h \right\}\]</div>
+<p>Now let’s derive a nonlinear equation for <span class="math notranslate nohighlight">\(h\)</span> alone.</p>
+<p>Starting from <a class="reference internal" href="#equation-j1b">(42.9)</a>, we multiply both sides by <span class="math notranslate nohighlight">\(q(w')\)</span> to get</p>
 <div class="math notranslate nohighlight">
 \[
-    v^*(w')
-    = \max \left\{ \frac{w'}{1 - \beta}, \, h \right\}
+    v^*(w') q(w') = \max \left\{ \frac{w'}{1 - \beta}, h \right\} q(w')
 \]</div>
-<p>Substituting this last equation into <a class="reference internal" href="#equation-j1">(42.8)</a> gives</p>
+<p>Next, we sum both sides over <span class="math notranslate nohighlight">\(w' \in \mathbb{W}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    \sum_{w' \in \mathbb W} v^*(w') q(w')
+    = \sum_{w' \in \mathbb W} \max \left\{ \frac{w'}{1 - \beta}, h \right\} q(w')
+\]</div>
+<p>Now multiply both sides by <span class="math notranslate nohighlight">\(\beta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    \beta \sum_{w' \in \mathbb W} v^*(w') q(w')
+    = \beta \sum_{w' \in \mathbb W} \max \left\{ \frac{w'}{1 - \beta}, h \right\} q(w')
+\]</div>
+<p>Add <span class="math notranslate nohighlight">\(c\)</span> to both sides:</p>
+<div class="math notranslate nohighlight">
+\[
+    c + \beta \sum_{w' \in \mathbb W} v^*(w') q(w')
+    = c + \beta \sum_{w' \in \mathbb W} \max \left\{ \frac{w'}{1 - \beta}, h \right\} q(w')
+\]</div>
+<p>Finally, using the definition of <span class="math notranslate nohighlight">\(h\)</span> from <a class="reference internal" href="#equation-j1">(42.8)</a>, the left-hand side is just <span class="math notranslate nohighlight">\(h\)</span>, giving us</p>
 <div class="math notranslate nohighlight" id="equation-j2">
-<span class="eqno">(42.9)<a class="headerlink" href="#equation-j2" title="Link to this equation">#</a></span>\[    h = c + \beta
+<span class="eqno">(42.10)<a class="headerlink" href="#equation-j2" title="Link to this equation">#</a></span>\[    h = c + \beta
         \sum_{w' \in \mathbb W}
         \max \left\{
             \frac{w'}{1 - \beta}, h
         \right\}  q (w')\]</div>
-<p>This is a nonlinear equation that we can solve for <span class="math notranslate nohighlight">\(h\)</span>.</p>
+<p>This is a nonlinear equation in the single scalar <span class="math notranslate nohighlight">\(h\)</span> that we can solve for <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <p>As before, we will use successive approximations:</p>
 <p>Step 1: pick an initial guess <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <p>Step 2: compute the update <span class="math notranslate nohighlight">\(h'\)</span> via</p>
 <div class="math notranslate nohighlight" id="equation-j3">
-<span class="eqno">(42.10)<a class="headerlink" href="#equation-j3" title="Link to this equation">#</a></span>\[h'
+<span class="eqno">(42.11)<a class="headerlink" href="#equation-j3" title="Link to this equation">#</a></span>\[h'
 = c + \beta
     \sum_{w' \in \mathbb W}
     \max \left\{
@@ -967,7 +991,27 @@ given the parameters, and then simulate to see how long it takes to accept.</p>
 <p>And here’s a solution using JAX.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cdf</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">q_default</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, we set up a function to draw random wage offers from the distribution.</span>
+<span class="c1"># We use the inverse transform method: draw a uniform random variable u,</span>
+<span class="c1"># then find the smallest wage w such that the CDF at w is &gt;= u.</span>
+<span class="n">cdf</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">q_default</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_wage</span><span class="p">(</span><span class="n">uniform_rv</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Draw a wage from the distribution q_default using the inverse transform method.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    uniform_rv : float</span>
+<span class="sd">        A uniform random variable on [0, 1]</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    wage : float</span>
+<span class="sd">        A wage drawn from w_default with probabilities given by q_default</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">w_default</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cdf</span><span class="p">,</span> <span class="n">uniform_rv</span><span class="p">)]</span>
+
 
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_stopping_time</span><span class="p">(</span><span class="n">w_bar</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -977,7 +1021,7 @@ given the parameters, and then simulate to see how long it takes to accept.</p>
         <span class="n">t</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">accept</span> <span class="o">=</span> <span class="n">loop_state</span>
         <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">u</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">subkey</span><span class="p">)</span>
-        <span class="n">w</span> <span class="o">=</span> <span class="n">w_default</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cdf</span><span class="p">,</span> <span class="n">u</span><span class="p">)]</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">draw_wage</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
         <span class="n">accept</span> <span class="o">=</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="n">w_bar</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">accept</span>
@@ -1017,7 +1061,8 @@ given the parameters, and then simulate to see how long it takes to accept.</p>
     <span class="k">return</span> <span class="n">compute_mean_stopping_time</span><span class="p">(</span><span class="n">w_bar</span><span class="p">)</span>
 
 <span class="c1"># Vectorize across all c values</span>
-<span class="n">stop_times</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_stop_time_for_c</span><span class="p">)(</span><span class="n">c_vals</span><span class="p">)</span>
+<span class="n">compute_stop_time_vectorized</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_stop_time_for_c</span><span class="p">)</span>
+<span class="n">stop_times</span> <span class="o">=</span> <span class="n">compute_stop_time_vectorized</span><span class="p">(</span><span class="n">c_vals</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
@@ -1049,13 +1094,13 @@ continuous (i.e., have a density).</p>
 then behaving optimally in all subsequent periods:</p>
 <p>To shift to a continuous offer distribution, we can replace <a class="reference internal" href="#equation-j1">(42.8)</a> by</p>
 <div class="math notranslate nohighlight" id="equation-j1c">
-<span class="eqno">(42.11)<a class="headerlink" href="#equation-j1c" title="Link to this equation">#</a></span>\[h
+<span class="eqno">(42.12)<a class="headerlink" href="#equation-j1c" title="Link to this equation">#</a></span>\[h
 = c + \beta
     \int v^*(s') q (s') ds'.
 \quad\]</div>
-<p>Equation <a class="reference internal" href="#equation-j2">(42.9)</a> becomes</p>
+<p>Equation <a class="reference internal" href="#equation-j2">(42.10)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-j2c">
-<span class="eqno">(42.12)<a class="headerlink" href="#equation-j2c" title="Link to this equation">#</a></span>\[h
+<span class="eqno">(42.13)<a class="headerlink" href="#equation-j2c" title="Link to this equation">#</a></span>\[h
 = c + \beta
     \int
     \max \left\{
@@ -1097,12 +1142,12 @@ assumes a lognormal wage distribution.</p>
     <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">mc_size</span><span class="p">,))</span>
     <span class="n">w_draws</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">σ</span> <span class="o">*</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">McCallModelContinuous</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">σ</span><span class="o">=</span><span class="n">σ</span><span class="p">,</span> <span class="n">μ</span><span class="o">=</span><span class="n">μ</span><span class="p">,</span> <span class="n">w_draws</span><span class="o">=</span><span class="n">w_draws</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">McCallModelContinuous</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">w_draws</span><span class="p">)</span>
 
 
 <span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_reservation_wage_continuous</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">w_draws</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">σ</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">μ</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">w_draws</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">w_draws</span> <span class="o">=</span> <span class="n">model</span>
     
     <span class="n">h</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">w_draws</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>  <span class="c1"># initial guess</span>
     
@@ -1118,8 +1163,9 @@ assumes a lognormal wage distribution.</p>
         <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">,</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span>
     
     <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">h_final</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">cond</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
-    
+    <span class="n">final_state</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">cond</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
+    <span class="n">h_final</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">final_state</span>
+
     <span class="c1"># Now compute the reservation wage</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span> <span class="o">*</span> <span class="n">h_final</span>
 </pre></div>
@@ -1139,12 +1185,13 @@ assumes a lognormal wage distribution.</p>
     <span class="n">model</span> <span class="o">=</span> <span class="n">create_mccall_continuous</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">compute_reservation_wage_continuous</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
-<span class="c1"># Create meshgrid and vectorize computation</span>
-<span class="n">c_grid</span><span class="p">,</span> <span class="n">β_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">c_vals</span><span class="p">,</span> <span class="n">β_vals</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
-<span class="n">compute_R_vectorized</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span>
-    <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_R_element</span><span class="p">,</span> 
-    <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span> 
-    <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="c1"># First, vectorize over β (holding c fixed)</span>
+<span class="n">compute_R_over_β</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_R_element</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+<span class="c1"># Next, vectorize over c (applying the above function to each c)</span>
+<span class="n">compute_R_vectorized</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_R_over_β</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+<span class="c1"># Apply to compute the full grid</span>
 <span class="n">R</span> <span class="o">=</span> <span class="n">compute_R_vectorized</span><span class="p">(</span><span class="n">c_vals</span><span class="p">,</span> <span class="n">β_vals</span><span class="p">)</span>
 </pre></div>
 </div>

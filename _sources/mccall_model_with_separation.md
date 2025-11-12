@@ -467,17 +467,18 @@ Here's a function `compute_reservation_wage` that takes an instance of `Model`
 and returns the associated reservation wage.
 
 ```{code-cell} ipython3
-@jax.jit
 def compute_reservation_wage(model):
     """
     Computes the reservation wage of an instance of the McCall model
-    by finding the smallest w such that v_e(w) >= h. If no such w exists, then
-    w_bar is set to np.inf.
-    """
+    by finding the smallest w such that v_e(w) >= h. 
 
+    """
+    # Find the first i such that v_e(w_i) >= h and return w[i]
+    # If no such w exists, then w_bar is set to np.inf
     v_e, h = solve_model(model)
-    i = jnp.searchsorted(v_e, h, side='left')
-    w_bar = jnp.where(i >= len(model.w), jnp.inf, model.w[i])
+    accept = v_e >= h
+    i = jnp.argmax(accept)   # take first accept index
+    w_bar = jnp.where(jnp.any(accept), model.w[i], jnp.inf)
     return w_bar
 ```
 
