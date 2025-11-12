@@ -132,7 +132,7 @@ $$
 
 where $\psi$ is the standard normal density.
 
-Here we are thinking of $v_u$ as a function on all of $\RR_+$.
+Here we are thinking of $v_u$ as a function on all of $\mathbb{R}_+$.
 
 
 ### Fitting
