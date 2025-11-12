@@ -3,6 +3,8 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3
   language: python
@@ -17,7 +19,7 @@ kernelspec:
 </div>
 ```
 
-# Job Search V: Correlated Wage Offers
+# Job Search V: Persistent and Transitory Wage Shocks
 
 ```{contents} Contents
 :depth: 2
@@ -26,30 +28,37 @@ kernelspec:
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython
-:tags: [hide-output]
+:tags: ["hide-output"]
 
 !pip install quantecon jax
 ```
 
-
 ## Overview
 
-In this lecture we solve a {doc}`McCall style job search model <mccall_model>` with persistent and
-transitory components to wages.
+In this lecture we extend the {doc}`McCall job search model <mccall_model>` by decomposing wage offers into **persistent** and **transitory** components.
 
-In other words, we relax the unrealistic assumption that randomness in wages is independent over time.
+In the {doc}`baseline model <mccall_model>`, wage offers are IID over time, which is unrealistic.
 
-At the same time, we will go back to assuming that jobs are permanent and no separation occurs.
+In {doc}`Job Search III <mccall_model_with_sep_markov>`, we introduced correlated wage draws using a Markov chain, but we also added job separation.
 
-This is to keep the model relatively simple as we study the impact of correlation.
+Here we take a different approach: we model wage dynamics through an AR(1) process for the persistent component plus a transitory shock, while returning to the assumption that jobs are permanent (as in the {doc}`baseline model <mccall_model>`).
+
+This persistent-transitory decomposition is:
+- More realistic for modeling actual wage processes
+- Commonly used in labor economics (see, e.g., {cite}`MaCurdy1982`, {cite}`Meghir2004`)
+- Simple enough to analyze while capturing key features of wage dynamics
+
+By keeping jobs permanent, we can focus on understanding how persistent and transitory wage shocks affect search behavior and reservation wages.
+
+We will solve the model using fitted value function iteration with linear interpolation, as introduced in {doc}`Job Search IV <mccall_fitted_vfi>`.
 
 We will use the following imports:
 
-```{code-cell} ipython3
+```{code-cell} ipython
 import matplotlib.pyplot as plt
 import jax
 import jax.numpy as jnp
-import jax.random as jr
+import jax.random
 import quantecon as qe
 from typing import NamedTuple
 ```
@@ -89,7 +98,7 @@ v^*(w, z) =
     \right\}
 $$
 
-In this expression, $u$ is a utility function and $\mathbb E_z$ is expectation of next period variables given current $z$.
+In this expression, $u$ is a utility function and $\mathbb E_z$ is the expectation of next period variables given current $z$.
 
 The variable $z$ enters as a state in the Bellman equation because its current value helps predict future wages.
 
@@ -137,7 +146,7 @@ $$
 \frac{u(w)}{1-\beta} \geq f^*(z)
 $$
 
-For utility we take $u(c) = \ln(c)$.
+For utility, we take $u(c) = \ln(c)$.
 
 The reservation wage is the wage where equality holds in the last expression.
 
@@ -167,8 +176,8 @@ Here's a `NamedTuple` that stores the model parameters and data.
 
 Default parameter values are embedded in the model.
 
-```{code-cell} ipython3
-class JobSearchModel(NamedTuple):
+```{code-cell} ipython
+class Model(NamedTuple):
     μ: float     # transient shock log mean
     s: float     # transient shock log variance  
     d: float     # shift coefficient of persistent state
@@ -180,9 +189,9 @@ class JobSearchModel(NamedTuple):
     e_draws: jnp.ndarray
 
 def create_job_search_model(μ=0.0, s=1.0, d=0.0, ρ=0.9, σ=0.1, β=0.98, c=5.0, 
-                           mc_size=1000, grid_size=100, key=jr.PRNGKey(1234)):
+                           mc_size=1000, grid_size=100, key=jax.random.PRNGKey(1234)):
     """
-    Create a JobSearchModel with computed grid and draws.
+    Create a Model with computed grid and draws.
     """
     # Set up grid
     z_mean = d / (1 - ρ)
@@ -192,20 +201,19 @@ def create_job_search_model(μ=0.0, s=1.0, d=0.0, ρ=0.9, σ=0.1, β=0.98, c=5.0
     z_grid = jnp.linspace(a, b, grid_size)
 
     # Draw and store shocks
-    e_draws = jr.normal(key, (2, mc_size))
+    e_draws = jax.random.normal(key, (2, mc_size))
 
-    return JobSearchModel(μ=μ, s=s, d=d, ρ=ρ, σ=σ, β=β, c=c, 
-                         z_grid=z_grid, e_draws=e_draws)
+    return Model(μ, s, d, ρ, σ, β, c, z_grid, e_draws)
 ```
 
-Next we implement the $Q$ operator.
+Next, we implement the $Q$ operator.
 
-```{code-cell} ipython3
+```{code-cell} ipython
 def Q(model, f_in):
     """
     Apply the operator Q.
 
-        * model is an instance of JobSearchModel
+        * model is an instance of Model
         * f_in is an array that represents f
         * returns Qf
 
@@ -235,7 +243,7 @@ def Q(model, f_in):
 
 Here's a function to compute an approximation to the fixed point of $Q$.
 
-```{code-cell} ipython3
+```{code-cell} ipython
 @jax.jit  
 def compute_fixed_point(model, tol=1e-4, max_iter=1000):
     """
@@ -266,16 +274,16 @@ def compute_fixed_point(model, tol=1e-4, max_iter=1000):
 
 Let's try generating an instance and solving the model.
 
-```{code-cell} ipython3
+```{code-cell} ipython
 model = create_job_search_model()
 
 with qe.Timer():
     f_star = compute_fixed_point(model).block_until_ready()
 ```
 
-Next we will compute and plot the reservation wage function defined in {eq}`corr_mcm_barw`.
+Next, we will compute and plot the reservation wage function defined in {eq}`corr_mcm_barw`.
 
-```{code-cell} ipython3
+```{code-cell} ipython
 res_wage_function = jnp.exp(f_star * (1 - model.β))
 
 fig, ax = plt.subplots()
@@ -292,10 +300,10 @@ Notice that the reservation wage is increasing in the current state $z$.
 This is because a higher state leads the agent to predict higher future wages,
 increasing the option value of waiting.
 
-Let's try changing unemployment compensation and look at its impact on the
+Let's try changing unemployment compensation and looking at its impact on the
 reservation wage:
 
-```{code-cell} ipython3
+```{code-cell} ipython
 c_vals = 1, 2, 3
 
 fig, ax = plt.subplots()
@@ -317,13 +325,56 @@ at all state values.
 
 ## Unemployment duration
 
-Next we study how mean unemployment duration varies with unemployment compensation.
+Next, we study how mean unemployment duration varies with unemployment compensation.
 
-For simplicity we’ll fix the initial state at $z_t = 0$.
+For simplicity, we'll fix the initial state at $z_t = 0$.
 
-```{code-cell} ipython3
+```{code-cell} ipython
+@jax.jit
+def draw_duration(key, μ, s, d, ρ, σ, β, z_grid, f_star, t_max=10_000):
+    """
+    Draw unemployment duration for a single simulation.
+
+    """
+    def f_star_function(z):
+        return jnp.interp(z, z_grid, f_star)
+
+    def cond_fun(loop_state):
+        z, t, unemployed, key = loop_state
+        return jnp.logical_and(unemployed, t < t_max)
+
+    def body_fun(loop_state):
+        z, t, unemployed, key = loop_state
+        key1, key2, key = jax.random.split(key, 3)
+
+        # Draw current wage
+        y = jnp.exp(μ + s * jax.random.normal(key1))
+        w = jnp.exp(z) + y
+        res_wage = jnp.exp(f_star_function(z) * (1 - β))
+
+        # Check if optimal to stop
+        accept = w >= res_wage
+        τ = jnp.where(accept, t, t_max)
+
+        # Update state if not accepting
+        z_new = jnp.where(accept, z,
+                            ρ * z + d + σ * jax.random.normal(key2))
+        t_new = t + 1
+        unemployed_new = jnp.logical_not(accept)
+
+        return z_new, t_new, unemployed_new, key
+
+    # Initial loop_state: (z, t, unemployed, key)
+    init_state = (0.0, 0, True, key)
+    z_final, t_final, unemployed_final, _ = jax.lax.while_loop(
+        cond_fun, body_fun, init_state)
+
+    # Return final time if job found, otherwise t_max
+    return jnp.where(unemployed_final, t_max, t_final)
+
+
 def compute_unemployment_duration(
-        model, key=jr.PRNGKey(1234), num_reps=100_000
+        model, key=jax.random.PRNGKey(1234), num_reps=100_000
     ):
     """
     Compute expected unemployment duration.
@@ -331,60 +382,23 @@ def compute_unemployment_duration(
     """
     f_star = compute_fixed_point(model)
     μ, s, d = model.μ, model.s, model.d
-    ρ, σ, β, c = model.ρ, model.σ, model.β, model.c
+    ρ, σ, β = model.ρ, model.σ, model.β
     z_grid = model.z_grid
 
-    @jax.jit
-    def f_star_function(z):
-        return jnp.interp(z, z_grid, f_star)
-
-    @jax.jit
-    def draw_τ(key, t_max=10_000):
-        def cond_fun(loop_state):
-            z, t, unemployed, key = loop_state
-            return jnp.logical_and(unemployed, t < t_max)
-        
-        def body_fun(loop_state):
-            z, t, unemployed, key = loop_state
-            key1, key2, key = jr.split(key, 3)
-            
-            # Draw current wage
-            y = jnp.exp(μ + s * jr.normal(key1))
-            w = jnp.exp(z) + y
-            res_wage = jnp.exp(f_star_function(z) * (1 - β))
-            
-            # Check if optimal to stop
-            accept = w >= res_wage
-            τ = jnp.where(accept, t, t_max)
-            
-            # Update state if not accepting
-            z_new = jnp.where(accept, z, 
-                                ρ * z + d + σ * jr.normal(key2))
-            t_new = t + 1
-            unemployed_new = jnp.logical_not(accept)
-            
-            return z_new, t_new, unemployed_new, key
-        
-        # Initial loop_state: (z, t, unemployed, key)
-        init_state = (0.0, 0, True, key)
-        z_final, t_final, unemployed_final, _ = jax.lax.while_loop(
-            cond_fun, body_fun, init_state)
-        
-        # Return final time if job found, otherwise t_max
-        return jnp.where(unemployed_final, t_max, t_final)
-
     # Generate keys for all simulations
-    keys = jr.split(key, num_reps)
-    
+    keys = jax.random.split(key, num_reps)
+
     # Vectorize over simulations
-    τ_vals = jax.vmap(draw_τ)(keys)
-    
+    τ_vals = jax.vmap(
+        lambda k: draw_duration(k, μ, s, d, ρ, σ, β, z_grid, f_star)
+    )(keys)
+
     return jnp.mean(τ_vals)
 ```
 
 Let's test this out with some possible values for unemployment compensation.
 
-```{code-cell} ipython3
+```{code-cell} ipython
 c_vals = jnp.linspace(1.0, 10.0, 8)
 durations = []
 for i, c in enumerate(c_vals):
@@ -396,7 +410,7 @@ durations = jnp.array(durations)
 
 Here is a plot of the results.
 
-```{code-cell} ipython3
+```{code-cell} ipython
 fig, ax = plt.subplots()
 ax.plot(c_vals, durations)
 ax.set_xlabel("unemployment compensation")
@@ -423,9 +437,9 @@ Investigate how mean unemployment duration varies with the discount factor $\bet
 :class: dropdown
 ```
 
-Here is one solution
+Here is one solution:
 
-```{code-cell} ipython3
+```{code-cell} ipython
 beta_vals = jnp.linspace(0.94, 0.99, 8)
 durations = []
 for i, β in enumerate(beta_vals):
@@ -435,7 +449,7 @@ for i, β in enumerate(beta_vals):
 durations = jnp.array(durations)
 ```
 
-```{code-cell} ipython3
+```{code-cell} ipython
 fig, ax = plt.subplots()
 ax.plot(beta_vals, durations)
 ax.set_xlabel(r"$\beta$")

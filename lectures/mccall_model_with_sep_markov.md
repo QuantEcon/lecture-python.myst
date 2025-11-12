@@ -1,16 +1,14 @@
 ---
-jupyter:
-  jupytext:
-    default_lexer: ipython3
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.17.2
-  kernelspec:
-    display_name: Python 3 (ipykernel)
-    language: python
-    name: python3
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
 ---
 
 (mccall_with_sep_markov)=
@@ -22,7 +20,7 @@ jupyter:
 </div>
 ```
 
-
++++
 
 # Job Search III: Search with Separation and Markov Wages
 
@@ -104,6 +102,7 @@ $$
     \right]
 $$
 
++++
 
 ## Computational Approach
 
@@ -121,6 +120,7 @@ $$
 
 2. Substitute into the unemployed agent's Bellman equation to get:
 
++++
 
 $$
     v_u(w) = 
@@ -137,6 +137,7 @@ $$
 
 The optimal policy turns out to be a reservation wage strategy: accept all wages above some threshold.
 
++++
 
 ## Code
 
@@ -334,6 +335,7 @@ plt.show()
 
 Can you provide an intuitive economic story behind the outcome that you see in this figure?
 
++++
 
 ## Employment Simulation
 
@@ -492,7 +494,7 @@ This is because she uses the wage $w$ from her last job to draw a new wage offer
 via $P(w, \cdot)$, and positive correlation means that a high current $w$ is
 often leads a high new draw.
 
-
++++
 
 ## The Ergodic Property
 
@@ -545,6 +547,7 @@ As a result, we can study steady-state unemployment either by:
 
 Often the second approach is better for our purposes, since it's easier to parallelize.
 
++++
 
 ## Cross-Sectional Analysis
 
