@@ -10,7 +10,7 @@ on:
         type: string
 jobs:
   preview:
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
+    runs-on: ubuntu-latest
     env:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -28,17 +28,12 @@ jobs:
           python-version: "3.13"
           environment-file: environment.yml
           activate-environment: quantecon
-      - name: Install JAX, Numpyro, PyTorch
+      - name: Install JAX and Numpyro (CPU-only)
         shell: bash -l {0}
         run: |
-          # pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
-          # pip install pyro-ppl
-          pip install "jax[cuda12-local]==0.6.2"
-          pip install numpyro pyro-ppl
+          pip install -U jax
+          pip install numpyro
           python scripts/test-jax-install.py
-      - name: Check nvidia Drivers
-        shell: bash -l {0}
-        run: nvidia-smi
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
