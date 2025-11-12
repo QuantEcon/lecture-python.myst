@@ -1,16 +1,14 @@
 ---
-jupyter:
-  jupytext:
-    default_lexer: ipython
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.17.2
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
+kernelspec:
+  display_name: Python 3
+  language: python
+  name: python3
 ---
 
 ```{raw} jupyter
@@ -56,7 +54,7 @@ We will solve the model using fitted value function iteration with linear interp
 
 We will use the following imports:
 
-```python
+```{code-cell} ipython
 import matplotlib.pyplot as plt
 import jax
 import jax.numpy as jnp
@@ -178,7 +176,7 @@ Here's a `NamedTuple` that stores the model parameters and data.
 
 Default parameter values are embedded in the model.
 
-```python
+```{code-cell} ipython
 class Model(NamedTuple):
     μ: float     # transient shock log mean
     s: float     # transient shock log variance  
@@ -210,7 +208,7 @@ def create_job_search_model(μ=0.0, s=1.0, d=0.0, ρ=0.9, σ=0.1, β=0.98, c=5.0
 
 Next, we implement the $Q$ operator.
 
-```python
+```{code-cell} ipython
 def Q(model, f_in):
     """
     Apply the operator Q.
@@ -245,7 +243,7 @@ def Q(model, f_in):
 
 Here's a function to compute an approximation to the fixed point of $Q$.
 
-```python
+```{code-cell} ipython
 @jax.jit  
 def compute_fixed_point(model, tol=1e-4, max_iter=1000):
     """
@@ -276,7 +274,7 @@ def compute_fixed_point(model, tol=1e-4, max_iter=1000):
 
 Let's try generating an instance and solving the model.
 
-```python
+```{code-cell} ipython
 model = create_job_search_model()
 
 with qe.Timer():
@@ -285,7 +283,7 @@ with qe.Timer():
 
 Next, we will compute and plot the reservation wage function defined in {eq}`corr_mcm_barw`.
 
-```python
+```{code-cell} ipython
 res_wage_function = jnp.exp(f_star * (1 - model.β))
 
 fig, ax = plt.subplots()
@@ -305,7 +303,7 @@ increasing the option value of waiting.
 Let's try changing unemployment compensation and looking at its impact on the
 reservation wage:
 
-```python
+```{code-cell} ipython
 c_vals = 1, 2, 3
 
 fig, ax = plt.subplots()
@@ -331,7 +329,7 @@ Next, we study how mean unemployment duration varies with unemployment compensat
 
 For simplicity, we'll fix the initial state at $z_t = 0$.
 
-```python
+```{code-cell} ipython
 @jax.jit
 def draw_duration(key, μ, s, d, ρ, σ, β, z_grid, f_star, t_max=10_000):
     """
@@ -400,7 +398,7 @@ def compute_unemployment_duration(
 
 Let's test this out with some possible values for unemployment compensation.
 
-```python
+```{code-cell} ipython
 c_vals = jnp.linspace(1.0, 10.0, 8)
 durations = []
 for i, c in enumerate(c_vals):
@@ -412,7 +410,7 @@ durations = jnp.array(durations)
 
 Here is a plot of the results.
 
-```python
+```{code-cell} ipython
 fig, ax = plt.subplots()
 ax.plot(c_vals, durations)
 ax.set_xlabel("unemployment compensation")
@@ -441,7 +439,7 @@ Investigate how mean unemployment duration varies with the discount factor $\bet
 
 Here is one solution:
 
-```python
+```{code-cell} ipython
 beta_vals = jnp.linspace(0.94, 0.99, 8)
 durations = []
 for i, β in enumerate(beta_vals):
@@ -451,7 +449,7 @@ for i, β in enumerate(beta_vals):
 durations = jnp.array(durations)
 ```
 
-```python
+```{code-cell} ipython
 fig, ax = plt.subplots()
 ax.plot(beta_vals, durations)
 ax.set_xlabel(r"$\beta$")
