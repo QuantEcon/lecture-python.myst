@@ -29,7 +29,9 @@ jupyter:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```python tags=["hide-output"]
+```{code-cell} ipython
+:tags: ["hide-output"]
+
 !pip install quantecon jax
 ```
 
