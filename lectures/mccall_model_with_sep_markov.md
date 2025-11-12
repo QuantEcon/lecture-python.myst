@@ -414,7 +414,6 @@ unemployed, 1 if employed) and $w_t$ is
 * their current wage, if employed. 
 
 ```{code-cell} ipython3
-@jax.jit
 def update_agent(key, status, wage_idx, model, w_star):
     """
     Updates an agent's employment status and current wage.
