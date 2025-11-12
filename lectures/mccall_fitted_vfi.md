@@ -473,33 +473,6 @@ This makes economic sense: when the value of being unemployed rises (through hig
 ```{exercise}
 :label: mfv_ex2
 
-Let us now consider how the agent responds to an increase in volatility.
-
-To try to understand this, compute the reservation wage when the wage offer distribution is uniform on $(m - s, m + s)$ and $s$ varies.
-
-The idea here is that we are holding the mean constant and spreading the support.
-
-(This is a form of *mean-preserving spread*.)
-
-Use `s_vals = jnp.linspace(1.0, 2.0, 15)` and `m = 2.0`.
-
-State how you expect the reservation wage to vary with $s$.
-
-Now compute it - is this as you expected?
-```
-
-```{solution-start} mfv_ex2
-:class: dropdown
-```
-
-Maybe add an exercise that explores a pure increase in volatility.
-
-```{solution-end}
-```
-
-```{exercise}
-:label: mfv_ex3
-
 Create a plot that shows how the reservation wage changes with the risk aversion parameter $\gamma$.
 
 Use `γ_vals = jnp.linspace(1.2, 2.5, 15)` and keep all other parameters at their default values.
@@ -508,7 +481,7 @@ How do you expect the reservation wage to vary with $\gamma$? Why?
 
 ```
 
-```{solution-start} mfv_ex3
+```{solution-start} mfv_ex2
 :class: dropdown
 ```
 
