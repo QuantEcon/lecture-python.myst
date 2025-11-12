@@ -28,15 +28,15 @@ jobs:
           python-version: "3.13"
           environment-file: environment.yml
           activate-environment: quantecon
+      - name: Check nvidia Drivers
+        shell: bash -l {0}
+        run: nvidia-smi
       - name: Install JAX and Numpyro
         shell: bash -l {0}
         run: |
           pip install -U "jax[cuda13]"
           pip install numpyro
           python scripts/test-jax-install.py
-      - name: Check nvidia Drivers
-        shell: bash -l {0}
-        run: nvidia-smi
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
