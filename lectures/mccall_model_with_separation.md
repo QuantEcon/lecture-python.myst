@@ -473,12 +473,12 @@ def compute_reservation_wage(model):
     by finding the smallest w such that v_e(w) >= h. 
 
     """
-    # Find the first i such that v_e(w_i) >= h and return w_vals[i]
+    # Find the first i such that v_e(w_i) >= h and return w[i]
     # If no such w exists, then w_bar is set to np.inf
     v_e, h = solve_model(model)
     accept = v_e >= h
     i = jnp.argmax(accept)   # take first accept index
-    w_bar = jnp.where(jnp.any(accept), w_vals[i], jnp.inf)
+    w_bar = jnp.where(jnp.any(accept), model.w[i], jnp.inf)
     return w_bar
 ```
 
