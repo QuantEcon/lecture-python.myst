@@ -86,60 +86,7 @@ The wage updates are as follows:
 * If an unemployed agent rejects offer $w$, then their next offer is drawn from $P(w, \cdot)$
 * If an employed agent loses a job in which they were paid wage $w$, then their next offer is drawn from $P(w, \cdot)$
 
-### Value Functions
-
-We let
-
-- $v_u(w)$ be the value of being unemployed when current wage offer is $w$
-- $v_e(w)$ be the value of being employed at wage $w$
-
-The Bellman equations are obvious modifications of the {doc}`IID case <mccall_model_with_separation>`.
-
-The only change is that expectations for next period are computed using the transition matrix $P$ conditioned on current wage $w$, instead of being drawn independently from $q$.
-
-The unemployed worker's value function satisfies the Bellman equation
-
-$$
-    v_u(w) = \max\{v_e(w), u(c) + \beta \sum_{w'} v_u(w') P(w,w')\}
-$$
-
-The employed worker's value function satisfies the Bellman equation
-
-$$
-    v_e(w) = 
-    u(w) + \beta
-    \left[
-        \alpha \sum_{w'} v_u(w') P(w,w') + (1-\alpha) v_e(w)
-    \right]
-$$
-
-As a matter of notation, given a function $h$ assigning values to wages, it is common to set
-
-$$
-    (Ph)(w) = \sum_{w'} h(w') P(w,w')
-$$
-
-(To understand this expression, think of $P$ as a matrix and $h$ as a column vector.)
-
-With this notation, the Bellman equations become
-
-$$
-    v_u(w) = \max\{v_e(w), u(c) + \beta (P v_u)(w)\}
-$$
-
-and
-
-$$
-    v_e(w) = 
-    u(w) + \beta
-    \left[
-        \alpha (P v_u)(w) + (1-\alpha) v_e(w)
-    \right]
-$$
-
-+++
-
-### The Wage Process
+### The Wage Offer Process
 
 To construct the wage offer process we start with an AR1 process.
 
@@ -162,10 +109,68 @@ This means that the wage process will be positively correlated: the higher the c
 wage offer, the more likely we are to get a high offer tomorrow.
 
 
+
+### Value Functions
+
+We let
+
+- $v_u(w)$ be the value of being unemployed when current wage offer is $w$
+- $v_e(w)$ be the value of being employed at wage $w$
+
+The Bellman equations are obvious modifications of the {doc}`IID case <mccall_model_with_separation>`.
+
+The only change is that expectations for next period are computed using the transition matrix $P$ conditioned on current wage $w$, instead of being drawn independently from $q$.
+
+The unemployed worker's value function satisfies the Bellman equation
+
+$$
+    v_u(w) = \max
+        \left\{
+            v_e(w), u(c) + \beta \sum_{w'} v_u(w') P(w,w')
+        \right\}
+$$
+
+The employed worker's value function satisfies the Bellman equation
+
+$$
+    v_e(w) = 
+    u(w) + \beta
+    \left[
+        \alpha \sum_{w'} v_u(w') P(w,w') + (1-\alpha) v_e(w)
+    \right]
+$$
+
+As a matter of notation, given a function $h$ assigning values to wages, it is common to set
+
+$$
+    (Ph)(w) = \sum_{w'} h(w') P(w,w')
+$$
+
+(To understand this expression, think of $P$ as a matrix, $h$ as a column vector, and $w$ as a row index.)
+
+With this notation, the Bellman equations become
+
+$$
+    v_u(w) = \max\{v_e(w), u(c) + \beta (P v_u)(w)\}
+$$
+
+and
+
+$$
+    v_e(w) = 
+    u(w) + \beta
+    \left[
+        \alpha (P v_u)(w) + (1-\alpha) v_e(w)
+    \right]
+$$
+
++++
+
+
 ## Computational Approach
 
 To solve this problem, we use the employed worker's Bellman equation to express
-$v_e$ in terms of $Pv_u$:
+$v_e$ in terms of $Pv_u$
 
 $$
     v_e(w) = 
@@ -354,6 +359,10 @@ ax.set_xlabel(r"$w$")
 plt.show()
 ```
 
+The reservation wage is at the intersection of the stopping value function, which is
+equal to $v_e$, and the continuation value function, which is the value of
+rejecting
+
 ## Sensitivity Analysis
 
 Let's examine how reservation wages change with the separation rate.
@@ -361,16 +370,17 @@ Let's examine how reservation wages change with the separation rate.
 ```{code-cell} ipython3
 α_vals: jnp.ndarray = jnp.linspace(0.0, 1.0, 10)
 
-w_star_vec = jnp.empty_like(α_vals)
-for (i_α, α) in enumerate(α_vals):
+w_star_vec = []
+for α in α_vals:
     model = create_js_with_sep_model(α=α)
     v_star = vfi(model)
     w_star = get_reservation_wage(v_star, model)
-    w_star_vec = w_star_vec.at[i_α].set(w_star)
+    w_star_vec.append(w_star)
 
 fig, ax = plt.subplots(figsize=(9, 5.2))
-ax.plot(α_vals, w_star_vec, linewidth=2, alpha=0.6,
-        label="reservation wage")
+ax.plot(
+    α_vals, w_star_vec, linewidth=2, alpha=0.6, label="reservation wage"
+)
 ax.legend(frameon=False)
 ax.set_xlabel(r"$\alpha$")
 ax.set_ylabel(r"$w$")
@@ -397,20 +407,22 @@ This is implemented via `jnp.searchsorted` on the precomputed cumulative sum
 
 The function `update_agent` advances the agent's state by one period.
 
+The agent's state is a pair $(s_t, w_t)$, where $s_t$ is employment status (0 if
+unemployed, 1 if employed) and $w_t$ is 
+
+* their current wage offer, if unemployed, or
+* their current wage, if employed. 
+
 ```{code-cell} ipython3
 @jax.jit
-def update_agent(key, is_employed, wage_idx, model, w_star):
+def update_agent(key, status, wage_idx, model, w_star):
     """
-    Updates an agent by one period.  Updates their employment status and their
-    current wage (stored by index).
-
-    Agents who lose their job that pays wage w receive a new draw in the next
-    period via the probabilites in P(w, .)
+    Updates an agent's employment status and current wage.
 
     Parameters:
     - key: JAX random key
-    - is_employed: Current employment status (0 or 1)
-    - wage_idx: Current wage index
+    - status: Current employment status (0 or 1)
+    - wage_idx: Current wage, recorded as an array index
     - model: Model instance
     - w_star: Reservation wage
 
@@ -419,6 +431,7 @@ def update_agent(key, is_employed, wage_idx, model, w_star):
 
     key1, key2 = jax.random.split(key)
     # Use precomputed cumulative sum for efficient sampling
+    # via the inverse transform method.
     new_wage_idx = jnp.searchsorted(
         P_cumsum[wage_idx, :], jax.random.uniform(key1)
     )
@@ -428,21 +441,21 @@ def update_agent(key, is_employed, wage_idx, model, w_star):
 
     # If employed: status = 1 if no separation, 0 if separation
     # If unemployed: status = 1 if accepts, 0 if rejects
-    final_employment = jnp.where(
-        is_employed,
+    next_status = jnp.where(
+        status,
         1 - separation_occurs.astype(jnp.int32),  # employed path
         accepts.astype(jnp.int32)                 # unemployed path
     )
 
     # If employed: wage = current if no separation, new if separation
     # If unemployed: wage = current if accepts, new if rejects
-    final_wage = jnp.where(
-        is_employed,
+    next_wage = jnp.where(
+        status,
         jnp.where(separation_occurs, new_wage_idx, wage_idx),  # employed path
         jnp.where(accepts, wage_idx, new_wage_idx)             # unemployed path
     )
 
-    return final_employment, final_wage
+    return next_status, next_wage
 ```
 
 Here's a function to simulate the employment path of a single agent.
@@ -463,22 +476,22 @@ def simulate_employment_path(
     n, w_vals, P, P_cumsum, β, c, α, γ = model
 
     # Initial conditions
-    is_employed = 0
+    status = 0
     wage_idx = 0
 
-    wage_path_list = []
-    employment_status_list = []
+    wage_path = []
+    status_path = []
 
     for t in range(T):
-        wage_path_list.append(w_vals[wage_idx])
-        employment_status_list.append(is_employed)
+        wage_path.append(w_vals[wage_idx])
+        status_path.append(status)
 
         key, subkey = jax.random.split(key)
-        is_employed, wage_idx = update_agent(
-            subkey, is_employed, wage_idx, model, w_star
+        status, wage_idx = update_agent(
+            subkey, status, wage_idx, model, w_star
         )
 
-    return jnp.array(wage_path_list), jnp.array(employment_status_list)
+    return jnp.array(wage_path), jnp.array(status_path)
 ```
 
 Let's create a comprehensive plot of the employment simulation:
@@ -631,23 +644,23 @@ def _simulate_cross_section_compiled(
 
     # Initialize arrays
     wage_indices = jnp.zeros(n_agents, dtype=jnp.int32)
-    is_employed = jnp.zeros(n_agents, dtype=jnp.int32)
+    status = jnp.zeros(n_agents, dtype=jnp.int32)
 
     def update(t, loop_state):
-        key, is_employed, wage_indices = loop_state
+        key, status, wage_indices = loop_state
 
         # Shift loop state forwards
         key, subkey = jax.random.split(key)
         agent_keys = jax.random.split(subkey, n_agents)
 
-        is_employed, wage_indices = update_agents_vmap(
-            agent_keys, is_employed, wage_indices, model, w_star
+        status, wage_indices = update_agents_vmap(
+            agent_keys, status, wage_indices, model, w_star
         )
 
-        return key, is_employed, wage_indices
+        return key, status, wage_indices
 
     # Run simulation using fori_loop
-    initial_loop_state = (key, is_employed, wage_indices)
+    initial_loop_state = (key, status, wage_indices)
     final_loop_state = lax.fori_loop(0, T, update, initial_loop_state)
 
     # Return only final employment state
@@ -680,12 +693,12 @@ def simulate_cross_section(
     w_star = get_reservation_wage(v_star, model)
 
     # Run JIT-compiled simulation
-    final_employment = _simulate_cross_section_compiled(
+    final_status = _simulate_cross_section_compiled(
         key, model, w_star, n_agents, T
     )
 
     # Calculate unemployment rate at final period
-    unemployment_rate = 1 - jnp.mean(final_employment)
+    unemployment_rate = 1 - jnp.mean(final_status)
 
     return unemployment_rate
 ```
@@ -707,18 +720,18 @@ def plot_cross_sectional_unemployment(model: Model, t_snapshot: int = 200,
     key = jax.random.PRNGKey(42)
     v_star = vfi(model)
     w_star = get_reservation_wage(v_star, model)
-    final_employment = _simulate_cross_section_compiled(
+    final_status = _simulate_cross_section_compiled(
         key, model, w_star, n_agents, t_snapshot
     )
 
     # Calculate unemployment rate
-    unemployment_rate = 1 - jnp.mean(final_employment)
+    unemployment_rate = 1 - jnp.mean(final_status)
 
     fig, ax = plt.subplots(figsize=(8, 5))
 
     # Plot histogram as density (bars sum to 1)
-    weights = jnp.ones_like(final_employment) / len(final_employment)
-    ax.hist(final_employment, bins=[-0.5, 0.5, 1.5],
+    weights = jnp.ones_like(final_status) / len(final_status)
+    ax.hist(final_status, bins=[-0.5, 0.5, 1.5],
             alpha=0.7, color='blue', edgecolor='black',
             density=True, weights=weights)
 
