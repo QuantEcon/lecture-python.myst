@@ -10,7 +10,7 @@ on:
         type: string
 jobs:
   preview:
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
+    runs-on: ubuntu-latest
     env:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -28,28 +28,38 @@ jobs:
           python-version: "3.13"
           environment-file: environment.yml
           activate-environment: quantecon
-      - name: Check nvidia Drivers
-        shell: bash -l {0}
-        run: nvidia-smi
-      - name: Install JAX and Numpyro
+      - name: Install JAX and Numpyro (CPU-only)
         shell: bash -l {0}
         run: |
-          pip install -U "jax[cuda13]"
+          pip install -U jax
           pip install numpyro
           python scripts/test-jax-install.py
+      - name: Install LaTeX dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y     \
+          texlive-latex-recommended \
+          texlive-latex-extra       \
+          texlive-fonts-recommended \
+          texlive-fonts-extra       \
+          texlive-xetex             \
+          latexmk                   \
+          xindy                     \
+          dvipng                    \
+          cm-super
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
       - name: Display Pip Versions
         shell: bash -l {0}
         run: pip list
-      - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v11
-        with:
-          workflow: cache.yml
-          branch: main
-          name: build-cache
-          path: _build
+      # - name: Download "build" folder (cache)
+      #   uses: dawidd6/action-download-artifact@v11
+      #   with:
+      #     workflow: cache.yml
+      #     branch: main
+      #     name: build-cache
+      #     path: _build
       # Build Assets (Download Notebooks and PDF via LaTeX)
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
@@ -93,6 +103,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y nodejs npm
           sudo npm install -g netlify-cli
+          # Create Netlify config directory with proper permissions
+          mkdir -p ~/.config/netlify
+          chmod 755 ~/.config/netlify
       - name: Detect Changed Lecture Files
         id: detect-changes
         shell: bash -l {0}
