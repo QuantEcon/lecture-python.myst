@@ -103,6 +103,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y nodejs npm
           sudo npm install -g netlify-cli
+          # Create Netlify config directory with proper permissions
+          mkdir -p ~/.config/netlify
+          chmod 755 ~/.config/netlify
       - name: Detect Changed Lecture Files
         id: detect-changes
         shell: bash -l {0}
