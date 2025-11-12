@@ -137,47 +137,6 @@ Here we are thinking of $v_u$ as a function on all of $\RR_+$.
 
 ### Fitting
 
-In the {doc}`discrete case <mccall_model_with_sep_markov>`, we ended up iterating on the Bellman operator
-
-$$
-    (Tv_u)(w) =
-    \max
-    \left\{
-        \frac{1}{1-\beta(1-\alpha)} \cdot
-        \left(
-            u(w) + \alpha\beta (Pv_u)(w)
-        \right),
-        u(c) + \beta(Pv_u)(w)
-    \right\}
-$$
-
-where
-
-$$
-    (P v_u)(w) := \sum_{w'} v_u(w') P(w, w')
-$$
-
-Here we iterate on the same law after changing the definition of the $P$ operator to
-
-$$
-    (P v_u)(w) := \int v_u(w') p(w, w') d w'
-$$
-
-where $p(w, \cdot)$ is the conditional density of $w'$ given $w$.
-
-We can write this more explicitly as
-
-$$
-    (P v_u)(w) := \int v_u( w^\rho  \exp(\nu z) ) \psi(z) dz,
-$$
-
-where $\psi$ is the standard normal density.
-
-Here we are thinking of $v_u$ as a function on all of $\RR_+$.
-
-
-### Fitting
-
 In theory, we should now proceed as follows:
 
 1. Begin with a guess $v$ 
