@@ -34,6 +34,19 @@ jobs:
           pip install -U jax
           pip install numpyro
           python scripts/test-jax-install.py
+      - name: Install LaTeX dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y     \
+          texlive-latex-recommended \
+          texlive-latex-extra       \
+          texlive-fonts-recommended \
+          texlive-fonts-extra       \
+          texlive-xetex             \
+          latexmk                   \
+          xindy                     \
+          dvipng                    \
+          cm-super
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
