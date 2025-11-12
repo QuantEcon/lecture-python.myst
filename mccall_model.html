@@ -283,15 +283,13 @@ and the pros and cons as they themselves see them.” – Robert E. Lucas, Jr.</
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
-Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.6.2)
+Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.8.0)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
 Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
 Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jaxlib&lt;=0.6.2,&gt;=0.6.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.6.2)
+Requirement already satisfied: jaxlib&lt;=0.8.0,&gt;=0.8.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.8.0)
 Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.5.3)
 Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (3.4.0)
 Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
@@ -352,9 +350,9 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>The agent is infinitely lived and aims to maximize the expected discounted
 sum of earnings</p>
 <div class="math notranslate nohighlight" id="equation-obj-model">
-<span class="eqno">(42.1)<a class="headerlink" href="#equation-obj-model" title="Link to this equation">#</a></span>\[{\mathbb E} \sum_{t=0}^\infty \beta^t u(y_t)\]</div>
+<span class="eqno">(42.1)<a class="headerlink" href="#equation-obj-model" title="Link to this equation">#</a></span>\[{\mathbb E} \sum_{t=0}^\infty \beta^t y_t\]</div>
 <p>The constant <span class="math notranslate nohighlight">\(\beta\)</span> lies in <span class="math notranslate nohighlight">\((0, 1)\)</span> and is called a <strong>discount factor</strong>.</p>
-<p>The smaller is <span class="math notranslate nohighlight">\(\beta\)</span>, the more the agent discounts future utility relative to current utility.</p>
+<p>The smaller is <span class="math notranslate nohighlight">\(\beta\)</span>, the more the agent discounts future earnings relative to current earnings.</p>
 <p>The variable  <span class="math notranslate nohighlight">\(y_t\)</span> is income, equal to</p>
 <ul class="simple">
 <li><p>his/her wage <span class="math notranslate nohighlight">\(w_t\)</span> when employed</p></li>
@@ -367,7 +365,7 @@ sum of earnings</p>
 <li><p>Waiting too long for a good offer is costly, since the future is discounted.</p></li>
 <li><p>Accepting too early is costly, since better offers might arrive in the future.</p></li>
 </ul>
-<p>To decide optimally in the face of this trade-off, we use <a class="reference external" href="https://dp.quantecon.org/">dynamic programming</a>.</p>
+<p>To decide the optimal wait time in the face of this trade-off, we use <a class="reference external" href="https://dp.quantecon.org/">dynamic programming</a>.</p>
 <p>Dynamic programming can be thought of as a two-step procedure that</p>
 <ol class="arabic simple">
 <li><p>first assigns values to “states” and</p></li>
@@ -384,20 +382,20 @@ sum of earnings</p>
 </ol>
 <p>To weigh these two aspects of the decision problem, we need to assign <em>values</em>
 to states.</p>
-<p>To this end, let <span class="math notranslate nohighlight">\(v^*(w)\)</span> be the total lifetime <em>value</em> accruing to an
+<p>To this end, let <span class="math notranslate nohighlight">\(v^*(w)\)</span> be the total lifetime value accruing to an
 unemployed worker who enters the current period unemployed when the wage is
 <span class="math notranslate nohighlight">\(w \in \mathbb{W}\)</span>.</p>
 <p>(In particular, the agent has wage offer <span class="math notranslate nohighlight">\(w\)</span> in hand and can accept or reject it.)</p>
-<p>More precisely, <span class="math notranslate nohighlight">\(v^*(w)\)</span> denotes the value of the objective function
-<a class="reference internal" href="#equation-obj-model">(42.1)</a> when an agent in this situation makes <em>optimal</em> decisions now
-and at all future points in time.</p>
+<p>More precisely, <span class="math notranslate nohighlight">\(v^*(w)\)</span> denotes the total sum of expected discounted earnings
+when an agent always behaves in an optimal way. points in time.</p>
 <p>Of course <span class="math notranslate nohighlight">\(v^*(w)\)</span> is not trivial to calculate because we don’t yet know
 what decisions are optimal and what aren’t!</p>
-<p>But think of <span class="math notranslate nohighlight">\(v^*\)</span> as a function that assigns to each possible wage
-<span class="math notranslate nohighlight">\(s\)</span> the maximal lifetime value that can be obtained with that offer in
-hand.</p>
-<p>A crucial observation is that this function <span class="math notranslate nohighlight">\(v^*\)</span> must satisfy the
-recursion</p>
+<p>If we don’t know what opimal choices are, it feels imposible to calculate
+<span class="math notranslate nohighlight">\(v^*(w)\)</span>.</p>
+<p>But let’s put this aside for now and think of <span class="math notranslate nohighlight">\(v^*\)</span> as a function that assigns
+to each possible wage <span class="math notranslate nohighlight">\(w\)</span> the maximal lifetime value <span class="math notranslate nohighlight">\(v^*(w)\)</span> that can be
+obtained with that offer in hand.</p>
+<p>A crucial observation is that this function <span class="math notranslate nohighlight">\(v^*\)</span> must satisfy</p>
 <div class="math notranslate nohighlight" id="equation-odu-pv">
 <span class="eqno">(42.2)<a class="headerlink" href="#equation-odu-pv" title="Link to this equation">#</a></span>\[v^*(w)
 = \max \left\{
@@ -409,7 +407,8 @@ recursion</p>
 ubiquitous in economic dynamics and other fields involving planning over time.</p>
 <p>The intuition behind it is as follows:</p>
 <ul class="simple">
-<li><p>the first term inside the max operation is the lifetime payoff from accepting current offer, since</p></li>
+<li><p>the first term inside the max operation is the lifetime payoff from accepting current offer, since
+such a worker works forever at <span class="math notranslate nohighlight">\(w\)</span> and values this income stream as</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[
@@ -423,13 +422,18 @@ optimally in all subsequent periods</p></li>
 <p>If we optimize and pick the best of these two options, we obtain maximal
 lifetime value from today, given current offer <span class="math notranslate nohighlight">\(w\)</span>.</p>
 <p>But this is precisely <span class="math notranslate nohighlight">\(v^*(w)\)</span>, which is the left-hand side of <a class="reference internal" href="#equation-odu-pv">(42.2)</a>.</p>
+<p>Putting this all together, we see that <a class="reference internal" href="#equation-odu-pv">(42.2)</a> is valid for all <span class="math notranslate nohighlight">\(w\)</span>.</p>
 </section>
 <section id="the-optimal-policy">
 <h3><span class="section-number">42.2.3. </span>The Optimal Policy<a class="headerlink" href="#the-optimal-policy" title="Link to this heading">#</a></h3>
-<p>Suppose for now that we are able to solve <a class="reference internal" href="#equation-odu-pv">(42.2)</a> for the unknown function <span class="math notranslate nohighlight">\(v^*\)</span>.</p>
-<p>Once we have this function in hand we can behave optimally (i.e., make the
-right choice between accept and reject).</p>
+<p>We still don’t know how to compute <span class="math notranslate nohighlight">\(v^*\)</span>  (although <a class="reference internal" href="#equation-odu-pv">(42.2)</a> gives us hints
+we’ll return to below).</p>
+<p>But suppose for now that we do know <span class="math notranslate nohighlight">\(v^*\)</span>.</p>
+<p>Once we have this function in hand we can easily make optimal choices (i.e., make the
+right choice between accept and reject given any <span class="math notranslate nohighlight">\(w\)</span>).</p>
 <p>All we have to do is select the maximal choice on the right-hand side of <a class="reference internal" href="#equation-odu-pv">(42.2)</a>.</p>
+<p>In other words, we make the best choice between stopping and continuing, given
+the information provided to us by <span class="math notranslate nohighlight">\(v^*\)</span>.</p>
 <p>The optimal action is best thought of as a <strong>policy</strong>, which is, in general, a map from
 states to actions.</p>
 <p>Given any <span class="math notranslate nohighlight">\(w\)</span>, we can read off the corresponding best choice (accept or
@@ -474,7 +478,7 @@ reject) by picking the max on the right-hand side of <a class="reference interna
 <div class="math notranslate nohighlight" id="equation-odu-pv2">
 <span class="eqno">(42.4)<a class="headerlink" href="#equation-odu-pv2" title="Link to this equation">#</a></span>\[v^*(i)
 = \max \left\{
-        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{1 \leq j \leq n}
+        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{j=1}^n 
             v^*(j) q (j)
     \right\}
 \quad
@@ -487,7 +491,7 @@ reject) by picking the max on the right-hand side of <a class="reference interna
 <div class="math notranslate nohighlight" id="equation-odu-pv2p">
 <span class="eqno">(42.5)<a class="headerlink" href="#equation-odu-pv2p" title="Link to this equation">#</a></span>\[v'(i)
 = \max \left\{
-        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{1 \leq j \leq n}
+        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{j=1}^n
             v(j) q (j)
     \right\}
 \quad
@@ -505,7 +509,7 @@ reject) by picking the max on the right-hand side of <a class="reference interna
 <div class="math notranslate nohighlight" id="equation-odu-pv3">
 <span class="eqno">(42.6)<a class="headerlink" href="#equation-odu-pv3" title="Link to this equation">#</a></span>\[(Tv)(i)
 = \max \left\{
-        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{1 \leq j \leq n}
+        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{j=1}^n
             v(j) q (j)
     \right\}
 \quad
@@ -528,8 +532,7 @@ satisfied by <span class="math notranslate nohighlight">\(T\)</span> on <span cl
 </section>
 <section id="implementation">
 <h3><span class="section-number">42.3.3. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h3>
-<p>Our default for <span class="math notranslate nohighlight">\(q\)</span>, the distribution of the state process, will be
-<a class="reference external" href="https://en.wikipedia.org/wiki/Beta-binomial_distribution">Beta-binomial</a>.</p>
+<p>Our default for <span class="math notranslate nohighlight">\(q\)</span>, the wage offer distribution, will be <a class="reference external" href="https://en.wikipedia.org/wiki/Beta-binomial_distribution">Beta-binomial</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span>                        <span class="c1"># default parameters</span>
@@ -577,7 +580,17 @@ satisfied by <span class="math notranslate nohighlight">\(T\)</span> on <span cl
 </div>
 </div>
 </div>
-<p>We implement the Bellman operator <span class="math notranslate nohighlight">\(T\)</span> from <a class="reference internal" href="#equation-odu-pv3">(42.6)</a> as follows</p>
+<p>We implement the Bellman operator <span class="math notranslate nohighlight">\(T\)</span> from <a class="reference internal" href="#equation-odu-pv3">(42.6)</a>, which we can write in
+terms of array operations as</p>
+<div class="math notranslate nohighlight" id="equation-odu-pv4">
+<span class="eqno">(42.7)<a class="headerlink" href="#equation-odu-pv4" title="Link to this equation">#</a></span>\[Tv
+= \max \left\{
+        \frac{w}{1 - \beta}, \, c + \beta \sum_{j=1}^n v(j) q (j)
+    \right\}
+\quad\]</div>
+<p>(The first term inside the max is an array and the second is just a number – here
+we mean that the max comparison against this number is done element-by-element for all elements in the array.)</p>
+<p>We can code <span class="math notranslate nohighlight">\(T\)</span> up as follows.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">McCallModel</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
@@ -617,7 +630,7 @@ in the sequence <span class="math notranslate nohighlight">\(\{ T^k v \}\)</span
 </div>
 <p>You can see that convergence is occurring: successive iterates are getting closer together.</p>
 <p>Here’s a more serious iteration effort to compute the limit, which continues
-until measured deviation between successive iterates is below tol.</p>
+until measured deviation between successive iterates is below <code class="docutils literal notranslate"><span class="pre">tol</span></code>.</p>
 <p>Once we obtain a good approximation to the limit, we will use it to calculate
 the reservation wage.</p>
 <div class="cell docutils container">
@@ -668,8 +681,58 @@ the reservation wage.</p>
 <h3><span class="section-number">42.3.4. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Link to this heading">#</a></h3>
 <p>Now that we know how to compute the reservation wage, let’s see how it varies with
 parameters.</p>
-<p>In particular, let’s look at what happens when we change <span class="math notranslate nohighlight">\(\beta\)</span> and
-<span class="math notranslate nohighlight">\(c\)</span>.</p>
+<p>Here we compare the reservation wage at two values of <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+<p>The reservation wages will be plotted alongside the wage offer distribution, so
+that we can get a sense of what fraction of offers will be accepted.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="c1"># Get the default color cycle</span>
+<span class="n">prop_cycle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">prop_cycle</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span>
+
+<span class="c1"># Plot the wage offer distribution</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;wage offer distribution&#39;</span><span class="p">,</span> 
+        <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Compute reservation wage with default beta</span>
+<span class="n">model_default</span> <span class="o">=</span> <span class="n">McCallModel</span><span class="p">()</span>
+<span class="n">v_init</span> <span class="o">=</span> <span class="n">model_default</span><span class="o">.</span><span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">model_default</span><span class="o">.</span><span class="n">β</span><span class="p">)</span>
+<span class="n">v_default</span><span class="p">,</span> <span class="n">res_wage_default</span> <span class="o">=</span> <span class="n">compute_reservation_wage</span><span class="p">(</span>
+    <span class="n">model_default</span><span class="p">,</span> <span class="n">v_init</span>
+<span class="p">)</span>
+
+<span class="c1"># Compute reservation wage with lower beta</span>
+<span class="n">β_new</span> <span class="o">=</span> <span class="mf">0.96</span>
+<span class="n">model_low_beta</span> <span class="o">=</span> <span class="n">McCallModel</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="n">β_new</span><span class="p">)</span>
+<span class="n">v_init_low</span> <span class="o">=</span> <span class="n">model_low_beta</span><span class="o">.</span><span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">model_low_beta</span><span class="o">.</span><span class="n">β</span><span class="p">)</span>
+<span class="n">v_low</span><span class="p">,</span> <span class="n">res_wage_low</span> <span class="o">=</span> <span class="n">compute_reservation_wage</span><span class="p">(</span>
+    <span class="n">model_low_beta</span><span class="p">,</span> <span class="n">v_init_low</span>
+<span class="p">)</span>
+
+<span class="c1"># Plot vertical lines for reservation wages</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">res_wage_default</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;reservation wage (β=</span><span class="si">{</span><span class="n">model_default</span><span class="o">.</span><span class="n">β</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">res_wage_low</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;reservation wage (β=</span><span class="si">{</span><span class="n">β_new</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;wage&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/252c24bd7108296800d1b008bda68a5e51d2e5a80d16a41bccf40089ad542a6b.png" src="_images/252c24bd7108296800d1b008bda68a5e51d2e5a80d16a41bccf40089ad542a6b.png" />
+</div>
+</div>
+<p>We see that the reservation wage is higher when <span class="math notranslate nohighlight">\(\beta\)</span> is higher.</p>
+<p>This is not surprising, since higher <span class="math notranslate nohighlight">\(\beta\)</span> is associated with more patience.</p>
+<p>Now let’s look more systematically at what happens when we change <span class="math notranslate nohighlight">\(\beta\)</span> and <span class="math notranslate nohighlight">\(c\)</span>.</p>
 <p>As a first step, given that we’ll use it many times, let’s create a more
 efficient, jit-complied version of the function that computes the reservation
 wage:</p>
@@ -753,16 +816,16 @@ wage:</p>
 need to compute the value function.</p>
 <p>Let <span class="math notranslate nohighlight">\(h\)</span> denote the continuation value:</p>
 <div class="math notranslate nohighlight" id="equation-j1">
-<span class="eqno">(42.7)<a class="headerlink" href="#equation-j1" title="Link to this equation">#</a></span>\[    h = c + \beta \sum_{w'} v^*(w') q (w')\]</div>
+<span class="eqno">(42.8)<a class="headerlink" href="#equation-j1" title="Link to this equation">#</a></span>\[    h = c + \beta \sum_{w'} v^*(w') q (w')\]</div>
 <p>The Bellman equation can now be written as</p>
 <div class="math notranslate nohighlight">
 \[
     v^*(w')
     = \max \left\{ \frac{w'}{1 - \beta}, \, h \right\}
 \]</div>
-<p>Substituting this last equation into <a class="reference internal" href="#equation-j1">(42.7)</a> gives</p>
+<p>Substituting this last equation into <a class="reference internal" href="#equation-j1">(42.8)</a> gives</p>
 <div class="math notranslate nohighlight" id="equation-j2">
-<span class="eqno">(42.8)<a class="headerlink" href="#equation-j2" title="Link to this equation">#</a></span>\[    h = c + \beta
+<span class="eqno">(42.9)<a class="headerlink" href="#equation-j2" title="Link to this equation">#</a></span>\[    h = c + \beta
         \sum_{w' \in \mathbb W}
         \max \left\{
             \frac{w'}{1 - \beta}, h
@@ -772,7 +835,7 @@ need to compute the value function.</p>
 <p>Step 1: pick an initial guess <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <p>Step 2: compute the update <span class="math notranslate nohighlight">\(h'\)</span> via</p>
 <div class="math notranslate nohighlight" id="equation-j3">
-<span class="eqno">(42.9)<a class="headerlink" href="#equation-j3" title="Link to this equation">#</a></span>\[h'
+<span class="eqno">(42.10)<a class="headerlink" href="#equation-j3" title="Link to this equation">#</a></span>\[h'
 = c + \beta
     \sum_{w' \in \mathbb W}
     \max \left\{
@@ -786,8 +849,7 @@ need to compute the value function.</p>
 <p>Here’s an implementation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_reservation_wage_two</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_reservation_wage_two</span><span class="p">(</span>
         <span class="n">model</span><span class="p">:</span> <span class="n">McCallModel</span><span class="p">,</span>   <span class="c1"># instance containing default parameters</span>
         <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>      <span class="c1"># error tolerance</span>
         <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>    <span class="c1"># maximum number of iterations for loop</span>
@@ -907,7 +969,6 @@ given the parameters, and then simulate to see how long it takes to accept.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cdf</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">q_default</span><span class="p">)</span>
 
-<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_stopping_time</span><span class="p">(</span><span class="n">w_bar</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute stopping time by drawing wages until one exceeds `w_bar`.</span>
@@ -930,7 +991,6 @@ given the parameters, and then simulate to see how long it takes to accept.</p>
     <span class="k">return</span> <span class="n">t_final</span>
 
 
-<span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;num_reps&#39;</span><span class="p">,))</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_mean_stopping_time</span><span class="p">(</span><span class="n">w_bar</span><span class="p">,</span> <span class="n">num_reps</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a mean stopping time over `num_reps` repetitions by</span>
@@ -949,6 +1009,7 @@ given the parameters, and then simulate to see how long it takes to accept.</p>
 
 <span class="n">c_vals</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_stop_time_for_c</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute mean stopping time for a given compensation value c.&quot;&quot;&quot;</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">McCallModel</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
@@ -984,17 +1045,17 @@ offer distribution used above with a continuous distribution.</p>
 <p>This is a significant topic because many convenient distributions are
 continuous (i.e., have a density).</p>
 <p>Fortunately, the theory changes little in our simple model.</p>
-<p>Recall that <span class="math notranslate nohighlight">\(h\)</span> in <a class="reference internal" href="#equation-j1">(42.7)</a> denotes the value of not accepting a job in this period but
+<p>Recall that <span class="math notranslate nohighlight">\(h\)</span> in <a class="reference internal" href="#equation-j1">(42.8)</a> denotes the value of not accepting a job in this period but
 then behaving optimally in all subsequent periods:</p>
-<p>To shift to a continuous offer distribution, we can replace <a class="reference internal" href="#equation-j1">(42.7)</a> by</p>
+<p>To shift to a continuous offer distribution, we can replace <a class="reference internal" href="#equation-j1">(42.8)</a> by</p>
 <div class="math notranslate nohighlight" id="equation-j1c">
-<span class="eqno">(42.10)<a class="headerlink" href="#equation-j1c" title="Link to this equation">#</a></span>\[h
+<span class="eqno">(42.11)<a class="headerlink" href="#equation-j1c" title="Link to this equation">#</a></span>\[h
 = c + \beta
     \int v^*(s') q (s') ds'.
 \quad\]</div>
-<p>Equation <a class="reference internal" href="#equation-j2">(42.8)</a> becomes</p>
+<p>Equation <a class="reference internal" href="#equation-j2">(42.9)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-j2c">
-<span class="eqno">(42.11)<a class="headerlink" href="#equation-j2c" title="Link to this equation">#</a></span>\[h
+<span class="eqno">(42.12)<a class="headerlink" href="#equation-j2c" title="Link to this equation">#</a></span>\[h
 = c + \beta
     \int
     \max \left\{
@@ -1444,8 +1505,8 @@ assumes a lognormal wage distribution.</p>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="mccall_correlated.html">
-   46. Job Search V: Correlated Wage Offers
+  <a class="reference internal" href="mccall_persist_trans.html">
+   46. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">

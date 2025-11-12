@@ -3,6 +3,8 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3
   language: python
@@ -26,19 +28,29 @@ kernelspec:
 
 ## Overview
 
-In this lecture we again study the {doc}`McCall job search model with separation <mccall_model_with_separation>`, but now with a continuous wage distribution.
+This lecture follows on from the job search model with separation presented in the {doc}`previous lecture <mccall_model_with_separation>`.
 
-While we already considered continuous wage distributions briefly in the
-exercises of the {doc}`first job search lecture <mccall_model>`,
-the change was relatively trivial in that case.
+In that lecture mixed exogenous job separation events and Markov wage offer distributions.
 
-This is because we were able to reduce the problem to solving for a single
-scalar value (the continuation value).
+In this lecture we allow this wage offer process to be continuous rather than discrete.
 
-Here, with separation, the change is less trivial, since a continuous wage distribution leads to an uncountably infinite state space.
+In particular,
 
-The infinite state space leads to additional challenges, particularly when it
-comes to applying value function iteration (VFI).
+$$
+    W_t = \exp(X_t)
+    \quad \text{where} \quad
+    X_{t+1} = \rho X_t + \nu Z_{t+1}
+$$
+
+and $\{Z_t\}$ is IID and standard normal.
+
+While we already considered continuous wage distributions briefly in Exercise {ref}`mm_ex2` of the {doc}`first job search lecture <mccall_model>`, the change was relatively trivial in that case.
+
+The reason is that we were able to reduce the problem to solving for a single scalar value (the continuation value).
+
+Here, in our Markov setting, the change is less trivial, since a continuous wage distribution leads to an uncountably infinite state space.
+
+The infinite state space leads to additional challenges, particularly when it comes to applying value function iteration (VFI).
 
 These challenges will lead us to modify VFI by adding an interpolation step.
 
@@ -46,72 +58,96 @@ The combination of VFI and this interpolation step is called **fitted value func
 
 Fitted VFI is very common in practice, so we will take some time to work through the details.
 
+In addition to what's in Anaconda, this lecture will need the following libraries
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install quantecon
+```
+
 We will use the following imports:
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import jax
 import jax.numpy as jnp
+from jax import lax
 from typing import NamedTuple
 import quantecon as qe
-
-# Set JAX to use CPU
-jax.config.update('jax_platform_name', 'cpu')
 ```
+
+## Model
+
+The model is the same as in the {doc}`discrete case <mccall_model_with_sep_markov>`, with the following features:
+
+- Each period, an unemployed agent receives a wage offer $w$
+- Wage offers follow a continuous Markov process: $W_t = \exp(X_t)$ where $X_{t+1} = \rho X_t + \nu Z_{t+1}$
+- $\{Z_t\}$ is IID and standard normal
+- Jobs terminate with probability $\alpha$ each period (separation rate)
+- Unemployed workers receive compensation $c$ per period
+- Workers have CRRA utility $u(c) = \frac{c^{1-\gamma} - 1}{1-\gamma}$
+- Future payoffs are discounted by factor $\beta \in (0,1)$
 
 ## The algorithm
 
-The model is the same as the McCall model with job separation that we {doc}`studied before <mccall_model_with_separation>`, except that the wage offer distribution is continuous.
 
-We are going to start with the two Bellman equations we obtained for the model with job separation after {ref}`a simplifying transformation <ast_mcm>`.
+### Value function iteration
 
-Modified to accommodate continuous wage draws, they take the following form:
-
-```{math}
-:label: bell1mcmc
-
-d = \int \max \left\{ v(w'), \,  u(c) + \beta d \right\} q(w') d w'
-```
-
-and
+In the {doc}`discrete case <mccall_model_with_sep_markov>`, we ended up iterating on the Bellman operator
 
 ```{math}
 :label: bell2mcmc
 
-v(w) = u(w) + \beta
-    \left[
-        (1-\alpha)v(w) + \alpha d
-    \right]
+    (Tv_u)(w) =
+    \max
+    \left\{
+        \frac{1}{1-\beta(1-\alpha)} \cdot
+        \left(
+            u(w) + \alpha\beta (Pv_u)(w)
+        \right),
+        u(c) + \beta(Pv_u)(w)
+    \right\}
 ```
 
-The unknowns here are the function $v$ and the scalar $d$.
+where
 
-The differences between these and the pair of Bellman equations we previously worked on are
+$$
+    (P v_u)(w) := \sum_{w'} v_u(w') P(w, w')
+$$
 
-1. In {eq}`bell1mcmc`, what used to be a sum over a finite number of wage values is an integral over an infinite set.
-1. The function $v$ in {eq}`bell2mcmc` is defined over all $w \in \mathbb R_+$.
+Here we iterate on the same law after changing the definition of the $P$ operator to
 
-The function $q$ in {eq}`bell1mcmc` is the density of the wage offer distribution.
+$$
+    (P v_u)(w) := \int v_u(w') p(w, w') d w'
+$$
 
-Its support is taken as equal to $\mathbb R_+$.
+where $p(w, \cdot)$ is the conditional density of $w'$ given $w$.
 
-### Value function iteration
+We can write this more explicitly as
+
+$$
+    (P v_u)(w) := \int v_u( w^\rho  \exp(\nu z) ) \psi(z) dz,
+$$
+
+where $\psi$ is the standard normal density.
+
+Here we are thinking of $v_u$ as a function on all of $\mathbb{R}_+$.
+
+
+### Fitting
 
 In theory, we should now proceed as follows:
 
-1. Begin with a guess $v, d$ for the solutions to {eq}`bell1mcmc`--{eq}`bell2mcmc`.
-1. Plug $v, d$ into the right hand side of {eq}`bell1mcmc`--{eq}`bell2mcmc` and
-   compute the left hand side to obtain updates $v', d'$
-1. Unless some stopping condition is satisfied, set $(v, d) = (v', d')$
-   and go to step 2.
+1. Begin with a guess $v$ 
+1. Applying $T$ to obtain the update $v' = Tv$
+1. Unless some stopping condition is satisfied, set $v = v'$ and go to step 2.
 
-However, there is a problem we must confront before we implement this procedure:
-The iterates of the value function can neither be calculated exactly nor stored on a computer.
+However, there is a problem we must confront before we implement this procedure: The iterates of the value function can neither be calculated exactly nor stored on a computer.
 
 To see the issue, consider {eq}`bell2mcmc`.
 
-Even if $v$ is a known function, the only way to store its update $v'$
-is to record its value $v'(w)$ for every $w \in \mathbb R_+$.
+Even if $v$ is a known function, the only way to store its update $v'$ is to record its value $v'(w)$ for every $w \in \mathbb R_+$.
 
 Clearly, this is impossible.
 
@@ -123,8 +159,7 @@ The procedure is as follows:
 
 Let a current guess $v$ be given.
 
-Now we record the value of the function $v'$ at only
-finitely many "grid" points $w_1 < w_2 < \cdots < w_I$ and then reconstruct $v'$ from this information when required.
+Now we record the value of the function $v'$ at only finitely many "grid" points $w_1 < w_2 < \cdots < w_I$ and then reconstruct $v'$ from this information when required.
 
 More precisely, the algorithm will be
 
@@ -138,8 +173,7 @@ How should we go about step 2?
 
 This is a problem of function approximation, and there are many ways to approach it.
 
-What's important here is that the function approximation scheme must not only
-produce a good approximation to each $v$, but also that it combines well with the broader iteration algorithm described above.
+What's important here is that the function approximation scheme must not only produce a good approximation to each $v$, but also that it combines well with the broader iteration algorithm described above.
 
 One good choice from both respects is continuous piecewise linear interpolation.
 
@@ -151,10 +185,9 @@ This method
 
 Linear interpolation will be implemented using JAX's interpolation function `jnp.interp`.
 
-The next figure illustrates piecewise linear interpolation of an arbitrary
-function on grid points $0, 0.2, 0.4, 0.6, 0.8, 1$.
+The next figure illustrates piecewise linear interpolation of an arbitrary function on grid points $0, 0.2, 0.4, 0.6, 0.8, 1$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 def f(x):
     y1 = 2 * jnp.cos(6 * x) + jnp.sin(14 * x)
     return y1 + 2.5
@@ -181,127 +214,218 @@ plt.show()
 
 The first step is to build a JAX-compatible structure for the McCall model with separation and a continuous wage offer distribution.
 
-We will take the utility function to be the log function for this application, with $u(c) = \ln c$.
+The key computational challenge is evaluating the conditional expectation $(Pv_u)(w) = \int v_u(w') p(w, w') dw'$ at each wage grid point.
 
-We will adopt the lognormal distribution for wages, with $w = \exp(\mu + \sigma z)$
-when $z$ is standard normal and $\mu, \sigma$ are parameters.
+From the equation above, we have:
 
-```{code-cell} python3
-def lognormal_draws(n=1000, μ=2.5, σ=0.5, seed=1234):
-    key = jax.random.PRNGKey(seed)
-    z = jax.random.normal(key, (n,))
-    w_draws = jnp.exp(μ + σ * z)
-    return w_draws
+$$
+(Pv_u)(w) = \int v_u(w^\rho \exp(\nu z)) \psi(z) dz
+$$
+
+where $\psi$ is the standard normal density.
+
+We approximate this integral using Monte Carlo integration with draws from the standard normal distribution:
+
+$$
+(Pv_u)(w) \approx \frac{1}{N} \sum_{i=1}^N v_u(w^\rho \exp(\nu z_i))
+$$
+
+We use the same CRRA utility function as in the discrete case:
+
+```{code-cell} ipython3
+def u(c, γ):
+    return (c**(1 - γ) - 1) / (1 - γ)
 ```
 
 Here's our model structure using a NamedTuple.
 
-```{code-cell} python3
-class McCallModelContinuous(NamedTuple):
+```{code-cell} ipython3
+class Model(NamedTuple):
     c: float              # unemployment compensation
     α: float              # job separation rate
     β: float              # discount factor
+    ρ: float              # wage persistence
+    ν: float              # wage volatility
+    γ: float              # utility parameter
     w_grid: jnp.ndarray   # grid of points for fitted VFI
-    w_draws: jnp.ndarray  # draws of wages for Monte Carlo
+    z_draws: jnp.ndarray  # draws from the standard normal distribution
 
-def create_mccall_model(c=1,
-                        α=0.1,
-                        β=0.96,
-                        grid_min=1e-10,
-                        grid_max=5,
-                        grid_size=100,
-                        μ=2.5,
-                        σ=0.5,
-                        mc_size=1000,
-                        seed=1234,
-                        w_draws=None):
+def create_mccall_model(
+        c: float = 1.0,
+        α: float = 0.1,
+        β: float = 0.96,
+        ρ: float = 0.9,
+        ν: float = 0.2,
+        γ: float = 1.5,
+        grid_size: int = 100,
+        mc_size: int = 1000,
+        seed: int = 1234
+    ):
     """Factory function to create a McCall model instance."""
-    if w_draws is None:
 
-        # Generate wage draws if not provided
-        w_draws = lognormal_draws(n=mc_size, μ=μ, σ=σ, seed=seed)
+    key = jax.random.PRNGKey(seed)
+    z_draws = jax.random.normal(key, (mc_size,))
 
-    w_grid = jnp.linspace(grid_min, grid_max, grid_size)
-    return McCallModelContinuous(c=c, α=α, β=β, w_grid=w_grid, w_draws=w_draws)
+    # Discretize just to get a suitable wage grid for interpolation
+    mc = qe.markov.tauchen(grid_size, ρ, ν)
+    w_grid = jnp.exp(jnp.array(mc.state_values))
 
-@jax.jit
-def update(model, v, d):
-    """Update value function and continuation value."""
+    return Model(c=c, α=α, β=β, ρ=ρ, ν=ν, γ=γ, w_grid=w_grid, z_draws=z_draws)
+```
+
+```{code-cell} ipython3
+def T(model, v):
+    """Update the value function."""
 
     # Unpack model parameters
-    c, α, β, w_grid, w_draws = model
-    u = jnp.log
-    
+    c, α, β, ρ, ν, γ, w_grid, z_draws = model
+
     # Interpolate array represented value function
     vf = lambda x: jnp.interp(x, w_grid, v)
-    
-    # Update d using Monte Carlo to evaluate integral
-    d_new = jnp.mean(jnp.maximum(vf(w_draws), u(c) + β * d))
-    
-    # Update v
-    v_new = u(w_grid) + β * ((1 - α) * v + α * d)
-    
-    return v_new, d_new
+
+    def compute_expectation(w):
+        # Use Monte Carlo to evaluate integral (P v)(w)
+        # Compute E[v(w' | w)] where w' = w^ρ * exp(ν * z)
+        w_next = w**ρ * jnp.exp(ν * z_draws)
+        return jnp.mean(vf(w_next))
+
+    compute_exp_all = jax.vmap(compute_expectation)
+    Pv = compute_exp_all(w_grid)
+
+    d = 1 / (1 - β * (1 - α))
+    accept = d * (u(w_grid, γ) + α * β * Pv)
+    reject = u(c, γ) + β * Pv
+    return jnp.maximum(accept, reject)
 ```
 
-We then return the current iterate as an approximate solution.
+Here's the solver:
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jax.jit
-def solve_model(model, tol=1e-5, max_iter=2000):
-    """
-    Iterates to convergence on the Bellman equations
+def vfi(
+        model: Model,
+        tolerance: float = 1e-6,   # Error tolerance
+        max_iter: int = 100_000,   # Max iteration bound
+    ):
 
-    * model is an instance of McCallModelContinuous
-    """
-    
-    # Initial guesses
-    v = jnp.ones_like(model.w_grid)
-    d = 1.0
-    
-    def body_fun(state):
-        v, d, i, error = state
-        v_new, d_new = update(model, v, d)
-        error_1 = jnp.max(jnp.abs(v_new - v))
-        error_2 = jnp.abs(d_new - d)
-        error = jnp.maximum(error_1, error_2)
-        return v_new, d_new, i + 1, error
-    
-    def cond_fun(state):
-        _, _, i, error = state
-        return (error > tol) & (i < max_iter)
-    
-    initial_state = (v, d, 0, tol + 1)
-    v_final, d_final, _, _ = jax.lax.while_loop(cond_fun, body_fun, initial_state)
-    
-    return v_final, d_final
+    v_init = jnp.zeros(model.w_grid.shape)
+
+    def cond(loop_state):
+        v, error, i = loop_state
+        return (error > tolerance) & (i <= max_iter)
+
+    def update(loop_state):
+        v, error, i = loop_state
+        v_new = T(model, v)
+        error = jnp.max(jnp.abs(v_new - v))
+        new_loop_state = v_new, error, i + 1
+        return new_loop_state
+
+    initial_state = (v_init, tolerance + 1, 1)
+    final_loop_state = lax.while_loop(cond, update, initial_state)
+    v_final, error, i = final_loop_state
+
+    return v_final
 ```
 
-Here's a function `compute_reservation_wage` that takes an instance of `McCallModelContinuous`
+The next function computes the optimal policy under the assumption that $v$ is
+the value function:
+
+```{code-cell} ipython3
+def get_greedy(v: jnp.ndarray, model: Model) -> jnp.ndarray:
+    """Get a v-greedy policy."""
+    c, α, β, ρ, ν, γ, w_grid, z_draws = model
+
+    # Interpolate value function
+    vf = lambda x: jnp.interp(x, w_grid, v)
+
+    def compute_expectation(w):
+        # Use Monte Carlo to evaluate integral (P v)(w)
+        # Compute E[v(w' | w)] where w' = w^ρ * exp(ν * z)
+        w_next = w**ρ * jnp.exp(ν * z_draws)
+        return jnp.mean(vf(w_next))
+
+    compute_exp_all = jax.vmap(compute_expectation)
+    Pv = compute_exp_all(w_grid)
+
+    d = 1 / (1 - β * (1 - α))
+    accept = d * (u(w_grid, γ) + α * β * Pv)
+    reject = u(c, γ) + β * Pv
+    σ = accept >= reject
+    return σ
+```
+
+Here's a function that takes an instance of `Model`
 and returns the associated reservation wage.
 
-If $v(w) < h$ for all $w$, then the function returns `jnp.inf`
-
-```{code-cell} python3
+```{code-cell} ipython3
 @jax.jit
-def compute_reservation_wage(model):
+def get_reservation_wage(σ: jnp.ndarray, model: Model) -> float:
     """
-    Computes the reservation wage of an instance of the McCall model
-    by finding the smallest w such that v(w) >= h.
+    Calculate the reservation wage from a given policy.
 
-    If no such w exists, then w_bar is set to inf.
+    Parameters:
+    - σ: Policy array where σ[i] = True means accept wage w_grid[i]
+    - model: Model instance containing wage values
+
+    Returns:
+    - Reservation wage (lowest wage for which policy indicates acceptance)
     """
-    c, α, β, w_grid, w_draws = model
-    u = jnp.log
-    
-    v, d = solve_model(model)
-    h = u(c) + β * d
-    
-    # Find the first wage where v(w) >= h
-    indices = jnp.where(v >= h, size=1, fill_value=-1)
-    w_bar = jnp.where(indices[0] >= 0, w_grid[indices[0]], jnp.inf)
-    
-    return w_bar
+    c, α, β, ρ, ν, γ, w_grid, z_draws = model
+
+    # Find the first index where policy indicates acceptance
+    # σ is a boolean array, argmax returns the first True value
+    first_accept_idx = jnp.argmax(σ)
+
+    # If no acceptance (all False), return infinity
+    # Otherwise return the wage at the first acceptance index
+    return jnp.where(jnp.any(σ), w_grid[first_accept_idx], jnp.inf)
+```
+
+## Computing the Solution
+
+Let's solve the model:
+
+```{code-cell} ipython3
+model = create_mccall_model()
+c, α, β, ρ, ν, γ, w_grid, z_draws = model
+v_star = vfi(model)
+σ_star = get_greedy(v_star, model)
+```
+
+Next we compute some related quantities, including the reservation wage.
+
+```{code-cell} ipython3
+# Interpolate the value function for computing expectations
+vf = lambda x: jnp.interp(x, w_grid, v_star)
+
+def compute_expectation(w):
+    # Use Monte Carlo to evaluate integral (P v)(w)
+    # Compute E[v(w' | w)] where w' = w^ρ * exp(ν * z)
+    w_next = w**ρ * jnp.exp(ν * z_draws)
+    return jnp.mean(vf(w_next))
+
+compute_exp_all = jax.vmap(compute_expectation)
+Pv = compute_exp_all(w_grid)
+
+d = 1 / (1 - β * (1 - α))
+accept = d * (u(w_grid, γ) + α * β * Pv)
+h_star = u(c, γ) + β * Pv
+w_star = get_reservation_wage(σ_star, model)
+```
+
+Let's plot our results.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(9, 5.2))
+ax.plot(w_grid, h_star, linewidth=4, ls="--", alpha=0.4,
+        label="continuation value")
+ax.plot(w_grid, accept, linewidth=4, ls="--", alpha=0.4,
+        label="stopping value")
+ax.plot(w_grid, v_star, "k-", alpha=0.7, label=r"$v_u^*(w)$")
+ax.legend(frameon=False)
+ax.set_xlabel(r"$w$")
+plt.show()
 ```
 
 The exercises ask you to explore the solution and how it changes with parameters.
@@ -311,12 +435,8 @@ The exercises ask you to explore the solution and how it changes with parameters
 ```{exercise}
 :label: mfv_ex1
 
-Use the code above to explore what happens to the reservation wage when the wage parameter $\mu$
-changes.
+Use the code above to explore what happens to the reservation wage when $c$ changes.
 
-Use the default parameters and $\mu$ in `μ_vals = jnp.linspace(0.0, 2.0, 15)`.
-
-Is the impact on the reservation wage as you expected?
 ```
 
 ```{solution-start} mfv_ex1
@@ -325,24 +445,27 @@ Is the impact on the reservation wage as you expected?
 
 Here is one solution
 
-```{code-cell} python3
-def compute_res_wage_given_μ(μ):
-    model = create_mccall_model(μ=μ)
-    w_bar = compute_reservation_wage(model)
+```{code-cell} ipython3
+def compute_res_wage_given_c(c):
+    model = create_mccall_model(c=c)
+    v_star = vfi(model)
+    σ_star = get_greedy(v_star, model)
+    w_bar = get_reservation_wage(σ_star, model)
     return w_bar
 
-μ_vals = jnp.linspace(0.0, 2.0, 15)
-w_bar_vals = jax.vmap(compute_res_wage_given_μ)(μ_vals)
+c_vals = jnp.linspace(0.0, 2.0, 15)
+w_bar_vals = jax.vmap(compute_res_wage_given_c)(c_vals)
 
 fig, ax = plt.subplots()
-ax.set(xlabel='mean', ylabel='reservation wage')
-ax.plot(μ_vals, w_bar_vals, label=r'$\bar w$ as a function of $\mu$')
+ax.set(xlabel='unemployment compensation', ylabel='reservation wage')
+ax.plot(c_vals, w_bar_vals, label=r'$\bar w$ as a function of $c$')
 ax.legend()
 plt.show()
 ```
 
-Not surprisingly, the agent is more inclined to wait when the distribution of
-offers shifts to the right.
+As unemployment compensation increases, the reservation wage also increases.
+
+This makes economic sense: when the value of being unemployed rises (through higher $c$), workers become more selective about which job offers to accept.
 
 ```{solution-end}
 ```
@@ -350,63 +473,46 @@ offers shifts to the right.
 ```{exercise}
 :label: mfv_ex2
 
-Let us now consider how the agent responds to an increase in volatility.
+Create a plot that shows how the reservation wage changes with the risk aversion parameter $\gamma$.
 
-To try to understand this, compute the reservation wage when the wage offer
-distribution is uniform on $(m - s, m + s)$ and $s$ varies.
+Use `γ_vals = jnp.linspace(1.2, 2.5, 15)` and keep all other parameters at their default values.
 
-The idea here is that we are holding the mean constant and spreading the
-support.
+How do you expect the reservation wage to vary with $\gamma$? Why?
 
-(This is a form of *mean-preserving spread*.)
-
-Use `s_vals = jnp.linspace(1.0, 2.0, 15)` and `m = 2.0`.
-
-State how you expect the reservation wage to vary with $s$.
-
-Now compute it - is this as you expected?
 ```
 
 ```{solution-start} mfv_ex2
 :class: dropdown
 ```
 
-Here is one solution
+We compute the reservation wage for different values of the risk aversion parameter:
 
-```{code-cell} python3
-def compute_res_wage_given_s(s, m=2.0, seed=1234):
-    a, b = m - s, m + s
-    key = jax.random.PRNGKey(seed)
-    uniform_draws = jax.random.uniform(key, shape=(10_000,), minval=a, maxval=b)
+```{code-cell} ipython3
+γ_vals = jnp.linspace(1.2, 2.5, 15)
+w_star_vec = jnp.empty_like(γ_vals)
 
-    # Create model with default parameters but replace wage draws
-    model = create_mccall_model(w_draws=uniform_draws)
-    w_bar = compute_reservation_wage(model)
-    return w_bar
+for i, γ in enumerate(γ_vals):
+    model = create_mccall_model(γ=γ)
+    v_star = vfi(model)
+    σ_star = get_greedy(v_star, model)
+    w_star = get_reservation_wage(σ_star, model)
+    w_star_vec = w_star_vec.at[i].set(w_star)
 
-s_vals = jnp.linspace(1.0, 2.0, 15)
-
-# Use vmap with different seeds for each s value
-seeds = jnp.arange(len(s_vals))
-compute_vectorized = jax.vmap(compute_res_wage_given_s, in_axes=(0, None, 0))
-w_bar_vals = compute_vectorized(s_vals, 2.0, seeds)
-
-fig, ax = plt.subplots()
-ax.set(xlabel='volatility', ylabel='reservation wage')
-ax.plot(s_vals, w_bar_vals, label=r'$\bar w$ as a function of wage volatility')
-ax.legend()
+fig, ax = plt.subplots(figsize=(9, 5.2))
+ax.plot(γ_vals, w_star_vec, linewidth=2, alpha=0.6,
+        label='reservation wage')
+ax.legend(frameon=False)
+ax.set_xlabel(r'$\gamma$')
+ax.set_ylabel(r'$w^*$')
+ax.set_title('Reservation wage as a function of risk aversion')
 plt.show()
 ```
 
-The reservation wage increases with volatility.
+As risk aversion ($\gamma$) increases, the reservation wage decreases.
 
-One might think that higher volatility would make the agent more inclined to
-take a given offer, since doing so represents certainty and waiting represents
-risk.
+This occurs because more risk-averse workers place higher value on the security of employment relative to the uncertainty of continued search.
 
-But job search is like holding an option: the worker is only exposed to upside risk (since, in a free market, no one can force them to take a bad offer).
-
-More volatility means higher upside potential, which encourages the agent to wait.
+With higher $\gamma$, the utility cost of unemployment (foregone consumption) becomes more severe, making workers more willing to accept lower wages rather than continue searching.
 
 ```{solution-end}
 ```
