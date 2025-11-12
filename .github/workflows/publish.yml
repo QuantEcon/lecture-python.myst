@@ -22,7 +22,7 @@ jobs:
       - name: Install JAX and Numpyro
         shell: bash -l {0}
         run: |
-          pip install --upgrade "jax[cuda13-local]"
+          pip install -U "jax[cuda13]"
           pip install numpyro
           python scripts/test-jax-install.py
       - name: Check nvidia drivers
