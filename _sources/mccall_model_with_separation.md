@@ -134,7 +134,7 @@ Let
 Here **maximum lifetime value** means the value of {eq}`objective` when
 the worker makes optimal decisions at all future points in time.
 
-As we now show, these obtaining these functions is key to solving the new model.
+As we now show, obtaining these functions is key to solving the model.
 
 ### The Bellman Equations
 
@@ -199,27 +199,211 @@ enough information to solve for both $v_e$ and $v_u$.
 
 Once we have them in hand, we will be able to make optimal choices.
 
-(ast_mcm)=
-### A Simplifying Transformation
 
-Rather than jumping straight into solving these equations, let's see if we can
-simplify them somewhat.
+### The Reservation Wage
+
+
+Let
+
+```{math}
+:label: defh_mm
+
+    h := u(c) + \beta \sum_{w' \in \mathbb W} v_u(w') q(w')
+```
+
+This is the continuation value for an unemployed agent (the value of rejecting the current offer).
+
+If we know $v_u$ then we can easily compute $h$.
+
+From {eq}`bell2_mccall`, we see that an unemployed agent accepts current offer $w$ if $v_e(w) \geq h$.
+
+This means precisely that the value of accepting is higher than the value of rejecting.
+
+It is clear that $v_e$ is (at least weakly) increasing in $w$, since the agent is never made worse off by a higher wage offer.
+
+Hence, we can express the optimal choice as accepting wage offer $w$ if and only if $w \geq \bar w$,
+where the **reservation wage** $\bar w$ is the first wage level $w$ such that
+
+$$
+    v_e(w) \geq h
+$$
+
+
+
+## Code
+
+Let's now implement a solution method based on the two Bellman equations.
+
+### Set Up
+
+In the code, you'll see that we use a class to store the various parameters and other
+objects associated with a given model.
+
+This helps to tidy up the code and provides an object that's easy to pass to functions.
+
+The default utility function is a CRRA utility function
+
+```{code-cell} ipython3
+def u(c, γ):
+    return (c**(1 - γ) - 1) / (1 - γ)
+```
+
+Also, here's a default wage distribution, based around the BetaBinomial
+distribution:
+
+```{code-cell} ipython3
+n = 60                                  # n possible outcomes for w
+w_default = jnp.linspace(10, 20, n)     # wages between 10 and 20
+a, b = 600, 400                         # shape parameters
+dist = BetaBinomial(n-1, a, b)          # distribution
+q_default = jnp.array(dist.pdf())       # probabilities as a JAX array
+```
+
+Here's our model class for the McCall model with separation.
+
+```{code-cell} ipython3
+class Model(NamedTuple):
+    α: float = 0.2              # job separation rate
+    β: float = 0.98             # discount factor
+    γ: float = 2.0              # utility parameter (CRRA)
+    c: float = 6.0              # unemployment compensation
+    w: jnp.ndarray = w_default  # wage outcome space
+    q: jnp.ndarray = q_default  # probabilities over wage offers
+```
+
+
+### Operators
+
+To iterate on the Bellman equations, we define two operators, one for each value function.
+
+These operators take the current value functions as inputs and return updated versions.
+
+```{code-cell} ipython3
+def T_u(model, v_u, v_e):
+    """
+    Apply the unemployment Bellman update rule.
+
+    """
+    α, β, γ, c, w, q = model
+    h = u(c, γ) + β * (v_u @ q)
+    return jnp.maximum(v_e, h)
+```
+
+```{code-cell} ipython3
+def T_e(model, v_u, v_e):
+    """
+    Apply the employment Bellman update rule.
+
+    """
+    α, β, γ, c, w, q = model
+    v_e_new = u(w, γ) + β * ((1 - α) * v_e + α * (v_u @ q))
+    return v_e_new
+```
+
+
+
+### Iteration
+
+Here's our iteration routine, which alternates between updating $v_u$ and $v_e$ until convergence.
+
+We iterate until successive realizations are closer together than some small tolerance level.
+
+```{code-cell} ipython3
+def solve_full_model(
+        model,
+        tol: float=1e-6,
+        max_iter: int=1_000,
+    ):
+    """
+    Solves for both value functions v_u and v_e iteratively.
+
+    """
+    α, β, γ, c, w, q = model
+    i = 0
+    error = tol + 1
+    v_e = v_u = w / (1 - β)
+
+    while i < max_iter and error > tol:
+        v_u_next = T_u(model, v_u, v_e)
+        v_e_next = T_e(model, v_u, v_e)
+        error_u = jnp.max(jnp.abs(v_u_next - v_u))
+        error_e = jnp.max(jnp.abs(v_e_next - v_e))
+        error = jnp.max(jnp.array([error_u, error_e]))
+        v_u = v_u_next
+        v_e = v_e_next
+        i += 1
+
+    return v_u, v_e
+```
+
+
+
+### Computing the Reservation Wage
+
+Now that we can solve for both value functions, let's compute the reservation wage.
+
+Recall from above that the reservation wage $\bar w$ solves
+$v_e(\bar w) = h$, where $h$ is the continuation value defined in {eq}`defh_mm`.
+
+Let's compare $v_e$ and $h$ to see what they look like.
+
+We'll use the default parameterizations found in the code above.
+
+```{code-cell} ipython3
+model = Model()
+α, β, γ, c, w, q = model
+v_u, v_e = solve_full_model(model)
+h = u(c, γ) + β * (v_u @ q)
+
+fig, ax = plt.subplots()
+ax.plot(w, v_e, 'b-', lw=2, alpha=0.7, label='$v_e$')
+ax.plot(w, [h] * len(w), 'g-', lw=2, alpha=0.7, label='$h$')
+ax.set_xlim(min(w), max(w))
+ax.legend()
+plt.show()
+```
+
+The value $v_e$ is increasing because higher $w$ generates a higher wage flow conditional on staying employed.
+
+The reservation wage is the $w$ where these lines meet.
+
+Let's compute this reservation wage explicitly:
+
+```{code-cell} ipython3
+def compute_reservation_wage_full(model):
+    """
+    Computes the reservation wage using the full model solution.
+    """
+    α, β, γ, c, w, q = model
+    v_u, v_e = solve_full_model(model)
+    h = u(c, γ) + β * (v_u @ q)
+    # Find the first w such that v_e(w) >= h
+    accept = v_e >= h
+    i = jnp.argmax(accept)
+    w_bar = jnp.where(jnp.any(accept), w[i], jnp.inf)
+    return w_bar
+
+w_bar_full = compute_reservation_wage_full(model)
+print(f"Reservation wage (full model): {w_bar_full:.4f}")
+```
+
+
+
+
+(ast_mcm)=
+## A Simplifying Transformation
+
+The approach above works, but iterating over two vector-valued functions is computationally expensive.
+
+Let's return to the key equations and see if we can simplify them to reduce the problem to a single scalar equation.
 
 (This process will be analogous to our {ref}`second pass <mm_op2>` at the plain vanilla
 McCall model, where we reduced the Bellman equation to an equation in an unknown
 scalar value, rather than an unknown vector.)
 
-First, let
+First, recall $h$ as defined in {eq}`defh_mm`.
 
-```{math}
-:label: defh_mm
-
-h := u(c) + \beta \sum_{w' \in \mathbb W} v_u(w') q(w')
-```
-
-be the continuation value associated with unemployment (the value of rejecting the current offer).
-
-We can now write {eq}`bell2_mccall` as
+Using $h$, we can now write {eq}`bell2_mccall` as
 
 $$
 v_u(w) = \max \left\{ v_e(w), \,  h \right\}
@@ -291,28 +475,7 @@ h = u(c) + \beta \sum_{w' \in \mathbb W} \max \left\{ \frac{u(w') + \alpha(h - u
 
 This is a single scalar equation in $h$.
 
-### The Reservation Wage
 
-Suppose we can use {eq}`bell_scalar` to solve for $h$.
-
-Once we have $h$, we can obtain $v_e$ from {eq}`v_e_closed`.
-
-We can then determine optimal behavior for the worker.
-
-From {eq}`bell2_mccall`, we see that an unemployed agent accepts current offer
-$w$ if $v_e(w) \geq h$.
-
-This means precisely that the value of accepting is higher than the value of rejecting.
-
-It is clear that $v_e$ is (at least weakly) increasing in $w$, since the agent is never made worse off by a higher wage offer.
-
-Hence, we can express the optimal choice as accepting wage offer $w$ if and only if
-
-$$
-w \geq \bar w
-\quad \text{where} \quad
-\bar w \text{ solves } v_e(\bar w) = h
-$$
 
 ### Solving the Bellman Equations
 
@@ -336,50 +499,11 @@ Once convergence is achieved, we can compute $v_e$ from {eq}`v_e_closed`.
 
 (It is possible to prove that {eq}`bell_iter` converges via the Banach contraction mapping theorem.)
 
+
+
 ## Implementation
 
-Let's implement this iterative process.
-
-In the code, you'll see that we use a class to store the various parameters and other
-objects associated with a given model.
-
-This helps to tidy up the code and provides an object that's easy to pass to functions.
-
-The default utility function is a CRRA utility function
-
-```{code-cell} ipython3
-def u(c, γ):
-    return (c**(1 - γ) - 1) / (1 - γ)
-```
-
-Also, here's a default wage distribution, based around the BetaBinomial
-distribution:
-
-```{code-cell} ipython3
-n = 60                                  # n possible outcomes for w
-w_default = jnp.linspace(10, 20, n)     # wages between 10 and 20
-a, b = 600, 400                         # shape parameters
-dist = BetaBinomial(n-1, a, b)          # distribution
-q_default = jnp.array(dist.pdf())       # probabilities as a JAX array
-```
-
-Here's our model class for the McCall model with separation.
-
-```{code-cell} ipython3
-class Model(NamedTuple):
-    α: float = 0.2              # job separation rate
-    β: float = 0.98             # discount factor
-    γ: float = 2.0              # utility parameter (CRRA)
-    c: float = 6.0              # unemployment compensation
-    w: jnp.ndarray = w_default  # wage outcome space
-    q: jnp.ndarray = q_default  # probabilities over wage offers
-```
-
-Now we iterate until successive realizations are closer together than some small tolerance level.
-
-We then return the current iterate as an approximate solution.
-
-First, we define a function to compute $v_e$ from $h$:
+First, we define a function to compute $v_e$ from $h$ using {eq}`v_e_closed`.
 
 ```{code-cell} ipython3
 def compute_v_e(model, h):
@@ -431,37 +555,6 @@ def solve_model(model, tol=1e-5, max_iter=2000):
     return v_e_final, h_final
 ```
 
-### The Reservation Wage: First Pass
-
-The optimal choice of the agent is summarized by the reservation wage.
-
-As discussed above, the reservation wage is the $\bar w$ that solves
-$v_e(\bar w) = h$ where $h$ is the continuation value.
-
-Let's compare $v_e$ and $h$ to see what they look like.
-
-We'll use the default parameterizations found in the code above.
-
-```{code-cell} ipython3
-model = Model()
-v_e, h = solve_model(model)
-
-fig, ax = plt.subplots()
-ax.plot(model.w, v_e, 'b-', lw=2, alpha=0.7, label='$v_e$')
-ax.plot(model.w, [h] * len(model.w),
-        'g-', lw=2, alpha=0.7, label='$h$')
-ax.set_xlim(min(model.w), max(model.w))
-ax.legend()
-plt.show()
-```
-
-The value $v_e$ is increasing because higher $w$ generates a higher wage flow conditional on staying employed.
-
-
-The reservation wage is the $w$ where these lines meet.
-
-
-### Computing the Reservation Wage
 
 Here's a function `compute_reservation_wage` that takes an instance of `Model`
 and returns the associated reservation wage.
@@ -470,7 +563,7 @@ and returns the associated reservation wage.
 def compute_reservation_wage(model):
     """
     Computes the reservation wage of an instance of the McCall model
-    by finding the smallest w such that v_e(w) >= h. 
+    by finding the smallest w such that v_e(w) >= h.
 
     """
     # Find the first i such that v_e(w_i) >= h and return w[i]
@@ -481,6 +574,17 @@ def compute_reservation_wage(model):
     w_bar = jnp.where(jnp.any(accept), model.w[i], jnp.inf)
     return w_bar
 ```
+
+Let's verify that this simplified approach gives the same answer as the full model:
+
+```{code-cell} ipython3
+w_bar_simplified = compute_reservation_wage(model)
+print(f"Reservation wage (simplified): {w_bar_simplified:.4f}")
+print(f"Reservation wage (full model): {w_bar_full:.4f}")
+print(f"Difference: {abs(w_bar_simplified - w_bar_full):.6f}")
+```
+
+As we can see, both methods produce essentially the same reservation wage, but the simplified method is much more efficient.
 
 Next we will investigate how the reservation wage varies with parameters.
 
