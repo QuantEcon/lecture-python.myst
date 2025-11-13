@@ -101,14 +101,12 @@ At the start of each period, the agent can be either
 * unemployed or
 * employed at some existing wage level $w$.
 
-At the start of a given period, the current wage offer $w_t$ is observed.
+If currently employed at wage $w$, the worker
 
-If currently employed, the worker
+1. receives utility $u(w)$ from their current wage and
+1. is fired with some (small) probability $\alpha$, becoming unemployed next period.
 
-1. receives utility $u(w)$ and
-1. is fired with some (small) probability $\alpha$.
-
-If currently unemployed, the worker either accepts or rejects the current offer $w_t$.
+If currently unemployed, the worker receives random wage offer $w_t$ and either accepts or rejects.
 
 If he accepts, then he begins work immediately at wage $w_t$.
 
@@ -126,15 +124,16 @@ We drop time subscripts in what follows and primes denote next period values.
 
 Let
 
-* $v_e(w)$ be maximum lifetime value accruing to a worker who enters the current
-  period *employed* with existing wage $w$
-* $v_u(w)$ be maximum lifetime value accruing to a worker who who enters the
-  current period *unemployed* and receives wage offer $w$.
+* $v_e(w)$ be maximum lifetime value for a worker who enters the current
+  period employed with wage $w$
+* $v_u(w)$ be maximum lifetime for a worker who who enters the
+  current period unemployed and receives wage offer $w$.
 
-Here **maximum lifetime value** means the value of {eq}`objective` when
+Here, **maximum lifetime value** means the value of {eq}`objective` when
 the worker makes optimal decisions at all future points in time.
 
 As we now show, obtaining these functions is key to solving the model.
+
 
 ### The Bellman Equations
 
@@ -160,7 +159,8 @@ $w/(1-\beta)$.
 
 We have to make this change because jobs are not permanent.
 
-Accepting transitions the worker to employment and hence yields reward $v_e(w)$.
+Accepting transitions the worker to employment and hence yields reward $v_e(w)$,
+which we discuss below.
 
 Rejecting leads to unemployment compensation and unemployment tomorrow.
 
@@ -211,18 +211,16 @@ Let
     h := u(c) + \beta \sum_{w' \in \mathbb W} v_u(w') q(w')
 ```
 
-This is the continuation value for an unemployed agent (the value of rejecting the current offer).
-
-If we know $v_u$ then we can easily compute $h$.
+This is the **continuation value** for an unemployed agent -- the value of rejecting the current offer and then making optimal choices.
 
 From {eq}`bell2_mccall`, we see that an unemployed agent accepts current offer $w$ if $v_e(w) \geq h$.
 
 This means precisely that the value of accepting is higher than the value of rejecting.
 
-It is clear that $v_e$ is (at least weakly) increasing in $w$, since the agent is never made worse off by a higher wage offer.
+The function $v_e$ is increasing in $w$, since an employed agent is never made worse off by a higher current wage.
 
 Hence, we can express the optimal choice as accepting wage offer $w$ if and only if $w \geq \bar w$,
-where the **reservation wage** $\bar w$ is the first wage level $w$ such that
+where the **reservation wage** $\bar w$ is the first wage level $w \in \mathbb W$ such that
 
 $$
     v_e(w) \geq h
@@ -232,14 +230,11 @@ $$
 
 ## Code
 
-Let's now implement a solution method based on the two Bellman equations.
+Let's now implement a solution method based on the two Bellman equations
+{eq}`bell2_mccall` and {eq}`bell1_mccall`.
+
 
 ### Set Up
-
-In the code, you'll see that we use a class to store the various parameters and other
-objects associated with a given model.
-
-This helps to tidy up the code and provides an object that's easy to pass to functions.
 
 The default utility function is a CRRA utility function
 
@@ -274,25 +269,29 @@ class Model(NamedTuple):
 
 ### Operators
 
-To iterate on the Bellman equations, we define two operators, one for each value function.
+We'll use a similar iterative approach to solving the Bellman equations that we
+adopted in the {doc}`first job search lecture <mccall_model>`.
+
+As a first step, to iterate on the Bellman equations, we define two operators, one for each value function.
 
 These operators take the current value functions as inputs and return updated versions.
 
 ```{code-cell} ipython3
 def T_u(model, v_u, v_e):
     """
-    Apply the unemployment Bellman update rule.
+    Apply the unemployment Bellman update rule and return new guess of v_u.
 
     """
     α, β, γ, c, w, q = model
     h = u(c, γ) + β * (v_u @ q)
-    return jnp.maximum(v_e, h)
+    v_u_new = jnp.maximum(v_e, h)
+    return v_u_new
 ```
 
 ```{code-cell} ipython3
 def T_e(model, v_u, v_e):
     """
-    Apply the employment Bellman update rule.
+    Apply the employment Bellman update rule and return new guess of v_e.
 
     """
     α, β, γ, c, w, q = model
@@ -301,12 +300,12 @@ def T_e(model, v_u, v_e):
 ```
 
 
-
 ### Iteration
 
-Here's our iteration routine, which alternates between updating $v_u$ and $v_e$ until convergence.
+Now we write an iteration routine, which updates the pair of arrays  $v_u$, $v_e$ until convergence.
 
-We iterate until successive realizations are closer together than some small tolerance level.
+More precisely, we iterate until successive realizations are closer together
+than some small tolerance level.
 
 ```{code-cell} ipython3
 def solve_full_model(
@@ -340,10 +339,10 @@ def solve_full_model(
 
 ### Computing the Reservation Wage
 
-Now that we can solve for both value functions, let's compute the reservation wage.
+Now that we can solve for both value functions, let's investigate the reservation wage.
 
-Recall from above that the reservation wage $\bar w$ solves
-$v_e(\bar w) = h$, where $h$ is the continuation value defined in {eq}`defh_mm`.
+Recall from above that the reservation wage $\bar w$ is the first $w \in \mathbb
+W$ satisfying $v_e(w) \geq h$, where $h$ is the continuation value defined in {eq}`defh_mm`.
 
 Let's compare $v_e$ and $h$ to see what they look like.
 
@@ -377,9 +376,9 @@ def compute_reservation_wage_full(model):
     α, β, γ, c, w, q = model
     v_u, v_e = solve_full_model(model)
     h = u(c, γ) + β * (v_u @ q)
-    # Find the first w such that v_e(w) >= h
+    # Find the first w such that v_e(w) >= h, or +inf if none exist
     accept = v_e >= h
-    i = jnp.argmax(accept)
+    i = jnp.argmax(accept)  # returns first accept index
     w_bar = jnp.where(jnp.any(accept), w[i], jnp.inf)
     return w_bar
 
@@ -387,7 +386,7 @@ w_bar_full = compute_reservation_wage_full(model)
 print(f"Reservation wage (full model): {w_bar_full:.4f}")
 ```
 
-
+This value seems close to where the two lines meet.
 
 
 (ast_mcm)=
@@ -395,42 +394,49 @@ print(f"Reservation wage (full model): {w_bar_full:.4f}")
 
 The approach above works, but iterating over two vector-valued functions is computationally expensive.
 
-Let's return to the key equations and see if we can simplify them to reduce the problem to a single scalar equation.
+With some mathematics and some brain power, we can form a solution method that
+is far more efficient.
 
 (This process will be analogous to our {ref}`second pass <mm_op2>` at the plain vanilla
 McCall model, where we reduced the Bellman equation to an equation in an unknown
 scalar value, rather than an unknown vector.)
 
-First, recall $h$ as defined in {eq}`defh_mm`.
-
-Using $h$, we can now write {eq}`bell2_mccall` as
+First, we use the continuation value $h$, as defined in {eq}`defh_mm`, to write {eq}`bell2_mccall` as
 
 $$
-v_u(w) = \max \left\{ v_e(w), \,  h \right\}
+    v_u(w) = \max \left\{ v_e(w), \,  h \right\}
 $$
 
-or, shifting time forward one period
+Taking the expectation of both sides and then discounting, this becomes
 
 $$
-\sum_{w' \in \mathbb W} v_u(w') q(w')
- = \sum_{w' \in \mathbb W} \max \left\{ v_e(w'), \,  h \right\} q(w')
+\beta \sum_{w'} v_u(w') q(w')
+ = \beta \sum_{w'} \max \left\{ v_e(w'), \,  h \right\} q(w')
 $$
 
-Using {eq}`defh_mm` again now gives
+Adding $u(c)$ to both sides and using {eq}`defh_mm` again gives
 
 ```{math}
 :label: bell02_mccall
 
-h = u(c) + \beta \sum_{w' \in \mathbb W} \max \left\{ v_e(w'), \,  h \right\} q(w')
+h = u(c) + \beta \sum_{w'} \max \left\{ v_e(w'), \,  h \right\} q(w')
 ```
 
-Finally, from {eq}`defh_mm` we have
+This is a nice scalar equation in the continuation value, which is already
+useful.
+
+But we can go further, but eliminating $v_e$ from the above equation.
+
+
+### Simplifying to a Single Equation
+
+As a first step, we rearrange the expression defining $h$ (see {eq}`defh_mm`) to obtain
 
 $$
-\sum_{w' \in \mathbb W} v_u(w') q(w') = \frac{h - u(c)}{\beta}
+\sum_{w'} v_u(w') q(w') = \frac{h - u(c)}{\beta}
 $$
 
-so {eq}`bell1_mccall` can now be rewritten as
+Using this, the Bellman equation for $v_e$, as given in {eq}`bell1_mccall`, can now be rewritten as
 
 ```{math}
 :label: bell01_mccall
@@ -441,28 +447,26 @@ v_e(w) = u(w) + \beta
     \right]
 ```
 
-### Simplifying to a Single Equation
-
-We can simplify further by solving {eq}`bell01_mccall` for $v_e$ as a function of $h$.
+Our next step is to solve {eq}`bell01_mccall` for $v_e$ as a function of $h$.
 
 Rearranging {eq}`bell01_mccall` gives
 
 $$
-v_e(w) = u(w) + \beta(1-\alpha)v_e(w) + \alpha(h - u(c))
+    v_e(w) = u(w) + \beta(1-\alpha)v_e(w) + \alpha(h - u(c))
 $$
 
 or
 
 $$
-v_e(w) - \beta(1-\alpha)v_e(w) = u(w) + \alpha(h - u(c))
+    v_e(w) - \beta(1-\alpha)v_e(w) = u(w) + \alpha(h - u(c))
 $$
 
-Solving for $v_e(w)$:
+Solving for $v_e(w)$ gives
 
 ```{math}
 :label: v_e_closed
 
-v_e(w) = \frac{u(w) + \alpha(h - u(c))}{1 - \beta(1-\alpha)}
+    v_e(w) = \frac{u(w) + \alpha(h - u(c))}{1 - \beta(1-\alpha)}
 ```
 
 Substituting this into {eq}`bell02_mccall` yields
@@ -473,18 +477,17 @@ Substituting this into {eq}`bell02_mccall` yields
 h = u(c) + \beta \sum_{w' \in \mathbb W} \max \left\{ \frac{u(w') + \alpha(h - u(c))}{1 - \beta(1-\alpha)}, \,  h \right\} q(w')
 ```
 
-This is a single scalar equation in $h$.
+Finally we have a single scalar equation in $h$!
 
+If we can solve this for $h$, we can easily recover $v_e$ using
+{eq}`v_e_closed`.
+
+Then we have enough information to compute the reservation wage.
 
 
 ### Solving the Bellman Equations
 
-We'll use the same iterative approach to solving the Bellman equations that we
-adopted in the {doc}`first job search lecture <mccall_model>`.
-
-In this case we only need to iterate on the single scalar equation {eq}`bell_scalar`.
-
-The iteration rule is
+To solve {eq}`bell_scalar`, we use the iteration rule 
 
 ```{math}
 :label: bell_iter
@@ -495,7 +498,6 @@ h_{n+1} = u(c) + \beta \sum_{w' \in \mathbb W}
 
 starting from some initial condition $h_0$.
 
-Once convergence is achieved, we can compute $v_e$ from {eq}`v_e_closed`.
 
 (It is possible to prove that {eq}`bell_iter` converges via the Banach contraction mapping theorem.)
 
@@ -503,16 +505,8 @@ Once convergence is achieved, we can compute $v_e$ from {eq}`v_e_closed`.
 
 ## Implementation
 
-First, we define a function to compute $v_e$ from $h$ using {eq}`v_e_closed`.
-
-```{code-cell} ipython3
-def compute_v_e(model, h):
-    " Compute v_e from h using the closed-form expression. "
-    α, β, γ, c, w, q = model
-    return (u(w, γ) + α * (h - u(c, γ))) / (1 - β * (1 - α))
-```
-
-Now we implement the iteration on $h$ only:
+To implement iteration on $h$, we provide a function that provides one update,
+from $h_n$ to $h_{n+1}$
 
 ```{code-cell} ipython3
 def update_h(model, h):
@@ -523,7 +517,18 @@ def update_h(model, h):
     return h_new
 ```
 
-Using this iteration rule, we can write our model solver.
+Also, we provide a function to compute $v_e$ from {eq}`v_e_closed`.
+
+```{code-cell} ipython3
+def compute_v_e(model, h):
+    " Compute v_e from h using the closed-form expression. "
+    α, β, γ, c, w, q = model
+    return (u(w, γ) + α * (h - u(c, γ))) / (1 - β * (1 - α))
+```
+
+This function will be applied once convergence is achieved.
+
+Now we can write our model solver.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -555,9 +560,8 @@ def solve_model(model, tol=1e-5, max_iter=2000):
     return v_e_final, h_final
 ```
 
-
-Here's a function `compute_reservation_wage` that takes an instance of `Model`
-and returns the associated reservation wage.
+Finally, here's a function `compute_reservation_wage` that uses all the logic above,
+taking an instance of `Model` and returning the associated reservation wage.
 
 ```{code-cell} ipython3
 def compute_reservation_wage(model):
@@ -584,10 +588,11 @@ print(f"Reservation wage (full model): {w_bar_full:.4f}")
 print(f"Difference: {abs(w_bar_simplified - w_bar_full):.6f}")
 ```
 
-As we can see, both methods produce essentially the same reservation wage, but the simplified method is much more efficient.
+As we can see, both methods produce essentially the same reservation wage.
+
+However, the simplified method is far more efficient.
 
 Next we will investigate how the reservation wage varies with parameters.
-
 
 
 ## Impact of Parameters
