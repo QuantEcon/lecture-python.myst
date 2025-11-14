@@ -350,15 +350,15 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
     X_{t+1} = \rho X_t + \nu Z_{t+1}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\{Z_t\}\)</span> is IID and standard normal.</p>
-<p>Informally, we set <span class="math notranslate nohighlight">\(W_t = \exp(Z_t)\)</span>.</p>
-<p>In practice, we</p>
+<p>Below we will always choose <span class="math notranslate nohighlight">\(\rho \in (0, 1)\)</span>.</p>
+<p>This means that the wage process will be positively correlated: the higher the current
+wage offer, the more likely we are to get a high offer tomorrow.</p>
+<p>To go from the AR1 process to the wage offer process, we set <span class="math notranslate nohighlight">\(W_t = \exp(X_t)\)</span>.</p>
+<p>Actually, in practice, we approximate this wage process as follows:</p>
 <ul class="simple">
 <li><p>discretize the AR1 process using <a class="reference internal" href="finite_markov.html#fm_ex3"><span class="std std-ref">Tauchen’s method</span></a> and</p></li>
 <li><p>take the exponential of the resulting wage offer values.</p></li>
 </ul>
-<p>Below we will always choose <span class="math notranslate nohighlight">\(\rho \in (0, 1)\)</span>.</p>
-<p>This means that the wage process will be positively correlated: the higher the current
-wage offer, the more likely we are to get a high offer tomorrow.</p>
 </section>
 <section id="value-functions">
 <h3><span class="section-number">44.1.3. </span>Value Functions<a class="headerlink" href="#value-functions" title="Link to this heading">#</a></h3>
@@ -498,9 +498,9 @@ optimize simulation – the details are explained below.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P_cumsum</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">d</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">))</span>
-    <span class="n">accept</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="n">w_vals</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">α</span> <span class="o">*</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span>
-    <span class="n">reject</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">accept</span><span class="p">,</span> <span class="n">reject</span><span class="p">)</span>
+    <span class="n">v_e</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="n">w_vals</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">α</span> <span class="o">*</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">v_e</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -555,10 +555,10 @@ optimize simulation – the details are explained below.</p>
     <span class="c1"># Compute accept and reject values</span>
     <span class="n">d</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">))</span>
     <span class="n">v_e</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="n">w_vals</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">α</span> <span class="o">*</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span>
-    <span class="n">continuation_value</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span>
+    <span class="n">continuation_values</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span>
 
     <span class="c1"># Find where acceptance becomes optimal</span>
-    <span class="n">accept_indices</span> <span class="o">=</span> <span class="n">v_e</span> <span class="o">&gt;=</span> <span class="n">continuation_value</span>
+    <span class="n">accept_indices</span> <span class="o">=</span> <span class="n">v_e</span> <span class="o">&gt;=</span> <span class="n">continuation_values</span>
     <span class="n">first_accept_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">accept_indices</span><span class="p">)</span>  <span class="c1"># index of first True</span>
 
     <span class="c1"># If no acceptance (all False), return infinity</span>
