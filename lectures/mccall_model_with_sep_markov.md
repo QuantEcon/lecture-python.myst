@@ -406,8 +406,8 @@ This is implemented via `jnp.searchsorted` on the precomputed cumulative sum
 
 The function `update_agent` advances the agent's state by one period.
 
-The agent's state is a pair $(s_t, w_t)$, where $s_t$ is employment status (0 if
-unemployed, 1 if employed) and $w_t$ is 
+The agent's state is a pair $(S_t, W_t)$, where $S_t$ is employment status (0 if
+unemployed, 1 if employed) and $W_t$ is 
 
 * their current wage offer, if unemployed, or
 * their current wage, if employed. 
@@ -569,10 +569,10 @@ fraction of time an agent spends unemployed over a long time series.
 We will see that these two values are approximately equal -- if fact they are
 exactly equal in the limit.
 
-The reason is that the process $(s_t, w_t)$, where
+The reason is that the process $(S_t, W_t)$, where
 
-- $s_t$ is the employment status and
-- $w_t$ is the wage 
+- $S_t$ is the employment status and
+- $W_t$ is the wage 
 
 is Markovian, since the next pair depends only on the current pair and iid
 randomness, and ergodic. 
@@ -595,7 +595,7 @@ In particular, the fraction of time a single agent spends unemployed (across all
 wage states) converges to the cross-sectional unemployment rate:
 
 $$
-    \lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^{T} \mathbb{1}\{s_t = \text{unemployed}\} = \sum_{w=1}^{n} \pi(\text{unemployed}, w)
+    \lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^{T} \mathbb{1}\{S_t = \text{unemployed}\} = \sum_{w=1}^{n} \pi(\text{unemployed}, w)
 $$
 
 This holds regardless of initial conditions -- provided that we burn in the

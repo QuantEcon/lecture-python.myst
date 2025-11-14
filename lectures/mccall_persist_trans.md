@@ -68,20 +68,20 @@ from typing import NamedTuple
 Wages at each point in time are given by
 
 $$
-w_t = \exp(z_t) + y_t
+W_t = \exp(Z_t) + Y_t
 $$
 
 where
 
 $$
-y_t \sim \exp(\mu + s \zeta_t)
+Y_t \sim \exp(\mu + s \zeta_t)
 \quad \text{and} \quad
-z_{t+1} = d + \rho z_t + \sigma \epsilon_{t+1}
+Z_{t+1} = d + \rho Z_t + \sigma \epsilon_{t+1}
 $$
 
 Here $\{ \zeta_t \}$ and $\{ \epsilon_t \}$ are both IID and standard normal.
 
-Here $\{y_t\}$ is a transitory component and $\{z_t\}$ is persistent.
+Here $\{Y_t\}$ is a transitory component and $\{Z_t\}$ is persistent.
 
 As before, the worker can either
 
@@ -327,7 +327,7 @@ at all state values.
 
 Next, we study how mean unemployment duration varies with unemployment compensation.
 
-For simplicity, we'll fix the initial state at $z_t = 0$.
+For simplicity, we'll fix the initial state at $Z_0 = 0$.
 
 ```{code-cell} ipython
 @jax.jit
