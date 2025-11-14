@@ -77,19 +77,19 @@ from quantecon.distributions import BetaBinomial
 ```{index} single: Models; McCall
 ```
 
-An unemployed agent receives in each period a job offer at wage $w_t$.
+An unemployed agent receives in each period a job offer at wage $W_t$.
 
 In this lecture, we adopt the following simple environment:
 
-* The offer sequence $\{w_t\}_{t \geq 0}$ is IID, with $q(w)$ being the probability of observing wage $w$ in finite set $\mathbb{W}$.
-* The agent observes $w_t$ at the start of $t$.
-* The agent knows that $\{w_t\}$ is IID with common distribution $q$ and can use this when computing expectations.
+* The offer sequence $\{W_t\}_{t \geq 0}$ is IID, with $q(w)$ being the probability of observing wage $w$ in finite set $\mathbb{W}$.
+* The agent observes $W_t$ at the start of $t$.
+* The agent knows that $\{W_t\}$ is IID with common distribution $q$ and can use this when computing expectations.
 
 (In later lectures, we will relax these assumptions.)
 
 At time $t$, our agent has two choices:
 
-1. Accept the offer and work permanently at constant wage $w_t$.
+1. Accept the offer and work permanently at constant wage $W_t$.
 1. Reject the offer, receive unemployment compensation $c$, and reconsider next period.
 
 The agent is infinitely lived and aims to maximize the expected discounted
@@ -98,16 +98,16 @@ sum of earnings
 ```{math}
 :label: obj_model
 
-{\mathbb E} \sum_{t=0}^\infty \beta^t u(y_t)
+{\mathbb E} \sum_{t=0}^\infty \beta^t y_t
 ```
 
 The constant $\beta$ lies in $(0, 1)$ and is called a **discount factor**.
 
-The smaller is $\beta$, the more the agent discounts future utility relative to current utility.
+The smaller is $\beta$, the more the agent discounts future earnings relative to current earnings.
 
 The variable  $y_t$ is income, equal to
 
-* his/her wage $w_t$ when employed
+* his/her wage $W_t$ when employed
 * unemployment compensation $c$ when unemployed
 
 
@@ -118,7 +118,7 @@ The worker faces a trade-off:
 * Waiting too long for a good offer is costly, since the future is discounted.
 * Accepting too early is costly, since better offers might arrive in the future.
 
-To decide optimally in the face of this trade-off, we use [dynamic programming](https://dp.quantecon.org/).
+To decide the optimal wait time in the face of this trade-off, we use [dynamic programming](https://dp.quantecon.org/).
 
 Dynamic programming can be thought of as a two-step procedure that
 
@@ -137,25 +137,26 @@ In order to optimally trade-off current and future rewards, we need to think abo
 To weigh these two aspects of the decision problem, we need to assign *values*
 to states.
 
-To this end, let $v^*(w)$ be the total lifetime *value* accruing to an
+To this end, let $v^*(w)$ be the total lifetime value accruing to an
 unemployed worker who enters the current period unemployed when the wage is
 $w \in \mathbb{W}$.
 
 (In particular, the agent has wage offer $w$ in hand and can accept or reject it.)
 
-More precisely, $v^*(w)$ denotes the value of the objective function
-{eq}`obj_model` when an agent in this situation makes *optimal* decisions now
-and at all future points in time.
+More precisely, $v^*(w)$ denotes the total sum of expected discounted earnings
+when an agent always behaves in an optimal way. points in time.
 
 Of course $v^*(w)$ is not trivial to calculate because we don't yet know
 what decisions are optimal and what aren't!
 
-But think of $v^*$ as a function that assigns to each possible wage
-$s$ the maximal lifetime value that can be obtained with that offer in
-hand.
+If we don't know what opimal choices are, it feels imposible to calculate
+$v^*(w)$.
 
-A crucial observation is that this function $v^*$ must satisfy the
-recursion
+But let's put this aside for now and think of $v^*$ as a function that assigns
+to each possible wage $w$ the maximal lifetime value $v^*(w)$ that can be
+obtained with that offer in hand.
+
+A crucial observation is that this function $v^*$ must satisfy 
 
 ```{math}
 :label: odu_pv
@@ -175,6 +176,7 @@ ubiquitous in economic dynamics and other fields involving planning over time.
 The intuition behind it is as follows:
 
 * the first term inside the max operation is the lifetime payoff from accepting current offer, since
+    such a worker works forever at $w$ and values this income stream as
 
 $$
     \frac{w}{1 - \beta} = w + \beta w + \beta^2 w + \cdots
@@ -189,15 +191,23 @@ lifetime value from today, given current offer $w$.
 
 But this is precisely $v^*(w)$, which is the left-hand side of {eq}`odu_pv`.
 
+Putting this all together, we see that {eq}`odu_pv` is valid for all $w$.
+
 
 ### The Optimal Policy
 
-Suppose for now that we are able to solve {eq}`odu_pv` for the unknown function $v^*$.
+We still don't know how to compute $v^*$  (although {eq}`odu_pv` gives us hints
+we'll return to below).
 
-Once we have this function in hand we can behave optimally (i.e., make the
-right choice between accept and reject).
+But suppose for now that we do know $v^*$.
+
+Once we have this function in hand we can easily make optimal choices (i.e., make the
+right choice between accept and reject given any $w$).
 
 All we have to do is select the maximal choice on the right-hand side of {eq}`odu_pv`.
+
+In other words, we make the best choice between stopping and continuing, given
+the information provided to us by $v^*$.
 
 The optimal action is best thought of as a **policy**, which is, in general, a map from
 states to actions.
@@ -262,7 +272,7 @@ In view of {eq}`odu_pv`, this vector satisfies the nonlinear system of equations
 
 v^*(i)
 = \max \left\{
-        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{1 \leq j \leq n}
+        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{j=1}^n 
             v^*(j) q (j)
     \right\}
 \quad
@@ -284,7 +294,7 @@ Step 2: compute a new vector $v' \in \mathbb R^n$ via
 
 v'(i)
 = \max \left\{
-        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{1 \leq j \leq n}
+        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{j=1}^n
             v(j) q (j)
     \right\}
 \quad
@@ -312,7 +322,7 @@ First, one defines a mapping $T$ from $\mathbb R^n$ to itself via
 
 (Tv)(i)
 = \max \left\{
-        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{1 \leq j \leq n}
+        \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{j=1}^n
             v(j) q (j)
     \right\}
 \quad
@@ -341,8 +351,7 @@ $\{ T^k v \}$ converges to the fixed point $v^*$ regardless of $v$.
 
 ### Implementation
 
-Our default for $q$, the distribution of the state process, will be
-[Beta-binomial](https://en.wikipedia.org/wiki/Beta-binomial_distribution).
+Our default for $q$, the wage offer distribution, will be [Beta-binomial](https://en.wikipedia.org/wiki/Beta-binomial_distribution).
 
 ```{code-cell} ipython3
 n, a, b = 50, 200, 100                        # default parameters
@@ -381,7 +390,23 @@ class McCallModel(NamedTuple):
     q: jnp.ndarray = q_default  # array of probabilities
 ```
 
-We implement the Bellman operator $T$ from {eq}`odu_pv3` as follows
+We implement the Bellman operator $T$ from {eq}`odu_pv3`, which we can write in
+terms of array operations as
+
+```{math}
+:label: odu_pv4
+
+Tv
+= \max \left\{
+        \frac{w}{1 - \beta}, \, c + \beta \sum_{j=1}^n v(j) q (j)
+    \right\}
+\quad
+```
+
+(The first term inside the max is an array and the second is just a number -- here
+we mean that the max comparison against this number is done element-by-element for all elements in the array.)
+
+We can code $T$ up as follows.
 
 ```{code-cell} ipython3
 def T(model: McCallModel, v: jnp.ndarray):
@@ -416,7 +441,7 @@ plt.show()
 You can see that convergence is occurring: successive iterates are getting closer together.
 
 Here's a more serious iteration effort to compute the limit, which continues
-until measured deviation between successive iterates is below tol.
+until measured deviation between successive iterates is below `tol`.
 
 Once we obtain a good approximation to the limit, we will use it to calculate
 the reservation wage.
@@ -459,8 +484,58 @@ print(res_wage)
 Now that we know how to compute the reservation wage, let's see how it varies with
 parameters.
 
-In particular, let's look at what happens when we change $\beta$ and
-$c$.
+Here we compare the reservation wage at two values of $\beta$.
+
+The reservation wages will be plotted alongside the wage offer distribution, so
+that we can get a sense of what fraction of offers will be accepted.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+# Get the default color cycle
+prop_cycle = plt.rcParams['axes.prop_cycle']
+colors = prop_cycle.by_key()['color']
+
+# Plot the wage offer distribution
+ax.plot(w, q, '-', alpha=0.6, lw=2,
+        label='wage offer distribution',
+        color=colors[0])
+
+# Compute reservation wage with default beta
+model_default = McCallModel()
+c, β, w, q = model_default
+v_init = w / (1 - β)
+v_default, res_wage_default = compute_reservation_wage(
+    model_default, v_init
+)
+
+# Compute reservation wage with lower beta
+β_new = 0.96
+model_low_beta = McCallModel(β=β_new)
+c, β_low, w, q = model_low_beta
+v_init_low = w / (1 - β_low)
+v_low, res_wage_low = compute_reservation_wage(
+    model_low_beta, v_init_low
+)
+
+# Plot vertical lines for reservation wages
+ax.axvline(x=res_wage_default, color=colors[1], lw=2,
+           label=f'reservation wage (β={β})')
+ax.axvline(x=res_wage_low, color=colors[2], lw=2,
+           label=f'reservation wage (β={β_new})')
+
+ax.set_xlabel('wage', fontsize=12)
+ax.set_ylabel('probability', fontsize=12)
+ax.tick_params(axis='both', which='major', labelsize=11)
+ax.legend(loc='upper left', frameon=False, fontsize=11)
+plt.show()
+```
+
+We see that the reservation wage is higher when $\beta$ is higher.
+
+This is not surprising, since higher $\beta$ is associated with more patience.
+
+Now let's look more systematically at what happens when we change $\beta$ and $c$.
 
 As a first step, given that we'll use it many times, let's create a more
 efficient, jit-complied version of the function that computes the reservation
@@ -548,12 +623,43 @@ Let $h$ denote the continuation value:
 
 The Bellman equation can now be written as
 
-$$
+```{math}
+:label: j1b
+
     v^*(w')
     = \max \left\{ \frac{w'}{1 - \beta}, \, h \right\}
+```
+
+Now let's derive a nonlinear equation for $h$ alone.
+
+Starting from {eq}`j1b`, we multiply both sides by $q(w')$ to get
+
+$$
+    v^*(w') q(w') = \max \left\{ \frac{w'}{1 - \beta}, h \right\} q(w')
 $$
 
-Substituting this last equation into {eq}`j1` gives
+Next, we sum both sides over $w' \in \mathbb{W}$:
+
+$$
+    \sum_{w' \in \mathbb W} v^*(w') q(w')
+    = \sum_{w' \in \mathbb W} \max \left\{ \frac{w'}{1 - \beta}, h \right\} q(w')
+$$
+
+Now multiply both sides by $\beta$:
+
+$$
+    \beta \sum_{w' \in \mathbb W} v^*(w') q(w')
+    = \beta \sum_{w' \in \mathbb W} \max \left\{ \frac{w'}{1 - \beta}, h \right\} q(w')
+$$
+
+Add $c$ to both sides:
+
+$$
+    c + \beta \sum_{w' \in \mathbb W} v^*(w') q(w')
+    = c + \beta \sum_{w' \in \mathbb W} \max \left\{ \frac{w'}{1 - \beta}, h \right\} q(w')
+$$
+
+Finally, using the definition of $h$ from {eq}`j1`, the left-hand side is just $h$, giving us
 
 ```{math}
 :label: j2
@@ -565,7 +671,7 @@ Substituting this last equation into {eq}`j1` gives
         \right\}  q (w')
 ```
 
-This is a nonlinear equation that we can solve for $h$.
+This is a nonlinear equation in the single scalar $h$ that we can solve for $h$.
 
 As before, we will use successive approximations:
 
@@ -596,7 +702,6 @@ The big difference here, however, is that we're iterating on a scalar $h$, rathe
 Here's an implementation:
 
 ```{code-cell} ipython3
-@jax.jit
 def compute_reservation_wage_two(
         model: McCallModel,   # instance containing default parameters
         tol: float=1e-5,      # error tolerance
@@ -709,9 +814,28 @@ plt.show()
 And here's a solution using JAX.
 
 ```{code-cell} ipython3
+# First, we set up a function to draw random wage offers from the distribution.
+# We use the inverse transform method: draw a uniform random variable u,
+# then find the smallest wage w such that the CDF at w is >= u.
 cdf = jnp.cumsum(q_default)
 
-@jax.jit
+def draw_wage(uniform_rv):
+    """
+    Draw a wage from the distribution q_default using the inverse transform method.
+
+    Parameters:
+    -----------
+    uniform_rv : float
+        A uniform random variable on [0, 1]
+
+    Returns:
+    --------
+    wage : float
+        A wage drawn from w_default with probabilities given by q_default
+    """
+    return w_default[jnp.searchsorted(cdf, uniform_rv)]
+
+
 def compute_stopping_time(w_bar, key):
     """
     Compute stopping time by drawing wages until one exceeds `w_bar`.
@@ -720,7 +844,7 @@ def compute_stopping_time(w_bar, key):
         t, key, accept = loop_state
         key, subkey = jax.random.split(key)
         u = jax.random.uniform(subkey)
-        w = w_default[jnp.searchsorted(cdf, u)]
+        w = draw_wage(u)
         accept = w >= w_bar
         t = t + 1
         return t, key, accept
@@ -734,7 +858,6 @@ def compute_stopping_time(w_bar, key):
     return t_final
 
 
-@partial(jax.jit, static_argnames=('num_reps',))
 def compute_mean_stopping_time(w_bar, num_reps=100000, seed=1234):
     """
     Generate a mean stopping time over `num_reps` repetitions by
@@ -753,6 +876,7 @@ def compute_mean_stopping_time(w_bar, num_reps=100000, seed=1234):
 
 c_vals = jnp.linspace(10, 40, 25)
 
+@jax.jit
 def compute_stop_time_for_c(c):
     """Compute mean stopping time for a given compensation value c."""
     model = McCallModel(c=c)
@@ -760,7 +884,8 @@ def compute_stop_time_for_c(c):
     return compute_mean_stopping_time(w_bar)
 
 # Vectorize across all c values
-stop_times = jax.vmap(compute_stop_time_for_c)(c_vals)
+compute_stop_time_vectorized = jax.vmap(compute_stop_time_for_c)
+stop_times = compute_stop_time_vectorized(c_vals)
 
 fig, ax = plt.subplots()
 
@@ -857,12 +982,12 @@ def create_mccall_continuous(
     key = jax.random.PRNGKey(seed)
     s = jax.random.normal(key, (mc_size,))
     w_draws = jnp.exp(μ + σ * s)
-    return McCallModelContinuous(c=c, β=β, σ=σ, μ=μ, w_draws=w_draws)
+    return McCallModelContinuous(c, β, σ, μ, w_draws)
 
 
 @jax.jit
 def compute_reservation_wage_continuous(model, max_iter=500, tol=1e-5):
-    c, β, σ, μ, w_draws = model.c, model.β, model.σ, model.μ, model.w_draws
+    c, β, σ, μ, w_draws = model
     
     h = jnp.mean(w_draws) / (1 - β)  # initial guess
     
@@ -878,8 +1003,9 @@ def compute_reservation_wage_continuous(model, max_iter=500, tol=1e-5):
         return jnp.logical_and(i < max_iter, error > tol)
     
     initial_state = (h, 0, tol + 1)
-    h_final, _, _ = jax.lax.while_loop(cond, update, initial_state)
-    
+    final_state = jax.lax.while_loop(cond, update, initial_state)
+    h_final, _, _ = final_state
+
     # Now compute the reservation wage
     return (1 - β) * h_final
 ```
@@ -898,12 +1024,13 @@ def compute_R_element(c, β):
     model = create_mccall_continuous(c=c, β=β)
     return compute_reservation_wage_continuous(model)
 
-# Create meshgrid and vectorize computation
-c_grid, β_grid = jnp.meshgrid(c_vals, β_vals, indexing='ij')
-compute_R_vectorized = jax.vmap(
-    jax.vmap(compute_R_element, 
-    in_axes=(None, 0)), 
-    in_axes=(0, None))
+# First, vectorize over β (holding c fixed)
+compute_R_over_β = jax.vmap(compute_R_element, in_axes=(None, 0))
+
+# Next, vectorize over c (applying the above function to each c)
+compute_R_vectorized = jax.vmap(compute_R_over_β, in_axes=(0, None))
+
+# Apply to compute the full grid
 R = compute_R_vectorized(c_vals, β_vals)
 ```
 
