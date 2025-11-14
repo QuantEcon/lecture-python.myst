@@ -25,6 +25,15 @@ kernelspec:
 :depth: 2
 ```
 
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython
+---
+tags: [hide-output]
+---
+!pip install quantecon tabulate
+```
+
 ## Overview
 
 This lecture puts elementary tools to work to approximate probability distributions of the annual failure rates of a system consisting of
@@ -58,8 +67,6 @@ import matplotlib.pyplot as plt
 from scipy.signal import fftconvolve
 from tabulate import tabulate
 import quantecon as qe
-
-np.set_printoptions(precision=3, suppress=True)
 ```
 
 ## The lognormal distribution
@@ -497,7 +504,7 @@ where $P(F)$ is the system failure probability.
 
 Probabilities for each event are recorded as failure rates per year.
 
-## Failure Rates Unknown
+## Failure rates unknown
 
 Now we come to the problem that really interests us, following  {cite:t}`Ardron_2018` and
  {cite:t}`Greenfield_Sargent_1993`  in the spirit of  {cite:t}`apostolakis1990`.
