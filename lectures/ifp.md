@@ -256,11 +256,13 @@ Here
 * primes indicate next period states (as well as derivatives), and
 * $\sigma$ is the unknown function.
 
+(We emphasize that {eq}`eqeul1` only holds when we have an interior solution, meaning $\sigma(a, z) < a$.)
+
 We aim to find a fixed point $\sigma$ of {eq}`eqeul1`.
 
 To do so we use the EGM.
 
-We begin with an exogenous grid $G = \{s_0, \ldots, s_{m-1}\}$ with $s_0 > 0$, where each $s_i$ represents savings.
+We begin with a strictly increasing exogenous grid $G = \{s_0, \ldots, s_{m-1}\}$ with $s_0 > 0$, where each $s_i$ represents savings.
 
 The relationship between current assets $a$, consumption $c$, and savings $s$ is
 
@@ -292,12 +294,12 @@ $$
     a^e_{ij} = c_{ij} + s_i.
 $$
 
-Our next guess policy function, which we write as $K\sigma$, is the linear interpolation of
-$(a^e_{ij}, c_{ij})$ over $i$, for each $j$.
+To anchor the interpolation at the origin, we add the point $(0, 0)$ to the start of the endogenous grid for each $j$.
+
+Our next guess policy function, which we write as $K\sigma$, is then the linear interpolation of
+the points $\{(0, 0), (a^e_{0j}, c_{0j}), \ldots, (a^e_{(m-1)j}, c_{(m-1)j})\}$ for each $j$.
 
 (The number of one dimensional linear interpolations is equal to `len(z_grid)`.)
-
-For $a < a^e_{i0}$ (i.e., below the minimum endogenous grid point), the household consumes everything, so we set $(K \sigma)(a, z_j) = a$.
 
 
 
@@ -324,23 +326,23 @@ class IFP(NamedTuple):
     γ: float                  # Preference parameter
     Π: jnp.ndarray            # Markov matrix for exogenous shock
     z_grid: jnp.ndarray       # Markov state values for Z_t
-    asset_grid: jnp.ndarray   # Exogenous asset grid
+    savings_grid: jnp.ndarray # Exogenous savings grid
 
 
 def create_ifp(r=0.01,
-               β=0.98,
+               β=0.96,
                γ=1.5,
                Π=((0.6, 0.4),
                   (0.05, 0.95)),
-               z_grid=(0.0, 0.2),
-               asset_grid_max=40,
-               asset_grid_size=50):
+               z_grid=(-10.0, jnp.log(2.0)),
+               savings_grid_max=16,
+               savings_grid_size=50):
 
-    asset_grid = jnp.linspace(0, asset_grid_max, asset_grid_size)
+    savings_grid = jnp.linspace(0, savings_grid_max, savings_grid_size)
     Π, z_grid = jnp.array(Π), jnp.array(z_grid)
     R = 1 + r
     assert R * β < 1, "Stability condition violated."
-    return IFP(R=R, β=β, γ=γ, Π=Π, z_grid=z_grid, asset_grid=asset_grid)
+    return IFP(R=R, β=β, γ=γ, Π=Π, z_grid=z_grid, savings_grid=savings_grid)
 
 # Set y(z) = exp(z)
 y = jnp.exp
@@ -384,16 +386,12 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     3. Given σ(a', z'), compute current consumption c that
        satisfies Euler equation
     4. Compute the endogenous current asset level a^e = c + s
-    5. Interpolate back to asset grid to get σ_new(a, z)
+    5. Interpolate back to savings grid to get σ_new(a, z)
 
     """
-    R, β, γ, Π, z_grid, asset_grid = ifp
-    n_a = len(asset_grid)
+    R, β, γ, Π, z_grid, savings_grid = ifp
+    n_a = len(savings_grid)
     n_z = len(z_grid)
-
-    # Create savings grid (exogenous grid for EGM)
-    # We use the asset grid as the savings grid
-    savings_grid = asset_grid
 
     def compute_c_for_fixed_income_state(j):
         """
@@ -413,7 +411,7 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
         # Interpolate to get consumption at each (a', z')
         # For each z', interpolate over the a' values
         def interp_for_z(z_idx):
-            return jnp.interp(a_next_grid[:, z_idx], asset_grid, σ[:, z_idx])
+            return jnp.interp(a_next_grid[:, z_idx], savings_grid, σ[:, z_idx])
 
         c_next_grid = jax.vmap(interp_for_z)(jnp.arange(n_z))  # Shape: (n_z, n_a)
         c_next_grid = c_next_grid.T  # Shape: (n_a, n_z)
@@ -430,17 +428,14 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
         # Compute endogenous grid of current assets: a = c + s
         a_endogenous = c_vals + savings_grid
 
-        # Interpolate back to exogenous asset grid
-        σ_new = jnp.interp(asset_grid, a_endogenous, c_vals)
+        # Add (0, 0) to anchor the interpolation at the origin
+        a_endogenous = jnp.concatenate([jnp.array([0.0]), a_endogenous])
+        c_vals = jnp.concatenate([jnp.array([0.0]), c_vals])
 
-        # For asset levels below the minimum endogenous grid point,
-        # the household is constrained and consumes everything: c = a
+        # Interpolate back to exogenous savings grid
+        σ_new = jnp.interp(savings_grid, a_endogenous, c_vals)
 
-        σ_new = jnp.where(asset_grid < a_endogenous[0],
-                          asset_grid,
-                          σ_new)
-
-        return σ_new  #  Consumption over the asset grid given z[j]
+        return σ_new  #  Consumption over the savings grid given z[j]
 
     # Compute consumption over all income states using vmap
     c_vmap = jax.vmap(compute_c_for_fixed_income_state)
@@ -477,14 +472,41 @@ def solve_model(ifp: IFP,
     return σ
 ```
 
+Here's a helper function to compute the endogenous grid from the policy:
+
+```{code-cell} ipython3
+def get_endogenous_grid(σ: jnp.ndarray, ifp: IFP):
+    """
+    Compute endogenous asset grid from consumption policy.
+
+    For each state j, the endogenous grid is a[i,j] = c[i,j] + s[i].
+    We also add the point (0, 0) at the start for each state.
+
+    Returns:
+        a_endogenous: array of shape (n_a+1, n_z) with asset values
+        c_endogenous: array of shape (n_a+1, n_z) with consumption values
+    """
+    savings_grid = ifp.savings_grid
+    n_z = σ.shape[1]
+
+    # Compute a = c + s for each state
+    a_vals = σ + savings_grid[:, None]
+
+    # Add (0, 0) at the start for each state
+    a_endogenous = jnp.vstack([jnp.zeros(n_z), a_vals])
+    c_endogenous = jnp.vstack([jnp.zeros(n_z), σ])
+
+    return a_endogenous, c_endogenous
+```
+
 ### Test run
 
 Let's road test the EGM code.
 
 ```{code-cell} ipython3
 ifp = create_ifp()
-R, β, γ, Π, z_grid, asset_grid = ifp
-σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
+R, β, γ, Π, z_grid, savings_grid = ifp
+σ_init = savings_grid[:, None] * jnp.ones(len(z_grid))
 σ_star = solve_model(ifp, σ_init)
 ```
 
@@ -492,8 +514,12 @@ Here's a plot of the optimal policy for each $z$ state
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.plot(asset_grid, σ_star[:, 0], label='bad state')
-ax.plot(asset_grid, σ_star[:, 1], label='good state')
+
+# Get endogenous grid points
+a_endogenous, c_endogenous = get_endogenous_grid(σ_star, ifp)
+
+ax.plot(a_endogenous[:, 0], c_endogenous[:, 0], label='bad state')
+ax.plot(a_endogenous[:, 1], c_endogenous[:, 1], label='good state')
 ax.set(xlabel='assets', ylabel='consumption')
 ax.legend()
 plt.show()
@@ -504,10 +530,10 @@ To begin to understand the long run asset levels held by households under the de
 
 ```{code-cell} ipython3
 ifp = create_ifp()
-R, β, γ, Π, z_grid, asset_grid = ifp
-σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
+R, β, γ, Π, z_grid, savings_grid = ifp
+σ_init = savings_grid[:, None] * jnp.ones(len(z_grid))
 σ_star = solve_model(ifp, σ_init)
-a = asset_grid
+a = savings_grid
 
 fig, ax = plt.subplots()
 for z, lb in zip((0, 1), ('low income', 'high income')):
@@ -564,14 +590,17 @@ Let's see if we match up:
 
 ```{code-cell} ipython3
 ifp_cake_eating = create_ifp(r=0.0, z_grid=(-jnp.inf, -jnp.inf))
-R, β, γ, Π, z_grid, asset_grid = ifp_cake_eating
-σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
+R, β, γ, Π, z_grid, savings_grid = ifp_cake_eating
+σ_init = savings_grid[:, None] * jnp.ones(len(z_grid))
 σ_star = solve_model(ifp_cake_eating, σ_init)
 
+# Get endogenous grid
+a_endogenous, c_endogenous = get_endogenous_grid(σ_star, ifp_cake_eating)
+
 fig, ax = plt.subplots()
-ax.plot(asset_grid, σ_star[:, 0], label='numerical')
-ax.plot(asset_grid,
-        c_star(asset_grid, ifp_cake_eating.β, ifp_cake_eating.γ),
+ax.plot(a_endogenous[:, 0], c_endogenous[:, 0], label='numerical')
+ax.plot(a_endogenous[:, 0],
+        c_star(a_endogenous[:, 0], ifp_cake_eating.β, ifp_cake_eating.γ),
         '--', label='analytical')
 ax.set(xlabel='assets', ylabel='consumption')
 ax.legend()
@@ -606,16 +635,18 @@ suppress consumption (because they encourage more savings).
 Here's one solution:
 
 ```{code-cell} ipython3
-# With β=0.98, we need R*β < 1, so r < 0.0204
-r_vals = np.linspace(0, 0.016, 4)
+# With β=0.96, we need R*β < 1, so r < 0.0416
+r_vals = np.linspace(0, 0.04, 4)
 
 fig, ax = plt.subplots()
 for r_val in r_vals:
     ifp = create_ifp(r=r_val)
-    R, β, γ, Π, z_grid, asset_grid = ifp
-    σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
+    R, β, γ, Π, z_grid, savings_grid = ifp
+    σ_init = savings_grid[:, None] * jnp.ones(len(z_grid))
     σ_star = solve_model(ifp, σ_init)
-    ax.plot(asset_grid, σ_star[:, 0], label=f'$r = {r_val:.3f}$')
+    # Get endogenous grid
+    a_endogenous, c_endogenous = get_endogenous_grid(σ_star, ifp)
+    ax.plot(a_endogenous[:, 0], c_endogenous[:, 0], label=f'$r = {r_val:.3f}$')
 
 ax.set(xlabel='asset level', ylabel='consumption (low income)')
 ax.legend()
@@ -658,19 +689,19 @@ def compute_asset_stationary(ifp, σ_star, num_households=50_000, T=500, seed=12
     ifp is an instance of IFP
     σ_star is the optimal consumption policy
     """
-    R, β, γ, Π, z_grid, asset_grid = ifp
+    R, β, γ, Π, z_grid, savings_grid = ifp
     n_z = len(z_grid)
 
     # Create interpolation function for consumption policy
-    σ_interp = lambda a, z_idx: jnp.interp(a, asset_grid, σ_star[:, z_idx])
+    σ_interp = lambda a, z_idx: jnp.interp(a, savings_grid, σ_star[:, z_idx])
 
     # Simulate one household forward
     def simulate_one_household(key):
         # Random initial state (both z and a)
         key1, key2, key3 = jax.random.split(key, 3)
         z_idx = jax.random.choice(key1, n_z)
-        # Start with random assets drawn uniformly from [0, asset_grid_max/2]
-        a = jax.random.uniform(key3, minval=0.0, maxval=asset_grid[-1]/2)
+        # Start with random assets drawn uniformly from [0, savings_grid_max/2]
+        a = jax.random.uniform(key3, minval=0.0, maxval=savings_grid[-1]/2)
 
         # Simulate forward T periods
         def step(state, key_t):
@@ -700,8 +731,8 @@ Now we call the function, generate the asset distribution and histogram it:
 
 ```{code-cell} ipython3
 ifp = create_ifp()
-R, β, γ, Π, z_grid, asset_grid = ifp
-σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
+R, β, γ, Π, z_grid, savings_grid = ifp
+σ_init = savings_grid[:, None] * jnp.ones(len(z_grid))
 σ_star = solve_model(ifp, σ_init)
 assets = compute_asset_stationary(ifp, σ_star)
 
@@ -765,8 +796,8 @@ asset_mean = []
 for r in r_vals:
     print(f'Solving model at r = {r}')
     ifp = create_ifp(r=r)
-    R, β, γ, Π, z_grid, asset_grid = ifp
-    σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
+    R, β, γ, Π, z_grid, savings_grid = ifp
+    σ_init = savings_grid[:, None] * jnp.ones(len(z_grid))
     σ_star = solve_model(ifp, σ_init)
     assets = compute_asset_stationary(ifp, σ_star, num_households=10_000, T=500)
     mean = np.mean(assets)
