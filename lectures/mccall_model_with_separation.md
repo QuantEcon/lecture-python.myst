@@ -718,6 +718,7 @@ grid_size = 25
 α_vals = jnp.linspace(0.05, 0.5, grid_size)     # separation rate
 ```
 
+Interpret the results.
 ```{exercise-end}
 ```
 
