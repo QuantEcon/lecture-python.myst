@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -266,7 +266,6 @@ class Model(NamedTuple):
     q: jnp.ndarray = q_default  # probabilities over wage offers
 ```
 
-
 ### Operators
 
 We'll use a similar iterative approach to solving the Bellman equations that we
@@ -298,7 +297,6 @@ def T_e(model, v_u, v_e):
     v_e_new = u(w, γ) + β * ((1 - α) * v_e + α * (v_u @ q))
     return v_e_new
 ```
-
 
 ### Iteration
 
@@ -334,8 +332,6 @@ def solve_full_model(
 
     return v_u, v_e
 ```
-
-
 
 ### Computing the Reservation Wage
 
@@ -597,71 +593,30 @@ Next we will investigate how the reservation wage varies with parameters.
 
 ## Impact of Parameters
 
-In each instance below, we'll show you a figure and then ask you to reproduce it in the exercises.
+In each instance below, we'll investigate how the reservation wage $\bar w$ varies
+with a particular parameter of interest, holding the other parameters fixed at their default values.
 
 ### The Reservation Wage and Unemployment Compensation
 
 First, let's look at how $\bar w$ varies with unemployment compensation.
 
-In the figure below, we use the default parameters in the `Model` class, apart from
-c (which takes the values given on the horizontal axis)
-
-```{glue:figure} mccall_resw_c
-:figwidth: 600px
-
-```
-
-As expected, higher unemployment compensation causes the worker to hold out for higher wages.
-
-In effect, the cost of continuing job search is reduced.
-
-### The Reservation Wage and Discounting
-
-Next, let's investigate how $\bar w$ varies with the discount factor.
-
-The next figure plots the reservation wage associated with different values of
-$\beta$
-
-```{glue:figure} mccall_resw_beta
-:figwidth: 600px
-
-```
-
-Again, the results are intuitive: More patient workers will hold out for higher wages.
-
-### The Reservation Wage and Job Destruction
-
-Finally, let's look at how $\bar w$ varies with the job separation rate $\alpha$.
-
-Higher $\alpha$ translates to a greater chance that a worker will face termination in each period once employed.
-
-```{glue:figure} mccall_resw_alpha
-:figwidth: 600px
-
-```
-
-Once more, the results are in line with our intuition.
-
-If the separation rate is high, then the benefit of holding out for a higher wage falls.
-
-Hence the reservation wage is lower.
-
-## Exercises
+In the exercise below, we use the default parameters in the `Model` class, apart from
+$c$ (which takes the values given on the horizontal axis).
 
 ```{exercise-start}
 :label: mmws_ex1
 ```
 
-Reproduce all the reservation wage figures shown above.
+Generate a figure showing how $\bar w$ varies with unemployment compensation $c$.
 
-Regarding the values on the horizontal axis, use
+Use the following values for unemployment compensation on the horizontal axis:
 
 ```{code-cell} ipython3
 grid_size = 25
 c_vals = jnp.linspace(2, 12, grid_size)         # unemployment compensation
-β_vals = jnp.linspace(0.8, 0.99, grid_size)     # discount factors
-α_vals = jnp.linspace(0.05, 0.5, grid_size)     # separation rate
 ```
+
+Interpret the results.
 
 ```{exercise-end}
 ```
@@ -669,8 +624,6 @@ c_vals = jnp.linspace(2, 12, grid_size)         # unemployment compensation
 ```{solution-start} mmws_ex1
 :class: dropdown
 ```
-
-Here's the first figure.
 
 ```{code-cell} ipython3
 def compute_res_wage_given_c(c):
@@ -688,7 +641,41 @@ glue("mccall_resw_c", fig, display=False)
 plt.show()
 ```
 
-Here's the second one.
+As expected, higher unemployment compensation causes the worker to hold out for higher wages.
+
+In effect, the cost of continuing job search is reduced.
+
+```{solution-end}
+```
+
+### The Reservation Wage and Discounting
+
+Next, let's investigate how $\bar w$ varies with the discount factor.
+
+The next exercise considers the reservation wage associated with different values of
+$\beta$.
+
+```{exercise-start}
+:label: mmws_ex2
+```
+
+Generate a figure showing how $\bar w$ varies with the discount factor $\beta$.
+
+Use the following values for the discount factor on the horizontal axis:
+
+```{code-cell} ipython3
+grid_size = 25
+β_vals = jnp.linspace(0.8, 0.99, grid_size)     # discount factors
+```
+
+Interpret the results.
+
+```{exercise-end}
+```
+
+```{solution-start} mmws_ex2
+:class: dropdown
+```
 
 ```{code-cell} ipython3
 def compute_res_wage_given_beta(β):
@@ -706,7 +693,37 @@ glue("mccall_resw_beta", fig, display=False)
 plt.show()
 ```
 
-Here's the third.
+Again, the results are intuitive: More patient workers will hold out for higher wages.
+
+
+```{solution-end}
+```
+
+### The Reservation Wage and Job Destruction
+
+Finally, let's look at how $\bar w$ varies with the job separation rate $\alpha$.
+
+Higher $\alpha$ translates to a greater chance that a worker will face termination in each period once employed.
+
+```{exercise-start}
+:label: mmws_ex3
+```
+
+Generate a figure showing how $\bar w$ varies with the separation rate $\alpha$.
+
+Use the following values for the separation rate on the horizontal axis:
+
+```{code-cell} ipython3
+grid_size = 25
+α_vals = jnp.linspace(0.05, 0.5, grid_size)     # separation rate
+```
+
+```{exercise-end}
+```
+
+```{solution-start} mmws_ex3
+:class: dropdown
+```
 
 ```{code-cell} ipython3
 def compute_res_wage_given_alpha(α):
@@ -723,6 +740,14 @@ ax.legend()
 glue("mccall_resw_alpha", fig, display=False)
 plt.show()
 ```
+
+
+Once more, the results are in line with our intuition.
+
+If the separation rate is high, then the benefit of holding out for a higher wage falls.
+
+Hence the reservation wage is lower.
+
 
 ```{solution-end}
 ```
