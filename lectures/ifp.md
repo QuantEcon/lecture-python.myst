@@ -93,7 +93,7 @@ subject to
 ```{math}
 :label: eqst
 
-a_{t+1} + c_t \leq  R a_t + Y_t
+a_{t+1} = R (a_t - c_t) + Y_{t+1}
 \quad c_t \geq 0,
 \quad a_t \geq 0
 \quad t = 0, 1, \ldots
@@ -109,9 +109,10 @@ Here
 
 The timing here is as follows:
 
-1. At the start of period $t$, the household observes labor income $Y_t$ and financial assets $R a_t$ .
+1. At the start of period $t$, the household observes current asset holdings $a_t$.
 1. The household chooses current consumption $c_t$.
-1. Time shifts to $t+1$ and the process repeats.
+1. Savings $(a_t - c_t)$ earn interest at rate $r$.
+1. Labor income $Y_{t+1}$ is realized and time shifts to $t+1$.
 
 Non-capital income $Y_t$ is given by $Y_t = y(Z_t)$, where
 
@@ -246,7 +247,7 @@ random variables:
 
     (u' \circ \sigma)  (a, z)
     = \beta R \, \sum_{z'}  (u' \circ \sigma)
-            [R a + y(z) - \sigma(a, z)), \, z'] \Pi(z, z')
+            [R (a - \sigma(a, z)) + y(z'), \, z'] \Pi(z, z')
 ```
 
 Here
@@ -259,27 +260,36 @@ We aim to find a fixed point $\sigma$ of {eq}`eqeul1`.
 
 To do so we use the EGM.
 
-We begin with an exogenous grid $G = \{a'_0, \ldots, a'_{m-1}\}$ with $a'_0 = 0$.
+We begin with an exogenous grid $G = \{s_0, \ldots, s_{m-1}\}$ with $s_0 > 0$, where each $s_i$ represents savings.
 
-Fix a current guess of the policy function $\sigma$. 
+The relationship between current assets $a$, consumption $c$, and savings $s$ is
 
-For each $a'_i$ and $z_j$ we set
+$$
+    a = c + s
+$$
+
+and next period assets are given by
+
+$$
+    a' = R s + y(z').
+$$
+
+Fix a current guess of the policy function $\sigma$.
+
+For each savings level $s_i$ and current state $z_j$, we set
 
 $$
     c_{ij} = (u')^{-1}
         \left[
-            \beta R \, \sum_{z'}  
-            u' [ \sigma(a'_i, z') ] \Pi(z_j, z')
+            \beta R \, \sum_{z'}
+            u' [ \sigma(R s_i + y(z'), z') ] \Pi(z_j, z')
         \right]
 $$
 
-and then $a^e_{ij}$ as the current asset level $a_t$ that solves the budget constraint
-$a'_{ij} + c_{ij} =  R a_t + y(z_j)$.  
-
-That is,
+and then obtain the endogenous grid of current assets via
 
 $$
-    a^e_{ij} = \frac{1}{R} [a'_{ij} + c_{ij} - y(z_j)].  
+    a^e_{ij} = c_{ij} + s_i.
 $$
 
 Our next guess policy function, which we write as $K\sigma$, is the linear interpolation of
@@ -287,7 +297,7 @@ $(a^e_{ij}, c_{ij})$ over $i$, for each $j$.
 
 (The number of one dimensional linear interpolations is equal to `len(z_grid)`.)
 
-For $a < a^e_{ij}$ we use the budget constraint to set $(K \sigma)(a, z_j) = Ra + y(z_j)$.
+For $a < a^e_{i0}$ (i.e., below the minimum endogenous grid point), the household consumes everything, so we set $(K \sigma)(a, z_j) = a$.
 
 
 
@@ -355,7 +365,7 @@ guess $K\sigma$.
 We understand $\sigma$ is an array of shape $(n_a, n_z)$, where $n_a$ and $n_z$
 are the respective grid sizes.
 
-The value `σ[i,j]` corresponds to $\sigma(a'_i, z_j)$.
+The value `σ[i,j]` corresponds to $\sigma(a_i, z_j)$, where $a_i$ is a point on the asset grid.
 
 ```{code-cell} ipython3
 def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
@@ -368,46 +378,66 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
 
     Algorithm
     ---------
-    The EGM works backwards from next period:
-    1. Given σ(a', z'), compute current consumption c that
+    The EGM works with a savings grid:
+    1. Use exogenous savings grid s_i
+    2. For each (s_i, z_j), compute next period assets a' = R*s_i + y(z')
+    3. Given σ(a', z'), compute current consumption c that
        satisfies Euler equation
-    2. Compute the endogenous current asset level a^e that leads
-       to (c, a')
-    3. Interpolate back to exogenous grid to get σ_new(a', z')
+    4. Compute the endogenous current asset level a^e = c + s
+    5. Interpolate back to asset grid to get σ_new(a, z)
 
     """
     R, β, γ, Π, z_grid, asset_grid = ifp
     n_a = len(asset_grid)
     n_z = len(z_grid)
 
+    # Create savings grid (exogenous grid for EGM)
+    # We use the asset grid as the savings grid
+    savings_grid = asset_grid
+
     def compute_c_for_fixed_income_state(j):
         """
         Compute updated consumption policy for income state z_j.
 
-        The asset_grid here represents a' (next period assets).
+        The savings_grid represents s (savings), where a' = R*s + y(z').
 
         """
 
-        # Compute u'(σ(a', z')) for all (a', z')
-        u_prime_vals = u_prime(σ, γ)
+        # For each savings level s_i, compute expected marginal utility
+        # We need to evaluate σ at next period assets a' = R*s + y(z')
 
-        # Calculate the sum Σ_{z'} u'(σ(a', z')) * Π(z_j, z') at each a'
-        expected_marginal = u_prime_vals @ Π[j, :]
+        # Compute next period assets for all (s_i, z') combinations
+        # Shape: (n_a, n_z) where savings_grid has n_a points
+        a_next_grid = R * savings_grid[:, None] + y(z_grid)
+
+        # Interpolate to get consumption at each (a', z')
+        # For each z', interpolate over the a' values
+        def interp_for_z(z_idx):
+            return jnp.interp(a_next_grid[:, z_idx], asset_grid, σ[:, z_idx])
+
+        c_next_grid = jax.vmap(interp_for_z)(jnp.arange(n_z))  # Shape: (n_z, n_a)
+        c_next_grid = c_next_grid.T  # Shape: (n_a, n_z)
+
+        # Compute u'(c') for all points
+        u_prime_next = u_prime(c_next_grid, γ)
+
+        # Take expectation over z' for each s, given current state z_j
+        expected_marginal = u_prime_next @ Π[j, :]  # Shape: (n_a,)
 
         # Use Euler equation to find today's consumption
         c_vals = u_prime_inv(β * R * expected_marginal, γ)
 
-        # Compute endogenous grid of current assets using the 
-        a_endogenous = (1/R) * (asset_grid + c_vals - y(z_grid[j]))
+        # Compute endogenous grid of current assets: a = c + s
+        a_endogenous = c_vals + savings_grid
 
-        # Interpolate back to exogenous grid
+        # Interpolate back to exogenous asset grid
         σ_new = jnp.interp(asset_grid, a_endogenous, c_vals)
 
         # For asset levels below the minimum endogenous grid point,
-        # the household is constrained and c = R*a + y(z) 
+        # the household is constrained and consumes everything: c = a
 
         σ_new = jnp.where(asset_grid < a_endogenous[0],
-                          R * asset_grid + y(z_grid[j]),
+                          asset_grid,
                           σ_new)
 
         return σ_new  #  Consumption over the asset grid given z[j]
@@ -416,7 +446,7 @@ def K(σ: jnp.ndarray, ifp: IFP) -> jnp.ndarray:
     c_vmap = jax.vmap(compute_c_for_fixed_income_state)
     σ_new = c_vmap(jnp.arange(n_z)) # Shape (n_z, n_a), one row per income state
 
-    return σ_new.T  # Transpose to get (n_a, n_z) 
+    return σ_new.T  # Transpose to get (n_a, n_z)
 ```
 
 ```{code-cell} ipython3
@@ -454,7 +484,7 @@ Let's road test the EGM code.
 ```{code-cell} ipython3
 ifp = create_ifp()
 R, β, γ, Π, z_grid, asset_grid = ifp
-σ_init = R * asset_grid[:, None] + y(z_grid)
+σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
 σ_star = solve_model(ifp, σ_init)
 ```
 
@@ -475,13 +505,13 @@ To begin to understand the long run asset levels held by households under the de
 ```{code-cell} ipython3
 ifp = create_ifp()
 R, β, γ, Π, z_grid, asset_grid = ifp
-σ_init = R * asset_grid[:, None] + y(z_grid)
+σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
 σ_star = solve_model(ifp, σ_init)
 a = asset_grid
 
 fig, ax = plt.subplots()
 for z, lb in zip((0, 1), ('low income', 'high income')):
-    ax.plot(a, R * (a - σ_star[:, z]) + y(z) , label=lb)
+    ax.plot(a, R * (a - σ_star[:, z]) + y(z_grid[z]) , label=lb)
 
 ax.plot(a, a, 'k--')
 ax.set(xlabel='current assets', ylabel='next period assets')
@@ -493,8 +523,10 @@ plt.show()
 The unbroken lines show the update function for assets at each $z$, which is
 
 $$
-    a \mapsto R (a - \sigma^*(a, z)) + y(z)
+    a \mapsto R (a - \sigma^*(a, z)) + y(z')
 $$
+
+where we plot this for a particular realization $z' = z$.
 
 The dashed line is the 45 degree line.
 
@@ -533,7 +565,7 @@ Let's see if we match up:
 ```{code-cell} ipython3
 ifp_cake_eating = create_ifp(r=0.0, z_grid=(-jnp.inf, -jnp.inf))
 R, β, γ, Π, z_grid, asset_grid = ifp_cake_eating
-σ_init = R * asset_grid[:, None] + y(z_grid)
+σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
 σ_star = solve_model(ifp_cake_eating, σ_init)
 
 fig, ax = plt.subplots()
@@ -581,7 +613,7 @@ fig, ax = plt.subplots()
 for r_val in r_vals:
     ifp = create_ifp(r=r_val)
     R, β, γ, Π, z_grid, asset_grid = ifp
-    σ_init = R * asset_grid[:, None] + y(z_grid)
+    σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
     σ_star = solve_model(ifp, σ_init)
     ax.plot(asset_grid, σ_star[:, 0], label=f'$r = {r_val:.3f}$')
 
@@ -643,12 +675,13 @@ def compute_asset_stationary(ifp, σ_star, num_households=50_000, T=500, seed=12
         # Simulate forward T periods
         def step(state, key_t):
             a_current, z_current = state
+            # Consume based on current state
+            c = σ_interp(a_current, z_current)
             # Draw next shock
             z_next = jax.random.choice(key_t, n_z, p=Π[z_current])
-            # Update assets
+            # Update assets: a' = R*(a - c) + Y'
             z_val = z_grid[z_next]
-            c = σ_interp(a_current, z_next)
-            a_next = R * a_current + y(z_val) - c
+            a_next = R * (a_current - c) + y(z_val)
             return (a_next, z_next), None
 
         keys = jax.random.split(key2, T)
@@ -668,7 +701,7 @@ Now we call the function, generate the asset distribution and histogram it:
 ```{code-cell} ipython3
 ifp = create_ifp()
 R, β, γ, Π, z_grid, asset_grid = ifp
-σ_init = R * asset_grid[:, None] + y(z_grid)
+σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
 σ_star = solve_model(ifp, σ_init)
 assets = compute_asset_stationary(ifp, σ_star)
 
@@ -733,7 +766,7 @@ for r in r_vals:
     print(f'Solving model at r = {r}')
     ifp = create_ifp(r=r)
     R, β, γ, Π, z_grid, asset_grid = ifp
-    σ_init = R * asset_grid[:, None] + y(z_grid)
+    σ_init = asset_grid[:, None] * jnp.ones(len(z_grid))
     σ_star = solve_model(ifp, σ_init)
     assets = compute_asset_stationary(ifp, σ_star, num_households=10_000, T=500)
     mean = np.mean(assets)
