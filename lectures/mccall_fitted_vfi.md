@@ -233,8 +233,8 @@ $$
 We use the same CRRA utility function as in the discrete case:
 
 ```{code-cell} ipython3
-def u(c, γ):
-    return (c**(1 - γ) - 1) / (1 - γ)
+def u(x, γ):
+    return (x**(1 - γ) - 1) / (1 - γ)
 ```
 
 Here's our model structure using a NamedTuple.

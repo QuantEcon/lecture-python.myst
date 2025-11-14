@@ -208,8 +208,8 @@ The optimal policy turns out to be a reservation wage strategy: accept all wages
 The default utility function is a CRRA utility function
 
 ```{code-cell} ipython3
-def u(c, γ):
-    return (c**(1 - γ) - 1) / (1 - γ)
+def u(x, γ):
+    return (x**(1 - γ) - 1) / (1 - γ)
 ```
 
 Let's set up a `Model` class to store information needed to solve the model.

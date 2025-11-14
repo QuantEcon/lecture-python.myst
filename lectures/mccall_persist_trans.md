@@ -146,7 +146,7 @@ $$
 \frac{u(w)}{1-\beta} \geq f^*(z)
 $$
 
-For utility, we take $u(c) = \ln(c)$.
+For utility, we take $u(x) = \ln(x)$.
 
 The reservation wage is the wage where equality holds in the last expression.
 

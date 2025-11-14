@@ -239,8 +239,8 @@ Let's now implement a solution method based on the two Bellman equations
 The default utility function is a CRRA utility function
 
 ```{code-cell} ipython3
-def u(c, γ):
-    return (c**(1 - γ) - 1) / (1 - γ)
+def u(x, γ):
+    return (x**(1 - γ) - 1) / (1 - γ)
 ```
 
 Also, here's a default wage distribution, based around the BetaBinomial
