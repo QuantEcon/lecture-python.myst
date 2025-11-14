@@ -96,17 +96,19 @@ $$
 
 where $\{Z_t\}$ is IID and standard normal.
 
-Informally, we set $W_t = \exp(Z_t)$.
-
-In practice, we
-
-* discretize the AR1 process using {ref}`Tauchen's method <fm_ex3>` and
-* take the exponential of the resulting wage offer values.
 
 Below we will always choose $\rho \in (0, 1)$.
 
 This means that the wage process will be positively correlated: the higher the current
 wage offer, the more likely we are to get a high offer tomorrow.
+
+To go from the AR1 process to the wage offer process, we set $W_t = \exp(X_t)$.
+
+Actually, in practice, we approximate this wage process as follows:
+
+* discretize the AR1 process using {ref}`Tauchen's method <fm_ex3>` and
+* take the exponential of the resulting wage offer values.
+
 
 
 
@@ -259,9 +261,9 @@ def T(v: jnp.ndarray, model: Model) -> jnp.ndarray:
     """
     n, w_vals, P, P_cumsum, β, c, α, γ = model
     d = 1 / (1 - β * (1 - α))
-    accept = d * (u(w_vals, γ) + α * β * P @ v)
-    reject = u(c, γ) + β * P @ v
-    return jnp.maximum(accept, reject)
+    v_e = d * (u(w_vals, γ) + α * β * P @ v)
+    h = u(c, γ) + β * P @ v
+    return jnp.maximum(v_e, h)
 ```
 
 Here's a routine for value function iteration, as well as a second routine that
@@ -314,12 +316,12 @@ def get_reservation_wage(v: jnp.ndarray, model: Model) -> float:
 
     # Compute accept and reject values
     d = 1 / (1 - β * (1 - α))
-    accept = d * (u(w_vals, γ) + α * β * P @ v)
-    reject = u(c, γ) + β * P @ v
+    v_e = d * (u(w_vals, γ) + α * β * P @ v)
+    continuation_values = u(c, γ) + β * P @ v
 
     # Find where acceptance becomes optimal
-    should_accept = accept >= reject
-    first_accept_idx = jnp.argmax(should_accept)
+    should_accept = v_e >= continuation_values
+    first_accept_idx = jnp.argmax(should_accept)   # first True in Boolean array
 
     # If no acceptance (all False), return infinity
     # Otherwise return the wage at the first acceptance index
