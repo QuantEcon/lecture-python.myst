@@ -90,7 +90,7 @@ introducing a utility function $u$.
 
 It satisfies $u'> 0$ and $u'' < 0$.
 
-Wage offers $\{ w_t \}$ are IID with common distribution $q$.
+Wage offers $\{ W_t \}$ are IID with common distribution $q$.
 
 The set of possible wage values is denoted by $\mathbb W$.
 
@@ -106,9 +106,9 @@ If currently employed at wage $w$, the worker
 1. receives utility $u(w)$ from their current wage and
 1. is fired with some (small) probability $\alpha$, becoming unemployed next period.
 
-If currently unemployed, the worker receives random wage offer $w_t$ and either accepts or rejects.
+If currently unemployed, the worker receives random wage offer $W_t$ and either accepts or rejects.
 
-If he accepts, then he begins work immediately at wage $w_t$.
+If he accepts, then he begins work immediately at wage $W_t$.
 
 If he rejects, then he receives unemployment compensation $c$.
 
@@ -239,8 +239,8 @@ Let's now implement a solution method based on the two Bellman equations
 The default utility function is a CRRA utility function
 
 ```{code-cell} ipython3
-def u(c, γ):
-    return (c**(1 - γ) - 1) / (1 - γ)
+def u(x, γ):
+    return (x**(1 - γ) - 1) / (1 - γ)
 ```
 
 Also, here's a default wage distribution, based around the BetaBinomial
