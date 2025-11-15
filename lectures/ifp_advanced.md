@@ -127,7 +127,7 @@ does not grow too quickly.
 
 When $\{R_t\}$ was constant we required that $\beta R < 1$.
 
-Now it is stochastic, we require that
+Since it is now stochastic, we require that
 
 ```{math}
 :label: fpbc2
@@ -139,7 +139,7 @@ G_R := \lim_{n \to \infty}
 ```
 
 Notice that, when $\{R_t\}$ takes some constant value $R$, this
-reduces to the previous restriction $\beta R < 1$
+reduces to the previous restriction $\beta R < 1$.
 
 The value $G_R$ can be thought of as the long run (geometric) average
 gross rate of return.
@@ -414,16 +414,26 @@ class IFP:
 
 Here's the Coleman-Reffett operator based on EGM:
 
+### Implementation Details
+
+The implementation of operator $K$ maps directly to equation {eq}`k_opr`.
+
+The left side $u'(\xi)$ becomes `u_prime_inv(β * Ez)` after solving for $\xi$.
+
+The expectation term $\mathbb E_z \hat{R} (u' \circ \sigma)[\hat{R}(a - \xi) + \hat{Y}, \hat{Z}]$ is computed via Monte Carlo averaging over future states and shocks.
+
+The max with $u'(a)$ is handled implicitly—the endogenous grid method naturally handles the liquidity constraint since we only solve for interior consumption where $c < a$.
+
 ```{code-cell} ipython
 @jit
-def K(a_in, σ_in, ifp):
+def K(ae_vals, c_vals, ifp):
     """
     The Coleman--Reffett operator for the income fluctuation problem,
     using the endogenous grid method.
 
         * ifp is an instance of IFP
-        * a_in[i, z] is an asset grid
-        * σ_in[i, z] is consumption at a_in[i, z]
+        * ae_vals[i, z] is an asset grid
+        * c_vals[i, z] is consumption at ae_vals[i, z]
     """
 
     # Simplify names
@@ -433,12 +443,12 @@ def K(a_in, σ_in, ifp):
     n = len(P)
 
     # Create consumption function by linear interpolation
-    σ = lambda a, z: np.interp(a, a_in[:, z], σ_in[:, z])
+    σ = lambda a, z: np.interp(a, ae_vals[:, z], c_vals[:, z])
 
     # Allocate memory
-    σ_out = np.empty_like(σ_in)
+    c_out = np.empty_like(c_vals)
 
-    # Obtain c_i at each s_i, z, store in σ_out[i, z], computing
+    # Obtain c_i at each s_i, z, store in c_out[i, z], computing
     # the expectation term by Monte Carlo
     for i, s in enumerate(s_grid):
         for z in range(n):
@@ -452,19 +462,27 @@ def K(a_in, σ_in, ifp):
                         U = u_prime(σ(R_hat * s + Y_hat, z_hat))
                         Ez += R_hat * U * P[z, z_hat]
             Ez = Ez / (len(η_draws) * len(ζ_draws))
-            σ_out[i, z] =  u_prime_inv(β * Ez)
+            c_out[i, z] =  u_prime_inv(β * Ez)
 
     # Calculate endogenous asset grid
-    a_out = np.empty_like(σ_out)
+    ae_out = np.empty_like(c_out)
     for z in range(n):
-        a_out[:, z] = s_grid + σ_out[:, z]
+        ae_out[:, z] = s_grid + c_out[:, z]
 
     # Fixing a consumption-asset pair at (0, 0) improves interpolation
-    σ_out[0, :] = 0
-    a_out[0, :] = 0
+    c_out[0, :] = 0
+    ae_out[0, :] = 0
 
-    return a_out, σ_out
+    return ae_out, c_out
 ```
+
+### Code Walkthrough
+
+The operator creates a consumption function `σ` by interpolating the input policy, then uses triple nested loops to compute the expectation via Monte Carlo averaging over savings grid points, current states, future states, and shock realizations.
+
+After computing optimal consumption $c_i$ at each savings level $s_i$ by inverting marginal utility, we construct the endogenous asset grid using $a_i = s_i + c_i$.
+
+Setting consumption and assets to zero at the origin ensures smooth interpolation near zero assets, where the household consumes everything.
 
 The next function solves for an approximation of the optimal consumption policy via time iteration.
 
@@ -497,11 +515,23 @@ def solve_model_time_iter(model,        # Class with model information
     return a_new, σ_new
 ```
 
+This function implements fixed-point iteration by repeatedly applying the operator $K$ until the policy converges.
+
+Convergence is measured by the maximum absolute change in consumption across all states.
+
+The operator is guaranteed to converge due to the contraction property discussed earlier.
+
 Now we are ready to create an instance at the default parameters.
 
 ```{code-cell} ipython
 ifp = IFP()
 ```
+
+The default parameters represent a calibration with moderate risk aversion ($\gamma = 1.5$, CRRA utility) and a quarterly discount factor ($\beta = 0.96$, corresponding to roughly 4% annual discounting).
+
+The Markov chain has high persistence (90% probability of staying in the current state), while returns have 10% volatility around a zero mean log return ($a_r = 0.1$, $b_r = 0.0$).
+
+Labor income is state-dependent: $Y_t = \exp(0.2 \eta_t + 0.5 Z_t)$ implies higher expected income in the good state ($Z_t = 1$) compared to the bad state ($Z_t = 0$).
 
 Next we set up an initial condition, which corresponds to consuming all
 assets.
@@ -537,8 +567,11 @@ Notice that we consume all assets in the lower range of the asset space.
 
 This is because we anticipate income $Y_{t+1}$ tomorrow, which makes the need to save less urgent.
 
-Can you explain why consuming all assets ends earlier (for lower values of
-assets) when $z=0$?
+Observe that consuming all assets ends earlier (at lower asset levels) when $z=0$ compared to $z=1$.
+
+This occurs because expected future income is lower in the bad state ($z=0$), so the household begins precautionary saving at lower wealth levels.
+
+In contrast, when $z=1$ (good state), higher expected future income allows the household to consume all assets up to a higher threshold before savings become optimal.
 
 ### Law of Motion
 
@@ -684,14 +717,14 @@ Here's the Coleman-Reffett operator using JAX:
 
 ```{code-cell} ipython
 @jax_jit
-def K_jax(a_in, σ_in, ifp):
+def K_jax(ae_vals, c_vals, ifp):
     """
     The Coleman--Reffett operator for the income fluctuation problem,
     using the endogenous grid method with JAX.
 
         * ifp is an instance of IFP_JAX
-        * a_in[i, z] is an asset grid
-        * σ_in[i, z] is consumption at a_in[i, z]
+        * ae_vals[i, z] is an asset grid
+        * c_vals[i, z] is consumption at ae_vals[i, z]
     """
 
     # Extract parameters from ifp
@@ -701,9 +734,9 @@ def K_jax(a_in, σ_in, ifp):
     n = len(P)
 
     # Allocate memory
-    σ_out = jnp.empty_like(σ_in)
+    c_out = jnp.empty_like(c_vals)
 
-    # Obtain c_i at each s_i, z, store in σ_out[i, z], computing
+    # Obtain c_i at each s_i, z, store in c_out[i, z], computing
     # the expectation term by Monte Carlo
     def compute_expectation(s, z):
         """Compute expectation for given s and z"""
@@ -714,7 +747,7 @@ def K_jax(a_in, σ_in, ifp):
                 Y_hat = Y(z_hat, η, a_y, b_y)
                 a_val = R_hat * s + Y_hat
                 # Interpolate consumption
-                c_interp = jnp.interp(a_val, a_in[:, z_hat], σ_in[:, z_hat])
+                c_interp = jnp.interp(a_val, ae_vals[:, z_hat], c_vals[:, z_hat])
                 U = u_prime(c_interp, γ)
                 return R_hat * U
 
@@ -728,17 +761,17 @@ def K_jax(a_in, σ_in, ifp):
         return u_prime_inv(β * Ez, γ)
 
     # Vectorize over s_grid and z
-    σ_out = vmap(vmap(compute_expectation, in_axes=(None, 0)),
+    c_out = vmap(vmap(compute_expectation, in_axes=(None, 0)),
                   in_axes=(0, None))(s_grid, jnp.arange(n))
 
     # Calculate endogenous asset grid
-    a_out = s_grid[:, None] + σ_out
+    ae_out = s_grid[:, None] + c_out
 
     # Fixing a consumption-asset pair at (0, 0) improves interpolation
-    σ_out = σ_out.at[0, :].set(0)
-    a_out = a_out.at[0, :].set(0)
+    c_out = c_out.at[0, :].set(0)
+    ae_out = ae_out.at[0, :].set(0)
 
-    return a_out, σ_out
+    return ae_out, c_out
 ```
 
 The next function solves for an approximation of the optimal consumption policy via time iteration using JAX:
