@@ -390,11 +390,11 @@ on $s_t$ via the following string of equalities
 
 $$
 \begin{aligned}
-E \left[ E d(s_{t+j}) | s_{t+1} \right] | s_t
+E \left[ E d(s_{t+j} | s_{t+1}) | s_t \right]
     & = \sum_{s_{t+1}} \left[ \sum_{s_{t+j}} d(s_{t+j}) P_{j-1}(s_{t+j}| s_{t+1} ) \right]         P(s_{t+1} | s_t) \\
  & = \sum_{s_{t+j}}  d(s_{t+j}) \left[ \sum_{s_{t+1}} P_{j-1} ( s_{t+j} |s_{t+1}) P(s_{t+1}| s_t) \right] \\
  & = \sum_{s_{t+j}} d(s_{t+j}) P_j (s_{t+j} | s_t ) \\
- & = E d(s_{t+j})| s_t
+ & = E d(s_{t+j}| s_t)
     \end{aligned}
 $$
 
@@ -416,7 +416,7 @@ $$
 The **law of iterated values** states
 
 $$
-V \left[ V (d(s_{t+j}) | s_{t+1}) \right] | s_t  =   V(d(s_{t+j}))| s_t
+V \left[ V (d(s_{t+j}) | s_{t+1}) | s_t \right] =   V(d(s_{t+j})| s_t )
 $$
 
 We verify it by pursuing the following a string of inequalities that are counterparts to those we used
@@ -424,11 +424,11 @@ to verify the law of iterated expectations:
 
 $$
 \begin{aligned}
-V \left[ V  ( d(s_{t+j}) | s_{t+1} ) \right] | s_t
+V \left[ V  ( d(s_{t+j}) | s_{t+1} ) | s_t \right]
     & = \sum_{s_{t+1}} \left[ \sum_{s_{t+j}} d(s_{t+j}) Q_{j-1}(s_{t+j}| s_{t+1} ) \right]         Q(s_{t+1} | s_t) \\
  & = \sum_{s_{t+j}}  d(s_{t+j}) \left[ \sum_{s_{t+1}} Q_{j-1} ( s_{t+j} |s_{t+1}) Q(s_{t+1}| s_t) \right] \\
  & = \sum_{s_{t+j}} d(s_{t+j}) Q_j (s_{t+j} | s_t ) \\
- & = E V(d(s_{t+j}))| s_t
+ & = E V(d(s_{t+j})| s_t)
     \end{aligned}
 $$
 
@@ -544,7 +544,7 @@ A^{K}\left(s\right)
 \end{array}\right], \quad s \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]
 $$
 
-and an  $n \times 1$ vector of continuation endowment values for each individual $k$ as
+and an  $n \times 1$ vector-form function of continuation endowment values for each individual $k$ as
 
 $$
 A^{k}=\left[\begin{array}{c}
@@ -557,7 +557,7 @@ $$
 $A^k$ of consumer $k$ satisfies
 
 $$
-A^k = \left[I - Q\right]^{-1} \left[ y^k\right]
+A^k = \left[I - Q\right]^{-1} y^k
 $$
 
 where
@@ -571,7 +571,7 @@ y^{k}\left(\bar{s}_{n}\right)
 $$
 
 
-In a competitive equilibrium of an **infinite horizon** economy with sequential trading of one-period Arrow securities, $A^k(s)$ serves as a state-by-state vector of **debt limits** on the quantities of one-period  Arrow securities
+In a competitive equilibrium of an *infinite horizon* economy with sequential trading of one-period Arrow securities, $A^k(s)$ serves as a state-by-state vector of *debt limits* on the quantities of one-period  Arrow securities
 paying off  in state $s$ at time $t+1$ that individual $k$ can issue at time $t$.
 
 
@@ -580,8 +580,10 @@ These are often called **natural debt limits**.
 Evidently, they equal the maximum amount that it is feasible for  individual $k$ to repay
 even if he consumes zero goods forevermore.
 
-**Remark:** If  we have an Inada condition at zero consumption or just impose that consumption
-be nonnegative, then in a **finite horizon** economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section on a Finite Horizon Economy  below.
+```{prf:remark}
+If  we have an Inada condition at zero consumption or just impose that consumption
+be nonnegative, then in a *finite horizon* economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section on a [finite orizon economy](#finite-horizon)  below.
+```
 
 
 
@@ -601,14 +603,14 @@ $$
 \end{array}\right], \quad s \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]
 $$
 
-and an  $n \times 1$ vector of continuation wealths for each individual $k$ as
+and an  $n \times 1$ vector-form function of continuation wealths for each individual $k\in \left[1, \ldots, K\right]$ as
 
 $$
 \psi^{k}=\left[\begin{array}{c}
 \psi^{k}\left(\bar{s}_{1}\right)\\
 \vdots\\
 \psi^{k}\left(\bar{s}_{n}\right)
-\end{array}\right], \quad k \in \left[1, \ldots, K\right]
+\end{array}\right]
 $$
 
 Continuation wealth  $\psi^k$ of consumer $k$ satisfies
@@ -633,12 +635,15 @@ $$
 
 Note that $\sum_{k=1}^K \psi^k = {0}_{n \times 1}$.
 
-**Remark:** At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$,
+```{prf:remark}
+At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$,
 the continuation wealth $\psi^k(s_0) = 0$ for all agents $k = 1, \ldots, K$.  This indicates that
 the economy begins with  all agents being debt-free and financial-asset-free at time $0$, state $s_0$.
+```
 
-
-**Remark:** Note that all agents' continuation wealths recurrently return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$.
+```{prf:remark}
+Note that all agents' continuation wealths recurrently return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$.
+```
 
 ### Optimal Portfolios
 
@@ -704,7 +709,7 @@ We now describe a finite-horizon version of the economy that operates  for $T+1$
 $t \in {\bf T} = \{ 0, 1, \ldots, T\}$.
 
 Consequently, we'll  want  $T+1$ counterparts to objects described above, with one important exception:
-we won't need **borrowing limits**.
+we won't need *borrowing limits*.
 
  * borrowing limits aren't required for a finite horizon economy in which a
 one-period utility function $u(c)$ satisfies an Inada condition that sets the marginal utility of consumption at zero consumption to zero.
@@ -764,12 +769,16 @@ $$
 
 Note that $\sum_{k=1}^K \psi_t^k = {0}_{n \times 1}$ for all $t \in {\bf T}$.
 
-**Remark:** At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$,
+```{prf:remark}
+At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$,
  for all agents $k = 1, \ldots, K$, continuation wealth $\psi_0^k(s_0) = 0$.  This indicates that
 the economy begins with  all agents being debt-free and financial-asset-free at time $0$, state $s_0$.
+```
 
 
-**Remark:** Note that all agents' continuation wealths  return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$. This will recur if the Markov chain makes the initial state $s_0$ recurrent.
+```{prf:remark}
+Note that all agents' continuation wealths  return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$. This will recur if the Markov chain makes the initial state $s_0$ recurrent.
+```
 
 
 
@@ -833,7 +842,10 @@ We are ready to dive into some Python code.
 As usual, we start with Python imports.
 
 ```{code-cell} ipython3
+import jax
+import jax.numpy as jnp
 import numpy as np
+from typing import NamedTuple
 import matplotlib.pyplot as plt
 ```
 
@@ -849,166 +861,149 @@ In addition to infinite-horizon economies, the code is set up to handle finite-h
 We'll study examples of  finite horizon economies after we first  look at  some infinite-horizon economies.
 
 ```{code-cell} ipython3
-class RecurCompetitive:
+class RecurCompetitive(NamedTuple):
     """
     A class that represents a recursive competitive economy
     with one-period Arrow securities.
     """
+    s: jax.Array    # state vector
+    P: jax.Array    # transition matrix
+    ys: jax.Array   # endowments ys = [y1, y2, .., yT]
+    y: jax.Array    # total endownment under each state
+    n: float        # number of states
+    K: float        # number of agents
+    γ: float        # risk aversion
+    β: float        # discount rate
+    T: float        # time horizon, 0 if infinite
 
-    def __init__(self,
-                 s,        # state vector
-                 P,        # transition matrix
-                 ys,       # endowments ys = [y1, y2, .., yI]
-                 γ=0.5,    # risk aversion
-                 β=0.98,   # discount rate
-                 T=None):  # time horizon, none if infinite
 
-        # preference parameters
-        self.γ = γ
-        self.β = β
+def create_rc_model(s, P, ys, γ=0.5, β=0.98, T=0):
+    n, K = ys.shape
+    y = jnp.sum(ys, 1)
+    return RecurCompetitive(
+        s=s, P=P, ys=ys, y=y n=n, K=K, γ=γ, β=β, T=T
+        )
 
-        # variables dependent on state
-        self.s = s
-        self.P = P
-        self.ys = ys
-        self.y = np.sum(ys, 1)
 
-        # dimensions
-        self.n, self.K = ys.shape
+def u(rc, c):
+    "The CRRA utility"
+    return c ** (1 - rc.γ) / (1 - rc.γ)
 
-        # compute pricing kernel
-        self.Q = self.pricing_kernel()
 
-        # compute price of risk-free one-period bond
-        self.PRF = self.price_risk_free_bond()
+def u_prime(rc, c):
+    "The first derivative of CRRA utility"
+    return c ** (-rc.γ)
 
-        # compute risk-free rate
-        self.R = self.risk_free_rate()
 
-        # V = [I - Q]^{-1} (infinite case)
-        if T is None:
-            self.T = None
-            self.V = np.empty((1, n, n))
-            self.V[0] = np.linalg.inv(np.eye(n) - self.Q)
-        # V = [I + Q + Q^2 + ... + Q^T] (finite case)
-        else:
-            self.T = T
-            self.V = np.empty((T+1, n, n))
-            self.V[0] = np.eye(n)
+def pricing_kernel(rc):
+    "Compute the pricing kernel matrix Q"
 
-            Qt = np.eye(n)
-            for t in range(1, T+1):
-                Qt = Qt.dot(self.Q)
-                self.V[t] = self.V[t-1] + Qt
+    c, n, β = rc.y, rc.n, rc.β
 
-        # natural debt limit
-        self.A = self.V[-1] @ ys
+    Q = jnp.empty((n, n))
+    for i in range(n):
+        for j in range(n):
+            ratio = u_prime(c[j]) / u_prime(c[i])
+            Q[i, j] = β * ratio * P[i, j]
 
-    def u(self, c):
-        "The CRRA utility"
+    return Q
 
-        return c ** (1 - self.γ) / (1 - self.γ)
 
-    def u_prime(self, c):
-        "The first derivative of CRRA utility"
+def V(rc, Q):
+    T = rc.T
+    n = rc.n
+    if T==0:
+        V = jnp.empty((1, n, n))
+        V.at[0].set(jnp.linalg.inv(jnp.eye(n) - Q))
+    # V = [I + Q + Q^2 + ... + Q^T] (finite case)
+    else:
+        V = jnp.empty((T+1, n, n))
+        V.at[0].set(jnp.eye(n))
 
-        return c ** (-self.γ)
+        Qt = jnp.eye(n)
+        for t in range(1, T+1):
+            Qt = Qt @ Q
+            V.at[t].set(V[t-1] + Qt)
+    return V
 
-    def pricing_kernel(self):
-        "Compute the pricing kernel matrix Q"
 
-        c = self.y
+def A(rc, V):
+    return V[-1] @ rc.ys
 
-        n = self.n
-        Q = np.empty((n, n))
-        for i in range(n):
-            for j in range(n):
-                ratio = self.u_prime(c[j]) / self.u_prime(c[i])
-                Q[i, j] = self.β * ratio * P[i, j]
 
-        self.Q = Q
+def wealth_distribution(rc, s0_idx):
+    "Solve for wealth distribution α"
 
-        return Q
+    # simplify notations
+    n, T = rc.n, rc.T
+    Q = pricing_kernel(rc)
+    y, ys = rc.y, rc.ys
 
-    def wealth_distribution(self, s0_idx):
-        "Solve for wealth distribution α"
+    V = V(rc, Q)
+    # row of V corresponding to s0
+    Vs0 = V[-1, s0_idx, :]
+    α = Vs0 @ ys / (Vs0 @ y)
 
-        # set initial state
-        self.s0_idx = s0_idx
+    return α
 
-        # simplify notations
-        n = self.n
-        Q = self.Q
-        y, ys = self.y, self.ys
+def continuation_wealths(rc, Q, V, α):
+    "Given α, compute the continuation wealths ψ"
+    n, K = rc.n, rc.K
+    y, ys = rc.y, rc.ys
+    diff = np.empty((n, K))
+    for k in range(K):
+        diff[:, k] = α[k] * y - ys[:, k]
 
-        # row of V corresponding to s0
-        Vs0 = self.V[-1, s0_idx, :]
-        α = Vs0 @ self.ys / (Vs0 @ self.y)
+    ψ = V @ diff
 
-        self.α = α
+    return ψ
 
-        return α
+def price_risk_free_bond(Q):
+    "Give Q, compute price of one-period risk free bond"
 
-    def continuation_wealths(self):
-        "Given α, compute the continuation wealths ψ"
+    PRF = jnp.sum(Q, axis=1)
 
-        diff = np.empty((n, K))
-        for k in range(K):
-            diff[:, k] = self.α[k] * self.y - self.ys[:, k]
+    return PRF
 
-        ψ = self.V @ diff
-        self.ψ = ψ
+def risk_free_rate(Q):
+    "Given Q, compute one-period gross risk-free interest rate R"
 
-        return ψ
+    R = jnp.sum(Q, axis=1)
+    R = jnp.reciprocal(R)
 
-    def price_risk_free_bond(self):
-        "Give Q, compute price of one-period risk free bond"
+    return R
 
-        PRF = np.sum(self.Q, axis=1)
-        self.PRF = PRF
+def value_functionss(rc):
+    "Given α, compute the optimal value functions J in equilibrium"
 
-        return PRF
+    n, K, T = rc.n, rc.K, rc.T
+    β = rc.β
+    P = rc.P
 
-    def risk_free_rate(self):
-        "Given Q, compute one-period gross risk-free interest rate R"
+    # compute (I - βP)^(-1) in infinite case
+    if T==0:
+        P_seq = jnp.empty((1, n, n))
+        P_seq.at[0].set(
+            jnp.linalg.inv(jnp.eye(n) - β * P)
+            )
+    # and (I + βP + ... + β^T P^T) in finite case
+    else:
+        P_seq = jnp.empty((T+1, n, n))
+        P_seq.at[0].set(np.eye(n))
 
-        R = np.sum(self.Q, axis=1)
-        R = np.reciprocal(R)
-        self.R = R
+        Pt = jnp.eye(n)
+        for t in range(1, T+1):
+            Pt = Pt @ P
+            P_seq.at[t].set(P_seq[t-1] + Pt * β ** t)
 
-        return R
+    # compute the matrix [u(α_1 y), ..., u(α_K, y)]
+    flow = jnp.empty((n, K))
+    for k in range(K):
+        flow[:, k] = u(α[k] * y)
 
-    def value_functionss(self):
-        "Given α, compute the optimal value functions J in equilibrium"
+    J = P_seq @ flow
 
-        n, T = self.n, self.T
-        β = self.β
-        P = self.P
-
-        # compute (I - βP)^(-1) in infinite case
-        if T is None:
-            P_seq = np.empty((1, n, n))
-            P_seq[0] = np.linalg.inv(np.eye(n) - β * P)
-        # and (I + βP + ... + β^T P^T) in finite case
-        else:
-            P_seq = np.empty((T+1, n, n))
-            P_seq[0] = np.eye(n)
-
-            Pt = np.eye(n)
-            for t in range(1, T+1):
-                Pt = Pt.dot(P)
-                P_seq[t] = P_seq[t-1] + Pt * β ** t
-
-        # compute the matrix [u(α_1 y), ..., u(α_K, y)]
-        flow = np.empty((n, K))
-        for k in range(K):
-            flow[:, k] = self.u(self.α[k] * self.y)
-
-        J = P_seq @ flow
-
-        self.J = J
-
-        return J
+    return J
 ```
 
 ## Examples
@@ -1030,13 +1025,13 @@ Here goes.
 K, n = 2, 2
 
 # states
-s = np.array([0, 1])
+s = jnp.array([0, 1])
 
 # transition
-P = np.array([[.5, .5], [.5, .5]])
+P = jnp.array([[.5, .5], [.5, .5]])
 
 # endowments
-ys = np.empty((n, K))
+ys = jnp.empty((n, K))
 ys[:, 0] = 1 - s       # y1
 ys[:, 1] = s           # y2
 ```
@@ -1052,31 +1047,36 @@ ex1.ys
 
 ```{code-cell} ipython3
 # pricing kernal
-ex1.Q
+Q = pricing_kernel(ex1)
 ```
 
 ```{code-cell} ipython3
 # Risk free rate R
-ex1.R
+R = risk_free_rate(Q)
 ```
 
 ```{code-cell} ipython3
 # natural debt limit, A = [A1, A2, ..., AI]
-ex1.A
+V = V(ex1, Q)
+A = A(ex1, V)
+A
 ```
 
 ```{code-cell} ipython3
 # when the initial state is state 1
-print(f'α = {ex1.wealth_distribution(s0_idx=0)}')
-print(f'ψ = \n{ex1.continuation_wealths()}')
+print(f'α = {wealth_distribution(ex1, s0_idx=0)}')
+print(f'ψ = \n{continuation_wealths(ex1, )}')
 print(f'J = \n{ex1.value_functionss()}')
 ```
 
 ```{code-cell} ipython3
 # when the initial state is state 2
-print(f'α = {ex1.wealth_distribution(s0_idx=1)}')
-print(f'ψ = \n{ex1.continuation_wealths()}')
-print(f'J = \n{ex1.value_functionss()}')
+α = wealth_distribution(ex1, s0_idx=1)
+ψ = continuation_wealths(ex1, Q, V, α)
+J = value_functionss(ex1)
+print(f'α = {α}')
+print(f'ψ = \n{ψ}')
+print(f'J = \n{J}')
 ```
 
 ### Example 2
