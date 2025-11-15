@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.3
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -34,7 +34,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon
+!pip install quantecon jax myst-nb
 ```
 
 ## Overview
@@ -65,7 +65,7 @@ from quantecon.distributions import BetaBinomial
 from myst_nb import glue
 ```
 
-## The Model
+## The model
 
 The model is similar to the {doc}`baseline McCall job search model <mccall_model>`.
 
@@ -94,7 +94,7 @@ Wage offers $\{ W_t \}$ are IID with common distribution $q$.
 
 The set of possible wage values is denoted by $\mathbb W$.
 
-### Timing and Decisions
+### Timing and decisions
 
 At the start of each period, the agent can be either
 
@@ -118,7 +118,7 @@ The process then repeats.
 We do not allow for job search while employed---this topic is taken up in a {doc}`later lecture <jv>`.
 ```
 
-## Solving the Model
+## Solving the model
 
 We drop time subscripts in what follows and primes denote next period values.
 
@@ -135,7 +135,7 @@ the worker makes optimal decisions at all future points in time.
 As we now show, obtaining these functions is key to solving the model.
 
 
-### The Bellman Equations
+### The Bellman equations
 
 We recall that, in {doc}`the original job search model <mccall_model>`, the
 value function (the value of being unemployed with a given wage offer) satisfied
@@ -200,7 +200,7 @@ enough information to solve for both $v_e$ and $v_u$.
 Once we have them in hand, we will be able to make optimal choices.
 
 
-### The Reservation Wage
+### The reservation wage
 
 
 Let
@@ -234,7 +234,7 @@ Let's now implement a solution method based on the two Bellman equations
 {eq}`bell2_mccall` and {eq}`bell1_mccall`.
 
 
-### Set Up
+### Set up
 
 The default utility function is a CRRA utility function
 
@@ -265,6 +265,7 @@ class Model(NamedTuple):
     w: jnp.ndarray = w_default  # wage outcome space
     q: jnp.ndarray = q_default  # probabilities over wage offers
 ```
+
 
 ### Operators
 
@@ -298,6 +299,7 @@ def T_e(model, v_u, v_e):
     return v_e_new
 ```
 
+
 ### Iteration
 
 Now we write an iteration routine, which updates the pair of arrays  $v_u$, $v_e$ until convergence.
@@ -308,8 +310,8 @@ than some small tolerance level.
 ```{code-cell} ipython3
 def solve_full_model(
         model,
-        tol: float=1e-6,
-        max_iter: int=1_000,
+        tol: float = 1e-6,
+        max_iter: int = 1_000,
     ):
     """
     Solves for both value functions v_u and v_e iteratively.
@@ -333,7 +335,9 @@ def solve_full_model(
     return v_u, v_e
 ```
 
-### Computing the Reservation Wage
+
+
+### Computing the reservation wage
 
 Now that we can solve for both value functions, let's investigate the reservation wage.
 
@@ -386,7 +390,7 @@ This value seems close to where the two lines meet.
 
 
 (ast_mcm)=
-## A Simplifying Transformation
+## A simplifying transformation
 
 The approach above works, but iterating over two vector-valued functions is computationally expensive.
 
@@ -424,7 +428,7 @@ useful.
 But we can go further, but eliminating $v_e$ from the above equation.
 
 
-### Simplifying to a Single Equation
+### Simplifying to a single equation
 
 As a first step, we rearrange the expression defining $h$ (see {eq}`defh_mm`) to obtain
 
@@ -481,7 +485,7 @@ If we can solve this for $h$, we can easily recover $v_e$ using
 Then we have enough information to compute the reservation wage.
 
 
-### Solving the Bellman Equations
+### Solving the Bellman equations
 
 To solve {eq}`bell_scalar`, we use the iteration rule 
 
@@ -591,32 +595,73 @@ However, the simplified method is far more efficient.
 Next we will investigate how the reservation wage varies with parameters.
 
 
-## Impact of Parameters
+## Impact of parameters
 
-In each instance below, we'll investigate how the reservation wage $\bar w$ varies
-with a particular parameter of interest, holding the other parameters fixed at their default values.
+In each instance below, we'll show you a figure and then ask you to reproduce it in the exercises.
 
-### The Reservation Wage and Unemployment Compensation
+### The reservation wage and unemployment compensation
 
 First, let's look at how $\bar w$ varies with unemployment compensation.
 
-In the exercise below, we use the default parameters in the `Model` class, apart from
-$c$ (which takes the values given on the horizontal axis).
+In the figure below, we use the default parameters in the `Model` class, apart from
+c (which takes the values given on the horizontal axis)
+
+```{glue:figure} mccall_resw_c
+:figwidth: 600px
+
+```
+
+As expected, higher unemployment compensation causes the worker to hold out for higher wages.
+
+In effect, the cost of continuing job search is reduced.
+
+### The reservation wage and discounting
+
+Next, let's investigate how $\bar w$ varies with the discount factor.
+
+The next figure plots the reservation wage associated with different values of
+$\beta$
+
+```{glue:figure} mccall_resw_beta
+:figwidth: 600px
+
+```
+
+Again, the results are intuitive: More patient workers will hold out for higher wages.
+
+### The reservation wage and job destruction
+
+Finally, let's look at how $\bar w$ varies with the job separation rate $\alpha$.
+
+Higher $\alpha$ translates to a greater chance that a worker will face termination in each period once employed.
+
+```{glue:figure} mccall_resw_alpha
+:figwidth: 600px
+
+```
+
+Once more, the results are in line with our intuition.
+
+If the separation rate is high, then the benefit of holding out for a higher wage falls.
+
+Hence the reservation wage is lower.
+
+## Exercises
 
 ```{exercise-start}
 :label: mmws_ex1
 ```
 
-Generate a figure showing how $\bar w$ varies with unemployment compensation $c$.
+Reproduce all the reservation wage figures shown above.
 
-Use the following values for unemployment compensation on the horizontal axis:
+Regarding the values on the horizontal axis, use
 
 ```{code-cell} ipython3
 grid_size = 25
 c_vals = jnp.linspace(2, 12, grid_size)         # unemployment compensation
+β_vals = jnp.linspace(0.8, 0.99, grid_size)     # discount factors
+α_vals = jnp.linspace(0.05, 0.5, grid_size)     # separation rate
 ```
-
-Interpret the results.
 
 ```{exercise-end}
 ```
@@ -624,6 +669,8 @@ Interpret the results.
 ```{solution-start} mmws_ex1
 :class: dropdown
 ```
+
+Here's the first figure.
 
 ```{code-cell} ipython3
 def compute_res_wage_given_c(c):
@@ -635,47 +682,13 @@ w_bar_vals = jax.vmap(compute_res_wage_given_c)(c_vals)
 
 fig, ax = plt.subplots()
 ax.set(xlabel='unemployment compensation', ylabel='reservation wage')
-ax.plot(c_vals, w_bar_vals, label=r'$\bar w$ as a function of $c$')
+ax.plot(c_vals, w_bar_vals, lw=2, label=r'$\bar w$ as a function of $c$')
 ax.legend()
 glue("mccall_resw_c", fig, display=False)
 plt.show()
 ```
 
-As expected, higher unemployment compensation causes the worker to hold out for higher wages.
-
-In effect, the cost of continuing job search is reduced.
-
-```{solution-end}
-```
-
-### The Reservation Wage and Discounting
-
-Next, let's investigate how $\bar w$ varies with the discount factor.
-
-The next exercise considers the reservation wage associated with different values of
-$\beta$.
-
-```{exercise-start}
-:label: mmws_ex2
-```
-
-Generate a figure showing how $\bar w$ varies with the discount factor $\beta$.
-
-Use the following values for the discount factor on the horizontal axis:
-
-```{code-cell} ipython3
-grid_size = 25
-β_vals = jnp.linspace(0.8, 0.99, grid_size)     # discount factors
-```
-
-Interpret the results.
-
-```{exercise-end}
-```
-
-```{solution-start} mmws_ex2
-:class: dropdown
-```
+Here's the second one.
 
 ```{code-cell} ipython3
 def compute_res_wage_given_beta(β):
@@ -687,44 +700,13 @@ w_bar_vals = jax.vmap(compute_res_wage_given_beta)(β_vals)
 
 fig, ax = plt.subplots()
 ax.set(xlabel='discount factor', ylabel='reservation wage')
-ax.plot(β_vals, w_bar_vals, label=r'$\bar w$ as a function of $\beta$')
+ax.plot(β_vals, w_bar_vals, lw=2, label=r'$\bar w$ as a function of $\beta$')
 ax.legend()
 glue("mccall_resw_beta", fig, display=False)
 plt.show()
 ```
 
-Again, the results are intuitive: More patient workers will hold out for higher wages.
-
-
-```{solution-end}
-```
-
-### The Reservation Wage and Job Destruction
-
-Finally, let's look at how $\bar w$ varies with the job separation rate $\alpha$.
-
-Higher $\alpha$ translates to a greater chance that a worker will face termination in each period once employed.
-
-```{exercise-start}
-:label: mmws_ex3
-```
-
-Generate a figure showing how $\bar w$ varies with the separation rate $\alpha$.
-
-Use the following values for the separation rate on the horizontal axis:
-
-```{code-cell} ipython3
-grid_size = 25
-α_vals = jnp.linspace(0.05, 0.5, grid_size)     # separation rate
-```
-
-Interpret the results.
-```{exercise-end}
-```
-
-```{solution-start} mmws_ex3
-:class: dropdown
-```
+Here's the third.
 
 ```{code-cell} ipython3
 def compute_res_wage_given_alpha(α):
@@ -736,19 +718,11 @@ w_bar_vals = jax.vmap(compute_res_wage_given_alpha)(α_vals)
 
 fig, ax = plt.subplots()
 ax.set(xlabel='separation rate', ylabel='reservation wage')
-ax.plot(α_vals, w_bar_vals, label=r'$\bar w$ as a function of $\alpha$')
+ax.plot(α_vals, w_bar_vals, lw=2, label=r'$\bar w$ as a function of $\alpha$')
 ax.legend()
 glue("mccall_resw_alpha", fig, display=False)
 plt.show()
 ```
-
-
-Once more, the results are in line with our intuition.
-
-If the separation rate is high, then the benefit of holding out for a higher wage falls.
-
-Hence the reservation wage is lower.
-
 
 ```{solution-end}
 ```
