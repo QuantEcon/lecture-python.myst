@@ -265,7 +265,7 @@ We aim to find a fixed point $\sigma$ of {eq}`eqeul1`.
 
 To do so we use the EGM.
 
-We begin with a strictly increasing exogenous grid $G = \{s_0, \ldots, s_m}\}$ with $s_0 = 0$, where each $s_i$ represents savings.
+We begin with a strictly increasing exogenous grid $G = \{s_0, \ldots, s_m\}$ with $s_0 = 0$, where each $s_i$ represents savings.
 
 The relationship between current assets $a$, consumption $c$, and savings $s$ is
 
