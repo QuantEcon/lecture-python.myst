@@ -77,19 +77,19 @@ from quantecon.distributions import BetaBinomial
 ```{index} single: Models; McCall
 ```
 
-An unemployed agent receives in each period a job offer at wage $w_t$.
+An unemployed agent receives in each period a job offer at wage $W_t$.
 
 In this lecture, we adopt the following simple environment:
 
-* The offer sequence $\{w_t\}_{t \geq 0}$ is IID, with $q(w)$ being the probability of observing wage $w$ in finite set $\mathbb{W}$.
-* The agent observes $w_t$ at the start of $t$.
-* The agent knows that $\{w_t\}$ is IID with common distribution $q$ and can use this when computing expectations.
+* The offer sequence $\{W_t\}_{t \geq 0}$ is IID, with $q(w)$ being the probability of observing wage $w$ in finite set $\mathbb{W}$.
+* The agent observes $W_t$ at the start of $t$.
+* The agent knows that $\{W_t\}$ is IID with common distribution $q$ and can use this when computing expectations.
 
 (In later lectures, we will relax these assumptions.)
 
 At time $t$, our agent has two choices:
 
-1. Accept the offer and work permanently at constant wage $w_t$.
+1. Accept the offer and work permanently at constant wage $W_t$.
 1. Reject the offer, receive unemployment compensation $c$, and reconsider next period.
 
 The agent is infinitely lived and aims to maximize the expected discounted
@@ -107,7 +107,7 @@ The smaller is $\beta$, the more the agent discounts future earnings relative to
 
 The variable  $y_t$ is income, equal to
 
-* his/her wage $w_t$ when employed
+* his/her wage $W_t$ when employed
 * unemployment compensation $c$ when unemployed
 
 

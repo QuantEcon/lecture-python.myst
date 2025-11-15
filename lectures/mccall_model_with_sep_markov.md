@@ -96,17 +96,19 @@ $$
 
 where $\{Z_t\}$ is IID and standard normal.
 
-Informally, we set $W_t = \exp(Z_t)$.
-
-In practice, we
-
-* discretize the AR1 process using {ref}`Tauchen's method <fm_ex3>` and
-* take the exponential of the resulting wage offer values.
 
 Below we will always choose $\rho \in (0, 1)$.
 
 This means that the wage process will be positively correlated: the higher the current
 wage offer, the more likely we are to get a high offer tomorrow.
+
+To go from the AR1 process to the wage offer process, we set $W_t = \exp(X_t)$.
+
+Actually, in practice, we approximate this wage process as follows:
+
+* discretize the AR1 process using {ref}`Tauchen's method <fm_ex3>` and
+* take the exponential of the resulting wage offer values.
+
 
 
 
@@ -206,8 +208,8 @@ The optimal policy turns out to be a reservation wage strategy: accept all wages
 The default utility function is a CRRA utility function
 
 ```{code-cell} ipython3
-def u(c, γ):
-    return (c**(1 - γ) - 1) / (1 - γ)
+def u(x, γ):
+    return (x**(1 - γ) - 1) / (1 - γ)
 ```
 
 Let's set up a `Model` class to store information needed to solve the model.
@@ -259,9 +261,9 @@ def T(v: jnp.ndarray, model: Model) -> jnp.ndarray:
     """
     n, w_vals, P, P_cumsum, β, c, α, γ = model
     d = 1 / (1 - β * (1 - α))
-    accept = d * (u(w_vals, γ) + α * β * P @ v)
-    reject = u(c, γ) + β * P @ v
-    return jnp.maximum(accept, reject)
+    v_e = d * (u(w_vals, γ) + α * β * P @ v)
+    h = u(c, γ) + β * P @ v
+    return jnp.maximum(v_e, h)
 ```
 
 Here's a routine for value function iteration.
@@ -312,10 +314,10 @@ def get_reservation_wage(v: jnp.ndarray, model: Model) -> float:
     # Compute accept and reject values
     d = 1 / (1 - β * (1 - α))
     v_e = d * (u(w_vals, γ) + α * β * P @ v)
-    continuation_value = u(c, γ) + β * P @ v
+    continuation_values = u(c, γ) + β * P @ v
 
     # Find where acceptance becomes optimal
-    accept_indices = v_e >= continuation_value
+    accept_indices = v_e >= continuation_values
     first_accept_idx = jnp.argmax(accept_indices)  # index of first True
 
     # If no acceptance (all False), return infinity
@@ -404,8 +406,8 @@ This is implemented via `jnp.searchsorted` on the precomputed cumulative sum
 
 The function `update_agent` advances the agent's state by one period.
 
-The agent's state is a pair $(s_t, w_t)$, where $s_t$ is employment status (0 if
-unemployed, 1 if employed) and $w_t$ is 
+The agent's state is a pair $(S_t, W_t)$, where $S_t$ is employment status (0 if
+unemployed, 1 if employed) and $W_t$ is 
 
 * their current wage offer, if unemployed, or
 * their current wage, if employed. 
@@ -567,10 +569,10 @@ fraction of time an agent spends unemployed over a long time series.
 We will see that these two values are approximately equal -- if fact they are
 exactly equal in the limit.
 
-The reason is that the process $(s_t, w_t)$, where
+The reason is that the process $(S_t, W_t)$, where
 
-- $s_t$ is the employment status and
-- $w_t$ is the wage 
+- $S_t$ is the employment status and
+- $W_t$ is the wage 
 
 is Markovian, since the next pair depends only on the current pair and iid
 randomness, and ergodic. 
@@ -593,7 +595,7 @@ In particular, the fraction of time a single agent spends unemployed (across all
 wage states) converges to the cross-sectional unemployment rate:
 
 $$
-    \lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^{T} \mathbb{1}\{s_t = \text{unemployed}\} = \sum_{w=1}^{n} \pi(\text{unemployed}, w)
+    \lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^{T} \mathbb{1}\{S_t = \text{unemployed}\} = \sum_{w=1}^{n} \pi(\text{unemployed}, w)
 $$
 
 This holds regardless of initial conditions -- provided that we burn in the
