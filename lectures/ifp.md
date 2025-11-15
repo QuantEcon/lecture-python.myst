@@ -188,7 +188,7 @@ V(a, z) := \max \, \mathbb{E}
 
 where the maximization is overall feasible consumption paths from $(a,z)$.
 
-An **optimal consumption path** from $(a,z)$ is a feasible consumption path from $(a,z)$ that attains the supremum in {eq}`eqvf`.
+An **optimal consumption path** from $(a,z)$ is a feasible consumption path from $(a,z)$ that maximizes {eq}`eqvfs`.
 
 To pin down such paths we can use a version of the Euler equation, which in the present setting is
 
