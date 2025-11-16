@@ -465,8 +465,8 @@ def compute_reservation_wage(
         v = v_next
         i += 1
     
-    res_wage = (1 - β) * (c + β * v @ q)
-    return v, res_wage
+    w_bar = (1 - β) * (c + β * v @ q)
+    return v, w_bar
 ```
 
 The cell computes the reservation wage at the default parameters
@@ -475,8 +475,8 @@ The cell computes the reservation wage at the default parameters
 model = McCallModel()
 c, β, w, q = model
 v_init = w / (1 - β)  # initial guess
-v, res_wage = compute_reservation_wage(model, v_init)
-print(res_wage)
+v, w_bar = compute_reservation_wage(model, v_init)
+print(w_bar)
 ```
 
 ### Comparative Statics
@@ -569,8 +569,8 @@ def compute_res_wage_jitted(
     final_state = jax.lax.while_loop(cond, update, initial_state)
     v, i, error = final_state
 
-    res_wage = (1 - β) * (c + β * v @ q)
-    return v, res_wage
+    w_bar = (1 - β) * (c + β * v @ q)
+    return v, w_bar
 ```
 
 Now we compute the reservation wage at each $c, \beta$ pair.
@@ -587,9 +587,9 @@ v_init = model.w / (1 - model.β)
 for i, c in enumerate(c_vals):
     for j, β in enumerate(β_vals):
         model = McCallModel(c=c, β=β)
-        v, res_wage = compute_res_wage_jitted(model, v_init)
+        v, w_bar = compute_res_wage_jitted(model, v_init)
         v_init = v
-        res_wage_matrix[i, j] = res_wage
+        res_wage_matrix[i, j] = w_bar
 
 fig, ax = plt.subplots()
 cs1 = ax.contourf(c_vals, β_vals, res_wage_matrix.T, alpha=0.75)
@@ -917,8 +917,8 @@ res_wages_volatility = []
 for σ in σ_vals:
     μ = compute_μ_for_mean(σ, mean_wage)
     model = create_mccall_continuous(σ=float(σ), μ=float(μ))
-    res_wage = compute_reservation_wage_continuous(model)
-    res_wages_volatility.append(res_wage)
+    w_bar = compute_reservation_wage_continuous(model)
+    res_wages_volatility.append(w_bar)
 
 res_wages_volatility = jnp.array(res_wages_volatility)
 ```
