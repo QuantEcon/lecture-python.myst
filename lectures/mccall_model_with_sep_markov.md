@@ -168,42 +168,24 @@ $$
 
 +++
 
+### Optimal Policy
 
-## Computational Approach
-
-To solve this problem, we use the employed worker's Bellman equation to express
-$v_e$ in terms of $Pv_u$
+Once we have the solutions $v_e$ and $v_u$ to these Bellman equations, we can compute the optimal policy: accept at current wage offer $w$ if 
 
 $$
-    v_e(w) = 
-    \frac{1}{1-\beta(1-\alpha)} \cdot (u(w) + \alpha\beta(Pv_u)(w))
+    v_e(w) ≥ u(c) + β(Pv_u)(w)
 $$
-
-Next we substitute into the unemployed agent's Bellman equation to get
-
-+++
-
-$$
-    v_u(w) = 
-    \max
-    \left\{
-        \frac{1}{1-\beta(1-\alpha)} \cdot (u(w) + \alpha\beta(Pv_u)(w)),
-        u(c) + \beta(Pv_u)(w)
-    \right\}
-$$
-
-Then we use value function iteration to solve for $v_u$.
-
-With $v_u$ in hand, we can 
-
-1. recover $v_e$ through the equations above and
-2. compute optimal policy: accept if $v_e(w) ≥ u(c) + β(Pv_u)(w)$
 
 The optimal policy turns out to be a reservation wage strategy: accept all wages above some threshold.
 
 +++
 
+
 ## Code
+
+Let's now implement the model.
+
+### Set Up
 
 The default utility function is a CRRA utility function
 
@@ -251,7 +233,152 @@ def create_js_with_sep_model(
     return Model(n, w_vals, P, P_cumsum, β, c, α, γ)
 ```
 
-Here's the Bellman operator for the unemployed worker's value function:
+
+### Solution: First Pass
+
+Let's put together a (not very efficient) routine for calculating the
+reservation wage.
+
+(We will think carefully about efficiency below.)
+
+It works by starting with guesses for $v_e$ and $v_u$ and iterating to
+convergence.
+
+Here's are Bellman operators that update $v_u$ and $v_e$ respectively.
+
+
+```{code-cell} ipython3
+def T_u(model, v_u, v_e):
+    """
+    Apply the unemployment Bellman update rule and return new guess of v_u.
+
+    """
+    n, w_vals, P, P_cumsum, β, c, α, γ = model
+    h = u(c, γ) + β * P @ v_u 
+    v_u_new = jnp.maximum(v_e, h)
+    return v_u_new
+```
+
+```{code-cell} ipython3
+def T_e(model, v_u, v_e):
+    """
+    Apply the employment Bellman update rule and return new guess of v_e.
+
+    """
+    n, w_vals, P, P_cumsum, β, c, α, γ = model
+    v_e_new = u(w_vals, γ) + β * ((1 - α) * v_e + α * P @ v_u)
+    return v_e_new
+```
+
+Here's a routine to iterate to convergence and then compute the reservation
+wage.
+
+```{code-cell} ipython3
+def solve_model_first_pass(
+        model: Model,           # instance containing default parameters
+        v_u_init: jnp.ndarray,  # initial condition for v_u
+        v_e_init: jnp.ndarray,  # initial condition for v_e
+        tol: float=1e-6,        # error tolerance
+        max_iter: int=1_000,    # maximum number of iterations for loop
+    ):
+    n, w_vals, P, P_cumsum, β, c, α, γ = model
+    i = 0
+    error = tol + 1 
+    v_u = v_u_init
+    v_e = v_e_init
+    
+    while i < max_iter and error > tol:
+        v_u_next = T_u(model, v_u, v_e)
+        v_e_next = T_e(model, v_u, v_e)
+        error_u = jnp.max(jnp.abs(v_u_next - v_u))
+        error_e = jnp.max(jnp.abs(v_e_next - v_e))
+        error = jnp.maximum(error_u, error_e)
+        v_u = v_u_next
+        v_e = v_e_next
+        i += 1
+
+    # Compute accept and reject values
+    continuation_values = u(c, γ) + β * P @ v_u
+
+    # Find where acceptance becomes optimal
+    accept_indices = v_e >= continuation_values
+    first_accept_idx = jnp.argmax(accept_indices)  # index of first True
+
+    # If no acceptance (all False), return infinity
+    # Otherwise return the wage at the first acceptance index
+    w_bar = jnp.where(
+        jnp.any(accept_indices), w_vals[first_accept_idx], jnp.inf
+    )
+    return v_u, v_e, w_bar
+```
+
+
+### Road Test
+
+Let's solve the model:
+
+```{code-cell} ipython3
+model = create_js_with_sep_model()
+n, w_vals, P, P_cumsum, β, c, α, γ = model
+v_u_init = jnp.zeros(n)
+v_e_init = jnp.zeros(n)
+v_u, v_e, w_bar_first = solve_model_first_pass(model, v_u_init, v_e_init)
+```
+
+Next we compute the continuation values.
+
+```{code-cell} ipython3
+h = u(c, γ) + β * P @ v_u
+```
+
+Let's plot our results.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(9, 5.2))
+ax.plot(w_vals, h, 'g-', linewidth=2, 
+        label="continuation value function $h$")
+ax.plot(w_vals, v_e, 'b-', linewidth=2, 
+        label="employment value function $v_e$")
+ax.legend(frameon=False)
+ax.set_xlabel(r"$w$")
+plt.show()
+```
+
+The reservation wage is at the intersection of $v_e$, and the continuation value
+function, which is the value of rejecting.
+
+
+## Improving Efficiency
+
+The solution method desribed above works fine but we can do much better.
+
+First, we use the employed worker's Bellman equation to express
+$v_e$ in terms of $Pv_u$
+
+$$
+    v_e(w) = 
+    \frac{1}{1-\beta(1-\alpha)} \cdot (u(w) + \alpha\beta(Pv_u)(w))
+$$
+
+Next we substitute into the unemployed agent's Bellman equation to get
+
++++
+
+$$
+    v_u(w) = 
+    \max
+    \left\{
+        \frac{1}{1-\beta(1-\alpha)} \cdot (u(w) + \alpha\beta(Pv_u)(w)),
+        u(c) + \beta(Pv_u)(w)
+    \right\}
+$$
+
+Then we use value function iteration to solve for $v_u$.
+
+With $v_u$ in hand, we can recover $v_e$ through the equations above and
+then compute the reservation wage.
+
+Here's the new Bellman operator for the unemployed worker's value function:
 
 ```{code-cell} ipython3
 def T(v: jnp.ndarray, model: Model) -> jnp.ndarray:
@@ -326,15 +453,21 @@ def get_reservation_wage(v: jnp.ndarray, model: Model) -> float:
 ```
 
 
-## Computing the Solution
-
-Let's solve the model:
+Let's solve the model using our new method:
 
 ```{code-cell} ipython3
 model = create_js_with_sep_model()
 n, w_vals, P, P_cumsum, β, c, α, γ = model
 v_u = vfi(model)
 w_bar = get_reservation_wage(v_u, model)
+```
+
+Let's verify that both methods produce the same reservation wage:
+
+```{code-cell} ipython3
+print(f"Reservation wage (first method):  {w_bar_first:.6f}")
+print(f"Reservation wage (second method): {w_bar:.6f}")
+print(f"Difference: {abs(w_bar - w_bar_first):.2e}")
 ```
 
 Next we compute some related quantities for plotting.
@@ -358,9 +491,9 @@ ax.set_xlabel(r"$w$")
 plt.show()
 ```
 
-The reservation wage is at the intersection of the stopping value function, which is
-equal to $v_e$, and the continuation value function, which is the value of
-rejecting
+The result is the same as before but we only iterate on one array --- and also
+our JAX code is more efficient.
+
 
 ## Sensitivity Analysis
 
@@ -704,15 +837,14 @@ def simulate_cross_section(
 This function generates a histogram showing the distribution of employment status across many agents:
 
 ```{code-cell} ipython3
-def plot_cross_sectional_unemployment(model: Model, t_snapshot: int = 200,
-                                     n_agents: int = 20_000):
+def plot_cross_sectional_unemployment(
+        model: Model, 
+        t_snapshot: int = 200,    # Time of cross-sectional snapshot
+        n_agents: int = 20_000    # Number of agents to simulate
+    ):
     """
     Generate histogram of cross-sectional unemployment at a specific time.
 
-    Parameters:
-    - model: Model instance with parameters
-    - t_snapshot: Time period at which to take the cross-sectional snapshot
-    - n_agents: Number of agents to simulate
     """
     # Get final employment state directly
     key = jax.random.PRNGKey(42)
@@ -743,7 +875,9 @@ def plot_cross_sectional_unemployment(model: Model, t_snapshot: int = 200,
     plt.show()
 ```
 
-Now let's compare the time-average unemployment rate (from a single agent's long simulation) with the cross-sectional unemployment rate (from many agents at a single point in time).
+Now let's compare the time-average unemployment rate (from a single agent's long
+simulation) with the cross-sectional unemployment rate (from many agents at a
+single point in time).
 
 We claimed above that these numbers will be approximately equal in large
 samples, due to ergodicity.
@@ -789,6 +923,11 @@ plot_cross_sectional_unemployment(model_low_c)
 
 Create a plot that investigates more carefully how the steady state cross-sectional unemployment rate
 changes with unemployment compensation.
+
+Try a range of values for unemployment compensation `c`, such as `c = 0.2, 0.4, 0.6, 0.8, 1.0`.
+For each value, compute the steady-state cross-sectional unemployment rate and plot it against `c`.
+
+What relationship do you observe between unemployment compensation and the unemployment rate?
 
 ```{exercise-end}
 ```
