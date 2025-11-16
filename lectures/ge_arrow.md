@@ -875,135 +875,132 @@ class RecurCompetitive(NamedTuple):
     γ: float        # risk aversion
     β: float        # discount rate
     T: float        # time horizon, 0 if infinite
+    Q: jax.Array    # pricing kernek
+    PRF: jax.Array  # price of risk-free bond
+    R: jax.Array    # risk-free rate
+    A: jax.Array    # natural debt limit
+    α: jax.Array    # wealth distribution
+    ψ: jax.Array    # continuation value
+    J: jax.Array    # optimal value
 
 
-def create_rc_model(s, P, ys, γ=0.5, β=0.98, T=0):
+def compute_rc_model(s, P, ys, 0_idx=0, γ=0.5, β=0.98, T=0):
     n, K = ys.shape
     y = jnp.sum(ys, 1)
+
+    def u(c):
+        "The CRRA utility"
+        return c ** (1 - γ) / (1 - γ)
+
+    def u_prime(c):
+        "The first derivative of CRRA utility"
+        return c ** (-γ)
+
+    def pricing_kernel(c):
+        "Compute the pricing kernel matrix Q"
+
+        Q = jnp.empty((n, n))
+        for i in range(n):
+            for j in range(n):
+                ratio = u_prime(c[j]) / u_prime(c[i])
+                Q[i, j] = β * ratio * P[i, j]
+
+        return Q
+    
+    def V(Q):
+        if T==0:
+            V = jnp.empty((1, n, n))
+            V.at[0].set(jnp.linalg.inv(jnp.eye(n) - Q))
+        # V = [I + Q + Q^2 + ... + Q^T] (finite case)
+        else:
+            V = jnp.empty((T+1, n, n))
+            V.at[0].set(jnp.eye(n))
+
+            Qt = jnp.eye(n)
+            for t in range(1, T+1):
+                Qt = Qt @ Q
+                V.at[t].set(V[t-1] + Qt)
+        return V
+
+    def A(ys, V):
+        "Give endownments and pricing kernel, compute natural debt limit"
+        return V[-1] @ ys
+
+    def wealth_distribution(V, ys, y, 0_idx):
+        "Solve for wealth distribution α"
+
+        # row of V corresponding to s0
+        Vs0 = V[-1, s0_idx, :]
+        α = Vs0 @ ys / (Vs0 @ y)
+
+        return α
+    
+    def continuation_wealths(V, α):
+        "Given α, compute the continuation wealths ψ"
+        diff = jnp.empty((n, K))
+        for k in range(K):
+            diff.at[:, k].set(α[k] * y - ys[:, k])
+
+        ψ = V @ diff
+
+        return ψ
+
+    def price_risk_free_bond(Q):
+        "Give Q, compute price of one-period risk free bond"
+
+        PRF = jnp.sum(Q, axis=1)
+
+        return PRF
+
+    def risk_free_rate(Q):
+        "Given Q, compute one-period gross risk-free interest rate R"
+
+        R = jnp.sum(Q, axis=1)
+        R = jnp.reciprocal(R)
+
+        return R
+    
+    def value_functions(α, y):
+        "Given α, compute the optimal value functions J in equilibrium"
+
+        # compute (I - βP)^(-1) in infinite case
+        if T==0:
+            P_seq = jnp.empty((1, n, n))
+            P_seq.at[0].set(
+                jnp.linalg.inv(jnp.eye(n) - β * P)
+                )
+        # and (I + βP + ... + β^T P^T) in finite case
+        else:
+            P_seq = jnp.empty((T+1, n, n))
+            P_seq.at[0].set(np.eye(n))
+
+            Pt = jnp.eye(n)
+            for t in range(1, T+1):
+                Pt = Pt @ P
+                P_seq.at[t].set(P_seq[t-1] + Pt * β ** t)
+
+        # compute the matrix [u(α_1 y), ..., u(α_K, y)]
+        flow = jnp.empty((n, K))
+        for k in range(K):
+            flow.at[:, k].set(u(α[k] * y))
+
+        J = P_seq @ flow
+
+        return J
+
+    Q = pricing_kernek(y)
+    V = V(Q)
+    A = A(ys, Q)
+    α = wealth_distribution(V, ys, y, s0_idx)
+    ψ = continuation_wealths(V, α)
+    PRF = price_risk_free_bond(Q)
+    R = risk_free_rate(Q)
+    J = value_functions(α, y)
+
     return RecurCompetitive(
-        s=s, P=P, ys=ys, y=y n=n, K=K, γ=γ, β=β, T=T
+        s=s, P=P, ys=ys, y=y n=n, K=K, γ=γ, β=β, T=T,
+        Q=Q, V=V, A=A, α=α, ψ=ψ, PRF=PRF, R=R, J=J
         )
-
-
-def u(rc, c):
-    "The CRRA utility"
-    return c ** (1 - rc.γ) / (1 - rc.γ)
-
-
-def u_prime(rc, c):
-    "The first derivative of CRRA utility"
-    return c ** (-rc.γ)
-
-
-def pricing_kernel(rc):
-    "Compute the pricing kernel matrix Q"
-
-    c, n, β = rc.y, rc.n, rc.β
-
-    Q = jnp.empty((n, n))
-    for i in range(n):
-        for j in range(n):
-            ratio = u_prime(c[j]) / u_prime(c[i])
-            Q[i, j] = β * ratio * P[i, j]
-
-    return Q
-
-
-def V(rc, Q):
-    T = rc.T
-    n = rc.n
-    if T==0:
-        V = jnp.empty((1, n, n))
-        V.at[0].set(jnp.linalg.inv(jnp.eye(n) - Q))
-    # V = [I + Q + Q^2 + ... + Q^T] (finite case)
-    else:
-        V = jnp.empty((T+1, n, n))
-        V.at[0].set(jnp.eye(n))
-
-        Qt = jnp.eye(n)
-        for t in range(1, T+1):
-            Qt = Qt @ Q
-            V.at[t].set(V[t-1] + Qt)
-    return V
-
-
-def A(rc, V):
-    return V[-1] @ rc.ys
-
-
-def wealth_distribution(rc, s0_idx):
-    "Solve for wealth distribution α"
-
-    # simplify notations
-    n, T = rc.n, rc.T
-    Q = pricing_kernel(rc)
-    y, ys = rc.y, rc.ys
-
-    V = V(rc, Q)
-    # row of V corresponding to s0
-    Vs0 = V[-1, s0_idx, :]
-    α = Vs0 @ ys / (Vs0 @ y)
-
-    return α
-
-def continuation_wealths(rc, Q, V, α):
-    "Given α, compute the continuation wealths ψ"
-    n, K = rc.n, rc.K
-    y, ys = rc.y, rc.ys
-    diff = np.empty((n, K))
-    for k in range(K):
-        diff[:, k] = α[k] * y - ys[:, k]
-
-    ψ = V @ diff
-
-    return ψ
-
-def price_risk_free_bond(Q):
-    "Give Q, compute price of one-period risk free bond"
-
-    PRF = jnp.sum(Q, axis=1)
-
-    return PRF
-
-def risk_free_rate(Q):
-    "Given Q, compute one-period gross risk-free interest rate R"
-
-    R = jnp.sum(Q, axis=1)
-    R = jnp.reciprocal(R)
-
-    return R
-
-def value_functionss(rc):
-    "Given α, compute the optimal value functions J in equilibrium"
-
-    n, K, T = rc.n, rc.K, rc.T
-    β = rc.β
-    P = rc.P
-
-    # compute (I - βP)^(-1) in infinite case
-    if T==0:
-        P_seq = jnp.empty((1, n, n))
-        P_seq.at[0].set(
-            jnp.linalg.inv(jnp.eye(n) - β * P)
-            )
-    # and (I + βP + ... + β^T P^T) in finite case
-    else:
-        P_seq = jnp.empty((T+1, n, n))
-        P_seq.at[0].set(np.eye(n))
-
-        Pt = jnp.eye(n)
-        for t in range(1, T+1):
-            Pt = Pt @ P
-            P_seq.at[t].set(P_seq[t-1] + Pt * β ** t)
-
-    # compute the matrix [u(α_1 y), ..., u(α_K, y)]
-    flow = jnp.empty((n, K))
-    for k in range(K):
-        flow[:, k] = u(α[k] * y)
-
-    J = P_seq @ flow
-
-    return J
 ```
 
 ## Examples
@@ -1032,12 +1029,12 @@ P = jnp.array([[.5, .5], [.5, .5]])
 
 # endowments
 ys = jnp.empty((n, K))
-ys[:, 0] = 1 - s       # y1
-ys[:, 1] = s           # y2
+ys.at[:, 0].set(1 - s)       # y1
+ys.at[:, 1].set(s)           # y2
 ```
 
 ```{code-cell} ipython3
-ex1 = RecurCompetitive(s, P, ys)
+ex1 = compute_rc_model(s, P, ys, s0_idx=0)
 ```
 
 ```{code-cell} ipython3
@@ -1047,36 +1044,32 @@ ex1.ys
 
 ```{code-cell} ipython3
 # pricing kernal
-Q = pricing_kernel(ex1)
+ex1.Q
 ```
 
 ```{code-cell} ipython3
 # Risk free rate R
-R = risk_free_rate(Q)
+ex1.R
 ```
 
 ```{code-cell} ipython3
 # natural debt limit, A = [A1, A2, ..., AI]
-V = V(ex1, Q)
-A = A(ex1, V)
-A
+ex1.A
 ```
 
 ```{code-cell} ipython3
 # when the initial state is state 1
-print(f'α = {wealth_distribution(ex1, s0_idx=0)}')
-print(f'ψ = \n{continuation_wealths(ex1, )}')
-print(f'J = \n{ex1.value_functionss()}')
+print(f'α = {ex1.α}')
+print(f'ψ = \n{ex1.ψ}')
+print(f'J = \n{ex1.J}')
 ```
 
 ```{code-cell} ipython3
 # when the initial state is state 2
-α = wealth_distribution(ex1, s0_idx=1)
-ψ = continuation_wealths(ex1, Q, V, α)
-J = value_functionss(ex1)
-print(f'α = {α}')
-print(f'ψ = \n{ψ}')
-print(f'J = \n{J}')
+ex1 = compute_rc_model(s, P, ys, s0_idx=1)
+print(f'α = {ex1.α}')
+print(f'ψ = \n{wx1.ψ}')
+print(f'J = \n{ex1.J}')
 ```
 
 ### Example 2
@@ -1086,19 +1079,19 @@ print(f'J = \n{J}')
 K, n = 2, 2
 
 # states
-s = np.array([1, 2])
+s = jnp.array([1, 2])
 
 # transition
-P = np.array([[.5, .5], [.5, .5]])
+P = jnp.array([[.5, .5], [.5, .5]])
 
 # endowments
-ys = np.empty((n, K))
-ys[:, 0] = 1.5         # y1
-ys[:, 1] = s           # y2
+ys = jnp.empty((n, K))
+ys.at[:, 0].set(1.5)         # y1
+ys.at[:, 1].set(s)           # y2
 ```
 
 ```{code-cell} ipython3
-ex2 = RecurCompetitive(s, P, ys)
+ex2 = compute_rc_model(s, P, ys)
 ```
 
 ```{code-cell} ipython3
@@ -1123,11 +1116,15 @@ Note that the pricing kernal in example economies 1 and 2 differ.
 This comes from differences in the aggregate endowments in state 1 and 2 in example 1.
 
 ```{code-cell} ipython3
-ex2.β * ex2.u_prime(3.5) / ex2.u_prime(2.5) * ex2.P[0,1]
+def u_prime(c, γ=0.5):
+    "The first derivative of CRRA utility"
+    return c ** (-γ)
+
+ex2.β * u_prime(3.5) / u_prime(2.5) * ex2.P[0,1]
 ```
 
 ```{code-cell} ipython3
-ex2.β * ex2.u_prime(2.5) / ex2.u_prime(3.5) * ex2.P[1,0]
+ex2.β * u_prime(2.5) / u_prime(3.5) * ex2.P[1,0]
 ```
 
 
@@ -1144,16 +1141,17 @@ ex2.A
 
 ```{code-cell} ipython3
 # when the initial state is state 1
-print(f'α = {ex2.wealth_distribution(s0_idx=0)}')
-print(f'ψ = \n{ex2.continuation_wealths()}')
-print(f'J = \n{ex2.value_functionss()}')
+print(f'α = {ex2.α}')
+print(f'ψ = \n{ex2.ψ}')
+print(f'J = \n{ex2.J}')
 ```
 
 ```{code-cell} ipython3
 # when the initial state is state 1
-print(f'α = {ex2.wealth_distribution(s0_idx=1)}')
-print(f'ψ = \n{ex2.continuation_wealths()}')
-print(f'J = \n{ex2.value_functionss()}')
+ex2 = compute_rc_model(s, P, ys, s0_idx=1)
+print(f'α = {ex2.α}')
+print(f'ψ = \n{ex2.ψ}')
+print(f'J = \n{ex2.J}')
 ```
 
 ### Example 3
@@ -1163,20 +1161,20 @@ print(f'J = \n{ex2.value_functionss()}')
 K, n = 2, 2
 
 # states
-s = np.array([1, 2])
+s = jnp.array([1, 2])
 
 # transition
 λ = 0.9
-P = np.array([[1-λ, λ], [0, 1]])
+P = jnp.array([[1-λ, λ], [0, 1]])
 
 # endowments
-ys = np.empty((n, K))
-ys[:, 0] = [1, 0]         # y1
-ys[:, 1] = [0, 1]         # y2
+ys = jnp.empty((n, K))
+ys.at[:, 0].set([1, 0])         # y1
+ys.at[:, 1].set([0, 1])         # y2
 ```
 
 ```{code-cell} ipython3
-ex3 = RecurCompetitive(s, P, ys)
+ex3 = compute_rc_model(s, P, ys)
 ```
 
 ```{code-cell} ipython3
@@ -1205,38 +1203,38 @@ Note that the natural debt limit for agent $1$ in state $2$ is $0$.
 
 ```{code-cell} ipython3
 # when the initial state is state 1
-print(f'α = {ex3.wealth_distribution(s0_idx=0)}')
-print(f'ψ = \n{ex3.continuation_wealths()}')
-print(f'J = \n{ex3.value_functionss()}')
+print(f'α = {ex3.α}')
+print(f'ψ = \n{ex3.ψ}')
+print(f'J = \n{ex3.J}')
 ```
 
 ```{code-cell} ipython3
-# when the initial state is state 1
-print(f'α = {ex3.wealth_distribution(s0_idx=1)}')
-print(f'ψ = \n{ex3.continuation_wealths()}')
-print(f'J = \n{ex3.value_functionss()}')
+# when the initial state is state 2
+ex3 = compute_rc_model(s, P, ys, s0_idx=1)
+print(f'α = {ex3.α}')
+print(f'ψ = \n{ex3.ψ}')
+print(f'J = \n{ex3.J}')
 ```
 
 For the specification of the Markov chain in example 3, let's take a look at how the equilibrium allocation changes as a function of transition probability $\lambda$.
 
 ```{code-cell} ipython3
-λ_seq = np.linspace(0, 0.99, 100)
+λ_seq = jnp.linspace(0, 0.99, 100)
 
 # prepare containers
-αs0_seq = np.empty((len(λ_seq), 2))
-αs1_seq = np.empty((len(λ_seq), 2))
+αs0_seq = jnp.empty((len(λ_seq), 2))
+αs1_seq = jnp.empty((len(λ_seq), 2))
 
 for i, λ in enumerate(λ_seq):
-    P = np.array([[1-λ, λ], [0, 1]])
-    ex3 = RecurCompetitive(s, P, ys)
+    P = jnp.array([[1-λ, λ], [0, 1]])
+    ex3 = compute_rc_model(s, P, ys)
 
     # initial state s0 = 1
-    α = ex3.wealth_distribution(s0_idx=0)
-    αs0_seq[i, :] = α
+    αs0_seq.at[i, :].set(ex3.α)
 
     # initial state s0 = 2
-    α = ex3.wealth_distribution(s0_idx=1)
-    αs1_seq[i, :] = α
+    ex3 = compute_rc_model(s, P, ys, s0_idx=1)
+    αs1_seq.at[i, :].set(ex3.α)
 ```
 
 ```{code-cell} ipython3
@@ -1259,7 +1257,7 @@ plt.show()
 K, n = 2, 3
 
 # states
-s = np.array([1, 2, 3])
+s = jnp.array([1, 2, 3])
 
 # transition
 λ = .9
@@ -1267,16 +1265,16 @@ s = np.array([1, 2, 3])
 δ = .05
 
 # prosperous, moderate, and recession states
-P = np.array([[1-λ, λ, 0], [μ/2, μ, μ/2], [(1-δ)/2, (1-δ)/2, δ]])
+P = jnp.array([[1-λ, λ, 0], [μ/2, μ, μ/2], [(1-δ)/2, (1-δ)/2, δ]])
 
 # endowments
-ys = np.empty((n, K))
-ys[:, 0] = [.25, .75, .2]       # y1
-ys[:, 1] = [1.25, .25, .2]      # y2
+ys = jnp.empty((n, K))
+ys.at[:, 0].set([.25, .75, .2])       # y1
+ys.at[:, 1].set([1.25, .25, .2])      # y2
 ```
 
 ```{code-cell} ipython3
-ex4 = RecurCompetitive(s, P, ys)
+ex4 = compute_rc_model(s, P, ys)
 ```
 
 ```{code-cell} ipython3
@@ -1296,10 +1294,11 @@ print('')
 
 for i in range(1, 4):
     # when the initial state is state i
+    ex4 = compute_rc_model(s, P, ys, s0_idx=i-1)
     print(f"when the initial state is state {i}")
-    print(f'α = {ex4.wealth_distribution(s0_idx=i-1)}')
-    print(f'ψ = \n{ex4.continuation_wealths()}')
-    print(f'J = \n{ex4.value_functionss()}\n')
+    print(f'α = {ex4.α}')
+    print(f'ψ = \n{ex4.ψ}')
+    print(f'J = \n{ex4.J}\n')
 ```
 
 
@@ -1312,19 +1311,19 @@ We now  revisit the economy defined in example 1, but set the time horizon to be
 K, n = 2, 2
 
 # states
-s = np.array([0, 1])
+s = jnp.array([0, 1])
 
 # transition
-P = np.array([[.5, .5], [.5, .5]])
+P = jnp.array([[.5, .5], [.5, .5]])
 
 # endowments
-ys = np.empty((n, K))
-ys[:, 0] = 1 - s       # y1
-ys[:, 1] = s           # y2
+ys = jnp.empty((n, K))
+ys.at[:, 0].set(1 - s)       # y1
+ys.at[:, 1].set(s)           # y2
 ```
 
 ```{code-cell} ipython3
-ex1_finite = RecurCompetitive(s, P, ys, T=10)
+ex1_finite = compute_rc_model(s, P, ys, T=10)
 ```
 
 ```{code-cell} ipython3
@@ -1352,24 +1351,25 @@ In the finite time horizon case, `ψ` and `J` are returned as sequences.
 Components  are ordered from $t=T$ to $t=0$.
 
 ```{code-cell} ipython3
-# when the initial state is state 2
-print(f'α = {ex1_finite.wealth_distribution(s0_idx=0)}')
-print(f'ψ = \n{ex1_finite.continuation_wealths()}\n')
-print(f'J = \n{ex1_finite.value_functionss()}')
+# when the initial state is state 1
+print(f'α = {ex1_finite.α}')
+print(f'ψ = \n{ex1_finite.ψ}\n')
+print(f'J = \n{ex1_finite.J}')
 ```
 
 ```{code-cell} ipython3
 # when the initial state is state 2
-print(f'α = {ex1_finite.wealth_distribution(s0_idx=1)}')
-print(f'ψ = \n{ex1_finite.continuation_wealths()}\n')
-print(f'J = \n{ex1_finite.value_functionss()}')
+ex1_finite = compute_rc_model(s, P, ys, s0_idx=1, T=10)
+print(f'α = {ex1_finite.α}')
+print(f'ψ = \n{ex1_finite.ψ}\n')
+print(f'J = \n{ex1_finite.J}')
 ```
 
 We can check the results with finite horizon converges to the ones with infinite horizon as $T \rightarrow \infty$.
 
 ```{code-cell} ipython3
-ex1_large = RecurCompetitive(s, P, ys, T=10000)
-ex1_large.wealth_distribution(s0_idx=1)
+ex1_large = compute_rc_model(s, P, ys, s0_idx=1, T=10000)
+ex1_large.α
 ```
 
 ```{code-cell} ipython3
@@ -1377,11 +1377,9 @@ ex1.V, ex1_large.V[-1]
 ```
 
 ```{code-cell} ipython3
-ex1_large.continuation_wealths()
 ex1.ψ, ex1_large.ψ[-1]
 ```
 
 ```{code-cell} ipython3
-ex1_large.value_functionss()
 ex1.J, ex1_large.J[-1]
 ```
