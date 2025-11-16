@@ -938,25 +938,28 @@ As expected, the reservation wage is increasing in $\sigma$.
 
 ### Lifetime Value and Volatility
 
-We've seen that the reservation wage increases with volatility. Now let's verify that
-the lifetime value at the optimal policy also increases with volatility.
+We've seen that the reservation wage increases with volatility.
 
-The intuition is that higher volatility provides more upside potential while the
-worker can protect against downside risk by rejecting low offers. This option value
-translates into higher expected lifetime utility.
+It's also the case that maximal lifetime value increases with volatility.
+
+Higher volatility provides more upside potential, while at the same time 
+workers can protect themselves against downside risk by rejecting low offers.
+
+This option value translates into higher expected lifetime utility.
 
 To demonstrate this, we'll:
 1. Compute the reservation wage for each volatility level
 2. Simulate the worker's job search process following the optimal policy
 3. Calculate the expected discounted lifetime income
 
-The simulation works as follows: starting unemployed, the worker draws wage offers
-and accepts the first offer that exceeds their reservation wage. We then compute
-the present value of this income stream.
+The simulation works as follows: we draw 100 wage offers and track the worker's
+earnings at each date. The worker accepts the first offer that exceeds their
+reservation wage and earns that wage in all subsequent periods. We then compute
+the discounted sum of earnings over these 100 periods.
 
 ```{code-cell} ipython3
 @jax.jit
-def simulate_lifetime_value(key, model, w_bar, max_search_periods=1000):
+def simulate_lifetime_value(key, model, w_bar, n_periods=100):
     """
     Simulate one realization of the job search and compute lifetime value.
 
@@ -968,45 +971,38 @@ def simulate_lifetime_value(key, model, w_bar, max_search_periods=1000):
         The model containing parameters
     w_bar : float
         The reservation wage
-    max_search_periods : int
-        Maximum number of search periods before forcing acceptance
+    n_periods : int
+        Number of periods to simulate
 
     Returns:
     --------
     lifetime_value : float
-        Discounted sum of lifetime income
+        Discounted sum of income over n_periods
     """
     c, β, σ, μ, w_draws = model
 
-    def search_step(state):
-        t, key, accepted, wage = state
-        key, subkey = jax.random.split(key)
-        # Draw wage offer
-        s = jax.random.normal(subkey)
-        w = jnp.exp(μ + σ * s)
-        # Check if we accept
-        accept_now = w >= w_bar
-        # Update state: if we accept now, store the wage
-        wage = jnp.where(accept_now, w, wage)
-        accepted = jnp.logical_or(accepted, accept_now)
-        t = t + 1
-        return t, key, accepted, wage
+    # Draw all wage offers upfront
+    key, subkey = jax.random.split(key)
+    s_vals = jax.random.normal(subkey, (n_periods,))
+    wage_offers = jnp.exp(μ + σ * s_vals)
 
-    def search_cond(state):
-        t, _, accepted, _ = state
-        # Continue searching if not accepted and haven't hit max periods
-        return jnp.logical_and(jnp.logical_not(accepted), t < max_search_periods)
+    # Determine which offers are acceptable
+    accept = wage_offers >= w_bar
 
-    # Initial state: period 0, not accepted, wage 0
-    initial_state = (0, key, False, 0.0)
-    t_final, _, _, final_wage = jax.lax.while_loop(search_cond, search_step, initial_state)
+    # Track employment status: employed from first acceptance onward
+    employed = jnp.cumsum(accept) > 0
 
-    # Compute lifetime value
-    # During unemployment (periods 0 to t_final-1): receive c each period
-    # After employment (period t_final onwards): receive final_wage forever
-    unemployment_value = c * (1 - β**t_final) / (1 - β)
-    employment_value = (β**t_final) * final_wage / (1 - β)
-    lifetime_value = unemployment_value + employment_value
+    # Get the accepted wage (first wage where accept is True)
+    first_accept_idx = jnp.argmax(accept)
+    accepted_wage = wage_offers[first_accept_idx]
+
+    # Earnings at each period: accepted_wage if employed, c if unemployed
+    earnings = jnp.where(employed, accepted_wage, c)
+
+    # Compute discounted sum
+    periods = jnp.arange(n_periods)
+    discount_factors = β ** periods
+    lifetime_value = jnp.sum(discount_factors * earnings)
 
     return lifetime_value
 
