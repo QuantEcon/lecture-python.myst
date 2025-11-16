@@ -907,7 +907,7 @@ mean_wage = 20.0
 # Create a range of volatility values
 σ_vals = jnp.linspace(0.1, 1.0, 25)
 
-# For each σ, compute μ to maintain constant mean
+# Given σ, compute μ to maintain constant mean
 def compute_μ_for_mean(σ, mean_wage):
     return jnp.log(mean_wage) - (σ**2) / 2
 
@@ -927,7 +927,6 @@ Now let's plot the reservation wage as a function of volatility:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-
 ax.plot(σ_vals, res_wages_volatility, linewidth=2)
 ax.set_xlabel(r'volatility ($\sigma$)', fontsize=12)
 ax.set_ylabel('reservation wage', fontsize=12)
@@ -1015,21 +1014,6 @@ def compute_mean_lifetime_value(model, w_bar, num_reps=10000, seed=1234):
     """
     Compute mean lifetime value across many simulations.
 
-    Parameters:
-    -----------
-    model : McCallModelContinuous
-        The model containing parameters
-    w_bar : float
-        The reservation wage
-    num_reps : int
-        Number of simulation replications
-    seed : int
-        Random seed
-
-    Returns:
-    --------
-    mean_value : float
-        Average lifetime value across all replications
     """
     key = jax.random.PRNGKey(seed)
     keys = jax.random.split(key, num_reps)
@@ -1037,44 +1021,30 @@ def compute_mean_lifetime_value(model, w_bar, num_reps=10000, seed=1234):
     # Vectorize the simulation across all replications
     simulate_fn = jax.vmap(simulate_lifetime_value, in_axes=(0, None, None))
     lifetime_values = simulate_fn(keys, model, w_bar)
-
     return jnp.mean(lifetime_values)
 ```
 
-Now let's compute both the reservation wage and the expected lifetime value
-for each volatility level:
+Now let's compute the expected lifetime value for each volatility level:
 
 ```{code-cell} ipython3
 # Use the same volatility range and mean wage
 σ_vals = jnp.linspace(0.1, 1.0, 25)
 mean_wage = 20.0
 
-# Storage for results
-res_wages_vol = []
-lifetime_values_vol = []
-
+lifetime_vals = []
 for σ in σ_vals:
     μ = compute_μ_for_mean(σ, mean_wage)
-    model = create_mccall_continuous(σ=float(σ), μ=float(μ))
-
-    # Compute reservation wage
-    w_bar = compute_reservation_wage_continuous(model)
-    res_wages_vol.append(w_bar)
-
-    # Compute expected lifetime value
+    model = create_mccall_continuous(σ=σ, μ=μ)
     lv = compute_mean_lifetime_value(model, w_bar)
-    lifetime_values_vol.append(lv)
+    lifetime_vals.append(lv)
 
-res_wages_vol = jnp.array(res_wages_vol)
-lifetime_values_vol = jnp.array(lifetime_values_vol)
 ```
 
 Let's visualize the expected lifetime value as a function of volatility:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-
-ax.plot(σ_vals, lifetime_values_vol, linewidth=2, color='green')
+ax.plot(σ_vals, lifetime_vals, linewidth=2, color='green')
 ax.set_xlabel(r'volatility ($\sigma$)', fontsize=12)
 ax.set_ylabel('expected lifetime value', fontsize=12)
 plt.show()
