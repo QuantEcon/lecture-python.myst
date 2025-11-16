@@ -524,8 +524,8 @@ def popu_dist(σ, household, Q):
 
     j_grid, a_grid, γ_grid, Π, β, init_μ, VJ = household
 
-    J = hh.j_grid.size
-    num_state = hh.a_grid.size * hh.γ_grid.size
+    J = household.j_grid.size
+    num_state = household.a_grid.size * household.γ_grid.size
 
     def update_popu_j(μ_j, j):
         "Update population distribution from age j to j+1"
@@ -626,7 +626,7 @@ def compute_aggregates(μ, household):
 
     J, a_size, γ_size = j_grid.size, a_grid.size, γ_grid.size
 
-    μ = μ.reshape((J, hh.a_grid.size, hh.γ_grid.size))
+    μ = μ.reshape((J, household.a_grid.size, household.γ_grid.size))
 
     # Compute private savings
     a = a_grid.reshape((1, a_size, 1))
@@ -693,13 +693,13 @@ def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
         r_old, w_old, τ_old = r, w, τ
 
         # Household optimal decisions and values
-        V, σ = backwards_opt([r, w], [τ, δ], hh, Q)
+        V, σ = backwards_opt([r, w], [τ, δ], household, Q)
 
         # Compute the stationary distribution
-        μ = popu_dist(σ, hh, Q)
+        μ = popu_dist(σ, household, Q)
 
         # Compute aggregates
-        A, L = compute_aggregates(μ, hh)
+        A, L = compute_aggregates(μ, household)
         K = A - D
 
         # Update prices
@@ -860,8 +860,8 @@ def population_evolution(σt, μt, household, Q):
 
     j_grid, a_grid, γ_grid, Π, β, init_μ, VJ = household
 
-    J = hh.j_grid.size
-    num_state = hh.a_grid.size * hh.γ_grid.size
+    J = household.j_grid.size
+    num_state = household.a_grid.size * household.γ_grid.size
 
     def population_evolution_j(j):
 
@@ -997,7 +997,7 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
 
         # Solve optimal policies backwards
         V_seq, σ_seq = solve_backwards(
-            V_ss2, σ_ss2, hh, firm, price_seq, pol_seq, Q)
+            V_ss2, σ_ss2, household, firm, price_seq, pol_seq, Q)
 
         # Compute population evolution forwards
         μ_seq, K_seq, L_seq = simulate_forwards(
