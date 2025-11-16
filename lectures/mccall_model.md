@@ -947,21 +947,24 @@ workers can protect themselves against downside risk by rejecting low offers.
 
 This option value translates into higher expected lifetime utility.
 
-To demonstrate this, we'll:
-1. Compute the reservation wage for each volatility level
-2. Simulate the worker's job search process following the optimal policy
-3. Calculate the expected discounted lifetime income
+To demonstrate this, we will:
 
-The simulation works as follows: we draw 100 wage offers and track the worker's
-earnings at each date. The worker accepts the first offer that exceeds their
-reservation wage and earns that wage in all subsequent periods. We then compute
-the discounted sum of earnings over these 100 periods.
+1. Compute the reservation wage for each volatility level
+3. Calculate the expected discounted value of the lifetime income stream
+   associated with that reservation wage, using Monte Carlo.
+
+The simulation works as follows: 
+
+1. Compute the present discounted value of one lifetime earnings path, from a given wage path. 
+2. Average over a large number of such calculations to approximate expected discounted value.
+
+We truncate each path at $T=100$, which provides sufficient resolution for our purposes.
 
 ```{code-cell} ipython3
 @jax.jit
 def simulate_lifetime_value(key, model, w_bar, n_periods=100):
     """
-    Simulate one realization of the job search and compute lifetime value.
+    Simulate one realization of the wage path and compute lifetime value.
 
     Parameters:
     -----------
@@ -1080,9 +1083,6 @@ plt.show()
 The plot confirms that despite workers setting higher reservation wages when facing
 more volatile wage offers (as shown above), they achieve higher expected lifetime
 values due to the option value of search.
-
-This demonstrates a key insight from the McCall model: volatility in wage offers
-benefits workers who can optimally time their job acceptance decision.
 
 
 ## Exercises
