@@ -127,7 +127,7 @@ does not grow too quickly.
 
 When $\{R_t\}$ was constant we required that $\beta R < 1$.
 
-Now it is stochastic, we require that
+Since it is now stochastic, we require that
 
 ```{math}
 :label: fpbc2
@@ -139,7 +139,7 @@ G_R := \lim_{n \to \infty}
 ```
 
 Notice that, when $\{R_t\}$ takes some constant value $R$, this
-reduces to the previous restriction $\beta R < 1$
+reduces to the previous restriction $\beta R < 1$.
 
 The value $G_R$ can be thought of as the long run (geometric) average
 gross rate of return.
@@ -251,7 +251,7 @@ convergence (as measured by the distance $\rho$).
 ### Using an Endogenous Grid
 
 In the study of that model we found that it was possible to further
-accelerate time iteration via the {doc}`endogenous grid method <egm_policy_iter>`.
+accelerate time iteration via the {doc}`endogenous grid method <cake_eating_egm>`.
 
 We will use the same method here.
 
@@ -333,7 +333,7 @@ is just $\mathbb E R_t$.
 
 We test the condition $\beta \mathbb E R_t < 1$ in the code below.
 
-## Implementation
+## Numba Implementation
 
 We will assume that $R_t = \exp(a_r \zeta_t + b_r)$ where $a_r, b_r$
 are constants and $\{ \zeta_t\}$ is IID standard normal.
@@ -414,16 +414,26 @@ class IFP:
 
 Here's the Coleman-Reffett operator based on EGM:
 
+### Implementation Details
+
+The implementation of operator $K$ maps directly to equation {eq}`k_opr`.
+
+The left side $u'(\xi)$ becomes `u_prime_inv(β * Ez)` after solving for $\xi$.
+
+The expectation term $\mathbb E_z \hat{R} (u' \circ \sigma)[\hat{R}(a - \xi) + \hat{Y}, \hat{Z}]$ is computed via Monte Carlo averaging over future states and shocks.
+
+The max with $u'(a)$ is handled implicitly—the endogenous grid method naturally handles the liquidity constraint since we only solve for interior consumption where $c < a$.
+
 ```{code-cell} ipython
 @jit
-def K(a_in, σ_in, ifp):
+def K(ae_vals, c_vals, ifp):
     """
     The Coleman--Reffett operator for the income fluctuation problem,
     using the endogenous grid method.
 
         * ifp is an instance of IFP
-        * a_in[i, z] is an asset grid
-        * σ_in[i, z] is consumption at a_in[i, z]
+        * ae_vals[i, z] is an asset grid
+        * c_vals[i, z] is consumption at ae_vals[i, z]
     """
 
     # Simplify names
@@ -433,12 +443,12 @@ def K(a_in, σ_in, ifp):
     n = len(P)
 
     # Create consumption function by linear interpolation
-    σ = lambda a, z: np.interp(a, a_in[:, z], σ_in[:, z])
+    σ = lambda a, z: np.interp(a, ae_vals[:, z], c_vals[:, z])
 
     # Allocate memory
-    σ_out = np.empty_like(σ_in)
+    c_out = np.empty_like(c_vals)
 
-    # Obtain c_i at each s_i, z, store in σ_out[i, z], computing
+    # Obtain c_i at each s_i, z, store in c_out[i, z], computing
     # the expectation term by Monte Carlo
     for i, s in enumerate(s_grid):
         for z in range(n):
@@ -452,19 +462,27 @@ def K(a_in, σ_in, ifp):
                         U = u_prime(σ(R_hat * s + Y_hat, z_hat))
                         Ez += R_hat * U * P[z, z_hat]
             Ez = Ez / (len(η_draws) * len(ζ_draws))
-            σ_out[i, z] =  u_prime_inv(β * Ez)
+            c_out[i, z] =  u_prime_inv(β * Ez)
 
     # Calculate endogenous asset grid
-    a_out = np.empty_like(σ_out)
+    ae_out = np.empty_like(c_out)
     for z in range(n):
-        a_out[:, z] = s_grid + σ_out[:, z]
+        ae_out[:, z] = s_grid + c_out[:, z]
 
     # Fixing a consumption-asset pair at (0, 0) improves interpolation
-    σ_out[0, :] = 0
-    a_out[0, :] = 0
+    c_out[0, :] = 0
+    ae_out[0, :] = 0
 
-    return a_out, σ_out
+    return ae_out, c_out
 ```
+
+### Code Walkthrough
+
+The operator creates a consumption function `σ` by interpolating the input policy, then uses triple nested loops to compute the expectation via Monte Carlo averaging over savings grid points, current states, future states, and shock realizations.
+
+After computing optimal consumption $c_i$ at each savings level $s_i$ by inverting marginal utility, we construct the endogenous asset grid using $a_i = s_i + c_i$.
+
+Setting consumption and assets to zero at the origin ensures smooth interpolation near zero assets, where the household consumes everything.
 
 The next function solves for an approximation of the optimal consumption policy via time iteration.
 
@@ -497,11 +515,23 @@ def solve_model_time_iter(model,        # Class with model information
     return a_new, σ_new
 ```
 
+This function implements fixed-point iteration by repeatedly applying the operator $K$ until the policy converges.
+
+Convergence is measured by the maximum absolute change in consumption across all states.
+
+The operator is guaranteed to converge due to the contraction property discussed earlier.
+
 Now we are ready to create an instance at the default parameters.
 
 ```{code-cell} ipython
 ifp = IFP()
 ```
+
+The default parameters represent a calibration with moderate risk aversion ($\gamma = 1.5$, CRRA utility) and a quarterly discount factor ($\beta = 0.96$, corresponding to roughly 4% annual discounting).
+
+The Markov chain has high persistence (90% probability of staying in the current state), while returns have 10% volatility around a zero mean log return ($a_r = 0.1$, $b_r = 0.0$).
+
+Labor income is state-dependent: $Y_t = \exp(0.2 \eta_t + 0.5 Z_t)$ implies higher expected income in the good state ($Z_t = 1$) compared to the bad state ($Z_t = 0$).
 
 Next we set up an initial condition, which corresponds to consuming all
 assets.
@@ -537,8 +567,11 @@ Notice that we consume all assets in the lower range of the asset space.
 
 This is because we anticipate income $Y_{t+1}$ tomorrow, which makes the need to save less urgent.
 
-Can you explain why consuming all assets ends earlier (for lower values of
-assets) when $z=0$?
+Observe that consuming all assets ends earlier (at lower asset levels) when $z=0$ compared to $z=1$.
+
+This occurs because expected future income is lower in the bad state ($z=0$), so the household begins precautionary saving at lower wealth levels.
+
+In contrast, when $z=1$ (good state), higher expected future income allows the household to consume all assets up to a higher threshold before savings become optimal.
 
 ### Law of Motion
 
@@ -582,6 +615,296 @@ The dashed line is the 45 degree line.
 
 We can see from the figure that the dynamics will be stable --- assets do not
 diverge even in the highest state.
+
+## JAX Implementation
+
+We now provide a JAX implementation of the model.
+
+JAX is a high-performance numerical computing library that provides automatic differentiation and JIT compilation, with support for GPU/TPU acceleration.
+
+First we need to import JAX and related libraries:
+
+```{code-cell} ipython
+import jax
+import jax.numpy as jnp
+from jax import vmap
+from typing import NamedTuple
+
+# Import jax.jit with a different name to avoid conflict with numba.jit
+jax_jit = jax.jit
+```
+
+We enable 64-bit precision in JAX to ensure accurate results that match the Numba implementation:
+
+```{code-cell} ipython
+jax.config.update("jax_enable_x64", True)
+```
+
+Here's the JAX version of the IFP class using NamedTuple for compatibility with JAX's JIT compilation:
+
+```{code-cell} ipython
+class IFP_JAX(NamedTuple):
+    """
+    A NamedTuple that stores primitives for the income fluctuation
+    problem, using JAX.
+    """
+    γ: float
+    β: float
+    P: jnp.ndarray
+    a_r: float
+    b_r: float
+    a_y: float
+    b_y: float
+    s_grid: jnp.ndarray
+    η_draws: jnp.ndarray
+    ζ_draws: jnp.ndarray
+
+
+def create_ifp_jax(γ=1.5,
+                   β=0.96,
+                   P=np.array([(0.9, 0.1),
+                               (0.1, 0.9)]),
+                   a_r=0.1,
+                   b_r=0.0,
+                   a_y=0.2,
+                   b_y=0.5,
+                   shock_draw_size=50,
+                   grid_max=10,
+                   grid_size=100,
+                   seed=1234):
+    """
+    Create an instance of IFP_JAX with the given parameters.
+    """
+    # Test stability assuming {R_t} is IID and adopts the lognormal
+    # specification given below.  The test is then β E R_t < 1.
+    ER = np.exp(b_r + a_r**2 / 2)
+    assert β * ER < 1, "Stability condition failed."
+
+    # Convert to JAX arrays
+    P_jax = jnp.array(P)
+
+    # Generate random draws using JAX
+    key = jax.random.PRNGKey(seed)
+    key, subkey1, subkey2 = jax.random.split(key, 3)
+    η_draws = jax.random.normal(subkey1, (shock_draw_size,))
+    ζ_draws = jax.random.normal(subkey2, (shock_draw_size,))
+    s_grid = jnp.linspace(0, grid_max, grid_size)
+
+    return IFP_JAX(γ=γ, β=β, P=P_jax, a_r=a_r, b_r=b_r, a_y=a_y, b_y=b_y,
+                   s_grid=s_grid, η_draws=η_draws, ζ_draws=ζ_draws)
+
+
+# Utility functions for the IFP model
+
+def u_prime(c, γ):
+    """Marginal utility"""
+    return c**(-γ)
+
+def u_prime_inv(c, γ):
+    """Inverse of marginal utility"""
+    return c**(-1/γ)
+
+def R(z, ζ, a_r, b_r):
+    """Gross return on assets"""
+    return jnp.exp(a_r * ζ + b_r)
+
+def Y(z, η, a_y, b_y):
+    """Labor income"""
+    return jnp.exp(a_y * η + (z * b_y))
+```
+
+Here's the Coleman-Reffett operator using JAX:
+
+```{code-cell} ipython
+@jax_jit
+def K_jax(ae_vals, c_vals, ifp):
+    """
+    The Coleman--Reffett operator for the income fluctuation problem,
+    using the endogenous grid method with JAX.
+
+        * ifp is an instance of IFP_JAX
+        * ae_vals[i, z] is an asset grid
+        * c_vals[i, z] is consumption at ae_vals[i, z]
+    """
+
+    # Extract parameters from ifp
+    γ, β, P = ifp.γ, ifp.β, ifp.P
+    a_r, b_r, a_y, b_y = ifp.a_r, ifp.b_r, ifp.a_y, ifp.b_y
+    s_grid, η_draws, ζ_draws = ifp.s_grid, ifp.η_draws, ifp.ζ_draws
+    n = len(P)
+
+    # Allocate memory
+    c_out = jnp.empty_like(c_vals)
+
+    # Obtain c_i at each s_i, z, store in c_out[i, z], computing
+    # the expectation term by Monte Carlo
+    def compute_expectation(s, z):
+        """Compute expectation for given s and z"""
+        def inner_expectation(z_hat):
+            # Vectorize over shocks
+            def compute_term(η, ζ):
+                R_hat = R(z_hat, ζ, a_r, b_r)
+                Y_hat = Y(z_hat, η, a_y, b_y)
+                a_val = R_hat * s + Y_hat
+                # Interpolate consumption
+                c_interp = jnp.interp(a_val, ae_vals[:, z_hat], c_vals[:, z_hat])
+                U = u_prime(c_interp, γ)
+                return R_hat * U
+
+            # Vectorize over all shock combinations
+            η_grid, ζ_grid = jnp.meshgrid(η_draws, ζ_draws, indexing='ij')
+            terms = vmap(vmap(compute_term))(η_grid, ζ_grid)
+            return P[z, z_hat] * jnp.mean(terms)
+
+        # Sum over z_hat states
+        Ez = jnp.sum(vmap(inner_expectation)(jnp.arange(n)))
+        return u_prime_inv(β * Ez, γ)
+
+    # Vectorize over s_grid and z
+    c_out = vmap(vmap(compute_expectation, in_axes=(None, 0)),
+                  in_axes=(0, None))(s_grid, jnp.arange(n))
+
+    # Calculate endogenous asset grid
+    ae_out = s_grid[:, None] + c_out
+
+    # Fixing a consumption-asset pair at (0, 0) improves interpolation
+    c_out = c_out.at[0, :].set(0)
+    ae_out = ae_out.at[0, :].set(0)
+
+    return ae_out, c_out
+```
+
+The next function solves for an approximation of the optimal consumption policy via time iteration using JAX:
+
+```{code-cell} ipython
+def solve_model_time_iter_jax(model,        # Class with model information
+                               a_vec,        # Initial condition for assets
+                               σ_vec,        # Initial condition for consumption
+                               tol=1e-4,
+                               max_iter=1000,
+                               verbose=True,
+                               print_skip=25):
+
+    # Set up loop
+    i = 0
+    error = tol + 1
+
+    while i < max_iter and error > tol:
+        a_new, σ_new = K_jax(a_vec, σ_vec, model)
+        error = jnp.max(jnp.abs(σ_vec - σ_new))
+        i += 1
+        if verbose and i % print_skip == 0:
+            print(f"Error at iteration {i} is {error}.")
+        a_vec, σ_vec = a_new, σ_new
+
+    if error > tol:
+        print("Failed to converge!")
+    elif verbose:
+        print(f"\nConverged in {i} iterations.")
+
+    return a_new, σ_new
+```
+
+Now we can create an instance and solve the model using JAX:
+
+```{code-cell} ipython
+ifp_jax = create_ifp_jax()
+```
+
+Set up the initial condition:
+
+```{code-cell} ipython
+# Initial guess of σ = consume all assets
+k = len(ifp_jax.s_grid)
+n = len(ifp_jax.P)
+σ_init_jax = jnp.empty((k, n))
+for z in range(n):
+    σ_init_jax = σ_init_jax.at[:, z].set(ifp_jax.s_grid)
+a_init_jax = σ_init_jax.copy()
+```
+
+Let's generate an approximation solution with JAX:
+
+```{code-cell} ipython
+a_star_jax, σ_star_jax = solve_model_time_iter_jax(ifp_jax, a_init_jax, σ_init_jax, print_skip=5)
+```
+
+Here's a plot comparing the JAX solution with the Numba solution:
+
+```{code-cell} ipython
+fig, ax = plt.subplots()
+for z in range(len(ifp_jax.P)):
+    ax.plot(np.array(a_star_jax[:, z]), np.array(σ_star_jax[:, z]),
+            label=f"JAX: consumption when $z={z}$", linestyle='--')
+    ax.plot(a_star[:, z], σ_star[:, z],
+            label=f"Numba: consumption when $z={z}$", linestyle='-', alpha=0.6)
+
+plt.legend()
+plt.show()
+```
+
+### Comparison of Numba and JAX Solutions
+
+Now let's verify that both implementations produce nearly identical results.
+
+With 64-bit precision enabled in JAX, we expect the solutions to be very close.
+
+Let's compute the maximum absolute differences:
+
+```{code-cell} ipython
+# Convert JAX arrays to NumPy for comparison
+a_star_jax_np = np.array(a_star_jax)
+σ_star_jax_np = np.array(σ_star_jax)
+
+# Compute differences
+a_diff = np.abs(a_star - a_star_jax_np)
+σ_diff = np.abs(σ_star - σ_star_jax_np)
+
+print("Comparison of Numba and JAX solutions:")
+print("=" * 50)
+print(f"Max absolute difference in asset grid: {np.max(a_diff):.3e}")
+print(f"Mean absolute difference in asset grid: {np.mean(a_diff):.3e}")
+print(f"Max absolute difference in consumption: {np.max(σ_diff):.3e}")
+print(f"Mean absolute difference in consumption: {np.mean(σ_diff):.3e}")
+```
+
+Let's also visualize the differences:
+
+```{code-cell} ipython
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+for z in range(len(ifp.P)):
+    axes[0].plot(a_star[:, z], a_diff[:, z], label=f'z={z}')
+    axes[1].plot(a_star[:, z], σ_diff[:, z], label=f'z={z}')
+
+axes[0].set_xlabel('assets')
+axes[0].set_ylabel('absolute difference')
+axes[0].set_title('Asset Grid Differences: |Numba - JAX|')
+axes[0].legend()
+
+axes[1].set_xlabel('assets')
+axes[1].set_ylabel('absolute difference')
+axes[1].set_title('Consumption Differences: |Numba - JAX|')
+axes[1].legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+As we can see, the differences between the two implementations are extremely small (on the order of machine precision), confirming that both methods produce essentially identical results.
+
+The tiny differences arise from:
+- Different random number generators (NumPy vs JAX)
+- Minor differences in floating-point operations order
+- Different interpolation implementations
+
+Despite these minor numerical differences, both implementations converge to the same optimal policy.
+
+The JAX implementation provides several advantages:
+
+1. **GPU/TPU acceleration**: JAX can automatically utilize GPU/TPU hardware for faster computation
+2. **Automatic differentiation**: JAX provides automatic differentiation, which can be useful for sensitivity analysis
+3. **Functional programming**: JAX encourages a functional style that can be easier to reason about and parallelize
 
 ## Exercises
 

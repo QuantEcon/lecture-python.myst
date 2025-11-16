@@ -19,12 +19,11 @@ jobs:
           python-version: "3.13"
           environment-file: environment.yml
           activate-environment: quantecon
-      - name: Install JAX, Numpyro, PyTorch
+      - name: Install JAX and Numpyro
         shell: bash -l {0}
         run: |
-          pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
-          pip install --upgrade "jax[cuda12-local]==0.6.2"
-          pip install numpyro  
+          pip install -U "jax[cuda13]"
+          pip install numpyro
           python scripts/test-jax-install.py
       - name: Check nvidia drivers
         shell: bash -l {0}
@@ -59,7 +58,7 @@ jobs:
         run: |
           jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
           zip -r download-notebooks.zip _build/jupyter
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: download-notebooks
           path: download-notebooks.zip
@@ -73,6 +72,32 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
+      # Create HTML archive for release assets
+      - name: Create HTML archive
+        shell: bash -l {0}
+        run: |
+          tar -czf lecture-python-html-${{ github.ref_name }}.tar.gz -C _build/html .
+          sha256sum lecture-python-html-${{ github.ref_name }}.tar.gz > html-checksum.txt
+          
+          # Create metadata manifest
+          cat > html-manifest.json << EOF
+          {
+            "tag": "${{ github.ref_name }}",
+            "commit": "${{ github.sha }}",
+            "timestamp": "$(date -Iseconds)",
+            "size_mb": $(du -sm _build/html | cut -f1),
+            "file_count": $(find _build/html -type f | wc -l)
+          }
+          EOF
+      - name: Upload archives to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            lecture-python-html-${{ github.ref_name }}.tar.gz
+            html-checksum.txt
+            html-manifest.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy website to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:

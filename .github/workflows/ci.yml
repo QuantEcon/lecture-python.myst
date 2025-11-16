@@ -11,6 +11,9 @@ on:
 jobs:
   preview:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -25,17 +28,15 @@ jobs:
           python-version: "3.13"
           environment-file: environment.yml
           activate-environment: quantecon
-      - name: Install JAX, Numpyro, PyTorch
-        shell: bash -l {0}
-        run: |
-          pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
-          pip install pyro-ppl
-          pip install --upgrade "jax[cuda12-local]==0.6.2"
-          pip install numpyro pyro-ppl
-          python scripts/test-jax-install.py
       - name: Check nvidia Drivers
         shell: bash -l {0}
         run: nvidia-smi
+      - name: Install JAX and Numpyro
+        shell: bash -l {0}
+        run: |
+          pip install -U "jax[cuda13]"
+          pip install numpyro
+          python scripts/test-jax-install.py
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
@@ -57,7 +58,7 @@ jobs:
           mkdir -p _build/html/_notebooks
           cp -u _build/jupyter/*.ipynb _build/html/_notebooks
       - name: Upload Execution Reports (Download Notebooks)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: execution-reports-notebooks
@@ -69,7 +70,7 @@ jobs:
           mkdir -p _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
       - name: Upload Execution Reports (LaTeX)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: execution-reports
@@ -80,7 +81,7 @@ jobs:
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
       - name: Upload Execution Reports (HTML)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: execution-reports
@@ -168,6 +169,11 @@ jobs:
           fi
       - name: Preview Deploy to Netlify
         id: netlify-deploy
+        if: >
+          github.actor != 'dependabot[bot]' &&
+          (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
+          env.NETLIFY_AUTH_TOKEN != '' &&
+          env.NETLIFY_SITE_ID != ''
         shell: bash -l {0}
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
@@ -238,11 +244,16 @@ jobs:
               echo "🎯 Preview page: ${deploy_url}/${{ github.event.inputs.preview_page }}"
             fi
           fi
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      - name: Skip Netlify Deploy (no secrets or untrusted actor)
+        if: >
+          !(github.actor != 'dependabot[bot]' &&
+          (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
+          env.NETLIFY_AUTH_TOKEN != '' &&
+          env.NETLIFY_SITE_ID != '')
+        run: |
+          echo "Skipping Netlify preview deploy: secrets unavailable or actor not trusted (actor=${{ github.actor }})"
       - name: Post PR Comment with Preview Links
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.netlify-deploy.outputs.deploy_url != ''
         uses: actions/github-script@v7
         with:
           script: |
