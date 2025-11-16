@@ -1035,6 +1035,7 @@ lifetime_vals = []
 for σ in σ_vals:
     μ = compute_μ_for_mean(σ, mean_wage)
     model = create_mccall_continuous(σ=σ, μ=μ)
+    w_bar = compute_reservation_wage_continuous(model)
     lv = compute_mean_lifetime_value(model, w_bar)
     lifetime_vals.append(lv)
 
