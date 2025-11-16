@@ -950,7 +950,7 @@ because they can capitalize on high offers while rejecting low ones.
 Compute the average duration of unemployment when $\beta=0.99$ and
 $c$ takes the following values
 
-> `c_vals = np.linspace(10, 40, 25)`
+> `c_vals = np.linspace(10, 40, 4)`
 
 That is, start the agent off as unemployed, compute their reservation wage
 given the parameters, and then simulate to see how long it takes to accept.
@@ -1040,7 +1040,7 @@ def compute_mean_stopping_time_continuous(w_bar, model, num_reps=100000, seed=12
 
 
 # Compute mean stopping time for different values of c
-c_vals = jnp.linspace(10, 40, 25)
+c_vals = jnp.linspace(10, 40, 4)
 
 @jax.jit
 def compute_stop_time_for_c_continuous(c):
