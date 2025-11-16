@@ -929,20 +929,168 @@ Now let's plot the reservation wage as a function of volatility:
 fig, ax = plt.subplots()
 
 ax.plot(σ_vals, res_wages_volatility, linewidth=2)
-ax.set_xlabel('volatility ($\sigma$)', fontsize=12)
+ax.set_xlabel(r'volatility ($\sigma$)', fontsize=12)
 ax.set_ylabel('reservation wage', fontsize=12)
-ax.set_title('Reservation wage increases with volatility')
-ax.grid(True, alpha=0.3)
-
 plt.show()
 ```
 
 As expected, the reservation wage is increasing in $\sigma$.
 
-This confirms that workers prefer more volatile wage distributions, all else equal,
-because they can capitalize on high offers while rejecting low ones.
+### Lifetime Value and Volatility
+
+We've seen that the reservation wage increases with volatility. Now let's verify that
+the lifetime value at the optimal policy also increases with volatility.
+
+The intuition is that higher volatility provides more upside potential while the
+worker can protect against downside risk by rejecting low offers. This option value
+translates into higher expected lifetime utility.
+
+To demonstrate this, we'll:
+1. Compute the reservation wage for each volatility level
+2. Simulate the worker's job search process following the optimal policy
+3. Calculate the expected discounted lifetime income
+
+The simulation works as follows: starting unemployed, the worker draws wage offers
+and accepts the first offer that exceeds their reservation wage. We then compute
+the present value of this income stream.
+
+```{code-cell} ipython3
+@jax.jit
+def simulate_lifetime_value(key, model, w_bar, max_search_periods=1000):
+    """
+    Simulate one realization of the job search and compute lifetime value.
+
+    Parameters:
+    -----------
+    key : jax.random.PRNGKey
+        Random key for JAX
+    model : McCallModelContinuous
+        The model containing parameters
+    w_bar : float
+        The reservation wage
+    max_search_periods : int
+        Maximum number of search periods before forcing acceptance
+
+    Returns:
+    --------
+    lifetime_value : float
+        Discounted sum of lifetime income
+    """
+    c, β, σ, μ, w_draws = model
+
+    def search_step(state):
+        t, key, accepted, wage = state
+        key, subkey = jax.random.split(key)
+        # Draw wage offer
+        s = jax.random.normal(subkey)
+        w = jnp.exp(μ + σ * s)
+        # Check if we accept
+        accept_now = w >= w_bar
+        # Update state: if we accept now, store the wage
+        wage = jnp.where(accept_now, w, wage)
+        accepted = jnp.logical_or(accepted, accept_now)
+        t = t + 1
+        return t, key, accepted, wage
+
+    def search_cond(state):
+        t, _, accepted, _ = state
+        # Continue searching if not accepted and haven't hit max periods
+        return jnp.logical_and(jnp.logical_not(accepted), t < max_search_periods)
+
+    # Initial state: period 0, not accepted, wage 0
+    initial_state = (0, key, False, 0.0)
+    t_final, _, _, final_wage = jax.lax.while_loop(search_cond, search_step, initial_state)
+
+    # Compute lifetime value
+    # During unemployment (periods 0 to t_final-1): receive c each period
+    # After employment (period t_final onwards): receive final_wage forever
+    unemployment_value = c * (1 - β**t_final) / (1 - β)
+    employment_value = (β**t_final) * final_wage / (1 - β)
+    lifetime_value = unemployment_value + employment_value
+
+    return lifetime_value
+
+
+@jax.jit
+def compute_mean_lifetime_value(model, w_bar, num_reps=10000, seed=1234):
+    """
+    Compute mean lifetime value across many simulations.
+
+    Parameters:
+    -----------
+    model : McCallModelContinuous
+        The model containing parameters
+    w_bar : float
+        The reservation wage
+    num_reps : int
+        Number of simulation replications
+    seed : int
+        Random seed
+
+    Returns:
+    --------
+    mean_value : float
+        Average lifetime value across all replications
+    """
+    key = jax.random.PRNGKey(seed)
+    keys = jax.random.split(key, num_reps)
+
+    # Vectorize the simulation across all replications
+    simulate_fn = jax.vmap(simulate_lifetime_value, in_axes=(0, None, None))
+    lifetime_values = simulate_fn(keys, model, w_bar)
+
+    return jnp.mean(lifetime_values)
+```
+
+Now let's compute both the reservation wage and the expected lifetime value
+for each volatility level:
+
+```{code-cell} ipython3
+# Use the same volatility range and mean wage
+σ_vals = jnp.linspace(0.1, 1.0, 25)
+mean_wage = 20.0
+
+# Storage for results
+res_wages_vol = []
+lifetime_values_vol = []
+
+for σ in σ_vals:
+    μ = compute_μ_for_mean(σ, mean_wage)
+    model = create_mccall_continuous(σ=float(σ), μ=float(μ))
+
+    # Compute reservation wage
+    w_bar = compute_reservation_wage_continuous(model)
+    res_wages_vol.append(w_bar)
+
+    # Compute expected lifetime value
+    lv = compute_mean_lifetime_value(model, w_bar)
+    lifetime_values_vol.append(lv)
+
+res_wages_vol = jnp.array(res_wages_vol)
+lifetime_values_vol = jnp.array(lifetime_values_vol)
+```
+
+Let's visualize the expected lifetime value as a function of volatility:
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+ax.plot(σ_vals, lifetime_values_vol, linewidth=2, color='green')
+ax.set_xlabel(r'volatility ($\sigma$)', fontsize=12)
+ax.set_ylabel('expected lifetime value', fontsize=12)
+plt.show()
+```
+
+The plot confirms that despite workers setting higher reservation wages when facing
+more volatile wage offers (as shown above), they achieve higher expected lifetime
+values due to the option value of search.
+
+This demonstrates a key insight from the McCall model: volatility in wage offers
+benefits workers who can optimally time their job acceptance decision.
+
 
 ## Exercises
+
 
 ```{exercise}
 :label: mm_ex1
@@ -958,6 +1106,8 @@ given the parameters, and then simulate to see how long it takes to accept.
 Repeat a large number of times and take the average.
 
 Plot mean unemployment duration as a function of $c$ in `c_vals`.
+
+Try to explain what you see.
 ```
 
 ```{solution-start} mm_ex1
