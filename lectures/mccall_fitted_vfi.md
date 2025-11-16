@@ -44,7 +44,7 @@ $$
 
 and $\{Z_t\}$ is IID and standard normal.
 
-While we already considered continuous wage distributions briefly in {doc}`<mccall_model>`, the change was relatively trivial in that case.
+While we already considered continuous wage distributions briefly in {doc}`mccall_model`, the change was relatively trivial in that case.
 
 The reason is that we were able to reduce the problem to solving for a single scalar value (the continuation value).
 
