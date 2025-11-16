@@ -321,17 +321,17 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>Wages at each point in time are given by</p>
 <div class="math notranslate nohighlight">
 \[
-w_t = \exp(z_t) + y_t
+W_t = \exp(Z_t) + Y_t
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[
-y_t \sim \exp(\mu + s \zeta_t)
+Y_t \sim \exp(\mu + s \zeta_t)
 \quad \text{and} \quad
-z_{t+1} = d + \rho z_t + \sigma \epsilon_{t+1}
+Z_{t+1} = d + \rho Z_t + \sigma \epsilon_{t+1}
 \]</div>
 <p>Here <span class="math notranslate nohighlight">\(\{ \zeta_t \}\)</span> and <span class="math notranslate nohighlight">\(\{ \epsilon_t \}\)</span> are both IID and standard normal.</p>
-<p>Here <span class="math notranslate nohighlight">\(\{y_t\}\)</span> is a transitory component and <span class="math notranslate nohighlight">\(\{z_t\}\)</span> is persistent.</p>
+<p>Here <span class="math notranslate nohighlight">\(\{Y_t\}\)</span> is a transitory component and <span class="math notranslate nohighlight">\(\{Z_t\}\)</span> is persistent.</p>
 <p>As before, the worker can either</p>
 <ol class="arabic simple">
 <li><p>accept an offer and work permanently at that wage, or</p></li>
@@ -383,7 +383,7 @@ Qf(z) = u(c) + \beta \, \mathbb E_z \max \left\{ \frac{u(w')}{1-\beta}, f(z') \r
 \[
 \frac{u(w)}{1-\beta} \geq f^*(z)
 \]</div>
-<p>For utility, we take <span class="math notranslate nohighlight">\(u(c) = \ln(c)\)</span>.</p>
+<p>For utility, we take <span class="math notranslate nohighlight">\(u(x) = \ln(x)\)</span>.</p>
 <p>The reservation wage is the wage where equality holds in the last expression.</p>
 <p>That is,</p>
 <div class="math notranslate nohighlight" id="equation-corr-mcm-barw">
@@ -514,7 +514,7 @@ Qf(z) = u(c) + \beta \, \mathbb E_z \max \left\{ \frac{u(w')}{1-\beta}, f(z') \r
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.46 seconds elapsed
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.45 seconds elapsed
 </pre></div>
 </div>
 </div>
@@ -572,7 +572,7 @@ at all state values.</p>
 <section id="unemployment-duration">
 <h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">46.4. </span>Unemployment duration</a><a class="headerlink" href="#unemployment-duration" title="Link to this heading">#</a></h2>
 <p>Next, we study how mean unemployment duration varies with unemployment compensation.</p>
-<p>For simplicity, we’ll fix the initial state at <span class="math notranslate nohighlight">\(z_t = 0\)</span>.</p>
+<p>For simplicity, we’ll fix the initial state at <span class="math notranslate nohighlight">\(Z_0 = 0\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>

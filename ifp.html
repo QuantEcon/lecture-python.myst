@@ -178,22 +178,30 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">57.1.1. References</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-optimal-savings-problem">57.2. The Optimal Savings Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-household-problem">57.2. The Household Problem</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">57.2.1. Set-Up</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-and-euler-equation">57.2.2. Value Function and Euler Equation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimality-results">57.2.3. Optimality Results</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">57.3. Computation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-iteration">57.3.1. Time Iteration</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-technical-details">57.3.2. Some Technical Details</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-method">57.3.1. Solution Method</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">57.4. Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sanity-check">57.4.1. A Sanity Check</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-implementation">57.4. NumPy Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">57.4.1. Set Up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solver">57.4.2. Solver</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">57.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation">57.5. JAX Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">57.5.1. Set Up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">57.5.2. Solver</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-run">57.5.3. Test run</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamics">57.5.4. Dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sanity-check">57.5.5. A Sanity Check</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">57.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -251,17 +259,18 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-income-fluctuation-problem-i-basic-model">
-<h1><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">57. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem I: Basic Model</a><a class="headerlink" href="#the-income-fluctuation-problem-i-basic-model" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">57. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem I: Basic Model</a><a class="headerlink" href="#the-income-fluctuation-problem-i-basic-model" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#the-income-fluctuation-problem-i-basic-model" id="id16">The Income Fluctuation Problem I: Basic Model</a></p>
+<li><p><a class="reference internal" href="#the-income-fluctuation-problem-i-basic-model" id="id17">The Income Fluctuation Problem I: Basic Model</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id17">Overview</a></p></li>
-<li><p><a class="reference internal" href="#the-optimal-savings-problem" id="id18">The Optimal Savings Problem</a></p></li>
-<li><p><a class="reference internal" href="#computation" id="id19">Computation</a></p></li>
-<li><p><a class="reference internal" href="#implementation" id="id20">Implementation</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id21">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id18">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-household-problem" id="id19">The Household Problem</a></p></li>
+<li><p><a class="reference internal" href="#computation" id="id20">Computation</a></p></li>
+<li><p><a class="reference internal" href="#numpy-implementation" id="id21">NumPy Implementation</a></p></li>
+<li><p><a class="reference internal" href="#jax-implementation" id="id22">JAX Implementation</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id23">Exercises</a></p></li>
 </ul>
 </li>
 </ul>
@@ -279,7 +288,10 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.10.1-py3-none-any.whl.metadata (5.3 kB)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
@@ -293,49 +305,66 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.10.1
+</pre></div>
+</div>
 </div>
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">57.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id18" role="doc-backlink"><span class="section-number">57.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In this lecture, we study an optimal savings problem for an infinitely lived consumer—the “common ancestor” described in <span id="id1">[<a class="reference internal" href="zreferences.html#id200" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 1.3.</p>
-<p>This is an essential sub-problem for many representative macroeconomic models</p>
+<p>This savings problem is often called an <strong>income fluctuation problem</strong> or a <strong>household problem</strong>.</p>
+<p>It is an essential sub-problem for many representative macroeconomic models</p>
 <ul class="simple">
 <li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id155" title="S Rao Aiyagari. Uninsured Idiosyncratic Risk and Aggregate Saving. The Quarterly Journal of Economics, 109(3):659–684, 1994.">Aiyagari, 1994</a>]</span></p></li>
 <li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id190" title="Mark Huggett. The risk-free rate in heterogeneous-agent incomplete-insurance economies. Journal of Economic Dynamics and Control, 17(5-6):953–969, 1993.">Huggett, 1993</a>]</span></p></li>
 <li><p>etc.</p></li>
 </ul>
-<p>It is related to the decision problem in the <a class="reference internal" href="cake_eating_stochastic.html"><span class="doc">cake eating model</span></a> and yet differs in important ways.</p>
-<p>For example, the choice problem for the agent includes an additive income term that leads to an occasionally binding constraint.</p>
-<p>Moreover, in this and the following lectures, we will inject more realistic
-features such as correlated shocks.</p>
-<p>To solve the model we will use Euler equation based time iteration, which proved
-to be <a class="reference internal" href="cake_eating_time_iter.html"><span class="doc">fast and accurate</span></a> in our investigation of
-the <a class="reference internal" href="cake_eating_stochastic.html"><span class="doc">cake eating model</span></a>.</p>
-<p>Time iteration is globally convergent under mild assumptions, even when utility is unbounded (both above and below).</p>
+<p>It is related to the decision problem in the <a class="reference internal" href="cake_eating_stochastic.html"><span class="doc">cake eating model</span></a> but differs in significant ways.</p>
+<p>For example,</p>
+<ol class="arabic simple">
+<li><p>The choice problem for the agent includes an additive income term that leads to an occasionally binding constraint.</p></li>
+<li><p>Shocks affecting the budget constraint are correlated, forcing us to track an extra state variable.</p></li>
+</ol>
+<p>To solve the model we will use the endogenous grid method, which we found to be <a class="reference internal" href="cake_eating_egm_jax.html"><span class="doc">fast and accurate</span></a> in our investigation of cake eating.</p>
 <p>We’ll need the following imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">quantecon.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">brentq</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">float64</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numba.experimental</span><span class="w"> </span><span class="kn">import</span> <span class="n">jitclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarkovChain</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will use 64-bit precision in JAX because we want to compare NumPy outputs with JAX outputs — and NumPy arrays default to 64 bits.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="references">
 <h3><span class="section-number">57.1.1. </span>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h3>
-<p>Our presentation is a simplified version of <span id="id4">[<a class="reference internal" href="zreferences.html#id270" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">Ma <em>et al.</em>, 2020</a>]</span>.</p>
+<p>The primary source for the technical details discussed below is <span id="id4">[<a class="reference internal" href="zreferences.html#id270" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">Ma <em>et al.</em>, 2020</a>]</span>.</p>
 <p>Other references include <span id="id5">[<a class="reference internal" href="zreferences.html#id171" title="Angus Deaton. Saving and Liquidity Constraints. Econometrica, 59(5):1221–1248, 1991.">Deaton, 1991</a>]</span>, <span id="id6">[<a class="reference internal" href="zreferences.html#id173" title="Wouter J Den Haan. Comparison of solutions to the incomplete markets model with aggregate uncertainty. Journal of Economic Dynamics and Control, 34(1):4–27, 2010.">Den Haan, 2010</a>]</span>,
 <span id="id7">[<a class="reference internal" href="zreferences.html#id196" title="Moritz Kuhn. Recursive Equilibria In An Aiyagari-Style Economy With Permanent Income Shocks. International Economic Review, 54:807–835, 2013.">Kuhn, 2013</a>]</span>, <span id="id8">[<a class="reference internal" href="zreferences.html#id220" title="Guillaume Rabault. When do borrowing constraints bind? Some new results on the income fluctuation problem. Journal of Economic Dynamics and Control, 26(2):217–245, 2002.">Rabault, 2002</a>]</span>,  <span id="id9">[<a class="reference internal" href="zreferences.html#id222" title="Michael Reiter. Solving heterogeneous-agent models by projection and perturbation. Journal of Economic Dynamics and Control, 33(3):649–665, 2009.">Reiter, 2009</a>]</span>  and
 <span id="id10">[<a class="reference internal" href="zreferences.html#id225" title="Jack Schechtman and Vera L S Escudero. Some results on an income fluctuation problem. Journal of Economic Theory, 16(2):151–166, 1977.">Schechtman and Escudero, 1977</a>]</span>.</p>
 </section>
 </section>
-<section id="the-optimal-savings-problem">
-<h2><a class="toc-backref" href="#id18" role="doc-backlink"><span class="section-number">57.2. </span>The Optimal Savings Problem</a><a class="headerlink" href="#the-optimal-savings-problem" title="Link to this heading">#</a></h2>
+<section id="the-household-problem">
+<h2><a class="toc-backref" href="#id19" role="doc-backlink"><span class="section-number">57.2. </span>The Household Problem</a><a class="headerlink" href="#the-household-problem" title="Link to this heading">#</a></h2>
 <p id="index-1">Let’s write down the model and then discuss how to solve it.</p>
 <section id="set-up">
 <h3><span class="section-number">57.2.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h3>
@@ -346,7 +375,7 @@ the <a class="reference internal" href="cake_eating_stochastic.html"><span class
 \]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight" id="equation-eqst">
-<span class="eqno">(57.1)<a class="headerlink" href="#equation-eqst" title="Link to this equation">#</a></span>\[a_{t+1} \leq  R(a_t - c_t)  + Y_{t+1},
+<span class="eqno">(57.1)<a class="headerlink" href="#equation-eqst" title="Link to this equation">#</a></span>\[a_{t+1} = R (a_t - c_t) + Y_{t+1}
 \quad c_t \geq 0,
 \quad a_t \geq 0
 \quad t = 0, 1, \ldots\]</div>
@@ -360,30 +389,43 @@ the <a class="reference internal" href="cake_eating_stochastic.html"><span class
 </ul>
 <p>The timing here is as follows:</p>
 <ol class="arabic simple">
-<li><p>At the start of period <span class="math notranslate nohighlight">\(t\)</span>, the household chooses consumption
-<span class="math notranslate nohighlight">\(c_t\)</span>.</p></li>
-<li><p>Labor is supplied by the household throughout the period and labor income
-<span class="math notranslate nohighlight">\(Y_{t+1}\)</span> is received at the end of period <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
-<li><p>Financial income <span class="math notranslate nohighlight">\(R(a_t - c_t)\)</span> is received at the end of period <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
-<li><p>Time shifts to <span class="math notranslate nohighlight">\(t+1\)</span> and the process repeats.</p></li>
+<li><p>At the start of period <span class="math notranslate nohighlight">\(t\)</span>, the household observes current asset holdings <span class="math notranslate nohighlight">\(a_t\)</span>.</p></li>
+<li><p>The household chooses current consumption <span class="math notranslate nohighlight">\(c_t\)</span>.</p></li>
+<li><p>Savings <span class="math notranslate nohighlight">\(s_t := a_t - c_t\)</span> earns interest at rate <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
+<li><p>Labor income <span class="math notranslate nohighlight">\(Y_{t+1}\)</span> is realized and time shifts to <span class="math notranslate nohighlight">\(t+1\)</span>.</p></li>
 </ol>
-<p>Non-capital income <span class="math notranslate nohighlight">\(Y_t\)</span> is given by <span class="math notranslate nohighlight">\(Y_t = y(Z_t)\)</span>, where
-<span class="math notranslate nohighlight">\(\{Z_t\}\)</span> is an exogeneous state process.</p>
+<p>Non-capital income <span class="math notranslate nohighlight">\(Y_t\)</span> is given by <span class="math notranslate nohighlight">\(Y_t = y(Z_t)\)</span>, where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\{Z_t\}\)</span> is an exogenous state process and</p></li>
+<li><p><span class="math notranslate nohighlight">\(y\)</span> is a given function taking values in <span class="math notranslate nohighlight">\(\mathbb{R}_+\)</span>.</p></li>
+</ul>
 <p>As is common in the literature, we take <span class="math notranslate nohighlight">\(\{Z_t\}\)</span> to be a finite state
-Markov chain taking values in <span class="math notranslate nohighlight">\(\mathsf Z\)</span> with Markov matrix <span class="math notranslate nohighlight">\(P\)</span>.</p>
+Markov chain taking values in <span class="math notranslate nohighlight">\(\mathsf Z\)</span> with Markov matrix <span class="math notranslate nohighlight">\(\Pi\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The budget constraint for the household is more often written as <span class="math notranslate nohighlight">\(a_{t+1} + c_t \leq R a_t + Y_t\)</span>.</p>
+<p>This setup was developed for discretization.</p>
+<p>it means that the control is also the next period state <span class="math notranslate nohighlight">\(a_{t+1}\)</span>, which can then be restricted to a finite grid.</p>
+<p>Computational economists are moving away from raw discretization, which allows
+the use of alternative timings, such as the one that we adopt.</p>
+<p>Our timing turns out to slightly easier in terms of minimizing state variables
+(because transient components of labor income are automatially integrated out — see
+<a class="reference internal" href="ifp_advanced.html"><span class="doc">this lecture</span></a>) and studying dynamics.</p>
+<p>In practice, either timing can be used when including households in larger models.</p>
+</div>
 <p>We further assume that</p>
 <ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(u\)</span> is smooth, strictly increasing and strictly concave with <span class="math notranslate nohighlight">\(\lim_{c \to 0} u'(c) = \infty\)</span> and <span class="math notranslate nohighlight">\(\lim_{c \to \infty} u'(c) = 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(y(z) = \exp(z)\)</span></p></li>
 </ol>
-<p>The asset space is <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> and the state is the pair <span class="math notranslate nohighlight">\((a,z)
-\in \mathsf S := \mathbb R_+ \times \mathsf Z\)</span>.</p>
-<p>A <em>feasible consumption path</em> from <span class="math notranslate nohighlight">\((a,z) \in \mathsf S\)</span> is a consumption
+<p>The asset space is <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> and the state is the pair <span class="math notranslate nohighlight">\((a,z) \in \mathsf S := \mathbb R_+ \times \mathsf Z\)</span>.</p>
+<p>A <strong>feasible consumption path</strong> from <span class="math notranslate nohighlight">\((a,z) \in \mathsf S\)</span> is a consumption
 sequence <span class="math notranslate nohighlight">\(\{c_t\}\)</span> such that <span class="math notranslate nohighlight">\(\{c_t\}\)</span> and its induced asset path <span class="math notranslate nohighlight">\(\{a_t\}\)</span> satisfy</p>
 <ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\((a_0, z_0) = (a, z)\)</span></p></li>
 <li><p>the feasibility constraints in <a class="reference internal" href="#equation-eqst">(57.1)</a>, and</p></li>
-<li><p>measurability, which means that <span class="math notranslate nohighlight">\(c_t\)</span> is a function of random
+<li><p>adaptedness, which means that <span class="math notranslate nohighlight">\(c_t\)</span> is a function of random
 outcomes up to date <span class="math notranslate nohighlight">\(t\)</span> but not after.</p></li>
 </ol>
 <p>The meaning of the third point is just that consumption at time <span class="math notranslate nohighlight">\(t\)</span>
@@ -394,36 +436,26 @@ be contingent only on the current state.</p>
 </section>
 <section id="value-function-and-euler-equation">
 <h3><span class="section-number">57.2.2. </span>Value Function and Euler Equation<a class="headerlink" href="#value-function-and-euler-equation" title="Link to this heading">#</a></h3>
-<p>The <em>value function</em> <span class="math notranslate nohighlight">\(V \colon \mathsf S \to \mathbb{R}\)</span> is defined by</p>
-<div class="math notranslate nohighlight" id="equation-eqvf">
-<span class="eqno">(57.2)<a class="headerlink" href="#equation-eqvf" title="Link to this equation">#</a></span>\[V(a, z) := \max \, \mathbb{E}
+<p>The <strong>value function</strong> <span class="math notranslate nohighlight">\(V \colon \mathsf S \to \mathbb{R}\)</span> is defined by</p>
+<div class="math notranslate nohighlight" id="equation-eqvfs">
+<span class="eqno">(57.2)<a class="headerlink" href="#equation-eqvfs" title="Link to this equation">#</a></span>\[V(a, z) := \max \, \mathbb{E}
 \left\{
 \sum_{t=0}^{\infty} \beta^t u(c_t)
 \right\}\]</div>
 <p>where the maximization is overall feasible consumption paths from <span class="math notranslate nohighlight">\((a,z)\)</span>.</p>
-<p>An <em>optimal consumption path</em> from <span class="math notranslate nohighlight">\((a,z)\)</span> is a feasible consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> that attains the supremum in <a class="reference internal" href="#equation-eqvf">(57.2)</a>.</p>
+<p>An <strong>optimal consumption path</strong> from <span class="math notranslate nohighlight">\((a,z)\)</span> is a feasible consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> that maximizes <a class="reference internal" href="#equation-eqvfs">(57.2)</a>.</p>
 <p>To pin down such paths we can use a version of the Euler equation, which in the present setting is</p>
 <div class="math notranslate nohighlight" id="equation-ee00">
-<span class="eqno">(57.3)<a class="headerlink" href="#equation-ee00" title="Link to this equation">#</a></span>\[u' (c_t)
-\geq \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
-<p>and</p>
+<span class="eqno">(57.3)<a class="headerlink" href="#equation-ee00" title="Link to this equation">#</a></span>\[    u' (c_t) \geq \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
+<p>with</p>
 <div class="math notranslate nohighlight" id="equation-ee01">
-<span class="eqno">(57.4)<a class="headerlink" href="#equation-ee01" title="Link to this equation">#</a></span>\[c_t &lt; a_t
-\; \implies \;
-u' (c_t) = \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
-<p>When <span class="math notranslate nohighlight">\(c_t = a_t\)</span> we obviously have <span class="math notranslate nohighlight">\(u'(c_t) = u'(a_t)\)</span>,</p>
+<span class="eqno">(57.4)<a class="headerlink" href="#equation-ee01" title="Link to this equation">#</a></span>\[    c_t &lt; a_t
+    \; \implies \;
+    u' (c_t) = \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
 <p>When <span class="math notranslate nohighlight">\(c_t\)</span> hits the upper bound <span class="math notranslate nohighlight">\(a_t\)</span>, the
 strict inequality <span class="math notranslate nohighlight">\(u' (c_t) &gt; \beta R \,  \mathbb{E}_t  u'(c_{t+1})\)</span>
 can occur because <span class="math notranslate nohighlight">\(c_t\)</span> cannot increase sufficiently to attain equality.</p>
-<p>(The lower boundary case <span class="math notranslate nohighlight">\(c_t = 0\)</span> never arises at the optimum because
-<span class="math notranslate nohighlight">\(u'(0) = \infty\)</span>.)</p>
-<p>With some thought, one can show that <a class="reference internal" href="#equation-ee00">(57.3)</a> and <a class="reference internal" href="#equation-ee01">(57.4)</a> are
-equivalent to</p>
-<div class="math notranslate nohighlight" id="equation-eqeul0">
-<span class="eqno">(57.5)<a class="headerlink" href="#equation-eqeul0" title="Link to this equation">#</a></span>\[u' (c_t)
-= \max \left\{
-    \beta R \,  \mathbb{E}_t  u'(c_{t+1})  \,,\;  u'(a_t)
-\right\}\]</div>
+<p>The lower boundary case <span class="math notranslate nohighlight">\(c_t = 0\)</span> never arises along the optimal path because <span class="math notranslate nohighlight">\(u'(0) = \infty\)</span>.</p>
 </section>
 <section id="optimality-results">
 <h3><span class="section-number">57.2.3. </span>Optimality Results<a class="headerlink" href="#optimality-results" title="Link to this heading">#</a></h3>
@@ -431,284 +463,238 @@ equivalent to</p>
 <ol class="arabic simple">
 <li><p>For each <span class="math notranslate nohighlight">\((a,z) \in \mathsf S\)</span>, a unique optimal consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> exists</p></li>
 <li><p>This path is the unique feasible path from <span class="math notranslate nohighlight">\((a,z)\)</span> satisfying the
-Euler equality <a class="reference internal" href="#equation-eqeul0">(57.5)</a> and the transversality condition</p></li>
+Euler equations <a class="reference internal" href="#equation-ee00">(57.3)</a>-<a class="reference internal" href="#equation-ee01">(57.4)</a> and the transversality condition</p></li>
 </ol>
 <div class="math notranslate nohighlight" id="equation-eqtv">
-<span class="eqno">(57.6)<a class="headerlink" href="#equation-eqtv" title="Link to this equation">#</a></span>\[\lim_{t \to \infty} \beta^t \, \mathbb{E} \, [ u'(c_t) a_{t+1} ] = 0\]</div>
-<p>Moreover, there exists an <em>optimal consumption function</em>
+<span class="eqno">(57.5)<a class="headerlink" href="#equation-eqtv" title="Link to this equation">#</a></span>\[\lim_{t \to \infty} \beta^t \, \mathbb{E} \, [ u'(c_t) a_{t+1} ] = 0\]</div>
+<p>Moreover, there exists an <strong>optimal consumption policy</strong>
 <span class="math notranslate nohighlight">\(\sigma^* \colon \mathsf S \to \mathbb R_+\)</span> such that the path
 from <span class="math notranslate nohighlight">\((a,z)\)</span> generated by</p>
 <div class="math notranslate nohighlight">
 \[
-(a_0, z_0) = (a, z),
-\quad
-c_t = \sigma^*(a_t, Z_t)
-\quad \text{and} \quad
-a_{t+1} = R (a_t - c_t) + Y_{t+1}
+    (a_0, z_0) = (a, z),
+    \quad
+    c_t = \sigma^*(a_t, Z_t)
+    \quad \text{and} \quad
+    a_{t+1} = R (a_t - c_t) + Y_{t+1}
 \]</div>
-<p>satisfies both <a class="reference internal" href="#equation-eqeul0">(57.5)</a> and <a class="reference internal" href="#equation-eqtv">(57.6)</a>, and hence is the unique optimal
+<p>satisfies both the Euler equations <a class="reference internal" href="#equation-ee00">(57.3)</a>-<a class="reference internal" href="#equation-ee01">(57.4)</a> and <a class="reference internal" href="#equation-eqtv">(57.5)</a>, and hence is the unique optimal
 path from <span class="math notranslate nohighlight">\((a,z)\)</span>.</p>
 <p>Thus, to solve the optimization problem, we need to compute the policy <span class="math notranslate nohighlight">\(\sigma^*\)</span>.</p>
 </section>
 </section>
 <section id="computation">
-<span id="ifp-computation"></span><h2><a class="toc-backref" href="#id19" role="doc-backlink"><span class="section-number">57.3. </span>Computation</a><a class="headerlink" href="#computation" title="Link to this heading">#</a></h2>
-<p id="index-2">There are two standard ways to solve for <span class="math notranslate nohighlight">\(\sigma^*\)</span></p>
-<ol class="arabic simple">
-<li><p>time iteration using the Euler equality and</p></li>
-<li><p>value function iteration.</p></li>
-</ol>
-<p>Our investigation of the cake eating problem and stochastic optimal growth
-model suggests that time iteration will be faster and more accurate.</p>
-<p>This is the approach that we apply below.</p>
-<section id="time-iteration">
-<h3><span class="section-number">57.3.1. </span>Time Iteration<a class="headerlink" href="#time-iteration" title="Link to this heading">#</a></h3>
-<p>We can rewrite <a class="reference internal" href="#equation-eqeul0">(57.5)</a> to make it a statement about functions rather than
-random variables.</p>
-<p>In particular, consider the functional equation</p>
+<span id="ifp-computation"></span><h2><a class="toc-backref" href="#id20" role="doc-backlink"><span class="section-number">57.3. </span>Computation</a><a class="headerlink" href="#computation" title="Link to this heading">#</a></h2>
+<p id="index-2">We solve for the optimal consumption policy using time iteration and the
+endogenous grid method.</p>
+<p>Readers unfamiliar with the endogenous grid method should review the discussion
+in <a class="reference internal" href="cake_eating_egm.html"><span class="doc">Cake Eating V: The Endogenous Grid Method</span></a>.</p>
+<section id="solution-method">
+<h3><span class="section-number">57.3.1. </span>Solution Method<a class="headerlink" href="#solution-method" title="Link to this heading">#</a></h3>
+<p>We rewrite <a class="reference internal" href="#equation-ee01">(57.4)</a> to make it a statement about functions rather than
+random variables:</p>
 <div class="math notranslate nohighlight" id="equation-eqeul1">
-<span class="eqno">(57.7)<a class="headerlink" href="#equation-eqeul1" title="Link to this equation">#</a></span>\[(u' \circ \sigma)  (a, z)
-= \max \left\{
-\beta R \, \mathbb E_z (u' \circ \sigma)
-    [R (a - \sigma(a, z)) + \hat Y, \, \hat Z]
-\, , \;
-     u'(a)
-     \right\}\]</div>
-<p>where</p>
+<span class="eqno">(57.6)<a class="headerlink" href="#equation-eqeul1" title="Link to this equation">#</a></span>\[    (u' \circ \sigma)  (a, z)
+    = \beta R \, \sum_{z'}  (u' \circ \sigma)
+            [R (a - \sigma(a, z)) + y(z'), \, z'] \Pi(z, z')\]</div>
+<p>Here</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\((u' \circ \sigma)(s) := u'(\sigma(s))\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathbb E_z\)</span> conditions on current state <span class="math notranslate nohighlight">\(z\)</span> and <span class="math notranslate nohighlight">\(\hat X\)</span>
-indicates next period value of random variable <span class="math notranslate nohighlight">\(X\)</span> and</p></li>
+<li><p><span class="math notranslate nohighlight">\((u' \circ \sigma)(s) := u'(\sigma(s))\)</span>,</p></li>
+<li><p>primes indicate next period states (as well as derivatives), and</p></li>
 <li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the unknown function.</p></li>
 </ul>
-<p>We need a suitable class of candidate solutions for the optimal consumption
-policy.</p>
-<p>The right way to pick such a class is to consider what properties the solution
-is likely to have, in order to restrict the search space and ensure that
-iteration is well behaved.</p>
-<p>To this end, let <span class="math notranslate nohighlight">\(\mathscr C\)</span> be the space of continuous functions <span class="math notranslate nohighlight">\(\sigma \colon \mathbf S \to \mathbb R\)</span> such that <span class="math notranslate nohighlight">\(\sigma\)</span> is increasing in the first argument, <span class="math notranslate nohighlight">\(0 &lt; \sigma(a,z) \leq a\)</span> for all <span class="math notranslate nohighlight">\((a,z) \in \mathbf S\)</span>, and</p>
-<div class="math notranslate nohighlight" id="equation-ifpc4">
-<span class="eqno">(57.8)<a class="headerlink" href="#equation-ifpc4" title="Link to this equation">#</a></span>\[\sup_{(a,z) \in \mathbf S}
-\left| (u' \circ \sigma)(a,z) - u'(a) \right| &lt; \infty\]</div>
-<p>This will be our candidate class.</p>
-<p>In addition, let <span class="math notranslate nohighlight">\(K \colon \mathscr{C} \to \mathscr{C}\)</span> be defined as
-follows.</p>
-<p>For given <span class="math notranslate nohighlight">\(\sigma \in \mathscr{C}\)</span>, the value <span class="math notranslate nohighlight">\(K \sigma (a,z)\)</span> is the unique <span class="math notranslate nohighlight">\(c \in [0, a]\)</span> that solves</p>
-<div class="math notranslate nohighlight" id="equation-eqsifc">
-<span class="eqno">(57.9)<a class="headerlink" href="#equation-eqsifc" title="Link to this equation">#</a></span>\[u'(c)
-= \max \left\{
-           \beta R \, \mathbb E_z (u' \circ \sigma) \,
-           [R (a - c) + \hat Y, \, \hat Z]
-           \, , \;
-           u'(a)
-     \right\}\]</div>
-<p>We refer to <span class="math notranslate nohighlight">\(K\)</span> as the Coleman–Reffett operator.</p>
-<p>The operator <span class="math notranslate nohighlight">\(K\)</span> is constructed so that fixed points of <span class="math notranslate nohighlight">\(K\)</span>
-coincide with solutions to the functional equation <a class="reference internal" href="#equation-eqeul1">(57.7)</a>.</p>
-<p>It is shown in <span id="id12">[<a class="reference internal" href="zreferences.html#id270" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">Ma <em>et al.</em>, 2020</a>]</span> that the unique optimal policy can be
-computed by picking any <span class="math notranslate nohighlight">\(\sigma \in \mathscr{C}\)</span> and iterating with the
-operator <span class="math notranslate nohighlight">\(K\)</span> defined in <a class="reference internal" href="#equation-eqsifc">(57.9)</a>.</p>
-</section>
-<section id="some-technical-details">
-<h3><span class="section-number">57.3.2. </span>Some Technical Details<a class="headerlink" href="#some-technical-details" title="Link to this heading">#</a></h3>
-<p>The proof of the last statement is somewhat technical but here is a quick
-summary:</p>
-<p>It is shown in <span id="id13">[<a class="reference internal" href="zreferences.html#id270" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">Ma <em>et al.</em>, 2020</a>]</span> that <span class="math notranslate nohighlight">\(K\)</span> is a contraction mapping on
-<span class="math notranslate nohighlight">\(\mathscr{C}\)</span> under the metric</p>
+<p>The equality <a class="reference internal" href="#equation-eqeul1">(57.6)</a> holds at all interior choices, meaning <span class="math notranslate nohighlight">\(\sigma(a, z) &lt; a\)</span>.</p>
+<p>We aim to find a fixed point <span class="math notranslate nohighlight">\(\sigma\)</span> of <a class="reference internal" href="#equation-eqeul1">(57.6)</a>.</p>
+<p>To do so we use the EGM.</p>
+<p>Below we use the relationships <span class="math notranslate nohighlight">\(a_t = c_t + s_t\)</span> and <span class="math notranslate nohighlight">\(a_{t+1} = R s_t + y(z_{t+1})\)</span>.</p>
+<p>We begin with an exogenous savings grid <span class="math notranslate nohighlight">\(s_0 &lt; s_1 &lt; \cdots &lt; s_m\)</span> with <span class="math notranslate nohighlight">\(s_0 = 0\)</span>.</p>
+<p>We fix a current guess of the policy function <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<p>For each exogenous savings level <span class="math notranslate nohighlight">\(s_i\)</span> with <span class="math notranslate nohighlight">\(i \geq 1\)</span> and current state <span class="math notranslate nohighlight">\(z_j\)</span>, we set</p>
 <div class="math notranslate nohighlight">
 \[
-\rho(c, d) := \| \, u' \circ \sigma_1 - u' \circ \sigma_2 \, \|
-    := \sup_{s \in S} | \, u'(\sigma_1(s))  - u'(\sigma_2(s)) \, |
- \qquad \quad (\sigma_1, \sigma_2 \in \mathscr{C})
+    c_{ij} := (u')^{-1}
+        \left[
+            \beta R \, \sum_{z'}
+            u' [ \sigma(R s_i + y(z'), z') ] \Pi(z_j, z')
+        \right]
 \]</div>
-<p>which evaluates the maximal difference in terms of marginal utility.</p>
-<p>(The benefit of this measure of distance is that, while elements of <span class="math notranslate nohighlight">\(\mathscr C\)</span> are not generally bounded, <span class="math notranslate nohighlight">\(\rho\)</span> is always finite under our assumptions.)</p>
-<p>It is also shown that the metric <span class="math notranslate nohighlight">\(\rho\)</span> is complete on <span class="math notranslate nohighlight">\(\mathscr{C}\)</span>.</p>
-<p>In consequence, <span class="math notranslate nohighlight">\(K\)</span> has a unique fixed point <span class="math notranslate nohighlight">\(\sigma^* \in \mathscr{C}\)</span> and <span class="math notranslate nohighlight">\(K^n c \to \sigma^*\)</span> as <span class="math notranslate nohighlight">\(n \to \infty\)</span> for any <span class="math notranslate nohighlight">\(\sigma \in \mathscr{C}\)</span>.</p>
-<p>By the definition of <span class="math notranslate nohighlight">\(K\)</span>, the fixed points of <span class="math notranslate nohighlight">\(K\)</span> in <span class="math notranslate nohighlight">\(\mathscr{C}\)</span> coincide with the solutions to <a class="reference internal" href="#equation-eqeul1">(57.7)</a> in <span class="math notranslate nohighlight">\(\mathscr{C}\)</span>.</p>
-<p>As a consequence, the path <span class="math notranslate nohighlight">\(\{c_t\}\)</span> generated from <span class="math notranslate nohighlight">\((a_0,z_0) \in
-S\)</span> using policy function <span class="math notranslate nohighlight">\(\sigma^*\)</span> is the unique optimal path from
-<span class="math notranslate nohighlight">\((a_0,z_0) \in S\)</span>.</p>
-</section>
-</section>
-<section id="implementation">
-<h2><a class="toc-backref" href="#id20" role="doc-backlink"><span class="section-number">57.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
-<p id="index-3">We use the CRRA utility specification</p>
+<p>The Euler equation holds here because <span class="math notranslate nohighlight">\(i \geq 1\)</span> implies <span class="math notranslate nohighlight">\(s_i &gt; 0\)</span> and hence consumption is interior.</p>
+<p>For the boundary case <span class="math notranslate nohighlight">\(s_0 = 0\)</span> we set</p>
 <div class="math notranslate nohighlight">
 \[
-u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
+    c_{0j} := 0  \quad \text{for all j}
 \]</div>
-<p>The exogeneous state process <span class="math notranslate nohighlight">\(\{Z_t\}\)</span> defaults to a two-state Markov chain
-with state space <span class="math notranslate nohighlight">\(\{0, 1\}\)</span> and transition matrix <span class="math notranslate nohighlight">\(P\)</span>.</p>
-<p>Here we build a class called <code class="docutils literal notranslate"><span class="pre">IFP</span></code> that stores the model primitives.</p>
+<p>We then obtain a corresponding endogenous grid of current assets via</p>
+<div class="math notranslate nohighlight">
+\[
+    a^e_{ij} := c_{ij} + s_i.
+\]</div>
+<p>Notice that, for each <span class="math notranslate nohighlight">\(j\)</span>, we have <span class="math notranslate nohighlight">\(a^e_{0j} = c_{0j} = 0\)</span>.</p>
+<p>This anchors the interpolation at the correct value at the origin, since,
+without borrowing, consumption is zero when assets are zero.</p>
+<p>Our next guess of the policy function, which we write as <span class="math notranslate nohighlight">\(K\sigma\)</span>, is the linear interpolation of
+the interpolation points</p>
+<div class="math notranslate nohighlight">
+\[ \{(a^e_{0j}, c_{0j}), \ldots, (a^e_{mj}, c_{mj})\} \]</div>
+<p>for each <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>(The number of one-dimensional linear interpolations is equal to the size of <span class="math notranslate nohighlight">\(\mathsf Z\)</span>.)</p>
+</section>
+</section>
+<section id="numpy-implementation">
+<h2><a class="toc-backref" href="#id21" role="doc-backlink"><span class="section-number">57.4. </span>NumPy Implementation</a><a class="headerlink" href="#numpy-implementation" title="Link to this heading">#</a></h2>
+<p>In this section we’ll code up a NumPy version of the code that aims only for
+clarity, rather than efficiency.</p>
+<p>Once we have it working, we’ll produce a JAX version that’s far more efficient
+and check that we obtain the same results.</p>
+<p>We use the CRRA utility specification</p>
+<div class="math notranslate nohighlight">
+\[
+    u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
+\]</div>
+<p>Here are the utility-related functions:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp_data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>              <span class="c1"># Interest rate 1 + r</span>
-    <span class="p">(</span><span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>              <span class="c1"># Discount factor</span>
-    <span class="p">(</span><span class="s1">&#39;γ&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>              <span class="c1"># Preference parameter</span>
-    <span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:,</span> <span class="p">:]),</span>        <span class="c1"># Markov matrix for binary Z_t</span>
-    <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>           <span class="c1"># Income is Y_t = y[Z_t]</span>
-    <span class="p">(</span><span class="s1">&#39;asset_grid&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:])</span>   <span class="c1"># Grid (array)</span>
-<span class="p">]</span>
-
-<span class="nd">@jitclass</span><span class="p">(</span><span class="n">ifp_data</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">IFP</span><span class="p">:</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">r</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                 <span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>
-                 <span class="n">γ</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-                 <span class="n">P</span><span class="o">=</span><span class="p">((</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
-                    <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)),</span>
-                 <span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span>
-                 <span class="n">grid_max</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
-                 <span class="n">grid_size</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">r</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span> <span class="o">=</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">P</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">asset_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
-
-        <span class="c1"># Recall that we need R β &lt; 1 for convergence.</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Stability condition violated.&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">u_prime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u_prime</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">:</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
+<span class="n">u_prime_inv</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">:</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">γ</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Next we provide a function to compute the difference</p>
-<div class="math notranslate nohighlight" id="equation-euler-diff-eq">
-<span class="eqno">(57.10)<a class="headerlink" href="#equation-euler-diff-eq" title="Link to this equation">#</a></span>\[u'(c) - \max \left\{
-           \beta R \, \mathbb E_z (u' \circ \sigma) \,
-           [R (a - c) + \hat Y, \, \hat Z]
-           \, , \;
-           u'(a)
-     \right\}\]</div>
+<section id="id12">
+<h3><span class="section-number">57.4.1. </span>Set Up<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>Here we build a class called <code class="docutils literal notranslate"><span class="pre">IFPNumPy</span></code> that stores the model primitives.</p>
+<p>The exogenous state process <span class="math notranslate nohighlight">\(\{Z_t\}\)</span> defaults to a two-state Markov chain
+with transition matrix <span class="math notranslate nohighlight">\(\Pi\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">euler_diff</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">σ_vals</span><span class="p">,</span> <span class="n">ifp</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The difference between the left- and right-hand side</span>
-<span class="sd">    of the Euler Equation, given current policy σ.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">IFPNumPy</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">R</span><span class="p">:</span> <span class="nb">float</span>                  <span class="c1"># Gross interest rate R = 1 + r</span>
+    <span class="n">β</span><span class="p">:</span> <span class="nb">float</span>                  <span class="c1"># Discount factor</span>
+    <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span>                  <span class="c1"># Preference parameter</span>
+    <span class="n">Π</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>             <span class="c1"># Markov matrix for exogenous shock</span>
+    <span class="n">z_grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>        <span class="c1"># Markov state values for Z_t</span>
+    <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>             <span class="c1"># Exogenous savings grid</span>
 
-<span class="sd">        * c is the consumption choice</span>
-<span class="sd">        * (a, z) is the state, with z in {0, 1}</span>
-<span class="sd">        * σ_vals is a policy represented as a matrix.</span>
-<span class="sd">        * ifp is an instance of IFP</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_ifp</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+               <span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>
+               <span class="n">γ</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+               <span class="n">Π</span><span class="o">=</span><span class="p">((</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
+                  <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)),</span>
+               <span class="n">z_grid</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)),</span>
+               <span class="n">savings_grid_max</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+               <span class="n">savings_grid_size</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">savings_grid_max</span><span class="p">,</span> <span class="n">savings_grid_size</span><span class="p">)</span>
+    <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Π</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">r</span>
+    <span class="k">assert</span> <span class="n">R</span> <span class="o">*</span> <span class="n">β</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Stability condition violated.&quot;</span>
+    <span class="k">return</span> <span class="n">IFPNumPy</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+<span class="c1"># Set y(z) = exp(z)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="solver">
+<h3><span class="section-number">57.4.2. </span>Solver<a class="headerlink" href="#solver" title="Link to this heading">#</a></h3>
+<p>Here is the operator <span class="math notranslate nohighlight">\(K\)</span> that transforms current guess <span class="math notranslate nohighlight">\(\sigma\)</span> into next period
+guess <span class="math notranslate nohighlight">\(K\sigma\)</span>.</p>
+<p>In practice, it takes in</p>
+<ul class="simple">
+<li><p>a guess of optimal consumption values <span class="math notranslate nohighlight">\(c_{ij}\)</span>, stored as <code class="docutils literal notranslate"><span class="pre">c_vals</span></code></p></li>
+<li><p>and a corresponding set of endogenous grid points <span class="math notranslate nohighlight">\(a^e_{ij}\)</span>, stored as <code class="docutils literal notranslate"><span class="pre">ae_vals</span></code></p></li>
+</ul>
+<p>These are converted into a consumption policy <span class="math notranslate nohighlight">\(a \mapsto \sigma(a, z_j)\)</span> by
+linear interpolation of <span class="math notranslate nohighlight">\((a^e_{ij}, c_{ij})\)</span> over <span class="math notranslate nohighlight">\(i\)</span> for each <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">K_numpy</span><span class="p">(</span>
+        <span class="n">c_vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">ae_vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">ifp_numpy</span><span class="p">:</span> <span class="n">IFPNumPy</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Euler equation operator for the IFP model using the</span>
+<span class="sd">    Endogenous Grid Method.</span>
+
+<span class="sd">    This operator implements one iteration of the EGM algorithm to</span>
+<span class="sd">    update the consumption policy function.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ifp_numpy</span>
+    <span class="n">n_a</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">n_z</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
 
-    <span class="c1"># Simplify names</span>
-    <span class="n">R</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span>  <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">γ</span>
-    <span class="n">asset_grid</span><span class="p">,</span> <span class="n">u_prime</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">asset_grid</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">u_prime</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">new_c_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">c_vals</span><span class="p">)</span>
 
-    <span class="c1"># Convert policy into a function by linear interpolation</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">σ</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">asset_grid</span><span class="p">,</span> <span class="n">σ_vals</span><span class="p">[:,</span> <span class="n">z</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_a</span><span class="p">):</span>  <span class="c1"># Start from 1 for positive savings levels</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_z</span><span class="p">):</span>
+            <span class="c1"># Compute Σ_z&#39; u&#39;(σ(R s_i + y(z&#39;), z&#39;)) Π[z_j, z&#39;]</span>
+            <span class="n">expectation</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_z</span><span class="p">):</span>
+                <span class="c1"># Set up the function a -&gt; σ(a, z_k)</span>
+                <span class="n">σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">[:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="n">k</span><span class="p">])</span>
+                <span class="n">next_c</span> <span class="o">=</span> <span class="n">σ</span><span class="p">(</span><span class="n">R</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">(</span><span class="n">z_grid</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+                <span class="n">expectation</span> <span class="o">+=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">next_c</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">Π</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+            <span class="c1"># Calculate updated c_{ij} values</span>
+            <span class="n">new_c_vals</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">R</span> <span class="o">*</span> <span class="n">expectation</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
 
-    <span class="c1"># Calculate the expectation conditional on current z</span>
-    <span class="n">expect</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="k">for</span> <span class="n">z_hat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">expect</span> <span class="o">+=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">σ</span><span class="p">(</span><span class="n">R</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">z_hat</span><span class="p">],</span> <span class="n">z_hat</span><span class="p">))</span> <span class="o">*</span> <span class="n">P</span><span class="p">[</span><span class="n">z</span><span class="p">,</span> <span class="n">z_hat</span><span class="p">]</span>
+    <span class="n">new_ae_vals</span> <span class="o">=</span> <span class="n">new_c_vals</span> <span class="o">+</span> <span class="n">s</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="nb">max</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">R</span> <span class="o">*</span> <span class="n">expect</span><span class="p">,</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">new_c_vals</span><span class="p">,</span> <span class="n">new_ae_vals</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Note that we use linear interpolation along the asset grid to approximate the
-policy function.</p>
-<p>The next step is to obtain the root of the Euler difference.</p>
+<p>To solve the model we use a simple while loop.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">ifp</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_model_numpy</span><span class="p">(</span>
+        <span class="n">ifp_numpy</span><span class="p">:</span> <span class="n">IFPNumPy</span><span class="p">,</span>
+        <span class="n">c_vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1_000</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The operator K.</span>
+<span class="sd">    Solve the model using time iteration with EGM.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">σ_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">σ</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ifp</span><span class="o">.</span><span class="n">asset_grid</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span><span class="n">euler_diff</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">ifp</span><span class="p">))</span>
-            <span class="n">σ_new</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">root</span>
-
-    <span class="k">return</span> <span class="n">σ_new</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>With the operator <span class="math notranslate nohighlight">\(K\)</span> in hand, we can choose an initial condition and
-start to iterate.</p>
-<p>The following function iterates to convergence and returns the approximate
-optimal policy.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_model_time_iter</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>    <span class="c1"># Class with model information</span>
-                          <span class="n">σ</span><span class="p">,</span>        <span class="c1"># Initial condition</span>
-                          <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                          <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-                          <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="n">print_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
-
-    <span class="c1"># Set up loop</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ae_vals</span> <span class="o">=</span> <span class="n">c_vals</span>  <span class="c1"># Initial condition</span>
     <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
 
-    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
-        <span class="n">σ_new</span> <span class="o">=</span> <span class="n">K</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">σ</span> <span class="o">-</span> <span class="n">σ_new</span><span class="p">))</span>
-        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error at iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="n">σ</span> <span class="o">=</span> <span class="n">σ_new</span>
+    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="n">new_c_vals</span><span class="p">,</span> <span class="n">new_ae_vals</span> <span class="o">=</span> <span class="n">K_numpy</span><span class="p">(</span><span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">,</span> <span class="n">ifp_numpy</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_c_vals</span> <span class="o">-</span> <span class="n">c_vals</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span> <span class="o">=</span> <span class="n">new_c_vals</span><span class="p">,</span> <span class="n">new_ae_vals</span>
 
-    <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to converge!&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">σ_new</span>
+    <span class="k">return</span> <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s carry this out using the default parameters of the <code class="docutils literal notranslate"><span class="pre">IFP</span></code> class:</p>
+<p>Let’s road test the EGM code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp</span> <span class="o">=</span> <span class="n">IFP</span><span class="p">()</span>
-
-<span class="c1"># Set up initial consumption policy of consuming all assets at all z</span>
-<span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ifp</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
-<span class="n">a_grid</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">asset_grid</span>
-<span class="n">a_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">)</span>
-<span class="n">σ_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">a_grid</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">z_size</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">σ_star</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.011629589188244083.
-Error at iteration 50 is 0.0003857183099458261.
-
-Converged in 60 iterations.
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp_numpy</span> <span class="o">=</span> <span class="n">create_ifp</span><span class="p">()</span>
+<span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ifp_numpy</span>
+<span class="n">initial_c_vals</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">))</span>
+<span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span> <span class="o">=</span> <span class="n">solve_model_numpy</span><span class="p">(</span><span class="n">ifp_numpy</span><span class="p">,</span> <span class="n">initial_c_vals</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Here’s a plot of the resulting policy for each exogeneous state <span class="math notranslate nohighlight">\(z\)</span>.</p>
+<p>Here’s a plot of the optimal consumption policy for each <span class="math notranslate nohighlight">\(z\)</span> state</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">z_size</span><span class="p">):</span>
-    <span class="n">label</span> <span class="o">=</span> <span class="sa">rf</span><span class="s1">&#39;$\sigma^*(\cdot, </span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s1">)$&#39;</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;bad state&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;good state&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;assets&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;consumption&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -716,29 +702,259 @@ Converged in 60 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ef6a2c4615656290f4e8cca513853fb3830e44c58f034deb5748ae1fc61bc141.png" src="_images/ef6a2c4615656290f4e8cca513853fb3830e44c58f034deb5748ae1fc61bc141.png" />
+<img alt="_images/ed22ef9c9a5e32164069930bab599eb1dc557f2e559376123570306e3c6aa455.png" src="_images/ed22ef9c9a5e32164069930bab599eb1dc557f2e559376123570306e3c6aa455.png" />
 </div>
 </div>
-<p>The following exercises walk you through several applications where policy functions are computed.</p>
+</section>
+</section>
+<section id="jax-implementation">
+<h2><a class="toc-backref" href="#id22" role="doc-backlink"><span class="section-number">57.5. </span>JAX Implementation</a><a class="headerlink" href="#jax-implementation" title="Link to this heading">#</a></h2>
+<p id="index-3">Now we write a more efficient JAX version.</p>
+<section id="id13">
+<h3><span class="section-number">57.5.1. </span>Set Up<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>We start with a class called <code class="docutils literal notranslate"><span class="pre">IFP</span></code> that stores the model primitives.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">IFP</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">R</span><span class="p">:</span> <span class="nb">float</span>                  <span class="c1"># Gross interest rate R = 1 + r</span>
+    <span class="n">β</span><span class="p">:</span> <span class="nb">float</span>                  <span class="c1"># Discount factor</span>
+    <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span>                  <span class="c1"># Preference parameter</span>
+    <span class="n">Π</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>            <span class="c1"># Markov matrix for exogenous shock</span>
+    <span class="n">z_grid</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>       <span class="c1"># Markov state values for Z_t</span>
+    <span class="n">s</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>            <span class="c1"># Exogenous savings grid</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_ifp</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+               <span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>
+               <span class="n">γ</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+               <span class="n">Π</span><span class="o">=</span><span class="p">((</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
+                  <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)),</span>
+               <span class="n">z_grid</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)),</span>
+               <span class="n">savings_grid_max</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+               <span class="n">savings_grid_size</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">savings_grid_max</span><span class="p">,</span> <span class="n">savings_grid_size</span><span class="p">)</span>
+    <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Π</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">r</span>
+    <span class="k">assert</span> <span class="n">R</span> <span class="o">*</span> <span class="n">β</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Stability condition violated.&quot;</span>
+    <span class="k">return</span> <span class="n">IFP</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+<span class="c1"># Set y(z) = exp(z)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id14">
+<h3><span class="section-number">57.5.2. </span>Solver<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>Here is the operator <span class="math notranslate nohighlight">\(K\)</span> that transforms current guess <span class="math notranslate nohighlight">\(\sigma\)</span> into next period
+guess <span class="math notranslate nohighlight">\(K\sigma\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span>
+        <span class="n">c_vals</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+        <span class="n">ae_vals</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+        <span class="n">ifp</span><span class="p">:</span> <span class="n">IFP</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Euler equation operator for the IFP model using the</span>
+<span class="sd">    Endogenous Grid Method.</span>
+
+<span class="sd">    This operator implements one iteration of the EGM algorithm to</span>
+<span class="sd">    update the consumption policy function.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ifp</span>
+    <span class="n">n_a</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">n_z</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
+
+    <span class="c1"># Function to compute consumption for one (i, j) pair where i &gt;= 1</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_c_ij</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+
+        <span class="c1"># For each k, compute u&#39;(σ(R * s_i + y(z_k), z_k))</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">mu</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="n">next_a</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">(</span><span class="n">z_grid</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="c1"># Interpolate to get consumption at next_a in state k</span>
+            <span class="n">next_c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">next_a</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">[:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="n">k</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">next_c</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
+
+        <span class="c1"># Compute u&#39;(σ(R * s_i + y(z_k), z_k)) at all k via vmap</span>
+        <span class="n">mu_vectorized</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+        <span class="n">marginal_utils</span> <span class="o">=</span> <span class="n">mu_vectorized</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_z</span><span class="p">))</span>
+        <span class="c1"># Compute expectation: Σ_k u&#39;(σ(...)) * Π[j, k]</span>
+        <span class="n">expectation</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">marginal_utils</span> <span class="o">*</span> <span class="n">Π</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="c1"># Invert to get consumption</span>
+        <span class="k">return</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">R</span> <span class="o">*</span> <span class="n">expectation</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
+
+    <span class="c1"># Set up index grids for vmap computation of all c_{ij}</span>
+    <span class="n">i_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_a</span><span class="p">)</span>
+    <span class="n">j_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_z</span><span class="p">)</span>
+
+    <span class="c1"># vmap over j for each i</span>
+    <span class="n">compute_c_i</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_c_ij</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="c1"># vmap over i</span>
+    <span class="n">compute_c</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">compute_c_i</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j_grid</span><span class="p">))</span>
+
+    <span class="c1"># Compute consumption for i &gt;= 1</span>
+    <span class="n">new_c_interior</span> <span class="o">=</span> <span class="n">compute_c</span><span class="p">(</span><span class="n">i_grid</span><span class="p">)</span>  <span class="c1"># Shape: (n_a-1, n_z)</span>
+
+    <span class="c1"># For i = 0, set consumption to 0</span>
+    <span class="n">new_c_boundary</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_z</span><span class="p">))</span>
+
+    <span class="c1"># Concatenate boundary and interior</span>
+    <span class="n">new_c_vals</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">new_c_boundary</span><span class="p">,</span> <span class="n">new_c_interior</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Compute endogenous asset grid: a^e_{ij} = c_{ij} + s_i</span>
+    <span class="n">new_ae_vals</span> <span class="o">=</span> <span class="n">new_c_vals</span> <span class="o">+</span> <span class="n">s</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">new_c_vals</span><span class="p">,</span> <span class="n">new_ae_vals</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a jit-accelerated iterative routine to solve the model using this operator.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span><span class="n">ifp</span><span class="p">:</span> <span class="n">IFP</span><span class="p">,</span>
+                <span class="n">c_vals</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
+                <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve the model using time iteration with EGM.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">condition</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">body</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">new_c_vals</span><span class="p">,</span> <span class="n">new_ae_vals</span> <span class="o">=</span> <span class="n">K</span><span class="p">(</span><span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">,</span> <span class="n">ifp</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_c_vals</span> <span class="o">-</span> <span class="n">c_vals</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">new_c_vals</span><span class="p">,</span> <span class="n">new_ae_vals</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span>
+
+    <span class="n">ae_vals</span> <span class="o">=</span> <span class="n">c_vals</span>  
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">final_loop_state</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
+    <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">final_loop_state</span>
+
+    <span class="k">return</span> <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="test-run">
+<h3><span class="section-number">57.5.3. </span>Test run<a class="headerlink" href="#test-run" title="Link to this heading">#</a></h3>
+<p>Let’s road test the EGM code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp</span> <span class="o">=</span> <span class="n">create_ifp</span><span class="p">()</span>
+<span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ifp</span>
+<span class="n">c_vals_init</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">))</span>
+<span class="n">c_vals_jax</span><span class="p">,</span> <span class="n">ae_vals_jax</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">c_vals_init</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To verify the correctness of our JAX implementation, let’s compare it with the NumPy version we developed earlier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the results</span>
+<span class="n">max_c_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">c_vals</span><span class="p">)</span> <span class="o">-</span> <span class="n">c_vals_jax</span><span class="p">))</span>
+<span class="n">max_ae_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">)</span> <span class="o">-</span> <span class="n">ae_vals_jax</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum difference in consumption policy: </span><span class="si">{</span><span class="n">max_c_diff</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum difference in asset grid:        </span><span class="si">{</span><span class="n">max_ae_diff</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum difference in consumption policy: 1.33e-15
+Maximum difference in asset grid:        3.55e-15
+</pre></div>
+</div>
+</div>
+</div>
+<p>The maximum differences are on the order of <span class="math notranslate nohighlight">\(10^{-15}\)</span> or smaller, which is essentially machine precision for 64-bit floating point arithmetic.</p>
+<p>This confirms that our JAX implementation produces identical results to the NumPy version, validating the correctness of our vectorized JAX code.</p>
+<p>Here’s a plot of the optimal policy for each <span class="math notranslate nohighlight">\(z\)</span> state</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;bad state&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;good state&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;assets&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;consumption&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ed22ef9c9a5e32164069930bab599eb1dc557f2e559376123570306e3c6aa455.png" src="_images/ed22ef9c9a5e32164069930bab599eb1dc557f2e559376123570306e3c6aa455.png" />
+</div>
+</div>
+</section>
+<section id="dynamics">
+<h3><span class="section-number">57.5.4. </span>Dynamics<a class="headerlink" href="#dynamics" title="Link to this heading">#</a></h3>
+<p>To begin to understand the long run asset levels held by households under the default parameters, let’s look at the
+45 degree diagram showing the law of motion for assets under the optimal consumption policy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;low income&#39;</span><span class="p">,</span> <span class="s1">&#39;high income&#39;</span><span class="p">)):</span>
+    <span class="c1"># Interpolate consumption policy on the savings grid</span>
+    <span class="n">c_on_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">[:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="n">k</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">R</span> <span class="o">*</span> <span class="p">(</span><span class="n">s</span> <span class="o">-</span> <span class="n">c_on_grid</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">(</span><span class="n">z_grid</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;current assets&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;next period assets&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b36ffedfd814fabc91a5dffb4bee6ade20c67bf56e5dc336822782dd6d5d99fa.png" src="_images/b36ffedfd814fabc91a5dffb4bee6ade20c67bf56e5dc336822782dd6d5d99fa.png" />
+</div>
+</div>
+<p>The unbroken lines show the update function for assets at each <span class="math notranslate nohighlight">\(z\)</span>, which is</p>
+<div class="math notranslate nohighlight">
+\[
+    a \mapsto R (a - \sigma^*(a, z)) + y(z')
+\]</div>
+<p>where we plot this for a particular realization <span class="math notranslate nohighlight">\(z' = z\)</span>.</p>
+<p>The dashed line is the 45 degree line.</p>
+<p>The figure suggests that the dynamics will be stable — assets do not diverge
+even in the highest state.</p>
+<p>In fact there is a unique stationary distribution of assets that we can calculate by simulation – we examine this below.</p>
+<ul class="simple">
+<li><p>Can be proved via theorem 2 of <span id="id15">[<a class="reference internal" href="zreferences.html#id187" title="Hugo A Hopenhayn and Edward C Prescott. Stochastic Monotonicity and Stationary Distributions for Dynamic Economies. Econometrica, 60(6):1387–1406, 1992.">Hopenhayn and Prescott, 1992</a>]</span>.</p></li>
+<li><p>It represents the long run dispersion of assets across households when households have idiosyncratic shocks.</p></li>
+</ul>
+</section>
 <section id="a-sanity-check">
-<h3><span class="section-number">57.4.1. </span>A Sanity Check<a class="headerlink" href="#a-sanity-check" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.5.5. </span>A Sanity Check<a class="headerlink" href="#a-sanity-check" title="Link to this heading">#</a></h3>
 <p>One way to check our results is to</p>
 <ul class="simple">
 <li><p>set labor income to zero in each state and</p></li>
 <li><p>set the gross interest rate <span class="math notranslate nohighlight">\(R\)</span> to unity.</p></li>
 </ul>
-<p>In this case, our income fluctuation problem is just a cake eating problem.</p>
-<p>We know that, in this case, the value function and optimal consumption policy
-are given by</p>
+<p>In this case, our income fluctuation problem is just a CRRA cake eating problem.</p>
+<p>Then the value function and optimal consumption policy are given by</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">c_star</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">):</span>
-
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">γ</span><span class="p">))</span> <span class="o">*</span> <span class="n">x</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">v_star</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">):</span>
-
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">γ</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -747,54 +963,43 @@ are given by</p>
 <p>Let’s see if we match up:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp_cake_eating</span> <span class="o">=</span> <span class="n">IFP</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
-
-<span class="n">σ_star</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">ifp_cake_eating</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp_cake_eating</span> <span class="o">=</span> <span class="n">create_ifp</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">z_grid</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">))</span>
+<span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ifp_cake_eating</span>
+<span class="n">c_vals_init</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">))</span>
+<span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">ifp_cake_eating</span><span class="p">,</span> <span class="n">c_vals_init</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;numerical&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">c_star</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">γ</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;analytical&#39;</span><span class="p">)</span>
-
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;numerical&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">c_star</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ifp_cake_eating</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">ifp_cake_eating</span><span class="o">.</span><span class="n">γ</span><span class="p">),</span>
+        <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;analytical&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;assets&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;consumption&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.02333227263054538.
-Error at iteration 50 is 0.005301238424249455.
-Error at iteration 75 is 0.0019706324625650695.
-Error at iteration 100 is 0.0008675521337955794.
-Error at iteration 125 is 0.00041073542212261005.
-Error at iteration 150 is 0.00020120334010526042.
-Error at iteration 175 is 0.00010021430795070785.
-
-Converged in 176 iterations.
-</pre></div>
-</div>
-<img alt="_images/721300121a62a287c784c7ea0b1df82241b535468554f248291f728a8cec694a.png" src="_images/721300121a62a287c784c7ea0b1df82241b535468554f248291f728a8cec694a.png" />
+<img alt="_images/d1759e29acb00ca43c5edf6904df443eb3328009204a3194384500088a040388.png" src="_images/d1759e29acb00ca43c5edf6904df443eb3328009204a3194384500088a040388.png" />
 </div>
 </div>
-<p>Success!</p>
+<p>This looks pretty good.</p>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id21" role="doc-backlink"><span class="section-number">57.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id23" role="doc-backlink"><span class="section-number">57.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="ifp_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 57.1 </span></p>
 <section id="exercise-content">
 <p>Let’s consider how the interest rate affects consumption.</p>
-<p>Reproduce the following figure, which shows (approximately) optimal consumption policies for different interest rates</p>
-<img alt="_images/ifp_policies.png" class="align-center" src="_images/ifp_policies.png" />
 <ul class="simple">
-<li><p>Other than <code class="docutils literal notranslate"><span class="pre">r</span></code>, all parameters are at their default values.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">r</span></code> steps through <code class="docutils literal notranslate"><span class="pre">np.linspace(0,</span> <span class="pre">0.04,</span> <span class="pre">4)</span></code>.</p></li>
-<li><p>Consumption is plotted against assets for income shock fixed at the smallest value.</p></li>
+<li><p>Step <code class="docutils literal notranslate"><span class="pre">r</span></code> through <code class="docutils literal notranslate"><span class="pre">np.linspace(0,</span> <span class="pre">0.016,</span> <span class="pre">4)</span></code>.</p></li>
+<li><p>Other than <code class="docutils literal notranslate"><span class="pre">r</span></code>, hold all parameters at their default values.</p></li>
+<li><p>Plot consumption against assets for income shock fixed at the smallest value.</p></li>
 </ul>
-<p>The figure shows that higher interest rates boost savings and hence suppress consumption.</p>
+<p>Your figure should show that, for this model, higher interest rates
+suppress consumption (because they encourage more savings).</p>
 </section>
 </div>
 <div class="solution dropdown admonition" id="ifp-solution-1">
@@ -804,13 +1009,16 @@ Converged in 176 iterations.
 <p>Here’s one solution:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># With β=0.96, we need R*β &lt; 1, so r &lt; 0.0416</span>
+<span class="n">r_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">r_val</span> <span class="ow">in</span> <span class="n">r_vals</span><span class="p">:</span>
-    <span class="n">ifp</span> <span class="o">=</span> <span class="n">IFP</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r_val</span><span class="p">)</span>
-    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ifp</span><span class="o">.</span><span class="n">asset_grid</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$r = </span><span class="si">{</span><span class="n">r_val</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+    <span class="n">ifp</span> <span class="o">=</span> <span class="n">create_ifp</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r_val</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ifp</span>
+    <span class="n">c_vals_init</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">))</span>
+    <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">c_vals_init</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$r = </span><span class="si">{</span><span class="n">r_val</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;asset level&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;consumption (low income)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -819,7 +1027,7 @@ Converged in 176 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cd85b7e307fd28c3587bd4a98df9354c6bb2f9fb06abcac2e527de26a9770e99.png" src="_images/cd85b7e307fd28c3587bd4a98df9354c6bb2f9fb06abcac2e527de26a9770e99.png" />
+<img alt="_images/7d5113f675c3078dcfd7b8b3dd81b682c01773fb9a0fc0ae386a57f500bb21ae.png" src="_images/7d5113f675c3078dcfd7b8b3dd81b682c01773fb9a0fc0ae386a57f500bb21ae.png" />
 </div>
 </div>
 </section>
@@ -828,107 +1036,96 @@ Converged in 176 iterations.
 
 <p class="admonition-title"><span class="caption-number">Exercise 57.2 </span></p>
 <section id="exercise-content">
-<p>Now let’s consider the long run asset levels held by households under the
-default parameters.</p>
-<p>The following figure is a 45 degree diagram showing the law of motion for assets when consumption is optimal</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp</span> <span class="o">=</span> <span class="n">IFP</span><span class="p">()</span>
-
-<span class="n">σ_star</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">asset_grid</span>
-<span class="n">R</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">y</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">lb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;low income&#39;</span><span class="p">,</span> <span class="s1">&#39;high income&#39;</span><span class="p">)):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">R</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">σ_star</span><span class="p">[:,</span> <span class="n">z</span><span class="p">])</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">lb</span><span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;current assets&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;next period assets&#39;</span><span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/49f5caf1e886bdcbe6f1a4e2538e1731af21b88fe67a5751f84868327014d82f.png" src="_images/49f5caf1e886bdcbe6f1a4e2538e1731af21b88fe67a5751f84868327014d82f.png" />
-</div>
-</div>
-<p>The unbroken lines show the update function for assets at each <span class="math notranslate nohighlight">\(z\)</span>, which is</p>
-<div class="math notranslate nohighlight">
-\[
-a \mapsto R (a - \sigma^*(a, z)) + y(z)
-\]</div>
-<p>The dashed line is the 45 degree line.</p>
-<p>We can see from the figure that the dynamics will be stable — assets do not
-diverge even in the highest state.</p>
-<p>In fact there is a unique stationary distribution of assets that we can calculate by simulation</p>
-<ul class="simple">
-<li><p>Can be proved via theorem 2 of <span id="id14">[<a class="reference internal" href="zreferences.html#id187" title="Hugo A Hopenhayn and Edward C Prescott. Stochastic Monotonicity and Stationary Distributions for Dynamic Economies. Econometrica, 60(6):1387–1406, 1992.">Hopenhayn and Prescott, 1992</a>]</span>.</p></li>
-<li><p>It represents the long run dispersion of assets across households when households have idiosyncratic shocks.</p></li>
-</ul>
-<p>Ergodicity is valid here, so stationary probabilities can be calculated by averaging over a single long time series.</p>
-<p>Hence to approximate the stationary distribution we can simulate a long time
-series for assets and histogram it.</p>
-<p>Your task is to generate such a histogram.</p>
-<ul class="simple">
-<li><p>Use a single time series <span class="math notranslate nohighlight">\(\{a_t\}\)</span> of length 500,000.</p></li>
-<li><p>Given the length of this time series, the initial condition <span class="math notranslate nohighlight">\((a_0,
-z_0)\)</span> will not matter.</p></li>
-<li><p>You might find it helpful to use the <code class="docutils literal notranslate"><span class="pre">MarkovChain</span></code> class from <code class="docutils literal notranslate"><span class="pre">quantecon</span></code>.</p></li>
-</ul>
+<p>Let’s approximate the stationary distribution by simulation.</p>
+<p>Run a large number of households forward for <span class="math notranslate nohighlight">\(T\)</span> periods and then histogram the
+cross-sectional distribution of assets.</p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">num_households=50_000,</span> <span class="pre">T=500</span></code>.</p>
 </section>
 </div>
 <div class="solution dropdown admonition" id="ifp-solution-3">
 
 <p class="admonition-title">Solution</p>
 <section id="solution-content">
-<p>First we write a function to compute a long asset series.</p>
+<p>First we write a function to simulate many households in parallel using JAX.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_asset_series</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_asset_stationary</span><span class="p">(</span>
+        <span class="n">ifp</span><span class="p">,</span> <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">,</span> <span class="n">num_households</span><span class="o">=</span><span class="mi">50_000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Simulates a time series of length T for assets, given optimal</span>
-<span class="sd">    savings behavior.</span>
+<span class="sd">    Simulates num_households households for T periods to approximate</span>
+<span class="sd">    the stationary distribution of assets.</span>
+
+<span class="sd">    By ergodicity, simulating many households for moderate time is equivalent to</span>
+<span class="sd">    simulating one household for very long time, but parallelizes better.</span>
 
 <span class="sd">    ifp is an instance of IFP</span>
+<span class="sd">    c_vals, ae_vals are the consumption policy and endogenous grid from</span>
+<span class="sd">    solve_model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">P</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">R</span>  <span class="c1"># Simplify names</span>
+    <span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ifp</span>
+    <span class="n">n_z</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
 
-    <span class="c1"># Solve for the optimal policy</span>
-    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">asset_grid</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">[:,</span> <span class="n">z</span><span class="p">])</span>
+    <span class="c1"># Create interpolation function for consumption policy</span>
+    <span class="c1"># Interpolate on the endogenous grid</span>
+    <span class="n">σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">z_idx</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">[:,</span> <span class="n">z_idx</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="n">z_idx</span><span class="p">])</span>
 
-    <span class="c1"># Simulate the exogeneous state process</span>
-    <span class="n">mc</span> <span class="o">=</span> <span class="n">MarkovChain</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
-    <span class="n">z_seq</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="c1"># Simulate one household forward</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">simulate_one_household</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
 
-    <span class="c1"># Simulate the asset path</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">z_seq</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
-        <span class="n">a</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">σ</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">z</span><span class="p">))</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">z</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">a</span>
+        <span class="c1"># Random initial state (a, z)</span>
+        <span class="n">key1</span><span class="p">,</span> <span class="n">key2</span><span class="p">,</span> <span class="n">key3</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">z_idx</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">key1</span><span class="p">,</span> <span class="n">n_z</span><span class="p">)</span>
+        <span class="c1"># Start with random assets drawn from [0, savings_grid_max/2]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key3</span><span class="p">,</span> <span class="n">minval</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Simulate forward T periods</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">key_t</span><span class="p">):</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">z_idx</span> <span class="o">=</span> <span class="n">state</span>
+            <span class="c1"># Consume based on current state</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">σ</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">z_idx</span><span class="p">)</span>
+            <span class="c1"># Draw next shock</span>
+            <span class="n">z_next_idx</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">key_t</span><span class="p">,</span> <span class="n">n_z</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">Π</span><span class="p">[</span><span class="n">z_idx</span><span class="p">])</span>
+            <span class="c1"># Update assets: a&#39; = R*(a - c) + Y&#39;</span>
+            <span class="n">z_next</span> <span class="o">=</span> <span class="n">z_grid</span><span class="p">[</span><span class="n">z_next_idx</span><span class="p">]</span>
+            <span class="n">a_next</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">(</span><span class="n">z_next</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">a_next</span><span class="p">,</span> <span class="n">z_next_idx</span><span class="p">),</span> <span class="kc">None</span>
+
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key2</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+        <span class="n">initial_state</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">z_idx</span>
+        <span class="n">final_state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">a_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">final_state</span>
+        <span class="k">return</span> <span class="n">a_final</span>
+
+    <span class="c1"># Vectorize over many households</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num_households</span><span class="p">)</span>
+    <span class="n">sim_all_households</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">simulate_one_household</span><span class="p">)</span>
+    <span class="n">assets</span> <span class="o">=</span> <span class="n">sim_all_households</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">assets</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now we call the function, generate the series and then histogram it:</p>
+<p>Now we call the function, generate the asset distribution and histogram it:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp</span> <span class="o">=</span> <span class="n">IFP</span><span class="p">()</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">compute_asset_series</span><span class="p">(</span><span class="n">ifp</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp</span> <span class="o">=</span> <span class="n">create_ifp</span><span class="p">()</span>
+<span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ifp</span>
+<span class="n">c_vals_init</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">))</span>
+<span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">c_vals_init</span><span class="p">)</span>
+<span class="n">assets</span> <span class="o">=</span> <span class="n">compute_asset_stationary</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">assets</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;assets&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4916e716d23493f430f71209b9372c6cd6be1882b56b8054081aaa6f8a885b14.png" src="_images/4916e716d23493f430f71209b9372c6cd6be1882b56b8054081aaa6f8a885b14.png" />
+<img alt="_images/836ea254741b6c205cf0d4602d4b15ba648bb8f82f0c84ed6413089946012012.png" src="_images/836ea254741b6c205cf0d4602d4b15ba648bb8f82f0c84ed6413089946012012.png" />
 </div>
 </div>
 <p>The shape of the asset distribution is unrealistic.</p>
@@ -945,7 +1142,7 @@ more realistic features to the model.</p>
 asset holdings vary with the interest rate</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><span id="id15">[<a class="reference internal" href="zreferences.html#id200" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span> section 18.6 can be consulted for more background on the topic treated in this exercise.</p>
+<p><span id="id16">[<a class="reference internal" href="zreferences.html#id200" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span> section 18.6 can be consulted for more background on the topic treated in this exercise.</p>
 </div>
 <p>For a given parameterization of the model, the mean of the stationary
 distribution of assets can be interpreted as aggregate capital in an economy
@@ -956,6 +1153,15 @@ the interest rate.</p>
 <p>Following tradition, put the price (i.e., interest rate) on the vertical axis.</p>
 <p>On the horizontal axis put aggregate capital, computed as the mean of the
 stationary distribution given the interest rate.</p>
+<p>Use</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">r_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </div>
 <div class="solution dropdown admonition" id="ifp-solution-5">
@@ -965,19 +1171,22 @@ stationary distribution given the interest rate.</p>
 <p>Here’s one solution</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">r_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
 <span class="n">asset_mean</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">r_vals</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Solving model at r = </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">ifp</span> <span class="o">=</span> <span class="n">IFP</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
-    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">compute_asset_series</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">250_000</span><span class="p">))</span>
+    <span class="n">ifp</span> <span class="o">=</span> <span class="n">create_ifp</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">Π</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ifp</span>
+    <span class="n">c_vals_init</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">))</span>
+    <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">c_vals_init</span><span class="p">)</span>
+    <span class="n">assets</span> <span class="o">=</span> <span class="n">compute_asset_stationary</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">c_vals</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">,</span> <span class="n">num_households</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">assets</span><span class="p">)</span>
     <span class="n">asset_mean</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">asset_mean</span><span class="p">,</span> <span class="n">r_vals</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Mean assets: </span><span class="si">{</span><span class="n">mean</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r_vals</span><span class="p">,</span> <span class="n">asset_mean</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;capital&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;interest rate&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;interest rate&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;capital&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -987,79 +1196,54 @@ stationary distribution given the interest rate.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.0
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.0008333333333333334
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 6.5712
+Solving model at r = 0.0013636363636363635
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.0016666666666666668
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 6.6597
+Solving model at r = 0.002727272727272727
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.0025
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 6.7521
+Solving model at r = 0.00409090909090909
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.0033333333333333335
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 6.8489
+Solving model at r = 0.005454545454545454
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.004166666666666667
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 6.9512
+Solving model at r = 0.006818181818181818
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.005
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 7.0584
+Solving model at r = 0.00818181818181818
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.005833333333333334
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 7.1721
+Solving model at r = 0.009545454545454544
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.006666666666666667
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 7.2919
+Solving model at r = 0.010909090909090908
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.007500000000000001
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 7.4194
+Solving model at r = 0.012272727272727272
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.008333333333333333
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 7.5545
+Solving model at r = 0.013636363636363636
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.009166666666666667
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 7.6987
+Solving model at r = 0.015
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.01
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Mean assets: 7.8529
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.010833333333333334
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.011666666666666667
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.0125
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.013333333333333334
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.014166666666666668
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.015000000000000001
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.015833333333333335
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.016666666666666666
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.0175
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.018333333333333333
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.01916666666666667
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.02
-</pre></div>
-</div>
-<img alt="_images/0fb37da355056451d258b09e79da2d3abb7feab88e5cc79fac5cb8700d4972d5.png" src="_images/0fb37da355056451d258b09e79da2d3abb7feab88e5cc79fac5cb8700d4972d5.png" />
+<img alt="_images/77925880020ab1a1deea55226e6f89b7d33a7aad8e18a3c00c72b4ed6c27dcc6.png" src="_images/77925880020ab1a1deea55226e6f89b7d33a7aad8e18a3c00c72b4ed6c27dcc6.png" />
 </div>
 </div>
 <p>As expected, aggregate savings increases with the interest rate.</p>

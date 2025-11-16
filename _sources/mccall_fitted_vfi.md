@@ -28,11 +28,13 @@ kernelspec:
 
 ## Overview
 
-This lecture follows on from the job search model with separation presented in the {doc}`previous lecture <mccall_model_with_separation>`.
+This lecture follows on from the job search model with separation presented in
+the {doc}`previous lecture <mccall_model_with_separation>`.
 
-In that lecture mixed exogenous job separation events and Markov wage offer distributions.
+That lecture combined exogenous job separation events and a Markov wage offer
+process.
 
-In this lecture we allow this wage offer process to be continuous rather than discrete.
+In this lecture we continue with this set and, in addition, allow the wage offer process to be continuous rather than discrete.
 
 In particular,
 
@@ -44,26 +46,32 @@ $$
 
 and $\{Z_t\}$ is IID and standard normal.
 
-While we already considered continuous wage distributions briefly in Exercise {ref}`mm_ex2` of the {doc}`first job search lecture <mccall_model>`, the change was relatively trivial in that case.
+While we already considered continuous wage distributions briefly in
+{doc}`mccall_model`, the change was relatively trivial in that case.
 
-The reason is that we were able to reduce the problem to solving for a single scalar value (the continuation value).
+The reason is that we were able to reduce the problem to solving for a single
+scalar value (the continuation value).
 
-Here, in our Markov setting, the change is less trivial, since a continuous wage distribution leads to an uncountably infinite state space.
+Here, in our Markov setting, the change is less trivial, since a continuous wage
+distribution leads to an uncountably infinite state space.
 
-The infinite state space leads to additional challenges, particularly when it comes to applying value function iteration (VFI).
+The infinite state space leads to additional challenges, particularly when it
+comes to applying value function iteration (VFI).
 
 These challenges will lead us to modify VFI by adding an interpolation step.
 
-The combination of VFI and this interpolation step is called **fitted value function iteration** (fitted VFI).
+The combination of VFI and this interpolation step is called **fitted value
+function iteration** (fitted VFI).
 
-Fitted VFI is very common in practice, so we will take some time to work through the details.
+Fitted VFI is very common in practice, so we will take some time to work through
+the details.
 
 In addition to what's in Anaconda, this lecture will need the following libraries
 
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon
+!pip install quantecon jax
 ```
 
 We will use the following imports:
@@ -74,22 +82,26 @@ import jax
 import jax.numpy as jnp
 from jax import lax
 from typing import NamedTuple
+from functools import partial
 import quantecon as qe
 ```
 
 ## Model
 
-The model is the same as in the {doc}`discrete case <mccall_model_with_sep_markov>`, with the following features:
+Assuming that readers are familiar with the content of {doc}`mccall_model_with_sep_markov`, the model can be summarized as follows.
 
-- Each period, an unemployed agent receives a wage offer $w$
 - Wage offers follow a continuous Markov process: $W_t = \exp(X_t)$ where $X_{t+1} = \rho X_t + \nu Z_{t+1}$
 - $\{Z_t\}$ is IID and standard normal
 - Jobs terminate with probability $\alpha$ each period (separation rate)
 - Unemployed workers receive compensation $c$ per period
-- Workers have CRRA utility $u(c) = \frac{c^{1-\gamma} - 1}{1-\gamma}$
+- Workers have CRRA utility $u(x) = \frac{x^{1-\gamma} - 1}{1-\gamma}$
 - Future payoffs are discounted by factor $\beta \in (0,1)$
 
-## The algorithm
+## Solution method
+
+Let's discuss how we can solve this model.
+
+The only real change from {doc}`mccall_model_with_sep_markov` is that we replace sums with integrals.
 
 
 ### Value function iteration
@@ -124,15 +136,20 @@ $$
 
 where $p(w, \cdot)$ is the conditional density of $w'$ given $w$.
 
-We can write this more explicitly as
+Here we are thinking of $v_u$ as a function on all of $\mathbb{R}_+$.
+
+After taking $\psi$ to be the standard normal density, we can write the expression above more explicitly as
 
 $$
     (P v_u)(w) := \int v_u( w^\rho  \exp(\nu z) ) \psi(z) dz,
 $$
 
-where $\psi$ is the standard normal density.
+To understand this expression, recall that $W_t = \exp(X_t)$ where $X_{t+1} = \rho X_t + \nu Z_{t+1}$.
 
-Here we are thinking of $v_u$ as a function on all of $\mathbb{R}_+$.
+As a result $W_{t+1} = \exp(X_{t+1}) = \exp(\rho \log(W_t) + \nu Z_{t+1}) = W_t^\rho \exp(\nu Z_{t+1})$.
+
+The integral above regards the current wage $W_t$ as fixed at $w$ and takes the
+expectation of $v_u(w^\rho \exp(\nu Z_{t+1}))$.
 
 
 ### Fitting
@@ -212,32 +229,31 @@ plt.show()
 
 ## Implementation
 
-The first step is to build a JAX-compatible structure for the McCall model with separation and a continuous wage offer distribution.
+Let's code up and solve the model.
 
-The key computational challenge is evaluating the conditional expectation $(Pv_u)(w) = \int v_u(w') p(w, w') dw'$ at each wage grid point.
+### Setup
 
-From the equation above, we have:
+The first step is to build a JAX-compatible structure for the McCall model with
+separation and a continuous wage offer distribution.
+
+The key computational challenge is evaluating the conditional expectation
+$(Pv_u)(w) = \int v_u(w') p(w, w') dw'$ at each wage grid point.
+
+Recall that we have:
 
 $$
-(Pv_u)(w) = \int v_u(w^\rho \exp(\nu z)) \psi(z) dz
+    (Pv_u)(w) = \int v_u(w^\rho \exp(\nu z)) \psi(z) dz
 $$
 
 where $\psi$ is the standard normal density.
 
-We approximate this integral using Monte Carlo integration with draws from the standard normal distribution:
+We will approximate this integral using Monte Carlo integration with draws $\{Z_i\}$ from the standard normal distribution:
 
 $$
-(Pv_u)(w) \approx \frac{1}{N} \sum_{i=1}^N v_u(w^\rho \exp(\nu z_i))
+    (Pv_u)(w) \approx \frac{1}{N} \sum_{i=1}^N v_u(w^\rho \exp(\nu Z_i))
 $$
 
-We use the same CRRA utility function as in the discrete case:
-
-```{code-cell} ipython3
-def u(c, γ):
-    return (c**(1 - γ) - 1) / (1 - γ)
-```
-
-Here's our model structure using a NamedTuple.
+For this reason, our data structure will include a fixed set of IID $N(0,1)$ draws $\{Z_i\}$.
 
 ```{code-cell} ipython3
 class Model(NamedTuple):
@@ -270,8 +286,20 @@ def create_mccall_model(
     mc = qe.markov.tauchen(grid_size, ρ, ν)
     w_grid = jnp.exp(jnp.array(mc.state_values))
 
-    return Model(c=c, α=α, β=β, ρ=ρ, ν=ν, γ=γ, w_grid=w_grid, z_draws=z_draws)
+    return Model(c, α, β, ρ, ν, γ, w_grid, z_draws)
 ```
+
+We use the same CRRA utility function as in the discrete case:
+
+```{code-cell} ipython3
+def u(x, γ):
+    return (x**(1 - γ) - 1) / (1 - γ)
+```
+
+
+### Iteration
+
+Here is the Bellman operator, where we use Monte Carlo integration to evaluate the expectation.
 
 ```{code-cell} ipython3
 def T(model, v):
@@ -284,21 +312,21 @@ def T(model, v):
     vf = lambda x: jnp.interp(x, w_grid, v)
 
     def compute_expectation(w):
-        # Use Monte Carlo to evaluate integral (P v)(w)
-        # Compute E[v(w' | w)] where w' = w^ρ * exp(ν * z)
+        # Use Monte Carlo to evaluate integral (P v)(w) = E[v(W' | w)] 
+        # where W' = w^ρ * exp(ν * Z)
         w_next = w**ρ * jnp.exp(ν * z_draws)
         return jnp.mean(vf(w_next))
 
-    compute_exp_all = jax.vmap(compute_expectation)
-    Pv = compute_exp_all(w_grid)
+    compute_exp_on_grid = jax.vmap(compute_expectation)
+    Pv = compute_exp_on_grid(w_grid)
 
     d = 1 / (1 - β * (1 - α))
-    accept = d * (u(w_grid, γ) + α * β * Pv)
-    reject = u(c, γ) + β * Pv
-    return jnp.maximum(accept, reject)
+    v_e = d * (u(w_grid, γ) + α * β * Pv)
+    continuation_values = u(c, γ) + β * Pv
+    return jnp.maximum(v_e, continuation_values)
 ```
 
-Here's the solver:
+Here's the solver, which computes an approximate fixed point $v_u$ of $T$.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -307,6 +335,10 @@ def vfi(
         tolerance: float = 1e-6,   # Error tolerance
         max_iter: int = 100_000,   # Max iteration bound
     ):
+    """
+    Compute the fixed point v_u of T.
+
+    """
 
     v_init = jnp.zeros(model.w_grid.shape)
 
@@ -328,16 +360,16 @@ def vfi(
     return v_final
 ```
 
-The next function computes the optimal policy under the assumption that $v$ is
-the value function:
+Here's a function that uses a solution $v_u$ to compute the remaining functions of
+interest: $v_u$, and the continuation value function $h$.
+
+We use the same expressions as we did in the {doc}`discrete case <mccall_model_with_sep_markov>`, after replacing sums with integrals.
 
 ```{code-cell} ipython3
-def get_greedy(v: jnp.ndarray, model: Model) -> jnp.ndarray:
-    """Get a v-greedy policy."""
-    c, α, β, ρ, ν, γ, w_grid, z_draws = model
+def compute_solution_functions(model, v_u):
 
-    # Interpolate value function
-    vf = lambda x: jnp.interp(x, w_grid, v)
+    # Interpolate v_u 
+    vf = lambda x: jnp.interp(x, w_grid, v_u)
 
     def compute_expectation(w):
         # Use Monte Carlo to evaluate integral (P v)(w)
@@ -345,90 +377,404 @@ def get_greedy(v: jnp.ndarray, model: Model) -> jnp.ndarray:
         w_next = w**ρ * jnp.exp(ν * z_draws)
         return jnp.mean(vf(w_next))
 
-    compute_exp_all = jax.vmap(compute_expectation)
-    Pv = compute_exp_all(w_grid)
+    compute_exp_on_grid = jax.vmap(compute_expectation)
+    Pv = compute_exp_on_grid(w_grid)
 
     d = 1 / (1 - β * (1 - α))
-    accept = d * (u(w_grid, γ) + α * β * Pv)
-    reject = u(c, γ) + β * Pv
-    σ = accept >= reject
-    return σ
+    v_e = d * (u(w_grid, γ) + α * β * Pv)
+    h = u(c, γ) + β * Pv
+
+    return v_e, h
 ```
 
-Here's a function that takes an instance of `Model`
-and returns the associated reservation wage.
-
-```{code-cell} ipython3
-@jax.jit
-def get_reservation_wage(σ: jnp.ndarray, model: Model) -> float:
-    """
-    Calculate the reservation wage from a given policy.
-
-    Parameters:
-    - σ: Policy array where σ[i] = True means accept wage w_grid[i]
-    - model: Model instance containing wage values
-
-    Returns:
-    - Reservation wage (lowest wage for which policy indicates acceptance)
-    """
-    c, α, β, ρ, ν, γ, w_grid, z_draws = model
-
-    # Find the first index where policy indicates acceptance
-    # σ is a boolean array, argmax returns the first True value
-    first_accept_idx = jnp.argmax(σ)
-
-    # If no acceptance (all False), return infinity
-    # Otherwise return the wage at the first acceptance index
-    return jnp.where(jnp.any(σ), w_grid[first_accept_idx], jnp.inf)
-```
-
-## Computing the Solution
-
-Let's solve the model:
+Let's try solving the model:
 
 ```{code-cell} ipython3
 model = create_mccall_model()
 c, α, β, ρ, ν, γ, w_grid, z_draws = model
-v_star = vfi(model)
-σ_star = get_greedy(v_star, model)
-```
-
-Next we compute some related quantities, including the reservation wage.
-
-```{code-cell} ipython3
-# Interpolate the value function for computing expectations
-vf = lambda x: jnp.interp(x, w_grid, v_star)
-
-def compute_expectation(w):
-    # Use Monte Carlo to evaluate integral (P v)(w)
-    # Compute E[v(w' | w)] where w' = w^ρ * exp(ν * z)
-    w_next = w**ρ * jnp.exp(ν * z_draws)
-    return jnp.mean(vf(w_next))
-
-compute_exp_all = jax.vmap(compute_expectation)
-Pv = compute_exp_all(w_grid)
-
-d = 1 / (1 - β * (1 - α))
-accept = d * (u(w_grid, γ) + α * β * Pv)
-h_star = u(c, γ) + β * Pv
-w_star = get_reservation_wage(σ_star, model)
+v_u = vfi(model)
+v_e, h = compute_solution_functions(model, v_u)
 ```
 
 Let's plot our results.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(9, 5.2))
-ax.plot(w_grid, h_star, linewidth=4, ls="--", alpha=0.4,
-        label="continuation value")
-ax.plot(w_grid, accept, linewidth=4, ls="--", alpha=0.4,
-        label="stopping value")
-ax.plot(w_grid, v_star, "k-", alpha=0.7, label=r"$v_u^*(w)$")
+ax.plot(w_grid, h, 'g-', linewidth=2,
+        label="continuation value function $h$")
+ax.plot(w_grid, v_e, 'b-', linewidth=2,
+        label="employment value function $v_e$")
 ax.legend(frameon=False)
 ax.set_xlabel(r"$w$")
 plt.show()
 ```
 
-The exercises ask you to explore the solution and how it changes with parameters.
+The reservation wage is at the intersection of the employment value function $v_e$ and the continuation value function $h$.
+
+Here's a function to compute it explicitly.
+
+```{code-cell} ipython3
+@jax.jit
+def get_reservation_wage(model: Model) -> float:
+    """
+    Calculate the reservation wage for a given model.
+
+    """
+    c, α, β, ρ, ν, γ, w_grid, z_draws = model
+
+    v_u = vfi(model)
+    v_e, h = compute_solution_functions(model, v_u)
+
+    # Compute optimal policy (acceptance indices)
+    σ = v_e >= h
+
+    # Find first index where policy indicates acceptance
+    first_accept_idx = jnp.argmax(σ) # returns first True value
+
+    # If no acceptance (all False), return infinity
+    # Otherwise return the wage at the first acceptance index
+    return jnp.where(jnp.any(σ), w_grid[first_accept_idx], jnp.inf)
+```
+
+
+Let's repeat our plot, but now inserting the reservation wage.
+
+```{code-cell} ipython3
+w_bar = get_reservation_wage(model)
+
+fig, ax = plt.subplots(figsize=(9, 5.2))
+ax.plot(w_grid, h, 'g-', linewidth=2,
+        label="continuation value function $h$")
+ax.plot(w_grid, v_e, 'b-', linewidth=2,
+        label="employment value function $v_e$")
+ax.axvline(x=w_bar, color='black', linestyle='--', alpha=0.8,
+           label=f'reservation wage $\\bar{{w}}$')
+ax.legend(frameon=False)
+ax.set_xlabel(r"$w$")
+plt.show()
+```
+
+
+## Simulation
+
+Now we run some simulations with a focus on unemployment rate.
+
+### Single agent dynamics
+
+Let's simulate the employment path of a single agent under the optimal policy.
+
+We need a function to update the agent's state by one period.
+
+```{code-cell} ipython3
+def update_agent(key, status, wage, model, w_bar):
+    """
+    Updates an agent's employment status and current wage by one period.
+
+    Parameters:
+    - key: JAX random key
+    - status: Current employment status (0 or 1)
+    - wage: Current wage if employed, current offer if unemployed
+    - model: Model instance
+    - w_bar: Reservation wage
+
+    """
+    c, α, β, ρ, ν, γ, w_grid, z_draws = model
+
+    # Draw new wage offer based on current wage
+    key1, key2 = jax.random.split(key)
+    z = jax.random.normal(key1)
+    new_wage = wage**ρ * jnp.exp(ν * z)
+
+    # Check if separation occurs (for employed workers)
+    separation_occurs = jax.random.uniform(key2) < α
+
+    # Accept if current wage meets or exceeds reservation wage
+    accepts = wage >= w_bar
+
+    # If employed: status = 1 if no separation, 0 if separation
+    # If unemployed: status = 1 if accepts, 0 if rejects
+    next_status = jnp.where(
+        status,
+        1 - separation_occurs.astype(jnp.int32),  # employed path
+        accepts.astype(jnp.int32)                 # unemployed path
+    )
+
+    # If employed: wage = current if no separation, new if separation
+    # If unemployed: wage = current if accepts, new if rejects
+    next_wage = jnp.where(
+        status,
+        jnp.where(separation_occurs, new_wage, wage),  # employed path
+        jnp.where(accepts, wage, new_wage)             # unemployed path
+    )
+
+    return next_status, next_wage
+```
+
+Here's a function to simulate the employment path of a single agent.
+
+```{code-cell} ipython3
+def simulate_employment_path(
+        model: Model,     # Model details
+        w_bar: float,     # Reservation wage
+        T: int = 2_000,   # Simulation length
+        seed: int = 42    # Set seed for simulation
+    ):
+    """
+    Simulate employment path for T periods starting from unemployment.
+
+    """
+    key = jax.random.PRNGKey(seed)
+    c, α, β, ρ, ν, γ, w_grid, z_draws = model
+
+    # Initial conditions: start unemployed with initial wage draw
+    status = 0
+    key, subkey = jax.random.split(key)
+    wage = jnp.exp(jax.random.normal(subkey) * ν)
+
+    wage_path = []
+    status_path = []
+
+    for t in range(T):
+        wage_path.append(wage)
+        status_path.append(status)
+
+        key, subkey = jax.random.split(key)
+        status, wage = update_agent(
+            subkey, status, wage, model, w_bar
+        )
+
+    return jnp.array(wage_path), jnp.array(status_path)
+```
+
+Let's create a comprehensive plot of the employment simulation:
+
+```{code-cell} ipython3
+model = create_mccall_model()
+w_bar = get_reservation_wage(model)
+
+wage_path, employment_status = simulate_employment_path(model, w_bar)
+
+fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 6))
+
+# Plot employment status
+ax1.plot(employment_status, 'b-', alpha=0.7, linewidth=1)
+ax1.fill_between(
+    range(len(employment_status)), employment_status, alpha=0.3, color='blue'
+)
+ax1.set_ylabel('employment status')
+ax1.set_title('Employment path (0=unemployed, 1=employed)')
+ax1.set_yticks((0, 1))
+ax1.set_ylim(-0.1, 1.1)
+
+# Plot wage path with reservation wage
+ax2.plot(wage_path, 'b-', alpha=0.7, linewidth=1)
+ax2.axhline(y=w_bar, color='black', linestyle='--', alpha=0.8,
+           label=f'Reservation wage: {w_bar:.2f}')
+ax2.set_xlabel('time')
+ax2.set_ylabel('wage')
+ax2.set_title('Wage path (actual and offers)')
+ax2.legend()
+
+# Plot cumulative fraction of time unemployed
+unemployed_indicator = (employment_status == 0).astype(int)
+cumulative_unemployment = (
+    jnp.cumsum(unemployed_indicator) /
+    jnp.arange(1, len(employment_status) + 1)
+)
+
+ax3.plot(cumulative_unemployment, 'r-', alpha=0.8, linewidth=2)
+ax3.axhline(y=jnp.mean(unemployed_indicator), color='black',
+            linestyle='--', alpha=0.7,
+            label=f'Final rate: {jnp.mean(unemployed_indicator):.3f}')
+ax3.set_xlabel('time')
+ax3.set_ylabel('cumulative unemployment rate')
+ax3.set_title('Cumulative fraction of time spent unemployed')
+ax3.legend()
+ax3.set_ylim(0, 1)
+
+plt.tight_layout()
+plt.show()
+```
+
+The simulation shows the agent cycling between employment and unemployment.
+
+The agent starts unemployed and receives wage offers according to the Markov process.
+
+When unemployed, the agent accepts offers that exceed the reservation wage.
+
+When employed, the agent faces job separation with probability $\alpha$ each period.
+
+### Cross-Sectional Analysis
+
+Now let's simulate many agents simultaneously to examine the cross-sectional unemployment rate.
+
+We first create a vectorized version of `update_agent` to efficiently update all agents in parallel:
+
+```{code-cell} ipython3
+# Create vectorized version of update_agent
+update_agents_vmap = jax.vmap(
+    update_agent, in_axes=(0, 0, 0, None, None)
+)
+```
+
+Next we define the core simulation function, which uses `lax.fori_loop` to efficiently iterate many agents forward in time:
+
+```{code-cell} ipython3
+@partial(jax.jit, static_argnums=(3, 4))
+def _simulate_cross_section_compiled(
+        key: jnp.ndarray,
+        model: Model,
+        w_bar: float,
+        n_agents: int,
+        T: int
+    ):
+    """JIT-compiled core simulation loop using lax.fori_loop.
+    Returns only the final employment state to save memory."""
+    c, α, β, ρ, ν, γ, w_grid, z_draws = model
+
+    # Initialize arrays
+    key, subkey = jax.random.split(key)
+    wages = jnp.exp(jax.random.normal(subkey, (n_agents,)) * ν)
+    status = jnp.zeros(n_agents, dtype=jnp.int32)
+
+    def update(t, loop_state):
+        key, status, wages = loop_state
+
+        # Shift loop state forwards
+        key, subkey = jax.random.split(key)
+        agent_keys = jax.random.split(subkey, n_agents)
+
+        status, wages = update_agents_vmap(
+            agent_keys, status, wages, model, w_bar
+        )
+
+        return key, status, wages
+
+    # Run simulation using fori_loop
+    initial_loop_state = (key, status, wages)
+    final_loop_state = lax.fori_loop(0, T, update, initial_loop_state)
+
+    # Return only final employment state
+    _, final_is_employed, _ = final_loop_state
+    return final_is_employed
+
+
+def simulate_cross_section(
+        model: Model,
+        n_agents: int = 100_000,
+        T: int = 200,
+        seed: int = 42
+    ) -> float:
+    """
+    Simulate employment paths for many agents and return final unemployment rate.
+
+    Parameters:
+    - model: Model instance with parameters
+    - n_agents: Number of agents to simulate
+    - T: Number of periods to simulate
+    - seed: Random seed for reproducibility
+
+    Returns:
+    - unemployment_rate: Fraction of agents unemployed at time T
+    """
+    key = jax.random.PRNGKey(seed)
+
+    # Solve for optimal reservation wage
+    w_bar = get_reservation_wage(model)
+
+    # Run JIT-compiled simulation
+    final_status = _simulate_cross_section_compiled(
+        key, model, w_bar, n_agents, T
+    )
+
+    # Calculate unemployment rate at final period
+    unemployment_rate = 1 - jnp.mean(final_status)
+
+    return unemployment_rate
+```
+
+
+Now let's compare the time-average unemployment rate (from a single agent's long
+simulation) with the cross-sectional unemployment rate (from many agents at a
+single point in time).
+
+```{code-cell} ipython3
+model = create_mccall_model()
+cross_sectional_unemp = simulate_cross_section(
+    model, n_agents=20_000, T=200
+)
+
+time_avg_unemp = jnp.mean(unemployed_indicator)
+print(f"Time-average unemployment rate (single agent, T=2000): "
+      f"{time_avg_unemp:.4f}")
+print(f"Cross-sectional unemployment rate (at t=200): "
+      f"{cross_sectional_unemp:.4f}")
+print(f"Difference: {abs(time_avg_unemp - cross_sectional_unemp):.4f}")
+```
+
+The difference above can be further reduced by increasing the simulation length for the single agent.
+
+```{code-cell} ipython3
+wage_path_long, employment_status_long = simulate_employment_path(model, w_bar, T=10_000)
+unemployed_indicator_long = (employment_status_long == 0).astype(int)
+time_avg_unemp_long = jnp.mean(unemployed_indicator_long)
+
+print(f"Time-average unemployment rate (single agent, T=10000): "
+      f"{time_avg_unemp_long:.4f}")
+print(f"Cross-sectional unemployment rate (at t=200): "
+      f"{cross_sectional_unemp:.4f}")
+print(f"Difference: {abs(time_avg_unemp_long - cross_sectional_unemp):.4f}")
+```
+
+### Visualization
+
+This function generates a histogram showing the distribution of employment status across many agents:
+
+```{code-cell} ipython3
+def plot_cross_sectional_unemployment(
+        model: Model,            # Model instance with parameters
+        t_snapshot: int = 200,   # Time for cross-sectional snapshot
+        n_agents: int = 20_000   # Number of agents to simulate
+    ):
+    """
+    Generate histogram of cross-sectional unemployment at a specific time.
+
+    """
+
+    # Get final employment state directly
+    key = jax.random.PRNGKey(42)
+    w_bar = get_reservation_wage(model)
+    final_status = _simulate_cross_section_compiled(
+        key, model, w_bar, n_agents, t_snapshot
+    )
+
+    # Calculate unemployment rate
+    unemployment_rate = 1 - jnp.mean(final_status)
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+
+    # Plot histogram as density (bars sum to 1)
+    weights = jnp.ones_like(final_status) / len(final_status)
+    ax.hist(final_status, bins=[-0.5, 0.5, 1.5],
+            alpha=0.7, color='blue', edgecolor='black',
+            density=True, weights=weights)
+
+    ax.set_xlabel('employment status (0=unemployed, 1=employed)')
+    ax.set_ylabel('density')
+    ax.set_title(f'Cross-sectional distribution at t={t_snapshot}, ' +
+                 f'unemployment rate = {unemployment_rate:.3f}')
+    ax.set_xticks([0, 1])
+
+    plt.tight_layout()
+    plt.show()
+```
+
+Let's plot the cross-sectional distribution:
+
+```{code-cell} ipython3
+plot_cross_sectional_unemployment(model)
+```
+
 
 ## Exercises
 
@@ -448,9 +794,7 @@ Here is one solution
 ```{code-cell} ipython3
 def compute_res_wage_given_c(c):
     model = create_mccall_model(c=c)
-    v_star = vfi(model)
-    σ_star = get_greedy(v_star, model)
-    w_bar = get_reservation_wage(σ_star, model)
+    w_bar = get_reservation_wage(model)
     return w_bar
 
 c_vals = jnp.linspace(0.0, 2.0, 15)
@@ -489,30 +833,31 @@ We compute the reservation wage for different values of the risk aversion parame
 
 ```{code-cell} ipython3
 γ_vals = jnp.linspace(1.2, 2.5, 15)
-w_star_vec = jnp.empty_like(γ_vals)
+w_bar_vec = jnp.empty_like(γ_vals)
 
 for i, γ in enumerate(γ_vals):
     model = create_mccall_model(γ=γ)
-    v_star = vfi(model)
-    σ_star = get_greedy(v_star, model)
-    w_star = get_reservation_wage(σ_star, model)
-    w_star_vec = w_star_vec.at[i].set(w_star)
+    w_bar = get_reservation_wage(model)
+    w_bar_vec = w_bar_vec.at[i].set(w_bar)
 
 fig, ax = plt.subplots(figsize=(9, 5.2))
-ax.plot(γ_vals, w_star_vec, linewidth=2, alpha=0.6,
+ax.plot(γ_vals, w_bar_vec, linewidth=2, alpha=0.6,
         label='reservation wage')
 ax.legend(frameon=False)
 ax.set_xlabel(r'$\gamma$')
-ax.set_ylabel(r'$w^*$')
+ax.set_ylabel(r'$\bar{w}$')
 ax.set_title('Reservation wage as a function of risk aversion')
 plt.show()
 ```
 
 As risk aversion ($\gamma$) increases, the reservation wage decreases.
 
-This occurs because more risk-averse workers place higher value on the security of employment relative to the uncertainty of continued search.
+This occurs because more risk-averse workers place higher value on the security
+of employment relative to the uncertainty of continued search.
 
-With higher $\gamma$, the utility cost of unemployment (foregone consumption) becomes more severe, making workers more willing to accept lower wages rather than continue searching.
+With higher $\gamma$, the utility cost of unemployment (foregone consumption)
+becomes more severe, making workers more willing to accept lower wages rather
+than continue searching.
 
 ```{solution-end}
 ```

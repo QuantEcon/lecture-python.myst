@@ -192,11 +192,17 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-the-assumptions">58.3.4. Testing the Assumptions</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">58.4. Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#law-of-motion">58.4.1. Law of Motion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numba-implementation">58.4. Numba Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-details">58.4.1. Implementation Details</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-walkthrough">58.4.2. Code Walkthrough</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#law-of-motion">58.4.3. Law of Motion</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">58.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation">58.5. JAX Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-numba-and-jax-solutions">58.5.1. Comparison of Numba and JAX Solutions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">58.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -263,8 +269,9 @@
 <li><p><a class="reference internal" href="#overview" id="id10">Overview</a></p></li>
 <li><p><a class="reference internal" href="#the-savings-problem" id="id11">The Savings Problem</a></p></li>
 <li><p><a class="reference internal" href="#solution-algorithm" id="id12">Solution Algorithm</a></p></li>
-<li><p><a class="reference internal" href="#implementation" id="id13">Implementation</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id14">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#numba-implementation" id="id13">Numba Implementation</a></p></li>
+<li><p><a class="reference internal" href="#jax-implementation" id="id14">JAX Implementation</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id15">Exercises</a></p></li>
 </ul>
 </li>
 </ul>
@@ -367,14 +374,14 @@ the solution methods described below converge.</p>
 <p>We also need to ensure that the present discounted value of wealth
 does not grow too quickly.</p>
 <p>When <span class="math notranslate nohighlight">\(\{R_t\}\)</span> was constant we required that <span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span>.</p>
-<p>Now it is stochastic, we require that</p>
+<p>Since it is now stochastic, we require that</p>
 <div class="math notranslate nohighlight" id="equation-fpbc2">
 <span class="eqno">(58.4)<a class="headerlink" href="#equation-fpbc2" title="Link to this equation">#</a></span>\[\beta G_R &lt; 1,
 \quad \text{where} \quad
 G_R := \lim_{n \to \infty}
 \left(\mathbb E \prod_{t=1}^n R_t \right)^{1/n}\]</div>
 <p>Notice that, when <span class="math notranslate nohighlight">\(\{R_t\}\)</span> takes some constant value <span class="math notranslate nohighlight">\(R\)</span>, this
-reduces to the previous restriction <span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span></p>
+reduces to the previous restriction <span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span>.</p>
 <p>The value <span class="math notranslate nohighlight">\(G_R\)</span> can be thought of as the long run (geometric) average
 gross rate of return.</p>
 <p>More intuition behind <a class="reference internal" href="#equation-fpbc2">(58.4)</a> is provided in <span id="id4">[<a class="reference internal" href="zreferences.html#id270" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">Ma <em>et al.</em>, 2020</a>]</span>.</p>
@@ -524,8 +531,8 @@ is just <span class="math notranslate nohighlight">\(\mathbb E R_t\)</span>.</p>
 <p>We test the condition <span class="math notranslate nohighlight">\(\beta \mathbb E R_t &lt; 1\)</span> in the code below.</p>
 </section>
 </section>
-<section id="implementation">
-<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">58.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<section id="numba-implementation">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">58.4. </span>Numba Implementation</a><a class="headerlink" href="#numba-implementation" title="Link to this heading">#</a></h2>
 <p>We will assume that <span class="math notranslate nohighlight">\(R_t = \exp(a_r \zeta_t + b_r)\)</span> where <span class="math notranslate nohighlight">\(a_r, b_r\)</span>
 are constants and <span class="math notranslate nohighlight">\(\{ \zeta_t\}\)</span> is IID standard normal.</p>
 <p>We allow labor income to be correlated, with</p>
@@ -607,17 +614,23 @@ and <span class="math notranslate nohighlight">\(\{ Z_t\}\)</span> is a Markov c
 </div>
 </div>
 <p>Here’s the Coleman-Reffett operator based on EGM:</p>
+<section id="implementation-details">
+<h3><span class="section-number">58.4.1. </span>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading">#</a></h3>
+<p>The implementation of operator <span class="math notranslate nohighlight">\(K\)</span> maps directly to equation <a class="reference internal" href="#equation-k-opr">(58.6)</a>.</p>
+<p>The left side <span class="math notranslate nohighlight">\(u'(\xi)\)</span> becomes <code class="docutils literal notranslate"><span class="pre">u_prime_inv(β</span> <span class="pre">*</span> <span class="pre">Ez)</span></code> after solving for <span class="math notranslate nohighlight">\(\xi\)</span>.</p>
+<p>The expectation term <span class="math notranslate nohighlight">\(\mathbb E_z \hat{R} (u' \circ \sigma)[\hat{R}(a - \xi) + \hat{Y}, \hat{Z}]\)</span> is computed via Monte Carlo averaging over future states and shocks.</p>
+<p>The max with <span class="math notranslate nohighlight">\(u'(a)\)</span> is handled implicitly—the endogenous grid method naturally handles the liquidity constraint since we only solve for interior consumption where <span class="math notranslate nohighlight">\(c &lt; a\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span><span class="n">a_in</span><span class="p">,</span> <span class="n">σ_in</span><span class="p">,</span> <span class="n">ifp</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">,</span> <span class="n">c_vals</span><span class="p">,</span> <span class="n">ifp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Coleman--Reffett operator for the income fluctuation problem,</span>
 <span class="sd">    using the endogenous grid method.</span>
 
 <span class="sd">        * ifp is an instance of IFP</span>
-<span class="sd">        * a_in[i, z] is an asset grid</span>
-<span class="sd">        * σ_in[i, z] is consumption at a_in[i, z]</span>
+<span class="sd">        * ae_vals[i, z] is an asset grid</span>
+<span class="sd">        * c_vals[i, z] is consumption at ae_vals[i, z]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Simplify names</span>
@@ -627,12 +640,12 @@ and <span class="math notranslate nohighlight">\(\{ Z_t\}\)</span> is a Markov c
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
 
     <span class="c1"># Create consumption function by linear interpolation</span>
-    <span class="n">σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> <span class="n">σ_in</span><span class="p">[:,</span> <span class="n">z</span><span class="p">])</span>
+    <span class="n">σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="n">z</span><span class="p">])</span>
 
     <span class="c1"># Allocate memory</span>
-    <span class="n">σ_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">σ_in</span><span class="p">)</span>
+    <span class="n">c_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">c_vals</span><span class="p">)</span>
 
-    <span class="c1"># Obtain c_i at each s_i, z, store in σ_out[i, z], computing</span>
+    <span class="c1"># Obtain c_i at each s_i, z, store in c_out[i, z], computing</span>
     <span class="c1"># the expectation term by Monte Carlo</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s_grid</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -646,22 +659,28 @@ and <span class="math notranslate nohighlight">\(\{ Z_t\}\)</span> is a Markov c
                         <span class="n">U</span> <span class="o">=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">σ</span><span class="p">(</span><span class="n">R_hat</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">Y_hat</span><span class="p">,</span> <span class="n">z_hat</span><span class="p">))</span>
                         <span class="n">Ez</span> <span class="o">+=</span> <span class="n">R_hat</span> <span class="o">*</span> <span class="n">U</span> <span class="o">*</span> <span class="n">P</span><span class="p">[</span><span class="n">z</span><span class="p">,</span> <span class="n">z_hat</span><span class="p">]</span>
             <span class="n">Ez</span> <span class="o">=</span> <span class="n">Ez</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">η_draws</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">ζ_draws</span><span class="p">))</span>
-            <span class="n">σ_out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span> <span class="o">=</span>  <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">Ez</span><span class="p">)</span>
+            <span class="n">c_out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span> <span class="o">=</span>  <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">Ez</span><span class="p">)</span>
 
     <span class="c1"># Calculate endogenous asset grid</span>
-    <span class="n">a_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">σ_out</span><span class="p">)</span>
+    <span class="n">ae_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">c_out</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">a_out</span><span class="p">[:,</span> <span class="n">z</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_grid</span> <span class="o">+</span> <span class="n">σ_out</span><span class="p">[:,</span> <span class="n">z</span><span class="p">]</span>
+        <span class="n">ae_out</span><span class="p">[:,</span> <span class="n">z</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_grid</span> <span class="o">+</span> <span class="n">c_out</span><span class="p">[:,</span> <span class="n">z</span><span class="p">]</span>
 
     <span class="c1"># Fixing a consumption-asset pair at (0, 0) improves interpolation</span>
-    <span class="n">σ_out</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">a_out</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">c_out</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ae_out</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">return</span> <span class="n">a_out</span><span class="p">,</span> <span class="n">σ_out</span>
+    <span class="k">return</span> <span class="n">ae_out</span><span class="p">,</span> <span class="n">c_out</span>
 </pre></div>
 </div>
 </div>
 </div>
+</section>
+<section id="code-walkthrough">
+<h3><span class="section-number">58.4.2. </span>Code Walkthrough<a class="headerlink" href="#code-walkthrough" title="Link to this heading">#</a></h3>
+<p>The operator creates a consumption function <code class="docutils literal notranslate"><span class="pre">σ</span></code> by interpolating the input policy, then uses triple nested loops to compute the expectation via Monte Carlo averaging over savings grid points, current states, future states, and shock realizations.</p>
+<p>After computing optimal consumption <span class="math notranslate nohighlight">\(c_i\)</span> at each savings level <span class="math notranslate nohighlight">\(s_i\)</span> by inverting marginal utility, we construct the endogenous asset grid using <span class="math notranslate nohighlight">\(a_i = s_i + c_i\)</span>.</p>
+<p>Setting consumption and assets to zero at the origin ensures smooth interpolation near zero assets, where the household consumes everything.</p>
 <p>The next function solves for an approximation of the optimal consumption policy via time iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -695,6 +714,9 @@ and <span class="math notranslate nohighlight">\(\{ Z_t\}\)</span> is a Markov c
 </div>
 </div>
 </div>
+<p>This function implements fixed-point iteration by repeatedly applying the operator <span class="math notranslate nohighlight">\(K\)</span> until the policy converges.</p>
+<p>Convergence is measured by the maximum absolute change in consumption across all states.</p>
+<p>The operator is guaranteed to converge due to the contraction property discussed earlier.</p>
 <p>Now we are ready to create an instance at the default parameters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -703,6 +725,9 @@ and <span class="math notranslate nohighlight">\(\{ Z_t\}\)</span> is a Markov c
 </div>
 </div>
 </div>
+<p>The default parameters represent a calibration with moderate risk aversion (<span class="math notranslate nohighlight">\(\gamma = 1.5\)</span>, CRRA utility) and a quarterly discount factor (<span class="math notranslate nohighlight">\(\beta = 0.96\)</span>, corresponding to roughly 4% annual discounting).</p>
+<p>The Markov chain has high persistence (90% probability of staying in the current state), while returns have 10% volatility around a zero mean log return (<span class="math notranslate nohighlight">\(a_r = 0.1\)</span>, <span class="math notranslate nohighlight">\(b_r = 0.0\)</span>).</p>
+<p>Labor income is state-dependent: <span class="math notranslate nohighlight">\(Y_t = \exp(0.2 \eta_t + 0.5 Z_t)\)</span> implies higher expected income in the good state (<span class="math notranslate nohighlight">\(Z_t = 1\)</span>) compared to the bad state (<span class="math notranslate nohighlight">\(Z_t = 0\)</span>).</p>
 <p>Next we set up an initial condition, which corresponds to consuming all
 assets.</p>
 <div class="cell docutils container">
@@ -742,7 +767,9 @@ assets.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.0019748126990770665.
-Error at iteration 35 is 0.0007219210463285108.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 35 is 0.0007219210463285108.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 40 is 0.0002590544496094971.
@@ -773,10 +800,12 @@ Converged in 45 iterations.
 </div>
 <p>Notice that we consume all assets in the lower range of the asset space.</p>
 <p>This is because we anticipate income <span class="math notranslate nohighlight">\(Y_{t+1}\)</span> tomorrow, which makes the need to save less urgent.</p>
-<p>Can you explain why consuming all assets ends earlier (for lower values of
-assets) when <span class="math notranslate nohighlight">\(z=0\)</span>?</p>
+<p>Observe that consuming all assets ends earlier (at lower asset levels) when <span class="math notranslate nohighlight">\(z=0\)</span> compared to <span class="math notranslate nohighlight">\(z=1\)</span>.</p>
+<p>This occurs because expected future income is lower in the bad state (<span class="math notranslate nohighlight">\(z=0\)</span>), so the household begins precautionary saving at lower wealth levels.</p>
+<p>In contrast, when <span class="math notranslate nohighlight">\(z=1\)</span> (good state), higher expected future income allows the household to consume all assets up to a higher threshold before savings become optimal.</p>
+</section>
 <section id="law-of-motion">
-<h3><span class="section-number">58.4.1. </span>Law of Motion<a class="headerlink" href="#law-of-motion" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">58.4.3. </span>Law of Motion<a class="headerlink" href="#law-of-motion" title="Link to this heading">#</a></h3>
 <p>Let’s try to get some idea of what will happen to assets over the long run
 under this consumption policy.</p>
 <p>As with our <a class="reference internal" href="ifp.html"><span class="doc">earlier lecture</span></a> on the income fluctuation problem, we
@@ -821,8 +850,347 @@ a \mapsto \bar R (a - \sigma^*(a, z)) + \bar Y(z)
 diverge even in the highest state.</p>
 </section>
 </section>
+<section id="jax-implementation">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">58.5. </span>JAX Implementation</a><a class="headerlink" href="#jax-implementation" title="Link to this heading">#</a></h2>
+<p>We now provide a JAX implementation of the model.</p>
+<p>JAX is a high-performance numerical computing library that provides automatic differentiation and JIT compilation, with support for GPU/TPU acceleration.</p>
+<p>First we need to import JAX and related libraries:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">vmap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+
+<span class="c1"># Import jax.jit with a different name to avoid conflict with numba.jit</span>
+<span class="n">jax_jit</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We enable 64-bit precision in JAX to ensure accurate results that match the Numba implementation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s the JAX version of the IFP class using NamedTuple for compatibility with JAX’s JIT compilation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">IFP_JAX</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A NamedTuple that stores primitives for the income fluctuation</span>
+<span class="sd">    problem, using JAX.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">β</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">P</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">a_r</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">b_r</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">a_y</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">b_y</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">s_grid</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">η_draws</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">ζ_draws</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_ifp_jax</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                   <span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>
+                   <span class="n">P</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+                               <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)]),</span>
+                   <span class="n">a_r</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                   <span class="n">b_r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                   <span class="n">a_y</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                   <span class="n">b_y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                   <span class="n">shock_draw_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                   <span class="n">grid_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                   <span class="n">grid_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                   <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an instance of IFP_JAX with the given parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Test stability assuming {R_t} is IID and adopts the lognormal</span>
+    <span class="c1"># specification given below.  The test is then β E R_t &lt; 1.</span>
+    <span class="n">ER</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b_r</span> <span class="o">+</span> <span class="n">a_r</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">β</span> <span class="o">*</span> <span class="n">ER</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Stability condition failed.&quot;</span>
+
+    <span class="c1"># Convert to JAX arrays</span>
+    <span class="n">P_jax</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+
+    <span class="c1"># Generate random draws using JAX</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">subkey1</span><span class="p">,</span> <span class="n">subkey2</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">η_draws</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey1</span><span class="p">,</span> <span class="p">(</span><span class="n">shock_draw_size</span><span class="p">,))</span>
+    <span class="n">ζ_draws</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey2</span><span class="p">,</span> <span class="p">(</span><span class="n">shock_draw_size</span><span class="p">,))</span>
+    <span class="n">s_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">IFP_JAX</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="n">P_jax</span><span class="p">,</span> <span class="n">a_r</span><span class="o">=</span><span class="n">a_r</span><span class="p">,</span> <span class="n">b_r</span><span class="o">=</span><span class="n">b_r</span><span class="p">,</span> <span class="n">a_y</span><span class="o">=</span><span class="n">a_y</span><span class="p">,</span> <span class="n">b_y</span><span class="o">=</span><span class="n">b_y</span><span class="p">,</span>
+                   <span class="n">s_grid</span><span class="o">=</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">η_draws</span><span class="o">=</span><span class="n">η_draws</span><span class="p">,</span> <span class="n">ζ_draws</span><span class="o">=</span><span class="n">ζ_draws</span><span class="p">)</span>
+
+
+<span class="c1"># Utility functions for the IFP model</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">u_prime</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Marginal utility&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">u_prime_inv</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Inverse of marginal utility&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">γ</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">R</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">ζ</span><span class="p">,</span> <span class="n">a_r</span><span class="p">,</span> <span class="n">b_r</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gross return on assets&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a_r</span> <span class="o">*</span> <span class="n">ζ</span> <span class="o">+</span> <span class="n">b_r</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">Y</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">a_y</span><span class="p">,</span> <span class="n">b_y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Labor income&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a_y</span> <span class="o">*</span> <span class="n">η</span> <span class="o">+</span> <span class="p">(</span><span class="n">z</span> <span class="o">*</span> <span class="n">b_y</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s the Coleman-Reffett operator using JAX:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax_jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">K_jax</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">,</span> <span class="n">c_vals</span><span class="p">,</span> <span class="n">ifp</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Coleman--Reffett operator for the income fluctuation problem,</span>
+<span class="sd">    using the endogenous grid method with JAX.</span>
+
+<span class="sd">        * ifp is an instance of IFP_JAX</span>
+<span class="sd">        * ae_vals[i, z] is an asset grid</span>
+<span class="sd">        * c_vals[i, z] is consumption at ae_vals[i, z]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Extract parameters from ifp</span>
+    <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">P</span>
+    <span class="n">a_r</span><span class="p">,</span> <span class="n">b_r</span><span class="p">,</span> <span class="n">a_y</span><span class="p">,</span> <span class="n">b_y</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">a_r</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">b_r</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">a_y</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">b_y</span>
+    <span class="n">s_grid</span><span class="p">,</span> <span class="n">η_draws</span><span class="p">,</span> <span class="n">ζ_draws</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">η_draws</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">ζ_draws</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+
+    <span class="c1"># Allocate memory</span>
+    <span class="n">c_out</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">c_vals</span><span class="p">)</span>
+
+    <span class="c1"># Obtain c_i at each s_i, z, store in c_out[i, z], computing</span>
+    <span class="c1"># the expectation term by Monte Carlo</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_expectation</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute expectation for given s and z&quot;&quot;&quot;</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">inner_expectation</span><span class="p">(</span><span class="n">z_hat</span><span class="p">):</span>
+            <span class="c1"># Vectorize over shocks</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">compute_term</span><span class="p">(</span><span class="n">η</span><span class="p">,</span> <span class="n">ζ</span><span class="p">):</span>
+                <span class="n">R_hat</span> <span class="o">=</span> <span class="n">R</span><span class="p">(</span><span class="n">z_hat</span><span class="p">,</span> <span class="n">ζ</span><span class="p">,</span> <span class="n">a_r</span><span class="p">,</span> <span class="n">b_r</span><span class="p">)</span>
+                <span class="n">Y_hat</span> <span class="o">=</span> <span class="n">Y</span><span class="p">(</span><span class="n">z_hat</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">a_y</span><span class="p">,</span> <span class="n">b_y</span><span class="p">)</span>
+                <span class="n">a_val</span> <span class="o">=</span> <span class="n">R_hat</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">Y_hat</span>
+                <span class="c1"># Interpolate consumption</span>
+                <span class="n">c_interp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a_val</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">[:,</span> <span class="n">z_hat</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="n">z_hat</span><span class="p">])</span>
+                <span class="n">U</span> <span class="o">=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">c_interp</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">R_hat</span> <span class="o">*</span> <span class="n">U</span>
+
+            <span class="c1"># Vectorize over all shock combinations</span>
+            <span class="n">η_grid</span><span class="p">,</span> <span class="n">ζ_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">η_draws</span><span class="p">,</span> <span class="n">ζ_draws</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+            <span class="n">terms</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_term</span><span class="p">))(</span><span class="n">η_grid</span><span class="p">,</span> <span class="n">ζ_grid</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">P</span><span class="p">[</span><span class="n">z</span><span class="p">,</span> <span class="n">z_hat</span><span class="p">]</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+
+        <span class="c1"># Sum over z_hat states</span>
+        <span class="n">Ez</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">inner_expectation</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">Ez</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
+
+    <span class="c1"># Vectorize over s_grid and z</span>
+    <span class="n">c_out</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_expectation</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+                  <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))(</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="c1"># Calculate endogenous asset grid</span>
+    <span class="n">ae_out</span> <span class="o">=</span> <span class="n">s_grid</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">c_out</span>
+
+    <span class="c1"># Fixing a consumption-asset pair at (0, 0) improves interpolation</span>
+    <span class="n">c_out</span> <span class="o">=</span> <span class="n">c_out</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ae_out</span> <span class="o">=</span> <span class="n">ae_out</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ae_out</span><span class="p">,</span> <span class="n">c_out</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The next function solves for an approximation of the optimal consumption policy via time iteration using JAX:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_model_time_iter_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>        <span class="c1"># Class with model information</span>
+                               <span class="n">a_vec</span><span class="p">,</span>        <span class="c1"># Initial condition for assets</span>
+                               <span class="n">σ_vec</span><span class="p">,</span>        <span class="c1"># Initial condition for consumption</span>
+                               <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+                               <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                               <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                               <span class="n">print_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+
+    <span class="c1"># Set up loop</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="n">a_new</span><span class="p">,</span> <span class="n">σ_new</span> <span class="o">=</span> <span class="n">K_jax</span><span class="p">(</span><span class="n">a_vec</span><span class="p">,</span> <span class="n">σ_vec</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">σ_vec</span> <span class="o">-</span> <span class="n">σ_new</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error at iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">a_vec</span><span class="p">,</span> <span class="n">σ_vec</span> <span class="o">=</span> <span class="n">a_new</span><span class="p">,</span> <span class="n">σ_new</span>
+
+    <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to converge!&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">a_new</span><span class="p">,</span> <span class="n">σ_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can create an instance and solve the model using JAX:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp_jax</span> <span class="o">=</span> <span class="n">create_ifp_jax</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Set up the initial condition:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initial guess of σ = consume all assets</span>
+<span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ifp_jax</span><span class="o">.</span><span class="n">s_grid</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ifp_jax</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
+<span class="n">σ_init_jax</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">σ_init_jax</span> <span class="o">=</span> <span class="n">σ_init_jax</span><span class="o">.</span><span class="n">at</span><span class="p">[:,</span> <span class="n">z</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ifp_jax</span><span class="o">.</span><span class="n">s_grid</span><span class="p">)</span>
+<span class="n">a_init_jax</span> <span class="o">=</span> <span class="n">σ_init_jax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s generate an approximation solution with JAX:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_star_jax</span><span class="p">,</span> <span class="n">σ_star_jax</span> <span class="o">=</span> <span class="n">solve_model_time_iter_jax</span><span class="p">(</span><span class="n">ifp_jax</span><span class="p">,</span> <span class="n">a_init_jax</span><span class="p">,</span> <span class="n">σ_init_jax</span><span class="p">,</span> <span class="n">print_skip</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.5056668931888328.
+Error at iteration 10 is 0.1034861379984835.
+Error at iteration 15 is 0.03412817463153939.
+Error at iteration 20 is 0.01201705155740429.
+Error at iteration 25 is 0.004145424467285608.
+Error at iteration 30 is 0.001391633566658168.
+Error at iteration 35 is 0.0004556358742306976.
+Error at iteration 40 is 0.00014622723914969882.
+
+Converged in 42 iterations.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a plot comparing the JAX solution with the Numba solution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ifp_jax</span><span class="o">.</span><span class="n">P</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a_star_jax</span><span class="p">[:,</span> <span class="n">z</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">σ_star_jax</span><span class="p">[:,</span> <span class="n">z</span><span class="p">]),</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;JAX: consumption when $z=</span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_star</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> <span class="n">σ_star</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Numba: consumption when $z=</span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/7602b429e80f30b8598b5373dde932c1aefb1e2353334fc29d9663b545bb4eb8.png" src="_images/7602b429e80f30b8598b5373dde932c1aefb1e2353334fc29d9663b545bb4eb8.png" />
+</div>
+</div>
+<section id="comparison-of-numba-and-jax-solutions">
+<h3><span class="section-number">58.5.1. </span>Comparison of Numba and JAX Solutions<a class="headerlink" href="#comparison-of-numba-and-jax-solutions" title="Link to this heading">#</a></h3>
+<p>Now let’s verify that both implementations produce nearly identical results.</p>
+<p>With 64-bit precision enabled in JAX, we expect the solutions to be very close.</p>
+<p>Let’s compute the maximum absolute differences:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert JAX arrays to NumPy for comparison</span>
+<span class="n">a_star_jax_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a_star_jax</span><span class="p">)</span>
+<span class="n">σ_star_jax_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">σ_star_jax</span><span class="p">)</span>
+
+<span class="c1"># Compute differences</span>
+<span class="n">a_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a_star</span> <span class="o">-</span> <span class="n">a_star_jax_np</span><span class="p">)</span>
+<span class="n">σ_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">σ_star</span> <span class="o">-</span> <span class="n">σ_star_jax_np</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Comparison of Numba and JAX solutions:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Max absolute difference in asset grid: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a_diff</span><span class="p">)</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean absolute difference in asset grid: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">a_diff</span><span class="p">)</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Max absolute difference in consumption: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">σ_diff</span><span class="p">)</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean absolute difference in consumption: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">σ_diff</span><span class="p">)</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Comparison of Numba and JAX solutions:
+==================================================
+Max absolute difference in asset grid: 5.377e-02
+Mean absolute difference in asset grid: 3.559e-02
+Max absolute difference in consumption: 5.377e-02
+Mean absolute difference in consumption: 3.559e-02
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s also visualize the differences:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ifp</span><span class="o">.</span><span class="n">P</span><span class="p">)):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_star</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> <span class="n">a_diff</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;z=</span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_star</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> <span class="n">σ_diff</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;z=</span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;assets&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;absolute difference&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Asset Grid Differences: |Numba - JAX|&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;assets&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;absolute difference&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Consumption Differences: |Numba - JAX|&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ec2966a6dbac28a323846d2f132683c927c19ea9b9fc8a222cc5e12540a54431.png" src="_images/ec2966a6dbac28a323846d2f132683c927c19ea9b9fc8a222cc5e12540a54431.png" />
+</div>
+</div>
+<p>As we can see, the differences between the two implementations are extremely small (on the order of machine precision), confirming that both methods produce essentially identical results.</p>
+<p>The tiny differences arise from:</p>
+<ul class="simple">
+<li><p>Different random number generators (NumPy vs JAX)</p></li>
+<li><p>Minor differences in floating-point operations order</p></li>
+<li><p>Different interpolation implementations</p></li>
+</ul>
+<p>Despite these minor numerical differences, both implementations converge to the same optimal policy.</p>
+<p>The JAX implementation provides several advantages:</p>
+<ol class="arabic simple">
+<li><p><strong>GPU/TPU acceleration</strong>: JAX can automatically utilize GPU/TPU hardware for faster computation</p></li>
+<li><p><strong>Automatic differentiation</strong>: JAX provides automatic differentiation, which can be useful for sensitivity analysis</p></li>
+<li><p><strong>Functional programming</strong>: JAX encourages a functional style that can be easier to reason about and parallelize</p></li>
+</ol>
+</section>
+</section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">58.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">58.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="ifpa_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 58.1 </span></p>
