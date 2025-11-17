@@ -268,7 +268,7 @@ class Model(NamedTuple):
 
 def create_mccall_model(
         c: float = 1.0,
-        α: float = 0.1,
+        α: float = 0.05,
         β: float = 0.96,
         ρ: float = 0.9,
         ν: float = 0.2,
@@ -361,14 +361,17 @@ def vfi(
 ```
 
 Here's a function that uses a solution $v_u$ to compute the remaining functions of
-interest: $v_u$, and the continuation value function $h$.
+interest: $v_e$, and the continuation value function $h$.
 
 We use the same expressions as we did in the {doc}`discrete case <mccall_model_with_sep_markov>`, after replacing sums with integrals.
 
 ```{code-cell} ipython3
 def compute_solution_functions(model, v_u):
 
-    # Interpolate v_u 
+    # Unpack model parameters
+    c, α, β, ρ, ν, γ, w_grid, z_draws = model
+
+    # Interpolate v_u on the wage grid
     vf = lambda x: jnp.interp(x, w_grid, v_u)
 
     def compute_expectation(w):
@@ -604,7 +607,7 @@ When unemployed, the agent accepts offers that exceed the reservation wage.
 
 When employed, the agent faces job separation with probability $\alpha$ each period.
 
-### Cross-Sectional Analysis
+### Cross-sectional analysis
 
 Now let's simulate many agents simultaneously to examine the cross-sectional unemployment rate.
 
@@ -633,29 +636,29 @@ def _simulate_cross_section_compiled(
     c, α, β, ρ, ν, γ, w_grid, z_draws = model
 
     # Initialize arrays
-    key, subkey = jax.random.split(key)
+    init_key, subkey = jax.random.split(key)
     wages = jnp.exp(jax.random.normal(subkey, (n_agents,)) * ν)
     status = jnp.zeros(n_agents, dtype=jnp.int32)
 
     def update(t, loop_state):
-        key, status, wages = loop_state
+        status, wages = loop_state
 
         # Shift loop state forwards
-        key, subkey = jax.random.split(key)
-        agent_keys = jax.random.split(subkey, n_agents)
+        step_key = jax.random.fold_in(init_key, t)
+        agent_keys = jax.random.split(step_key, n_agents)
 
         status, wages = update_agents_vmap(
             agent_keys, status, wages, model, w_bar
         )
 
-        return key, status, wages
+        return status, wages
 
     # Run simulation using fori_loop
-    initial_loop_state = (key, status, wages)
+    initial_loop_state = (status, wages)
     final_loop_state = lax.fori_loop(0, T, update, initial_loop_state)
 
     # Return only final employment state
-    _, final_is_employed, _ = final_loop_state
+    final_is_employed, _ = final_loop_state
     return final_is_employed
 
 
