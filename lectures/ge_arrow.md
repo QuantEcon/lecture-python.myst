@@ -145,7 +145,7 @@ $$
 
 for all $t$ and for all $s^t$.
 
-## Recursive Formulation
+## Recursive formulation
 
 Following descriptions in section 9.3.3 of Ljungqvist and Sargent {cite}`Ljungqvist2012` chapter 9, we  set up  a competitive equilibrium of a pure exchange economy with complete markets in one-period Arrow securities.
 
@@ -239,7 +239,7 @@ are  zero net aggregate claims.
 
 
 
-## State Variable Degeneracy
+## State variable degeneracy
 
 Please see Ljungqvist and Sargent {cite}`Ljungqvist2012` for a description of
 timing protocol for trades  consistent with an  Arrow-Debreu vision in which
@@ -284,7 +284,7 @@ This outcome depends critically on there being complete markets in Arrow securit
 
 For example, it does not prevail in the incomplete markets setting of this lecture {doc}`The Aiyagari Model <aiyagari>`
 
-## Markov Asset Prices
+## Markov asset prices
 
 
 Let's start with a brief summary of formulas for computing asset prices in
@@ -315,7 +315,7 @@ $$
 
 * The gross rate of return on a one-period risk-free bond Markov state $\bar s_i$ is $R_i = (\sum_j Q_{i,j})^{-1}$
 
-### Exogenous Pricing Kernel
+### Exogenous pricing kernel
 
 At this point, we'll take the pricing kernel $Q$ as exogenous, i.e., determined outside the model
 
@@ -352,7 +352,7 @@ Below, we describe an equilibrium model with trading of one-period Arrow securit
 
 In constructing our model, we'll repeatedly encounter formulas that remind us of our asset pricing formulas.
 
-### Multi-Step-Forward Transition Probabilities and Pricing Kernels
+### Multi-step-forward transition probabilities and pricing kernels
 
 The $(i,j)$ component of  the $\ell$-step ahead transition probability $P^\ell$ is
 
@@ -370,7 +370,7 @@ $$
 
 We'll use these objects to state a useful property in asset pricing theory.
 
-### Laws of Iterated Expectations and Iterated Values
+### Laws of iterated expectations and iterated values
 
 A  *law of iterated values* has a mathematical structure that parallels a
 *law of iterated expectations*
@@ -432,7 +432,7 @@ V \left[ V  ( d(s_{t+j}) | s_{t+1} ) | s_t \right]
     \end{aligned}
 $$
 
-## General Equilibrium
+## General equilibrium
 
 Now we are ready to do some fun calculations.
 
@@ -483,7 +483,7 @@ $$
 
 * A collection of $n \times 1$ vectors of individual $k$ consumptions: $c^k\left(s\right), k=1,\ldots, K$
 
-### $Q$ is the Pricing Kernel
+### $Q$ is the pricing kernel
 
 
 For any agent  $k \in \left[1, \ldots, K\right]$, at the equilibrium allocation,
@@ -587,7 +587,7 @@ be nonnegative, then in a *finite horizon* economy with sequential trading of on
 
 
 
-### Continuation Wealth
+### Continuation wealth
 
 Continuation wealth plays an important role in Bellmanizing a competitive equilibrium with sequential
 trading of a complete set of one-period Arrow securities.
@@ -645,7 +645,7 @@ the economy begins with  all agents being debt-free and financial-asset-free at 
 Note that all agents' continuation wealths recurrently return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$.
 ```
 
-### Optimal Portfolios
+### Optimal portfolios
 
 A nifty feature of the model is that an optimal portfolio of  a type $k$ agent equals the continuation wealth that we just computed.
 
@@ -656,7 +656,7 @@ $$
 a_k(s) = \psi^k(s), \quad s \in \left[\bar s_1, \ldots, \bar s_n \right]
 $$ (eqn:optport)
 
-### Equilibrium Wealth Distribution $\alpha$
+### Equilibrium wealth distribution $\alpha$
 
 
 With the initial state being  a particular state $s_0 \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]$,
@@ -703,7 +703,7 @@ $$ J^k = (I - \beta P)^{-1} u(\alpha_k y)  , \quad u(c) = \frac{c^{1-\gamma}}{1-
 where it is understood that $ u(\alpha_k y)$ is a vector.
 
 
-## Finite Horizon
+## Finite horizon
 
 We now describe a finite-horizon version of the economy that operates  for $T+1$ periods
 $t \in {\bf T} = \{ 0, 1, \ldots, T\}$.
@@ -717,7 +717,7 @@ one-period utility function $u(c)$ satisfies an Inada condition that sets the ma
 limits borrowing.
 
 
-### Continuation Wealths
+### Continuation wealths
 
 
 We denote  a $K \times 1$ vector of  state-dependent continuation wealths in Markov state $s$ at time $t$ as
@@ -834,7 +834,7 @@ where it is understood that $ u(\alpha_k y)$ is a vector.
 
 
 
-## Python Code
+## Python code
 
 We are ready to dive into some Python code.
 
@@ -884,6 +884,7 @@ class RecurCompetitive(NamedTuple):
     α: jax.Array    # wealth distribution
     ψ: jax.Array    # continuation value
     J: jax.Array    # optimal value
+
 
 @partial(jax.jit, static_argnums=(6,))
 def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
