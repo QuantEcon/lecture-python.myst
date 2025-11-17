@@ -361,14 +361,17 @@ def vfi(
 ```
 
 Here's a function that uses a solution $v_u$ to compute the remaining functions of
-interest: $v_u$, and the continuation value function $h$.
+interest: $v_e$, and the continuation value function $h$.
 
 We use the same expressions as we did in the {doc}`discrete case <mccall_model_with_sep_markov>`, after replacing sums with integrals.
 
 ```{code-cell} ipython3
 def compute_solution_functions(model, v_u):
 
-    # Interpolate v_u 
+    # Unpack model parameters
+    c, α, β, ρ, ν, γ, w_grid, z_draws = model
+
+    # Interpolate v_u on the wage grid
     vf = lambda x: jnp.interp(x, w_grid, v_u)
 
     def compute_expectation(w):
@@ -604,7 +607,7 @@ When unemployed, the agent accepts offers that exceed the reservation wage.
 
 When employed, the agent faces job separation with probability $\alpha$ each period.
 
-### Cross-Sectional Analysis
+### Cross-sectional analysis
 
 Now let's simulate many agents simultaneously to examine the cross-sectional unemployment rate.
 

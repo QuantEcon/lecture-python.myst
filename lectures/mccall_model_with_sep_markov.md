@@ -49,7 +49,7 @@ libraries
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon
+!pip install quantecon jax
 ```
 
 We use the following imports:
@@ -64,7 +64,7 @@ import matplotlib.pyplot as plt
 from functools import partial
 ```
 
-## Model Setup
+## Model setup
 
 The setting is as follows:
 
@@ -74,7 +74,7 @@ The setting is as follows:
 - Unemployed workers receive compensation $c$ per period
 - Future payoffs are discounted by factor $\beta \in (0,1)$
 
-### Decision Problem
+### Decision problem
 
 When unemployed and receiving wage offer $w$, the agent chooses between:
 
@@ -86,7 +86,7 @@ The wage updates are as follows:
 * If an unemployed agent rejects offer $w$, then their next offer is drawn from $P(w, \cdot)$
 * If an employed agent loses a job in which they were paid wage $w$, then their next offer is drawn from $P(w, \cdot)$
 
-### The Wage Offer Process
+### The wage offer process
 
 To construct the wage offer process we start with an AR1 process.
 
@@ -112,7 +112,7 @@ Actually, in practice, we approximate this wage process as follows:
 
 
 
-### Value Functions
+### Value functions
 
 We let
 
@@ -168,12 +168,12 @@ $$
 
 +++
 
-### Optimal Policy
+### Optimal policy
 
 Once we have the solutions $v_e$ and $v_u$ to these Bellman equations, we can compute the optimal policy: accept at current wage offer $w$ if 
 
 $$
-    v_e(w) ≥ u(c) + β(Pv_u)(w)
+    v_e(w) \geq u(c) + \beta (P v_u)(w)
 $$
 
 The optimal policy turns out to be a reservation wage strategy: accept all wages above some threshold.
@@ -185,7 +185,7 @@ The optimal policy turns out to be a reservation wage strategy: accept all wages
 
 Let's now implement the model.
 
-### Set Up
+### Set up
 
 The default utility function is a CRRA utility function
 
@@ -234,7 +234,7 @@ def create_js_with_sep_model(
 ```
 
 
-### Solution: First Pass
+### Solution: first pass
 
 Let's put together a (not very efficient) routine for calculating the
 reservation wage.
@@ -244,7 +244,7 @@ reservation wage.
 It works by starting with guesses for $v_e$ and $v_u$ and iterating to
 convergence.
 
-Here's are Bellman operators that update $v_u$ and $v_e$ respectively.
+Here are Bellman operators that update $v_u$ and $v_e$ respectively.
 
 
 ```{code-cell} ipython3
@@ -313,7 +313,7 @@ def solve_model_first_pass(
 ```
 
 
-### Road Test
+### Road test
 
 Let's solve the model:
 
@@ -348,9 +348,9 @@ The reservation wage is at the intersection of $v_e$, and the continuation value
 function, which is the value of rejecting.
 
 
-## Improving Efficiency
+## Improving efficiency
 
-The solution method desribed above works fine but we can do much better.
+The solution method described above works fine but we can do much better.
 
 First, we use the employed worker's Bellman equation to express
 $v_e$ in terms of $Pv_u$
@@ -495,7 +495,7 @@ The result is the same as before but we only iterate on one array --- and also
 our JAX code is more efficient.
 
 
-## Sensitivity Analysis
+## Sensitivity analysis
 
 Let's examine how reservation wages change with the separation rate.
 
@@ -523,7 +523,7 @@ Can you provide an intuitive economic story behind the outcome that you see in t
 
 +++
 
-## Employment Simulation
+## Employment simulation
 
 Now let's simulate the employment dynamics of a single agent under the optimal policy.
 
@@ -691,7 +691,7 @@ often leads a high new draw.
 
 +++
 
-## The Ergodic Property
+## Ergodic property
 
 Below we examine cross-sectional unemployment.
 
@@ -699,7 +699,7 @@ In particular, we will look at the unemployment rate in a cross-sectional
 simulation and compare it to the time-average unemployment rate, which is the
 fraction of time an agent spends unemployed over a long time series.
 
-We will see that these two values are approximately equal -- if fact they are
+We will see that these two values are approximately equal -- in fact they are
 exactly equal in the limit.
 
 The reason is that the process $(S_t, W_t)$, where
@@ -744,7 +744,7 @@ Often the second approach is better for our purposes, since it's easier to paral
 
 +++
 
-## Cross-Sectional Analysis
+## Cross-sectional analysis
 
 Now let's simulate many agents simultaneously to examine the cross-sectional unemployment rate.
 
@@ -907,7 +907,7 @@ Now let's visualize the cross-sectional distribution:
 plot_cross_sectional_unemployment(model)
 ```
 
-## Lower Unemployment Compensation (c=0.5)
+## Lower unemployment compensation (c=0.5)
 
 What happens to the cross-sectional unemployment rate with lower unemployment compensation?
 
