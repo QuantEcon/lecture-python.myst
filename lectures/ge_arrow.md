@@ -328,7 +328,9 @@ Two examples would be
 
 We'll write down implications of  Markov asset pricing in a nutshell for two types of assets
 
-  * the price in Markov state $s$ at time $t$ of a **cum dividend** stock that entitles the owner at the beginning of time $t$ to the time $t$ dividend and the option to sell the asset at time $t+1$.  The price evidently satisfies $p^h(\bar s_i) = d^h(\bar s_i) + \sum_j Q_{ij} p^h(\bar s_j) $, which implies that the vector $p^h$ satisfies $p^h = d^h + Q p^h$ which implies the formula
+  * the price in Markov state $s$ at time $t$ of a **cum dividend** stock that entitles the owner at the beginning of time $t$ to the time $t$ dividend and the option to sell the asset at time $t+1$.  
+  
+  * The price evidently satisfies $p^h(\bar s_i) = d^h(\bar s_i) + \sum_j Q_{ij} p^h(\bar s_j) $, which implies that the vector $p^h$ satisfies $p^h = d^h + Q p^h$ which implies the formula
 
 $$
 p^h = (I - Q)^{-1} d^h
@@ -337,7 +339,9 @@ $$
 
 
 
-* the price in Markov state $s$ at time $t$ of an **ex dividend** stock that entitles the owner at the end  of time $t$ to the time $t+1$ dividend and the option to sell the stock at time $t+1$. The  price is
+* the price in Markov state $s$ at time $t$ of an **ex dividend** stock that entitles the owner at the end  of time $t$ to the time $t+1$ dividend and the option to sell the stock at time $t+1$. 
+
+The  price is
 
 $$
 p^h = (I - Q)^{-1} Q d^h
@@ -582,7 +586,9 @@ even if he consumes zero goods forevermore.
 
 ```{prf:remark}
 If  we have an Inada condition at zero consumption or just impose that consumption
-be nonnegative, then in a *finite horizon* economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section on a [finite horizon economy](#finite-horizon)  below.
+be nonnegative, then in a *finite horizon* economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. 
+
+See the section on a [finite horizon economy](#finite-horizon)  below.
 ```
 
 
@@ -637,7 +643,9 @@ Note that $\sum_{k=1}^K \psi^k = {0}_{n \times 1}$.
 
 ```{prf:remark}
 At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$,
-the continuation wealth $\psi^k(s_0) = 0$ for all agents $k = 1, \ldots, K$.  This indicates that
+the continuation wealth $\psi^k(s_0) = 0$ for all agents $k = 1, \ldots, K$.  
+
+This indicates that
 the economy begins with  all agents being debt-free and financial-asset-free at time $0$, state $s_0$.
 ```
 
@@ -771,13 +779,17 @@ Note that $\sum_{k=1}^K \psi_t^k = {0}_{n \times 1}$ for all $t \in {\bf T}$.
 
 ```{prf:remark}
 At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$,
- for all agents $k = 1, \ldots, K$, continuation wealth $\psi_0^k(s_0) = 0$.  This indicates that
+ for all agents $k = 1, \ldots, K$, continuation wealth $\psi_0^k(s_0) = 0$.  
+ 
+ This indicates that
 the economy begins with  all agents being debt-free and financial-asset-free at time $0$, state $s_0$.
 ```
 
 
 ```{prf:remark}
-Note that all agents' continuation wealths  return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$. This will recur if the Markov chain makes the initial state $s_0$ recurrent.
+Note that all agents' continuation wealths  return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$. 
+
+This will recur if the Markov chain makes the initial state $s_0$ recurrent.
 ```
 
 
