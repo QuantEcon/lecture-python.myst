@@ -35,16 +35,6 @@ kernelspec:
 "Asset pricing is all about covariances" -- Lars Peter Hansen
 ```
 
-```{admonition} GPU
-:class: warning
-
-This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming.
-
-Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
-
-Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax) for installing JAX with GPU support. If you would like to install JAX running on the `cpu` only you can use `pip install jax[cpu]`
-```
-
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython
@@ -85,10 +75,7 @@ Let's start with some imports:
 import matplotlib.pyplot as plt
 import numpy as np
 import quantecon as qe
-import jax
-import jax.numpy as jnp
-from jax.numpy.linalg import eigvals, solve
-from typing import NamedTuple
+from numpy.linalg import eigvals, solve
 ```
 
 ## {index}`Pricing Models <single: Pricing Models>`
@@ -104,7 +91,7 @@ Let $\{d_t\}_{t \geq 0}$ be a stream of dividends
 Let's look at some equations that we expect to hold for prices of assets under ex-dividend contracts
 (we will consider cum-dividend pricing in the exercises).
 
-### Risk-neutral pricing
+### Risk-Neutral Pricing
 
 ```{index} single: Pricing Models; Risk-Neutral
 ```
@@ -129,7 +116,7 @@ Here ${\mathbb E}_t [y]$ denotes the best forecast of $y$, conditioned on inform
 
 More precisely, ${\mathbb E}_t [y]$ is the mathematical expectation of $y$ conditional on information available at time $t$.
 
-### Pricing with random discount factor
+### Pricing with Random Discount Factor
 
 ```{index} single: Pricing Models; Risk Aversion
 ```
@@ -158,7 +145,7 @@ This is because such assets pay well when funds are more urgently wanted.
 
 We give examples of how the stochastic discount factor has been modeled below.
 
-### Asset pricing and covariances
+### Asset Pricing and Covariances
 
 Recall that, from the definition of a conditional covariance ${\rm cov}_t (x_{t+1}, y_{t+1})$, we have
 
@@ -185,9 +172,9 @@ It is useful to regard equation {eq}`lteeqs102`   as a generalization of equatio
 
 Equation {eq}`lteeqs102` asserts that the covariance of the stochastic discount factor with the one period payout $d_{t+1} + p_{t+1}$ is an important determinant of the price $p_t$.
 
-We give examples of some models of stochastic discount factors that have been proposed later in this lecture and also in a {doc}`later lecture<advanced:lucas_model>`.
+We give examples of some models of stochastic discount factors that have been proposed later in this lecture and also in a [later lecture](https://python-advanced.quantecon.org/lucas_model.html).
 
-### The price-dividend ratio
+### The Price-Dividend Ratio
 
 Aside from prices, another quantity of interest is the **price-dividend ratio** $v_t := p_t / d_t$.
 
@@ -203,7 +190,7 @@ v_t = {\mathbb E}_t \left[ m_{t+1} \frac{d_{t+1}}{d_t} (1 + v_{t+1}) \right]
 
 Below we'll discuss the implication of this equation.
 
-## Prices in the risk-neutral case
+## Prices in the Risk-Neutral Case
 
 What can we say about price dynamics on the basis of the models described above?
 
@@ -216,7 +203,7 @@ For now we'll study  the risk-neutral case in which  the stochastic discount fac
 
 We'll  focus on how an asset  price depends on a dividend process.
 
-### Example 1: constant dividends
+### Example 1: Constant Dividends
 
 The simplest case is risk-neutral price of a constant, non-random dividend stream $d_t = d > 0$.
 
@@ -247,7 +234,7 @@ This is the equilibrium price in the constant dividend case.
 Indeed, simple algebra shows that setting $p_t = \bar p$ for all $t$
 satisfies the difference equation $p_t = \beta (d + p_{t+1})$.
 
-### Example 2: dividends with deterministic growth paths
+### Example 2: Dividends with Deterministic Growth Paths
 
 Consider a growing, non-random dividend process $d_{t+1} = g d_t$
 where $0 < g \beta < 1$.
@@ -280,7 +267,7 @@ $$
 This is called the *Gordon formula*.
 
 (mass_mg)=
-### Example 3: Markov growth, risk-neutral pricing
+### Example 3: Markov Growth, Risk-Neutral Pricing
 
 Next, we consider a dividend process
 
@@ -323,21 +310,14 @@ The next figure shows a simulation, where
 * $\{X_t\}$ evolves as a discretized AR1 process produced using {ref}`Tauchen's method <fm_ex3>`.
 * $g_t = \exp(X_t)$, so that $\ln g_t = X_t$ is the growth rate.
 
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: |
-      State, growth, and dividend simulation
-    name: fig_markov_sim
----
+```{code-cell} ipython
 n = 7
 mc = qe.tauchen(n, 0.96, 0.25)
 sim_length = 80
 
-x_series = mc.simulate(sim_length, init=jnp.median(mc.state_values))
-g_series = jnp.exp(x_series)
-d_series = jnp.cumprod(g_series) # Assumes d_0 = 1
+x_series = mc.simulate(sim_length, init=np.median(mc.state_values))
+g_series = np.exp(x_series)
+d_series = np.cumprod(g_series) # Assumes d_0 = 1
 
 series = [x_series, g_series, d_series, np.log(d_series)]
 labels = ['$X_t$', '$g_t$', '$d_t$', r'$\log \, d_t$']
@@ -350,7 +330,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-#### Pricing formula
+#### Pricing Formula
 
 To obtain asset prices in this setting, let's adapt our analysis from the case of deterministic growth.
 
@@ -420,25 +400,18 @@ As before, we'll generate $\{X_t\}$  as a {ref}`discretized AR1 process <fm_ex3>
 
 Here's the code, including a test of the spectral radius condition
 
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: |
-      Price-dividend ratio risk-neutral case
-    name: fig_pdv_neutral
----
+```{code-cell} python3
 n = 25  # Size of state space
 β = 0.9
 mc = qe.tauchen(n, 0.96, 0.02)
 
-K = mc.P * jnp.exp(mc.state_values)
+K = mc.P * np.exp(mc.state_values)
 
 warning_message = "Spectral radius condition fails"
-assert jnp.max(jnp.abs(eigvals(K))) < 1 / β,  warning_message
+assert np.max(np.abs(eigvals(K))) < 1 / β,  warning_message
 
-I = jnp.identity(n)
-v = solve(I - β * K, β * K @ jnp.ones(n))
+I = np.identity(n)
+v = solve(I - β * K, β * K @ np.ones(n))
 
 fig, ax = plt.subplots()
 ax.plot(mc.state_values, v, 'g-o', lw=2, alpha=0.7, label='$v$')
@@ -467,7 +440,7 @@ We'll price several distinct assets, including
 * A consol (a type of bond issued by the UK government in the 19th century)
 * Call options on a consol
 
-### Pricing a Lucas tree
+### Pricing a Lucas Tree
 
 ```{index} single: Finite Markov Asset Pricing; Lucas Tree
 ```
@@ -496,7 +469,7 @@ m_{t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)}
 
 where $u$ is a concave utility function and $c_t$ is time $t$ consumption of a representative consumer.
 
-(A derivation of this expression is given in a {doc}`later lecture<advanced:lucas_model>`)
+(A derivation of this expression is given in a [later lecture](https://python-advanced.quantecon.org/lucas_model.html))
 
 Assume the existence of an endowment that follows growth process {eq}`mass_fmce`.
 
@@ -566,51 +539,46 @@ v = (I - \beta J)^{-1} \beta  J {\mathbb 1}
 We will define a function tree_price to compute $v$ given parameters stored in
 the class AssetPriceModel
 
-```{code-cell} ipython3
-class AssetPriceModel(NamedTuple):
+```{code-cell} python3
+class AssetPriceModel:
     """
     A class that stores the primitives of the asset pricing model.
 
     Parameters
     ----------
+    β : scalar, float
+        Discount factor
     mc : MarkovChain
-        Contains the transition matrix and set of state values
+        Contains the transition matrix and set of state values for the state
+        process
+    γ : scalar(float)
+        Coefficient of risk aversion
     g : callable
         The function mapping states to growth rates
-    β : float
-        Discount factor
-    γ : float
-        Coefficient of risk aversion
-    n: int
-        The number of states
+
     """
-    mc: qe.MarkovChain
-    g: callable
-    β: float
-    γ: float
-    n: int
-    
+    def __init__(self, β=0.96, mc=None, γ=2.0, g=np.exp):
+        self.β, self.γ = β, γ
+        self.g = g
 
-def create_ap_model(mc=None, g=jnp.exp, β=0.96, γ=2.0):
-    """Create an AssetPriceModel class"""
-    if mc is None:
-        n, ρ, σ = 25, 0.9, 0.02
-        mc = qe.tauchen(n, ρ, σ)
-    else:
-        mc = mc
-        n = mc.P.shape[0]
+        # A default process for the Markov chain
+        if mc is None:
+            self.ρ = 0.9
+            self.σ = 0.02
+            self.mc = qe.tauchen(n, self.ρ, self.σ)
+        else:
+            self.mc = mc
 
-    return AssetPriceModel(mc=mc, g=g, β=β, γ=γ, n=n)
+        self.n = self.mc.P.shape[0]
 
-
-def test_stability(Q, β):
-    """
-    Stability test for a given matrix Q.
-    """
-    sr = np.max(np.abs(eigvals(Q)))
-    if not sr < 1 / β:
-        msg = f"Spectral radius condition failed with radius = {sr}"
-        raise ValueError(msg)
+    def test_stability(self, Q):
+        """
+        Stability test for a given matrix Q.
+        """
+        sr = np.max(np.abs(eigvals(Q)))
+        if not sr < 1 / self.β:
+            msg = f"Spectral radius condition failed with radius = {sr}"
+            raise ValueError(msg)
 
 
 def tree_price(ap):
@@ -633,11 +601,11 @@ def tree_price(ap):
     J = P * ap.g(y)**(1 - γ)
 
     # Make sure that a unique solution exists
-    test_stability(J, β)
+    ap.test_stability(J)
 
     # Compute v
-    I = jnp.identity(ap.n)
-    Ones = jnp.ones(ap.n)
+    I = np.identity(ap.n)
+    Ones = np.ones(ap.n)
     v = solve(I - β * J, β * J @ Ones)
 
     return v
@@ -646,25 +614,19 @@ def tree_price(ap):
 Here's a plot of $v$ as a function of the state for several values of $\gamma$,
 with a positively correlated Markov process and $g(x) = \exp(x)$
 
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: |
-      Lucas tree prices for varying risk aversion
-    name: fig_lucas_gamma
----
+```{code-cell} python3
 γs = [1.2, 1.4, 1.6, 1.8, 2.0]
-ap = create_ap_model()
+ap = AssetPriceModel()
 states = ap.mc.state_values
 
 fig, ax = plt.subplots()
 
 for γ in γs:
-    tem_ap = create_ap_model(mc=ap.mc, g=ap.g, β=ap.β, γ=γ)
-    v = tree_price(tem_ap)
+    ap.γ = γ
+    v = tree_price(ap)
     ax.plot(states, v, lw=2, alpha=0.6, label=rf"$\gamma = {γ}$")
 
+ax.set_title('Price-dividend ratio as a function of the state')
 ax.set_ylabel("price-dividend ratio")
 ax.set_xlabel("state")
 ax.legend(loc='upper right')
@@ -744,7 +706,7 @@ p = (I - \beta M)^{-1} \beta M \zeta {\mathbb 1}
 
 The above is implemented in the function consol_price.
 
-```{code-cell} ipython3
+```{code-cell} python3
 def consol_price(ap, ζ):
     """
     Computes price of a consol bond with payoff ζ
@@ -753,7 +715,7 @@ def consol_price(ap, ζ):
     ----------
     ap: AssetPriceModel
         An instance of AssetPriceModel containing primitives
-    
+
     ζ : scalar(float)
         Coupon of the console
 
@@ -761,17 +723,18 @@ def consol_price(ap, ζ):
     -------
     p : array_like(float)
         Console bond prices
+
     """
     # Simplify names, set up matrices
     β, γ, P, y = ap.β, ap.γ, ap.mc.P, ap.mc.state_values
     M = P * ap.g(y)**(- γ)
 
     # Make sure that a unique solution exists
-    test_stability(M, β)
+    ap.test_stability(M)
 
     # Compute price
-    I = jnp.identity(ap.n)
-    Ones = jnp.ones(ap.n)
+    I = np.identity(ap.n)
+    Ones = np.ones(ap.n)
     p = solve(I - β * M, β * ζ * M @ Ones)
 
     return p
@@ -849,7 +812,7 @@ Start at some initial $w$ and iterate with $T$ to convergence .
 
 We can find the solution with the following function call_option
 
-```{code-cell} ipython3
+```{code-cell} python3
 def call_option(ap, ζ, p_s, ϵ=1e-7):
     """
     Computes price of a call option on a consol bond.
@@ -865,7 +828,7 @@ def call_option(ap, ζ, p_s, ϵ=1e-7):
     p_s : scalar(float)
         Strike price
 
-    ϵ : scalar(float), optional(default=1e-7)
+    ϵ : scalar(float), optional(default=1e-8)
         Tolerance for infinite horizon problem
 
     Returns
@@ -879,42 +842,26 @@ def call_option(ap, ζ, p_s, ϵ=1e-7):
     M = P * ap.g(y)**(- γ)
 
     # Make sure that a unique consol price exists
-    test_stability(M, β)
+    ap.test_stability(M)
 
     # Compute option price
     p = consol_price(ap, ζ)
-    w = jnp.zeros(ap.n)
+    w = np.zeros(ap.n)
     error = ϵ + 1
-
-    def step(state):
-        w, error = state
+    while error > ϵ:
         # Maximize across columns
-        w_new = jnp.maximum(β * M @ w, p - p_s)
+        w_new = np.maximum(β * M @ w, p - p_s)
         # Find maximal difference of each component and update
-        error_new = jnp.amax(jnp.abs(w - w_new))
-        return (w_new, error_new)
+        error = np.amax(np.abs(w - w_new))
+        w = w_new
 
-    # Check whether converged
-    def cond(state):
-        _, error = state
-        return error > ϵ
-
-    final_w, _ = jax.lax.while_loop(cond, step, (w, error))
-
-    return final_w
+    return w
 ```
 
 Here's a plot of $w$ compared to the consol price when $P_S = 40$
 
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: |
-      Consol price and call option value
-    name: fig_consol_call
----
-ap = create_ap_model(β=0.9)
+```{code-cell} python3
+ap = AssetPriceModel(β=0.9)
 ζ = 1.0
 strike_price = 40
 
@@ -1013,12 +960,10 @@ $$
 
 Consider the following primitives
 
-```{code-cell} ipython3
+```{code-cell} python3
 n = 5  # Size of State Space
-P = jnp.full((n, n), 0.0125)
-P = P.at[jnp.arange(n), jnp.arange(n)].set(
-    P[jnp.arange(n), jnp.arange(n)] + 1 - P.sum(1)
-    )
+P = np.full((n, n), 0.0125)
+P[range(n), range(n)] += 1 - P.sum(1)
 # State values of the Markov chain
 s = np.array([0.95, 0.975, 1.0, 1.025, 1.05])
 γ = 2.0
@@ -1043,13 +988,11 @@ Do the same for
 
 First, let's enter the parameters:
 
-```{code-cell} ipython3
+```{code-cell} python3
 n = 5
-P = jnp.full((n, n), 0.0125)
-P = P.at[jnp.arange(n), jnp.arange(n)].set(
-    P[jnp.arange(n), jnp.arange(n)] + 1 - P.sum(1)
-    )
-s = jnp.array([0.95, 0.975, 1.0, 1.025, 1.05])  # State values
+P = np.full((n, n), 0.0125)
+P[range(n), range(n)] += 1 - P.sum(1)
+s = np.array([0.95, 0.975, 1.0, 1.025, 1.05])  # State values
 mc = qe.MarkovChain(P, state_values=s)
 
 γ = 2.0
@@ -1061,27 +1004,27 @@ p_s = 150.0
 Next, we'll create an instance of `AssetPriceModel` to feed into the
 functions
 
-```{code-cell} ipython3
-apm = create_ap_model(mc=mc, g=lambda x: x, β=β, γ=γ)
+```{code-cell} python3
+apm = AssetPriceModel(β=β, mc=mc, γ=γ, g=lambda x: x)
 ```
 
 Now we just need to call the relevant functions on the data:
 
-```{code-cell} ipython3
+```{code-cell} python3
 tree_price(apm)
 ```
 
-```{code-cell} ipython3
+```{code-cell} python3
 consol_price(apm, ζ)
 ```
 
-```{code-cell} ipython3
+```{code-cell} python3
 call_option(apm, ζ, p_s)
 ```
 
 Let's show the last two functions as a plot
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots()
 ax.plot(s, consol_price(apm, ζ), label='consol')
 ax.plot(s, call_option(apm, ζ, p_s), label='call option')
@@ -1142,7 +1085,7 @@ Is one higher than the other?  Can you give intuition?
 
 Here's a suitable function:
 
-```{code-cell} ipython3
+```{code-cell} python3
 def finite_horizon_call_option(ap, ζ, p_s, k):
     """
     Computes k period option value.
@@ -1152,23 +1095,22 @@ def finite_horizon_call_option(ap, ζ, p_s, k):
     M = P * ap.g(y)**(- γ)
 
     # Make sure that a unique solution exists
-    test_stability(M, β)
+    ap.test_stability(M)
+
 
     # Compute option price
     p = consol_price(ap, ζ)
-    def step(i, w):
+    w = np.zeros(ap.n)
+    for i in range(k):
         # Maximize across columns
-        w = jnp.maximum(β * M @ w, p - p_s)
-        return w
-    
-    w = jax.lax.fori_loop(0, k, step, jnp.zeros(ap.n))
+        w = np.maximum(β * M @ w, p - p_s)
 
     return w
 ```
 
 Now let's compute the option values at `k=5` and `k=25`
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots()
 for k in [5, 25]:
     w = finite_horizon_call_option(apm, ζ, p_s, k)
