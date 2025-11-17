@@ -189,7 +189,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">45.5. Simulation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-agent-dynamics">45.5.1. Single agent dynamics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-analysis">45.5.2. Cross-Sectional Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-analysis">45.5.2. Cross-sectional analysis</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">45.5.3. Visualization</a></li>
 </ul>
 </li>
@@ -308,7 +308,10 @@ the details.</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.10.1-py3-none-any.whl.metadata (5.3 kB)
 Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.8.0)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
@@ -318,12 +321,21 @@ Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/l
 Requirement already satisfied: jaxlib&lt;=0.8.0,&gt;=0.8.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.8.0)
 Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.5.3)
 Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (3.4.0)
-Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
 Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.10.1
 </pre></div>
 </div>
 </div>
@@ -499,7 +511,7 @@ separation and a continuous wage offer distribution.</p>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">create_mccall_model</span><span class="p">(</span>
         <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
         <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span><span class="p">,</span>
         <span class="n">ρ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
         <span class="n">ν</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
@@ -600,13 +612,16 @@ separation and a continuous wage offer distribution.</p>
 </div>
 </div>
 <p>Here’s a function that uses a solution <span class="math notranslate nohighlight">\(v_u\)</span> to compute the remaining functions of
-interest: <span class="math notranslate nohighlight">\(v_u\)</span>, and the continuation value function <span class="math notranslate nohighlight">\(h\)</span>.</p>
+interest: <span class="math notranslate nohighlight">\(v_e\)</span>, and the continuation value function <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <p>We use the same expressions as we did in the <a class="reference internal" href="mccall_model_with_sep_markov.html"><span class="doc">discrete case</span></a>, after replacing sums with integrals.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_solution_functions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v_u</span><span class="p">):</span>
 
-    <span class="c1"># Interpolate v_u </span>
+    <span class="c1"># Unpack model parameters</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">ν</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">w_grid</span><span class="p">,</span> <span class="n">z_draws</span> <span class="o">=</span> <span class="n">model</span>
+
+    <span class="c1"># Interpolate v_u on the wage grid</span>
     <span class="n">vf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w_grid</span><span class="p">,</span> <span class="n">v_u</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_expectation</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
@@ -653,7 +668,7 @@ interest: <span class="math notranslate nohighlight">\(v_u\)</span>, and the con
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7b1e57017730dbab7592bf29a75b1ca86281476b43aea3e511c2005ce4a75480.png" src="_images/7b1e57017730dbab7592bf29a75b1ca86281476b43aea3e511c2005ce4a75480.png" />
+<img alt="_images/148f94b70f22a78c6d41ea506a1170e9903162626477b73c4030306327cbd33d.png" src="_images/148f94b70f22a78c6d41ea506a1170e9903162626477b73c4030306327cbd33d.png" />
 </div>
 </div>
 <p>The reservation wage is at the intersection of the employment value function <span class="math notranslate nohighlight">\(v_e\)</span> and the continuation value function <span class="math notranslate nohighlight">\(h\)</span>.</p>
@@ -703,7 +718,7 @@ interest: <span class="math notranslate nohighlight">\(v_u\)</span>, and the con
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d9ee876dbafb8e6ec4db7fb120c14b74f45d0e29248281fc0b78778a32f823c1.png" src="_images/d9ee876dbafb8e6ec4db7fb120c14b74f45d0e29248281fc0b78778a32f823c1.png" />
+<img alt="_images/eb9bd81b51a1644b67b1eacba97a4223de6e6882bb915fda2182ea47521553bd.png" src="_images/eb9bd81b51a1644b67b1eacba97a4223de6e6882bb915fda2182ea47521553bd.png" />
 </div>
 </div>
 </section>
@@ -853,7 +868,7 @@ interest: <span class="math notranslate nohighlight">\(v_u\)</span>, and the con
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/45edf71dc79d77167fac82b83c5637c8d0cfb372630a15e96d965adc593a9a28.png" src="_images/45edf71dc79d77167fac82b83c5637c8d0cfb372630a15e96d965adc593a9a28.png" />
+<img alt="_images/e6e5fbe6f110cf7dd89747581778a0d969bfed75d9762a0b58acf0c59e4efb1a.png" src="_images/e6e5fbe6f110cf7dd89747581778a0d969bfed75d9762a0b58acf0c59e4efb1a.png" />
 </div>
 </div>
 <p>The simulation shows the agent cycling between employment and unemployment.</p>
@@ -862,7 +877,7 @@ interest: <span class="math notranslate nohighlight">\(v_u\)</span>, and the con
 <p>When employed, the agent faces job separation with probability <span class="math notranslate nohighlight">\(\alpha\)</span> each period.</p>
 </section>
 <section id="cross-sectional-analysis">
-<h3><span class="section-number">45.5.2. </span>Cross-Sectional Analysis<a class="headerlink" href="#cross-sectional-analysis" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">45.5.2. </span>Cross-sectional analysis<a class="headerlink" href="#cross-sectional-analysis" title="Link to this heading">#</a></h3>
 <p>Now let’s simulate many agents simultaneously to examine the cross-sectional unemployment rate.</p>
 <p>We first create a vectorized version of <code class="docutils literal notranslate"><span class="pre">update_agent</span></code> to efficiently update all agents in parallel:</p>
 <div class="cell docutils container">
@@ -891,29 +906,29 @@ interest: <span class="math notranslate nohighlight">\(v_u\)</span>, and the con
     <span class="n">c</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">ν</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">w_grid</span><span class="p">,</span> <span class="n">z_draws</span> <span class="o">=</span> <span class="n">model</span>
 
     <span class="c1"># Initialize arrays</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">init_key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
     <span class="n">wages</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="p">(</span><span class="n">n_agents</span><span class="p">,))</span> <span class="o">*</span> <span class="n">ν</span><span class="p">)</span>
     <span class="n">status</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_agents</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">loop_state</span><span class="p">):</span>
-        <span class="n">key</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">wages</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">status</span><span class="p">,</span> <span class="n">wages</span> <span class="o">=</span> <span class="n">loop_state</span>
 
         <span class="c1"># Shift loop state forwards</span>
-        <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="n">agent_keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">)</span>
+        <span class="n">step_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">fold_in</span><span class="p">(</span><span class="n">init_key</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">agent_keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">step_key</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">)</span>
 
         <span class="n">status</span><span class="p">,</span> <span class="n">wages</span> <span class="o">=</span> <span class="n">update_agents_vmap</span><span class="p">(</span>
             <span class="n">agent_keys</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">wages</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">w_bar</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">wages</span>
+        <span class="k">return</span> <span class="n">status</span><span class="p">,</span> <span class="n">wages</span>
 
     <span class="c1"># Run simulation using fori_loop</span>
-    <span class="n">initial_loop_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">wages</span><span class="p">)</span>
+    <span class="n">initial_loop_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">wages</span><span class="p">)</span>
     <span class="n">final_loop_state</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">initial_loop_state</span><span class="p">)</span>
 
     <span class="c1"># Return only final employment state</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">final_is_employed</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">final_loop_state</span>
+    <span class="n">final_is_employed</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">final_loop_state</span>
     <span class="k">return</span> <span class="n">final_is_employed</span>
 
 
@@ -973,9 +988,9 @@ single point in time).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time-average unemployment rate (single agent, T=2000): 0.2335
-Cross-sectional unemployment rate (at t=200): 0.2929
-Difference: 0.0594
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time-average unemployment rate (single agent, T=2000): 0.1395
+Cross-sectional unemployment rate (at t=200): 0.2032
+Difference: 0.0637
 </pre></div>
 </div>
 </div>
@@ -996,9 +1011,9 @@ Difference: 0.0594
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time-average unemployment rate (single agent, T=10000): 0.2945
-Cross-sectional unemployment rate (at t=200): 0.2929
-Difference: 0.0016
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time-average unemployment rate (single agent, T=10000): 0.2071
+Cross-sectional unemployment rate (at t=200): 0.2032
+Difference: 0.0039
 </pre></div>
 </div>
 </div>
@@ -1057,7 +1072,7 @@ Difference: 0.0016
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ad9cbafbb2368f87aadce807283479d5d564c4c84b66ff8a755c3747d3ce5c07.png" src="_images/ad9cbafbb2368f87aadce807283479d5d564c4c84b66ff8a755c3747d3ce5c07.png" />
+<img alt="_images/0db4d5249a6a890d325c903ec8052f519c5f7a02796bd90fc369b4fa0853af6a.png" src="_images/0db4d5249a6a890d325c903ec8052f519c5f7a02796bd90fc369b4fa0853af6a.png" />
 </div>
 </div>
 </section>
@@ -1095,7 +1110,7 @@ Difference: 0.0016
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cd9225fd260259284c86d656d3aa00877b21c0734f2132081e0aa08ca44acd30.png" src="_images/cd9225fd260259284c86d656d3aa00877b21c0734f2132081e0aa08ca44acd30.png" />
+<img alt="_images/330773ac62dbdaab15b8e321e8e655c3c19ef1e562bf02a14441651999f8d4a7.png" src="_images/330773ac62dbdaab15b8e321e8e655c3c19ef1e562bf02a14441651999f8d4a7.png" />
 </div>
 </div>
 <p>As unemployment compensation increases, the reservation wage also increases.</p>
@@ -1138,7 +1153,7 @@ Difference: 0.0016
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8a23e3981d742537b4115cddf3363ab1929fc28c50e6aaf8365ca701e67fd792.png" src="_images/8a23e3981d742537b4115cddf3363ab1929fc28c50e6aaf8365ca701e67fd792.png" />
+<img alt="_images/f7db2d8588232ffd3a4e78cb693a37ac46a3d95f0b76d3f2ae18db87cc48263e.png" src="_images/f7db2d8588232ffd3a4e78cb693a37ac46a3d95f0b76d3f2ae18db87cc48263e.png" />
 </div>
 </div>
 <p>As risk aversion (<span class="math notranslate nohighlight">\(\gamma\)</span>) increases, the reservation wage decreases.</p>
