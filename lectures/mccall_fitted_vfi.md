@@ -268,7 +268,7 @@ class Model(NamedTuple):
 
 def create_mccall_model(
         c: float = 1.0,
-        α: float = 0.1,
+        α: float = 0.05,
         β: float = 0.96,
         ρ: float = 0.9,
         ν: float = 0.2,
@@ -633,29 +633,29 @@ def _simulate_cross_section_compiled(
     c, α, β, ρ, ν, γ, w_grid, z_draws = model
 
     # Initialize arrays
-    key, subkey = jax.random.split(key)
+    init_key, subkey = jax.random.split(key)
     wages = jnp.exp(jax.random.normal(subkey, (n_agents,)) * ν)
     status = jnp.zeros(n_agents, dtype=jnp.int32)
 
     def update(t, loop_state):
-        key, status, wages = loop_state
+        status, wages = loop_state
 
         # Shift loop state forwards
-        key, subkey = jax.random.split(key)
-        agent_keys = jax.random.split(subkey, n_agents)
+        step_key = jax.random.fold_in(init_key, t)
+        agent_keys = jax.random.split(step_key, n_agents)
 
         status, wages = update_agents_vmap(
             agent_keys, status, wages, model, w_bar
         )
 
-        return key, status, wages
+        return status, wages
 
     # Run simulation using fori_loop
-    initial_loop_state = (key, status, wages)
+    initial_loop_state = (status, wages)
     final_loop_state = lax.fori_loop(0, T, update, initial_loop_state)
 
     # Return only final employment state
-    _, final_is_employed, _ = final_loop_state
+    final_is_employed, _ = final_loop_state
     return final_is_employed
 
 

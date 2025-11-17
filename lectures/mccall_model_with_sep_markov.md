@@ -751,8 +751,8 @@ Now let's simulate many agents simultaneously to examine the cross-sectional une
 We first create a vectorized version of `update_agent` to efficiently update all agents in parallel:
 
 ```{code-cell} ipython3
-# Create vectorized version of update_agent
-# The last parameter is now w_bar (scalar) instead of σ (array)
+# Create vectorized version of update_agent.
+# Vectorize over key, status, wage_idx
 update_agents_vmap = jax.vmap(
     update_agent, in_axes=(0, 0, 0, None, None)
 )
@@ -761,61 +761,56 @@ update_agents_vmap = jax.vmap(
 Next we define the core simulation function, which uses `lax.fori_loop` to efficiently iterate many agents forward in time:
 
 ```{code-cell} ipython3
-@partial(jax.jit, static_argnums=(3, 4))
+@jax.jit
 def _simulate_cross_section_compiled(
         key: jnp.ndarray,
         model: Model,
         w_bar: float,
-        n_agents: int,
+        initial_wage_indices: jnp.ndarray,
+        initial_status_vec: jnp.ndarray,
         T: int
     ):
-    """JIT-compiled core simulation loop using lax.fori_loop.
-    Returns only the final employment state to save memory."""
-    n, w_vals, P, P_cumsum, β, c, α, γ = model
+    """
+    JIT-compiled core simulation loop for shifting the cross section
+    using lax.fori_loop. Returns the final employment employment status
+    cross-section.
 
-    # Initialize arrays
-    wage_indices = jnp.zeros(n_agents, dtype=jnp.int32)
-    status = jnp.zeros(n_agents, dtype=jnp.int32)
+    """
+    n, w_vals, P, P_cumsum, β, c, α, γ = model
+    n_agents = len(initial_wage_indices)
+
 
     def update(t, loop_state):
-        key, status, wage_indices = loop_state
-
-        # Shift loop state forwards
-        key, subkey = jax.random.split(key)
-        agent_keys = jax.random.split(subkey, n_agents)
-
+        " Shift loop state forwards "
+        status, wage_indices = loop_state
+        step_key = jax.random.fold_in(key, t)
+        agent_keys = jax.random.split(step_key, n_agents)
         status, wage_indices = update_agents_vmap(
             agent_keys, status, wage_indices, model, w_bar
         )
-
-        return key, status, wage_indices
+        return status, wage_indices
 
     # Run simulation using fori_loop
-    initial_loop_state = (key, status, wage_indices)
+    initial_loop_state = (initial_status_vec, initial_wage_indices)
     final_loop_state = lax.fori_loop(0, T, update, initial_loop_state)
 
     # Return only final employment state
-    _, final_is_employed, _ = final_loop_state
+    final_is_employed, _ = final_loop_state
     return final_is_employed
 
 
 def simulate_cross_section(
-        model: Model,
-        n_agents: int = 100_000,
-        T: int = 200,
-        seed: int = 42
+        model: Model,               # Model instance with parameters
+        n_agents: int = 100_000,    # Number of agents to simulate
+        T: int = 200,               # Length of burn-in
+        seed: int = 42              # For reproducibility
     ) -> float:
     """
-    Simulate employment paths for many agents and return final unemployment rate.
+    Wrapper function for _simulate_cross_section_compiled.
 
-    Parameters:
-    - model: Model instance with parameters
-    - n_agents: Number of agents to simulate
-    - T: Number of periods to simulate
-    - seed: Random seed for reproducibility
+    Push forward a cross-section for T periods and return the final
+    cross-sectional unemployment rate.
 
-    Returns:
-    - unemployment_rate: Fraction of agents unemployed at time T
     """
     key = jax.random.PRNGKey(seed)
 
@@ -823,14 +818,15 @@ def simulate_cross_section(
     v_u = vfi(model)
     w_bar = get_reservation_wage(v_u, model)
 
-    # Run JIT-compiled simulation
+    # Initialize arrays
+    initial_wage_indices = jnp.zeros(n_agents, dtype=jnp.int32)
+    initial_status_vec = jnp.zeros(n_agents, dtype=jnp.int32)
+
     final_status = _simulate_cross_section_compiled(
-        key, model, w_bar, n_agents, T
+        key, model, w_bar, initial_wage_indices, initial_status_vec, T
     )
 
-    # Calculate unemployment rate at final period
     unemployment_rate = 1 - jnp.mean(final_status)
-
     return unemployment_rate
 ```
 
@@ -850,8 +846,13 @@ def plot_cross_sectional_unemployment(
     key = jax.random.PRNGKey(42)
     v_u = vfi(model)
     w_bar = get_reservation_wage(v_u, model)
+
+    # Initialize arrays
+    initial_wage_indices = jnp.zeros(n_agents, dtype=jnp.int32)
+    initial_status_vec = jnp.zeros(n_agents, dtype=jnp.int32)
+
     final_status = _simulate_cross_section_compiled(
-        key, model, w_bar, n_agents, t_snapshot
+        key, model, w_bar, initial_wage_indices, initial_status_vec, t_snapshot
     )
 
     # Calculate unemployment rate
