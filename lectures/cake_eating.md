@@ -30,14 +30,15 @@ progressively more challenging---and useful---problems.
 
 The main tool we will use to solve the cake eating problem is dynamic programming.
 
-Readers might find it helpful to review the following lectures before reading this one:
+The following lectures contain background on dynamic programming and might be
+worth reviewing:
 
 * The {doc}`shortest paths lecture <intro:short_path>`
 * The {doc}`basic McCall model <mccall_model>`
 * The {doc}`McCall model with separation <mccall_model_with_separation>`
 * The {doc}`McCall model with separation and a continuous wage distribution <mccall_fitted_vfi>`
 
-In what follows, we require the following imports:
+We require the following imports:
 
 ```{code-cell} ipython
 import matplotlib.pyplot as plt
@@ -46,7 +47,7 @@ import numpy as np
 
 ## The model
 
-We consider an infinite time horizon $t=0, 1, 2, 3..$
+We consider a discrete time model with an infinite time horizon.
 
 At $t=0$ the agent is given a complete cake with size $\bar x$.
 
@@ -55,13 +56,12 @@ so that, in particular, $x_0=\bar x$.
 
 We choose how much of the cake to eat in any given period $t$.
 
-After choosing to consume $c_t$ of the cake in period $t$ there is
+After choosing to consume $c_t$ of the cake in period $t$, the amount left in period $t+1$ is
 
 $$
-x_{t+1} = x_t - c_t
+    x_{t+1} = x_t - c_t
 $$
 
-left in period $t+1$.
 
 Consuming quantity $c$ of the cake gives current utility $u(c)$.
 
@@ -98,15 +98,14 @@ subject to
 ```{math}
 :label: cake_feasible
 
-x_{t+1} = x_t - c_t
-\quad \text{and} \quad
-0\leq c_t\leq x_t
+    x_{t+1} = x_t - c_t
+    \quad \text{and} \quad
+    0\leq c_t\leq x_t
 ```
 
 for all $t$.
 
-A consumption path $\{c_t\}$ satisfying {eq}`cake_feasible` where
-$x_0 = \bar x$ is called **feasible**.
+A consumption path $\{c_t\}$ satisfying {eq}`cake_feasible` where $x_0 = \bar x$ is called **feasible**.
 
 In this problem, the following terminology is standard:
 
@@ -122,7 +121,7 @@ The key trade-off in the cake-eating problem is this:
 * But delaying some consumption is also attractive because $u$ is concave.
 
 The concavity of $u$ implies that the consumer gains value from
-*consumption smoothing*, which means spreading consumption out over time.
+**consumption smoothing**, which means spreading consumption out over time.
 
 This is because concavity implies diminishing marginal utility---a progressively smaller gain in utility for each additional spoonful of cake consumed within one period.
 
@@ -132,17 +131,15 @@ The reasoning given above suggests that the discount factor $\beta$ and the curv
 
 Here's an educated guess as to what impact these parameters will have.
 
-First, higher $\beta$ implies less discounting, and hence the agent is more patient, which should reduce the rate of consumption.
-
-Second, higher $\gamma$ implies that marginal utility $u'(c) =
-c^{-\gamma}$ falls faster with $c$.
+1. Higher $\beta$ implies less discounting, and hence the agent is more patient, which should reduce the rate of consumption.
+2. Higher $\gamma$ implies that marginal utility $u'(c) = c^{-\gamma}$ falls faster with $c$.
 
 This suggests more smoothing, and hence a lower rate of consumption.
 
-In summary, we expect the rate of consumption to be *decreasing in both
-parameters*.
+In summary, we expect the rate of consumption to be decreasing in both parameters.
 
 Let's see if this is true.
+
 
 ## The value function
 
@@ -182,7 +179,7 @@ v(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
 \quad \text{for any given } x \geq 0.
 ```
 
-The intuition here is essentially the same it was for the McCall model.
+The intuition here is essentially the same as it was for the McCall model.
 
 Choosing $c$ optimally means trading off current vs future rewards.
 
@@ -198,31 +195,34 @@ If $c$ is chosen optimally using this trade off strategy, then we obtain maximal
 
 Hence, $v(x)$ equals the right hand side of {eq}`bellman-cep`, as claimed.
 
+
+
 ### An analytical solution
 
-It has been shown that, with $u$ as the CRRA utility function in
-{eq}`crra_utility`, the function
+It has been shown that, with $u$ as the CRRA utility function in {eq}`crra_utility`, the function
+$v^*$ given by
 
 ```{math}
 :label: crra_vstar
 
-v^*(x_t) = \left( 1-\beta^{1/\gamma} \right)^{-\gamma}u(x_t)
+    v^*(x) = \left( 1-\beta^{1/\gamma} \right)^{-\gamma}u(x)
 ```
 
 solves the Bellman equation and hence is equal to the value function.
 
 You are asked to confirm that this is true in the exercises below.
 
+```{note}
 The solution {eq}`crra_vstar` depends heavily on the CRRA utility function.
 
-In fact, if we move away from CRRA utility, usually there is no analytical
-solution at all.
+In fact, if we move away from CRRA utility, usually there is no analytical solution at all.
 
 In other words, beyond CRRA utility, we know that the value function still
 satisfies the Bellman equation, but we do not have a way of writing it
 explicitly, as a function of the state variable and the parameters.
 
-We will deal with that situation numerically when the time comes.
+We will deal with that situation numerically in the following lectures.
+```
 
 Here is a Python representation of the value function:
 
@@ -248,26 +248,24 @@ ax.legend(fontsize=12)
 plt.show()
 ```
 
+
 ## The optimal policy
 
-Now that we have the value function, it is straightforward to calculate the
-optimal action at each state.
+Now that we have the value function, it is straightforward to calculate the optimal action at each state.
 
-We should choose consumption to maximize the
-right hand side of the Bellman equation {eq}`bellman-cep`.
+We should choose consumption to maximize the right hand side of the Bellman equation {eq}`bellman-cep`.
 
 $$
-c^* = \arg \max_{c} \{u(c) + \beta v(x - c)\}
+    c^* = \arg \max_{c} \{u(c) + \beta v(x - c)\}
 $$
 
-We can think of this optimal choice as a function of the state $x$, in
-which case we call it the **optimal policy**.
+We can think of this optimal choice as a function of the state $x$, in which case we call it the **optimal policy**.
 
 We denote the optimal policy by $\sigma^*$, so that
 
 $$
-\sigma^*(x) := \arg \max_{c} \{u(c) + \beta v(x - c)\}
-\quad \text{for all } x
+    \sigma^*(x) := \arg \max_{c} \{u(c) + \beta v(x - c)\}
+    \quad \text{for all } x
 $$
 
 If we plug the analytical expression {eq}`crra_vstar` for the value function
@@ -276,16 +274,16 @@ into the right hand side and compute the optimum, we find that
 ```{math}
 :label: crra_opt_pol
 
-\sigma^*(x) = \left( 1-\beta^{1/\gamma} \right) x
+    \sigma^*(x) = \left( 1-\beta^{1/\gamma} \right) x
 ```
 
 Now let's recall our intuition on the impact of parameters.
 
-We guessed that the consumption rate would be decreasing in both parameters.
+We guessed that consumption would be decreasing in both parameters.
 
 This is in fact the case, as can be seen from {eq}`crra_opt_pol`.
 
-Here's some plots that illustrate.
+Here are some plots that illustrate.
 
 ```{code-cell} python3
 def c_star(x, β, γ):
@@ -332,7 +330,7 @@ The Euler equation for the present problem can be stated as
 u^{\prime} (c^*_{t})=\beta u^{\prime}(c^*_{t+1})
 ```
 
-This is necessary condition for the optimal path.
+This is a necessary condition for the optimal path.
 
 It says that, along the optimal path, marginal rewards are equalized across time, after appropriate discounting.
 
@@ -446,6 +444,11 @@ This is just the Euler equation.
 ### Derivation II: using the Bellman equation
 
 Another way to derive the Euler equation is to use the Bellman equation {eq}`bellman-cep`.
+
+```{note}
+The argument that follows assumes that the value function is differentiable.
+A proof of differentiability of the value function can be found in [EDTC](https://johnstachurski.net/edtc.html), theorem 10.1.13.
+```
 
 Taking the derivative on the right hand side of the Bellman equation with
 respect to $c$ and setting it to zero, we get
@@ -610,4 +613,67 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 $$
 
 Our claims are now verified.
+```
+
+```{exercise}
+:label: cep_ex2
+
+Verify that the optimal policy {eq}`crra_opt_pol` satisfies the Euler equation {eq}`euler_pol`.
+```
+
+```{solution} cep_ex2
+:class: dropdown
+
+Recall that the optimal policy is
+
+$$
+    \sigma^*(x) = (1 - \beta^{1/\gamma})x
+$$
+
+and the Euler equation in policy form is
+
+$$
+    u'(\sigma(x)) = \beta u'(\sigma(x - \sigma(x)))
+$$
+
+With CRRA utility $u(c) = \frac{c^{1-\gamma}}{1-\gamma}$, the marginal utility is
+
+$$
+    u'(c) = c^{-\gamma}
+$$
+
+Now let's verify the Euler equation. The left-hand side is
+
+$$
+    u'(\sigma^*(x)) 
+    = [\sigma^*(x)]^{-\gamma} 
+    = [(1 - \beta^{1/\gamma})x]^{-\gamma} 
+    = (1 - \beta^{1/\gamma})^{-\gamma} x^{-\gamma}
+$$
+
+For the right-hand side, we first compute the state in the next period:
+
+$$
+    x - \sigma^*(x) = x - (1 - \beta^{1/\gamma})x = x\beta^{1/\gamma}
+$$
+
+Next period's consumption under the optimal policy is
+
+$$
+    \sigma^*(x - \sigma^*(x)) = \sigma^*(x\beta^{1/\gamma}) = (1 - \beta^{1/\gamma}) \cdot x\beta^{1/\gamma}
+$$
+
+Therefore, the right-hand side of the Euler equation is
+
+$$
+\begin{aligned}
+\beta u'(\sigma^*(x - \sigma^*(x)))
+  &= \beta [(1 - \beta^{1/\gamma}) \cdot x\beta^{1/\gamma}]^{-\gamma} \\
+  &= \beta (1 - \beta^{1/\gamma})^{-\gamma} x^{-\gamma} (\beta^{1/\gamma})^{-\gamma} \\
+  &= \beta (1 - \beta^{1/\gamma})^{-\gamma} x^{-\gamma} \beta^{-1} \\
+  &= (1 - \beta^{1/\gamma})^{-\gamma} x^{-\gamma}
+\end{aligned}
+$$
+
+Since the left-hand side equals the right-hand side, the optimal policy $\sigma^*$ satisfies the Euler equation.
 ```
