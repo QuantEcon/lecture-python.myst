@@ -143,7 +143,7 @@ $$
 c(\omega) = c = C.
 $$
 
-This line of argument indicates the special *aggregation theory* that lies beneath outcomes in which a representative consumer
+This line of argument indicates the special **aggregation theory** that lies beneath outcomes in which a representative consumer
 consumes amount $C$.
 
 It appears often in aggregate economics.
