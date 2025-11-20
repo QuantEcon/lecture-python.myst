@@ -114,7 +114,7 @@ Let $(u')^{-1}$ be the inverse function of $u'$.
 
 The idea is this:
 
-* First, we fix an **exogenous** grid $\{k_i\}$ for capital ($k = x - c$).
+* First, we fix an *exogenous* grid $\{k_i\}$ for capital ($k = x - c$).
 * Then we obtain  $c_i$ via
 
 ```{math}
