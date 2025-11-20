@@ -108,9 +108,9 @@ dynamics are
 
 In these equations,
 
-* $\beta(t)$ is called the *transmission rate* (the rate at which individuals bump into others and expose them to the virus).
-* $\sigma$ is called the *infection rate* (the rate at which those who are exposed become infected)
-* $\gamma$ is called the *recovery rate* (the rate at which infected people recover or die).
+* $\beta(t)$ is called the **transmission rate** (the rate at which individuals bump into others and expose them to the virus).
+* $\sigma$ is called the **infection rate** (the rate at which those who are exposed become infected)d)
+* $\gamma$ is called the **recovery rate** (the rate at which infected people recover or die).
 * the dot symbol $\dot y$ represents the time derivative $dy/dt$.
 
 We do not need to model the fraction $r$ of the population in state $R$ separately because the states form a partition.
@@ -141,7 +141,7 @@ As in Atkeson's note, we set
 
 The transmission rate is modeled as
 
-* $\beta(t) := R(t) \gamma$ where $R(t)$ is the *effective reproduction number* at time $t$.
+* $\beta(t) := R(t) \gamma$ where $R(t)$ is the **effective reproduction number** at time $t$.
 
 (The notation is slightly confusing, since $R(t)$ is different to
 $R$, the symbol that represents the removed state.)
