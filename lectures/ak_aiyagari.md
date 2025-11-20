@@ -151,17 +151,17 @@ Summarizing activities in the asset market, all agents, regardless of age $j \in
 
 ### Key features
 
-*Lifecycle patterns* shape economic behavior across ages:
+**Lifecycle patterns** shape economic behavior across ages:
 
   - Labor productivity varies systematically with age according to the profile $l(j)$, while asset holdings typically follow a lifecycle pattern of accumulation during working years and decumulation during retirement.
 
   - Age-specific fiscal transfers $\delta_{j,t}$ redistribute resources across generations.
 
-*Within-cohort heterogeneity* creates dispersion among agents of the same age:
+**Within-cohort heterogeneity** creates dispersion among agents of the same age:
 
   - Agents of the same age differ in their asset holdings $a_{i,j,t}$ due to different histories of idiosyncratic productivity shocks, their current productivities $\gamma_{i,j,t}$, and consequently their labor incomes and financial wealth.
 
-*Cross-cohort interactions* determine equilibrium outcomes through market aggregation:
+**Cross-cohort interactions** determine equilibrium outcomes through market aggregation:
 
   - All cohorts participate together in factor markets, with asset supplies from all cohorts determining aggregate capital and effective labor supplies from all cohorts determining aggregate labor.
 
