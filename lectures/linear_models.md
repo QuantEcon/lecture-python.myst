@@ -112,7 +112,7 @@ The primitives of the model are
 Given $A, C, G$ and draws of $x_0$ and $w_1, w_2, \ldots$, the
 model {eq}`st_space_rep` pins down the values of the sequences $\{x_t\}$ and $\{y_t\}$.
 
-Even without these draws, the primitives 1--3 pin down the *probability distributions* of $\{x_t\}$ and $\{y_t\}$.
+Even without these draws, the primitives 1--3 pin down the **probability distributions** of $\{x_t\}$ and $\{y_t\}$.
 
 Later we'll see how to compute these distributions and their moments.
 
@@ -259,7 +259,7 @@ C = \begin{bmatrix}
      \end{bmatrix}
 $$
 
-The matrix $A$ has the form of the *companion matrix* to the vector
+The matrix $A$ has the form of the **companion matrix** to the vector
 $\begin{bmatrix}\phi_1 &  \phi_2 & \phi_3 & \phi_4 \end{bmatrix}$.
 
 The next figure shows the dynamics of this process when
@@ -301,7 +301,7 @@ Now suppose that
 * $\phi_j$ is a $k \times k$ matrix and
 * $w_t$ is $k \times 1$
 
-Then {eq}`eq_ar_rep` is termed a *vector autoregression*.
+Then {eq}`eq_ar_rep` is termed a **vector autoregression**.
 
 To map this into {eq}`st_space_rep`, we set
 
@@ -345,8 +345,8 @@ where $I$ is the $k \times k$ identity matrix and $\sigma$ is a $k \times k$ mat
 
 We can use {eq}`st_space_rep` to represent
 
-1. the *deterministic seasonal* $y_t = y_{t-4}$
-1. the *indeterministic seasonal* $y_t = \phi_4 y_{t-4} + w_t$
+1. the **deterministic seasonal** $y_t = y_{t-4}$
+1. the **indeterministic seasonal** $y_t = \phi_4 y_{t-4} + w_t$
 
 In fact, both are special cases of {eq}`eq_ar_rep`.
 
@@ -376,7 +376,7 @@ The *indeterministic* seasonal produces recurrent, but aperiodic, seasonal fluct
 ```{index} single: Linear State Space Models; Time Trends
 ```
 
-The model $y_t = a t + b$ is known as a *linear time trend*.
+The model $y_t = a t + b$ is known as a **linear time trend**.
 
 We can represent this model in the linear state space form by taking
 
@@ -462,7 +462,7 @@ $x_0, w_1, w_2, \ldots,  w_t$ can be found by using {eq}`st_space_rep` repeatedl
 \end{aligned}
 ```
 
-Representation {eq}`eqob5` is a  *moving average* representation.
+Representation {eq}`eqob5` is a  **moving average** representation.
 
 It expresses $\{x_t\}$ as a linear function of
 
@@ -503,7 +503,7 @@ The first term on the right is a cumulated sum of martingale differences and is 
 
 The second term is a translated linear function of time.
 
-For this reason, $x_{1t}$ is called a *martingale with drift*.
+For this reason, $x_{1t}$ is called a **martingale with drift**.
 
 ## Distributions and Moments
 
@@ -548,8 +548,8 @@ As with $\mu_0$, the matrix $\Sigma_0$ is a primitive given in {eq}`st_space_rep
 
 As a matter of terminology, we will sometimes call
 
-* $\mu_t$ the *unconditional mean*  of $x_t$
-* $\Sigma_t$ the *unconditional variance-covariance matrix*  of $x_t$
+* $\mu_t$ the **unconditional mean**  of $x_t$
+* $\Sigma_t$ the **unconditional variance-covariance matrix**  of $x_t$
 
 This is to distinguish $\mu_t$ and $\Sigma_t$ from related objects that use conditioning
 information, to be defined below.
@@ -763,8 +763,8 @@ In the preceding figure, we approximated the population distribution of $y_T$ by
 1. recording each observation $y^i_T$
 1. histogramming this sample
 
-Just as the histogram approximates the population distribution, the *ensemble* or
-*cross-sectional average*
+Just as the histogram approximates the population distribution, the **ensemble** or
+**cross-sectional average**
 
 $$
 \bar y_T := \frac{1}{I} \sum_{i=1}^I y_T^i
@@ -870,7 +870,7 @@ $$
 
 #### Autocovariance Functions
 
-An important object related to the joint distribution is the *autocovariance function*
+An important object related to the joint distribution is the **autocovariance function**
 
 ```{math}
 :label: eqnautodeff
@@ -958,11 +958,11 @@ the distribution at $T$.
 Apparently, the distributions of $y_t$  converge to a fixed long-run
 distribution as $t \to \infty$.
 
-When such a distribution exists it is called a *stationary distribution*.
+When such a distribution exists it is called a **stationary distribution**.
 
 ### Stationary Distributions
 
-In our setting, a distribution $\psi_{\infty}$ is said to be *stationary* for $x_t$ if
+In our setting, a distribution $\psi_{\infty}$ is said to be **stationary** for $x_t$ if
 
 $$
 x_t \sim \psi_{\infty}
@@ -1016,7 +1016,7 @@ Moreover, in view of {eq}`eqnautocov`, the autocovariance function takes the for
 
 This motivates the following definition.
 
-A  process $\{x_t\}$ is said to be *covariance stationary* if
+A  process $\{x_t\}$ is said to be **covariance stationary** if
 
 * both $\mu_t$ and $\Sigma_t$ are constant in $t$
 * $\Sigma_{t+j,t}$ depends on the time gap $j$ but not on time $t$
@@ -1156,7 +1156,7 @@ $$
 
 Do these time series averages converge to something interpretable in terms of our basic state-space representation?
 
-The answer depends on something called *ergodicity*.
+The answer depends on something called **ergodicity**.
 
 Ergodicity is the property that time series and ensemble averages coincide.
 
@@ -1246,7 +1246,7 @@ $$
 The right-hand side follows from $x_{t+1} = A x_t + C w_{t+1}$ and the
 fact that $w_{t+1}$ is zero mean and independent of $x_t, x_{t-1}, \ldots, x_0$.
 
-That $\mathbb{E}_t [x_{t+1}] = \mathbb{E}[x_{t+1} \mid x_t]$ is an implication of $\{x_t\}$ having the *Markov property*.
+That $\mathbb{E}_t [x_{t+1}] = \mathbb{E}[x_{t+1} \mid x_t]$ is an implication of $\{x_t\}$ having the **Markov property**.
 
 The one-step-ahead forecast error is
 
@@ -1313,7 +1313,7 @@ $V_j$ defined in {eq}`eqob9a` can be calculated recursively via $V_1 = CC'$ and
 V_j = CC^\prime + A V_{j-1} A^\prime, \quad j \geq 2
 ```
 
-$V_j$ is the *conditional covariance matrix* of the errors in forecasting
+$V_j$ is the **conditional covariance matrix** of the errors in forecasting
 $x_{t+j}$, conditioned on time $t$ information $x_t$.
 
 Under particular conditions, $V_j$ converges to
@@ -1324,7 +1324,7 @@ Under particular conditions, $V_j$ converges to
 V_\infty = CC' + A V_\infty A'
 ```
 
-Equation {eq}`eqob10` is an example of a *discrete Lyapunov* equation in the covariance matrix $V_\infty$.
+Equation {eq}`eqob10` is an example of a **discrete Lyapunov** equation in the covariance matrix $V_\infty$.
 
 A sufficient condition for $V_j$ to converge is that the eigenvalues of $A$ be strictly less than one in modulus.
 
