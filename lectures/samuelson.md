@@ -66,27 +66,27 @@ from cmath import sqrt
 
 ### Samuelson's model
 
-Samuelson used a *second-order linear difference equation* to
+Samuelson used a **second-order linear difference equation** to
 represent a model of national output based on three components:
 
-- a *national output identity* asserting that national output or national income is the
+- a **national output identity** asserting that national output or national income is the
   sum of consumption plus investment plus government purchases.
-- a Keynesian *consumption function* asserting that consumption at
+- a Keynesian **consumption function** asserting that consumption at
   time $t$ is equal to a constant times national output at time $t-1$.
-- an investment *accelerator* asserting that investment at time
-  $t$ equals a constant called the *accelerator coefficient*
+- an investment **accelerator** asserting that investment at time
+  $t$ equals a constant called the **accelerator coefficient**
   times the difference in output between period $t-1$ and
   $t-2$.
 
 Consumption plus investment plus government purchases
-constitute *aggregate demand,* which automatically calls forth an
-equal amount of *aggregate supply*.
+constitute **aggregate demand,** which automatically calls forth an
+equal amount of **aggregate supply**.
 
 (To read about linear difference equations see [here](https://en.wikipedia.org/wiki/Linear_difference_equation) or chapter IX of {cite}`Sargent1987`.)
 
 Samuelson used the model to analyze how particular values of the
 marginal propensity to consume and the accelerator coefficient might
-give rise to transient *business cycles* in national output.
+give rise to transient **business cycles** in national output.
 
 Possible dynamic properties include
 
@@ -100,7 +100,7 @@ adds a random shock to the right side of the national income
 identity representing random fluctuations in aggregate demand.
 
 This modification makes national output become governed by a second-order
-*stochastic linear difference equation* that, with appropriate parameter values,
+**stochastic linear difference equation** that, with appropriate parameter values,
 gives rise to recurrent irregular business cycles.
 
 (To read about stochastic linear difference equations see chapter XI of
@@ -152,7 +152,7 @@ and the national income identity
 Y_t = C_t + I_t + G_t
 ```
 
-- The parameter $\alpha$ is peoples' *marginal propensity to consume*
+- The parameter $\alpha$ is peoples' **marginal propensity to consume**
   out of income - equation {eq}`consumption` asserts that people consume a fraction of
   $\alpha \in (0,1)$ of each additional dollar of income.
 - The parameter $\beta > 0$ is the investment accelerator coefficient - equation
@@ -193,7 +193,7 @@ a constant value as $t$ becomes large.
 We are interested in studying
 
 - the transient fluctuations in $Y_t$ as it converges to its
-  *steady state* level
+  **steady state** level
 - the *rate* at which it converges to a steady state level
 
 The deterministic version of the model described so far --- meaning that
@@ -204,10 +204,10 @@ fluctuations by adding a random shock to aggregate demand.
 
 ### Stochastic version of the model
 
-We create a *random* or *stochastic* version of the model by adding
-a random process of *shocks* or *disturbances*
+We create a **random** or **stochastic** version of the model by adding
+a random process of **shocks** or **disturbances**
 $\{\sigma \epsilon_t \}$ to the right side of equation {eq}`second_order`,
-leading to the *second-order scalar linear stochastic difference equation*:
+leading to the **second-order scalar linear stochastic difference equation**:
 
 ```{math}
 :label: second_stochastic
@@ -235,7 +235,7 @@ Y_{t+2} - \rho_1 Y_{t+1} - \rho_2 Y_t  = 0
 ```
 
 To discover the properties of the solution of {eq}`second_stochastic2`,
-it is useful first to form the *characteristic polynomial*
+it is useful first to form the **characteristic polynomial**
 for {eq}`second_stochastic2`:
 
 ```{math}
@@ -246,7 +246,7 @@ z^2 - \rho_1 z  - \rho_2
 
 where $z$ is possibly a complex number.
 
-We want to find the two *zeros* (a.k.a. *roots*) -- namely
+We want to find the two **zeros** (a.k.a. **roots**) -- namely
 $\lambda_1, \lambda_2$ -- of the characteristic polynomial.
 
 These are two special values of $z$, say $z= \lambda_1$ and
