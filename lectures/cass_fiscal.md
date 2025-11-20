@@ -147,8 +147,8 @@ $$ (eq:gov_budget)
 
 Given a budget-feasible government policy $\{g_t\}_{t=0}^\infty$ and $\{\tau_{ct}, \tau_{kt}, \tau_{nt}, \tau_{ht}\}_{t=0}^\infty$ subject to {eq}`eq:gov_budget`,
 
-- *Household* chooses $\{c_t\}_{t=0}^\infty$, $\{n_t\}_{t=0}^\infty$, and $\{k_{t+1}\}_{t=0}^\infty$ to maximize utility{eq}`eq:utility` subject to budget constraint{eq}`eq:house_budget`, and 
-- *Frim* chooses sequences of capital $\{k_t\}_{t=0}^\infty$ and $\{n_t\}_{t=0}^\infty$ to maximize profits
+- **Household** chooses $\{c_t\}_{t=0}^\infty$, $\{n_t\}_{t=0}^\infty$, and $\{k_{t+1}\}_{t=0}^\infty$ to maximize utility{eq}`eq:utility` subject to budget constraint{eq}`eq:house_budget`, and 
+- **Firm** chooses sequences of capital $\{k_t\}_{t=0}^\infty$ and $\{n_t\}_{t=0}^\infty$ to maximize profits
 
     $$
          \sum_{t=0}^\infty q_t [F(k_t, n_t) - \eta_t k_t - w_t n_t]
