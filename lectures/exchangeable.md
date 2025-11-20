@@ -47,7 +47,7 @@ search model.
 Among other things, this lecture discusses  connections between the statistical concepts of sequences of random variables that are
 
 - independently and identically distributed
-- exchangeable (also known as **conditionally** independently and identically distributed)
+- exchangeable (also known as *conditionally* independently and identically distributed)
 
 Understanding these concepts is essential for appreciating how Bayesian updating
 works.

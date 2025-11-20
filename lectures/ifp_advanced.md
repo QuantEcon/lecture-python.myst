@@ -264,7 +264,7 @@ assets is low.
 
 #### Finding Optimal Consumption
 
-The endogenous grid method (EGM) calls for us to take a grid of **savings**
+The endogenous grid method (EGM) calls for us to take a grid of *savings*
 values $s_i$, where each such $s$ is interpreted as $s = a -
 c$.
 
