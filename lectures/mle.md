@@ -74,7 +74,7 @@ Let's consider the steps we need to go through in maximum likelihood estimation 
 
 The first step with maximum likelihood estimation is to choose the probability distribution believed to be generating the data.
 
-More precisely, we need to make an assumption as to which *parametric class* of distributions is generating the data.
+More precisely, we need to make an assumption as to which **parametric class** of distributions is generating the data.
 
 * e.g., the class of all normal distributions, or the class of all gamma distributions.
 
@@ -183,7 +183,7 @@ In Treisman's paper, the dependent variable --- the number of billionaires $y_i$
 
 Hence, the distribution of $y_i$ needs to be conditioned on the vector of explanatory variables $\mathbf{x}_i$.
 
-The standard formulation --- the so-called *Poisson regression* model --- is as follows:
+The standard formulation --- the so-called **Poisson regression** model --- is as follows:
 
 ```{math}
 :label: poissonreg
@@ -861,7 +861,7 @@ f(y_i; \boldsymbol{\beta}) = \mu_i^{y_i} (1-\mu_i)^{1-y_i}, \quad y_i = 0,1 \\
 \end{aligned}
 $$
 
-$\Phi$ represents the *cumulative normal distribution* and
+$\Phi$ represents the **cumulative normal distribution** and
 constrains the predicted $y_i$ to be between 0 and 1 (as required
 for a probability).
 
