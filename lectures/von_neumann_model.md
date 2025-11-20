@@ -364,11 +364,11 @@ respectively.
 A pair $(A,B)$ of $m\times n$ non-negative matrices defines
 an economy.
 
-- $m$ is the number of *activities* (or sectors)
-- $n$ is the number of *goods* (produced and/or consumed).
-- $A$ is called the *input matrix*; $a_{i,j}$ denotes the
+- $m$ is the number of **activities** (or sectors)
+- $n$ is the number of **goods** (produced and/or consumed).).
+- $A$ is called the **input matrix**; $a_{i,j}$ denotes the
   amount of good $j$ consumed by activity $i$
-- $B$ is called the *output matrix*; $b_{i,j}$ represents
+- $B$ is called the **output matrix**; $b_{i,j}$ represents
   the amount of good $j$ produced by activity $i$
 
 Two key assumptions restrict economy $(A,B)$:
@@ -388,28 +388,28 @@ Two key assumptions restrict economy $(A,B)$:
 ```
 ````
 
-A semi-positive *intensity* $m$-vector $x$ denotes levels at which
+A semi-positive **intensity** $m$-vector $x$ denotes levels at which
 activities are operated.
 
 Therefore,
 
-- vector $x^\top A$ gives the total amount of *goods used in
-  production*
-- vector $x^\top B$ gives *total outputs*
+- vector $x^\top A$ gives the total amount of **goods used in
+  production**
+- vector $x^\top B$ gives **total outputs****
 
-An economy $(A,B)$ is said to be *productive*, if there exists a
+An economy $(A,B)$ is said to be **productive**, if there exists a
 non-negative intensity vector $x \geq 0$ such
 that $x^\top B > x^\top A$.
 
 The semi-positive $n$-vector $p$ contains prices assigned to
 the $n$ goods.
 
-The $p$ vector implies *cost* and *revenue* vectors
+The $p$ vector implies **cost** and **revenue** vectors
 
-- the vector $Ap$ tells *costs* of the vector of activities
-- the vector $Bp$ tells *revenues* from the vector of activities
+- the vector $Ap$ tells **costs** of the vector of activities
+- the vector $Bp$ tells **revenues** from the vector of activitieses
 
-Satisfaction of a property of an input-output pair $(A,B)$ called *irreducibility*
+Satisfaction of a property of an input-output pair $(A,B)$ called **irreducibility**
 (or indecomposability) determines whether an economy can be decomposed
 into multiple "sub-economies".
 
