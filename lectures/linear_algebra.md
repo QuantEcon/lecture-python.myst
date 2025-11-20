@@ -85,7 +85,7 @@ from scipy.linalg import inv, solve, det, eig
 ```{index} single: Linear Algebra; Vectors
 ```
 
-A *vector* of length $n$ is just a sequence (or array, or tuple) of $n$ numbers, which we write as $x = (x_1, \ldots, x_n)$ or  $x = [x_1, \ldots, x_n]$.
+A **vector** of length $n$ is just a sequence (or array, or tuple) of $n$ numbers, which we write as $x = (x_1, \ldots, x_n)$ or  $x = [x_1, \ldots, x_n]$.
 
 We will write these sequences either horizontally or vertically as we please.
 
@@ -225,15 +225,15 @@ x + y
 ```{index} single: Vectors; Norm
 ```
 
-The *inner product* of vectors $x,y \in \mathbb R ^n$ is defined as
+The **inner product** of vectors $x,y \in \mathbb R ^n$ is defined as
 
 $$
 x' y := \sum_{i=1}^n x_i y_i
 $$
 
-Two vectors are called *orthogonal* if their inner product is zero.
+Two vectors are called **orthogonal** if their inner product is zero.
 
-The *norm* of a vector $x$ represents its "length" (i.e., its distance from the zero vector) and is defined as
+The **norm** of a vector $x$ represents its "length" (i.e., its distance from the zero vector) and is defined as
 
 $$
 \| x \| := \sqrt{x' x} := \left( \sum_{i=1}^n x_i^2 \right)^{1/2}
@@ -273,7 +273,7 @@ np.linalg.norm(x)      # Norm of x, take three
 
 Given a set of vectors $A := \{a_1, \ldots, a_k\}$ in $\mathbb R ^n$, it's natural to think about the new vectors we can create by performing linear operations.
 
-New vectors created in this manner are called *linear combinations* of $A$.
+New vectors created in this manner are called **linear combinations** of $A$.
 
 In particular, $y \in \mathbb R ^n$ is a linear combination of $A := \{a_1, \ldots, a_k\}$ if
 
@@ -282,9 +282,9 @@ y = \beta_1 a_1 + \cdots + \beta_k a_k
 \text{ for some scalars } \beta_1, \ldots, \beta_k
 $$
 
-In this context, the values $\beta_1, \ldots, \beta_k$ are called the *coefficients* of the linear combination.
+In this context, the values $\beta_1, \ldots, \beta_k$ are called the **coefficients** of the linear combination.
 
-The set of linear combinations of $A$ is called the *span* of $A$.
+The set of linear combinations of $A$ is called the **span** of $A$.
 
 The next figure shows the span of $A = \{a_1, a_2\}$ in $\mathbb R ^3$.
 
@@ -349,7 +349,7 @@ plt.show()
 If $A$ contains only one vector $a_1 \in \mathbb R ^2$, then its
 span is just the scalar multiples of $a_1$, which is the unique line passing through both $a_1$ and the origin.
 
-If $A = \{e_1, e_2, e_3\}$ consists  of the *canonical basis vectors* of $\mathbb R ^3$, that is
+If $A = \{e_1, e_2, e_3\}$ consists  of the **canonical basis vectors** of $\mathbb R ^3$, that is
 
 $$
 e_1 :=
@@ -399,8 +399,8 @@ The condition we need for a set of vectors to have a large span is what's called
 
 In particular, a collection of vectors $A := \{a_1, \ldots, a_k\}$ in $\mathbb R ^n$ is said to be
 
-* *linearly dependent* if some strict subset of $A$ has the same span as $A$.
-* *linearly independent* if it is not linearly dependent.
+* **linearly dependent** if some strict subset of $A$ has the same span as $A$.
+* **linearly independent** if it is not linearly dependent.
 
 Put differently, a set of vectors is linearly independent if no vector is redundant to the span and linearly dependent otherwise.
 
@@ -469,19 +469,19 @@ Often, the numbers in the matrix represent coefficients in a system of linear eq
 
 For obvious reasons, the matrix $A$ is also called a vector if either $n = 1$ or $k = 1$.
 
-In the former case, $A$ is called a *row vector*, while in the latter it is called a *column vector*.
+In the former case, $A$ is called a **row vector**, while in the latter it is called a **column vector**.
 
-If $n = k$, then $A$ is called *square*.
+If $n = k$, then $A$ is called **square**.*.
 
-The matrix formed by replacing $a_{ij}$ by $a_{ji}$ for every $i$ and $j$ is called the *transpose* of $A$ and denoted $A'$ or $A^{\top}$.
+The matrix formed by replacing $a_{ij}$ by $a_{ji}$ for every $i$ and $j$ is called the **transpose** of $A$ and denoted $A'$ or $A^{\top}$.
 
-If $A = A'$, then $A$ is called *symmetric*.
+If $A = A'$, then $A$ is called **symmetric**.*.
 
-For a square matrix $A$, the $i$ elements of the form $a_{ii}$ for $i=1,\ldots,n$ are called the *principal diagonal*.
+For a square matrix $A$, the $i$ elements of the form $a_{ii}$ for $i=1,\ldots,n$ are called the **principal diagonal**.
 
-$A$ is called *diagonal* if the only nonzero entries are on the principal diagonal.
+$A$ is called **diagonal** if the only nonzero entries are on the principal diagonal.l.
 
-If, in addition to being diagonal, each element along the principal diagonal is equal to 1, then $A$ is called the *identity matrix* and denoted by $I$.
+If, in addition to being diagonal, each element along the principal diagonal is equal to 1, then $A$ is called the **identity matrix** and denoted by $I$.
 
 ### Matrix Operations
 
@@ -641,9 +641,9 @@ See [here](https://python-programming.quantecon.org/numpy.html#matrix-multiplica
 
 Each $n \times k$ matrix $A$ can be identified with a function $f(x) = Ax$ that maps $x \in \mathbb R ^k$ into $y = Ax \in \mathbb R ^n$.
 
-These kinds of functions have a special property: they are *linear*.
+These kinds of functions have a special property: they are **linear**.
 
-A function $f \colon \mathbb R ^k \to \mathbb R ^n$ is called *linear* if, for all $x, y \in \mathbb R ^k$ and all scalars $\alpha, \beta$, we have
+A function $f \colon \mathbb R ^k \to \mathbb R ^n$ is called **linear** if, for all $x, y \in \mathbb R ^k$ and all scalars $\alpha, \beta$, we have
 
 $$
 f(\alpha x + \beta y) = \alpha f(x) + \beta f(y)
@@ -773,7 +773,7 @@ In particular, the following are equivalent
 1. The columns of $A$ are linearly independent.
 1. For any $y \in \mathbb R ^n$, the equation $y = Ax$ has a unique solution.
 
-The property of having linearly independent columns is sometimes expressed as having *full column rank*.
+The property of having linearly independent columns is sometimes expressed as having **full column rank**.
 
 #### Inverse Matrices
 
@@ -788,7 +788,7 @@ solution is $x = A^{-1} y$.
 A similar expression is available in the matrix case.
 
 In particular, if square matrix $A$ has full column rank, then it possesses a multiplicative
-*inverse matrix* $A^{-1}$, with the property that $A A^{-1} = A^{-1} A = I$.
+**inverse matrix** $A^{-1}$, with the property that $A A^{-1} = A^{-1} A = I$.
 
 As a consequence, if we pre-multiply both sides of $y = Ax$ by $A^{-1}$, we get $x = A^{-1} y$.
 
@@ -800,11 +800,11 @@ This is the solution that we're looking for.
 ```
 
 Another quick comment about square matrices is that to every such matrix we
-assign a unique number called the *determinant* of the matrix --- you can find
+assign a unique number called the **determinant** of the matrix --- you can find
 the expression for it [here](https://en.wikipedia.org/wiki/Determinant).
 
 If the determinant of $A$ is not zero, then we say that $A$ is
-*nonsingular*.
+**nonsingular**.
 
 Perhaps the most important fact about determinants is that $A$ is nonsingular if and only if $A$ is of full column rank.
 
@@ -929,8 +929,8 @@ $$
 A v = \lambda v
 $$
 
-then we say that $\lambda$ is an *eigenvalue* of $A$, and
-$v$ is an *eigenvector*.
+then we say that $\lambda$ is an **eigenvalue** of $A$, and
+$v$ is an **eigenvector**.
 
 Thus, an eigenvector of $A$ is a vector such that when the map $f(x) = Ax$ is applied, $v$ is merely scaled.
 
@@ -1034,7 +1034,7 @@ to one.
 
 ### Generalized Eigenvalues
 
-It is sometimes useful to consider the *generalized eigenvalue problem*, which, for given
+It is sometimes useful to consider the **generalized eigenvalue problem**, which, for given
 matrices $A$ and $B$, seeks generalized eigenvalues
 $\lambda$ and eigenvectors $v$ such that
 
@@ -1076,10 +1076,10 @@ $$
 $$
 
 The norms on the right-hand side are ordinary vector norms, while the norm on
-the left-hand side is a *matrix norm* --- in this case, the so-called
-*spectral norm*.
+the left-hand side is a **matrix norm** --- in this case, the so-called
+**spectral norm**.
 
-For example, for a square matrix $S$, the condition $\| S \| < 1$ means that $S$ is *contractive*, in the sense that it pulls all vectors towards the origin [^cfn].
+For example, for a square matrix $S$, the condition $\| S \| < 1$ means that $S$ is **contractive**, in the sense that it pulls all vectors towards the origin [^cfn].
 
 (la_neumann)=
 #### {index}`Neumann's Theorem <single: Neumann's Theorem>`
@@ -1112,7 +1112,7 @@ $$
 \rho(A) = \lim_{k \to \infty} \| A^k \|^{1/k}
 $$
 
-Here $\rho(A)$ is the *spectral radius*, defined as $\max_i |\lambda_i|$, where $\{\lambda_i\}_i$ is the set of eigenvalues of $A$.
+Here $\rho(A)$ is the **spectral radius**, defined as $\max_i |\lambda_i|$, where $\{\lambda_i\}_i$ is the set of eigenvalues of $A$.
 
 As a consequence of Gelfand's formula, if all eigenvalues are strictly less than one in modulus,
 there exists a $k$ with $\| A^k \| < 1$.
@@ -1128,8 +1128,8 @@ Let $A$ be a symmetric $n \times n$ matrix.
 
 We say that $A$ is
 
-1. *positive definite* if $x' A x > 0$ for every $x \in \mathbb R ^n \setminus \{0\}$
-1. *positive semi-definite* or *nonnegative definite* if $x' A x \geq 0$ for every $x \in \mathbb R ^n$
+1. **positive definite** if $x' A x > 0$ for every $x \in \mathbb R ^n \setminus \{0\}$
+1. **positive semi-definite** or **nonnegative definite** if $x' A x \geq 0$ for every $x \in \mathbb R ^n$
 
 Analogous definitions exist for negative definite and negative semi-definite matrices.
 
