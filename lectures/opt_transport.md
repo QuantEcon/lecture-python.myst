@@ -136,12 +136,12 @@ tackle the optimal transport problem.
 
 ### Vectorizing a Matrix of Decision Variables
 
-A *matrix* of decision variables $x_{ij}$ appears in problem {eq}`plannerproblem`.
+A **matrix** of decision variables $x_{ij}$ appears in problem {eq}`plannerproblem`.
 
-The SciPy function `linprog` expects to see a *vector* of decision variables.
+The SciPy function `linprog` expects to see a **vector** of decision variables.
 
 This situation impels us to rewrite our problem in terms of a
-*vector* of decision variables.
+**vector** of decision variables.
 
 Let
 
