@@ -164,13 +164,13 @@ In summary, the agent's aim is to select a path $c_0, c_1, c_2, \ldots$ for cons
 1. nonnegative,
 1. feasible in the sense of {eq}`outcsdp0`,
 1. optimal, in the sense that it maximizes {eq}`texs0_og2` relative to all other feasible consumption sequences, and
-1. *adapted*, in the sense that the action $c_t$ depends only on
+1. **adapted**, in the sense that the action $c_t$ depends only on
    observable outcomes, not on future outcomes such as $\xi_{t+1}$.
 
 In the present context
 
-* $x_t$ is called the *state* variable --- it summarizes the "state of the world" at the start of each period.
-* $c_t$ is called the *control* variable --- a value chosen by the agent each period after observing the state.
+* $x_t$ is called the **state** variable --- it summarizes the "state of the world" at the start of each period.
+* $c_t$ is called the **control** variable --- a value chosen by the agent each period after observing the state.
 
 ### The Policy Function Approach
 
