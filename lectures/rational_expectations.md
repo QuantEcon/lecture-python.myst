@@ -309,7 +309,7 @@ Y_{t+1} =  H(Y_t)
 
 where $Y_0$ is a known initial condition.
 
-The *belief function* $H$ is an equilibrium object, and hence remains to be determined.
+The **belief function** $H$ is an equilibrium object, and hence remains to be determined.
 
 #### Optimal Behavior Given Beliefs
 
@@ -364,7 +364,7 @@ $$
 v_y(y,Y) = a_0 - a_1 Y + \gamma (y' - y)
 $$
 
-Substituting this equation into {eq}`comp5` gives the *Euler equation*
+Substituting this equation into {eq}`comp5` gives the **Euler equation**
 
 ```{math}
 :label: ree_comp7
@@ -377,7 +377,7 @@ The firm optimally sets  an output path that satisfies {eq}`ree_comp7`, taking {
 * the initial conditions for $(y_0, Y_0)$.
 * the terminal condition $\lim_{t \rightarrow \infty } \beta^t y_t v_y(y_{t}, Y_t) = 0$.
 
-This last condition is called the *transversality condition*, and acts as a first-order necessary condition "at infinity".
+This last condition is called the **transversality condition**, and acts as a first-order necessary condition "at infinity".
 
 A representative  firm's decision rule solves the difference equation {eq}`ree_comp7` subject to the given initial condition $y_0$ and the transversality condition.
 
@@ -388,7 +388,7 @@ a decision rule that automatically imposes both the Euler equation {eq}`ree_comp
 
 As we've seen, a given belief translates into a particular decision rule $h$.
 
-Recalling that in equilbrium  $Y_t = y_t$, the *actual law of motion* for market-wide output is then
+Recalling that in equilbrium  $Y_t = y_t$, the **actual law of motion** for market-wide output is then
 
 ```{math}
 :label: ree_comp9a
@@ -401,7 +401,7 @@ Thus, when firms believe that the law of motion for market-wide output is {eq}`r
 (ree_def)=
 ### Definition of Rational Expectations Equilibrium
 
-A *rational expectations equilibrium* or *recursive competitive equilibrium*  of the model with adjustment costs is a decision rule $h$ and an aggregate law of motion $H$ such that
+A **rational expectations equilibrium** or **recursive competitive equilibrium**  of the model with adjustment costs is a decision rule $h$ and an aggregate law of motion $H$ such that
 
 1. Given belief $H$, the map $h$ is the firm's optimal policy function.
 1. The law of motion $H$ satisfies $H(Y)= h(Y,Y)$ for all
@@ -469,7 +469,7 @@ s(Y_t, Y_{t+1})
 
 The first term is the area under the demand curve, while the second measures the social costs of changing output.
 
-The *planning problem* is to choose a production plan $\{Y_t\}$ to maximize
+The **planning problem** is to choose a production plan $\{Y_t\}$ to maximize
 
 $$
 \sum_{t=0}^\infty \beta^t s(Y_t, Y_{t+1})

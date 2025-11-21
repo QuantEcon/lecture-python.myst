@@ -85,7 +85,7 @@ One way to summarize our knowledge is a point prediction $\hat x$
 * Then it is better to summarize our initial beliefs with a bivariate probability density $p$
   * $\int_E p(x)dx$ indicates the probability that we attach to the missile being in region $E$.
 
-The density $p$ is called our *prior* for the random variable $x$.
+The density $p$ is called our **prior** for the random variable $x$.
 
 To keep things tractable in our example,  we  assume that our prior is Gaussian.
 
@@ -317,7 +317,7 @@ We have obtained probabilities for the current location of the state (missile) g
 This is called "filtering" rather than forecasting because we are filtering
 out noise rather than looking into the future.
 
-* $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is called the *filtering distribution*
+* $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is called the **filtering distribution**
 
 But now let's suppose that we are given another task: to predict the location of the missile after one unit of time (whatever that may be) has elapsed.
 
@@ -331,7 +331,7 @@ Let's suppose that we have one, and that it's linear and Gaussian. In particular
 x_{t+1} = A x_t + w_{t+1}, \quad \text{where} \quad w_t \sim N(0, Q)
 ```
 
-Our aim is to combine this law of motion and our current distribution $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ to come up with a new *predictive* distribution for the location in one unit of time.
+Our aim is to combine this law of motion and our current distribution $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ to come up with a new **predictive** distribution for the location in one unit of time.
 
 In view of {eq}`kl_xdynam`, all we have to do is introduce a random vector $x^F \sim N(\hat x^F, \Sigma^F)$ and work out the distribution of $A x^F + w$ where $w$ is independent of $x^F$ and has distribution $N(0, Q)$.
 
@@ -356,7 +356,7 @@ $$
 $$
 
 The matrix $A \Sigma G' (G \Sigma G' + R)^{-1}$ is often written as
-$K_{\Sigma}$ and called the *Kalman gain*.
+$K_{\Sigma}$ and called the **Kalman gain**.
 
 * The subscript $\Sigma$ has been added to remind us that  $K_{\Sigma}$ depends on $\Sigma$, but not $y$ or $\hat x$.
 
@@ -373,7 +373,7 @@ Our updated prediction is the density $N(\hat x_{new}, \Sigma_{new})$ where
 \end{aligned}
 ```
 
-* The density $p_{new}(x) = N(\hat x_{new}, \Sigma_{new})$ is called the *predictive distribution*
+* The density $p_{new}(x) = N(\hat x_{new}, \Sigma_{new})$ is called the **predictive distribution**
 
 The predictive distribution is the new density shown in the following figure, where
 the update has used parameters.

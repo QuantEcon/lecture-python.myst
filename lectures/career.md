@@ -66,8 +66,8 @@ from matplotlib import cm
 
 In what follows we distinguish between a career and a job, where
 
-* a *career* is understood to be a general field encompassing many possible jobs, and
-* a *job*  is understood to be a position with a particular firm
+* a **career** is understood to be a general field encompassing many possible jobs, and
+* a **job**  is understood to be a position with a particular firm
 
 For workers, wages can be decomposed into the contribution of job and career
 

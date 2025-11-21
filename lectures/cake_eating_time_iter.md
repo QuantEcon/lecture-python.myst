@@ -237,7 +237,7 @@ whenever $\sigma \in \mathscr P$.
 It is possible to prove that there is a tight relationship between iterates of
 $K$ and iterates of the Bellman operator.
 
-Mathematically, the two operators are *topologically conjugate*.
+Mathematically, the two operators are **topologically conjugate**.
 
 Loosely speaking, this means that if iterates of one operator converge then
 so do iterates of the other, and vice versa.
