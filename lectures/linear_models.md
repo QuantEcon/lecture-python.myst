@@ -1156,7 +1156,7 @@ $$
 
 Do these time series averages converge to something interpretable in terms of our basic state-space representation?
 
-The answer depends on something called **ergodicity**.
+The answer depends on something called *ergodicity*.
 
 Ergodicity is the property that time series and ensemble averages coincide.
 

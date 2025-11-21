@@ -50,12 +50,12 @@ Key features of the environment in Morris's model include:
 * A single parameter indexes the set of statistical models 
 * All traders observe the same dividend history
 * All traders use Bayes' Law to update beliefs
-* Traders have different initial **prior distributions** over the parameter
-* Traders'  **posterior distributions** over the parameter eventually merge
+* Traders have different initial *prior distributions* over the parameter
+* Traders'  *posterior distributions* over the parameter eventually merge
 * Before their posterior distributions merge,  traders disagree about the  predictive density over prospective dividends 
     * therefore they disagree  about the value of the asset
 
-Just as in the hard-wired beliefs model of Harrison and Kreps, those differences of opinion induce  investors to  engage in **speculative behavior** in the following sense:
+Just as in the hard-wired beliefs model of Harrison and Kreps, those differences of opinion induce  investors to  engage in *speculative behavior* in the following sense:
 
  * sometimes they are willing to pay more for the asset than what they think is its "fundamental" value, i.e., the expected discounted value of its prospective dividend stream 
 
@@ -110,11 +110,11 @@ Traders buy and sell the risky asset in competitive markets each period $t = 0, 
 
 As in Harrison-Kreps:
 
-* The asset is traded **ex dividend**
+* The asset is traded *ex dividend*
 * An owner of a share at the end of time $t$ is entitled to the dividend at time $t+1$
 * An owner of a share at the end of period $t$ also has the right to sell the share at time $t+1$ after having received the dividend at time $t+1$.
 
-**Short sales are prohibited**.
+*Short sales are prohibited*.
 
 This matters because it limits how pessimists can express their opinions:
 
@@ -151,7 +151,7 @@ reduce the set of models to a single model by imputing to all agents inside the 
 A set of statistical models that has a particular geometric structure is called a [manifold](https://en.wikipedia.org/wiki/Manifold)  of statistical models. Morris endows traders with a shared  manifold of statistical models.
 ```
 
-Proceeding in this way adheres to  the **Harsanyi Common Priors Doctrine**.
+Proceeding in this way adheres to  the *Harsanyi Common Priors Doctrine*.
 
 
 

@@ -451,8 +451,8 @@ Lucas considered an abstract pure exchange economy with these features:
 
 * a single non-storable consumption good
 * a Markov process that governs the total amount of the consumption good available each period
-* a single **tree** that each period yields **fruit** that equals the total amount of consumption available to the economy
-* a competitive market in  **shares** in the tree that entitles their owners to corresponding shares of the **dividend** stream, i.e., the **fruit** stream, yielded by the tree
+* a single *tree* that each period yields *fruit* that equals the total amount of consumption available to the economy
+* a competitive market in  *shares* in the tree that entitles their owners to corresponding shares of the *dividend* stream, i.e., the *fruit* stream, yielded by the tree
 
 * a representative consumer who in a competitive equilibrium
 

@@ -74,7 +74,7 @@ Let's consider the steps we need to go through in maximum likelihood estimation 
 
 The first step with maximum likelihood estimation is to choose the probability distribution believed to be generating the data.
 
-More precisely, we need to make an assumption as to which **parametric class** of distributions is generating the data.
+More precisely, we need to make an assumption as to which *parametric class* of distributions is generating the data.
 
 * e.g., the class of all normal distributions, or the class of all gamma distributions.
 

@@ -39,7 +39,7 @@ tags: [hide-output]
 
 ## Overview
 
-This lecture introduces the concept of a **rational expectations equilibrium**.
+This lecture introduces the concept of a *rational expectations equilibrium*.
 
 To illustrate it, we describe a linear quadratic version of a  model
 due to Lucas and Prescott {cite}`LucasPrescott1971`.
@@ -53,7 +53,7 @@ Because we use linear quadratic setups for demand and costs, we can deploy the L
 We will learn about how a representative agent's problem differs from a planner's, and how a planning problem can be used to compute  quantities and prices in a rational expectations
 equilibrium.
 
-We will also learn about how a rational expectations equilibrium can be characterized as a [fixed point](https://en.wikipedia.org/wiki/Fixed_point_%28mathematics%29) of a mapping from a **perceived law of motion** to an **actual law of motion**.
+We will also learn about how a rational expectations equilibrium can be characterized as a [fixed point](https://en.wikipedia.org/wiki/Fixed_point_%28mathematics%29) of a mapping from a *perceived law of motion* to an *actual law of motion*.
 
 Equality between a perceived and an actual law of motion for endogenous market-wide objects captures in a nutshell what the rational expectations equilibrium concept is all about.
 

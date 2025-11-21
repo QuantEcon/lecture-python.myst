@@ -51,7 +51,7 @@ As an example, we will replicate results from Acemoglu, Johnson and Robinson's s
 
 In the paper, the authors emphasize the importance of institutions in economic development.
 
-The main contribution is the use of settler mortality rates as a source of **exogenous** variation in institutional differences.
+The main contribution is the use of settler mortality rates as a source of *exogenous* variation in institutional differences.
 
 Such variation is needed to determine whether it is institutions that give rise to greater economic growth, rather than the other way around.
 
@@ -125,7 +125,7 @@ where:
 - $\beta_0$ is the intercept of the linear trend line on the
   y-axis
 - $\beta_1$ is the slope of the linear trend line, representing
-  the **marginal effect** of protection against risk on log GDP per
+  the *marginal effect* of protection against risk on log GDP per
   capita
 - $u_i$ is a random error term (deviations of observations from
   the linear trend due to factors not included in the model)

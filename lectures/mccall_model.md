@@ -134,7 +134,7 @@ In order to optimally trade-off current and future rewards, we need to think abo
 1. the current payoffs we get from different choices
 1. the different states that those choices will lead to in next period
 
-To weigh these two aspects of the decision problem, we need to assign **values**
+To weigh these two aspects of the decision problem, we need to assign *values*
 to states.
 
 To this end, let $v^*(w)$ be the total lifetime value accruing to an

@@ -66,21 +66,21 @@ from cmath import sqrt
 
 ### Samuelson's model
 
-Samuelson used a **second-order linear difference equation** to
+Samuelson used a *second-order linear difference equation* to
 represent a model of national output based on three components:
 
-- a **national output identity** asserting that national output or national income is the
+- a *national output identity* asserting that national output or national income is the
   sum of consumption plus investment plus government purchases.
-- a Keynesian **consumption function** asserting that consumption at
+- a Keynesian *consumption function* asserting that consumption at
   time $t$ is equal to a constant times national output at time $t-1$.
-- an investment **accelerator** asserting that investment at time
-  $t$ equals a constant called the **accelerator coefficient**
+- an investment *accelerator* asserting that investment at time
+  $t$ equals a constant called the *accelerator coefficient*
   times the difference in output between period $t-1$ and
   $t-2$.
 
 Consumption plus investment plus government purchases
-constitute **aggregate demand,** which automatically calls forth an
-equal amount of **aggregate supply**.
+constitute *aggregate demand,* which automatically calls forth an
+equal amount of *aggregate supply*.
 
 (To read about linear difference equations see [here](https://en.wikipedia.org/wiki/Linear_difference_equation) or chapter IX of {cite}`Sargent1987`.)
 
@@ -204,10 +204,10 @@ fluctuations by adding a random shock to aggregate demand.
 
 ### Stochastic version of the model
 
-We create a **random** or **stochastic** version of the model by adding
-a random process of **shocks** or **disturbances**
+We create a *random* or *stochastic* version of the model by adding
+a random process of *shocks* or *disturbances*
 $\{\sigma \epsilon_t \}$ to the right side of equation {eq}`second_order`,
-leading to the **second-order scalar linear stochastic difference equation**:
+leading to the *second-order scalar linear stochastic difference equation*:
 
 ```{math}
 :label: second_stochastic
