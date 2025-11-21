@@ -70,7 +70,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=a459934d9fea1f60268e46d95e2569a33e1f6ec2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=15c2afa29682abb9326a76db12ed4f4c791e68c4" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -336,7 +336,7 @@ we do have some beliefs about <span class="math notranslate nohighlight">\(x\)</
 </ul>
 </li>
 </ul>
-<p>The density <span class="math notranslate nohighlight">\(p\)</span> is called our <em>prior</em> for the random variable <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>The density <span class="math notranslate nohighlight">\(p\)</span> is called our <strong>prior</strong> for the random variable <span class="math notranslate nohighlight">\(x\)</span>.</p>
 <p>To keep things tractable in our example,  we  assume that our prior is Gaussian.</p>
 <p>In particular, we take</p>
 <div class="math notranslate nohighlight" id="equation-prior">
@@ -544,14 +544,14 @@ information <span class="math notranslate nohighlight">\(y - G \hat x\)</span>.<
 <p>This is called “filtering” rather than forecasting because we are filtering
 out noise rather than looking into the future.</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(p(x \,|\, y) = N(\hat x^F, \Sigma^F)\)</span> is called the <em>filtering distribution</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(p(x \,|\, y) = N(\hat x^F, \Sigma^F)\)</span> is called the <strong>filtering distribution</strong></p></li>
 </ul>
 <p>But now let’s suppose that we are given another task: to predict the location of the missile after one unit of time (whatever that may be) has elapsed.</p>
 <p>To do this we need a model of how the state evolves.</p>
 <p>Let’s suppose that we have one, and that it’s linear and Gaussian. In particular,</p>
 <div class="math notranslate nohighlight" id="equation-kl-xdynam">
 <span class="eqno">(40.5)<a class="headerlink" href="#equation-kl-xdynam" title="Link to this equation">#</a></span>\[x_{t+1} = A x_t + w_{t+1}, \quad \text{where} \quad w_t \sim N(0, Q)\]</div>
-<p>Our aim is to combine this law of motion and our current distribution <span class="math notranslate nohighlight">\(p(x \,|\, y) = N(\hat x^F, \Sigma^F)\)</span> to come up with a new <em>predictive</em> distribution for the location in one unit of time.</p>
+<p>Our aim is to combine this law of motion and our current distribution <span class="math notranslate nohighlight">\(p(x \,|\, y) = N(\hat x^F, \Sigma^F)\)</span> to come up with a new <strong>predictive</strong> distribution for the location in one unit of time.</p>
 <p>In view of <a class="reference internal" href="#equation-kl-xdynam">(40.5)</a>, all we have to do is introduce a random vector <span class="math notranslate nohighlight">\(x^F \sim N(\hat x^F, \Sigma^F)\)</span> and work out the distribution of <span class="math notranslate nohighlight">\(A x^F + w\)</span> where <span class="math notranslate nohighlight">\(w\)</span> is independent of <span class="math notranslate nohighlight">\(x^F\)</span> and has distribution <span class="math notranslate nohighlight">\(N(0, Q)\)</span>.</p>
 <p>Since linear combinations of Gaussians are Gaussian, <span class="math notranslate nohighlight">\(A x^F + w\)</span> is Gaussian.</p>
 <p>Elementary calculations and the expressions in <a class="reference internal" href="#equation-kl-filter-exp">(40.4)</a> tell us that</p>
@@ -571,7 +571,7 @@ out noise rather than looking into the future.</p>
 = A \Sigma A' - A \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma A' + Q
 \]</div>
 <p>The matrix <span class="math notranslate nohighlight">\(A \Sigma G' (G \Sigma G' + R)^{-1}\)</span> is often written as
-<span class="math notranslate nohighlight">\(K_{\Sigma}\)</span> and called the <em>Kalman gain</em>.</p>
+<span class="math notranslate nohighlight">\(K_{\Sigma}\)</span> and called the <strong>Kalman gain</strong>.</p>
 <ul class="simple">
 <li><p>The subscript <span class="math notranslate nohighlight">\(\Sigma\)</span> has been added to remind us that  <span class="math notranslate nohighlight">\(K_{\Sigma}\)</span> depends on <span class="math notranslate nohighlight">\(\Sigma\)</span>, but not <span class="math notranslate nohighlight">\(y\)</span> or <span class="math notranslate nohighlight">\(\hat x\)</span>.</p></li>
 </ul>
@@ -583,7 +583,7 @@ out noise rather than looking into the future.</p>
     \Sigma_{new} &amp;:= A \Sigma A' - K_{\Sigma} G \Sigma A' + Q \nonumber
 \end{aligned}\end{split}\]</div>
 <ul class="simple">
-<li><p>The density <span class="math notranslate nohighlight">\(p_{new}(x) = N(\hat x_{new}, \Sigma_{new})\)</span> is called the <em>predictive distribution</em></p></li>
+<li><p>The density <span class="math notranslate nohighlight">\(p_{new}(x) = N(\hat x_{new}, \Sigma_{new})\)</span> is called the <strong>predictive distribution</strong></p></li>
 </ul>
 <p>The predictive distribution is the new density shown in the following figure, where
 the update has used parameters.</p>

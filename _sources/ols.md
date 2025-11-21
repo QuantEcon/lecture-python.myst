@@ -169,7 +169,7 @@ The most common technique to estimate the parameters ($\beta$'s)
 of the linear model is Ordinary Least Squares (OLS).
 
 As the name implies, an OLS model is solved by finding the parameters
-that minimize *the sum of squared residuals*, i.e.
+that minimize **the sum of squared residuals**, i.e.
 
 $$
 \underset{\hat{\beta}}{\min} \sum^N_{i=1}{\hat{u}^2_i}

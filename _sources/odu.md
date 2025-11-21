@@ -111,7 +111,7 @@ v(w)
 ```
 
 The optimal policy has the form $\mathbf{1}\{w \geq \bar w\}$, where
-$\bar w$ is a constant called the *reservation wage*.
+$\bar w$ is a constant called the **reservation wage**.
 
 ### Offer Distribution Unknown
 
@@ -545,7 +545,7 @@ and using $\circ$ for composition of functions yields
 
 Equation {eq}`odu_mvf4` can be understood as a functional equation, where $\bar w$ is the unknown function.
 
-* Let's call it the *reservation wage functional equation* (RWFE).
+* Let's call it the **reservation wage functional equation** (RWFE).
 * The solution $\bar w$ to the RWFE is the object that we wish to compute.
 
 ## Solving the RWFE

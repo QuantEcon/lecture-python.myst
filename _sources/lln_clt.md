@@ -84,7 +84,7 @@ will converge to their population means.
 The classical law of large numbers concerns independent and
 identically distributed (IID) random variables.
 
-Here is the strongest version of the classical LLN, known as *Kolmogorov's strong law*.
+Here is the strongest version of the classical LLN, known as **Kolmogorov's strong law**.
 
 Let $X_1, \ldots, X_n$ be independent and identically
 distributed scalar random variables, with common distribution $F$.
@@ -563,7 +563,7 @@ $$
 \right) =: \boldsymbol \mu
 $$
 
-The *variance-covariance matrix* of random vector $\mathbf X$ is defined as
+The **variance-covariance matrix** of random vector $\mathbf X$ is defined as
 
 $$
 \mathop{\mathrm{Var}}[\mathbf X]

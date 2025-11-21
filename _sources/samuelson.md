@@ -86,7 +86,7 @@ equal amount of *aggregate supply*.
 
 Samuelson used the model to analyze how particular values of the
 marginal propensity to consume and the accelerator coefficient might
-give rise to transient *business cycles* in national output.
+give rise to transient **business cycles** in national output.
 
 Possible dynamic properties include
 
@@ -100,7 +100,7 @@ adds a random shock to the right side of the national income
 identity representing random fluctuations in aggregate demand.
 
 This modification makes national output become governed by a second-order
-*stochastic linear difference equation* that, with appropriate parameter values,
+**stochastic linear difference equation** that, with appropriate parameter values,
 gives rise to recurrent irregular business cycles.
 
 (To read about stochastic linear difference equations see chapter XI of
@@ -152,7 +152,7 @@ and the national income identity
 Y_t = C_t + I_t + G_t
 ```
 
-- The parameter $\alpha$ is peoples' *marginal propensity to consume*
+- The parameter $\alpha$ is peoples' **marginal propensity to consume**
   out of income - equation {eq}`consumption` asserts that people consume a fraction of
   $\alpha \in (0,1)$ of each additional dollar of income.
 - The parameter $\beta > 0$ is the investment accelerator coefficient - equation
@@ -193,7 +193,7 @@ a constant value as $t$ becomes large.
 We are interested in studying
 
 - the transient fluctuations in $Y_t$ as it converges to its
-  *steady state* level
+  **steady state** level
 - the *rate* at which it converges to a steady state level
 
 The deterministic version of the model described so far --- meaning that
@@ -235,7 +235,7 @@ Y_{t+2} - \rho_1 Y_{t+1} - \rho_2 Y_t  = 0
 ```
 
 To discover the properties of the solution of {eq}`second_stochastic2`,
-it is useful first to form the *characteristic polynomial*
+it is useful first to form the **characteristic polynomial**
 for {eq}`second_stochastic2`:
 
 ```{math}
@@ -246,7 +246,7 @@ z^2 - \rho_1 z  - \rho_2
 
 where $z$ is possibly a complex number.
 
-We want to find the two *zeros* (a.k.a. *roots*) -- namely
+We want to find the two **zeros** (a.k.a. **roots**) -- namely
 $\lambda_1, \lambda_2$ -- of the characteristic polynomial.
 
 These are two special values of $z$, say $z= \lambda_1$ and
