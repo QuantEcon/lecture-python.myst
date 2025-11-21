@@ -109,7 +109,7 @@ dynamics are
 In these equations,
 
 * $\beta(t)$ is called the **transmission rate** (the rate at which individuals bump into others and expose them to the virus).
-* $\sigma$ is called the **infection rate** (the rate at which those who are exposed become infected)d)
+* $\sigma$ is called the **infection rate** (the rate at which those who are exposed become infected)
 * $\gamma$ is called the **recovery rate** (the rate at which infected people recover or die).
 * the dot symbol $\dot y$ represents the time derivative $dy/dt$.
 

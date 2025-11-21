@@ -471,15 +471,15 @@ For obvious reasons, the matrix $A$ is also called a vector if either $n = 1$ or
 
 In the former case, $A$ is called a **row vector**, while in the latter it is called a **column vector**.
 
-If $n = k$, then $A$ is called **square**.*.
+If $n = k$, then $A$ is called **square**.
 
 The matrix formed by replacing $a_{ij}$ by $a_{ji}$ for every $i$ and $j$ is called the **transpose** of $A$ and denoted $A'$ or $A^{\top}$.
 
-If $A = A'$, then $A$ is called **symmetric**.*.
+If $A = A'$, then $A$ is called **symmetric**.
 
 For a square matrix $A$, the $i$ elements of the form $a_{ii}$ for $i=1,\ldots,n$ are called the **principal diagonal**.
 
-$A$ is called **diagonal** if the only nonzero entries are on the principal diagonal.l.
+$A$ is called **diagonal** if the only nonzero entries are on the principal diagonal.
 
 If, in addition to being diagonal, each element along the principal diagonal is equal to 1, then $A$ is called the **identity matrix** and denoted by $I$.
 
