@@ -191,7 +191,7 @@ class Model(NamedTuple):
 def create_cake_eating_model(
         β: float = 0.96,           # discount factor
         γ: float = 1.5,            # degree of relative risk aversion
-        x_grid_min: float = 1e-5,  # exclude zero for numerical stability
+        x_grid_min: float = 1e-3,  # exclude zero for numerical stability
         x_grid_max: float = 2.5,   # size of cake
         x_grid_size: int = 120
     ):
