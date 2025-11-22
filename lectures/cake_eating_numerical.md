@@ -235,7 +235,7 @@ def state_action_value(
     # Unpack
     β, γ, x_grid = model.β, model.γ, model.x_grid
     # Convert array into function
-    vf = lambda x: np.interp(x, x_grid, v_array)
+    vf = lambda x: np.interp(x, x_grid, v)
     # Return unmaximmized RHS of Bellman equation 
     return u(c, γ) + β * vf(x - c)
 ```
