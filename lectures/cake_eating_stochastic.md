@@ -34,8 +34,8 @@ stochastically.
 
 We can think of this cake as a harvest that regrows if we save some seeds.
 
-Specifically, if we save (invest) part of today's cake, it grows into next
-period's cake according to a stochastic production process.
+Specifically, if we save and invest part of today's harvest $x_t$, it grows into next
+period's harvest $x_{t+1}$ according to a stochastic production process.
 
 ```{note}
 The term "cake eating" is not such a good fit now that we have a stochastic and
@@ -81,6 +81,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import interp1d
 from scipy.optimize import minimize_scalar
+from typing import NamedTuple, Callable
+
 ```
 
 ## The Model
@@ -88,48 +90,40 @@ from scipy.optimize import minimize_scalar
 ```{index} single: Stochastic Cake Eating; Model
 ```
 
+Here we described the new model and the optimization problem.
+
+### Setup
+
 Consider an agent who owns an amount $x_t \in \mathbb R_+ := [0, \infty)$ of a consumption good at time $t$.
 
-This output can either be consumed or invested.
-
-When the good is invested, it is transformed one-for-one into capital.
-
-The resulting capital stock, denoted here by $k_{t+1}$, will then be used for production.
+This output can either be consumed or saved and used for production.
 
 Production is stochastic, in that it also depends on a shock $\xi_{t+1}$ realized at the end of the current period.
 
 Next period output is
 
 $$
-x_{t+1} := f(k_{t+1}) \xi_{t+1}
+x_{t+1} := f(s_t) \xi_{t+1}
 $$
 
-where $f \colon \mathbb R_+ \to \mathbb R_+$ is called the production function.
-
-The resource constraint is
+where $f \colon \mathbb R_+ \to \mathbb R_+$ is the **production function** and
 
 ```{math}
 :label: outcsdp0
 
-k_{t+1} + c_t \leq x_t
+s_t = x_t - c_t 
 ```
 
-and all variables are required to be nonnegative.
+is **current savings**.
 
-### Assumptions and Comments
+and all variables are required to be nonnegative.
 
 In what follows,
 
 * The sequence $\{\xi_t\}$ is assumed to be IID.
 * The common distribution of each $\xi_t$ will be denoted by $\phi$.
 * The production function $f$ is assumed to be increasing and continuous.
-* Depreciation of capital is not made explicit but can be incorporated into the production function.
 
-While many other treatments of stochastic consumption-saving models use $k_t$ as the state variable, we will use $x_t$.
-
-This will allow us to treat a stochastic model while maintaining only one state variable.
-
-We consider alternative states and timing specifications in some of our other lectures.
 
 ### Optimization
 
@@ -157,20 +151,19 @@ where
 * $u$ is a bounded, continuous and strictly increasing utility function and
 * $\beta \in (0, 1)$ is a discount factor.
 
-In {eq}`og_conse` we are assuming that the resource constraint {eq}`outcsdp0` holds with equality --- which is reasonable because $u$ is strictly increasing and no output will be wasted at the optimum.
-
 In summary, the agent's aim is to select a path $c_0, c_1, c_2, \ldots$ for consumption that is
 
 1. nonnegative,
-1. feasible in the sense of {eq}`outcsdp0`,
+1. feasible,
 1. optimal, in the sense that it maximizes {eq}`texs0_og2` relative to all other feasible consumption sequences, and
-1. **adapted**, in the sense that the action $c_t$ depends only on
-   observable outcomes, not on future outcomes such as $\xi_{t+1}$.
+1. **adapted**, in the sense that the current action $c_t$ depends only on current and historical outcomes, not on future outcomes such as $\xi_{t+1}$.
 
 In the present context
 
 * $x_t$ is called the **state** variable --- it summarizes the "state of the world" at the start of each period.
 * $c_t$ is called the **control** variable --- a value chosen by the agent each period after observing the state.
+
+
 
 ### The Policy Function Approach
 
@@ -183,14 +176,10 @@ A policy function is a map from past and present observables into current action
 
 We'll be particularly interested in **Markov policies**, which are maps from the current state $x_t$ into a current action $c_t$.
 
-For dynamic programming problems such as this one (in fact for any [Markov decision process](https://en.wikipedia.org/wiki/Markov_decision_process)), the optimal policy is always a Markov policy.
+For dynamic programming problems such as this one, the optimal policy is always a Markov policy (see, e.g., [DP1](https://dp.quantecon.org/)).
 
-In other words, the current state $x_t$ provides a [sufficient statistic](https://en.wikipedia.org/wiki/Sufficient_statistic)
-for the history in terms of making an optimal decision today.
-
-This is quite intuitive, but if you wish you can find proofs in texts such as {cite}`StokeyLucas1989` (section 4.1).
-
-Hereafter we focus on finding the best Markov policy.
+In other words, the current state $x_t$ provides a sufficient statistic for the history
+in terms of making an optimal decision today.
 
 In our context, a Markov policy is a function $\sigma \colon
 \mathbb R_+ \to \mathbb R_+$, with the understanding that states are mapped to actions via
@@ -199,7 +188,7 @@ $$
 c_t = \sigma(x_t) \quad \text{for all } t
 $$
 
-In what follows, we will call $\sigma$ a *feasible consumption policy* if it satisfies
+In what follows, we will call $\sigma$ a **feasible consumption policy** if it satisfies
 
 ```{math}
 :label: idp_fp_og2
@@ -246,9 +235,11 @@ The aim is to select a policy that makes this number as large as possible.
 
 The next section covers these ideas more formally.
 
+
+
 ### Optimality
 
-The $\sigma$ associated with a given policy $\sigma$ is the mapping defined by
+The lifetime value $v_{\sigma}$ associated with a given policy $\sigma$ is the mapping defined by
 
 ```{math}
 :label: vfcsdp00
@@ -259,8 +250,7 @@ v_{\sigma}(x) =
 
 when $\{x_t\}$ is given by {eq}`firstp0_og2` with $x_0 = x$.
 
-In other words, it is the lifetime value of following policy $\sigma$
-starting at initial condition $x$.
+In other words, it is the lifetime value of following policy $\sigma$ forever, starting at initial condition $x$.
 
 The **value function** is then defined as
 
@@ -270,15 +260,17 @@ The **value function** is then defined as
 v^*(x) := \sup_{\sigma \in \Sigma} \; v_{\sigma}(x)
 ```
 
-The value function gives the maximal value that can be obtained from state $x$, after considering all feasible policies.
+The value function gives the maximal value that can be obtained from state $x$,
+after considering all feasible policies.
 
-A policy $\sigma \in \Sigma$ is called **optimal** if it attains the supremum in {eq}`vfcsdp0` for all $x \in \mathbb R_+$.
+A policy $\sigma \in \Sigma$ is called **optimal** if it attains the supremum in
+{eq}`vfcsdp0` for all $x \in \mathbb R_+$.
+
 
 ### The Bellman Equation
 
-With our assumptions on utility and production functions, the value function as defined in {eq}`vfcsdp0` also satisfies a **Bellman equation**.
-
-For this problem, the Bellman equation takes the form
+The following equation is called the **Bellman equation** associated with this
+dynamic programming problem.
 
 ```{math}
 :label: fpb30
@@ -290,7 +282,8 @@ v(x) = \max_{0 \leq c \leq x}
 \qquad (x \in \mathbb R_+)
 ```
 
-This is a *functional equation in* $v$.
+This is a *functional equation in* $v$, in the sense that a given $v$ can either
+satisfy it or not satisfy it.
 
 The term $\int v(f(x - c) z) \phi(dz)$ can be understood as the expected next period value when
 
@@ -298,7 +291,7 @@ The term $\int v(f(x - c) z) \phi(dz)$ can be understood as the expected next pe
 * the state is $x$
 * consumption is set to $c$
 
-As shown in [EDTC](https://johnstachurski.net/edtc.html), theorem 10.1.11 and a range of other texts,
+As shown in [EDTC](https://johnstachurski.net/edtc.html), Theorem 10.1.11 and a range of other texts,
 the value function $v^*$ satisfies the Bellman equation.
 
 In other words, {eq}`fpb30` holds when $v=v^*$.
@@ -308,15 +301,17 @@ The intuition is that maximal value from a given state can be obtained by optima
 * current reward from a given action, vs
 * expected discounted future value of the state resulting from that action
 
-The Bellman equation is important because it gives us more information about the value function.
+The Bellman equation is important because it 
 
-It also suggests a way of computing the value function, which we discuss below.
+1. gives us more information about the value function and
+2. suggests a way of computing the value function, which we discuss below.
+
+
+
 
 ### Greedy Policies
 
-The primary importance of the value function is that we can use it to compute optimal policies.
-
-The details are as follows.
+The value function can be used to compute optimal policies.
 
 Given a continuous function $v$ on $\mathbb R_+$, we say that
 $\sigma \in \Sigma$ is $v$-**greedy** if $\sigma(x)$ is a solution to
@@ -343,7 +338,7 @@ In our setting, we have the following key result
 The intuition is similar to the intuition for the Bellman equation, which was
 provided after {eq}`fpb30`.
 
-See, for example, theorem 10.1.11 of [EDTC](https://johnstachurski.net/edtc.html).
+See, for example, Theorem 10.1.11 of [EDTC](https://johnstachurski.net/edtc.html).
 
 Hence, once we have a good approximation to $v^*$, we can compute the
 (approximately) optimal policy by computing the corresponding greedy policy.
@@ -351,13 +346,14 @@ Hence, once we have a good approximation to $v^*$, we can compute the
 The advantage is that we are now solving a much lower dimensional optimization
 problem.
 
+
 ### The Bellman Operator
 
 How, then, should we compute the value function?
 
 One way is to use the so-called **Bellman operator**.
 
-(An operator is a map that sends functions into functions.)
+(The term **operator** is usually reserved for functions that send functions into functions!)
 
 The Bellman operator is denoted by $T$ and defined by
 
@@ -371,11 +367,10 @@ Tv(x) := \max_{0 \leq c \leq x}
 \qquad (x \in \mathbb R_+)
 ```
 
-In other words, $T$ sends the function $v$ into the new function
-$Tv$ defined by {eq}`fcbell20_optgrowth`.
+In other words, $T$ sends the function $v$ into the new function $Tv$ defined by {eq}`fcbell20_optgrowth`.
 
-By construction, the set of solutions to the Bellman equation
-{eq}`fpb30` *exactly coincides with* the set of fixed points of $T$.
+By construction, the set of solutions to the Bellman equation {eq}`fpb30`
+*exactly coincides with* the set of fixed points of $T$.
 
 For example, if $Tv = v$, then, for any $x \geq 0$,
 
@@ -391,6 +386,9 @@ $$
 which says precisely that $v$ is a solution to the Bellman equation.
 
 It follows that $v^*$ is a fixed point of $T$.
+
+
+
 
 ### Review of Theoretical Results
 
@@ -430,7 +428,7 @@ Our problem now is how to compute it.
 ```{index} single: Dynamic Programming; Unbounded Utility
 ```
 
-The results stated above assume that the utility function is bounded.
+The results stated above assume that $u$ is bounded.
 
 In practice economists often work with unbounded utility functions --- and so will we.
 
@@ -458,36 +456,18 @@ Let's now look at computing the value function and the optimal policy.
 Our implementation in this lecture will focus on clarity and
 flexibility.
 
-Both of these things are helpful, but they do cost us some speed --- as you
-will see when you run the code.
+(In subsequent lectures we will focus on efficiency and speed.)
 
-The algorithm we will use is fitted value function iteration, which was
-described in earlier lectures {doc}`the McCall model <mccall_fitted_vfi>` and
-{doc}`cake eating <cake_eating_numerical>`.
+We will use fitted value function iteration, which was
+already described in {doc}`cake eating <cake_eating_numerical>`.
 
-The algorithm will be
-
-(fvi_alg)=
-1. Begin with an array of values $\{ v_1, \ldots, v_I \}$ representing
-   the values of some initial function $v$ on the grid points $\{ x_1, \ldots, x_I \}$.
-1. Build a function $\hat v$ on the state space $\mathbb R_+$ by
-   linear interpolation, based on these data points.
-1. Obtain and record the value $T \hat v(x_i)$ on each grid point
-   $x_i$ by repeatedly solving {eq}`fcbell20_optgrowth`.
-1. Unless some stopping condition is satisfied, set
-   $\{ v_1, \ldots, v_I \} = \{ T \hat v(x_1), \ldots, T \hat v(x_I) \}$ and go to step 2.
 
 ### Scalar Maximization
 
 To maximize the right hand side of the Bellman equation {eq}`fpb30`, we are going to use
 the `minimize_scalar` routine from SciPy.
 
-Since we are maximizing rather than minimizing, we will use the fact that the
-maximizer of $g$ on the interval $[a, b]$ is the minimizer of
-$-g$ on the same interval.
-
-To this end, and to keep the interface tidy, we will wrap `minimize_scalar`
-in an outer function as follows:
+To keep the interface tidy, we will wrap `minimize_scalar` in an outer function as follows:
 
 ```{code-cell} python3
 def maximize(g, a, b, args):
@@ -507,25 +487,25 @@ def maximize(g, a, b, args):
     return maximizer, maximum
 ```
 
-### Stochastic Cake Eating Model
 
-We will assume for now that $\phi$ is the distribution of $\xi := \exp(\mu + s \zeta)$ where
+
+### Model
+
+We will assume for now that $\phi$ is the distribution of $\xi := \exp(\mu + \nu \zeta)$ where
 
 * $\zeta$ is standard normal,
 * $\mu$ is a shock location parameter and
-* $s$ is a shock scale parameter.
+* $\nu$ is a shock scale parameter.
 
 We will store the primitives of the model in a `NamedTuple`.
 
 ```{code-cell} python3
-from typing import NamedTuple, Callable
-
 class Model(NamedTuple):
     u: Callable        # utility function
     f: Callable        # production function
     β: float           # discount factor
     μ: float           # shock location parameter
-    s: float           # shock scale parameter
+    ν: float           # shock scale parameter
     grid: np.ndarray   # state grid
     shocks: np.ndarray # shock draws
 
@@ -534,7 +514,7 @@ def create_model(u: Callable,
                  f: Callable,
                  β: float = 0.96,
                  μ: float = 0.0,
-                 s: float = 0.1,
+                 ν: float = 0.1,
                  grid_max: float = 4.0,
                  grid_size: int = 120,
                  shock_size: int = 250,
@@ -547,9 +527,9 @@ def create_model(u: Callable,
 
     # Store shocks (with a seed, so results are reproducible)
     np.random.seed(seed)
-    shocks = np.exp(μ + s * np.random.randn(shock_size))
+    shocks = np.exp(μ + ν * np.random.randn(shock_size))
 
-    return Model(u=u, f=f, β=β, μ=μ, s=s, grid=grid, shocks=shocks)
+    return Model(u, f, β, μ, ν, grid, shocks)
 
 
 def state_action_value(c: float,
@@ -618,12 +598,13 @@ def T(v: np.ndarray, model: Model) -> tuple[np.ndarray, np.ndarray]:
 Let's suppose now that
 
 $$
-f(k) = k^{\alpha}
+f(x-c) = (x-c)^{\alpha}
 \quad \text{and} \quad
 u(c) = \ln c
 $$
 
-For this particular problem, an exact analytical solution is available (see {cite}`Ljungqvist2012`, section 3.1.2), with
+For this particular problem, an exact analytical solution is available (see
+{cite}`Ljungqvist2012`, section 3.1.2), with
 
 ```{math}
 :label: dpi_tv
@@ -670,8 +651,8 @@ Next let's create an instance of the model with the above primitives and assign 
 
 ```{code-cell} python3
 α = 0.4
-def fcd(k):
-    return k**α
+def fcd(s):
+    return s**α
 
 model = create_model(u=np.log, f=fcd)
 ```
