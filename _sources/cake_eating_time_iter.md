@@ -38,7 +38,7 @@ In this lecture, we introduce the core idea of **time iteration**: iterating on
 a guess of the optimal policy using the Euler equation.
 
 This approach differs from the value function iteration we used in
-{doc}`Cake Eating III <cake_eating_stochastic>`, where we iterated on the value function itself.
+{doc}`cake_eating_stochastic`, where we iterated on the value function itself.
 
 Time iteration exploits the structure of the Euler equation to find the optimal
 policy directly, rather than computing the value function as an intermediate step.
@@ -49,7 +49,7 @@ policy function, we can often solve problems faster than with value function ite
 However, time iteration is not the most efficient Euler equation-based method
 available.
 
-In {doc}`Cake Eating V <cake_eating_egm>`, we'll introduce the **endogenous
+In {doc}`cake_eating_egm`, we'll introduce the **endogenous
 grid method** (EGM), which provides an even more efficient way to solve the
 problem.
 
@@ -68,9 +68,9 @@ from typing import NamedTuple, Callable
 ## The Euler Equation
 
 Our first step is to derive the Euler equation, which is a generalization of
-the Euler equation we obtained in {doc}`Cake Eating I <cake_eating>`.
+the Euler equation we obtained in {doc}`cake_eating`.
 
-We take the model set out in {doc}`Cake Eating III <cake_eating_stochastic>` and add the following assumptions:
+We take the model set out in {doc}`cake_eating_stochastic` and add the following assumptions:
 
 1. $u$ and $f$ are continuously differentiable and strictly concave
 1. $f(0) = 0$
@@ -120,12 +120,12 @@ v^*(x) = \max_{0 \leq k \leq x}
     \right\},
 $$
 
-Differentiating with respect to $x$,  and then evaluating at the optimum yields {eq}`cpi_env`.
+Differentiating with respect to $x$, and then evaluating at the optimum yields {eq}`cpi_env`.
 
 (Section 12.1 of [EDTC](https://johnstachurski.net/edtc.html) contains full proofs of these results, and closely related discussions can be found in many other texts.)
 
 Differentiability of the value function and interiority of the optimal policy
-imply that optimal consumption satisfies the first order condition associated
+imply that optimal consumption satisfies the first-order condition associated
 with {eq}`cpi_fpb30`, which is
 
 ```{math}
@@ -179,7 +179,7 @@ that are continuous, strictly increasing and interior.
 Henceforth we denote this set of policies by $\mathscr P$
 
 1. The operator $K$ takes as its argument a $\sigma \in \mathscr P$ and
-1. returns a new function $K\sigma$,  where $K\sigma(x)$ is the $c \in (0, x)$ that solves.
+1. returns a new function $K\sigma$, where $K\sigma(x)$ is the $c \in (0, x)$ that solves
 
 ```{math}
 :label: cpi_coledef
@@ -194,7 +194,7 @@ We call this operator the **Coleman-Reffett operator** to acknowledge the work o
 In essence, $K\sigma$ is the consumption policy that the Euler equation tells
 you to choose today when your future consumption policy is $\sigma$.
 
-The  important thing to note about $K$ is that, by
+The important thing to note about $K$ is that, by
 construction, its fixed points coincide with solutions to the functional
 equation {eq}`cpi_euler_func`.
 
@@ -237,28 +237,46 @@ whenever $\sigma \in \mathscr P$.
 It is possible to prove that there is a tight relationship between iterates of
 $K$ and iterates of the Bellman operator.
 
-Mathematically, the two operators are **topologically conjugate**.
+Mathematically, $T$ and $K$ are **topologically conjugate** under a translation
+that involves differentiation in one direction and integration in the other.
 
-Loosely speaking, this means that if iterates of one operator converge then
+This conjugacy implies that if iterates of one operator converge then
 so do iterates of the other, and vice versa.
 
-Moreover, there is a sense in which they converge at the same rate, at least
-in theory.
+Moreover, there is a sense in which they converge *at the same rate*, at least in theory.
 
-However, it turns out that the operator $K$ is more stable numerically
+However, it turns out that the operator $K$ is more stable *numerically*
 and hence more efficient in the applications we consider.
+
+This is because
+
+* $K$ exploits additional structure because it uses first-order conditions, and
+* policies near the optimal policy have less curvature and hence are easier to
+  approximate than value functions near the optimal value function.
 
 Examples are given below.
 
+
 ## Implementation
 
-As in {doc}`Cake Eating III <cake_eating_stochastic>`, we continue to assume that
+Let's turn to implementation.
+
+```{note}
+In this lecture we mainly focus on the algorithm, favoring clarity over efficiency in the code.
+
+In later lectures we will optimize both the algorithm and the code.
+```
+
+
+
+As in {doc}`cake_eating_stochastic`, we assume that
 
 * $u(c) = \ln c$
-* $f(k) = k^{\alpha}$
-* $\phi$ is the distribution of $\xi := \exp(\mu + s \zeta)$ when $\zeta$ is standard normal
+* $f(x-c) = (x-c)^{\alpha}$
+* $\phi$ is the distribution of $\xi := \exp(\mu + \nu \zeta)$ when $\zeta$ is standard normal
 
-This will allow us to compare our results to the analytical solutions
+This allows us to compare our results to the analytical solutions we obtained in
+that lecture:
 
 ```{code-cell} python3
 def v_star(x, α, β, μ):
@@ -283,7 +301,7 @@ means iterating with the operator $K$.
 
 For this we need access to the functions $u'$ and $f, f'$.
 
-We use the same `Model` structure from {doc}`Cake Eating III <cake_eating_stochastic>`.
+We use the same `Model` structure from {doc}`cake_eating_stochastic`.
 
 ```{code-cell} python3
 class Model(NamedTuple):
@@ -291,7 +309,7 @@ class Model(NamedTuple):
     f: Callable        # production function
     β: float           # discount factor
     μ: float           # shock location parameter
-    s: float           # shock scale parameter
+    ν: float           # shock scale parameter
     grid: np.ndarray   # state grid
     shocks: np.ndarray # shock draws
     α: float = 0.4     # production function parameter
@@ -299,18 +317,20 @@ class Model(NamedTuple):
     f_prime: Callable = None        # derivative of production
 
 
-def create_model(u: Callable,
-                 f: Callable,
-                 β: float = 0.96,
-                 μ: float = 0.0,
-                 s: float = 0.1,
-                 grid_max: float = 4.0,
-                 grid_size: int = 120,
-                 shock_size: int = 250,
-                 seed: int = 1234,
-                 α: float = 0.4,
-                 u_prime: Callable = None,
-                 f_prime: Callable = None) -> Model:
+def create_model(
+        u: Callable,
+        f: Callable,
+        β: float = 0.96,
+        μ: float = 0.0,
+        ν: float = 0.1,
+        grid_max: float = 4.0,
+        grid_size: int = 120,
+        shock_size: int = 250,
+        seed: int = 1234,
+        α: float = 0.4,
+        u_prime: Callable = None,
+        f_prime: Callable = None
+    ) -> Model:
     """
     Creates an instance of the cake eating model.
     """
@@ -319,10 +339,9 @@ def create_model(u: Callable,
 
     # Store shocks (with a seed, so results are reproducible)
     np.random.seed(seed)
-    shocks = np.exp(μ + s * np.random.randn(shock_size))
+    shocks = np.exp(μ + ν * np.random.randn(shock_size))
 
-    return Model(u=u, f=f, β=β, μ=μ, s=s, grid=grid, shocks=shocks,
-                 α=α, u_prime=u_prime, f_prime=f_prime)
+    return Model(u, f, β, μ, ν, grid, shocks, α, u_prime, f_prime)
 ```
 
 Now we implement a method called `euler_diff`, which returns
@@ -341,14 +360,14 @@ def euler_diff(c: float, σ: np.ndarray, x: float, model: Model) -> float:
 
     """
 
-    β, shocks, grid = model.β, model.shocks, model.grid
-    f, f_prime, u_prime = model.f, model.f_prime, model.u_prime
+    # Unpack
+    u, f, β, μ, ν, grid, shocks, α, u_prime, f_prime = model
 
-    # First turn σ into a function via interpolation
+    # Turn σ into a function via interpolation
     σ_func = lambda x: np.interp(x, grid, σ)
 
     # Now set up the function we need to find the root of.
-    vals = u_prime(σ_func(f(x - c) * shocks)) * f_prime(x - c) * shocks
+    vals = u_prime(σ_func(f(x - c, α) * shocks)) * f_prime(x - c, α) * shocks
     return u_prime(c) - β * np.mean(vals)
 ```
 
@@ -365,12 +384,10 @@ def K(σ: np.ndarray, model: Model) -> np.ndarray:
     """
     The Coleman-Reffett operator
 
-     Here model is an instance of Model.
     """
 
-    β = model.β
-    f, f_prime, u_prime = model.f, model.f_prime, model.u_prime
-    grid, shocks = model.grid, model.shocks
+    # Unpack
+    u, f, β, μ, ν, grid, shocks, α, u_prime, f_prime = model
 
     σ_new = np.empty_like(σ)
     for i, x in enumerate(grid):
@@ -390,8 +407,8 @@ Let's generate an instance and plot some iterates of $K$, starting from $σ(x) =
 α = 0.4
 u = lambda c: np.log(c)
 u_prime = lambda c: 1 / c
-f = lambda k: k**α
-f_prime = lambda k: α * k**(α - 1)
+f = lambda k, α: k**α
+f_prime = lambda k, α: α * k**(α - 1)
 
 model = create_model(u=u, f=f, α=α, u_prime=u_prime, f_prime=f_prime)
 grid = model.grid
@@ -417,20 +434,24 @@ plt.show()
 ```
 
 We see that the iteration process converges quickly to a limit
-that resembles the solution we obtained in {doc}`Cake Eating III <cake_eating_stochastic>`.
+that resembles the solution we obtained in {doc}`cake_eating_stochastic`.
 
 Here is a function called `solve_model_time_iter` that takes an instance of
 `Model` and returns an approximation to the optimal policy,
 using time iteration.
 
+
 ```{code-cell} python3
-def solve_model_time_iter(model: Model,
-                          σ_init: np.ndarray,
-                          tol: float = 1e-5,
-                          max_iter: int = 1000,
-                          verbose: bool = True) -> np.ndarray:
+def solve_model_time_iter(
+        model: Model,
+        σ_init: np.ndarray,
+        tol: float = 1e-5,
+        max_iter: int = 1000,
+        verbose: bool = True
+    ) -> np.ndarray:
     """
     Solve the model using time iteration.
+
     """
     σ = σ_init
     error = tol + 1
@@ -453,19 +474,25 @@ def solve_model_time_iter(model: Model,
 Let's call it:
 
 ```{code-cell} python3
-σ_init = np.copy(model.grid)
+# Unpack
+grid = model.grid
+
+σ_init = np.copy(grid)
 σ = solve_model_time_iter(model, σ_init)
 ```
 
 Here is a plot of the resulting policy, compared with the true policy:
 
 ```{code-cell} python3
+# Unpack
+grid, α, β = model.grid, model.α, model.β
+
 fig, ax = plt.subplots()
 
-ax.plot(model.grid, σ, lw=2,
+ax.plot(grid, σ, lw=2,
         alpha=0.8, label='approximate policy function')
 
-ax.plot(model.grid, σ_star(model.grid, model.α, model.β), 'k--',
+ax.plot(grid, σ_star(grid, α, β), 'k--',
         lw=2, alpha=0.8, label='true policy function')
 
 ax.legend()
@@ -477,12 +504,15 @@ Again, the fit is excellent.
 The maximal absolute deviation between the two policies is
 
 ```{code-cell} python3
-np.max(np.abs(σ - σ_star(model.grid, model.α, model.β)))
+# Unpack
+grid, α, β = model.grid, model.α, model.β
+
+np.max(np.abs(σ - σ_star(grid, α, β)))
 ```
 
 Time iteration runs faster than value function iteration, as discussed in {doc}`cake_eating_stochastic`.
 
-This is because time iteration exploits differentiability and the first order conditions, while value function iteration does not use this available structure.
+This is because time iteration exploits differentiability and the first-order conditions, while value function iteration does not use this available structure.
 
 At the same time, there is a variation of time iteration that runs even faster.
 
@@ -519,7 +549,7 @@ def u_crra(c):
 def u_prime_crra(c):
     return c**(-γ)
 
-# Use same production function as before
+# Use the same production function as before
 model_crra = create_model(u=u_crra, f=f, α=α,
                           u_prime=u_prime_crra, f_prime=f_prime)
 ```
@@ -528,13 +558,16 @@ Now we solve and plot the policy:
 
 ```{code-cell} python3
 %%time
-σ_init = np.copy(model_crra.grid)
+# Unpack
+grid = model_crra.grid
+
+σ_init = np.copy(grid)
 σ = solve_model_time_iter(model_crra, σ_init)
 
 
 fig, ax = plt.subplots()
 
-ax.plot(model_crra.grid, σ, lw=2,
+ax.plot(grid, σ, lw=2,
         alpha=0.8, label='approximate policy function')
 
 ax.legend()

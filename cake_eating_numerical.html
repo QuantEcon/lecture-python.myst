@@ -70,7 +70,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=15c2afa29682abb9326a76db12ed4f4c791e68c4" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3d32f4ec5c55bbd96dbde5c8507c26db016c3d6a" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +95,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=06ebc90d5139b434c2742937a4ef3b185cb93e2f"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=14c25eb8210b9697743fa54cadcbbf6b0ef0e5bb"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -214,10 +214,9 @@
 
                         <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
-                        <p class="qe-page__header-subheading">Cake Eating II: Numerical Methods</p>
-
                     </div>
-                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+
+                    <!-- Authors section -->
                         <p class="qe-page__header-authors" font-size="18">
                             
                                 
@@ -230,6 +229,28 @@
                             
                         </p>
 
+                    <!-- Last modified / Changelog dropdown -->
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: Nov 23, 2025
+                            <span class="changelog-icon">▼</span>
+                        </button>
+
+                    <!-- Changelog dropdown content -->
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/cake_eating_numerical.md">full history</a>)</h4>
+                        <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a606a21" class="changelog-hash">a606a21</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">8 hours ago</span>
+                                <span class="changelog-message">Improve cake eating time iteration lecture: fix alpha parameter handling and code style (#729)</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
 
                 </div> <!-- .page__header -->
 
@@ -281,6 +302,11 @@ accuracy of alternative numerical methods.</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize_scalar</span><span class="p">,</span> <span class="n">bisect</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
@@ -360,14 +386,14 @@ search.</p>
 <li><p>Begin with an array of values <span class="math notranslate nohighlight">\(\{ v_0, \ldots, v_I \}\)</span>  representing
 the values of some initial function <span class="math notranslate nohighlight">\(v\)</span> on the grid points <span class="math notranslate nohighlight">\(\{ x_0, \ldots, x_I \}\)</span>.</p></li>
 <li><p>Build a function <span class="math notranslate nohighlight">\(\hat v\)</span> on the state space <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> by
-linear interpolation, based on these data points.</p></li>
-<li><p>Obtain and record the value <span class="math notranslate nohighlight">\(T \hat v(x_i)\)</span> on each grid point
-<span class="math notranslate nohighlight">\(x_i\)</span> by repeatedly solving the maximization problem in the Bellman
-equation.</p></li>
+interpolation, based on the interpolation points <span class="math notranslate nohighlight">\(\{(x_i, v_i)\}\)</span>.</p></li>
+<li><p>Insert <span class="math notranslate nohighlight">\(\hat v\)</span> into the right hand side of the Bellman equation and
+obtain and record the value <span class="math notranslate nohighlight">\(T \hat v(x_i)\)</span> on each grid point
+<span class="math notranslate nohighlight">\(x_i\)</span>.</p></li>
 <li><p>Unless some stopping condition is satisfied, set
 <span class="math notranslate nohighlight">\(\{ v_0, \ldots, v_I \} = \{ T \hat v(x_0), \ldots, T \hat v(x_I) \}\)</span> and go to step 2.</p></li>
 </ol>
-<p>In step 2 we’ll use continuous piecewise linear interpolation.</p>
+<p>In step 2 we’ll use piecewise linear interpolation.</p>
 </section>
 <section id="implementation">
 <h3><span class="section-number">52.3.3. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h3>
@@ -396,29 +422,33 @@ SciPy minimization routine into a maximization routine.</p>
 </div>
 <p>We’ll store the parameters <span class="math notranslate nohighlight">\(\beta\)</span> and <span class="math notranslate nohighlight">\(\gamma\)</span> and the grid in a
 <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code> called <code class="docutils literal notranslate"><span class="pre">Model</span></code>.</p>
+<p>We’ll also create a helper function called <code class="docutils literal notranslate"><span class="pre">create_cake_eating_model</span></code> to store
+default parameters and build an instance of <code class="docutils literal notranslate"><span class="pre">Model</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create model data structure</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
     <span class="n">β</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">x_grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">create_cake_eating_model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>           <span class="c1"># discount factor</span>
-                              <span class="n">γ</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>            <span class="c1"># degree of relative risk aversion</span>
-                              <span class="n">x_grid_min</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>  <span class="c1"># exclude zero for numerical stability</span>
-                              <span class="n">x_grid_max</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>   <span class="c1"># size of cake</span>
-                              <span class="n">x_grid_size</span><span class="o">=</span><span class="mi">120</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_cake_eating_model</span><span class="p">(</span>
+        <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span><span class="p">,</span>           <span class="c1"># discount factor</span>
+        <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span>            <span class="c1"># degree of relative risk aversion</span>
+        <span class="n">x_grid_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>  <span class="c1"># exclude zero for numerical stability</span>
+        <span class="n">x_grid_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5</span><span class="p">,</span>   <span class="c1"># size of cake</span>
+        <span class="n">x_grid_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">120</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates an instance of the cake eating model.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_grid_min</span><span class="p">,</span> <span class="n">x_grid_max</span><span class="p">,</span> <span class="n">x_grid_size</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">,</span> <span class="n">x_grid</span><span class="o">=</span><span class="n">x_grid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now we define utility functions that operate on the model:</p>
+<p>Here’s the CRRA utility function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">):</span>
@@ -429,21 +459,31 @@ SciPy minimization routine into a maximization routine.</p>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">c</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">u_prime</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    First derivative of utility function.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">c</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">state_action_value</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v_array</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The next function is the unmaximized right hand side of the Bellman equation.</p>
+<p>The array <code class="docutils literal notranslate"><span class="pre">v</span></code> is the current guess of <span class="math notranslate nohighlight">\(v\)</span>, stored as an array on the grid
+points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">state_action_value</span><span class="p">(</span>
+        <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>               <span class="c1"># current consumption</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>               <span class="c1"># the current state (remaining cake)</span>
+        <span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>          <span class="c1"># current guess of the value function</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span>            <span class="c1"># instance of cake eating model</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Right hand side of the Bellman equation given x and c.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">x_grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">x_grid</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">v_array</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">v</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack</span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">x_grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">x_grid</span>
+    <span class="c1"># Convert array into function</span>
+    <span class="n">vf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="c1"># Return unmaximmized RHS of Bellman equation </span>
+    <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">vf</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -451,12 +491,12 @@ SciPy minimization routine into a maximization routine.</p>
 <p>We now define the Bellman operation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span>
+        <span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>          <span class="c1"># current guess of the value function</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span>            <span class="c1"># instance of cake eating model</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Bellman operator.  Updates the guess of the value function.</span>
-
-<span class="sd">    * model is an instance of Model</span>
-<span class="sd">    * v is an array representing a guess of the value function</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">v_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -487,39 +527,46 @@ SciPy minimization routine into a maximization routine.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">x_grid</span>
 <span class="n">v</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span>  <span class="c1"># Initial guess</span>
 <span class="n">n</span> <span class="o">=</span> <span class="mi">12</span>                  <span class="c1"># Number of iterations</span>
-
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
+<span class="c1"># Initial plot</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
         <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Initial guess&#39;</span><span class="p">)</span>
 
+<span class="c1"># Iterate</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>  <span class="c1"># Apply the Bellman operator</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">n</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="c1"># One last update and plot</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>  
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+        <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Final guess&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;cake size $x$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Value function iterations&#39;</span><span class="p">)</span>
-
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/910fe2a0bf3c9a576f54cb1c1b75cf01d048439c96eb4a58114ddfb961400bd7.png" src="_images/910fe2a0bf3c9a576f54cb1c1b75cf01d048439c96eb4a58114ddfb961400bd7.png" />
+<img alt="_images/67c60fb5c4254789bf28473d0982dc717f0d3215ad85718a8d3d572d5f8e098d.png" src="_images/67c60fb5c4254789bf28473d0982dc717f0d3215ad85718a8d3d572d5f8e098d.png" />
 </div>
 </div>
-<p>To do this more systematically, we introduce a wrapper function called
-<code class="docutils literal notranslate"><span class="pre">compute_value_function</span></code> that iterates until some convergence conditions are
-satisfied.</p>
+<p>To iterate more systematically, we introduce a wrapper function called
+<code class="docutils literal notranslate"><span class="pre">compute_value_function</span></code>.</p>
+<p>It’s task is to iterate using <span class="math notranslate nohighlight">\(T\)</span> until some convergence conditions are satisfied.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_value_function</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
-                           <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                           <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-                           <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">print_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_value_function</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
+        <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1_000</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">print_skip</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25</span>
+    <span class="p">):</span>
 
     <span class="c1"># Set up loop</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x_grid</span><span class="p">))</span> <span class="c1"># Initial guess</span>
@@ -630,6 +677,8 @@ neighborhood of zero.</p>
 working with policy functions.</p>
 <p>We will see that value function iteration can be avoided by iterating on a guess
 of the policy function instead.</p>
+<p>The policy function has less curvature and hence is easier to interpolate than
+the value function.</p>
 <p>These ideas will be explored over the next few lectures.</p>
 </div>
 </section>
@@ -654,13 +703,13 @@ above.</p>
 <p>Here’s the function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">σ</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">σ</span><span class="p">(</span>
+        <span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>          <span class="c1"># current guess of the value function</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span>            <span class="c1"># instance of cake eating model</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The optimal policy function. Given the value function,</span>
 <span class="sd">    it finds optimal consumption in each state.</span>
-
-<span class="sd">    * model is an instance of Model</span>
-<span class="sd">    * v is a value function array</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -678,7 +727,7 @@ above.</p>
 <p>Now let’s pass the approximate value function and compute optimal consumption:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">σ</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1558,18 +1607,18 @@ the standard cake eating case <span class="math notranslate nohighlight">\(\alph
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/cake_eating_numerical.ipynb">Colab</option>
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/lectures/cake_eating_numerical.ipynb">Colab</option>
                 
                 </select>
                 <i class="fas fa-check-circle"></i>
             </li>
             <li class="launcher-private">
                 <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/cake_eating_numerical.ipynb" data-branch=main>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/lectures/cake_eating_numerical.ipynb" data-branch=main>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/cake_eating_numerical.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/lectures/cake_eating_numerical.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
@@ -1601,7 +1650,7 @@ the standard cake eating case <span class="math notranslate nohighlight">\(\alph
                 const launcherPrivate = document.getElementById('launcher-private-input');
                 const pageName = "cake_eating_numerical";
                 const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
-                const urlPath = "tree/lecture-python.notebooks/cake_eating_numerical.ipynb";
+                const urlPath = "tree/lecture-python.notebooks/lectures/cake_eating_numerical.ipynb";
                 const branch = "main"
                 const launchNotebookLink = document.getElementById('advancedLaunchButton');
 

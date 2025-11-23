@@ -22,11 +22,10 @@ In this lecture we introduce a simple "cake eating" problem.
 The intertemporal problem is: how much to enjoy today and how much to leave
 for the future?
 
-Although the topic sounds trivial, this kind of trade-off between current
-and future utility is at the heart of many savings and consumption problems.
+This trade-off between current and future rewards is at the heart of many savings and consumption problems.
 
-Once we master the ideas in this simple environment, we will apply them to
-progressively more challenging---and useful---problems.
+Once we master the ideas in a simple environment, we will apply them to
+progressively more challenging problems.
 
 The main tool we will use to solve the cake eating problem is dynamic programming.
 
@@ -105,7 +104,7 @@ subject to
 
 for all $t$.
 
-A consumption path $\{c_t\}$ satisfying {eq}`cake_feasible` where $x_0 = \bar x$ is called **feasible**.
+A consumption path $\{c_t\}$ satisfying {eq}`cake_feasible` and $x_0 = \bar x$ is called **feasible**.
 
 In this problem, the following terminology is standard:
 
@@ -131,10 +130,19 @@ The reasoning given above suggests that the discount factor $\beta$ and the curv
 
 Here's an educated guess as to what impact these parameters will have.
 
-1. Higher $\beta$ implies less discounting, and hence the agent is more patient, which should reduce the rate of consumption.
-2. Higher $\gamma$ implies that marginal utility $u'(c) = c^{-\gamma}$ falls faster with $c$.
+1. Higher $\beta$ implies less discounting, and hence the agent is more patient,
+   which should reduce the rate of consumption.
+2. Higher $\gamma$ implies more curvature in $u$, 
+   more desire for consumption smoothing, and hence a lower rate of consumption.
 
-This suggests more smoothing, and hence a lower rate of consumption.
+```{note}
+More formally, higher $\gamma$ implies a lower intertemporal elasticity of substitution, since
+IES = $1/\gamma$. 
+
+This means the consumer is less willing to substitute consumption between periods.
+
+This stronger preference for consumption smoothing results in a lower consumption rate.
+```
 
 In summary, we expect the rate of consumption to be decreasing in both parameters.
 
@@ -256,16 +264,16 @@ Now that we have the value function, it is straightforward to calculate the opti
 We should choose consumption to maximize the right hand side of the Bellman equation {eq}`bellman-cep`.
 
 $$
-    c^* = \arg \max_{c} \{u(c) + \beta v(x - c)\}
+    c^* = \argmax_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
 $$
 
-We can think of this optimal choice as a function of the state $x$, in which case we call it the **optimal policy**.
+We can think of this optimal choice as a *function* of the state $x$, in which case we call it the **optimal policy**.
 
 We denote the optimal policy by $\sigma^*$, so that
 
 $$
     \sigma^*(x) := \arg \max_{c} \{u(c) + \beta v(x - c)\}
-    \quad \text{for all } x
+    \quad \text{for all } \; x \geq 0
 $$
 
 If we plug the analytical expression {eq}`crra_vstar` for the value function
@@ -330,7 +338,7 @@ The Euler equation for the present problem can be stated as
 u^{\prime} (c^*_{t})=\beta u^{\prime}(c^*_{t+1})
 ```
 
-This is a necessary condition for the optimal path.
+This is a necessary condition for an optimal consumption path $\{c^*_t\}_{t \geq 0}$.
 
 It says that, along the optimal path, marginal rewards are equalized across time, after appropriate discounting.
 
@@ -342,8 +350,7 @@ We can also state the Euler equation in terms of the policy function.
 A **feasible consumption policy** is a map $x \mapsto \sigma(x)$
 satisfying $0 \leq \sigma(x) \leq x$.
 
-The last restriction says that we cannot consume more than the remaining
-quantity of cake.
+(The last restriction says that we cannot consume more than the remaining quantity of cake.)
 
 A feasible consumption policy $\sigma$ is said to **satisfy the Euler equation** if, for
 all $x > 0$,

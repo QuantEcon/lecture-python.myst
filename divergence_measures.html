@@ -70,7 +70,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=15c2afa29682abb9326a76db12ed4f4c791e68c4" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3d32f4ec5c55bbd96dbde5c8507c26db016c3d6a" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +95,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=06ebc90d5139b434c2742937a4ef3b185cb93e2f"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=14c25eb8210b9697743fa54cadcbbf6b0ef0e5bb"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -213,10 +213,9 @@
 
                         <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
-                        <p class="qe-page__header-subheading">Statistical Divergence Measures</p>
-
                     </div>
-                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+
+                    <!-- Authors section -->
                         <p class="qe-page__header-authors" font-size="18">
                             
                                 
@@ -229,6 +228,28 @@
                             
                         </p>
 
+                    <!-- Last modified / Changelog dropdown -->
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: Nov 23, 2025
+                            <span class="changelog-icon">▼</span>
+                        </button>
+
+                    <!-- Changelog dropdown content -->
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/divergence_measures.md">full history</a>)</h4>
+                        <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a606a21" class="changelog-hash">a606a21</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">8 hours ago</span>
+                                <span class="changelog-message">Improve cake eating time iteration lecture: fix alpha parameter handling and code style (#729)</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
 
                 </div> <!-- .page__header -->
 
@@ -326,13 +347,13 @@ Entropy <span class="math notranslate nohighlight">\(H(f)\)</span> for the unifo
 \]</div>
 <p>The following two  concepts are widely used to compare two distributions <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p><strong>Cross-Entropy:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-63716905-1b0d-4adc-882a-aea5d9928706">
-<span class="eqno">(21.1)<a class="headerlink" href="#equation-63716905-1b0d-4adc-882a-aea5d9928706" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f13431fb-9588-490b-8f32-f06eac754b58">
+<span class="eqno">(21.1)<a class="headerlink" href="#equation-f13431fb-9588-490b-8f32-f06eac754b58" title="Permalink to this equation">#</a></span>\[\begin{equation}
 H(f,g) = -\sum_{i} f_i \log g_i
 \end{equation}\]</div>
 <p><strong>Kullback-Leibler (KL) Divergence:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-e5652bf3-c767-4a16-9769-1cbb1b6607bf">
-<span class="eqno">(21.2)<a class="headerlink" href="#equation-e5652bf3-c767-4a16-9769-1cbb1b6607bf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8964ce9d-5491-4cd7-91db-6d7699a1550b">
+<span class="eqno">(21.2)<a class="headerlink" href="#equation-8964ce9d-5491-4cd7-91db-6d7699a1550b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 \end{equation}\]</div>
 <p>These concepts are related by the following equality.</p>
@@ -341,8 +362,8 @@ D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 D_{KL}(f \parallel g) = H(f,g) - H(f)
 \]</div>
 <p>To prove <a class="reference internal" href="#equation-eq-klcross">(21.3)</a>, note that</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d986fa3a-5ca5-434b-9e5d-461981dd3cb0">
-<span class="eqno">(21.4)<a class="headerlink" href="#equation-d986fa3a-5ca5-434b-9e5d-461981dd3cb0" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-00ed5c4a-aab7-45b1-8dae-555834a043f2">
+<span class="eqno">(21.4)<a class="headerlink" href="#equation-00ed5c4a-aab7-45b1-8dae-555834a043f2" title="Permalink to this equation">#</a></span>\[\begin{align}
 D_{KL}(f \parallel g) &amp;= \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right] \\
 &amp;= \sum_{i} f_i \left[\log f_i - \log g_i\right] \\
 &amp;= \sum_{i} f_i \log f_i - \sum_{i} f_i \log g_i \\
@@ -1494,18 +1515,18 @@ Optimal ϕ = 0.5969
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/divergence_measures.ipynb">Colab</option>
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/lectures/divergence_measures.ipynb">Colab</option>
                 
                 </select>
                 <i class="fas fa-check-circle"></i>
             </li>
             <li class="launcher-private">
                 <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/divergence_measures.ipynb" data-branch=main>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/lectures/divergence_measures.ipynb" data-branch=main>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/divergence_measures.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/lectures/divergence_measures.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
@@ -1537,7 +1558,7 @@ Optimal ϕ = 0.5969
                 const launcherPrivate = document.getElementById('launcher-private-input');
                 const pageName = "divergence_measures";
                 const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
-                const urlPath = "tree/lecture-python.notebooks/divergence_measures.ipynb";
+                const urlPath = "tree/lecture-python.notebooks/lectures/divergence_measures.ipynb";
                 const branch = "main"
                 const launchNotebookLink = document.getElementById('advancedLaunchButton');
 

@@ -70,7 +70,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=15c2afa29682abb9326a76db12ed4f4c791e68c4" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3d32f4ec5c55bbd96dbde5c8507c26db016c3d6a" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +95,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=06ebc90d5139b434c2742937a4ef3b185cb93e2f"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=14c25eb8210b9697743fa54cadcbbf6b0ef0e5bb"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -223,10 +223,9 @@
 
                         <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
-                        <p class="qe-page__header-subheading">Cake Eating I: Introduction to Optimal Saving</p>
-
                     </div>
-                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+
+                    <!-- Authors section -->
                         <p class="qe-page__header-authors" font-size="18">
                             
                                 
@@ -239,6 +238,28 @@
                             
                         </p>
 
+                    <!-- Last modified / Changelog dropdown -->
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: Nov 23, 2025
+                            <span class="changelog-icon">▼</span>
+                        </button>
+
+                    <!-- Changelog dropdown content -->
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/cake_eating.md">full history</a>)</h4>
+                        <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a606a21" class="changelog-hash">a606a21</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">8 hours ago</span>
+                                <span class="changelog-message">Improve cake eating time iteration lecture: fix alpha parameter handling and code style (#729)</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
 
                 </div> <!-- .page__header -->
 
@@ -271,10 +292,9 @@
 <p>In this lecture we introduce a simple “cake eating” problem.</p>
 <p>The intertemporal problem is: how much to enjoy today and how much to leave
 for the future?</p>
-<p>Although the topic sounds trivial, this kind of trade-off between current
-and future utility is at the heart of many savings and consumption problems.</p>
-<p>Once we master the ideas in this simple environment, we will apply them to
-progressively more challenging—and useful—problems.</p>
+<p>This trade-off between current and future rewards is at the heart of many savings and consumption problems.</p>
+<p>Once we master the ideas in a simple environment, we will apply them to
+progressively more challenging problems.</p>
 <p>The main tool we will use to solve the cake eating problem is dynamic programming.</p>
 <p>The following lectures contain background on dynamic programming and might be
 worth reviewing:</p>
@@ -331,7 +351,7 @@ so that, in particular, <span class="math notranslate nohighlight">\(x_0=\bar x\
     \quad \text{and} \quad
     0\leq c_t\leq x_t\]</div>
 <p>for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>A consumption path <span class="math notranslate nohighlight">\(\{c_t\}\)</span> satisfying <a class="reference internal" href="#equation-cake-feasible">(51.3)</a> where <span class="math notranslate nohighlight">\(x_0 = \bar x\)</span> is called <strong>feasible</strong>.</p>
+<p>A consumption path <span class="math notranslate nohighlight">\(\{c_t\}\)</span> satisfying <a class="reference internal" href="#equation-cake-feasible">(51.3)</a> and <span class="math notranslate nohighlight">\(x_0 = \bar x\)</span> is called <strong>feasible</strong>.</p>
 <p>In this problem, the following terminology is standard:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_t\)</span> is called the <strong>state variable</strong></p></li>
@@ -354,10 +374,18 @@ so that, in particular, <span class="math notranslate nohighlight">\(x_0=\bar x\
 <p>The reasoning given above suggests that the discount factor <span class="math notranslate nohighlight">\(\beta\)</span> and the curvature parameter <span class="math notranslate nohighlight">\(\gamma\)</span> will play a key role in determining the rate of consumption.</p>
 <p>Here’s an educated guess as to what impact these parameters will have.</p>
 <ol class="arabic simple">
-<li><p>Higher <span class="math notranslate nohighlight">\(\beta\)</span> implies less discounting, and hence the agent is more patient, which should reduce the rate of consumption.</p></li>
-<li><p>Higher <span class="math notranslate nohighlight">\(\gamma\)</span> implies that marginal utility <span class="math notranslate nohighlight">\(u'(c) = c^{-\gamma}\)</span> falls faster with <span class="math notranslate nohighlight">\(c\)</span>.</p></li>
+<li><p>Higher <span class="math notranslate nohighlight">\(\beta\)</span> implies less discounting, and hence the agent is more patient,
+which should reduce the rate of consumption.</p></li>
+<li><p>Higher <span class="math notranslate nohighlight">\(\gamma\)</span> implies more curvature in <span class="math notranslate nohighlight">\(u\)</span>,
+more desire for consumption smoothing, and hence a lower rate of consumption.</p></li>
 </ol>
-<p>This suggests more smoothing, and hence a lower rate of consumption.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>More formally, higher <span class="math notranslate nohighlight">\(\gamma\)</span> implies a lower intertemporal elasticity of substitution, since
+IES = <span class="math notranslate nohighlight">\(1/\gamma\)</span>.</p>
+<p>This means the consumer is less willing to substitute consumption between periods.</p>
+<p>This stronger preference for consumption smoothing results in a lower consumption rate.</p>
+</div>
 <p>In summary, we expect the rate of consumption to be decreasing in both parameters.</p>
 <p>Let’s see if this is true.</p>
 </section>
@@ -450,14 +478,14 @@ explicitly, as a function of the state variable and the parameters.</p>
 <p>We should choose consumption to maximize the right hand side of the Bellman equation <a class="reference internal" href="#equation-bellman-cep">(51.5)</a>.</p>
 <div class="math notranslate nohighlight">
 \[
-    c^* = \arg \max_{c} \{u(c) + \beta v(x - c)\}
+    c^* = \argmax_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
 \]</div>
-<p>We can think of this optimal choice as a function of the state <span class="math notranslate nohighlight">\(x\)</span>, in which case we call it the <strong>optimal policy</strong>.</p>
+<p>We can think of this optimal choice as a <em>function</em> of the state <span class="math notranslate nohighlight">\(x\)</span>, in which case we call it the <strong>optimal policy</strong>.</p>
 <p>We denote the optimal policy by <span class="math notranslate nohighlight">\(\sigma^*\)</span>, so that</p>
 <div class="math notranslate nohighlight">
 \[
     \sigma^*(x) := \arg \max_{c} \{u(c) + \beta v(x - c)\}
-    \quad \text{for all } x
+    \quad \text{for all } \; x \geq 0
 \]</div>
 <p>If we plug the analytical expression <a class="reference internal" href="#equation-crra-vstar">(51.6)</a> for the value function
 into the right hand side and compute the optimum, we find that</p>
@@ -512,15 +540,14 @@ provides key insights that are hard to obtain by other methods.</p>
 <p>The Euler equation for the present problem can be stated as</p>
 <div class="math notranslate nohighlight" id="equation-euler-cep">
 <span class="eqno">(51.8)<a class="headerlink" href="#equation-euler-cep" title="Link to this equation">#</a></span>\[u^{\prime} (c^*_{t})=\beta u^{\prime}(c^*_{t+1})\]</div>
-<p>This is a necessary condition for the optimal path.</p>
+<p>This is a necessary condition for an optimal consumption path <span class="math notranslate nohighlight">\(\{c^*_t\}_{t \geq 0}\)</span>.</p>
 <p>It says that, along the optimal path, marginal rewards are equalized across time, after appropriate discounting.</p>
 <p>This makes sense: optimality is obtained by smoothing consumption up to the
 point where no marginal gains remain.</p>
 <p>We can also state the Euler equation in terms of the policy function.</p>
 <p>A <strong>feasible consumption policy</strong> is a map <span class="math notranslate nohighlight">\(x \mapsto \sigma(x)\)</span>
 satisfying <span class="math notranslate nohighlight">\(0 \leq \sigma(x) \leq x\)</span>.</p>
-<p>The last restriction says that we cannot consume more than the remaining
-quantity of cake.</p>
+<p>(The last restriction says that we cannot consume more than the remaining quantity of cake.)</p>
 <p>A feasible consumption policy <span class="math notranslate nohighlight">\(\sigma\)</span> is said to <strong>satisfy the Euler equation</strong> if, for
 all <span class="math notranslate nohighlight">\(x &gt; 0\)</span>,</p>
 <div class="math notranslate nohighlight" id="equation-euler-pol">
@@ -1462,18 +1489,18 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/cake_eating.ipynb">Colab</option>
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/lectures/cake_eating.ipynb">Colab</option>
                 
                 </select>
                 <i class="fas fa-check-circle"></i>
             </li>
             <li class="launcher-private">
                 <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/cake_eating.ipynb" data-branch=main>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/lectures/cake_eating.ipynb" data-branch=main>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/cake_eating.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/lectures/cake_eating.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
@@ -1505,7 +1532,7 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
                 const launcherPrivate = document.getElementById('launcher-private-input');
                 const pageName = "cake_eating";
                 const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
-                const urlPath = "tree/lecture-python.notebooks/cake_eating.ipynb";
+                const urlPath = "tree/lecture-python.notebooks/lectures/cake_eating.ipynb";
                 const branch = "main"
                 const launchNotebookLink = document.getElementById('advancedLaunchButton');
 

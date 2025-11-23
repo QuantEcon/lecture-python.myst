@@ -45,7 +45,7 @@ Let's put these algorithm and code optimizations to one side for now.
 
 We will use the following imports:
 
-```{code-cell} ipython
+```{code-cell} python3
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import minimize_scalar, bisect
@@ -142,14 +142,16 @@ The process looks like this:
 1. Begin with an array of values $\{ v_0, \ldots, v_I \}$  representing
    the values of some initial function $v$ on the grid points $\{ x_0, \ldots, x_I \}$.
 1. Build a function $\hat v$ on the state space $\mathbb R_+$ by
-   linear interpolation, based on these data points.
-1. Obtain and record the value $T \hat v(x_i)$ on each grid point
-   $x_i$ by repeatedly solving the maximization problem in the Bellman
-   equation.
+   interpolation, based on the interpolation points $\{(x_i, v_i)\}$.
+1. Insert $\hat v$ into the right hand side of the Bellman equation and
+   obtain and record the value $T \hat v(x_i)$ on each grid point
+   $x_i$.
 1. Unless some stopping condition is satisfied, set
    $\{ v_0, \ldots, v_I \} = \{ T \hat v(x_0), \ldots, T \hat v(x_I) \}$ and go to step 2.
 
-In step 2 we'll use continuous piecewise linear interpolation.
+In step 2 we'll use piecewise linear interpolation.
+
+
 
 ### Implementation
 
@@ -177,26 +179,31 @@ def maximize(g, a, b, args):
 We'll store the parameters $\beta$ and $\gamma$ and the grid in a
 `NamedTuple` called `Model`.
 
+We'll also create a helper function called `create_cake_eating_model` to store
+default parameters and build an instance of `Model`.
+
 ```{code-cell} python3
-# Create model data structure
 class Model(NamedTuple):
     β: float
     γ: float
     x_grid: np.ndarray
 
-def create_cake_eating_model(β=0.96,           # discount factor
-                              γ=1.5,            # degree of relative risk aversion
-                              x_grid_min=1e-3,  # exclude zero for numerical stability
-                              x_grid_max=2.5,   # size of cake
-                              x_grid_size=120):
+def create_cake_eating_model(
+        β: float = 0.96,           # discount factor
+        γ: float = 1.5,            # degree of relative risk aversion
+        x_grid_min: float = 1e-3,  # exclude zero for numerical stability
+        x_grid_max: float = 2.5,   # size of cake
+        x_grid_size: int = 120
+    ):
     """
     Creates an instance of the cake eating model.
+
     """
     x_grid = np.linspace(x_grid_min, x_grid_max, x_grid_size)
-    return Model(β=β, γ=γ, x_grid=x_grid)
+    return Model(β, γ, x_grid)
 ```
 
-Now we define utility functions that operate on the model:
+Here's the CRRA utility function.
 
 ```{code-cell} python3
 def u(c, γ):
@@ -207,32 +214,41 @@ def u(c, γ):
         return np.log(c)
     else:
         return (c ** (1 - γ)) / (1 - γ)
+```
 
-def u_prime(c, γ):
-    """
-    First derivative of utility function.
-    """
-    return c ** (-γ)
+The next function is the unmaximized right hand side of the Bellman equation.
 
-def state_action_value(c, x, v_array, model):
+The array `v` is the current guess of $v$, stored as an array on the grid
+points.
+
+```{code-cell} python3
+def state_action_value(
+        c: float,               # current consumption
+        x: float,               # the current state (remaining cake)
+        v: np.ndarray,          # current guess of the value function
+        model: Model            # instance of cake eating model
+    ):
     """
     Right hand side of the Bellman equation given x and c.
-    """
-    β, γ, x_grid = model.β, model.γ, model.x_grid
-    v = lambda x: np.interp(x, x_grid, v_array)
 
-    return u(c, γ) + β * v(x - c)
+    """
+    # Unpack
+    β, γ, x_grid = model.β, model.γ, model.x_grid
+    # Convert array into function
+    vf = lambda x: np.interp(x, x_grid, v)
+    # Return unmaximmized RHS of Bellman equation 
+    return u(c, γ) + β * vf(x - c)
 ```
 
 We now define the Bellman operation:
 
 ```{code-cell} python3
-def T(v, model):
+def T(
+        v: np.ndarray,          # current guess of the value function
+        model: Model            # instance of cake eating model
+    ):
     """
     The Bellman operator.  Updates the guess of the value function.
-
-    * model is an instance of Model
-    * v is an array representing a guess of the value function
 
     """
     v_new = np.empty_like(v)
@@ -261,34 +277,42 @@ $x$ grid point.
 x_grid = model.x_grid
 v = u(x_grid, model.γ)  # Initial guess
 n = 12                  # Number of iterations
-
 fig, ax = plt.subplots()
 
+# Initial plot
 ax.plot(x_grid, v, color=plt.cm.jet(0),
         lw=2, alpha=0.6, label='Initial guess')
 
+# Iterate
 for i in range(n):
     v = T(v, model)  # Apply the Bellman operator
     ax.plot(x_grid, v, color=plt.cm.jet(i / n), lw=2, alpha=0.6)
+
+# One last update and plot
+v = T(v, model)  
+ax.plot(x_grid, v, color=plt.cm.jet(0),
+        lw=2, alpha=0.6, label='Final guess')
 
 ax.legend()
 ax.set_ylabel('value', fontsize=12)
 ax.set_xlabel('cake size $x$', fontsize=12)
 ax.set_title('Value function iterations')
-
 plt.show()
 ```
 
-To do this more systematically, we introduce a wrapper function called
-`compute_value_function` that iterates until some convergence conditions are
-satisfied.
+To iterate more systematically, we introduce a wrapper function called
+`compute_value_function`.
+
+It's task is to iterate using $T$ until some convergence conditions are satisfied.
 
 ```{code-cell} python3
-def compute_value_function(model,
-                           tol=1e-4,
-                           max_iter=1000,
-                           verbose=True,
-                           print_skip=25):
+def compute_value_function(
+        model: Model,
+        tol: float = 1e-4,
+        max_iter: int = 1_000,
+        verbose: bool = True,
+        print_skip: int = 25
+    ):
 
     # Set up loop
     v = np.zeros(len(model.x_grid)) # Initial guess
@@ -367,6 +391,9 @@ working with policy functions.
 We will see that value function iteration can be avoided by iterating on a guess
 of the policy function instead.  
 
+The policy function has less curvature and hence is easier to interpolate than
+the value function.
+
 These ideas will be explored over the next few lectures.
 ```
 
@@ -398,13 +425,13 @@ above.
 Here's the function:
 
 ```{code-cell} python3
-def σ(model, v):
+def σ(
+        v: np.ndarray,          # current guess of the value function
+        model: Model            # instance of cake eating model
+    ):
     """
     The optimal policy function. Given the value function,
     it finds optimal consumption in each state.
-
-    * model is an instance of Model
-    * v is a value function array
 
     """
     c = np.empty_like(v)
@@ -420,7 +447,7 @@ def σ(model, v):
 Now let's pass the approximate value function and compute optimal consumption:
 
 ```{code-cell} python3
-c = σ(model, v)
+c = σ(v, model)
 ```
 
 (pol_an)=
