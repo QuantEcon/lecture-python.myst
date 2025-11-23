@@ -243,7 +243,7 @@ def K(
 
     # Solve for updated consumption value
     for i, s in enumerate(s_grid):
-        vals = u_prime(σ(f(s) * shocks)) * f_prime(s) * shocks
+        vals = u_prime(σ(f(s, α) * shocks)) * f_prime(s, α) * shocks
         c_out[i] = u_prime_inv(β * np.mean(vals))
 
     # Determine corresponding endogenous grid
@@ -266,14 +266,13 @@ First we create an instance.
 
 ```{code-cell} python3
 # Define utility and production functions with derivatives
-α = 0.4
 u = lambda c: np.log(c)
 u_prime = lambda c: 1 / c
 u_prime_inv = lambda x: 1 / x
-f = lambda k: k**α
-f_prime = lambda k: α * k**(α - 1)
+f = lambda k, α: k**α
+f_prime = lambda k, α: α * k**(α - 1)
 
-model = create_model(u=u, f=f, α=α, u_prime=u_prime,
+model = create_model(u=u, f=f, u_prime=u_prime,
                      f_prime=f_prime, u_prime_inv=u_prime_inv)
 s_grid = model.s_grid
 ```
