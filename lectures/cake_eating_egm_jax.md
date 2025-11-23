@@ -311,7 +311,7 @@ def K_crra(
     c_out = compute_c_vectorized(s_grid)
 
     # Determine corresponding endogenous grid
-    x_out = s_grid + c_out
+    x_out = s_grid + c_out  # x_i = s_i + c_i
 
     return c_out, x_out
 ```
@@ -390,7 +390,7 @@ plt.show()
 
 Note that the plots for $\gamma > 1$ do not cover the entire x-axis range shown.
 
-This is because the endogenous grid $x = k + \sigma(k)$ depends on the consumption policy, which varies with $\gamma$.
+This is because the endogenous grid $x = s + \sigma(s)$ depends on the consumption policy, which varies with $\gamma$.
 
 Let's check the maximum deviation between the log utility case ($\gamma = 1.0$) and values approaching from above.
 
