@@ -85,7 +85,7 @@ class Model(NamedTuple):
     β: float              # discount factor
     μ: float              # shock location parameter
     s: float              # shock scale parameter
-    grid: jnp.ndarray     # state grid
+    s_grid: jnp.ndarray   # exogenous savings grid
     shocks: jnp.ndarray   # shock draws
     α: float              # production function parameter
 
@@ -101,14 +101,14 @@ def create_model(β: float = 0.96,
     """
     Creates an instance of the cake eating model.
     """
-    # Set up grid
-    grid = jnp.linspace(1e-4, grid_max, grid_size)
+    # Set up exogenous savings grid
+    s_grid = jnp.linspace(1e-4, grid_max, grid_size)
 
     # Store shocks (with a seed, so results are reproducible)
     key = jax.random.PRNGKey(seed)
     shocks = jnp.exp(μ + s * jax.random.normal(key, shape=(shock_size,)))
 
-    return Model(β=β, μ=μ, s=s, grid=grid, shocks=shocks, α=α)
+    return Model(β=β, μ=μ, s=s, s_grid=s_grid, shocks=shocks, α=α)
 ```
 
 Here's the Coleman-Reffett operator using EGM.
@@ -128,22 +128,22 @@ def K(
 
     # Simplify names
     β, α = model.β, model.α
-    grid, shocks = model.grid, model.shocks
+    s_grid, shocks = model.s_grid, model.shocks
 
     # Linear interpolation of policy using endogenous grid
     σ = lambda x_val: jnp.interp(x_val, x_in, c_in)
 
     # Define function to compute consumption at a single grid point
-    def compute_c(k):
-        vals = u_prime(σ(f(k, α) * shocks)) * f_prime(k, α) * shocks
+    def compute_c(s):
+        vals = u_prime(σ(f(s, α) * shocks)) * f_prime(s, α) * shocks
         return u_prime_inv(β * jnp.mean(vals))
 
     # Vectorize over grid using vmap
     compute_c_vectorized = jax.vmap(compute_c)
-    c_out = compute_c_vectorized(grid)
+    c_out = compute_c_vectorized(s_grid)
 
     # Determine corresponding endogenous grid
-    x_out = grid + c_out  # x_i = k_i + c_i
+    x_out = s_grid + c_out  # x_i = s_i + c_i
 
     return c_out, x_out
 ```
@@ -165,7 +165,7 @@ Now we create a model instance.
 
 ```{code-cell} python3
 model = create_model()
-grid = model.grid
+s_grid = model.s_grid
 ```
 
 The solver uses JAX's `jax.lax.while_loop` for the iteration and is JIT-compiled for speed.
@@ -203,8 +203,8 @@ def solve_model_time_iter(model: Model,
 We solve the model starting from an initial guess.
 
 ```{code-cell} python3
-c_init = jnp.copy(grid)
-x_init = grid + c_init
+c_init = jnp.copy(s_grid)
+x_init = s_grid + c_init
 c, x = solve_model_time_iter(model, c_init, x_init)
 ```
 
@@ -296,22 +296,22 @@ def K_crra(
     """
     # Simplify names
     β, α = model.β, model.α
-    grid, shocks = model.grid, model.shocks
+    s_grid, shocks = model.s_grid, model.shocks
 
     # Linear interpolation of policy using endogenous grid
     σ = lambda x_val: jnp.interp(x_val, x_in, c_in)
 
     # Define function to compute consumption at a single grid point
-    def compute_c(k):
-        vals = u_prime_crra(σ(f(k, α) * shocks), γ) * f_prime(k, α) * shocks
+    def compute_c(s):
+        vals = u_prime_crra(σ(f(s, α) * shocks), γ) * f_prime(s, α) * shocks
         return u_prime_inv_crra(β * jnp.mean(vals), γ)
 
     # Vectorize over grid using vmap
     compute_c_vectorized = jax.vmap(compute_c)
-    c_out = compute_c_vectorized(grid)
+    c_out = compute_c_vectorized(s_grid)
 
     # Determine corresponding endogenous grid
-    x_out = grid + c_out
+    x_out = s_grid + c_out
 
     return c_out, x_out
 ```
@@ -359,8 +359,8 @@ endogenous_grids = {}
 model_crra = create_model()
 
 for γ in γ_values:
-    c_init = jnp.copy(model_crra.grid)
-    x_init = model_crra.grid + c_init
+    c_init = jnp.copy(model_crra.s_grid)
+    x_init = model_crra.s_grid + c_init
     c_gamma, x_gamma = solve_model_crra(model_crra, c_init, x_init, γ)
     jax.block_until_ready(c_gamma)
     policies[γ] = c_gamma
