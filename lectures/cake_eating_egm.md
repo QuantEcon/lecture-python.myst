@@ -41,7 +41,7 @@ The original reference is {cite}`Carroll2006`.
 
 Let's start with some standard imports:
 
-```{code-cell} ipython
+```{code-cell} python3
 import matplotlib.pyplot as plt
 import numpy as np
 import quantecon as qe
@@ -49,11 +49,11 @@ import quantecon as qe
 
 ## Key Idea
 
-Let's start by reminding ourselves of the theory and then see how the numerics fit in.
+First we remind ourselves of the theory and then we turn to numerical methods.
 
 ### Theory
 
-Take the model set out in {doc}`Cake Eating IV <cake_eating_time_iter>`, following the same terminology and notation.
+We work with the model set out in {doc}`cake_eating_time_iter`, following the same terminology and notation.
 
 The Euler equation is
 
@@ -79,23 +79,26 @@ u'(c)
 
 ### Exogenous Grid
 
-As discussed in {doc}`Cake Eating IV <cake_eating_time_iter>`, to implement the method on a computer, we need a numerical approximation.
+As discussed in {doc}`cake_eating_time_iter`, to implement the method on a
+computer, we need numerical approximation.
 
 In particular, we represent a policy function by a set of values on a finite grid.
 
-The function itself is reconstructed from this representation when necessary, using interpolation or some other method.
+The function itself is reconstructed from this representation when necessary,
+using interpolation or some other method.
 
-{doc}`Previously <cake_eating_time_iter>`, to obtain a finite representation of an updated consumption policy, we
+Our {doc}`previous strategy <cake_eating_time_iter>` for obtaining a finite representation of an updated consumption policy was to
 
-* fixed a grid of income points $\{x_i\}$
-* calculated the consumption value $c_i$ corresponding to each
-  $x_i$ using {eq}`egm_coledef` and a root-finding routine
+* fix a grid of income points $\{x_i\}$
+* calculate the consumption value $c_i$ corresponding to each $x_i$ using
+  {eq}`egm_coledef` and a root-finding routine
 
 Each $c_i$ is then interpreted as the value of the function $K \sigma$ at $x_i$.
 
-Thus, with the points $\{x_i, c_i\}$ in hand, we can reconstruct $K \sigma$ via approximation.
+Thus, with the pairs $\{(x_i, c_i)\}$ in hand, we can reconstruct $K \sigma$ via approximation.
 
 Iteration then continues...
+
 
 ### Endogenous Grid
 
@@ -105,7 +108,7 @@ $c_i$ corresponding to a given income value $x_i$.
 Root-finding is costly because it typically involves a significant number of
 function evaluations.
 
-As pointed out by Carroll {cite}`Carroll2006`, we can avoid this if
+As pointed out by Carroll {cite}`Carroll2006`, we can avoid this step if
 $x_i$ is chosen endogenously.
 
 The only assumption required is that $u'$ is invertible on $(0, \infty)$.
@@ -114,7 +117,7 @@ Let $(u')^{-1}$ be the inverse function of $u'$.
 
 The idea is this:
 
-* First, we fix an *exogenous* grid $\{k_i\}$ for capital ($k = x - c$).
+* First, we fix an *exogenous* grid $\{s_i\}$ for savings ($s = x - c$).
 * Then we obtain  $c_i$ via
 
 ```{math}
@@ -123,28 +126,28 @@ The idea is this:
 c_i =
 (u')^{-1}
 \left\{
-    \beta \int (u' \circ \sigma) (f(k_i) z ) \, f'(k_i) \, z \, \phi(dz)
+    \beta \int (u' \circ \sigma) (f(s_i) z ) \, f'(s_i) \, z \, \phi(dz)
 \right\}
 ```
 
-* Finally, for each $c_i$ we set $x_i = c_i + k_i$.
+* Finally, for each $c_i$ we set $x_i = c_i + s_i$.
 
-It is clear that each $(x_i, c_i)$ pair constructed in this manner satisfies {eq}`egm_coledef`.
+Importantly, each $(x_i, c_i)$ pair constructed in this manner satisfies {eq}`egm_coledef`.
 
 With the points $\{x_i, c_i\}$ in hand, we can reconstruct $K \sigma$ via approximation as before.
 
-The name EGM comes from the fact that the grid $\{x_i\}$ is  determined **endogenously**.
+The name EGM comes from the fact that the grid $\{x_i\}$ is determined **endogenously**.
+
 
 ## Implementation
 
-As in {doc}`Cake Eating IV <cake_eating_time_iter>`, we will start with a simple setting
-where
+As in {doc}`cake_eating_time_iter`, we will start with a simple setting where
 
 * $u(c) = \ln c$,
-* production is Cobb-Douglas, and
+* the function $f$ has a Cobb-Douglas specification, and
 * the shocks are lognormal.
 
-This will allow us to make comparisons with the analytical solutions
+This will allow us to make comparisons with the analytical solutions.
 
 ```{code-cell} python3
 def v_star(x, α, β, μ):
@@ -164,7 +167,7 @@ def σ_star(x, α, β):
     return (1 - α * β) * x
 ```
 
-We reuse the `Model` structure from {doc}`Cake Eating IV <cake_eating_time_iter>`.
+We reuse the `Model` structure from {doc}`cake_eating_time_iter`.
 
 ```{code-cell} python3
 from typing import NamedTuple, Callable
@@ -174,8 +177,8 @@ class Model(NamedTuple):
     f: Callable           # production function
     β: float              # discount factor
     μ: float              # shock location parameter
-    s: float              # shock scale parameter
-    grid: np.ndarray      # state grid
+    ν: float              # shock scale parameter
+    s_grid: np.ndarray    # exogenous savings grid
     shocks: np.ndarray    # shock draws
     α: float              # production function parameter
     u_prime: Callable     # derivative of utility
@@ -187,7 +190,7 @@ def create_model(u: Callable,
                  f: Callable,
                  β: float = 0.96,
                  μ: float = 0.0,
-                 s: float = 0.1,
+                 ν: float = 0.1,
                  grid_max: float = 4.0,
                  grid_size: int = 120,
                  shock_size: int = 250,
@@ -199,15 +202,14 @@ def create_model(u: Callable,
     """
     Creates an instance of the cake eating model.
     """
-    # Set up grid
-    grid = np.linspace(1e-4, grid_max, grid_size)
+    # Set up exogenous savings grid
+    s_grid = np.linspace(1e-4, grid_max, grid_size)
 
     # Store shocks (with a seed, so results are reproducible)
     np.random.seed(seed)
-    shocks = np.exp(μ + s * np.random.randn(shock_size))
+    shocks = np.exp(μ + ν * np.random.randn(shock_size))
 
-    return Model(u=u, f=f, β=β, μ=μ, s=s, grid=grid, shocks=shocks,
-                 α=α, u_prime=u_prime, f_prime=f_prime, u_prime_inv=u_prime_inv)
+    return Model(u, f, β, μ, ν, s_grid, shocks, α, u_prime, f_prime, u_prime_inv)
 ```
 
 ### The Operator
@@ -215,36 +217,43 @@ def create_model(u: Callable,
 Here's an implementation of $K$ using EGM as described above.
 
 ```{code-cell} python3
-def K(σ_array: np.ndarray, model: Model) -> np.ndarray:
+def K(
+        c_in: np.ndarray,   # Consumption values on the endogenous grid
+        x_in: np.ndarray,   # Current endogenous grid
+        model: Model        # Model specification
+    ):
     """
-    The Coleman-Reffett operator using EGM
+    An implementation of the Coleman-Reffett operator using EGM.
 
     """
 
     # Simplify names
-    f, β = model.f, model.β
-    f_prime, u_prime = model.f_prime, model.u_prime
-    u_prime_inv = model.u_prime_inv
-    grid, shocks = model.grid, model.shocks
+    u, f, β, μ, ν, s_grid, shocks, α, u_prime, f_prime, u_prime_inv = model
 
-    # Determine endogenous grid
-    x = grid + σ_array  # x_i = k_i + c_i
-
-    # Linear interpolation of policy using endogenous grid
-    σ = lambda x_val: np.interp(x_val, x, σ_array)
+    # Linear interpolation of policy on the endogenous grid
+    σ = lambda x: np.interp(x, x_in, c_in)
 
     # Allocate memory for new consumption array
-    c = np.empty_like(grid)
+    c_out = np.empty_like(s_grid)
 
     # Solve for updated consumption value
-    for i, k in enumerate(grid):
-        vals = u_prime(σ(f(k) * shocks)) * f_prime(k) * shocks
-        c[i] = u_prime_inv(β * np.mean(vals))
+    for i, s in enumerate(s_grid):
+        vals = u_prime(σ(f(s) * shocks)) * f_prime(s) * shocks
+        c_out[i] = u_prime_inv(β * np.mean(vals))
 
-    return c
+    # Determine corresponding endogenous grid
+    x_out = s_grid + c_out        # x_i = s_i + c_i
+
+    return c_out, x_out
 ```
 
 Note the lack of any root-finding algorithm.
+
+```{note}
+The routine is still not particularly fast because we are using pure Python loops.
+
+But in the next lecture ({doc}`cake_eating_egm_jax`) we will use a fully vectorized and efficient solution.
+```
 
 ### Testing
 
@@ -261,28 +270,29 @@ f_prime = lambda k: α * k**(α - 1)
 
 model = create_model(u=u, f=f, α=α, u_prime=u_prime,
                      f_prime=f_prime, u_prime_inv=u_prime_inv)
-grid = model.grid
+s_grid = model.s_grid
 ```
 
 Here's our solver routine:
 
 ```{code-cell} python3
 def solve_model_time_iter(model: Model,
-                          σ_init: np.ndarray,
+                          c_init: np.ndarray,
+                          x_init: np.ndarray,
                           tol: float = 1e-5,
                           max_iter: int = 1000,
-                          verbose: bool = True) -> np.ndarray:
+                          verbose: bool = True):
     """
     Solve the model using time iteration with EGM.
     """
-    σ = σ_init
+    c, x = c_init, x_init
     error = tol + 1
     i = 0
 
     while error > tol and i < max_iter:
-        σ_new = K(σ, model)
-        error = np.max(np.abs(σ_new - σ))
-        σ = σ_new
+        c_new, x_new = K(c, x, model)
+        error = np.max(np.abs(c_new - c))
+        c, x = c_new, x_new
         i += 1
         if verbose:
             print(f"Iteration {i}, error = {error}")
@@ -290,24 +300,23 @@ def solve_model_time_iter(model: Model,
     if i == max_iter:
         print("Warning: maximum iterations reached")
 
-    return σ
+    return c, x
 ```
 
 Let's call it:
 
 ```{code-cell} python3
-σ_init = np.copy(grid)
-σ = solve_model_time_iter(model, σ_init)
+c_init = np.copy(s_grid)
+x_init = s_grid + c_init
+c, x = solve_model_time_iter(model, c_init, x_init)
 ```
 
 Here is a plot of the resulting policy, compared with the true policy:
 
 ```{code-cell} python3
-x = grid + σ  # x_i = k_i + c_i
-
 fig, ax = plt.subplots()
 
-ax.plot(x, σ, lw=2,
+ax.plot(x, c, lw=2,
         alpha=0.8, label='approximate policy function')
 
 ax.plot(x, σ_star(x, model.α, model.β), 'k--',
@@ -320,16 +329,22 @@ plt.show()
 The maximal absolute deviation between the two policies is
 
 ```{code-cell} python3
-np.max(np.abs(σ - σ_star(x, model.α, model.β)))
+np.max(np.abs(c - σ_star(x, model.α, model.β)))
 ```
 
 Here's the execution time:
 
 ```{code-cell} python3
 with qe.Timer():
-    σ = solve_model_time_iter(model, σ_init, verbose=False)
+    c, x = solve_model_time_iter(model, c_init, x_init, verbose=False)
 ```
 
 EGM is faster than time iteration because it avoids numerical root-finding.
 
 Instead, we invert the marginal utility function directly, which is much more efficient.
+
+In the {doc}`next lecture <cake_eating_egm_jax>`, we will use a fully vectorized
+and efficient version of EGM that is also parallelized using JAX.
+
+This provides an extremely fast way to solve the optimal consumption problem we
+have been studying for the last few lectures.
