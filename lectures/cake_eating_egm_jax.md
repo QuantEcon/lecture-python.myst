@@ -164,9 +164,7 @@ f_prime = lambda k, α: α * k**(α - 1)
 Now we create a model instance.
 
 ```{code-cell} python3
-α = 0.4
-
-model = create_model(α=α)
+model = create_model()
 grid = model.grid
 ```
 
@@ -358,7 +356,7 @@ Now we solve for $\gamma = 1$ (log utility) and values approaching 1 from above.
 policies = {}
 endogenous_grids = {}
 
-model_crra = create_model(α=α)
+model_crra = create_model()
 
 for γ in γ_values:
     c_init = jnp.copy(model_crra.grid)
