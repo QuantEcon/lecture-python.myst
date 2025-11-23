@@ -39,6 +39,11 @@ EGM is a numerical method for implementing policy iteration invented by [Chris C
 
 The original reference is {cite}`Carroll2006`.
 
+For now we will focus on a clean and simple implementation of EGM that stays
+close to the underlying mathematics.
+
+Then, in {doc}`the next lecture <cake_eating_egm_jax>`, we will construct a fully vectorized and parallelized version of EGM based on JAX.
+
 Let's start with some standard imports:
 
 ```{code-cell} python3
