@@ -273,7 +273,7 @@ u_prime_inv = lambda x: 1 / x
 f = lambda k: k**α
 f_prime = lambda k: α * k**(α - 1)
 
-model = create_model(u=u, f=f, α=α, u_prime=u_prime,
+model = create_model(u=u, f=f, u_prime=u_prime,
                      f_prime=f_prime, u_prime_inv=u_prime_inv)
 s_grid = model.s_grid
 ```
