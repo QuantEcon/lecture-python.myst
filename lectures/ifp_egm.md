@@ -19,7 +19,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`IFP II: The Endogenous Grid Method <single: IFP II: The Endogenous Grid Method>`
+# {index}`IFP III: The Endogenous Grid Method <single: IFP III: The Endogenous Grid Method>`
 
 ```{contents} Contents
 :depth: 2
