@@ -744,9 +744,8 @@ This looks pretty good.
 
 ## Exercises
 
-```{exercise-start}
+```{exercise}
 :label: ifp_ex1
-```
 
 Let's consider how the interest rate affects consumption.
 
@@ -754,10 +753,8 @@ Let's consider how the interest rate affects consumption.
 * Other than `r`, hold all parameters at their default values.
 * Plot consumption against assets for income shock fixed at the smallest value.
 
-Your figure should show that, for this model, higher interest rates 
+Your figure should show that, for this model, higher interest rates
 suppress consumption (because they encourage more savings).
-
-```{exercise-end}
 ```
 
 ```{solution-start} ifp_ex1
@@ -787,9 +784,8 @@ plt.show()
 ```
 
 
-```{exercise-start}
+```{exercise}
 :label: ifp_ex2
-```
 
 Let's approximate the stationary distribution by simulation.
 
@@ -797,8 +793,6 @@ Run a large number of households forward for $T$ periods and then histogram the
 cross-sectional distribution of assets.
 
 Set `num_households=50_000, T=500`.
-
-```{exercise-end}
 ```
 
 ```{solution-start} ifp_ex2
