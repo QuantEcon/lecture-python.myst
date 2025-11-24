@@ -745,7 +745,7 @@ This looks pretty good.
 ## Exercises
 
 ```{exercise}
-:label: ifp_ex1
+:label: ifp_egm_ex1
 
 Let's consider how the interest rate affects consumption.
 
@@ -757,7 +757,7 @@ Your figure should show that, for this model, higher interest rates
 suppress consumption (because they encourage more savings).
 ```
 
-```{solution-start} ifp_ex1
+```{solution-start} ifp_egm_ex1
 :class: dropdown
 ```
 
@@ -785,7 +785,7 @@ plt.show()
 
 
 ```{exercise}
-:label: ifp_ex2
+:label: ifp_egm_ex2
 
 Let's approximate the stationary distribution by simulation.
 
@@ -795,7 +795,7 @@ cross-sectional distribution of assets.
 Set `num_households=50_000, T=500`.
 ```
 
-```{solution-start} ifp_ex2
+```{solution-start} ifp_egm_ex2
 :class: dropdown
 ```
 
@@ -886,9 +886,8 @@ more realistic features to the model.
 
 
 
-```{exercise-start}
-:label: ifp_ex3
-```
+```{exercise}
+:label: ifp_egm_ex3
 
 Following on from exercises 1 and 2, let's look at how savings and aggregate
 asset holdings vary with the interest rate
@@ -915,11 +914,9 @@ Use
 M = 12
 r_vals = np.linspace(0, 0.015, M)
 ```
-
-```{exercise-end}
 ```
 
-```{solution-start} ifp_ex3
+```{solution-start} ifp_egm_ex3
 :class: dropdown
 ```
 
