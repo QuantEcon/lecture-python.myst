@@ -916,10 +916,10 @@ Use
 M = 12
 r_vals = np.linspace(0, 0.015, M)
 ```
-```
 
 ```{exercise-end}
 ```
+
 
 ```{solution-start} ifp_egm_ex3
 :class: dropdown
