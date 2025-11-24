@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`Cake Eating V: The Endogenous Grid Method <single: Cake Eating V: The Endogenous Grid Method>`
+# {index}`Optimal Savings V: The Endogenous Grid Method <single: Optimal Savings V: The Endogenous Grid Method>`
 
 ```{contents} Contents
 :depth: 2
@@ -26,10 +26,10 @@ kernelspec:
 
 ## Overview
 
-Previously, we solved the stochastic cake eating problem using
+Previously, we solved the optimal savings problem using
 
-1. {doc}`value function iteration <cake_eating_stochastic>`
-1. {doc}`Euler equation based time iteration <cake_eating_time_iter>`
+1. {doc}`value function iteration <os_stochastic>`
+1. {doc}`Euler equation based time iteration <os_time_iter>`
 
 We found time iteration to be significantly more accurate and efficient.
 
@@ -42,7 +42,7 @@ The original reference is {cite}`Carroll2006`.
 For now we will focus on a clean and simple implementation of EGM that stays
 close to the underlying mathematics.
 
-Then, in {doc}`the next lecture <cake_eating_egm_jax>`, we will construct a fully vectorized and parallelized version of EGM based on JAX.
+Then, in {doc}`os_egm_jax`, we will construct a fully vectorized and parallelized version of EGM based on JAX.
 
 Let's start with some standard imports:
 
@@ -58,7 +58,7 @@ First we remind ourselves of the theory and then we turn to numerical methods.
 
 ### Theory
 
-We work with the model set out in {doc}`cake_eating_time_iter`, following the same terminology and notation.
+We work with the model set out in {doc}`os_time_iter`, following the same terminology and notation.
 
 The Euler equation is
 
@@ -84,7 +84,7 @@ u'(c)
 
 ### Exogenous Grid
 
-As discussed in {doc}`cake_eating_time_iter`, to implement the method on a
+As discussed in {doc}`os_time_iter`, to implement the method on a
 computer, we need numerical approximation.
 
 In particular, we represent a policy function by a set of values on a finite grid.
@@ -92,7 +92,7 @@ In particular, we represent a policy function by a set of values on a finite gri
 The function itself is reconstructed from this representation when necessary,
 using interpolation or some other method.
 
-Our {doc}`previous strategy <cake_eating_time_iter>` for obtaining a finite representation of an updated consumption policy was to
+Our previous strategy in {doc}`os_time_iter` for obtaining a finite representation of an updated consumption policy was to
 
 * fix a grid of income points $\{x_i\}$
 * calculate the consumption value $c_i$ corresponding to each $x_i$ using
@@ -146,7 +146,7 @@ The name EGM comes from the fact that the grid $\{x_i\}$ is determined **endogen
 
 ## Implementation
 
-As in {doc}`cake_eating_time_iter`, we will start with a simple setting where
+As in {doc}`os_time_iter`, we will start with a simple setting where
 
 * $u(c) = \ln c$,
 * the function $f$ has a Cobb-Douglas specification, and
@@ -172,7 +172,7 @@ def σ_star(x, α, β):
     return (1 - α * β) * x
 ```
 
-We reuse the `Model` structure from {doc}`cake_eating_time_iter`.
+We reuse the `Model` structure from {doc}`os_time_iter`.
 
 ```{code-cell} python3
 from typing import NamedTuple, Callable
@@ -205,7 +205,7 @@ def create_model(u: Callable,
                  f_prime: Callable = None,
                  u_prime_inv: Callable = None) -> Model:
     """
-    Creates an instance of the cake eating model.
+    Creates an instance of the optimal savings model.
     """
     # Set up exogenous savings grid
     s_grid = np.linspace(1e-4, grid_max, grid_size)
@@ -257,7 +257,7 @@ Note the lack of any root-finding algorithm.
 ```{note}
 The routine is still not particularly fast because we are using pure Python loops.
 
-But in the next lecture ({doc}`cake_eating_egm_jax`) we will use a fully vectorized and efficient solution.
+But in the next lecture ({doc}`os_egm_jax`) we will use a fully vectorized and efficient solution.
 ```
 
 ### Testing
@@ -347,7 +347,7 @@ EGM is faster than time iteration because it avoids numerical root-finding.
 
 Instead, we invert the marginal utility function directly, which is much more efficient.
 
-In the {doc}`next lecture <cake_eating_egm_jax>`, we will use a fully vectorized
+In {doc}`os_egm_jax`, we will use a fully vectorized
 and efficient version of EGM that is also parallelized using JAX.
 
 This provides an extremely fast way to solve the optimal consumption problem we

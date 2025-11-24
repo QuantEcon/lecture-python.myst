@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-# Cake Eating II: Numerical Methods
+# Optimal Savings II: Numerical Cake Eating
 
 ```{contents} Contents
 :depth: 2
@@ -17,7 +17,7 @@ kernelspec:
 
 ## Overview
 
-In this lecture we continue the study of {doc}`the cake eating problem <cake_eating>`.
+In this lecture we continue the study of the problem described in {doc}`os`.
 
 The aim of this lecture is to solve the problem using numerical
 methods.
@@ -54,7 +54,7 @@ from typing import NamedTuple
 
 ## Reviewing the Model
 
-You might like to {doc}`review the details <cake_eating>` before we start.
+You might like to review the details in {doc}`os` before we start.
 
 Recall in particular that the Bellman equation is
 
@@ -402,7 +402,7 @@ These ideas will be explored over the next few lectures.
 
 Let's try computing the optimal policy.
 
-In the {doc}`first lecture on cake eating <cake_eating>`, the optimal
+In {doc}`os`, the optimal
 consumption policy was shown to be
 
 $$
@@ -477,7 +477,7 @@ However, both changes will lead to a longer compute time.
 Another possibility is to use an alternative algorithm, which offers the
 possibility of faster compute time and, at the same time, more accuracy.
 
-We explore this {doc}`soon <cake_eating_time_iter>`.
+We explore this in {doc}`os_time_iter`.
 
 
 ## Exercises

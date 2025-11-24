@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-# Cake Eating I: Introduction to Optimal Saving
+# Optimal Savings I: Cake Eating
 
 ```{contents} Contents
 :depth: 2

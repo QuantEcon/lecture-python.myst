@@ -45,14 +45,14 @@ It is an essential sub-problem for many representative macroeconomic models
 * {cite}`Huggett1993`
 * etc.
 
-It is related to the decision problem in the {doc}`cake eating model <cake_eating_stochastic>` but differs in significant ways.
+It is related to the decision problem in {doc}`os_stochastic` but differs in significant ways.
 
 For example, 
 
 1. The choice problem for the agent includes an additive income term that leads to an occasionally binding constraint.
 2. Shocks affecting the budget constraint are correlated, forcing us to track an extra state variable.
 
-To solve the model we will use the endogenous grid method, which we found to be {doc}`fast and accurate <cake_eating_egm_jax>` in our investigation of cake eating.
+To solve the model we will use the endogenous grid method, which we found to be fast and accurate in {doc}`os_egm_jax`.
 
 We'll need the following imports:
 
@@ -256,7 +256,7 @@ We solve for the optimal consumption policy using time iteration and the
 endogenous grid method.
 
 Readers unfamiliar with the endogenous grid method should review the discussion
-in {doc}`cake_eating_egm`.
+in {doc}`os_egm`.
 
 ### Solution Method
 
