@@ -175,7 +175,7 @@ Optimality is defined below.
 The **value function** $V \colon \mathsf S \to \mathbb{R}$ is defined by
 
 ```{math}
-:label: eqvfs
+:label: eqvfs_egm
 
 V(a, z) := \max \, \mathbb{E}
 \left\{
