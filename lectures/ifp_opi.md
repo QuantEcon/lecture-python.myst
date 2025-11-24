@@ -381,7 +381,15 @@ ax.set_title('OPI execution time vs step size m')
 plt.show()
 ```
 
-We can see that OPI provides significant speedups over VFI, with the optimal value of m depending on the problem structure.
+The results show interesting behavior across different values of m:
+
+* When m=1, OPI is actually slower than VFI, even though they should be mathematically equivalent. This is because the OPI implementation has overhead from computing the greedy policy and calling the policy operator, making it less efficient than the direct VFI approach for m=1.
+
+* The optimal performance occurs around m=25-50, where OPI achieves roughly 3x speedup over VFI.
+
+* For very large m (200, 400), performance degrades as we spend too much time iterating the policy operator before updating the policy.
+
+This demonstrates that there's a "sweet spot" for the OPI step size m that balances between policy updates and value function iterations.
 
 ## Exercises
 
