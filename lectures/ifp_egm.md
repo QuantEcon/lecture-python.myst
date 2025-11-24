@@ -19,7 +19,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`IFP III: The Endogenous Grid Method <single: IFP III: The Endogenous Grid Method>`
+# {index}`The Income Fluctuation Problem III: The Endogenous Grid Method <single: The Income Fluctuation Problem III: The Endogenous Grid Method>`
 
 ```{contents} Contents
 :depth: 2
@@ -424,7 +424,9 @@ def K_numpy(
             for k in range(n_z):
                 # Set up the function a -> σ(a, z_k)
                 σ = lambda a: np.interp(a, ae_vals[:, k], c_vals[:, k])
+                # Calculate σ(R s_i + y(z_k), z_k)
                 next_c = σ(R * s[i] + y(z_grid[k]))
+                # Add to the sum that forms the expectation
                 expectation += u_prime(next_c, γ) * Π[j, k]
             # Calculate updated c_{ij} values
             new_c_vals[i, j] = u_prime_inv(β * R * expectation, γ)
@@ -548,22 +550,26 @@ def K(
     n_a = len(s)
     n_z = len(z_grid)
 
-    # Function to compute consumption for one (i, j) pair where i >= 1
     def compute_c_ij(i, j):
+        " Function to compute consumption for one (i, j) pair where i >= 1. "
 
-        # For each k, compute u'(σ(R * s_i + y(z_k), z_k))
+        # First set up a function that takes s_i as given and, for each k in the indices
+        # of z_grid, computes the term u'(σ(R * s_i + y(z_k), z_k))
         def mu(k):
             next_a = R * s[i] + y(z_grid[k])
-            # Interpolate to get consumption at next_a in state k
+            # Interpolate to get σ(R * s_i + y(z_k), z_k)
             next_c = jnp.interp(next_a, ae_vals[:, k], c_vals[:, k])
+            # Return the final quantity u'(σ(R * s_i + y(z_k), z_k))
             return u_prime(next_c, γ)
 
         # Compute u'(σ(R * s_i + y(z_k), z_k)) at all k via vmap
         mu_vectorized = jax.vmap(mu)
         marginal_utils = mu_vectorized(jnp.arange(n_z))
+
         # Compute expectation: Σ_k u'(σ(...)) * Π[j, k]
         expectation = jnp.sum(marginal_utils * Π[j, :])
-        # Invert to get consumption
+
+        # Invert to get consumption c_{ij} at (s_i, z_j)
         return u_prime_inv(β * R * expectation, γ)
 
     # Set up index grids for vmap computation of all c_{ij}
@@ -646,9 +652,11 @@ print(f"Maximum difference in consumption policy: {max_c_diff:.2e}")
 print(f"Maximum difference in asset grid:        {max_ae_diff:.2e}")
 ```
 
-The maximum differences are on the order of $10^{-15}$ or smaller, which is essentially machine precision for 64-bit floating point arithmetic.
+The maximum differences are on the order of $10^{-15}$ or smaller, which is
+essentially machine precision for 64-bit floating point arithmetic.
 
-This confirms that our JAX implementation produces identical results to the NumPy version, validating the correctness of our vectorized JAX code.
+This confirms that our JAX implementation produces identical results to the
+NumPy version, validating the correctness of our vectorized JAX code.
 
 Here's a plot of the optimal policy for each $z$ state
 
@@ -663,7 +671,8 @@ plt.show()
 
 ### Dynamics
 
-To begin to understand the long run asset levels held by households under the default parameters, let's look at the
+To begin to understand the long run asset levels held by households under the
+default parameters, let's look at the
 45 degree diagram showing the law of motion for assets under the optimal consumption policy.
 
 ```{code-cell} ipython3
@@ -741,6 +750,132 @@ plt.show()
 
 This looks pretty good.
 
+## Simulation
+
+Let's return to the default model and study the stationary distribution of assets.
+
+Our plan is to run a large number of households forward for $T$ periods and then
+histogram the cross-sectional distribution of assets.
+
+Set `num_households=50_000, T=500`.
+```
+
+```{solution-start} ifp_egm_ex2
+:class: dropdown
+```
+
+First we write a function to run a single household forward in time and record
+the final value of assets.
+
+The function takes a solution pair `c_vals`  and `ae_vals`, understanding them
+as representing an optimal policy associated with a given model `ifp`
+
+```{code-cell} ipython3
+@jax.jit
+def simulate_household(
+        key, a_0, z_idx_0, c_vals, ae_vals, ifp, num_households, T
+    ):
+    """
+    Simulates num_households households for T periods to approximate
+    the stationary distribution of assets.
+
+    - key is the state of the random number generator
+    - ifp is an instance of IFP
+    - c_vals, ae_vals are the optimal consumption policy, endogenous grid for ifp
+
+    """
+    R, β, γ, Π, z_grid, s = ifp
+    n_z = len(z_grid)
+
+    # Create interpolation function for consumption policy
+    σ = lambda a, z_idx: jnp.interp(a, ae_vals[:, z_idx], c_vals[:, z_idx])
+
+    # Simulate forward T periods
+    def update(state, t):
+        a, z_idx = state
+        c = σ(a, z_idx)
+        # Draw next shock z' from Π[z, z']
+        current_key = jax.random.fold_in(t, key)
+        z_next_idx = jax.random.choice(current_key, n_z, p=Π[z_idx])
+        z_next = z_grid[z_next_idx]
+        # Update assets: a' = R * (a - c) + Y'
+        a_next = R * (a - c) + y(z_next)
+        # Return updated state
+        return a_next, z_next_idx
+
+    initial_state = a_0, z_idx_0
+    final_state = jax.lax.fori_loop(0, T, update, initial_state)
+    a_final, _ = final_state
+    return a_final
+```
+
+Now we write a function to simulate many households in parallel.
+
+```{code-cell} ipython3
+def compute_asset_stationary(
+        c_vals, ae_vals, ifp, num_households=50_000, T=500, seed=1234
+    ):
+    """
+    Simulates num_households households for T periods to approximate
+    the stationary distribution of assets.
+
+    By ergodicity, simulating many households for moderate time is equivalent to
+    simulating one household for very long time, but parallelizes better.
+
+    ifp is an instance of IFP
+    c_vals, ae_vals are the consumption policy and endogenous grid from
+    solve_model
+
+    """
+    R, β, γ, Π, z_grid, s = ifp
+    n_z = len(z_grid)
+
+    # Create interpolation function for consumption policy
+    # Interpolate on the endogenous grid
+    σ = lambda a, z_idx: jnp.interp(a, ae_vals[:, z_idx], c_vals[:, z_idx])
+
+    # Start with assets = savings_grid_max / 2
+    a_0_vector = jnp.full(num_households, s[-1] / 2)
+    # Initialize the exogenous state of each household
+    z_idx_0_vector = jnp.zeros(num_households).astype(jnp.int32)
+
+    # Vectorize over many households
+    key = jax.random.PRNGKey(seed)
+    keys = jax.random.split(key, num_households)
+    # Vectorize simulate_household in (key, a_0, z_idx_0)
+    sim_all_households = jax.vmap(
+        simulate_household, axes=(0, 0, 0, None, None, None, None, None)
+    )
+    assets = sim_all_households(keys, a_0_vector, z_idx_0_vector)
+
+    return np.array(assets)
+```
+
+Now we call the function, generate the asset distribution and histogram it:
+
+```{code-cell} ipython3
+ifp = create_ifp()
+R, β, γ, Π, z_grid, s = ifp
+c_vals_init = s[:, None] * jnp.ones(len(z_grid))
+c_vals, ae_vals = solve_model(ifp, c_vals_init)
+assets = compute_asset_stationary(ifp, c_vals, ae_vals)
+
+fig, ax = plt.subplots()
+ax.hist(assets, bins=20, alpha=0.5, density=True)
+ax.set(xlabel='assets')
+plt.show()
+```
+
+The shape of the asset distribution is completely unrealistic!
+
+Here it is left skewed when in reality it has a long right tail.
+
+In a {doc}`subsequent lecture <ifp_advanced>` we will rectify this by adding
+more realistic features to the model.
+
+
+
+
 
 ## Exercises
 
@@ -784,113 +919,12 @@ plt.show()
 ```
 
 
-```{exercise}
-:label: ifp_egm_ex2
-
-Let's approximate the stationary distribution by simulation.
-
-Run a large number of households forward for $T$ periods and then histogram the
-cross-sectional distribution of assets.
-
-Set `num_households=50_000, T=500`.
-```
-
-```{solution-start} ifp_egm_ex2
-:class: dropdown
-```
-
-First we write a function to simulate many households in parallel using JAX.
-
-```{code-cell} ipython3
-def compute_asset_stationary(
-        ifp, c_vals, ae_vals, num_households=50_000, T=500, seed=1234
-    ):
-    """
-    Simulates num_households households for T periods to approximate
-    the stationary distribution of assets.
-
-    By ergodicity, simulating many households for moderate time is equivalent to
-    simulating one household for very long time, but parallelizes better.
-
-    ifp is an instance of IFP
-    c_vals, ae_vals are the consumption policy and endogenous grid from
-    solve_model
-    """
-    R, β, γ, Π, z_grid, s = ifp
-    n_z = len(z_grid)
-
-    # Create interpolation function for consumption policy
-    # Interpolate on the endogenous grid
-    σ = lambda a, z_idx: jnp.interp(a, ae_vals[:, z_idx], c_vals[:, z_idx])
-
-    # Simulate one household forward
-    def simulate_one_household(key):
-
-        # Random initial state (a, z)
-        key1, key2, key3 = jax.random.split(key, 3)
-        z_idx = jax.random.choice(key1, n_z)
-        # Start with random assets drawn from [0, savings_grid_max/2]
-        a = jax.random.uniform(key3, minval=0.0, maxval=s[-1]/2)
-
-        # Simulate forward T periods
-        def step(state, key_t):
-            a, z_idx = state
-            # Consume based on current state
-            c = σ(a, z_idx)
-            # Draw next shock
-            z_next_idx = jax.random.choice(key_t, n_z, p=Π[z_idx])
-            # Update assets: a' = R*(a - c) + Y'
-            z_next = z_grid[z_next_idx]
-            a_next = R * (a - c) + y(z_next)
-            return (a_next, z_next_idx), None
-
-        keys = jax.random.split(key2, T)
-        initial_state = a, z_idx
-        final_state, _ = jax.lax.scan(step, initial_state, keys)
-        a_final, _ = final_state
-        return a_final
-
-    # Vectorize over many households
-    key = jax.random.PRNGKey(seed)
-    keys = jax.random.split(key, num_households)
-    sim_all_households = jax.vmap(simulate_one_household)
-    assets = sim_all_households(keys)
-
-    return np.array(assets)
-```
-
-Now we call the function, generate the asset distribution and histogram it:
-
-```{code-cell} ipython3
-ifp = create_ifp()
-R, β, γ, Π, z_grid, s = ifp
-c_vals_init = s[:, None] * jnp.ones(len(z_grid))
-c_vals, ae_vals = solve_model(ifp, c_vals_init)
-assets = compute_asset_stationary(ifp, c_vals, ae_vals)
-
-fig, ax = plt.subplots()
-ax.hist(assets, bins=20, alpha=0.5, density=True)
-ax.set(xlabel='assets')
-plt.show()
-```
-
-The shape of the asset distribution is unrealistic.
-
-Here it is left skewed when in reality it has a long right tail.
-
-In a {doc}`subsequent lecture <ifp_advanced>` we will rectify this by adding
-more realistic features to the model.
-
-```{solution-end}
-```
-
-
 
 ```{exercise-start}
 :label: ifp_egm_ex3
 ```
 
-Following on from exercises 1 and 2, let's look at how savings and aggregate
+Following on from Exercises 1, let's look at how savings and aggregate
 asset holdings vary with the interest rate
 
 ```{note}
@@ -905,12 +939,10 @@ shocks.
 Your task is to investigate how this measure of aggregate capital varies with
 the interest rate.
 
-Following tradition, put the price (i.e., interest rate) on the vertical axis.
+Intuition suggests that a higher interest rate should encourage capital
+formation --- test this.
 
-On the horizontal axis put aggregate capital, computed as the mean of the
-stationary distribution given the interest rate.
-
-Use 
+For the interest rate grid, use
 
 ```{code-cell} ipython3
 M = 12

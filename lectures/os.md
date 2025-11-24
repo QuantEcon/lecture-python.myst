@@ -259,12 +259,12 @@ plt.show()
 
 ## The optimal policy
 
-Now that we have the value function, it is straightforward to calculate the optimal action at each state.
+Now that we have the value function $v^*$, it is straightforward to calculate the optimal action at each state.
 
 We should choose consumption to maximize the right hand side of the Bellman equation {eq}`bellman-cep`.
 
 $$
-    c^* = \arg \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
+    c^* = \arg \max_{0 \leq c \leq x} \{u(c) + \beta v^*(x - c)\}
 $$
 
 We can think of this optimal choice as a *function* of the state $x$, in which case we call it the **optimal policy**.
@@ -272,7 +272,7 @@ We can think of this optimal choice as a *function* of the state $x$, in which c
 We denote the optimal policy by $\sigma^*$, so that
 
 $$
-    \sigma^*(x) := \arg \max_{c} \{u(c) + \beta v(x - c)\}
+    \sigma^*(x) := \arg \max_{c} \{u(c) + \beta v^*(x - c)\}
     \quad \text{for all } \; x \geq 0
 $$
 
