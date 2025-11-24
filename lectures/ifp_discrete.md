@@ -40,7 +40,7 @@ solving it via old-fashioned discretization + value function iteration.
 Although this approach is not the fastest or the most efficient, it is very
 robust and flexible.
 
-For example, if we suddenly decided to add [Epstein--Zin preferences](), or
+For example, if we suddenly decided to add [Epstein--Zin preferences](https://en.wikipedia.org/wiki/Epstein%E2%80%93Zin_preferences), or
 modify ordinary conditional expectations to quantiles, the technique would
 continue to work well.
 
@@ -332,16 +332,11 @@ Here's the speedup from using `jax.lax.while_loop`.
 print(f"Relative speed = {python_time / jax_without_compile:.2f}")
 ```
 
-We can do better still by switching to alternative algorithms that are better suited to parallelization.
-
-These algorithms are discussed in a {doc}`separate lecture <opt_savings_2>`.
-
 
 ## Exercises
 
-```{exercise-start}
+```{exercise}
 :label: ifp_ex1
-```
 
 In this exercise, we explore an alternative approach to implementing value function iteration using `jax.vmap`.
 
@@ -367,8 +362,6 @@ Specifically:
 4. Implement `value_iteration_vmap` using `jax.lax.while_loop`.
 5. Test that your implementation produces the same results as the direct vectorization approach.
 6. Compare the execution times of both approaches.
-
-```{exercise-end}
 ```
 
 ```{solution-start} ifp_ex1
