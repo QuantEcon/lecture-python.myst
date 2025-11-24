@@ -70,7 +70,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3d32f4ec5c55bbd96dbde5c8507c26db016c3d6a" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=10af625e9e6eb695015491be7f888e42a03bc430" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +95,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=14c25eb8210b9697743fa54cadcbbf6b0ef0e5bb"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -224,7 +224,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 08, 2025
+                            Last changed: Nov 23, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -232,6 +232,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/cake_eating_egm_jax.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/ed8e89aae" class="changelog-hash">ed8e89aae</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">9 hours ago</span>
+                                <span class="changelog-message">Unify K operator signature in cake_eating_egm_jax with cake_eating_egm (#732)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -327,7 +336,7 @@
     <span class="n">β</span><span class="p">:</span> <span class="nb">float</span>              <span class="c1"># discount factor</span>
     <span class="n">μ</span><span class="p">:</span> <span class="nb">float</span>              <span class="c1"># shock location parameter</span>
     <span class="n">s</span><span class="p">:</span> <span class="nb">float</span>              <span class="c1"># shock scale parameter</span>
-    <span class="n">grid</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>     <span class="c1"># state grid</span>
+    <span class="n">s_grid</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>   <span class="c1"># exogenous savings grid</span>
     <span class="n">shocks</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>   <span class="c1"># shock draws</span>
     <span class="n">α</span><span class="p">:</span> <span class="nb">float</span>              <span class="c1"># production function parameter</span>
 
@@ -343,14 +352,14 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates an instance of the cake eating model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Set up grid</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
+    <span class="c1"># Set up exogenous savings grid</span>
+    <span class="n">s_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
 
     <span class="c1"># Store shocks (with a seed, so results are reproducible)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">shocks</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">shock_size</span><span class="p">,)))</span>
 
-    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="o">=</span><span class="n">μ</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">shocks</span><span class="o">=</span><span class="n">shocks</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="o">=</span><span class="n">μ</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">s_grid</span><span class="o">=</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">shocks</span><span class="o">=</span><span class="n">shocks</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -359,7 +368,11 @@
 <p>The key JAX feature here is <code class="docutils literal notranslate"><span class="pre">vmap</span></code>, which vectorizes the computation over the grid points.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span><span class="n">σ_array</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span>
+        <span class="n">c_in</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># Consumption values on the endogenous grid</span>
+        <span class="n">x_in</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># Current endogenous grid</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span>        <span class="c1"># Model specification</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Coleman-Reffett operator using EGM</span>
 
@@ -367,24 +380,24 @@
 
     <span class="c1"># Simplify names</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">α</span>
-    <span class="n">grid</span><span class="p">,</span> <span class="n">shocks</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">shocks</span>
-
-    <span class="c1"># Determine endogenous grid</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">grid</span> <span class="o">+</span> <span class="n">σ_array</span>  <span class="c1"># x_i = k_i + c_i</span>
+    <span class="n">s_grid</span><span class="p">,</span> <span class="n">shocks</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">shocks</span>
 
     <span class="c1"># Linear interpolation of policy using endogenous grid</span>
-    <span class="n">σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x_val</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">σ_array</span><span class="p">)</span>
+    <span class="n">σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x_val</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">x_in</span><span class="p">,</span> <span class="n">c_in</span><span class="p">)</span>
 
     <span class="c1"># Define function to compute consumption at a single grid point</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">compute_c</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
-        <span class="n">vals</span> <span class="o">=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">σ</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span><span class="p">))</span> <span class="o">*</span> <span class="n">f_prime</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_c</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">σ</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span><span class="p">))</span> <span class="o">*</span> <span class="n">f_prime</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span>
         <span class="k">return</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">))</span>
 
     <span class="c1"># Vectorize over grid using vmap</span>
     <span class="n">compute_c_vectorized</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_c</span><span class="p">)</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">compute_c_vectorized</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+    <span class="n">c_out</span> <span class="o">=</span> <span class="n">compute_c_vectorized</span><span class="p">(</span><span class="n">s_grid</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">c</span>
+    <span class="c1"># Determine corresponding endogenous grid</span>
+    <span class="n">x_out</span> <span class="o">=</span> <span class="n">s_grid</span> <span class="o">+</span> <span class="n">c_out</span>  <span class="c1"># x_i = s_i + c_i</span>
+
+    <span class="k">return</span> <span class="n">c_out</span><span class="p">,</span> <span class="n">x_out</span>
 </pre></div>
 </div>
 </div>
@@ -406,10 +419,14 @@
 <p>Now we create a model instance.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α</span> <span class="o">=</span> <span class="mf">0.4</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">)</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">grid</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">()</span>
+<span class="n">s_grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">s_grid</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1124 04:06:16.987378   14474 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1124 04:06:16.999435   14251 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -419,30 +436,31 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">solve_model_time_iter</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
-                          <span class="n">σ_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                          <span class="n">c_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                          <span class="n">x_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
                           <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
-                          <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+                          <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solve the model using time iteration with EGM.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">condition</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">body</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
-        <span class="n">σ_new</span> <span class="o">=</span> <span class="n">K</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">σ_new</span> <span class="o">-</span> <span class="n">σ</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">σ_new</span><span class="p">,</span> <span class="n">error</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">c_new</span><span class="p">,</span> <span class="n">x_new</span> <span class="o">=</span> <span class="n">K</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">c_new</span> <span class="o">-</span> <span class="n">c</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c_new</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="n">error</span>
 
     <span class="c1"># Initialize loop state</span>
-    <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">c_init</span><span class="p">,</span> <span class="n">x_init</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Run the loop</span>
-    <span class="n">i</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">σ</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span>
 </pre></div>
 </div>
 </div>
@@ -450,8 +468,9 @@
 <p>We solve the model starting from an initial guess.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">σ_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
-<span class="n">σ</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">s_grid</span><span class="p">)</span>
+<span class="n">x_init</span> <span class="o">=</span> <span class="n">s_grid</span> <span class="o">+</span> <span class="n">c_init</span>
+<span class="n">c</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">c_init</span><span class="p">,</span> <span class="n">x_init</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -459,11 +478,9 @@
 <p>Let’s plot the resulting policy against the analytical solution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">grid</span> <span class="o">+</span> <span class="n">σ</span>  <span class="c1"># x_i = k_i + c_i</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;approximate policy function&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">),</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span>
@@ -481,7 +498,7 @@
 <p>The fit is very good.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_dev</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">σ</span> <span class="o">-</span> <span class="n">σ_star</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">)))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_dev</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="n">σ_star</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum absolute deviation: </span><span class="si">{</span><span class="n">max_dev</span><span class="si">:</span><span class="s2">.7</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -496,12 +513,13 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">qe</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
-    <span class="n">σ</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">c_init</span><span class="p">,</span> <span class="n">x_init</span><span class="p">)</span>
+    <span class="n">jax</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00283408 seconds elapsed
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00706530 seconds elapsed
 </pre></div>
 </div>
 </div>
@@ -553,30 +571,35 @@
 <p>Now we create a version of the Coleman-Reffett operator that takes <span class="math notranslate nohighlight">\(\gamma\)</span> as a parameter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">K_crra</span><span class="p">(</span><span class="n">σ_array</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span> <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">K_crra</span><span class="p">(</span>
+        <span class="n">c_in</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># Consumption values on the endogenous grid</span>
+        <span class="n">x_in</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># Current endogenous grid</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>       <span class="c1"># Model specification</span>
+        <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span>            <span class="c1"># CRRA parameter</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Coleman-Reffett operator using EGM with CRRA utility</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Simplify names</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">α</span>
-    <span class="n">grid</span><span class="p">,</span> <span class="n">shocks</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">shocks</span>
-
-    <span class="c1"># Determine endogenous grid</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">grid</span> <span class="o">+</span> <span class="n">σ_array</span>
+    <span class="n">s_grid</span><span class="p">,</span> <span class="n">shocks</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">shocks</span>
 
     <span class="c1"># Linear interpolation of policy using endogenous grid</span>
-    <span class="n">σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x_val</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">σ_array</span><span class="p">)</span>
+    <span class="n">σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x_val</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">x_in</span><span class="p">,</span> <span class="n">c_in</span><span class="p">)</span>
 
     <span class="c1"># Define function to compute consumption at a single grid point</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">compute_c</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
-        <span class="n">vals</span> <span class="o">=</span> <span class="n">u_prime_crra</span><span class="p">(</span><span class="n">σ</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span><span class="p">),</span> <span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">f_prime</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_c</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">u_prime_crra</span><span class="p">(</span><span class="n">σ</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span><span class="p">),</span> <span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">f_prime</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span>
         <span class="k">return</span> <span class="n">u_prime_inv_crra</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">),</span> <span class="n">γ</span><span class="p">)</span>
 
     <span class="c1"># Vectorize over grid using vmap</span>
     <span class="n">compute_c_vectorized</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_c</span><span class="p">)</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">compute_c_vectorized</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+    <span class="n">c_out</span> <span class="o">=</span> <span class="n">compute_c_vectorized</span><span class="p">(</span><span class="n">s_grid</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">c</span>
+    <span class="c1"># Determine corresponding endogenous grid</span>
+    <span class="n">x_out</span> <span class="o">=</span> <span class="n">s_grid</span> <span class="o">+</span> <span class="n">c_out</span>  <span class="c1"># x_i = s_i + c_i</span>
+
+    <span class="k">return</span> <span class="n">c_out</span><span class="p">,</span> <span class="n">x_out</span>
 </pre></div>
 </div>
 </div>
@@ -586,31 +609,32 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">solve_model_crra</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
-                     <span class="n">σ_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                     <span class="n">c_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                     <span class="n">x_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
                      <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
                      <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
-                     <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+                     <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solve the model using time iteration with EGM and CRRA utility.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">condition</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">body</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
-        <span class="n">σ_new</span> <span class="o">=</span> <span class="n">K_crra</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">σ_new</span> <span class="o">-</span> <span class="n">σ</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">σ_new</span><span class="p">,</span> <span class="n">error</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">c_new</span><span class="p">,</span> <span class="n">x_new</span> <span class="o">=</span> <span class="n">K_crra</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">c_new</span> <span class="o">-</span> <span class="n">c</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c_new</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="n">error</span>
 
     <span class="c1"># Initialize loop state</span>
-    <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">c_init</span><span class="p">,</span> <span class="n">x_init</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Run the loop</span>
-    <span class="n">i</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">σ</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span>
 </pre></div>
 </div>
 </div>
@@ -620,13 +644,17 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">γ_values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">]</span>
 <span class="n">policies</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">endogenous_grids</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="n">model_crra</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">)</span>
+<span class="n">model_crra</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">γ</span> <span class="ow">in</span> <span class="n">γ_values</span><span class="p">:</span>
-    <span class="n">σ_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">model_crra</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
-    <span class="n">σ_gamma</span> <span class="o">=</span> <span class="n">solve_model_crra</span><span class="p">(</span><span class="n">model_crra</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-    <span class="n">policies</span><span class="p">[</span><span class="n">γ</span><span class="p">]</span> <span class="o">=</span> <span class="n">σ_gamma</span>
+    <span class="n">c_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">model_crra</span><span class="o">.</span><span class="n">s_grid</span><span class="p">)</span>
+    <span class="n">x_init</span> <span class="o">=</span> <span class="n">model_crra</span><span class="o">.</span><span class="n">s_grid</span> <span class="o">+</span> <span class="n">c_init</span>
+    <span class="n">c_gamma</span><span class="p">,</span> <span class="n">x_gamma</span> <span class="o">=</span> <span class="n">solve_model_crra</span><span class="p">(</span><span class="n">model_crra</span><span class="p">,</span> <span class="n">c_init</span><span class="p">,</span> <span class="n">x_init</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
+    <span class="n">jax</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">(</span><span class="n">c_gamma</span><span class="p">)</span>
+    <span class="n">policies</span><span class="p">[</span><span class="n">γ</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_gamma</span>
+    <span class="n">endogenous_grids</span><span class="p">[</span><span class="n">γ</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_gamma</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Solved for γ = </span><span class="si">{</span><span class="n">γ</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -646,7 +674,7 @@ Solved for γ = 1.2
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">γ</span> <span class="ow">in</span> <span class="n">γ_values</span><span class="p">:</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">model_crra</span><span class="o">.</span><span class="n">grid</span> <span class="o">+</span> <span class="n">policies</span><span class="p">[</span><span class="n">γ</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">endogenous_grids</span><span class="p">[</span><span class="n">γ</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">γ</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">policies</span><span class="p">[</span><span class="n">γ</span><span class="p">],</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                 <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;γ = </span><span class="si">{</span><span class="n">γ</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> (log utility)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
@@ -666,7 +694,7 @@ Solved for γ = 1.2
 </div>
 </div>
 <p>Note that the plots for <span class="math notranslate nohighlight">\(\gamma &gt; 1\)</span> do not cover the entire x-axis range shown.</p>
-<p>This is because the endogenous grid <span class="math notranslate nohighlight">\(x = k + \sigma(k)\)</span> depends on the consumption policy, which varies with <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
+<p>This is because the endogenous grid <span class="math notranslate nohighlight">\(x = s + \sigma(s)\)</span> depends on the consumption policy, which varies with <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
 <p>Let’s check the maximum deviation between the log utility case (<span class="math notranslate nohighlight">\(\gamma = 1.0\)</span>) and values approaching from above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
