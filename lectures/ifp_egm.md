@@ -886,8 +886,9 @@ more realistic features to the model.
 
 
 
-```{exercise}
+```{exercise-start}
 :label: ifp_egm_ex3
+```
 
 Following on from exercises 1 and 2, let's look at how savings and aggregate
 asset holdings vary with the interest rate
@@ -895,6 +896,7 @@ asset holdings vary with the interest rate
 ```{note}
 {cite}`Ljungqvist2012` section 18.6 can be consulted for more background on the topic treated in this exercise.
 ```
+
 For a given parameterization of the model, the mean of the stationary
 distribution of assets can be interpreted as aggregate capital in an economy
 with a unit mass of *ex-ante* identical households facing idiosyncratic
@@ -914,6 +916,9 @@ Use
 M = 12
 r_vals = np.linspace(0, 0.015, M)
 ```
+```
+
+```{exercise-end}
 ```
 
 ```{solution-start} ifp_egm_ex3
