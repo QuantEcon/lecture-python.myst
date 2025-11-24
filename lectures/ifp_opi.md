@@ -222,6 +222,7 @@ def iterate_policy_operator(σ, v, m, model):
 For comparison, here's VFI from {doc}`ifp_discrete`:
 
 ```{code-cell} ipython3
+@jax.jit
 def value_function_iteration(model, tol=1e-5, max_iter=10_000):
     """
     Implements VFI using successive approximation.
@@ -252,6 +253,7 @@ The algorithm alternates between
 2. Computing a new greedy policy based on the updated value function
 
 ```{code-cell} ipython3
+@jax.jit
 def optimistic_policy_iteration(model, m=10, tol=1e-5, max_iter=10_000):
     """
     Implements optimistic policy iteration with step size m.
