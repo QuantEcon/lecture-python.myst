@@ -356,7 +356,7 @@ print(f"Speedup factor: {vfi_time / opi_time:.2f}")
 Let's try different values of m to see how it affects performance:
 
 ```{code-cell} ipython3
-m_vals = [5, 10, 25, 50, 100]
+m_vals = [1, 5, 10, 25, 50, 100, 200, 400]
 opi_times = []
 
 for m in m_vals:
