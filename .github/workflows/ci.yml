@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v5
         if: failure()
         with:
-          name: execution-reports
+          name: execution-reports-latex
           path: _build/latex/reports
       # Final Build of HTML
       - name: Build HTML
@@ -84,7 +84,7 @@ jobs:
         uses: actions/upload-artifact@v5
         if: failure()
         with:
-          name: execution-reports
+          name: execution-reports-html
           path: _build/html/reports
       - name: Install Node.js and Netlify CLI
         shell: bash -l {0}
