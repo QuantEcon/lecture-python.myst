@@ -19,11 +19,29 @@ kernelspec:
 </div>
 ```
 
-# {index}`The Income Fluctuation Problem I: Basic Model <single: The Income Fluctuation Problem I: Basic Model>`
+# {index}`IFP II: The Endogenous Grid Method <single: IFP II: The Endogenous Grid Method>`
 
 ```{contents} Contents
 :depth: 2
 ```
+
+
+## Overview
+
+In this lecture we continue examining a version of the IFP from
+{doc}`ifp_discrete`.
+
+We will make two changes.
+
+First, we will change the timing to one that we find more flexible and convenient.
+
+Second, to solve the model, we will use the endogenous grid method (EGM). 
+
+We use the EGM because we know it to be fast and accurate from {doc}`os_egm_jax`.
+
+Also, the discretization we used in {doc}`ifp_discrete` is harder here, due to
+the change in timing.
+
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
@@ -33,28 +51,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-## Overview
-
-In this lecture, we study an optimal savings problem for an infinitely lived consumer---the "common ancestor" described in {cite}`Ljungqvist2012`, section 1.3.
-
-This savings problem is often called an **income fluctuation problem** or a **household problem**.
-
-It is an essential sub-problem for many representative macroeconomic models
-
-* {cite}`Aiyagari1994`
-* {cite}`Huggett1993`
-* etc.
-
-It is related to the decision problem in {doc}`os_stochastic` but differs in significant ways.
-
-For example, 
-
-1. The choice problem for the agent includes an additive income term that leads to an occasionally binding constraint.
-2. Shocks affecting the budget constraint are correlated, forcing us to track an extra state variable.
-
-To solve the model we will use the endogenous grid method, which we found to be fast and accurate in {doc}`os_egm_jax`.
-
-We'll need the following imports:
+We'll also need the following imports:
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
