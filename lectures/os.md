@@ -264,7 +264,7 @@ Now that we have the value function, it is straightforward to calculate the opti
 We should choose consumption to maximize the right hand side of the Bellman equation {eq}`bellman-cep`.
 
 $$
-    c^* = \argmax_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
+    c^* = \arg \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
 $$
 
 We can think of this optimal choice as a *function* of the state $x$, in which case we call it the **optimal policy**.

@@ -16,17 +16,19 @@ kernelspec:
 
 ## Overview
 
-In {doc}`ifp_discrete` we studied the income fluctuation problem and solved it using value function iteration (VFI).
+In {doc}`ifp_discrete` we studied the income fluctuation problem and solved it
+using value function iteration (VFI).
 
-In this lecture we'll solve the same problem using **optimistic policy iteration** (OPI), which is a faster alternative to VFI.
+In this lecture we'll solve the same problem using **optimistic policy
+iteration** (OPI), which is very general, typically faster than VFI and only
+slightly more complex.
 
 OPI combines elements of both value function iteration and policy iteration.
 
-The algorithm can be found in [this book](https://dp.quantecon.org), where a PDF is freely available.
+A detailed discussion of the algorithm can be found in [DP1](https://dp.quantecon.org).
 
-We will show that OPI provides significant speed improvements over standard VFI for the income fluctuation problem.
-
-For details on the income fluctuation problem, see {doc}`ifp_discrete`.
+Here our aim is to implement OPI and test whether or not it yields significant
+speed improvements over standard VFI for the income fluctuation problem.
 
 In addition to Anaconda, this lecture will need the following libraries:
 
@@ -48,11 +50,6 @@ from time import time
 ```
 
 
-We'll use 64 bit floats to gain extra precision.
-
-```{code-cell} ipython3
-jax.config.update("jax_enable_x64", True)
-```
 
 ## Model and Primitives
 
@@ -86,15 +83,18 @@ class Model(NamedTuple):
     Q: jnp.ndarray        # Markov matrix for income
 
 
-def create_consumption_model(R=1.01,                    # Gross interest rate
-                             β=0.98,                    # Discount factor
-                             γ=2,                       # CRRA parameter
-                             a_min=0.01,                # Min assets
-                             a_max=5.0,                 # Max assets
-                             a_size=150,                # Grid size
-                             ρ=0.9, ν=0.1, y_size=100): # Income parameters
+def create_consumption_model(
+        R=1.01,                    # Gross interest rate
+        β=0.98,                    # Discount factor
+        γ=2,                       # CRRA parameter
+        a_min=0.01,                # Min assets
+        a_max=5.0,                 # Max assets
+        a_size=150,                # Grid size
+        ρ=0.9, ν=0.1, y_size=100   # Income parameters
+    ):
     """
     Creates an instance of the consumption-savings model.
+
     """
     a_grid = jnp.linspace(a_min, a_max, a_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
@@ -104,9 +104,9 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
 
 ## Operators and Policies
 
-We need to define several operators for implementing OPI.
+We repeat some functions from {doc}`ifp_discrete`.
 
-First, the right hand side of the Bellman equation:
+Here is the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
 @jax.jit
@@ -139,7 +139,7 @@ def B(v, model):
     return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
 ```
 
-The Bellman operator:
+Here's the Bellman operator:
 
 ```{code-cell} ipython3
 @jax.jit
@@ -148,7 +148,7 @@ def T(v, model):
     return jnp.max(B(v, model), axis=2)
 ```
 
-The greedy policy:
+Here's the function that computes a $v$-greedy policy:
 
 ```{code-cell} ipython3
 @jax.jit
@@ -157,7 +157,8 @@ def get_greedy(v, model):
     return jnp.argmax(B(v, model), axis=2)
 ```
 
-Now we define the policy operator $T_\sigma$, which is the Bellman operator with policy $\sigma$ fixed.
+Now we define the policy operator $T_\sigma$, which is the Bellman operator with
+policy $\sigma$ fixed.
 
 For a given policy $\sigma$, the policy operator is defined by
 
@@ -381,22 +382,26 @@ ax.set_title('OPI execution time vs step size m')
 plt.show()
 ```
 
-The results show interesting behavior across different values of m:
+Here's a summary of the results
 
-* When m=1, OPI is actually slower than VFI, even though they should be mathematically equivalent. This is because the OPI implementation has overhead from computing the greedy policy and calling the policy operator, making it less efficient than the direct VFI approach for m=1.
+* When $m=1$, OPI is slight slower than VFI, even though they should be mathematically equivalent, due to small inefficiencies associated with extra function calls.
 
-* The optimal performance occurs around m=25-50, where OPI achieves roughly 3x speedup over VFI.
+* OPI outperforms VFI for a very large range of $m$ values.
 
-* For very large m (200, 400), performance degrades as we spend too much time iterating the policy operator before updating the policy.
+* For very large $m$, OPI performance begins to degrade as we spend too much
+  time iterating the policy operator.
 
-This demonstrates that there's a "sweet spot" for the OPI step size m that balances between policy updates and value function iterations.
 
 ## Exercises
 
 ```{exercise}
 :label: ifp_opi_ex1
 
-Experiment with different parameter values for the income process ($\rho$ and $\nu$) and see how they affect the relative performance of VFI vs OPI.
+The speed gains achieved by OPI are quite robust to parameter changes.
+
+Confirm this by experimenting with different parameter values for the income process ($\rho$ and $\nu$).
+
+Measure how they affect the relative performance of VFI vs OPI.
 
 Try:
 * $\rho \in \{0.8, 0.9, 0.95\}$

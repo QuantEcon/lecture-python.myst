@@ -100,10 +100,13 @@ Here
 
 * $c_t$ is consumption and $c_t \geq 0$,
 * $a_t$ is assets and $a_t \geq 0$,
-* $R > 0$ is a gross rate of return, and
-* $(y_t)$ is labor income.
+* $R = 1 + r$ is a gross rate of return, and
+* $(y_t)_{t \geq 0}$ is labor income, taking values in some finite set $\mathsf Y$.
 
 We assume below that labor income dynamics follow a discretized AR(1) process.
+
+We set $\mathsf S := \mathbb{R}_+ \times \mathsf Y$, which represents the state
+space.
 
 The **value function** $V \colon \mathsf S \to \mathbb{R}$ is defined by
 
@@ -115,6 +118,9 @@ V(a, y) := \max \, \mathbb{E}
 \sum_{t=0}^{\infty} \beta^t u(c_t)
 \right\}
 ```
+
+where the maximization is over all feasible consumption sequences given $(a_0,
+y_0) = (a, y)$.
 
 The Bellman equation is
 
@@ -157,15 +163,18 @@ class Model(NamedTuple):
     Q: jnp.ndarray        # Markov matrix for income
 
 
-def create_consumption_model(R=1.01,                    # Gross interest rate
-                             β=0.98,                    # Discount factor
-                             γ=2,                       # CRRA parameter
-                             a_min=0.01,                # Min assets
-                             a_max=5.0,                 # Max assets
-                             a_size=150,                # Grid size
-                             ρ=0.9, ν=0.1, y_size=100): # Income parameters
+def create_consumption_model(
+        R=1.01,                    # Gross interest rate
+        β=0.98,                    # Discount factor
+        γ=2,                       # CRRA parameter
+        a_min=0.01,                # Min assets
+        a_max=5.0,                 # Max assets
+        a_size=150,                # Grid size
+        ρ=0.9, ν=0.1, y_size=100   # Income parameters
+    ):
     """
     Creates an instance of the consumption-savings model.
+
     """
     a_grid = jnp.linspace(a_min, a_max, a_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
@@ -174,6 +183,10 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
 ```
 
 Now we define the right hand side of the Bellman equation.
+
+We'll use a vectorized coding style reminiscent of Matlab and NumPy (avoiding all loops).
+
+Your are invited to explore an alternative style based around `jax.vmap` in the Exercises.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -233,6 +246,7 @@ def get_greedy(v, model):
     return jnp.argmax(B(v, model), axis=2)
 ```
 
+
 ### Value function iteration
 
 Now we define a solver that implements VFI.
@@ -260,6 +274,7 @@ def value_function_iteration_python(model, tol=1e-5, max_iter=10_000):
 Next we write a version that uses `jax.lax.while_loop`.
 
 ```{code-cell} ipython3
+@jax.jit
 def value_function_iteration(model, tol=1e-5, max_iter=10_000):
     """
     Implements VFI using successive approximation.
@@ -341,11 +356,13 @@ print(f"Relative speed = {python_time / jax_without_compile:.2f}")
 In this exercise, we explore an alternative approach to implementing value function iteration using `jax.vmap`.
 
 For this simple optimal savings problem, direct vectorization is relatively easy.
+
 In particular, it's straightforward to express the right hand side of the
 Bellman equation as an array that stores evaluations of the function at every
 state and control.
 
 However, for more complex models, direct vectorization can be much harder.
+
 For this reason, it helps to have another approach to fast JAX implementations
 up our sleeves.
 
