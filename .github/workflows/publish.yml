@@ -50,6 +50,12 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
+      - name: Upload Execution Reports (LaTeX)
+        uses: actions/upload-artifact@v5
+        if: failure()
+        with:
+          name: execution-reports-latex
+          path: _build/latex/reports
       - name: Copy LaTeX PDF for GH-PAGES
         shell: bash -l {0}
         run: |
@@ -60,6 +66,12 @@ jobs:
         run: |
           jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
           zip -r download-notebooks.zip _build/jupyter
+      - name: Upload Execution Reports (Download Notebooks)
+        uses: actions/upload-artifact@v5
+        if: failure()
+        with:
+          name: execution-reports-notebooks
+          path: _build/jupyter/reports
       - uses: actions/upload-artifact@v5
         with:
           name: download-notebooks
@@ -74,6 +86,12 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
+      - name: Upload Execution Reports (HTML)
+        uses: actions/upload-artifact@v5
+        if: failure()
+        with:
+          name: execution-reports-html
+          path: _build/html/reports
       # Create HTML archive for release assets
       - name: Create HTML archive
         shell: bash -l {0}
