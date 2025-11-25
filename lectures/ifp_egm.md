@@ -399,8 +399,8 @@ linear interpolation of $(a^e_{ij}, c_{ij})$ over $i$ for each $j$.
 
 ```{code-cell} ipython3
 def K_numpy(
-        c_vals: np.ndarray,
-        ae_vals: np.ndarray,
+        c_vals: np.ndarray,   # Initial guess of σ on grid endogenous grid
+        ae_vals: np.ndarray,  # Initial endogenous grid
         ifp_numpy: IFPNumPy
     ) -> np.ndarray:
     """
@@ -441,7 +441,8 @@ To solve the model we use a simple while loop.
 ```{code-cell} ipython3
 def solve_model_numpy(
         ifp_numpy: IFPNumPy,
-        c_vals: np.ndarray,
+        ae_vals_init: np.ndarray,
+        c_vals_init: np.ndarray,
         tol: float = 1e-5,
         max_iter: int = 1_000
     ) -> np.ndarray:
@@ -450,7 +451,6 @@ def solve_model_numpy(
 
     """
     i = 0
-    ae_vals = c_vals  # Initial condition
     error = tol + 1
 
     while error > tol and i < max_iter:
@@ -467,8 +467,13 @@ Let's road test the EGM code.
 ```{code-cell} ipython3
 ifp_numpy = create_ifp()
 R, β, γ, Π, z_grid, s = ifp_numpy
-initial_c_vals = s[:, None] * np.ones(len(z_grid))
-c_vals, ae_vals = solve_model_numpy(ifp_numpy, initial_c_vals)
+# Initial conditions -- agent consumes everything
+ae_vals_init = s[:, None] * np.ones(len(z_grid))
+c_vals_init = ae_vals_init
+# Solve from these initial conditions
+c_vals, ae_vals = solve_model_numpy(
+    ifp_numpy, c_vals_init, ae_vals_init
+)
 ```
 
 Here's a plot of the optimal consumption policy for each $z$ state
@@ -601,10 +606,13 @@ Here's a jit-accelerated iterative routine to solve the model using this operato
 
 ```{code-cell} ipython3
 @jax.jit
-def solve_model(ifp: IFP,
-                c_vals: jnp.ndarray,
-                tol: float = 1e-5,
-                max_iter: int = 1000) -> jnp.ndarray:
+def solve_model(
+        ifp: IFP,
+        c_vals_init: jnp.ndarray,   # Initial guess of σ on grid endogenous grid
+        ae_vals_init: jnp.ndarray,  # Initial endogenous grid
+        tol: float = 1e-5,
+        max_iter: int = 1000
+    ) -> jnp.ndarray:
     """
     Solve the model using time iteration with EGM.
 
@@ -621,8 +629,8 @@ def solve_model(ifp: IFP,
         i += 1
         return new_c_vals, new_ae_vals, i, error
 
-    ae_vals = c_vals  
-    initial_state = (c_vals, ae_vals, 0, tol + 1)
+    i, error = 0, tol + 1
+    initial_state = (c_vals_init, ae_vals_init, i, error)
     final_loop_state = jax.lax.while_loop(condition, body, initial_state)
     c_vals, ae_vals, i, error = final_loop_state
 
@@ -637,8 +645,11 @@ Let's road test the EGM code.
 ```{code-cell} ipython3
 ifp = create_ifp()
 R, β, γ, Π, z_grid, s = ifp
-c_vals_init = s[:, None] * jnp.ones(len(z_grid))
-c_vals_jax, ae_vals_jax = solve_model(ifp, c_vals_init)
+# Set initial conditions where the agent consumes everything
+ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
+c_vals_init = ae_vals_init   
+# Solve starting from these initial conditions
+c_vals_jax, ae_vals_jax = solve_model(ifp, c_vals_init, ae_vals_init)
 ```
 
 To verify the correctness of our JAX implementation, let's compare it with the NumPy version we developed earlier.
@@ -735,8 +746,9 @@ Let's see if we match up:
 ```{code-cell} ipython3
 ifp_cake_eating = create_ifp(r=0.0, z_grid=(-jnp.inf, -jnp.inf))
 R, β, γ, Π, z_grid, s = ifp_cake_eating
-c_vals_init = s[:, None] * jnp.ones(len(z_grid))
-c_vals, ae_vals = solve_model(ifp_cake_eating, c_vals_init)
+ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
+c_vals_init = ae_vals_init   
+c_vals, ae_vals = solve_model(ifp_cake_eating, c_vals_init, ae_vals_init)
 
 fig, ax = plt.subplots()
 ax.plot(ae_vals[:, 0], c_vals[:, 0], label='numerical')
@@ -758,11 +770,6 @@ Our plan is to run a large number of households forward for $T$ periods and then
 histogram the cross-sectional distribution of assets.
 
 Set `num_households=50_000, T=500`.
-```
-
-```{solution-start} ifp_egm_ex2
-:class: dropdown
-```
 
 First we write a function to run a single household forward in time and record
 the final value of assets.
@@ -773,11 +780,11 @@ as representing an optimal policy associated with a given model `ifp`
 ```{code-cell} ipython3
 @jax.jit
 def simulate_household(
-        key, a_0, z_idx_0, c_vals, ae_vals, ifp, num_households, T
+        key, a_0, z_idx_0, c_vals, ae_vals, ifp, T
     ):
     """
-    Simulates num_households households for T periods to approximate
-    the stationary distribution of assets.
+    Simulates a single household for T periods to approximate the stationary
+    distribution of assets.
 
     - key is the state of the random number generator
     - ifp is an instance of IFP
@@ -793,13 +800,12 @@ def simulate_household(
     # Simulate forward T periods
     def update(state, t):
         a, z_idx = state
-        c = σ(a, z_idx)
         # Draw next shock z' from Π[z, z']
         current_key = jax.random.fold_in(t, key)
         z_next_idx = jax.random.choice(current_key, n_z, p=Π[z_idx])
         z_next = z_grid[z_next_idx]
         # Update assets: a' = R * (a - c) + Y'
-        a_next = R * (a - c) + y(z_next)
+        a_next = R * (a - σ(a, z_idx)) + y(z_next)
         # Return updated state
         return a_next, z_next_idx
 
@@ -819,12 +825,10 @@ def compute_asset_stationary(
     Simulates num_households households for T periods to approximate
     the stationary distribution of assets.
 
-    By ergodicity, simulating many households for moderate time is equivalent to
-    simulating one household for very long time, but parallelizes better.
+    Returns the final cross-section of asset holdings.
 
-    ifp is an instance of IFP
-    c_vals, ae_vals are the consumption policy and endogenous grid from
-    solve_model
+    - ifp is an instance of IFP
+    - c_vals, ae_vals are the optimal consumption policy and endogenous grid.
 
     """
     R, β, γ, Π, z_grid, s = ifp
@@ -856,8 +860,9 @@ Now we call the function, generate the asset distribution and histogram it:
 ```{code-cell} ipython3
 ifp = create_ifp()
 R, β, γ, Π, z_grid, s = ifp
-c_vals_init = s[:, None] * jnp.ones(len(z_grid))
-c_vals, ae_vals = solve_model(ifp, c_vals_init)
+ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
+c_vals_init = ae_vals_init   
+c_vals, ae_vals = solve_model(ifp, c_vals_init, ae_vals_init)
 assets = compute_asset_stationary(ifp, c_vals, ae_vals)
 
 fig, ax = plt.subplots()
@@ -906,9 +911,14 @@ fig, ax = plt.subplots()
 for r_val in r_vals:
     ifp = create_ifp(r=r_val)
     R, β, γ, Π, z_grid, s = ifp
-    c_vals_init = s[:, None] * jnp.ones(len(z_grid))
+    ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
+    c_vals_init = ae_vals_init   
     c_vals, ae_vals = solve_model(ifp, c_vals_init)
+    # Plot policy
     ax.plot(ae_vals[:, 0], c_vals[:, 0], label=f'$r = {r_val:.3f}$')
+    # Start next round with last solution
+    c_vals_init = c_vals   
+    ae_vals_init = ae_vals   
 
 ax.set(xlabel='asset level', ylabel='consumption (low income)')
 ax.legend()
@@ -921,7 +931,7 @@ plt.show()
 
 
 ```{exercise-start}
-:label: ifp_egm_ex3
+:label: ifp_egm_ex2
 ```
 
 Following on from Exercises 1, let's look at how savings and aggregate
@@ -953,7 +963,7 @@ r_vals = np.linspace(0, 0.015, M)
 ```
 
 
-```{solution-start} ifp_egm_ex3
+```{solution-start} ifp_egm_ex2
 :class: dropdown
 ```
 
@@ -967,12 +977,16 @@ for r in r_vals:
     print(f'Solving model at r = {r}')
     ifp = create_ifp(r=r)
     R, β, γ, Π, z_grid, s = ifp
-    c_vals_init = s[:, None] * jnp.ones(len(z_grid))
-    c_vals, ae_vals = solve_model(ifp, c_vals_init)
+    ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
+    c_vals_init = ae_vals_init   
+    c_vals, ae_vals = solve_model(ifp, c_vals_init, ae_vals_init)
     assets = compute_asset_stationary(ifp, c_vals, ae_vals, num_households=10_000, T=500)
     mean = np.mean(assets)
     asset_mean.append(mean)
     print(f'  Mean assets: {mean:.4f}')
+    # Start next round with last solution
+    c_vals_init = c_vals   
+    ae_vals_init = ae_vals   
 ax.plot(r_vals, asset_mean)
 
 ax.set(xlabel='interest rate', ylabel='capital')
