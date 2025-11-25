@@ -90,7 +90,7 @@ def create_consumption_model(
         a_min=0.01,                # Min assets
         a_max=10.0,                # Max assets
         a_size=150,                # Grid size
-        ρ=0.9, ν=0.1, y_size=12    # Income parameters
+        ρ=0.9, ν=0.1, y_size=100   # Income parameters
     ):
     """
     Creates an instance of the consumption-savings model.
@@ -324,9 +324,9 @@ print(f"VFI completed in {vfi_time:.2f} seconds.")
 Now let's time OPI with different values of m:
 
 ```{code-cell} ipython3
-print("Starting OPI with m=10.")
+print("Starting OPI with m=50.")
 start = time()
-v_star_opi, σ_star_opi = optimistic_policy_iteration(model, m=10)
+v_star_opi, σ_star_opi = optimistic_policy_iteration(model, m=50)
 v_star_opi.block_until_ready()
 opi_time_with_compile = time() - start
 print(f"OPI completed in {opi_time_with_compile:.2f} seconds.")
@@ -336,7 +336,7 @@ Run it again:
 
 ```{code-cell} ipython3
 start = time()
-v_star_opi, σ_star_opi = optimistic_policy_iteration(model, m=10)
+v_star_opi, σ_star_opi = optimistic_policy_iteration(model, m=50)
 v_star_opi.block_until_ready()
 opi_time = time() - start
 print(f"OPI completed in {opi_time:.2f} seconds.")

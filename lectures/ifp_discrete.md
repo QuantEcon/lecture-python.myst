@@ -170,7 +170,7 @@ def create_consumption_model(
         a_min=0.01,                # Min assets
         a_max=10.0,                # Max assets
         a_size=150,                # Grid size
-        ρ=0.9, ν=0.1, y_size=12    # Income parameters
+        ρ=0.9, ν=0.1, y_size=100   # Income parameters
     ):
     """
     Creates an instance of the consumption-savings model.
