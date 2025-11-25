@@ -159,17 +159,16 @@ The `maximize` function below is a small helper function that converts a
 SciPy minimization routine into a maximization routine.
 
 ```{code-cell} python3
-def maximize(g, upper_bound, args):
+def maximize(g, upper_bound):
     """
     Maximize the function g over the interval [0, upper_bound].
 
     We use the fact that the maximizer of g on any interval is
-    also the minimizer of -g.  The tuple args collects any extra
-    arguments to g.
+    also the minimizer of -g.
 
     """
 
-    objective = lambda x: -g(x, *args)
+    objective = lambda x: -g(x)
     bounds = (0, upper_bound)
     result = minimize_scalar(objective, bounds=bounds, method='bounded')
     maximizer, maximum = result.x, -result.fun

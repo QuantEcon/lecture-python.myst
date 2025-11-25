@@ -450,6 +450,7 @@ def solve_model_numpy(
     Solve the model using time iteration with EGM.
 
     """
+    c_vals, ae_vals = c_vals_init, ae_vals_init
     i = 0
     error = tol + 1
 
@@ -798,11 +799,11 @@ def simulate_household(
     σ = lambda a, z_idx: jnp.interp(a, ae_vals[:, z_idx], c_vals[:, z_idx])
 
     # Simulate forward T periods
-    def update(state, t):
+    def update(t, state):
         a, z_idx = state
         # Draw next shock z' from Π[z, z']
-        current_key = jax.random.fold_in(t, key)
-        z_next_idx = jax.random.choice(current_key, n_z, p=Π[z_idx])
+        current_key = jax.random.fold_in(key, t)
+        z_next_idx = jax.random.choice(current_key, n_z, p=Π[z_idx]).astype(jnp.int32)
         z_next = z_grid[z_next_idx]
         # Update assets: a' = R * (a - c) + Y'
         a_next = R * (a - σ(a, z_idx)) + y(z_next)
@@ -848,9 +849,9 @@ def compute_asset_stationary(
     keys = jax.random.split(key, num_households)
     # Vectorize simulate_household in (key, a_0, z_idx_0)
     sim_all_households = jax.vmap(
-        simulate_household, axes=(0, 0, 0, None, None, None, None, None)
+        simulate_household, in_axes=(0, 0, 0, None, None, None, None)
     )
-    assets = sim_all_households(keys, a_0_vector, z_idx_0_vector)
+    assets = sim_all_households(keys, a_0_vector, z_idx_0_vector, c_vals, ae_vals, ifp, T)
 
     return np.array(assets)
 ```
@@ -860,10 +861,10 @@ Now we call the function, generate the asset distribution and histogram it:
 ```{code-cell} ipython3
 ifp = create_ifp()
 R, β, γ, Π, z_grid, s = ifp
-ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
-c_vals_init = ae_vals_init   
+ae_vals_init = s[:, None] * jnp.ones(len(z_grid))
+c_vals_init = ae_vals_init
 c_vals, ae_vals = solve_model(ifp, c_vals_init, ae_vals_init)
-assets = compute_asset_stationary(ifp, c_vals, ae_vals)
+assets = compute_asset_stationary(c_vals, ae_vals, ifp)
 
 fig, ax = plt.subplots()
 ax.hist(assets, bins=20, alpha=0.5, density=True)
@@ -911,9 +912,9 @@ fig, ax = plt.subplots()
 for r_val in r_vals:
     ifp = create_ifp(r=r_val)
     R, β, γ, Π, z_grid, s = ifp
-    ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
-    c_vals_init = ae_vals_init   
-    c_vals, ae_vals = solve_model(ifp, c_vals_init)
+    ae_vals_init = s[:, None] * jnp.ones(len(z_grid))
+    c_vals_init = ae_vals_init
+    c_vals, ae_vals = solve_model(ifp, c_vals_init, ae_vals_init)
     # Plot policy
     ax.plot(ae_vals[:, 0], c_vals[:, 0], label=f'$r = {r_val:.3f}$')
     # Start next round with last solution
@@ -980,7 +981,7 @@ for r in r_vals:
     ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
     c_vals_init = ae_vals_init   
     c_vals, ae_vals = solve_model(ifp, c_vals_init, ae_vals_init)
-    assets = compute_asset_stationary(ifp, c_vals, ae_vals, num_households=10_000, T=500)
+    assets = compute_asset_stationary(c_vals, ae_vals, ifp, num_households=10_000, T=500)
     mean = np.mean(assets)
     asset_mean.append(mean)
     print(f'  Mean assets: {mean:.4f}')
