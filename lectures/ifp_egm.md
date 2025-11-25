@@ -129,18 +129,20 @@ Markov chain taking values in $\mathsf Z$ with Markov matrix $\Pi$.
 ```{note}
 The budget constraint for the household is more often written as $a_{t+1} + c_t \leq R a_t + Y_t$.
 
-This setup was developed for discretization. 
+This setup, which is pervasive in quantitative economics, was developed for discretization. 
 
-it means that the control is also the next period state $a_{t+1}$, which can then be restricted to a finite grid.
+It means that the control is also the next period state $a_{t+1}$, which can
+then be restricted to a finite grid.
 
-Computational economists are moving away from raw discretization, which allows
-the use of alternative timings, such as the one that we adopt.
+We try to avoid raw discretization when possible, since it suffers heavily from
+the curse of dimensionality.
 
-Our timing turns out to slightly easier in terms of minimizing state variables
-(because transient components of labor income are automatially integrated out --- see
-{doc}`this lecture <ifp_advanced>`) and studying dynamics.
+Moreover, removing discretization allows the use of alternative timings, such as the one that we adopt in this lecture.
 
-In practice, either timing can be used when including households in larger models.
+In fact the timing we use here is, in many cases, considerably more efficient than the traditional one.
+
+The reason is that transient shocks (in this lecture, the transient component of labor income) are 
+automatially integrated out (instead of becoming state variables).
 
 ```
 
