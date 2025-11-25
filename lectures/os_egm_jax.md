@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`Cake Eating VI: EGM with JAX <single: Cake Eating VI: EGM with JAX>`
+# {index}`Optimal Savings VI: EGM with JAX <single: Optimal Savings VI: EGM with JAX>`
 
 ```{contents} Contents
 :depth: 2
@@ -28,7 +28,7 @@ kernelspec:
 
 In this lecture, we'll implement the endogenous grid method (EGM) using JAX.
 
-This lecture builds on {doc}`cake_eating_egm`, which introduced EGM using NumPy.
+This lecture builds on {doc}`os_egm`, which introduced EGM using NumPy.
 
 By converting to JAX, we can leverage fast linear algebra, hardware accelerators, and JIT compilation for improved performance.
 
@@ -46,11 +46,11 @@ from typing import NamedTuple
 
 ## Implementation
 
-For details on the savings problem and the endogenous grid method (EGM), please see {doc}`cake_eating_egm`.
+For details on the savings problem and the endogenous grid method (EGM), please see {doc}`os_egm`.
 
 Here we focus on the JAX implementation of EGM.
 
-We use the same setting as in {doc}`cake_eating_egm`:
+We use the same setting as in {doc}`os_egm`:
 
 * $u(c) = \ln c$,
 * production is Cobb-Douglas, and
@@ -99,7 +99,7 @@ def create_model(β: float = 0.96,
                  seed: int = 1234,
                  α: float = 0.4) -> Model:
     """
-    Creates an instance of the cake eating model.
+    Creates an instance of the optimal savings model.
     """
     # Set up exogenous savings grid
     s_grid = jnp.linspace(1e-4, grid_max, grid_size)
@@ -250,7 +250,7 @@ This speed comes from:
 ```{exercise}
 :label: cake_egm_jax_ex1
 
-Solve the stochastic cake eating problem with CRRA utility
+Solve the optimal savings problem with CRRA utility
 
 $$
     u(c) = \frac{c^{1 - \gamma} - 1}{1 - \gamma}

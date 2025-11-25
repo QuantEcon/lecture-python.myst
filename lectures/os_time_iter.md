@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`Cake Eating IV: Time Iteration <single: Cake Eating IV: Time Iteration>`
+# {index}`Optimal Savings IV: Time Iteration <single: Optimal Savings IV: Time Iteration>`
 
 ```{contents} Contents
 :depth: 2
@@ -38,7 +38,7 @@ In this lecture, we introduce the core idea of **time iteration**: iterating on
 a guess of the optimal policy using the Euler equation.
 
 This approach differs from the value function iteration we used in
-{doc}`cake_eating_stochastic`, where we iterated on the value function itself.
+{doc}`os_stochastic`, where we iterated on the value function itself.
 
 Time iteration exploits the structure of the Euler equation to find the optimal
 policy directly, rather than computing the value function as an intermediate step.
@@ -49,7 +49,7 @@ policy function, we can often solve problems faster than with value function ite
 However, time iteration is not the most efficient Euler equation-based method
 available.
 
-In {doc}`cake_eating_egm`, we'll introduce the **endogenous
+In {doc}`os_egm`, we'll introduce the **endogenous
 grid method** (EGM), which provides an even more efficient way to solve the
 problem.
 
@@ -68,9 +68,9 @@ from typing import NamedTuple, Callable
 ## The Euler Equation
 
 Our first step is to derive the Euler equation, which is a generalization of
-the Euler equation we obtained in {doc}`cake_eating`.
+the Euler equation we obtained in {doc}`os`.
 
-We take the model set out in {doc}`cake_eating_stochastic` and add the following assumptions:
+We take the model set out in {doc}`os_stochastic` and add the following assumptions:
 
 1. $u$ and $f$ are continuously differentiable and strictly concave
 1. $f(0) = 0$
@@ -98,7 +98,7 @@ We know that $\sigma^*$ is a $v^*$-greedy policy so that $\sigma^*(x)$ is the ma
 
 The conditions above imply that
 
-* $\sigma^*$ is the unique optimal policy for the stochastic cake eating problem
+* $\sigma^*$ is the unique optimal policy for the optimal savings problem
 * the optimal policy is continuous, strictly increasing and also **interior**, in the sense that $0 < \sigma^*(x) < x$ for all strictly positive $x$, and
 * the value function is strictly concave and continuously differentiable, with
 
@@ -269,7 +269,7 @@ In later lectures we will optimize both the algorithm and the code.
 
 
 
-As in {doc}`cake_eating_stochastic`, we assume that
+As in {doc}`os_stochastic`, we assume that
 
 * $u(c) = \ln c$
 * $f(x-c) = (x-c)^{\alpha}$
@@ -301,7 +301,7 @@ means iterating with the operator $K$.
 
 For this we need access to the functions $u'$ and $f, f'$.
 
-We use the same `Model` structure from {doc}`cake_eating_stochastic`.
+We use the same `Model` structure from {doc}`os_stochastic`.
 
 ```{code-cell} python3
 class Model(NamedTuple):
@@ -332,7 +332,7 @@ def create_model(
         f_prime: Callable = None
     ) -> Model:
     """
-    Creates an instance of the cake eating model.
+    Creates an instance of the optimal savings model.
     """
     # Set up grid
     grid = np.linspace(1e-4, grid_max, grid_size)
@@ -434,7 +434,7 @@ plt.show()
 ```
 
 We see that the iteration process converges quickly to a limit
-that resembles the solution we obtained in {doc}`cake_eating_stochastic`.
+that resembles the solution we obtained in {doc}`os_stochastic`.
 
 Here is a function called `solve_model_time_iter` that takes an instance of
 `Model` and returns an approximation to the optimal policy,
@@ -510,20 +510,20 @@ grid, α, β = model.grid, model.α, model.β
 np.max(np.abs(σ - σ_star(grid, α, β)))
 ```
 
-Time iteration runs faster than value function iteration, as discussed in {doc}`cake_eating_stochastic`.
+Time iteration runs faster than value function iteration, as discussed in {doc}`os_stochastic`.
 
 This is because time iteration exploits differentiability and the first-order conditions, while value function iteration does not use this available structure.
 
 At the same time, there is a variation of time iteration that runs even faster.
 
-This is the endogenous grid method, which we will introduce in {doc}`cake_eating_egm`.
+This is the endogenous grid method, which we will introduce in {doc}`os_egm`.
 
 ## Exercises
 
 ```{exercise}
 :label: cpi_ex1
 
-Solve the stochastic cake eating problem with CRRA utility
+Solve the optimal savings problem with CRRA utility
 
 $$
 u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
