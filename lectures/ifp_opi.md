@@ -109,33 +109,28 @@ We repeat some functions from {doc}`ifp_discrete`.
 Here is the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
-def B(v, model):
+def B(v, model, i, j, ip):
     """
-    A vectorized version of the right-hand side of the Bellman equation
-    (before maximization), which is a 3D array representing
+    The right-hand side of the Bellman equation before maximization, which takes
+    the form
 
         B(a, y, a′) = u(Ra + y - a′) + β Σ_y′ v(a′, y′) Q(y, y′)
 
-    for all (a, y, a′).
+    The indices are (i, j, ip) -> (a, y, a′).
     """
-
-    # Unpack
     β, R, γ, a_grid, y_grid, Q = model
-    a_size, y_size = len(a_grid), len(y_grid)
-
-    # Compute current rewards r(a, y, ap) as array r[i, j, ip]
-    a  = jnp.reshape(a_grid, (a_size, 1, 1))    # a[i]   ->  a[i, j, ip]
-    y  = jnp.reshape(y_grid, (1, y_size, 1))    # z[j]   ->  z[i, j, ip]
-    ap = jnp.reshape(a_grid, (1, 1, a_size))    # ap[ip] -> ap[i, j, ip]
+    a, y, ap  = a_grid[i], y_grid[j], a_grid[ip]
     c = R * a + y - ap
-
-    # Calculate continuation rewards at all combinations of (a, y, ap)
-    v = jnp.reshape(v, (1, 1, a_size, y_size))  # v[ip, jp] -> v[i, j, ip, jp]
-    Q = jnp.reshape(Q, (1, y_size, 1, y_size))  # Q[j, jp]  -> Q[i, j, ip, jp]
-    EV = jnp.sum(v * Q, axis=3)                 # sum over last index jp
-
-    # Compute the right-hand side of the Bellman equation
+    EV = jnp.sum(v[ip, :] * Q[j, :])
     return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
+```
+
+Now we successively apply `vmap` to vectorize over all indices:
+
+```{code-cell} ipython3
+B_1    = jax.vmap(B,   in_axes=(None, None, None, None, 0))
+B_2    = jax.vmap(B_1, in_axes=(None, None, None, 0,    None))
+B_vmap = jax.vmap(B_2, in_axes=(None, None, 0,    None, None))
 ```
 
 Here's the Bellman operator:
@@ -143,7 +138,10 @@ Here's the Bellman operator:
 ```{code-cell} ipython3
 def T(v, model):
     "The Bellman operator."
-    return jnp.max(B(v, model), axis=2)
+    a_indices = jnp.arange(len(model.a_grid))
+    y_indices = jnp.arange(len(model.y_grid))
+    B_values = B_vmap(v, model, a_indices, y_indices, a_indices)
+    return jnp.max(B_values, axis=-1)
 ```
 
 Here's the function that computes a $v$-greedy policy:
@@ -151,7 +149,10 @@ Here's the function that computes a $v$-greedy policy:
 ```{code-cell} ipython3
 def get_greedy(v, model):
     "Computes a v-greedy policy, returned as a set of indices."
-    return jnp.argmax(B(v, model), axis=2)
+    a_indices = jnp.arange(len(model.a_grid))
+    y_indices = jnp.arange(len(model.y_grid))
+    B_values = B_vmap(v, model, a_indices, y_indices, a_indices)
+    return jnp.argmax(B_values, axis=-1)
 ```
 
 Now we define the policy operator $T_\sigma$, which is the Bellman operator with
