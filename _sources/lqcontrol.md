@@ -57,7 +57,7 @@ In reading what follows, it will be useful to have some familiarity with
 
 * matrix manipulations
 * vectors of random variables
-* dynamic programming and the Bellman equation (see for example {doc}`this lecture <intro:short_path>` and {doc}`this lecture <cake_eating_stochastic>`)
+* dynamic programming and the Bellman equation (see for example {doc}`this lecture <intro:short_path>` and {doc}`os_stochastic`)
 
 For additional reading on LQ control, see, for example,
 
