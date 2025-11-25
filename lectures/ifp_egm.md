@@ -29,19 +29,17 @@ kernelspec:
 ## Overview
 
 In this lecture we continue examining a version of the IFP from
-{doc}`ifp_discrete`.
 
-We will make two changes.
+* {doc}`ifp_discrete` and
+* {doc}`ifp_opi`.
 
-First, we will change the timing to one that we find more flexible and convenient.
+We will make three changes.
 
-Second, to solve the model, we will use the endogenous grid method (EGM). 
+1. We will add a transient shock component to labor income (as well as a persistent one).
+2. We will change the timing to one that is more efficient for our set up.
+3. To solve the model, we will use the endogenous grid method (EGM). 
 
 We use the EGM because we know it to be fast and accurate from {doc}`os_egm_jax`.
-
-Also, the discretization we used in {doc}`ifp_discrete` is harder here, due to
-the change in timing.
-
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
@@ -63,7 +61,8 @@ import jax.numpy as jnp
 from typing import NamedTuple
 ```
 
-We will use 64-bit precision in JAX because we want to compare NumPy outputs with JAX outputs --- and NumPy arrays default to 64 bits.
+We will use 64-bit precision in JAX because we want to compare NumPy outputs
+with JAX outputs --- and NumPy arrays default to 64 bits.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
@@ -87,7 +86,7 @@ Let's write down the model and then discuss how to solve it.
 
 ### Set-Up
 
-Consider a household that chooses a state-contingent consumption plan $\{c_t\}_{t \geq 0}$ to maximize
+A household chooses a state-contingent consumption plan $\{c_t\}_{t \geq 0}$ to maximize
 
 $$
 \mathbb{E} \, \sum_{t=0}^{\infty} \beta^t u(c_t)
@@ -119,43 +118,45 @@ The timing here is as follows:
 1. Savings $s_t := a_t - c_t$ earns interest at rate $r$.
 1. Labor income $Y_{t+1}$ is realized and time shifts to $t+1$.
 
-Non-capital income $Y_t$ is given by $Y_t = Y(Z_t, \eta_t)$, where
+Non-capital income $Y_t$ is given by $Y_t = y(Z_t, \eta_t)$, where
 
-* $\{Z_t\}$ is an exogenous state process,
-* $\{\eta_t\}$ is an IID shock process (with $\eta_t \sim N(0, 1)$), and
-* $Y$ is a given function taking values in $\mathbb{R}_+$.
+* $\{Z_t\}$ is an exogenous state process (persistent component),
+* $\{\eta_t\}$ is an IID shock process, and
+* $y$ is a function taking values in $\mathbb{R}_+$.
 
-As is common in the literature, we take $\{Z_t\}$ to be a finite state
+Throughout this lecture, we assume that $\eta_t \sim N(0, 1)$.
+
+We take $\{Z_t\}$ to be a finite state
 Markov chain taking values in $\mathsf Z$ with Markov matrix $\Pi$.
 
 The shock process $\{\eta_t\}$ is independent of $\{Z_t\}$ and represents
 transient income fluctuations.
 
 ```{note}
-The budget constraint for the household is more often written as $a_{t+1} + c_t \leq R a_t + Y_t$.
+In previous lectures we used the more standard household budget constraint $a_{t+1} + c_t \leq R a_t + Y_t$.
 
 This setup, which is pervasive in quantitative economics, was developed for discretization. 
 
-It means that the control is also the next period state $a_{t+1}$, which can
-then be restricted to a finite grid.
+It means that the control variable is also the next period state $a_{t+1}$,
+which makes it straightforward to restrict assets to a finite grid.
 
-We try to avoid raw discretization when possible, since it suffers heavily from
-the curse of dimensionality.
+But fixing the control to be the next period state forces us to include more
+information in the current state, which expands the size of the state space.
 
-Moreover, removing discretization allows the use of alternative timings, such as the one that we adopt in this lecture.
+Moreover, aiming for discretization is not always a good idea, since 
+it suffers heavily from the curse of dimensionality.
 
-In fact the timing we use here is, in many cases, considerably more efficient than the traditional one.
+The timing we use here is considerably more efficient than the traditional one.
 
-The reason is that transient shocks (in this lecture, the transient component of labor income) are 
-automatially integrated out (instead of becoming state variables).
-
+* The transient component of labor income is automatially integrated out, instead of becoming a state variables.
+* Forcing the next period state to be the control variable is not necessary due to the use of EGM.
 ```
 
 We further assume that
 
 1. $\beta R < 1$
 1. $u$ is smooth, strictly increasing and strictly concave with $\lim_{c \to 0} u'(c) = \infty$ and $\lim_{c \to \infty} u'(c) = 0$
-1. $Y(z, \eta) = \exp(a_y \eta + z b_y)$ where $a_y, b_y$ are positive constants 
+1. $y(z, \eta) = \exp(a_y \eta + z b_y)$ where $a_y, b_y$ are positive constants 
 
 The asset space is $\mathbb R_+$ and the state is the pair $(a,z) \in \mathsf S := \mathbb R_+ \times \mathsf Z$.
 
@@ -257,10 +258,11 @@ Thus, to solve the optimization problem, we need to compute the policy $\sigma^*
 ```
 
 We solve for the optimal consumption policy using time iteration and the
-endogenous grid method.
+endogenous grid method, which were previously discussed in
 
-Readers unfamiliar with the endogenous grid method should review the discussion
-in {doc}`os_egm`.
+* {doc}`os_time_iter`
+* {doc}`os_egm`
+
 
 ### Solution Method
 
@@ -273,7 +275,7 @@ random variables:
 
     (u' \circ \sigma)  (a, z)
     = \beta R \, \sum_{z'} \int (u' \circ \sigma)
-            [R (a - \sigma(a, z)) + Y(z', \eta'), \, z'] \phi(\eta') d\eta' \, \Pi(z, z')
+            [R (a - \sigma(a, z)) + y(z', \eta'), \, z'] \phi(\eta') d\eta' \, \Pi(z, z')
 ```
 
 Here
@@ -289,7 +291,7 @@ We aim to find a fixed point $\sigma$ of {eq}`eqeul1`.
 
 To do so we use the EGM.
 
-Below we use the relationships $a_t = c_t + s_t$ and $a_{t+1} = R s_t + y(z_{t+1})$.
+Below we use the relationships $a_t = c_t + s_t$ and $a_{t+1} = R s_t + Y_{t+1}$.
 
 We begin with an exogenous savings grid $s_0 < s_1 < \cdots < s_m$ with $s_0 = 0$.
 
@@ -297,13 +299,16 @@ We fix a current guess of the policy function $\sigma$.
 
 For each exogenous savings level $s_i$ with $i \geq 1$ and current state $z_j$, we set
 
-$$
+
+```{math}
+:label: cfequ
+
     c_{ij} := (u')^{-1}
         \left[
             \beta R \, \sum_{z'} \int
-            u' [ \sigma(R s_i + Y(z', \eta'), z') ] \phi(\eta') d\eta' \, \Pi(z_j, z')
+            u' [ \sigma(R s_i + y(z', \eta'), z') ] \phi(\eta') d\eta' \, \Pi(z_j, z')
         \right]
-$$
+```
 
 The Euler equation holds here because $i \geq 1$ implies $s_i > 0$ and hence consumption is interior.
 
@@ -402,9 +407,9 @@ def create_ifp(r=0.01,
     assert R * β < 1, "Stability condition violated."
     return IFPNumPy(R, β, γ, Π, z_grid, s, a_y, b_y, η_draws)
 
-# Set Y(z, η) = exp(a_y * η + z * b_y)
+# Set y(z, η) = exp(a_y * η + z * b_y)
 @numba.jit
-def Y(z, η, a_y, b_y):
+def y(z, η, a_y, b_y):
     return np.exp(a_y * η + z * b_y)
 ```
 
@@ -420,6 +425,22 @@ In practice, it takes in
 
 These are converted into a consumption policy $a \mapsto \sigma(a, z_j)$ by 
 linear interpolation of $(a^e_{ij}, c_{ij})$ over $i$ for each $j$.
+
+When we compute consumption in {eq}`cfequ`, we will use Monte Carlo over
+$\eta'$, so that the expression becomes
+
+```{math}
+:label: cfequmc
+
+    c_{ij} := (u')^{-1}
+        \left[
+            \beta R \, \sum_{z'} \frac{1}{m} \sum_{\ell=1}^m
+            u' [ \sigma(R s_i + y(z', \eta_{\ell}), z') ] \, \Pi(z_j, z')
+        \right]
+```
+
+with each $\eta_{\ell}$ being a standard normal draw.
+
 
 ```{code-cell} ipython3
 @numba.jit
@@ -440,26 +461,37 @@ def K_numpy(
     n_a = len(s)
     n_z = len(z_grid)
 
+    # Utility functions
+    def u_prime(c):
+        return c**(-γ)
+
+    def u_prime_inv(c):
+        return c**(-1/γ)
+
+    def y(z, η):
+        return np.exp(a_y * η + z * b_y)
+
     new_c_vals = np.zeros_like(c_vals)
 
     for i in range(1, n_a):  # Start from 1 for positive savings levels
         for j in range(n_z):
-            # Compute Σ_z' ∫ u'(σ(R s_i + Y(z', η'), z')) φ(η') dη' Π[z_j, z']
+            # Compute Σ_z' ∫ u'(σ(R s_i + y(z', η'), z')) φ(η') dη' Π[z_j, z']
             expectation = 0.0
             for k in range(n_z):
+                z_prime = z_grid[k]
                 # Integrate over η draws (Monte Carlo)
                 inner_sum = 0.0
                 for η in η_draws:
                     # Calculate next period assets
-                    next_a = R * s[i] + Y(z_grid[k], η, a_y, b_y)
-                    # Interpolate to get σ(R s_i + Y(z_k, η), z_k)
+                    next_a = R * s[i] + y(z_prime, η)
+                    # Interpolate to get σ(R s_i + y(z', η), z')
                     next_c = np.interp(next_a, ae_vals[:, k], c_vals[:, k])
                     # Add to the inner sum
-                    inner_sum += u_prime(next_c, γ)
+                    inner_sum += u_prime(next_c)
                 # Average over η draws and weight by transition probability
                 expectation += (inner_sum / len(η_draws)) * Π[j, k]
             # Calculate updated c_{ij} values
-            new_c_vals[i, j] = u_prime_inv(β * R * expectation, γ)
+            new_c_vals[i, j] = u_prime_inv(β * R * expectation)
 
     new_ae_vals = new_c_vals + s[:, None]
 
@@ -526,7 +558,7 @@ plt.show()
 ```{index} single: Optimal Savings; Programming Implementation
 ```
 
-Now we write a more efficient JAX version.
+Now we write a more efficient JAX version, which can run on a GPU.
 
 ### Set Up
 
@@ -566,8 +598,8 @@ def create_ifp(r=0.01,
     assert R * β < 1, "Stability condition violated."
     return IFP(R, β, γ, Π, z_grid, s, a_y, b_y, η_draws)
 
-# Set Y(z, η) = exp(a_y * η + z * b_y)
-def Y_jax(z, η, a_y, b_y):
+# Set y(z, η) = exp(a_y * η + z * b_y)
+def y_jax(z, η, a_y, b_y):
     return jnp.exp(a_y * η + z * b_y)
 
 # Utility functions for JAX (can't use numba-jitted versions)
@@ -603,18 +635,29 @@ def K(
     n_a = len(s)
     n_z = len(z_grid)
 
+    # Utility functions
+    def u_prime(c):
+        return c**(-γ)
+
+    def u_prime_inv(c):
+        return c**(-1/γ)
+
+    def y(z, η):
+        return jnp.exp(a_y * η + z * b_y)
+
     def compute_c_ij(i, j):
         " Function to compute consumption for one (i, j) pair where i >= 1. "
 
         # For each k (future z state), compute the integral over η
         def compute_expectation_k(k):
-            # For each η draw, compute u'(σ(R * s_i + Y(z_k, η), z_k))
+            z_prime = z_grid[k]
+            # For each η draw, compute u'(σ(R * s_i + y(z', η), z'))
             def compute_for_eta(η):
-                next_a = R * s[i] + Y_jax(z_grid[k], η, a_y, b_y)
-                # Interpolate to get σ(R * s_i + Y(z_k, η), z_k)
+                next_a = R * s[i] + y(z_prime, η)
+                # Interpolate to get σ(R * s_i + y(z', η), z')
                 next_c = jnp.interp(next_a, ae_vals[:, k], c_vals[:, k])
-                # Return u'(σ(R * s_i + Y(z_k, η), z_k))
-                return u_prime_jax(next_c, γ)
+                # Return u'(σ(R * s_i + y(z', η), z'))
+                return u_prime(next_c)
 
             # Compute average over all η draws using vmap
             compute_all_eta = jax.vmap(compute_for_eta)
@@ -630,7 +673,7 @@ def K(
         expectation = jnp.sum(expectations_k * Π[j, :])
 
         # Invert to get consumption c_{ij} at (s_i, z_j)
-        return u_prime_inv_jax(β * R * expectation, γ)
+        return u_prime_inv(β * R * expectation)
 
     # Set up index grids for vmap computation of all c_{ij}
     i_grid = jnp.arange(1, n_a)
@@ -718,11 +761,10 @@ print(f"Maximum difference in consumption policy: {max_c_diff:.2e}")
 print(f"Maximum difference in asset grid:        {max_ae_diff:.2e}")
 ```
 
-The maximum differences are on the order of $10^{-15}$ or smaller, which is
-essentially machine precision for 64-bit floating point arithmetic.
+These numbers confirm that we are computing essentially the same policy using
+the two approaches.
 
-This confirms that our JAX implementation produces identical results to the
-NumPy version, validating the correctness of our vectorized JAX code.
+(Remaining  differences are mainly due to different Monte Carlo integration outcomes over relatively small samples.)
 
 Here's a plot of the optimal policy for each $z$ state
 
@@ -746,12 +788,25 @@ fig, ax = plt.subplots()
 
 # Compute mean labor income at each z state
 R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
-Y_mean = jnp.array([jnp.mean(Y_jax(z, η_draws, a_y, b_y)) for z in z_grid])
+
+def y(z, η):
+    return jnp.exp(a_y * η + z * b_y)
+
+def y_bar(k):
+    """Expected labor income conditional on current state z_grid[k]"""
+    # Compute mean of y(z', η) for each future state z'
+    def mean_y_at_z(z_prime):
+        return jnp.mean(y(z_prime, η_draws))
+
+    # Vectorize over all future states z'
+    y_means = jax.vmap(mean_y_at_z)(z_grid)
+    # Weight by transition probabilities and sum
+    return jnp.sum(y_means * Π[k, :])
 
 for k, label in zip((0, 1), ('low income', 'high income')):
     # Interpolate consumption policy on the savings grid
     c_on_grid = jnp.interp(s, ae_vals[:, k], c_vals[:, k])
-    ax.plot(s, R * (s - c_on_grid) + Y_mean[k] , label=label)
+    ax.plot(s, R * (s - c_on_grid) + y_bar(k) , label=label)
 
 ax.plot(s, s, 'k--')
 ax.set(xlabel='current assets', ylabel='next period assets')
@@ -763,22 +818,28 @@ plt.show()
 The unbroken lines show the update function for assets at each $z$, which is
 
 $$
-    a \mapsto R (a - \sigma^*(a, z)) + \bar{Y}(z')
+    a \mapsto R (a - \sigma^*(a, z)) + \bar{y}(z)
 $$
 
-where $\bar{Y}(z') := \mathbb{E}_\eta Y(z', \eta)$ is mean labor income at state $z'$,
-and we plot this for a particular realization $z' = z$.
+where 
+
+$$
+    \bar{y}(z) := \sum_{z'} \frac{1}{m} \sum_{\ell = 1}^m y(z', \eta_{\ell}) \Pi(z, z')
+$$ 
+
+is a Monte Carlo approximation to expected labor income conditional on current state $z$.
 
 The dashed line is the 45 degree line.
 
-The figure suggests that the dynamics will be stable --- assets do not diverge
-even in the highest state.
+The figure suggests that, on average, the dynamics will be stable --- assets do
+not diverge even in the highest state.
 
-In fact there is a unique stationary distribution of assets that we can calculate by simulation -- we examine this below.
+This turns out to be true: there is a unique stationary distribution of assets.
 
-* Can be proved via theorem 2 of {cite}`HopenhaynPrescott1992`.
-* It represents the long run dispersion of assets across households when households have idiosyncratic shocks.
+* For details see {cite}`ma2020income`
 
+This stationary distribution represents the long run dispersion of assets across
+households when households have idiosyncratic shocks.
 
 
 ### A Sanity Check
@@ -821,6 +882,9 @@ plt.show()
 ```
 
 This looks pretty good.
+
+
+
 
 ## Simulation
 
@@ -868,7 +932,7 @@ def simulate_household(
         η_key = jax.random.fold_in(key, 2*t + 1)
         η = jax.random.normal(η_key)
         # Update assets: a' = R * (a - c) + Y'
-        a_next = R * (a - σ(a, z_idx)) + Y_jax(z_next, η, a_y, b_y)
+        a_next = R * (a - σ(a, z_idx)) + y_jax(z_next, η, a_y, b_y)
         # Return updated state
         return a_next, z_next_idx
 
@@ -967,13 +1031,13 @@ def gini_coefficient(x):
     The Gini coefficient is a measure of inequality that ranges from
     0 (perfect equality) to 1 (perfect inequality).
     """
-    x = np.asarray(x)
+    x = jnp.asarray(x)
     n = len(x)
     # Sort values
-    x_sorted = np.sort(x)
+    x_sorted = jnp.sort(x)
     # Compute Gini coefficient
-    cumsum = np.cumsum(x_sorted)
-    return (2 * np.sum((np.arange(1, n+1)) * x_sorted)) / (n * cumsum[-1]) - (n + 1) / n
+    cumsum = jnp.cumsum(x_sorted)
+    return (2 * jnp.sum((jnp.arange(1, n+1)) * x_sorted)) / (n * cumsum[-1]) - (n + 1) / n
 
 
 def top_share(x, p=0.01):
@@ -987,14 +1051,14 @@ def top_share(x, p=0.01):
     Returns:
         Share of total wealth held by top p fraction
     """
-    x = np.asarray(x)
-    x_sorted = np.sort(x)
+    x = jnp.asarray(x)
+    x_sorted = jnp.sort(x)
     # Number of households in top p%
-    n_top = int(np.ceil(len(x) * p))
+    n_top = int(jnp.ceil(len(x) * p))
     # Wealth held by top p%
-    wealth_top = np.sum(x_sorted[-n_top:])
+    wealth_top = jnp.sum(x_sorted[-n_top:])
     # Total wealth
-    wealth_total = np.sum(x_sorted)
+    wealth_total = jnp.sum(x_sorted)
     return wealth_top / wealth_total if wealth_total > 0 else 0.0
 ```
 
@@ -1008,21 +1072,30 @@ print(f"Gini coefficient: {gini:.4f}")
 print(f"Top 1% wealth share: {top1:.4f}")
 ```
 
+These numbers are a long way out, at least for a country such as the US!
+
+Recent numbers suggest that 
+
+* the Gini coefficient for wealth in the US is around 0.8
+* the top 1% wealth share is over 0.3
+
+In a {doc}`later lecture <ifp_advanced>` we'll see if we can improve on these
+numbers.
+
+
+
 ### Interest Rate and Inequality
 
-Now let's examine how wealth inequality varies with the interest rate $r$.
+Let's examine how wealth inequality varies with the interest rate $r$.
 
 Economic intuition suggests that higher interest rates might increase wealth
 inequality, as wealthier households benefit more from returns on their assets.
 
-However, higher interest rates also encourage saving, which could
-reduce inequality if lower-wealth households save more.
-
 Let's investigate empirically:
 
 ```{code-cell} ipython3
-# Test over 12 interest rate values
-M = 12
+# Test over 8 interest rate values
+M = 8
 r_vals = np.linspace(0, 0.015, M)
 
 gini_vals = []
@@ -1071,19 +1144,12 @@ plt.tight_layout()
 plt.show()
 ```
 
-The results show how wealth inequality measures respond to changes in the
-interest rate.
+The results show that these two inequality measures increase with the interest rate.
 
-Higher interest rates lead to greater aggregate savings (as shown in Exercise 2),
-but the relationship with inequality depends on the distribution of who benefits
-from these higher returns.
+However the differences are very minor!
 
-If wealthier households are more able to take advantage of high interest rates
-(due to higher initial wealth), inequality increases with $r$.
-
-The Gini coefficient and top 1% share provide complementary views of inequality:
-the Gini captures inequality across the entire distribution, while the top 1%
-share focuses specifically on concentration at the top.
+Certainly changing the interest rate will not produce the kinds of numbers that
+we see in the data.
 
 
 ## Exercises
@@ -1159,7 +1225,7 @@ formation --- test this.
 For the interest rate grid, use
 
 ```{code-cell} ipython3
-M = 12
+M = 8
 r_vals = np.linspace(0, 0.015, M)
 ```
 
