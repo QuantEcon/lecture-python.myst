@@ -56,6 +56,7 @@ We'll also need the following imports:
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
+import numba
 from quantecon import MarkovChain
 import jax
 import jax.numpy as jnp
@@ -118,13 +119,17 @@ The timing here is as follows:
 1. Savings $s_t := a_t - c_t$ earns interest at rate $r$.
 1. Labor income $Y_{t+1}$ is realized and time shifts to $t+1$.
 
-Non-capital income $Y_t$ is given by $Y_t = y(Z_t)$, where
+Non-capital income $Y_t$ is given by $Y_t = Y(Z_t, \eta_t)$, where
 
-* $\{Z_t\}$ is an exogenous state process and
-* $y$ is a given function taking values in $\mathbb{R}_+$.
+* $\{Z_t\}$ is an exogenous state process,
+* $\{\eta_t\}$ is an IID shock process (with $\eta_t \sim N(0, 1)$), and
+* $Y$ is a given function taking values in $\mathbb{R}_+$.
 
 As is common in the literature, we take $\{Z_t\}$ to be a finite state
 Markov chain taking values in $\mathsf Z$ with Markov matrix $\Pi$.
+
+The shock process $\{\eta_t\}$ is independent of $\{Z_t\}$ and represents
+transient income fluctuations.
 
 ```{note}
 The budget constraint for the household is more often written as $a_{t+1} + c_t \leq R a_t + Y_t$.
@@ -150,7 +155,7 @@ We further assume that
 
 1. $\beta R < 1$
 1. $u$ is smooth, strictly increasing and strictly concave with $\lim_{c \to 0} u'(c) = \infty$ and $\lim_{c \to \infty} u'(c) = 0$
-1. $y(z) = \exp(z)$ 
+1. $Y(z, \eta) = \exp(a_y \eta + z b_y)$ where $a_y, b_y$ are positive constants 
 
 The asset space is $\mathbb R_+$ and the state is the pair $(a,z) \in \mathsf S := \mathbb R_+ \times \mathsf Z$.
 
@@ -267,14 +272,15 @@ random variables:
 :label: eqeul1
 
     (u' \circ \sigma)  (a, z)
-    = \beta R \, \sum_{z'}  (u' \circ \sigma)
-            [R (a - \sigma(a, z)) + y(z'), \, z'] \Pi(z, z')
+    = \beta R \, \sum_{z'} \int (u' \circ \sigma)
+            [R (a - \sigma(a, z)) + Y(z', \eta'), \, z'] \phi(\eta') d\eta' \, \Pi(z, z')
 ```
 
 Here
 
 * $(u' \circ \sigma)(s) := u'(\sigma(s))$,
-* primes indicate next period states (as well as derivatives), and
+* primes indicate next period states (as well as derivatives),
+* $\phi$ is the density of the shock $\eta_t$ (standard normal), and
 * $\sigma$ is the unknown function.
 
 The equality {eq}`eqeul1` holds at all interior choices, meaning $\sigma(a, z) < a$.
@@ -294,8 +300,8 @@ For each exogenous savings level $s_i$ with $i \geq 1$ and current state $z_j$, 
 $$
     c_{ij} := (u')^{-1}
         \left[
-            \beta R \, \sum_{z'}
-            u' [ \sigma(R s_i + y(z'), z') ] \Pi(z_j, z')
+            \beta R \, \sum_{z'} \int
+            u' [ \sigma(R s_i + Y(z', \eta'), z') ] \phi(\eta') d\eta' \, \Pi(z_j, z')
         \right]
 $$
 
@@ -345,8 +351,13 @@ $$
 Here are the utility-related functions:
 
 ```{code-cell} ipython3
-u_prime = lambda c, γ: c**(-γ)
-u_prime_inv = lambda c, γ: c**(-1/γ)
+@numba.jit
+def u_prime(c, γ):
+    return c**(-γ)
+
+@numba.jit
+def u_prime_inv(c, γ):
+    return c**(-1/γ)
 ```
 
 ### Set Up
@@ -365,6 +376,9 @@ class IFPNumPy(NamedTuple):
     Π: np.ndarray             # Markov matrix for exogenous shock
     z_grid: np.ndarray        # Markov state values for Z_t
     s: np.ndarray             # Exogenous savings grid
+    a_y: float                # Scale parameter for Y_t
+    b_y: float                # Additive parameter for Y_t
+    η_draws: np.ndarray       # Draws of innovation η for MC
 
 
 def create_ifp(r=0.01,
@@ -374,16 +388,24 @@ def create_ifp(r=0.01,
                   (0.05, 0.95)),
                z_grid=(-10.0, np.log(2.0)),
                savings_grid_max=16,
-               savings_grid_size=50):
+               savings_grid_size=50,
+               a_y=0.2,
+               b_y=0.5,
+               shock_draw_size=100,
+               seed=1234):
 
+    np.random.seed(seed)
     s = np.linspace(0, savings_grid_max, savings_grid_size)
     Π, z_grid = np.array(Π), np.array(z_grid)
     R = 1 + r
+    η_draws = np.random.randn(shock_draw_size)
     assert R * β < 1, "Stability condition violated."
-    return IFPNumPy(R, β, γ, Π, z_grid, s)
+    return IFPNumPy(R, β, γ, Π, z_grid, s, a_y, b_y, η_draws)
 
-# Set y(z) = exp(z)
-y = np.exp
+# Set Y(z, η) = exp(a_y * η + z * b_y)
+@numba.jit
+def Y(z, η, a_y, b_y):
+    return np.exp(a_y * η + z * b_y)
 ```
 
 ### Solver
@@ -400,6 +422,7 @@ These are converted into a consumption policy $a \mapsto \sigma(a, z_j)$ by
 linear interpolation of $(a^e_{ij}, c_{ij})$ over $i$ for each $j$.
 
 ```{code-cell} ipython3
+@numba.jit
 def K_numpy(
         c_vals: np.ndarray,   # Initial guess of σ on grid endogenous grid
         ae_vals: np.ndarray,  # Initial endogenous grid
@@ -413,7 +436,7 @@ def K_numpy(
     update the consumption policy function.
 
     """
-    R, β, γ, Π, z_grid, s = ifp_numpy
+    R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp_numpy
     n_a = len(s)
     n_z = len(z_grid)
 
@@ -421,15 +444,20 @@ def K_numpy(
 
     for i in range(1, n_a):  # Start from 1 for positive savings levels
         for j in range(n_z):
-            # Compute Σ_z' u'(σ(R s_i + y(z'), z')) Π[z_j, z']
+            # Compute Σ_z' ∫ u'(σ(R s_i + Y(z', η'), z')) φ(η') dη' Π[z_j, z']
             expectation = 0.0
             for k in range(n_z):
-                # Set up the function a -> σ(a, z_k)
-                σ = lambda a: np.interp(a, ae_vals[:, k], c_vals[:, k])
-                # Calculate σ(R s_i + y(z_k), z_k)
-                next_c = σ(R * s[i] + y(z_grid[k]))
-                # Add to the sum that forms the expectation
-                expectation += u_prime(next_c, γ) * Π[j, k]
+                # Integrate over η draws (Monte Carlo)
+                inner_sum = 0.0
+                for η in η_draws:
+                    # Calculate next period assets
+                    next_a = R * s[i] + Y(z_grid[k], η, a_y, b_y)
+                    # Interpolate to get σ(R s_i + Y(z_k, η), z_k)
+                    next_c = np.interp(next_a, ae_vals[:, k], c_vals[:, k])
+                    # Add to the inner sum
+                    inner_sum += u_prime(next_c, γ)
+                # Average over η draws and weight by transition probability
+                expectation += (inner_sum / len(η_draws)) * Π[j, k]
             # Calculate updated c_{ij} values
             new_c_vals[i, j] = u_prime_inv(β * R * expectation, γ)
 
@@ -469,7 +497,7 @@ Let's road test the EGM code.
 
 ```{code-cell} ipython3
 ifp_numpy = create_ifp()
-R, β, γ, Π, z_grid, s = ifp_numpy
+R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp_numpy
 # Initial conditions -- agent consumes everything
 ae_vals_init = s[:, None] * np.ones(len(z_grid))
 c_vals_init = ae_vals_init
@@ -512,6 +540,9 @@ class IFP(NamedTuple):
     Π: jnp.ndarray            # Markov matrix for exogenous shock
     z_grid: jnp.ndarray       # Markov state values for Z_t
     s: jnp.ndarray            # Exogenous savings grid
+    a_y: float                # Scale parameter for Y_t
+    b_y: float                # Additive parameter for Y_t
+    η_draws: jnp.ndarray      # Draws of innovation η for MC
 
 
 def create_ifp(r=0.01,
@@ -521,16 +552,30 @@ def create_ifp(r=0.01,
                   (0.05, 0.95)),
                z_grid=(-10.0, jnp.log(2.0)),
                savings_grid_max=16,
-               savings_grid_size=50):
+               savings_grid_size=50,
+               a_y=0.2,
+               b_y=0.5,
+               shock_draw_size=100,
+               seed=1234):
 
+    key = jax.random.PRNGKey(seed)
     s = jnp.linspace(0, savings_grid_max, savings_grid_size)
     Π, z_grid = jnp.array(Π), jnp.array(z_grid)
     R = 1 + r
+    η_draws = jax.random.normal(key, (shock_draw_size,))
     assert R * β < 1, "Stability condition violated."
-    return IFP(R, β, γ, Π, z_grid, s)
+    return IFP(R, β, γ, Π, z_grid, s, a_y, b_y, η_draws)
 
-# Set y(z) = exp(z)
-y = jnp.exp
+# Set Y(z, η) = exp(a_y * η + z * b_y)
+def Y_jax(z, η, a_y, b_y):
+    return jnp.exp(a_y * η + z * b_y)
+
+# Utility functions for JAX (can't use numba-jitted versions)
+def u_prime_jax(c, γ):
+    return c**(-γ)
+
+def u_prime_inv_jax(c, γ):
+    return c**(-1/γ)
 ```
 
 
@@ -542,8 +587,8 @@ guess $K\sigma$.
 
 ```{code-cell} ipython3
 def K(
-        c_vals: jnp.ndarray, 
-        ae_vals: jnp.ndarray, 
+        c_vals: jnp.ndarray,
+        ae_vals: jnp.ndarray,
         ifp: IFP
     ) -> jnp.ndarray:
     """
@@ -554,31 +599,38 @@ def K(
     update the consumption policy function.
 
     """
-    R, β, γ, Π, z_grid, s = ifp
+    R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
     n_a = len(s)
     n_z = len(z_grid)
 
     def compute_c_ij(i, j):
         " Function to compute consumption for one (i, j) pair where i >= 1. "
 
-        # First set up a function that takes s_i as given and, for each k in the indices
-        # of z_grid, computes the term u'(σ(R * s_i + y(z_k), z_k))
-        def mu(k):
-            next_a = R * s[i] + y(z_grid[k])
-            # Interpolate to get σ(R * s_i + y(z_k), z_k)
-            next_c = jnp.interp(next_a, ae_vals[:, k], c_vals[:, k])
-            # Return the final quantity u'(σ(R * s_i + y(z_k), z_k))
-            return u_prime(next_c, γ)
+        # For each k (future z state), compute the integral over η
+        def compute_expectation_k(k):
+            # For each η draw, compute u'(σ(R * s_i + Y(z_k, η), z_k))
+            def compute_for_eta(η):
+                next_a = R * s[i] + Y_jax(z_grid[k], η, a_y, b_y)
+                # Interpolate to get σ(R * s_i + Y(z_k, η), z_k)
+                next_c = jnp.interp(next_a, ae_vals[:, k], c_vals[:, k])
+                # Return u'(σ(R * s_i + Y(z_k, η), z_k))
+                return u_prime_jax(next_c, γ)
 
-        # Compute u'(σ(R * s_i + y(z_k), z_k)) at all k via vmap
-        mu_vectorized = jax.vmap(mu)
-        marginal_utils = mu_vectorized(jnp.arange(n_z))
+            # Compute average over all η draws using vmap
+            compute_all_eta = jax.vmap(compute_for_eta)
+            marginal_utils = compute_all_eta(η_draws)
+            # Return the average (Monte Carlo approximation of the integral)
+            return jnp.mean(marginal_utils)
 
-        # Compute expectation: Σ_k u'(σ(...)) * Π[j, k]
-        expectation = jnp.sum(marginal_utils * Π[j, :])
+        # Compute ∫ u'(σ(...)) φ(η) dη for all k via vmap
+        exp_over_eta = jax.vmap(compute_expectation_k)
+        expectations_k = exp_over_eta(jnp.arange(n_z))
+
+        # Compute expectation: Σ_k [∫ u'(σ(...)) φ(η) dη] * Π[j, k]
+        expectation = jnp.sum(expectations_k * Π[j, :])
 
         # Invert to get consumption c_{ij} at (s_i, z_j)
-        return u_prime_inv(β * R * expectation, γ)
+        return u_prime_inv_jax(β * R * expectation, γ)
 
     # Set up index grids for vmap computation of all c_{ij}
     i_grid = jnp.arange(1, n_a)
@@ -647,10 +699,10 @@ Let's road test the EGM code.
 
 ```{code-cell} ipython3
 ifp = create_ifp()
-R, β, γ, Π, z_grid, s = ifp
+R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
 # Set initial conditions where the agent consumes everything
-ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
-c_vals_init = ae_vals_init   
+ae_vals_init = s[:, None] * jnp.ones(len(z_grid))
+c_vals_init = ae_vals_init
 # Solve starting from these initial conditions
 c_vals_jax, ae_vals_jax = solve_model(ifp, c_vals_init, ae_vals_init)
 ```
@@ -692,10 +744,14 @@ default parameters, let's look at the
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 
+# Compute mean labor income at each z state
+R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
+Y_mean = jnp.array([jnp.mean(Y_jax(z, η_draws, a_y, b_y)) for z in z_grid])
+
 for k, label in zip((0, 1), ('low income', 'high income')):
     # Interpolate consumption policy on the savings grid
     c_on_grid = jnp.interp(s, ae_vals[:, k], c_vals[:, k])
-    ax.plot(s, R * (s - c_on_grid) + y(z_grid[k]) , label=label)
+    ax.plot(s, R * (s - c_on_grid) + Y_mean[k] , label=label)
 
 ax.plot(s, s, 'k--')
 ax.set(xlabel='current assets', ylabel='next period assets')
@@ -707,10 +763,11 @@ plt.show()
 The unbroken lines show the update function for assets at each $z$, which is
 
 $$
-    a \mapsto R (a - \sigma^*(a, z)) + y(z')
+    a \mapsto R (a - \sigma^*(a, z)) + \bar{Y}(z')
 $$
 
-where we plot this for a particular realization $z' = z$.
+where $\bar{Y}(z') := \mathbb{E}_\eta Y(z', \eta)$ is mean labor income at state $z'$,
+and we plot this for a particular realization $z' = z$.
 
 The dashed line is the 45 degree line.
 
@@ -748,9 +805,9 @@ Let's see if we match up:
 
 ```{code-cell} ipython3
 ifp_cake_eating = create_ifp(r=0.0, z_grid=(-jnp.inf, -jnp.inf))
-R, β, γ, Π, z_grid, s = ifp_cake_eating
-ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
-c_vals_init = ae_vals_init   
+R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp_cake_eating
+ae_vals_init = s[:, None] * jnp.ones(len(z_grid))
+c_vals_init = ae_vals_init
 c_vals, ae_vals = solve_model(ifp_cake_eating, c_vals_init, ae_vals_init)
 
 fig, ax = plt.subplots()
@@ -794,7 +851,7 @@ def simulate_household(
     - c_vals, ae_vals are the optimal consumption policy, endogenous grid for ifp
 
     """
-    R, β, γ, Π, z_grid, s = ifp
+    R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
     n_z = len(z_grid)
 
     # Create interpolation function for consumption policy
@@ -804,11 +861,14 @@ def simulate_household(
     def update(t, state):
         a, z_idx = state
         # Draw next shock z' from Π[z, z']
-        current_key = jax.random.fold_in(key, t)
+        current_key = jax.random.fold_in(key, 2*t)
         z_next_idx = jax.random.choice(current_key, n_z, p=Π[z_idx]).astype(jnp.int32)
         z_next = z_grid[z_next_idx]
+        # Draw η shock
+        η_key = jax.random.fold_in(key, 2*t + 1)
+        η = jax.random.normal(η_key)
         # Update assets: a' = R * (a - c) + Y'
-        a_next = R * (a - σ(a, z_idx)) + y(z_next)
+        a_next = R * (a - σ(a, z_idx)) + Y_jax(z_next, η, a_y, b_y)
         # Return updated state
         return a_next, z_next_idx
 
@@ -834,7 +894,7 @@ def compute_asset_stationary(
     - c_vals, ae_vals are the optimal consumption policy and endogenous grid.
 
     """
-    R, β, γ, Π, z_grid, s = ifp
+    R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
     n_z = len(z_grid)
 
     # Create interpolation function for consumption policy
@@ -862,7 +922,7 @@ Now we call the function, generate the asset distribution and histogram it:
 
 ```{code-cell} ipython3
 ifp = create_ifp()
-R, β, γ, Π, z_grid, s = ifp
+R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
 ae_vals_init = s[:, None] * jnp.ones(len(z_grid))
 c_vals_init = ae_vals_init
 c_vals, ae_vals = solve_model(ifp, c_vals_init, ae_vals_init)
@@ -874,15 +934,156 @@ ax.set(xlabel='assets')
 plt.show()
 ```
 
-The shape of the asset distribution is completely unrealistic!
+The asset distribution now shows more realistic features compared to the simple
+model without transient income shocks.
 
-Here it is left skewed when in reality it has a long right tail.
+The addition of the IID income shock $\eta_t$ creates more income volatility,
+which induces households to save more for precautionary reasons.
 
-In a {doc}`subsequent lecture <ifp_advanced>` we will rectify this by adding
-more realistic features to the model.
+This helps generate more wealth inequality compared to a model with only the
+Markov component.
 
 
+## Wealth Inequality
 
+In this section we examine wealth inequality in more detail by computing
+standard measures of inequality and examining how they vary with the interest rate.
+
+### Measuring Inequality
+
+We'll compute two common measures of wealth inequality:
+
+1. **Gini coefficient**: A measure of inequality ranging from 0 (perfect equality)
+   to 1 (perfect inequality)
+2. **Top 1% wealth share**: The fraction of total wealth held by the richest 1% of households
+
+Here are functions to compute these measures:
+
+```{code-cell} ipython3
+def gini_coefficient(x):
+    """
+    Compute the Gini coefficient for array x.
+
+    The Gini coefficient is a measure of inequality that ranges from
+    0 (perfect equality) to 1 (perfect inequality).
+    """
+    x = np.asarray(x)
+    n = len(x)
+    # Sort values
+    x_sorted = np.sort(x)
+    # Compute Gini coefficient
+    cumsum = np.cumsum(x_sorted)
+    return (2 * np.sum((np.arange(1, n+1)) * x_sorted)) / (n * cumsum[-1]) - (n + 1) / n
+
+
+def top_share(x, p=0.01):
+    """
+    Compute the share of total wealth held by the top p fraction of households.
+
+    Parameters:
+        x: array of wealth values
+        p: fraction of top households (default 0.01 for top 1%)
+
+    Returns:
+        Share of total wealth held by top p fraction
+    """
+    x = np.asarray(x)
+    x_sorted = np.sort(x)
+    # Number of households in top p%
+    n_top = int(np.ceil(len(x) * p))
+    # Wealth held by top p%
+    wealth_top = np.sum(x_sorted[-n_top:])
+    # Total wealth
+    wealth_total = np.sum(x_sorted)
+    return wealth_top / wealth_total if wealth_total > 0 else 0.0
+```
+
+Let's compute these measures for our baseline simulation:
+
+```{code-cell} ipython3
+gini = gini_coefficient(assets)
+top1 = top_share(assets, p=0.01)
+
+print(f"Gini coefficient: {gini:.4f}")
+print(f"Top 1% wealth share: {top1:.4f}")
+```
+
+### Interest Rate and Inequality
+
+Now let's examine how wealth inequality varies with the interest rate $r$.
+
+Economic intuition suggests that higher interest rates might increase wealth
+inequality, as wealthier households benefit more from returns on their assets.
+
+However, higher interest rates also encourage saving, which could
+reduce inequality if lower-wealth households save more.
+
+Let's investigate empirically:
+
+```{code-cell} ipython3
+# Test over 12 interest rate values
+M = 12
+r_vals = np.linspace(0, 0.015, M)
+
+gini_vals = []
+top1_vals = []
+
+# Solve and simulate for each r
+for r in r_vals:
+    print(f'Analyzing inequality at r = {r:.4f}')
+    ifp = create_ifp(r=r)
+    R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
+    ae_vals_init = s[:, None] * jnp.ones(len(z_grid))
+    c_vals_init = ae_vals_init
+    c_vals, ae_vals = solve_model(ifp, c_vals_init, ae_vals_init)
+    assets = compute_asset_stationary(c_vals, ae_vals, ifp,
+                                       num_households=50_000, T=500)
+    gini = gini_coefficient(assets)
+    top1 = top_share(assets, p=0.01)
+    gini_vals.append(gini)
+    top1_vals.append(top1)
+    print(f'  Gini: {gini:.4f}, Top 1%: {top1:.4f}')
+    # Start next round with last solution
+    c_vals_init = c_vals
+    ae_vals_init = ae_vals
+```
+
+Now let's visualize the results:
+
+```{code-cell} ipython3
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+# Plot Gini coefficient vs interest rate
+axes[0].plot(r_vals, gini_vals, 'o-')
+axes[0].set_xlabel('interest rate $r$')
+axes[0].set_ylabel('Gini coefficient')
+axes[0].set_title('Wealth Inequality vs Interest Rate')
+axes[0].grid(alpha=0.3)
+
+# Plot top 1% share vs interest rate
+axes[1].plot(r_vals, top1_vals, 'o-', color='C1')
+axes[1].set_xlabel('interest rate $r$')
+axes[1].set_ylabel('top 1% wealth share')
+axes[1].set_title('Top 1% Wealth Share vs Interest Rate')
+axes[1].grid(alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+The results show how wealth inequality measures respond to changes in the
+interest rate.
+
+Higher interest rates lead to greater aggregate savings (as shown in Exercise 2),
+but the relationship with inequality depends on the distribution of who benefits
+from these higher returns.
+
+If wealthier households are more able to take advantage of high interest rates
+(due to higher initial wealth), inequality increases with $r$.
+
+The Gini coefficient and top 1% share provide complementary views of inequality:
+the Gini captures inequality across the entire distribution, while the top 1%
+share focuses specifically on concentration at the top.
 
 
 ## Exercises
@@ -913,15 +1114,15 @@ r_vals = np.linspace(0, 0.04, 4)
 fig, ax = plt.subplots()
 for r_val in r_vals:
     ifp = create_ifp(r=r_val)
-    R, β, γ, Π, z_grid, s = ifp
+    R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
     ae_vals_init = s[:, None] * jnp.ones(len(z_grid))
     c_vals_init = ae_vals_init
     c_vals, ae_vals = solve_model(ifp, c_vals_init, ae_vals_init)
     # Plot policy
     ax.plot(ae_vals[:, 0], c_vals[:, 0], label=f'$r = {r_val:.3f}$')
     # Start next round with last solution
-    c_vals_init = c_vals   
-    ae_vals_init = ae_vals   
+    c_vals_init = c_vals
+    ae_vals_init = ae_vals
 
 ax.set(xlabel='asset level', ylabel='consumption (low income)')
 ax.legend()
@@ -979,17 +1180,17 @@ asset_mean = []
 for r in r_vals:
     print(f'Solving model at r = {r}')
     ifp = create_ifp(r=r)
-    R, β, γ, Π, z_grid, s = ifp
-    ae_vals_init = s[:, None] * jnp.ones(len(z_grid))    
-    c_vals_init = ae_vals_init   
+    R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
+    ae_vals_init = s[:, None] * jnp.ones(len(z_grid))
+    c_vals_init = ae_vals_init
     c_vals, ae_vals = solve_model(ifp, c_vals_init, ae_vals_init)
     assets = compute_asset_stationary(c_vals, ae_vals, ifp, num_households=10_000, T=500)
     mean = np.mean(assets)
     asset_mean.append(mean)
     print(f'  Mean assets: {mean:.4f}')
     # Start next round with last solution
-    c_vals_init = c_vals   
-    ae_vals_init = ae_vals   
+    c_vals_init = c_vals
+    ae_vals_init = ae_vals
 ax.plot(r_vals, asset_mean)
 
 ax.set(xlabel='interest rate', ylabel='capital')
