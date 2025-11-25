@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-# Cake Eating II: Numerical Methods
+# Optimal Savings II: Numerical Cake Eating
 
 ```{contents} Contents
 :depth: 2
@@ -17,7 +17,7 @@ kernelspec:
 
 ## Overview
 
-In this lecture we continue the study of {doc}`the cake eating problem <cake_eating>`.
+In this lecture we continue the study of the problem described in {doc}`os`.
 
 The aim of this lecture is to solve the problem using numerical
 methods.
@@ -54,7 +54,7 @@ from typing import NamedTuple
 
 ## Reviewing the Model
 
-You might like to {doc}`review the details <cake_eating>` before we start.
+You might like to review the details in {doc}`os` before we start.
 
 Recall in particular that the Bellman equation is
 
@@ -159,19 +159,18 @@ The `maximize` function below is a small helper function that converts a
 SciPy minimization routine into a maximization routine.
 
 ```{code-cell} python3
-def maximize(g, a, b, args):
+def maximize(g, upper_bound):
     """
-    Maximize the function g over the interval [a, b].
+    Maximize the function g over the interval [0, upper_bound].
 
     We use the fact that the maximizer of g on any interval is
-    also the minimizer of -g.  The tuple args collects any extra
-    arguments to g.
+    also the minimizer of -g.
 
-    Returns the maximal value and the maximizer.
     """
 
-    objective = lambda x: -g(x, *args)
-    result = minimize_scalar(objective, bounds=(a, b), method='bounded')
+    objective = lambda x: -g(x)
+    bounds = (0, upper_bound)
+    result = minimize_scalar(objective, bounds=bounds, method='bounded')
     maximizer, maximum = result.x, -result.fun
     return maximizer, maximum
 ```
@@ -216,15 +215,24 @@ def u(c, γ):
         return (c ** (1 - γ)) / (1 - γ)
 ```
 
-The next function is the unmaximized right hand side of the Bellman equation.
+To work with the Bellman equation, let's write it as
 
-The array `v` is the current guess of $v$, stored as an array on the grid
-points.
+$$
+    v(x) = \max_{0 \leq c \leq x} B(x, c, v)
+$$
+
+where
+
+$$
+    B(x, c, v) := u(c) + \beta v(x - c)
+$$
+
+Now we implement the function $B$.
 
 ```{code-cell} python3
-def state_action_value(
-        c: float,               # current consumption
+def B(
         x: float,               # the current state (remaining cake)
+        c: float,               # current consumption
         v: np.ndarray,          # current guess of the value function
         model: Model            # instance of cake eating model
     ):
@@ -234,9 +242,11 @@ def state_action_value(
     """
     # Unpack
     β, γ, x_grid = model.β, model.γ, model.x_grid
-    # Convert array into function
+
+    # Convert array v into a function by linear interpolation
     vf = lambda x: np.interp(x, x_grid, v)
-    # Return unmaximmized RHS of Bellman equation 
+
+    # Return B(x, c, v)
     return u(c, γ) + β * vf(x - c)
 ```
 
@@ -244,18 +254,18 @@ We now define the Bellman operation:
 
 ```{code-cell} python3
 def T(
-        v: np.ndarray,          # current guess of the value function
-        model: Model            # instance of cake eating model
+        v: np.ndarray,          # Current guess of the value function
+        model: Model            # Instance of the cake eating model
     ):
-    """
-    The Bellman operator.  Updates the guess of the value function.
+    " The Bellman operator.  Updates the guess of the value function. "
 
-    """
+    # Allocate memory for the new array v_new = Tv
     v_new = np.empty_like(v)
 
+    # Calculate Tv(x) for all x
     for i, x in enumerate(model.x_grid):
-        # Maximize RHS of Bellman equation at state x
-        v_new[i] = maximize(state_action_value, 1e-10, x, (x, v, model))[1]
+        # Maximize RHS of Bellman equation with respect to c over [0, x]
+        _, v_new[i] = maximize(lambda c: B(x, c, v, model), x)
 
     return v_new
 ```
@@ -264,8 +274,10 @@ After defining the Bellman operator, we are ready to solve the model.
 
 Let's start by creating a model using the default parameterization.
 
+
 ```{code-cell} python3
 model = create_cake_eating_model()
+β, γ, x_grid = model
 ```
 
 Now let's see the iteration of the value function in action.
@@ -274,8 +286,7 @@ We start from guess $v$ given by $v(x) = u(x)$ for every
 $x$ grid point.
 
 ```{code-cell} python3
-x_grid = model.x_grid
-v = u(x_grid, model.γ)  # Initial guess
+v = u(x_grid, γ)  # Initial guess
 n = 12                  # Number of iterations
 fig, ax = plt.subplots()
 
@@ -360,7 +371,7 @@ plt.show()
 Next let's compare it to the analytical solution.
 
 ```{code-cell} python3
-v_analytical = v_star(model.x_grid, model.β, model.γ)
+v_analytical = v_star(x_grid, β, γ)
 ```
 
 ```{code-cell} python3
@@ -402,7 +413,7 @@ These ideas will be explored over the next few lectures.
 
 Let's try computing the optimal policy.
 
-In the {doc}`first lecture on cake eating <cake_eating>`, the optimal
+In {doc}`os`, the optimal
 consumption policy was shown to be
 
 $$
@@ -411,13 +422,15 @@ $$
 
 Let's see if our numerical results lead to something similar.
 
-Our numerical strategy will be to compute
+Our numerical strategy will be to compute, for any given $v$, the policy
 
 $$
-\sigma(x) = \arg \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
+    \sigma(x) = \arg \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
 $$
 
-on a grid of $x$ points and then interpolate.
+This policy is called the $v$-**greedy policy**.
+
+In practice we will compute $\sigma$ on a grid of $x$ points and then interpolate.
 
 For $v$ we will use the approximation of the value function we obtained
 above.
@@ -425,29 +438,25 @@ above.
 Here's the function:
 
 ```{code-cell} python3
-def σ(
+def get_greedy(
         v: np.ndarray,          # current guess of the value function
         model: Model            # instance of cake eating model
     ):
-    """
-    The optimal policy function. Given the value function,
-    it finds optimal consumption in each state.
+    " Compute the v-greedy policy on x_grid."
 
-    """
-    c = np.empty_like(v)
+    σ = np.empty_like(v)
 
-    for i in range(len(model.x_grid)):
-        x = model.x_grid[i]
+    for i, x in enumerate(model.x_grid):
         # Maximize RHS of Bellman equation at state x
-        c[i] = maximize(state_action_value, 1e-10, x, (x, v, model))[0]
+        σ[i], _ = maximize(lambda c: B(x, c, v, model), x)
 
-    return c
+    return σ
 ```
 
 Now let's pass the approximate value function and compute optimal consumption:
 
 ```{code-cell} python3
-c = σ(v, model)
+σ = get_greedy(v, model)
 ```
 
 (pol_an)=
@@ -459,7 +468,7 @@ c_analytical = c_star(model.x_grid, model.β, model.γ)
 fig, ax = plt.subplots()
 
 ax.plot(model.x_grid, c_analytical, label='analytical')
-ax.plot(model.x_grid, c, label='numerical')
+ax.plot(model.x_grid, σ, label='numerical')
 ax.set_ylabel(r'$\sigma(x)$')
 ax.set_xlabel('$x$')
 ax.legend()
@@ -477,7 +486,7 @@ However, both changes will lead to a longer compute time.
 Another possibility is to use an alternative algorithm, which offers the
 possibility of faster compute time and, at the same time, more accuracy.
 
-We explore this {doc}`soon <cake_eating_time_iter>`.
+We explore this in {doc}`os_time_iter`.
 
 
 ## Exercises
@@ -529,31 +538,27 @@ def create_extended_model(β=0.96,           # discount factor
     Creates an instance of the extended cake eating model.
     """
     x_grid = np.linspace(x_grid_min, x_grid_max, x_grid_size)
-    return ExtendedModel(β=β, γ=γ, α=α, x_grid=x_grid)
+    return ExtendedModel(β, γ, α, x_grid)
 
-def extended_state_action_value(c, x, v_array, model):
+def extended_B(c, x, v, model):
     """
     Right hand side of the Bellman equation for the extended cake model given x and c.
-    """
-    β, γ, α, x_grid = model.β, model.γ, model.α, model.x_grid
-    v = lambda x: np.interp(x, x_grid, v_array)
 
-    return u(c, γ) + β * v((x - c)**α)
+    """
+    β, γ, α, x_grid = model
+    vf = lambda x: np.interp(x, x_grid, v)
+    return u(c, γ) + β * vf((x - c)**α)
 ```
 
 We also need a modified Bellman operator:
 
 ```{code-cell} python3
-def T_extended(v, model):
-    """
-    The Bellman operator for the extended cake model.
-    """
+def extended_T(v, model):
+    " The Bellman operator for the extended cake model. "
+
     v_new = np.empty_like(v)
-
     for i, x in enumerate(model.x_grid):
-        # Maximize RHS of Bellman equation at state x
-        v_new[i] = maximize(extended_state_action_value, 1e-10, x, (x, v, model))[1]
-
+        _, v_new[i] = maximize(lambda c: extended_B(c, x, v, model), x)
     return v_new
 ```
 
@@ -563,7 +568,7 @@ Now create the model:
 model = create_extended_model()
 ```
 
-Here's the computed value function.
+Here's a function to compute the value function.
 
 ```{code-cell} python3
 def compute_value_function_extended(model,
@@ -579,7 +584,7 @@ def compute_value_function_extended(model,
     error = tol + 1
 
     while i < max_iter and error > tol:
-        v_new = T_extended(v, model)
+        v_new = extended_T(v, model)
         error = np.max(np.abs(v - v_new))
         i += 1
         if verbose and i % print_skip == 0:
@@ -608,19 +613,19 @@ Here's the computed policy, combined with the solution we derived above for
 the standard cake eating case $\alpha=1$.
 
 ```{code-cell} python3
-def σ_extended(model, v):
+def extended_get_greedy(model, v):
     """
     The optimal policy function for the extended cake model.
     """
-    c = np.empty_like(v)
+    σ = np.empty_like(v)
 
-    for i in range(len(model.x_grid)):
-        x = model.x_grid[i]
-        c[i] = maximize(extended_state_action_value, 1e-10, x, (x, v, model))[0]
+    for i, x in enumerate(model.x_grid):
+        # Maximize extended_B with respect to c over [0, x]
+        σ[i], _ = maximize(lambda c: extended_B(c, x, v, model), x)
 
-    return c
+    return σ
 
-c_new = σ_extended(model, v)
+σ = extended_get_greedy(model, v)
 
 # Get the baseline model for comparison
 baseline_model = create_cake_eating_model()
@@ -629,7 +634,7 @@ c_analytical = c_star(baseline_model.x_grid, baseline_model.β, baseline_model.�
 fig, ax = plt.subplots()
 
 ax.plot(baseline_model.x_grid, c_analytical, label=r'$\alpha=1$ solution')
-ax.plot(model.x_grid, c_new, label=fr'$\alpha={model.α}$ solution')
+ax.plot(model.x_grid, σ, label=fr'$\alpha={model.α}$ solution')
 
 ax.set_ylabel('consumption', fontsize=12)
 ax.set_xlabel('$x$', fontsize=12)

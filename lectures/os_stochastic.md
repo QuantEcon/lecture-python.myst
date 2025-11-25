@@ -18,7 +18,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`Cake Eating III: Stochastic Dynamics <single: Cake Eating III: Stochastic Dynamics>`
+# {index}`Optimal Savings III: Stochastic Returns <single: Optimal Savings III: Stochastic Returns>`
 
 ```{contents} Contents
 :depth: 2
@@ -26,30 +26,16 @@ kernelspec:
 
 ## Overview
 
-In this lecture, we continue our study of the cake eating problem, building on
-{doc}`Cake Eating I <cake_eating>` and {doc}`Cake Eating II <cake_eating_numerical>`.
+In this lecture, we continue our study of optimal savings problems, building on
+{doc}`os` and {doc}`os_numerical`.
 
-The key difference from the previous lectures is that the cake size now evolves
+The key difference from the previous lectures is that wealth now evolves
 stochastically.
 
-We can think of this cake as a harvest that regrows if we save some seeds.
+We can think of wealth as a harvest that regrows if we save some seeds.
 
 Specifically, if we save and invest part of today's harvest $x_t$, it grows into next
 period's harvest $x_{t+1}$ according to a stochastic production process.
-
-```{note}
-The term "cake eating" is not such a good fit now that we have a stochastic and
-potentially growing state.
-
-Nonetheless, we'll continue to refer to cake eating to maintain flow from the
-previous lectures.
-
-Soon we'll move to more ambitious optimal savings/consumption problems and adopt
-new terminology.
-
-This lecture serves as a bridge between cake eating and the more ambitious
-problems.
-```
 
 The extensions in this lecture introduce several new elements:
 
@@ -87,7 +73,7 @@ from typing import NamedTuple, Callable
 
 ## The Model
 
-```{index} single: Stochastic Cake Eating; Model
+```{index} single: Optimal Savings; Model
 ```
 
 Here we described the new model and the optimization problem.
@@ -167,7 +153,7 @@ In the present context
 
 ### The Policy Function Approach
 
-```{index} single: Stochastic Cake Eating; Policy Function Approach
+```{index} single: Optimal Savings; Policy Function Approach
 ```
 
 One way to think about solving this problem is to look for the best **policy function**.
@@ -459,7 +445,7 @@ flexibility.
 (In subsequent lectures we will focus on efficiency and speed.)
 
 We will use fitted value function iteration, which was
-already described in {doc}`cake eating <cake_eating_numerical>`.
+already described in {doc}`os_numerical`.
 
 
 ### Scalar Maximization
@@ -520,7 +506,7 @@ def create_model(u: Callable,
                  shock_size: int = 250,
                  seed: int = 1234) -> Model:
     """
-    Creates an instance of the cake eating model.
+    Creates an instance of the optimal savings model.
     """
     # Set up grid
     grid = np.linspace(1e-4, grid_max, grid_size)
@@ -778,7 +764,7 @@ The figure shows that we are pretty much on the money.
 
 ### The Policy Function
 
-```{index} single: Stochastic Cake Eating; Policy Function
+```{index} single: Optimal Savings; Policy Function
 ```
 
 The policy `v_greedy` computed above corresponds to an approximate optimal policy.
@@ -816,7 +802,7 @@ u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 $$
 
 Maintaining the other defaults, including the Cobb-Douglas production
-function,  solve the stochastic cake eating model with this
+function,  solve the optimal savings model with this
 utility specification.
 
 Setting $\gamma = 1.5$, compute and plot an estimate of the optimal policy.

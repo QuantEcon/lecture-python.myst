@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`The Income Fluctuation Problem II: Stochastic Returns on Assets <single: The Income Fluctuation Problem II: Stochastic Returns on Assets>`
+# {index}`The Income Fluctuation Problem IV: Stochastic Returns on Assets <single: The Income Fluctuation Problem IV: Stochastic Returns on Assets>`
 
 ```{contents} Contents
 :depth: 2
@@ -34,7 +34,7 @@ tags: [hide-output]
 
 ## Overview
 
-In this lecture, we continue our study of the {doc}`income fluctuation problem <ifp>`.
+In this lecture, we continue our study of the income fluctuation problem described in {doc}`ifp_egm`.
 
 While the interest rate was previously taken to be fixed, we now allow
 returns on assets to be state-dependent.
@@ -112,7 +112,7 @@ where
 
 Let $P$ represent the Markov matrix for the chain $\{Z_t\}_{t \geq 0}$.
 
-Our assumptions on preferences are the same as our {doc}`previous lecture <ifp>` on the income fluctuation problem.
+Our assumptions on preferences are the same as in {doc}`ifp_egm`.
 
 As before, $\mathbb E_z \hat X$ means expectation of next period value
 $\hat X$ given current value $Z = z$.
@@ -160,8 +160,7 @@ the IID and CRRA environment of {cite}`benhabib2015`.
 
 ### Optimality
 
-Let the class of candidate consumption policies $\mathscr C$ be defined
-{doc}`as before <ifp>`.
+Let the class of candidate consumption policies $\mathscr C$ be defined as in {doc}`ifp_egm`.
 
 In {cite}`ma2020income` it is shown that, under the stated assumptions,
 
@@ -182,8 +181,7 @@ In the present setting, the Euler equation takes the form
        \right\}
 ```
 
-(Intuition and derivation are similar to our {doc}`earlier lecture <ifp>` on
-the income fluctuation problem.)
+(Intuition and derivation are similar to {doc}`ifp_egm`.)
 
 We again solve the Euler equation using time iteration, iterating with a
 Coleman--Reffett operator $K$ defined to match the Euler equation
@@ -197,8 +195,7 @@ Coleman--Reffett operator $K$ defined to match the Euler equation
 ### A Time Iteration Operator
 
 Our definition of the candidate class $\sigma \in \mathscr C$ of consumption
-policies is the same as in our {doc}`earlier lecture <ifp>` on the income
-fluctuation problem.
+policies is the same as in {doc}`ifp_egm`.
 
 For fixed $\sigma \in \mathscr C$ and $(a,z) \in \mathbf S$, the value
 $K\sigma(a,z)$ of the function $K\sigma$ at $(a,z)$ is defined as the
@@ -251,7 +248,7 @@ convergence (as measured by the distance $\rho$).
 ### Using an Endogenous Grid
 
 In the study of that model we found that it was possible to further
-accelerate time iteration via the {doc}`endogenous grid method <cake_eating_egm>`.
+accelerate time iteration via the {doc}`endogenous grid method <os_egm>`.
 
 We will use the same method here.
 
@@ -578,7 +575,7 @@ In contrast, when $z=1$ (good state), higher expected future income allows the h
 Let's try to get some idea of what will happen to assets over the long run
 under this consumption policy.
 
-As with our {doc}`earlier lecture <ifp>` on the income fluctuation problem, we
+As in {doc}`ifp_egm`, we
 begin by producing a 45 degree diagram showing the law of motion for assets
 
 ```{code-cell} python3
@@ -911,7 +908,7 @@ The JAX implementation provides several advantages:
 ```{exercise}
 :label: ifpa_ex1
 
-Let's repeat our {ref}`earlier exercise <ifp_ex2>` on the long-run
+Let's repeat our {ref}`earlier exercise <ifp_egm_ex2>` on the long-run
 cross sectional distribution of assets.
 
 In that exercise, we used a relatively simple income fluctuation model.
