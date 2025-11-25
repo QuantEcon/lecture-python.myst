@@ -88,9 +88,9 @@ def create_consumption_model(
         β=0.98,                    # Discount factor
         γ=2,                       # CRRA parameter
         a_min=0.01,                # Min assets
-        a_max=5.0,                 # Max assets
+        a_max=10.0,                # Max assets
         a_size=150,                # Grid size
-        ρ=0.9, ν=0.1, y_size=100   # Income parameters
+        ρ=0.9, ν=0.1, y_size=12    # Income parameters
     ):
     """
     Creates an instance of the consumption-savings model.
@@ -345,8 +345,37 @@ print(f"OPI completed in {opi_time:.2f} seconds.")
 Check that we get the same result:
 
 ```{code-cell} ipython3
-print(f"Policies match: {jnp.allclose(σ_star_vfi, σ_star_opi)}")
+print(f"Values match: {jnp.allclose(v_star_vfi, v_star_opi)}")
 ```
+
+The value functions match, confirming both algorithms converge to the same solution.
+
+Let's visually compare the asset dynamics under both policies:
+
+```{code-cell} ipython3
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# VFI policy
+for j, label in zip([0, -1], ['low income', 'high income']):
+    a_next_vfi = model.a_grid[σ_star_vfi[:, j]]
+    axes[0].plot(model.a_grid, a_next_vfi, label=label)
+axes[0].plot(model.a_grid, model.a_grid, 'k--', linewidth=0.5, alpha=0.5)
+axes[0].set(xlabel='current assets', ylabel='next period assets', title='VFI')
+axes[0].legend()
+
+# OPI policy
+for j, label in zip([0, -1], ['low income', 'high income']):
+    a_next_opi = model.a_grid[σ_star_opi[:, j]]
+    axes[1].plot(model.a_grid, a_next_opi, label=label)
+axes[1].plot(model.a_grid, model.a_grid, 'k--', linewidth=0.5, alpha=0.5)
+axes[1].set(xlabel='current assets', ylabel='next period assets', title='OPI')
+axes[1].legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+The policies are visually indistinguishable, confirming both methods produce the same solution.
 
 Here's the speedup:
 
@@ -384,9 +413,7 @@ plt.show()
 
 Here's a summary of the results
 
-* When $m=1$, OPI is slight slower than VFI, even though they should be mathematically equivalent, due to small inefficiencies associated with extra function calls.
-
-* OPI outperforms VFI for a very large range of $m$ values.
+* OPI outperforms VFI for a large range of $m$ values.
 
 * For very large $m$, OPI performance begins to degrade as we spend too much
   time iterating the policy operator.

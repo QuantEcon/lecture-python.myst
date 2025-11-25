@@ -168,9 +168,9 @@ def create_consumption_model(
         β=0.98,                    # Discount factor
         γ=2,                       # CRRA parameter
         a_min=0.01,                # Min assets
-        a_max=5.0,                 # Max assets
+        a_max=10.0,                # Max assets
         a_size=150,                # Grid size
-        ρ=0.9, ν=0.1, y_size=100   # Income parameters
+        ρ=0.9, ν=0.1, y_size=12    # Income parameters
     ):
     """
     Creates an instance of the consumption-savings model.
@@ -346,6 +346,39 @@ Here's the speedup from using `jax.lax.while_loop`.
 ```{code-cell} ipython3
 print(f"Relative speed = {python_time / jax_without_compile:.2f}")
 ```
+
+
+### Asset Dynamics
+
+To understand long-run behavior, let's examine the asset accumulation dynamics under the optimal policy.
+
+The following 45-degree diagram shows how assets evolve over time:
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+# Plot asset accumulation for first and last income states
+for j, label in zip([0, -1], ['low income', 'high income']):
+    # Get next-period assets for each current asset level
+    a_next = model.a_grid[σ_star_jax[:, j]]
+    ax.plot(model.a_grid, a_next, label=label)
+
+# Add 45-degree line
+ax.plot(model.a_grid, model.a_grid, 'k--', linewidth=0.5)
+ax.set(xlabel='current assets', ylabel='next period assets')
+ax.legend()
+plt.show()
+```
+
+The plot shows the asset accumulation rule for each income state.
+
+The dotted line is the 45-degree line, representing points where $a_{t+1} = a_t$.
+
+We see that:
+
+* For low income levels, assets tend to decrease (points below the 45-degree line)
+* For high income levels, assets tend to increase at low asset levels
+* The dynamics suggest convergence to a stationary distribution
 
 
 ## Exercises
