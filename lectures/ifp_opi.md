@@ -109,7 +109,6 @@ We repeat some functions from {doc}`ifp_discrete`.
 Here is the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
-@jax.jit
 def B(v, model):
     """
     A vectorized version of the right-hand side of the Bellman equation
@@ -142,7 +141,6 @@ def B(v, model):
 Here's the Bellman operator:
 
 ```{code-cell} ipython3
-@jax.jit
 def T(v, model):
     "The Bellman operator."
     return jnp.max(B(v, model), axis=2)
@@ -151,7 +149,6 @@ def T(v, model):
 Here's the function that computes a $v$-greedy policy:
 
 ```{code-cell} ipython3
-@jax.jit
 def get_greedy(v, model):
     "Computes a v-greedy policy, returned as a set of indices."
     return jnp.argmax(B(v, model), axis=2)
@@ -194,7 +191,6 @@ Apply vmap to vectorize:
 T_σ_1    = jax.vmap(T_σ,   in_axes=(None, None, None, None, 0))
 T_σ_vmap = jax.vmap(T_σ_1, in_axes=(None, None, None, 0,    None))
 
-@jax.jit
 def T_σ_vec(v, σ, model):
     """Vectorized version of T_σ."""
     a_size, y_size = len(model.a_grid), len(model.y_grid)
@@ -206,7 +202,6 @@ def T_σ_vec(v, σ, model):
 Now we need a function to apply the policy operator m times:
 
 ```{code-cell} ipython3
-@jax.jit
 def iterate_policy_operator(σ, v, m, model):
     """
     Apply the policy operator T_σ exactly m times to v.
